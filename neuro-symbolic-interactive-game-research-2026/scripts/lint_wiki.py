@@ -9,7 +9,8 @@ from collections import defaultdict
 from pathlib import Path
 
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]")
-IGNORE_DIRS = {".git", ".obsidian", ".trash"}
+IGNORE_DIRS = {".git", ".graphify", ".obsidian", ".trash"}
+IGNORE_PREFIXES = {("graphify-out", "prompts", "obsidian")}
 REQUIRED_PATHS = [
     "AGENTS.md",
     "index.md",
@@ -30,6 +31,8 @@ def collect_pages(vault_root: Path) -> dict[str, Path]:
         if any(part in IGNORE_DIRS for part in path.parts):
             continue
         rel = path.relative_to(vault_root)
+        if any(rel.parts[: len(prefix)] == prefix for prefix in IGNORE_PREFIXES):
+            continue
         if rel.name in {"AGENTS.md", "CLAUDE.md"}:
             continue
         if rel.parts and rel.parts[0] == "raw":
@@ -73,6 +76,9 @@ def lint(vault_root: Path) -> dict[str, object]:
         for raw_target in WIKILINK_RE.findall(text):
             resolved = resolve_target(raw_target, basename_index, pages)
             if resolved is None:
+                target_path = vault_root / f"{raw_target.strip().strip('/').removesuffix('.md')}.md"
+                if target_path.is_file():
+                    continue
                 broken_links.append({"page": rel, "target": raw_target})
                 continue
             if resolved != rel:

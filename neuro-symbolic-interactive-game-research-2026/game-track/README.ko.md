@@ -2,7 +2,7 @@
 
 게임 트랙은 연구 코드를 엔진 내부에 직접 결합하지 않는다. 엔진은 `schemas/game-bridge.schema.json`을 따르는 관찰 이벤트를 보내고, 연구 런타임은 `candidate`, `validation`, `commit/reject` 이벤트를 반환한다.
 
-현재 구현 범위는 이벤트 스키마·fixture·결정론적 후보 검증·상태 불변 fallback·headless 재생 예제다. 네트워크 transport, 프로세스 간 멱등 저장소, timeout fault injection은 계획된 어댑터 작업이며 구현 완료로 주장하지 않는다.
+현재 구현 범위는 이벤트 스키마·fixture·결정론적 후보 검증·상태 불변 fallback·콘텐츠 해시 인증·레코드 간 상태 연속성을 확인하는 semantic JSONL 재생이다. 네트워크 transport, 프로세스 간 멱등 저장소, timeout fault injection은 계획된 어댑터 작업이며 구현 완료로 주장하지 않는다.
 
 라이브 어댑터 승인 조건:
 

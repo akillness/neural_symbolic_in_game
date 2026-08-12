@@ -1,3 +1,4 @@
+import hashlib
 import json
 import sys
 import tempfile
@@ -12,6 +13,8 @@ from nesy_game import (
     CandidateAction,
     WorldState,
     execute_with_repair,
+    replay_trace_jsonl,
+    replay_trace_record,
     to_jsonable,
     verify_trace_record,
     write_trace_jsonl,
@@ -146,6 +149,49 @@ class RuntimeTests(unittest.TestCase):
         record["state"]["facts"] = ["tampered"]
         record["attempts"] = 999
         self.assertFalse(verify_trace_record(record))
+
+    def test_semantic_replay_rejects_rehashed_impossible_state(self) -> None:
+        action = CandidateAction(
+            action_id="semantic-tamper",
+            actor_id="guard",
+            action_type="REPLY",
+            preconditions=frozenset({"met_guard"}),
+            effects=frozenset({"door_open"}),
+        )
+        record = to_jsonable(execute_with_repair(self.state, action))
+        record["state"]["facts"] = ["forged"]
+        payload = {key: value for key, value in record.items() if key != "trace_hash"}
+        canonical = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        record["trace_hash"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        self.assertTrue(verify_trace_record(record))
+        with self.assertRaisesRegex(ValueError, "replayed state"):
+            replay_trace_record(record)
+
+    def test_jsonl_replay_enforces_episode_continuity(self) -> None:
+        first_action = CandidateAction(
+            action_id="first",
+            actor_id="guard",
+            action_type="REPLY",
+            preconditions=frozenset({"met_guard"}),
+            effects=frozenset({"door_open"}),
+        )
+        first = execute_with_repair(self.state, first_action)
+        second_action = replace(first_action, action_id="second")
+        second = execute_with_repair(first.state, second_action)
+        disconnected = execute_with_repair(self.state, second_action)
+
+        with tempfile.TemporaryDirectory() as directory:
+            valid_path = Path(directory) / "valid.jsonl"
+            write_trace_jsonl(valid_path, first)
+            write_trace_jsonl(valid_path, second)
+            replayed = replay_trace_jsonl(valid_path, self.state)
+            self.assertEqual(replayed, second.state)
+
+            broken_path = Path(directory) / "broken.jsonl"
+            write_trace_jsonl(broken_path, first)
+            write_trace_jsonl(broken_path, disconnected)
+            with self.assertRaisesRegex(ValueError, "does not continue"):
+                replay_trace_jsonl(broken_path, self.state)
 
     def test_quest_stage_cannot_regress(self) -> None:
         action = CandidateAction(

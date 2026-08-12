@@ -30,7 +30,7 @@ uv run python scripts/validate_harness.py
 uv run python examples/headless_demo.py
 ```
 
-현재 실행 범위는 로컬 정책 검증기, 제한 수리/fallback, 전체 수리 이력 해시와 JSONL writer, 스키마 fixture, headless 예제다. 실제 10개 모델 추론 어댑터, MLflow/에너지 텔레메트리, Godot/Unity transport, 인간 연구는 명세만 있으며 아직 구현되지 않았다. 실제 추론 환경은 `game-track/README.ko.md` 계약을 구현한 뒤 연결한다.
+현재 실행 범위는 로컬 정책 검증기, 제한 수리/fallback, 전체 수리 이력 해시, 에피소드 연속성을 검사하는 semantic JSONL replay, 스키마 fixture, headless 예제다. 실제 10개 모델 추론 어댑터, MLflow/에너지 텔레메트리, Godot/Unity transport, 인간 연구는 명세만 있으며 아직 구현되지 않았다. 실제 추론 환경은 `game-track/README.ko.md` 계약을 구현한 뒤 연결한다.
 
 ## 디렉터리
 

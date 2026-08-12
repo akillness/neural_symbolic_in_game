@@ -9,7 +9,14 @@ from dataclasses import fields, is_dataclass, replace
 from pathlib import Path
 from typing import Any
 
-from .contracts import CandidateAction, CommitOutcome, TraceAttempt, ValidationResult, WorldState
+from .contracts import (
+    ActionPolicy,
+    CandidateAction,
+    CommitOutcome,
+    TraceAttempt,
+    ValidationResult,
+    WorldState,
+)
 from .validator import validate_candidate
 
 Repairer = Callable[[WorldState, CandidateAction, ValidationResult, int], CandidateAction]
@@ -194,3 +201,108 @@ def verify_trace_record(record: Mapping[str, Any]) -> bool:
     }
     canonical = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest() == record["trace_hash"]
+
+
+def _world_state_from_json(data: Mapping[str, Any]) -> WorldState:
+    policies = {
+        action_type: ActionPolicy(
+            required_preconditions=frozenset(policy["required_preconditions"]),
+            allowed_effects=frozenset(policy["allowed_effects"]),
+            required_effects=frozenset(policy.get("required_effects", [])),
+        )
+        for action_type, policy in data.get("action_policies", {}).items()
+    }
+    return WorldState(
+        state_id=str(data["state_id"]),
+        locations=frozenset(data["locations"]),
+        reachable_locations=frozenset(data["reachable_locations"]),
+        object_locations=data["object_locations"],
+        inventory=frozenset(data["inventory"]),
+        facts=frozenset(data["facts"]),
+        action_policies=policies,
+        npc_knowledge={
+            key: frozenset(value) for key, value in data.get("npc_knowledge", {}).items()
+        },
+        forbidden_disclosures={
+            key: frozenset(value) for key, value in data.get("forbidden_disclosures", {}).items()
+        },
+        quest_stage=int(data.get("quest_stage", 0)),
+    )
+
+
+def _candidate_from_json(data: Mapping[str, Any]) -> CandidateAction:
+    return CandidateAction(
+        action_id=str(data["action_id"]),
+        actor_id=str(data["actor_id"]),
+        action_type=str(data["action_type"]),
+        preconditions=frozenset(data["preconditions"]),
+        effects=frozenset(data["effects"]),
+        required_objects=frozenset(data.get("required_objects", [])),
+        used_facts=frozenset(data.get("used_facts", [])),
+        disclosed_facts=frozenset(data.get("disclosed_facts", [])),
+        required_quest_stage=int(data.get("required_quest_stage", 0)),
+        quest_stage_effect=data.get("quest_stage_effect"),
+        narrative_text=str(data.get("narrative_text", "")),
+        metadata=data.get("metadata", {}),
+    )
+
+
+def replay_trace_record(record: Mapping[str, Any]) -> WorldState:
+    """Authenticate and semantically replay one outcome record."""
+
+    if not verify_trace_record(record):
+        raise ValueError("trace record hash verification failed")
+    trace = record["trace"]
+    attempts = record["attempts"]
+    if not isinstance(trace, list) or not trace or attempts != len(trace) - 1:
+        raise ValueError("trace attempt count is inconsistent")
+    if [entry.get("attempt") for entry in trace] != list(range(len(trace))):
+        raise ValueError("trace attempt sequence is not contiguous")
+    if trace[-1].get("candidate") != record["candidate"]:
+        raise ValueError("top-level candidate differs from final trace attempt")
+    if trace[-1].get("validation") != record["validation"]:
+        raise ValueError("top-level validation differs from final trace attempt")
+
+    prior_state = _world_state_from_json(record["prior_state"])
+    candidate = _candidate_from_json(record["candidate"])
+    validation = validate_candidate(prior_state, candidate)
+    if to_jsonable(validation) != record["validation"]:
+        raise ValueError("recorded validation does not match deterministic validation")
+
+    if record["status"] == "commit":
+        if not validation.valid:
+            raise ValueError("invalid candidate cannot have commit status")
+        expected_state = _apply_valid(prior_state, candidate)
+    elif record["status"] == "fallback":
+        if validation.valid:
+            raise ValueError("valid candidate cannot have fallback status")
+        expected_state = prior_state
+    else:
+        raise ValueError(f"unsupported trace status: {record['status']}")
+    if to_jsonable(expected_state) != record["state"]:
+        raise ValueError("recorded outcome state does not match replayed state")
+    return expected_state
+
+
+def replay_trace_jsonl(path: str | Path, initial_state: WorldState | None = None) -> WorldState:
+    """Replay a JSONL episode and enforce state continuity between records."""
+
+    expected_prior = initial_state
+    count = 0
+    with Path(path).open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+                if expected_prior is not None and record.get("prior_state") != to_jsonable(
+                    expected_prior
+                ):
+                    raise ValueError("prior state does not continue from the preceding record")
+                expected_prior = replay_trace_record(record)
+                count += 1
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+                raise ValueError(f"invalid trace at line {line_number}: {exc}") from exc
+    if count == 0 or expected_prior is None:
+        raise ValueError("trace file contains no records")
+    return expected_prior

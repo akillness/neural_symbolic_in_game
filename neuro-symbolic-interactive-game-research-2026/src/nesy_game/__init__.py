@@ -10,7 +10,14 @@ from .contracts import (
     WorldState,
 )
 from .metrics import evaluate_trace
-from .runtime import execute_with_repair, to_jsonable, verify_trace_record, write_trace_jsonl
+from .runtime import (
+    execute_with_repair,
+    replay_trace_jsonl,
+    replay_trace_record,
+    to_jsonable,
+    verify_trace_record,
+    write_trace_jsonl,
+)
 from .validator import validate_candidate
 
 __all__ = [
@@ -23,6 +30,8 @@ __all__ = [
     "WorldState",
     "evaluate_trace",
     "execute_with_repair",
+    "replay_trace_jsonl",
+    "replay_trace_record",
     "to_jsonable",
     "validate_candidate",
     "verify_trace_record",

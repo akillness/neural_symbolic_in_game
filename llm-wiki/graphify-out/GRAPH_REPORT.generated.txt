@@ -4,12 +4,12 @@
 - cluster-only mode — file stats not available
 
 ## Summary
-- 454 nodes · 410 edges · 44 communities (29 shown, 15 thin omitted)
+- 468 nodes · 421 edges · 47 communities (32 shown, 15 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9dfe1a8d`
+- Built from commit: `04301a3d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -56,6 +56,9 @@
 - [[_COMMUNITY_Community 39|Community 39]]
 - [[_COMMUNITY_Community 40|Community 40]]
 - [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 44|Community 44]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28` - 16 edges
@@ -72,7 +75,7 @@
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
 
-## Communities (44 total, 15 thin omitted)
+## Communities (47 total, 15 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.02
@@ -104,11 +107,11 @@ Nodes (22): code:block1 (python -m sglang.launch_server \), code:block2 (vllm se
 
 ### Community 7 - "Community 7"
 Cohesion: 0.10
-Nodes (19): code:block1 (<s>[SYSTEM_PROMPT]<system prompt>[/SYSTEM_PROMPT][INST]<user), code:block2 (system_prompt = """You are Mistral Small 3.1, a Large Langua), code:block3 (pip install vllm --upgrade), code:block4 (python -c "import mistral_common; print(mistral_common.__ver), code:block5 (vllm serve mistralai/Mistral-Small-3.1-24B-Instruct-2503 --t), code:block6 (import requests), code:block7 (import requests), code:block8 (from vllm import LLM) (+11 more)
+Nodes (19): code:block1 (# Use a pipeline as a high-level helper), code:block10 (export greedy='false'), code:block11 (export greedy='false'), code:block12 (@misc{qwen3technicalreport,), code:block2 (# Load model directly), code:block3 (# Install vLLM from pip:), code:block4 (docker model run hf.co/Qwen/Qwen3-VL-8B-Instruct), code:block5 (# Install SGLang from pip:) (+11 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.10
-Nodes (19): code:block1 (# Use a pipeline as a high-level helper), code:block10 (export greedy='false'), code:block11 (export greedy='false'), code:block12 (@misc{qwen3technicalreport,), code:block2 (# Load model directly), code:block3 (# Install vLLM from pip:), code:block4 (docker model run hf.co/Qwen/Qwen3-VL-8B-Instruct), code:block5 (# Install SGLang from pip:) (+11 more)
+Nodes (19): code:block1 (<s>[SYSTEM_PROMPT]<system prompt>[/SYSTEM_PROMPT][INST]<user), code:block2 (system_prompt = """You are Mistral Small 3.1, a Large Langua), code:block3 (pip install vllm --upgrade), code:block4 (python -c "import mistral_common; print(mistral_common.__ver), code:block5 (vllm serve mistralai/Mistral-Small-3.1-24B-Instruct-2503 --t), code:block6 (import requests), code:block7 (import requests), code:block8 (from vllm import LLM) (+11 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.11
@@ -136,62 +139,74 @@ Nodes (5): Concepts, Index, Project, Prompt/output ingest, Sources and reports
 
 ### Community 15 - "Community 15"
 Cohesion: 0.40
-Nodes (4): Answer, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Evidence and Citations, Question
+Nodes (4): [2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, [2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, [2026-08-12 09:32:40] query | 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해, Log
 
 ### Community 16 - "Community 16"
 Cohesion: 0.40
-Nodes (4): Answer, Evidence and Citations, Question, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+Nodes (4): Answer, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Evidence and Citations, Question
 
 ### Community 17 - "Community 17"
 Cohesion: 0.40
-Nodes (4): IEEE Account, Need Help?, Profile Information, Purchase Details
+Nodes (4): Answer, Evidence and Citations, Question, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
 
 ### Community 18 - "Community 18"
 Cohesion: 0.40
-Nodes (4): Aim and Scope, Demystifying the Peeker's Advantage in Multiplayer First-Person Shooter Games, Important Notice, Special Issue on Multi-Modal Content Generation for Games
+Nodes (4): Answer, Evidence and Citations, Question, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
 
 ### Community 19 - "Community 19"
-Cohesion: 0.50
-Nodes (3): code:text (drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-re), drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt
+Cohesion: 0.40
+Nodes (4): IEEE Account, Need Help?, Profile Information, Purchase Details
 
 ### Community 20 - "Community 20"
-Cohesion: 0.50
-Nodes (3): code:text (중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야), Prompt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+Cohesion: 0.40
+Nodes (4): Aim and Scope, Demystifying the Peeker's Advantage in Multiplayer First-Person Shooter Games, Important Notice, Special Issue on Multi-Modal Content Generation for Games
 
 ### Community 21 - "Community 21"
 Cohesion: 0.50
-Nodes (3): [2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, [2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, Log
+Nodes (3): code:text (drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-re), drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt
 
 ### Community 22 - "Community 22"
 Cohesion: 0.50
-Nodes (3): Chain-of-thought (CoT), Evaluations, Example rollouts
+Nodes (3): code:text (중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야), Prompt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
 
 ### Community 23 - "Community 23"
 Cohesion: 0.50
-Nodes (3): code:text (중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야), Prompt Excerpt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+Nodes (3): code:text (깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해), Prompt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
 
 ### Community 24 - "Community 24"
 Cohesion: 0.50
-Nodes (3): last_digest, session_id, updated_at
+Nodes (3): Chain-of-thought (CoT), Evaluations, Example rollouts
 
 ### Community 25 - "Community 25"
 Cohesion: 0.50
-Nodes (3): code:block1 (<bos><start_of_turn>user), code:block2 (<bos><start_of_turn>user), **Multi-turn text example**
+Nodes (3): code:text (drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-re), drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt Excerpt
 
 ### Community 26 - "Community 26"
 Cohesion: 0.50
-Nodes (3): code:text (drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-re), drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt Excerpt
+Nodes (3): code:text (깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해), Prompt Excerpt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
+
+### Community 27 - "Community 27"
+Cohesion: 0.50
+Nodes (3): last_digest, session_id, updated_at
+
+### Community 28 - "Community 28"
+Cohesion: 0.50
+Nodes (3): code:block1 (<bos><start_of_turn>user), code:block2 (<bos><start_of_turn>user), **Multi-turn text example**
+
+### Community 29 - "Community 29"
+Cohesion: 0.50
+Nodes (3): code:text (중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야), Prompt Excerpt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
 
 ## Knowledge Gaps
-- **329 isolated node(s):** `[2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`, `[2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야`, `Project`, `Concepts`, `Sources and reports` (+324 more)
+- **335 isolated node(s):** `[2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`, `[2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야`, `[2026-08-12 09:32:40] query | 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해`, `Project`, `Concepts` (+330 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What connects `[2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`, `[2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야`, `Project` to the rest of the system?**
-  _329 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `[2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`, `[2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야`, `[2026-08-12 09:32:40] query | 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해` to the rest of the system?**
+  _335 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.021505376344086023 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

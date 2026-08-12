@@ -2,7 +2,7 @@
 
 The game track does not embed research code directly inside the engine. The engine emits observations conforming to `schemas/game-bridge.schema.json`; the research runtime returns `candidate`, `validation`, and `commit/reject` events.
 
-Current implementation: event schema, fixture, deterministic candidate validation, unchanged-state fallback, and headless replay example. Network transport, cross-process idempotency storage, and timeout fault injection are planned adapter work and are not claimed as implemented.
+Current implementation: event schema, fixture, deterministic candidate validation, unchanged-state fallback, content-hash authentication, and semantic JSONL replay with cross-record state-continuity checks. Network transport, cross-process idempotency storage, and timeout fault injection are planned adapter work and are not claimed as implemented.
 
 Acceptance requirements for a live adapter:
 

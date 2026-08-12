@@ -30,7 +30,7 @@ uv run python scripts/validate_harness.py
 uv run python examples/headless_demo.py
 ```
 
-This repository currently runs the local policy validator, bounded repair/fallback, full-history trace hash and JSONL writer, schema fixture, and headless example. Real ten-model inference adapters, MLflow/energy telemetry, Godot/Unity transport, and the human study are specified but not implemented. Connect inference only after implementing the adapter contract in `game-track/README.en.md`.
+This repository currently runs the local policy validator, bounded repair/fallback, full-history trace hash, semantic JSONL replay with episode-continuity checks, schema fixture, and headless example. Real ten-model inference adapters, MLflow/energy telemetry, Godot/Unity transport, and the human study are specified but not implemented. Connect inference only after implementing the adapter contract in `game-track/README.en.md`.
 
 ## Layout
 

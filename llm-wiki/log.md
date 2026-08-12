@@ -14,3 +14,8 @@
 - 2026-08-12: Added TRACE-RPG controller, hard/soft boundary, claim status, journal-grade design, project, and synthesis pages.
 - 2026-08-12: Added Graphify two-layer rules; authoritative graph refresh and query smoke test follow wiki lint.
 - 2026-08-12: Lint passed with no broken links; authoritative Graphify graph built and queried successfully.
+
+## [2026-08-12 09:32:40] query | 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
+- Raw capture: [[raw/sources/prompts/2026/08/12/093240-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-12-093240-prompt]]
+- Query note: [[wiki/queries/2026-08-12-093240-prompt]]
