@@ -1,0 +1,57 @@
+metrics:
+  - id: valid_episode_rate
+    formula: valid_completed_episodes / attempted_episodes
+    direction: maximize
+    type: primary
+  - id: hard_violation_per_commit
+    formula: hard_violations_on_committed_actions / committed_actions
+    direction: minimize
+    type: primary
+  - id: quest_solvability
+    formula: planner_solved_quests / evaluated_quests
+    direction: maximize
+    type: deterministic
+  - id: forbidden_disclosure_rate
+    formula: forbidden_facts_disclosed / disclosure_opportunities
+    direction: minimize
+    type: deterministic
+  - id: unknown_fact_usage_rate
+    formula: facts_outside_npc_knowledge / asserted_facts
+    direction: minimize
+    type: deterministic
+  - id: repair_at_k
+    formula: invalid_candidates_repaired_within_k / invalid_candidates
+    direction: maximize
+    type: process
+  - id: diversity_at_matched_validity
+    formula: structural_diversity conditioned on equal hard-validity band
+    direction: maximize
+    type: secondary
+  - id: human_naturalness
+    formula: blinded ordinal rating with rater random effect
+    direction: maximize
+    type: human
+  - id: target_tension_rmse
+    formula: sqrt(mean((predicted_tension - target_tension)^2))
+    direction: minimize
+    type: affect
+  - id: tension_ccc
+    formula: concordance_correlation(target_tension, predicted_tension)
+    direction: maximize
+    type: affect
+  - id: p95_latency_ms
+    formula: percentile(total_request_latency_ms, 95)
+    direction: minimize
+    type: systems
+  - id: tokens_per_valid_commit
+    formula: total_tokens / valid_committed_actions
+    direction: minimize
+    type: systems
+  - id: validator_false_negative_rate
+    formula: human_confirmed_hard_violations_missed / human_confirmed_hard_violations
+    direction: minimize
+    type: audit
+  - id: validator_false_positive_rate
+    formula: valid_actions_rejected / human_confirmed_valid_actions
+    direction: minimize
+    type: audit

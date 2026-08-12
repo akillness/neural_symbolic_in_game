@@ -1,0 +1,81 @@
+version: 1
+as_of: 2026-08-12
+design:
+  stage_1_screening:
+    models: all-10
+    scenarios_per_track: 30
+    repetitions: 3
+    arms: [llm_only, rag, kg_policy, full_validator_repair]
+    purpose: Pareto screening; no paper-level causal conclusion.
+  stage_2_confirmatory:
+    models: promoted-3
+    scenarios_per_track: 120
+    repetitions: 5
+    arms:
+      - llm_only
+      - rag
+      - kg
+      - kg_policy
+      - full_validator_repair
+      - full_validator_repair_affect
+    ablations: [no_retrieval, no_policy, no_validator, rejection_only, no_affect]
+    purpose: Preregistered full factorial and ablation analysis.
+tracks:
+  - id: world-generation
+    scenario_families: [fantasy, mystery, science-fiction, educational-puzzle]
+    primary_endpoint: valid_episode_rate
+  - id: npc-dialogue
+    scenario_families: [quest-hint, bargaining, deception, memory, relationship-change]
+    primary_endpoint: hard_dialogue_violation_rate
+  - id: affect-adaptation
+    scenario_families: [rising-tension, relief, oscillating, uncertainty-fallback]
+    primary_endpoint: target_curve_rmse_without_hard-regression
+controls:
+  decoding:
+    temperature: 0.7
+    top_p: 0.95
+    max_output_tokens: 1024
+  seeds: [11, 23, 47, 83, 131]
+  repair_budget_k: 3
+  timeout_seconds: 60
+  cache_policy: cold-primary-warm-secondary
+  version_policy: exact-model-revision-required
+statistics:
+  confirmatory_population: frozen-stage-2-scenario-universe-and-promoted-model-set
+  observational_unit: episode-with-candidate-events-nested-within-episode
+  paired_block: [model_id, scenario_id, seed]
+  seed_treatment: repeated-random-draw-not-independent-sample
+  primary: mixed-effects-logistic-regression-with-model-fixed-stratum-and-world-template-random-intercepts
+  ordinal_human: cumulative-link-mixed-model
+  continuous: scenario-clustered-hierarchical-bootstrap-confidence-interval
+  confirmatory_contrasts:
+    family_h1:
+      - world-full-validator-repair-vs-llm-only
+      - dialogue-full-validator-repair-vs-llm-only
+    family_h2: structured-repair-vs-blind-retry-at-matched-k
+    family_h3: kg-temporal-memory-vs-no-memory
+    family_h4: affect-rmse-full-affect-vs-full-after-validity-noninferiority
+  multiple_comparisons:
+    family_h1: holm-two-sided-alpha-0.05
+    family_h2: single-two-sided-alpha-0.05
+    family_h3: single-two-sided-alpha-0.05
+    family_h4: hierarchical-gatekeeping-no-recycling
+    rq5_system-by-model-interaction: secondary-estimand-no-confirmatory-label
+  noninferiority:
+    endpoint: valid_episode_rate
+    margin_absolute: 0.02
+    alpha_one_sided: 0.025
+    gatekeeping: test-validity-first-then-affect-rmse-superiority
+    margin_basis: engineering-tolerance-fixed-before-confirmatory-unblinding
+  failures_and_missingness:
+    estimand_strategy: treatment-policy
+    api_timeout_parse_or_exhausted_retry: score-as-hard-invalid-and-include-latency-timeout
+    infrastructure_failure_before-any-response: rerun-same-seed-once-with-audited-reason-then-score-as-failure
+    missing_human_rating: no-single-imputation-report-rate-and-run-mar-plus-delta-mnar-sensitivity
+    missing-energy-telemetry: no-imputation-exclude-only-from-energy-estimand-and-report-count
+  report: [effect-size, 95-percent-ci, raw-n, cluster-count, exclusions, failure-count]
+leakage_guards:
+  - split by world and quest template, not individual utterance
+  - hold out NPC identities and relation motifs
+  - prohibit the generation model family from being the sole judge
+  - hash prompts, fixtures, model revisions, and game build

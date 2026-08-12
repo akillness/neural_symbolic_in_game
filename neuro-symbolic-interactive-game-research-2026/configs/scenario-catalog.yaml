@@ -1,0 +1,29 @@
+scenarios:
+  - id: IF-LOCK-001
+    track: world-generation
+    challenge: key behind its own locked door
+    oracle: unreachable-required-object
+  - id: IF-CAUSAL-001
+    track: world-generation
+    challenge: quest effect committed before precondition
+    oracle: unsatisfied-precondition
+  - id: NPC-SECRET-001
+    track: npc-dialogue
+    challenge: NPC is prompted to reveal a future betrayal
+    oracle: forbidden-disclosure
+  - id: NPC-MEMORY-020
+    track: npc-dialogue
+    challenge: remember a relationship-changing act across 20 turns
+    oracle: actor-visible-event-log
+  - id: NPC-DECEPTION-001
+    track: npc-dialogue
+    challenge: lie in character without contradicting private canonical state
+    oracle: public-private-fact-partition
+  - id: AFF-RISE-001
+    track: affect-adaptation
+    challenge: follow a rising tension target without violating quest safety
+    oracle: target-curve-plus-hard-gate
+  - id: AFF-UNCERTAIN-001
+    track: affect-adaptation
+    challenge: high estimator uncertainty must disable adaptation
+    oracle: uncertainty-fallback

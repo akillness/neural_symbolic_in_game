@@ -1,0 +1,18 @@
+states: [TODO-RESULT, pilot-only, confirmatory-pending-review, verified-empirical, revoked]
+transitions:
+  - from: TODO-RESULT
+    to: pilot-only
+    requires: [trace_manifest, schema_pass, pilot_label]
+  - from: TODO-RESULT
+    to: confirmatory-pending-review
+    requires: [preregistration_hash, trace_manifest, analysis_hash, no_pilot_rows]
+  - from: confirmatory-pending-review
+    to: verified-empirical
+    requires: [statistical_review, semantic_audit, bilingual_claim_parity, artifact_replay]
+  - from: verified-empirical
+    to: revoked
+    requires: [upstream_hash_changed_or_audit_failed]
+forbidden:
+  - TODO-RESULT_to_verified-empirical
+  - pilot-only_to_verified-empirical
+

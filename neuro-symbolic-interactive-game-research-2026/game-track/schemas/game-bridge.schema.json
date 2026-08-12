@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/game-bridge.schema.json",
+  "title": "TRACE-RPG Game Bridge Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "run_id",
+    "episode_id",
+    "event_id",
+    "step",
+    "event_type",
+    "seed",
+    "world_state_hash",
+    "timestamp_ms",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "scenario_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "episode_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "step": {"type": "integer", "minimum": 0},
+    "event_type": {
+      "enum": ["observation", "player_action", "candidate", "validation", "commit", "reject", "fallback", "intervention"]
+    },
+    "model_id": {"type": ["string", "null"]},
+    "policy_id": {"type": ["string", "null"]},
+    "seed": {"type": "integer", "minimum": 0},
+    "world_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "timestamp_ms": {"type": "integer", "minimum": 0},
+    "payload": {"type": "object"}
+  }
+}

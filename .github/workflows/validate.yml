@@ -1,0 +1,36 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: neuro-symbolic-interactive-game-research-2026
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v6
+      - name: Install locked environment
+        run: uv sync --extra research --extra dev
+      - name: Unit tests
+        run: uv run python -m unittest discover -s tests -v
+      - name: Ruff lint and format
+        run: |
+          uv run ruff check src tests scripts examples
+          uv run ruff format --check src tests scripts examples
+      - name: Project integrity
+        run: uv run python scripts/validate_project.py
+      - name: Harness structure
+        run: uv run python scripts/validate_harness.py
+      - name: Deep-research result contracts
+        run: uv run python scripts/validate_deep_research.py --fields research/deep-research/fields.yaml --dir research/deep-research/results --quiet
+      - name: Survey artifact contract
+        run: uv run python scripts/validate_survey_artifacts.py ../.survey/neuro-symbolic-interactive-game-2026 --require-provenance
+      - name: Wiki lint
+        run: uv run python scripts/lint_wiki.py ../llm-wiki

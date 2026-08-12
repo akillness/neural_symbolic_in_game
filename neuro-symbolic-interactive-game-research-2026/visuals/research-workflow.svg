@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">TRACE-RPG journal research workflow</title>
+  <desc id="desc">Evidence, formalization, pilot, screening, confirmation, and manuscript phases are separated by provenance, logic, design, reproducibility, and claim gates.</desc>
+  <defs>
+    <style>.bg{fill:#fafcff}.phase{fill:#edf4ff;stroke:#3378d4;stroke-width:2}.gate{fill:#fff1f3;stroke:#d6385b;stroke-width:2}.t{font:14px system-ui,sans-serif;fill:#15213b}.h{font:bold 21px system-ui,sans-serif;fill:#101b31}.a{stroke:#667da6;stroke-width:2.5;marker-end:url(#m)}</style>
+    <marker id="m" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#667da6"/></marker>
+  </defs>
+  <rect class="bg" width="1200" height="430" rx="18"/>
+  <text class="h" x="35" y="45">Research-to-journal pipeline</text>
+  <g>
+    <rect class="phase" x="35" y="95" width="135" height="80" rx="12"/><text class="t" x="60" y="128">Evidence</text><text class="t" x="55" y="151">harvest</text>
+    <rect class="gate" x="195" y="95" width="120" height="80" rx="40"/><text class="t" x="218" y="128">Provenance</text><text class="t" x="230" y="151">G1</text>
+    <rect class="phase" x="340" y="95" width="135" height="80" rx="12"/><text class="t" x="360" y="128">Ontology +</text><text class="t" x="372" y="151">formalism</text>
+    <rect class="gate" x="500" y="95" width="120" height="80" rx="40"/><text class="t" x="526" y="128">Logic</text><text class="t" x="539" y="151">G2</text>
+    <rect class="phase" x="645" y="95" width="135" height="80" rx="12"/><text class="t" x="679" y="128">Pilot +</text><text class="t" x="668" y="151">power sim</text>
+    <rect class="gate" x="805" y="95" width="120" height="80" rx="40"/><text class="t" x="825" y="128">Design</text><text class="t" x="844" y="151">G3</text>
+    <rect class="phase" x="950" y="95" width="210" height="80" rx="12"/><text class="t" x="985" y="128">10-model screening</text><text class="t" x="1004" y="151">exploratory only</text>
+  </g>
+  <g>
+    <rect class="gate" x="950" y="260" width="210" height="80" rx="40"/><text class="t" x="995" y="293">Frozen Pareto G4</text><text class="t" x="993" y="316">promote 3 models</text>
+    <rect class="phase" x="685" y="260" width="215" height="80" rx="12"/><text class="t" x="714" y="293">Confirmatory factorial</text><text class="t" x="733" y="316">+ human study</text>
+    <rect class="gate" x="430" y="260" width="210" height="80" rx="40"/><text class="t" x="465" y="293">Statistics + replay G5</text><text class="t" x="492" y="316">independent</text>
+    <rect class="phase" x="195" y="260" width="190" height="80" rx="12"/><text class="t" x="234" y="293">KO/EN manuscript</text><text class="t" x="243" y="316">claim linked</text>
+    <rect class="gate" x="35" y="260" width="120" height="80" rx="40"/><text class="t" x="62" y="293">Journal</text><text class="t" x="72" y="316">G6</text>
+  </g>
+  <line class="a" x1="170" y1="135" x2="195" y2="135"/><line class="a" x1="315" y1="135" x2="340" y2="135"/><line class="a" x1="475" y1="135" x2="500" y2="135"/><line class="a" x1="620" y1="135" x2="645" y2="135"/><line class="a" x1="780" y1="135" x2="805" y2="135"/><line class="a" x1="925" y1="135" x2="950" y2="135"/>
+  <line class="a" x1="1055" y1="175" x2="1055" y2="260"/><line class="a" x1="950" y1="300" x2="900" y2="300"/><line class="a" x1="685" y1="300" x2="640" y2="300"/><line class="a" x1="430" y1="300" x2="385" y2="300"/><line class="a" x1="195" y1="300" x2="155" y2="300"/>
+  <text class="t" x="35" y="392">Any failed gate freezes downstream claim promotion; failed artifacts remain inspectable.</text>
+</svg>
+

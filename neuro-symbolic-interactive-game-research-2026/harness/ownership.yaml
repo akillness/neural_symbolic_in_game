@@ -1,0 +1,16 @@
+artifacts:
+  research/source-ledger.yaml: {writer: evidence-researcher, reviewer: research-orchestrator}
+  research/claim-ledger.yaml: {writer: research-orchestrator, reviewer: reproducibility-verifier}
+  configs/model-matrix.yaml: {writer: evidence-researcher, reviewer: reproducibility-verifier}
+  configs/experiment-matrix.yaml: {writer: experiment-designer, reviewer: statistician}
+  configs/metric-catalog.yaml: {writer: statistician, reviewer: experiment-designer}
+  game-track/schemas/game-bridge.schema.json: {writer: game-integrator, reviewer: logic-auditor}
+  paper/en/manuscript.md: {writer: bilingual-editor, reviewer: research-orchestrator}
+  paper/ko/manuscript.md: {writer: bilingual-editor, reviewer: research-orchestrator}
+  llm-wiki: {writer: knowledge-curator, reviewer: research-orchestrator}
+rules:
+  - writer and reviewer must be different roles
+  - raw sources and run traces are immutable
+  - result claims require trace, analysis, and reviewer identifiers
+  - failed gates remain visible under _workspace/gates
+

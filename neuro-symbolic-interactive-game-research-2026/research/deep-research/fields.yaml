@@ -1,0 +1,26 @@
+field_categories:
+  - name: Basic Info
+    category: Basic Info
+    fields:
+      - {name: name, description: Display name, detail_level: brief, required: true}
+      - {name: exact_model, description: Immutable or exact model identifier where available, detail_level: brief, required: true}
+      - {name: release, description: Public release date or month, detail_level: brief, required: true}
+      - {name: access, description: Hosted or weight-access mode, detail_level: brief, required: true}
+      - {name: license, description: Model code and weight license or API status, detail_level: moderate, required: true}
+  - name: Technical Features
+    category: Technical Features
+    fields:
+      - {name: modalities, description: Supported input modalities relevant to the study, detail_level: moderate, required: true}
+      - {name: context_tokens, description: Documented context-window token count, detail_level: brief, required: true}
+      - {name: serving_path, description: Practical API or local serving route, detail_level: moderate, required: true}
+  - name: Experimental Fit
+    category: Experimental Fit
+    fields:
+      - {name: game_research_use, description: Preregistered role in TRACE-RPG, detail_level: detailed, required: true}
+      - {name: key_risk, description: Main validity or operational risk, detail_level: detailed, required: true}
+      - {name: source_urls, description: Primary source URLs used for the record, detail_level: detailed, required: true}
+      - {name: evidence_status, description: Verification status as of the research date, detail_level: brief, required: true}
+  - name: Uncertainty
+    category: Uncertainty
+    fields:
+      - {name: uncertain, description: Fields requiring re-verification, detail_level: brief, required: false}

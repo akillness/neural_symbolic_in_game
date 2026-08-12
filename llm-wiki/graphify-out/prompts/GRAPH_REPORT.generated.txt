@@ -1,0 +1,56 @@
+# Graph Report - /Users/jangyoung/orca/neural_symbolic_in_game/llm-wiki  (2026-08-12)
+
+## Corpus Check
+- 8 files · ~710 words
+- Verdict: corpus is large enough that graph structure adds value.
+
+## Summary
+- 8 nodes · 16 edges · 2 communities
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- Token cost: 0 input · 0 output
+
+## Community Hubs (Navigation)
+- [[_COMMUNITY_Community 0|Community 0]]
+- [[_COMMUNITY_Community 1|Community 1]]
+
+## God Nodes (most connected - your core abstractions)
+1. `Log` - 6 edges
+2. `Index` - 4 edges
+3. `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…` - 4 edges
+4. `중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야` - 4 edges
+5. `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…` - 4 edges
+6. `중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야` - 4 edges
+7. `중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야` - 3 edges
+8. `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…` - 3 edges
+
+## Surprising Connections (you probably didn't know these)
+- `Log` --links_to--> `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`  [EXTRACTED]
+  log.md → raw/sources/prompts/2026/08/12/075859-019ff4f6-0dc-drive-download-20260812t074907z-1-001-ai-researc.md
+- `Log` --links_to--> `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`  [EXTRACTED]
+  log.md → wiki/sources/2026-08-12-075859-drive-download-20260812t074907z-1-001-ai-researc.md
+- `Log` --links_to--> `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…`  [EXTRACTED]
+  log.md → wiki/queries/2026-08-12-075859-drive-download-20260812t074907z-1-001-ai-researc.md
+- `Index` --links_to--> `중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야`  [EXTRACTED]
+  index.md → wiki/sources/2026-08-12-081137-sci-sci-e.md
+- `Index` --links_to--> `중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야`  [EXTRACTED]
+  index.md → wiki/queries/2026-08-12-081137-sci-sci-e.md
+
+## Communities (2 total, 0 thin omitted)
+
+### Community 0 - "Community 0"
+Cohesion: 0.83
+Nodes (4): Index, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…
+
+### Community 1 - "Community 1"
+Cohesion: 1.00
+Nodes (4): Log, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+
+## Suggested Questions
+_Questions this graph is uniquely positioned to answer:_
+
+- **Why does `Log` connect `Community 1` to `Community 0`?**
+  _High betweenness centrality (0.333) - this node is a cross-community bridge._
+- **Why does `Index` connect `Community 0` to `Community 1`?**
+  _High betweenness centrality (0.095) - this node is a cross-community bridge._
+- **Why does `drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…` connect `Community 0` to `Community 1`?**
+  _High betweenness centrality (0.036) - this node is a cross-community bridge._

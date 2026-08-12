@@ -1,0 +1,19 @@
+topic: 2026 model panel for auditable neuro-symbolic interactive games
+items:
+  - {name: Qwen-AgentWorld-35B-A3B, category: open-weight world model, description: Visual-language environment dynamics candidate}
+  - {name: Phi-4-mini-instruct, category: open-weight compact LLM, description: Edge latency baseline}
+  - {name: Qwen3-14B, category: open-weight LLM, description: Practical multilingual proposer}
+  - {name: DeepSeek-R1-Distill-Qwen-14B, category: open-weight reasoning LLM, description: Formalization and repair candidate}
+  - {name: OLMo-2-1124-13B-Instruct, category: open-weight reproducibility LLM, description: Open-training-artifact baseline}
+  - {name: Mistral-Small-3.1-24B-Instruct-2503, category: open-weight multimodal LLM, description: Strong local multimodal comparator}
+  - {name: Qwen3-VL-8B-Instruct, category: open-weight VLM, description: Compact visual gameplay observer}
+  - {name: gpt-oss-20b, category: open-weight reasoning LLM, description: Local structured-output baseline}
+  - {name: GPT-5.4-2026-03-05, category: hosted frontier model, description: Hosted quality and tool-use control}
+  - {name: Gemini-3.6-Flash, category: hosted multimodal model, description: Low-latency video-capable control}
+execution:
+  batch_size: 3
+  items_per_agent: 1
+  output_dir: ./results
+  time_range: 2024-01-01_to_2026-08-12
+  checkpoint_note: User requested end-to-end autonomous construction; intermediate human checkpoints were resolved by the explicit task scope.
+
