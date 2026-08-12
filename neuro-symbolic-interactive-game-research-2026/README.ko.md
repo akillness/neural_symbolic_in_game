@@ -28,9 +28,10 @@ uv run python -m unittest discover -s tests -v
 uv run python scripts/validate_project.py
 uv run python scripts/validate_harness.py
 uv run python examples/headless_demo.py
+uv run python examples/recorded_experiment.py
 ```
 
-현재 실행 범위는 로컬 정책 검증기, 제한 수리/fallback, 전체 수리 이력 해시, 에피소드 연속성을 검사하는 semantic JSONL replay, 스키마 fixture, headless 예제다. 실제 10개 모델 추론 어댑터, MLflow/에너지 텔레메트리, Godot/Unity transport, 인간 연구는 명세만 있으며 아직 구현되지 않았다. 실제 추론 환경은 `game-track/README.ko.md` 계약을 구현한 뒤 연결한다.
+현재 실행 범위는 로컬 정책 검증기, 제한 수리/fallback, 전체 수리 이력 해시, semantic JSONL replay, 네트워크 없는 recorded-response 실험 어댑터다. 오프라인 runner는 모델 revision·seed·토큰·provider/runner 지연·실패·commit 상태를 스키마 검증 JSONL에 보존한다. 실제 10개 모델 API/로컬 서빙 어댑터, MLflow/에너지 텔레메트리, Godot/Unity transport, 인간 연구는 아직 명세 단계다.
 
 ## 디렉터리
 

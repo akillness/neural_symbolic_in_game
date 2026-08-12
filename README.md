@@ -5,9 +5,9 @@
 [![Knowledge](https://img.shields.io/badge/knowledge-llm--wiki%20%2B%20Graphify-6f42c1)](./llm-wiki/index.md)
 [![Research status](https://img.shields.io/badge/status-experimental-orange)](./neuro-symbolic-interactive-game-research-2026/README.en.md)
 
-도전적인 뉴로-심볼릭 인터랙티브 게임 연구를 위한 이중언어 논문 초안, 10개 모델 평가 매트릭스, 결정론적 정책 검증 런타임, 게임 브리지, 그리고 지속 갱신 가능한 연구 하네스입니다. 현재는 로컬 검증·추적 스캐폴드이며 실제 모델/엔진 어댑터와 인간 실험은 다음 구현 단계입니다.
+도전적인 뉴로-심볼릭 인터랙티브 게임 연구를 위한 이중언어 논문 초안, 10개 모델 평가 매트릭스, 결정론적 정책 검증 런타임, semantic trace replay, recorded-response 실험 runner, 게임 브리지, 지속 갱신 가능한 연구 하네스입니다. 실제 모델/엔진 어댑터와 인간 실험은 다음 구현 단계입니다.
 
-This repository contains a bilingual paper draft, a ten-model evaluation matrix, a deterministic policy-validation runtime, a game bridge, and a refreshable research harness. It is presently a local validation/trace scaffold; real model and engine adapters plus the human study remain future work.
+This repository contains a bilingual paper draft, a ten-model evaluation matrix, deterministic policy validation, semantic trace replay, a recorded-response experiment runner, a game bridge, and a refreshable research harness. Real model and engine adapters plus the human study remain future work.
 
 | Start here | Description |
 |---|---|

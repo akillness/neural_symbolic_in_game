@@ -26,6 +26,8 @@ jobs:
           uv run ruff format --check src tests scripts examples
       - name: Project integrity
         run: uv run python scripts/validate_project.py
+      - name: Offline experiment smoke
+        run: uv run python examples/recorded_experiment.py
       - name: Harness structure
         run: uv run python scripts/validate_harness.py
       - name: Deep-research result contracts

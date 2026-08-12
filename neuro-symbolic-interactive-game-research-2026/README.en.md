@@ -28,9 +28,10 @@ uv run python -m unittest discover -s tests -v
 uv run python scripts/validate_project.py
 uv run python scripts/validate_harness.py
 uv run python examples/headless_demo.py
+uv run python examples/recorded_experiment.py
 ```
 
-This repository currently runs the local policy validator, bounded repair/fallback, full-history trace hash, semantic JSONL replay with episode-continuity checks, schema fixture, and headless example. Real ten-model inference adapters, MLflow/energy telemetry, Godot/Unity transport, and the human study are specified but not implemented. Connect inference only after implementing the adapter contract in `game-track/README.en.md`.
+This repository currently runs the local policy validator, bounded repair/fallback, full-history trace hash, semantic JSONL replay, and a network-free recorded-response experiment adapter. The offline runner preserves model revision, seed, token counts, provider/runner latency, failures, and commit status in schema-validated JSONL. Real ten-model API/local-serving adapters, MLflow/energy telemetry, Godot/Unity transport, and the human study are specified but not implemented.
 
 ## Layout
 

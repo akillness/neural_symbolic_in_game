@@ -43,6 +43,26 @@ metrics:
     formula: percentile(total_request_latency_ms, 95)
     direction: minimize
     type: systems
+    estimand: all_assigned_cases
+    timeout_policy: preregister deadline censoring or a fixed timeout cap before confirmatory use
+  - id: provider_response_latency_p95_ms
+    formula: percentile(recorded_provider_latency_ms among responses received, 95)
+    direction: minimize
+    type: diagnostic
+    estimand: response_observed_cases_only
+    companion_count: latency_observed_cases
+  - id: adapter_failure_rate
+    formula: adapter_failures / all_assigned_cases
+    direction: minimize
+    type: systems
+  - id: overall_failure_rate
+    formula: non_committed_assigned_cases / all_assigned_cases
+    direction: minimize
+    type: systems
+  - id: hard_validation_failure_rate
+    formula: symbolic_validation_fallbacks / all_assigned_cases
+    direction: minimize
+    type: primary
   - id: tokens_per_valid_commit
     formula: total_tokens / valid_committed_actions
     direction: minimize

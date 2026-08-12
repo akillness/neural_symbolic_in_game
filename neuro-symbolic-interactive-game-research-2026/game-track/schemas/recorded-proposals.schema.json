@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/trace-rpg-recorded-proposals.schema.json",
+  "title": "TRACE-RPG Frozen Proposal Fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["model_id", "model_revision", "records"],
+  "properties": {
+    "model_id": {"type": "string", "minLength": 1},
+    "model_revision": {"type": "string", "minLength": 1},
+    "records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "stringSet": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "actor_id", "action_type", "preconditions", "effects"],
+      "properties": {
+        "action_id": {"type": "string", "minLength": 1},
+        "actor_id": {"type": "string", "minLength": 1},
+        "action_type": {"type": "string", "minLength": 1},
+        "preconditions": {"$ref": "#/$defs/stringSet"},
+        "effects": {"$ref": "#/$defs/stringSet"},
+        "required_objects": {"$ref": "#/$defs/stringSet"},
+        "used_facts": {"$ref": "#/$defs/stringSet"},
+        "disclosed_facts": {"$ref": "#/$defs/stringSet"},
+        "required_quest_stage": {"type": "integer", "minimum": 0},
+        "quest_stage_effect": {"type": ["integer", "null"], "minimum": 0},
+        "narrative_text": {"type": "string"},
+        "metadata": {"type": "object"}
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string"}
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario_id", "seed"],
+      "properties": {
+        "scenario_id": {"type": "string", "minLength": 1},
+        "seed": {"type": "integer", "minimum": 0},
+        "provider_latency_ms": {"type": "number", "minimum": 0},
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "candidate": {"$ref": "#/$defs/candidate"},
+        "failure": {"$ref": "#/$defs/failure"}
+      },
+      "oneOf": [
+        {
+          "required": [
+            "provider_latency_ms",
+            "input_tokens",
+            "output_tokens",
+            "candidate"
+          ],
+          "not": {"required": ["failure"]}
+        },
+        {
+          "required": ["failure"],
+          "not": {
+            "anyOf": [
+              {"required": ["provider_latency_ms"]},
+              {"required": ["input_tokens"]},
+              {"required": ["output_tokens"]},
+              {"required": ["candidate"]}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

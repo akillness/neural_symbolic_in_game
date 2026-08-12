@@ -31,7 +31,12 @@ REQUIRED = [
     "research/journal-targets.ko.md",
     "research/deep-research/report.md",
     "game-track/schemas/game-bridge.schema.json",
+    "game-track/schemas/experiment-record.schema.json",
+    "game-track/schemas/recorded-proposals.schema.json",
+    "game-track/recorded-experiment.en.md",
+    "game-track/recorded-experiment.ko.md",
     "data/fixtures/game-bridge-event.json",
+    "data/fixtures/recorded-proposals.json",
     "harness/ownership.yaml",
 ]
 
@@ -87,6 +92,90 @@ def check_json_and_bridge() -> None:
         fail(f"bridge fixture violates Draft 2020-12 schema: {rendered}")
     for result in (ROOT / "research/deep-research/results").glob("*.json"):
         json.loads(result.read_text(encoding="utf-8"))
+    recorded = json.loads((ROOT / "data/fixtures/recorded-proposals.json").read_text())
+    recorded_schema = json.loads(
+        (ROOT / "game-track/schemas/recorded-proposals.schema.json").read_text()
+    )
+    Draft202012Validator.check_schema(recorded_schema)
+    recorded_errors = sorted(
+        Draft202012Validator(recorded_schema).iter_errors(recorded),
+        key=lambda item: list(item.path),
+    )
+    if recorded_errors:
+        fail(f"recorded proposals violate Draft 2020-12 schema: {recorded_errors}")
+
+    from nesy_game import (
+        ActionPolicy,
+        RecordedProposalAdapter,
+        WorldState,
+        experiment_record_from_mapping,
+        run_experiment_case,
+        to_jsonable,
+    )
+
+    state = WorldState(
+        state_id="schema-smoke",
+        locations=frozenset({"harbor"}),
+        reachable_locations=frozenset({"harbor"}),
+        object_locations={},
+        inventory=frozenset(),
+        facts=frozenset({"player_saved_dock"}),
+        action_policies={
+            "NPC_REPLY": ActionPolicy(
+                frozenset({"player_saved_dock"}),
+                frozenset({"lighthouse_hint_given"}),
+                frozenset({"lighthouse_hint_given"}),
+            )
+        },
+        npc_knowledge={"captain_mira": frozenset({"player_saved_dock"})},
+    )
+    adapter = RecordedProposalAdapter(
+        recorded["model_id"], recorded["model_revision"], recorded["records"]
+    )
+    commit_case = run_experiment_case(
+        adapter,
+        state,
+        run_id="schema-smoke",
+        scenario_id="NPC-HARBOR-001",
+        seed=23,
+    )
+    failure_case = run_experiment_case(
+        adapter,
+        state,
+        run_id="schema-smoke",
+        scenario_id="NPC-HARBOR-001",
+        seed=47,
+    )
+    invalid_record = json.loads(json.dumps(recorded["records"][0]))
+    invalid_record["seed"] = 99
+    invalid_record["candidate"]["effects"] = ["policy_bypass"]
+    fallback_adapter = RecordedProposalAdapter(
+        recorded["model_id"], recorded["model_revision"], [invalid_record]
+    )
+    fallback_case = run_experiment_case(
+        fallback_adapter,
+        state,
+        run_id="schema-smoke",
+        scenario_id="NPC-HARBOR-001",
+        seed=99,
+    )
+    result_schema = json.loads(
+        (ROOT / "game-track/schemas/experiment-record.schema.json").read_text()
+    )
+    Draft202012Validator.check_schema(result_schema)
+    result_validator = Draft202012Validator(result_schema)
+    for branch, case in (
+        ("commit", commit_case),
+        ("adapter_failure", failure_case),
+        ("fallback", fallback_case),
+    ):
+        decoded = to_jsonable(case.record)
+        result_errors = sorted(
+            result_validator.iter_errors(decoded), key=lambda item: list(item.path)
+        )
+        if result_errors:
+            fail(f"{branch} experiment record violates Draft 2020-12 schema: {result_errors}")
+        experiment_record_from_mapping(decoded)
 
 
 def check_svg() -> None:

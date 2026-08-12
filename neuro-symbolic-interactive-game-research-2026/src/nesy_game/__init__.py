@@ -9,6 +9,21 @@ from .contracts import (
     ValidationResult,
     WorldState,
 )
+from .experiment import (
+    AdapterFailure,
+    ExperimentCase,
+    ExperimentRecord,
+    ProposalAdapter,
+    ProposalResponse,
+    RecordedProposalAdapter,
+    candidate_from_mapping,
+    experiment_assignment_key,
+    experiment_record_from_mapping,
+    run_experiment_case,
+    summarize_experiment,
+    verify_experiment_record,
+    write_experiment_jsonl,
+)
 from .metrics import evaluate_trace
 from .runtime import (
     execute_with_repair,
@@ -22,18 +37,31 @@ from .validator import validate_candidate
 
 __all__ = [
     "ActionPolicy",
+    "AdapterFailure",
     "CandidateAction",
     "CommitOutcome",
+    "ExperimentCase",
+    "ExperimentRecord",
+    "ProposalAdapter",
+    "ProposalResponse",
+    "RecordedProposalAdapter",
     "TraceAttempt",
     "ValidationError",
     "ValidationResult",
     "WorldState",
+    "candidate_from_mapping",
     "evaluate_trace",
     "execute_with_repair",
+    "experiment_assignment_key",
+    "experiment_record_from_mapping",
     "replay_trace_jsonl",
     "replay_trace_record",
+    "run_experiment_case",
+    "summarize_experiment",
     "to_jsonable",
     "validate_candidate",
+    "verify_experiment_record",
     "verify_trace_record",
+    "write_experiment_jsonl",
     "write_trace_jsonl",
 ]

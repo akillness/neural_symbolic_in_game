@@ -1,0 +1,30 @@
+{
+  "model_id": "offline/recorded-controller",
+  "model_revision": "fixture-sha256-demo-v1",
+  "records": [
+    {
+      "scenario_id": "NPC-HARBOR-001",
+      "seed": 23,
+      "provider_latency_ms": 842.5,
+      "input_tokens": 318,
+      "output_tokens": 41,
+      "candidate": {
+        "action_id": "recorded-valid-23",
+        "actor_id": "captain_mira",
+        "action_type": "NPC_REPLY",
+        "preconditions": ["player_saved_dock"],
+        "effects": ["lighthouse_hint_given"],
+        "used_facts": ["player_saved_dock"],
+        "narrative_text": "The old light answers only to those who saved the dock."
+      }
+    },
+    {
+      "scenario_id": "NPC-HARBOR-001",
+      "seed": 47,
+      "failure": {
+        "code": "recorded_timeout",
+        "message": "Frozen provider record documents a timeout."
+      }
+    }
+  ]
+}

@@ -6,6 +6,6 @@ At step `t`, canonical state is `c_t = (G_t, q_t, m_t)`: a typed world/knowledge
 
 The research contribution is the controller boundary and traceability rather than a claim that one model is a complete NPC or world engine. The game and research tracks compile separately and interoperate through a versioned event schema.
 
-Trace integrity has two gates. A content hash authenticates the complete outcome and every repair attempt; semantic replay then recomputes deterministic validation and state mutation while enforcing that each JSONL record begins from the preceding committed state. A record with a freshly recomputed hash can therefore still fail replay if it encodes an impossible transition.
+Trace integrity has two gates. An unkeyed SHA-256 checksum detects accidental or unaudited content drift in the complete outcome and every repair attempt; it is not a signature. Semantic replay then recomputes deterministic validation and state mutation while enforcing that each JSONL record begins from the preceding committed state. A record with a freshly recomputed checksum can therefore still fail replay if it encodes an impossible transition.
 
 Related: [[wiki/concepts/hard-validity-soft-adaptation]], [[wiki/concepts/journal-grade-experimental-design]], [[wiki/projects/trace-rpg-paper-2026]].

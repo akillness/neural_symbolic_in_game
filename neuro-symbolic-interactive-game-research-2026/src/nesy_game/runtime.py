@@ -165,7 +165,7 @@ def execute_with_repair(
 
 
 def write_trace_jsonl(path: str | Path, outcome: CommitOutcome) -> None:
-    """Append one self-verifying outcome; callers own file retention and locking."""
+    """Append one content-checksummed outcome; callers own retention and locking."""
 
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -248,7 +248,7 @@ def _candidate_from_json(data: Mapping[str, Any]) -> CandidateAction:
 
 
 def replay_trace_record(record: Mapping[str, Any]) -> WorldState:
-    """Authenticate and semantically replay one outcome record."""
+    """Verify the unkeyed checksum and semantically replay one outcome record."""
 
     if not verify_trace_record(record):
         raise ValueError("trace record hash verification failed")
