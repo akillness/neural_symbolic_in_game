@@ -3,8 +3,8 @@
   "pipeline": "academic-pipeline",
   "mode": "full",
   "oversight": "very-high",
-  "as_of": "2026-08-12",
-  "status": "stage_4_user_checkpoint",
+  "as_of": "2026-08-13",
+  "status": "stage_5_complete_stage_6_unblocked",
   "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
@@ -114,8 +114,63 @@
       "C-RESULT-005"
     ]
   },
+  "stage_4_5": {
+    "status": "pass_with_scope_boundaries",
+    "audited_at": "2026-08-13",
+    "audit_path": "research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md",
+    "audited_revision": "ea96f2e",
+    "claims_audited": 22,
+    "classification": {
+      "faithful": 22,
+      "overstated": 0,
+      "unsupported": 0,
+      "scope_mismatch": 0
+    },
+    "mechanical_checks": {
+      "unbacked_numbers": 0,
+      "bilingual_fraction_parity": true,
+      "label_parity": true,
+      "float_and_equation_parity": true,
+      "citation_key_parity": true,
+      "bibliography_closed": true,
+      "todo_result_claims_asserted": 0,
+      "pilot_claims_consistent": "5/5",
+      "frozen_bundle_checksums_intact": "46/46"
+    },
+    "residual_boundaries": [
+      "encoded predicates only; semantic omissions unmeasured",
+      "unkeyed SHA-256 is not authentication",
+      "replay does not authenticate repair generation",
+      "proposal parser ignores unknown top-level candidate fields",
+      "single-process writer ownership assumed",
+      "C-RESULT-001 through C-RESULT-005 remain TODO-RESULT"
+    ]
+  },
+  "stage_5": {
+    "status": "pass_no_hallucinated_citations",
+    "audited_at": "2026-08-13",
+    "audit_path": "research/academic-pipeline/stage-05-citation-verification.md",
+    "record_path": "research/academic-pipeline/stage-05-citation-verification.json",
+    "method": "three-index triangulation over metadata APIs; no publisher-page scraping",
+    "title_match_threshold": 0.85,
+    "totals": {
+      "entries": 36,
+      "verified": 33,
+      "preprint": 3,
+      "unmatched": 0,
+      "hallucinated": 0
+    },
+    "preprints": ["S01", "S02", "S26"],
+    "conditional_metadata": ["S23"],
+    "coverage_limitation": "Semantic Scholar returned HTTP 429 for 9 of 36 entries after three backoff rounds; each is matched by at least one other index",
+    "carried_caveats": [
+      "S23 issue metadata must be rechecked at submission",
+      "three preprint citations remain advisory"
+    ]
+  },
   "downstream_stages": {
-    "status": "blocked_by_stage_4_checkpoint",
-    "next": "After explicit user approval, run Stage 4.5 claim-faithfulness audit before Stage 5 citation verification."
+    "status": "stage_6_unblocked",
+    "next": "Stage 6 peer-review simulation, then Stage 7 optional cross-model verification, Stage 8 revision, Stage 9 formatting and disclosure, Stage 10 material passport lock.",
+    "not_executed": ["6", "7", "8", "9", "10"]
   }
 }

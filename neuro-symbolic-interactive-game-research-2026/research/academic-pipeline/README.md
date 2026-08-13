@@ -14,8 +14,10 @@ It follows the local `academic-research` full pipeline and records every mandato
 | 2 | Source shortlist and claim boundaries | Approved 2026-08-12 |
 | 2.5 | Pre-write claim/provenance integrity gate | Passed with fail-closed scope boundaries |
 | 3 | IEEE ToG IMRaD outline and evidence map | Approved 2026-08-12 |
-| 4 | Deterministic offline pilot, bilingual IEEE drafts, and six-page PDFs | **AWAITING_USER_APPROVAL** |
-| 4.5--10 | Review, citation audit, revision, final PDF, and repro lock | Not executed |
+| 4 | Deterministic offline pilot, bilingual IEEE drafts, and six-page PDFs | Approved 2026-08-13 |
+| 4.5 | Claim-faithfulness integrity gate (L3) | Passed 2026-08-13: 22 claims audited, 0 overstated, 0 unsupported |
+| 5 | Citation verification | Passed 2026-08-13: 36 entries, 33 verified, 3 preprint, 0 hallucinated |
+| 6--10 | Peer review, revision, final PDF, and repro lock | Not executed |
 
 No hosted ten-model or human-study result is represented as completed evidence. Until those studies
 are run, generated numerical results are limited to deterministic, local, offline harness experiments
