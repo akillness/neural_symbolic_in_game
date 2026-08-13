@@ -6,6 +6,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 AGENTS = ROOT / ".claude/agents"
 SKILLS = ROOT / ".claude/skills"
@@ -48,11 +50,28 @@ def main() -> None:
         if not text.startswith("---\n") or "description:" not in text:
             errors.append(f"{path}: invalid skill frontmatter")
 
-    ownership = (ROOT / "harness/ownership.yaml").read_text(encoding="utf-8")
-    for role in re.findall(r"(?:writer|reviewer):\s*([a-z-]+)", ownership):
-        if role not in names:
-            errors.append(f"ownership references unknown role {role}")
-    if "writer and reviewer must be different roles" not in ownership:
+    ownership_path = ROOT / "harness/ownership.yaml"
+    ownership_text = ownership_path.read_text(encoding="utf-8")
+    ownership = yaml.safe_load(ownership_text)
+    artifacts = ownership.get("artifacts", {})
+    if not isinstance(artifacts, dict):
+        errors.append("ownership artifacts must be a mapping")
+        artifacts = {}
+    for artifact, assignment in artifacts.items():
+        artifact_path = (ROOT / artifact).resolve()
+        if not artifact_path.exists():
+            errors.append(f"ownership artifact does not exist: {artifact}")
+        if not isinstance(assignment, dict):
+            errors.append(f"ownership assignment must be a mapping: {artifact}")
+            continue
+        writer = assignment.get("writer")
+        reviewer = assignment.get("reviewer")
+        for role in (writer, reviewer):
+            if role not in names:
+                errors.append(f"ownership references unknown role {role}")
+        if writer == reviewer:
+            errors.append(f"ownership writer/reviewer collision: {artifact}")
+    if "writer and reviewer must be different roles" not in ownership_text:
         errors.append("writer/reviewer separation rule missing")
 
     if errors:

@@ -2,7 +2,7 @@
 
 Status: **USER APPROVED — 2026-08-12**  
 Retrieval date: 2026-08-12  
-Scope: 36 sources, 2011--2026; systems, games, evaluation, statistics, and reproducibility
+Scope: 37 Stage-2 sources plus 5 Stage-8 lineage additions, 2011--2026; systems, games, evaluation, statistics, and reproducibility
 
 ## Evidence labels / 근거 등급
 
@@ -18,7 +18,7 @@ Scope: 36 sources, 2011--2026; systems, games, evaluation, statistics, and repro
 
 | ID | Evidence and primary link | 3W role | Intended use in TRACE-RPG | Claim boundary |
 | --- | --- | --- | --- | --- |
-| S01 | Vaucher et al., “IVIE: A Neuro-symbolic Approach to Incremental and Validated Generation of Interactive Fiction Worlds,” 2026, [arXiv:2606.13348](https://arxiv.org/abs/2606.13348). **PREPRINT / accepted-forthcoming non-archival material** | HOW/WHAT | Closest recent comparator for incremental world generation plus symbolic validation. | Not evidence that TRACE-RPG is correct or superior; publication status must not be overstated. |
+| S01 | Vaucher et al., “IVIE: A Neuro-symbolic Approach to Incremental and Validated Generation of Interactive Fiction Worlds,” 2026, [arXiv:2606.13348](https://arxiv.org/abs/2606.13348). **PREPRINT / accepted-forthcoming non-archival material** | HOW/WHAT | Direct game-specific comparator for incremental world generation plus symbolic validation. | Not evidence that TRACE-RPG is correct or superior; publication status must not be overstated. |
 | S02 | Figueiredo and Elumeze, “Symbolically Scaffolded Play,” 2025, [arXiv:2510.25820](https://arxiv.org/abs/2510.25820). **PREPRINT** | WHY/WHAT | Motivates role-sensitive constraint/creativity trade-offs in NPC dialogue. | Cannot anchor a central factual or SOTA claim alone. |
 | S03 | Weir et al., “Ontologically Faithful Generation of Non-Player Character Dialogues,” EMNLP 2024, [doi:10.18653/v1/2024.emnlp-main.520](https://doi.org/10.18653/v1/2024.emnlp-main.520). **PR** | HOW/WHAT | Quest/entity grounding and NPC knowledge-faithfulness benchmark design. | Ontological grounding does not prove executable transition or disclosure safety. |
 | S04 | He et al., “G-Retriever,” NeurIPS 2024, [doi:10.52202/079017-4224](https://doi.org/10.52202/079017-4224). **PR** | HOW/WHAT | Bounded relevant-subgraph retrieval comparator. | Retrieval quality is not a hard game-state guarantee. |
@@ -54,6 +54,7 @@ Scope: 36 sources, 2011--2026; systems, games, evaluation, statistics, and repro
 | S34 | Henderson et al., “Towards the Systematic Reporting of the Energy and Carbon Footprints of Machine Learning,” JMLR 2020, [official article](https://jmlr.org/papers/v21/20-312.html). **PR-OA** | HOW | Hardware, runtime, measured energy, and carbon reporting boundary. | Hosted-provider energy must remain unobserved unless directly supplied. |
 | S35 | Barr et al., “Random Effects Structure for Confirmatory Hypothesis Testing: Keep It Maximal,” *Journal of Memory and Language* 68(3), 2013, [doi:10.1016/j.jml.2012.11.001](https://doi.org/10.1016/j.jml.2012.11.001). **PR** | HOW | Crossed participant/item mixed-effects structure for human preference analysis. | Maximal models may require preregistered convergence simplification. |
 | S36 | Scholak et al., “PICARD: Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models,” EMNLP 2021, [doi:10.18653/v1/2021.emnlp-main.779](https://doi.org/10.18653/v1/2021.emnlp-main.779). **PR** | HOW/WHAT | Incremental constrained-decoding comparator. | Syntactic admissibility is not semantic game-state correctness. |
+| S42 | Buongiorno et al., “PANGeA: Procedural Artificial Narrative Using Generative AI for Turn-Based, Role-Playing Video Games,” AIIDE 2024, [doi:10.1609/aiide.v20i1.31876](https://doi.org/10.1609/aiide.v20i1.31876). **PR** | HOW/WHAT | Direct game-specific memory, validation, REST, and Unity-integration comparator. | Its LLM self-reflection validation is not deterministic state-relative authorization; its reported task accuracy is not comparable to TRACE-RPG fixture conformance. |
 
 ## Proposed evidence architecture / 제안 근거 구조
 
@@ -78,3 +79,13 @@ Scope: 36 sources, 2011--2026; systems, games, evaluation, statistics, and repro
 
 Approve this 36-source pool, identify any source to remove, or name a required paper/author/venue to add.
 Approval unlocks Stage 2.5 gap analysis and Stage 3 IMRaD outline construction.
+
+## 2026-08-13 comparator addendum
+
+S42 was added after the user-requested final literature refresh because it materially changes the
+novelty boundary: IVIE cannot be ranked as the single “closest” comparator when archival PANGeA
+already combines game-engine integration, memory, and validation. The Scrapling research-harvest
+gate was run before retrieval; official AAAI/OJS, Crossref, OpenAlex, and Semantic Scholar metadata
+agree on DOI, title, authors, date, venue, volume, issue, and pages. The official paper documents an
+LLM yes/no self-reflection and iterative-refinement validator, so the comparison is bounded to
+architecture and authority placement rather than superiority.

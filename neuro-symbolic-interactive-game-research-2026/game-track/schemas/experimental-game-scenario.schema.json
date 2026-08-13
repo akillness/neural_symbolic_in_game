@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.example/schemas/experimental-game-scenario.schema.json",
+  "title": "TRACE-RPG experimental game scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "title_en",
+    "title_ko",
+    "initial_state",
+    "disclosure_policy",
+    "safe_fallback"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "scenario_id": {"const": "sealed-lighthouse-v1"},
+    "title_en": {"type": "string", "minLength": 1},
+    "title_ko": {"type": "string", "minLength": 1},
+    "initial_state": {"$ref": "#/$defs/state"},
+    "disclosure_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "permanently_forbidden", "stage_gates"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "permanently_forbidden": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "stage_gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fact_id", "minimum_stage"],
+            "properties": {
+              "fact_id": {"type": "string", "minLength": 1},
+              "minimum_stage": {"type": "integer", "minimum": 0}
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "safe_fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fallback_id", "text_en", "text_ko"],
+      "properties": {
+        "fallback_id": {"type": "string", "minLength": 1},
+        "text_en": {"type": "string", "minLength": 1},
+        "text_ko": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "stringSet": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state_schema_version",
+        "scenario_id",
+        "revision",
+        "player",
+        "world",
+        "quest",
+        "facts",
+        "npcs"
+      ],
+      "properties": {
+        "state_schema_version": {"const": "1.0.0"},
+        "scenario_id": {"const": "sealed-lighthouse-v1"},
+        "revision": {"type": "integer", "minimum": 0},
+        "player": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["location", "inventory"],
+          "properties": {
+            "location": {"type": "string", "minLength": 1},
+            "inventory": {"$ref": "#/$defs/stringSet"}
+          }
+        },
+        "world": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reachable_locations", "object_locations"],
+          "properties": {
+            "reachable_locations": {"$ref": "#/$defs/stringSet"},
+            "object_locations": {
+              "type": "object",
+              "additionalProperties": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "quest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stage", "flags"],
+          "properties": {
+            "stage": {"type": "integer", "minimum": 0},
+            "flags": {"$ref": "#/$defs/stringSet"}
+          }
+        },
+        "facts": {"$ref": "#/$defs/stringSet"},
+        "npcs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["knowledge", "disclosed", "relationship_memory"],
+            "properties": {
+              "knowledge": {"$ref": "#/$defs/stringSet"},
+              "disclosed": {"$ref": "#/$defs/stringSet"},
+              "relationship_memory": {"$ref": "#/$defs/stringSet"}
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

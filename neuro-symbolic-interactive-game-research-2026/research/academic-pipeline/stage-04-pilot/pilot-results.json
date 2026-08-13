@@ -422,18 +422,24 @@
       }
     ]
   },
+  "amendment": {
+    "artifact_status": "post-stage-08-rerun",
+    "change": "candidate_contract_strictness moved from an accepted boundary sentinel to a closed negative regression after both parsers began rejecting unknown top-level keys",
+    "id": "stage-08-candidate-contract-strictness",
+    "source_stage": "stage-04-pilot"
+  },
   "assignment_manifest": {
-    "assignment_count": 62,
-    "assignment_set_hash": "a853747f79ac2547e2e46f2789a5c78d4f74973d18082b24fb6f911fb8cad65e",
+    "assignment_count": 64,
+    "assignment_set_hash": "a073baa3f593cfc3978ad75836e18ddc55a3d825336b2699a7181ac2d2cdc653",
     "path": "pilot-assignment-manifest.json",
     "schema_path": "pilot-assignment-manifest.schema.json"
   },
   "boundary_sentinels": {
     "raw_counts": {
-      "encoded_acceptance_count": 3,
-      "passed_sentinel_count": 3,
+      "encoded_acceptance_count": 2,
+      "passed_sentinel_count": 2,
       "safety_pass_count": 0,
-      "sentinel_count": 3
+      "sentinel_count": 2
     },
     "rows": [
       {
@@ -878,225 +884,6 @@
         "sentinel_id": "boundary-omitted-required-object",
         "state_changed": true,
         "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
-      },
-      {
-        "arm_id": "boundary_sentinel_k0",
-        "atomic_state_passed": true,
-        "boundary_type": "candidate_contract_strictness",
-        "config_hash": "0f13526b57eb3fe6e65cdee05decbeee61a5ce80040167a26f629a18e9ac7ec6",
-        "expected_valid": true,
-        "final_state_hash": "b2f886b456bad6f166b1f4c71d1f5525d24c38491c6260f794763feaae3f12a8",
-        "final_status": "commit",
-        "input_hash": "1e645a1bd2f1d19f30f7c590499dae06dda1ac4a29fbbc52860b8eb64ecb74b8",
-        "interpretation": "The proposal parser currently ignores an unrecognized top-level candidate field; this is an accepted contract-strictness limitation, not evidence of safe metadata handling.",
-        "observed_codes": [],
-        "observed_valid": true,
-        "outcome_record": {
-          "attempts": 0,
-          "candidate": {
-            "action_id": "boundary-extra-candidate-field",
-            "action_type": "SAY",
-            "actor_id": "guard",
-            "disclosed_facts": [],
-            "effects": [],
-            "metadata": {},
-            "narrative_text": "",
-            "preconditions": [
-              "met_guard"
-            ],
-            "quest_stage_effect": null,
-            "required_objects": [],
-            "required_quest_stage": 0,
-            "used_facts": []
-          },
-          "prior_state": {
-            "action_policies": {
-              "OPEN_DOOR": {
-                "allowed_effects": [
-                  "door_open"
-                ],
-                "allowed_quest_stage_effects": [],
-                "required_effects": [
-                  "door_open"
-                ],
-                "required_preconditions": [
-                  "met_guard"
-                ]
-              },
-              "ROLLBACK_STAGE": {
-                "allowed_effects": [],
-                "allowed_quest_stage_effects": [
-                  0
-                ],
-                "required_effects": [],
-                "required_preconditions": [
-                  "met_guard"
-                ]
-              },
-              "SAY": {
-                "allowed_effects": [],
-                "allowed_quest_stage_effects": [],
-                "required_effects": [],
-                "required_preconditions": [
-                  "met_guard"
-                ]
-              }
-            },
-            "facts": [
-              "met_guard",
-              "public_fact"
-            ],
-            "forbidden_disclosures": {
-              "guard": [
-                "sealed_secret"
-              ]
-            },
-            "inventory": [],
-            "locations": [
-              "gate",
-              "vault"
-            ],
-            "npc_knowledge": {
-              "guard": [
-                "met_guard",
-                "public_fact",
-                "sealed_secret"
-              ]
-            },
-            "object_locations": {
-              "remote_key": "vault"
-            },
-            "quest_stage": 1,
-            "reachable_locations": [
-              "gate"
-            ],
-            "state_id": "conformance-s0"
-          },
-          "state": {
-            "action_policies": {
-              "OPEN_DOOR": {
-                "allowed_effects": [
-                  "door_open"
-                ],
-                "allowed_quest_stage_effects": [],
-                "required_effects": [
-                  "door_open"
-                ],
-                "required_preconditions": [
-                  "met_guard"
-                ]
-              },
-              "ROLLBACK_STAGE": {
-                "allowed_effects": [],
-                "allowed_quest_stage_effects": [
-                  0
-                ],
-                "required_effects": [],
-                "required_preconditions": [
-                  "met_guard"
-                ]
-              },
-              "SAY": {
-                "allowed_effects": [],
-                "allowed_quest_stage_effects": [],
-                "required_effects": [],
-                "required_preconditions": [
-                  "met_guard"
-                ]
-              }
-            },
-            "facts": [
-              "met_guard",
-              "public_fact"
-            ],
-            "forbidden_disclosures": {
-              "guard": [
-                "sealed_secret"
-              ]
-            },
-            "inventory": [],
-            "locations": [
-              "gate",
-              "vault"
-            ],
-            "npc_knowledge": {
-              "guard": [
-                "met_guard",
-                "public_fact",
-                "sealed_secret"
-              ]
-            },
-            "object_locations": {
-              "remote_key": "vault"
-            },
-            "quest_stage": 1,
-            "reachable_locations": [
-              "gate"
-            ],
-            "state_id": "569ecee434e58dfb"
-          },
-          "status": "commit",
-          "trace": [
-            {
-              "attempt": 0,
-              "candidate": {
-                "action_id": "boundary-extra-candidate-field",
-                "action_type": "SAY",
-                "actor_id": "guard",
-                "disclosed_facts": [],
-                "effects": [],
-                "metadata": {},
-                "narrative_text": "",
-                "preconditions": [
-                  "met_guard"
-                ],
-                "quest_stage_effect": null,
-                "required_objects": [],
-                "required_quest_stage": 0,
-                "used_facts": []
-              },
-              "validation": {
-                "checks_run": [
-                  "action_policy",
-                  "precondition",
-                  "object_reachability",
-                  "npc_knowledge",
-                  "forbidden_disclosure",
-                  "quest_stage",
-                  "quest_stage_monotonicity"
-                ],
-                "errors": [],
-                "valid": true
-              }
-            }
-          ],
-          "trace_context": {
-            "arm_id": "boundary_sentinel_k0",
-            "pilot_id": "trace-rpg-deterministic-conformance-v1",
-            "sentinel_id": "boundary-extra-candidate-field"
-          },
-          "trace_hash": "4e14483471832db68b7f00b4cdd7359f162b6792a7a32a4edcf24a5c6e3b3fa9",
-          "validation": {
-            "checks_run": [
-              "action_policy",
-              "precondition",
-              "object_reachability",
-              "npc_knowledge",
-              "forbidden_disclosure",
-              "quest_stage",
-              "quest_stage_monotonicity"
-            ],
-            "errors": [],
-            "valid": true
-          }
-        },
-        "passed": true,
-        "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
-        "replay_passed": true,
-        "safety_pass": false,
-        "sentinel_id": "boundary-extra-candidate-field",
-        "state_changed": true,
-        "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
       }
     ]
   },
@@ -1105,8 +892,43 @@
     "does not support model superiority, player-experience, affect, or causal claims",
     "does not estimate validator false-positive or false-negative rates",
     "boundary sentinel acceptance is not evidence of semantic safety or policy completeness",
+    "the closed candidate-contract regression establishes parser rejection parity only; it is not semantic-safety evidence",
     "semantic replay does not authenticate or re-execute the repair generator"
   ],
+  "closed_boundary_regressions": {
+    "raw_counts": {
+      "parser_parity_count": 1,
+      "passed_regression_count": 1,
+      "proposal_rejected_count": 1,
+      "regression_count": 1,
+      "replay_rejected_count": 1,
+      "unknown_key_rejection_count": 1
+    },
+    "rows": [
+      {
+        "arm_id": "closed_boundary_regression",
+        "boundary_type": "candidate_contract_strictness",
+        "closed_in": "stage-08",
+        "config_hash": "0f1718f806acd9aa753cceb561f7b7c79ed732829becc414254a8cf3311f35cc",
+        "expected_failure_code": "parse_error",
+        "expected_rejected": true,
+        "final_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+        "input_hash": "8cdd8dc11c803cc80209672e8c30524b09e6c5e05f2988ff367f95e761d886b0",
+        "interpretation": "Formerly boundary-extra-candidate-field, which the proposal parser accepted while the replay parser rejected it. Stage 8 closed that asymmetry. This fixture is retained as a negative regression so parser drift back to the permissive behaviour fails the pilot.",
+        "observed_failure_code": "parse_error",
+        "parsers_agree": true,
+        "passed": true,
+        "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+        "proposal_error": "unknown candidate fields: ['unexpected_top_level_metadata']",
+        "proposal_rejected": true,
+        "regression_id": "closed-extra-candidate-field",
+        "replay_error": "unknown candidate fields: ['unexpected_top_level_metadata']",
+        "replay_rejected": true,
+        "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+        "unknown_key_rejected": true
+      }
+    ]
+  },
   "evidence_scope": "designed-fixture conformance only; no model-efficacy or human-study inference",
   "gate_conformance": {
     "raw_counts": {
@@ -6662,14 +6484,40 @@
     {
       "arm_id": "pilot_summary",
       "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
-      "denominator": 3,
+      "denominator": 2,
       "final_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "input_hash": "814eeb27348fe8e434a914ab3d46984a10bddfe2d44bee1cf2a88c1632ff918f",
       "measure": "encoded_acceptances_documented",
-      "notes": "known semantic-extraction, policy-completeness, and unknown-field contract boundaries; not safety passes",
-      "numerator": 3,
+      "notes": "known semantic-extraction and policy-completeness boundaries; not safety passes",
+      "numerator": 2,
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "section": "boundary_sentinels",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    {
+      "arm_id": "pilot_summary",
+      "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
+      "denominator": 1,
+      "final_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "input_hash": "6070b45b4d433390fb4ec85eaea08166e946c2812b980f4e9b503aa3cbe6f6a0",
+      "measure": "closed_boundaries_still_rejected",
+      "notes": "both parsers reject the complete candidate specifically for its unknown key",
+      "numerator": 1,
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "section": "closed_boundary_regressions",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    {
+      "arm_id": "pilot_summary",
+      "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
+      "denominator": 1,
+      "final_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "input_hash": "660caa1d9b524484923efd824ba85bf73a81cf27992a9f5a67f30d9f3fb54549",
+      "measure": "parser_parity_on_unknown_keys",
+      "notes": "proposal and replay parsers agree on unknown-key rejection",
+      "numerator": 1,
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "section": "closed_boundary_regressions",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
     {

@@ -1,0 +1,115 @@
+schema_version: 1.0.0
+as_of: 2026-08-13
+status: planned-plus-headless-implementation-no-efficacy-result
+game:
+  id: sealed-lighthouse
+  titles: {en: The Sealed Lighthouse, ko: 봉인된 등대}
+  form: turn-based-narrative-investigation-micro-rpg
+  target_episode_minutes: [8, 12]
+  engine: Godot-4.x
+  execution: headless-first
+  combat: prohibited-in-primary-experiment
+  monetization: none-research-override-D-006
+authority:
+  engine_owns: [observation-rendering, player-input, local-save-load, engine-telemetry]
+  target_research_runtime_owns: [encoded-policy-validation, commit-authorization]
+  current_fixture_authority: godot-authored-policy-mirror
+  live_python_authorization_transport: not-executed
+  transport: versioned-json-and-jsonl
+  failure_invariant: full-canonical-state-unchanged
+tracks:
+  primary:
+    id: structured-state-text
+    purpose: confirmatory-controller-comparison
+    observation: canonical-structured-text
+    generated_images: prohibited
+  secondary:
+    id: secondary-vlm-ui
+    purpose: separately-reported-exploratory-visual-observation
+    asset_manifest: game-track/assets/concepts/asset-manifest.json
+    runtime_generation: prohibited
+    require_input_pack_hash: true
+episode:
+  id: SL-EP-001
+  ordered_beats:
+    - load-frozen-initial-state
+    - observe-dark-lighthouse-and-harbor
+    - acquire-authorized-harbor-evidence
+    - reject-early-betrayal-secret-request-without-mutation
+    - commit-valid-quest-progress
+    - permit-lighthouse-hint-after-authorization
+    - save-and-reload
+    - replay-and-compare-terminal-state-hash
+    - inject-duplicate-event-and-timeout-fallback
+controller_arms:
+  - direct_commit
+  - structural_constraint_only
+  - validator_rejection_only
+  - matched_budget_blind_retry
+  - structured_repair
+  - trace_rpg_full
+holdout:
+  independent_unit: world-and-quest-template
+  grouped_factors: [world_template, quest_motif, npc_identity, relation_motif, disclosure_pattern]
+  hidden_oracle: independently-authored-and-physically-separated
+  prototype_content_use: development-only
+  confirmatory_content_status: TODO-DATA
+telemetry_required:
+  schema_version: 1.1.0
+  provenance:
+    - game_build_hash
+    - engine_version
+    - platform
+    - content_pack_hash
+    - template_id
+    - split_id
+    - policy_hash
+    - oracle_hash
+    - prompt_hash
+    - model_id
+    - model_revision
+    - seed
+  outcomes:
+    - prior_state_hash
+    - final_state_hash
+    - event_id
+    - terminal_status
+    - failure_class
+    - replay_match
+  systems:
+    - engine_frame_ms
+    - input_to_visible_feedback_ms
+    - request_latency_ms
+    - recorded_provider_latency_ms
+    - input_tokens
+    - output_tokens
+    - cost_usd
+    - resident_memory_mb
+  metric_mapping:
+    engine_frame_ms: engine_frame_p95_ms
+    input_to_visible_feedback_ms: engine_input_latency_p95_ms
+    request_latency_ms: p95_latency_ms
+    recorded_provider_latency_ms: provider_response_latency_p95_ms
+    resident_memory_mb: engine_memory_soak_delta_mb
+  optional_soft_context:
+    - retrieval_evidence_ids
+    - memory_read_event_ids
+    - memory_write_event_ids
+    - target_tension
+    - predicted_tension
+    - affect_uncertainty
+    - adaptation_action
+human_study:
+  cycle_1: protocol-and-tooling-only
+  recruitment: prohibited
+  personal_data_collection: prohibited
+  required_before_execution:
+    - ethics-or-applicable-review
+    - consent-and-compensation
+    - blinding-and-randomization
+    - retention-deletion-withdrawal-opt-out
+    - independent-label-and-adjudication-protocol
+paper_boundary:
+  planned_claim_ids: [C-RESULT-001, C-RESULT-002, C-RESULT-003, C-RESULT-004, C-RESULT-005]
+  promote_in_cycle_1: []
+  stage_6_targets: [C1-independent-efficacy-oracle, M6-executed-interactive-path]

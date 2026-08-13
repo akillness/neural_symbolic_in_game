@@ -1,6 +1,6 @@
 # TRACE-RPG Research Package 2026
 
-> Status: Stage 6 peer review recommends revise and resubmit for the IEEE ToG Full Paper track and awaits the required user decision. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. The only numeric evidence is the deterministic offline conformance pilot.
+> Status: the user accepted the revision direction produced by the simulated Stage 6 Major Revision review, and the evidence-generating game-track revision is in progress. This is not a journal decision or paper acceptance. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. Existing numbers remain deterministic authored-fixture conformance counts.
 
 TRACE-RPG never writes an LLM proposal directly into canonical game state. Each successfully parsed proposal becomes a typed candidate event and is committed only after an externally supplied action policy and deterministic checks over preconditions, reachability, NPC knowledge, disclosure, and quest stage. An invalid candidate yields structured validation errors and may receive a bounded repair opportunity; adapter and controller failures remain classified terminal rows. Knowledge-graph retrieval and game-engine integration remain separate confirmatory tracks connected through the versioned event contract; neither is represented as completed pilot evidence.
 
@@ -12,7 +12,7 @@ All six SVGs are produced by `scripts/generate_readme_visuals.py`. The V2 footer
 
 ![Trust boundary: learned proposal, symbolic authority](visuals/system-architecture.svg)
 
-The proposer may observe the affect estimate `z_t`, graph retrieval, and temporal memory, yet none of them holds commit authority. Canonical state changes only through `T(c_t, a_t)` after the gate passes. Encoded validity is validity for encoded predicates only, and unknown top-level candidate fields are currently ignored rather than rejected.
+The proposer may observe the affect estimate `z_t`, graph retrieval, and temporal memory, yet none of them holds commit authority. Canonical state changes only through `T(c_t, a_t)` after the gate passes. Encoded validity is validity for encoded predicates only, and the shared candidate-key contract rejects unknown top-level fields at both proposal and replay boundaries.
 
 ### V2 · One transaction
 
@@ -36,10 +36,13 @@ Designed-fixture evidence never promotes itself into an efficacy claim, and a ve
 
 ![Academic pipeline status](visuals/research-workflow.svg)
 
-Stage 4.5 found 22/22 abstract and introduction claims faithful, Stage 5 verified all 36
-bibliography identities without an unmatched or hallucinated entry, and Stage 6 identified the
-independent efficacy study, clean release lock, and IEEE AI-use disclosure as critical Full Paper
-revision gates. See [`research/academic-pipeline/stage-06-peer-review-simulation.md`](research/academic-pipeline/stage-06-peer-review-simulation.md).
+The original Stage 4.5 `22/22` pass is retained only as a superseded audit record: Stage 6 later
+reproduced three claim defects and one unaudited body-level telemetry defect. Stage 8 corrected the
+manuscript and parser contract, and Stage 9 completed the short-paper formatting and AI-use
+disclosure. Stage 5 still verifies all 36 bibliography identities without an unmatched or
+hallucinated entry. A clean-commit Stage 10 reproducibility lock and any independent efficacy study
+remain pending. See [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)
+and [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md).
 
 ### V6 · Planned confirmatory design (not executed)
 
@@ -68,12 +71,25 @@ uv sync --extra research --extra dev
 uv run python -m unittest discover -s tests -v
 uv run python scripts/validate_project.py
 uv run python scripts/validate_harness.py
+./scripts/validate_game_track.sh
+./scripts/validate_codex_oauth_llm.sh
 uv run python examples/headless_demo.py
 uv run python examples/recorded_experiment.py
 uv run python scripts/generate_readme_visuals.py
 ```
 
-This repository currently runs the local policy validator, bounded repair/fallback, full-history trace hash, semantic JSONL replay, and a network-free recorded-response experiment adapter. The offline runner preserves model revision, seed, token counts, provider/runner latency, failures, and commit status in schema-validated JSONL. The last command regenerates the six visuals above from the frozen pilot artifacts and the claim ledger, so a changed number changes its figure. Real ten-model API/local-serving adapters, MLflow/energy telemetry, Godot/Unity transport, and the human study are specified but not implemented.
+Optional local LLM access is available through the official Codex device-code flow. The wrapper
+never reads or prints credentials, runs each prompt ephemerally in a disposable read-only
+workspace, and returns only a non-authoritative soft proposal with an explicit `request_id`.
+It is not included in the public Web build and cannot commit canonical game state. See
+[`docs/codex-oauth-llm.en.md`](docs/codex-oauth-llm.en.md).
+
+This repository runs the local policy validator, bounded repair/fallback, operation/state-hash JSONL
+replay, a network-free recorded-response adapter, and the Godot 4.x headless *Sealed Lighthouse*
+policy-mirror slice. The game slice is engine-local conformance evidence only: it exercises quest
+progression, gated disclosure, failure nonmutation, save/load, replay, authored fault fixtures, and
+stable-envelope schema projection. Real Python↔Godot authorization transport, ten-model inference,
+persistent live transport, MLflow/energy telemetry, and human recruitment remain unexecuted.
 
 ## Layout
 
@@ -83,7 +99,8 @@ This repository currently runs the local policy validator, bounded repair/fallba
 | `paper/en`, `paper/ko` | Superseded future confirmatory-protocol blueprints |
 | `configs/` | SSOT for ten models, treatments, scenarios, and metrics |
 | `src/nesy_game/` | Deterministic contracts and minimal validator |
-| `game-track/` | Engine-neutral bridge and replay contract |
+| `game-track/` | Engine-neutral contracts, bilingual experimental GDD, Godot slice, and a fail-closed public asset-exclusion record |
+| `_workspace/current/` | Single live game-studio production, design, engineering, QA, UI, and ops workspace |
 | `research/` | Immutable sources, Scrapling captures, evidence and claim ledgers |
 | `harness/` | Agent roles, workflows, and validation gates |
 | `../llm-wiki/` | Project wiki and Graphify knowledge graph |
@@ -92,7 +109,7 @@ This repository currently runs the local policy validator, bounded repair/fallba
 
 ## Stage 4 paper and bounded pilot
 
-The authoritative six-page IEEE drafts are `paper/latex/en/main.pdf` and
+The authoritative IEEE short-paper drafts are `paper/latex/en/main.pdf` and
 `paper/latex/ko/main.pdf`. Their tables are generated from
 `research/academic-pipeline/stage-04-pilot/pilot-results.json`: gate agreement `13/13`
 across 12 encoded error codes; repair-arm commits `0/2`, `0/2`, and `1/2`; named
@@ -112,6 +129,63 @@ Type 3 font, missing-glyph, undefined-reference, citation, and overfull-box regr
 - Synthetic players are stress-test instruments, not evidence of human experience.
 - Raw sources and execution traces are immutable, and paper tables must be generated from trace IDs.
 - “Open weight” is not treated as a synonym for “open source”; every model retains an explicit license and policy record.
+
+## Experimental game track
+
+*The Sealed Lighthouse* is an 8--12 minute target, turn-based narrative investigation micro-RPG
+chosen through a five-round deep interview. Its primary planned experiment uses structured text and
+canonical state. A separately labelled secondary VLM/UI track may use reviewed, checksum-locked
+derivatives in a future internal packet; this public-safe snapshot contains only their exclusion
+IDs and hashes, never generated image bytes. Image generation never occurs during an experiment.
+Start with `game-track/design/gdd.en.md`,
+`game-track/design/paper-crosswalk.en.md`, and `configs/experimental-game.yaml`.
+
+The human-study surface is protocol and tooling only. No participant has been recruited and no
+personal telemetry or human outcome exists. Godot/headless measurements do not promote any
+`C-RESULT-*` claim.
+
+### Cycle 3 public-safe playable
+
+The current Godot 4.7.1 playable adds third-person harbor exploration, proposal-gated interaction,
+responsive ledger UI, reduced motion, pooled procedural VFX, and gesture-gated locally generated
+audio. Its narrative payoff is restoration of the harbor-side signal and acquisition of the tide
+route; the offshore lighthouse remains sealed.
+
+| `SL-PLAY-EVAL-001` row | Checks | Result |
+|---|---:|---|
+| Canonical fixture | `10/10` | PASS |
+| Duplicate-event fixture | `10/10` | PASS |
+| Timeout fixture | `10/10` | PASS |
+| Corrupt-save fixture | `10/10` | PASS |
+| Presentation invariants | `7/7` | PASS |
+| **Combined** | **`47/47`** | **PASS** |
+
+All `4/4` fixtures reached
+`4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. See
+[`SL-PLAY-EVAL-001`](game-track/godot/docs/latest/evaluation-matrix.md) and its
+[JSON record](game-track/godot/docs/latest/evaluation-matrix.json).
+
+| Arrival | Refusal |
+|---|---|
+| ![Public-safe arrival](game-track/godot/docs/latest/arrival.png) | ![Public-safe refusal](game-track/godot/docs/latest/refusal.png) |
+| Authorized hint | Ending |
+| ![Public-safe authorized hint](game-track/godot/docs/latest/authorized_hint.png) | ![Public-safe ending](game-track/godot/docs/latest/ending.png) |
+
+These four 1280×720 files are latest engineering working captures, not immutable research evidence.
+Generated candidates are excluded from Web/`--public-safe`; the public build uses procedural
+geometry, VFX, UI, and audio. The evaluation establishes authored-fixture and presentation-
+invariant conformance only. G4, usability, immersion, affect, player efficacy, and model efficacy
+are **UNASSESSED**; G6 remains `FIX` pending save/reload, warmed-frame/input, and soak evidence.
+
+```bash
+./scripts/build_godot_web.sh
+python3 -m http.server 4173 --directory game-track/web/public
+```
+
+Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+Playwriter verified clean loading, Korean glyphs, responsive 1280×720 and 390×844 layouts,
+and gesture-triggered pointer lock with zero console/page errors. See
+[`game-track/web/README.md`](game-track/web/README.md).
 
 ## Execution order
 

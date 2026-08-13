@@ -11,5 +11,5 @@ The file-based agent definitions live in `../.claude/agents/`; reusable skills l
 | Execution | model adapters and engine/mock track | reproducibility verifier | immutable traces |
 | Manuscript | bilingual editor | research orchestrator | claim-linked KO/EN drafts |
 
-No agent may approve its own high-risk artifact. The orchestrator records gate decisions in `_workspace/gates/` and never deletes failed intermediate outputs.
-
+No agent may approve its own high-risk artifact. The orchestrator records gate decisions in
+`_workspace/current/production/gate-reviews/` and never deletes failed intermediate outputs.

@@ -1,25 +1,46 @@
 version: 1
-as_of: 2026-08-12
+as_of: 2026-08-13
 design:
   stage_1_screening:
     models: all-10
     scenarios_per_track: 30
     repetitions: 3
-    arms: [llm_only, rag, kg_policy, full_validator_repair]
+    controller_arms:
+      - direct_commit
+      - structural_constraint_only
+      - validator_rejection_only
+      - matched_budget_blind_retry
+      - structured_repair
+      - trace_rpg_full
+    grounding_variants: [none, rag, kg_temporal_memory]
     purpose: Pareto screening; no paper-level causal conclusion.
   stage_2_confirmatory:
     models: promoted-3
     scenarios_per_track: 120
     repetitions: 5
-    arms:
-      - llm_only
-      - rag
-      - kg
-      - kg_policy
-      - full_validator_repair
-      - full_validator_repair_affect
-    ablations: [no_retrieval, no_policy, no_validator, rejection_only, no_affect]
+    controller_arms:
+      - direct_commit
+      - structural_constraint_only
+      - validator_rejection_only
+      - matched_budget_blind_retry
+      - structured_repair
+      - trace_rpg_full
+    grounding_variants: [none, rag, kg_temporal_memory]
+    affect_variants: [off, uncertainty_calibrated_soft_adaptation]
+    ablations: [no_retrieval, no_memory, no_policy, no_validator, rejection_only, no_affect]
     purpose: Preregistered full factorial and ablation analysis.
+  controller_arm_contract:
+    direct_commit: unvalidated parsed candidates are applied; unsafe research baseline, isolated build only
+    structural_constraint_only: schema and grammar constraints only; no state-relative semantic gate
+    validator_rejection_only: invalid candidates reject with no repair call
+    matched_budget_blind_retry: up to K new proposals without structured validation errors
+    structured_repair: up to K repairs with structured validation errors but without the complete grounding stack
+    trace_rpg_full: frozen grounding context plus external policy, hard gate, structured repair, defensive revalidation, and auditable terminal accounting
+  comparison_budget:
+    proposal_or_repair_calls_max: 4
+    invalid_followup_calls_max: 3
+    matched_across: [matched_budget_blind_retry, structured_repair, trace_rpg_full]
+    per_attempt_accounting_required: [tokens, provider_latency_ms, total_request_latency_ms, cost, failure_class]
 tracks:
   - id: world-generation
     scenario_families: [fantasy, mystery, science-fiction, educational-puzzle]
@@ -40,6 +61,13 @@ controls:
   timeout_seconds: 60
   cache_policy: cold-primary-warm-secondary
   version_policy: exact-model-revision-required
+  experimental_game:
+    game_id: sealed-lighthouse
+    game_config: configs/experimental-game.yaml
+    engine: Godot-4.x-headless
+    primary_input_track: structured-state-text
+    secondary_input_track: secondary-vlm-ui
+    image_generation_during_run: prohibited
 statistics:
   confirmatory_population: frozen-stage-2-scenario-universe-and-promoted-model-set
   observational_unit: episode-with-candidate-events-nested-within-episode
@@ -50,11 +78,11 @@ statistics:
   continuous: scenario-clustered-hierarchical-bootstrap-confidence-interval
   confirmatory_contrasts:
     family_h1:
-      - world-full-validator-repair-vs-llm-only
-      - dialogue-full-validator-repair-vs-llm-only
-    family_h2: structured-repair-vs-blind-retry-at-matched-k
+      - world-trace-rpg-full-vs-direct-commit
+      - dialogue-trace-rpg-full-vs-direct-commit
+    family_h2: structured-repair-vs-matched-budget-blind-retry
     family_h3: kg-temporal-memory-vs-no-memory
-    family_h4: affect-rmse-full-affect-vs-full-after-validity-noninferiority
+    family_h4: uncertainty-calibrated-affect-vs-affect-off-after-validity-noninferiority
   multiple_comparisons:
     family_h1: holm-two-sided-alpha-0.05
     family_h2: single-two-sided-alpha-0.05
@@ -69,7 +97,8 @@ statistics:
     margin_basis: engineering-tolerance-fixed-before-confirmatory-unblinding
   failures_and_missingness:
     estimand_strategy: treatment-policy
-    api_timeout_parse_or_exhausted_retry: score-as-hard-invalid-and-include-latency-timeout
+    api_timeout_or_parse_failure: retain-as-adapter-failure-and-include-timeout-capped-total-latency
+    exhausted_symbolic_repair: retain-as-symbolic-fallback
     infrastructure_failure_before-any-response: rerun-same-seed-once-with-audited-reason-then-score-as-failure
     missing_human_rating: no-single-imputation-report-rate-and-run-mar-plus-delta-mnar-sensitivity
     missing-energy-telemetry: no-imputation-exclude-only-from-energy-estimand-and-report-count

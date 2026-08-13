@@ -17,6 +17,7 @@ from .contracts import (
     TraceAttempt,
     ValidationResult,
     WorldState,
+    parse_candidate_mapping,
 )
 from .validator import validate_candidate
 
@@ -352,50 +353,28 @@ def _string_set_mapping(data: Any, field: str) -> dict[str, frozenset[str]]:
     }
 
 
+def parse_candidate_record(data: Mapping[str, Any]) -> CandidateAction:
+    """Strictly parse a persisted candidate record.
+
+    This is the replay-side counterpart to
+    :func:`nesy_game.experiment.candidate_from_mapping`. Both derive their key set from
+    :data:`nesy_game.contracts.CANDIDATE_FIELDS`, so the two agree on unknown-key
+    handling. They intentionally differ on omitted optional fields: this parser requires
+    every key because it reads records serialized from a committed candidate. Public so
+    that conformance checks can compare the two parsers without importing a private
+    symbol.
+
+    Raises:
+        ValueError: if a key is missing, unknown, or a value has the wrong type.
+    """
+
+    return _candidate_from_json(data)
+
+
 def _candidate_from_json(data: Mapping[str, Any]) -> CandidateAction:
-    data = _require_mapping(data, "candidate")
-    _require_exact_keys(
-        data,
-        {
-            "action_id",
-            "actor_id",
-            "action_type",
-            "preconditions",
-            "effects",
-            "required_objects",
-            "used_facts",
-            "disclosed_facts",
-            "required_quest_stage",
-            "quest_stage_effect",
-            "narrative_text",
-            "metadata",
-        },
-        "candidate",
-    )
-    quest_stage_effect = data["quest_stage_effect"]
-    if quest_stage_effect is not None:
-        quest_stage_effect = _require_exact_int(quest_stage_effect, "quest_stage_effect")
-    narrative_text = data["narrative_text"]
-    if not isinstance(narrative_text, str):
-        raise ValueError("narrative_text must be a string")  # noqa: TRY004
-    metadata = _require_mapping(data["metadata"], "metadata")
-    _validate_json_value(metadata, "metadata")
-    return CandidateAction(
-        action_id=_require_nonempty_string(data["action_id"], "action_id"),
-        actor_id=_require_nonempty_string(data["actor_id"], "actor_id"),
-        action_type=_require_nonempty_string(data["action_type"], "action_type"),
-        preconditions=_require_string_list(data["preconditions"], "preconditions"),
-        effects=_require_string_list(data["effects"], "effects"),
-        required_objects=_require_string_list(data["required_objects"], "required_objects"),
-        used_facts=_require_string_list(data["used_facts"], "used_facts"),
-        disclosed_facts=_require_string_list(data["disclosed_facts"], "disclosed_facts"),
-        required_quest_stage=_require_exact_int(
-            data["required_quest_stage"], "required_quest_stage"
-        ),
-        quest_stage_effect=quest_stage_effect,
-        narrative_text=narrative_text,
-        metadata=dict(metadata),
-    )
+    """Strictly parse a persisted candidate record: every key must be present."""
+
+    return parse_candidate_mapping(data, allow_defaults=False)
 
 
 def _validate_validation_record(data: Any, field: str) -> Mapping[str, Any]:

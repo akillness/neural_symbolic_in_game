@@ -1,5 +1,12 @@
 # Log
 
+## [2026-08-13 11:49:45] report | Sealed Lighthouse Cycle 2 render evidence
+- Executed four authored Godot headless fixtures and a separate non-headless canonical trace render replay.
+- Selected immutable evidence set `godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`; v1--v4 remain superseded visual-QA/provenance-hardening history.
+- Added three 1280×720 PNGs bound to event/state/source/software/file hashes and decoded pixel checks; primary frames contain no generated assets.
+- Added bounded `C-GAME-DESIGN-003` / `SL-CAPTURE-001` paper evidence; `C-RESULT-001`--`005` remain `TODO-RESULT`.
+- Rebuilt bilingual PDFs and passed final game-track 19/44 plus full 82/47 tests and repository verification gates.
+
 ## [2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…
 - Raw capture: [prompt](raw/sources/prompts/2026/08/12/075859-019ff4f6-0dc-drive-download-20260812t074907z-1-001-ai-researc.md)
 - Source note: [[wiki/sources/2026-08-12-075859-drive-download-20260812t074907z-1-001-ai-researc]]
@@ -51,3 +58,75 @@
 - 2026-08-13: Treated the subsequent continue instruction as approval of the nonblocking Stage 5 citation gate and ran the Stage 6 reviewer ensemble.
 - 2026-08-13: Stage 6 recommended revise and resubmit for the ToG Full Paper track; independent efficacy evidence, clean release locking, and IEEE AI-use disclosure are critical revisions.
 - 2026-08-13: Filed [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] and stopped at the mandatory Stage 6 user-decision checkpoint.
+
+## [2026-08-13 08:16:10] query | interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…
+- Raw capture: [[raw/sources/prompts/2026/08/13/081610-019ff4f6-0dc-interview-game-studio-harness]]
+- Source note: [[wiki/sources/2026-08-13-081610-interview-game-studio-harness]]
+- Query note: [[wiki/queries/2026-08-13-081610-interview-game-studio-harness]]
+
+## [2026-08-13 08:19:11] query | 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+- Raw capture: [[raw/sources/prompts/2026/08/13/081911-019ff4f6-0dc-god-tibo-imagen]]
+- Source note: [[wiki/sources/2026-08-13-081911-god-tibo-imagen]]
+- Query note: [[wiki/queries/2026-08-13-081911-god-tibo-imagen]]
+
+## [2026-08-13 08:56:17] query | 비 플랜
+- Raw capture: [[raw/sources/prompts/2026/08/13/085617-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-13-085617-prompt]]
+- Query note: [[wiki/queries/2026-08-13-085617-prompt]]
+
+## [2026-08-13 08:57:24] query | 권장대로 진행하자
+- Raw capture: [[raw/sources/prompts/2026/08/13/085724-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-13-085724-prompt]]
+- Query note: [[wiki/queries/2026-08-13-085724-prompt]]
+
+## [2026-08-13 08:58:28] query | 이중 트랙으로 진행
+- Raw capture: [[raw/sources/prompts/2026/08/13/085828-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-13-085828-prompt]]
+- Query note: [[wiki/queries/2026-08-13-085828-prompt]]
+
+## [2026-08-13 09:33:42] query | 비 권장대로 진행
+- Raw capture: [[raw/sources/prompts/2026/08/13/093342-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-13-093342-prompt]]
+- Query note: [[wiki/queries/2026-08-13-093342-prompt]]
+- 2026-08-13: Completed the five-round deep interview for the experimental game track at 6% residual ambiguity.
+- 2026-08-13: Fixed The Sealed Lighthouse as a Godot 4.x headless-first, turn-based narrative investigation micro-RPG.
+- 2026-08-13: Independently narrowed the executed Godot evidence to an engine-local authored policy mirror with stable-envelope schema projection; live Python authorization transport remains pending.
+- 2026-08-13: Added pre-mutation corrupt-save rejection and rejected/regenerated the prompt-noncompliant SL-C04 icon concept while preserving both provenance states.
+- 2026-08-13: Split experiments into structured state/text primary and frozen-image VLM/UI secondary tracks; prohibited runtime image generation.
+- 2026-08-13: Created a single-live-folder game-studio workspace and a refresh-on-change canonical studio rule contract.
+- 2026-08-13: Added explicit controller arms, holdout/oracle separation, engine telemetry metrics, and bounded paper design claims while retaining C-RESULT-001--005 as TODO-RESULT.
+- 2026-08-13: Generated four provenance-locked concept surfaces with god-tibo-imagen after dry-run validation; publication rights/style review remains pending.
+- 2026-08-13: Filed [[wiki/reports/2026-08-13-trace-rpg-sealed-lighthouse-game-track]]; Godot 4.7.1 engine-local execution and independent review completed with fixes, while live Python authorization and G6 remain open.
+- 2026-08-13: Made promoted Godot evidence fail-closed and immutable by requiring a unique evidence-set ID, staging before promotion, rejecting overwrite/path traversal, and adding capture regressions.
+- 2026-08-13: Captured and selected immutable Godot evidence set `godot-4.7.1-20260813t110554z-sealed-lighthouse-v1`; `current.json` binds its manifest hash and the aggregate validator follows the pointer.
+- 2026-08-13: Independent final game-integrator/logic-auditor review approved the bounded Cycle 1 packet; live Python authorization, G6, and all efficacy claims remain open.
+
+## [2026-08-13 11:30:58] query | 실험 동작하고 캡쳐이미지 추가
+- Raw capture: [[raw/sources/prompts/2026/08/13/113058-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-13-113058-prompt]]
+- Query note: [[wiki/queries/2026-08-13-113058-prompt]]
+- 2026-08-13: Stage 6 adversarial peer review found three integrity defects the Stage 4.5 gate had passed; all three reproduced by direct inspection.
+- 2026-08-13: Corrected the Stage 4.5 verdict to SUPERSEDED and added three mandatory checks (read the invoked function body, test loader-enforced ratios, trace telemetry provenance).
+- 2026-08-13: Stage 7 recorded NOT_ACTIVATED; ARS_CROSS_MODEL unset and a local 7B endpoint is not a credible verifier.
+- 2026-08-13: Stage 8 closed Class A and B; unified both candidate parsers on one shared contract and fixed figure legibility from 3.30pt to 6.75pt.
+- 2026-08-13: Stage 9 added AI-usage disclosure and availability statements; Stage 10 compiled the passport with F13 and F14 open.
+
+## [2026-08-13 12:59:06] query | godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…
+- Raw capture: [[raw/sources/prompts/2026/08/13/125906-019ffb33-6c1-godot]]
+- Source note: [[wiki/sources/2026-08-13-125906-godot]]
+- Query note: [[wiki/queries/2026-08-13-125906-godot]]
+
+## [2026-08-13 13:00:53] query | 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
+- Raw capture: [[raw/sources/prompts/2026/08/13/130053-019ffb33-6c1-prompt]]
+- Source note: [[wiki/sources/2026-08-13-130053-prompt]]
+- Query note: [[wiki/queries/2026-08-13-130053-prompt]]
+
+## [2026-08-13 13:11:59] query | finally you must try to research for $research-paper-writing both english and k…
+- Raw capture: [[raw/sources/prompts/2026/08/13/131159-019ffb33-6c1-finally-you-must-try-to-research-for-research-pa]]
+- Source note: [[wiki/sources/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa]]
+- Query note: [[wiki/queries/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa]]
+
+## [2026-08-13 14:13:11] query | oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가
+- Raw capture: [[raw/sources/prompts/2026/08/13/141311-019ffb33-6c1-oauth-llm-codex]]
+- Source note: [[wiki/sources/2026-08-13-141311-oauth-llm-codex]]
+- Query note: [[wiki/queries/2026-08-13-141311-oauth-llm-codex]]

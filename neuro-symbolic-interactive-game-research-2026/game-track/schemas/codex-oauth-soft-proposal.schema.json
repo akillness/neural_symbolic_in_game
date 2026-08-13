@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/codex-oauth-soft-proposal.schema.json",
+  "title": "Codex OAuth soft proposal",
+  "description": "A non-authoritative language proposal that cannot authorize or mutate canonical game state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "status",
+    "claim_boundary",
+    "authorization_effect",
+    "canonical_state_mutated",
+    "hard_validation_required",
+    "response",
+    "assumptions",
+    "uncertainties"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "status": {
+      "type": "string",
+      "const": "candidate"
+    },
+    "claim_boundary": {
+      "type": "string",
+      "const": "candidate_soft_proposal_only"
+    },
+    "authorization_effect": {
+      "type": "string",
+      "const": "none"
+    },
+    "canonical_state_mutated": {
+      "type": "boolean",
+      "const": false
+    },
+    "hard_validation_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "response": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20000
+    },
+    "assumptions": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    }
+  }
+}

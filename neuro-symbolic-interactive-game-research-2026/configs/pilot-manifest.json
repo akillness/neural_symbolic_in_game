@@ -2,6 +2,12 @@
   "schema_version": "1.0.0",
   "pilot_id": "trace-rpg-deterministic-conformance-v1",
   "evidence_scope": "designed-fixture conformance only; no model-efficacy or human-study inference",
+  "amendment": {
+    "id": "stage-08-candidate-contract-strictness",
+    "artifact_status": "post-stage-08-rerun",
+    "source_stage": "stage-04-pilot",
+    "change": "candidate_contract_strictness moved from an accepted boundary sentinel to a closed negative regression after both parsers began rejecting unknown top-level keys"
+  },
   "implemented_validator_codes": [
     "UNKNOWN_ACTION_TYPE",
     "POLICY_PRECONDITION_OMISSION",
@@ -18,36 +24,64 @@
   ],
   "base_state": {
     "state_id": "conformance-s0",
-    "locations": ["gate", "vault"],
-    "reachable_locations": ["gate"],
-    "object_locations": {"remote_key": "vault"},
+    "locations": [
+      "gate",
+      "vault"
+    ],
+    "reachable_locations": [
+      "gate"
+    ],
+    "object_locations": {
+      "remote_key": "vault"
+    },
     "inventory": [],
-    "facts": ["met_guard", "public_fact"],
+    "facts": [
+      "met_guard",
+      "public_fact"
+    ],
     "action_policies": {
       "OPEN_DOOR": {
-        "required_preconditions": ["met_guard"],
-        "allowed_effects": ["door_open"],
-        "required_effects": ["door_open"],
+        "required_preconditions": [
+          "met_guard"
+        ],
+        "allowed_effects": [
+          "door_open"
+        ],
+        "required_effects": [
+          "door_open"
+        ],
         "allowed_quest_stage_effects": []
       },
       "SAY": {
-        "required_preconditions": ["met_guard"],
+        "required_preconditions": [
+          "met_guard"
+        ],
         "allowed_effects": [],
         "required_effects": [],
         "allowed_quest_stage_effects": []
       },
       "ROLLBACK_STAGE": {
-        "required_preconditions": ["met_guard"],
+        "required_preconditions": [
+          "met_guard"
+        ],
         "allowed_effects": [],
         "required_effects": [],
-        "allowed_quest_stage_effects": [0]
+        "allowed_quest_stage_effects": [
+          0
+        ]
       }
     },
     "npc_knowledge": {
-      "guard": ["met_guard", "public_fact", "sealed_secret"]
+      "guard": [
+        "met_guard",
+        "public_fact",
+        "sealed_secret"
+      ]
     },
     "forbidden_disclosures": {
-      "guard": ["sealed_secret"]
+      "guard": [
+        "sealed_secret"
+      ]
     },
     "quest_stage": 1
   },
@@ -59,15 +93,23 @@
         "action_id": "gate-valid-control",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
-        "used_facts": ["public_fact"],
-        "disclosed_facts": ["public_fact"]
+        "used_facts": [
+          "public_fact"
+        ],
+        "disclosed_facts": [
+          "public_fact"
+        ]
       }
     },
     {
       "id": "gate-unknown-action",
-      "expected_codes": ["UNKNOWN_ACTION_TYPE"],
+      "expected_codes": [
+        "UNKNOWN_ACTION_TYPE"
+      ],
       "candidate": {
         "action_id": "gate-unknown-action",
         "actor_id": "guard",
@@ -78,128 +120,183 @@
     },
     {
       "id": "gate-policy-stage-effect-violation",
-      "expected_codes": ["POLICY_QUEST_STAGE_EFFECT_VIOLATION"],
+      "expected_codes": [
+        "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+      ],
       "candidate": {
         "action_id": "gate-policy-stage-effect-violation",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
         "quest_stage_effect": 2
       }
     },
     {
       "id": "gate-policy-precondition-omission",
-      "expected_codes": ["POLICY_PRECONDITION_OMISSION"],
+      "expected_codes": [
+        "POLICY_PRECONDITION_OMISSION"
+      ],
       "candidate": {
         "action_id": "gate-policy-precondition-omission",
         "actor_id": "guard",
         "action_type": "OPEN_DOOR",
         "preconditions": [],
-        "effects": ["door_open"]
+        "effects": [
+          "door_open"
+        ]
       }
     },
     {
       "id": "gate-policy-effect-omission",
-      "expected_codes": ["POLICY_EFFECT_OMISSION"],
+      "expected_codes": [
+        "POLICY_EFFECT_OMISSION"
+      ],
       "candidate": {
         "action_id": "gate-policy-effect-omission",
         "actor_id": "guard",
         "action_type": "OPEN_DOOR",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": []
       }
     },
     {
       "id": "gate-policy-effect-violation",
-      "expected_codes": ["POLICY_EFFECT_VIOLATION"],
+      "expected_codes": [
+        "POLICY_EFFECT_VIOLATION"
+      ],
       "candidate": {
         "action_id": "gate-policy-effect-violation",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
-        "effects": ["unauthorized_effect"]
+        "preconditions": [
+          "met_guard"
+        ],
+        "effects": [
+          "unauthorized_effect"
+        ]
       }
     },
     {
       "id": "gate-unsatisfied-precondition",
-      "expected_codes": ["UNSATISFIED_PRECONDITION"],
+      "expected_codes": [
+        "UNSATISFIED_PRECONDITION"
+      ],
       "candidate": {
         "action_id": "gate-unsatisfied-precondition",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard", "missing_fact"],
+        "preconditions": [
+          "met_guard",
+          "missing_fact"
+        ],
         "effects": []
       }
     },
     {
       "id": "gate-unreachable-object",
-      "expected_codes": ["UNREACHABLE_REQUIRED_OBJECT"],
+      "expected_codes": [
+        "UNREACHABLE_REQUIRED_OBJECT"
+      ],
       "candidate": {
         "action_id": "gate-unreachable-object",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
-        "required_objects": ["remote_key"]
+        "required_objects": [
+          "remote_key"
+        ]
       }
     },
     {
       "id": "gate-npc-knowledge",
-      "expected_codes": ["NPC_KNOWLEDGE_VIOLATION"],
+      "expected_codes": [
+        "NPC_KNOWLEDGE_VIOLATION"
+      ],
       "candidate": {
         "action_id": "gate-npc-knowledge",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
-        "used_facts": ["unknown_fact"]
+        "used_facts": [
+          "unknown_fact"
+        ]
       }
     },
     {
       "id": "gate-disclosure-knowledge",
-      "expected_codes": ["NPC_DISCLOSURE_KNOWLEDGE_VIOLATION"],
+      "expected_codes": [
+        "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION"
+      ],
       "candidate": {
         "action_id": "gate-disclosure-knowledge",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
-        "disclosed_facts": ["unknown_disclosure"]
+        "disclosed_facts": [
+          "unknown_disclosure"
+        ]
       }
     },
     {
       "id": "gate-forbidden-disclosure",
-      "expected_codes": ["FORBIDDEN_DISCLOSURE"],
+      "expected_codes": [
+        "FORBIDDEN_DISCLOSURE"
+      ],
       "candidate": {
         "action_id": "gate-forbidden-disclosure",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
-        "disclosed_facts": ["sealed_secret"]
+        "disclosed_facts": [
+          "sealed_secret"
+        ]
       }
     },
     {
       "id": "gate-quest-stage",
-      "expected_codes": ["QUEST_STAGE_VIOLATION"],
+      "expected_codes": [
+        "QUEST_STAGE_VIOLATION"
+      ],
       "candidate": {
         "action_id": "gate-quest-stage",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
         "required_quest_stage": 2
       }
     },
     {
       "id": "gate-quest-regression",
-      "expected_codes": ["QUEST_STAGE_REGRESSION"],
+      "expected_codes": [
+        "QUEST_STAGE_REGRESSION"
+      ],
       "candidate": {
         "action_id": "gate-quest-regression",
         "actor_id": "guard",
         "action_type": "ROLLBACK_STAGE",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
         "quest_stage_effect": 0
       }
@@ -215,7 +312,9 @@
         "action_id": "boundary-unparsed-secret-in-narrative",
         "actor_id": "guard",
         "action_type": "SAY",
-        "preconditions": ["met_guard"],
+        "preconditions": [
+          "met_guard"
+        ],
         "effects": [],
         "disclosed_facts": [],
         "narrative_text": "I reveal sealed_secret: it is hidden beneath the vault."
@@ -230,30 +329,32 @@
         "action_id": "boundary-omitted-required-object",
         "actor_id": "guard",
         "action_type": "OPEN_DOOR",
-        "preconditions": ["met_guard"],
-        "effects": ["door_open"]
-      }
-    },
-    {
-      "id": "boundary-extra-candidate-field",
-      "boundary_type": "candidate_contract_strictness",
-      "expected_valid": true,
-      "interpretation": "The proposal parser currently ignores an unrecognized top-level candidate field; this is an accepted contract-strictness limitation, not evidence of safe metadata handling.",
-      "candidate": {
-        "action_id": "boundary-extra-candidate-field",
-        "actor_id": "guard",
-        "action_type": "SAY",
-        "preconditions": ["met_guard"],
-        "effects": [],
-        "unexpected_top_level_metadata": {"sealed_secret": true}
+        "preconditions": [
+          "met_guard"
+        ],
+        "effects": [
+          "door_open"
+        ]
       }
     }
   ],
   "repair": {
     "arms": [
-      {"id": "rejection_only", "repair_budget": 0, "strategy": "none"},
-      {"id": "unchanged_retry", "repair_budget": 1, "strategy": "unchanged"},
-      {"id": "structured_repair", "repair_budget": 1, "strategy": "policy_restore"}
+      {
+        "id": "rejection_only",
+        "repair_budget": 0,
+        "strategy": "none"
+      },
+      {
+        "id": "unchanged_retry",
+        "repair_budget": 1,
+        "strategy": "unchanged"
+      },
+      {
+        "id": "structured_repair",
+        "repair_budget": 1,
+        "strategy": "policy_restore"
+      }
     ],
     "cases": [
       {
@@ -268,8 +369,12 @@
           "action_id": "repairable-policy-precondition",
           "actor_id": "guard",
           "action_type": "OPEN_DOOR",
-          "preconditions": ["stale_guard_fact"],
-          "effects": ["door_open"]
+          "preconditions": [
+            "stale_guard_fact"
+          ],
+          "effects": [
+            "door_open"
+          ]
         }
       },
       {
@@ -284,9 +389,15 @@
           "action_id": "nonrepairable-unreachable-object",
           "actor_id": "guard",
           "action_type": "OPEN_DOOR",
-          "preconditions": ["met_guard"],
-          "effects": ["door_open"],
-          "required_objects": ["remote_key"]
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [
+            "door_open"
+          ],
+          "required_objects": [
+            "remote_key"
+          ]
         }
       }
     ]
@@ -324,8 +435,12 @@
         "action_id": "adapter-valid",
         "actor_id": "guard",
         "action_type": "OPEN_DOOR",
-        "preconditions": ["met_guard"],
-        "effects": ["door_open"]
+        "preconditions": [
+          "met_guard"
+        ],
+        "effects": [
+          "door_open"
+        ]
       }
     },
     {
@@ -341,8 +456,12 @@
         "action_id": "adapter-symbolic-fallback",
         "actor_id": "guard",
         "action_type": "OPEN_DOOR",
-        "preconditions": ["met_guard"],
-        "effects": ["unauthorized_effect"]
+        "preconditions": [
+          "met_guard"
+        ],
+        "effects": [
+          "unauthorized_effect"
+        ]
       }
     },
     {
@@ -385,5 +504,34 @@
     "duplicate_observed_record",
     "duplicate_expected_assignment",
     "missing_expected_assignment"
+  ],
+  "closed_boundary_regressions": [
+    {
+      "id": "closed-extra-candidate-field",
+      "boundary_type": "candidate_contract_strictness",
+      "closed_in": "stage-08",
+      "expected_rejected": true,
+      "expected_failure_code": "parse_error",
+      "interpretation": "Formerly boundary-extra-candidate-field, which the proposal parser accepted while the replay parser rejected it. Stage 8 closed that asymmetry. This fixture is retained as a negative regression so parser drift back to the permissive behaviour fails the pilot.",
+      "candidate": {
+        "action_id": "closed-extra-candidate-field",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": [
+          "met_guard"
+        ],
+        "effects": [],
+        "required_objects": [],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": null,
+        "narrative_text": "",
+        "metadata": {},
+        "unexpected_top_level_metadata": {
+          "sealed_secret": true
+        }
+      }
+    }
   ]
 }

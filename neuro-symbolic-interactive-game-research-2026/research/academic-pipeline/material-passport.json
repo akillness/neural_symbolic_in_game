@@ -4,7 +4,13 @@
   "mode": "full",
   "oversight": "very-high",
   "as_of": "2026-08-13",
-  "status": "stage_6_user_checkpoint",
+  "status": "stage_10_final_reaudit_passed_clean_release_lock_pending",
+  "release_readiness": {
+    "status": "blocked",
+    "blockers": [
+      "clean_commit_reproducibility_lock"
+    ]
+  },
   "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
@@ -30,7 +36,7 @@
     "status": "approved",
     "approved_at": "2026-08-12",
     "shortlist_path": "research/academic-pipeline/stage-02-source-shortlist.md",
-    "source_count": 36,
+    "source_count": 42,
     "year_range": "2011-2026",
     "verification": "Official primary pages plus Crossref/OpenAlex where available; Semantic Scholar batch verification incomplete because of HTTP 429.",
     "preprints": [
@@ -81,30 +87,44 @@
   "stage_4": {
     "status": "approved",
     "approved_at": "2026-08-13",
+    "draft_report_status": "historical_stage_4_snapshot_superseded_by_stage_8_revision",
     "draft_report_path": "research/academic-pipeline/stage-04-draft-report.md",
     "pilot_path": "research/academic-pipeline/stage-04-pilot/pilot-results.json",
     "pilot_sha256_manifest": "research/academic-pipeline/stage-04-pilot/sha256-manifest.json",
     "manuscripts": {
       "english_source": "paper/latex/en/main.tex",
       "english_pdf": "paper/latex/en/main.pdf",
-      "english_pdf_sha256": "1a404306f65d680d4130495bb9af1bf9c90a84dfc7b95bf1bb57f868277bdd57",
+      "english_pdf_sha256": "553da2f886d72cc9cbdb79ffc333ee72647080b7a2d3ff490c37ee077d7a7504",
       "korean_source": "paper/latex/ko/main.tex",
       "korean_pdf": "paper/latex/ko/main.pdf",
-      "korean_pdf_sha256": "cd9f18d19fd98a912a3d43e985afb39d2b5f2dda78871134525b8bd9f1b82dc7",
-      "page_count_each": 6,
-      "reference_count": 36
+      "korean_pdf_sha256": "da62f77305bae7fecfb6fdf0ea836430974a0f9fa04a3b38cdae4888abf51ec8",
+      "page_count": {
+        "english": 7,
+        "korean": 6
+      },
+      "reference_count": 42,
+      "digest_status": "current_after_2026-08-13_expanded_stage_4_5_reaudit_rebuild"
     },
     "verification": {
-      "tests_passed": 63,
-      "subtests_passed": 3,
-      "gate_fixtures": "13/13 across 12 implemented codes",
-      "repair_arm_commits": ["0/2", "0/2", "1/2"],
+      "unittest_discovery_passed": 96,
+      "pytest_game_track_tests_passed": 19,
+      "pytest_game_track_subtests_passed": 44,
+      "gate_fixtures": "13/13 across 12 implemented codes — the denominator, code coverage, and single valid control are loader-enforced construction invariants; the observed expected-code agreement is authored-oracle conformance, not an independent success rate",
+      "repair_arm_commits": [
+        "0/2",
+        "0/2",
+        "1/2"
+      ],
       "detectable_integrity_faults": "10/10",
       "known_repair_provenance_boundary_replay_accepted": "1/1",
       "adapter_outcomes": "1 commit, 1 symbolic fallback, 5 adapter failures / 7",
       "assignment_guards": "3/3",
-      "assignment_count": 62,
-      "pdf_visual_qa": "all 12 rendered pages inspected; no clipping, overlap, missing glyph, overfull box, undefined citation, undefined reference, or Type 3 font"
+      "open_boundary_sentinels": "2/2 accepted at the encoded layer; 0 safety passes",
+      "closed_candidate_contract_regression": "1/1; proposal and replay parsers specifically rejected the complete candidate's unknown key",
+      "assignment_count": 64,
+      "executed_row_count": 43,
+      "aggregate_row_count": 21,
+      "pdf_visual_qa_snapshot": "historical Stage-4 six-page-per-language inspection; the current paper release is revalidated separately after rebuild"
     },
     "claim_boundary": "designed synthetic offline conformance only; no live-model, human, affect, retrieval, memory, engine, population-efficacy, or cryptographic-authenticity inference",
     "unsupported_result_claims": [
@@ -116,16 +136,35 @@
     ]
   },
   "stage_4_5": {
-    "status": "pass_with_scope_boundaries",
+    "status": "pass_expanded_post_revision_reaudit_clean_release_lock_pending",
     "audited_at": "2026-08-13",
     "audit_path": "research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md",
-    "audited_revision": "ea96f2e",
-    "claims_audited": 22,
-    "classification": {
-      "faithful": 22,
-      "overstated": 0,
-      "unsupported": 0,
-      "scope_mismatch": 0
+    "original_audit": {
+      "audited_revision": "ea96f2e",
+      "scope": "abstract_and_introduction",
+      "claims_audited": 22,
+      "recorded_verdict": "pass_with_scope_boundaries",
+      "superseded": true,
+      "classification": {
+        "faithful": 22,
+        "overstated": 0,
+        "unsupported": 0,
+        "scope_mismatch": 0
+      }
+    },
+    "corrected_audit": {
+      "gate_decision": "block",
+      "classification": {
+        "faithful": 19,
+        "overstated": 1,
+        "unsupported": 0,
+        "scope_mismatch": 1,
+        "outdated": 1
+      },
+      "additional_out_of_original_scope_body_findings": {
+        "audited": 1,
+        "overstated": 1
+      }
     },
     "mechanical_checks": {
       "unbacked_numbers": 0,
@@ -135,14 +174,47 @@
       "citation_key_parity": true,
       "bibliography_closed": true,
       "todo_result_claims_asserted": 0,
-      "pilot_claims_consistent": "5/5",
-      "frozen_bundle_checksums_intact": "46/46"
+      "pilot_claims_consistent": "expanded re-audit passed after exact numeric, function-body, construction-invariant, telemetry-origin, bridge-scope, engine-timing, and bilingual checks",
+      "current_frozen_bundle_checksums": "35 artifact + 20 working-tree input hashes recompute (55/55); all 20 input paths exist at recorded commit e4c2c77, but only 19 exact input digests match because the commit contains an earlier runner revision"
+    },
+    "post_stage_8": {
+      "remediation_status": "implemented",
+      "formal_reaudit_status": "executed_pass_with_disclosed_clean_release_block",
+      "current_bundle": {
+        "artifacts": 35,
+        "declared_inputs": 20,
+        "bound_provenance_rows": 64,
+        "executed_fixture_rows": 43,
+        "aggregate_rows": 21
+      },
+      "final_audit": {
+        "audited_at": "2026-08-13",
+        "claim_families": 42,
+        "classification": {
+          "faithful": 42,
+          "overstated": 0,
+          "unsupported": 0,
+          "scope_mismatch": 0
+        },
+        "preliminary_findings_corrected_before_verdict": [
+          "E45-01_engine_timing_ratio",
+          "E45-02_snapshot_log_boundary",
+          "E45-03_bridge_event_scope",
+          "E45-04_recorded_commit_digest_match",
+          "E45-05_ai_use_disclosure",
+          "E45-06_archive_availability",
+          "E45-07_float_and_table_references"
+        ],
+        "worktree_hashes_verified": "55/55",
+        "recorded_commit_input_digest_match": "19/20; all paths exist, but scripts/run_conformance_pilot.py is an earlier revision at the recorded commit",
+        "gate_decision": "pass_with_disclosed_release_block"
+      }
     },
     "residual_boundaries": [
       "encoded predicates only; semantic omissions unmeasured",
       "unkeyed SHA-256 is not authentication",
       "replay does not authenticate repair generation",
-      "proposal parser ignores unknown top-level candidate fields",
+      "the shared key contract rejects unknown top-level candidate fields at both parser boundaries; this establishes parser parity, not semantic safety",
       "single-process writer ownership assumed",
       "C-RESULT-001 through C-RESULT-005 remain TODO-RESULT"
     ]
@@ -156,42 +228,237 @@
     "method": "three-index triangulation over metadata APIs; no publisher-page scraping",
     "title_match_threshold": 0.85,
     "totals": {
-      "entries": 36,
-      "verified": 33,
+      "entries": 42,
+      "verified": 39,
       "preprint": 3,
       "unmatched": 0,
       "hallucinated": 0
     },
-    "preprints": ["S01", "S02", "S26"],
-    "conditional_metadata": ["S23"],
+    "preprints": [
+      "S01",
+      "S02",
+      "S26"
+    ],
+    "conditional_metadata": [
+      "S23"
+    ],
     "coverage_limitation": "Semantic Scholar returned HTTP 429 for 9 of 36 entries after three backoff rounds; each is matched by at least one other index",
     "carried_caveats": [
       "S23 issue metadata must be rechecked at submission",
       "three preprint citations remain advisory"
-    ]
+    ],
+    "addendum": {
+      "added_at_stage_8": [
+        "S37_riedl2003managing",
+        "S38_evans2013versu",
+        "S39_fikes1971strips",
+        "S40_schneider2000enforceable",
+        "S41_ware2021sabre"
+      ],
+      "added_at_final_literature_refresh": [
+        "S42_buongiorno2024pangea"
+      ],
+      "verification": "all six additions resolved in Crossref, OpenAlex, and Semantic Scholar",
+      "correction": "S38 archival year corrected 2013 -> 2014 (Crossref issue year; OpenAlex reported the early-access year)"
+    }
   },
   "stage_6": {
-    "status": "revise_and_resubmit_awaiting_user_decision",
-    "reviewed_at": "2026-08-13",
-    "review_path": "research/academic-pipeline/stage-06-peer-review-simulation.md",
-    "target_track": "IEEE Transactions on Games Full Paper",
-    "editorial_decision": "revise_and_resubmit",
-    "reviewer_scores": {
-      "eic": 5.0,
-      "r1_methodology": 5.0,
-      "r2_related_work": 5.5,
-      "r3_clarity_reproducibility": 7.0
+    "status": "major_revision_direction_accepted_and_actioned",
+    "decision_status": "user_accepted_simulated_revision_direction_not_journal_decision",
+    "user_accepted_direction_at": "2026-08-13",
+    "reviewed_track": "full_paper",
+    "current_submission_track": "short_paper",
+    "revision_status": "stages_8_and_9_executed",
+    "review_paths": {
+      "initial_simulation": "research/academic-pipeline/stage-06-peer-review-simulation.md",
+      "adversarial_review": "research/academic-pipeline/stage-06-peer-review.md",
+      "game_track_revision": "research/academic-pipeline/stage-06-game-track-revision.md"
     },
-    "critical_findings": [
-      "full-paper efficacy and external validity are absent",
-      "the reproducibility packet is not clean-commit release-locked",
-      "IEEE AI-use disclosure is missing"
+    "audit_path": "research/academic-pipeline/stage-06-peer-review.md",
+    "panel": [
+      "EIC",
+      "R1_methods",
+      "R2_related_work",
+      "R3_reproducibility",
+      "devils_advocate"
     ],
-    "decision_boundary": "Stage 8 revision is blocked until the user accepts, partially accepts, or rebuts the Stage 6 findings."
+    "recommendations": {
+      "EIC": "major_revision",
+      "R1": "major_revision",
+      "R2": "major_revision",
+      "R3": "major_revision",
+      "devils_advocate": "reject_on_integrity"
+    },
+    "scores": {
+      "EIC_overall": 4.5,
+      "R1_methodology": 4,
+      "R2": 4.5,
+      "R3_writing": 6,
+      "devils_advocate_overall": 2
+    },
+    "integrity_findings_reproduced_by_maintainer": [
+      "I1",
+      "I2",
+      "I3",
+      "F6"
+    ],
+    "note": "Three defects passed the Stage 4.5 gate; that verdict was corrected, not defended."
   },
   "downstream_stages": {
-    "status": "blocked_by_stage_6_checkpoint",
-    "next": "User decision on Stage 6 findings; then optional Stage 7 cross-model verification and Stage 8 author revision.",
-    "not_executed": ["7", "8", "9", "10"]
+    "status": "stages_8_and_9_executed_stage_10_clean_release_lock_pending",
+    "executed": [
+      "8",
+      "9"
+    ],
+    "optional_not_activated": [
+      "7"
+    ],
+    "pending": [
+      "10_clean_commit_release_lock"
+    ],
+    "note": "Stage 7 was gated off, not executed; the expanded Stage-4.5 final re-audit passed, and only clean committed/tagged recapture remains."
+  },
+  "stage_7": {
+    "status": "not_activated_optional",
+    "executed": false,
+    "audit_path": "research/academic-pipeline/stage-07-cross-model-verification.md",
+    "activation_variable": "ARS_CROSS_MODEL",
+    "activation_variable_set": false,
+    "reason": "optional stage; gate unmet. A reachable local 7B endpoint does not satisfy it and is not a credible verifier for the findings at issue."
+  },
+  "stage_8": {
+    "status": "executed_findings_closed_at_stage_8_current_release_provenance_reopened",
+    "audit_path": "research/academic-pipeline/stage-08-revision.md",
+    "resolved": [
+      "I1",
+      "I2",
+      "I3",
+      "F4",
+      "F5",
+      "F6",
+      "F7",
+      "F8",
+      "F9",
+      "F10",
+      "F11",
+      "F12",
+      "F13",
+      "F14",
+      "F15",
+      "F16",
+      "F17",
+      "F18"
+    ],
+    "open_camera_ready_items": [],
+    "current_accounting": {
+      "bound_provenance_rows": 64,
+      "executed_fixture_rows": 43,
+      "aggregate_rows": 21,
+      "enforcement": "per-row row_class, schema consts, and a build-time partition assertion"
+    },
+    "code_changes": [
+      "both candidate parsers unified on contracts.parse_candidate_mapping",
+      "closed boundary retained as a parser-parity regression fixture",
+      "whitespace-only identifiers rejected again after the unification briefly relaxed them",
+      "three dead helpers removed from experiment.py"
+    ],
+    "response_letter_path": "research/academic-pipeline/stage-08-response-letter.md",
+    "comment_disposition": {
+      "total": 38,
+      "resolved": 30,
+      "partially_addressed": 4,
+      "rebutted": 4
+    },
+    "f13_closure": "P1-P4 relabelled I1-I4 as asserted implementation invariants in both languages; no proof or theorem language remains; I2's formerly vacuous antecedent is disclosed with an explicit non-guarantee of wall-clock termination",
+    "f14_closure": "every manifest row carries a schema-enforced row_class; executed and aggregate counts are declared, pinned as schema consts, and asserted at build time",
+    "f17_closure": "both manuscripts directly include the three required figures and directly input their language-matched generated results and tables; IfFileExists and pendingartifact fallbacks are absent, so missing required artifacts fail the LaTeX build",
+    "f18_closure": "all five figure/algorithm floats and all three tables have explicit matched EN/KO text references",
+    "current_release_provenance_gap": "F6 was closed by the Stage-8 packet at the time, but the later F14 runner revision was recaptured against an earlier recorded commit; all 20 paths exist there, but only 19 exact input digests match, so clean tagged recapture is required"
+  },
+  "stage_9": {
+    "status": "executed_formatted_disclosed_and_camera_ready_items_closed",
+    "audit_path": "research/academic-pipeline/stage-09-formatting-and-disclosure.md",
+    "article_type": "short_paper",
+    "page_count": {
+      "english": 7,
+      "korean": 6
+    },
+    "page_band": "6-8 (transactions.games, retrieved 2026-08-13)",
+    "reference_count": 42,
+    "build_freshness": "fresh_after_expanded_stage_4_5_reaudit_rebuild",
+    "open_items": [],
+    "ai_disclosure": "matched EN/KO disclosure covers prose/code/test drafting, command orchestration, evidence audit and interpretation, reviewer simulation, and citation checks; deterministic runners/artifacts remain the source of values",
+    "anonymization": "author, affiliation, funding, biography all absent"
+  },
+  "stage_10": {
+    "status": "passport_compiled_final_reaudit_passed_clean_commit_release_lock_pending",
+    "compiled_at": "2026-08-13",
+    "repro_lock": {
+      "status": "dirty_snapshot_only",
+      "clean_release_lock": false,
+      "working_tree_dirty": true,
+      "note": "All 55 worktree hashes recompute. All 20 input paths exist at recorded commit e4c2c77, but only 19 exact digests match; that commit contains an earlier scripts/run_conformance_pilot.py, while the frozen runner revision is represented only by the dirty-tree hash. This is not a clean-commit/tag byte-reproducible release lock.",
+      "git_commit_of_pilot_inputs": "e4c2c775eaa1dc0a12091f69be19994083685839",
+      "declared_input_paths_present_at_commit": "20/20",
+      "exact_input_digests_matching_at_commit": "19/20",
+      "mismatched_input_at_commit": "scripts/run_conformance_pilot.py (earlier revision present)",
+      "artifact_count": 35,
+      "environment": {
+        "machine": "arm64",
+        "platform": "macOS-26.3.1-arm64-arm-64bit",
+        "python_executable": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/.venv/bin/python3",
+        "python_implementation": "CPython",
+        "python_version": "3.11.14",
+        "uv_version": "uv 0.9.10 (44f5a14f4 2025-11-17)"
+      }
+    },
+    "artifact_digests": {
+      "english_pdf": "553da2f886d72cc9cbdb79ffc333ee72647080b7a2d3ff490c37ee077d7a7504",
+      "korean_pdf": "da62f77305bae7fecfb6fdf0ea836430974a0f9fa04a3b38cdae4888abf51ec8",
+      "references_bib": "5ca42d5d172ef72028f2c33e33d1f90dab18223c05021d2a77920e6f1ef0ef4e",
+      "pilot_results_json": "f6c76abba4c728849912e90382e8df9079738f128706c13a5a649e45d37f7bfd",
+      "sha256_manifest": "a2c208f7e852e85e057c4737f7c91b9ac177659c0a1ec0584a21b79e461e875c"
+    },
+    "score_trajectory": {
+      "stage_2_5": "pass with fail-closed scope boundaries",
+      "stage_4_5_original": "22/22 FAITHFUL — SUPERSEDED, verdict was wrong",
+      "stage_4_5_corrected": "19 FAITHFUL, 1 OVERSTATED, 1 SCOPE_MISMATCH, 1 OUTDATED, +1 unaudited body claim",
+      "stage_4_5_final": "expanded full-manuscript re-audit: 42/42 claim families FAITHFUL after seven preliminary findings were corrected; clean release lock remains separate",
+      "stage_5": "36/36 resolved, 0 hallucinated (42/42 after Stage 8 lineage and final comparator additions)",
+      "stage_6": "major revision; 3 integrity findings + 1 provenance failure",
+      "stage_8": "all manuscript findings, including F17 and F18, are closed; the later dirty runner recapture reopens only the clean-release provenance item"
+    },
+    "open_at_release": {
+      "acceptance_blockers": {
+        "F6": "all 20 input paths exist at recorded commit e4c2c77, but only 19 exact digests match; clean committed/tagged recapture required"
+      },
+      "camera_ready_items": {},
+      "partially_addressed_comments": [
+        "EIC-10",
+        "R1-1",
+        "R1-5",
+        "DA-3"
+      ],
+      "standing_evidence_boundary": "C-RESULT-001..005 remain TODO-RESULT; the pilot is deterministic offline conformance over one authored world state"
+    },
+    "honest_summary": "The expanded final re-audit passed only after a first read-only pass found and corrected six additional claim defects plus one citation-of-floats/tables defect. The current manuscripts are claim-faithful and keep all efficacy claims at TODO-RESULT. Archival release remains blocked because all 20 input paths exist at the recorded commit but only 19 exact digests match; the commit has an earlier runner and the frozen runner revision exists only in the disclosed dirty-tree state.",
+    "clean_clone_gate": {
+      "verified_at": "2026-08-13",
+      "method": "git clone of the committed tree into a pristine directory with no Godot import cache and no working-tree state, then the full CI suite plus pilot reproduction and both paper builds",
+      "results": {
+        "tests": "96/96 pass",
+        "ruff_check_and_format": "clean over src, tests, scripts, examples",
+        "validate_project": "pass",
+        "validate_harness": "pass",
+        "recorded_experiment": "pass",
+        "deep_research_contract": "10/10",
+        "survey_contract": "pass",
+        "readme_visual_sync": "pass",
+        "wiki_lint": "no structural issues",
+        "pilot_reproduction": "34/34 artifacts byte-identical to the committed bundle",
+        "paper_build": "make all exits 0; EN 7 pp, KO 6 pp"
+      },
+      "defect_found_and_fixed": "The first clean-clone run failed 4 Godot fixture subtests. Root cause: .godot/ is a gitignored build artifact, so a fresh clone has no import cache and Godot spent its first invocation importing instead of running the fixture. The suite passed locally only because an untracked cache existed. The harness now runs the idempotent import unconditionally and fails loudly with engine output if it errors, rather than trusting the mere existence of .godot/."
+    }
   }
 }

@@ -1707,14 +1707,38 @@
       ],
       "type": "object"
     },
+    "amendment": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_status": {
+          "const": "post-stage-08-rerun"
+        },
+        "change": {
+          "const": "candidate_contract_strictness moved from an accepted boundary sentinel to a closed negative regression after both parsers began rejecting unknown top-level keys"
+        },
+        "id": {
+          "const": "stage-08-candidate-contract-strictness"
+        },
+        "source_stage": {
+          "const": "stage-04-pilot"
+        }
+      },
+      "required": [
+        "id",
+        "artifact_status",
+        "source_stage",
+        "change"
+      ],
+      "type": "object"
+    },
     "assignment_manifest": {
       "additionalProperties": false,
       "properties": {
         "assignment_count": {
-          "const": 62
+          "const": 64
         },
         "assignment_set_hash": {
-          "const": "a853747f79ac2547e2e46f2789a5c78d4f74973d18082b24fb6f911fb8cad65e"
+          "const": "a073baa3f593cfc3978ad75836e18ddc55a3d825336b2699a7181ac2d2cdc653"
         },
         "path": {
           "const": "pilot-assignment-manifest.json"
@@ -1738,16 +1762,16 @@
           "additionalProperties": false,
           "properties": {
             "encoded_acceptance_count": {
-              "const": 3
+              "const": 2
             },
             "passed_sentinel_count": {
-              "const": 3
+              "const": 2
             },
             "safety_pass_count": {
               "const": 0
             },
             "sentinel_count": {
-              "const": 3
+              "const": 2
             }
           },
           "required": [
@@ -1760,8 +1784,8 @@
         },
         "rows": {
           "items": false,
-          "maxItems": 3,
-          "minItems": 3,
+          "maxItems": 2,
+          "minItems": 2,
           "prefixItems": [
             {
               "additionalProperties": false,
@@ -3695,966 +3719,6 @@
                 "outcome_record"
               ],
               "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "arm_id": {
-                  "const": "boundary_sentinel_k0"
-                },
-                "atomic_state_passed": {
-                  "const": true
-                },
-                "boundary_type": {
-                  "const": "candidate_contract_strictness"
-                },
-                "config_hash": {
-                  "const": "0f13526b57eb3fe6e65cdee05decbeee61a5ce80040167a26f629a18e9ac7ec6"
-                },
-                "expected_valid": {
-                  "const": true
-                },
-                "final_state_hash": {
-                  "const": "b2f886b456bad6f166b1f4c71d1f5525d24c38491c6260f794763feaae3f12a8"
-                },
-                "final_status": {
-                  "const": "commit"
-                },
-                "input_hash": {
-                  "const": "1e645a1bd2f1d19f30f7c590499dae06dda1ac4a29fbbc52860b8eb64ecb74b8"
-                },
-                "interpretation": {
-                  "const": "The proposal parser currently ignores an unrecognized top-level candidate field; this is an accepted contract-strictness limitation, not evidence of safe metadata handling."
-                },
-                "observed_codes": {
-                  "items": false,
-                  "maxItems": 0,
-                  "minItems": 0,
-                  "type": "array"
-                },
-                "observed_valid": {
-                  "const": true
-                },
-                "outcome_record": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "attempts": {
-                      "const": 0
-                    },
-                    "candidate": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "action_id": {
-                          "const": "boundary-extra-candidate-field"
-                        },
-                        "action_type": {
-                          "const": "SAY"
-                        },
-                        "actor_id": {
-                          "const": "guard"
-                        },
-                        "disclosed_facts": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        },
-                        "effects": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        },
-                        "metadata": {
-                          "additionalProperties": false,
-                          "properties": {},
-                          "required": [],
-                          "type": "object"
-                        },
-                        "narrative_text": {
-                          "const": ""
-                        },
-                        "preconditions": {
-                          "items": false,
-                          "maxItems": 1,
-                          "minItems": 1,
-                          "prefixItems": [
-                            {
-                              "const": "met_guard"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "quest_stage_effect": {
-                          "const": null
-                        },
-                        "required_objects": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        },
-                        "required_quest_stage": {
-                          "const": 0
-                        },
-                        "used_facts": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        }
-                      },
-                      "required": [
-                        "action_id",
-                        "actor_id",
-                        "action_type",
-                        "preconditions",
-                        "effects",
-                        "required_objects",
-                        "used_facts",
-                        "disclosed_facts",
-                        "required_quest_stage",
-                        "quest_stage_effect",
-                        "narrative_text",
-                        "metadata"
-                      ],
-                      "type": "object"
-                    },
-                    "prior_state": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "action_policies": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "OPEN_DOOR": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "allowed_effects": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "door_open"
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "allowed_quest_stage_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_effects": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "door_open"
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "required_preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "required_preconditions",
-                                "allowed_effects",
-                                "required_effects",
-                                "allowed_quest_stage_effects"
-                              ],
-                              "type": "object"
-                            },
-                            "ROLLBACK_STAGE": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "allowed_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "allowed_quest_stage_effects": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": 0
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "required_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "required_preconditions",
-                                "allowed_effects",
-                                "required_effects",
-                                "allowed_quest_stage_effects"
-                              ],
-                              "type": "object"
-                            },
-                            "SAY": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "allowed_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "allowed_quest_stage_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "required_preconditions",
-                                "allowed_effects",
-                                "required_effects",
-                                "allowed_quest_stage_effects"
-                              ],
-                              "type": "object"
-                            }
-                          },
-                          "required": [
-                            "OPEN_DOOR",
-                            "ROLLBACK_STAGE",
-                            "SAY"
-                          ],
-                          "type": "object"
-                        },
-                        "facts": {
-                          "items": false,
-                          "maxItems": 2,
-                          "minItems": 2,
-                          "prefixItems": [
-                            {
-                              "const": "met_guard"
-                            },
-                            {
-                              "const": "public_fact"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "forbidden_disclosures": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "guard": {
-                              "items": false,
-                              "maxItems": 1,
-                              "minItems": 1,
-                              "prefixItems": [
-                                {
-                                  "const": "sealed_secret"
-                                }
-                              ],
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "guard"
-                          ],
-                          "type": "object"
-                        },
-                        "inventory": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        },
-                        "locations": {
-                          "items": false,
-                          "maxItems": 2,
-                          "minItems": 2,
-                          "prefixItems": [
-                            {
-                              "const": "gate"
-                            },
-                            {
-                              "const": "vault"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "npc_knowledge": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "guard": {
-                              "items": false,
-                              "maxItems": 3,
-                              "minItems": 3,
-                              "prefixItems": [
-                                {
-                                  "const": "met_guard"
-                                },
-                                {
-                                  "const": "public_fact"
-                                },
-                                {
-                                  "const": "sealed_secret"
-                                }
-                              ],
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "guard"
-                          ],
-                          "type": "object"
-                        },
-                        "object_locations": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "remote_key": {
-                              "const": "vault"
-                            }
-                          },
-                          "required": [
-                            "remote_key"
-                          ],
-                          "type": "object"
-                        },
-                        "quest_stage": {
-                          "const": 1
-                        },
-                        "reachable_locations": {
-                          "items": false,
-                          "maxItems": 1,
-                          "minItems": 1,
-                          "prefixItems": [
-                            {
-                              "const": "gate"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "state_id": {
-                          "const": "conformance-s0"
-                        }
-                      },
-                      "required": [
-                        "state_id",
-                        "locations",
-                        "reachable_locations",
-                        "object_locations",
-                        "inventory",
-                        "facts",
-                        "action_policies",
-                        "npc_knowledge",
-                        "forbidden_disclosures",
-                        "quest_stage"
-                      ],
-                      "type": "object"
-                    },
-                    "state": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "action_policies": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "OPEN_DOOR": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "allowed_effects": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "door_open"
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "allowed_quest_stage_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_effects": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "door_open"
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "required_preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "required_preconditions",
-                                "allowed_effects",
-                                "required_effects",
-                                "allowed_quest_stage_effects"
-                              ],
-                              "type": "object"
-                            },
-                            "ROLLBACK_STAGE": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "allowed_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "allowed_quest_stage_effects": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": 0
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "required_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "required_preconditions",
-                                "allowed_effects",
-                                "required_effects",
-                                "allowed_quest_stage_effects"
-                              ],
-                              "type": "object"
-                            },
-                            "SAY": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "allowed_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "allowed_quest_stage_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "required_preconditions",
-                                "allowed_effects",
-                                "required_effects",
-                                "allowed_quest_stage_effects"
-                              ],
-                              "type": "object"
-                            }
-                          },
-                          "required": [
-                            "OPEN_DOOR",
-                            "ROLLBACK_STAGE",
-                            "SAY"
-                          ],
-                          "type": "object"
-                        },
-                        "facts": {
-                          "items": false,
-                          "maxItems": 2,
-                          "minItems": 2,
-                          "prefixItems": [
-                            {
-                              "const": "met_guard"
-                            },
-                            {
-                              "const": "public_fact"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "forbidden_disclosures": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "guard": {
-                              "items": false,
-                              "maxItems": 1,
-                              "minItems": 1,
-                              "prefixItems": [
-                                {
-                                  "const": "sealed_secret"
-                                }
-                              ],
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "guard"
-                          ],
-                          "type": "object"
-                        },
-                        "inventory": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        },
-                        "locations": {
-                          "items": false,
-                          "maxItems": 2,
-                          "minItems": 2,
-                          "prefixItems": [
-                            {
-                              "const": "gate"
-                            },
-                            {
-                              "const": "vault"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "npc_knowledge": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "guard": {
-                              "items": false,
-                              "maxItems": 3,
-                              "minItems": 3,
-                              "prefixItems": [
-                                {
-                                  "const": "met_guard"
-                                },
-                                {
-                                  "const": "public_fact"
-                                },
-                                {
-                                  "const": "sealed_secret"
-                                }
-                              ],
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "guard"
-                          ],
-                          "type": "object"
-                        },
-                        "object_locations": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "remote_key": {
-                              "const": "vault"
-                            }
-                          },
-                          "required": [
-                            "remote_key"
-                          ],
-                          "type": "object"
-                        },
-                        "quest_stage": {
-                          "const": 1
-                        },
-                        "reachable_locations": {
-                          "items": false,
-                          "maxItems": 1,
-                          "minItems": 1,
-                          "prefixItems": [
-                            {
-                              "const": "gate"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "state_id": {
-                          "const": "569ecee434e58dfb"
-                        }
-                      },
-                      "required": [
-                        "state_id",
-                        "locations",
-                        "reachable_locations",
-                        "object_locations",
-                        "inventory",
-                        "facts",
-                        "action_policies",
-                        "npc_knowledge",
-                        "forbidden_disclosures",
-                        "quest_stage"
-                      ],
-                      "type": "object"
-                    },
-                    "status": {
-                      "const": "commit"
-                    },
-                    "trace": {
-                      "items": false,
-                      "maxItems": 1,
-                      "minItems": 1,
-                      "prefixItems": [
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "attempt": {
-                              "const": 0
-                            },
-                            "candidate": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "action_id": {
-                                  "const": "boundary-extra-candidate-field"
-                                },
-                                "action_type": {
-                                  "const": "SAY"
-                                },
-                                "actor_id": {
-                                  "const": "guard"
-                                },
-                                "disclosed_facts": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "effects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "metadata": {
-                                  "additionalProperties": false,
-                                  "properties": {},
-                                  "required": [],
-                                  "type": "object"
-                                },
-                                "narrative_text": {
-                                  "const": ""
-                                },
-                                "preconditions": {
-                                  "items": false,
-                                  "maxItems": 1,
-                                  "minItems": 1,
-                                  "prefixItems": [
-                                    {
-                                      "const": "met_guard"
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "quest_stage_effect": {
-                                  "const": null
-                                },
-                                "required_objects": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "required_quest_stage": {
-                                  "const": 0
-                                },
-                                "used_facts": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "action_id",
-                                "actor_id",
-                                "action_type",
-                                "preconditions",
-                                "effects",
-                                "required_objects",
-                                "used_facts",
-                                "disclosed_facts",
-                                "required_quest_stage",
-                                "quest_stage_effect",
-                                "narrative_text",
-                                "metadata"
-                              ],
-                              "type": "object"
-                            },
-                            "validation": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "checks_run": {
-                                  "items": false,
-                                  "maxItems": 7,
-                                  "minItems": 7,
-                                  "prefixItems": [
-                                    {
-                                      "const": "action_policy"
-                                    },
-                                    {
-                                      "const": "precondition"
-                                    },
-                                    {
-                                      "const": "object_reachability"
-                                    },
-                                    {
-                                      "const": "npc_knowledge"
-                                    },
-                                    {
-                                      "const": "forbidden_disclosure"
-                                    },
-                                    {
-                                      "const": "quest_stage"
-                                    },
-                                    {
-                                      "const": "quest_stage_monotonicity"
-                                    }
-                                  ],
-                                  "type": "array"
-                                },
-                                "errors": {
-                                  "items": false,
-                                  "maxItems": 0,
-                                  "minItems": 0,
-                                  "type": "array"
-                                },
-                                "valid": {
-                                  "const": true
-                                }
-                              },
-                              "required": [
-                                "valid",
-                                "errors",
-                                "checks_run"
-                              ],
-                              "type": "object"
-                            }
-                          },
-                          "required": [
-                            "attempt",
-                            "candidate",
-                            "validation"
-                          ],
-                          "type": "object"
-                        }
-                      ],
-                      "type": "array"
-                    },
-                    "trace_context": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "arm_id": {
-                          "const": "boundary_sentinel_k0"
-                        },
-                        "pilot_id": {
-                          "const": "trace-rpg-deterministic-conformance-v1"
-                        },
-                        "sentinel_id": {
-                          "const": "boundary-extra-candidate-field"
-                        }
-                      },
-                      "required": [
-                        "arm_id",
-                        "pilot_id",
-                        "sentinel_id"
-                      ],
-                      "type": "object"
-                    },
-                    "trace_hash": {
-                      "const": "4e14483471832db68b7f00b4cdd7359f162b6792a7a32a4edcf24a5c6e3b3fa9"
-                    },
-                    "validation": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "checks_run": {
-                          "items": false,
-                          "maxItems": 7,
-                          "minItems": 7,
-                          "prefixItems": [
-                            {
-                              "const": "action_policy"
-                            },
-                            {
-                              "const": "precondition"
-                            },
-                            {
-                              "const": "object_reachability"
-                            },
-                            {
-                              "const": "npc_knowledge"
-                            },
-                            {
-                              "const": "forbidden_disclosure"
-                            },
-                            {
-                              "const": "quest_stage"
-                            },
-                            {
-                              "const": "quest_stage_monotonicity"
-                            }
-                          ],
-                          "type": "array"
-                        },
-                        "errors": {
-                          "items": false,
-                          "maxItems": 0,
-                          "minItems": 0,
-                          "type": "array"
-                        },
-                        "valid": {
-                          "const": true
-                        }
-                      },
-                      "required": [
-                        "valid",
-                        "errors",
-                        "checks_run"
-                      ],
-                      "type": "object"
-                    }
-                  },
-                  "required": [
-                    "status",
-                    "state",
-                    "candidate",
-                    "validation",
-                    "attempts",
-                    "trace_hash",
-                    "prior_state",
-                    "trace",
-                    "trace_context"
-                  ],
-                  "type": "object"
-                },
-                "passed": {
-                  "const": true
-                },
-                "prior_state_hash": {
-                  "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
-                },
-                "replay_passed": {
-                  "const": true
-                },
-                "safety_pass": {
-                  "const": false
-                },
-                "sentinel_id": {
-                  "const": "boundary-extra-candidate-field"
-                },
-                "state_changed": {
-                  "const": true
-                },
-                "state_hash": {
-                  "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
-                }
-              },
-              "required": [
-                "arm_id",
-                "config_hash",
-                "input_hash",
-                "state_hash",
-                "prior_state_hash",
-                "sentinel_id",
-                "boundary_type",
-                "expected_valid",
-                "observed_valid",
-                "observed_codes",
-                "final_status",
-                "replay_passed",
-                "state_changed",
-                "atomic_state_passed",
-                "final_state_hash",
-                "passed",
-                "safety_pass",
-                "interpretation",
-                "outcome_record"
-              ],
-              "type": "object"
             }
           ],
           "type": "array"
@@ -4668,8 +3732,8 @@
     },
     "claim_boundary": {
       "items": false,
-      "maxItems": 5,
-      "minItems": 5,
+      "maxItems": 6,
+      "minItems": 6,
       "prefixItems": [
         {
           "const": "supports implementation conformance on designed fixtures"
@@ -4684,10 +3748,151 @@
           "const": "boundary sentinel acceptance is not evidence of semantic safety or policy completeness"
         },
         {
+          "const": "the closed candidate-contract regression establishes parser rejection parity only; it is not semantic-safety evidence"
+        },
+        {
           "const": "semantic replay does not authenticate or re-execute the repair generator"
         }
       ],
       "type": "array"
+    },
+    "closed_boundary_regressions": {
+      "additionalProperties": false,
+      "properties": {
+        "raw_counts": {
+          "additionalProperties": false,
+          "properties": {
+            "parser_parity_count": {
+              "const": 1
+            },
+            "passed_regression_count": {
+              "const": 1
+            },
+            "proposal_rejected_count": {
+              "const": 1
+            },
+            "regression_count": {
+              "const": 1
+            },
+            "replay_rejected_count": {
+              "const": 1
+            },
+            "unknown_key_rejection_count": {
+              "const": 1
+            }
+          },
+          "required": [
+            "regression_count",
+            "proposal_rejected_count",
+            "replay_rejected_count",
+            "parser_parity_count",
+            "unknown_key_rejection_count",
+            "passed_regression_count"
+          ],
+          "type": "object"
+        },
+        "rows": {
+          "items": false,
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "arm_id": {
+                  "const": "closed_boundary_regression"
+                },
+                "boundary_type": {
+                  "const": "candidate_contract_strictness"
+                },
+                "closed_in": {
+                  "const": "stage-08"
+                },
+                "config_hash": {
+                  "const": "0f1718f806acd9aa753cceb561f7b7c79ed732829becc414254a8cf3311f35cc"
+                },
+                "expected_failure_code": {
+                  "const": "parse_error"
+                },
+                "expected_rejected": {
+                  "const": true
+                },
+                "final_state_hash": {
+                  "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+                },
+                "input_hash": {
+                  "const": "8cdd8dc11c803cc80209672e8c30524b09e6c5e05f2988ff367f95e761d886b0"
+                },
+                "interpretation": {
+                  "const": "Formerly boundary-extra-candidate-field, which the proposal parser accepted while the replay parser rejected it. Stage 8 closed that asymmetry. This fixture is retained as a negative regression so parser drift back to the permissive behaviour fails the pilot."
+                },
+                "observed_failure_code": {
+                  "const": "parse_error"
+                },
+                "parsers_agree": {
+                  "const": true
+                },
+                "passed": {
+                  "const": true
+                },
+                "prior_state_hash": {
+                  "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+                },
+                "proposal_error": {
+                  "const": "unknown candidate fields: ['unexpected_top_level_metadata']"
+                },
+                "proposal_rejected": {
+                  "const": true
+                },
+                "regression_id": {
+                  "const": "closed-extra-candidate-field"
+                },
+                "replay_error": {
+                  "const": "unknown candidate fields: ['unexpected_top_level_metadata']"
+                },
+                "replay_rejected": {
+                  "const": true
+                },
+                "state_hash": {
+                  "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+                },
+                "unknown_key_rejected": {
+                  "const": true
+                }
+              },
+              "required": [
+                "arm_id",
+                "config_hash",
+                "input_hash",
+                "state_hash",
+                "prior_state_hash",
+                "regression_id",
+                "boundary_type",
+                "closed_in",
+                "expected_rejected",
+                "proposal_rejected",
+                "replay_rejected",
+                "parsers_agree",
+                "expected_failure_code",
+                "observed_failure_code",
+                "proposal_error",
+                "replay_error",
+                "unknown_key_rejected",
+                "final_state_hash",
+                "passed",
+                "interpretation"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        }
+      },
+      "required": [
+        "rows",
+        "raw_counts"
+      ],
+      "type": "object"
     },
     "evidence_scope": {
       "const": "designed-fixture conformance only; no model-efficacy or human-study inference"
@@ -28351,8 +27556,8 @@
     },
     "summary_rows": {
       "items": false,
-      "maxItems": 16,
-      "minItems": 16,
+      "maxItems": 18,
+      "minItems": 18,
       "prefixItems": [
         {
           "additionalProperties": false,
@@ -28468,7 +27673,7 @@
               "const": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9"
             },
             "denominator": {
-              "const": 3
+              "const": 2
             },
             "final_state_hash": {
               "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
@@ -28480,16 +27685,120 @@
               "const": "encoded_acceptances_documented"
             },
             "notes": {
-              "const": "known semantic-extraction, policy-completeness, and unknown-field contract boundaries; not safety passes"
+              "const": "known semantic-extraction and policy-completeness boundaries; not safety passes"
             },
             "numerator": {
-              "const": 3
+              "const": 2
             },
             "prior_state_hash": {
               "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
             },
             "section": {
               "const": "boundary_sentinels"
+            },
+            "state_hash": {
+              "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+            }
+          },
+          "required": [
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash",
+            "final_state_hash",
+            "section",
+            "measure",
+            "numerator",
+            "denominator",
+            "notes"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "const": "pilot_summary"
+            },
+            "config_hash": {
+              "const": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9"
+            },
+            "denominator": {
+              "const": 1
+            },
+            "final_state_hash": {
+              "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+            },
+            "input_hash": {
+              "const": "6070b45b4d433390fb4ec85eaea08166e946c2812b980f4e9b503aa3cbe6f6a0"
+            },
+            "measure": {
+              "const": "closed_boundaries_still_rejected"
+            },
+            "notes": {
+              "const": "both parsers reject the complete candidate specifically for its unknown key"
+            },
+            "numerator": {
+              "const": 1
+            },
+            "prior_state_hash": {
+              "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+            },
+            "section": {
+              "const": "closed_boundary_regressions"
+            },
+            "state_hash": {
+              "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+            }
+          },
+          "required": [
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash",
+            "final_state_hash",
+            "section",
+            "measure",
+            "numerator",
+            "denominator",
+            "notes"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "const": "pilot_summary"
+            },
+            "config_hash": {
+              "const": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9"
+            },
+            "denominator": {
+              "const": 1
+            },
+            "final_state_hash": {
+              "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+            },
+            "input_hash": {
+              "const": "660caa1d9b524484923efd824ba85bf73a81cf27992a9f5a67f30d9f3fb54549"
+            },
+            "measure": {
+              "const": "parser_parity_on_unknown_keys"
+            },
+            "notes": {
+              "const": "proposal and replay parsers agree on unknown-key rejection"
+            },
+            "numerator": {
+              "const": 1
+            },
+            "prior_state_hash": {
+              "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+            },
+            "section": {
+              "const": "closed_boundary_regressions"
             },
             "state_hash": {
               "const": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
@@ -29194,9 +28503,11 @@
     "schema_version",
     "pilot_id",
     "evidence_scope",
+    "amendment",
     "inference",
     "gate_conformance",
     "boundary_sentinels",
+    "closed_boundary_regressions",
     "repair_arms",
     "integrity_faults",
     "integrity_boundaries",

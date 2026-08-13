@@ -28,6 +28,7 @@ from .experiment import (
 from .metrics import evaluate_trace
 from .runtime import (
     execute_with_repair,
+    parse_candidate_record,
     replay_trace_jsonl,
     replay_trace_record,
     to_jsonable,
@@ -55,6 +56,7 @@ __all__ = [
     "execute_with_repair",
     "experiment_assignment_key",
     "experiment_record_from_mapping",
+    "parse_candidate_record",
     "planned_experiment_assignment",
     "replay_trace_jsonl",
     "replay_trace_record",

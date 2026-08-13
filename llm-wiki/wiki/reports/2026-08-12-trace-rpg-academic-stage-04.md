@@ -9,7 +9,7 @@ a deterministic offline conformance pilot, not copied by hand.
 ## Exact designed-fixture observations
 
 - Gate conformance matched 13/13 authored expectations and exercised 12/12 encoded validator codes.
-- Three encoded-boundary sentinels were accepted as designed and 0/3 were labelled safety passes:
+- The original Stage 4 packet accepted three encoded-boundary sentinels and labelled 0/3 as safety passes:
   unparsed narrative disclosure, omitted object requirements in both candidate and policy, and an
   ignored unknown top-level candidate field.
 - Repair-arm commits were 0/2 for rejection only, 0/2 for unchanged retry, and 1/2 for deterministic
@@ -21,7 +21,7 @@ a deterministic offline conformance pilot, not copied by hand.
   checksum was recomputed.
 - Seven adapter/accounting cases ended as one commit, one symbolic fallback, and five classified
   adapter failures; three of three assignment guards rejected injected duplicate or missing cases.
-- The released manifest binds 62 published-row provenance records. This is not 62 stochastic trials,
+- The original release bound 62 published-row provenance records. Stage 8 supersedes it with 64 rows after closing the unknown-key boundary. Neither count represents stochastic trials,
   model calls, or an inferential sample.
 
 ## Claim boundary

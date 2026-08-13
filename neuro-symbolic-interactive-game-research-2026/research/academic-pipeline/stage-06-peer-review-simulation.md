@@ -12,6 +12,11 @@ Devil's Advocate
 Evidence baseline: Stage 4 bilingual six-page manuscripts, Stage 4 deterministic conformance
 packet, Stage 4.5 claim-faithfulness audit, and Stage 5 citation-identity audit
 
+> **Post-review resolution note (2026-08-13):** this review's unknown-field and assignment-count
+> findings describe its pre-Stage-8 baseline. The current rerun has 2 open semantic/policy
+> sentinels, a separate 1/1 closed unknown-key regression, and 64 bound provenance rows (43
+> executed + 21 aggregate). Statements below are retained as historical reviewer evidence.
+
 ## Editorial decision / 편집 판정
 
 The simulated decision is **revise and resubmit for the declared Full Paper track**. The topic is

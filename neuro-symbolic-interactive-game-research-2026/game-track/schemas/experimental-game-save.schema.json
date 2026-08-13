@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.example/schemas/experimental-game-save.schema.json",
+  "title": "TRACE-RPG experimental game save",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "run_id",
+    "episode_id",
+    "saved_at_event_id",
+    "state_hash",
+    "state"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "scenario_id": {"const": "sealed-lighthouse-v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "episode_id": {"type": "string", "minLength": 1},
+    "saved_at_event_id": {"type": "string", "minLength": 1},
+    "state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "state": {"$ref": "#/$defs/state"}
+  },
+  "$defs": {
+    "stringSet": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state_schema_version", "scenario_id", "revision", "player", "world", "quest", "facts", "npcs"],
+      "properties": {
+        "state_schema_version": {"const": "1.0.0"},
+        "scenario_id": {"const": "sealed-lighthouse-v1"},
+        "revision": {"type": "integer", "minimum": 0},
+        "player": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["location", "inventory"],
+          "properties": {
+            "location": {"type": "string", "minLength": 1},
+            "inventory": {"$ref": "#/$defs/stringSet"}
+          }
+        },
+        "world": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reachable_locations", "object_locations"],
+          "properties": {
+            "reachable_locations": {"$ref": "#/$defs/stringSet"},
+            "object_locations": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}}
+          }
+        },
+        "quest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stage", "flags"],
+          "properties": {
+            "stage": {"type": "integer", "minimum": 0},
+            "flags": {"$ref": "#/$defs/stringSet"}
+          }
+        },
+        "facts": {"$ref": "#/$defs/stringSet"},
+        "npcs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["knowledge", "disclosed", "relationship_memory"],
+            "properties": {
+              "knowledge": {"$ref": "#/$defs/stringSet"},
+              "disclosed": {"$ref": "#/$defs/stringSet"},
+              "relationship_memory": {"$ref": "#/$defs/stringSet"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

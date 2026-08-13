@@ -1,6 +1,6 @@
 # TRACE-RPG 연구 패키지 2026
 
-> 상태: Stage 6 동료심사는 IEEE ToG Full Paper 트랙에 대해 대폭 수정 후 재투고를 권고했으며 필수 사용자 결정을 기다린다. 확증 효능 결과는 아직 없고 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 유일한 수치 근거는 결정론적 오프라인 적합성 파일럿이다.
+> 상태: 사용자가 Stage 6 모의 Major Revision 심사에서 나온 개정 방향을 수용했고 근거 생성 게임 트랙 개정이 진행 중이다. 이는 저널 결정이나 논문 게재 승인이 아니다. 확증 효능 결과는 아직 없으며 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 기존 수치는 저자가 설계한 결정론적 fixture 적합성 count다.
 
 TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 상태에 기록하지 않는다. Parsing에 성공한 제안은 typed candidate event가 되고, 외부에서 공급된 행동 정책과 precondition·도달 가능성·NPC 지식·정보 공개·quest stage에 대한 결정론적 검사를 통과한 경우에만 커밋된다. 유효하지 않은 후보는 구조화 validation error를 만들고 제한된 repair 기회를 받을 수 있으며, adapter와 controller failure는 분류된 terminal row로 남는다. 지식 그래프 검색과 게임 엔진 연동은 versioned event contract로 연결되는 별도 확증 트랙이며, 현재 파일럿에서 완료된 근거로 표현하지 않는다.
 
@@ -12,7 +12,7 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 
 ![신뢰 경계: 학습된 제안, 심볼릭 권위](visuals/system-architecture.svg)
 
-제안자는 감정 추정 `z_t`, 그래프 검색, 시간 메모리를 관찰할 수 있으나 이들 중 어느 것도 커밋 권한을 갖지 않는다. 정식 상태는 게이트를 통과한 `T(c_t, a_t)`로만 바뀐다. 인코딩된 유효성은 인코딩된 술어에 한한 유효성이며, 인식하지 못한 최상위 candidate field는 현재 거부가 아니라 무시된다.
+제안자는 감정 추정 `z_t`, 그래프 검색, 시간 메모리를 관찰할 수 있으나 이들 중 어느 것도 커밋 권한을 갖지 않는다. 정식 상태는 게이트를 통과한 `T(c_t, a_t)`로만 바뀐다. 인코딩된 유효성은 인코딩된 술어에 한한 유효성이며, 공유 candidate-key 계약은 proposal과 replay 양쪽에서 알 수 없는 최상위 field를 거부한다.
 
 ### V2 · 단일 트랜잭션
 
@@ -36,10 +36,13 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 
 ![학술 파이프라인 상태](visuals/research-workflow.svg)
 
-Stage 4.5에서는 초록·서론 주장 22/22가 충실한 것으로 판정됐고, Stage 5에서는 참고문헌
-36건 모두의 동일성을 확인해 미일치·환각 인용이 없었다. Stage 6은 독립 효능 실험,
-깨끗한 릴리스 고정, IEEE AI 사용 고지를 Full Paper의 필수 수정 게이트로 판정했다.
-상세 내용은 [`research/academic-pipeline/stage-06-peer-review-simulation.md`](research/academic-pipeline/stage-06-peer-review-simulation.md)에 있다.
+원래 Stage 4.5의 `22/22` 통과 판정은 대체된 감사 기록으로만 보존한다. Stage 6에서 주장
+결함 3건과 감사 범위 밖의 본문 telemetry 결함 1건을 재현했고, Stage 8에서 원고와 parser
+계약을 수정했으며 Stage 9에서 Short Paper 서식과 AI 사용 고지를 완료했다. Stage 5의
+참고문헌 36건 동일성 검증(미일치·환각 인용 0건)은 유효하다. 깨끗한 커밋을 기준으로 한
+Stage 10 재현성 고정과 독립 효능 실험은 아직 남아 있다. 상세 내용은
+[`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)와
+[`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md)에 있다.
 
 ### V6 · 계획된 확증 설계 (미실행)
 
@@ -49,7 +52,9 @@ Stage 4.5에서는 초록·서론 주장 22/22가 충실한 것으로 판정됐�
 
 1차 투고 후보는 게임 AI·플레이어 모델링·게임 평가 범위가 직접 맞는 **IEEE Transactions on Games**다. 방법론 기여가 더 강하면 **Knowledge-Based Systems**, 감정 추론의 독립적 기여가 충분하면 **IEEE Transactions on Affective Computing**, 응용·사용자 연구 중심이면 **Entertainment Computing**을 재검토한다. 색인 상태는 변할 수 있으므로 제출 직전 Clarivate Master Journal List에서 SCIE 여부를 다시 확인하는 것을 필수 게이트로 둔다.
 
-저널 수준 주장은 사전등록된 1차 평가지표, 파일럿 분산에 근거한 검정력 분석, 세계·퀘스트 템플릿 단위 홀드아웃, 혼합효과모형, 효과크기와 95% 신뢰구간, 다중비교 보정, 독립 인간평가, assignment-complete outcome record, proposal outcome이 존재할 때의 완전한 trace를 요구한다.
+저널 수준 주장은 사전등록된 1차 평가지표, 파일럿 분산에 근거한 검정력 분석, 세계·퀘스트 템플릿
+단위 홀드아웃, 혼합효과모형, 효과크기와 95% 신뢰구간, 다중비교 보정, 독립 인간평가, 실패 분석,
+assignment-complete outcome record, proposal outcome이 존재할 때의 완전한 trace를 요구한다.
 
 상세 투고 게이트: [`research/journal-targets.ko.md`](research/journal-targets.ko.md)
 
@@ -68,12 +73,25 @@ uv sync --extra research --extra dev
 uv run python -m unittest discover -s tests -v
 uv run python scripts/validate_project.py
 uv run python scripts/validate_harness.py
+./scripts/validate_game_track.sh
+./scripts/validate_codex_oauth_llm.sh
 uv run python examples/headless_demo.py
 uv run python examples/recorded_experiment.py
 uv run python scripts/generate_readme_visuals.py
 ```
 
-현재 실행 범위는 로컬 정책 검증기, 제한 수리/fallback, 전체 수리 이력 해시, semantic JSONL replay, 네트워크 없는 recorded-response 실험 어댑터다. 오프라인 runner는 모델 revision·seed·토큰·provider/runner 지연·실패·commit 상태를 스키마 검증 JSONL에 보존한다. 마지막 명령은 위 여섯 개 SVG를 동결된 파일럿 아티팩트와 주장 원장에서 다시 생성하므로, 수치가 바뀌면 그림도 함께 갱신된다. 실제 10개 모델 API/로컬 서빙 어댑터, MLflow/에너지 텔레메트리, Godot/Unity transport, 인간 연구는 아직 명세 단계다.
+선택형 로컬 LLM 접근은 공식 Codex device-code 흐름을 사용한다. wrapper는 credential을 직접
+읽거나 출력하지 않고, 매 prompt를 폐기형 read-only 임시 workspace에서 실행하며 명시적
+`request_id`가 있는 비권위 소프트 제안만 반환한다. 공개 Web 빌드에는 포함되지 않으며 정식 game
+state를 commit할 수 없다. 상세 내용은
+[`docs/codex-oauth-llm.ko.md`](docs/codex-oauth-llm.ko.md)에 있다.
+
+현재 실행 범위에는 로컬 정책 검증기, 제한 수리/fallback, operation/상태 해시 JSONL replay,
+네트워크 없는 recorded-response 어댑터와 Godot 4.x headless *봉인된 등대* 정책 미러 슬라이스가
+포함된다. 게임 슬라이스는 퀘스트 진행, 단계별 공개, 실패 상태 불변, 저장/불러오기, 재생, 저자 설계
+결함 fixture, 안정 envelope 스키마 projection을 실행하는 엔진 로컬 적합성 근거다. 실제
+Python↔Godot 권한 transport, 10개 모델 추론, 영속 라이브 transport, MLflow/에너지 텔레메트리,
+인간 모집은 미실행이다.
 
 ## 디렉터리
 
@@ -83,7 +101,8 @@ uv run python scripts/generate_readme_visuals.py
 | `paper/en`, `paper/ko` | 대체된 미래 확증 연구 프로토콜 청사진 |
 | `configs/` | 10개 모델, 실험군, 시나리오, 평가 지표 SSOT |
 | `src/nesy_game/` | 결정론적 계약과 최소 검증기 |
-| `game-track/` | 엔진 독립 게임 브리지와 재생 계약 |
+| `game-track/` | 엔진 독립 계약, 이중언어 실험 GDD, Godot 슬라이스, fail-closed 공개 자산 제외 기록 |
+| `_workspace/current/` | 단일 최신 게임 스튜디오 기획·제작·엔지니어링·QA·UI·운영 워크스페이스 |
 | `research/` | 원본 보존, Scrapling 캡처, 근거·주장 원장, 심층연구 |
 | `harness/` | 에이전트 역할, 워크플로우, 검증 게이트 |
 | `../llm-wiki/` | 프로젝트 지식 위키와 Graphify 그래프 |
@@ -92,7 +111,7 @@ uv run python scripts/generate_readme_visuals.py
 
 ## Stage 4 원고와 범위가 제한된 파일럿
 
-정식 IEEE 6쪽 원고는 `paper/latex/en/main.pdf`와 `paper/latex/ko/main.pdf`다.
+정식 IEEE short-paper 원고는 `paper/latex/en/main.pdf`와 `paper/latex/ko/main.pdf`다.
 표는 `research/academic-pipeline/stage-04-pilot/pilot-results.json`에서 생성된다.
 인코딩 오류 코드 12종에 대한 게이트 일치 `13/13`, 수리 arm 커밋 `0/2`, `0/2`,
 `1/2`, 사전 지정한 탐지 가능 무결성 결함 `10/10`, 별도로 선언한 repair-provenance
@@ -111,6 +130,61 @@ Type 3 font를 피하기 위한 고해상도 PNG를 포함하고, 쪽수·Type 3
 - 합성 플레이어는 스트레스 테스트 도구이며 인간 경험의 증거가 아니다.
 - `raw/`와 실행 추적은 불변이며, 논문 표는 추적 ID에서만 생성한다.
 - 공개 가중치와 오픈소스를 같은 뜻으로 쓰지 않는다. 라이선스와 사용 정책을 모델별로 기록한다.
+
+## 실험 게임 트랙
+
+*봉인된 등대*는 5회 심층 인터뷰로 확정한 8--12분 목표의 턴 기반 내러티브 수사
+micro-RPG다. 1차 계획 실험은 구조화 텍스트와 정식 상태를 사용한다. 별도 2차 VLM/UI 트랙은
+향후 인간 검토를 통과한 체크섬 동결 파생본만 내부 패킷에서 사용할 수 있다. 이 공개 안전
+스냅샷은 제외 ID와 해시만 보존하고 생성 이미지 바이트는 포함하지 않으며, 실험 중 이미지
+생성도 금지한다. `game-track/design/gdd.ko.md`,
+`game-track/design/paper-crosswalk.ko.md`, `configs/experimental-game.yaml`에서 시작한다.
+
+인간 연구는 프로토콜·도구 설계 범위다. 참가자를 모집하지 않았고 개인 텔레메트리나 인간
+결과도 없다. Godot/headless 측정은 어떤 `C-RESULT-*` 주장도 승격하지 않는다.
+
+### Cycle 3 public-safe 플레이어블
+
+현재 Godot 4.7.1 플레이어블은 3인칭 항구 탐색, 제안 게이트 상호작용, 반응형 장부 UI,
+모션 감소, 풀링된 절차 VFX, 사용자 제스처 뒤 활성화되는 로컬 생성 음향을 제공한다. 플레이어는
+항구 측 신호를 복구하고 썰물 항로를 얻으며, 앞바다 등대는 봉인된 채로 남는다.
+
+| `SL-PLAY-EVAL-001` 행 | 검사 | 결과 |
+|---|---:|---|
+| 정식 fixture | `10/10` | PASS |
+| 중복 이벤트 fixture | `10/10` | PASS |
+| timeout fixture | `10/10` | PASS |
+| 손상 저장 fixture | `10/10` | PASS |
+| 프레젠테이션 불변조건 | `7/7` | PASS |
+| **합계** | **`47/47`** | **PASS** |
+
+fixture `4/4` 모두
+`4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`에 도달했다. 상세 표는
+[`SL-PLAY-EVAL-001`](game-track/godot/docs/latest/evaluation-matrix.md), 기계 판독 기록은
+[JSON](game-track/godot/docs/latest/evaluation-matrix.json)에 있다.
+
+| 도착 | 보류 |
+|---|---|
+| ![Public-safe 도착](game-track/godot/docs/latest/arrival.png) | ![Public-safe 보류](game-track/godot/docs/latest/refusal.png) |
+| 승인 단서 | 항로 획득 결말 |
+| ![Public-safe 승인 단서](game-track/godot/docs/latest/authorized_hint.png) | ![Public-safe 결말](game-track/godot/docs/latest/ending.png) |
+
+네 1280×720 파일은 최신 엔지니어링 작업 캡처이며 불변 연구 근거가 아니다. 생성 후보 자산은
+Web/`--public-safe`에서 제외되며 공개 빌드는 절차적 지오메트리·VFX·UI·음향만 사용한다.
+평가는 저자 fixture와 프레젠테이션 불변조건 적합성만 입증한다. G4, 사용성, 몰입, 정서,
+플레이어 효능, 모델 효능은 **UNASSESSED**이며, G6는 save/reload, warmed frame/input,
+30분 soak 근거가 없어
+`FIX`다.
+
+```bash
+./scripts/build_godot_web.sh
+python3 -m http.server 4173 --directory game-track/web/public
+```
+
+배포 상태: **[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+Playwriter로 한글 글리프, 1280×720·390×844 반응형 배치, 제스처 기반 포인터 잠금,
+콘솔·페이지 오류 0건을 확인했다. 상세 안내는
+[`game-track/web/README.md`](game-track/web/README.md)에 있다.
 
 ## 다음 실행 순서
 

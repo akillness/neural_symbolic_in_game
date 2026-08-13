@@ -1,16 +1,22 @@
 \begin{table}[t]
-\caption{결정론적 수리 arm 결과}
+\caption{수리 callback 제어 흐름 (비교 아님)}
 \label{tab:pilot-repair}
-\centering\footnotesize
-\begin{tabular}{@{}lccc@{}}
+\centering\scriptsize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X@{}}
 \toprule
-Arm & 사례 & 커밋 & 수리 호출 \\
+Callback & 주입 결함 & 대응 필드 대입 & 종단 경로 \\
 \midrule
-거부 전용 & 2 & 0 & 0 \\
-동일 후보 재시도 & 2 & 0 & 2 \\
-구조화 수리 & 2 & 1 & 2 \\
+없음 (K=0) & 도달 불가 object (수리 불가) & --- & fallback \\
+없음 (K=0) & 정책 precondition (수리 가능) & --- & fallback \\
+동일 후보 재시도 & 도달 불가 object (수리 불가) & 없음 & fallback \\
+동일 후보 재시도 & 정책 precondition (수리 가능) & 없음 & fallback \\
+정책 복원 oracle & 도달 불가 object (수리 불가) & preconditions, effects & fallback \\
+정책 복원 oracle & 정책 precondition (수리 가능) & preconditions, effects & commit \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \begin{table}[t]
@@ -21,8 +27,9 @@ Arm & 사례 & 커밋 & 수리 호출 \\
 \toprule
 검사 & 분자 & 분모 \\
 \midrule
-게이트 fixture 일치 & 13 & 13 \\
-알려진 경계 허용$^{a}$ & 3 & 3 \\
+게이트 fixture 일치$^{c}$ & 13 & 13 \\
+알려진 경계 허용$^{a}$ & 2 & 2 \\
+닫힌 unknown-key 경계 거부$^{d}$ & 1 & 1 \\
 탐지 가능 무결성 결함 거부 & 10 & 10 \\
 알려진 무결성 경계 replay 허용$^{b}$ & 1 & 1 \\
 Adapter 커밋 & 1 & 7 \\
@@ -31,5 +38,5 @@ Adapter 실패 & 5 & 7 \\
 Manifest guard 거부 & 3 & 3 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$경계 허용은 의미 추출, 정책 완결성, 알 수 없는 필드 처리의 한계를 문서화하며 safety pass가 아니다. $^{b}$Replay는 repair 생성을 인증하거나 다시 실행하지 않는다.}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$경계 허용은 의미 추출과 정책 완결성 한계를 문서화하며 safety pass가 아니다. $^{b}$Replay는 repair 생성을 인증하거나 다시 실행하지 않는다. $^{c}$Loader가 이 일치를 강제하므로 측정값이 아니라 구성 불변량이다. $^{d}$Stage 8 이후의 parser 거부 parity이며 의미 안전성 증거가 아니다.}
 \end{table}

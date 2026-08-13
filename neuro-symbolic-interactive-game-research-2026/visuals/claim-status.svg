@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="2006" viewBox="0 0 1480 2006" role="img" aria-labelledby="svg-title svg-desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="2354" viewBox="0 0 1480 2354" role="img" aria-labelledby="svg-title svg-desc">
   <title id="svg-title">TRACE-RPG claim ledger status</title>
   <desc id="svg-desc">Every tracked claim with its current epistemic state. Efficacy claims C-RESULT-001 through C-RESULT-005 have no evidence and are rendered as TODO-RESULT.</desc>
   <defs>
@@ -17,7 +17,7 @@
       .arrow-label { font-size: 19px; font-weight: 700; }
     </style>
   </defs>
-  <rect x="0" y="0" width="1480" height="2006" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1480" height="2354" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1480" height="96" rx="0" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="0"/>
   <rect x="0" y="0" width="10" height="96" fill="#0072B2"/>
   <text x="34" y="42" class="section" text-anchor="start">V4 · What is actually claimed, and on what evidence</text>
@@ -60,8 +60,8 @@
   <text x="66" y="634" class="box-title" text-anchor="start">C-PILOT-001</text>
   <rect x="66" y="648" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
   <text x="216" y="673" class="small" text-anchor="middle">Verified · designed fixture</text>
-  <text x="400" y="634" class="small" text-anchor="start">In the authored Stage 4 fixtures, encoded gate outcomes matched 13/13 prespecified</text>
-  <text x="400" y="661" class="small" text-anchor="start">expectations and exercised all 12 implemented error codes.</text>
+  <text x="400" y="634" class="small" text-anchor="start">In the authored Stage 4 fixtures, the loader-enforced set covered all 12 implemented error</text>
+  <text x="400" y="661" class="small" text-anchor="start">codes and observed outcomes matched 13/13 authored expectations; this is authored-oracle</text>
   <text x="400" y="690" class="note" text-anchor="start">evidence: pilot-results.json, sha256-manifest.json</text>
   <rect x="40" y="716" width="1400" height="104" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
   <rect x="40" y="716" width="8" height="104" fill="#0072B2"/>
@@ -69,7 +69,7 @@
   <rect x="66" y="764" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
   <text x="216" y="789" class="small" text-anchor="middle">Verified · designed fixture</text>
   <text x="400" y="750" class="small" text-anchor="start">In two authored invalid cases, rejection-only and unchanged retry committed 0/2 each, while</text>
-  <text x="400" y="777" class="small" text-anchor="start">deterministic structured repair committed 1/2.</text>
+  <text x="400" y="777" class="small" text-anchor="start">the policy-restore callback committed 1/2; the callback is an oracle control-flow probe, not</text>
   <text x="400" y="806" class="note" text-anchor="start">evidence: pilot-results.json, repair-arms.csv</text>
   <rect x="40" y="832" width="1400" height="104" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
   <rect x="40" y="832" width="8" height="104" fill="#0072B2"/>
@@ -92,54 +92,78 @@
   <text x="66" y="1098" class="box-title" text-anchor="start">C-PILOT-005</text>
   <rect x="66" y="1112" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
   <text x="216" y="1137" class="small" text-anchor="middle">Verified · designed fixture</text>
-  <text x="400" y="1098" class="small" text-anchor="start">The frozen Stage 4 manifest binds 62 published-row provenance records, including</text>
-  <text x="400" y="1125" class="small" text-anchor="start">fault-specific input specifications, and the tracked release records its input and artifact</text>
+  <text x="400" y="1098" class="small" text-anchor="start">The frozen Stage 4 manifest binds 64 published-row provenance records, including the closed</text>
+  <text x="400" y="1125" class="small" text-anchor="start">unknown-key regression and fault-specific input specifications, and the tracked release</text>
   <text x="400" y="1154" class="note" text-anchor="start">evidence: pilot-assignment-manifest.json, sha256-manifest.json</text>
-  <rect x="40" y="1180" width="1400" height="104" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
-  <rect x="40" y="1180" width="8" height="104" fill="#E69F00"/>
-  <text x="66" y="1214" class="box-title" text-anchor="start">C-SYSTEM-001</text>
-  <rect x="66" y="1228" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#E69F00" stroke-width="2"/>
-  <text x="216" y="1253" class="small" text-anchor="middle">Proposed contribution</text>
-  <text x="400" y="1214" class="small" text-anchor="start">TRACE-RPG treats encoded hard predicates as a pre-commit gate while narrative, affect,</text>
-  <text x="400" y="1241" class="small" text-anchor="start">retrieval, and memory signals remain non-authoritative proposal context.</text>
-  <text x="400" y="1270" class="note" text-anchor="start">evidence: ivie-2026</text>
-  <rect x="40" y="1296" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
-  <rect x="40" y="1296" width="8" height="104" fill="#7A7A7A"/>
-  <text x="66" y="1330" class="box-title" text-anchor="start">C-RESULT-001</text>
-  <rect x="66" y="1344" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
-  <text x="216" y="1369" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
-  <text x="400" y="1330" class="small" text-anchor="start">TRACE-RPG reduces hard violations versus LLM-only baselines.</text>
-  <text x="400" y="1386" class="note" text-anchor="start">evidence: none recorded</text>
-  <rect x="40" y="1412" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
-  <rect x="40" y="1412" width="8" height="104" fill="#7A7A7A"/>
-  <text x="66" y="1446" class="box-title" text-anchor="start">C-RESULT-002</text>
-  <rect x="66" y="1460" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
-  <text x="216" y="1485" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
-  <text x="400" y="1446" class="small" text-anchor="start">Affect adaptation improves target-curve tracking without validity regression.</text>
-  <text x="400" y="1502" class="note" text-anchor="start">evidence: none recorded</text>
-  <rect x="40" y="1528" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
-  <rect x="40" y="1528" width="8" height="104" fill="#7A7A7A"/>
-  <text x="66" y="1562" class="box-title" text-anchor="start">C-RESULT-003</text>
-  <rect x="66" y="1576" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
-  <text x="216" y="1601" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
-  <text x="400" y="1562" class="small" text-anchor="start">Structured counterexample repair is more sample-efficient than blind retry at matched K.</text>
-  <text x="400" y="1618" class="note" text-anchor="start">evidence: none recorded</text>
+  <rect x="40" y="1180" width="1400" height="104" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="40" y="1180" width="8" height="104" fill="#0072B2"/>
+  <text x="66" y="1214" class="box-title" text-anchor="start">C-GAME-DESIGN-002</text>
+  <rect x="66" y="1228" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+  <text x="216" y="1253" class="small" text-anchor="middle">Verified · authored engine fixture</text>
+  <text x="400" y="1214" class="small" text-anchor="start">The engine-local Godot evidence comprises four authored fixtures. The canonical,</text>
+  <text x="400" y="1241" class="small" text-anchor="start">duplicate-ID, and timeout fixtures completed their declared multi-step, failure-isolation,</text>
+  <text x="400" y="1270" class="note" text-anchor="start">evidence: experimental-game.yaml, stage-06-peer-review-simulation.md, godot-headless.md,</text>
+  <rect x="40" y="1296" width="1400" height="104" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="40" y="1296" width="8" height="104" fill="#0072B2"/>
+  <text x="66" y="1330" class="box-title" text-anchor="start">C-GAME-DESIGN-003</text>
+  <rect x="66" y="1344" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+  <text x="216" y="1369" class="small" text-anchor="middle">Verified · authored engine render fixture</text>
+  <text x="400" y="1330" class="small" text-anchor="start">In the retained Godot 4.7.1 render packet, three non-headless 1280x720 primary-track PNGs</text>
+  <text x="400" y="1357" class="small" text-anchor="start">are content-hashed and bound to canonical scripted-fixture event IDs, delivery indices,</text>
+  <text x="400" y="1386" class="note" text-anchor="start">evidence: current.json, evidence-manifest.json, capture-manifest.json,</text>
+  <rect x="40" y="1412" width="1400" height="104" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
+  <rect x="40" y="1412" width="8" height="104" fill="#E69F00"/>
+  <text x="66" y="1446" class="box-title" text-anchor="start">C-GAME-DESIGN-001</text>
+  <rect x="66" y="1460" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#E69F00" stroke-width="2"/>
+  <text x="216" y="1485" class="small" text-anchor="middle">Approved · design protocol</text>
+  <text x="400" y="1446" class="small" text-anchor="start">The approved Sealed Lighthouse protocol separates a structured-state/text primary track from</text>
+  <text x="400" y="1473" class="small" text-anchor="start">a frozen-image VLM/UI secondary track, with image generation prohibited during experiment</text>
+  <text x="400" y="1502" class="note" text-anchor="start">evidence: experimental-game.yaml, asset-manifest.json,</text>
+  <rect x="40" y="1528" width="1400" height="104" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
+  <rect x="40" y="1528" width="8" height="104" fill="#E69F00"/>
+  <text x="66" y="1562" class="box-title" text-anchor="start">C-SYSTEM-001</text>
+  <rect x="66" y="1576" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#E69F00" stroke-width="2"/>
+  <text x="216" y="1601" class="small" text-anchor="middle">Proposed contribution</text>
+  <text x="400" y="1562" class="small" text-anchor="start">TRACE-RPG treats encoded hard predicates as a pre-commit gate while narrative, affect,</text>
+  <text x="400" y="1589" class="small" text-anchor="start">retrieval, and memory signals remain non-authoritative proposal context.</text>
+  <text x="400" y="1618" class="note" text-anchor="start">evidence: ivie-2026</text>
   <rect x="40" y="1644" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
   <rect x="40" y="1644" width="8" height="104" fill="#7A7A7A"/>
-  <text x="66" y="1678" class="box-title" text-anchor="start">C-RESULT-004</text>
+  <text x="66" y="1678" class="box-title" text-anchor="start">C-RESULT-001</text>
   <rect x="66" y="1692" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
   <text x="216" y="1717" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
-  <text x="400" y="1678" class="small" text-anchor="start">Graph retrieval plus event-sourced temporal memory reduces long-horizon contradictions at</text>
-  <text x="400" y="1705" class="small" text-anchor="start">matched validity.</text>
+  <text x="400" y="1678" class="small" text-anchor="start">TRACE-RPG reduces hard violations versus LLM-only baselines.</text>
   <text x="400" y="1734" class="note" text-anchor="start">evidence: none recorded</text>
   <rect x="40" y="1760" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
   <rect x="40" y="1760" width="8" height="104" fill="#7A7A7A"/>
-  <text x="66" y="1794" class="box-title" text-anchor="start">C-RESULT-005</text>
+  <text x="66" y="1794" class="box-title" text-anchor="start">C-RESULT-002</text>
   <rect x="66" y="1808" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
   <text x="216" y="1833" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
-  <text x="400" y="1794" class="small" text-anchor="start">The controller effect is directionally consistent across model access and scale strata.</text>
+  <text x="400" y="1794" class="small" text-anchor="start">Affect adaptation improves target-curve tracking without validity regression.</text>
   <text x="400" y="1850" class="note" text-anchor="start">evidence: none recorded</text>
-  <rect x="40" y="1886" width="1400" height="76" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <text x="66" y="1922" class="small" text-anchor="start">Verified · primary source: 1   ·   Verified · narrower scope: 2   ·   Verified · preprint, narrow scope: 1   ·   Verified · designed fixture: 5   ·   Proposed contribution: 1   ·   TODO-RESULT · no evidence: 5</text>
-  <text x="66" y="1950" class="note" text-anchor="start">Pilot and screening data cannot transition directly to verified-empirical; a verified result is revoked if an upstream hash changes.</text>
+  <rect x="40" y="1876" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
+  <rect x="40" y="1876" width="8" height="104" fill="#7A7A7A"/>
+  <text x="66" y="1910" class="box-title" text-anchor="start">C-RESULT-003</text>
+  <rect x="66" y="1924" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
+  <text x="216" y="1949" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
+  <text x="400" y="1910" class="small" text-anchor="start">Structured counterexample repair is more sample-efficient than blind retry at matched K.</text>
+  <text x="400" y="1966" class="note" text-anchor="start">evidence: none recorded</text>
+  <rect x="40" y="1992" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
+  <rect x="40" y="1992" width="8" height="104" fill="#7A7A7A"/>
+  <text x="66" y="2026" class="box-title" text-anchor="start">C-RESULT-004</text>
+  <rect x="66" y="2040" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
+  <text x="216" y="2065" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
+  <text x="400" y="2026" class="small" text-anchor="start">Graph retrieval plus event-sourced temporal memory reduces long-horizon contradictions at</text>
+  <text x="400" y="2053" class="small" text-anchor="start">matched validity.</text>
+  <text x="400" y="2082" class="note" text-anchor="start">evidence: none recorded</text>
+  <rect x="40" y="2108" width="1400" height="104" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
+  <rect x="40" y="2108" width="8" height="104" fill="#7A7A7A"/>
+  <text x="66" y="2142" class="box-title" text-anchor="start">C-RESULT-005</text>
+  <rect x="66" y="2156" width="300" height="36" rx="18" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2"/>
+  <text x="216" y="2181" class="small" text-anchor="middle">TODO-RESULT · no evidence</text>
+  <text x="400" y="2142" class="small" text-anchor="start">The controller effect is directionally consistent across model access and scale strata.</text>
+  <text x="400" y="2198" class="note" text-anchor="start">evidence: none recorded</text>
+  <rect x="40" y="2234" width="1400" height="76" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <text x="66" y="2270" class="small" text-anchor="start">Verified · primary source: 1   ·   Verified · narrower scope: 2   ·   Verified · preprint, narrow scope: 1   ·   Verified · designed fixture: 5   ·   Verified · authored engine fixture: 1   ·   Verified · authored engine render fixture: 1   ·   Approved · design protocol: 1   ·   Proposed contribution: 1   ·   TODO-RESULT · no evidence: 5</text>
+  <text x="66" y="2298" class="note" text-anchor="start">Pilot and screening data cannot transition directly to verified-empirical; a verified result is revoked if an upstream hash changes.</text>
 </svg>

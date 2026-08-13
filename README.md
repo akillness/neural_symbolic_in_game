@@ -40,13 +40,63 @@ Every denominator is an authored deterministic case. The efficacy claims `C-RESU
 
 ![Academic pipeline status](./neuro-symbolic-interactive-game-research-2026/visuals/research-workflow.svg)
 
-The academic pipeline has reached the Stage 6 user checkpoint. The simulated IEEE Transactions on
-Games review recommends revise and resubmit for the Full Paper track; confirmatory efficacy claims
-remain blocked.
+The academic pipeline has actioned the user-accepted direction from a simulated IEEE Transactions
+on Games Major Revision review. This is an internal review exercise, not a journal decision or
+paper acceptance; confirmatory efficacy claims remain blocked.
 
 ![Planned confirmatory design — no result in this repository comes from this matrix](./neuro-symbolic-interactive-game-research-2026/visuals/confirmatory-design.svg)
 
 Regenerate all six visuals with `uv run python scripts/generate_readme_visuals.py`.
+
+## Cycle 3 playable engineering snapshot / 플레이어블 엔지니어링 스냅샷
+
+*The Sealed Lighthouse / 봉인된 등대* now has a public-safe Godot 4.7.1 playable presentation:
+third-person harbor exploration, proposal-gated interactions, responsive ledger UI, reduced motion,
+pooled procedural VFX, and gesture-gated locally generated audio. The player restores the
+harbor-side signal and earns the tide route while the offshore lighthouse remains sealed.
+
+| `SL-PLAY-EVAL-001` row | Checks | Result |
+|---|---:|---|
+| Canonical fixture | `10/10` | PASS |
+| Duplicate-event fixture | `10/10` | PASS |
+| Timeout fixture | `10/10` | PASS |
+| Corrupt-save fixture | `10/10` | PASS |
+| Presentation invariants | `7/7` | PASS |
+| **Combined** | **`47/47`** | **PASS** |
+
+All `4/4` authored fixtures reached the exact terminal SHA-256
+`4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. See the
+[full bilingual-friendly evaluation matrix](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
+and [machine-readable JSON](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.json).
+
+| Arrival / 도착 | Refusal / 보류 |
+|---|---|
+| ![Cycle 3 public-safe arrival](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/arrival.png) | ![Cycle 3 public-safe refusal](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/refusal.png) |
+| Authorized hint / 승인 단서 | Ending / 항로 획득 |
+| ![Cycle 3 public-safe authorized hint](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/authorized_hint.png) | ![Cycle 3 public-safe ending](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/ending.png) |
+
+These are latest **engineering working captures**, not the immutable Cycle 2 research packet.
+Generated candidates listed in `game-track/assets/concepts/public-exclusion.json` are excluded from Web and
+`--public-safe`; the public artifact uses procedural geometry, VFX, UI, and audio.
+
+**Claim boundary / 주장 경계:** fixture and presentation-invariant conformance only. G4,
+usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**. G6 remains
+`FIX` pending save/reload, warmed-frame/input, and 30-minute soak evidence.
+
+```bash
+cd neuro-symbolic-interactive-game-research-2026
+./scripts/build_godot_web.sh
+python3 -m http.server 4173 --directory game-track/web/public
+```
+
+Deployment / 배포: **[play the public-safe Web build](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+Vercel returned `200` for HTML/JS/WASM/PCK, served WASM as `application/wasm`, and Playwriter
+confirmed readable Korean text, a clean load, and gesture-triggered pointer lock with zero console
+or page errors at 1280×720 and 390×844.
+
+| Deployed desktop / 배포 데스크톱 | Deployed narrow layout / 배포 협폭 |
+|---|---|
+| ![Vercel desktop in-game smoke](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-in-game.png) | ![Vercel 390 by 844 in-game smoke](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-mobile-in-game.png) |
 
 ## Quick validation
 

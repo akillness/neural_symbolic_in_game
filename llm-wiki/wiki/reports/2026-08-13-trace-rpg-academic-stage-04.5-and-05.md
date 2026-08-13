@@ -1,12 +1,37 @@
 # TRACE-RPG Academic Pipeline — Stages 4.5 and 5
 
-Status: **BOTH GATES PASSED — STAGE 6 UNBLOCKED**
+Status: **EXPANDED STAGE 4.5 RE-AUDIT PASSED; STAGE 5 CITATION-IDENTITY GATE PASSED**
+
+Current correction: Stage 6 reproduced three claim defects and one body-level telemetry defect that
+the original audit missed. The expanded Stage-10 re-audit then failed its own first pass on six more
+claim defects plus one uncited-float/table defect. Matched EN/KO repairs narrowed the engine timing,
+snapshot/log, bridge, recorded-commit provenance, AI disclosure, and archive-availability wording
+and completed all float/table references. A restarted full-manuscript audit classified 42/42 claim
+families `FAITHFUL`. The clean release lock remains blocked because all 20 input paths exist at
+recorded commit `e4c2c77`, but only 19 exact digests match; both manuscripts disclose the earlier
+runner revision responsible for that gap.
 
 The Stage 4 packet was approved on 2026-08-13, and the two fail-closed integrity gates that guard
 peer review were then executed. Neither gate produced a blocking finding, and neither promoted any
 designed-fixture observation into an efficacy result.
 
-## Stage 4.5 — claim faithfulness
+## Current Stage 4.5 verdict — expanded claim faithfulness
+
+The final audit covers the complete manuscript, generated result/table fragments, implementation
+bodies, bridge schema, retained Godot v5 timing/render packet, citation ledger, claim ledger, and
+SHA packet. It passes 42/42 claim families with zero `OVERSTATED`, `UNSUPPORTED`, or
+`SCOPE_MISMATCH` findings after the preliminary findings were repaired. Mandatory checks read the
+reference repairer body, distinguish loader invariants from observations, trace schema-constant
+telemetry, reconcile snapshot state with separately stored history, enumerate the actual bridge
+event surface, and verify all current experimental numbers.
+
+All 35 artifact and 20 working-tree input hashes recompute. All 20 paths exist at the recorded
+commit, but exactly 19/20 digests match; the commit has an earlier `scripts/run_conformance_pilot.py`,
+while the frozen runner revision is dirty-tree-only. This is a disclosed release blocker, not a
+hidden claim-faithfulness failure. `C-RESULT-001` through `005` remain
+`TODO-RESULT`.
+
+## Original Stage 4.5 verdict — claim faithfulness (superseded)
 
 Twenty-two claims were audited: nine abstract sentences and thirteen introduction sentences. All
 twenty-two classified `FAITHFUL`, with zero `OVERSTATED`, `UNSUPPORTED`, or `SCOPE_MISMATCH`.
@@ -20,13 +45,14 @@ The audit was mechanical wherever a mechanical check was possible:
 - The five `TODO-RESULT` efficacy claims were searched for as positive assertions and none appears.
 - `C-PILOT-001` through `C-PILOT-005` were recomputed against the pilot CSVs and the assignment
   manifest; all five are consistent.
-- All 46 frozen-bundle SHA-256 entries, 32 artifacts and 14 inputs, were recomputed and intact.
+- The superseding Stage 8 packet records 35 artifacts and 20 declared inputs; its SHA-256 entries were recomputed and intact after migration.
 
 Mechanism claims were traced to implementing symbols rather than to matching prose. The audit
-confirmed that the proposal parser `candidate_from_mapping` ignores unknown top-level candidate
-fields while the replay parser `_candidate_from_json` rejects them through `_require_exact_keys`.
-The manuscripts describe the permissive proposal boundary and disclose it as boundary sentinel
-`boundary-extra-candidate-field`, so the abstract statement is accurate rather than flattering.
+historically confirmed that the proposal parser `candidate_from_mapping` ignored unknown top-level candidate
+fields while the replay parser `_candidate_from_json` rejected them through `_require_exact_keys`.
+The Stage 4 manuscripts described that permissive proposal boundary and disclosed it as boundary sentinel
+`boundary-extra-candidate-field`. Stage 8 closed the asymmetry: both parsers now reject an unknown key,
+and the former sentinel is retained as a negative regression rather than an open limitation.
 
 A risk-vocabulary sweep found twenty-one superiority, efficacy, generality, proof, and security
 tokens in the English manuscript. Every occurrence is a negation, an explicitly scoped statement, or
@@ -34,13 +60,13 @@ an attributed claim about prior work. The Korean manuscript's two tokens are bot
 
 ## Stage 5 — citation verification
 
-Thirty-six bibliography entries were verified through metadata APIs only, with no publisher-page
+Forty-two bibliography entries were verified through metadata APIs only, with no publisher-page
 scraping: Semantic Scholar as primary, OpenAlex and Crossref as advisory, and arXiv for preprint
 confirmation. A title match counted only at normalized similarity of at least 0.85.
 
 | Status | Count |
 | --- | --- |
-| `VERIFIED` | 33 |
+| `VERIFIED` | 39 |
 | `PREPRINT` | 3 |
 | `UNMATCHED` | 0 |
 | `HALLUCINATED` | 0 |
@@ -78,7 +104,9 @@ evidence with no live model, participant, affect, retrieval, memory, or engine r
 - `research/academic-pipeline/stage-05-citation-verification.json`
 - `research/academic-pipeline/material-passport.json`
 
-Next gate: Stage 6 peer-review simulation. Stages 6 through 10 remain unexecuted.
+Current pipeline: the user accepted and actioned the simulated Stage-6 revise-and-resubmit direction;
+optional Stage 7 was not activated; Stages 8 and 9 executed; the final Stage-4.5 re-audit passed.
+Stage 10 remains blocked only on clean committed/tagged recapture.
 
 Related: [[wiki/reports/2026-08-12-trace-rpg-academic-stage-04]],
 [[wiki/projects/trace-rpg-paper-2026]], [[wiki/concepts/evidence-and-claim-status]].

@@ -24,6 +24,7 @@ REQUIRED = [
     "configs/experiment-matrix.yaml",
     "configs/metric-catalog.yaml",
     "configs/scenario-catalog.yaml",
+    "configs/experimental-game.yaml",
     "research/source-ledger.yaml",
     "research/claim-ledger.yaml",
     "research/original-link-audit.yaml",
@@ -35,9 +36,17 @@ REQUIRED = [
     "game-track/schemas/recorded-proposals.schema.json",
     "game-track/recorded-experiment.en.md",
     "game-track/recorded-experiment.ko.md",
+    "game-track/design/gdd.en.md",
+    "game-track/design/gdd.ko.md",
+    "game-track/design/paper-crosswalk.en.md",
+    "game-track/design/paper-crosswalk.ko.md",
+    "game-track/godot/project.godot",
+    "game-track/assets/concepts/asset-manifest.json",
     "data/fixtures/game-bridge-event.json",
     "data/fixtures/recorded-proposals.json",
     "harness/ownership.yaml",
+    "CLAUDE.md",
+    "_workspace/current/production/task-manifest.md",
 ]
 
 

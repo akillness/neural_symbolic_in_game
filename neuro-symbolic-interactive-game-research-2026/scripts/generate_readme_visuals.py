@@ -5,7 +5,7 @@ Two of the six visuals are data-driven: `pilot-evidence.svg` is rendered from th
 frozen Stage 4 pilot summary and `claim-status.svg` from the claim ledger.  Their
 numbers therefore cannot drift away from the artifacts they describe.  The four
 diagram visuals restate the implemented boundary and mark every unexecuted stage,
-so the README never implies live-model, human, affect, or engine evidence.
+so the README never implies live-model, human, affect, or cross-runtime evidence.
 
 Style follows `generate_paper_figures.py` (Classic Academic, Okabe-Ito accents)
 so that README and manuscript figures read as one family.
@@ -280,7 +280,7 @@ def system_architecture_svg() -> str:
         footnote(
             66,
             788,
-            "Encoded validity is validity for encoded predicates only; unknown top-level candidate fields are currently ignored rather than rejected.",
+            "Encoded validity is validity for encoded predicates only; the shared key contract rejects unknown top-level fields at both parser boundaries.",
         )
     )
     items.append("</svg>")
@@ -428,6 +428,7 @@ def commit_transaction_svg() -> str:
 SECTION_ORDER = (
     "gate_conformance",
     "boundary_sentinels",
+    "closed_boundary_regressions",
     "repair_arms",
     "integrity_faults",
     "integrity_boundaries",
@@ -442,9 +443,14 @@ SECTION_META: dict[str, tuple[str, str, str]] = {
         GREEN,
     ),
     "boundary_sentinels": (
-        "Boundary sentinels",
+        "Open boundary sentinels",
         "documented encoding limitations — accepted on purpose, not safety passes",
         ORANGE,
+    ),
+    "closed_boundary_regressions": (
+        "Closed boundary regression",
+        "post-Stage-8 parser rejection parity — not semantic-safety evidence",
+        GREEN,
     ),
     "repair_arms": (
         "Repair arms",
@@ -578,6 +584,13 @@ STATUS_STYLE: dict[str, tuple[str, str, str]] = {
     "verified-scope-limited": ("Verified · narrower scope", PALE_GREEN, GREEN),
     "verified-scope-limited-preprint": ("Verified · preprint, narrow scope", PALE_ORANGE, ORANGE),
     "verified-designed-fixture": ("Verified · designed fixture", PALE_BLUE, BLUE),
+    "verified-authored-engine-fixture": ("Verified · authored engine fixture", PALE_BLUE, BLUE),
+    "verified-authored-engine-render-fixture": (
+        "Verified · authored engine render fixture",
+        PALE_BLUE,
+        BLUE,
+    ),
+    "approved-design-protocol": ("Approved · design protocol", PALE_ORANGE, ORANGE),
     "proposed-contribution": ("Proposed contribution", PALE_ORANGE, ORANGE),
     "TODO-RESULT": ("TODO-RESULT · no evidence", PALE_GRAY, GRAY),
 }
@@ -587,6 +600,9 @@ STATUS_ORDER = (
     "verified-scope-limited",
     "verified-scope-limited-preprint",
     "verified-designed-fixture",
+    "verified-authored-engine-fixture",
+    "verified-authored-engine-render-fixture",
+    "approved-design-protocol",
     "proposed-contribution",
     "TODO-RESULT",
 )
@@ -699,8 +715,8 @@ def research_workflow_svg() -> str:
         height,
         "TRACE-RPG academic pipeline status",
         (
-            "Stages 1 through 5 passed their gates. Stage 6 recommends revise and resubmit "
-            "and awaits the required user decision."
+            "Stages 1 through 5 passed their gates. The user accepted the Stage 6 revise-and-"
+            "resubmit direction; bounded game-track evidence generation is active."
         ),
     )
     items += title_band(
@@ -717,7 +733,7 @@ def research_workflow_svg() -> str:
         ("Stage 4", "Draft + pilot + PDFs", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 4.5", "Claim audit", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 5", "Citation integrity", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 6", "Peer review", "USER DECISION", PALE_ORANGE, ORANGE),
+        ("Stage 6", "Peer review + game revision", "REVISION ACTIVE", PALE_ORANGE, ORANGE),
     )
     card_w = 165
     gap = 12
@@ -770,7 +786,7 @@ def research_workflow_svg() -> str:
         text(
             66,
             476,
-            "62 frozen assignments · Stage 6 meta-review · SHA-256 manifest",
+            "64 frozen provenance rows · Godot policy-mirror runs · Stage 6 meta-review",
             css_class="small",
         )
     )
@@ -778,11 +794,19 @@ def research_workflow_svg() -> str:
     items.append(rect(750, 380, 690, 130, fill="#FFFFFF", stroke=GRAY, radius=7, dash="7 6"))
     items.append(text(776, 416, "Not produced by any stage so far", css_class="box-title"))
     items.append(
-        text(776, 448, "live model calls · human study · affect controller", css_class="small")
+        text(
+            776,
+            448,
+            "live model calls · human study · live Python↔Godot authorization",
+            css_class="small",
+        )
     )
     items.append(
         text(
-            776, 476, "retrieval and memory experiments · game-engine execution", css_class="small"
+            776,
+            476,
+            "retrieval/memory efficacy · affect efficacy · stable performance study",
+            css_class="small",
         )
     )
     items.append("</svg>")
@@ -838,12 +862,12 @@ def confirmatory_design_svg() -> str:
             520,
             "Controller systems (6)",
             (
-                "LLM-only",
-                "retrieval-augmented",
-                "knowledge graph",
-                "graph + policy",
-                "validator + bounded repair",
-                "full + affect (gated)",
+                "direct commit",
+                "structural constraint only",
+                "validator rejection only",
+                "matched-budget blind retry",
+                "structured repair",
+                "TRACE-RPG full",
             ),
         ),
         (

@@ -7,7 +7,8 @@ __pycache__/
 dist/
 build/
 *.egg-info/
-_workspace/
+/_workspace/
+/neuro-symbolic-interactive-game-research-2026/game-track/godot/.godot/
 /graphify-out/
 neuro-symbolic-interactive-game-research-2026/runs/
 llm-wiki/.state/
@@ -27,3 +28,13 @@ neuro-symbolic-interactive-game-research-2026/paper/latex/*/*.fls
 neuro-symbolic-interactive-game-research-2026/paper/latex/*/*.log
 neuro-symbolic-interactive-game-research-2026/paper/latex/*/*.out
 neuro-symbolic-interactive-game-research-2026/paper/latex/*/*.xdv
+
+# Agent runtime state must not be tracked (AGENTS.md excludes root .omc/.omx)
+.omc/
+.omx/
+neuro-symbolic-interactive-game-research-2026/.omc/
+neuro-symbolic-interactive-game-research-2026/.omx/
+neuro-symbolic-interactive-game-research-2026/game-track/godot/.omc/
+neuro-symbolic-interactive-game-research-2026/game-track/godot/addons/RodinBridge/
+neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/*.png.import
+neuro-symbolic-interactive-game-research-2026/game-track/web/public/
