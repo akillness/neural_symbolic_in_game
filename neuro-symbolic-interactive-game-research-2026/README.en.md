@@ -1,6 +1,6 @@
 # TRACE-RPG Research Package 2026
 
-> Status: implementation and designed-fixture paper draft. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. The only numeric evidence is the deterministic offline conformance pilot.
+> Status: Stage 6 peer review recommends revise and resubmit for the IEEE ToG Full Paper track and awaits the required user decision. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. The only numeric evidence is the deterministic offline conformance pilot.
 
 TRACE-RPG never writes an LLM proposal directly into canonical game state. Each successfully parsed proposal becomes a typed candidate event and is committed only after an externally supplied action policy and deterministic checks over preconditions, reachability, NPC knowledge, disclosure, and quest stage. An invalid candidate yields structured validation errors and may receive a bounded repair opportunity; adapter and controller failures remain classified terminal rows. Knowledge-graph retrieval and game-engine integration remain separate confirmatory tracks connected through the versioned event contract; neither is represented as completed pilot evidence.
 
@@ -35,6 +35,11 @@ Designed-fixture evidence never promotes itself into an efficacy claim, and a ve
 ### V5 · Academic pipeline status
 
 ![Academic pipeline status](visuals/research-workflow.svg)
+
+Stage 4.5 found 22/22 abstract and introduction claims faithful, Stage 5 verified all 36
+bibliography identities without an unmatched or hallucinated entry, and Stage 6 identified the
+independent efficacy study, clean release lock, and IEEE AI-use disclosure as critical Full Paper
+revision gates. See [`research/academic-pipeline/stage-06-peer-review-simulation.md`](research/academic-pipeline/stage-06-peer-review-simulation.md).
 
 ### V6 · Planned confirmatory design (not executed)
 

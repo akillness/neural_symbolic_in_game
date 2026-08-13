@@ -4,7 +4,7 @@
   "mode": "full",
   "oversight": "very-high",
   "as_of": "2026-08-13",
-  "status": "stage_5_complete_stage_6_unblocked",
+  "status": "stage_6_user_checkpoint",
   "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
@@ -79,7 +79,8 @@
     ]
   },
   "stage_4": {
-    "status": "awaiting_user_approval",
+    "status": "approved",
+    "approved_at": "2026-08-13",
     "draft_report_path": "research/academic-pipeline/stage-04-draft-report.md",
     "pilot_path": "research/academic-pipeline/stage-04-pilot/pilot-results.json",
     "pilot_sha256_manifest": "research/academic-pipeline/stage-04-pilot/sha256-manifest.json",
@@ -149,6 +150,7 @@
   "stage_5": {
     "status": "pass_no_hallucinated_citations",
     "audited_at": "2026-08-13",
+    "approved_at": "2026-08-13",
     "audit_path": "research/academic-pipeline/stage-05-citation-verification.md",
     "record_path": "research/academic-pipeline/stage-05-citation-verification.json",
     "method": "three-index triangulation over metadata APIs; no publisher-page scraping",
@@ -168,9 +170,28 @@
       "three preprint citations remain advisory"
     ]
   },
+  "stage_6": {
+    "status": "revise_and_resubmit_awaiting_user_decision",
+    "reviewed_at": "2026-08-13",
+    "review_path": "research/academic-pipeline/stage-06-peer-review-simulation.md",
+    "target_track": "IEEE Transactions on Games Full Paper",
+    "editorial_decision": "revise_and_resubmit",
+    "reviewer_scores": {
+      "eic": 5.0,
+      "r1_methodology": 5.0,
+      "r2_related_work": 5.5,
+      "r3_clarity_reproducibility": 7.0
+    },
+    "critical_findings": [
+      "full-paper efficacy and external validity are absent",
+      "the reproducibility packet is not clean-commit release-locked",
+      "IEEE AI-use disclosure is missing"
+    ],
+    "decision_boundary": "Stage 8 revision is blocked until the user accepts, partially accepts, or rebuts the Stage 6 findings."
+  },
   "downstream_stages": {
-    "status": "stage_6_unblocked",
-    "next": "Stage 6 peer-review simulation, then Stage 7 optional cross-model verification, Stage 8 revision, Stage 9 formatting and disclosure, Stage 10 material passport lock.",
-    "not_executed": ["6", "7", "8", "9", "10"]
+    "status": "blocked_by_stage_6_checkpoint",
+    "next": "User decision on Stage 6 findings; then optional Stage 7 cross-model verification and Stage 8 author revision.",
+    "not_executed": ["7", "8", "9", "10"]
   }
 }

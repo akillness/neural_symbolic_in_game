@@ -40,6 +40,10 @@ Every denominator is an authored deterministic case. The efficacy claims `C-RESU
 
 ![Academic pipeline status](./neuro-symbolic-interactive-game-research-2026/visuals/research-workflow.svg)
 
+The academic pipeline has reached the Stage 6 user checkpoint. The simulated IEEE Transactions on
+Games review recommends revise and resubmit for the Full Paper track; confirmatory efficacy claims
+remain blocked.
+
 ![Planned confirmatory design — no result in this repository comes from this matrix](./neuro-symbolic-interactive-game-research-2026/visuals/confirmatory-design.svg)
 
 Regenerate all six visuals with `uv run python scripts/generate_readme_visuals.py`.

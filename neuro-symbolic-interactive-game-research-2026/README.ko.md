@@ -1,6 +1,6 @@
 # TRACE-RPG 연구 패키지 2026
 
-> 상태: 구현 및 설계 fixture 논문 초안. 확증 효능 결과는 아직 없으며 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 유일한 수치 근거는 결정론적 오프라인 적합성 파일럿이다.
+> 상태: Stage 6 동료심사는 IEEE ToG Full Paper 트랙에 대해 대폭 수정 후 재투고를 권고했으며 필수 사용자 결정을 기다린다. 확증 효능 결과는 아직 없고 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 유일한 수치 근거는 결정론적 오프라인 적합성 파일럿이다.
 
 TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 상태에 기록하지 않는다. Parsing에 성공한 제안은 typed candidate event가 되고, 외부에서 공급된 행동 정책과 precondition·도달 가능성·NPC 지식·정보 공개·quest stage에 대한 결정론적 검사를 통과한 경우에만 커밋된다. 유효하지 않은 후보는 구조화 validation error를 만들고 제한된 repair 기회를 받을 수 있으며, adapter와 controller failure는 분류된 terminal row로 남는다. 지식 그래프 검색과 게임 엔진 연동은 versioned event contract로 연결되는 별도 확증 트랙이며, 현재 파일럿에서 완료된 근거로 표현하지 않는다.
 
@@ -35,6 +35,11 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 ### V5 · 학술 파이프라인 진행 상태
 
 ![학술 파이프라인 상태](visuals/research-workflow.svg)
+
+Stage 4.5에서는 초록·서론 주장 22/22가 충실한 것으로 판정됐고, Stage 5에서는 참고문헌
+36건 모두의 동일성을 확인해 미일치·환각 인용이 없었다. Stage 6은 독립 효능 실험,
+깨끗한 릴리스 고정, IEEE AI 사용 고지를 Full Paper의 필수 수정 게이트로 판정했다.
+상세 내용은 [`research/academic-pipeline/stage-06-peer-review-simulation.md`](research/academic-pipeline/stage-06-peer-review-simulation.md)에 있다.
 
 ### V6 · 계획된 확증 설계 (미실행)
 

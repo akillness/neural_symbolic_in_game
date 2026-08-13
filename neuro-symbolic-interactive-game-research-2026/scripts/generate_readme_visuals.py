@@ -699,8 +699,8 @@ def research_workflow_svg() -> str:
         height,
         "TRACE-RPG academic pipeline status",
         (
-            "Stages 1 through 4 have produced artifacts. Stage 4 awaits user approval, "
-            "and Stages 4.5 and 5 have not been executed."
+            "Stages 1 through 5 passed their gates. Stage 6 recommends revise and resubmit "
+            "and awaits the required user decision."
         ),
     )
     items += title_band(
@@ -714,12 +714,13 @@ def research_workflow_svg() -> str:
         ("Stage 2", "36-source shortlist", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 2.5", "Integrity gate", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 3", "IEEE outline", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 4", "Draft + pilot + PDFs", "AWAITING APPROVAL", PALE_ORANGE, ORANGE),
-        ("Stage 4.5", "Post-draft review", "NOT EXECUTED", PALE_GRAY, GRAY),
-        ("Stage 5", "Citation integrity", "NOT EXECUTED", PALE_GRAY, GRAY),
+        ("Stage 4", "Draft + pilot + PDFs", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stage 4.5", "Claim audit", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stage 5", "Citation integrity", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stage 6", "Peer review", "USER DECISION", PALE_ORANGE, ORANGE),
     )
-    card_w = 190
-    gap = 15
+    card_w = 165
+    gap = 12
     x = 40
     for index, (name, artifact, status, fill, accent) in enumerate(stages):
         dash = "7 6" if status == "NOT EXECUTED" else None
@@ -763,13 +764,13 @@ def research_workflow_svg() -> str:
     items.append(rect(40, 380, 690, 130, fill="#FFFFFF", stroke=GREEN, radius=7))
     items.append(text(66, 416, "Produced by the executed stages", css_class="box-title"))
     items.append(
-        text(66, 448, "bilingual six-page IEEE PDFs · 36-record bibliography", css_class="small")
+        text(66, 448, "bilingual IEEE PDFs · verified 36-record bibliography", css_class="small")
     )
     items.append(
         text(
             66,
             476,
-            "62 frozen assignments · generated tables · SHA-256 manifest",
+            "62 frozen assignments · Stage 6 meta-review · SHA-256 manifest",
             css_class="small",
         )
     )

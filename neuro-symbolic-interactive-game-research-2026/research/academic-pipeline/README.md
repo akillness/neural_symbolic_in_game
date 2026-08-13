@@ -17,7 +17,8 @@ It follows the local `academic-research` full pipeline and records every mandato
 | 4 | Deterministic offline pilot, bilingual IEEE drafts, and six-page PDFs | Approved 2026-08-13 |
 | 4.5 | Claim-faithfulness integrity gate (L3) | Passed 2026-08-13: 22 claims audited, 0 overstated, 0 unsupported |
 | 5 | Citation verification | Passed 2026-08-13: 36 entries, 33 verified, 3 preprint, 0 hallucinated |
-| 6--10 | Peer review, revision, final PDF, and repro lock | Not executed |
+| 6 | EIC + R1/R2/R3 + Devil's Advocate peer-review simulation | Revise and resubmit; awaiting user decision 2026-08-13 |
+| 7--10 | Optional cross-model review, revision, final PDF, and repro lock | Not executed |
 
 No hosted ten-model or human-study result is represented as completed evidence. Until those studies
 are run, generated numerical results are limited to deterministic, local, offline harness experiments
