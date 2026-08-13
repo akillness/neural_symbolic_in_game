@@ -1,0 +1,389 @@
+{
+  "schema_version": "1.0.0",
+  "pilot_id": "trace-rpg-deterministic-conformance-v1",
+  "evidence_scope": "designed-fixture conformance only; no model-efficacy or human-study inference",
+  "implemented_validator_codes": [
+    "UNKNOWN_ACTION_TYPE",
+    "POLICY_PRECONDITION_OMISSION",
+    "POLICY_EFFECT_OMISSION",
+    "POLICY_EFFECT_VIOLATION",
+    "POLICY_QUEST_STAGE_EFFECT_VIOLATION",
+    "UNSATISFIED_PRECONDITION",
+    "UNREACHABLE_REQUIRED_OBJECT",
+    "NPC_KNOWLEDGE_VIOLATION",
+    "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION",
+    "FORBIDDEN_DISCLOSURE",
+    "QUEST_STAGE_VIOLATION",
+    "QUEST_STAGE_REGRESSION"
+  ],
+  "base_state": {
+    "state_id": "conformance-s0",
+    "locations": ["gate", "vault"],
+    "reachable_locations": ["gate"],
+    "object_locations": {"remote_key": "vault"},
+    "inventory": [],
+    "facts": ["met_guard", "public_fact"],
+    "action_policies": {
+      "OPEN_DOOR": {
+        "required_preconditions": ["met_guard"],
+        "allowed_effects": ["door_open"],
+        "required_effects": ["door_open"],
+        "allowed_quest_stage_effects": []
+      },
+      "SAY": {
+        "required_preconditions": ["met_guard"],
+        "allowed_effects": [],
+        "required_effects": [],
+        "allowed_quest_stage_effects": []
+      },
+      "ROLLBACK_STAGE": {
+        "required_preconditions": ["met_guard"],
+        "allowed_effects": [],
+        "required_effects": [],
+        "allowed_quest_stage_effects": [0]
+      }
+    },
+    "npc_knowledge": {
+      "guard": ["met_guard", "public_fact", "sealed_secret"]
+    },
+    "forbidden_disclosures": {
+      "guard": ["sealed_secret"]
+    },
+    "quest_stage": 1
+  },
+  "gate_fixtures": [
+    {
+      "id": "gate-valid-control",
+      "expected_codes": [],
+      "candidate": {
+        "action_id": "gate-valid-control",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "used_facts": ["public_fact"],
+        "disclosed_facts": ["public_fact"]
+      }
+    },
+    {
+      "id": "gate-unknown-action",
+      "expected_codes": ["UNKNOWN_ACTION_TYPE"],
+      "candidate": {
+        "action_id": "gate-unknown-action",
+        "actor_id": "guard",
+        "action_type": "UNREGISTERED",
+        "preconditions": [],
+        "effects": []
+      }
+    },
+    {
+      "id": "gate-policy-stage-effect-violation",
+      "expected_codes": ["POLICY_QUEST_STAGE_EFFECT_VIOLATION"],
+      "candidate": {
+        "action_id": "gate-policy-stage-effect-violation",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "quest_stage_effect": 2
+      }
+    },
+    {
+      "id": "gate-policy-precondition-omission",
+      "expected_codes": ["POLICY_PRECONDITION_OMISSION"],
+      "candidate": {
+        "action_id": "gate-policy-precondition-omission",
+        "actor_id": "guard",
+        "action_type": "OPEN_DOOR",
+        "preconditions": [],
+        "effects": ["door_open"]
+      }
+    },
+    {
+      "id": "gate-policy-effect-omission",
+      "expected_codes": ["POLICY_EFFECT_OMISSION"],
+      "candidate": {
+        "action_id": "gate-policy-effect-omission",
+        "actor_id": "guard",
+        "action_type": "OPEN_DOOR",
+        "preconditions": ["met_guard"],
+        "effects": []
+      }
+    },
+    {
+      "id": "gate-policy-effect-violation",
+      "expected_codes": ["POLICY_EFFECT_VIOLATION"],
+      "candidate": {
+        "action_id": "gate-policy-effect-violation",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": ["unauthorized_effect"]
+      }
+    },
+    {
+      "id": "gate-unsatisfied-precondition",
+      "expected_codes": ["UNSATISFIED_PRECONDITION"],
+      "candidate": {
+        "action_id": "gate-unsatisfied-precondition",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard", "missing_fact"],
+        "effects": []
+      }
+    },
+    {
+      "id": "gate-unreachable-object",
+      "expected_codes": ["UNREACHABLE_REQUIRED_OBJECT"],
+      "candidate": {
+        "action_id": "gate-unreachable-object",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "required_objects": ["remote_key"]
+      }
+    },
+    {
+      "id": "gate-npc-knowledge",
+      "expected_codes": ["NPC_KNOWLEDGE_VIOLATION"],
+      "candidate": {
+        "action_id": "gate-npc-knowledge",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "used_facts": ["unknown_fact"]
+      }
+    },
+    {
+      "id": "gate-disclosure-knowledge",
+      "expected_codes": ["NPC_DISCLOSURE_KNOWLEDGE_VIOLATION"],
+      "candidate": {
+        "action_id": "gate-disclosure-knowledge",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "disclosed_facts": ["unknown_disclosure"]
+      }
+    },
+    {
+      "id": "gate-forbidden-disclosure",
+      "expected_codes": ["FORBIDDEN_DISCLOSURE"],
+      "candidate": {
+        "action_id": "gate-forbidden-disclosure",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "disclosed_facts": ["sealed_secret"]
+      }
+    },
+    {
+      "id": "gate-quest-stage",
+      "expected_codes": ["QUEST_STAGE_VIOLATION"],
+      "candidate": {
+        "action_id": "gate-quest-stage",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "required_quest_stage": 2
+      }
+    },
+    {
+      "id": "gate-quest-regression",
+      "expected_codes": ["QUEST_STAGE_REGRESSION"],
+      "candidate": {
+        "action_id": "gate-quest-regression",
+        "actor_id": "guard",
+        "action_type": "ROLLBACK_STAGE",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "quest_stage_effect": 0
+      }
+    }
+  ],
+  "boundary_sentinels": [
+    {
+      "id": "boundary-unparsed-secret-in-narrative",
+      "boundary_type": "semantic_extraction",
+      "expected_valid": true,
+      "interpretation": "The encoded gate accepts this candidate because disclosed_facts is empty; this documents a missing semantic-extraction check and is not a safety pass.",
+      "candidate": {
+        "action_id": "boundary-unparsed-secret-in-narrative",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "disclosed_facts": [],
+        "narrative_text": "I reveal sealed_secret: it is hidden beneath the vault."
+      }
+    },
+    {
+      "id": "boundary-omitted-required-object",
+      "boundary_type": "policy_completeness",
+      "expected_valid": true,
+      "interpretation": "The encoded gate accepts this candidate because neither the proposal nor the action policy declares an object requirement; this documents a policy-completeness boundary.",
+      "candidate": {
+        "action_id": "boundary-omitted-required-object",
+        "actor_id": "guard",
+        "action_type": "OPEN_DOOR",
+        "preconditions": ["met_guard"],
+        "effects": ["door_open"]
+      }
+    },
+    {
+      "id": "boundary-extra-candidate-field",
+      "boundary_type": "candidate_contract_strictness",
+      "expected_valid": true,
+      "interpretation": "The proposal parser currently ignores an unrecognized top-level candidate field; this is an accepted contract-strictness limitation, not evidence of safe metadata handling.",
+      "candidate": {
+        "action_id": "boundary-extra-candidate-field",
+        "actor_id": "guard",
+        "action_type": "SAY",
+        "preconditions": ["met_guard"],
+        "effects": [],
+        "unexpected_top_level_metadata": {"sealed_secret": true}
+      }
+    }
+  ],
+  "repair": {
+    "arms": [
+      {"id": "rejection_only", "repair_budget": 0, "strategy": "none"},
+      {"id": "unchanged_retry", "repair_budget": 1, "strategy": "unchanged"},
+      {"id": "structured_repair", "repair_budget": 1, "strategy": "policy_restore"}
+    ],
+    "cases": [
+      {
+        "id": "repairable-policy-precondition",
+        "repairable": true,
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "structured_repair": "commit"
+        },
+        "candidate": {
+          "action_id": "repairable-policy-precondition",
+          "actor_id": "guard",
+          "action_type": "OPEN_DOOR",
+          "preconditions": ["stale_guard_fact"],
+          "effects": ["door_open"]
+        }
+      },
+      {
+        "id": "nonrepairable-unreachable-object",
+        "repairable": false,
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "structured_repair": "fallback"
+        },
+        "candidate": {
+          "action_id": "nonrepairable-unreachable-object",
+          "actor_id": "guard",
+          "action_type": "OPEN_DOOR",
+          "preconditions": ["met_guard"],
+          "effects": ["door_open"],
+          "required_objects": ["remote_key"]
+        }
+      }
+    ]
+  },
+  "integrity_faults": [
+    "checksum_drift",
+    "rehashed_impossible_state",
+    "attempts_mutation",
+    "type_coercion",
+    "intermediate_validation_mutation",
+    "early_valid_attempt_followed_by_repair",
+    "top_level_candidate_mutation",
+    "disconnected_episode",
+    "record_outcome_mismatch",
+    "partial_write_rollback"
+  ],
+  "integrity_boundaries": [
+    {
+      "id": "repair_transition_substitution",
+      "expected_detected": false,
+      "interpretation": "Semantic replay validates every recorded candidate and validation but cannot authenticate or re-execute the repair generator that produced the transition; a rehashed substitute invalid precursor can therefore remain replay-valid."
+    }
+  ],
+  "adapter_cases": [
+    {
+      "id": "adapter-valid",
+      "kind": "recorded",
+      "seed": 101,
+      "expected_status": "commit",
+      "expected_failure_type": null,
+      "provider_latency_ms": 10.0,
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "candidate": {
+        "action_id": "adapter-valid",
+        "actor_id": "guard",
+        "action_type": "OPEN_DOOR",
+        "preconditions": ["met_guard"],
+        "effects": ["door_open"]
+      }
+    },
+    {
+      "id": "adapter-symbolic-fallback",
+      "kind": "recorded",
+      "seed": 102,
+      "expected_status": "fallback",
+      "expected_failure_type": "hard_validation_failure",
+      "provider_latency_ms": 12.0,
+      "input_tokens": 110,
+      "output_tokens": 22,
+      "candidate": {
+        "action_id": "adapter-symbolic-fallback",
+        "actor_id": "guard",
+        "action_type": "OPEN_DOOR",
+        "preconditions": ["met_guard"],
+        "effects": ["unauthorized_effect"]
+      }
+    },
+    {
+      "id": "adapter-timeout",
+      "kind": "simulated_timeout",
+      "seed": 103,
+      "expected_status": "adapter_failure",
+      "expected_failure_type": "timeout"
+    },
+    {
+      "id": "adapter-missing-record",
+      "kind": "missing_record",
+      "seed": 104,
+      "expected_status": "adapter_failure",
+      "expected_failure_type": "missing_record"
+    },
+    {
+      "id": "adapter-malformed-record",
+      "kind": "malformed_record",
+      "seed": 105,
+      "expected_status": "adapter_failure",
+      "expected_failure_type": "parse_error"
+    },
+    {
+      "id": "adapter-non-json",
+      "kind": "non_json_live",
+      "seed": 106,
+      "expected_status": "adapter_failure",
+      "expected_failure_type": "parse_error"
+    },
+    {
+      "id": "adapter-contract-error",
+      "kind": "contract_none",
+      "seed": 107,
+      "expected_status": "adapter_failure",
+      "expected_failure_type": "adapter_contract:response_type"
+    }
+  ],
+  "accounting_guards": [
+    "duplicate_observed_record",
+    "duplicate_expected_assignment",
+    "missing_expected_assignment"
+  ]
+}

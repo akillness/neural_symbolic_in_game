@@ -21,11 +21,14 @@ from nesy_game import (
     WorldState,
     experiment_assignment_key,
     experiment_record_from_mapping,
+    planned_experiment_assignment,
     run_experiment_case,
     summarize_experiment,
     verify_experiment_record,
     write_experiment_jsonl,
 )
+
+REPAIR_TARGET = "door_open"
 
 
 class ExperimentTests(unittest.TestCase):
@@ -91,6 +94,12 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(case.record.status, "commit")
         self.assertAlmostEqual(case.record.runner_latency_ms, 5.0)
         self.assertEqual(case.record.provider_latency_ms, 125.0)
+        self.assertEqual(case.record.arm_id, "default")
+        self.assertEqual(len(case.record.controller_config_hash), 64)
+        self.assertEqual(len(case.record.assignment_input_hash), 64)
+        self.assertEqual(len(case.record.prior_state_hash), 64)
+        self.assertEqual(len(case.record.proposal_hash), 64)
+        self.assertEqual(len(case.record.final_state_hash), 64)
         self.assertIn("door_open", case.state.facts)
         self.assertEqual(case.outcome.trace_context["model_revision"], "revision")
 
@@ -135,9 +144,187 @@ class ExperimentTests(unittest.TestCase):
         assignment = experiment_assignment_key(case.record)
         with self.assertRaisesRegex(ValueError, "duplicate assigned-case"):
             summarize_experiment([case.record, case.record], [assignment])
-        missing = ("run", "S-1", 12, "model", "revision")
+        missing = list(assignment)
+        missing[3] = 12
         with self.assertRaisesRegex(ValueError, "manifest mismatch"):
-            summarize_experiment([case.record], [assignment, missing])
+            summarize_experiment([case.record], [assignment, tuple(missing)])
+
+    def test_assignment_key_separates_experimental_arms(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+        control = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            arm_id="rejection_only",
+            scenario_id="S-1",
+            seed=11,
+        )
+        treatment = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            arm_id="structured_repair",
+            scenario_id="S-1",
+            seed=11,
+        )
+        self.assertNotEqual(
+            experiment_assignment_key(control.record), experiment_assignment_key(treatment.record)
+        )
+
+    def test_assignment_key_binds_config_input_and_prior_state(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+        first = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            scenario_id="S-1",
+            seed=11,
+            controller_config={"policy_revision": "p1"},
+            assignment_input={"fixture_id": "fixture-1"},
+        )
+        second = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            scenario_id="S-1",
+            seed=11,
+            controller_config={"policy_revision": "p2"},
+            assignment_input={"fixture_id": "fixture-1"},
+        )
+        self.assertNotEqual(
+            experiment_assignment_key(first.record), experiment_assignment_key(second.record)
+        )
+
+    def test_assignment_can_be_frozen_before_execution(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+        expected = planned_experiment_assignment(
+            adapter,
+            self.state,
+            run_id="run",
+            arm_id="gate",
+            scenario_id="S-1",
+            seed=11,
+            controller_config={"policy_revision": "p1"},
+            assignment_input={"fixture_id": "fixture-1"},
+        )
+        case = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            arm_id="gate",
+            scenario_id="S-1",
+            seed=11,
+            controller_config={"policy_revision": "p1"},
+            assignment_input={"fixture_id": "fixture-1"},
+        )
+        self.assertEqual(expected, experiment_assignment_key(case.record))
+
+    def test_repairer_closure_values_are_bound_into_controller_provenance(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+
+        def make_repairer(effect):
+            def repairer(_state, candidate, _validation, _attempt):
+                return replace(candidate, effects=frozenset({effect}))
+
+            return repairer
+
+        first = planned_experiment_assignment(
+            adapter,
+            self.state,
+            run_id="run",
+            scenario_id="S-1",
+            seed=11,
+            repairer=make_repairer("door_open"),
+            repair_budget=1,
+        )
+        second = planned_experiment_assignment(
+            adapter,
+            self.state,
+            run_id="run",
+            scenario_id="S-1",
+            seed=11,
+            repairer=make_repairer("other_effect"),
+            repair_budget=1,
+        )
+        self.assertNotEqual(first[6], second[6])
+
+    def test_repairer_referenced_globals_are_bound_into_controller_provenance(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+
+        def repairer(_state, candidate, _validation, _attempt):
+            return replace(candidate, effects=frozenset({REPAIR_TARGET}))
+
+        global REPAIR_TARGET
+        original = REPAIR_TARGET
+        try:
+            REPAIR_TARGET = "door_open"
+            first = planned_experiment_assignment(
+                adapter,
+                self.state,
+                run_id="run",
+                scenario_id="S-1",
+                seed=11,
+                repairer=repairer,
+                repair_budget=1,
+            )
+            REPAIR_TARGET = "other_effect"
+            second = planned_experiment_assignment(
+                adapter,
+                self.state,
+                run_id="run",
+                scenario_id="S-1",
+                seed=11,
+                repairer=repairer,
+                repair_budget=1,
+            )
+        finally:
+            REPAIR_TARGET = original
+        self.assertNotEqual(first[6], second[6])
+
+    def test_controller_provenance_cannot_contradict_actual_arguments(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+        with self.assertRaisesRegex(ValueError, "reserved controller field"):
+            run_experiment_case(
+                adapter,
+                self.state,
+                run_id="run",
+                scenario_id="S-1",
+                seed=11,
+                repair_budget=1,
+                controller_config={"repair_budget": 0},
+            )
+        with self.assertRaisesRegex(ValueError, "reserved assignment field"):
+            run_experiment_case(
+                adapter,
+                self.state,
+                run_id="run",
+                scenario_id="S-1",
+                seed=11,
+                assignment_input={"scenario_id": "other"},
+            )
+
+    def test_record_hash_binds_config_input_and_state_provenance(self) -> None:
+        adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])
+        case = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            arm_id="policy_gate",
+            scenario_id="S-1",
+            seed=11,
+            controller_config={"repair_budget": 0, "policy_revision": "p1"},
+            assignment_input={"fixture_id": "fixture-1"},
+        )
+        record = json.loads(json.dumps(case.record.__dict__))
+        for field in (
+            "arm_id",
+            "controller_config_hash",
+            "assignment_input_hash",
+            "prior_state_hash",
+        ):
+            tampered = dict(record)
+            tampered[field] = "0" * 64 if field.endswith("_hash") else "other-arm"
+            self.assertFalse(verify_experiment_record(tampered), field)
 
     def test_summary_separates_symbolic_fallback_from_adapter_failure(self) -> None:
         invalid = json.loads(json.dumps(self.valid_record))
@@ -152,6 +339,33 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(summary["overall_failure_rate"], 1.0)
         self.assertEqual(summary["hard_validation_failure_rate"], 1.0)
         self.assertEqual(summary["adapter_failure_rate"], 0.0)
+
+    def test_repairer_exception_is_a_terminal_controller_failure(self) -> None:
+        invalid = json.loads(json.dumps(self.valid_record))
+        invalid["candidate"]["effects"] = ["policy_bypass"]
+        adapter = RecordedProposalAdapter("model", "revision", [invalid])
+
+        def exploding_repairer(*_args):
+            raise RuntimeError("injected repair failure")
+
+        case = run_experiment_case(
+            adapter,
+            self.state,
+            run_id="run",
+            arm_id="structured_repair",
+            scenario_id="S-1",
+            seed=11,
+            repairer=exploding_repairer,
+            repair_budget=1,
+        )
+        self.assertEqual(case.record.status, "controller_failure")
+        self.assertEqual(case.record.failure_type, "controller_exception:RuntimeError")
+        self.assertIsNone(case.outcome)
+        self.assertEqual(case.record.prior_state_hash, case.record.final_state_hash)
+        self.assertEqual(case.state, self.state)
+        self.assert_schema_valid(json.loads(json.dumps(case.record.__dict__)))
+        summary = summarize_experiment([case.record], [experiment_assignment_key(case.record)])
+        self.assertEqual(summary["controller_failure_rate"], 1.0)
 
     def test_result_and_trace_jsonl_are_written_separately(self) -> None:
         adapter = RecordedProposalAdapter("model", "revision", [self.valid_record])

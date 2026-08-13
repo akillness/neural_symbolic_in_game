@@ -7,6 +7,7 @@
   "required": [
     "schema_version",
     "run_id",
+    "arm_id",
     "scenario_id",
     "seed",
     "model_id",
@@ -21,16 +22,22 @@
     "trace_hash",
     "prior_state_id",
     "final_state_id",
+    "controller_config_hash",
+    "assignment_input_hash",
+    "prior_state_hash",
+    "final_state_hash",
+    "proposal_hash",
     "record_hash"
   ],
   "properties": {
-    "schema_version": {"const": "1.0.0"},
+    "schema_version": {"const": "1.2.0"},
     "run_id": {"type": "string", "minLength": 1},
+    "arm_id": {"type": "string", "minLength": 1},
     "scenario_id": {"type": "string", "minLength": 1},
     "seed": {"type": "integer", "minimum": 0},
     "model_id": {"type": "string", "minLength": 1},
     "model_revision": {"type": "string", "minLength": 1},
-    "status": {"enum": ["commit", "fallback", "adapter_failure"]},
+    "status": {"enum": ["commit", "fallback", "adapter_failure", "controller_failure"]},
     "failure_type": {"type": ["string", "null"]},
     "provider_latency_ms": {"type": ["number", "null"], "minimum": 0},
     "runner_latency_ms": {"type": "number", "minimum": 0},
@@ -40,6 +47,11 @@
     "trace_hash": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
     "prior_state_id": {"type": "string", "minLength": 1},
     "final_state_id": {"type": "string", "minLength": 1},
+    "controller_config_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "assignment_input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "prior_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "final_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "proposal_hash": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
     "record_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
   },
   "allOf": [
@@ -50,15 +62,33 @@
           "failure_type": {"type": "string", "minLength": 1},
           "provider_latency_ms": {"type": "null"},
           "trace_hash": {"type": "null"},
+          "proposal_hash": {"type": "null"},
           "input_tokens": {"const": 0},
           "output_tokens": {"const": 0},
           "repair_attempts": {"const": 0}
         }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "controller_failure"}}},
+      "then": {
+        "properties": {
+          "failure_type": {"type": "string", "minLength": 1},
+          "provider_latency_ms": {"type": "number", "minimum": 0},
+          "trace_hash": {"type": "null"},
+          "proposal_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"enum": ["commit", "fallback"]}}
       },
-      "else": {
+      "then": {
         "properties": {
           "provider_latency_ms": {"type": "number", "minimum": 0},
-          "trace_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          "trace_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "proposal_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
         }
       }
     },

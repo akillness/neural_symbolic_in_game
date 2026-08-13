@@ -55,6 +55,18 @@ def validate_candidate(state: WorldState, action: CandidateAction) -> Validation
                     "Remove the effect or revise the policy through an audited authoring workflow.",
                 )
             )
+        if (
+            action.quest_stage_effect is not None
+            and action.quest_stage_effect not in policy.allowed_quest_stage_effects
+        ):
+            errors.append(
+                ValidationError(
+                    "POLICY_QUEST_STAGE_EFFECT_VIOLATION",
+                    str(action.quest_stage_effect),
+                    "Candidate declared a quest-stage mutation not authorized by its action policy.",
+                    "Remove the stage mutation or authorize the exact target through audited policy.",
+                )
+            )
 
     for predicate in sorted(action.preconditions - state.facts):
         errors.append(

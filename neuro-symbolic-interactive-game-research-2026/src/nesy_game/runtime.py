@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections.abc import Callable, Mapping
 from dataclasses import fields, is_dataclass, replace
 from pathlib import Path
@@ -33,6 +34,63 @@ def to_jsonable(value: Any) -> Any:
     if isinstance(value, (list, tuple)):
         return [to_jsonable(child) for child in value]
     return value
+
+
+def _require_mapping(value: Any, field: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise ValueError(f"{field} must be an object")  # noqa: TRY004
+    if any(not isinstance(key, str) for key in value):
+        raise ValueError(f"{field} keys must be strings")
+    return value
+
+
+def _require_exact_keys(value: Mapping[str, Any], expected: set[str], field: str) -> None:
+    missing = sorted(expected - value.keys())
+    extra = sorted(value.keys() - expected)
+    if missing or extra:
+        raise ValueError(f"{field} fields mismatch: missing={missing}, extra={extra}")
+
+
+def _require_nonempty_string(value: Any, field: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{field} must be a non-empty string")
+    return value
+
+
+def _require_exact_int(value: Any, field: str, *, minimum: int = 0) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
+        raise ValueError(f"{field} must be a non-negative exact integer")
+    return value
+
+
+def _require_string_list(value: Any, field: str) -> frozenset[str]:
+    if not isinstance(value, list):
+        raise ValueError(f"{field} must be an array of strings")  # noqa: TRY004
+    parsed = [_require_nonempty_string(item, f"{field} item") for item in value]
+    if len(parsed) != len(set(parsed)):
+        raise ValueError(f"{field} must not contain duplicates")
+    return frozenset(parsed)
+
+
+def _validate_json_value(value: Any, field: str) -> None:
+    if value is None or isinstance(value, (str, bool)):
+        return
+    if isinstance(value, int) and not isinstance(value, bool):
+        return
+    if isinstance(value, float):
+        if math.isfinite(value):
+            return
+        raise ValueError(f"{field} contains a non-finite number")
+    if isinstance(value, list):
+        for index, child in enumerate(value):
+            _validate_json_value(child, f"{field}[{index}]")
+        return
+    if isinstance(value, Mapping):
+        for key, child in value.items():
+            _require_nonempty_string(key, f"{field} key")
+            _validate_json_value(child, f"{field}.{key}")
+        return
+    raise ValueError(f"{field} contains a non-JSON value")
 
 
 def _trace_hash(
@@ -187,7 +245,7 @@ def verify_trace_record(record: Mapping[str, Any]) -> bool:
         "trace_context",
         "trace_hash",
     }
-    if not required <= record.keys():
+    if set(record) != required:
         return False
     payload = {
         "status": record["status"],
@@ -204,67 +262,205 @@ def verify_trace_record(record: Mapping[str, Any]) -> bool:
 
 
 def _world_state_from_json(data: Mapping[str, Any]) -> WorldState:
+    data = _require_mapping(data, "world state")
+    _require_exact_keys(
+        data,
+        {
+            "state_id",
+            "locations",
+            "reachable_locations",
+            "object_locations",
+            "inventory",
+            "facts",
+            "action_policies",
+            "npc_knowledge",
+            "forbidden_disclosures",
+            "quest_stage",
+        },
+        "world state",
+    )
+    raw_policies = _require_mapping(data["action_policies"], "action_policies")
     policies = {
-        action_type: ActionPolicy(
-            required_preconditions=frozenset(policy["required_preconditions"]),
-            allowed_effects=frozenset(policy["allowed_effects"]),
-            required_effects=frozenset(policy.get("required_effects", [])),
+        _require_nonempty_string(action_type, "action policy key"): _policy_from_json(
+            policy, f"action_policies.{action_type}"
         )
-        for action_type, policy in data.get("action_policies", {}).items()
+        for action_type, policy in raw_policies.items()
+    }
+    object_locations = _require_mapping(data["object_locations"], "object_locations")
+    parsed_object_locations = {
+        _require_nonempty_string(key, "object_locations key"): _require_nonempty_string(
+            value, f"object_locations.{key}"
+        )
+        for key, value in object_locations.items()
     }
     return WorldState(
-        state_id=str(data["state_id"]),
-        locations=frozenset(data["locations"]),
-        reachable_locations=frozenset(data["reachable_locations"]),
-        object_locations=data["object_locations"],
-        inventory=frozenset(data["inventory"]),
-        facts=frozenset(data["facts"]),
+        state_id=_require_nonempty_string(data["state_id"], "state_id"),
+        locations=_require_string_list(data["locations"], "locations"),
+        reachable_locations=_require_string_list(
+            data["reachable_locations"], "reachable_locations"
+        ),
+        object_locations=parsed_object_locations,
+        inventory=_require_string_list(data["inventory"], "inventory"),
+        facts=_require_string_list(data["facts"], "facts"),
         action_policies=policies,
-        npc_knowledge={
-            key: frozenset(value) for key, value in data.get("npc_knowledge", {}).items()
-        },
-        forbidden_disclosures={
-            key: frozenset(value) for key, value in data.get("forbidden_disclosures", {}).items()
-        },
-        quest_stage=int(data.get("quest_stage", 0)),
+        npc_knowledge=_string_set_mapping(data["npc_knowledge"], "npc_knowledge"),
+        forbidden_disclosures=_string_set_mapping(
+            data["forbidden_disclosures"], "forbidden_disclosures"
+        ),
+        quest_stage=_require_exact_int(data["quest_stage"], "quest_stage"),
     )
+
+
+def _policy_from_json(data: Any, field: str) -> ActionPolicy:
+    data = _require_mapping(data, field)
+    _require_exact_keys(
+        data,
+        {
+            "required_preconditions",
+            "allowed_effects",
+            "required_effects",
+            "allowed_quest_stage_effects",
+        },
+        field,
+    )
+    raw_stage_effects = data["allowed_quest_stage_effects"]
+    if not isinstance(raw_stage_effects, list):
+        raise TypeError(f"{field}.allowed_quest_stage_effects must be an array")
+    parsed_stage_effects = [
+        _require_exact_int(value, f"{field}.allowed_quest_stage_effects item")
+        for value in raw_stage_effects
+    ]
+    if len(set(parsed_stage_effects)) != len(parsed_stage_effects):
+        raise ValueError(f"{field}.allowed_quest_stage_effects must not contain duplicates")
+    return ActionPolicy(
+        required_preconditions=_require_string_list(
+            data["required_preconditions"], f"{field}.required_preconditions"
+        ),
+        allowed_effects=_require_string_list(data["allowed_effects"], f"{field}.allowed_effects"),
+        required_effects=_require_string_list(
+            data["required_effects"], f"{field}.required_effects"
+        ),
+        allowed_quest_stage_effects=frozenset(parsed_stage_effects),
+    )
+
+
+def _string_set_mapping(data: Any, field: str) -> dict[str, frozenset[str]]:
+    data = _require_mapping(data, field)
+    return {
+        _require_nonempty_string(key, f"{field} key"): _require_string_list(value, f"{field}.{key}")
+        for key, value in data.items()
+    }
 
 
 def _candidate_from_json(data: Mapping[str, Any]) -> CandidateAction:
-    return CandidateAction(
-        action_id=str(data["action_id"]),
-        actor_id=str(data["actor_id"]),
-        action_type=str(data["action_type"]),
-        preconditions=frozenset(data["preconditions"]),
-        effects=frozenset(data["effects"]),
-        required_objects=frozenset(data.get("required_objects", [])),
-        used_facts=frozenset(data.get("used_facts", [])),
-        disclosed_facts=frozenset(data.get("disclosed_facts", [])),
-        required_quest_stage=int(data.get("required_quest_stage", 0)),
-        quest_stage_effect=data.get("quest_stage_effect"),
-        narrative_text=str(data.get("narrative_text", "")),
-        metadata=data.get("metadata", {}),
+    data = _require_mapping(data, "candidate")
+    _require_exact_keys(
+        data,
+        {
+            "action_id",
+            "actor_id",
+            "action_type",
+            "preconditions",
+            "effects",
+            "required_objects",
+            "used_facts",
+            "disclosed_facts",
+            "required_quest_stage",
+            "quest_stage_effect",
+            "narrative_text",
+            "metadata",
+        },
+        "candidate",
     )
+    quest_stage_effect = data["quest_stage_effect"]
+    if quest_stage_effect is not None:
+        quest_stage_effect = _require_exact_int(quest_stage_effect, "quest_stage_effect")
+    narrative_text = data["narrative_text"]
+    if not isinstance(narrative_text, str):
+        raise ValueError("narrative_text must be a string")  # noqa: TRY004
+    metadata = _require_mapping(data["metadata"], "metadata")
+    _validate_json_value(metadata, "metadata")
+    return CandidateAction(
+        action_id=_require_nonempty_string(data["action_id"], "action_id"),
+        actor_id=_require_nonempty_string(data["actor_id"], "actor_id"),
+        action_type=_require_nonempty_string(data["action_type"], "action_type"),
+        preconditions=_require_string_list(data["preconditions"], "preconditions"),
+        effects=_require_string_list(data["effects"], "effects"),
+        required_objects=_require_string_list(data["required_objects"], "required_objects"),
+        used_facts=_require_string_list(data["used_facts"], "used_facts"),
+        disclosed_facts=_require_string_list(data["disclosed_facts"], "disclosed_facts"),
+        required_quest_stage=_require_exact_int(
+            data["required_quest_stage"], "required_quest_stage"
+        ),
+        quest_stage_effect=quest_stage_effect,
+        narrative_text=narrative_text,
+        metadata=dict(metadata),
+    )
+
+
+def _validate_validation_record(data: Any, field: str) -> Mapping[str, Any]:
+    data = _require_mapping(data, field)
+    _require_exact_keys(data, {"valid", "errors", "checks_run"}, field)
+    if not isinstance(data["valid"], bool):
+        raise ValueError(f"{field}.valid must be a boolean")  # noqa: TRY004
+    if not isinstance(data["errors"], list):
+        raise ValueError(f"{field}.errors must be an array")  # noqa: TRY004
+    for index, error in enumerate(data["errors"]):
+        error_field = f"{field}.errors[{index}]"
+        error = _require_mapping(error, error_field)
+        _require_exact_keys(error, {"code", "entity", "reason", "repair_hint"}, error_field)
+        for key in ("code", "entity", "reason", "repair_hint"):
+            if not isinstance(error[key], str):
+                raise ValueError(f"{error_field}.{key} must be a string")  # noqa: TRY004
+    checks = data["checks_run"]
+    if not isinstance(checks, list) or any(
+        not isinstance(item, str) or not item for item in checks
+    ):
+        raise ValueError(f"{field}.checks_run must be an array of non-empty strings")
+    return data
 
 
 def replay_trace_record(record: Mapping[str, Any]) -> WorldState:
     """Verify the unkeyed checksum and semantically replay one outcome record."""
 
+    record = _require_mapping(record, "trace record")
     if not verify_trace_record(record):
         raise ValueError("trace record hash verification failed")
     trace = record["trace"]
     attempts = record["attempts"]
-    if not isinstance(trace, list) or not trace or attempts != len(trace) - 1:
+    if not isinstance(trace, list) or not trace:
+        raise ValueError("trace must be a non-empty array")
+    attempts = _require_exact_int(attempts, "attempts")
+    if attempts != len(trace) - 1:
         raise ValueError("trace attempt count is inconsistent")
-    if [entry.get("attempt") for entry in trace] != list(range(len(trace))):
-        raise ValueError("trace attempt sequence is not contiguous")
+    context = _require_mapping(record["trace_context"], "trace_context")
+    _validate_json_value(context, "trace_context")
+    prior_state = _world_state_from_json(record["prior_state"])
+    parsed_candidates: list[CandidateAction] = []
+    for index, raw_entry in enumerate(trace):
+        entry_field = f"trace[{index}]"
+        entry = _require_mapping(raw_entry, entry_field)
+        _require_exact_keys(entry, {"attempt", "candidate", "validation"}, entry_field)
+        attempt = _require_exact_int(entry["attempt"], f"{entry_field}.attempt")
+        if attempt != index:
+            raise ValueError("trace attempt sequence is not contiguous")
+        candidate = _candidate_from_json(entry["candidate"])
+        _validate_validation_record(entry["validation"], f"{entry_field}.validation")
+        validation = validate_candidate(prior_state, candidate)
+        if to_jsonable(validation) != entry["validation"]:
+            raise ValueError(f"attempt {index} validation does not match deterministic validation")
+        if index < len(trace) - 1 and validation.valid:
+            raise ValueError("trace contains an attempt after an early valid candidate")
+        parsed_candidates.append(candidate)
+
+    _candidate_from_json(record["candidate"])
+    _validate_validation_record(record["validation"], "validation")
     if trace[-1].get("candidate") != record["candidate"]:
         raise ValueError("top-level candidate differs from final trace attempt")
     if trace[-1].get("validation") != record["validation"]:
         raise ValueError("top-level validation differs from final trace attempt")
 
-    prior_state = _world_state_from_json(record["prior_state"])
-    candidate = _candidate_from_json(record["candidate"])
+    candidate = parsed_candidates[-1]
     validation = validate_candidate(prior_state, candidate)
     if to_jsonable(validation) != record["validation"]:
         raise ValueError("recorded validation does not match deterministic validation")
@@ -279,7 +475,8 @@ def replay_trace_record(record: Mapping[str, Any]) -> WorldState:
         expected_state = prior_state
     else:
         raise ValueError(f"unsupported trace status: {record['status']}")
-    if to_jsonable(expected_state) != record["state"]:
+    recorded_state = _world_state_from_json(record["state"])
+    if to_jsonable(expected_state) != to_jsonable(recorded_state):
         raise ValueError("recorded outcome state does not match replayed state")
     return expected_state
 

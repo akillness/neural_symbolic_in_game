@@ -8,6 +8,26 @@ from types import MappingProxyType
 from typing import Any
 
 
+def _string_set(value: Any, field_name: str) -> frozenset[str]:
+    if not isinstance(value, (list, tuple, set, frozenset)):
+        raise TypeError(f"{field_name} must be an explicit collection of strings")
+    frozen = frozenset(value)
+    if len(frozen) != len(value):
+        raise ValueError(f"{field_name} must not contain duplicates")
+    if any(not isinstance(item, str) or not item for item in frozen):
+        raise ValueError(f"{field_name} must contain non-empty strings")
+    return frozen
+
+
+def _string_set_mapping(value: Mapping[Any, Any], field_name: str) -> Mapping[str, frozenset[str]]:
+    parsed: dict[str, frozenset[str]] = {}
+    for key, children in value.items():
+        if not isinstance(key, str) or not key:
+            raise ValueError(f"{field_name} keys must be non-empty strings")
+        parsed[key] = _string_set(children, f"{field_name}.{key}")
+    return MappingProxyType(parsed)
+
+
 def _deep_freeze(value: Any) -> Any:
     if isinstance(value, Mapping):
         return MappingProxyType({key: _deep_freeze(child) for key, child in value.items()})
@@ -25,11 +45,27 @@ class ActionPolicy:
     required_preconditions: frozenset[str]
     allowed_effects: frozenset[str]
     required_effects: frozenset[str] = field(default_factory=frozenset)
+    allowed_quest_stage_effects: frozenset[int] = field(default_factory=frozenset)
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "required_preconditions", frozenset(self.required_preconditions))
-        object.__setattr__(self, "allowed_effects", frozenset(self.allowed_effects))
-        object.__setattr__(self, "required_effects", frozenset(self.required_effects))
+        object.__setattr__(
+            self,
+            "required_preconditions",
+            _string_set(self.required_preconditions, "required_preconditions"),
+        )
+        object.__setattr__(
+            self, "allowed_effects", _string_set(self.allowed_effects, "allowed_effects")
+        )
+        object.__setattr__(
+            self, "required_effects", _string_set(self.required_effects, "required_effects")
+        )
+        stage_effects = frozenset(self.allowed_quest_stage_effects)
+        if any(
+            not isinstance(stage, int) or isinstance(stage, bool) or stage < 0
+            for stage in stage_effects
+        ):
+            raise ValueError("allowed_quest_stage_effects must contain non-negative exact integers")
+        object.__setattr__(self, "allowed_quest_stage_effects", stage_effects)
         if not self.required_effects <= self.allowed_effects:
             raise ValueError("required effects must be a subset of allowed effects")
 
@@ -48,23 +84,45 @@ class WorldState:
     quest_stage: int = 0
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "locations", frozenset(self.locations))
-        object.__setattr__(self, "reachable_locations", frozenset(self.reachable_locations))
-        object.__setattr__(self, "inventory", frozenset(self.inventory))
-        object.__setattr__(self, "facts", frozenset(self.facts))
-        object.__setattr__(self, "object_locations", MappingProxyType(dict(self.object_locations)))
-        object.__setattr__(self, "action_policies", MappingProxyType(dict(self.action_policies)))
+        if not isinstance(self.state_id, str) or not self.state_id:
+            raise ValueError("state_id must be a non-empty string")
+        if not isinstance(self.quest_stage, int) or isinstance(self.quest_stage, bool):
+            raise TypeError("quest_stage must be a non-negative exact integer")
+        if self.quest_stage < 0:
+            raise ValueError("quest_stage must be a non-negative exact integer")
+        locations = _string_set(self.locations, "locations")
+        reachable_locations = _string_set(self.reachable_locations, "reachable_locations")
+        if not reachable_locations <= locations:
+            raise ValueError("reachable locations must be a subset of locations")
+        object_locations = dict(self.object_locations)
+        if any(
+            not isinstance(key, str) or not key or not isinstance(location, str) or not location
+            for key, location in object_locations.items()
+        ):
+            raise ValueError("object locations must map non-empty strings to non-empty strings")
+        if not set(object_locations.values()) <= locations:
+            raise ValueError("object locations must refer to declared locations")
+        action_policies = dict(self.action_policies)
+        if any(
+            not isinstance(key, str) or not key or not isinstance(policy, ActionPolicy)
+            for key, policy in action_policies.items()
+        ):
+            raise ValueError("action policies must map non-empty strings to ActionPolicy values")
+        object.__setattr__(self, "locations", locations)
+        object.__setattr__(self, "reachable_locations", reachable_locations)
+        object.__setattr__(self, "inventory", _string_set(self.inventory, "inventory"))
+        object.__setattr__(self, "facts", _string_set(self.facts, "facts"))
+        object.__setattr__(self, "object_locations", MappingProxyType(object_locations))
+        object.__setattr__(self, "action_policies", MappingProxyType(action_policies))
         object.__setattr__(
             self,
             "npc_knowledge",
-            MappingProxyType({key: frozenset(value) for key, value in self.npc_knowledge.items()}),
+            _string_set_mapping(self.npc_knowledge, "npc_knowledge"),
         )
         object.__setattr__(
             self,
             "forbidden_disclosures",
-            MappingProxyType(
-                {key: frozenset(value) for key, value in self.forbidden_disclosures.items()}
-            ),
+            _string_set_mapping(self.forbidden_disclosures, "forbidden_disclosures"),
         )
 
 
@@ -84,6 +142,24 @@ class CandidateAction:
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        for name in ("action_id", "actor_id", "action_type"):
+            if not isinstance(getattr(self, name), str) or not getattr(self, name):
+                raise ValueError(f"{name} must be a non-empty string")
+        if not isinstance(self.required_quest_stage, int) or isinstance(
+            self.required_quest_stage, bool
+        ):
+            raise TypeError("required_quest_stage must be a non-negative exact integer")
+        if self.required_quest_stage < 0:
+            raise ValueError("required_quest_stage must be a non-negative exact integer")
+        if self.quest_stage_effect is not None and (
+            not isinstance(self.quest_stage_effect, int)
+            or isinstance(self.quest_stage_effect, bool)
+        ):
+            raise TypeError("quest_stage_effect must be null or a non-negative exact integer")
+        if self.quest_stage_effect is not None and self.quest_stage_effect < 0:
+            raise ValueError("quest_stage_effect must be null or a non-negative exact integer")
+        if not isinstance(self.narrative_text, str):
+            raise TypeError("narrative_text must be a string")
         for name in (
             "preconditions",
             "effects",
@@ -91,7 +167,7 @@ class CandidateAction:
             "used_facts",
             "disclosed_facts",
         ):
-            object.__setattr__(self, name, frozenset(getattr(self, name)))
+            object.__setattr__(self, name, _string_set(getattr(self, name), name))
         object.__setattr__(self, "metadata", _deep_freeze(self.metadata))
 
 

@@ -35,6 +35,7 @@ class RuntimeTests(unittest.TestCase):
                     frozenset({"met_guard"}),
                     frozenset({"door_open"}),
                     frozenset({"door_open"}),
+                    frozenset({2}),
                 ),
                 "ROLLBACK": ActionPolicy(frozenset({"met_guard"}), frozenset()),
             },
@@ -167,6 +168,81 @@ class RuntimeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "replayed state"):
             replay_trace_record(record)
 
+    def test_semantic_replay_rejects_rehashed_type_coercion(self) -> None:
+        action = CandidateAction(
+            action_id="strict-replay",
+            actor_id="guard",
+            action_type="REPLY",
+            preconditions=frozenset({"met_guard"}),
+            effects=frozenset({"door_open"}),
+        )
+        record = to_jsonable(execute_with_repair(self.state, action))
+        record["prior_state"]["quest_stage"] = "1"
+        payload = {key: value for key, value in record.items() if key != "trace_hash"}
+        canonical = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        record["trace_hash"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        self.assertTrue(verify_trace_record(record))
+        with self.assertRaisesRegex(ValueError, "quest_stage must be a non-negative exact integer"):
+            replay_trace_record(record)
+
+    def test_semantic_replay_revalidates_intermediate_attempts(self) -> None:
+        final = CandidateAction(
+            action_id="repair-history",
+            actor_id="guard",
+            action_type="REPLY",
+            preconditions=frozenset({"met_guard"}),
+            effects=frozenset({"door_open"}),
+        )
+        initial = replace(final, preconditions=frozenset({"unknown"}))
+
+        def repair(state, candidate, validation, attempt):
+            return final
+
+        record = to_jsonable(execute_with_repair(self.state, initial, repair, repair_budget=1))
+        record["trace"][0]["validation"] = record["trace"][1]["validation"]
+        payload = {key: value for key, value in record.items() if key != "trace_hash"}
+        canonical = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        record["trace_hash"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        self.assertTrue(verify_trace_record(record))
+        with self.assertRaisesRegex(ValueError, "attempt 0 validation"):
+            replay_trace_record(record)
+
+    def test_semantic_replay_rejects_attempts_after_an_early_valid_candidate(self) -> None:
+        final = CandidateAction(
+            action_id="repair-control-flow",
+            actor_id="guard",
+            action_type="REPLY",
+            preconditions=frozenset({"met_guard"}),
+            effects=frozenset({"door_open"}),
+        )
+        initial = replace(final, preconditions=frozenset({"unknown"}))
+        record = to_jsonable(
+            execute_with_repair(self.state, initial, lambda *_args: final, repair_budget=1)
+        )
+        record["trace"][0]["candidate"] = record["trace"][1]["candidate"]
+        record["trace"][0]["validation"] = record["trace"][1]["validation"]
+        payload = {key: value for key, value in record.items() if key != "trace_hash"}
+        canonical = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        record["trace_hash"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        self.assertTrue(verify_trace_record(record))
+        with self.assertRaisesRegex(ValueError, "early valid candidate"):
+            replay_trace_record(record)
+
+    def test_trace_checksum_rejects_unbound_top_level_metadata(self) -> None:
+        action = CandidateAction(
+            action_id="valid",
+            actor_id="guard",
+            action_type="REPLY",
+            preconditions=frozenset({"met_guard"}),
+            effects=frozenset({"door_open"}),
+        )
+        outcome = execute_with_repair(self.state, action)
+        record = to_jsonable(outcome)
+        record["unhashed_claim"] = {"arm_id": "forged"}
+        self.assertFalse(verify_trace_record(record))
+        with self.assertRaisesRegex(ValueError, "hash verification failed"):
+            replay_trace_record(record)
+
     def test_jsonl_replay_enforces_episode_continuity(self) -> None:
         first_action = CandidateAction(
             action_id="first",
@@ -204,7 +280,11 @@ class RuntimeTests(unittest.TestCase):
         )
         outcome = execute_with_repair(self.state, action)
         self.assertEqual(outcome.status, "fallback")
-        self.assertEqual(outcome.validation.errors[0].code, "QUEST_STAGE_REGRESSION")
+        codes = {error.code for error in outcome.validation.errors}
+        self.assertEqual(
+            codes,
+            {"POLICY_QUEST_STAGE_EFFECT_VIOLATION", "QUEST_STAGE_REGRESSION"},
+        )
 
 
 if __name__ == "__main__":
