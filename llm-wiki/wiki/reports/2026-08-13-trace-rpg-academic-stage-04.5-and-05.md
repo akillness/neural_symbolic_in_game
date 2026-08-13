@@ -1,12 +1,19 @@
 # TRACE-RPG Academic Pipeline — Stages 4.5 and 5
 
-Status: **BOTH GATES PASSED — STAGE 6 UNBLOCKED**
+Status: **STAGE 4.5 ORIGINAL PASS SUPERSEDED; STAGE 5 CITATION-IDENTITY GATE REMAINS PASSED**
+
+Current correction: Stage 6 later reproduced three claim defects and one body-level telemetry defect
+outside the original audit scope. The fail-closed Stage 4.5 verdict is therefore not a current pass;
+its `22/22` result below is retained as historical evidence of the deficient audit. Stage 8 corrected
+the manuscript/parser issues and regenerated the pilot as 2 open sentinels plus 1 closed unknown-key
+regression, but a final comprehensive claim-faithfulness re-audit belongs to Stage 10. Stage 5's
+36-entry citation-identity result is unaffected.
 
 The Stage 4 packet was approved on 2026-08-13, and the two fail-closed integrity gates that guard
 peer review were then executed. Neither gate produced a blocking finding, and neither promoted any
 designed-fixture observation into an efficacy result.
 
-## Stage 4.5 — claim faithfulness
+## Original Stage 4.5 verdict — claim faithfulness (superseded)
 
 Twenty-two claims were audited: nine abstract sentences and thirteen introduction sentences. All
 twenty-two classified `FAITHFUL`, with zero `OVERSTATED`, `UNSUPPORTED`, or `SCOPE_MISMATCH`.
@@ -20,13 +27,14 @@ The audit was mechanical wherever a mechanical check was possible:
 - The five `TODO-RESULT` efficacy claims were searched for as positive assertions and none appears.
 - `C-PILOT-001` through `C-PILOT-005` were recomputed against the pilot CSVs and the assignment
   manifest; all five are consistent.
-- All 46 frozen-bundle SHA-256 entries, 32 artifacts and 14 inputs, were recomputed and intact.
+- The superseding Stage 8 packet records 35 artifacts and 20 declared inputs; its SHA-256 entries were recomputed and intact after migration.
 
 Mechanism claims were traced to implementing symbols rather than to matching prose. The audit
-confirmed that the proposal parser `candidate_from_mapping` ignores unknown top-level candidate
-fields while the replay parser `_candidate_from_json` rejects them through `_require_exact_keys`.
-The manuscripts describe the permissive proposal boundary and disclose it as boundary sentinel
-`boundary-extra-candidate-field`, so the abstract statement is accurate rather than flattering.
+historically confirmed that the proposal parser `candidate_from_mapping` ignored unknown top-level candidate
+fields while the replay parser `_candidate_from_json` rejected them through `_require_exact_keys`.
+The Stage 4 manuscripts described that permissive proposal boundary and disclosed it as boundary sentinel
+`boundary-extra-candidate-field`. Stage 8 closed the asymmetry: both parsers now reject an unknown key,
+and the former sentinel is retained as a negative regression rather than an open limitation.
 
 A risk-vocabulary sweep found twenty-one superiority, efficacy, generality, proof, and security
 tokens in the English manuscript. Every occurrence is a negation, an explicitly scoped statement, or
@@ -78,7 +86,9 @@ evidence with no live model, participant, affect, retrieval, memory, or engine r
 - `research/academic-pipeline/stage-05-citation-verification.json`
 - `research/academic-pipeline/material-passport.json`
 
-Next gate: Stage 6 peer-review simulation. Stages 6 through 10 remain unexecuted.
+Current pipeline: Stage 6 revise-and-resubmit was accepted and actioned; optional Stage 7 was not
+activated; Stages 8 and 9 executed; Stage 10 clean-commit reproducibility lock and final re-audit are
+pending.
 
 Related: [[wiki/reports/2026-08-12-trace-rpg-academic-stage-04]],
 [[wiki/projects/trace-rpg-paper-2026]], [[wiki/concepts/evidence-and-claim-status]].

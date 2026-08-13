@@ -19,8 +19,10 @@
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-02]] — journal target, 36-source shortlist, and empirical claim boundary
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-03]] — fail-closed claim audit and IEEE ToG IMRaD outline
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-04]] — bilingual IEEE draft, deterministic pilot, and evidence boundary
-- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] — claim-faithfulness and citation-verification gates, both passed
-- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] — ToG peer-review simulation; Full Paper revise-and-resubmit decision awaits user response
+- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] — superseded Stage 4.5 pass/correction trail and still-valid Stage 5 citation-identity gate
+- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] — ToG peer-review simulation; user accepted the Full Paper revise-and-resubmit game-track direction
+- [[wiki/reports/2026-08-13-trace-rpg-sealed-lighthouse-game-track]] — **current** Godot 4.7.1 authored fixtures, immutable v5 non-headless render evidence, dual-track resources, and bounded paper claim
+- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06-to-10]] — full pipeline completion: adversarial review caught three claims the Stage 4.5 gate passed; parser asymmetry and figure legibility fixed in code
 - [[maintenance-log]] — wiki and Graphify maintenance decisions
 
 ## Prompt/output ingest
@@ -56,3 +58,31 @@
 - [[wiki/sources/2026-08-13-024518-continue]] - continue
 
 - [[wiki/queries/2026-08-13-024518-continue]] - continue
+
+- [[wiki/sources/2026-08-13-081610-interview-game-studio-harness]] - interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…
+
+- [[wiki/queries/2026-08-13-081610-interview-game-studio-harness]] - interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…
+
+- [[wiki/sources/2026-08-13-081911-god-tibo-imagen]] - 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+- [[wiki/queries/2026-08-13-081911-god-tibo-imagen]] - 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+- [[wiki/sources/2026-08-13-085617-prompt]] - 비 플랜
+
+- [[wiki/queries/2026-08-13-085617-prompt]] - 비 플랜
+
+- [[wiki/sources/2026-08-13-085724-prompt]] - 권장대로 진행하자
+
+- [[wiki/queries/2026-08-13-085724-prompt]] - 권장대로 진행하자
+
+- [[wiki/sources/2026-08-13-085828-prompt]] - 이중 트랙으로 진행
+
+- [[wiki/queries/2026-08-13-085828-prompt]] - 이중 트랙으로 진행
+
+- [[wiki/sources/2026-08-13-093342-prompt]] - 비 권장대로 진행
+
+- [[wiki/queries/2026-08-13-093342-prompt]] - 비 권장대로 진행
+
+- [[wiki/sources/2026-08-13-113058-prompt]] - 실험 동작하고 캡쳐이미지 추가
+
+- [[wiki/queries/2026-08-13-113058-prompt]] - 실험 동작하고 캡쳐이미지 추가

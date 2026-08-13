@@ -1,6 +1,6 @@
 # TRACE-RPG Academic Pipeline — Stage 6
 
-Status: **REVISE AND RESUBMIT — USER DECISION REQUIRED**
+Status: **REVISE AND RESUBMIT — USER ACCEPTED GAME-TRACK EVIDENCE REVISION**
 
 The Stage 6 IEEE Transactions on Games peer-review simulation combined EIC, methodology, related
 work, clarity/reproducibility, and adversarial-review perspectives. It retained the approved Full
@@ -11,8 +11,9 @@ Paper target and did not reinterpret the deterministic Stage 4 pilot as efficacy
 The topic and staged authorization mechanism fit game-AI and game-software research, but the current
 six-page packet is not mature Full Paper evidence. The central finding is a revise-and-resubmit
 decision: TRACE-RPG has a coherent proposal/commit trust boundary and strong evidence discipline,
-yet lacks independent semantic labels, live model/controller comparisons, held-out game-world
-templates, an executed engine path, and participant evidence.
+yet at review time lacked independent semantic labels, live model/controller comparisons, held-out
+game-world templates, an executed engine path, and participant evidence. The subsequent Sealed
+Lighthouse revision closes only the bounded authored engine-local path item.
 
 The strongest accept case is a substantially revised reproducibility-first Short Paper. The active
 project contract nevertheless remains a Full Paper, so evidence-generating confirmatory work is a
@@ -38,7 +39,8 @@ publication gate rather than an optional embellishment.
 - Expand the central algorithm to include adapter/controller failures, deadlines, terminal record
   emission, paired persistence, and rollback.
 - Resolve the repository license and add code/data availability text through an author decision.
-- Execute a headless or real-engine multi-step path before claiming engine relevance.
+- Integrate the now-executed Godot engine-local policy-mirror path without presenting it as a live
+  Python authorization round-trip; engine relevance remains bounded to authored conformance.
 
 ## Stable evidence boundary
 
@@ -50,8 +52,12 @@ questions. `C-RESULT-001` through `C-RESULT-005` remain `TODO-RESULT`.
 Canonical review:
 `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-06-peer-review-simulation.md`.
 
-Next gate: the user must accept, partially accept, or rebut the Stage 6 findings before optional
-Stage 7 cross-model review or Stage 8 author revision.
+The user accepted the evidence-generating direction through a five-round deep interview. The active
+revision now includes a planning-heavy Godot headless experimental game, independent oracle/holdout
+protocol, frozen concept-resource track, three retained engine-local policy-mirror runs, a fresh
+corrupt-save negative run, and stable-envelope schema projection. This supplies bounded authored
+engine conformance toward M6; it does not satisfy C1 confirmatory efficacy, live cross-runtime
+authorization, participant, or external-validity requirements.
 
 Related: [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]],
 [[wiki/projects/trace-rpg-paper-2026]], [[wiki/concepts/journal-grade-experimental-design]].
