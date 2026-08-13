@@ -61,13 +61,14 @@ omitting it.
 
 ## Carried open items / 이월된 미해결 항목
 
-Stage 9 does not close these; they are recorded so the Stage 10 passport carries them.
+Stage 9 originally carried the items below. The current manuscript subsequently resolves F13 and
+F14; F17 and F18 remain camera-ready items.
 
 | ID | Item | Status |
 | --- | --- | --- |
-| F13 | P1--P4 stated in theorem register without proof; P2's antecedent vacuously satisfied | open |
-| F14 | 62-key manifest mixes 19 aggregate rows with 43 executed rows | open |
+| F13 | I1--I4 are explicitly asserted implementation invariants, not theorems; no callback deadline is claimed | resolved in current manuscript |
+| F14 | 64 provenance rows are split as 43 executed fixture rows plus 21 aggregate rows | resolved in current manuscript |
 | F17 | `\IfFileExists` and `\pendingartifact` scaffolding still present, latent | open |
-| F18 | three of five floats uncited in both languages | open |
+| F18 | one of four figure floats uncited in each language | open |
 
-F13과 F14는 게재 승인 차단 항목으로 남는다. F17과 F18은 camera-ready 이전 교정 항목이다.
+F13과 F14는 현재 원고에서 해결됐다. F17과 F18은 camera-ready 이전 교정 항목이다.

@@ -551,24 +551,32 @@ class GodotExperimentalGameContractTests(unittest.TestCase):
 class GodotExperimentalGameRuntimeTests(unittest.TestCase):
     @staticmethod
     def _ensure_project_imported(godot: str) -> None:
-        """Import the Godot project once if its asset cache is absent.
+        """Import the Godot project so a fresh checkout runs fixtures deterministically.
 
         `.godot/` is a build artifact and is gitignored, so a fresh clone has no import
         cache. Godot then spends its first invocation importing instead of running the
         fixture, which produces no summary and fails the test for an environment reason
-        rather than a real one. Importing explicitly makes the run deterministic from a
-        pristine checkout.
+        rather than a real one.
+
+        The import command is idempotent, so it runs unconditionally rather than trusting
+        the mere existence of `.godot/`: a partial or failed cache would otherwise be
+        mistaken for a usable one and produce a misleading downstream failure. A nonzero
+        exit fails here, with engine output attached, instead of surfacing later as a
+        missing summary file.
         """
 
-        if (GODOT_PROJECT / ".godot").is_dir():
-            return
-        subprocess.run(
+        result = subprocess.run(
             [godot, "--headless", "--path", str(GODOT_PROJECT), "--import"],
             check=False,
             capture_output=True,
             text=True,
             timeout=300,
         )
+        if result.returncode != 0:
+            raise AssertionError(
+                "Godot project import failed; fixture runs would fail for an "
+                f"environment reason.\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+            )
 
     def test_all_headless_fixtures_when_godot_4_is_available(self) -> None:
         godot = find_godot_4()

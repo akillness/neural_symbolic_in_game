@@ -5,6 +5,13 @@
   "oversight": "very-high",
   "as_of": "2026-08-13",
   "status": "stage_10_passport_compiled_clean_release_lock_pending",
+  "release_readiness": {
+    "status": "blocked",
+    "blockers": [
+      "stage_4_5_final_reaudit",
+      "clean_commit_reproducibility_lock"
+    ]
+  },
   "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
@@ -81,18 +88,23 @@
   "stage_4": {
     "status": "approved",
     "approved_at": "2026-08-13",
+    "draft_report_status": "historical_stage_4_snapshot_superseded_by_stage_8_revision",
     "draft_report_path": "research/academic-pipeline/stage-04-draft-report.md",
     "pilot_path": "research/academic-pipeline/stage-04-pilot/pilot-results.json",
     "pilot_sha256_manifest": "research/academic-pipeline/stage-04-pilot/sha256-manifest.json",
     "manuscripts": {
       "english_source": "paper/latex/en/main.tex",
       "english_pdf": "paper/latex/en/main.pdf",
-      "english_pdf_sha256": "1a404306f65d680d4130495bb9af1bf9c90a84dfc7b95bf1bb57f868277bdd57",
+      "english_pdf_sha256": "14bb12ee92daa5019cc7132b5eabb17fc6d4882089b5a3f4be2613a8bda6af84",
       "korean_source": "paper/latex/ko/main.tex",
       "korean_pdf": "paper/latex/ko/main.pdf",
-      "korean_pdf_sha256": "cd9f18d19fd98a912a3d43e985afb39d2b5f2dda78871134525b8bd9f1b82dc7",
-      "page_count_each": 6,
-      "reference_count": 36
+      "korean_pdf_sha256": "0e5e7d38e4da5650fd045152e451c77f979cb49e496aeb79c0a4e0b23b45b75f",
+      "page_count": {
+        "english": 7,
+        "korean": 6
+      },
+      "reference_count": 41,
+      "digest_status": "current_after_final_pdf_rebuild"
     },
     "verification": {
       "unittest_discovery_passed": 96,
@@ -128,21 +140,32 @@
     "status": "superseded_original_pass_remediated_reaudit_pending",
     "audited_at": "2026-08-13",
     "audit_path": "research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md",
-    "audited_revision": "ea96f2e",
-    "claims_audited": 22,
-    "original_classification_superseded": {
-      "faithful": 22,
-      "overstated": 0,
-      "unsupported": 0,
-      "scope_mismatch": 0
+    "original_audit": {
+      "audited_revision": "ea96f2e",
+      "scope": "abstract_and_introduction",
+      "claims_audited": 22,
+      "recorded_verdict": "pass_with_scope_boundaries",
+      "superseded": true,
+      "classification": {
+        "faithful": 22,
+        "overstated": 0,
+        "unsupported": 0,
+        "scope_mismatch": 0
+      }
     },
-    "corrected_classification": {
-      "faithful": 19,
-      "overstated": 1,
-      "unsupported": 0,
-      "scope_mismatch": 1,
-      "outdated": 1,
-      "additional_unaudited_body_overstatement": 1
+    "corrected_audit": {
+      "gate_decision": "block",
+      "classification": {
+        "faithful": 19,
+        "overstated": 1,
+        "unsupported": 0,
+        "scope_mismatch": 1,
+        "outdated": 1
+      },
+      "additional_out_of_original_scope_body_findings": {
+        "audited": 1,
+        "overstated": 1
+      }
     },
     "mechanical_checks": {
       "unbacked_numbers": 0,
@@ -154,6 +177,17 @@
       "todo_result_claims_asserted": 0,
       "pilot_claims_consistent": "post-Stage-8 packet regenerated; final comprehensive claim-faithfulness re-audit pending",
       "current_frozen_bundle_checksums": "35 artifacts + 20 declared inputs; verified by the post-Stage-8 runner"
+    },
+    "post_stage_8": {
+      "remediation_status": "implemented",
+      "formal_reaudit_status": "not_executed",
+      "current_bundle": {
+        "artifacts": 35,
+        "declared_inputs": 20,
+        "bound_provenance_rows": 64,
+        "executed_fixture_rows": 43,
+        "aggregate_rows": 21
+      }
     },
     "residual_boundaries": [
       "encoded predicates only; semantic omissions unmeasured",
@@ -205,7 +239,17 @@
     }
   },
   "stage_6": {
-    "status": "major_revision_with_integrity_findings",
+    "status": "major_revision_direction_accepted_and_actioned",
+    "decision_status": "accepted",
+    "accepted_at": "2026-08-13",
+    "reviewed_track": "full_paper",
+    "current_submission_track": "short_paper",
+    "revision_status": "stages_8_and_9_executed",
+    "review_paths": {
+      "initial_simulation": "research/academic-pipeline/stage-06-peer-review-simulation.md",
+      "adversarial_review": "research/academic-pipeline/stage-06-peer-review.md",
+      "game_track_revision": "research/academic-pipeline/stage-06-game-track-revision.md"
+    },
     "audit_path": "research/academic-pipeline/stage-06-peer-review.md",
     "panel": [
       "EIC",
@@ -251,14 +295,15 @@
     "note": "Stage 7 was gated off, not executed; see the Stage-7 record."
   },
   "stage_7": {
-    "status": "not_activated",
+    "status": "not_activated_optional",
+    "executed": false,
     "audit_path": "research/academic-pipeline/stage-07-cross-model-verification.md",
     "activation_variable": "ARS_CROSS_MODEL",
     "activation_variable_set": false,
     "reason": "optional stage; gate unmet. A reachable local 7B endpoint does not satisfy it and is not a credible verifier for the findings at issue."
   },
   "stage_8": {
-    "status": "revised_class_a_and_b_closed",
+    "status": "executed_class_a_and_b_closed_f13_f14_resolved_in_current_manuscript",
     "audit_path": "research/academic-pipeline/stage-08-revision.md",
     "resolved": [
       "I1",
@@ -276,7 +321,7 @@
       "F15",
       "F16"
     ],
-    "open_acceptance_blockers": [
+    "resolved_in_current_manuscript": [
       "F13",
       "F14"
     ],
@@ -284,6 +329,11 @@
       "F17",
       "F18"
     ],
+    "current_accounting": {
+      "bound_provenance_rows": 64,
+      "executed_fixture_rows": 43,
+      "aggregate_rows": 21
+    },
     "code_changes": [
       "both candidate parsers unified on contracts.parse_candidate_mapping",
       "closed boundary retained as a parser-parity regression fixture",
@@ -292,7 +342,7 @@
     ]
   },
   "stage_9": {
-    "status": "formatted_and_disclosed",
+    "status": "executed_formatted_and_disclosed_with_open_camera_ready_items",
     "audit_path": "research/academic-pipeline/stage-09-formatting-and-disclosure.md",
     "article_type": "short_paper",
     "page_count": {
@@ -300,6 +350,12 @@
       "korean": 6
     },
     "page_band": "6-8 (transactions.games, retrieved 2026-08-13)",
+    "reference_count": 41,
+    "build_freshness": "fresh_after_generated_fragment_refresh",
+    "open_items": [
+      "F17",
+      "F18"
+    ],
     "ai_disclosure": "present in both languages",
     "anonymization": "author, affiliation, funding, biography all absent"
   },
@@ -307,6 +363,9 @@
     "status": "passport_compiled_clean_commit_release_lock_pending",
     "compiled_at": "2026-08-13",
     "repro_lock": {
+      "status": "dirty_snapshot_only",
+      "clean_release_lock": false,
+      "working_tree_dirty": true,
       "note": "The packet resolves 20/20 declared inputs at the recorded commit, but records git.dirty=true; this is not yet a clean-commit/tag byte-reproducible release lock.",
       "git_commit_of_pilot_inputs": "26724a6bf32711ff69dc70983afd977ccb27f62e",
       "declared_inputs_resolving_at_commit": "20/20",
@@ -333,7 +392,7 @@
       "stage_4_5_corrected": "19 FAITHFUL, 1 OVERSTATED, 1 SCOPE_MISMATCH, 1 OUTDATED, +1 unaudited body claim",
       "stage_5": "36/36 resolved, 0 hallucinated (41/41 after Stage 8 additions)",
       "stage_6": "major revision; 3 integrity findings + 1 provenance failure",
-      "stage_8": "Class A and B closed; F13, F14 open"
+      "stage_8": "Class A, B, and C closed in the current manuscript; clean release lock and final re-audit pending"
     },
     "open_at_release": {
       "acceptance_blockers": {

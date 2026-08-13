@@ -285,7 +285,7 @@ Construct validity는 declared field에 한정되며 encoded check는 누락된 
 본 원고 준비 과정에서 대규모 언어 모델을 집필 및 검토 도구로 사용했다. 산문 초안 작성과 개정, 이번 개정을 이끈 심사 패널 시뮬레이션, 서지 메타데이터 API에 대한 인용 동일성 검사에 사용했다. 실험 결과의 생성, 변경, 해석에는 사용하지 않았다. 보고된 모든 수치는 동결된 픽스처에서 결정론적 파일럿 runner가 산출하며, 기계 생성 조각을 통해서만 원고에 삽입된다. 구현에 관한 모든 주장은 저자가 소스와 직접 대조해 확인했고, 모든 인용은 최소 하나의 독립 색인에서 확인했다. 내용에 대한 책임은 전적으로 저자에게 있다.
 
 \section*{데이터 및 코드 가용성}
-구현, 동결 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, 빌드는 심사용 익명 아카이브로 제공하며 camera-ready 시 DOI 기반 저장소로 대체한다. 번들의 SHA-256 manifest는 산출물 35개와 선언 입력 20개를 포함하며, 입력 20/20은 commit \texttt{26724a6}에서 모두 해소된다. Manifest key 64개는 실행 fixture row 43개와 aggregate row 21개로 구성된다. 다만 패킷은 \texttt{git.dirty=true}를 기록하므로 archival release 전에 clean commit과 tag에서 재캡처해야 한다.
+구현, 동결 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, 빌드는 심사용 익명 아카이브로 제공하며 camera-ready 시 DOI 기반 저장소로 대체한다. 번들의 SHA-256 manifest는 산출물 35개와 선언 입력 20개를 포함하며, 입력 20/20은 commit \texttt{26724a6}에서 모두 해소된다. 또한 bound provenance row 64개(실행 fixture row 43개와 aggregate row 21개)를 결합한다. 다만 패킷은 \texttt{git.dirty=true}를 기록하므로 archival release 전에 clean commit과 tag에서 재캡처해야 한다.
 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}

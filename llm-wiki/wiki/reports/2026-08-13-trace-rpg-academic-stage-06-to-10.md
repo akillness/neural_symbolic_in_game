@@ -1,6 +1,6 @@
 # TRACE-RPG Academic Pipeline — Stages 6 to 10
 
-Status: **PIPELINE COMPLETE — two acceptance blockers remain open**
+Status: **REVISION AND PASSPORT COMPILED — CLEAN RELEASE LOCK AND FINAL RE-AUDIT PENDING**
 
 The ten-stage academic pipeline ran to completion on 2026-08-13. The headline result is not that
 the manuscript improved, though it did. It is that a purpose-built claim-faithfulness gate passed
@@ -65,20 +65,23 @@ An independently written test suite for the unified parser caught a regression t
 introduced: the shared helper used `not value` where the original used `not value.strip()`, so
 whitespace-only identifiers could reach commit. Unified toward the strict side.
 
-## Open at release
+## Current release gate
 
 | ID | Item | Class |
 | --- | --- | --- |
-| F13 | P1--P4 stated in theorem register without proof; P2's antecedent vacuously satisfied | acceptance blocker |
-| F14 | 62-key manifest mixes 19 aggregate rows with 43 executed rows | acceptance blocker |
+| F13 | I1--I4 demoted to asserted encoded-contract implementation invariants; callback deadlines are not claimed | resolved in current manuscript |
+| F14 | 64 provenance rows reported as 43 executed fixture rows plus 21 aggregate rows | resolved in current manuscript |
 | F17 | Conditional build scaffolding still present, latent | camera-ready |
-| F18 | Three of five floats uncited | camera-ready |
+| F18 | One of four figure floats uncited in each language | camera-ready |
+| Release lock | Current pilot manifest records `git.dirty=true` | blocking until clean tagged recapture |
+| Claim re-audit | Original Stage 4.5 pass was superseded; expanded post-Stage-8 audit not yet rerun | blocking |
 
 ## Standing evidence boundary
 
 Unchanged by all of this. `C-RESULT-001` through `C-RESULT-005` remain `TODO-RESULT`. The pilot is
-deterministic offline conformance over one authored world state. The Godot evidence is one scripted
-headless fixture at a fixed seed whose 16.7 ms frame budget was not met.
+deterministic offline conformance over one authored world state. The Godot evidence comprises four
+authored engine-local fixtures and three trace-bound non-headless render captures; the 16.7 ms frame
+budget was not met and no live model, transport, participant, or efficacy result is implied.
 
 ## Verification
 

@@ -44,7 +44,9 @@ publication gate rather than an optional embellishment.
 
 ## Stable evidence boundary
 
-Stage 4.5 remains 22 faithful claims out of 22 audited, with no overstated or unsupported claim.
+The original Stage 4.5 `22/22` pass is superseded: Stage 6 reproduced three defects and one
+body-level telemetry defect outside that audit's scope. Stage 8 implemented remediation; a final
+expanded re-audit remains pending.
 Stage 5 remains 33 verified citation identities and 3 declared preprints out of 36, with no unmatched
 or hallucinated record. These integrity results do not answer the Stage 6 efficacy and novelty
 questions. `C-RESULT-001` through `C-RESULT-005` remain `TODO-RESULT`.

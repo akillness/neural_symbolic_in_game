@@ -11,11 +11,11 @@ Input: `stage-06-peer-review.md` (Major Revision; 3 integrity findings, 6 critic
 | --- | --- | --- | --- |
 | A — verified integrity failures | I1, I2, I3, F6 | 4 | 0 |
 | B — critical scope and positioning | F4, F5, F7, F8, F9, F10 | 6 | 0 |
-| C — major defects | F11, F12, F13, F14, F15 | 3 | 2 |
+| C — major defects | F11, F12, F13, F14, F15 | 5 | 0 |
 | Minor | F16, F17, F18 | 1 | 2 |
 
-Every Class A and Class B item is closed. Two Class C items and two minor items remain open and are
-recorded as such rather than described as addressed.
+Every Class A, Class B, and Class C item is closed in the current manuscript. Two camera-ready
+items remain open and are recorded as such rather than described as addressed.
 
 ## Class A — integrity / 무결성
 
@@ -47,7 +47,7 @@ populated and propagated for 2/7 assignments.
 **F6. The manifest's provenance commit did not contain the pilot runner.** At the recorded commit
 `3958c09`, `run_conformance_pilot.py` did not exist and only 5 of 14 declared inputs resolved. The
 runner, manifest, schemas, and configuration were committed first, then the pilot was regenerated.
-The recorded commit is now `8fff4bc` and **20 of 20 declared inputs resolve at it with matching
+The recorded commit is now `26724a6` and **20 of 20 declared inputs resolve at it with matching
 hashes**, verified by reading each input out of the commit with `git show` and recomputing its
 digest.
 
@@ -62,10 +62,9 @@ evaluate a neural proposal generator. "Neuro-symbolic" has been removed from the
 abstract, and the keywords in both languages.
 
 **F7. No availability statement.** A Data and Code Availability section was added to both
-manuscripts. It states what the bundle contains, that it carries a SHA-256 manifest over 32
-artifacts and 14 declared inputs, and — because reviewers deserve the caveat rather than a
-discovery — that the earlier packet's provenance commit did not resolve every input and has been
-regenerated.
+manuscripts. It states what the current bundle contains: a SHA-256 manifest over 35 artifacts and
+20 declared inputs, with all 20 inputs resolving at commit `26724a6`. The packet still records
+`git.dirty=true`, so a clean tagged recapture remains a release gate.
 
 **F8. Novelty asserted against a self-selected pool.** The phrase "within the approved 36-source
 pool" is removed. It was internal pipeline language and made the gap true by construction.
@@ -101,14 +100,15 @@ with the identical message `unknown candidate fields: ['unexpected_top_level_met
 
 **F15 resolved** as described under I1.
 
-**F13 open.** P1–P4 remain stated in theorem register without proof, and P2's antecedent is still
-vacuously satisfied by the pilot's callbacks. Closing this needs either proofs over the contract
-semantics or demotion to asserted design invariants with a per-invariant test reference.
+**F13 resolved in the current manuscript.** Former P1--P4 are now I1--I4, explicitly described as
+asserted implementation invariants under encoded contracts rather than general theorems. Their
+mechanisms are tied to deterministic valid, invalid, repair, fallback, replay, and fault-injection
+fixtures. I2 now conditions only on callbacks returning, explicitly states that the runtime does
+not enforce callback deadlines, and makes no wall-clock termination guarantee.
 
-**F14 open.** The 62-key manifest still enrols 19 aggregate summary rows alongside 43 executed
-rows. The counts must be reported separately before the manifest figure is used in the manuscript.
-The figure does not currently appear in the manuscript, which limits the exposure but does not
-close the finding.
+**F14 resolved in the current manuscript.** The regenerated manifest binds 64 provenance rows,
+reported explicitly as 43 executed fixture rows plus 21 aggregate rows. The manuscript no longer
+calls all 64 rows assignments or leaves the executed/aggregate denominator split implicit.
 
 ## Minor / 사소 항목
 
@@ -116,19 +116,19 @@ close the finding.
 **F17 open:** the `\IfFileExists` and `\pendingartifact` scaffolding is still present. It is latent
 rather than active — the current build contains no placeholder text — but it must be inlined for a
 submission bundle.
-**F18 open:** three of five floats remain uncited in both languages.
+**F18 open:** one of four figure floats remains uncited in each language.
 
 ## Verification / 검증
 
 | Check | Result |
 | --- | --- |
-| Test suite | 83 tests pass |
+| Test suite | 96 tests and 70 subtests pass |
 | Ruff lint and format | clean over `src`, `tests`, `scripts`, `examples` |
 | Pilot regeneration | deterministic; release bundle refreshed |
 | Manifest provenance | 20/20 declared inputs resolve at the recorded commit |
 | Parser parity | proposal and replay reject the same payload with the same message |
 | Paper build | `make all` exits 0; no Type-3 fonts, no overfull boxes, no undefined references |
-| Page count | EN 8 pp, KO 6 pp, inside the 6–8 short-paper band |
+| Page count | EN 7 pp, KO 6 pp, inside the 6–8 short-paper band |
 | Figure legibility | smallest glyph class 6.75 pt, measured from PDF image geometry |
 
 ## Article type / 논문 유형
@@ -141,9 +141,9 @@ which is also what recovered the space the two-column figures needed.
 
 ## Remaining gate status / 남은 게이트 상태
 
-Class A and Class B are closed, so the manuscript is resubmittable under the Stage 6 gate. F13 and
-F14 remain acceptance blockers and are carried into Stage 9 and Stage 10 as open items. This
-revision does not claim they are resolved.
+Class A, Class B, and Class C are closed in the current manuscript. F17 and F18 remain
+camera-ready items. A final expanded Stage-4.5 re-audit and a clean tagged recapture remain release
+gates; neither is replaced by this disposition record.
 
-Class A와 Class B는 종결됐으므로 Stage 6 게이트 기준으로 재제출이 가능하다. F13과 F14는 게재
-승인 차단 항목으로 남아 있으며, 본 개정은 이를 해결했다고 주장하지 않는다.
+Class A, Class B, Class C는 현재 원고에서 종결됐다. F17과 F18은 camera-ready 항목으로
+남아 있고, 확장된 Stage-4.5 최종 재감사와 clean tagged recapture는 별도 release gate다.
