@@ -19,3 +19,23 @@
 - Raw capture: [[raw/sources/prompts/2026/08/12/093240-019ff4f6-0dc-prompt]]
 - Source note: [[wiki/sources/2026-08-12-093240-prompt]]
 - Query note: [[wiki/queries/2026-08-12-093240-prompt]]
+
+## [2026-08-12 11:28:04] query | 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+- Raw capture: [[raw/sources/prompts/2026/08/12/112804-019ff4f6-0dc-academic-research-pdf]]
+- Source note: [[wiki/sources/2026-08-12-112804-academic-research-pdf]]
+- Query note: [[wiki/queries/2026-08-12-112804-academic-research-pdf]]
+
+## [2026-08-12 11:30:16] query | 확정
+- Raw capture: [[raw/sources/prompts/2026/08/12/113016-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-12-113016-prompt]]
+- Query note: [[wiki/queries/2026-08-12-113016-prompt]]
+
+## [2026-08-12 11:48:20] query | 승인
+- Raw capture: [[raw/sources/prompts/2026/08/12/114820-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-12-114820-prompt]]
+- Query note: [[wiki/queries/2026-08-12-114820-prompt]]
+
+## [2026-08-12 15:11:31] query | ㄱㄱ
+- Raw capture: [[raw/sources/prompts/2026/08/12/151131-019ff4f6-0dc-prompt]]
+- Source note: [[wiki/sources/2026-08-12-151131-prompt]]
+- Query note: [[wiki/queries/2026-08-12-151131-prompt]]
