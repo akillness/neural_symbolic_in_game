@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from copy import deepcopy
 from pathlib import Path
+from unittest.mock import patch
 
 from jsonschema import Draft202012Validator
 
@@ -30,6 +31,8 @@ class ConformancePilotTests(unittest.TestCase):
         return result, output, release
 
     def test_manifest_is_strict_and_covers_codes_and_boundaries(self) -> None:
+        self.assertEqual(self.manifest["amendment"]["artifact_status"], "post-stage-08-rerun")
+        self.assertEqual(self.manifest["amendment"]["source_stage"], "stage-04-pilot")
         expected_codes = set(self.manifest["implemented_validator_codes"])
         fixture_codes = [
             code for fixture in self.manifest["gate_fixtures"] for code in fixture["expected_codes"]
@@ -47,8 +50,38 @@ class ConformancePilotTests(unittest.TestCase):
         self.assertEqual(semantic["disclosed_facts"], [])
         omitted_object = sentinels["policy_completeness"]["candidate"]
         self.assertNotIn("required_objects", omitted_object)
-        extra_field = sentinels["candidate_contract_strictness"]["candidate"]
-        self.assertIn("unexpected_top_level_metadata", extra_field)
+        # candidate_contract_strictness is no longer an open boundary: Stage 8 made both
+        # parsers reject unknown top-level keys. It is retained as a closed-boundary
+        # regression so drift back to the permissive behaviour fails the pilot.
+        self.assertNotIn("candidate_contract_strictness", sentinels)
+        regressions = {
+            item["boundary_type"]: item for item in self.manifest["closed_boundary_regressions"]
+        }
+        closed = regressions["candidate_contract_strictness"]
+        self.assertIn("unexpected_top_level_metadata", closed["candidate"])
+        self.assertEqual(
+            set(closed["candidate"]) - {"unexpected_top_level_metadata"},
+            {
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "required_objects",
+                "used_facts",
+                "disclosed_facts",
+                "required_quest_stage",
+                "quest_stage_effect",
+                "narrative_text",
+                "metadata",
+            },
+        )
+        with self.assertRaisesRegex(pilot.AdapterFailure, "unknown candidate fields"):
+            pilot.candidate_from_mapping(closed["candidate"])
+        with self.assertRaisesRegex(ValueError, "unknown candidate fields"):
+            pilot.parse_candidate_record(closed["candidate"])
+        self.assertTrue(closed["expected_rejected"])
+        self.assertEqual(closed["expected_failure_code"], "parse_error")
         self.assertEqual(
             self.manifest["integrity_boundaries"],
             [
@@ -83,10 +116,21 @@ class ConformancePilotTests(unittest.TestCase):
             self.assertEqual(
                 result["boundary_sentinels"]["raw_counts"],
                 {
-                    "sentinel_count": 3,
-                    "encoded_acceptance_count": 3,
-                    "passed_sentinel_count": 3,
+                    "sentinel_count": 2,
+                    "encoded_acceptance_count": 2,
+                    "passed_sentinel_count": 2,
                     "safety_pass_count": 0,
+                },
+            )
+            self.assertEqual(
+                result["closed_boundary_regressions"]["raw_counts"],
+                {
+                    "regression_count": 1,
+                    "proposal_rejected_count": 1,
+                    "replay_rejected_count": 1,
+                    "parser_parity_count": 1,
+                    "unknown_key_rejection_count": 1,
+                    "passed_regression_count": 1,
                 },
             )
             repair = {
@@ -138,6 +182,7 @@ class ConformancePilotTests(unittest.TestCase):
             row_groups = (
                 result["gate_conformance"]["rows"],
                 result["boundary_sentinels"]["rows"],
+                result["closed_boundary_regressions"]["rows"],
                 result["repair_arms"]["rows"],
                 result["repair_arms"]["raw_counts_by_arm"],
                 result["integrity_faults"]["rows"],
@@ -169,6 +214,12 @@ class ConformancePilotTests(unittest.TestCase):
             for row in result["boundary_sentinels"]["rows"]:
                 self.assertTrue(row["observed_valid"])
                 self.assertFalse(row["safety_pass"])
+            closed_boundary = result["closed_boundary_regressions"]["rows"][0]
+            self.assertTrue(closed_boundary["proposal_rejected"])
+            self.assertTrue(closed_boundary["replay_rejected"])
+            self.assertTrue(closed_boundary["parsers_agree"])
+            self.assertTrue(closed_boundary["unknown_key_rejected"])
+            self.assertTrue(closed_boundary["passed"])
             integrity_boundary = result["integrity_boundaries"]["rows"][0]
             self.assertFalse(integrity_boundary["expected_detected"])
             self.assertFalse(integrity_boundary["observed_detected"])
@@ -180,25 +231,38 @@ class ConformancePilotTests(unittest.TestCase):
             assignments = json.loads(
                 (output / "pilot-assignment-manifest.json").read_text(encoding="utf-8")
             )
-            self.assertEqual(assignments["assignment_count"], 62)
+            self.assertEqual(assignments["assignment_count"], 64)
             self.assertEqual(
                 assignments["assignment_set_hash"],
                 pilot._canonical_hash(assignments["expected_provenance_by_key"]),
             )
+
+    def test_closed_boundary_fails_if_either_parser_accepts_unknown_key(self) -> None:
+        state = pilot._world_state(self.manifest["base_state"])
+        for parser_name in ("candidate_from_mapping", "parse_candidate_record"):
+            with self.subTest(parser=parser_name):
+                with patch.object(pilot, parser_name, return_value=object()):
+                    rows, raw = pilot.run_closed_boundary_regressions(self.manifest, state)
+                self.assertEqual(len(rows), 1)
+                self.assertFalse(rows[0]["parsers_agree"])
+                self.assertFalse(rows[0]["unknown_key_rejected"])
+                self.assertFalse(rows[0]["passed"])
+                self.assertEqual(raw["passed_regression_count"], 0)
 
     def test_generated_artifacts_schemas_hashes_and_release_mirror(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             returned_result, output, release = self.run_in_temp(Path(directory))
             table_stems = {
                 "gate-conformance": 13,
-                "boundary-sentinels": 3,
+                "boundary-sentinels": 2,
+                "closed-boundary-regressions": 1,
                 "repair-arms": 6,
                 "repair-arm-summary": 3,
                 "integrity-faults": 10,
                 "integrity-boundaries": 1,
                 "adapter-accounting": 7,
                 "accounting-guards": 3,
-                "pilot-summary": 16,
+                "pilot-summary": 18,
             }
             for stem, denominator in table_stems.items():
                 for suffix in ("csv", "md", "tex"):

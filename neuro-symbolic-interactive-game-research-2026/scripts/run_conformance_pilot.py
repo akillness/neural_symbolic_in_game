@@ -27,6 +27,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from nesy_game import (
     ActionPolicy,
+    AdapterFailure,
     CandidateAction,
     ExperimentCase,
     ProposalResponse,
@@ -34,6 +35,7 @@ from nesy_game import (
     WorldState,
     candidate_from_mapping,
     execute_with_repair,
+    parse_candidate_record,
     replay_trace_jsonl,
     replay_trace_record,
     run_experiment_case,
@@ -162,10 +164,12 @@ def _validate_manifest_structure(data: Mapping[str, Any]) -> None:
             "schema_version",
             "pilot_id",
             "evidence_scope",
+            "amendment",
             "implemented_validator_codes",
             "base_state",
             "gate_fixtures",
             "boundary_sentinels",
+            "closed_boundary_regressions",
             "repair",
             "integrity_faults",
             "integrity_boundaries",
@@ -174,6 +178,18 @@ def _validate_manifest_structure(data: Mapping[str, Any]) -> None:
         },
         "pilot manifest",
     )
+    _require_keys(
+        data["amendment"],
+        {"id", "artifact_status", "source_stage", "change"},
+        "pilot manifest amendment",
+    )
+    if (
+        data["amendment"]["id"] != "stage-08-candidate-contract-strictness"
+        or data["amendment"]["artifact_status"] != "post-stage-08-rerun"
+        or data["amendment"]["source_stage"] != "stage-04-pilot"
+        or not data["amendment"]["change"]
+    ):
+        raise ValueError("pilot amendment provenance differs from the frozen Stage-8 rerun")
     _require_keys(
         data["base_state"],
         {
@@ -211,6 +227,31 @@ def _validate_manifest_structure(data: Mapping[str, Any]) -> None:
             fixture["id"],
         )
         _validate_candidate_fixture(fixture["candidate"], f"{fixture['id']}.candidate")
+    for fixture in data["closed_boundary_regressions"]:
+        _require_keys(
+            fixture,
+            {
+                "id",
+                "boundary_type",
+                "closed_in",
+                "expected_rejected",
+                "expected_failure_code",
+                "interpretation",
+                "candidate",
+            },
+            fixture["id"],
+        )
+        _validate_candidate_fixture(fixture["candidate"], f"{fixture['id']}.candidate")
+        if fixture["expected_failure_code"] not in {"parse_error"}:
+            raise ValueError(
+                f"{fixture['id']} declares an unsupported expected_failure_code: "
+                f"{fixture['expected_failure_code']}"
+            )
+    boundary_ids = [item["id"] for item in data["boundary_sentinels"]] + [
+        item["id"] for item in data["closed_boundary_regressions"]
+    ]
+    if len(boundary_ids) != len(set(boundary_ids)):
+        raise ValueError("boundary sentinel and regression IDs must be unique")
     _require_keys(data["repair"], {"arms", "cases"}, "repair")
     arm_ids = {arm["id"] for arm in data["repair"]["arms"]}
     for arm in data["repair"]["arms"]:
@@ -291,17 +332,23 @@ def load_manifest(path: Path) -> dict[str, Any]:
         raise ValueError("gate fixtures must isolate every implemented validator code exactly once")
     if sum(not fixture["expected_codes"] for fixture in data["gate_fixtures"]) != 1:
         raise ValueError("gate fixtures require exactly one valid control")
-    if len(data["boundary_sentinels"]) != 3:
-        raise ValueError("pilot requires exactly three explicit boundary sentinels")
+    # The candidate_contract_strictness boundary was closed in Stage 8: the proposal parser
+    # now rejects unknown top-level fields, matching the replay parser. Only the two
+    # genuinely open encoding boundaries remain documented as sentinels.
+    if len(data["boundary_sentinels"]) != 2:
+        raise ValueError("pilot requires exactly two explicit boundary sentinels")
     boundary_types = {item["boundary_type"] for item in data["boundary_sentinels"]}
     if boundary_types != {
         "semantic_extraction",
         "policy_completeness",
-        "candidate_contract_strictness",
     }:
         raise ValueError("boundary sentinel coverage differs from the frozen manifest")
     if not all(item["expected_valid"] for item in data["boundary_sentinels"]):
         raise ValueError("boundary sentinels document encoded-gate acceptance")
+    if len(data["closed_boundary_regressions"]) != 1:
+        raise ValueError("pilot requires exactly one closed-boundary regression fixture")
+    if not all(item["expected_rejected"] for item in data["closed_boundary_regressions"]):
+        raise ValueError("closed-boundary regressions must expect rejection")
     return data
 
 
@@ -444,6 +491,94 @@ def run_boundary_sentinels(
         "encoded_acceptance_count": sum(row["observed_valid"] for row in rows),
         "passed_sentinel_count": sum(row["passed"] for row in rows),
         "safety_pass_count": sum(row["safety_pass"] for row in rows),
+    }
+    return rows, raw
+
+
+def run_closed_boundary_regressions(
+    manifest: Mapping[str, Any], state: WorldState
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    """Assert that boundaries closed in earlier stages stay closed, in both parsers.
+
+    Each fixture was once accepted by the permissive proposal parser while the replay
+    parser rejected it, so replay could refuse a candidate that had already committed.
+    Stage 8 closed that asymmetry. This check feeds the same mapping through both the
+    proposal-side parser and the replay-side parser and requires that they agree, so
+    drift in either one fails the pilot rather than silently reopening the gap.
+    """
+
+    rows: list[dict[str, Any]] = []
+    for fixture in manifest["closed_boundary_regressions"]:
+        payload = fixture["candidate"]
+
+        proposal_code: str | None = None
+        proposal_error: str | None = None
+        try:
+            candidate_from_mapping(payload)
+        except AdapterFailure as failure:
+            proposal_code = failure.code
+            proposal_error = str(failure)
+        proposal_rejected = proposal_code is not None
+
+        # Call the replay-side parser directly. A fabricated whole record would fail for
+        # unrelated hash/trace reasons and would report parity spuriously.
+        replay_error: str | None = None
+        try:
+            parse_candidate_record(payload)
+        except ValueError as failure:
+            # ValueError is the replay parser's declared refusal; any other exception is
+            # a bug and must surface rather than be counted as agreement.
+            replay_error = str(failure)
+        replay_rejected = replay_error is not None
+
+        parity = proposal_rejected == replay_rejected
+        unknown_key_rejected = (
+            proposal_error is not None
+            and "unknown candidate fields" in proposal_error
+            and replay_error is not None
+            and "unknown candidate fields" in replay_error
+        )
+        rows.append(
+            {
+                **_provenance(
+                    "closed_boundary_regression",
+                    {
+                        "boundary_type": fixture["boundary_type"],
+                        "closed_in": fixture["closed_in"],
+                        "expected_rejected": fixture["expected_rejected"],
+                    },
+                    payload,
+                    to_jsonable(state),
+                ),
+                "regression_id": fixture["id"],
+                "boundary_type": fixture["boundary_type"],
+                "closed_in": fixture["closed_in"],
+                "expected_rejected": fixture["expected_rejected"],
+                "proposal_rejected": proposal_rejected,
+                "replay_rejected": replay_rejected,
+                "parsers_agree": parity,
+                "expected_failure_code": fixture["expected_failure_code"],
+                "observed_failure_code": proposal_code,
+                "proposal_error": proposal_error,
+                "replay_error": replay_error,
+                "unknown_key_rejected": unknown_key_rejected,
+                "final_state_hash": _state_hash(state),
+                "passed": (
+                    proposal_rejected == fixture["expected_rejected"]
+                    and proposal_code == fixture["expected_failure_code"]
+                    and parity
+                    and unknown_key_rejected
+                ),
+                "interpretation": fixture["interpretation"],
+            }
+        )
+    raw = {
+        "regression_count": len(rows),
+        "proposal_rejected_count": sum(row["proposal_rejected"] for row in rows),
+        "replay_rejected_count": sum(row["replay_rejected"] for row in rows),
+        "parser_parity_count": sum(row["parsers_agree"] for row in rows),
+        "unknown_key_rejection_count": sum(row["unknown_key_rejected"] for row in rows),
+        "passed_regression_count": sum(row["passed"] for row in rows),
     }
     return rows, raw
 
@@ -1382,6 +1517,7 @@ def write_table_bundle(
 def _summary_rows(
     gate: Mapping[str, int],
     boundaries: Mapping[str, int],
+    closed_boundaries: Mapping[str, int],
     repair: Sequence[Mapping[str, Any]],
     integrity: Mapping[str, int],
     integrity_boundaries: Mapping[str, int],
@@ -1409,9 +1545,22 @@ def _summary_rows(
             "numerator": boundaries["encoded_acceptance_count"],
             "denominator": boundaries["sentinel_count"],
             "notes": (
-                "known semantic-extraction, policy-completeness, and unknown-field "
-                "contract boundaries; not safety passes"
+                "known semantic-extraction and policy-completeness boundaries; not safety passes"
             ),
+        },
+        {
+            "section": "closed_boundary_regressions",
+            "measure": "closed_boundaries_still_rejected",
+            "numerator": closed_boundaries["passed_regression_count"],
+            "denominator": closed_boundaries["regression_count"],
+            "notes": "both parsers reject the complete candidate specifically for its unknown key",
+        },
+        {
+            "section": "closed_boundary_regressions",
+            "measure": "parser_parity_on_unknown_keys",
+            "numerator": closed_boundaries["parser_parity_count"],
+            "denominator": closed_boundaries["regression_count"],
+            "notes": "proposal and replay parsers agree on unknown-key rejection",
         },
     ]
     for row in repair:
@@ -1493,6 +1642,11 @@ def _actual_published_provenance(result: Mapping[str, Any]) -> dict[str, dict[st
     row_groups = (
         ("gate_conformance", result["gate_conformance"]["rows"], "fixture_id"),
         ("boundary_sentinels", result["boundary_sentinels"]["rows"], "sentinel_id"),
+        (
+            "closed_boundary_regressions",
+            result["closed_boundary_regressions"]["rows"],
+            "regression_id",
+        ),
         ("repair_arms", result["repair_arms"]["rows"], "case_id"),
         (
             "repair_arm_summary",
@@ -1586,6 +1740,18 @@ def _expected_published_provenance(
             },
             fixture["candidate"],
         )
+    for fixture in manifest["closed_boundary_regressions"]:
+        add(
+            "closed_boundary_regressions",
+            fixture["id"],
+            "closed_boundary_regression",
+            {
+                "boundary_type": fixture["boundary_type"],
+                "closed_in": fixture["closed_in"],
+                "expected_rejected": fixture["expected_rejected"],
+            },
+            fixture["candidate"],
+        )
     repair_case_ids = [case["id"] for case in manifest["repair"]["cases"]]
     for arm in manifest["repair"]["arms"]:
         for case in manifest["repair"]["cases"]:
@@ -1671,6 +1837,8 @@ def _expected_published_provenance(
         ("gate_conformance", "fixtures_matching_expected_result"),
         ("gate_conformance", "implemented_codes_observed"),
         ("boundary_sentinels", "encoded_acceptances_documented"),
+        ("closed_boundary_regressions", "closed_boundaries_still_rejected"),
+        ("closed_boundary_regressions", "parser_parity_on_unknown_keys"),
         *[
             ("repair_arms", f"{arm['id']}:{measure}")
             for arm in manifest["repair"]["arms"]
@@ -1771,6 +1939,12 @@ def _assert_complete(result: Mapping[str, Any]) -> None:
         result["boundary_sentinels"]["raw_counts"]["passed_sentinel_count"]
         == result["boundary_sentinels"]["raw_counts"]["sentinel_count"],
         result["boundary_sentinels"]["raw_counts"]["safety_pass_count"] == 0,
+        result["closed_boundary_regressions"]["raw_counts"]["passed_regression_count"]
+        == result["closed_boundary_regressions"]["raw_counts"]["regression_count"],
+        result["closed_boundary_regressions"]["raw_counts"]["parser_parity_count"]
+        == result["closed_boundary_regressions"]["raw_counts"]["regression_count"],
+        result["closed_boundary_regressions"]["raw_counts"]["unknown_key_rejection_count"]
+        == result["closed_boundary_regressions"]["raw_counts"]["regression_count"],
         all(row["passed"] for row in result["repair_arms"]["rows"]),
         result["integrity_faults"]["raw_counts"]["detected_fault_count"]
         == result["integrity_faults"]["raw_counts"]["fault_count"],
@@ -1933,6 +2107,7 @@ def run_pilot(
 
     gate_rows, gate_raw = run_gate_conformance(manifest, state)
     boundary_rows, boundary_raw = run_boundary_sentinels(manifest, state)
+    closed_rows, closed_raw = run_closed_boundary_regressions(manifest, state)
     repair_rows, repair_summary = run_repair_arms(manifest, state)
     integrity_rows, integrity_raw = run_integrity_faults(manifest, state)
     integrity_boundary_rows, integrity_boundary_raw = run_integrity_boundaries(manifest, state)
@@ -1952,6 +2127,7 @@ def run_pilot(
         for row in _summary_rows(
             gate_raw,
             boundary_raw,
+            closed_raw,
             repair_summary,
             integrity_raw,
             integrity_boundary_raw,
@@ -1964,9 +2140,11 @@ def run_pilot(
         "schema_version": "1.0.0",
         "pilot_id": manifest["pilot_id"],
         "evidence_scope": manifest["evidence_scope"],
+        "amendment": manifest["amendment"],
         "inference": "none; raw designed-fixture counts only",
         "gate_conformance": {"rows": gate_rows, "raw_counts": gate_raw},
         "boundary_sentinels": {"rows": boundary_rows, "raw_counts": boundary_raw},
+        "closed_boundary_regressions": {"rows": closed_rows, "raw_counts": closed_raw},
         "repair_arms": {"rows": repair_rows, "raw_counts_by_arm": repair_summary},
         "integrity_faults": {"rows": integrity_rows, "raw_counts": integrity_raw},
         "integrity_boundaries": {
@@ -1996,6 +2174,7 @@ def run_pilot(
             "does not support model superiority, player-experience, affect, or causal claims",
             "does not estimate validator false-positive or false-negative rates",
             "boundary sentinel acceptance is not evidence of semantic safety or policy completeness",
+            "the closed candidate-contract regression establishes parser rejection parity only; it is not semantic-safety evidence",
             "semantic replay does not authenticate or re-execute the repair generator",
         ],
     }
@@ -2095,6 +2274,31 @@ def run_pilot(
                 "final_state_hash",
                 "passed",
                 "safety_pass",
+                "interpretation",
+            ),
+        )
+    )
+    generated.extend(
+        write_table_bundle(
+            output_dir,
+            "closed-boundary-regressions",
+            closed_rows,
+            (
+                *PROVENANCE_COLUMNS,
+                "regression_id",
+                "boundary_type",
+                "closed_in",
+                "expected_rejected",
+                "proposal_rejected",
+                "replay_rejected",
+                "parsers_agree",
+                "expected_failure_code",
+                "observed_failure_code",
+                "proposal_error",
+                "replay_error",
+                "unknown_key_rejected",
+                "final_state_hash",
+                "passed",
                 "interpretation",
             ),
         )

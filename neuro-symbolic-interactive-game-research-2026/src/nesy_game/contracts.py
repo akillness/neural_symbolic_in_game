@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
@@ -208,3 +209,152 @@ class CommitOutcome:
     def __post_init__(self) -> None:
         object.__setattr__(self, "trace", tuple(self.trace))
         object.__setattr__(self, "trace_context", _deep_freeze(self.trace_context))
+
+
+# Single source of truth for the candidate event's top-level key NAMES.
+#
+# Both parsers derive their accepted key set from this constant: the proposal-side
+# parser in `nesy_game.experiment` and the replay-side parser in `nesy_game.runtime`.
+# Before Stage 8 the two maintained separate lists and disagreed on unknown keys — the
+# proposal parser silently ignored them while replay rejected them, so replay could
+# refuse a candidate that had already committed. Deriving both from one constant makes
+# that specific divergence unrepresentable.
+#
+# The two parsers remain deliberately different in other respects and this constant does
+# not unify them: the proposal parser supplies defaults for omitted optional fields,
+# whereas the replay parser requires all twelve keys to be present because it reads
+# records that were serialized from a committed CandidateAction. Value-level validation
+# also differs. Only unknown-key handling is guaranteed identical.
+CANDIDATE_FIELDS = frozenset(
+    {
+        "action_id",
+        "actor_id",
+        "action_type",
+        "preconditions",
+        "effects",
+        "required_objects",
+        "used_facts",
+        "disclosed_facts",
+        "required_quest_stage",
+        "quest_stage_effect",
+        "narrative_text",
+        "metadata",
+    }
+)
+
+REQUIRED_CANDIDATE_FIELDS = frozenset(
+    {"action_id", "actor_id", "action_type", "preconditions", "effects"}
+)
+
+
+class CandidateParseError(ValueError):
+    """Raised when a candidate mapping violates the shared candidate contract."""
+
+
+def _as_string_set(value: Any, field: str) -> frozenset[str]:
+    if not isinstance(value, (list, tuple, set, frozenset)):
+        raise CandidateParseError(f"{field} must be an explicit collection of strings")
+    frozen = frozenset(value)
+    # Mirrors _string_set: a duplicate entry must be rejected, not silently collapsed,
+    # so a candidate cannot smuggle repeated facts past the contract.
+    if len(frozen) != len(value):
+        raise CandidateParseError(f"{field} must not contain duplicates")
+    if any(not isinstance(item, str) or not item for item in frozen):
+        raise CandidateParseError(f"{field} must contain non-empty strings")
+    return frozen
+
+
+def _as_nonempty_string(value: Any, field: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise CandidateParseError(f"{field} must be a non-empty string")
+    return value
+
+
+def _as_exact_int(value: Any, field: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise CandidateParseError(f"{field} must be a non-negative exact integer")
+    return value
+
+
+def _as_json_value(value: Any, field: str) -> None:
+    if value is None or isinstance(value, (str, bool)):
+        return
+    if isinstance(value, int) and not isinstance(value, bool):
+        return
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise CandidateParseError(f"{field} must be a finite number")
+        return
+    if isinstance(value, Mapping):
+        for key, child in value.items():
+            if not isinstance(key, str):
+                raise CandidateParseError(f"{field} keys must be strings")
+            _as_json_value(child, f"{field}.{key}")
+        return
+    if isinstance(value, (list, tuple)):
+        for index, child in enumerate(value):
+            _as_json_value(child, f"{field}[{index}]")
+        return
+    raise CandidateParseError(f"{field} must be JSON-representable")
+
+
+def parse_candidate_mapping(data: Any, *, allow_defaults: bool) -> CandidateAction:
+    """Parse a candidate mapping under the one shared candidate contract.
+
+    Both the proposal-side parser and the replay-side parser call this function, so
+    unknown-key handling, required-key handling, and value-level validation cannot drift
+    apart between them.
+
+    Args:
+        data: the candidate mapping.
+        allow_defaults: when True, omitted optional keys take their documented defaults,
+            which is the proposal boundary where a generator need not emit every field.
+            When False, every key must be present, which is the replay boundary where the
+            record was serialized from a committed :class:`CandidateAction`.
+
+    Raises:
+        CandidateParseError: on any contract violation. It subclasses ``ValueError`` so
+            existing replay callers that catch ``ValueError`` keep working.
+    """
+
+    if not isinstance(data, Mapping):
+        raise CandidateParseError("candidate must be an object")
+    if any(not isinstance(key, str) for key in data):
+        raise CandidateParseError("candidate keys must be strings")
+
+    unknown = sorted(set(data.keys()) - CANDIDATE_FIELDS)
+    if unknown:
+        raise CandidateParseError(f"unknown candidate fields: {unknown}")
+
+    expected = REQUIRED_CANDIDATE_FIELDS if allow_defaults else CANDIDATE_FIELDS
+    missing = sorted(expected - data.keys())
+    if missing:
+        raise CandidateParseError(f"candidate fields missing: {missing}")
+
+    quest_stage_effect = data.get("quest_stage_effect")
+    if quest_stage_effect is not None:
+        quest_stage_effect = _as_exact_int(quest_stage_effect, "quest_stage_effect")
+    narrative_text = data.get("narrative_text", "")
+    if not isinstance(narrative_text, str):
+        raise CandidateParseError("narrative_text must be a string")
+    metadata = data.get("metadata", {})
+    if not isinstance(metadata, Mapping):
+        raise CandidateParseError("metadata must be an object")
+    _as_json_value(metadata, "metadata")
+
+    return CandidateAction(
+        action_id=_as_nonempty_string(data["action_id"], "action_id"),
+        actor_id=_as_nonempty_string(data["actor_id"], "actor_id"),
+        action_type=_as_nonempty_string(data["action_type"], "action_type"),
+        preconditions=_as_string_set(data["preconditions"], "preconditions"),
+        effects=_as_string_set(data["effects"], "effects"),
+        required_objects=_as_string_set(data.get("required_objects", []), "required_objects"),
+        used_facts=_as_string_set(data.get("used_facts", []), "used_facts"),
+        disclosed_facts=_as_string_set(data.get("disclosed_facts", []), "disclosed_facts"),
+        required_quest_stage=_as_exact_int(
+            data.get("required_quest_stage", 0), "required_quest_stage"
+        ),
+        quest_stage_effect=quest_stage_effect,
+        narrative_text=narrative_text,
+        metadata=dict(metadata),
+    )

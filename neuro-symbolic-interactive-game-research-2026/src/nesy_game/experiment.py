@@ -14,7 +14,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
-from .contracts import CandidateAction, CommitOutcome, WorldState
+from .contracts import (
+    CandidateAction,
+    CandidateParseError,
+    CommitOutcome,
+    WorldState,
+    parse_candidate_mapping,
+)
 from .runtime import execute_with_repair, replay_trace_jsonl, replay_trace_record, to_jsonable
 
 
@@ -299,45 +305,23 @@ def _validate_json_value(value: Any, field: str) -> None:
 
 
 def candidate_from_mapping(data: Mapping[str, Any]) -> CandidateAction:
-    """Parse a candidate without treating model-supplied fields as authoritative policy."""
+    """Parse a proposal candidate under the shared candidate contract.
 
-    if not isinstance(data, Mapping):
-        raise AdapterFailure("parse_error", "candidate must be an object")
-    required = {"action_id", "actor_id", "action_type", "preconditions", "effects"}
-    missing = sorted(required - data.keys())
-    if missing:
-        raise AdapterFailure("parse_error", f"candidate fields missing: {missing}")
-    required_quest_stage = data.get("required_quest_stage", 0)
-    quest_stage_effect = data.get("quest_stage_effect")
-    narrative_text = data.get("narrative_text", "")
-    metadata = data.get("metadata", {})
-    if not _is_exact_int(required_quest_stage) or required_quest_stage < 0:
-        raise AdapterFailure("parse_error", "required_quest_stage must be a non-negative integer")
-    if quest_stage_effect is not None and (
-        not _is_exact_int(quest_stage_effect) or quest_stage_effect < 0
-    ):
-        raise AdapterFailure(
-            "parse_error", "quest_stage_effect must be null or a non-negative integer"
-        )
-    if not isinstance(narrative_text, str):
-        raise AdapterFailure("parse_error", "narrative_text must be a string")
-    if not isinstance(metadata, Mapping):
-        raise AdapterFailure("parse_error", "metadata must be an object")
-    _validate_json_value(metadata, "metadata")
-    return CandidateAction(
-        action_id=_nonempty_string(data["action_id"], "action_id"),
-        actor_id=_nonempty_string(data["actor_id"], "actor_id"),
-        action_type=_nonempty_string(data["action_type"], "action_type"),
-        preconditions=_string_set(data["preconditions"], "preconditions"),
-        effects=_string_set(data["effects"], "effects"),
-        required_objects=_string_set(data.get("required_objects", []), "required_objects"),
-        used_facts=_string_set(data.get("used_facts", []), "used_facts"),
-        disclosed_facts=_string_set(data.get("disclosed_facts", []), "disclosed_facts"),
-        required_quest_stage=required_quest_stage,
-        quest_stage_effect=quest_stage_effect,
-        narrative_text=narrative_text,
-        metadata=deepcopy(dict(metadata)),
-    )
+    Delegates to :func:`nesy_game.contracts.parse_candidate_mapping` with
+    ``allow_defaults=True``: a generator need not emit every optional field at the
+    proposal boundary. The replay-side parser calls the same function with
+    ``allow_defaults=False`` because it reads records serialized from a committed
+    candidate, so persisted-record strictness is preserved while unknown-key handling,
+    required-key handling, and value validation stay identical between the two.
+
+    Contract violations surface as :class:`AdapterFailure` with code ``parse_error`` so
+    the offline runner classifies them as adapter failures rather than crashes.
+    """
+
+    try:
+        return parse_candidate_mapping(data, allow_defaults=True)
+    except CandidateParseError as failure:
+        raise AdapterFailure("parse_error", str(failure)) from failure
 
 
 class RecordedProposalAdapter:
