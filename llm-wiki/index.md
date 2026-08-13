@@ -19,6 +19,7 @@
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-02]] — journal target, 36-source shortlist, and empirical claim boundary
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-03]] — fail-closed claim audit and IEEE ToG IMRaD outline
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-04]] — bilingual IEEE draft, deterministic pilot, and evidence boundary
+- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] — claim-faithfulness and citation-verification gates, both passed
 - [[maintenance-log]] — wiki and Graphify maintenance decisions
 
 ## Prompt/output ingest
@@ -50,3 +51,7 @@
 - [[wiki/sources/2026-08-12-151131-prompt]] - ㄱㄱ
 
 - [[wiki/queries/2026-08-12-151131-prompt]] - ㄱㄱ
+
+- [[wiki/sources/2026-08-13-024518-continue]] - continue
+
+- [[wiki/queries/2026-08-13-024518-continue]] - continue

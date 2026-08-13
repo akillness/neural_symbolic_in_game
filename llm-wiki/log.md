@@ -39,3 +39,12 @@
 - Raw capture: [[raw/sources/prompts/2026/08/12/151131-019ff4f6-0dc-prompt]]
 - Source note: [[wiki/sources/2026-08-12-151131-prompt]]
 - Query note: [[wiki/queries/2026-08-12-151131-prompt]]
+
+## [2026-08-13 02:45:18] query | continue
+- Raw capture: [[raw/sources/prompts/2026/08/13/024518-019ff4f6-0dc-continue]]
+- Source note: [[wiki/sources/2026-08-13-024518-continue]]
+- Query note: [[wiki/queries/2026-08-13-024518-continue]]
+- 2026-08-13: Stage 4.5 claim-faithfulness gate passed; 22 claims audited, 0 overstated, 0 unsupported.
+- 2026-08-13: Stage 5 citation verification passed; 36 entries, 33 verified, 3 preprint, 0 hallucinated.
+- 2026-08-13: Semantic Scholar rate-limited 9 of 36 lookups; recorded as index-access limitation, not citation evidence.
+- 2026-08-13: Filed [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] and updated the pipeline passport to stage_6_unblocked.
