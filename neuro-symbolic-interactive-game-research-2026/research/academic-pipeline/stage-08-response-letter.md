@@ -167,9 +167,10 @@ ledger before this review. We keep all three, labelled.
 
 **R3-1.** The reviewer's verification was correct: at the recorded commit the pilot runner did not
 exist and only 5 of 14 declared inputs resolved. We committed the runner, manifest, schemas, and
-configuration first, then regenerated. **All 20 declared inputs now resolve at the recorded commit
-with matching hashes**, verified by reading each input out of the commit and recomputing its digest.
-A pristine clone reproduces 34 of 34 release artifacts byte-identically.
+configuration first, then regenerated. The final 2026-08-14 packet records **21 declared inputs,
+all of which resolve at tagged commit `c4752df` with matching hashes**, verified by reading each
+input out of that commit and recomputing its digest. A `--no-local` pristine clone reproduced all
+35 manifest-listed release artifacts byte-identically from that tagged source.
 
 **R3-2.** Addressed as described under EIC-7: a Data and Code Availability section was added to both manuscripts, carrying the provenance caveat rather than omitting it.
 

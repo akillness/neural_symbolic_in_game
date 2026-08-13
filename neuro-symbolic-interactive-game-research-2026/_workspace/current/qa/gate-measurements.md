@@ -59,8 +59,8 @@ measurement.
   frame p95 remains `116.667/100.000/98.760/112.907 ms`, so it does not pass.
 - Cycle 3 engineering receipts: aggregate `40 tests, 44 subtests`; `SL-PLAY-EVAL-001` passed `4/4`
   authored fixtures (`40/40`) plus `7/7` presentation checks (`47/47` combined); four working PNGs
-  passed size/hash registration. The latest staged artifact has 11 top-level files and 41,425,846
-  bytes; its PCK is 1,573,072 bytes after `docs/latest/**` exclusion. Production
+  passed size/hash registration. The latest staged artifact has 11 top-level files and 41,426,198
+  bytes; its PCK is 1,573,424 bytes after `docs/latest/**` exclusion. Production
   `https://sealed-lighthouse-trace-rpg.vercel.app` returned 200 for
   HTML/JS/WASM/PCK/OFL, served WASM as `application/wasm`, and exposed the hash-matched 4,534-byte
   OFL notice as `text/plain`. Playwriter verified clean Korean rendering
@@ -103,7 +103,7 @@ measurement.
 | Browser gesture policy | trusted headless Playwriter click entered pointer lock; zero console/page errors | measured input latency pending |
 | Procedural audio | external asset check PASS; nine generated streams, 22,050 Hz, four voices | playback/impact unmeasured |
 | Bundled Korean font | Nanum Gothic Regular, unmodified, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256; public notice 4,534 bytes, SHA-256 `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f` | release resource, not research evidence |
-| Web artifact/deployment | 11 files, 41,425,846 bytes; latest production PCK 1,573,072 bytes after excluding `docs/latest/**`; HTML/JS/WASM/PCK/OFL 200; WASM and OFL MIME correct | save/reload/performance/soak pending |
+| Web artifact/deployment | 11 files, 41,426,198 bytes; latest production PCK 1,573,424 bytes after excluding `docs/latest/**`; HTML/JS/WASM/PCK/OFL 200; WASM and OFL MIME correct | save/reload/performance/soak pending |
 | Deployed responsive rendering | clean Korean at 1280×720 and 390×844; zero console/page errors | bounded browser smoke, not G4 |
 | Latest working captures | `4/4` 1280×720 PNGs with SHA-256 registration | never G4/efficacy evidence |
 
@@ -116,7 +116,7 @@ measurement.
 | `game-track/godot/docs/latest/authorized_hint.png` | 1280×720 | `8c70fcd8ede97fda4023c0e2a47cf010c79b3d91a10dda8b66ebc4d02f051b9a` |
 | `game-track/godot/docs/latest/ending.png` | 1280×720 | `dc881b9f6e436a1eeb6a21ecd38e41a241fd845f40b667919538d07a770fcbf3` |
 | `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `47/47` | PASS; engineering-only |
-| `game-track/web/public/` | 11 top-level files, 41,425,846 bytes; PCK 1,573,072 bytes | deployed static artifact after `docs/latest/**` exclusion with public OFL notice; ignored/non-authoritative |
+| `game-track/web/public/` | 11 top-level files, 41,426,198 bytes; PCK 1,573,424 bytes | deployed static artifact after `docs/latest/**` exclusion with public OFL notice; ignored/non-authoritative |
 | `docs/latest/vercel-start.png`, `vercel-in-game.png` | 1280×720 | production desktop start/in-game receipts |
 | `docs/latest/vercel-mobile-start.png`, `vercel-mobile-in-game.png` | 390×844 | production narrow start/in-game receipts |
 | `docs/latest/web-start.png`, `web-in-game.png` | 3294×1908 | local/extension-connected Web inspection receipts |

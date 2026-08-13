@@ -28,7 +28,7 @@ canonical `project.godot`, whose bytes remain evidence-bound.
 | Selected immutable evidence | v5 pointer unchanged | Cycle 2 evidence remains authoritative for its bounded claim |
 | Latest working screenshots | four 1280×720 public-safe PNGs, all hash-registered | not immutable/G4 evidence |
 | Bundled font | Nanum Gothic Regular, unmodified 2,054,744-byte upstream binary, SIL OFL 1.1, pinned SHA-256 | public-safe release resource |
-| Web artifact | 11 top-level files; latest PCK 1,573,072 bytes after `docs/latest/**` exclusion | deployed; non-authoritative |
+| Web artifact | 11 top-level files; latest PCK 1,573,424 bytes after `docs/latest/**` exclusion | deployed; non-authoritative |
 | Production responses | HTML/JS/WASM/PCK 200; WASM `application/wasm` | bounded HTTP/MIME PASS |
 | Playwriter desktop | 1280×720 start/in-game, clean Korean, trusted headless pointer lock, zero console/page errors | bounded browser PASS |
 | Playwriter narrow | 390×844 start/in-game, clean Korean, zero console/page errors | bounded responsive PASS |

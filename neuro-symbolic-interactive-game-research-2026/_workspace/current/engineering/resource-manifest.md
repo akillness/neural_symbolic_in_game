@@ -24,7 +24,7 @@ Status: public-safe playable deployed and browser-smoke verified; performance/so
 | `game-track/web/export_presets.cfg` | Web release lane | single-threaded Web preset, extension support disabled, scenario JSON included, `docs/latest/**` excluded | `[OBSERVED]` deployed artifact built from staged copy |
 | `scripts/build_godot_web.sh` | Web release lane | copy to `mktemp`, select `main_3d.tscn` only in staged copy, fail on Godot script/import errors, copy the OFL notice to the artifact root, sync deploy artifact | `[OBSERVED structure]`; canonical project is not rewritten |
 | `game-track/web/vercel.json` | Web release lane | static security headers without unnecessary cross-origin isolation | `[OBSERVED]` production deployment at `https://sealed-lighthouse-trace-rpg.vercel.app` |
-| `game-track/web/public/` | builder output | ignored disposable static artifact for browser validation/deploy | `[OBSERVED latest]` 11 top-level files, 41,425,846 bytes; PCK 1,573,072 bytes after excluding `docs/latest/**`; public OFL notice 4,534 bytes; HTML/JS/WASM/PCK/OFL returned 200 and WASM `application/wasm`; non-authoritative |
+| `game-track/web/public/` | builder output | ignored disposable static artifact for browser validation/deploy | `[OBSERVED latest]` 11 top-level files, 41,426,198 bytes; PCK 1,573,424 bytes after excluding `docs/latest/**`; public OFL notice 4,534 bytes; HTML/JS/WASM/PCK/OFL returned 200 and WASM `application/wasm`; non-authoritative |
 | Deployed browser captures | Playwriter | start/in-game presentation receipts | `[OBSERVED]` `docs/latest/vercel-start.png`, `vercel-in-game.png`, `vercel-mobile-start.png`, `vercel-mobile-in-game.png`; local Web inspection retained as `web-start.png`, `web-in-game.png` |
 
 ## Public-safe asset boundary

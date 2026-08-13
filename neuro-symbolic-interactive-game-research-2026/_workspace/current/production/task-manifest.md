@@ -37,8 +37,8 @@ final aggregate regression
 - `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001`: fixtures `4/4`, fixture checks
   `40/40`, presentation checks `7/7`, combined `47/47`; terminal SHA-256 unchanged.
 - Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix.
-- `game-track/web/public/` contains 11 top-level build files and 41,425,846 bytes; the latest PCK is
-  1,573,072 bytes after `docs/latest/**` exclusion. The public 4,534-byte OFL notice hash matches the
+- `game-track/web/public/` contains 11 top-level build files and 41,426,198 bytes; the latest PCK is
+  1,573,424 bytes after `docs/latest/**` exclusion. The public 4,534-byte OFL notice hash matches the
   source license. The artifact remains ignored and non-authoritative.
 - Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`; HTML/JS/WASM/PCK/OFL returned
   200, with WASM served as `application/wasm` and OFL as `text/plain`.

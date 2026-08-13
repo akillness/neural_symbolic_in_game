@@ -474,22 +474,28 @@
       "reviewer_archive_or_doi": "not_created_not_claimed"
     },
     "clean_clone_gate": {
-      "verified_at": "2026-08-13",
-      "method": "git clone of the committed tree into a pristine directory with no Godot import cache and no working-tree state, then the full CI suite plus pilot reproduction and both paper builds",
+      "verified_at": "2026-08-14",
+      "method": "git clone --no-local of the tagged source and release commits into a pristine directory, fresh tagged pilot execution, byte comparison against the release tag, full repository/game validation, and an isolated clean paper rebuild",
+      "source_tag": "trace-rpg-stage10-inputs-20260814-v1",
+      "source_commit": "c4752df43196761dcc64f02110f32bbaecfa235f",
+      "release_tag": "trace-rpg-stage10-release-20260814-v1",
       "results": {
-        "tests": "96/96 pass",
+        "unittest": "96/96 pass",
+        "pytest": "117 passed, 70 subtests passed",
+        "game_track": "40 passed, 44 subtests passed",
         "ruff_check_and_format": "clean over src, tests, scripts, examples",
         "validate_project": "pass",
         "validate_harness": "pass",
-        "recorded_experiment": "pass",
         "deep_research_contract": "10/10",
-        "survey_contract": "pass",
-        "readme_visual_sync": "pass",
-        "wiki_lint": "no structural issues",
-        "pilot_reproduction": "34/34 artifacts byte-identical to the committed bundle",
-        "paper_build": "make all exits 0; EN 7 pp, KO 6 pp"
+        "survey_contract": "3/3 artifacts with provenance",
+        "wiki_lint": "56 pages; no structural issues",
+        "pilot_inputs": "21/21 source-tag blobs match exact SHA-256 and size",
+        "pilot_reproduction": "35/35 manifest-listed artifacts byte-identical to the release tag",
+        "pilot_provenance": "64 = 43 executed + 21 aggregate",
+        "portable_paths": "dirty=false; 0 absolute user/clone paths",
+        "paper_build": "make clean && make all followed by make check passes; EN 7 pp, KO 6 pp; 0 Type-3 fonts and 0 forbidden log diagnostics"
       },
-      "defect_found_and_fixed": "The first clean-clone run failed 4 Godot fixture subtests. Root cause: .godot/ is a gitignored build artifact, so a fresh clone has no import cache and Godot spent its first invocation importing instead of running the fixture. The suite passed locally only because an untracked cache existed. The harness now runs the idempotent import unconditionally and fails loudly with engine output if it errors, rather than trusting the mere existence of .godot/."
+      "known_non_blocking_limit": "A bare make check can pass when LaTeX logs are absent because its negated grep treats missing files as success; the recorded gate therefore uses a clean rebuild before post-build checks."
     }
   }
 }

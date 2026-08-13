@@ -18,7 +18,7 @@ Current verdict input: `FIX`
 | Presentation evaluation JSON | DONE-ENGINEERING | `SL-PLAY-EVAL-001`: `4/4`, `40/40` + `7/7` = `47/47` |
 | Latest public-safe screenshots | DONE-WORKING-CAPTURES | four 1280×720 PNGs, SHA-256 registered; not immutable evidence |
 | Bundled Korean font | DONE-PROVENANCE | unmodified Nanum Gothic Regular, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256/source; public 4,534-byte OFL notice hash-matched |
-| Staged Web artifact | DONE-ARTIFACT | 11 top-level files, 41,425,846 bytes; latest PCK 1,573,072 bytes after `docs/latest/**` exclusion |
+| Staged Web artifact | DONE-ARTIFACT | 11 top-level files, 41,426,198 bytes; latest PCK 1,573,424 bytes after `docs/latest/**` exclusion |
 | Production HTTP/MIME | DONE | HTML/JS/WASM/PCK/OFL returned 200; WASM `application/wasm`; OFL `text/plain` |
 | Deployed browser layout/glyph smoke | DONE-BOUNDED | Playwriter 1280×720 and 390×844 start/in-game captures; Korean rendering clean |
 | Trusted headless pointer lock | DONE | Playwriter click entered pointer lock; console/page-error counts stayed zero |
