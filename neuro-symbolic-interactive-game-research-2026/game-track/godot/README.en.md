@@ -2,7 +2,7 @@
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passed `4/4` fixtures and
 `47/47` combined checks; four latest working captures are built; the public-safe Web artifact is
-live and browser-smoke verified** (2026-08-13).
+live and browser-smoke verified** (2026-08-14).
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the

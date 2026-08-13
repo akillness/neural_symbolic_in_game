@@ -184,6 +184,11 @@
       "sha256": "71eb1a6b9c07fe65583a557efb2b5a19928f7c5fd156261f14bb52d6e117d280"
     },
     {
+      "bytes": 1624,
+      "path": "game-track/schemas/codex-oauth-soft-proposal.schema.json",
+      "sha256": "6c70892f384de5c74d64e4db46dc0928b6b59438ef3f5ee579f25b920ef77cef"
+    },
+    {
       "bytes": 3747,
       "path": "game-track/schemas/experiment-record.schema.json",
       "sha256": "a54cd014421b269013c49aa46198db237e7f731d5e93afbe979e19cc46ee5911"
@@ -234,9 +239,9 @@
       "sha256": "4ad6c35d8c052db8ecb1b5b1e9c38d1f89b174ed57e51b7b10da23912ded0b9d"
     },
     {
-      "bytes": 97505,
+      "bytes": 98908,
       "path": "scripts/run_conformance_pilot.py",
-      "sha256": "c29a5da5227bbd4883a9ccf69cf41120ce5b71e45fa04cc75f5aecc23f2b52e2"
+      "sha256": "6de63e2508ee426489252ce5fbe08de5376ef1e60c734a91bdd4550c1f4f2aeb"
     },
     {
       "bytes": 1665,
@@ -269,9 +274,9 @@
       "sha256": "9f76cdb4c7c5d040a2a9b012723ad2b4c35e34fd88fe2cc1d17e9ce37557ae3e"
     },
     {
-      "bytes": 18925,
+      "bytes": 19856,
       "path": "tests/test_conformance_pilot.py",
-      "sha256": "f529473475bde2d931943bb61fadd0e300dc1c3d261fcc3e3b7bbad1e9a2cfbb"
+      "sha256": "d58b4ada69999b1b5040e30a0f4577b456ebcb93953f7943b85d7875f6096fee"
     },
     {
       "bytes": 68829,
@@ -282,23 +287,31 @@
   "reproducibility": {
     "environment": {
       "machine": "arm64",
-      "platform": "macOS-26.3.1-arm64-arm-64bit",
-      "python_executable": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/.venv/bin/python3",
+      "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+      "python_executable_name": "python3",
       "python_implementation": "CPython",
-      "python_version": "3.11.14",
+      "python_invocation": [
+        "uv",
+        "run",
+        "python"
+      ],
+      "python_version": "3.13.9",
       "uv_version": "uv 0.9.10 (44f5a14f4 2025-11-17)"
     },
     "git": {
-      "commit": "e4c2c775eaa1dc0a12091f69be19994083685839",
-      "dirty": true,
-      "dirty_diff_hash": "86f7d9fe39c3c1f2952a5da10468daa1a850719573e33fbcbe6037cb993e2466",
+      "commit": "c4752df43196761dcc64f02110f32bbaecfa235f",
+      "dirty": false,
+      "dirty_diff_hash": "c52b3e1776368c49e5622437084d837b6f6009a4e1df95b51be7112e287593b7",
       "release_paths_excluded_from_dirty_hash": [
         "neuro-symbolic-interactive-game-research-2026/runs/",
         "neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-04-pilot/"
+      ],
+      "tags_at_commit": [
+        "trace-rpg-stage10-inputs-20260814-v1"
       ]
     },
-    "runner_hash": "c29a5da5227bbd4883a9ccf69cf41120ce5b71e45fa04cc75f5aecc23f2b52e2",
-    "source_tree_hash": "6c02f7415cf1433157e2983630b73d008fb29516ea48065f772c01e7c377cb56"
+    "runner_hash": "6de63e2508ee426489252ce5fbe08de5376ef1e60c734a91bdd4550c1f4f2aeb",
+    "source_tree_hash": "690a4401a7399b841c47010780fe1defe04a5a0b7250db07decabdf7392549ea"
   },
   "schema_version": "1.0.0",
   "self_hash_excluded": true

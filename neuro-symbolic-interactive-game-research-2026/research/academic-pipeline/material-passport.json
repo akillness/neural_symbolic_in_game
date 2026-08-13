@@ -3,12 +3,14 @@
   "pipeline": "academic-pipeline",
   "mode": "full",
   "oversight": "very-high",
-  "as_of": "2026-08-13",
-  "status": "stage_10_final_reaudit_passed_clean_release_lock_pending",
+  "as_of": "2026-08-14",
+  "status": "stage_10_clean_tagged_recapture_passed",
   "release_readiness": {
-    "status": "blocked",
-    "blockers": [
-      "clean_commit_reproducibility_lock"
+    "status": "paper_packet_reproducibility_gate_passed",
+    "blockers": [],
+    "not_claimed": [
+      "reviewer_archive",
+      "doi_deposit"
     ]
   },
   "stage_1": {
@@ -94,16 +96,16 @@
     "manuscripts": {
       "english_source": "paper/latex/en/main.tex",
       "english_pdf": "paper/latex/en/main.pdf",
-      "english_pdf_sha256": "553da2f886d72cc9cbdb79ffc333ee72647080b7a2d3ff490c37ee077d7a7504",
+      "english_pdf_sha256": "bfa046615901872f2886d56b902bbeb45287f022a7dd53cc925b450bc22d518d",
       "korean_source": "paper/latex/ko/main.tex",
       "korean_pdf": "paper/latex/ko/main.pdf",
-      "korean_pdf_sha256": "da62f77305bae7fecfb6fdf0ea836430974a0f9fa04a3b38cdae4888abf51ec8",
+      "korean_pdf_sha256": "393256ec81f678d32b77d19774e4bc71a72ad0a156832d429b677d9cf0c7f806",
       "page_count": {
         "english": 7,
         "korean": 6
       },
       "reference_count": 42,
-      "digest_status": "current_after_2026-08-13_expanded_stage_4_5_reaudit_rebuild"
+      "digest_status": "current_after_2026-08-14_clean_tagged_recapture_availability_rebuild"
     },
     "verification": {
       "unittest_discovery_passed": 96,
@@ -136,7 +138,7 @@
     ]
   },
   "stage_4_5": {
-    "status": "pass_expanded_post_revision_reaudit_clean_release_lock_pending",
+    "status": "pass_expanded_post_revision_reaudit_clean_tagged_recapture_verified",
     "audited_at": "2026-08-13",
     "audit_path": "research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md",
     "original_audit": {
@@ -175,14 +177,14 @@
       "bibliography_closed": true,
       "todo_result_claims_asserted": 0,
       "pilot_claims_consistent": "expanded re-audit passed after exact numeric, function-body, construction-invariant, telemetry-origin, bridge-scope, engine-timing, and bilingual checks",
-      "current_frozen_bundle_checksums": "35 artifact + 20 working-tree input hashes recompute (55/55); all 20 input paths exist at recorded commit e4c2c77, but only 19 exact input digests match because the commit contains an earlier runner revision"
+      "current_frozen_bundle_checksums": "35/35 artifact hashes and 21/21 input hashes recompute (56/56); all input paths and exact digests match clean tagged commit c4752df43196761dcc64f02110f32bbaecfa235f"
     },
     "post_stage_8": {
       "remediation_status": "implemented",
-      "formal_reaudit_status": "executed_pass_with_disclosed_clean_release_block",
+      "formal_reaudit_status": "executed_pass_clean_tagged_recapture_verified",
       "current_bundle": {
         "artifacts": 35,
-        "declared_inputs": 20,
+        "declared_inputs": 21,
         "bound_provenance_rows": 64,
         "executed_fixture_rows": 43,
         "aggregate_rows": 21
@@ -205,9 +207,9 @@
           "E45-06_archive_availability",
           "E45-07_float_and_table_references"
         ],
-        "worktree_hashes_verified": "55/55",
-        "recorded_commit_input_digest_match": "19/20; all paths exist, but scripts/run_conformance_pilot.py is an earlier revision at the recorded commit",
-        "gate_decision": "pass_with_disclosed_release_block"
+        "worktree_hashes_verified": "56/56",
+        "clean_tagged_commit_input_digest_match": "21/21 paths and exact digests at c4752df43196761dcc64f02110f32bbaecfa235f; dirty=false; tag trace-rpg-stage10-inputs-20260814-v1",
+        "gate_decision": "pass_with_clean_tagged_recapture"
       }
     },
     "residual_boundaries": [
@@ -305,18 +307,17 @@
     "note": "Three defects passed the Stage 4.5 gate; that verdict was corrected, not defended."
   },
   "downstream_stages": {
-    "status": "stages_8_and_9_executed_stage_10_clean_release_lock_pending",
+    "status": "stages_8_9_and_10_executed",
     "executed": [
       "8",
-      "9"
+      "9",
+      "10"
     ],
     "optional_not_activated": [
       "7"
     ],
-    "pending": [
-      "10_clean_commit_release_lock"
-    ],
-    "note": "Stage 7 was gated off, not executed; the expanded Stage-4.5 final re-audit passed, and only clean committed/tagged recapture remains."
+    "pending": [],
+    "note": "Stage 7 was gated off, not executed. The expanded Stage-4.5 final re-audit and the Stage-10 clean tagged recapture passed; no reviewer archive or DOI deposit is claimed."
   },
   "stage_7": {
     "status": "not_activated_optional",
@@ -327,7 +328,7 @@
     "reason": "optional stage; gate unmet. A reachable local 7B endpoint does not satisfy it and is not a credible verifier for the findings at issue."
   },
   "stage_8": {
-    "status": "executed_findings_closed_at_stage_8_current_release_provenance_reopened",
+    "status": "executed_findings_closed_f6_clean_recapture_closed_2026_08_14",
     "audit_path": "research/academic-pipeline/stage-08-revision.md",
     "resolved": [
       "I1",
@@ -373,7 +374,7 @@
     "f14_closure": "every manifest row carries a schema-enforced row_class; executed and aggregate counts are declared, pinned as schema consts, and asserted at build time",
     "f17_closure": "both manuscripts directly include the three required figures and directly input their language-matched generated results and tables; IfFileExists and pendingartifact fallbacks are absent, so missing required artifacts fail the LaTeX build",
     "f18_closure": "all five figure/algorithm floats and all three tables have explicit matched EN/KO text references",
-    "current_release_provenance_gap": "F6 was closed by the Stage-8 packet at the time, but the later F14 runner revision was recaptured against an earlier recorded commit; all 20 paths exist there, but only 19 exact input digests match, so clean tagged recapture is required"
+    "f6_clean_recapture_closure": "The later F14 runner revision historically reopened F6 because e4c2c77 matched only 19/20 exact input digests. The 2026-08-14 recapture closes F6: clean tagged commit c4752df43196761dcc64f02110f32bbaecfa235f, dirty=false, 21/21 input paths and exact digests, 35/35 artifact hashes, 56/56 total."
   },
   "stage_9": {
     "status": "executed_formatted_disclosed_and_camera_ready_items_closed",
@@ -385,53 +386,65 @@
     },
     "page_band": "6-8 (transactions.games, retrieved 2026-08-13)",
     "reference_count": 42,
-    "build_freshness": "fresh_after_expanded_stage_4_5_reaudit_rebuild",
+    "build_freshness": "fresh_after_2026_08_14_clean_tagged_recapture_availability_rebuild",
     "open_items": [],
     "ai_disclosure": "matched EN/KO disclosure covers prose/code/test drafting, command orchestration, evidence audit and interpretation, reviewer simulation, and citation checks; deterministic runners/artifacts remain the source of values",
     "anonymization": "author, affiliation, funding, biography all absent"
   },
   "stage_10": {
-    "status": "passport_compiled_final_reaudit_passed_clean_commit_release_lock_pending",
-    "compiled_at": "2026-08-13",
+    "status": "passport_compiled_final_reaudit_and_clean_tagged_repro_lock_passed",
+    "compiled_at": "2026-08-14",
     "repro_lock": {
-      "status": "dirty_snapshot_only",
-      "clean_release_lock": false,
-      "working_tree_dirty": true,
-      "note": "All 55 worktree hashes recompute. All 20 input paths exist at recorded commit e4c2c77, but only 19 exact digests match; that commit contains an earlier scripts/run_conformance_pilot.py, while the frozen runner revision is represented only by the dirty-tree hash. This is not a clean-commit/tag byte-reproducible release lock.",
-      "git_commit_of_pilot_inputs": "e4c2c775eaa1dc0a12091f69be19994083685839",
-      "declared_input_paths_present_at_commit": "20/20",
-      "exact_input_digests_matching_at_commit": "19/20",
-      "mismatched_input_at_commit": "scripts/run_conformance_pilot.py (earlier revision present)",
+      "status": "clean_tagged_input_snapshot_verified",
+      "clean_release_lock": true,
+      "working_tree_dirty": false,
+      "note": "The manifest records dirty=false at tagged input commit c4752df43196761dcc64f02110f32bbaecfa235f. All 21 input paths and exact digests match that commit, all 35 artifact hashes recompute, and the packet verifies 56/56 total hashes. The manifest carries no absolute user/clone paths and records the portable uv run python invocation.",
+      "git_commit_of_pilot_inputs": "c4752df43196761dcc64f02110f32bbaecfa235f",
+      "tags_at_commit": [
+        "trace-rpg-stage10-inputs-20260814-v1"
+      ],
+      "declared_input_paths_present_at_commit": "21/21",
+      "exact_input_digests_matching_at_commit": "21/21",
+      "artifact_hashes_verified": "35/35",
+      "total_hashes_verified": "56/56",
       "artifact_count": 35,
+      "input_count": 21,
+      "bound_provenance_rows": 64,
+      "executed_fixture_rows": 43,
+      "aggregate_rows": 21,
+      "absolute_user_or_clone_paths": 0,
       "environment": {
         "machine": "arm64",
-        "platform": "macOS-26.3.1-arm64-arm-64bit",
-        "python_executable": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/.venv/bin/python3",
+        "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+        "python_executable_name": "python3",
         "python_implementation": "CPython",
-        "python_version": "3.11.14",
+        "python_invocation": [
+          "uv",
+          "run",
+          "python"
+        ],
+        "python_version": "3.13.9",
         "uv_version": "uv 0.9.10 (44f5a14f4 2025-11-17)"
       }
     },
     "artifact_digests": {
-      "english_pdf": "553da2f886d72cc9cbdb79ffc333ee72647080b7a2d3ff490c37ee077d7a7504",
-      "korean_pdf": "da62f77305bae7fecfb6fdf0ea836430974a0f9fa04a3b38cdae4888abf51ec8",
+      "english_pdf": "bfa046615901872f2886d56b902bbeb45287f022a7dd53cc925b450bc22d518d",
+      "korean_pdf": "393256ec81f678d32b77d19774e4bc71a72ad0a156832d429b677d9cf0c7f806",
       "references_bib": "5ca42d5d172ef72028f2c33e33d1f90dab18223c05021d2a77920e6f1ef0ef4e",
       "pilot_results_json": "f6c76abba4c728849912e90382e8df9079738f128706c13a5a649e45d37f7bfd",
-      "sha256_manifest": "a2c208f7e852e85e057c4737f7c91b9ac177659c0a1ec0584a21b79e461e875c"
+      "sha256_manifest": "ba973a7066b18d966d51569a795907a8c8174d9fb76429172053b9614969f9b4"
     },
     "score_trajectory": {
       "stage_2_5": "pass with fail-closed scope boundaries",
       "stage_4_5_original": "22/22 FAITHFUL — SUPERSEDED, verdict was wrong",
       "stage_4_5_corrected": "19 FAITHFUL, 1 OVERSTATED, 1 SCOPE_MISMATCH, 1 OUTDATED, +1 unaudited body claim",
-      "stage_4_5_final": "expanded full-manuscript re-audit: 42/42 claim families FAITHFUL after seven preliminary findings were corrected; clean release lock remains separate",
+      "stage_4_5_final": "expanded full-manuscript re-audit: 42/42 claim families FAITHFUL after seven preliminary findings were corrected; clean tagged recapture subsequently verified",
       "stage_5": "36/36 resolved, 0 hallucinated (42/42 after Stage 8 lineage and final comparator additions)",
       "stage_6": "major revision; 3 integrity findings + 1 provenance failure",
-      "stage_8": "all manuscript findings, including F17 and F18, are closed; the later dirty runner recapture reopens only the clean-release provenance item"
+      "stage_8": "all manuscript findings, including F17 and F18, are closed; the 2026-08-14 clean tagged recapture also closes the F6 provenance item"
     },
     "open_at_release": {
-      "acceptance_blockers": {
-        "F6": "all 20 input paths exist at recorded commit e4c2c77, but only 19 exact digests match; clean committed/tagged recapture required"
-      },
+      "acceptance_blockers": {},
       "camera_ready_items": {},
       "partially_addressed_comments": [
         "EIC-10",
@@ -439,9 +452,27 @@
         "R1-5",
         "DA-3"
       ],
-      "standing_evidence_boundary": "C-RESULT-001..005 remain TODO-RESULT; the pilot is deterministic offline conformance over one authored world state"
+      "standing_evidence_boundary": "C-RESULT-001..005 remain TODO-RESULT; the pilot is deterministic offline conformance over one authored world state; G4/G6 remain separate game gates",
+      "not_claimed": [
+        "reviewer_archive",
+        "doi_deposit"
+      ]
     },
-    "honest_summary": "The expanded final re-audit passed only after a first read-only pass found and corrected six additional claim defects plus one citation-of-floats/tables defect. The current manuscripts are claim-faithful and keep all efficacy claims at TODO-RESULT. Archival release remains blocked because all 20 input paths exist at the recorded commit but only 19 exact digests match; the commit has an earlier runner and the frozen runner revision exists only in the disclosed dirty-tree state.",
+    "honest_summary": "The expanded final re-audit passed only after a first read-only pass found and corrected six additional claim defects plus one citation-of-floats/tables defect. The 2026-08-14 clean tagged recapture closes F6 with dirty=false, 21/21 input path/digest matches, 35/35 artifact hashes, and 56/56 total hashes. The manuscripts remain bounded to deterministic authored-fixture conformance; C-RESULT-001..005 stay TODO-RESULT, no reviewer archive or DOI deposit is claimed, and G4/G6 are separate game gates.",
+    "clean_tagged_recapture": {
+      "verified_at": "2026-08-14",
+      "input_commit": "c4752df43196761dcc64f02110f32bbaecfa235f",
+      "input_tag": "trace-rpg-stage10-inputs-20260814-v1",
+      "manifest_dirty": false,
+      "input_paths_and_exact_digests": "21/21",
+      "artifact_hashes": "35/35",
+      "total_hashes": "56/56",
+      "provenance_rows": "64 = 43 executed + 21 aggregate",
+      "portable_python_invocation": "uv run python",
+      "absolute_user_or_clone_paths": 0,
+      "f6_status": "closed",
+      "reviewer_archive_or_doi": "not_created_not_claimed"
+    },
     "clean_clone_gate": {
       "verified_at": "2026-08-13",
       "method": "git clone of the committed tree into a pristine directory with no Godot import cache and no working-tree state, then the full CI suite plus pilot reproduction and both paper builds",

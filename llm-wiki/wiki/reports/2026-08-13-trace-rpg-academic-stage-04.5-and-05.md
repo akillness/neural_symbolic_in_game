@@ -7,9 +7,11 @@ the original audit missed. The expanded Stage-10 re-audit then failed its own fi
 claim defects plus one uncited-float/table defect. Matched EN/KO repairs narrowed the engine timing,
 snapshot/log, bridge, recorded-commit provenance, AI disclosure, and archive-availability wording
 and completed all float/table references. A restarted full-manuscript audit classified 42/42 claim
-families `FAITHFUL`. The clean release lock remains blocked because all 20 input paths exist at
-recorded commit `e4c2c77`, but only 19 exact digests match; both manuscripts disclose the earlier
-runner revision responsible for that gap.
+families `FAITHFUL`. At that audit point the clean release lock was still blocked because all 20
+input paths existed at recorded commit `e4c2c77`, but only 19 exact digests matched; both manuscripts
+disclosed the earlier runner revision responsible for that historical gap. A 2026-08-14 clean tagged recapture then
+closed F6 with 21/21 exact input digest matches at `c4752df`, `dirty=false`, and 35/35 artifact
+hashes.
 
 The Stage 4 packet was approved on 2026-08-13, and the two fail-closed integrity gates that guard
 peer review were then executed. Neither gate produced a blocking finding, and neither promoted any
@@ -25,10 +27,11 @@ reference repairer body, distinguish loader invariants from observations, trace 
 telemetry, reconcile snapshot state with separately stored history, enumerate the actual bridge
 event surface, and verify all current experimental numbers.
 
-All 35 artifact and 20 working-tree input hashes recompute. All 20 paths exist at the recorded
-commit, but exactly 19/20 digests match; the commit has an earlier `scripts/run_conformance_pilot.py`,
-while the frozen runner revision is dirty-tree-only. This is a disclosed release blocker, not a
-hidden claim-faithfulness failure. `C-RESULT-001` through `005` remain
+The current packet verifies 35/35 artifact hashes and 21/21 input hashes (56/56 total). Every input
+path and exact digest matches clean input commit `c4752df43196761dcc64f02110f32bbaecfa235f`, tagged
+`trace-rpg-stage10-inputs-20260814-v1`; the manifest records `dirty=false`, portable
+`uv run python`, and no absolute user/clone path. This closes F6 without changing the evidence
+boundary. No reviewer archive or DOI deposit is claimed, and `C-RESULT-001` through `005` remain
 `TODO-RESULT`.
 
 ## Original Stage 4.5 verdict — claim faithfulness (superseded)
@@ -106,7 +109,7 @@ evidence with no live model, participant, affect, retrieval, memory, or engine r
 
 Current pipeline: the user accepted and actioned the simulated Stage-6 revise-and-resubmit direction;
 optional Stage 7 was not activated; Stages 8 and 9 executed; the final Stage-4.5 re-audit passed.
-Stage 10 remains blocked only on clean committed/tagged recapture.
+Stage 10's clean committed/tagged recapture passed on 2026-08-14. G4/G6 remain separate game gates.
 
 Related: [[wiki/reports/2026-08-12-trace-rpg-academic-stage-04]],
 [[wiki/projects/trace-rpg-paper-2026]], [[wiki/concepts/evidence-and-claim-status]].

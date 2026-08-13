@@ -1,6 +1,6 @@
 # TRACE-RPG Academic Pipeline — Stages 6 to 10
 
-Status: **EXPANDED FINAL RE-AUDIT PASSED — CLEAN RELEASE LOCK PENDING**
+Status: **EXPANDED FINAL RE-AUDIT AND CLEAN TAGGED RECAPTURE PASSED**
 
 The ten-stage academic pipeline ran to completion on 2026-08-13. The headline result is not that
 the manuscript improved, though it did. It is that a purpose-built claim-faithfulness gate passed
@@ -83,6 +83,15 @@ After those repairs, all 42 audited claim families were classified `FAITHFUL`; n
 `OVERSTATED`, `UNSUPPORTED`, or `SCOPE_MISMATCH`. This is a manuscript-faithfulness pass, not
 a release-lock pass, and it does not convert any `C-RESULT-*` placeholder into a result.
 
+## Stage-10 clean tagged recapture
+
+The provenance mismatch found by the expanded audit is retained above as history. The 2026-08-14
+recapture closes F6 against input commit `c4752df43196761dcc64f02110f32bbaecfa235f`, tagged
+`trace-rpg-stage10-inputs-20260814-v1`. The manifest records `dirty=false`; all 21 input paths and
+exact digests match the commit, all 35 artifact hashes recompute, and the packet closes at 56/56
+hashes. The assignment partition remains 64 rows: 43 executed and 21 aggregate. Its Python
+invocation is the portable `uv run python`, and no absolute user or clone path is present.
+
 ## Current release gate
 
 | ID | Item | Class |
@@ -92,14 +101,16 @@ a release-lock pass, and it does not convert any `C-RESULT-*` placeholder into a
 | F17 | Conditional build scaffolding removed; both languages directly include the final figures | resolved in current manuscript |
 | F18 | All five figure/algorithm floats and all three table floats are explicitly referenced in both languages | resolved in current manuscript |
 | Claim re-audit | Expanded post-F17/F18 audit: 42/42 claim families faithful | passed |
-| Release lock | Current worktree bundle resolves 55/55 hashes; all 20 input paths exist at `e4c2c77`, but only 19 exact digests match because the commit contains an earlier `scripts/run_conformance_pilot.py` | blocking until clean tagged recapture |
+| F6 release lock | Clean tagged input commit `c4752df`; 21/21 exact input digest matches; 35/35 artifacts; 56/56 total; `dirty=false` | closed 2026-08-14 |
+| Archive/deposit | No anonymized reviewer archive or DOI deposit exists in the evidence packet | not claimed; not an F6 failure |
 
 ## Standing evidence boundary
 
 Unchanged by all of this. `C-RESULT-001` through `C-RESULT-005` remain `TODO-RESULT`. The pilot is
 deterministic offline conformance over one authored world state. The Godot evidence comprises four
 authored engine-local fixtures and three trace-bound non-headless render captures; the 16.7 ms frame
-budget was not met and no live model, transport, participant, or efficacy result is implied.
+budget was not met and no live model, transport, participant, or efficacy result is implied. G4/G6
+remain separate game gates.
 
 ## Verification
 
@@ -108,7 +119,8 @@ targeted candidate-contract, conformance-pilot, and runtime tests; ruff and repo
 clean. `make check` exits 0 with no Type-3 fonts, overfull boxes, undefined references, or missing
 characters; EN is 7 pp and KO is 6 pp inside the 6–8 short-paper band. Citation identity closes at
 42/42 keys, all eight floats are referenced in both languages, and the exact provenance result is
-55/55 hashes in the working tree, 20/20 input paths present at `e4c2c77`, but 19/20 exact digests matching.
+35/35 artifact hashes, 21/21 input paths and exact digests at tagged commit `c4752df`, and 56/56
+total hashes, with 64 provenance rows partitioned as 43 executed plus 21 aggregate.
 
 ## Canonical artifacts
 

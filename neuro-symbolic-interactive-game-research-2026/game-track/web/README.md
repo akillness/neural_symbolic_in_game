@@ -2,7 +2,7 @@
 
 Status: **public-safe artifact deployed at
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app); browser
-smoke passed on 2026-08-13**.
+smoke passed on 2026-08-14**.
 
 This directory holds the reproducible configuration for a procedural-only Godot Web build. The
 generated `public/` directory is intentionally ignored and is deployed as a static artifact after
@@ -27,12 +27,16 @@ The current ignored `public/` artifact contains 11 top-level files and 41,425,84
 
 Playwriter browser smoke confirmed:
 
+- production deployment `dpl_H1QxjfF2R8oZwXdfGwY65CDSufAT` serves the 2026-08-14 latest-only
+  public-safe artifact;
 - HTML, JS, WASM, and PCK returned `200`; WASM used `application/wasm`.
 - Korean glyphs rendered from the bundled OFL Nanum Gothic font.
 - [`NanumGothic-OFL.txt`](https://sealed-lighthouse-trace-rpg.vercel.app/NanumGothic-OFL.txt)
   returned `200 text/plain`, 4,534 bytes, and SHA-256
   `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f`.
-- the deployed PCK is 1,573,072 bytes and excludes `docs/latest/**` plus every pending concept pack;
+- the deployed PCK is 1,573,072 bytes, has SHA-256
+  `62ceb0837086bb9e9c6c7e592a28b3b0020baf7c167a9ba763624828e474b486`, and excludes
+  `docs/latest/**` plus every pending concept pack;
 - the start gate and in-game ledger remained readable at 1280×720 and 390×844;
 - a trusted Playwriter click entered pointer lock in headless Chromium;
 - console and page-error counts were zero before and after entry.

@@ -1,6 +1,6 @@
 # TRACE-RPG Research Package 2026
 
-> Status: the user accepted the revision direction produced by the simulated Stage 6 Major Revision review, and the evidence-generating game-track revision is in progress. This is not a journal decision or paper acceptance. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. Existing numbers remain deterministic authored-fixture conformance counts.
+> Status: the user accepted the revision direction produced by the simulated Stage 6 Major Revision review. The expanded claim-faithfulness audit and the Stage-10 clean tagged input recapture have passed; this closes F6's reproducibility gate, not the separate G4/G6 game gates. This is not a journal decision, paper acceptance, reviewer archive, or DOI deposit. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. Existing numbers remain deterministic authored-fixture conformance counts.
 
 TRACE-RPG never writes an LLM proposal directly into canonical game state. Each successfully parsed proposal becomes a typed candidate event and is committed only after an externally supplied action policy and deterministic checks over preconditions, reachability, NPC knowledge, disclosure, and quest stage. An invalid candidate yields structured validation errors and may receive a bounded repair opportunity; adapter and controller failures remain classified terminal rows. Knowledge-graph retrieval and game-engine integration remain separate confirmatory tracks connected through the versioned event contract; neither is represented as completed pilot evidence.
 
@@ -38,10 +38,11 @@ Designed-fixture evidence never promotes itself into an efficacy claim, and a ve
 
 The original Stage 4.5 `22/22` pass is retained only as a superseded audit record: Stage 6 later
 reproduced three claim defects and one unaudited body-level telemetry defect. Stage 8 corrected the
-manuscript and parser contract, and Stage 9 completed the short-paper formatting and AI-use
-disclosure. Stage 5 still verifies all 36 bibliography identities without an unmatched or
-hallucinated entry. A clean-commit Stage 10 reproducibility lock and any independent efficacy study
-remain pending. See [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)
+manuscript and parser contract, Stage 9 completed the short-paper formatting and AI-use disclosure,
+and the expanded audit passed 42/42 claim families. Stage 5 verifies 42 bibliography identities
+(39 verified, 3 preprints, 0 unmatched/hallucinated). The Stage-10 clean tagged recapture now binds
+21/21 input digests to commit `c4752df` and verifies 35/35 artifact hashes. Independent efficacy
+studies remain pending. See [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)
 and [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md).
 
 ### V6 · Planned confirmatory design (not executed)
@@ -117,6 +118,13 @@ detectable integrity faults `10/10`; one separately declared repair-provenance b
 replay-accepted `1/1`; adapter outcomes 1 commit, 1 symbolic fallback, and 5 classified
 failures out of 7; assignment guards `3/3`. These are raw authored-fixture counts, not
 live-model, player, or population efficacy estimates.
+
+The clean Stage-10 recapture records input commit
+`c4752df43196761dcc64f02110f32bbaecfa235f`, tag
+`trace-rpg-stage10-inputs-20260814-v1`, and `dirty=false`. All 21 input paths and exact digests match
+that commit, all 35 artifact hashes recompute (56/56 total), and the manifest uses the portable
+`uv run python` invocation without absolute user or clone paths. This closes F6; no reviewer archive
+or DOI deposit is claimed.
 
 Rebuild and verify both PDFs with `make -C paper/latex all`. The build preserves SVG
 sources, creates high-resolution PNG inclusions to avoid Type 3 fonts, and rejects page-count,

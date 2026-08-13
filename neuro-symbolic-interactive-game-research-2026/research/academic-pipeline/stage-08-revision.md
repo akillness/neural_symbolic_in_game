@@ -21,8 +21,8 @@ that point the separate release re-audit and reproducibility gates remained open
 > additional EN/KO claim and reference defects. It also found that the later F14 runner revision
 > was recaptured against an earlier commit: all 20 input paths exist at `e4c2c77`, but only 19 exact
 > digests match because its runner is an earlier revision. The current manuscripts disclose that
-> gap. F6 is therefore reopened only as
-> the clean-release provenance gate; no clean archive is claimed.
+> historical gap. F6 was reopened only as a clean-release provenance gate, then closed on
+> 2026-08-14 by a clean tagged recapture at `c4752df`; no reviewer archive or DOI deposit is claimed.
 
 ## Class A — integrity / 무결성
 
@@ -57,7 +57,10 @@ runner, manifest, schemas, and configuration were committed first, then the pilo
 At the Stage-8 recapture, commit `26724a6` resolved **20 of 20 declared inputs**. A later F14 runner
 revision changed that input after the recorded commit, so the current packet's separately verified
 state is 19/20 exact digest matches at `e4c2c77`; all paths exist, but the commit contains an earlier
-`scripts/run_conformance_pilot.py`, and the frozen runner revision is dirty-tree-only.
+`scripts/run_conformance_pilot.py`, and the frozen runner revision is dirty-tree-only. This remained
+the historical reason F6 was reopened. The final clean recapture binds 21/21 input paths and exact
+digests to `c4752df43196761dcc64f02110f32bbaecfa235f`, tagged
+`trace-rpg-stage10-inputs-20260814-v1`, with `dirty=false`; F6 is now closed.
 
 ## Class B — scope and positioning / 범위와 위치
 
@@ -71,9 +74,9 @@ abstract, and the keywords in both languages.
 
 **F7. No availability statement.** A Data and Code Availability section was added to both
 manuscripts. The final re-audit revised it to state only what is currently evidenced: 35 artifact
-and 20 working-tree input hashes recompute; all 20 paths exist at recorded commit `e4c2c77`, but
-only 19 exact digests match because the runner there is an earlier revision. A clean tagged recapture
-remains a release gate.
+and 21 input hashes recompute; all 21 paths and exact digests match clean tagged commit `c4752df`,
+and all 35 artifact hashes recompute (56/56 total). The statement also says that no reviewer archive
+or DOI deposit is currently claimed.
 
 **F8. Novelty asserted against a self-selected pool.** The phrase "within the approved 36-source
 pool" is removed. It was internal pipeline language and made the gap true by construction.
@@ -136,8 +139,8 @@ three tables now has an explicit matched reference in both languages.
 | Test suite | 96 tests and 70 subtests pass |
 | Ruff lint and format | clean over `src`, `tests`, `scripts`, `examples` |
 | Pilot regeneration | deterministic; release bundle refreshed |
-| Manifest worktree integrity | 35 artifact + 20 input hashes recompute (55/55) |
-| Manifest recorded-commit provenance | 20/20 paths present but 19/20 exact digests match at `e4c2c77`; earlier runner revision disclosed; clean release blocked |
+| Manifest integrity | 35 artifact + 21 input hashes recompute (56/56) |
+| Manifest recorded-commit provenance | `c4752df`, tagged `trace-rpg-stage10-inputs-20260814-v1`; `dirty=false`; 21/21 paths and exact digests match; portable invocation; no absolute user/clone paths |
 | Parser parity | proposal and replay reject the same payload with the same message |
 | Paper build | `make all` exits 0; no Type-3 fonts, no overfull boxes, no undefined references |
 | Page count | EN 7 pp, KO 6 pp, inside the 6–8 short-paper band |
@@ -153,9 +156,12 @@ which is also what recovered the space the two-column figures needed.
 
 ## Remaining gate status / 남은 게이트 상태
 
-The expanded Stage-4.5 re-audit now passes and F17/F18 are closed in the current manuscript. The
-clean committed/tagged recapture remains the single release gate; this disposition record does not
-replace it.
+The expanded Stage-4.5 re-audit passes, F17/F18 are closed, and the clean committed/tagged recapture
+has closed F6. No paper-packet release blocker remains in this disposition record. A reviewer
+archive/DOI deposit is not yet claimed, `C-RESULT-001`--`005` remain `TODO-RESULT`, and G4/G6 are
+separate game gates.
 
-확장된 Stage-4.5 최종 재감사는 통과했고 F17/F18은 현재 원고에서 종결됐다. Clean committed/tagged
-recapture만 release gate로 남으며, 이 기록은 저널 게재 승인을 뜻하지 않는다.
+확장된 Stage-4.5 최종 재감사는 통과했고 F17/F18은 현재 원고에서 종결됐다. Clean
+committed/tagged recapture도 F6를 종결했다. 심사 archive/DOI deposit은 아직 주장하지 않고,
+`C-RESULT-001`--`005`는 `TODO-RESULT`이며 G4/G6는 별도 게임 gate다. 이 기록은 저널 게재
+승인을 뜻하지 않는다.

@@ -1,24 +1,27 @@
 # Stage 4.5 Claim-Faithfulness Integrity Gate (L3) / 4.5단계 주장 충실성 무결성 게이트
 
-Status: **PASS — expanded post-revision re-audit executed; clean release lock remains blocked**
+Status: **PASS — expanded post-revision re-audit and clean tagged recapture verified**
 
 > **Current packet note (2026-08-13):** the expanded audit below supersedes the corrected BLOCK
 > while preserving both the deficient original audit and its Stage-6 correction as history. The
 > L3 gate now passes because the current EN/KO claims match the implementation and disclosed
-> evidence boundary. This is not an archival-release pass: the frozen packet still records a dirty
-> tree and only 19/20 exact input digests match at its recorded commit.
+> evidence boundary. A subsequent Stage-10 recapture on 2026-08-14 closed F6: the manifest records
+> `dirty=false`, a tagged input commit, and 21/21 exact input digest matches. This still does not
+> assert that a reviewer archive or DOI deposit exists.
 
 ## Final expanded re-audit (2026-08-13) / 최종 확장 재감사
 
+Current clean-recapture availability refresh and digest check: 2026-08-14.
+
 Audited sources:
 
-- EN source SHA-256: `6ca9954206fdfde056de92729ecc7f0871b1a55ffc7f1b683ad02f0768737863`
-- KO source SHA-256: `308eadc1f2cfce82e4826bf7c698114ead13590f2030579317bf8a9dc088a675`
-- EN PDF SHA-256: `553da2f886d72cc9cbdb79ffc333ee72647080b7a2d3ff490c37ee077d7a7504`
-- KO PDF SHA-256: `da62f77305bae7fecfb6fdf0ea836430974a0f9fa04a3b38cdae4888abf51ec8`
+- EN source SHA-256: `b002d9a63ffef805ea98dbaa129a38eec36ce37bdabeabe5eeebf9281f4ddc2f`
+- KO source SHA-256: `f0f6537d49c1c3bfe8b1cf293d9a583577453684bcd2045c278f16eebde8a1af`
+- EN PDF SHA-256: `bfa046615901872f2886d56b902bbeb45287f022a7dd53cc925b450bc22d518d`
+- KO PDF SHA-256: `393256ec81f678d32b77d19774e4bc71a72ad0a156832d429b677d9cf0c7f806`
 - bibliography SHA-256: `5ca42d5d172ef72028f2c33e33d1f90dab18223c05021d2a77920e6f1ef0ef4e`
 - pilot result SHA-256: `f6c76abba4c728849912e90382e8df9079738f128706c13a5a649e45d37f7bfd`
-- pilot SHA manifest SHA-256: `a2c208f7e852e85e057c4737f7c91b9ac177659c0a1ec0584a21b79e461e875c`
+- pilot SHA manifest SHA-256: `ba973a7066b18d966d51569a795907a8c8174d9fb76429172053b9614969f9b4`
 
 The first expanded pass did not pass. It found six claim defects and one remaining camera-ready
 reference defect that the earlier remediation record had missed. Each was corrected in matched
@@ -71,8 +74,8 @@ introduction.
 | Parser and mutation boundary | both candidate parsers call `parse_candidate_mapping`; unknown keys reject, and `_apply_valid` revalidates before mutation | pass |
 | Pilot numeric provenance | 13/13 construction invariant; repair 0/2, 0/2, 1/2; detectable faults 10/10; known boundary 1/1; sentinels 2/2 with 0 safety passes; parser regression 1/1; adapter 1+1+5/7; guards 3/3; provenance 43+21=64 | pass |
 | Engine numeric provenance | four v5 fixture summaries contain five frame samples each; the first is largest in all four, range 98.760--116.667 ms; 0/4 pass the 16.7 ms budget | pass |
-| Bundle integrity | all 35 artifact and 20 working-tree input hashes recompute (55/55) | pass |
-| Recorded-commit provenance | manifest commit `e4c2c77`; all 20 paths exist, but only 19 exact digests match; the runner blob at that commit is an earlier revision, and both manuscripts disclose exactly that | pass for claim faithfulness; release remains blocked |
+| Bundle integrity | all 35 artifact and 21 input hashes recompute (56/56); 64 provenance rows remain 43 executed plus 21 aggregate | pass |
+| Recorded-commit provenance | manifest commit `c4752df43196761dcc64f02110f32bbaecfa235f`; tag `trace-rpg-stage10-inputs-20260814-v1`; `dirty=false`; 21/21 paths and exact digests match; portable `uv run python`; no absolute user/clone paths | pass; F6 clean-recapture gate closed |
 | Bilingual parity | three equations, five figure/algorithm floats, three tables, eight label/ref pairs, 76 citation instances, 42 unique citation keys, and identical experimental fraction multisets | pass |
 | Citation identity | 42 entries: 39 `VERIFIED`, 3 `PREPRINT`, 0 `UNMATCHED`, 0 `HALLUCINATED` | pass |
 | `TODO-RESULT` firewall | `C-RESULT-001` through `C-RESULT-005` remain `TODO-RESULT`; no positive efficacy phrasing appears | pass |
@@ -80,15 +83,16 @@ introduction.
 
 ### Final gate decision
 
-The expanded L3 claim-faithfulness gate is **PASS_WITH_DISCLOSED_RELEASE_BLOCK**. Stage 5 remains
+The expanded L3 claim-faithfulness gate is **PASS_WITH_CLEAN_TAGGED_RECAPTURE**. Stage 5 remains
 valid and all current manuscript claims are faithful to their cited source/code/artifact boundary.
 No designed fixture, engine trace, screenshot, or generated presentation artifact is promoted into
 a model, participant, usability, immersion, affect, retrieval, memory, or population-efficacy
 result. `C-RESULT-001` through `C-RESULT-005` remain `TODO-RESULT`.
 
-The single remaining release gate is the clean committed/tagged recapture. The current packet's
-19/20 exact recorded-commit digest match is honestly disclosed, so it does not block claim faithfulness;
-it does block any claim that the package is a clean archival release.
+The clean committed/tagged recapture gate is closed by the 2026-08-14 packet. This verdict is still
+bounded: no anonymized reviewer archive or DOI deposit has been created or claimed, the five
+`C-RESULT-*` hypotheses remain `TODO-RESULT`, and the separate G4/G6 game-quality gates are outside
+this paper-packet decision.
 
 > ## Correction notice / 정정 고지
 >

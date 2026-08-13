@@ -2,6 +2,8 @@
 
 Date: 2026-08-13
 
+Current release update: clean tagged pilot recapture verified 2026-08-14.
+
 ## Article type and format / 논문 유형과 서식
 
 | Item | Value |
@@ -46,8 +48,11 @@ substitutions under XeLaTeX. Both are pre-existing and cosmetic.
 
 ## Sections added at this stage / 이번 단계에서 추가한 절
 
-**Data and Code Availability** (added at Stage 8 under finding F7) states the bundle contents, the
-SHA-256 manifest coverage, and the provenance-regeneration caveat.
+**Data and Code Availability** (added at Stage 8 under finding F7) states the bundle contents and
+the current clean tagged provenance: 35/35 artifact hashes, 21/21 input paths and exact digests at
+`c4752df`, tag `trace-rpg-stage10-inputs-20260814-v1`, `dirty=false`, 56/56 total hashes, portable
+`uv run python`, and no absolute user/clone paths. It does not claim an existing reviewer archive
+or DOI deposit.
 
 **Disclosure of AI Usage** is present in both languages. The expanded re-audit corrected it to
 cover prose, code, and test drafting; command orchestration; evidence auditing and result
@@ -75,4 +80,5 @@ the final copy-edit makes all required figures and generated fragments direct bu
 
 F13, F14, F17, F18은 현재 원고에서 해결됐다. 필수 그림 또는 생성 fragment가 없으면 placeholder로
 대체되지 않고 LaTeX build가 실패한다. 확장된 Stage-4.5 최종 재감사는 통과했고 clean
-committed/tagged recapture만 별도 release gate로 남는다.
+committed/tagged recapture가 F6도 종결했다. 심사 archive/DOI deposit은 주장하지 않으며
+`C-RESULT-001`--`005`는 계속 `TODO-RESULT`이고 별도 G4/G6 게임 gate의 상태는 바뀌지 않는다.

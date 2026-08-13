@@ -274,7 +274,7 @@ Construct validity는 declared field에 한정되며 encoded check는 누락된 
 본 원고 준비 과정에서 대규모 언어 모델은 산문, 코드, 시험 초안 작성, 명령 실행 조율, 근거 감사와 결과 해석, 이번 개정을 이끈 심사 패널 시뮬레이션, 서지 메타데이터 API에 대한 인용 동일성 검사를 보조했다. 보고 수치의 출처로서 결정론적 실행을 대체하지 않았다. 파일럿 count는 작성 fixture에서 프로젝트 runner가 산출하여 기계 생성 조각을 통해 원고에 들어가고, Godot timing과 render 서술은 보존된 engine-evidence packet에서 전사한다. 이번 개정의 구현 및 결과 주장은 source와 artifact에 대조했고, 모든 인용 동일성은 최소 하나의 독립 색인에서 확인했다. 내용에 대한 책임은 전적으로 저자에게 있다.
 
 \section*{데이터 및 코드 가용성}
-Repository에는 구현, 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, build source가 포함된다. 현재 SHA-256 manifest는 산출물 35개와 선언 입력 20개를 포함하고 bound provenance row 64개(실행 fixture row 43개와 aggregate row 21개)를 결합한다. 산출물 35개 hash와 working-tree 입력 20개 hash는 모두 재계산된다. Manifest가 기록한 commit \texttt{e4c2c77}에는 입력 경로 20개가 모두 존재하지만 정확한 입력 digest는 19개만 일치한다. 해당 commit에는 더 이른 \texttt{scripts/run\_conformance\_pilot.py}가 있고, 동결 runner revision은 기록된 dirty-tree hash로만 표현된다. 따라서 익명 심사 archive 또는 DOI 기반 저장소를 주장하기 전에 clean commit과 tag에서 재캡처해야 한다.
+Repository에는 구현, 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, build source가 포함된다. 현재 Stage-10 SHA-256 manifest는 산출물 35개와 선언 입력 21개를 포함하고 bound provenance row 64개(실행 fixture row 43개와 aggregate row 21개)를 결합한다. 입력 commit \texttt{c4752df}에는 \texttt{trace-rpg-stage10-inputs-20260814-v1} tag가 있으며 manifest는 \texttt{dirty=false}를 기록한다. 산출물 hash 35개와 입력 hash 21개가 모두 재계산되고, 모든 입력 경로와 정확한 digest가 해당 commit과 일치한다(총 56/56). Manifest의 실행 명령은 이식 가능한 \texttt{uv run python}이며 절대 사용자 경로나 clone 경로를 포함하지 않는다. 이로써 clean-input 재현성 gate는 종결되지만, 익명 심사 archive 또는 DOI 기반 저장소가 이미 존재한다는 뜻은 아니며 본 원고는 어느 것도 주장하지 않는다.
 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}

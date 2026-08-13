@@ -1,6 +1,6 @@
 # TRACE-RPG 연구 패키지 2026
 
-> 상태: 사용자가 Stage 6 모의 Major Revision 심사에서 나온 개정 방향을 수용했고 근거 생성 게임 트랙 개정이 진행 중이다. 이는 저널 결정이나 논문 게재 승인이 아니다. 확증 효능 결과는 아직 없으며 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 기존 수치는 저자가 설계한 결정론적 fixture 적합성 count다.
+> 상태: 사용자가 Stage 6 모의 Major Revision 심사에서 나온 개정 방향을 수용했다. 확장 주장 충실성 감사와 Stage-10 clean tagged input 재캡처가 통과하여 F6 재현성 gate는 종결됐지만, 별도 G4/G6 게임 gate는 종결되지 않았다. 이는 저널 결정, 논문 게재 승인, 심사 archive 또는 DOI deposit이 아니다. 확증 효능 결과는 아직 없으며 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 기존 수치는 저자가 설계한 결정론적 fixture 적합성 count다.
 
 TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 상태에 기록하지 않는다. Parsing에 성공한 제안은 typed candidate event가 되고, 외부에서 공급된 행동 정책과 precondition·도달 가능성·NPC 지식·정보 공개·quest stage에 대한 결정론적 검사를 통과한 경우에만 커밋된다. 유효하지 않은 후보는 구조화 validation error를 만들고 제한된 repair 기회를 받을 수 있으며, adapter와 controller failure는 분류된 terminal row로 남는다. 지식 그래프 검색과 게임 엔진 연동은 versioned event contract로 연결되는 별도 확증 트랙이며, 현재 파일럿에서 완료된 근거로 표현하지 않는다.
 
@@ -38,9 +38,10 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 
 원래 Stage 4.5의 `22/22` 통과 판정은 대체된 감사 기록으로만 보존한다. Stage 6에서 주장
 결함 3건과 감사 범위 밖의 본문 telemetry 결함 1건을 재현했고, Stage 8에서 원고와 parser
-계약을 수정했으며 Stage 9에서 Short Paper 서식과 AI 사용 고지를 완료했다. Stage 5의
-참고문헌 36건 동일성 검증(미일치·환각 인용 0건)은 유효하다. 깨끗한 커밋을 기준으로 한
-Stage 10 재현성 고정과 독립 효능 실험은 아직 남아 있다. 상세 내용은
+계약을 수정했으며 Stage 9에서 Short Paper 서식과 AI 사용 고지를 완료했다. 확장 감사는
+주장 family 42/42를 통과했다. Stage 5는 참고문헌 42건(검증 39건, preprint 3건,
+미일치·환각 0건)의 동일성을 확인한다. Stage-10 clean tagged 재캡처는 입력 digest 21/21을
+commit `c4752df`에 결합하고 산출물 hash 35/35를 확인했다. 독립 효능 실험은 아직 남아 있다. 상세 내용은
 [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)와
 [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md)에 있다.
 
@@ -118,6 +119,13 @@ Python↔Godot 권한 transport, 10개 모델 추론, 영속 라이브 transport
 경계의 replay 허용 `1/1`, adapter 결과 7건 중 commit 1건·기호 fallback 1건·분류된
 failure 5건, 배정 guard `3/3`이다. 이는 저자가 설계한 fixture의 원시 count이며 live
 model, player 또는 모집단 효능 추정치가 아니다.
+
+Clean Stage-10 재캡처는 입력 commit
+`c4752df43196761dcc64f02110f32bbaecfa235f`, tag
+`trace-rpg-stage10-inputs-20260814-v1`, `dirty=false`를 기록한다. 입력 경로와 정확한 digest
+21/21이 해당 commit과 일치하고 산출물 hash 35/35가 재계산된다(총 56/56). Manifest는 절대
+사용자·clone 경로 없이 이식 가능한 `uv run python` 명령을 사용한다. 이로써 F6는 종결되지만
+심사 archive 또는 DOI deposit은 주장하지 않는다.
 
 두 PDF는 `make -C paper/latex all`로 재생성·검증한다. 빌드는 SVG 원본을 보존하면서
 Type 3 font를 피하기 위한 고해상도 PNG를 포함하고, 쪽수·Type 3 font·누락 glyph·정의되지

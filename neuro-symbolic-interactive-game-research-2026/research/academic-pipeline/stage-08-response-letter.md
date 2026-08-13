@@ -250,17 +250,17 @@ generated-fragment inputs, with no placeholder fallback path.
 | `REBUTTED` | 4 |
 | Total comments | 38 |
 
-Closed by ID at the Stage-8 checkpoint: I1, I2, I3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15, F16, F17, F18. F13 and F14 were the two acceptance blockers carried out of Stage 8's first pass and were closed there: the propositions are relabelled as asserted invariants with the vacuous antecedent disclosed, and every manifest row carries a schema-enforced executed-or-aggregate class with the split declared and asserted. The expanded re-audit completed F18 by adding matched EN/KO references to all five figure/algorithm floats and all three tables. It also found that the later F14 runner revision reopened F6 as a release-only provenance item: all 20 input paths exist at `e4c2c77`, but only 19 exact digests match because that commit contains an earlier runner revision.
+Closed by ID at the Stage-8 checkpoint: I1, I2, I3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15, F16, F17, F18. F13 and F14 were the two acceptance blockers carried out of Stage 8's first pass and were closed there: the propositions are relabelled as asserted invariants with the vacuous antecedent disclosed, and every manifest row carries a schema-enforced executed-or-aggregate class with the split declared and asserted. The expanded re-audit completed F18 by adding matched EN/KO references to all five figure/algorithm floats and all three tables. It also found that the later F14 runner revision reopened F6 as a release-only provenance item: all 20 input paths existed at `e4c2c77`, but only 19 exact digests matched because that commit contained an earlier runner revision. The 2026-08-14 clean recapture closes F6 with 21/21 exact input digest matches at tagged commit `c4752df` and `dirty=false`.
 
 Open by ID: none among the recorded Stage 8 findings.
 
 Partially addressed comments: DA-3, EIC-10, R1-1, R1-5. Rebutted: DA-8, DA-10, EIC-11, R2-5. Each is argued in place above.
 
-We state closure by finding ID rather than by class, because the Stage 6 classes and the reviewer comment set do not partition the same way: a comment can remain partial while the finding it maps to is closed. No manuscript or camera-ready copy-edit item remains open. The expanded Stage-4.5 re-audit passes; clean committed/tagged recapture remains the separate release gate. This is the user-accepted simulated Major Revision direction, not a journal acceptance decision.
+We state closure by finding ID rather than by class, because the Stage 6 classes and the reviewer comment set do not partition the same way: a comment can remain partial while the finding it maps to is closed. No manuscript, camera-ready copy-edit, or F6 clean-recapture item remains open. The expanded Stage-4.5 re-audit and clean tagged input binding pass. No reviewer archive/DOI deposit is claimed. This is the user-accepted simulated Major Revision direction, not a journal acceptance decision.
 
 Class A/B 원고 지적과 F13/F14는 종결됐고, F17은 필수 산출물 직접 입력으로, F18은 5개
 figure/algorithm float와 3개 table의 영문·국문 참조로 종결했다. 확장된 Stage-4.5 재감사는
-통과했다. 현재 packet의 입력 경로 20개는 `e4c2c77`에 모두 존재하지만, 해당 commit의 runner가
-더 이른 revision이므로 정확한 digest는 19/20만 일치한다. 따라서 clean committed/tagged
-recapture가 별도 release gate로 남는다. 이는 사용자가 수용한 모의 Major Revision 방향이며
-저널의 게재 승인 결정이 아니다.
+통과했다. 과거 `e4c2c77` packet의 runner digest 불일치로 재개됐던 F6는 2026-08-14 clean
+recapture에서 tagged commit `c4752df`에 대한 정확한 입력 digest 21/21 일치와 `dirty=false`로
+종결됐다. 심사 archive/DOI deposit은 주장하지 않는다. 이는 사용자가 수용한 모의 Major
+Revision 방향이며 저널의 게재 승인 결정이 아니다.
