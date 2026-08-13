@@ -1,0 +1,508 @@
+{
+  "nodes": [
+    {
+      "id": "/README.md",
+      "type": "Bundle Guide",
+      "title": "TRACE-RPG Methods Knowledge Bundle"
+    },
+    {
+      "id": "/metrics/valid-episode-rate.md",
+      "type": "Metric Definition",
+      "title": "Valid Episode Rate"
+    },
+    {
+      "id": "/metrics/cost-of-valid-episode.md",
+      "type": "Metric Definition",
+      "title": "Cost-of-Valid-Episode [PROPOSED]"
+    },
+    {
+      "id": "/metrics/hard-violation-rate.md",
+      "type": "Metric Definition",
+      "title": "Hard Dialogue Violation Rate"
+    },
+    {
+      "id": "/metrics/tension-rmse.md",
+      "type": "Metric Definition",
+      "title": "Tension RMSE"
+    },
+    {
+      "id": "/metrics/repair-at-k.md",
+      "type": "Metric Definition",
+      "title": "repair@K"
+    },
+    {
+      "id": "/oracles/semantic-oracle.md",
+      "type": "Oracle",
+      "title": "의미 오라클"
+    },
+    {
+      "id": "/oracles/gold-isolation.md",
+      "type": "Protocol",
+      "title": "골드 격리"
+    },
+    {
+      "id": "/oracles/encoding-oracle.md",
+      "type": "Oracle",
+      "title": "인코딩 오라클"
+    },
+    {
+      "id": "/experiments/consensus-arms.md",
+      "type": "Controller Arm Set",
+      "title": "컨센서스 arm C1–C3 [PROPOSED]"
+    },
+    {
+      "id": "/experiments/stage-2-confirmatory.md",
+      "type": "Experiment Stage",
+      "title": "Stage 2 확증"
+    },
+    {
+      "id": "/experiments/controller-arms.md",
+      "type": "Controller Arm Set",
+      "title": "컨트롤러 arm A0–A5와 예산 계약"
+    },
+    {
+      "id": "/experiments/pilot-measurement.md",
+      "type": "Experiment Stage",
+      "title": "결정론적 오프라인 파일럿 (PQ1–PQ5)"
+    },
+    {
+      "id": "/experiments/stage-1-screening.md",
+      "type": "Experiment Stage",
+      "title": "Stage 1 스크리닝"
+    },
+    {
+      "id": "/concepts/kg-validator-isomorphism.md",
+      "type": "Concept",
+      "title": "KG 관계–validator 술어 동형성"
+    },
+    {
+      "id": "/concepts/invariants.md",
+      "type": "Concept",
+      "title": "구현 불변량 I1–I4"
+    },
+    {
+      "id": "/concepts/commit-gate.md",
+      "type": "Concept",
+      "title": "기호 커밋 게이트 (Symbolic Commit Gate)"
+    },
+    {
+      "id": "/concepts/claim-boundary.md",
+      "type": "Claim Boundary",
+      "title": "근거 경계 (Claim Boundary)"
+    },
+    {
+      "id": "/scenarios/scenario-families.md",
+      "type": "Scenario Family Set",
+      "title": "확증 시나리오 패밀리 7종"
+    },
+    {
+      "id": "/scenarios/sealed-lighthouse-dev.md",
+      "type": "Scenario Family Set",
+      "title": "SL-DEV-001 — 봉인된 등대 개발 fixture"
+    },
+    {
+      "id": "/citations/consensus-cost-literature.md",
+      "type": "Citation Set",
+      "title": "컨센서스·테스트타임 컴퓨트 문헌 (13편 검증)"
+    },
+    {
+      "id": "/citations/neurosymbolic-kg-literature.md",
+      "type": "Citation Set",
+      "title": "뉴로심볼릭·KG 검증 문헌 (15편 검증)"
+    },
+    {
+      "id": "/citations/cost-evaluation-literature.md",
+      "type": "Citation Set",
+      "title": "비용 인지·예산 매칭 평가 문헌 (14편 검증)"
+    },
+    {
+      "id": "/engine/m6-engine-fixture.md",
+      "type": "Engine Evidence",
+      "title": "M6 엔진 fixture (Godot 4.7.1)"
+    },
+    {
+      "id": "/engine/render-capture-evidence.md",
+      "type": "Engine Evidence",
+      "title": "Render Capture v5 (SL-CAPTURE-001)"
+    },
+    {
+      "id": "/engine/llm-channel-demo.md",
+      "type": "Engine Evidence",
+      "title": "Codex OAuth LLM 채널 (엔지니어링 데모)"
+    },
+    {
+      "id": "/contrasts/h1-gate-vs-direct.md",
+      "type": "Contrast Family",
+      "title": "H1 — 게이트 대 직접 커밋"
+    },
+    {
+      "id": "/contrasts/h3-memory.md",
+      "type": "Contrast Family",
+      "title": "H3 — KG 시간 메모리 대 무메모리"
+    },
+    {
+      "id": "/contrasts/h5-consensus-vs-gate.md",
+      "type": "Contrast Family",
+      "title": "H5 — 컨센서스 대 기호 게이트 [PROPOSED]"
+    },
+    {
+      "id": "/contrasts/h2-repair-vs-retry.md",
+      "type": "Contrast Family",
+      "title": "H2 — 구조화 수리 대 맹목 재시도"
+    },
+    {
+      "id": "/contrasts/h4-affect.md",
+      "type": "Contrast Family",
+      "title": "H4 — 감정 적응 게이트키핑"
+    },
+    {
+      "id": "/protocols/config-drift-check.md",
+      "type": "Runbook",
+      "title": "방법 원자 ↔ 동결 설정 드리프트 검사"
+    },
+    {
+      "id": "/protocols/episode-execution.md",
+      "type": "Runbook",
+      "title": "게임 에피소드 실험 실행 절차"
+    },
+    {
+      "id": "/protocols/bundle-validation.md",
+      "type": "Runbook",
+      "title": "OKF 번들 구조 린트"
+    },
+    {
+      "id": "/protocols/execution-controls.md",
+      "type": "Protocol",
+      "title": "실행 통제 (decoding·seed·timeout)"
+    },
+    {
+      "id": "/protocols/validate-repair-commit.md",
+      "type": "Protocol",
+      "title": "Validate–Repair–Commit 루프"
+    },
+    {
+      "id": "/protocols/missingness-policy.md",
+      "type": "Protocol",
+      "title": "결측·실패 treatment-policy"
+    },
+    {
+      "id": "/protocols/leakage-guards.md",
+      "type": "Protocol",
+      "title": "누출 방지 가드"
+    }
+  ],
+  "edges": [
+    {
+      "source": "/README.md",
+      "target": "/protocols/bundle-validation.md"
+    },
+    {
+      "source": "/README.md",
+      "target": "/protocols/config-drift-check.md"
+    },
+    {
+      "source": "/metrics/valid-episode-rate.md",
+      "target": "/contrasts/h1-gate-vs-direct.md"
+    },
+    {
+      "source": "/metrics/valid-episode-rate.md",
+      "target": "/contrasts/h4-affect.md"
+    },
+    {
+      "source": "/metrics/cost-of-valid-episode.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "source": "/metrics/cost-of-valid-episode.md",
+      "target": "/metrics/repair-at-k.md"
+    },
+    {
+      "source": "/metrics/hard-violation-rate.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "source": "/metrics/tension-rmse.md",
+      "target": "/contrasts/h4-affect.md"
+    },
+    {
+      "source": "/metrics/repair-at-k.md",
+      "target": "/contrasts/h2-repair-vs-retry.md"
+    },
+    {
+      "source": "/metrics/repair-at-k.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/oracles/semantic-oracle.md",
+      "target": "/protocols/leakage-guards.md"
+    },
+    {
+      "source": "/oracles/gold-isolation.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "source": "/oracles/encoding-oracle.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "source": "/oracles/encoding-oracle.md",
+      "target": "/oracles/gold-isolation.md"
+    },
+    {
+      "source": "/experiments/consensus-arms.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/experiments/consensus-arms.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "source": "/experiments/consensus-arms.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h1-gate-vs-direct.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h2-repair-vs-retry.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h3-memory.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h4-affect.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/oracles/encoding-oracle.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/protocols/leakage-guards.md"
+    },
+    {
+      "source": "/experiments/controller-arms.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "source": "/experiments/controller-arms.md",
+      "target": "/protocols/execution-controls.md"
+    },
+    {
+      "source": "/experiments/pilot-measurement.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "source": "/experiments/pilot-measurement.md",
+      "target": "/experiments/stage-1-screening.md"
+    },
+    {
+      "source": "/experiments/stage-1-screening.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/experiments/stage-1-screening.md",
+      "target": "/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "source": "/concepts/kg-validator-isomorphism.md",
+      "target": "/concepts/commit-gate.md"
+    },
+    {
+      "source": "/concepts/kg-validator-isomorphism.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "source": "/concepts/invariants.md",
+      "target": "/concepts/commit-gate.md"
+    },
+    {
+      "source": "/concepts/invariants.md",
+      "target": "/engine/m6-engine-fixture.md"
+    },
+    {
+      "source": "/concepts/commit-gate.md",
+      "target": "/concepts/invariants.md"
+    },
+    {
+      "source": "/concepts/commit-gate.md",
+      "target": "/protocols/validate-repair-commit.md"
+    },
+    {
+      "source": "/concepts/commit-gate.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "source": "/concepts/claim-boundary.md",
+      "target": "/experiments/pilot-measurement.md"
+    },
+    {
+      "source": "/concepts/claim-boundary.md",
+      "target": "/engine/render-capture-evidence.md"
+    },
+    {
+      "source": "/concepts/claim-boundary.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "source": "/scenarios/scenario-families.md",
+      "target": "/scenarios/sealed-lighthouse-dev.md"
+    },
+    {
+      "source": "/scenarios/sealed-lighthouse-dev.md",
+      "target": "/protocols/leakage-guards.md"
+    },
+    {
+      "source": "/scenarios/sealed-lighthouse-dev.md",
+      "target": "/engine/m6-engine-fixture.md"
+    },
+    {
+      "source": "/citations/consensus-cost-literature.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "source": "/citations/consensus-cost-literature.md",
+      "target": "/experiments/consensus-arms.md"
+    },
+    {
+      "source": "/citations/neurosymbolic-kg-literature.md",
+      "target": "/concepts/kg-validator-isomorphism.md"
+    },
+    {
+      "source": "/citations/cost-evaluation-literature.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "source": "/citations/cost-evaluation-literature.md",
+      "target": "/metrics/cost-of-valid-episode.md"
+    },
+    {
+      "source": "/citations/cost-evaluation-literature.md",
+      "target": "/protocols/execution-controls.md"
+    },
+    {
+      "source": "/engine/m6-engine-fixture.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "source": "/engine/render-capture-evidence.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/oracles/gold-isolation.md"
+    },
+    {
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "source": "/contrasts/h1-gate-vs-direct.md",
+      "target": "/metrics/valid-episode-rate.md"
+    },
+    {
+      "source": "/contrasts/h1-gate-vs-direct.md",
+      "target": "/metrics/hard-violation-rate.md"
+    },
+    {
+      "source": "/contrasts/h1-gate-vs-direct.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/contrasts/h3-memory.md",
+      "target": "/scenarios/scenario-families.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/experiments/consensus-arms.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/metrics/cost-of-valid-episode.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/metrics/valid-episode-rate.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/concepts/kg-validator-isomorphism.md"
+    },
+    {
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/citations/consensus-cost-literature.md"
+    },
+    {
+      "source": "/contrasts/h2-repair-vs-retry.md",
+      "target": "/metrics/repair-at-k.md"
+    },
+    {
+      "source": "/contrasts/h2-repair-vs-retry.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/contrasts/h4-affect.md",
+      "target": "/metrics/tension-rmse.md"
+    },
+    {
+      "source": "/protocols/episode-execution.md",
+      "target": "/scenarios/scenario-families.md"
+    },
+    {
+      "source": "/protocols/episode-execution.md",
+      "target": "/engine/m6-engine-fixture.md"
+    },
+    {
+      "source": "/protocols/episode-execution.md",
+      "target": "/oracles/encoding-oracle.md"
+    },
+    {
+      "source": "/protocols/episode-execution.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "source": "/protocols/episode-execution.md",
+      "target": "/protocols/missingness-policy.md"
+    },
+    {
+      "source": "/protocols/execution-controls.md",
+      "target": "/protocols/config-drift-check.md"
+    },
+    {
+      "source": "/protocols/validate-repair-commit.md",
+      "target": "/concepts/invariants.md"
+    },
+    {
+      "source": "/protocols/validate-repair-commit.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "source": "/protocols/leakage-guards.md",
+      "target": "/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "source": "/protocols/leakage-guards.md",
+      "target": "/oracles/gold-isolation.md"
+    }
+  ]
+}
