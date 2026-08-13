@@ -4,7 +4,9 @@
 Checks every .md atom for closed YAML frontmatter, the required type/title/
 description fields, and that absolute bundle links resolve to existing atoms.
 """
+
 import os
+import pathlib
 import re
 import sys
 
@@ -26,7 +28,7 @@ def main() -> int:
             if not name.endswith(".md"):
                 continue
             path = os.path.join(root, name)
-            text = open(path).read()
+            text = pathlib.Path(path).read_text()
             if not text.startswith("---"):
                 errors.append(f"{path}: missing frontmatter")
                 continue

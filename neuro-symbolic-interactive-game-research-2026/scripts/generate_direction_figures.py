@@ -5,6 +5,7 @@ Repository rule: paper/research diagrams come from SVG/Python generators, not
 image models. Output: research/directions/figures/*.svg. The Pareto panel is a
 conceptual target sketch and is labeled as such — it plots no measured data.
 """
+
 import os
 
 OUT_DIR = "research/directions/figures"
@@ -29,10 +30,11 @@ def box(x, y, w, h, stroke, label_lines, fill=CARD, size=12.5, color=INK):
             f'<text x="{x + w / 2}" y="{start + index * line_height}" text-anchor="middle" '
             f'font-family="{MONO}" font-size="{size}" fill="{color}">{line}</text>'
         )
-    return (
+    rect = (
         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{fill}" '
-        f'stroke="{stroke}" stroke-width="1.3"/>' + text
+        f'stroke="{stroke}" stroke-width="1.3"/>'
     )
+    return rect + text
 
 
 def arrow(x1, y1, x2, y2, color=SOFT, dash=""):
@@ -52,10 +54,11 @@ def label(x, y, text, color=MUTED, size=11, anchor="middle"):
 
 def lanes_figure() -> str:
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" '
-        f'font-family="{MONO}">',
-        f'<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" '
-        f'markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="{SOFT}"/></marker></defs>',
+        (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" font-family="{MONO}">'),
+        (
+            f'<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" '
+            f'markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="{SOFT}"/></marker></defs>'
+        ),
         f'<rect x="0" y="0" width="900" height="430" fill="{PANEL}"/>',
         label(450, 28, "세 가지 검증 체제 — 동일 시나리오·모델·예산 계정 아래 비교", INK, 14),
     ]
@@ -112,14 +115,22 @@ def pareto_figure() -> str:
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" font-family="{MONO}">',
         f'<rect x="0" y="0" width="860" height="420" fill="{PANEL}"/>',
         label(430, 30, "개념적 목표 스케치 — 측정 데이터 아님 [TARGET]", CORAL, 13),
-        f'<line x1="{left}" y1="{top + height}" x2="{left + width}" y2="{top + height}" '
-        f'stroke="{INK}" stroke-width="1.2"/>',
-        f'<line x1="{left}" y1="{top}" x2="{left}" y2="{top + height}" '
-        f'stroke="{INK}" stroke-width="1.2"/>',
-        label(left + width / 2, top + height + 40, "에피소드당 기대 비용 (토큰·호출·$) →", INK, 12.5),
-        f'<text x="40" y="{top + height / 2}" text-anchor="middle" font-family="{MONO}" '
-        f'font-size="12.5" fill="{INK}" transform="rotate(-90 40 {top + height / 2})">'
-        "하드 유효성 →</text>",
+        (
+            f'<line x1="{left}" y1="{top + height}" x2="{left + width}" y2="{top + height}" '
+            f'stroke="{INK}" stroke-width="1.2"/>'
+        ),
+        (
+            f'<line x1="{left}" y1="{top}" x2="{left}" y2="{top + height}" '
+            f'stroke="{INK}" stroke-width="1.2"/>'
+        ),
+        label(
+            left + width / 2, top + height + 40, "에피소드당 기대 비용 (토큰·호출·$) →", INK, 12.5
+        ),
+        (
+            f'<text x="40" y="{top + height / 2}" text-anchor="middle" font-family="{MONO}" '
+            f'font-size="12.5" fill="{INK}" transform="rotate(-90 40 {top + height / 2})">'
+            "하드 유효성 →</text>"
+        ),
     ]
     points = [
         ("A0 direct", 130, 300, MUTED),

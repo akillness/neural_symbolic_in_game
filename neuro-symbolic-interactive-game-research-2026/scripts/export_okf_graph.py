@@ -5,8 +5,10 @@ Nodes are atoms (typed via frontmatter); edges are the bundle-absolute markdown
 links between them. Output: knowledge/graphify-out/okf-links.json plus a
 degree/orphan summary, and an optional --path A B shortest-path query.
 """
+
 import json
 import os
+import pathlib
 import re
 import sys
 from collections import deque
@@ -26,11 +28,11 @@ def load_graph():
                 continue
             path = os.path.join(root, name)
             rel = "/" + os.path.relpath(path, BUNDLE).replace(os.sep, "/")
-            text = open(path).read()
+            text = pathlib.Path(path).read_text()
             fm_end = text.find("---", 3)
             frontmatter = text[3:fm_end] if text.startswith("---") and fm_end != -1 else ""
-            type_match = re.search(r"^type:\s*(.+)$", frontmatter, re.M)
-            title_match = re.search(r"^title:\s*(.+)$", frontmatter, re.M)
+            type_match = re.search(r"^type:\s*(.+)$", frontmatter, re.MULTILINE)
+            title_match = re.search(r"^title:\s*(.+)$", frontmatter, re.MULTILINE)
             nodes[rel] = {
                 "id": rel,
                 "type": type_match.group(1).strip() if type_match else "Unknown",
@@ -72,12 +74,13 @@ def shortest_path(nodes, edges, start_hint, goal_hint):
 def main() -> int:
     nodes, edges = load_graph()
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    json.dump(
-        {"nodes": list(nodes.values()), "edges": edges},
-        open(OUT, "w"),
-        indent=2,
-        ensure_ascii=False,
-    )
+    with open(OUT, "w") as handle:
+        json.dump(
+            {"nodes": list(nodes.values()), "edges": edges},
+            handle,
+            indent=2,
+            ensure_ascii=False,
+        )
     degree = {node_id: 0 for node_id in nodes}
     for edge in edges:
         degree[edge["source"]] += 1

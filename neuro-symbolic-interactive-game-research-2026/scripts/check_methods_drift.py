@@ -6,6 +6,8 @@ prose lives in knowledge/ OKF atoms (and mirrors the paper/oracle plan). This
 check fails when an atom quotes a number that no longer matches the frozen
 config — the silent-drift failure mode that motivates the methods graph.
 """
+
+import pathlib
 import re
 import sys
 
@@ -20,7 +22,7 @@ def check(atom_path, description, pattern):
 
 
 def main() -> int:
-    config = yaml.safe_load(open(CONFIG))
+    config = yaml.safe_load(pathlib.Path(CONFIG).read_text())
     controls = config["controls"]
     design = config["design"]
     stage1 = design["stage_1_screening"]
@@ -34,10 +36,12 @@ def main() -> int:
     check(
         "knowledge/protocols/execution-controls.md",
         "decoding/seed/timeout controls",
-        rf"temperature {controls['decoding']['temperature']}.*top_p {controls['decoding']['top_p']}"
-        rf".*max_output_tokens {controls['decoding']['max_output_tokens']}"
-        rf".*\[{', ?'.join(str(seed) for seed in seeds)}\]"
-        rf".*K={controls['repair_budget_k']}.*timeout {controls['timeout_seconds']}s",
+        (
+            rf"temperature {controls['decoding']['temperature']}.*top_p {controls['decoding']['top_p']}"
+            rf".*max_output_tokens {controls['decoding']['max_output_tokens']}"
+            rf".*\[{', ?'.join(str(seed) for seed in seeds)}\]"
+            rf".*K={controls['repair_budget_k']}.*timeout {controls['timeout_seconds']}s"
+        ),
     )
     check(
         "knowledge/experiments/stage-1-screening.md",
@@ -62,25 +66,29 @@ def main() -> int:
     check(
         "knowledge/experiments/controller-arms.md",
         "matched call budget",
-        rf"최대 호출 {budget['proposal_or_repair_calls_max']}\(1\+K\), "
-        rf"K={budget['invalid_followup_calls_max']}",
+        (
+            rf"최대 호출 {budget['proposal_or_repair_calls_max']}\(1\+K\), "
+            rf"K={budget['invalid_followup_calls_max']}"
+        ),
     )
     check(
         "knowledge/experiments/stage-2-confirmatory.md",
         "confirmatory seed list",
         seeds_regex,
     )
-    margin_pp = int(round(float(noninf["margin_absolute"]) * 100))
+    margin_pp = round(float(noninf["margin_absolute"]) * 100)
     check(
         "knowledge/contrasts/h4-affect.md",
         "noninferiority margin and alpha",
-        rf"한계 {margin_pp}pp.*α=\.0?25.*margin_absolute: {noninf['margin_absolute']}"
-        rf".*alpha_one_sided: {noninf['alpha_one_sided']}",
+        (
+            rf"한계 {margin_pp}pp.*α=\.0?25.*margin_absolute: {noninf['margin_absolute']}"
+            rf".*alpha_one_sided: {noninf['alpha_one_sided']}"
+        ),
     )
 
     failures = 0
     for atom_path, description, pattern in CHECKS:
-        text = open(atom_path).read().replace("\n", " ")
+        text = pathlib.Path(atom_path).read_text().replace("\n", " ")
         if re.search(pattern, text, re.DOTALL):
             print(f"PASS  {atom_path} :: {description}")
         else:
