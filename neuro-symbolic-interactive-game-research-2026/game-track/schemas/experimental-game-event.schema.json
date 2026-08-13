@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.example/schemas/experimental-game-event.schema.json",
+  "title": "TRACE-RPG experimental game JSONL event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "run_id",
+    "episode_id",
+    "event_id",
+    "sequence",
+    "delivery_index",
+    "turn",
+    "event_type",
+    "seed",
+    "timestamp_ms",
+    "world_state_hash_before",
+    "world_state_hash",
+    "model_id",
+    "model_revision",
+    "policy_id",
+    "proposal",
+    "evidence_ids",
+    "validation",
+    "repair",
+    "commit",
+    "cost_usd",
+    "request_latency_ms",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.1.0"},
+    "scenario_id": {"const": "sealed-lighthouse-v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "episode_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "sequence": {"type": "integer", "minimum": 0},
+    "delivery_index": {"type": "integer", "minimum": 0},
+    "turn": {"type": "integer", "minimum": 0},
+    "event_type": {
+      "enum": [
+        "observation",
+        "player_action",
+        "candidate",
+        "validation",
+        "reject",
+        "fallback",
+        "commit",
+        "timeout",
+        "save",
+        "load",
+        "replay_check"
+      ]
+    },
+    "seed": {"type": "integer", "minimum": 0},
+    "timestamp_ms": {"type": "integer", "minimum": 0},
+    "world_state_hash_before": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "world_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "model_id": {"type": ["string", "null"]},
+    "model_revision": {"type": ["string", "null"]},
+    "policy_id": {"type": "string", "minLength": 1},
+    "proposal": {"type": ["object", "null"]},
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "codes"],
+      "properties": {
+        "status": {"enum": ["not_applicable", "valid", "invalid", "timeout"]},
+        "codes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "repair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applied", "attempt", "reason"],
+      "properties": {
+        "applied": {"type": "boolean"},
+        "attempt": {"type": "integer", "minimum": 0},
+        "reason": {"type": ["string", "null"]}
+      }
+    },
+    "commit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applied", "operation"],
+      "properties": {
+        "applied": {"type": "boolean"},
+        "operation": {
+          "type": ["string", "null"],
+          "enum": [null, "acquire_object", "install_lens", "reveal_hint"]
+        }
+      }
+    },
+    "cost_usd": {"type": "number", "minimum": 0},
+    "request_latency_ms": {"type": "number", "minimum": 0},
+    "payload": {"type": "object"}
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.example/schemas/experimental-game-render-capture.schema.json",
+  "title": "TRACE-RPG authored Godot render replay capture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "evidence_set_id",
+    "fixture_id",
+    "scenario_id",
+    "run_id",
+    "episode_id",
+    "seed",
+    "input_mode",
+    "track",
+    "capture_method",
+    "captured_at_utc",
+    "engine",
+    "viewport",
+    "source",
+    "validation_toolchain",
+    "claim_scope",
+    "limitations",
+    "captures"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "status": {"const": "OBSERVED_GODOT_RENDER_REPLAY"},
+    "evidence_set_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
+    "fixture_id": {"const": "sealed-lighthouse-canonical-v1"},
+    "scenario_id": {"const": "sealed-lighthouse-v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "episode_id": {"type": "string", "minLength": 1},
+    "seed": {"type": "integer", "minimum": 0},
+    "input_mode": {"const": "scripted_fixture_trace_replay"},
+    "track": {"const": "primary-structured-state-text"},
+    "capture_method": {"const": "subviewport-frame-post-draw-v1"},
+    "captured_at_utc": {"type": "string", "minLength": 1},
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "headless",
+        "display_server",
+        "rendering_method",
+        "rendering_device"
+      ],
+      "properties": {
+        "name": {"const": "Godot"},
+        "version": {"type": "string", "minLength": 1},
+        "headless": {"const": false},
+        "display_server": {"type": "string", "not": {"const": "headless"}},
+        "rendering_method": {"type": "string", "minLength": 1},
+        "rendering_device": {"type": "string", "minLength": 1}
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": {"const": 1280},
+        "height": {"const": 720}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "events_jsonl",
+        "events_sha256",
+        "summary_json",
+        "summary_sha256",
+        "capture_scene_sha256",
+        "capture_runner_sha256",
+        "project_sha256",
+        "capture_pipeline_sha256",
+        "png_contract_sha256",
+        "capture_schema_sha256",
+        "retained_validator_sha256",
+        "uv_lock_sha256"
+      ],
+      "properties": {
+        "events_jsonl": {"const": "../sealed-lighthouse-canonical-v1/events.jsonl"},
+        "events_sha256": {"$ref": "#/$defs/sha256"},
+        "summary_json": {"const": "../sealed-lighthouse-canonical-v1/summary.json"},
+        "summary_sha256": {"$ref": "#/$defs/sha256"},
+        "capture_scene_sha256": {"$ref": "#/$defs/sha256"},
+        "capture_runner_sha256": {"$ref": "#/$defs/sha256"},
+        "project_sha256": {"$ref": "#/$defs/sha256"},
+        "capture_pipeline_sha256": {"$ref": "#/$defs/sha256"},
+        "png_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "capture_schema_sha256": {"$ref": "#/$defs/sha256"},
+        "retained_validator_sha256": {"$ref": "#/$defs/sha256"},
+        "uv_lock_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "validation_toolchain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python_version", "jsonschema_version", "json_schema_draft", "png_decoder"],
+      "properties": {
+        "python_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+"},
+        "jsonschema_version": {"type": "string", "minLength": 1},
+        "json_schema_draft": {"const": "2020-12"},
+        "png_decoder": {"const": "stdlib-zlib-filter-reconstruction-v1"}
+      }
+    },
+    "claim_scope": {"const": "authored-engine-render-state-correspondence-only"},
+    "limitations": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "captures": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/capture"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capture_id",
+        "file",
+        "beat",
+        "event_id",
+        "sequence",
+        "delivery_index",
+        "turn",
+        "world_state_hash_before",
+        "world_state_hash",
+        "validation_status",
+        "validation_codes",
+        "view_mode",
+        "participant_visible",
+        "generated_assets_in_frame",
+        "width",
+        "height",
+        "mime_type",
+        "bytes",
+        "sha256",
+        "pixel_stats"
+      ],
+      "properties": {
+        "capture_id": {
+          "enum": [
+            "sl-rc-001-arrival",
+            "sl-rc-002-rejected-secret",
+            "sl-rc-003-authorized-hint"
+          ]
+        },
+        "file": {
+          "enum": [
+            "sl-rc-001-arrival.png",
+            "sl-rc-002-rejected-secret.png",
+            "sl-rc-003-authorized-hint.png"
+          ]
+        },
+        "beat": {
+          "enum": [
+            "arrival_observation",
+            "forbidden_disclosure_rejected",
+            "authorized_hint_committed"
+          ]
+        },
+        "event_id": {
+          "enum": [
+            "evt-000-observe",
+            "evt-002-fallback-secret",
+            "evt-005-commit-hint"
+          ]
+        },
+        "sequence": {"type": "integer", "minimum": 0},
+        "delivery_index": {"type": "integer", "minimum": 0},
+        "turn": {"type": "integer", "minimum": 0},
+        "world_state_hash_before": {"$ref": "#/$defs/sha256"},
+        "world_state_hash": {"$ref": "#/$defs/sha256"},
+        "validation_status": {"enum": ["not_applicable", "invalid", "valid"]},
+        "validation_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "view_mode": {"enum": ["participant-primary", "experiment-inspector"]},
+        "participant_visible": {"type": "boolean"},
+        "generated_assets_in_frame": {"const": false},
+        "width": {"const": 1280},
+        "height": {"const": 720},
+        "mime_type": {"const": "image/png"},
+        "bytes": {"type": "integer", "minimum": 1024},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "pixel_stats": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "unique_colors",
+            "opaque_fraction",
+            "min_luma",
+            "max_luma",
+            "mean_luma"
+          ],
+          "properties": {
+            "unique_colors": {"type": "integer", "minimum": 32},
+            "opaque_fraction": {"type": "number", "minimum": 0.99, "maximum": 1},
+            "min_luma": {"type": "number", "minimum": 0, "maximum": 0.2},
+            "max_luma": {"type": "number", "minimum": 0.7, "maximum": 1},
+            "mean_luma": {"type": "number", "minimum": 0.03, "maximum": 0.95}
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"capture_id": {"const": "sl-rc-001-arrival"}}},
+          "then": {
+            "properties": {
+              "file": {"const": "sl-rc-001-arrival.png"},
+              "beat": {"const": "arrival_observation"},
+              "event_id": {"const": "evt-000-observe"},
+              "view_mode": {"const": "participant-primary"},
+              "participant_visible": {"const": true}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"capture_id": {"const": "sl-rc-002-rejected-secret"}}},
+          "then": {
+            "properties": {
+              "file": {"const": "sl-rc-002-rejected-secret.png"},
+              "beat": {"const": "forbidden_disclosure_rejected"},
+              "event_id": {"const": "evt-002-fallback-secret"},
+              "view_mode": {"const": "experiment-inspector"},
+              "participant_visible": {"const": false}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"capture_id": {"const": "sl-rc-003-authorized-hint"}}},
+          "then": {
+            "properties": {
+              "file": {"const": "sl-rc-003-authorized-hint.png"},
+              "beat": {"const": "authorized_hint_committed"},
+              "event_id": {"const": "evt-005-commit-hint"},
+              "view_mode": {"const": "experiment-inspector"},
+              "participant_visible": {"const": false}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

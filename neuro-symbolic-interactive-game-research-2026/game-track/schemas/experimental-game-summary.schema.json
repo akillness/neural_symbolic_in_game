@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.example/schemas/experimental-game-summary.schema.json",
+  "title": "TRACE-RPG experimental game run summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution_status",
+    "fixture_id",
+    "scenario_id",
+    "run_id",
+    "episode_id",
+    "seed",
+    "engine",
+    "hash_algorithm",
+    "initial_state_hash",
+    "research_oracle_state_hash",
+    "terminal_state_hash",
+    "loaded_state_hash",
+    "replay_state_hash",
+    "checks",
+    "counts",
+    "software",
+    "telemetry",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "execution_status": {"const": "OBSERVED_ENGINE_RUN"},
+    "fixture_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
+    "scenario_id": {"const": "sealed-lighthouse-v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "episode_id": {"type": "string", "minLength": 1},
+    "seed": {"type": "integer", "minimum": 0},
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "headless"],
+      "properties": {
+        "name": {"const": "Godot"},
+        "version": {"type": "string", "minLength": 1},
+        "headless": {"const": true}
+      }
+    },
+    "hash_algorithm": {"const": "sha256-canonical-json-v1"},
+    "initial_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "research_oracle_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "terminal_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "loaded_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "replay_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "early_forbidden_state_isolation",
+        "permitted_hint_after_authorization",
+        "save_load_hash_match",
+        "replay_hash_match",
+        "expected_terminal_hash_match",
+        "research_oracle_hash_match",
+        "duplicate_idempotent",
+        "timeout_state_isolation",
+        "corrupt_save_state_isolation",
+        "fixture_expectations_match"
+      ],
+      "properties": {
+        "early_forbidden_state_isolation": {"type": "boolean"},
+        "permitted_hint_after_authorization": {"type": "boolean"},
+        "save_load_hash_match": {"type": "boolean"},
+        "replay_hash_match": {"type": "boolean"},
+        "expected_terminal_hash_match": {"type": "boolean"},
+        "research_oracle_hash_match": {"type": "boolean"},
+        "duplicate_idempotent": {"type": "boolean"},
+        "timeout_state_isolation": {"type": "boolean"},
+        "corrupt_save_state_isolation": {"type": "boolean"},
+        "fixture_expectations_match": {"type": "boolean"}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["events", "commits", "fallbacks", "duplicate_events", "timeouts"],
+      "properties": {
+        "events": {"type": "integer", "minimum": 1},
+        "commits": {"type": "integer", "minimum": 3},
+        "fallbacks": {"type": "integer", "minimum": 1},
+        "duplicate_events": {"type": "integer", "minimum": 0},
+        "timeouts": {"type": "integer", "minimum": 0}
+      }
+    },
+    "software": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runner_sha256",
+        "machine_sha256",
+        "canonicalizer_sha256",
+        "scenario_sha256",
+        "fixture_sha256"
+      ],
+      "properties": {
+        "runner_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "machine_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "canonicalizer_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "scenario_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "fixture_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clock",
+        "engine_elapsed_ms",
+        "headless_frame_delta_ms",
+        "request_latency_ms",
+        "p95_frame_delta_ms",
+        "p95_request_latency_ms",
+        "frame_budget_ms",
+        "request_budget_ms",
+        "frame_budget_passed",
+        "request_budget_passed"
+      ],
+      "properties": {
+        "clock": {"const": "Time.get_ticks_usec"},
+        "engine_elapsed_ms": {"type": "number", "minimum": 0},
+        "headless_frame_delta_ms": {
+          "type": "array",
+          "items": {"type": "number", "minimum": 0},
+          "minItems": 1
+        },
+        "request_latency_ms": {
+          "type": "array",
+          "items": {"type": "number", "minimum": 0},
+          "minItems": 1
+        },
+        "p95_frame_delta_ms": {"type": "number", "minimum": 0},
+        "p95_request_latency_ms": {"type": "number", "minimum": 0},
+        "frame_budget_ms": {"const": 16.7},
+        "request_budget_ms": {"const": 100.0},
+        "frame_budget_passed": {"type": "boolean"},
+        "request_budget_passed": {"type": "boolean"}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["events_jsonl", "save_json"],
+      "properties": {
+        "events_jsonl": {"type": "string", "minLength": 1},
+        "save_json": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

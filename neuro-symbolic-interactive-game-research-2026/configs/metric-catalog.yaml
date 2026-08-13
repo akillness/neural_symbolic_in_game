@@ -75,3 +75,54 @@ metrics:
     formula: valid_actions_rejected / human_confirmed_valid_actions
     direction: minimize
     type: audit
+  - id: engine_terminal_state_hash_match_rate
+    formula: engine_replays_matching_reference_terminal_hash / completed_engine_replays
+    direction: maximize
+    type: engine-conformance
+    zero_denominator: NA
+  - id: save_load_state_hash_match_rate
+    formula: save_load_cycles_matching_pre_save_hash / completed_save_load_cycles
+    direction: maximize
+    type: engine-conformance
+    zero_denominator: NA
+  - id: duplicate_event_nonmutation_rate
+    formula: duplicate_deliveries_with_unchanged_state / duplicate_event_injections
+    direction: maximize
+    type: engine-conformance
+    zero_denominator: NA
+  - id: failure_path_nonmutation_rate
+    formula: timeout_adapter_controller_failures_with_full_state_equality / injected_failure_paths
+    direction: maximize
+    type: engine-conformance
+    zero_denominator: NA
+  - id: engine_frame_p95_ms
+    formula: percentile(engine_frame_ms, 95)
+    direction: minimize
+    type: engine-performance
+    threshold_target: 16.7
+    estimand: frames-in-the-frozen-engine-scenario
+  - id: engine_long_frame_rate
+    formula: frames_over_16_7_ms / measured_frames
+    direction: minimize
+    type: engine-performance
+    threshold_target: 0.005
+  - id: engine_input_latency_p95_ms
+    formula: percentile(input_to_visible_feedback_ms, 95)
+    direction: minimize
+    type: engine-performance
+    threshold_target: 100
+  - id: engine_memory_soak_delta_mb
+    formula: resident_memory_mb_at_30_min - resident_memory_mb_after_warmup
+    direction: minimize
+    type: engine-performance
+    interpretation: report observed curve and platform; no universal threshold in Cycle 1
+  - id: oracle_encoded_agreement_rate
+    formula: controller_encoded_label_equal_independent_encoded_label / independently_labelled_candidates
+    direction: maximize
+    type: independent-audit
+    zero_denominator: NA
+  - id: oracle_semantic_false_negative_rate
+    formula: independently_labelled_semantic_hazards_committed / independently_labelled_semantic_hazards
+    direction: minimize
+    type: independent-audit
+    zero_denominator: NA

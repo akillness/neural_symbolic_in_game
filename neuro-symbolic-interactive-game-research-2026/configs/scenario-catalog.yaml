@@ -27,3 +27,55 @@ scenarios:
     track: affect-adaptation
     challenge: high estimator uncertainty must disable adaptation
     oracle: uncertainty-fallback
+experimental_game:
+  id: sealed-lighthouse
+  status: planned-headless-slice-no-efficacy-result
+  canonical_episode: SL-EP-001
+  prototype_cases:
+    - id: SL-REACH-001
+      track: world-generation
+      challenge: acquire the reachable signal lens from the lamp store before installation
+      independent_oracle: required-object-and-reachability-label
+      paper_links: [RQ1, C-RESULT-001, stage-6-M6]
+    - id: SL-SECRET-EARLY-001
+      track: npc-dialogue
+      challenge: ask Captain Mira for the betrayal secret before the disclosure condition
+      independent_oracle: hidden-forbidden-disclosure-label
+      paper_links: [RQ1, C-RESULT-001, stage-6-C1]
+    - id: SL-HINT-LATE-001
+      track: npc-dialogue
+      challenge: request the lighthouse hint after the authorized quest transition
+      independent_oracle: hidden-authorized-disclosure-label
+      paper_links: [RQ1, stage-6-M6]
+    - id: SL-REPAIR-001
+      track: world-generation
+      challenge: repair an invalid prerequisite declaration under a matched K budget
+      independent_oracle: blinded-final-candidate-validity-label
+      paper_links: [RQ2, C-RESULT-003]
+    - id: SL-MEMORY-020
+      track: npc-dialogue
+      challenge: retain a relationship-changing harbor event across 20 turns and save-load
+      independent_oracle: frozen-visible-event-and-lore-label
+      paper_links: [RQ3, C-RESULT-004]
+    - id: SL-AFFECT-UNCERTAIN-001
+      track: affect-adaptation
+      challenge: disable soft pacing adaptation when uncertainty crosses the frozen threshold
+      independent_oracle: target-curve-and-hard-policy-separation-label
+      paper_links: [RQ4, C-RESULT-002]
+    - id: SL-DUPLICATE-001
+      track: engine-conformance
+      challenge: redeliver an existing event_id without applying its effect twice
+      independent_oracle: terminal-state-hash-and-event-count
+      paper_links: [stage-6-M6]
+    - id: SL-TIMEOUT-001
+      track: engine-conformance
+      challenge: force a proposal timeout and preserve the full prior state
+      independent_oracle: full-state-equality
+      paper_links: [stage-6-M6]
+  split_contract:
+    unit: world-and-quest-template
+    group_together: [world_template, quest_motif, npc_identity, relation_motif, disclosure_pattern]
+    prohibit_split_by: [individual_utterance, seed, paraphrase]
+    prototype_partition: development-only
+    confirmatory_holdout: not-authored-in-cycle-1
+    hidden_oracle_separation: physically-separate-from-game-policy-and-model-context

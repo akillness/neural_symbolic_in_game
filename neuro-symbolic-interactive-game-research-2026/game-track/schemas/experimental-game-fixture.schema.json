@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.example/schemas/experimental-game-fixture.schema.json",
+  "title": "TRACE-RPG experimental game execution fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "scenario_resource",
+    "run_id",
+    "episode_id",
+    "seed",
+    "fault_mode",
+    "expected"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "fixture_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
+    "scenario_resource": {"const": "res://data/sealed_lighthouse.json"},
+    "run_id": {"type": "string", "minLength": 1},
+    "episode_id": {"type": "string", "minLength": 1},
+    "seed": {"type": "integer", "minimum": 0},
+    "fault_mode": {"enum": ["none", "duplicate_event", "timeout", "corrupt_save"]},
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "oracle_id",
+        "research_oracle_state_hash",
+        "terminal_state_hash",
+        "fallback_codes",
+        "committed_operations",
+        "duplicate_event_count",
+        "timeout_count",
+        "replay_matches",
+        "save_load_matches"
+      ],
+      "properties": {
+        "oracle_id": {"const": "python-independent-sealed-lighthouse-v1"},
+        "research_oracle_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "terminal_state_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "fallback_codes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "committed_operations": {
+          "type": "array",
+          "items": {"enum": ["acquire_object", "install_lens", "reveal_hint"]},
+          "uniqueItems": true,
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "duplicate_event_count": {"type": "integer", "minimum": 0},
+        "timeout_count": {"type": "integer", "minimum": 0},
+        "replay_matches": {"const": true},
+        "save_load_matches": {"type": "boolean"}
+      }
+    }
+  }
+}
