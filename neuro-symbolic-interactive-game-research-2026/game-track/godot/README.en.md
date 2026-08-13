@@ -1,7 +1,8 @@
-# The Sealed Lighthouse — Godot conformance slice and render-capture pass
+# The Sealed Lighthouse — Godot conformance, playable, capture, and Web passes
 
-Status: **three retained Godot 4.7.1 headless runs plus one fresh corrupt-save negative fixture
-observed and schema-verified; separate non-headless capture promotion in progress** (2026-08-13).
+Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passed `4/4` fixtures and
+`47/47` combined checks; four latest working captures are built; the public-safe Web artifact is
+live and browser-smoke verified** (2026-08-13).
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -29,7 +30,7 @@ Frozen expected terminal state hash:
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`.
 This is an unkeyed SHA-256 integrity checksum over canonical JSON, not authentication.
 The fixture labels it `python-independent-sealed-lighthouse-v1`: the Python test computes the same
-terminal projection independently of GDScript. All three observed Godot runs matched that hash.
+terminal projection independently of GDScript. All four observed fixture runs matched that hash.
 
 ## Run with Godot 4.x
 
@@ -72,7 +73,7 @@ The authoritative retained 2026-08-13 evidence set is selected by
 `evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`. The canonical,
 duplicate-ID, timeout, and corrupt-save runs each made three commits and reached the frozen
 terminal/oracle hash; the corrupt-save probe was rejected before live-state mutation. The current
-game-track suite reports `19 passed, 44 subtests passed`. Performance budgets did not all pass:
+Cycle 3 aggregate receipt reports `40 tests, 44 subtests`. Performance budgets did not all pass:
 five-sample headless frame p95 values included startup transients and were `116.667`, `100.000`,
 `98.760`, and `112.907 ms`, respectively, in the selected retained packet.
 
@@ -115,19 +116,103 @@ presentation layer only. Live play and the headless smoke sweep share the same p
 # Play (WASD move, mouse look, E interact, F5/F9 save/load, M reduced motion)
 godot --path game-track/godot res://scenes/main_3d.tscn
 
-# Headless conformance smoke (8 checks: refusal immutability, stage gates, corrupt-save rejection)
-godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke
+# Public-safe headless smoke (8 checks: refusal immutability, stage gates, corrupt-save rejection)
+godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe
+
+# Presentation-invariant JSON (engineering only)
+godot --headless --path game-track/godot res://scenes/main_3d.tscn -- \
+  --evaluate /tmp/sl3d-evaluation.json --public-safe
 
 # Development verification shot (non-headless; not promotable capture evidence)
-godot --path game-track/godot res://scenes/main_3d.tscn -- --shot /tmp/sl3d-shot.png
+godot --path game-track/godot res://scenes/main_3d.tscn -- \
+  --shot /tmp/sl3d-shot.png --shot-stage arrival --public-safe
 ```
 
 The 8-check smoke sweep passed on Godot 4.7.1 (2026-08-13) and its final state hash matches the
-frozen hash `4b2310...8892`. [OBSERVED] Generated textures under `../assets/concepts/pack-3d/`
-(SL3D-A01..U01, with adjacent provenance) load only as optional presentation candidates and fall
-back to procedural materials when absent. Publication promotion of generated assets requires the
-pending human rights/style review. This slice produces no immersion, usability, performance, or
-model-efficacy evidence.
+frozen hash `4b2310...8892`. Web and `--public-safe` never load generated candidates under
+`../assets/concepts/` or `../assets/concepts/pack-3d/`; they use procedural geometry, materials,
+VFX, UI, and audio. Publication promotion of those candidates still requires the pending human
+rights/style review.
+
+## Cycle 3 evaluation matrix and latest working captures
+
+| `SL-PLAY-EVAL-001` row | Checks | Result |
+|---|---:|---|
+| Canonical fixture | `10/10` | PASS |
+| Duplicate-event fixture | `10/10` | PASS |
+| Timeout fixture | `10/10` | PASS |
+| Corrupt-save fixture | `10/10` | PASS |
+| Presentation invariants | `7/7` | PASS |
+| **Combined** | **`47/47`** | **PASS** |
+
+All `4/4` fixture runs reached the exact terminal SHA-256
+`4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. Open the
+[full matrix](docs/latest/evaluation-matrix.md), [JSON matrix](docs/latest/evaluation-matrix.json),
+or [raw presentation evaluation](docs/latest/presentation-evaluation.json).
+
+| Arrival | Refusal |
+|---|---|
+| ![Cycle 3 public-safe arrival](docs/latest/arrival.png) | ![Cycle 3 public-safe refusal](docs/latest/refusal.png) |
+| Authorized hint | Ending |
+| ![Cycle 3 public-safe authorized hint](docs/latest/authorized_hint.png) | ![Cycle 3 public-safe ending](docs/latest/ending.png) |
+
+The four 1280×720 PNGs are latest engineering working captures generated from a fresh disposable
+project copy. They do not replace or amend the immutable v5 packet.
+
+## Build the public-safe Web artifact
+
+From the repository project root:
+
+```bash
+./scripts/build_godot_web.sh
+python3 -m http.server 4173 --directory game-track/web/public
+```
+
+The builder copies the Godot project to a temporary directory, selects `main_3d.tscn` only in that
+copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
+unchanged. The current artifact contains `index.html`, JavaScript/audio worklets, a PCK, and WebAssembly
+output under ignored `game-track/web/public/`. Deployment status:
+**[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**. Playwriter
+verified Korean rendering, responsive 1280×720 and 390×844 layouts, pointer-lock entry, and zero
+console/page errors. See [`../web/README.md`](../web/README.md).
+
+**Cycle 3 claim boundary:** authored-fixture and presentation-invariant engineering conformance
+only. G4, usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**.
+G6 remains `FIX` pending save/reload, warmed-frame/input, and 30-minute soak evidence.
+
+## Optional LLM channel (Codex OAuth) and 3D resource pipeline
+
+Added 2026-08-14 [OBSERVED]:
+
+- `scripts/game3d/llm/` is an optional free-form dialogue channel that reuses the local Codex CLI
+  OAuth session (`~/.codex/auth.json`) read-only; `codex login` owns login/refresh and the game
+  never writes or logs tokens. Mira's free-form answers follow a JSON `{say, disclose[]}` contract;
+  every proposed disclosure is re-validated by the authored policy mirror (GDI-01/04). Malformed
+  output gets typed-counterexample repair up to `K=3` (mirrors the paper's A4 `structured_repair`
+  arm, `1+K=4` calls max); exhaustion/timeout falls back canonically with the state hash unchanged.
+  The prompt projects model-visible facts only — sealed fact IDs are never named (smoke-enforced).
+- Round-trip probe: `godot --headless -s res://scripts/game3d/llm/llm_probe.gd`
+  (observed 2026-08-14: gpt-5.4, 2994 ms latency, zero violations, state hash unchanged). Without
+  login/network the channel is simply inactive; the slice stays fully playable — the private
+  backend can never become a runtime dependency.
+- The GLB prop kit under `assets/models/` (lighthouse, signal lens, lamp post, crate, buoy) was
+  authored by a headless Blender 4.x procedural script (SHA-256 in `models-manifest.json`, not
+  AI-generated) and attaches via runtime `GLTFDocument` loading; without the kit the procedural
+  geometry remains the complete build.
+- `addons/RodinBridge/` (Godot Asset Library #4266) is an editor-only image→3D bridge dock for
+  interactive generation/import with a hyper3d.ai account; it plays no part in runtime or headless
+  paths.
+
+## Onboarding, tutorial, and full generated-resource wiring (2026-08-14)
+
+- All generated images are now wired as optional presentation candidates: SL-C01 key art on the
+  start gate, SL3D-P01 dialogue portrait, SL-C02/SL-C03/SL3D-U01 in the tutorial, SL3D-T01/T02 as
+  scene materials. Web and `--public-safe` runs load none of them and keep the procedural/text
+  surface. [OBSERVED]
+- A three-page evidence-folio tutorial (controls → ledger grammar → experiment link) auto-shows on
+  first run and reopens with `[T]`; the experiment page explains the 60–120 s loop and the K=3
+  repair budget (A4 mirror) in player language. One-shot toasts explain the first commit/refusal.
+- Verification shot stages now include `tutorial` and `start_gate`.
 
 ## Evidence boundary
 

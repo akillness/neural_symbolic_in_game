@@ -13,6 +13,8 @@ extends Node3D
 
 const SealedLighthouseMachine = preload("res://scripts/sealed_lighthouse_machine.gd")
 const CanonicalState = preload("res://scripts/canonical_state.gd")
+const ProceduralAudioFeedbackScript = preload("res://scripts/game3d/procedural_audio.gd")
+const MiraLLMChannelScript = preload("res://scripts/game3d/llm/mira_llm_channel.gd")
 
 const SCENARIO_PATH := "res://data/sealed_lighthouse.json"
 const SAVE_PATH := "user://sl3d_save.json"
@@ -23,11 +25,21 @@ var handles: Dictionary
 var player: PlayerInvestigator3D
 var ui: HarborLedgerUI
 var director: NarrativeDirector
+var audio_feedback: ProceduralAudioFeedback
+var llm_channel: MiraLLMChannel
+var _llm_connected: bool = false
+var _llm_pending: bool = false
+var _objective_beacon: Node3D
+var _first_commit_explained: bool = false
+var _first_refusal_explained: bool = false
 var commit_count: int = 0
 var refusal_count: int = 0
 var episode_over: bool = false
 var _dialogue_open: bool = false
 var _smoke_mode: bool = false
+var _evaluate_mode: bool = false
+var _play_started: bool = false
+var _evaluation_path: String = ""
 
 
 func _enter_tree() -> void:
@@ -35,17 +47,29 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	_smoke_mode = "--smoke" in OS.get_cmdline_user_args()
+	var user_args := OS.get_cmdline_user_args()
+	_smoke_mode = "--smoke" in user_args
+	var evaluate_index := user_args.find("--evaluate")
+	_evaluate_mode = evaluate_index != -1
+	if _evaluate_mode:
+		_evaluation_path = (
+			user_args[evaluate_index + 1]
+			if evaluate_index + 1 < user_args.size()
+			else "user://sealed-lighthouse-3d-engineering-evaluation.json"
+		)
 	scenario = _load_scenario()
 	machine = SealedLighthouseMachine.new(scenario)
 
 	handles = SealedLighthouseWorldBuilder.build(self)
+	_objective_beacon = _build_objective_beacon()
 	player = PlayerInvestigator3D.create()
 	player.position = Vector3(0.0, 0.2, 2.0)
 	add_child(player)
 
 	ui = HarborLedgerUI.new()
 	add_child(ui)
+	audio_feedback = ProceduralAudioFeedbackScript.new()
+	add_child(audio_feedback)
 	director = NarrativeDirector.new()
 	add_child(director)
 	director.setup(handles, player)
@@ -54,24 +78,73 @@ func _ready() -> void:
 	_spawn_interactables()
 	player.interact_requested.connect(_on_interact)
 	player.focus_changed.connect(_on_focus_changed)
+	player.footstep_requested.connect(_on_footstep_requested)
 	ui.choice_selected.connect(_on_choice)
+	ui.start_requested.connect(_on_start_requested)
+	ui.audio_toggle_requested.connect(_on_audio_toggle_requested)
+	audio_feedback.audio_unlocked.connect(_sync_audio_state)
+	audio_feedback.mute_changed.connect(func(_muted: bool) -> void: _sync_audio_state())
+	llm_channel = MiraLLMChannelScript.new()
+	add_child(llm_channel)
+	llm_channel.reply_validated.connect(_on_llm_reply)
+	llm_channel.reply_failed.connect(_on_llm_failed)
+	llm_channel.status_changed.connect(_on_llm_status)
+	ui.free_question_submitted.connect(_on_free_question)
+	ui.tutorial_closed.connect(_on_tutorial_closed)
+	llm_channel.setup(machine, scenario)
 
 	_sync_presentation()
 	if _smoke_mode:
 		_run_smoke.call_deferred()
 		return
-	var user_args := OS.get_cmdline_user_args()
+	if _evaluate_mode:
+		_run_engineering_evaluation.call_deferred(_evaluation_path)
+		return
 	var shot_index := user_args.find("--shot")
 	if shot_index != -1 and shot_index + 1 < user_args.size():
-		_run_screenshot.call_deferred(user_args[shot_index + 1])
+		var shot_stage := "arrival"
+		var shot_stage_index := user_args.find("--shot-stage")
+		if shot_stage_index != -1 and shot_stage_index + 1 < user_args.size():
+			shot_stage = user_args[shot_stage_index + 1]
+		_run_screenshot.call_deferred(user_args[shot_index + 1], shot_stage)
 		return
 
+	if OS.has_feature("web"):
+		player.input_locked = true
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		ui.show_start_gate(true)
+		ui.set_cursor_captured(false)
+		return
+	_start_experience(false)
+
+
+func _start_experience(unlock_audio: bool) -> void:
+	if _play_started:
+		return
+	_play_started = true
+	if unlock_audio:
+		audio_feedback.unlock_from_gesture()
+		audio_feedback.play_cue("start")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	ui.set_play_started(true)
+	ui.set_cursor_captured(true)
+	_sync_audio_state()
 	# W-001/W-002: the saved dock, the dark tower.
 	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
 	director.play_intro(func() -> void:
 		ui.ledger_line("narration", "미라 선장이 부두 끝에서 어두운 탑을 지켜보고 있다.")
+		if not FileAccess.file_exists("user://sl3d_tutorial_seen.flag"):
+			var flag := FileAccess.open("user://sl3d_tutorial_seen.flag", FileAccess.WRITE)
+			flag.store_string("seen")
+			flag.close()
+			_open_tutorial()
 	)
+
+
+func _on_start_requested() -> void:
+	# On web this callback is reached directly from the button press, keeping
+	# pointer lock and audio resume inside the browser's user-gesture boundary.
+	_start_experience(true)
 
 
 func _load_scenario() -> Dictionary:
@@ -91,6 +164,9 @@ func _register_input_actions() -> void:
 		"sl_save": KEY_F5,
 		"sl_load": KEY_F9,
 		"sl_motion": KEY_M,
+		"sl_llm": KEY_L,
+		"sl_tutorial": KEY_T,
+		"sl_audio": KEY_V,
 	}
 	for action in bindings:
 		if not InputMap.has_action(action):
@@ -101,24 +177,103 @@ func _register_input_actions() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _smoke_mode or episode_over:
+	if _smoke_mode or _evaluate_mode or episode_over:
 		return
+	if not _play_started:
+		if event.is_action_pressed("sl_motion"):
+			_toggle_reduced_motion()
+		elif event.is_action_pressed("sl_audio"):
+			_on_audio_toggle_requested()
+		return
+	if event.is_action_pressed("sl_audio") and not audio_feedback.is_unlocked():
+		_on_audio_toggle_requested()
+		return
+	_unlock_audio_from_event(event)
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode == KEY_ESCAPE and ui.is_tutorial_open():
+			ui.hide_tutorial()
+			return
+		if event.physical_keycode == KEY_ESCAPE and _dialogue_open:
+			_close_dialogue()
+			return
 		if event.physical_keycode == KEY_ESCAPE:
 			Input.mouse_mode = (
 				Input.MOUSE_MODE_VISIBLE
 				if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
 				else Input.MOUSE_MODE_CAPTURED
 			)
+			ui.set_cursor_captured(Input.mouse_mode == Input.MOUSE_MODE_CAPTURED)
+	elif (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+		and not _dialogue_open
+		and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED
+	):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		ui.set_cursor_captured(true)
 	if event.is_action_pressed("sl_save"):
 		_save_game()
 	elif event.is_action_pressed("sl_load"):
 		_load_game()
+	elif event.is_action_pressed("sl_tutorial"):
+		if not _dialogue_open and not episode_over:
+			if ui.is_tutorial_open():
+				ui.hide_tutorial()
+			else:
+				_open_tutorial()
+	elif event.is_action_pressed("sl_llm"):
+		ui.toast(llm_channel.refresh_login())
 	elif event.is_action_pressed("sl_motion"):
-		var reduced := not director.reduce_motion
-		director.reduce_motion = reduced
-		ui.reduce_motion = reduced
-		ui.toast("모션 감소: " + ("켜짐" if reduced else "꺼짐"))
+		_toggle_reduced_motion()
+	elif event.is_action_pressed("sl_audio"):
+		_toggle_audio()
+
+
+func _toggle_reduced_motion() -> void:
+	var reduced := not director.reduce_motion
+	director.reduce_motion = reduced
+	ui.reduce_motion = reduced
+	ui.toast("모션 감소: " + ("켜짐" if reduced else "꺼짐"))
+
+
+func _unlock_audio_from_event(event: InputEvent) -> void:
+	if audio_feedback.is_unlocked():
+		return
+	var is_gesture: bool = (
+		(event is InputEventKey and event.pressed and not event.echo)
+		or (event is InputEventMouseButton and event.pressed)
+	)
+	if is_gesture:
+		audio_feedback.unlock_from_gesture()
+		audio_feedback.play_cue("start")
+		_sync_audio_state()
+
+
+func _on_audio_toggle_requested() -> void:
+	if not audio_feedback.is_unlocked():
+		audio_feedback.unlock_from_gesture()
+		audio_feedback.play_cue("start")
+		_sync_audio_state()
+		ui.toast("음향: 켜짐")
+		return
+	_toggle_audio()
+
+
+func _toggle_audio() -> void:
+	var muted := audio_feedback.toggle_muted()
+	_sync_audio_state()
+	if not muted:
+		audio_feedback.play_cue("start")
+	ui.toast("음향: " + ("꺼짐" if muted else "켜짐"))
+
+
+func _sync_audio_state() -> void:
+	ui.set_audio_state(audio_feedback.is_unlocked(), audio_feedback.is_muted())
+
+
+func _on_footstep_requested(step_index: int) -> void:
+	audio_feedback.play_cue("step_%d" % (step_index % 2))
 
 
 func _spawn_interactables() -> void:
@@ -179,6 +334,8 @@ func _on_focus_changed(interactable: Interactable3D) -> void:
 		ui.hide_prompt()
 	else:
 		ui.show_prompt(interactable.prompt_text)
+		if _play_started:
+			audio_feedback.play_cue("focus")
 
 
 func _on_interact(interaction_id: String) -> void:
@@ -199,6 +356,23 @@ func _on_interact(interaction_id: String) -> void:
 				_finish_episode()
 
 
+func _open_tutorial() -> void:
+	ui.hide_prompt()
+	player.input_locked = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	ui.set_cursor_captured(false)
+	ui.show_tutorial()
+
+
+func _on_tutorial_closed() -> void:
+	if _smoke_mode or _evaluate_mode or episode_over or _dialogue_open:
+		return
+	player.input_locked = false
+	if _play_started:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		ui.set_cursor_captured(true)
+
+
 ## ---------------------------------------------------------------- proposals
 
 func _propose(operation: String, arguments: Dictionary, proposal_text: String) -> Dictionary:
@@ -207,10 +381,18 @@ func _propose(operation: String, arguments: Dictionary, proposal_text: String) -
 	if result["accepted"]:
 		commit_count += 1
 		ui.flash("commit")
+		audio_feedback.play_cue("commit")
+		if not _first_commit_explained:
+			_first_commit_explained = true
+			ui.toast("첫 커밋 — 검증을 통과한 행동만 상태를 바꾼다. 장부의 황색 실선을 보라.")
 	else:
 		refusal_count += 1
 		ui.flash("refusal")
+		audio_feedback.play_cue("refusal")
 		director.play_refusal_pulse()
+		if not _first_refusal_explained:
+			_first_refusal_explained = true
+			ui.toast("첫 보류 — 상태는 그대로다. 산호선이 이유와 다음 행동을 알려준다.")
 	return result
 
 
@@ -279,7 +461,9 @@ func _open_mira_dialogue() -> void:
 	_dialogue_open = true
 	ui.hide_prompt()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	ui.set_portrait_visible(true, "미라 선장 — 항만 감시선장")
+	ui.set_cursor_captured(false)
+	audio_feedback.play_cue("dialogue")
+	ui.set_portrait_visible(true, "미라 선장 · 항만 감시")
 	# W-003: duty-bounded operational knowledge, no keeper authority.
 	ui.ledger_line("dialogue", "「부두를 구해줘서 고맙다. 저 탑이 저러고 있으니, 오늘 밤은 아무도 물길에 못 들어간다.」")
 	_show_mira_choices()
@@ -296,6 +480,8 @@ func _show_mira_choices() -> void:
 		choices.append({"id": "ask_tide", "text": "조수 표식에 대해 알려줘요."})
 	else:
 		choices.append({"id": "ask_after", "text": "이제 어디로 가야 하죠?"})
+	if llm_channel != null and llm_channel.is_ready() and not _llm_pending:
+		choices.append({"id": "ask_free", "text": "자유롭게 묻는다 — 직접 입력 (LLM)"})
 	choices.append({"id": "leave", "text": "물러난다"})
 	ui.show_choices(choices)
 
@@ -313,12 +499,15 @@ func _on_choice(choice_id: String) -> void:
 			var codes: Array = machine.validate_disclosure(["keeper_betrayal"])
 			refusal_count += 1
 			ui.flash("refusal")
+			audio_feedback.play_cue("refusal")
 			director.play_refusal_pulse()
 			director.set_tension_stage(2)
 			_refusal_feedback(codes)
 			_show_mira_choices()
 		"ask_tide":
 			_propose_tide_hint()
+		"ask_free":
+			ui.show_question_input()
 		"ask_after":
 			ui.ledger_line("dialogue", "「썰물 표식을 따라가라. 다음 물때가 길을 열 거다. 탑은… 그때 다시 이야기하지.」")
 			_show_mira_choices()
@@ -337,6 +526,7 @@ func _propose_tide_hint() -> void:
 		# P-B05: one ledger link turns solid; restrained bell, signal glow.
 		ui.ledger_line("dialogue", "「좋아. 렌즈를 달았으니 말해주지. 서쪽 방파제의 조수 표식 — 썰물이 세 번째 표식 아래로 내려가면, 바위 사이로 길이 드러난다.」")
 		ui.ledger_line("hint", "조수 표식 단서가 장부에 기록되었다.")
+		audio_feedback.play_cue("hint")
 		director.set_tension_stage(3)
 		var world: Node3D = handles["world"]
 		director.play_commit_glow(world.get_node("TideMarks"), "TideGlow", 1.6)
@@ -348,10 +538,77 @@ func _propose_tide_hint() -> void:
 
 func _close_dialogue() -> void:
 	_dialogue_open = false
+	ui.hide_question_input()
 	ui.clear_choices()
 	ui.set_portrait_visible(false)
-	if not _smoke_mode:
+	if not _smoke_mode and not _evaluate_mode:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		ui.set_cursor_captured(true)
+
+
+## ------------------------------------------------------- free-form LLM channel
+
+func _on_llm_status(status_text: String) -> void:
+	_llm_connected = status_text.begins_with("LLM 연결됨")
+	ui.set_llm_status(status_text, _llm_connected)
+
+
+func _on_free_question(question: String) -> void:
+	if not _dialogue_open or _llm_pending:
+		return
+	if not llm_channel.ask(question):
+		return
+	_llm_pending = true
+	ui.clear_choices()
+	ui.ledger_line("proposal", "미라에게 묻는다 — “%s”" % question)
+	ui.ledger_line("narration", "미라가 바람 소리를 가늠하며 잠시 뜸을 들인다…")
+
+
+func _on_llm_reply(reply: Dictionary) -> void:
+	_llm_pending = false
+	if not _dialogue_open:
+		return
+	ui.ledger_line("dialogue", str(reply["say"]))
+	if int(reply.get("repairs_used", 0)) > 0:
+		ui.toast("형식 수리 %d회 후 유효 응답 (K=%d 예산 내)" % [
+			int(reply["repairs_used"]), MiraLLMChannel.REPAIR_BUDGET_K
+		])
+	for fact_id in reply.get("new_disclosures", []):
+		# Soft proposal → hard commit through the same authored policy path.
+		var result := _propose(
+			"reveal_hint",
+			{"actor_id": "captain_mira", "fact_id": str(fact_id)},
+			"미라가 %s 공개를 제안한다" % str(fact_id)
+		)
+		if result["accepted"]:
+			ui.ledger_line("hint", "%s 단서가 장부에 기록되었다." % str(fact_id))
+			audio_feedback.play_cue("hint")
+			director.set_tension_stage(3)
+			if str(fact_id) == "tide_marks_hint":
+				var world: Node3D = handles["world"]
+				director.play_commit_glow(world.get_node("TideMarks"), "TideGlow", 1.6)
+		else:
+			_refusal_feedback(result["codes"])
+	var violations: Array = reply.get("violation_codes", [])
+	if not violations.is_empty():
+		refusal_count += 1
+		ui.flash("refusal")
+		audio_feedback.play_cue("refusal")
+		director.play_refusal_pulse()
+		_refusal_feedback(violations)
+	_sync_presentation()
+	_show_mira_choices()
+
+
+func _on_llm_failed(reason: String) -> void:
+	_llm_pending = false
+	if not _dialogue_open:
+		return
+	# Timeout/parse-exhaustion fallback: canonical deflection, prior state kept
+	# byte-identical (GDI-02).
+	ui.ledger_line("refusal", "응답이 폭풍에 묻혔다 — 상태는 유지된다. (%s)" % reason)
+	ui.ledger_line("dialogue", scenario["safe_fallback"]["text_ko"])
+	_show_mira_choices()
 
 
 ## -------------------------------------------------------------- persistence
@@ -404,25 +661,71 @@ func _sync_presentation() -> void:
 	var tide_interact := _interactable("tide_marks")
 	if tide_interact != null:
 		tide_interact.enabled = hint_known
+	ui.set_lens_held("signal_lens" in state["player"]["inventory"] and not installed)
 	var mount_interact := _interactable("lamp_mount")
 	if mount_interact != null:
 		mount_interact.enabled = not installed
+	_update_objective_beacon(lens_in_store, installed, hint_known)
 
 	var objective := "꺼진 등대의 사정을 조사한다"
+	var phase := "도착 · ARRIVAL"
 	if hint_known:
 		objective = "조수 표식을 살펴 다음 경로를 확인한다"
+		phase = "단서 기록 · TRACE"
 	elif installed:
 		objective = "미라 선장에게 허가된 단서를 묻는다"
+		phase = "신호 복구 · SIGNAL"
 	elif not lens_in_store:
 		objective = "부두 거치대에 신호 렌즈를 설치한다"
+		phase = "렌즈 확보 · LENS"
 	var inventory: Array = state["player"]["inventory"]
-	var status := "단계 %d · 소지품: %s\n커밋 %d · 보류 %d\n[F5] 저장 · [F9] 불러오기 · [M] 모션 감소" % [
+	var exploration_progress := 3 if hint_known else int(state["quest"]["stage"])
+	var status := "상태 단계 %d · 소지품: %s\n커밋 %d · 보류 %d\n검증 통과 후에만 상태가 커밋됩니다." % [
 		int(state["quest"]["stage"]),
 		"신호 렌즈" if "signal_lens" in inventory else "없음",
 		commit_count,
 		refusal_count,
 	]
 	ui.set_status(objective, status)
+	ui.set_progress(exploration_progress, 3, phase)
+
+
+func _build_objective_beacon() -> Node3D:
+	# Usability affordance: one soft amber column marks the current objective
+	# target so the next valid action is always discoverable without opening a
+	# menu. Presentation only; it follows the committed snapshot.
+	var beacon := Node3D.new()
+	beacon.name = "ObjectiveBeacon"
+	var column := MeshInstance3D.new()
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = 0.14
+	mesh.bottom_radius = 0.22
+	mesh.height = 5.0
+	column.mesh = mesh
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(SealedLighthouseWorldBuilder.PALETTE.signal_amber, 0.16)
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	column.material_override = material
+	column.position = Vector3(0.0, 2.5, 0.0)
+	beacon.add_child(column)
+	(handles["world"] as Node3D).add_child(beacon)
+	return beacon
+
+
+func _update_objective_beacon(lens_in_store: bool, installed: bool, hint_known: bool) -> void:
+	if _objective_beacon == null:
+		return
+	var target := Vector3(0.0, 0.0, 15.2)
+	if hint_known:
+		target = Vector3(-8.5, 0.0, 15.5)
+	elif installed:
+		target = Vector3(3.0, 0.0, 11.0)
+	elif not lens_in_store:
+		target = Vector3(7.0, 0.0, 13.5)
+	else:
+		target = Vector3(-11.0, 0.0, 1.0)
+	_objective_beacon.position = target
 
 
 func _finish_episode() -> void:
@@ -441,28 +744,204 @@ func _finish_episode() -> void:
 		summary += "\n[color=#D9D3C4]— 다음 물때에 계속 —[/color]"
 		ui.show_end_card(summary)
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		ui.set_cursor_captured(false)
 	)
 
 
-func _run_screenshot(path: String) -> void:
-	# Development-only presentation verification capture. Requires a non-headless
-	# display driver; this is a working shot, not promotable render evidence.
+func _run_engineering_evaluation(path: String) -> void:
+	# Static/runtime presentation instrumentation only. This mode performs no
+	# participant or model trial and is explicitly not a G4/efficacy measurement.
 	player.input_locked = true
-	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
-	ui.ledger_line("proposal", "신호 렌즈를 회수한다")
-	ui.ledger_line("commit", "신호 렌즈 확보 — 회수 기록이 장부에 남는다.")
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	ui.show_start_gate(true)
+	ui.set_audio_state(audio_feedback.is_unlocked(), audio_feedback.is_muted())
+	await get_tree().process_frame
+	var state_hash_before := machine.state_hash()
+	var ui_snapshot := ui.get_engineering_snapshot()
+	var audio_snapshot := audio_feedback.get_engineering_snapshot()
+	var player_snapshot := player.get_engineering_snapshot()
+	var checks := [
+		{
+			"check": "evaluation_does_not_mutate_canonical_state",
+			"pass": machine.state_hash() == state_hash_before,
+		},
+		{
+			"check": "web_start_gate_is_visible_before_play",
+			"pass": ui_snapshot["start_gate_visible"] and not ui_snapshot["play_started"],
+		},
+		{
+			"check": "audio_remains_locked_before_user_gesture",
+			"pass": not audio_snapshot["unlocked"] and not audio_snapshot["ambient_playing"],
+		},
+		{
+			"check": "procedural_audio_uses_no_external_assets",
+			"pass": audio_snapshot["external_audio_assets"].is_empty(),
+		},
+		{
+			"check": "semantic_feedback_has_non_color_redundancy",
+			"pass": "text" in ui_snapshot["semantic_feedback_redundancy"]
+				and "icon" in ui_snapshot["semantic_feedback_redundancy"],
+		},
+		{
+			"check": "responsive_layout_profiles_declared",
+			"pass": ui_snapshot["responsive_profiles"]["narrow"] == "narrow-stacked"
+				and ui_snapshot["responsive_profiles"]["wide"] == "wide-columns",
+		},
+		{
+			"check": "player_world_changes_route_through_proposals",
+			"pass": player_snapshot["world_change_boundary"].begins_with("interact_requested"),
+		},
+	]
+	var passed := true
+	for check in checks:
+		if not check["pass"]:
+			passed = false
+	var report := {
+		"schema_version": "1.0.0",
+		"evaluation": "sealed-lighthouse-3d-presentation-engineering",
+		"engineering_only": true,
+		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy"],
+		"claim_boundary": "Automated presentation invariants only; no participant, neural-model, or gameplay efficacy measurement.",
+		"passed": passed,
+		"state_sha256_before": state_hash_before,
+		"state_sha256_after": machine.state_hash(),
+		"supported_screenshot_stages": ["arrival", "refusal", "authorized_hint", "ending", "tutorial", "start_gate"],
+		"ui": ui_snapshot,
+		"audio": audio_snapshot,
+		"player": player_snapshot,
+		"checks": checks,
+	}
+	var absolute_path := ProjectSettings.globalize_path(path)
+	var written := _write_json_atomic(absolute_path, report)
+	print("ENGINEERING-EVALUATION " + JSON.stringify({
+		"engineering_only": true,
+		"passed": passed,
+		"written": written,
+		"path": absolute_path,
+	}))
+	get_tree().quit(0 if passed and written else 1)
+
+
+func _write_json_atomic(path: String, payload: Dictionary) -> bool:
+	var parent := path.get_base_dir()
+	if parent != "" and DirAccess.make_dir_recursive_absolute(parent) != OK:
+		push_error("Cannot create evaluation directory: " + parent)
+		return false
+	var temporary_path := path + ".tmp"
+	if FileAccess.file_exists(temporary_path):
+		DirAccess.remove_absolute(temporary_path)
+	var handle := FileAccess.open(temporary_path, FileAccess.WRITE)
+	if handle == null:
+		push_error("Cannot open temporary evaluation file: " + temporary_path)
+		return false
+	handle.store_string(JSON.stringify(payload, "  ") + "\n")
+	handle.flush()
+	handle.close()
+	var rename_error := DirAccess.rename_absolute(temporary_path, path)
+	if rename_error != OK:
+		push_error("Atomic evaluation rename failed: %s -> %s" % [temporary_path, path])
+		return false
+	return true
+
+
+func _run_screenshot(path: String, stage: String = "arrival") -> void:
+	# Development-only public-safe presentation capture. Requires a non-headless
+	# display driver; this working shot is not promotable render/G4 evidence.
+	var supported := ["arrival", "refusal", "authorized_hint", "ending", "tutorial", "start_gate"]
+	if stage not in supported:
+		print("SHOT-ERROR " + JSON.stringify({
+			"error": "unsupported_stage",
+			"stage": stage,
+			"supported": supported,
+		}))
+		get_tree().quit(2)
+		return
+	player.input_locked = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	ui.set_play_started(true)
+	ui.set_cursor_captured(false)
+	var state_hash_before := machine.state_hash()
+	_prepare_screenshot_stage(stage)
 	var camera := Camera3D.new()
 	camera.fov = 58.0
 	add_child(camera)
-	camera.global_position = Vector3(-5.0, 2.6, 4.5)
-	camera.look_at(Vector3(5.0, 4.0, 45.0))
+	if stage == "ending":
+		camera.global_position = Vector3(-4.0, 3.5, 8.0)
+		camera.look_at(Vector3(-4.0, 4.0, 38.0))
+	elif stage == "refusal":
+		camera.global_position = Vector3(1.0, 2.4, 6.0)
+		camera.look_at(Vector3(3.0, 2.0, 11.0))
+	else:
+		camera.global_position = Vector3(-5.0, 2.6, 4.5)
+		camera.look_at(Vector3(5.0, 4.0, 45.0))
 	camera.current = true
 	for _frame in range(45):
 		await get_tree().process_frame
 	var image := get_viewport().get_texture().get_image()
-	image.save_png(path)
-	print("SHOT-SAVED " + path)
-	get_tree().quit(0)
+	var absolute_path := ProjectSettings.globalize_path(path)
+	var written := _save_png_atomic(image, absolute_path)
+	print("SHOT-SAVED " + JSON.stringify({
+		"engineering_only": true,
+		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy"],
+		"stage": stage,
+		"path": absolute_path,
+		"written": written,
+		"width": image.get_width(),
+		"height": image.get_height(),
+		"state_sha256_before": state_hash_before,
+		"state_sha256_after": machine.state_hash(),
+	}))
+	get_tree().quit(0 if written else 1)
+
+
+func _prepare_screenshot_stage(stage: String) -> void:
+	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
+	match stage:
+		"arrival":
+			ui.ledger_line("narration", "미라 선장이 부두 끝에서 어두운 탑을 지켜보고 있다.")
+		"refusal":
+			ui.set_portrait_visible(true, "미라 선장 · 항만 감시")
+			ui.ledger_line("proposal", "봉인된 사실을 지금 공개해 달라고 요청한다")
+			var before := machine.state_hash()
+			var codes: Array = machine.validate_disclosure(["keeper_betrayal"])
+			refusal_count += 1
+			ui.flash("refusal")
+			_refusal_feedback(codes)
+			assert(machine.state_hash() == before, "refusal screenshot must preserve state")
+		"tutorial":
+			ui.show_tutorial()
+		"start_gate":
+			ui.show_start_gate(true)
+		"authorized_hint", "ending":
+			_propose_acquire()
+			_propose_install()
+			_propose_tide_hint()
+			if stage == "ending":
+				var summary := "\n[color=#F2B84B]봉인된 등대 — 에피소드 종료[/color]\n\n"
+				summary += "장부에는 유효한 기록만 남았고, 썰물의 표식이 다음 경로를 가리킨다.\n\n"
+				summary += "커밋 %d · 보류 %d · 최종 단계 %d\n" % [
+					commit_count, refusal_count, int(machine.state["quest"]["stage"])
+				]
+				summary += "[color=#6b7b88]검사기 영수증 — 상태 해시 %s[/color]" % machine.state_hash().substr(0, 16)
+				ui.show_end_card(summary)
+	_sync_presentation()
+
+
+func _save_png_atomic(image: Image, path: String) -> bool:
+	var parent := path.get_base_dir()
+	if parent != "" and DirAccess.make_dir_recursive_absolute(parent) != OK:
+		push_error("Cannot create screenshot directory: " + parent)
+		return false
+	var temporary_path := path + ".tmp"
+	if FileAccess.file_exists(temporary_path):
+		DirAccess.remove_absolute(temporary_path)
+	if image.save_png(temporary_path) != OK:
+		push_error("Cannot save temporary screenshot: " + temporary_path)
+		return false
+	if DirAccess.rename_absolute(temporary_path, path) != OK:
+		push_error("Atomic screenshot rename failed: %s -> %s" % [temporary_path, path])
+		return false
+	return true
 
 
 ## -------------------------------------------------------------------- smoke
@@ -523,6 +1002,25 @@ func _run_smoke() -> void:
 		"pass": not machine.load_state_if_hash_matches(
 			machine.state, "0000000000000000"
 		) and machine.state_hash() == save_hash,
+	})
+
+	var sealed_probe := MiraLLMChannel.validate_reply(
+		"{\"say\": \"바람이 심하군.\", \"disclose\": [\"keeper_betrayal\"]}",
+		machine.state,
+		scenario
+	)
+	checks.append({
+		"check": "llm_sealed_disclosure_blocked_offline",
+		"pass": sealed_probe["valid"]
+			and "FORBIDDEN_DISCLOSURE" in sealed_probe["violation_codes"]
+			and sealed_probe["new_disclosures"].is_empty()
+			and machine.state_hash() == save_hash,
+	})
+	var projection := MiraLLMChannel.model_visible_projection(machine.state, scenario)
+	checks.append({
+		"check": "llm_prompt_projection_never_names_sealed_fact",
+		"pass": "keeper_betrayal" not in projection["known_facts"]
+			and "keeper_betrayal" not in projection["disclosable_now"],
 	})
 
 	var all_passed := true

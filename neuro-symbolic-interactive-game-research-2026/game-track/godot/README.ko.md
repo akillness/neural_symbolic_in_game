@@ -1,7 +1,8 @@
-# 봉인된 등대 — Godot 적합성 슬라이스와 render-capture pass
+# 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
-상태: **Godot 4.7.1 헤드리스 3종 보존 근거 + 손상 저장 negative fixture 실행 완료,
-별도 non-headless capture 승격 진행 중**(2026-08-13).
+상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `47/47`
+검사를 통과했다. 최신 작업 캡처 4개와 public-safe Web 산출물을 빌드·공개했고
+브라우저 스모크를 통과했다**(2026-08-13).
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -28,7 +29,7 @@ render-capture 진입점은 headless 적합성 runner와 의도적으로 분리�
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`다.
 이는 정규 JSON의 비밀키 없는 SHA-256 무결성 checksum이며 인증 수단이 아니다.
 fixture는 이를 `python-independent-sealed-lighthouse-v1` oracle로 명시한다. Python 테스트는
-GDScript와 독립적으로 같은 종료 상태 projection을 계산한다. 관측된 Godot 실행 3종은 모두
+GDScript와 독립적으로 같은 종료 상태 projection을 계산한다. 관측된 Godot fixture 실행 4종은 모두
 그 해시와 일치했다.
 
 ## Godot 4.x에서 실행
@@ -71,8 +72,8 @@ JSON Schema로 검증한다.
 `../../_workspace/current/engineering/tech-verification/current.json`이 지정하며 현재
 `evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`로 해석된다. 정식,
 중복 ID, timeout, 손상 저장 실행은 각각 commit 3회를 수행하고 동결 종료/oracle 해시에
-도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 현재 game-track 테스트는
-`19 passed, 44 subtests passed`다. 성능 budget은 모두 통과하지 않았다. 시작 transient를
+도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 현재 Cycle 3 aggregate
+receipt는 `40 tests, 44 subtests`다. 성능 budget은 모두 통과하지 않았다. 시작 transient를
 포함한 5개 표본의 헤드리스 frame p95는 선택 보존 패킷에서 각각 `116.667`, `100.000`,
 `98.760`, `112.907 ms`다.
 
@@ -116,18 +117,103 @@ verifier는 지원되는 다른 Python 버전에서도 실행할 수 있으며, 
 # 플레이 (WASD 이동, 마우스 시점, E 상호작용, F5/F9 저장·불러오기, M 모션 감소)
 godot --path game-track/godot res://scenes/main_3d.tscn
 
-# 헤드리스 적합성 스모크 (거절 불변·단계 게이트·손상 저장 거절 8종)
-godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke
+# Public-safe 헤드리스 스모크 (거절 불변·단계 게이트·손상 저장 거절 8종)
+godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe
+
+# 프레젠테이션 불변조건 JSON (엔지니어링 전용)
+godot --headless --path game-track/godot res://scenes/main_3d.tscn -- \
+  --evaluate /tmp/sl3d-evaluation.json --public-safe
 
 # 개발용 검증 샷 (non-headless, 승격 불가 작업 캡처)
-godot --path game-track/godot res://scenes/main_3d.tscn -- --shot /tmp/sl3d-shot.png
+godot --path game-track/godot res://scenes/main_3d.tscn -- \
+  --shot /tmp/sl3d-shot.png --shot-stage arrival --public-safe
 ```
 
 스모크 스윕 8검사는 2026-08-13 Godot 4.7.1에서 통과했고 종료 상태 해시는 동결 해시
-`4b2310…8892`와 일치한다. [OBSERVED] `../assets/concepts/pack-3d/`의 생성 텍스처
-(SL3D-A01~U01, provenance 동반)는 선택적 프레젠테이션 후보로만 로드되며, 없으면 절차적
-재질로 대체된다. 생성 자산의 인권·권리 검토 전 공개 승격은 불가하다. 이 슬라이스는 몰입,
-사용성, 성능, 모델 효과 근거를 만들지 않는다.
+`4b2310…8892`와 일치한다. Web과 `--public-safe`는 `../assets/concepts/` 및
+`../assets/concepts/pack-3d/`의 생성 후보를 로드하지 않고 절차 지오메트리·재질·VFX·UI·음향을
+사용한다. 후보 생성 자산의 인권·권리 검토 전 공개 승격은 계속 불가하다.
+
+## Cycle 3 평가 매트릭스와 최신 작업 캡처
+
+| `SL-PLAY-EVAL-001` 행 | 검사 | 결과 |
+|---|---:|---|
+| 정식 fixture | `10/10` | PASS |
+| 중복 이벤트 fixture | `10/10` | PASS |
+| timeout fixture | `10/10` | PASS |
+| 손상 저장 fixture | `10/10` | PASS |
+| 프레젠테이션 불변조건 | `7/7` | PASS |
+| **합계** | **`47/47`** | **PASS** |
+
+fixture `4/4` 모두 정확한 종료 SHA-256
+`4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`에 도달했다.
+[전체 매트릭스](docs/latest/evaluation-matrix.md), [JSON 매트릭스](docs/latest/evaluation-matrix.json),
+[원시 프레젠테이션 평가](docs/latest/presentation-evaluation.json)를 확인할 수 있다.
+
+| 도착 | 보류 |
+|---|---|
+| ![Cycle 3 public-safe 도착](docs/latest/arrival.png) | ![Cycle 3 public-safe 보류](docs/latest/refusal.png) |
+| 승인 단서 | 항로 획득 결말 |
+| ![Cycle 3 public-safe 승인 단서](docs/latest/authorized_hint.png) | ![Cycle 3 public-safe 결말](docs/latest/ending.png) |
+
+네 1280×720 PNG는 새로운 임시 프로젝트 복사본에서 생성한 최신 엔지니어링 작업 캡처다.
+불변 v5 패킷을 대체하거나 수정하지 않는다.
+
+## Public-safe Web 산출물 빌드
+
+저장소 프로젝트 루트에서 실행한다.
+
+```bash
+./scripts/build_godot_web.sh
+python3 -m http.server 4173 --directory game-track/web/public
+```
+
+빌더는 Godot 프로젝트를 임시 디렉터리로 복사하고 그 복사본에서만 `main_3d.tscn`을 선택한다.
+단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 현재
+산출물은 무시 대상 `game-track/web/public/` 아래의 `index.html`, JavaScript/audio worklet,
+PCK, WebAssembly 파일로 구성된다. 배포 상태:
+**[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**. Playwriter로
+한글 표시, 1280×720·390×844 반응형 배치, 포인터 잠금 진입, 콘솔·페이지 오류
+0건을 확인했다. 상세 내용은 [`../web/README.md`](../web/README.md)에 있다.
+
+**Cycle 3 주장 경계:** 저자 fixture와 프레젠테이션 불변조건 엔지니어링 적합성만 다룬다.
+G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 save/reload,
+warmed frame/input, 30분 soak 근거가 없어 `FIX`다.
+
+## 선택적 LLM 채널 (Codex OAuth)과 3D 리소스 파이프라인
+
+2026-08-14 추가분 [OBSERVED]:
+
+- `scripts/game3d/llm/`은 로컬 Codex CLI OAuth 세션(`~/.codex/auth.json`)을 읽기 전용으로
+  재사용하는 선택적 자유 대화 채널이다. 로그인 자체는 `codex login`이 소유하며, 게임은 토큰을
+  기록하거나 갱신하지 않는다. 미라 자유 질문은 JSON `{say, disclose[]}` 계약으로 응답받고,
+  모든 disclose 제안은 저자 정책 미러로 재검증된다(GDI-01/04). 형식 실패는 타입 반례와 함께
+  최대 `K=3` 수리(논문 A4 `structured_repair` 미러, 총 `1+K=4` 호출)이며, 소진·timeout은
+  정식 폴백으로 떨어지고 상태 해시는 불변이다. 프롬프트에는 모델 가시 사실만 투영되고
+  봉인 사실 ID는 이름조차 포함되지 않는다(스모크 검사로 강제).
+- 엔진 왕복 프로브: `godot --headless -s res://scripts/game3d/llm/llm_probe.gd`
+  (2026-08-14 관측: gpt-5.4, 지연 2994 ms, 위반 0, 상태 해시 불변). 미로그인/오프라인이면
+  채널이 비활성일 뿐 슬라이스 전체는 그대로 플레이 가능하다 — 사설 백엔드는 런타임 필수
+  의존이 될 수 없다.
+- `assets/models/`의 GLB 소품 킷(등대·신호 렌즈·램프 포스트·크레이트·부표)은 Blender 4.x
+  헤드리스 절차 스크립트로 저작했고(`models-manifest.json`에 SHA-256 기록, AI 생성 아님)
+  `GLTFDocument` 런타임 로드로 부착된다. 킷이 없으면 기존 절차적 지오메트리가 그대로 유효하다.
+- `addons/RodinBridge/`(Godot Asset Library #4266)는 에디터 전용 이미지→3D 브리지 독이다.
+  hyper3d.ai 계정으로 에디터에서 대화형 생성·임포트할 때 쓰며, 런타임·헤드리스 경로에는
+  관여하지 않는다.
+
+## 온보딩·튜토리얼과 생성 리소스 전량 배선 (2026-08-14)
+
+- 시작 게이트 배경에 스타일 앵커 SL-C01 키 아트, 대화 패널에 SL3D-P01 포트레이트,
+  튜토리얼에 SL-C02(미라 시트)·SL-C03(조사 UI 콘셉트)·SL3D-U01(렌즈 아이콘), 씬 재질에
+  SL3D-T01/T02 — 생성 이미지 전량이 배선됐다. 전부 선택적 프레젠테이션 후보이며 web/
+  `--public-safe` 경로에서는 로드되지 않고 절차적/텍스트 표면이 유지된다. [OBSERVED]
+- 3페이지 증거철 튜토리얼(조작 → 장부 문법 → 실험 연결)은 최초 실행 시 자동 표시되고
+  `[T]`로 재열람한다. 장부 문법 페이지는 제안·커밋·보류의 시각 언어를, 실험 연결 페이지는
+  60–120초 루프와 K=3 수리 예산(A4 미러)을 플레이어 언어로 설명한다.
+- 최초 커밋/보류 시 일회성 설명 토스트가 상태 불변·해시 전진 의미를 즉시 전달한다.
+- 검증 샷 스테이지에 `tutorial`, `start_gate`가 추가됐다
+  (`--shot <path> --shot-stage tutorial`).
 
 ## 증거 경계
 
