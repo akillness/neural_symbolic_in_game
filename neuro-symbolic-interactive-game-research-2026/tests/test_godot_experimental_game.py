@@ -549,10 +549,32 @@ class GodotExperimentalGameContractTests(unittest.TestCase):
 
 
 class GodotExperimentalGameRuntimeTests(unittest.TestCase):
+    @staticmethod
+    def _ensure_project_imported(godot: str) -> None:
+        """Import the Godot project once if its asset cache is absent.
+
+        `.godot/` is a build artifact and is gitignored, so a fresh clone has no import
+        cache. Godot then spends its first invocation importing instead of running the
+        fixture, which produces no summary and fails the test for an environment reason
+        rather than a real one. Importing explicitly makes the run deterministic from a
+        pristine checkout.
+        """
+
+        if (GODOT_PROJECT / ".godot").is_dir():
+            return
+        subprocess.run(
+            [godot, "--headless", "--path", str(GODOT_PROJECT), "--import"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+
     def test_all_headless_fixtures_when_godot_4_is_available(self) -> None:
         godot = find_godot_4()
         if godot is None:
             self.skipTest("Godot 4.x is not installed; no engine execution is claimed")
+        self._ensure_project_imported(godot)
 
         event_schema = load_json(SCHEMA_DIR / "experimental-game-event.schema.json")
         save_schema = load_json(SCHEMA_DIR / "experimental-game-save.schema.json")
