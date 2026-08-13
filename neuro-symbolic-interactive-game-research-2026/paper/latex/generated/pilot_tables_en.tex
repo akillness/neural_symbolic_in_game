@@ -1,16 +1,22 @@
 \begin{table}[t]
-\caption{Deterministic Repair-Arm Outcomes}
+\caption{Repair-Callback Control Flow (Not a Comparison)}
 \label{tab:pilot-repair}
-\centering\footnotesize
-\begin{tabular}{@{}lccc@{}}
+\centering\scriptsize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X@{}}
 \toprule
-Arm & Cases & Commits & Repair calls \\
+Callback & Injected defect & Fields it assigns & Terminal path \\
 \midrule
-Rejection only & 2 & 0 & 0 \\
-Unchanged retry & 2 & 0 & 2 \\
-Structured repair & 2 & 1 & 2 \\
+None (K=0) & unreachable object (nonrepairable) & --- & fallback \\
+None (K=0) & policy precondition (repairable) & --- & fallback \\
+Unchanged retry & unreachable object (nonrepairable) & none & fallback \\
+Unchanged retry & policy precondition (repairable) & none & fallback \\
+Policy-restore oracle & unreachable object (nonrepairable) & preconditions, effects & fallback \\
+Policy-restore oracle & policy precondition (repairable) & preconditions, effects & commit \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \begin{table}[t]
@@ -21,8 +27,9 @@ Structured repair & 2 & 1 & 2 \\
 \toprule
 Check & Numerator & Denominator \\
 \midrule
-Gate fixture agreement & 13 & 13 \\
-Known-boundary acceptances$^{a}$ & 3 & 3 \\
+Gate fixture agreement$^{c}$ & 13 & 13 \\
+Known-boundary acceptances$^{a}$ & 2 & 2 \\
+Closed unknown-key boundary rejected$^{d}$ & 1 & 1 \\
 Detectable integrity faults rejected & 10 & 10 \\
 Known integrity boundary replay-accepted$^{b}$ & 1 & 1 \\
 Adapter commits & 1 & 7 \\
@@ -31,5 +38,5 @@ Adapter failures & 5 & 7 \\
 Manifest guards rejected & 3 & 3 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$Boundary acceptances document semantic-extraction, policy-completeness, and unknown-field handling limits; they are not safety passes. $^{b}$Replay does not authenticate or re-execute repair generation.}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$Boundary acceptances document semantic-extraction and policy-completeness limits; they are not safety passes. $^{b}$Replay does not authenticate or re-execute repair generation. $^{c}$The loader enforces this agreement, so it is a construction invariant rather than a measurement. $^{d}$This is post-Stage-8 parser rejection parity, not semantic-safety evidence.}
 \end{table}

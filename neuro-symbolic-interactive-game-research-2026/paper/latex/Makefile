@@ -17,9 +17,18 @@ english: figures
 korean: figures
 	cd ko && latexmk -xelatex -interaction=nonstopmode -halt-on-error main.tex
 
+# IEEE ToG Short Paper band is 6-8 pages, with overlength charges above 6 and the count
+# including references (source: transactions.games author information, retrieved 2026-08-13).
+# Assert the band rather than a fixed count so a legibility fix cannot silently push the
+# paper out of its article type; anything above 6 is in-band but billable.
 check:
-	@test "$$(pdfinfo en/main.pdf | awk '/^Pages:/ {print $$2}')" = 6
-	@test "$$(pdfinfo ko/main.pdf | awk '/^Pages:/ {print $$2}')" = 6
+	@for lang in en ko; do \
+		pages=$$(pdfinfo $$lang/main.pdf | awk '/^Pages:/ {print $$2}'); \
+		if [ "$$pages" -lt 6 ] || [ "$$pages" -gt 8 ]; then \
+			echo "$$lang/main.pdf is $$pages pages, outside the 6-8 short-paper band"; \
+			exit 1; \
+		fi; \
+	done
 	@for pdf in figures/*.pdf; do \
 		test "$$(pdffonts "$$pdf" | awk 'NR > 2 && $$2 == "Type" && $$3 == "3" {count++} END {print count+0}')" = 0; \
 	done

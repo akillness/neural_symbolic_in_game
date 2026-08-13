@@ -40,6 +40,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{placeins}
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
@@ -48,20 +49,21 @@
 \newcommand{\pendingartifact}[1]{%
   \begin{center}\fbox{\parbox{0.92\columnwidth}{\textbf{생성 근거 파일 대기 중:} #1}}\end{center}}
 
-\title{TRACE-RPG: 감사 가능한 인터랙티브 게임 세계를 위한 이벤트 소싱 신경-기호 커밋 게이트}
+\title{TRACE-RPG: 인터랙티브 게임 세계의 생성 이벤트를 위한 trace 연결 기호 커밋 게이트}
 
 \author{익명 저자%
 \thanks{익명 심사를 위해 제출된 원고입니다.}}
 
 \begin{document}
+\bstctlcite{TRACE_RPG_BST_control}
 \maketitle
 
 \begin{abstract}
-대규모 언어 모델은 표현력 있는 퀘스트와 NPC 대화를 생성할 수 있지만, 유창하거나 스키마에 맞는 텍스트만으로 제안 이벤트의 실행 가능성, 권한 적합성, 정식 게임 상태와의 일관성이 성립하지는 않는다. 본 논문은 신뢰하지 않는 제안을 상태 변경으로부터 격리하는 이벤트 소싱 신경-기호 제어기 \system{}을 제안한다. 알려진 후보 필드에 대한 타입 엄격 parser, 외부에서 공급되는 행동 정책, 결정론적 상태 상대 술어가 하드 커밋 게이트를 구성하지만, 알 수 없는 candidate top-level field는 현재 거부되지 않고 무시된다. 거부된 후보에는 제한된 수리를 위한 구조화 반례를 제공할 수 있으며, 성공 후보는 변경 직전에 방어적으로 재검증한다. 할당 완전 실험 레코드는 종단 결과를 키 없는 SHA-256 무결성 체크섬과 연결하고, 의미적 리플레이는 인코딩된 전이를 재구성하며 에피소드 연속성 검사는 단절된 이력을 거부한다. 모집단 추론 대신 의도적으로 설계한 결정론적 오프라인 적합성 픽스처와 오류 주입으로 구현을 평가한다. 생성된 파일럿 산출물은 정확한 사례 수, 상태 격리 결과, 수리 경로, 지정 연산의 fault 거부 결과, 계수 검사를 보고한다. 근거 범위는 선언된 구조화 필드와 시험된 픽스처에 한정되며, 수리 생성의 provenance를 검증하거나 실시간 모델 우월성, 플레이어 효익, 감정 효능, 검색 효익, 상용 엔진 성능을 입증하지 않는다. 따라서 \system{}은 감사 가능한 트랜잭션 프로토콜과 후속 확증 게임 AI 연구를 위한 재현 가능한 기반을 제공한다.
+대규모 언어 모델은 표현력 있는 퀘스트와 NPC 대화를 생성할 수 있지만, 유창하거나 스키마에 맞는 텍스트만으로 제안 이벤트의 실행 가능성, 권한 적합성, 정식 게임 상태와의 일관성이 성립하지는 않는다. 본 논문은 신뢰하지 않는 제안을 상태 변경으로부터 격리하는 기호 커밋 게이트 \system{}을 제안한다. 타입 엄격 parser는 공유 candidate-key contract를 강제하여 알려진 필드의 모호한 type과 알 수 없는 top-level candidate field를 거부하고, 외부 공급 행동 정책과 결정론적 상태 상대 술어가 controller가 허용하는 모든 전이를 결정한다. 거부된 후보는 제한된 repair callback에 노출되고, 성공 후보는 변경 직전에 방어적으로 재검증된다. 종단 실험 레코드는 키 없는 SHA-256 콘텐츠 체크섬과 연결되고, 상태 의미 재생은 기록된 전이를 재계산하며, 에피소드 연속성 검사는 단절된 이력을 거부한다. 평가는 단일 작성 world state에 대한 의도적 설계 결정론적 오프라인 픽스처에서 수행하며, 보고 수치 중 무엇이 관찰값이고 무엇이 하니스의 구성 불변량인지 명시한다. 참조 repair callback은 권위 있는 상태에서 정책 필드를 재구성하므로 배포 가능한 수리 방법이 아니라 oracle 상한이며, adapter telemetry 값은 측정값이 아니라 합성 픽스처 상수다. 따라서 근거는 하나의 world에서 선언된 구조화 필드에 대한 구현 적합성만을 확립하며, 실시간 모델 동작, 플레이어 경험, 감정, 검색, 메모리, 상용 엔진 성능에 대해서는 아무것도 확립하지 않는다.
 \end{abstract}
 
 \begin{IEEEkeywords}
-게임 인공지능, 인터랙티브 내러티브, 신경-기호 시스템, 제약 생성, 이벤트 소싱, 재현성
+게임 인공지능, 인터랙티브 내러티브, 기호 검증, 제약 생성, 런타임 강제, 재현성
 \end{IEEEkeywords}
 
 \section{서론}
@@ -72,11 +74,11 @@
 본 논문은 이러한 관심사를 감사 가능한 트랜잭션 프로토콜로 결합한 구현인 \system{}을 제시한다. 현재 기여는 다음과 같다.
 \begin{enumerate}
   \item 정식 상태, 외부 공급 행동 정책, 후보 이벤트, 실험 레코드, 게임 브리지에 대한 버전 계약;
-  \item 결정론적 상태 상대 검증, 제한된 반례 유도 수리, 변경 없는 fallback, 방어적 커밋 전 검증;
+  \item 결정론적 상태 상대 검증, 변경 없는 fallback을 갖춘 제한된 repair callback, 방어적 커밋 전 검증;
   \item 콘텐츠 연결 종단 레코드, 상태 의미적 리플레이, 에피소드 연속성 검증; 그리고
   \item 엄격한 adapter 경계, 동결된 할당 키, 구별되는 종단 실패 클래스, 기술적 treatment-policy 계수를 갖춘 오프라인 harness.
 \end{enumerate}
-실증의 중심은 설계된 픽스처에 대한 결정론적 적합성 파일럿이다. 실시간 모델 호출, 인간 참여자, 감정 추정, 검색 실험, 실제 엔진 루프 측정은 없다. 계획된 10개 모델, 인간, 메모리, 감정, 엔진 연구는 향후 확증 확장이며 현재 결과가 아니다.
+실증의 중심은 단일 작성 world state에 대한 결정론적 설계 픽스처 적합성 파일럿이며, 보존한 Godot 4.7.1 작성형 policy-mirror trace와 render replay가 제한된 엔진 로컬 근거를 추가한다. 해당 픽스처의 headless 실행은 엔진 로컬 타이밍을 기록하며, 본 논문은 이를 있는 그대로 보고한다. 이는 고정 seed의 scripted canonical fixture 하나이고, 요청당 수치는 모델이나 네트워크 추론이 아니라 로컬 픽스처 처리를 측정하며, 16.7\,ms frame budget은 5-sample headless 측정에서 충족되지 않았으며 첫 sample이 나머지보다 한 자릿수 느렸다. 실시간 모델 호출, 참여자, 감정 또는 검색 실험, live Python--Godot 승인 왕복, 대표성 있는 end-to-end 게임플레이 성능 측정은 없다. 해당 연구는 본 논문의 범위 밖이다.
 
 \section{관련 연구와 연구 공백}
 \subsection{인터랙티브 내러티브와 게임 에이전트}
@@ -95,7 +97,7 @@ G-Retriever, HippoRAG, Mem0는 관련 하위 그래프 검색과 장기 메모�
 \subsection{감사 가능성과 재현성}
 과정 지표는 중간 실패를 보존할 동기를 제공하고 \cite{S16_ma2024agentboard}, 강건한 평가는 소수 확률적 실행의 과도한 해석을 경고한다 \cite{S31_agarwal2021precipice}. 재현성과 환경 보고 지침은 동결된 산출물과 명시적 측정 경계를 뒷받침한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}. 인간 및 LLM 평가는 구성개념, 평가자, 편향 통제를 요구하며 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}, 향후 비열등성과 참여자 분석에는 정당화된 margin과 random-effects 구조가 필요하다 \cite{S32_lakens2018equivalence,S35_barr2013random}.
 
-제한된 novelty는 개별 구성요소의 발명이 아니라 구현된 결합이다. 승인된 36개 문헌 집합에서 보고된 시스템들은 실행 가능한 상태, 근거화, 구조 제약, 기호 검사, 검색, 메모리, 과정 측정, 재현성의 일부를 다룬다. 보고서에 기능이 없다고 해서 모든 구현에 그 기능이 없다고 추론하지 않는다. \system{}은 외부 공급 정책 경계, 상태 상대 하드 검증, 제한된 수리, 수리 이력과 연결된 종단 근거, 의미적 리플레이, 할당 완전 실패 계수를 통해 이 관심사를 함께 노출한다.
+제한된 novelty는 개별 구성요소의 발명이 아니라 구현된 결합이다. 행동 개입(interposition) 자체는 오래된 기법이다. 내러티브 mediation은 사용자나 에이전트의 행동을 실행 전에 가로채 차단하거나 계획을 수정해 수용하고 \cite{S37_riedl2003managing}, 고전 계획법은 precondition과 effect로 적용 가능성을 정의하며 \cite{S39_fikes1971strips}, 런타임 강제는 신뢰하지 않는 행위자를 monitor로 감싸 허용된 전이만 통과시키고 \cite{S40_schneider2000enforceable}, 작성형 논리 기반 인터랙티브 드라마는 본 저널의 전신에서 캐릭터가 할 수 있는 발화를 규율했으며 \cite{S38_evans2013versu}, 신념 인지 내러티브 계획법은 캐릭터가 아는 바를 추론한다 \cite{S41_ware2021sabre}. 이는 본 논문의 knowledge/disclosure 술어가 훨씬 거칠게 인코딩하는 관심사다. \system{}은 interposition을 발명했다고 주장하지 않는다. 더 좁은 기여는 신뢰하지 않는 생성 proposer 아래에서 그 게이트에 결합된 근거 계층이다. 즉 콘텐츠 체크섬과 연결된 종단 레코드, 기록된 전이의 상태 의미 재생, 에피소드 연속성 검증, 그리고 proposal trace가 존재할 수 없는 사례까지 보존하는 할당 완전 실패 계수다. 보고서에 기능이 없다고 해서 모든 구현에 그 기능이 없다고 추론하지 않는다.
 
 \section{문제 정의와 보장 경계}
 시점 $t$에서 정식 상태는 다음과 같다.
@@ -104,7 +106,7 @@ c_t=(G_t,q_t,m_t),
 \end{equation}
 여기서 $G_t$는 typed world state이고, $q_t$는 외부 공급 action policy, 정식 disclosure set, quest-stage 제약을 함께 나타내며, $m_t$는 커밋된 event prefix이다. 검색, 내러티브 점수, 모델 rationale, 메모리 요약, 미래의 감정 추정은 비권위적 proposal context이다.
 
-신뢰하지 않는 proposer가 후보 $a_t$를 출력한다. 알려진 필드에 대한 타입 엄격 parsing이 먼저 선언 스키마를 확립하지만 알 수 없는 candidate top-level field는 무시한다. validator는 다음을 반환한다.
+신뢰하지 않는 proposer가 후보 $a_t$를 출력한다. 타입 엄격 parsing은 알 수 없는 top-level field의 거부를 포함한 공유 candidate-key contract를 먼저 강제하고 선언 스키마를 확립한다. validator는 다음을 반환한다.
 \begin{equation}
 V(c_t,a_t)=(v_{\mathrm{policy}},v_{\mathrm{pre}},v_{\mathrm{reach}},
 v_{\mathrm{know}},v_{\mathrm{disc}},v_{\mathrm{quest}},E_t),
@@ -123,7 +125,7 @@ c_t, & \text{그 외.}
 
 \section{TRACE-RPG 아키텍처와 알고리즘}
 \subsection{신뢰 경계와 계약}
-그림~\ref{fig:architecture}는 모델 또는 recorded adapter를 canonical owner 밖에 둔다. Parser는 알려진 필드의 모호한 숫자 또는 collection type을 거부하지만 알 수 없는 candidate top-level field는 무시한다. action policy는 candidate와 별도로 공급되며 required precondition과 allowed effect를 정의한다. bridge는 commit 이후에만 versioned event를 export한다. 이는 interface를 분리하지만 상용 엔진으로의 portability를 아직 입증하지 않는다.
+그림~\ref{fig:architecture}는 모델 또는 recorded adapter를 canonical owner 밖에 둔다. Parser는 알려진 필드의 모호한 숫자 또는 collection type을 거부하고 공유 key contract에 따라 알 수 없는 top-level candidate field도 거부한다. action policy는 candidate와 별도로 공급되며 required precondition과 allowed effect를 정의한다. bridge는 commit 이후에만 versioned event를 export한다. 이는 interface를 분리하지만 상용 엔진으로의 portability를 아직 입증하지 않는다.
 
 \begin{figure}[t]
   \centering
@@ -172,7 +174,7 @@ Quest & 부적격/후퇴 stage & 변경 없음 \\
 \label{alg:commit}
 \end{figure}
 
-구조화 반례는 repair callback에 error code를 노출한다. repair는 상태를 직접 변경하지 않으며, 예산 소진 시 변경 없는 결정론적 fallback을 반환한다. 그림~\ref{fig:repair}는 종단 경로를 나타낸다.
+검증 오류는 구조화된 error code로 repair callback에 노출된다. repair는 상태를 직접 변경하지 않으며, 예산 소진 시 변경 없는 결정론적 fallback을 반환한다. 그림~\ref{fig:repair}는 종단 경로를 나타낸다. 파일럿에서 사용한 참조 callback은 의도적으로 반례 유도 방식이 \emph{아니다}. 이 callback은 오류 집합을 폐기하고 권위 있는 상태에서 정책이 요구하는 precondition과 effect를 직접 재구성한다. 따라서 제어 흐름을 확인하는 oracle 상한이며, 그 결과를 반례를 소비하는 수리 방법에 대한 근거로 읽어서는 안 된다.
 
 \begin{figure}[t]
   \centering
@@ -195,7 +197,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair control flow, record/trace fault injection, adapter/accounting contract이다. 반복된 결정론적 seed가 아니라 고유 사례가 기술적 denominator를 구성한다. 모든 기대값은 실행 전에 명시한다.
 
 \subsection{측정치와 재현성}
-측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation을 센다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Recorded response의 provider-response latency는 response 수신을 조건으로 하는 과거 fixture metadata이며, local adapter timing은 end-to-end game latency가 아니다.
+측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation을 센다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다.
 
 릴리스 패킷은 fixture 및 assignment manifest, schema, outcome/trace record를 포함한 result JSON 산출물, 환경과 코드 revision, 생성 table, checksum을 동결한다. 보고는 재현성과 측정 경계 지침을 따른다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
@@ -221,7 +223,47 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
   \label{fig:evidence}
 \end{figure}
 
-생성 수치와 무관하게 이 파일럿에는 live model call, participant, affect prediction, retrieval 또는 memory intervention, narrative-quality comparison, 실제 game-engine loop가 없다. 범위는 구현된 structured transition과 evidence path의 적합성이다.
+Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1280$\times$720 SubViewport에서 리플레이했다. Manifest는 각 PNG를 event/delivery index, validation, state hash에 결합한다. 그림~\ref{fig:godot-render-fixture}(b)는 변경 전 hash를 보존하고, (c)는 valid commit 뒤 이를 변경한다. 모든 원본 panel은 생성 자산이 없는 primary-track render이며, 아래 illustrative crop은 작성된 status/event callout만 확대한다.
+
+\begin{figure*}[!t]
+  \centering
+  \begin{minipage}[t]{0.315\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png}\\[-0.3ex]
+    \footnotesize (a) 도착 관찰
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.315\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png}\\[-0.3ex]
+    \footnotesize (b) 상태 불변 거부
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.315\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png}\\[-0.3ex]
+    \footnotesize (c) 승인 commit
+  \end{minipage}
+  \vspace{0.45ex}
+
+  {\footnotesize
+  \begin{tabular}{@{}cllll@{}}
+    \toprule
+    패널 & 캡처 & 이벤트 & 검증 & 상태 관계 \\
+    \midrule
+    (a) & \texttt{sl-rc-001-arrival} & \texttt{evt-000-observe} & not applicable & snapshot $=$ before \\
+    (b) & \texttt{sl-rc-002-rejected-secret} & \texttt{evt-002-fallback-secret} & invalid & world $=$ before \\
+    (c) & \texttt{sl-rc-003-authorized-hint} & \texttt{evt-005-commit-hint} & valid & world $\ne$ before \\
+    \bottomrule
+  \end{tabular}\par
+  }
+  \vspace{0.25ex}
+  {\scriptsize Full-resolution artifact pointer: \nolinkurl{godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/}; 파일명은 위 capture ID에 \texttt{.png}를 붙인 것이다.\par}
+  \caption{작성형 Godot render replay에서 status/event를 확대한 illustrative crop과 manifest metadata. 이 trace-bound 대응은 live transport, 성능, usability, immersion, efficacy 근거가 아니다.}
+  \label{fig:godot-render-fixture}
+\end{figure*}
+
+선택 v5 packet은 하나의 scripted fixture의 render/state 대응만 확립하며 live model 또는 Python transport, participant 또는 player input, adaptation intervention, narrative-quality result를 추가하지 않는다.
+
+\FloatBarrier
 
 \section{논의}
 \subsection{확립 가능한 범위}
@@ -232,10 +274,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \subsection{선행연구와의 관계}
 \system{}은 parsing 후 state-relative authorization을 적용하여 constrained decoder를 보완한다 \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}. 검색 및 메모리 구성요소에는 commit authority를 부여하지 않는다는 점에서 구별된다 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}. 실행 가능한 환경과 benchmark를 대체하지 않고 보완한다 \cite{S11_cote2019textworld,S12_wang2022scienceworld,S15_liu2024agentbench,S18_paglieri2025balrog}. Process-linked trace는 AgentBoard가 강조한 측정 관심사를 구현하지만 \cite{S16_ma2024agentboard}, \system{}이 해당 시스템이나 다른 시스템보다 우월하다는 근거는 아니다.
 
-\section{확증 확장}
-향후 사전등록 연구는 동결된 모델 instance 10개를 선별하고 소규모 panel을 승격해 controller를 비교한다. 독립적으로 label된 semantic oracle을 사용하고, 실제 blind-retry comparator를 구현하고, attempt별 token과 latency를 기록하고, timeout 및 parse failure를 treatment-policy estimand에 유지해야 한다. Hardware/access profile마다 한 instance만 승격하면 결과는 instance 수준에 머물며 scale 또는 access effect를 식별하지 못한다 \cite{S14_perezliebana2019gvgai,S15_liu2024agentbench,S18_paglieri2025balrog,S31_agarwal2021precipice}.
-
-Retrieval 및 memory ablation은 인코딩된 validity를 맞춘 상태에서 graph 및 conversational-memory context를 비교한다 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}. 별도의 matched-validity human study에는 ethics review, player-qualified rater, blinding, randomized order, attention check, reliability, prospective power, 정당화된 mixed-effects analysis가 필요하다 \cite{S21_akoury2023player,S27_vanderlee2019best,S28_karpinska2021perils,S35_barr2013random}. Affect estimate는 선택적이고 비권위적으로 유지하며 validity non-inferiority margin에는 독립적 근거가 필요하다 \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement,S32_lakens2018equivalence}.
+효능을 검정할 연구, 즉 독립적으로 label된 semantic oracle과 실제 blind-retry comparator를 갖춘 사전등록 다중 모델 비교, 인코딩된 validity를 맞춘 retrieval 및 memory ablation, 정당화된 검정력과 mixed-effects 분석을 갖춘 blinded matched-validity 인간 연구는 본 논문의 범위 밖이며 부분적으로도 보고하지 않는다 \cite{S15_liu2024agentbench,S27_vanderlee2019best,S31_agarwal2021precipice,S35_barr2013random}.
 
 \section{타당성 위협, 윤리, 산출물 범위}
 Construct validity는 declared field에 한정되며 encoded check는 누락된 의미를 발견할 수 없다. Internal validity는 독립적으로 작성된 policy expectation과 fixture leakage 부재에 의존한다. External validity는 offline text/mock case에 한정된다. Conclusion validity는 모집단 추론 없이 raw designed-case count를 보고함으로써 보호한다. Reproducibility는 고정된 software 및 artifact version에 의존한다. Security validity는 key 없는 content-integrity check와 deterministic semantic replay에 한정되며 adversarial authentication은 아니다.
@@ -243,9 +282,15 @@ Construct validity는 declared field에 한정되며 encoded check는 누락된 
 파일럿은 participant 또는 personal telemetry를 처리하지 않는다. 향후 human 및 affect 연구에는 해당 review, informed consent, compensation disclosure, minimization, retention/deletion rule, opt-out이 필요하다. LLM judge를 사용하더라도 automated 및 crowd judgement 모두 calibration과 bias control이 필요하므로 보조 수단으로 유지한다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 \section{결론}
-\system{}은 작성된 candidate-event payload를 encoded neuro-symbolic commit gate를 통해 canonical mutation으로부터 격리하고, linked record와 state-semantic replay로 terminal outcome을 감사 가능하게 만든다. 결정론적 오프라인 파일럿은 동결된 fixture domain의 구현 mechanism에 대한 근거이지 cross-model superiority, player-experience benefit, retrieval 또는 memory effectiveness, affect efficacy, commercial-engine performance의 근거가 아니다. 이 질문들은 명시적인 확증 확장으로 남는다.
+\system{}은 작성된 candidate-event payload를 encoded 기호 commit gate를 통해 canonical mutation으로부터 격리하고, linked record와 state-semantic replay로 terminal outcome을 감사 가능하게 만든다. 결정론적 오프라인 파일럿은 단일 작성 world state의 동결된 fixture domain에서 구현 mechanism에 대한 근거이지 cross-model superiority, player-experience benefit, retrieval 또는 memory effectiveness, affect efficacy, commercial-engine performance의 근거가 아니다. 이 질문들은 명시적인 확증 확장으로 남는다.
 
+\section*{데이터 및 코드 가용성}
+구현, 동결 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, 빌드는 심사용 익명 아카이브로 제공하며 camera-ready 시 DOI 기반 저장소로 대체한다. 번들은 산출물 32개와 선언 입력 14개를 포함하는 SHA-256 manifest를 갖는다. 다만 manifest에 기록된 provenance commit은 파일럿 runner보다 앞서며 선언된 모든 입력을 해석하지 못한다. 모든 입력이 기록된 revision에서 해시 일치하도록 패킷을 깨끗한 커밋 트리에서 재생성 중이다.
+
+\begingroup
+\renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}
 \bibliographystyle{IEEEtran}
 \bibliography{../references}
+\endgroup
 
 \end{document}
