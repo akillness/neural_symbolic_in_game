@@ -409,6 +409,24 @@
       },
       "standing_evidence_boundary": "C-RESULT-001..005 remain TODO-RESULT; the pilot is deterministic offline conformance over one authored world state"
     },
-    "honest_summary": "The pipeline ran end to end and the manuscript is materially better than at Stage 4, but the headline finding of this run is that a purpose-built honesty gate passed three false claims. The gates checked artifacts against each other while the artifacts were consistently wrong together. Stage 6 adversarial review caught what Stage 4.5 did not, and Stage 4.5 has been amended with three mandatory checks derived from those misses."
+    "honest_summary": "The pipeline ran end to end and the manuscript is materially better than at Stage 4, but the headline finding of this run is that a purpose-built honesty gate passed three false claims. The gates checked artifacts against each other while the artifacts were consistently wrong together. Stage 6 adversarial review caught what Stage 4.5 did not, and Stage 4.5 has been amended with three mandatory checks derived from those misses.",
+    "clean_clone_gate": {
+      "verified_at": "2026-08-13",
+      "method": "git clone of the committed tree into a pristine directory with no Godot import cache and no working-tree state, then the full CI suite plus pilot reproduction and both paper builds",
+      "results": {
+        "tests": "96/96 pass",
+        "ruff_check_and_format": "clean over src, tests, scripts, examples",
+        "validate_project": "pass",
+        "validate_harness": "pass",
+        "recorded_experiment": "pass",
+        "deep_research_contract": "10/10",
+        "survey_contract": "pass",
+        "readme_visual_sync": "pass",
+        "wiki_lint": "no structural issues",
+        "pilot_reproduction": "34/34 artifacts byte-identical to the committed bundle",
+        "paper_build": "make all exits 0; EN 7 pp, KO 6 pp"
+      },
+      "defect_found_and_fixed": "The first clean-clone run failed 4 Godot fixture subtests. Root cause: .godot/ is a gitignored build artifact, so a fresh clone has no import cache and Godot spent its first invocation importing instead of running the fixture. The suite passed locally only because an untracked cache existed. The harness now runs the idempotent import unconditionally and fails loudly with engine output if it errors, rather than trusting the mere existence of .godot/."
+    }
   }
 }
