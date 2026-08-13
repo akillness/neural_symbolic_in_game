@@ -1,6 +1,61 @@
 # Stage 4.5 Claim-Faithfulness Integrity Gate (L3) / 4.5단계 주장 충실성 무결성 게이트
 
-Status: **PASS_WITH_SCOPE_BOUNDARIES**
+Status: **SUPERSEDED — original PASS verdict was wrong**
+
+> **Current packet note (2026-08-13):** this document preserves the original pre-Stage-8 audit
+> and its later correction. The current pilot packet is a post-Stage-8 rerun with 2 open
+> sentinels, 1 closed unknown-key regression, 64 provenance rows (43 executed + 21 aggregate),
+> and 35 artifact + 20 input hashes. Older counts and parser findings below are historical.
+
+> ## Correction notice / 정정 고지
+>
+> The original verdict below recorded 22/22 `FAITHFUL` and unblocked Stage 5. Stage 6 peer review
+> then found three defects that this gate should have caught, and all three were independently
+> reproduced. The original verdict is retained unedited for the audit trail; it is not the current
+> finding.
+>
+> | Claim | Original class | Corrected class | Basis |
+> | --- | --- | --- | --- |
+> | A04 "structured counterexamples for bounded repair" | `FAITHFUL` | **`OVERSTATED`** | `_structured_repair` discards the counterexample (`del validation, attempt`) and reconstructs policy fields from authoritative state |
+> | A07 "exact case counts" incl. 13/13 | `FAITHFUL` | **`SCOPE_MISMATCH`** | 13/13 is enforced by `load_manifest`; the pilot cannot run unless it holds |
+> | A08 non-claim list incl. "no engine-loop measurements" | `FAITHFUL` | **`OUTDATED`** | observed Godot 4.7.1 headless runs exist in the project working tree |
+> | B1 (body, `main.tex:161`) "provider-response latency ... is historical fixture metadata" | **not audited** | **`OVERSTATED`** | the six adapter telemetry values are pinned as JSON-Schema `const`; "historical" implies a provider interaction that never occurred |
+>
+> Corrected totals over the 22 audited abstract/introduction claims: 19 `FAITHFUL`,
+> 1 `OVERSTATED` (A04), 1 `SCOPE_MISMATCH` (A07), 1 `OUTDATED` (A08).
+>
+> B1 is additional and was **outside the original audit scope**: the gate audited only abstract and
+> introduction sentences, so a numeric-provenance claim in the body was never examined. That scope
+> restriction is itself a gate defect, corrected by mandatory check 3 below.
+>
+> Under fail-closed semantics this is a **BLOCK**, not a pass.
+>
+> Why the gate missed them: the audit traced each mechanism claim to an implementing symbol and
+> confirmed the symbol existed, but never read the reference repairer's body, never checked whether
+> a reported ratio was enforced by its own loader, and never traced telemetry values to their schema
+> declaration. Artifact-to-artifact consistency was verified while the artifacts were consistently
+> wrong together.
+>
+> Remediation: Stage 8 revises both manuscripts; the three checks below are added as mandatory.
+>
+> ### Mandatory checks added to this gate
+>
+> 1. **Reference-implementation body read.** For every mechanism named in the abstract, read the body
+>    of the function that the evaluation actually invokes — not merely the symbol the prose names.
+> 2. **Construction-invariant test.** For every reported ratio, check whether the harness can execute
+>    at all when the ratio fails. A ratio enforced by a loader precondition is an invariant, not a
+>    result.
+> 3. **Telemetry provenance trace.** For every numeric attributed to a provider, runtime, or device,
+>    trace it to its origin. A value pinned as a schema `const` is synthetic fixture metadata and may
+>    never be described with recording vocabulary.
+>
+> See `stage-06-peer-review.md` and `stage-08-revision.md`.
+
+---
+
+## Original verdict (2026-08-13, superseded) / 원래 판정 (대체됨)
+
+Status as recorded at the time: **PASS_WITH_SCOPE_BOUNDARIES**
 
 Snapshot date: 2026-08-13
 

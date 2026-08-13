@@ -1,6 +1,6 @@
 {
-  "assignment_count": 62,
-  "assignment_set_hash": "a853747f79ac2547e2e46f2789a5c78d4f74973d18082b24fb6f911fb8cad65e",
+  "assignment_count": 64,
+  "assignment_set_hash": "9f0a8d879044a059732ebbacbe00dda7db319ed1e8c2a1099d7f7a6c22511044",
   "expected_provenance_by_key": {
     "accounting_guards/duplicate_expected_assignment/accounting_guard": {
       "arm_id": "accounting_guard",
@@ -92,15 +92,6 @@
       "section": "adapter_accounting",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
-    "boundary_sentinels/boundary-extra-candidate-field/boundary_sentinel_k0": {
-      "arm_id": "boundary_sentinel_k0",
-      "config_hash": "0f13526b57eb3fe6e65cdee05decbeee61a5ce80040167a26f629a18e9ac7ec6",
-      "input_hash": "1e645a1bd2f1d19f30f7c590499dae06dda1ac4a29fbbc52860b8eb64ecb74b8",
-      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
-      "row_id": "boundary-extra-candidate-field",
-      "section": "boundary_sentinels",
-      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
-    },
     "boundary_sentinels/boundary-omitted-required-object/boundary_sentinel_k0": {
       "arm_id": "boundary_sentinel_k0",
       "config_hash": "a08fb5785b3d208a0af8610e3da63ca84034fda6e0ef3b4f1234a59e105dddcd",
@@ -117,6 +108,15 @@
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_id": "boundary-unparsed-secret-in-narrative",
       "section": "boundary_sentinels",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "closed_boundary_regressions/closed-extra-candidate-field/closed_boundary_regression": {
+      "arm_id": "closed_boundary_regression",
+      "config_hash": "0f1718f806acd9aa753cceb561f7b7c79ed732829becc414254a8cf3311f35cc",
+      "input_hash": "8cdd8dc11c803cc80209672e8c30524b09e6c5e05f2988ff367f95e761d886b0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_id": "closed-extra-candidate-field",
+      "section": "closed_boundary_regressions",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
     "gate_conformance/gate-disclosure-knowledge/gate_validation_k0": {
@@ -386,6 +386,24 @@
       "input_hash": "814eeb27348fe8e434a914ab3d46984a10bddfe2d44bee1cf2a88c1632ff918f",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_id": "boundary_sentinels:encoded_acceptances_documented",
+      "section": "pilot_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "pilot_summary/closed_boundary_regressions:closed_boundaries_still_rejected/pilot_summary": {
+      "arm_id": "pilot_summary",
+      "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
+      "input_hash": "6070b45b4d433390fb4ec85eaea08166e946c2812b980f4e9b503aa3cbe6f6a0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_id": "closed_boundary_regressions:closed_boundaries_still_rejected",
+      "section": "pilot_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "pilot_summary/closed_boundary_regressions:parser_parity_on_unknown_keys/pilot_summary": {
+      "arm_id": "pilot_summary",
+      "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
+      "input_hash": "660caa1d9b524484923efd824ba85bf73a81cf27992a9f5a67f30d9f3fb54549",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_id": "closed_boundary_regressions:parser_parity_on_unknown_keys",
       "section": "pilot_summary",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },

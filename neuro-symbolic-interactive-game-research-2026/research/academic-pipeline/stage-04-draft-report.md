@@ -1,14 +1,21 @@
 # Stage 4 Draft Report / Stage 4 초안 보고서
 
-Status: **AWAITING_USER_APPROVAL**
+Status: **SUPERSEDED HISTORICAL STAGE-4 SNAPSHOT — APPROVAL RECORDED 2026-08-13**
 
 Snapshot date: 2026-08-12
 
 Evidence class: deterministic local offline pilot engineering evidence
 
-Downstream status: **Stage 4.5 and Stage 5 have not been executed.**
+Amendment: **post-Stage-8 rerun**. The current packet preserves the Stage-4 study scope while
+moving `candidate_contract_strictness` from an accepted open sentinel to a closed negative
+regression after both proposal and replay parsers began rejecting unknown top-level keys.
 
-## Stage decision / 단계 판정
+Current downstream status: **Stage 4.5's original pass was superseded; Stage 5 passed; Stage 6 was
+accepted and actioned; Stages 8 and 9 executed; Stage 10 remains pending.** Statements below about
+awaiting approval, six-page parity, absent engine execution, and unexecuted downstream gates describe
+the original Stage-4 snapshot, not the current manuscript or game evidence.
+
+## Original Stage-4 decision / 원래 Stage-4 판정 (historical)
 
 Stage 4 produced a complete bilingual IEEE-format draft, machine-generated pilot result fragments,
 and a shared 36-record reference database. The English and Korean PDFs are each six pages. The
@@ -32,7 +39,7 @@ Stage 5 검토 결과를 추론해서는 안 된다.
 | Reproducible PDF build | `paper/latex/Makefile` | Regenerates SVG/PNG figures, both PDFs, and page/font/log gates |
 | Machine-generated bilingual result inputs | `paper/latex/generated/pilot_results_{en,ko}.tex`, `pilot_tables_{en,ko}.tex` | Generated from the frozen pilot artifacts |
 | Pilot evidence bundle | `research/academic-pipeline/stage-04-pilot/` | JSON, CSV, Markdown, and TeX views plus SHA-256 manifest |
-| Published-row provenance manifest | `research/academic-pipeline/stage-04-pilot/pilot-assignment-manifest.json` | 62 exact row keys and provenance records |
+| Published-row provenance manifest | `research/academic-pipeline/stage-04-pilot/pilot-assignment-manifest.json` | 64 exact row keys and provenance records |
 
 The PDFs, result inputs, source code, and pilot artifacts are reported here as existing evidence; this
 report does not modify them.
@@ -45,12 +52,13 @@ report does not modify them.
 | Rejection-only arm | 0/2 repair successes and 0/2 commits among two initially invalid designed cases | With repair budget 0, neither case committed | Comparative model efficacy or a population failure probability |
 | Unchanged-retry arm | 0/2 repair successes and 0/2 commits | Repeating the unchanged invalid candidate did not produce a commit in these two fixtures | A general claim that retry cannot work |
 | Structured-repair arm | 1/2 repair successes and 1/2 commits | One authored case committed after the repaired candidate passed the same deterministic validator; the other did not | Superiority, sample efficiency, or stability across models and tasks |
-| Boundary sentinels | 3/3 were accepted at the encoded layer; 0/3 were labelled safety passes | The fixtures expose unparsed narrative disclosure, an omitted candidate-and-policy object requirement, and ignored unknown top-level candidate fields | Semantic safety, complete policy coverage, or a fully closed candidate schema |
+| Open boundary sentinels | 2/2 were accepted at the encoded layer; 0/2 were labelled safety passes | The fixtures expose unparsed narrative disclosure and an omitted candidate-and-policy object requirement | Semantic safety or complete policy coverage |
+| Closed candidate-contract regression | 1/1 passed: both parsers specifically rejected a complete 12-field candidate carrying one unknown key | The Stage-8 shared key contract stayed closed in this authored negative fixture | Semantic safety, exhaustive schema robustness, or a population error rate |
 | Detectable integrity faults | 10/10 named injected faults were rejected by their designated operations | Rejection is supported only for the frozen checksum, replay, type, control-flow, linkage, continuity, and rollback mutations represented in the bundle; stable detector-layer attribution was not tested | Tamper-proofing, authentication, adversarial completeness, exact detector attribution, or detection of unspecified faults |
 | Known repair-provenance boundary | 1/1 designed boundary remained replay-accepted, as expected | State-semantic replay accepted a rehashed substitution of one invalid precursor for another before the same recorded valid repair because it does not authenticate or re-execute the repair generator | Provenance verification for repair generation |
 | Adapter accounting | 1 commit, 1 symbolic fallback, and 5 adapter failures across 7 assigned cases | Every designed adapter case entered one of the three reported terminal accounting categories | Live provider reliability, model quality, or latency distribution |
 | Assignment-accounting guards | 3/3 injected manifest faults detected | Duplicate observed record, duplicate expected assignment, and missing assignment were rejected in the authored guards | Concurrency safety or exhaustive accounting correctness |
-| Frozen published-row set | 62 row keys | The manifest fixes the expected provenance of every released pilot row, including fault-specific input specifications | 62 independent stochastic trials, 62 model calls, or a statistical sample |
+| Frozen published-row set | 64 row keys: 43 executed fixture rows and 21 aggregate rows | The manifest fixes the expected provenance of every released pilot row, including the closed-boundary regression and fault-specific input specifications | 64 independent stochastic trials, 64 model calls, or a statistical sample |
 
 All ratios above use authored deterministic cases as descriptive denominators. They are not estimates
 of a deployment population, and no confidence interval, significance test, or causal comparison is

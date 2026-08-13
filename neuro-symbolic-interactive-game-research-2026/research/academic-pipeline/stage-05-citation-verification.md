@@ -128,3 +128,23 @@ sentence that cites it; that judgement belongs to Stage 6 peer-review simulation
 
 이 게이트는 인용의 동일성만 검증한다. 각 문헌이 인용 문장을 실제로 뒷받침하는지에 대한
 판단은 Stage 6 동료심사 시뮬레이션의 몫이다.
+
+## Stage 8 addendum / 8단계 추가분
+
+Five prior-work citations were added at Stage 8 to close Stage 6 finding F10 (missing action-
+interposition lineage). Each was verified through the same three-index process before being cited:
+
+| Key | Work | Indices | Note |
+| --- | --- | --- | --- |
+| S37 | Riedl, Saretto & Young, narrative mediation, AAMAS 2003 | Crossref, OpenAlex, Semantic Scholar | DOI `10.1145/860575.860694` resolves; pages 741--748 confirmed |
+| S38 | Evans & Short, Versu, IEEE TCIAIG | Crossref, OpenAlex, Semantic Scholar | archival year corrected 2013 -> 2014; OpenAlex reported the early-access year, Crossref the issue year |
+| S39 | Fikes & Nilsson, STRIPS, Artificial Intelligence 1971 | Crossref, OpenAlex, Semantic Scholar | volume, issue, and pages confirmed |
+| S40 | Schneider, Enforceable Security Policies, ACM TISSEC 2000 | Crossref, OpenAlex, Semantic Scholar | volume, issue, and pages confirmed |
+| S41 | Ware & Siler, Sabre, AIIDE 2021 | Crossref, OpenAlex, Semantic Scholar | title similarity 1.0 |
+
+Revised totals: **41 entries, 38 verified, 3 preprint, 0 unmatched, 0 hallucinated.** The three
+preprints are unchanged (S01, S02, S26). Bibliography closure was re-checked after the addition:
+41 unique cite keys, 41 bibliography entries, no cited-but-absent key, no present-but-uncited entry.
+
+S38의 연도는 archival issue 기준 2014로 정정했다. OpenAlex는 early-access 연도를, Crossref는
+issue 연도를 보고했으며 Stage 5에서 확립한 archival 우선 원칙을 동일하게 적용했다.

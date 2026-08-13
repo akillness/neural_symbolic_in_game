@@ -1,0 +1,7 @@
+\begin{tabular}{llllllllllllllllllll}
+\hline
+arm\_id & config\_hash & input\_hash & state\_hash & prior\_state\_hash & regression\_id & boundary\_type & closed\_in & expected\_rejected & proposal\_rejected & replay\_rejected & parsers\_agree & expected\_failure\_code & observed\_failure\_code & proposal\_error & replay\_error & unknown\_key\_rejected & final\_state\_hash & passed & interpretation \\
+\hline
+closed\_boundary\_regression & 0f1718f806acd9aa753cceb561f7b7c79ed732829becc414254a8cf3311f35cc & 8cdd8dc11c803cc80209672e8c30524b09e6c5e05f2988ff367f95e761d886b0 & b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991 & b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991 & closed-extra-candidate-field & candidate\_contract\_strictness & stage-08 & true & true & true & true & parse\_error & parse\_error & unknown candidate fields: ['unexpected\_top\_level\_metadata'] & unknown candidate fields: ['unexpected\_top\_level\_metadata'] & true & b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991 & true & Formerly boundary-extra-candidate-field, which the proposal parser accepted while the replay parser rejected it. Stage 8 closed that asymmetry. This fixture is retained as a negative regression so parser drift back to the permissive behaviour fails the pilot. \\
+\hline
+\end{tabular}

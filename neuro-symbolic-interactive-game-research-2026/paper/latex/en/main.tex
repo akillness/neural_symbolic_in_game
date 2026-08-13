@@ -3,7 +3,6 @@
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
-\usepackage{placeins}
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
@@ -155,39 +154,16 @@ The terminal record classes are commit, symbolic fallback, adapter failure, and 
 
 \section{Deterministic Offline Pilot Method}
 \subsection{Questions and Designed Fixtures}
-The pilot asks whether: (PQ1) valid candidates commit while named invalid-policy cases remain unchanged; (PQ2) rejection-only, unchanged retry, and structured repair produce the expected outcomes on authored repairable and irreparable cases; (PQ3) frozen checksum, state-semantic, linkage, and continuity mutations are rejected by their designated check operations, while an injected second-file append failure triggers the expected pair-write rollback check; and (PQ4) strict adapters and assignment manifests retain exactly one classified terminal row per assigned case or fail closed.
+The pilot asks whether: (PQ1) valid candidates commit while named invalid-policy cases remain unchanged; (PQ2) rejection-only, unchanged retry, and structured repair produce the expected outcomes on authored repairable and irreparable cases; (PQ3) frozen checksum, state-semantic, linkage, and continuity mutations are rejected by their designated check operations, while an injected second-file append failure triggers the expected pair-write rollback check; (PQ4) strict adapters and assignment manifests retain exactly one classified terminal row per assigned case or fail closed; and (PQ5) proposal and replay parsers both reject a complete otherwise-valid candidate carrying one unknown top-level key.
 
 Cases are purposively designed conformance fixtures, not samples from a model or game population. The four domains are validator/state isolation, repair control flow, record/trace fault injection, and adapter/accounting contracts. Unique cases, rather than repeated deterministic seeds, form descriptive denominators. All expectations are specified before execution.
 
 \subsection{Measures and Reproducibility}
-Measures are exact counts: expected/observed validator-class agreement; rejected or controller-failure cases with state mutation; commit and attempt outcomes by repair arm and repairability; rejected/prespecified detectable faults by designated operation; replayed/committed traces; and rejected/injected manifest violations. Exception class alone does not identify a stable detector layer, so no detector-attribution result is reported. No $p$-values or population confidence intervals are attached to these designed fixtures. The adapter cases carry synthetic latency and token constants that the input schema pins with JSON-Schema \texttt{const}; they exercise accounting-field propagation only and are not measurements of any provider, runtime, or device.
+Measures are exact counts: expected/observed validator-class agreement; rejected or controller-failure cases with state mutation; commit and attempt outcomes by repair arm and repairability; rejected/prespecified detectable faults by designated operation; replayed/committed traces; rejected/injected manifest violations; and proposal/replay rejection agreement on the prespecified unknown-key negative regression. The last measure is deterministic parser-contract parity, not an empirical safety outcome. Exception class alone does not identify a stable detector layer, so no detector-attribution result is reported. No $p$-values or population confidence intervals are attached to these designed fixtures. The adapter cases carry synthetic latency and token constants that the input schema pins with JSON-Schema \texttt{const}; they exercise accounting-field propagation only and are not measurements of any provider, runtime, or device.
 
 The release packet freezes fixture and assignment manifests, schemas, a result JSON artifact with embedded outcome and trace records, environment and code revision, generated tables, and checksums. Reporting follows reproducibility and measurement-boundary guidance \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
 \section{Pilot Results}
-\IfFileExists{../generated/pilot_results_en.tex}{%
-  \input{../generated/pilot_results_en.tex}%
-}{%
-  \pendingartifact{\texttt{../generated/pilot\_results\_en.tex} has not yet been generated. No pilot number or empirical conclusion is inserted manually.}%
-}
-
-\IfFileExists{../generated/pilot_tables_en.tex}{%
-  \input{../generated/pilot_tables_en.tex}%
-}{%
-  \pendingartifact{\texttt{../generated/pilot\_tables\_en.tex} has not yet been generated. Result tables remain evidence-gated.}%
-}
-
-\begin{figure}[t]
-  \centering
-  \IfFileExists{../figures/fig_evidence_boundary.png}{%
-    \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.png}%
-  }{\fbox{\parbox{0.9\columnwidth}{\centering Pending vector artifact: evidence boundary and fault-injection flow.}}}
-  \caption{Evidence boundary from frozen fixture through a designated check operation and generated table. Counts are admitted only through generated artifacts.}
-  \label{fig:evidence}
-\end{figure}
-
-Godot 4.7.1 replayed the retained \emph{Sealed Lighthouse} canonical trace in a non-headless 1280$\times$720 SubViewport. Its manifest binds each PNG to event/delivery indices, validation, and state hashes: Fig.~\ref{fig:godot-render-fixture}(b) preserves the before hash, whereas (c) changes it after a valid commit. All source panels are generated-asset-free primary-track renders; the illustrative crops below enlarge only their authored status/event callouts.
-
 \begin{figure*}[!t]
   \centering
   \begin{minipage}[t]{0.315\textwidth}
@@ -224,9 +200,30 @@ Godot 4.7.1 replayed the retained \emph{Sealed Lighthouse} canonical trace in a 
   \label{fig:godot-render-fixture}
 \end{figure*}
 
-The selected v5 packet establishes one scripted fixture's render/state correspondence only; it adds no live model or Python transport, participant or player input, adaptation intervention, or narrative-quality result.
+\IfFileExists{../generated/pilot_results_en.tex}{%
+  \input{../generated/pilot_results_en.tex}%
+}{%
+  \pendingartifact{\texttt{../generated/pilot\_results\_en.tex} has not yet been generated. No pilot number or empirical conclusion is inserted manually.}%
+}
 
-\FloatBarrier
+\IfFileExists{../generated/pilot_tables_en.tex}{%
+  \input{../generated/pilot_tables_en.tex}%
+}{%
+  \pendingartifact{\texttt{../generated/pilot\_tables\_en.tex} has not yet been generated. Result tables remain evidence-gated.}%
+}
+
+\begin{figure}[t]
+  \centering
+  \IfFileExists{../figures/fig_evidence_boundary.png}{%
+    \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.png}%
+  }{\fbox{\parbox{0.9\columnwidth}{\centering Pending vector artifact: evidence boundary and fault-injection flow.}}}
+  \caption{Evidence boundary from frozen fixture through a designated check operation and generated table. Counts are admitted only through generated artifacts.}
+  \label{fig:evidence}
+\end{figure}
+
+Godot 4.7.1 replayed the retained \emph{Sealed Lighthouse} canonical trace in a non-headless 1280$\times$720 SubViewport. Its manifest binds each PNG to event/delivery indices, validation, and state hashes: Fig.~\ref{fig:godot-render-fixture}(b) preserves the before hash, whereas (c) changes it after a valid commit. All source panels are generated-asset-free primary-track renders; the illustrative crops below enlarge only their authored status/event callouts.
+
+The selected v5 packet establishes one scripted fixture's render/state correspondence only; it adds no live model or Python transport, participant or player input, adaptation intervention, or narrative-quality result.
 
 \section{Discussion}
 \subsection{Established Scope}
@@ -249,8 +246,11 @@ The pilot processes no participants or personal telemetry. Future human and affe
 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}
+\section*{Disclosure of AI Usage}
+Large language models were used as authoring and review tools in preparing this manuscript: to draft and revise prose, to simulate a reviewer panel whose findings drove this revision, and to run citation-identity checks against bibliographic metadata APIs. They were not used to generate, alter, or interpret any experimental result. All reported numbers are emitted by the deterministic pilot runner from frozen fixtures and are inserted into the manuscript only through machine-generated fragments. Every claim about the implementation was verified by the authors against the source, and every citation was verified against at least one independent index. The authors take full responsibility for the content.
+
 \section*{Data and Code Availability}
-The implementation, the frozen pilot bundle, the fixture and assignment manifests, the generated result fragments, and the build are available to reviewers as an anonymized archive; a DOI-bearing deposit will replace it at camera-ready. The bundle carries a SHA-256 manifest covering 32 artifacts and 14 declared inputs. Reviewers should note that the manifest's recorded provenance commit predates the pilot runner and does not resolve every declared input; the packet is being regenerated from a clean committed tree so that every input hash-matches at the recorded revision.
+The implementation, the frozen pilot bundle, the fixture and assignment manifests, the generated result fragments, and the build are available to reviewers as an anonymized archive; a DOI-bearing deposit will replace it at camera-ready. The bundle carries a SHA-256 manifest covering 35 artifacts, 20 declared inputs, and 64 assignment keys. Reviewers should note that the manifest's recorded provenance commit predates the pilot runner and does not resolve every declared input; the packet is being regenerated from a clean committed tree so that every input hash-matches at the recorded revision.
 
 \bibliographystyle{IEEEtran}
 \bibliography{../references}

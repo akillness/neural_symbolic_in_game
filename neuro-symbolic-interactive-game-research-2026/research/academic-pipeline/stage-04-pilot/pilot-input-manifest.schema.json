@@ -338,6 +338,30 @@
       ],
       "type": "array"
     },
+    "amendment": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_status": {
+          "const": "post-stage-08-rerun"
+        },
+        "change": {
+          "const": "candidate_contract_strictness moved from an accepted boundary sentinel to a closed negative regression after both parsers began rejecting unknown top-level keys"
+        },
+        "id": {
+          "const": "stage-08-candidate-contract-strictness"
+        },
+        "source_stage": {
+          "const": "stage-04-pilot"
+        }
+      },
+      "required": [
+        "id",
+        "artifact_status",
+        "source_stage",
+        "change"
+      ],
+      "type": "object"
+    },
     "base_state": {
       "additionalProperties": false,
       "properties": {
@@ -616,8 +640,8 @@
     },
     "boundary_sentinels": {
       "items": false,
-      "maxItems": 3,
-      "minItems": 3,
+      "maxItems": 2,
+      "minItems": 2,
       "prefixItems": [
         {
           "additionalProperties": false,
@@ -762,7 +786,15 @@
             "candidate"
           ],
           "type": "object"
-        },
+        }
+      ],
+      "type": "array"
+    },
+    "closed_boundary_regressions": {
+      "items": false,
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
         {
           "additionalProperties": false,
           "properties": {
@@ -773,7 +805,7 @@
               "additionalProperties": false,
               "properties": {
                 "action_id": {
-                  "const": "boundary-extra-candidate-field"
+                  "const": "closed-extra-candidate-field"
                 },
                 "action_type": {
                   "const": "SAY"
@@ -781,11 +813,26 @@
                 "actor_id": {
                   "const": "guard"
                 },
+                "disclosed_facts": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
                 "effects": {
                   "items": false,
                   "maxItems": 0,
                   "minItems": 0,
                   "type": "array"
+                },
+                "metadata": {
+                  "additionalProperties": false,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "narrative_text": {
+                  "const": ""
                 },
                 "preconditions": {
                   "items": false,
@@ -798,6 +845,18 @@
                   ],
                   "type": "array"
                 },
+                "quest_stage_effect": {
+                  "const": null
+                },
+                "required_objects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "required_quest_stage": {
+                  "const": 0
+                },
                 "unexpected_top_level_metadata": {
                   "additionalProperties": false,
                   "properties": {
@@ -809,6 +868,12 @@
                     "sealed_secret"
                   ],
                   "type": "object"
+                },
+                "used_facts": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
                 }
               },
               "required": [
@@ -817,24 +882,39 @@
                 "action_type",
                 "preconditions",
                 "effects",
+                "required_objects",
+                "used_facts",
+                "disclosed_facts",
+                "required_quest_stage",
+                "quest_stage_effect",
+                "narrative_text",
+                "metadata",
                 "unexpected_top_level_metadata"
               ],
               "type": "object"
             },
-            "expected_valid": {
+            "closed_in": {
+              "const": "stage-08"
+            },
+            "expected_failure_code": {
+              "const": "parse_error"
+            },
+            "expected_rejected": {
               "const": true
             },
             "id": {
-              "const": "boundary-extra-candidate-field"
+              "const": "closed-extra-candidate-field"
             },
             "interpretation": {
-              "const": "The proposal parser currently ignores an unrecognized top-level candidate field; this is an accepted contract-strictness limitation, not evidence of safe metadata handling."
+              "const": "Formerly boundary-extra-candidate-field, which the proposal parser accepted while the replay parser rejected it. Stage 8 closed that asymmetry. This fixture is retained as a negative regression so parser drift back to the permissive behaviour fails the pilot."
             }
           },
           "required": [
             "id",
             "boundary_type",
-            "expected_valid",
+            "closed_in",
+            "expected_rejected",
+            "expected_failure_code",
             "interpretation",
             "candidate"
           ],
@@ -2151,6 +2231,7 @@
     "schema_version",
     "pilot_id",
     "evidence_scope",
+    "amendment",
     "implemented_validator_codes",
     "base_state",
     "gate_fixtures",
@@ -2159,7 +2240,8 @@
     "integrity_faults",
     "integrity_boundaries",
     "adapter_cases",
-    "accounting_guards"
+    "accounting_guards",
+    "closed_boundary_regressions"
   ],
   "title": "TRACE-RPG frozen conformance pilot input manifest",
   "type": "object"

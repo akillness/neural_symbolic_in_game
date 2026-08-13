@@ -14,11 +14,14 @@ It follows the local `academic-research` full pipeline and records every mandato
 | 2 | Source shortlist and claim boundaries | Approved 2026-08-12 |
 | 2.5 | Pre-write claim/provenance integrity gate | Passed with fail-closed scope boundaries |
 | 3 | IEEE ToG IMRaD outline and evidence map | Approved 2026-08-12 |
-| 4 | Deterministic offline pilot, bilingual IEEE drafts, and six-page PDFs | Approved 2026-08-13 |
-| 4.5 | Claim-faithfulness integrity gate (L3) | Passed 2026-08-13: 22 claims audited, 0 overstated, 0 unsupported |
+| 4 | Deterministic offline pilot and bilingual IEEE drafts | Approved 2026-08-13; post-Stage-8 packet regenerated |
+| 4.5 | Claim-faithfulness integrity gate (L3) | Original 22/22 pass superseded after Stage 6 reproduced three claim defects and one unaudited body defect |
 | 5 | Citation verification | Passed 2026-08-13: 36 entries, 33 verified, 3 preprint, 0 hallucinated |
-| 6 | EIC + R1/R2/R3 + Devil's Advocate peer-review simulation | Revise and resubmit; awaiting user decision 2026-08-13 |
-| 7--10 | Optional cross-model review, revision, final PDF, and repro lock | Not executed |
+| 6 | EIC + R1/R2/R3 + Devil's Advocate peer-review simulation | Revise-and-resubmit direction accepted and revision findings actioned |
+| 7 | Optional cross-model verification | Not activated; no live cross-model evidence |
+| 8 | Author revision | Executed; Class A/B findings closed, explicitly listed residual findings retained |
+| 9 | Final formatting and AI-use disclosure | Executed; EN 7 pages, KO 6 pages, IEEE Short Paper band |
+| 10 | Reproducibility lock and release | Pending clean-commit regeneration and final claim-faithfulness re-audit |
 
 No hosted ten-model or human-study result is represented as completed evidence. Until those studies
 are run, generated numerical results are limited to deterministic, local, offline harness experiments

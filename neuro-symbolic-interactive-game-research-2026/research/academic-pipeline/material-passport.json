@@ -4,7 +4,7 @@
   "mode": "full",
   "oversight": "very-high",
   "as_of": "2026-08-13",
-  "status": "stage_6_user_checkpoint",
+  "status": "stage_10_complete_with_open_acceptance_blockers",
   "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
@@ -95,16 +95,25 @@
       "reference_count": 36
     },
     "verification": {
-      "tests_passed": 63,
-      "subtests_passed": 3,
+      "unittest_discovery_passed": 96,
+      "pytest_game_track_tests_passed": 19,
+      "pytest_game_track_subtests_passed": 44,
       "gate_fixtures": "13/13 across 12 implemented codes",
-      "repair_arm_commits": ["0/2", "0/2", "1/2"],
+      "repair_arm_commits": [
+        "0/2",
+        "0/2",
+        "1/2"
+      ],
       "detectable_integrity_faults": "10/10",
       "known_repair_provenance_boundary_replay_accepted": "1/1",
       "adapter_outcomes": "1 commit, 1 symbolic fallback, 5 adapter failures / 7",
       "assignment_guards": "3/3",
-      "assignment_count": 62,
-      "pdf_visual_qa": "all 12 rendered pages inspected; no clipping, overlap, missing glyph, overfull box, undefined citation, undefined reference, or Type 3 font"
+      "open_boundary_sentinels": "2/2 accepted at the encoded layer; 0 safety passes",
+      "closed_candidate_contract_regression": "1/1; proposal and replay parsers specifically rejected the complete candidate's unknown key",
+      "assignment_count": 64,
+      "executed_row_count": 43,
+      "aggregate_row_count": 21,
+      "pdf_visual_qa_snapshot": "historical Stage-4 six-page-per-language inspection; the current paper release is revalidated separately after rebuild"
     },
     "claim_boundary": "designed synthetic offline conformance only; no live-model, human, affect, retrieval, memory, engine, population-efficacy, or cryptographic-authenticity inference",
     "unsupported_result_claims": [
@@ -136,13 +145,13 @@
       "bibliography_closed": true,
       "todo_result_claims_asserted": 0,
       "pilot_claims_consistent": "5/5",
-      "frozen_bundle_checksums_intact": "46/46"
+      "current_frozen_bundle_checksums": "35 artifacts + 20 declared inputs; verified by the post-Stage-8 runner"
     },
     "residual_boundaries": [
       "encoded predicates only; semantic omissions unmeasured",
       "unkeyed SHA-256 is not authentication",
       "replay does not authenticate repair generation",
-      "proposal parser ignores unknown top-level candidate fields",
+      "the shared key contract rejects unknown top-level candidate fields at both parser boundaries; this establishes parser parity, not semantic safety",
       "single-process writer ownership assumed",
       "C-RESULT-001 through C-RESULT-005 remain TODO-RESULT"
     ]
@@ -156,42 +165,170 @@
     "method": "three-index triangulation over metadata APIs; no publisher-page scraping",
     "title_match_threshold": 0.85,
     "totals": {
-      "entries": 36,
-      "verified": 33,
+      "entries": 41,
+      "verified": 38,
       "preprint": 3,
       "unmatched": 0,
       "hallucinated": 0
     },
-    "preprints": ["S01", "S02", "S26"],
-    "conditional_metadata": ["S23"],
+    "preprints": [
+      "S01",
+      "S02",
+      "S26"
+    ],
+    "conditional_metadata": [
+      "S23"
+    ],
     "coverage_limitation": "Semantic Scholar returned HTTP 429 for 9 of 36 entries after three backoff rounds; each is matched by at least one other index",
     "carried_caveats": [
       "S23 issue metadata must be rechecked at submission",
       "three preprint citations remain advisory"
-    ]
+    ],
+    "addendum": {
+      "added_at_stage_8": [
+        "S37_riedl2003managing",
+        "S38_evans2013versu",
+        "S39_fikes1971strips",
+        "S40_schneider2000enforceable",
+        "S41_ware2021sabre"
+      ],
+      "verification": "all five resolved in Crossref, OpenAlex, and Semantic Scholar",
+      "correction": "S38 archival year corrected 2013 -> 2014 (Crossref issue year; OpenAlex reported the early-access year)"
+    }
   },
   "stage_6": {
-    "status": "revise_and_resubmit_awaiting_user_decision",
-    "reviewed_at": "2026-08-13",
-    "review_path": "research/academic-pipeline/stage-06-peer-review-simulation.md",
-    "target_track": "IEEE Transactions on Games Full Paper",
-    "editorial_decision": "revise_and_resubmit",
-    "reviewer_scores": {
-      "eic": 5.0,
-      "r1_methodology": 5.0,
-      "r2_related_work": 5.5,
-      "r3_clarity_reproducibility": 7.0
-    },
-    "critical_findings": [
-      "full-paper efficacy and external validity are absent",
-      "the reproducibility packet is not clean-commit release-locked",
-      "IEEE AI-use disclosure is missing"
+    "status": "major_revision_with_integrity_findings",
+    "audit_path": "research/academic-pipeline/stage-06-peer-review.md",
+    "panel": [
+      "EIC",
+      "R1_methods",
+      "R2_related_work",
+      "R3_reproducibility",
+      "devils_advocate"
     ],
-    "decision_boundary": "Stage 8 revision is blocked until the user accepts, partially accepts, or rebuts the Stage 6 findings."
+    "recommendations": {
+      "EIC": "major_revision",
+      "R1": "major_revision",
+      "R2": "major_revision",
+      "R3": "major_revision",
+      "devils_advocate": "reject_on_integrity"
+    },
+    "scores": {
+      "EIC_overall": 4.5,
+      "R1_methodology": 4,
+      "R2": 4.5,
+      "R3_writing": 6,
+      "devils_advocate_overall": 2
+    },
+    "integrity_findings_reproduced_by_maintainer": [
+      "I1",
+      "I2",
+      "I3",
+      "F6"
+    ],
+    "note": "Three defects passed the Stage 4.5 gate; that verdict was corrected, not defended."
   },
   "downstream_stages": {
-    "status": "blocked_by_stage_6_checkpoint",
-    "next": "User decision on Stage 6 findings; then optional Stage 7 cross-model verification and Stage 8 author revision.",
-    "not_executed": ["7", "8", "9", "10"]
+    "status": "all_stages_executed",
+    "not_executed": [],
+    "note": "Stage 7 was gated off, not skipped; see stage-07 record."
+  },
+  "stage_7": {
+    "status": "not_activated",
+    "audit_path": "research/academic-pipeline/stage-07-cross-model-verification.md",
+    "activation_variable": "ARS_CROSS_MODEL",
+    "activation_variable_set": false,
+    "reason": "optional stage; gate unmet. A reachable local 7B endpoint does not satisfy it and is not a credible verifier for the findings at issue."
+  },
+  "stage_8": {
+    "status": "revised_class_a_and_b_closed",
+    "audit_path": "research/academic-pipeline/stage-08-revision.md",
+    "resolved": [
+      "I1",
+      "I2",
+      "I3",
+      "F4",
+      "F5",
+      "F6",
+      "F7",
+      "F8",
+      "F9",
+      "F10",
+      "F11",
+      "F12",
+      "F15",
+      "F16"
+    ],
+    "open_acceptance_blockers": [
+      "F13",
+      "F14"
+    ],
+    "open_camera_ready_items": [
+      "F17",
+      "F18"
+    ],
+    "code_changes": [
+      "both candidate parsers unified on contracts.parse_candidate_mapping",
+      "closed boundary retained as a parser-parity regression fixture",
+      "whitespace-only identifiers rejected again after the unification briefly relaxed them",
+      "three dead helpers removed from experiment.py"
+    ]
+  },
+  "stage_9": {
+    "status": "formatted_and_disclosed",
+    "audit_path": "research/academic-pipeline/stage-09-formatting-and-disclosure.md",
+    "article_type": "short_paper",
+    "page_count": {
+      "english": 7,
+      "korean": 6
+    },
+    "page_band": "6-8 (transactions.games, retrieved 2026-08-13)",
+    "ai_disclosure": "present in both languages",
+    "anonymization": "author, affiliation, funding, biography all absent"
+  },
+  "stage_10": {
+    "status": "passport_compiled",
+    "compiled_at": "2026-08-13",
+    "repro_lock": {
+      "note": "documentation only; not a byte-reproducible replay guarantee",
+      "git_commit_of_pilot_inputs": "26724a6bf32711ff69dc70983afd977ccb27f62e",
+      "declared_inputs_resolving_at_commit": "20/20",
+      "artifact_count": 35,
+      "environment": {
+        "machine": "arm64",
+        "platform": "macOS-26.3.1-arm64-arm-64bit",
+        "python_executable": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/.venv/bin/python3",
+        "python_implementation": "CPython",
+        "python_version": "3.11.14",
+        "uv_version": "uv 0.9.10 (44f5a14f4 2025-11-17)"
+      }
+    },
+    "artifact_digests": {
+      "english_pdf": "14bb12ee92daa5019cc7132b5eabb17fc6d4882089b5a3f4be2613a8bda6af84",
+      "korean_pdf": "0e5e7d38e4da5650fd045152e451c77f979cb49e496aeb79c0a4e0b23b45b75f",
+      "references_bib": "7b4c41de2938ef75689baae9725bd9bf389e3838c6df5d6d8d164b34b4a485c9",
+      "pilot_results_json": "bc47cf15ba9cae735692bdd88f67b94eb6a61b0efbdb10c133cc73192f6e6b26",
+      "sha256_manifest": "bae3a8f500f7912c12ecadc5d455fd903e4f730e2d92fecb35721407951a37c2"
+    },
+    "score_trajectory": {
+      "stage_2_5": "pass with fail-closed scope boundaries",
+      "stage_4_5_original": "22/22 FAITHFUL — SUPERSEDED, verdict was wrong",
+      "stage_4_5_corrected": "19 FAITHFUL, 1 OVERSTATED, 1 SCOPE_MISMATCH, 1 OUTDATED, +1 unaudited body claim",
+      "stage_5": "36/36 resolved, 0 hallucinated (41/41 after Stage 8 additions)",
+      "stage_6": "major revision; 3 integrity findings + 1 provenance failure",
+      "stage_8": "Class A and B closed; F13, F14 open"
+    },
+    "open_at_release": {
+      "acceptance_blockers": {
+        "F13": "P1-P4 asserted in theorem register without proof; P2 antecedent vacuous",
+        "F14": "62-key manifest mixes 19 aggregate rows with 43 executed rows"
+      },
+      "camera_ready_items": {
+        "F17": "IfFileExists/pendingartifact scaffolding still present",
+        "F18": "three of five floats uncited"
+      },
+      "standing_evidence_boundary": "C-RESULT-001..005 remain TODO-RESULT; the pilot is deterministic offline conformance over one authored world state"
+    },
+    "honest_summary": "The pipeline ran end to end and the manuscript is materially better than at Stage 4, but the headline finding of this run is that a purpose-built honesty gate passed three false claims. The gates checked artifacts against each other while the artifacts were consistently wrong together. Stage 6 adversarial review caught what Stage 4.5 did not, and Stage 4.5 has been amended with three mandatory checks derived from those misses."
   }
 }

@@ -40,7 +40,6 @@
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
-\usepackage{placeins}
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
@@ -192,39 +191,16 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 
 \section{결정론적 오프라인 파일럿 방법}
 \subsection{질문과 설계 픽스처}
-파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 작성된 repairable 및 irreparable 사례에서 rejection-only, unchanged retry, structured repair가 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가?
+파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 작성된 repairable 및 irreparable 사례에서 rejection-only, unchanged retry, structured repair가 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가? (PQ5) proposal 및 replay parser가 그 외에는 완전하고 유효한 candidate에 unknown top-level key 하나를 추가한 사례를 모두 거부하는가?
 
 사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair control flow, record/trace fault injection, adapter/accounting contract이다. 반복된 결정론적 seed가 아니라 고유 사례가 기술적 denominator를 구성한다. 모든 기대값은 실행 전에 명시한다.
 
 \subsection{측정치와 재현성}
-측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation을 센다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다.
+측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation, 사전 명세한 unknown-key 음성 회귀에 대한 proposal/replay 거부 일치를 센다. 마지막 측정은 결정론적 parser-contract parity이며 실증적 safety outcome이 아니다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다.
 
 릴리스 패킷은 fixture 및 assignment manifest, schema, outcome/trace record를 포함한 result JSON 산출물, 환경과 코드 revision, 생성 table, checksum을 동결한다. 보고는 재현성과 측정 경계 지침을 따른다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
 \section{파일럿 결과}
-\IfFileExists{../generated/pilot_results_ko.tex}{%
-  \input{../generated/pilot_results_ko.tex}%
-}{%
-  \pendingartifact{\texttt{../generated/pilot\_results\_ko.tex}이 아직 생성되지 않았다. 파일럿 수치나 실증 결론을 수동으로 삽입하지 않는다.}%
-}
-
-\IfFileExists{../generated/pilot_tables_ko.tex}{%
-  \input{../generated/pilot_tables_ko.tex}%
-}{%
-  \pendingartifact{\texttt{../generated/pilot\_tables\_ko.tex}이 아직 생성되지 않았다. 결과 표는 근거 게이트 상태로 유지한다.}%
-}
-
-\begin{figure}[t]
-  \centering
-  \IfFileExists{../figures/fig_evidence_boundary.png}{%
-    \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.png}%
-  }{\fbox{\parbox{0.9\columnwidth}{\centering 벡터 산출물 대기 중: 근거 경계와 fault-injection 흐름.}}}
-  \caption{동결된 fixture에서 지정된 검사 연산과 생성 table로 이어지는 근거 경계. 수치는 생성 산출물을 통해서만 반영한다.}
-  \label{fig:evidence}
-\end{figure}
-
-Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1280$\times$720 SubViewport에서 리플레이했다. Manifest는 각 PNG를 event/delivery index, validation, state hash에 결합한다. 그림~\ref{fig:godot-render-fixture}(b)는 변경 전 hash를 보존하고, (c)는 valid commit 뒤 이를 변경한다. 모든 원본 panel은 생성 자산이 없는 primary-track render이며, 아래 illustrative crop은 작성된 status/event callout만 확대한다.
-
 \begin{figure*}[!t]
   \centering
   \begin{minipage}[t]{0.315\textwidth}
@@ -261,9 +237,30 @@ Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1
   \label{fig:godot-render-fixture}
 \end{figure*}
 
-선택 v5 packet은 하나의 scripted fixture의 render/state 대응만 확립하며 live model 또는 Python transport, participant 또는 player input, adaptation intervention, narrative-quality result를 추가하지 않는다.
+\IfFileExists{../generated/pilot_results_ko.tex}{%
+  \input{../generated/pilot_results_ko.tex}%
+}{%
+  \pendingartifact{\texttt{../generated/pilot\_results\_ko.tex}이 아직 생성되지 않았다. 파일럿 수치나 실증 결론을 수동으로 삽입하지 않는다.}%
+}
 
-\FloatBarrier
+\IfFileExists{../generated/pilot_tables_ko.tex}{%
+  \input{../generated/pilot_tables_ko.tex}%
+}{%
+  \pendingartifact{\texttt{../generated/pilot\_tables\_ko.tex}이 아직 생성되지 않았다. 결과 표는 근거 게이트 상태로 유지한다.}%
+}
+
+\begin{figure}[t]
+  \centering
+  \IfFileExists{../figures/fig_evidence_boundary.png}{%
+    \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.png}%
+  }{\fbox{\parbox{0.9\columnwidth}{\centering 벡터 산출물 대기 중: 근거 경계와 fault-injection 흐름.}}}
+  \caption{동결된 fixture에서 지정된 검사 연산과 생성 table로 이어지는 근거 경계. 수치는 생성 산출물을 통해서만 반영한다.}
+  \label{fig:evidence}
+\end{figure}
+
+Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1280$\times$720 SubViewport에서 리플레이했다. Manifest는 각 PNG를 event/delivery index, validation, state hash에 결합한다. 그림~\ref{fig:godot-render-fixture}(b)는 변경 전 hash를 보존하고, (c)는 valid commit 뒤 이를 변경한다. 모든 원본 panel은 생성 자산이 없는 primary-track render이며, 아래 illustrative crop은 작성된 status/event callout만 확대한다.
+
+선택 v5 packet은 하나의 scripted fixture의 render/state 대응만 확립하며 live model 또는 Python transport, participant 또는 player input, adaptation intervention, narrative-quality result를 추가하지 않는다.
 
 \section{논의}
 \subsection{확립 가능한 범위}
@@ -284,8 +281,11 @@ Construct validity는 declared field에 한정되며 encoded check는 누락된 
 \section{결론}
 \system{}은 작성된 candidate-event payload를 encoded 기호 commit gate를 통해 canonical mutation으로부터 격리하고, linked record와 state-semantic replay로 terminal outcome을 감사 가능하게 만든다. 결정론적 오프라인 파일럿은 단일 작성 world state의 동결된 fixture domain에서 구현 mechanism에 대한 근거이지 cross-model superiority, player-experience benefit, retrieval 또는 memory effectiveness, affect efficacy, commercial-engine performance의 근거가 아니다. 이 질문들은 명시적인 확증 확장으로 남는다.
 
+\section*{AI 사용 고지}
+본 원고 준비 과정에서 대규모 언어 모델을 집필 및 검토 도구로 사용했다. 산문 초안 작성과 개정, 이번 개정을 이끈 심사 패널 시뮬레이션, 서지 메타데이터 API에 대한 인용 동일성 검사에 사용했다. 실험 결과의 생성, 변경, 해석에는 사용하지 않았다. 보고된 모든 수치는 동결된 픽스처에서 결정론적 파일럿 runner가 산출하며, 기계 생성 조각을 통해서만 원고에 삽입된다. 구현에 관한 모든 주장은 저자가 소스와 직접 대조해 확인했고, 모든 인용은 최소 하나의 독립 색인에서 확인했다. 내용에 대한 책임은 전적으로 저자에게 있다.
+
 \section*{데이터 및 코드 가용성}
-구현, 동결 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, 빌드는 심사용 익명 아카이브로 제공하며 camera-ready 시 DOI 기반 저장소로 대체한다. 번들은 산출물 32개와 선언 입력 14개를 포함하는 SHA-256 manifest를 갖는다. 다만 manifest에 기록된 provenance commit은 파일럿 runner보다 앞서며 선언된 모든 입력을 해석하지 못한다. 모든 입력이 기록된 revision에서 해시 일치하도록 패킷을 깨끗한 커밋 트리에서 재생성 중이다.
+구현, 동결 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, 빌드는 심사용 익명 아카이브로 제공하며 camera-ready 시 DOI 기반 저장소로 대체한다. 번들은 산출물 35개, 선언 입력 20개, assignment key 64개를 포함하는 SHA-256 manifest를 갖는다. 다만 manifest에 기록된 provenance commit은 파일럿 runner보다 앞서며 선언된 모든 입력을 해석하지 못한다. 모든 입력이 기록된 revision에서 해시 일치하도록 패킷을 깨끗한 커밋 트리에서 재생성 중이다.
 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}

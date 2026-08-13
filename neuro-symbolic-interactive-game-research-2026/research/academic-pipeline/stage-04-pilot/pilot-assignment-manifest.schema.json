@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "properties": {
     "assignment_count": {
-      "const": 62
+      "const": 64
     },
     "assignment_set_hash": {
       "pattern": "^[a-f0-9]{64}$",
@@ -443,49 +443,6 @@
           ],
           "type": "object"
         },
-        "boundary_sentinels/boundary-extra-candidate-field/boundary_sentinel_k0": {
-          "additionalProperties": false,
-          "properties": {
-            "arm_id": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "config_hash": {
-              "pattern": "^[a-f0-9]{64}$",
-              "type": "string"
-            },
-            "input_hash": {
-              "pattern": "^[a-f0-9]{64}$",
-              "type": "string"
-            },
-            "prior_state_hash": {
-              "pattern": "^[a-f0-9]{64}$",
-              "type": "string"
-            },
-            "row_id": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "section": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "state_hash": {
-              "pattern": "^[a-f0-9]{64}$",
-              "type": "string"
-            }
-          },
-          "required": [
-            "section",
-            "row_id",
-            "arm_id",
-            "config_hash",
-            "input_hash",
-            "state_hash",
-            "prior_state_hash"
-          ],
-          "type": "object"
-        },
         "boundary_sentinels/boundary-omitted-required-object/boundary_sentinel_k0": {
           "additionalProperties": false,
           "properties": {
@@ -530,6 +487,49 @@
           "type": "object"
         },
         "boundary_sentinels/boundary-unparsed-secret-in-narrative/boundary_sentinel_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "closed_boundary_regressions/closed-extra-candidate-field/closed_boundary_regression": {
           "additionalProperties": false,
           "properties": {
             "arm_id": {
@@ -1862,6 +1862,92 @@
           ],
           "type": "object"
         },
+        "pilot_summary/closed_boundary_regressions:closed_boundaries_still_rejected/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/closed_boundary_regressions:parser_parity_on_unknown_keys/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
         "pilot_summary/gate_conformance:fixtures_matching_expected_result/pilot_summary": {
           "additionalProperties": false,
           "properties": {
@@ -2696,7 +2782,7 @@
         "gate_conformance/gate-quest-regression/gate_validation_k0",
         "boundary_sentinels/boundary-unparsed-secret-in-narrative/boundary_sentinel_k0",
         "boundary_sentinels/boundary-omitted-required-object/boundary_sentinel_k0",
-        "boundary_sentinels/boundary-extra-candidate-field/boundary_sentinel_k0",
+        "closed_boundary_regressions/closed-extra-candidate-field/closed_boundary_regression",
         "repair_arms/repairable-policy-precondition/rejection_only",
         "repair_arms/nonrepairable-unreachable-object/rejection_only",
         "repair_arm_summary/rejection_only/rejection_only",
@@ -2730,6 +2816,8 @@
         "pilot_summary/gate_conformance:fixtures_matching_expected_result/pilot_summary",
         "pilot_summary/gate_conformance:implemented_codes_observed/pilot_summary",
         "pilot_summary/boundary_sentinels:encoded_acceptances_documented/pilot_summary",
+        "pilot_summary/closed_boundary_regressions:closed_boundaries_still_rejected/pilot_summary",
+        "pilot_summary/closed_boundary_regressions:parser_parity_on_unknown_keys/pilot_summary",
         "pilot_summary/repair_arms:rejection_only:commits/pilot_summary",
         "pilot_summary/repair_arms:rejection_only:repair_successes/pilot_summary",
         "pilot_summary/repair_arms:unchanged_retry:commits/pilot_summary",
