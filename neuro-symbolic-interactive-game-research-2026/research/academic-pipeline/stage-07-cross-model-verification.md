@@ -33,7 +33,7 @@ executed.
 
 Even had the variable been set, the locally available models are 0.5B–7B parameter instances. The
 Stage 6 Devil's Advocate findings required reading a 2{,}298-line pilot harness, tracing a repair
-callback's body, recognizing that a loader precondition made a reported ratio vacuous, and
+callback's body, recognizing that a loader precondition supplied part of a reported ratio, and
 following schema `const` declarations into generated prose. A 7B local instance is not a credible
 independent verifier for findings of that kind, and reporting its agreement or disagreement as
 cross-model verification would overstate the check.

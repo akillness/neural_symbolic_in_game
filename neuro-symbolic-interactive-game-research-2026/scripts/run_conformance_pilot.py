@@ -50,6 +50,23 @@ from nesy_game import (
 DEFAULT_MANIFEST = ROOT / "configs/pilot-manifest.json"
 DEFAULT_OUTPUT = ROOT / "runs/conformance-pilot"
 DEFAULT_RELEASE = ROOT / "research/academic-pipeline/stage-04-pilot"
+# Every provenance section must declare whether its rows are executed fixture rows or
+# aggregate summaries derived from them. The mapping is exhaustive by construction: `add`
+# raises on an unregistered section, so a new aggregate section cannot silently be counted
+# as executed and inflate the executed-case total.
+ROW_CLASS_BY_SECTION: dict[str, str] = {
+    "gate_conformance": "executed",
+    "boundary_sentinels": "executed",
+    "closed_boundary_regressions": "executed",
+    "repair_arms": "executed",
+    "integrity_faults": "executed",
+    "integrity_boundaries": "executed",
+    "adapter_accounting": "executed",
+    "accounting_guards": "executed",
+    "pilot_summary": "aggregate",
+    "repair_arm_summary": "aggregate",
+}
+ROW_CLASSES = frozenset(ROW_CLASS_BY_SECTION.values())
 PROVENANCE_COLUMNS = (
     "arm_id",
     "config_hash",
@@ -1672,9 +1689,17 @@ def _actual_published_provenance(result: Mapping[str, Any]) -> dict[str, dict[st
             key = f"{section}/{row_id}/{row['arm_id']}"
             if key in actual:
                 raise ValueError(f"duplicate pilot assignment key: {key}")
+            try:
+                row_class = ROW_CLASS_BY_SECTION[section]
+            except KeyError as failure:
+                raise ValueError(
+                    f"section {section!r} has no declared row class; register it in "
+                    "ROW_CLASS_BY_SECTION"
+                ) from failure
             entry = {
                 "section": section,
                 "row_id": row_id,
+                "row_class": row_class,
                 **{column: row[column] for column in PROVENANCE_COLUMNS},
             }
             for hash_field in (
@@ -1709,9 +1734,17 @@ def _expected_published_provenance(
         key = f"{section}/{row_id}/{arm_id}"
         if key in expected:
             raise ValueError(f"duplicate expected pilot assignment key: {key}")
+        try:
+            row_class = ROW_CLASS_BY_SECTION[section]
+        except KeyError as failure:
+            raise ValueError(
+                f"section {section!r} has no declared row class; register it in "
+                "ROW_CLASS_BY_SECTION so aggregate rows are never counted as executed"
+            ) from failure
         expected[key] = {
             "section": section,
             "row_id": row_id,
+            "row_class": row_class,
             **_provenance(
                 arm_id,
                 config_payload,
@@ -1882,8 +1915,18 @@ def _build_assignment_manifest(
             f"missing={missing}, unexpected={unexpected}, mismatched={mismatched}"
         )
 
+    executed = sum(1 for row in expected.values() if row["row_class"] == "executed")
+    aggregate = sum(1 for row in expected.values() if row["row_class"] == "aggregate")
+    if executed + aggregate != len(expected):
+        raise ValueError(
+            "row-class partition is incomplete: "
+            f"{executed} executed + {aggregate} aggregate != {len(expected)} rows"
+        )
+
     assignment_manifest = {
         "schema_version": "1.0.0",
+        "executed_row_count": executed,
+        "aggregate_row_count": aggregate,
         "pilot_id": manifest["pilot_id"],
         "assignment_count": len(expected),
         "assignment_set_hash": _canonical_hash(expected),
@@ -1892,10 +1935,11 @@ def _build_assignment_manifest(
     entry_schema = {
         "type": "object",
         "additionalProperties": False,
-        "required": ["section", "row_id", *PROVENANCE_COLUMNS],
+        "required": ["section", "row_id", "row_class", *PROVENANCE_COLUMNS],
         "properties": {
             "section": {"type": "string", "minLength": 1},
             "row_id": {"type": "string", "minLength": 1},
+            "row_class": {"enum": sorted(ROW_CLASSES)},
             "arm_id": {"type": "string", "minLength": 1},
             "config_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
@@ -1913,6 +1957,8 @@ def _build_assignment_manifest(
             "schema_version",
             "pilot_id",
             "assignment_count",
+            "executed_row_count",
+            "aggregate_row_count",
             "assignment_set_hash",
             "expected_provenance_by_key",
         ],
@@ -1920,6 +1966,10 @@ def _build_assignment_manifest(
             "schema_version": {"const": "1.0.0"},
             "pilot_id": {"const": manifest["pilot_id"]},
             "assignment_count": {"const": len(expected)},
+            # Pinned as consts so a drifting executed/aggregate split fails schema
+            # validation rather than quietly changing what the total means.
+            "executed_row_count": {"const": executed},
+            "aggregate_row_count": {"const": aggregate},
             "assignment_set_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "expected_provenance_by_key": {
                 "type": "object",

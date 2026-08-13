@@ -103,6 +103,32 @@ capture environment rather than pretending to reproduce it exactly.
 
 ![Authorized hint](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
+## 3D presentation slice (`scenes/main_3d.tscn`)
+
+`scripts/game3d/` is a playable 3D presentation slice that uses the same authored policy mirror
+(`sealed_lighthouse_machine.gd`) as the only canonical-state writer [OBSERVED]. It builds the dock,
+lamp store, offshore lighthouse silhouette, and storm weather procedurally, and drives the
+SL-PRESENT-001 beats (P-B01..P-B06) and the B-011 tension curve `0.35->0.72->0.50` in the
+presentation layer only. Live play and the headless smoke sweep share the same proposal routing.
+
+```bash
+# Play (WASD move, mouse look, E interact, F5/F9 save/load, M reduced motion)
+godot --path game-track/godot res://scenes/main_3d.tscn
+
+# Headless conformance smoke (8 checks: refusal immutability, stage gates, corrupt-save rejection)
+godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke
+
+# Development verification shot (non-headless; not promotable capture evidence)
+godot --path game-track/godot res://scenes/main_3d.tscn -- --shot /tmp/sl3d-shot.png
+```
+
+The 8-check smoke sweep passed on Godot 4.7.1 (2026-08-13) and its final state hash matches the
+frozen hash `4b2310...8892`. [OBSERVED] Generated textures under `../assets/concepts/pack-3d/`
+(SL3D-A01..U01, with adjacent provenance) load only as optional presentation candidates and fall
+back to procedural materials when absent. Publication promotion of generated assets requires the
+pending human rights/style review. This slice produces no immersion, usability, performance, or
+model-efficacy evidence.
+
 ## Evidence boundary
 
 The retained artifacts provide authored-fixture engine-local policy-mirror evidence toward Stage 6

@@ -17,7 +17,7 @@ Status: **SUPERSEDED — original PASS verdict was wrong**
 > | Claim | Original class | Corrected class | Basis |
 > | --- | --- | --- | --- |
 > | A04 "structured counterexamples for bounded repair" | `FAITHFUL` | **`OVERSTATED`** | `_structured_repair` discards the counterexample (`del validation, attempt`) and reconstructs policy fields from authoritative state |
-> | A07 "exact case counts" incl. 13/13 | `FAITHFUL` | **`SCOPE_MISMATCH`** | 13/13 is enforced by `load_manifest`; the pilot cannot run unless it holds |
+> | A07 "exact case counts" incl. 13/13 | `FAITHFUL` | **`SCOPE_MISMATCH`** | `load_manifest` enforces the fixture-set design (denominator 13, all 12 codes covered, one valid control), so those are construction invariants; it does not enforce outcome equality, so the observed expected-code agreement is real but is authored-oracle conformance, not an independent success rate. The claim conflated the two. |
 > | A08 non-claim list incl. "no engine-loop measurements" | `FAITHFUL` | **`OUTDATED`** | observed Godot 4.7.1 headless runs exist in the project working tree |
 > | B1 (body, `main.tex:161`) "provider-response latency ... is historical fixture metadata" | **not audited** | **`OVERSTATED`** | the six adapter telemetry values are pinned as JSON-Schema `const`; "historical" implies a provider interaction that never occurred |
 >

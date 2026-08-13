@@ -104,6 +104,31 @@ verifier는 지원되는 다른 Python 버전에서도 실행할 수 있으며, 
 
 ![승인 힌트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
+## 3D 연출 슬라이스 (`scenes/main_3d.tscn`)
+
+`scripts/game3d/`는 동일한 저자 정책 미러(`sealed_lighthouse_machine.gd`)를 유일한 정식 상태
+저자[OBSERVED]로 사용하는 플레이 가능한 3D 연출 슬라이스다. 부두·램프 상점·해상 등대
+실루엣·폭풍 날씨를 절차적으로 구성하고, SL-PRESENT-001 비트(P-B01~P-B06)와 B-011 긴장 곡선
+`0.35→0.72→0.50`을 프레젠테이션 계층에서만 구동한다. 제안→커밋/보류 라우팅은 라이브 플레이와
+스모크 스윕이 같은 코드 경로를 쓴다.
+
+```bash
+# 플레이 (WASD 이동, 마우스 시점, E 상호작용, F5/F9 저장·불러오기, M 모션 감소)
+godot --path game-track/godot res://scenes/main_3d.tscn
+
+# 헤드리스 적합성 스모크 (거절 불변·단계 게이트·손상 저장 거절 8종)
+godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke
+
+# 개발용 검증 샷 (non-headless, 승격 불가 작업 캡처)
+godot --path game-track/godot res://scenes/main_3d.tscn -- --shot /tmp/sl3d-shot.png
+```
+
+스모크 스윕 8검사는 2026-08-13 Godot 4.7.1에서 통과했고 종료 상태 해시는 동결 해시
+`4b2310…8892`와 일치한다. [OBSERVED] `../assets/concepts/pack-3d/`의 생성 텍스처
+(SL3D-A01~U01, provenance 동반)는 선택적 프레젠테이션 후보로만 로드되며, 없으면 절차적
+재질로 대체된다. 생성 자산의 인권·권리 검토 전 공개 승격은 불가하다. 이 슬라이스는 몰입,
+사용성, 성능, 모델 효과 근거를 만들지 않는다.
+
 ## 증거 경계
 
 보존 산출물은 Stage 6 M6의 설계 fixture 엔진 로컬 정책 미러 근거를 제공한다. 런타임 간 통합

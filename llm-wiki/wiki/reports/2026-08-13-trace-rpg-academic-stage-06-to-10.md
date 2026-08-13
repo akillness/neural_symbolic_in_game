@@ -18,9 +18,12 @@ experiments. Each integrity finding was reproduced by direct inspection before b
    called this "counterexample-guided repair". Its 1/2 commit result was analytic: the callback
    assigns `preconditions`, so the precondition case commits; it never touches `required_objects`,
    so the reachability case cannot.
-2. **13/13 was a loader precondition published as an observation.** `load_manifest` refuses to run
-   unless the fixture set isolates every implemented validator code exactly once. The pilot could
-   not execute unless 13/13 already held.
+2. **13/13 conflated a construction invariant with an observation.** `load_manifest` refuses to run
+   unless the fixture set isolates every implemented validator code exactly once, so the denominator
+   13, the coverage of all 12 codes, and the single valid control are the harness's own precondition.
+   The loader does not check outcome equality, so the run does show something — each negative fixture
+   reached its declared code rather than a different one — but that is conformance to a self-authored
+   oracle, not an independent success rate. One number was reported as if it were the latter.
 3. **Synthetic constants were described with recording vocabulary.** The adapter latency and token
    values are pinned as JSON-Schema `const`. The paper called them "historical fixture metadata".
 4. **The artifact manifest's provenance commit did not contain the pilot runner.** At the recorded

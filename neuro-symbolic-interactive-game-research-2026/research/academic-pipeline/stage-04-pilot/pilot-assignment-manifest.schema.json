@@ -3,12 +3,18 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
+    "aggregate_row_count": {
+      "const": 21
+    },
     "assignment_count": {
       "const": 64
     },
     "assignment_set_hash": {
       "pattern": "^[a-f0-9]{64}$",
       "type": "string"
+    },
+    "executed_row_count": {
+      "const": 43
     },
     "expected_provenance_by_key": {
       "additionalProperties": false,
@@ -32,6 +38,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -48,6 +60,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -75,6 +88,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -91,6 +110,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -118,6 +138,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -134,6 +160,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -161,6 +188,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -177,6 +210,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -204,6 +238,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -220,6 +260,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -247,6 +288,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -263,6 +310,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -290,6 +338,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -306,6 +360,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -333,6 +388,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -349,6 +410,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -376,6 +438,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -392,6 +460,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -419,6 +488,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -435,6 +510,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -462,6 +538,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -478,6 +560,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -505,6 +588,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -521,6 +610,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -548,6 +638,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -564,6 +660,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -591,6 +688,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -607,6 +710,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -634,6 +738,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -650,6 +760,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -677,6 +788,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -693,6 +810,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -720,6 +838,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -736,6 +860,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -763,6 +888,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -779,6 +910,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -806,6 +938,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -822,6 +960,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -849,6 +988,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -865,6 +1010,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -892,6 +1038,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -908,6 +1060,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -935,6 +1088,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -951,6 +1110,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -978,6 +1138,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -994,6 +1160,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1021,6 +1188,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1037,6 +1210,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1064,6 +1238,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1080,6 +1260,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1107,6 +1288,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1123,6 +1310,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1150,6 +1338,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1166,6 +1360,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1193,6 +1388,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1209,6 +1410,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1236,6 +1438,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1252,6 +1460,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1279,6 +1488,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1295,6 +1510,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1322,6 +1538,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1338,6 +1560,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1365,6 +1588,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1381,6 +1610,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1408,6 +1638,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1424,6 +1660,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1451,6 +1688,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1467,6 +1710,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1494,6 +1738,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1510,6 +1760,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1537,6 +1788,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1553,6 +1810,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1580,6 +1838,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1596,6 +1860,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1623,6 +1888,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1639,6 +1910,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1666,6 +1938,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1682,6 +1960,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1709,6 +1988,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1725,6 +2010,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1752,6 +2038,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1768,6 +2060,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1795,6 +2088,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1811,6 +2110,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1838,6 +2138,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1854,6 +2160,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1881,6 +2188,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1897,6 +2210,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1924,6 +2238,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1940,6 +2260,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -1967,6 +2288,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -1983,6 +2310,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2010,6 +2338,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2026,6 +2360,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2053,6 +2388,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2069,6 +2410,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2096,6 +2438,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2112,6 +2460,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2139,6 +2488,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2155,6 +2510,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2182,6 +2538,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2198,6 +2560,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2225,6 +2588,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2241,6 +2610,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2268,6 +2638,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2284,6 +2660,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2311,6 +2688,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2327,6 +2710,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2354,6 +2738,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2370,6 +2760,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2397,6 +2788,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2413,6 +2810,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2440,6 +2838,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2456,6 +2860,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2483,6 +2888,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2499,6 +2910,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2526,6 +2938,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2542,6 +2960,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2569,6 +2988,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2585,6 +3010,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2612,6 +3038,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2628,6 +3060,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2655,6 +3088,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2671,6 +3110,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2698,6 +3138,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2714,6 +3160,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2741,6 +3188,12 @@
               "pattern": "^[a-f0-9]{64}$",
               "type": "string"
             },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
             "row_id": {
               "minLength": 1,
               "type": "string"
@@ -2757,6 +3210,7 @@
           "required": [
             "section",
             "row_id",
+            "row_class",
             "arm_id",
             "config_hash",
             "input_hash",
@@ -2845,6 +3299,8 @@
     "schema_version",
     "pilot_id",
     "assignment_count",
+    "executed_row_count",
+    "aggregate_row_count",
     "assignment_set_hash",
     "expected_provenance_by_key"
   ],

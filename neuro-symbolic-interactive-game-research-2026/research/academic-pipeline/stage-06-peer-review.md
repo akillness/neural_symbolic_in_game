@@ -96,13 +96,24 @@ policy reconstruction from the authoritative state — an oracle upper bound, no
 method. Its 1/2 result is analytic: it overwrites `preconditions`, so the precondition case commits;
 it never touches `required_objects`, so the reachability case cannot.
 
-### I2. The 13/13 headline is a loader precondition, not an observation
+### I2. The 13/13 headline mixes a construction invariant with an observation
 
 `scripts/run_conformance_pilot.py:286-293` — `load_manifest` raises
 `"gate fixtures must isolate every implemented validator code exactly once"` unless the fixture set
-is a bijection onto `implemented_validator_codes`, plus exactly one valid control. The pilot cannot
-execute unless 13/13 already holds by construction. Reporting it as a result carries no information
-about the validator.
+is a bijection onto `implemented_validator_codes`, plus exactly one valid control.
+
+What that enforces is the fixture-set *design*: the denominator 13, the coverage of all 12 codes,
+and the presence of exactly one valid control cannot come out otherwise, so publishing them as
+results is publishing the harness's own precondition.
+
+What it does **not** enforce is outcome equality. The loader never checks that a fixture's
+runtime-observed code equals its authored `expected_codes`, so the run does carry information: each
+isolated negative fixture reached its declared code rather than a different one, and every noncommit
+path preserved canonical state. That is deterministic conformance to a self-authored oracle, not an
+independent success rate.
+
+The defect is therefore presentation, not fabrication: one number conflated an invariant with an
+observation. The corrected prose separates them.
 
 ### I3. Adapter telemetry is synthetic and was described with recording vocabulary
 
