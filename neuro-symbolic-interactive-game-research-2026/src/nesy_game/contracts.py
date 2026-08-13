@@ -259,13 +259,17 @@ def _as_string_set(value: Any, field: str) -> frozenset[str]:
     # so a candidate cannot smuggle repeated facts past the contract.
     if len(frozen) != len(value):
         raise CandidateParseError(f"{field} must not contain duplicates")
-    if any(not isinstance(item, str) or not item for item in frozen):
+    if any(not isinstance(item, str) or not item.strip() for item in frozen):
         raise CandidateParseError(f"{field} must contain non-empty strings")
     return frozen
 
 
 def _as_nonempty_string(value: Any, field: str) -> str:
-    if not isinstance(value, str) or not value:
+    # Whitespace-only is rejected, matching the pre-unification proposal parser. Unifying
+    # toward the lenient side would have let a whitespace-only identifier reach commit;
+    # unifying toward the strict side is backward compatible because no committed record
+    # can contain one.
+    if not isinstance(value, str) or not value.strip():
         raise CandidateParseError(f"{field} must be a non-empty string")
     return value
 

@@ -270,40 +270,6 @@ def _normalize_proposal_response(value: Any) -> ProposalResponse:
     )
 
 
-def _nonempty_string(value: Any, field: str) -> str:
-    if not isinstance(value, str) or not value.strip():
-        raise AdapterFailure("parse_error", f"{field} must be a non-empty string")
-    return value
-
-
-def _string_set(value: Any, field: str) -> frozenset[str]:
-    if not isinstance(value, (list, tuple, set, frozenset)):
-        raise AdapterFailure("parse_error", f"{field} must be an array of strings")
-    parsed = frozenset(_nonempty_string(item, f"{field} item") for item in value)
-    if len(parsed) != len(value):
-        raise AdapterFailure("parse_error", f"{field} must not contain duplicates")
-    return parsed
-
-
-def _validate_json_value(value: Any, field: str) -> None:
-    if value is None or isinstance(value, (str, bool)) or _is_exact_int(value):
-        return
-    if isinstance(value, float):
-        if math.isfinite(value):
-            return
-        raise AdapterFailure("parse_error", f"{field} contains a non-finite number")
-    if isinstance(value, list):
-        for index, child in enumerate(value):
-            _validate_json_value(child, f"{field}[{index}]")
-        return
-    if isinstance(value, Mapping):
-        for key, child in value.items():
-            _nonempty_string(key, f"{field} key")
-            _validate_json_value(child, f"{field}.{key}")
-        return
-    raise AdapterFailure("parse_error", f"{field} contains a non-JSON value")
-
-
 def candidate_from_mapping(data: Mapping[str, Any]) -> CandidateAction:
     """Parse a proposal candidate under the shared candidate contract.
 
