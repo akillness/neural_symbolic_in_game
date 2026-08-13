@@ -1,30 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
-  <title id="title">TRACE-RPG journal research workflow</title>
-  <desc id="desc">Evidence, formalization, pilot, screening, confirmation, and manuscript phases are separated by provenance, logic, design, reproducibility, and claim gates.</desc>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="560" viewBox="0 0 1480 560" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">TRACE-RPG academic pipeline status</title>
+  <desc id="svg-desc">Stages 1 through 4 have produced artifacts. Stage 4 awaits user approval, and Stages 4.5 and 5 have not been executed.</desc>
   <defs>
-    <style>.bg{fill:#fafcff}.phase{fill:#edf4ff;stroke:#3378d4;stroke-width:2}.gate{fill:#fff1f3;stroke:#d6385b;stroke-width:2}.t{font:14px system-ui,sans-serif;fill:#15213b}.h{font:bold 21px system-ui,sans-serif;fill:#101b31}.a{stroke:#667da6;stroke-width:2.5;marker-end:url(#m)}</style>
-    <marker id="m" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#667da6"/></marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#E69F00"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#009E73"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7A7A7A"/></marker>
+    <style>
+      text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
+      .section { font-size: 25px; font-weight: 700; }
+      .box-title { font-size: 24px; font-weight: 700; }
+      .body { font-size: 21px; font-weight: 400; }
+      .small { font-size: 19px; font-weight: 400; }
+      .note { font-size: 19px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 19px; font-weight: 700; }
+    </style>
   </defs>
-  <rect class="bg" width="1200" height="430" rx="18"/>
-  <text class="h" x="35" y="45">Research-to-journal pipeline</text>
-  <g>
-    <rect class="phase" x="35" y="95" width="135" height="80" rx="12"/><text class="t" x="60" y="128">Evidence</text><text class="t" x="55" y="151">harvest</text>
-    <rect class="gate" x="195" y="95" width="120" height="80" rx="40"/><text class="t" x="218" y="128">Provenance</text><text class="t" x="230" y="151">G1</text>
-    <rect class="phase" x="340" y="95" width="135" height="80" rx="12"/><text class="t" x="360" y="128">Ontology +</text><text class="t" x="372" y="151">formalism</text>
-    <rect class="gate" x="500" y="95" width="120" height="80" rx="40"/><text class="t" x="526" y="128">Logic</text><text class="t" x="539" y="151">G2</text>
-    <rect class="phase" x="645" y="95" width="135" height="80" rx="12"/><text class="t" x="679" y="128">Pilot +</text><text class="t" x="668" y="151">power sim</text>
-    <rect class="gate" x="805" y="95" width="120" height="80" rx="40"/><text class="t" x="825" y="128">Design</text><text class="t" x="844" y="151">G3</text>
-    <rect class="phase" x="950" y="95" width="210" height="80" rx="12"/><text class="t" x="985" y="128">10-model screening</text><text class="t" x="1004" y="151">exploratory only</text>
-  </g>
-  <g>
-    <rect class="gate" x="950" y="260" width="210" height="80" rx="40"/><text class="t" x="995" y="293">Frozen Pareto G4</text><text class="t" x="993" y="316">promote 3 models</text>
-    <rect class="phase" x="685" y="260" width="215" height="80" rx="12"/><text class="t" x="714" y="293">Confirmatory factorial</text><text class="t" x="733" y="316">+ human study</text>
-    <rect class="gate" x="430" y="260" width="210" height="80" rx="40"/><text class="t" x="465" y="293">Statistics + replay G5</text><text class="t" x="492" y="316">independent</text>
-    <rect class="phase" x="195" y="260" width="190" height="80" rx="12"/><text class="t" x="234" y="293">KO/EN manuscript</text><text class="t" x="243" y="316">claim linked</text>
-    <rect class="gate" x="35" y="260" width="120" height="80" rx="40"/><text class="t" x="62" y="293">Journal</text><text class="t" x="72" y="316">G6</text>
-  </g>
-  <line class="a" x1="170" y1="135" x2="195" y2="135"/><line class="a" x1="315" y1="135" x2="340" y2="135"/><line class="a" x1="475" y1="135" x2="500" y2="135"/><line class="a" x1="620" y1="135" x2="645" y2="135"/><line class="a" x1="780" y1="135" x2="805" y2="135"/><line class="a" x1="925" y1="135" x2="950" y2="135"/>
-  <line class="a" x1="1055" y1="175" x2="1055" y2="260"/><line class="a" x1="950" y1="300" x2="900" y2="300"/><line class="a" x1="685" y1="300" x2="640" y2="300"/><line class="a" x1="430" y1="300" x2="385" y2="300"/><line class="a" x1="195" y1="300" x2="155" y2="300"/>
-  <text class="t" x="35" y="392">Any failed gate freezes downstream claim promotion; failed artifacts remain inspectable.</text>
+  <rect x="0" y="0" width="1480" height="560" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1480" height="96" rx="0" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="0"/>
+  <rect x="0" y="0" width="10" height="96" fill="#0072B2"/>
+  <text x="34" y="42" class="section" text-anchor="start">V5 · Academic pipeline: what has run, what has not</text>
+  <text x="34" y="74" class="small" text-anchor="start" fill="#5F6368">A stage is complete only when its artifact exists in the repository; approval gates are not inferred</text>
+  <line x1="0" y1="96" x2="1480" y2="96" stroke="#C9CDD1" stroke-width="2" fill="none"/>
+  <rect x="40" y="150" width="190" height="196" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="40" y="150" width="190" height="8" fill="#009E73"/>
+  <text x="135" y="196" class="box-title" text-anchor="middle">Stage 1</text>
+  <text x="135" y="232" class="small" text-anchor="middle"><tspan x="135" dy="0">Research packet</tspan></text>
+  <text x="135" y="308" class="note" text-anchor="middle" fill="#009E73"><tspan x="135" dy="0">COMPLETE</tspan></text>
+  <path d="M230 248 H245" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="245" y="150" width="190" height="196" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="245" y="150" width="190" height="8" fill="#009E73"/>
+  <text x="340" y="196" class="box-title" text-anchor="middle">Stage 2</text>
+  <text x="340" y="232" class="small" text-anchor="middle"><tspan x="340" dy="0">36-source</tspan><tspan x="340" dy="26">shortlist</tspan></text>
+  <text x="340" y="308" class="note" text-anchor="middle" fill="#009E73"><tspan x="340" dy="0">COMPLETE</tspan></text>
+  <path d="M435 248 H450" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="450" y="150" width="190" height="196" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="450" y="150" width="190" height="8" fill="#009E73"/>
+  <text x="545" y="196" class="box-title" text-anchor="middle">Stage 2.5</text>
+  <text x="545" y="232" class="small" text-anchor="middle"><tspan x="545" dy="0">Integrity gate</tspan></text>
+  <text x="545" y="308" class="note" text-anchor="middle" fill="#009E73"><tspan x="545" dy="0">COMPLETE</tspan></text>
+  <path d="M640 248 H655" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="655" y="150" width="190" height="196" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="655" y="150" width="190" height="8" fill="#009E73"/>
+  <text x="750" y="196" class="box-title" text-anchor="middle">Stage 3</text>
+  <text x="750" y="232" class="small" text-anchor="middle"><tspan x="750" dy="0">IEEE outline</tspan></text>
+  <text x="750" y="308" class="note" text-anchor="middle" fill="#009E73"><tspan x="750" dy="0">COMPLETE</tspan></text>
+  <path d="M845 248 H860" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="860" y="150" width="190" height="196" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
+  <rect x="860" y="150" width="190" height="8" fill="#E69F00"/>
+  <text x="955" y="196" class="box-title" text-anchor="middle">Stage 4</text>
+  <text x="955" y="232" class="small" text-anchor="middle"><tspan x="955" dy="0">Draft + pilot +</tspan><tspan x="955" dy="26">PDFs</tspan></text>
+  <text x="955" y="308" class="note" text-anchor="middle" fill="#E69F00"><tspan x="955" dy="0">AWAITING</tspan><tspan x="955" dy="24">APPROVAL</tspan></text>
+  <path d="M1050 248 H1065" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="5 4"/>
+  <rect x="1065" y="150" width="190" height="196" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2" stroke-dasharray="7 6"/>
+  <rect x="1065" y="150" width="190" height="8" fill="#7A7A7A"/>
+  <text x="1160" y="196" class="box-title" text-anchor="middle">Stage 4.5</text>
+  <text x="1160" y="232" class="small" text-anchor="middle"><tspan x="1160" dy="0">Post-draft review</tspan></text>
+  <text x="1160" y="308" class="note" text-anchor="middle" fill="#7A7A7A"><tspan x="1160" dy="0">NOT EXECUTED</tspan></text>
+  <path d="M1255 248 H1270" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="5 4"/>
+  <rect x="1270" y="150" width="190" height="196" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2" stroke-dasharray="7 6"/>
+  <rect x="1270" y="150" width="190" height="8" fill="#7A7A7A"/>
+  <text x="1365" y="196" class="box-title" text-anchor="middle">Stage 5</text>
+  <text x="1365" y="232" class="small" text-anchor="middle"><tspan x="1365" dy="0">Citation integrity</tspan></text>
+  <text x="1365" y="308" class="note" text-anchor="middle" fill="#7A7A7A"><tspan x="1365" dy="0">NOT EXECUTED</tspan></text>
+  <rect x="40" y="380" width="690" height="130" rx="7" fill="#FFFFFF" stroke="#009E73" stroke-width="2"/>
+  <text x="66" y="416" class="box-title" text-anchor="start">Produced by the executed stages</text>
+  <text x="66" y="448" class="small" text-anchor="start">bilingual six-page IEEE PDFs · 36-record bibliography</text>
+  <text x="66" y="476" class="small" text-anchor="start">62 frozen assignments · generated tables · SHA-256 manifest</text>
+  <rect x="750" y="380" width="690" height="130" rx="7" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="776" y="416" class="box-title" text-anchor="start">Not produced by any stage so far</text>
+  <text x="776" y="448" class="small" text-anchor="start">live model calls · human study · affect controller</text>
+  <text x="776" y="476" class="small" text-anchor="start">retrieval and memory experiments · game-engine execution</text>
 </svg>
-

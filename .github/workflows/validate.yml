@@ -26,6 +26,16 @@ jobs:
           uv run ruff format --check src tests scripts examples
       - name: Project integrity
         run: uv run python scripts/validate_project.py
+      - name: README visuals match their sources
+        run: |
+          uv run python scripts/generate_readme_visuals.py
+          # Catches both edited and uncommitted-new SVGs, so a changed pilot
+          # number or claim status can never leave a stale figure behind.
+          if [ -n "$(git status --porcelain -- visuals)" ]; then
+            echo "README visuals are stale; run scripts/generate_readme_visuals.py and commit visuals/."
+            git status --porcelain -- visuals
+            exit 1
+          fi
       - name: Offline experiment smoke
         run: uv run python examples/recorded_experiment.py
       - name: Harness structure

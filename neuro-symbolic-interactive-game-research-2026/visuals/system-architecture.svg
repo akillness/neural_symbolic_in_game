@@ -1,62 +1,100 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
-  <title id="title">TRACE-RPG system architecture</title>
-  <desc id="desc">A game engine sends versioned observations to a research controller. Retrieval and model proposals pass through a hard symbolic commit gate before canonical state can change.</desc>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="860" viewBox="0 0 1480 860" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">TRACE-RPG system architecture and trust boundary</title>
+  <desc id="svg-desc">Untrusted proposals and non-authoritative context reach a deterministic commit gate. Only the gate may mutate canonical state. Dashed elements are specified but unimplemented.</desc>
   <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#E69F00"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#009E73"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7A7A7A"/></marker>
     <style>
-      .bg{fill:#0b1020}.box{fill:#151d35;stroke:#6ea8fe;stroke-width:2}.hard{fill:#351b2b;stroke:#ff6b8a;stroke-width:3}.soft{fill:#18352e;stroke:#59d4a0;stroke-width:2}.txt{fill:#eef4ff;font:16px system-ui,sans-serif}.small{fill:#c8d4ee;font:13px system-ui,sans-serif}.head{fill:#fff;font:bold 22px system-ui,sans-serif}.arrow{stroke:#9fb4dc;stroke-width:3;fill:none;marker-end:url(#m)}
+      text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
+      .section { font-size: 25px; font-weight: 700; }
+      .box-title { font-size: 24px; font-weight: 700; }
+      .body { font-size: 21px; font-weight: 400; }
+      .small { font-size: 19px; font-weight: 400; }
+      .note { font-size: 19px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 19px; font-weight: 700; }
     </style>
-    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#9fb4dc"/></marker>
   </defs>
-  <rect class="bg" width="1200" height="620" rx="18"/>
-  <text class="head" x="42" y="48">TRACE-RPG · learned proposals, symbolic authority</text>
-
-  <rect class="box" x="40" y="105" width="230" height="150" rx="14"/>
-  <text class="txt" x="66" y="142">Game track</text>
-  <text class="small" x="66" y="174">Godot / Unity / mock</text>
-  <text class="small" x="66" y="200">observations · actions</text>
-  <text class="small" x="66" y="226">state-hash replay</text>
-
-  <rect class="box" x="345" y="86" width="250" height="88" rx="14"/>
-  <text class="txt" x="370" y="122">Evidence retrieval</text>
-  <text class="small" x="370" y="148">typed KG · policy · event prefix</text>
-
-  <rect class="soft" x="345" y="208" width="250" height="112" rx="14"/>
-  <text class="txt" x="370" y="246">Model proposal</text>
-  <text class="small" x="370" y="273">10-model screen → 3 confirmatory</text>
-  <text class="small" x="370" y="296">schema-constrained candidate</text>
-
-  <rect class="hard" x="680" y="125" width="270" height="180" rx="14"/>
-  <text class="txt" x="706" y="164">Hard commit gate</text>
-  <text class="small" x="706" y="195">precondition · reachability</text>
-  <text class="small" x="706" y="220">NPC knowledge · disclosure</text>
-  <text class="small" x="706" y="245">quest · schema · repair K</text>
-  <text class="small" x="706" y="275">invalid ⇒ reject / safe fallback</text>
-
-  <rect class="box" x="1010" y="125" width="150" height="180" rx="14"/>
-  <text class="txt" x="1034" y="164">Commit</text>
-  <text class="small" x="1034" y="196">canonical</text>
-  <text class="small" x="1034" y="220">world state</text>
-  <text class="small" x="1034" y="252">immutable</text>
-  <text class="small" x="1034" y="276">trace</text>
-
-  <rect class="soft" x="345" y="390" width="250" height="118" rx="14"/>
-  <text class="txt" x="370" y="429">Soft adaptation</text>
-  <text class="small" x="370" y="456">temporal memory · affect</text>
-  <text class="small" x="370" y="481">uncertainty fallback</text>
-
-  <rect class="box" x="680" y="390" width="480" height="118" rx="14"/>
-  <text class="txt" x="706" y="429">Research harness and observability</text>
-  <text class="small" x="706" y="456">source/claim ledger · exact revisions · latency/energy</text>
-  <text class="small" x="706" y="481">fact → logic → design → statistics → bilingual review</text>
-
-  <path class="arrow" d="M270 180 H345"/>
-  <path class="arrow" d="M595 130 H630 V175 H680"/>
-  <path class="arrow" d="M595 264 H680"/>
-  <path class="arrow" d="M950 215 H1010"/>
-  <path class="arrow" d="M1085 305 V345 H155 V255"/>
-  <path class="arrow" d="M470 390 V320"/>
-  <path class="arrow" d="M805 305 V390"/>
-
-  <text class="small" x="45" y="574">Invariant: no model, memory, retrieval, or affect score may bypass the hard gate.</text>
+  <rect x="0" y="0" width="1480" height="860" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1480" height="96" rx="0" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="0"/>
+  <rect x="0" y="0" width="10" height="96" fill="#0072B2"/>
+  <text x="34" y="42" class="section" text-anchor="start">V1 · Trust boundary: learned proposal, symbolic authority</text>
+  <text x="34" y="74" class="small" text-anchor="start" fill="#5F6368">Solid = implemented and exercised by the offline pilot   ·   Dashed = specified, not implemented, no evidence</text>
+  <line x1="0" y1="96" x2="1480" y2="96" stroke="#C9CDD1" stroke-width="2" fill="none"/>
+  <text x="40" y="148" class="arrow-label" text-anchor="start" fill="#5F6368">UNTRUSTED PROPOSAL</text>
+  <text x="560" y="148" class="arrow-label" text-anchor="start" fill="#B4436C">DETERMINISTIC AUTHORITY</text>
+  <text x="1080" y="148" class="arrow-label" text-anchor="start" fill="#5F6368">CANONICAL RECORD</text>
+  <rect x="40" y="170" width="450" height="150" rx="7" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2" stroke-dasharray="7 6"/>
+  <rect x="40" y="170" width="8" height="150" fill="#7A7A7A"/>
+  <text x="66" y="210" class="box-title" text-anchor="start">Non-authoritative context</text>
+  <text x="66" y="244" class="small" text-anchor="start">graph retrieval · temporal memory</text>
+  <text x="66" y="271" class="small" text-anchor="start">affect estimate z_t · narrative scores</text>
+  <text x="66" y="298" class="small" text-anchor="start">never a commit authority</text>
+  <rect x="40" y="390" width="450" height="150" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="40" y="390" width="8" height="150" fill="#0072B2"/>
+  <text x="66" y="430" class="box-title" text-anchor="start">Recorded-response adapter</text>
+  <text x="66" y="464" class="small" text-anchor="start">frozen JSONL candidates · seed · rev</text>
+  <text x="66" y="491" class="small" text-anchor="start">strict parse of known fields</text>
+  <text x="66" y="518" class="small" text-anchor="start">terminal: commit / fallback / failure</text>
+  <rect x="40" y="574" width="450" height="98" rx="7" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2" stroke-dasharray="7 6"/>
+  <rect x="40" y="574" width="8" height="98" fill="#7A7A7A"/>
+  <text x="66" y="614" class="box-title" text-anchor="start">Live model providers</text>
+  <text x="66" y="648" class="small" text-anchor="start">hosted API and local serving adapters</text>
+  <rect x="560" y="170" width="440" height="502" rx="9" fill="#FBECEF" stroke="#B4436C" stroke-width="3"/>
+  <text x="586" y="212" class="box-title" text-anchor="start">Hard commit gate</text>
+  <text x="586" y="242" class="small" text-anchor="start" fill="#5F6368">state-relative, externally supplied policy</text>
+  <line x1="586" y1="258" x2="974" y2="258" stroke="#B4436C" stroke-width="2" fill="none"/>
+  <text x="586" y="292" class="small" text-anchor="start">v_policy</text>
+  <text x="704" y="292" class="small" text-anchor="start" fill="#5F6368">action + effects allowed</text>
+  <text x="586" y="324" class="small" text-anchor="start">v_pre</text>
+  <text x="704" y="324" class="small" text-anchor="start" fill="#5F6368">preconditions hold in c_t</text>
+  <text x="586" y="356" class="small" text-anchor="start">v_reach</text>
+  <text x="704" y="356" class="small" text-anchor="start" fill="#5F6368">objects reachable</text>
+  <text x="586" y="388" class="small" text-anchor="start">v_know</text>
+  <text x="704" y="388" class="small" text-anchor="start" fill="#5F6368">speaker knows the fact</text>
+  <text x="586" y="420" class="small" text-anchor="start">v_disc</text>
+  <text x="704" y="420" class="small" text-anchor="start" fill="#5F6368">disclosure permitted</text>
+  <text x="586" y="452" class="small" text-anchor="start">v_quest</text>
+  <text x="704" y="452" class="small" text-anchor="start" fill="#5F6368">stage legal, no regression</text>
+  <rect x="586" y="494" width="388" height="66" rx="6" fill="#FFFFFF" stroke="#B4436C" stroke-width="2"/>
+  <text x="606" y="520" class="small" text-anchor="start">12 implemented error codes</text>
+  <text x="606" y="546" class="small" text-anchor="start" fill="#5F6368">structured counterexample set E_t</text>
+  <rect x="586" y="578" width="388" height="70" rx="6" fill="#FFFFFF" stroke="#E69F00" stroke-width="2"/>
+  <text x="606" y="604" class="small" text-anchor="start">Bounded repair, budget K</text>
+  <text x="606" y="630" class="small" text-anchor="start" fill="#5F6368">exhausted ⇒ unchanged-state fallback</text>
+  <rect x="1080" y="170" width="360" height="186" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="1080" y="170" width="8" height="186" fill="#009E73"/>
+  <text x="1106" y="210" class="box-title" text-anchor="start">Canonical state c_t</text>
+  <text x="1106" y="244" class="small" text-anchor="start">G_t  typed world graph</text>
+  <text x="1106" y="271" class="small" text-anchor="start">q_t  action + disclosure policy</text>
+  <text x="1106" y="298" class="small" text-anchor="start">m_t  committed event prefix</text>
+  <text x="1106" y="325" class="small" text-anchor="start">mutated only by T(c_t, a_t)</text>
+  <rect x="1080" y="380" width="360" height="186" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="1080" y="380" width="8" height="186" fill="#009E73"/>
+  <text x="1106" y="420" class="box-title" text-anchor="start">Terminal evidence record</text>
+  <text x="1106" y="454" class="small" text-anchor="start">every attempt + its error set</text>
+  <text x="1106" y="481" class="small" text-anchor="start">SHA-256 checksum (unkeyed)</text>
+  <text x="1106" y="508" class="small" text-anchor="start">semantic replay + continuity</text>
+  <text x="1106" y="535" class="small" text-anchor="start">frozen assignment key</text>
+  <rect x="1080" y="590" width="360" height="112" rx="7" fill="#FFFFFF" stroke="#7A7A7A" stroke-width="2" stroke-dasharray="7 6"/>
+  <rect x="1080" y="590" width="8" height="112" fill="#7A7A7A"/>
+  <text x="1106" y="630" class="box-title" text-anchor="start">Game bridge</text>
+  <text x="1106" y="664" class="small" text-anchor="start">versioned event contract</text>
+  <text x="1106" y="691" class="small" text-anchor="start">engine transport unimplemented</text>
+  <path d="M265 320 V390" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="7 6"/>
+  <text x="285" y="362" class="note" text-anchor="start">conditions the prompt</text>
+  <path d="M265 574 V540" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="7 6"/>
+  <path d="M490 465 H560" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <text x="525" y="452" class="note" text-anchor="middle">candidate</text>
+  <path d="M1000 245 H1080" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="1006" y="233" class="note" text-anchor="start" fill="#009E73">commit</text>
+  <path d="M1000 470 H1080" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="1006" y="458" class="note" text-anchor="start" fill="#009E73">record</text>
+  <path d="M700 672 V712 H525 V478" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <text x="612" y="704" class="note" text-anchor="middle" fill="#E69F00">repair attempt</text>
+  <rect x="40" y="720" width="1400" height="96" rx="7" fill="#EEF0F2" stroke="#C9CDD1" stroke-width="2"/>
+  <text x="66" y="756" class="small" text-anchor="start">Invariant: no model output, retrieved fact, memory summary, or affect score may change canonical state without passing the gate.</text>
+  <text x="66" y="788" class="note" text-anchor="start">Encoded validity is validity for encoded predicates only; unknown top-level candidate fields are currently ignored rather than rejected.</text>
 </svg>
-

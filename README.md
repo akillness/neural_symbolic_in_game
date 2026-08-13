@@ -17,7 +17,32 @@ This repository contains a bilingual paper draft, a ten-model evaluation matrix,
 | [English paper draft](./neuro-symbolic-interactive-game-research-2026/paper/en/manuscript.md) | TRACE-RPG manuscript draft |
 | [Project knowledge index](./llm-wiki/index.md) | Persistent sources, concepts, reports, and graph |
 
-![System architecture](./neuro-symbolic-interactive-game-research-2026/visuals/system-architecture.svg)
+## System at a glance
+
+![Trust boundary: learned proposal, symbolic authority](./neuro-symbolic-interactive-game-research-2026/visuals/system-architecture.svg)
+
+제안은 학습 모델이, 커밋 권한은 결정론적 게이트가 가집니다. 검색·메모리·감정 추정은 제안 컨텍스트일 뿐 정식 상태를 바꿀 수 없습니다.
+A learned model proposes; only the deterministic gate commits. Retrieval, memory, and affect are proposal context and can never mutate canonical state.
+
+![One transaction: parse, validate, bounded repair, defensive check, commit](./neuro-symbolic-interactive-game-research-2026/visuals/commit-transaction.svg)
+
+## What the numbers actually say
+
+아래 두 그림은 동결된 파일럿 CSV와 주장 원장에서 직접 생성되므로 원본 수치와 어긋날 수 없습니다. CI가 재생성 결과와 커밋된 SVG의 일치를 강제합니다.
+Both figures below are generated directly from the frozen pilot CSVs and the claim ledger, so they cannot drift from their sources; CI enforces that the committed SVGs match a fresh regeneration.
+
+![Every pilot number, generated from the frozen artifact](./neuro-symbolic-interactive-game-research-2026/visuals/pilot-evidence.svg)
+
+![Claim ledger status](./neuro-symbolic-interactive-game-research-2026/visuals/claim-status.svg)
+
+분모는 전부 저자가 설계한 결정론적 사례입니다. 효능 주장 `C-RESULT-001`–`005`는 근거가 없는 `TODO-RESULT`입니다.
+Every denominator is an authored deterministic case. The efficacy claims `C-RESULT-001`–`005` are `TODO-RESULT` with no evidence.
+
+![Academic pipeline status](./neuro-symbolic-interactive-game-research-2026/visuals/research-workflow.svg)
+
+![Planned confirmatory design — no result in this repository comes from this matrix](./neuro-symbolic-interactive-game-research-2026/visuals/confirmatory-design.svg)
+
+Regenerate all six visuals with `uv run python scripts/generate_readme_visuals.py`.
 
 ## Quick validation
 
@@ -26,6 +51,7 @@ cd neuro-symbolic-interactive-game-research-2026
 uv sync --extra research --extra dev
 uv run python -m unittest discover -s tests -v
 uv run python scripts/validate_project.py
+uv run python scripts/generate_readme_visuals.py
 ```
 
 The current package is a research scaffold, not a claim that model experiments have already run. Empirical values remain explicitly marked `TODO-RESULT` until trace-backed runs pass the release gates.
