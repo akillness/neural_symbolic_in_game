@@ -1,0 +1,2166 @@
+{
+  "$id": "https://example.org/schemas/trace-rpg-pilot-input-manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accounting_guards": {
+      "items": false,
+      "maxItems": 3,
+      "minItems": 3,
+      "prefixItems": [
+        {
+          "const": "duplicate_observed_record"
+        },
+        {
+          "const": "duplicate_expected_assignment"
+        },
+        {
+          "const": "missing_expected_assignment"
+        }
+      ],
+      "type": "array"
+    },
+    "adapter_cases": {
+      "items": false,
+      "maxItems": 7,
+      "minItems": 7,
+      "prefixItems": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "adapter-valid"
+                },
+                "action_type": {
+                  "const": "OPEN_DOOR"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "door_open"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_failure_type": {
+              "const": null
+            },
+            "expected_status": {
+              "const": "commit"
+            },
+            "id": {
+              "const": "adapter-valid"
+            },
+            "input_tokens": {
+              "const": 100
+            },
+            "kind": {
+              "const": "recorded"
+            },
+            "output_tokens": {
+              "const": 20
+            },
+            "provider_latency_ms": {
+              "const": 10.0
+            },
+            "seed": {
+              "const": 101
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type",
+            "provider_latency_ms",
+            "input_tokens",
+            "output_tokens",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "adapter-symbolic-fallback"
+                },
+                "action_type": {
+                  "const": "OPEN_DOOR"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "unauthorized_effect"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_failure_type": {
+              "const": "hard_validation_failure"
+            },
+            "expected_status": {
+              "const": "fallback"
+            },
+            "id": {
+              "const": "adapter-symbolic-fallback"
+            },
+            "input_tokens": {
+              "const": 110
+            },
+            "kind": {
+              "const": "recorded"
+            },
+            "output_tokens": {
+              "const": 22
+            },
+            "provider_latency_ms": {
+              "const": 12.0
+            },
+            "seed": {
+              "const": 102
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type",
+            "provider_latency_ms",
+            "input_tokens",
+            "output_tokens",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expected_failure_type": {
+              "const": "timeout"
+            },
+            "expected_status": {
+              "const": "adapter_failure"
+            },
+            "id": {
+              "const": "adapter-timeout"
+            },
+            "kind": {
+              "const": "simulated_timeout"
+            },
+            "seed": {
+              "const": 103
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expected_failure_type": {
+              "const": "missing_record"
+            },
+            "expected_status": {
+              "const": "adapter_failure"
+            },
+            "id": {
+              "const": "adapter-missing-record"
+            },
+            "kind": {
+              "const": "missing_record"
+            },
+            "seed": {
+              "const": 104
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expected_failure_type": {
+              "const": "parse_error"
+            },
+            "expected_status": {
+              "const": "adapter_failure"
+            },
+            "id": {
+              "const": "adapter-malformed-record"
+            },
+            "kind": {
+              "const": "malformed_record"
+            },
+            "seed": {
+              "const": 105
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expected_failure_type": {
+              "const": "parse_error"
+            },
+            "expected_status": {
+              "const": "adapter_failure"
+            },
+            "id": {
+              "const": "adapter-non-json"
+            },
+            "kind": {
+              "const": "non_json_live"
+            },
+            "seed": {
+              "const": 106
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expected_failure_type": {
+              "const": "adapter_contract:response_type"
+            },
+            "expected_status": {
+              "const": "adapter_failure"
+            },
+            "id": {
+              "const": "adapter-contract-error"
+            },
+            "kind": {
+              "const": "contract_none"
+            },
+            "seed": {
+              "const": 107
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "seed",
+            "expected_status",
+            "expected_failure_type"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "base_state": {
+      "additionalProperties": false,
+      "properties": {
+        "action_policies": {
+          "additionalProperties": false,
+          "properties": {
+            "OPEN_DOOR": {
+              "additionalProperties": false,
+              "properties": {
+                "allowed_effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "door_open"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "allowed_quest_stage_effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "required_effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "door_open"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "required_preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "required_preconditions",
+                "allowed_effects",
+                "required_effects",
+                "allowed_quest_stage_effects"
+              ],
+              "type": "object"
+            },
+            "ROLLBACK_STAGE": {
+              "additionalProperties": false,
+              "properties": {
+                "allowed_effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "allowed_quest_stage_effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": 0
+                    }
+                  ],
+                  "type": "array"
+                },
+                "required_effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "required_preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "required_preconditions",
+                "allowed_effects",
+                "required_effects",
+                "allowed_quest_stage_effects"
+              ],
+              "type": "object"
+            },
+            "SAY": {
+              "additionalProperties": false,
+              "properties": {
+                "allowed_effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "allowed_quest_stage_effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "required_effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "required_preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "required_preconditions",
+                "allowed_effects",
+                "required_effects",
+                "allowed_quest_stage_effects"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "OPEN_DOOR",
+            "SAY",
+            "ROLLBACK_STAGE"
+          ],
+          "type": "object"
+        },
+        "facts": {
+          "items": false,
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "const": "met_guard"
+            },
+            {
+              "const": "public_fact"
+            }
+          ],
+          "type": "array"
+        },
+        "forbidden_disclosures": {
+          "additionalProperties": false,
+          "properties": {
+            "guard": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "sealed_secret"
+                }
+              ],
+              "type": "array"
+            }
+          },
+          "required": [
+            "guard"
+          ],
+          "type": "object"
+        },
+        "inventory": {
+          "items": false,
+          "maxItems": 0,
+          "minItems": 0,
+          "type": "array"
+        },
+        "locations": {
+          "items": false,
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "const": "gate"
+            },
+            {
+              "const": "vault"
+            }
+          ],
+          "type": "array"
+        },
+        "npc_knowledge": {
+          "additionalProperties": false,
+          "properties": {
+            "guard": {
+              "items": false,
+              "maxItems": 3,
+              "minItems": 3,
+              "prefixItems": [
+                {
+                  "const": "met_guard"
+                },
+                {
+                  "const": "public_fact"
+                },
+                {
+                  "const": "sealed_secret"
+                }
+              ],
+              "type": "array"
+            }
+          },
+          "required": [
+            "guard"
+          ],
+          "type": "object"
+        },
+        "object_locations": {
+          "additionalProperties": false,
+          "properties": {
+            "remote_key": {
+              "const": "vault"
+            }
+          },
+          "required": [
+            "remote_key"
+          ],
+          "type": "object"
+        },
+        "quest_stage": {
+          "const": 1
+        },
+        "reachable_locations": {
+          "items": false,
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "const": "gate"
+            }
+          ],
+          "type": "array"
+        },
+        "state_id": {
+          "const": "conformance-s0"
+        }
+      },
+      "required": [
+        "state_id",
+        "locations",
+        "reachable_locations",
+        "object_locations",
+        "inventory",
+        "facts",
+        "action_policies",
+        "npc_knowledge",
+        "forbidden_disclosures",
+        "quest_stage"
+      ],
+      "type": "object"
+    },
+    "boundary_sentinels": {
+      "items": false,
+      "maxItems": 3,
+      "minItems": 3,
+      "prefixItems": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "boundary_type": {
+              "const": "semantic_extraction"
+            },
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "boundary-unparsed-secret-in-narrative"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "disclosed_facts": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "narrative_text": {
+                  "const": "I reveal sealed_secret: it is hidden beneath the vault."
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "disclosed_facts",
+                "narrative_text"
+              ],
+              "type": "object"
+            },
+            "expected_valid": {
+              "const": true
+            },
+            "id": {
+              "const": "boundary-unparsed-secret-in-narrative"
+            },
+            "interpretation": {
+              "const": "The encoded gate accepts this candidate because disclosed_facts is empty; this documents a missing semantic-extraction check and is not a safety pass."
+            }
+          },
+          "required": [
+            "id",
+            "boundary_type",
+            "expected_valid",
+            "interpretation",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "boundary_type": {
+              "const": "policy_completeness"
+            },
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "boundary-omitted-required-object"
+                },
+                "action_type": {
+                  "const": "OPEN_DOOR"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "door_open"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_valid": {
+              "const": true
+            },
+            "id": {
+              "const": "boundary-omitted-required-object"
+            },
+            "interpretation": {
+              "const": "The encoded gate accepts this candidate because neither the proposal nor the action policy declares an object requirement; this documents a policy-completeness boundary."
+            }
+          },
+          "required": [
+            "id",
+            "boundary_type",
+            "expected_valid",
+            "interpretation",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "boundary_type": {
+              "const": "candidate_contract_strictness"
+            },
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "boundary-extra-candidate-field"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "unexpected_top_level_metadata": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "sealed_secret": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "sealed_secret"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "unexpected_top_level_metadata"
+              ],
+              "type": "object"
+            },
+            "expected_valid": {
+              "const": true
+            },
+            "id": {
+              "const": "boundary-extra-candidate-field"
+            },
+            "interpretation": {
+              "const": "The proposal parser currently ignores an unrecognized top-level candidate field; this is an accepted contract-strictness limitation, not evidence of safe metadata handling."
+            }
+          },
+          "required": [
+            "id",
+            "boundary_type",
+            "expected_valid",
+            "interpretation",
+            "candidate"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "evidence_scope": {
+      "const": "designed-fixture conformance only; no model-efficacy or human-study inference"
+    },
+    "gate_fixtures": {
+      "items": false,
+      "maxItems": 13,
+      "minItems": 13,
+      "prefixItems": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-valid-control"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "disclosed_facts": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "public_fact"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "used_facts": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "public_fact"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "used_facts",
+                "disclosed_facts"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 0,
+              "minItems": 0,
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-valid-control"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-unknown-action"
+                },
+                "action_type": {
+                  "const": "UNREGISTERED"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "UNKNOWN_ACTION_TYPE"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-unknown-action"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-policy-stage-effect-violation"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "quest_stage_effect": {
+                  "const": 2
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "quest_stage_effect"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-policy-stage-effect-violation"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-policy-precondition-omission"
+                },
+                "action_type": {
+                  "const": "OPEN_DOOR"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "door_open"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "POLICY_PRECONDITION_OMISSION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-policy-precondition-omission"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-policy-effect-omission"
+                },
+                "action_type": {
+                  "const": "OPEN_DOOR"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "POLICY_EFFECT_OMISSION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-policy-effect-omission"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-policy-effect-violation"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "unauthorized_effect"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "POLICY_EFFECT_VIOLATION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-policy-effect-violation"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-unsatisfied-precondition"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 2,
+                  "minItems": 2,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    },
+                    {
+                      "const": "missing_fact"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "UNSATISFIED_PRECONDITION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-unsatisfied-precondition"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-unreachable-object"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "required_objects": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "remote_key"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "required_objects"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "UNREACHABLE_REQUIRED_OBJECT"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-unreachable-object"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-npc-knowledge"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "used_facts": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "unknown_fact"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "used_facts"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "NPC_KNOWLEDGE_VIOLATION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-npc-knowledge"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-disclosure-knowledge"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "disclosed_facts": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "unknown_disclosure"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "disclosed_facts"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-disclosure-knowledge"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-forbidden-disclosure"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "disclosed_facts": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "sealed_secret"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "disclosed_facts"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "FORBIDDEN_DISCLOSURE"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-forbidden-disclosure"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-quest-stage"
+                },
+                "action_type": {
+                  "const": "SAY"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "required_quest_stage": {
+                  "const": 2
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "required_quest_stage"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "QUEST_STAGE_VIOLATION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-quest-stage"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate": {
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "const": "gate-quest-regression"
+                },
+                "action_type": {
+                  "const": "ROLLBACK_STAGE"
+                },
+                "actor_id": {
+                  "const": "guard"
+                },
+                "effects": {
+                  "items": false,
+                  "maxItems": 0,
+                  "minItems": 0,
+                  "type": "array"
+                },
+                "preconditions": {
+                  "items": false,
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "prefixItems": [
+                    {
+                      "const": "met_guard"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "quest_stage_effect": {
+                  "const": 0
+                }
+              },
+              "required": [
+                "action_id",
+                "actor_id",
+                "action_type",
+                "preconditions",
+                "effects",
+                "quest_stage_effect"
+              ],
+              "type": "object"
+            },
+            "expected_codes": {
+              "items": false,
+              "maxItems": 1,
+              "minItems": 1,
+              "prefixItems": [
+                {
+                  "const": "QUEST_STAGE_REGRESSION"
+                }
+              ],
+              "type": "array"
+            },
+            "id": {
+              "const": "gate-quest-regression"
+            }
+          },
+          "required": [
+            "id",
+            "expected_codes",
+            "candidate"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "implemented_validator_codes": {
+      "items": false,
+      "maxItems": 12,
+      "minItems": 12,
+      "prefixItems": [
+        {
+          "const": "UNKNOWN_ACTION_TYPE"
+        },
+        {
+          "const": "POLICY_PRECONDITION_OMISSION"
+        },
+        {
+          "const": "POLICY_EFFECT_OMISSION"
+        },
+        {
+          "const": "POLICY_EFFECT_VIOLATION"
+        },
+        {
+          "const": "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+        },
+        {
+          "const": "UNSATISFIED_PRECONDITION"
+        },
+        {
+          "const": "UNREACHABLE_REQUIRED_OBJECT"
+        },
+        {
+          "const": "NPC_KNOWLEDGE_VIOLATION"
+        },
+        {
+          "const": "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION"
+        },
+        {
+          "const": "FORBIDDEN_DISCLOSURE"
+        },
+        {
+          "const": "QUEST_STAGE_VIOLATION"
+        },
+        {
+          "const": "QUEST_STAGE_REGRESSION"
+        }
+      ],
+      "type": "array"
+    },
+    "integrity_boundaries": {
+      "items": false,
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expected_detected": {
+              "const": false
+            },
+            "id": {
+              "const": "repair_transition_substitution"
+            },
+            "interpretation": {
+              "const": "Semantic replay validates every recorded candidate and validation but cannot authenticate or re-execute the repair generator that produced the transition; a rehashed substitute invalid precursor can therefore remain replay-valid."
+            }
+          },
+          "required": [
+            "id",
+            "expected_detected",
+            "interpretation"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "integrity_faults": {
+      "items": false,
+      "maxItems": 10,
+      "minItems": 10,
+      "prefixItems": [
+        {
+          "const": "checksum_drift"
+        },
+        {
+          "const": "rehashed_impossible_state"
+        },
+        {
+          "const": "attempts_mutation"
+        },
+        {
+          "const": "type_coercion"
+        },
+        {
+          "const": "intermediate_validation_mutation"
+        },
+        {
+          "const": "early_valid_attempt_followed_by_repair"
+        },
+        {
+          "const": "top_level_candidate_mutation"
+        },
+        {
+          "const": "disconnected_episode"
+        },
+        {
+          "const": "record_outcome_mismatch"
+        },
+        {
+          "const": "partial_write_rollback"
+        }
+      ],
+      "type": "array"
+    },
+    "pilot_id": {
+      "const": "trace-rpg-deterministic-conformance-v1"
+    },
+    "repair": {
+      "additionalProperties": false,
+      "properties": {
+        "arms": {
+          "items": false,
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "const": "rejection_only"
+                },
+                "repair_budget": {
+                  "const": 0
+                },
+                "strategy": {
+                  "const": "none"
+                }
+              },
+              "required": [
+                "id",
+                "repair_budget",
+                "strategy"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "const": "unchanged_retry"
+                },
+                "repair_budget": {
+                  "const": 1
+                },
+                "strategy": {
+                  "const": "unchanged"
+                }
+              },
+              "required": [
+                "id",
+                "repair_budget",
+                "strategy"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "const": "structured_repair"
+                },
+                "repair_budget": {
+                  "const": 1
+                },
+                "strategy": {
+                  "const": "policy_restore"
+                }
+              },
+              "required": [
+                "id",
+                "repair_budget",
+                "strategy"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        },
+        "cases": {
+          "items": false,
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "repairable-policy-precondition"
+                    },
+                    "action_type": {
+                      "const": "OPEN_DOOR"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "door_open"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "stale_guard_fact"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "commit"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "repairable-policy-precondition"
+                },
+                "repairable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "nonrepairable-unreachable-object"
+                    },
+                    "action_type": {
+                      "const": "OPEN_DOOR"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "door_open"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "required_objects": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "remote_key"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "required_objects"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "fallback"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "nonrepairable-unreachable-object"
+                },
+                "repairable": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        }
+      },
+      "required": [
+        "arms",
+        "cases"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    }
+  },
+  "required": [
+    "schema_version",
+    "pilot_id",
+    "evidence_scope",
+    "implemented_validator_codes",
+    "base_state",
+    "gate_fixtures",
+    "boundary_sentinels",
+    "repair",
+    "integrity_faults",
+    "integrity_boundaries",
+    "adapter_cases",
+    "accounting_guards"
+  ],
+  "title": "TRACE-RPG frozen conformance pilot input manifest",
+  "type": "object"
+}

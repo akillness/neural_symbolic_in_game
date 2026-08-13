@@ -1,0 +1,7 @@
+\begin{tabular}{llllllllllllllll}
+\hline
+arm\_id & config\_hash & input\_hash & state\_hash & prior\_state\_hash & boundary\_id & repair\_budget & repair\_strategy & expected\_detected & observed\_detected & replay\_accepted & checksum\_valid\_after\_substitution & exception\_type & passed & final\_state\_hash & interpretation \\
+\hline
+integrity\_boundary & 2d61bd9f6cb9004163e260e7651740e510447e59f99cd98b9624ab0de95f55e4 & 5e7eb90a7e2caff906617c48ab6b673ef1f4949f150caf936b80d23c071031d5 & b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991 & b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991 & repair\_transition\_substitution & 1 & policy\_restore & false & false & true & true & none & true & e19c10dbdefb735021726e0e99c723c9022d6c2be75f4df28479a72e58762b24 & Semantic replay validates every recorded candidate and validation but cannot authenticate or re-execute the repair generator that produced the transition; a rehashed substitute invalid precursor can therefore remain replay-valid. \\
+\hline
+\end{tabular}

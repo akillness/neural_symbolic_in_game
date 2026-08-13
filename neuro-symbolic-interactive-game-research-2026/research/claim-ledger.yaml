@@ -12,13 +12,45 @@ claims:
     evidence: [knudge-2022]
     status: verified-primary
   - id: C-AFFECT-001
-    claim: Current VLMs show a perception-understanding gap for engagement inference across games.
+    claim: A recent 2026 preprint reports a perception-understanding gap for engagement inference in the games it evaluates.
     evidence: [gamevibe-vlm-2026]
-    status: verified-primary
+    status: verified-scope-limited-preprint
   - id: C-SYSTEM-001
-    claim: Hard validity must be a commit gate while narrative and affect remain soft objectives.
+    claim: TRACE-RPG treats encoded hard predicates as a pre-commit gate while narrative, affect, retrieval, and memory signals remain non-authoritative proposal context.
     evidence: [ivie-2026]
     status: proposed-contribution
+  - id: C-PILOT-001
+    claim: In the authored Stage 4 fixtures, encoded gate outcomes matched 13/13 prespecified expectations and exercised all 12 implemented error codes.
+    evidence:
+      - research/academic-pipeline/stage-04-pilot/pilot-results.json
+      - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
+    status: verified-designed-fixture
+  - id: C-PILOT-002
+    claim: In two authored invalid cases, rejection-only and unchanged retry committed 0/2 each, while deterministic structured repair committed 1/2.
+    evidence:
+      - research/academic-pipeline/stage-04-pilot/pilot-results.json
+      - research/academic-pipeline/stage-04-pilot/repair-arms.csv
+    status: verified-designed-fixture
+  - id: C-PILOT-003
+    claim: All 10 faults prespecified as detectable were rejected by their designated operations without detector-layer attribution, while substitution of a different invalid precursor before the same valid repair was replay-accepted 1/1 as the separately declared provenance boundary.
+    evidence:
+      - research/academic-pipeline/stage-04-pilot/pilot-results.json
+      - research/academic-pipeline/stage-04-pilot/integrity-faults.csv
+      - research/academic-pipeline/stage-04-pilot/integrity-boundaries.csv
+    status: verified-designed-fixture
+  - id: C-PILOT-004
+    claim: The seven authored adapter/accounting assignments yielded 1 commit, 1 symbolic fallback, and 5 adapter failures, and all 3 injected assignment guards rejected.
+    evidence:
+      - research/academic-pipeline/stage-04-pilot/pilot-results.json
+      - research/academic-pipeline/stage-04-pilot/adapter-accounting.csv
+      - research/academic-pipeline/stage-04-pilot/accounting-guards.csv
+    status: verified-designed-fixture
+  - id: C-PILOT-005
+    claim: The frozen Stage 4 manifest binds 62 published-row provenance records, including fault-specific input specifications, and the tracked release records its input and artifact checksums.
+    evidence:
+      - research/academic-pipeline/stage-04-pilot/pilot-assignment-manifest.json
+      - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
+    status: verified-designed-fixture
   - id: C-RESULT-001
     claim: TRACE-RPG reduces hard violations versus LLM-only baselines.
     evidence: []

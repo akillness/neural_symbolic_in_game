@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0.0",
+  "pipeline": "academic-pipeline",
+  "mode": "full",
+  "oversight": "very-high",
+  "as_of": "2026-08-12",
+  "status": "stage_4_user_checkpoint",
+  "stage_1": {
+    "status": "approved",
+    "approved_at": "2026-08-12",
+    "target_journal": "IEEE Transactions on Games",
+    "article_type": "full research article",
+    "contribution_type": [
+      "systems",
+      "methodological",
+      "pilot-empirical"
+    ],
+    "languages": [
+      "en",
+      "ko"
+    ],
+    "source_format": "IEEE Transactions LaTeX",
+    "outputs": [
+      "English PDF",
+      "Korean PDF"
+    ],
+    "experiment_intake_declaration": "Only locally executable deterministic offline experiments are currently admissible as completed pilot engineering evidence; hosted ten-model and human studies remain future work."
+  },
+  "stage_2": {
+    "status": "approved",
+    "approved_at": "2026-08-12",
+    "shortlist_path": "research/academic-pipeline/stage-02-source-shortlist.md",
+    "source_count": 36,
+    "year_range": "2011-2026",
+    "verification": "Official primary pages plus Crossref/OpenAlex where available; Semantic Scholar batch verification incomplete because of HTTP 429.",
+    "preprints": [
+      "S01",
+      "S02",
+      "S26"
+    ],
+    "conditional_metadata": [
+      "S23"
+    ]
+  },
+  "stage_2_5": {
+    "status": "pass_with_fail_closed_claim_boundaries",
+    "audit_path": "research/academic-pipeline/stage-02.5-integrity-gate.md",
+    "repository_revision": "3958c092d4e01d9091c2206ba3ae4719656d2eb4",
+    "fresh_tests_passed": 41,
+    "completed_empirical_scope": "deterministic offline implementation conformance only",
+    "unsupported_result_claims": [
+      "C-RESULT-001",
+      "C-RESULT-002",
+      "C-RESULT-003",
+      "C-RESULT-004",
+      "C-RESULT-005"
+    ],
+    "resolution": "Result claims remain future TODO hypotheses and are excluded from present positive empirical claims."
+  },
+  "stage_3": {
+    "status": "approved",
+    "approved_at": "2026-08-12",
+    "outline_path": "research/academic-pipeline/stage-03-ieee-outline.md",
+    "working_title": "TRACE-RPG: Event-Sourced Neuro-Symbolic Commit Gates for Auditable Interactive Game Worlds",
+    "main_scope": [
+      "transaction contract",
+      "state-relative hard validation",
+      "bounded counterexample repair",
+      "semantic replay",
+      "assignment-complete experiment accounting",
+      "deterministic offline conformance pilot"
+    ],
+    "future_only_scope": [
+      "ten-model comparison",
+      "retrieval and temporal memory efficacy",
+      "human player evaluation",
+      "affect adaptation",
+      "commercial-engine performance"
+    ]
+  },
+  "stage_4": {
+    "status": "awaiting_user_approval",
+    "draft_report_path": "research/academic-pipeline/stage-04-draft-report.md",
+    "pilot_path": "research/academic-pipeline/stage-04-pilot/pilot-results.json",
+    "pilot_sha256_manifest": "research/academic-pipeline/stage-04-pilot/sha256-manifest.json",
+    "manuscripts": {
+      "english_source": "paper/latex/en/main.tex",
+      "english_pdf": "paper/latex/en/main.pdf",
+      "english_pdf_sha256": "1a404306f65d680d4130495bb9af1bf9c90a84dfc7b95bf1bb57f868277bdd57",
+      "korean_source": "paper/latex/ko/main.tex",
+      "korean_pdf": "paper/latex/ko/main.pdf",
+      "korean_pdf_sha256": "cd9f18d19fd98a912a3d43e985afb39d2b5f2dda78871134525b8bd9f1b82dc7",
+      "page_count_each": 6,
+      "reference_count": 36
+    },
+    "verification": {
+      "tests_passed": 63,
+      "subtests_passed": 3,
+      "gate_fixtures": "13/13 across 12 implemented codes",
+      "repair_arm_commits": ["0/2", "0/2", "1/2"],
+      "detectable_integrity_faults": "10/10",
+      "known_repair_provenance_boundary_replay_accepted": "1/1",
+      "adapter_outcomes": "1 commit, 1 symbolic fallback, 5 adapter failures / 7",
+      "assignment_guards": "3/3",
+      "assignment_count": 62,
+      "pdf_visual_qa": "all 12 rendered pages inspected; no clipping, overlap, missing glyph, overfull box, undefined citation, undefined reference, or Type 3 font"
+    },
+    "claim_boundary": "designed synthetic offline conformance only; no live-model, human, affect, retrieval, memory, engine, population-efficacy, or cryptographic-authenticity inference",
+    "unsupported_result_claims": [
+      "C-RESULT-001",
+      "C-RESULT-002",
+      "C-RESULT-003",
+      "C-RESULT-004",
+      "C-RESULT-005"
+    ]
+  },
+  "downstream_stages": {
+    "status": "blocked_by_stage_4_checkpoint",
+    "next": "After explicit user approval, run Stage 4.5 claim-faithfulness audit before Stage 5 citation verification."
+  }
+}

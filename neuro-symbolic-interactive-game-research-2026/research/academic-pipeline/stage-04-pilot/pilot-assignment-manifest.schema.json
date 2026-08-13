@@ -1,0 +1,2765 @@
+{
+  "$id": "https://example.org/schemas/trace-rpg-pilot-assignment-manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assignment_count": {
+      "const": 62
+    },
+    "assignment_set_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "expected_provenance_by_key": {
+      "additionalProperties": false,
+      "properties": {
+        "accounting_guards/duplicate_expected_assignment/accounting_guard": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "accounting_guards/duplicate_observed_record/accounting_guard": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "accounting_guards/missing_expected_assignment/accounting_guard": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-contract-error/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-malformed-record/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-missing-record/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-non-json/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-symbolic-fallback/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-timeout/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "adapter_accounting/adapter-valid/adapter_execution": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "boundary_sentinels/boundary-extra-candidate-field/boundary_sentinel_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "boundary_sentinels/boundary-omitted-required-object/boundary_sentinel_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "boundary_sentinels/boundary-unparsed-secret-in-narrative/boundary_sentinel_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-disclosure-knowledge/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-forbidden-disclosure/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-npc-knowledge/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-policy-effect-omission/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-policy-effect-violation/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-policy-precondition-omission/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-policy-stage-effect-violation/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-quest-regression/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-quest-stage/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-unknown-action/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-unreachable-object/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-unsatisfied-precondition/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "gate_conformance/gate-valid-control/gate_validation_k0": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_boundaries/repair_transition_substitution/integrity_boundary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/attempts_mutation/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/checksum_drift/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/disconnected_episode/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/early_valid_attempt_followed_by_repair/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/intermediate_validation_mutation/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/partial_write_rollback/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/record_outcome_mismatch/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/rehashed_impossible_state/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/top_level_candidate_mutation/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "integrity_faults/type_coercion/integrity_fault": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/accounting_guards:manifest_faults_detected/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/adapter_accounting:adapter_failures/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/adapter_accounting:commits/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/adapter_accounting:provider_latency_observed/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/adapter_accounting:symbolic_fallbacks/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/boundary_sentinels:encoded_acceptances_documented/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/gate_conformance:fixtures_matching_expected_result/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/gate_conformance:implemented_codes_observed/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/integrity_boundaries:known_undetectable_boundaries_observed/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/integrity_faults:named_detectable_faults_detected/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:rejection_only:commits/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:rejection_only:repair_successes/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:structured_repair:commits/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:structured_repair:repair_successes/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:unchanged_retry:commits/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:unchanged_retry:repair_successes/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arm_summary/rejection_only/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arm_summary/structured_repair/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arm_summary/unchanged_retry/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/nonrepairable-unreachable-object/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/nonrepairable-unreachable-object/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/nonrepairable-unreachable-object/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/repairable-policy-precondition/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/repairable-policy-precondition/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/repairable-policy-precondition/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "gate_conformance/gate-valid-control/gate_validation_k0",
+        "gate_conformance/gate-unknown-action/gate_validation_k0",
+        "gate_conformance/gate-policy-stage-effect-violation/gate_validation_k0",
+        "gate_conformance/gate-policy-precondition-omission/gate_validation_k0",
+        "gate_conformance/gate-policy-effect-omission/gate_validation_k0",
+        "gate_conformance/gate-policy-effect-violation/gate_validation_k0",
+        "gate_conformance/gate-unsatisfied-precondition/gate_validation_k0",
+        "gate_conformance/gate-unreachable-object/gate_validation_k0",
+        "gate_conformance/gate-npc-knowledge/gate_validation_k0",
+        "gate_conformance/gate-disclosure-knowledge/gate_validation_k0",
+        "gate_conformance/gate-forbidden-disclosure/gate_validation_k0",
+        "gate_conformance/gate-quest-stage/gate_validation_k0",
+        "gate_conformance/gate-quest-regression/gate_validation_k0",
+        "boundary_sentinels/boundary-unparsed-secret-in-narrative/boundary_sentinel_k0",
+        "boundary_sentinels/boundary-omitted-required-object/boundary_sentinel_k0",
+        "boundary_sentinels/boundary-extra-candidate-field/boundary_sentinel_k0",
+        "repair_arms/repairable-policy-precondition/rejection_only",
+        "repair_arms/nonrepairable-unreachable-object/rejection_only",
+        "repair_arm_summary/rejection_only/rejection_only",
+        "repair_arms/repairable-policy-precondition/unchanged_retry",
+        "repair_arms/nonrepairable-unreachable-object/unchanged_retry",
+        "repair_arm_summary/unchanged_retry/unchanged_retry",
+        "repair_arms/repairable-policy-precondition/structured_repair",
+        "repair_arms/nonrepairable-unreachable-object/structured_repair",
+        "repair_arm_summary/structured_repair/structured_repair",
+        "integrity_faults/checksum_drift/integrity_fault",
+        "integrity_faults/rehashed_impossible_state/integrity_fault",
+        "integrity_faults/attempts_mutation/integrity_fault",
+        "integrity_faults/type_coercion/integrity_fault",
+        "integrity_faults/intermediate_validation_mutation/integrity_fault",
+        "integrity_faults/early_valid_attempt_followed_by_repair/integrity_fault",
+        "integrity_faults/top_level_candidate_mutation/integrity_fault",
+        "integrity_faults/disconnected_episode/integrity_fault",
+        "integrity_faults/record_outcome_mismatch/integrity_fault",
+        "integrity_faults/partial_write_rollback/integrity_fault",
+        "integrity_boundaries/repair_transition_substitution/integrity_boundary",
+        "adapter_accounting/adapter-valid/adapter_execution",
+        "adapter_accounting/adapter-symbolic-fallback/adapter_execution",
+        "adapter_accounting/adapter-timeout/adapter_execution",
+        "adapter_accounting/adapter-missing-record/adapter_execution",
+        "adapter_accounting/adapter-malformed-record/adapter_execution",
+        "adapter_accounting/adapter-non-json/adapter_execution",
+        "adapter_accounting/adapter-contract-error/adapter_execution",
+        "accounting_guards/duplicate_observed_record/accounting_guard",
+        "accounting_guards/duplicate_expected_assignment/accounting_guard",
+        "accounting_guards/missing_expected_assignment/accounting_guard",
+        "pilot_summary/gate_conformance:fixtures_matching_expected_result/pilot_summary",
+        "pilot_summary/gate_conformance:implemented_codes_observed/pilot_summary",
+        "pilot_summary/boundary_sentinels:encoded_acceptances_documented/pilot_summary",
+        "pilot_summary/repair_arms:rejection_only:commits/pilot_summary",
+        "pilot_summary/repair_arms:rejection_only:repair_successes/pilot_summary",
+        "pilot_summary/repair_arms:unchanged_retry:commits/pilot_summary",
+        "pilot_summary/repair_arms:unchanged_retry:repair_successes/pilot_summary",
+        "pilot_summary/repair_arms:structured_repair:commits/pilot_summary",
+        "pilot_summary/repair_arms:structured_repair:repair_successes/pilot_summary",
+        "pilot_summary/integrity_faults:named_detectable_faults_detected/pilot_summary",
+        "pilot_summary/integrity_boundaries:known_undetectable_boundaries_observed/pilot_summary",
+        "pilot_summary/adapter_accounting:commits/pilot_summary",
+        "pilot_summary/adapter_accounting:symbolic_fallbacks/pilot_summary",
+        "pilot_summary/adapter_accounting:adapter_failures/pilot_summary",
+        "pilot_summary/adapter_accounting:provider_latency_observed/pilot_summary",
+        "pilot_summary/accounting_guards:manifest_faults_detected/pilot_summary"
+      ],
+      "type": "object"
+    },
+    "pilot_id": {
+      "const": "trace-rpg-deterministic-conformance-v1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    }
+  },
+  "required": [
+    "schema_version",
+    "pilot_id",
+    "assignment_count",
+    "assignment_set_hash",
+    "expected_provenance_by_key"
+  ],
+  "title": "TRACE-RPG deterministic conformance pilot assignment manifest",
+  "type": "object"
+}
