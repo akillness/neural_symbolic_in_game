@@ -20,6 +20,7 @@
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-03]] — fail-closed claim audit and IEEE ToG IMRaD outline
 - [[wiki/reports/2026-08-12-trace-rpg-academic-stage-04]] — bilingual IEEE draft, deterministic pilot, and evidence boundary
 - [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] — claim-faithfulness and citation-verification gates, both passed
+- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] — ToG peer-review simulation; Full Paper revise-and-resubmit decision awaits user response
 - [[maintenance-log]] — wiki and Graphify maintenance decisions
 
 ## Prompt/output ingest

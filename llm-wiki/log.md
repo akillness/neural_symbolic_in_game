@@ -48,3 +48,6 @@
 - 2026-08-13: Stage 5 citation verification passed; 36 entries, 33 verified, 3 preprint, 0 hallucinated.
 - 2026-08-13: Semantic Scholar rate-limited 9 of 36 lookups; recorded as index-access limitation, not citation evidence.
 - 2026-08-13: Filed [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] and updated the pipeline passport to stage_6_unblocked.
+- 2026-08-13: Treated the subsequent continue instruction as approval of the nonblocking Stage 5 citation gate and ran the Stage 6 reviewer ensemble.
+- 2026-08-13: Stage 6 recommended revise and resubmit for the ToG Full Paper track; independent efficacy evidence, clean release locking, and IEEE AI-use disclosure are critical revisions.
+- 2026-08-13: Filed [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] and stopped at the mandatory Stage 6 user-decision checkpoint.
