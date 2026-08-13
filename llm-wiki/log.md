@@ -130,3 +130,7 @@
 - Raw capture: [[raw/sources/prompts/2026/08/13/141311-019ffb33-6c1-oauth-llm-codex]]
 - Source note: [[wiki/sources/2026-08-13-141311-oauth-llm-codex]]
 - Query note: [[wiki/queries/2026-08-13-141311-oauth-llm-codex]]
+- 2026-08-14: Published the latest-only public-safe Godot Web artifact at `https://sealed-lighthouse-trace-rpg.vercel.app`; exact production PCK receipt is 1,573,424 bytes with SHA-256 `6e6500e79b48260ae5d6f532133ff664094ccc4e3a98116718a60264aca0b7b1`.
+- 2026-08-14: Playwriter reverified 1280×720 and 390×844 Korean layouts, gesture-triggered pointer lock, and zero console/page/failed-response errors; G4 and representative G6 performance remain unassessed/FIX.
+- 2026-08-14: Added a Codex-CLI-owned ChatGPT OAuth companion using `codex login --device-auth`; the wrapper never reads credentials and returns only non-authoritative, read-only soft proposals.
+- 2026-08-14: Closed the Stage-10 clean-recapture gate at tagged source commit `c4752df`: 21/21 inputs, 35/35 byte-identical artifacts, 64 provenance rows, `dirty=false`, and no absolute user/clone paths. `C-RESULT-001`--`005` remain TODO-RESULT.
