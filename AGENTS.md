@@ -33,3 +33,11 @@ This repository is an experimental, bilingual neuro-symbolic game research proje
 Before a paper release, pass: source integrity, citation identity, mathematical domain/unit checks, logic positive/negative fixtures, protocol completeness, leakage checks, deterministic replay, bilingual parity, SVG parsing, tests, and reproducibility metadata. A failed gate is `FIX`, not evidence to delete.
 
 Detailed ownership and workflow rules live in `neuro-symbolic-interactive-game-research-2026/harness/`.
+
+## Experimental game studio
+
+For any work under `neuro-symbolic-interactive-game-research-2026/game-track/` or
+`neuro-symbolic-interactive-game-research-2026/_workspace/`, also apply the canonical studio
+contract in `neuro-symbolic-interactive-game-research-2026/CLAUDE.md`. That file owns studio lanes,
+Godot boundaries, generated-asset provenance, game quality gates, and workspace freshness. The
+research rules above remain authoritative and are not duplicated in the studio contract.
