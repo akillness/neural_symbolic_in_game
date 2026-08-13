@@ -1,0 +1,35 @@
+\begin{table}[t]
+\caption{Deterministic Repair-Arm Outcomes}
+\label{tab:pilot-repair}
+\centering\footnotesize
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Arm & Cases & Commits & Repair calls \\
+\midrule
+Rejection only & 2 & 0 & 0 \\
+Unchanged retry & 2 & 0 & 2 \\
+Structured repair & 2 & 1 & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\caption{Frozen-Pilot Raw Accounting}
+\label{tab:pilot-accounting}
+\centering\footnotesize
+\begin{tabularx}{\columnwidth}{@{}Xrr@{}}
+\toprule
+Check & Numerator & Denominator \\
+\midrule
+Gate fixture agreement & 13 & 13 \\
+Known-boundary acceptances$^{a}$ & 3 & 3 \\
+Detectable integrity faults rejected & 10 & 10 \\
+Known integrity boundary replay-accepted$^{b}$ & 1 & 1 \\
+Adapter commits & 1 & 7 \\
+Symbolic fallbacks & 1 & 7 \\
+Adapter failures & 5 & 7 \\
+Manifest guards rejected & 3 & 3 \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$Boundary acceptances document semantic-extraction, policy-completeness, and unknown-field handling limits; they are not safety passes. $^{b}$Replay does not authenticate or re-execute repair generation.}
+\end{table}

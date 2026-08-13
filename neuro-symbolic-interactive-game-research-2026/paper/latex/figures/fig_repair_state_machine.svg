@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="780" viewBox="0 0 1440 780" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">TRACE-RPG bounded validate-repair-commit state machine</title>
+  <desc id="svg-desc">Each candidate attempt is validated and recorded. A repair budget K permits at most K plus one recorded attempts. A successful application performs an additional defensive validation before canonical mutation.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#E69F00"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#009E73"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7A7A7A"/></marker>
+    <style>
+      text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
+      .section { font-size: 25px; font-weight: 700; }
+      .box-title { font-size: 24px; font-weight: 700; }
+      .body { font-size: 21px; font-weight: 400; }
+      .small { font-size: 19px; font-weight: 400; }
+      .note { font-size: 19px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 19px; font-weight: 700; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="1440" height="780" fill="#FFFFFF"/>
+  <rect x="25" y="20" width="1390" height="92" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="25" y="20" width="9" height="92" fill="#0072B2"/>
+  <text x="50" y="55" class="section" text-anchor="start">BOUNDED ATTEMPT CONTRACT</text>
+  <text x="50" y="84" class="small" text-anchor="start" fill="#5F6368">≤ K + 1 recorded candidate attempts: j = 0, …, K</text>
+  <rect x="45" y="205" width="190" height="100" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
+  <rect x="45" y="205" width="8" height="100" rx="4" fill="#7A7A7A"/>
+  <text x="144" y="238" class="box-title" text-anchor="middle">Candidate a_j</text>
+  <text x="144" y="267" class="small" text-anchor="middle"><tspan x="144" dy="0">initial j = 0</tspan><tspan x="144" dy="25">or repaired</tspan></text>
+  <rect x="285" y="205" width="205" height="100" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="285" y="205" width="8" height="100" rx="4" fill="#0072B2"/>
+  <text x="391" y="238" class="box-title" text-anchor="middle">Validate</text>
+  <text x="391" y="267" class="small" text-anchor="middle"><tspan x="391" dy="0">V(c_t,a_j)</tspan><tspan x="391" dy="25">same prior c_t</tspan></text>
+  <rect x="540" y="195" width="245" height="120" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="540" y="195" width="8" height="120" rx="4" fill="#0072B2"/>
+  <text x="666" y="228" class="box-title" text-anchor="middle">Record attempt j</text>
+  <text x="666" y="257" class="small" text-anchor="middle"><tspan x="666" dy="0">candidate + V</tspan><tspan x="666" dy="25">errors E_j + hashes</tspan></text>
+  <polygon points="885,185 965,255 885,325 805,255" fill="#FFFFFF" stroke="#0072B2" stroke-width="3"/>
+  <text x="885" y="249" class="box-title" text-anchor="middle"><tspan x="885" dy="0">valid?</tspan></text>
+  <rect x="995" y="125" width="245" height="115" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="995" y="125" width="8" height="115" rx="4" fill="#009E73"/>
+  <text x="1121" y="158" class="box-title" text-anchor="middle">Defensive validation</text>
+  <text x="1121" y="187" class="small" text-anchor="middle"><tspan x="1121" dy="0">one extra check</tspan><tspan x="1121" dy="25">before mutation</tspan></text>
+  <rect x="1275" y="125" width="125" height="115" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
+  <rect x="1275" y="125" width="8" height="115" rx="4" fill="#009E73"/>
+  <text x="1341" y="158" class="box-title" text-anchor="middle">COMMIT</text>
+  <text x="1341" y="187" class="small" text-anchor="middle"><tspan x="1341" dy="0">atomic</tspan><tspan x="1341" dy="25">T(c_t,a_j)</tspan></text>
+  <polygon points="1010,310 1090,380 1010,450 930,380" fill="#FFFFFF" stroke="#E69F00" stroke-width="3"/>
+  <text x="1010" y="374" class="box-title" text-anchor="middle"><tspan x="1010" dy="0">j &lt; K?</tspan></text>
+  <rect x="735" y="485" width="240" height="110" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
+  <rect x="735" y="485" width="8" height="110" rx="4" fill="#E69F00"/>
+  <text x="859" y="518" class="box-title" text-anchor="middle">Structured repair</text>
+  <text x="859" y="547" class="small" text-anchor="middle"><tspan x="859" dy="0">consume E_j</tspan><tspan x="859" dy="25">set j ← j + 1</tspan></text>
+  <rect x="1185" y="485" width="215" height="110" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
+  <rect x="1185" y="485" width="8" height="110" rx="4" fill="#7A7A7A"/>
+  <text x="1296" y="518" class="box-title" text-anchor="middle">FALLBACK</text>
+  <text x="1296" y="547" class="small" text-anchor="middle"><tspan x="1296" dy="0">no mutation</tspan><tspan x="1296" dy="25">c_(t+1) = c_t</tspan></text>
+  <rect x="955" y="650" width="445" height="85" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="955" y="650" width="8" height="85" rx="4" fill="#0072B2"/>
+  <text x="1181" y="683" class="box-title" text-anchor="middle">Finalize trace + semantic replay</text>
+  <text x="1181" y="712" class="small" text-anchor="middle"><tspan x="1181" dy="0">recorded outcome must reconstruct deterministically</tspan></text>
+  <line x1="235" y1="255" x2="285" y2="255" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <line x1="490" y1="255" x2="540" y2="255" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <line x1="785" y1="255" x2="805" y2="255" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <path d="M965 235 H980 V182 H995" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="953" y="197" width="55" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="980" y="218" class="arrow-label" text-anchor="middle" fill="#009E73">yes</text>
+  <line x1="1240" y1="182" x2="1275" y2="182" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path d="M885 325 V355 H930" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <rect x="880" y="329" width="50" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="905" y="350" class="arrow-label" text-anchor="middle" fill="#E69F00">no</text>
+  <path d="M980 432 V458 H855 V485" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <rect x="877" y="435" width="55" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="904" y="456" class="arrow-label" text-anchor="middle" fill="#E69F00">yes</text>
+  <path d="M1090 380 H1140 V540 H1185" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <rect x="1111" y="349" width="48" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="1135" y="370" class="arrow-label" text-anchor="middle" fill="#7A7A7A">no</text>
+  <path d="M735 540 H665 V625 H140 V305" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="10 7"/>
+  <rect x="290" y="598" width="280" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="430" y="619" class="arrow-label" text-anchor="middle" fill="#E69F00">next recorded candidate attempt</text>
+  <path d="M1338 240 V630 H1180 V650" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path d="M1292 595 V625 H1245 V650" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <rect x="25" y="655" width="850" height="95" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="25" y="655" width="9" height="95" fill="#7A7A7A"/>
+  <text x="50" y="690" class="section" text-anchor="start">TERMINATION ASSUMPTION</text>
+  <text x="50" y="719" class="small" text-anchor="start" fill="#5F6368">Each proposal/repair callback returns within its separately enforced deadline</text>
+  <text x="1400" y="765" class="note" text-anchor="end">The extra defensive validation is not an additional candidate attempt.</text>
+</svg>

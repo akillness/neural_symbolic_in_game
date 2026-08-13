@@ -1,5 +1,10 @@
 # TRACE-RPG: An Event-Sourced Neuro-Symbolic Harness for Auditable and Affect-Adaptive Interactive Game Worlds
 
+> **Superseded protocol blueprint — not the current empirical manuscript.** The authoritative Stage 4
+> draft is [`../latex/en/main.tex`](../latex/en/main.tex), with machine-generated designed-fixture
+> results and explicit evidence boundaries. This file is retained only as a future confirmatory-study
+> plan; none of its ten-model, memory, affect, human, or engine statements are completed results.
+
 **Target manuscript:** IEEE Transactions on Games first; method-first redirection to Knowledge-Based Systems is decided after results.  
 **Status:** protocol-complete draft; all empirical values are `TODO-RESULT`.  
 **Claim namespace:** `C-*` identifiers are shared with the Korean draft and `research/claim-ledger.yaml`.

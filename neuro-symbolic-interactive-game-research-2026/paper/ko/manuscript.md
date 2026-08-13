@@ -1,5 +1,9 @@
 # TRACE-RPG: 감사 가능하고 감정 적응적인 인터랙티브 게임 세계를 위한 이벤트 소싱 뉴로-심볼릭 하네스
 
+> **대체된 확증 연구 프로토콜 청사진이며 현재 실증 원고가 아니다.** 정식 Stage 4 원고는
+> [`../latex/ko/main.tex`](../latex/ko/main.tex)이다. 현재 파일은 미래 확증 연구 계획으로만
+> 보존하며, 10개 모델·메모리·감정·인간·엔진 관련 문장은 완료된 결과가 아니다.
+
 **우선 투고 후보:** IEEE Transactions on Games. 결과의 기여 형태가 방법론 중심이면 Knowledge-Based Systems로 재판정한다.  
 **상태:** 프로토콜 완성형 초안. 모든 실증 수치는 `TODO-RESULT`다.  
 **주장 네임스페이스:** `C-*` 식별자는 영문 초안 및 `research/claim-ledger.yaml`과 공유한다.
