@@ -1,0 +1,130 @@
+{
+  "capture_method": "subviewport-frame-post-draw-v1",
+  "captured_at_utc": "2026-08-13 11:45:12",
+  "captures": [
+    {
+      "beat": "arrival_observation",
+      "bytes": 62928,
+      "capture_id": "sl-rc-001-arrival",
+      "delivery_index": 0,
+      "event_id": "evt-000-observe",
+      "file": "sl-rc-001-arrival.png",
+      "generated_assets_in_frame": false,
+      "height": 720,
+      "mime_type": "image/png",
+      "participant_visible": true,
+      "pixel_stats": {
+        "max_luma": 1.0,
+        "mean_luma": 0.157738,
+        "min_luma": 0.057507,
+        "opaque_fraction": 1.0,
+        "unique_colors": 1303
+      },
+      "sequence": 0,
+      "sha256": "616f028f90bf344b2fdf9084bd7da3d3f78b800e25f74a6773bc3775fad7466c",
+      "turn": 0,
+      "validation_codes": [],
+      "validation_status": "not_applicable",
+      "view_mode": "participant-primary",
+      "width": 1280,
+      "world_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "world_state_hash_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    },
+    {
+      "beat": "forbidden_disclosure_rejected",
+      "bytes": 68912,
+      "capture_id": "sl-rc-002-rejected-secret",
+      "delivery_index": 9,
+      "event_id": "evt-002-fallback-secret",
+      "file": "sl-rc-002-rejected-secret.png",
+      "generated_assets_in_frame": false,
+      "height": 720,
+      "mime_type": "image/png",
+      "participant_visible": false,
+      "pixel_stats": {
+        "max_luma": 1.0,
+        "mean_luma": 0.161866,
+        "min_luma": 0.057507,
+        "opaque_fraction": 1.0,
+        "unique_colors": 1275
+      },
+      "sequence": 9,
+      "sha256": "6630040a09c186172c376a06f6bcacb61d9d6041254ab265b4fa8ac37eaca4ee",
+      "turn": 2,
+      "validation_codes": [
+        "FORBIDDEN_DISCLOSURE",
+        "STAGE_GATED_DISCLOSURE"
+      ],
+      "validation_status": "invalid",
+      "view_mode": "experiment-inspector",
+      "width": 1280,
+      "world_state_hash": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+      "world_state_hash_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+    },
+    {
+      "beat": "authorized_hint_committed",
+      "bytes": 61154,
+      "capture_id": "sl-rc-003-authorized-hint",
+      "delivery_index": 17,
+      "event_id": "evt-005-commit-hint",
+      "file": "sl-rc-003-authorized-hint.png",
+      "generated_assets_in_frame": false,
+      "height": 720,
+      "mime_type": "image/png",
+      "participant_visible": false,
+      "pixel_stats": {
+        "max_luma": 1.0,
+        "mean_luma": 0.162676,
+        "min_luma": 0.057507,
+        "opaque_fraction": 1.0,
+        "unique_colors": 1311
+      },
+      "sequence": 17,
+      "sha256": "41a6b83e85efad4b9ce2c4105f19e8ae3200c32e838d1d3490227aa51d7642a5",
+      "turn": 5,
+      "validation_codes": [],
+      "validation_status": "valid",
+      "view_mode": "experiment-inspector",
+      "width": 1280,
+      "world_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "world_state_hash_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+    }
+  ],
+  "claim_scope": "authored-engine-render-state-correspondence-only",
+  "engine": {
+    "display_server": "macOS",
+    "headless": false,
+    "name": "Godot",
+    "rendering_device": "Apple M2 Pro",
+    "rendering_method": "gl_compatibility",
+    "version": "4.7.1-stable (official)"
+  },
+  "episode_id": "sealed-lighthouse-episode-001",
+  "evidence_set_id": "godot-4.7.1-20260813t114443z-sealed-lighthouse-render-v1",
+  "fixture_id": "sealed-lighthouse-canonical-v1",
+  "input_mode": "scripted_fixture_trace_replay",
+  "limitations": [
+    "No live Python authorization transport or neural model inference was used.",
+    "This scripted replay is not participant interaction, usability, immersion, G4, or G6 evidence.",
+    "Pixel hashes identify this packet only and are not cross-device visual golden values."
+  ],
+  "run_id": "godot-headless-canonical-v1",
+  "scenario_id": "sealed-lighthouse-v1",
+  "schema_version": "1.0.0",
+  "seed": 23,
+  "source": {
+    "capture_runner_sha256": "8586b3bac26cc6aa5597d5ff30960c309cce03bd7ce1615baaa5b66ae04411b1",
+    "capture_scene_sha256": "a27c56c1a27676908f4688f287c2cc379f6fbd38fc2f58ff4a652a0b91ae23fd",
+    "events_jsonl": "../sealed-lighthouse-canonical-v1/events.jsonl",
+    "events_sha256": "e3fb7b4f7bde96c0dda96d9aa9954e8f8a942119633b0b15d34a076e1cdda46c",
+    "project_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "summary_json": "../sealed-lighthouse-canonical-v1/summary.json",
+    "summary_sha256": "58475827f063169f02d055308b39ba9b937ef521bac5d7e5e7cd93f2c57e4c2d"
+  },
+  "status": "OBSERVED_GODOT_RENDER_REPLAY",
+  "track": "primary-structured-state-text",
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}

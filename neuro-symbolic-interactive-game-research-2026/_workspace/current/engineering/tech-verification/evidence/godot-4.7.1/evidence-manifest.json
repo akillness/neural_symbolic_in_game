@@ -1,0 +1,280 @@
+{
+  "command_template": "godot --headless --path game-track/godot --quit-after 120 -- --fixture=<absolute fixture path> --output=<evidence path>",
+  "engine_version": "4.7.1.stable.official.a13da4feb",
+  "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+  "runs": [
+    {
+      "files": {
+        "events.jsonl": {
+          "bytes": 21643,
+          "sha256": "b6ceccdb284ca76930750cd120182f4ae3ca37a56188ac5102a2a896ff6ca4bf"
+        },
+        "save.json": {
+          "bytes": 1426,
+          "sha256": "c5e05e7e378d6eea95d74990f18151ba796b069f656bbab7569dbb17c66ca200"
+        },
+        "summary.json": {
+          "bytes": 2522,
+          "sha256": "dc5d939cba46c425b0769b14daca3592f89f658b7b11c7f51e01bee48ea3a456"
+        }
+      },
+      "fixture_id": "sealed-lighthouse-canonical-v1",
+      "summary": {
+        "artifacts": {
+          "events_jsonl": "events.jsonl",
+          "save_json": "save.json"
+        },
+        "checks": {
+          "corrupt_save_state_isolation": true,
+          "duplicate_idempotent": true,
+          "early_forbidden_state_isolation": true,
+          "expected_terminal_hash_match": true,
+          "fixture_expectations_match": true,
+          "permitted_hint_after_authorization": true,
+          "replay_hash_match": true,
+          "research_oracle_hash_match": true,
+          "save_load_hash_match": true,
+          "timeout_state_isolation": true
+        },
+        "counts": {
+          "commits": 3,
+          "duplicate_events": 0,
+          "events": 21,
+          "fallbacks": 1,
+          "timeouts": 0
+        },
+        "engine": {
+          "headless": true,
+          "name": "Godot",
+          "version": "4.7.1-stable (official)"
+        },
+        "episode_id": "sealed-lighthouse-episode-001",
+        "execution_status": "OBSERVED_ENGINE_RUN",
+        "fixture_id": "sealed-lighthouse-canonical-v1",
+        "hash_algorithm": "sha256-canonical-json-v1",
+        "initial_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "loaded_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "replay_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "research_oracle_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "run_id": "godot-headless-canonical-v1",
+        "scenario_id": "sealed-lighthouse-v1",
+        "schema_version": "1.0.0",
+        "seed": 23,
+        "software": {
+          "canonicalizer_sha256": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+          "fixture_sha256": "c1749c8d9c9e141382f6da68be843d6802c83c862f8ff7d9994cc52d530bb460",
+          "machine_sha256": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962",
+          "runner_sha256": "acde3de4c5680f8189c72b70aace28ea1e5d304b6d793d0920dd78317e3fd16c",
+          "scenario_sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        },
+        "telemetry": {
+          "clock": "Time.get_ticks_usec",
+          "engine_elapsed_ms": 24.529,
+          "frame_budget_ms": 16.7,
+          "frame_budget_passed": false,
+          "headless_frame_delta_ms": [
+            116.666666666667,
+            7.20533333333333,
+            18.686,
+            7.44200000000001,
+            3.40733333333333
+          ],
+          "p95_frame_delta_ms": 116.666666666667,
+          "p95_request_latency_ms": 0.113,
+          "request_budget_ms": 100.0,
+          "request_budget_passed": true,
+          "request_latency_ms": [
+            0.113,
+            0.005,
+            0.072,
+            0.091
+          ]
+        },
+        "terminal_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      }
+    },
+    {
+      "files": {
+        "events.jsonl": {
+          "bytes": 23011,
+          "sha256": "e1143f09f31423c05d5354178d8eb641c1d13685a085760ec09031a252983629"
+        },
+        "save.json": {
+          "bytes": 1442,
+          "sha256": "0152d119af6f46ccdd12b7d52162fcd370e6886384ee7e19835b29eeab342be1"
+        },
+        "summary.json": {
+          "bytes": 2521,
+          "sha256": "0d4e62b72df84b76986b5504486d1db7b0410e15693724e9b01117dceda37413"
+        }
+      },
+      "fixture_id": "sealed-lighthouse-duplicate-event-v1",
+      "summary": {
+        "artifacts": {
+          "events_jsonl": "events.jsonl",
+          "save_json": "save.json"
+        },
+        "checks": {
+          "corrupt_save_state_isolation": true,
+          "duplicate_idempotent": true,
+          "early_forbidden_state_isolation": true,
+          "expected_terminal_hash_match": true,
+          "fixture_expectations_match": true,
+          "permitted_hint_after_authorization": true,
+          "replay_hash_match": true,
+          "research_oracle_hash_match": true,
+          "save_load_hash_match": true,
+          "timeout_state_isolation": true
+        },
+        "counts": {
+          "commits": 3,
+          "duplicate_events": 1,
+          "events": 22,
+          "fallbacks": 1,
+          "timeouts": 0
+        },
+        "engine": {
+          "headless": true,
+          "name": "Godot",
+          "version": "4.7.1-stable (official)"
+        },
+        "episode_id": "sealed-lighthouse-episode-duplicate-001",
+        "execution_status": "OBSERVED_ENGINE_RUN",
+        "fixture_id": "sealed-lighthouse-duplicate-event-v1",
+        "hash_algorithm": "sha256-canonical-json-v1",
+        "initial_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "loaded_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "replay_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "research_oracle_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "run_id": "godot-headless-duplicate-event-v1",
+        "scenario_id": "sealed-lighthouse-v1",
+        "schema_version": "1.0.0",
+        "seed": 23,
+        "software": {
+          "canonicalizer_sha256": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+          "fixture_sha256": "4afd82737c93a07f1573fc843e1c5b6d5c0867329b9775415a067508a190bae3",
+          "machine_sha256": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962",
+          "runner_sha256": "acde3de4c5680f8189c72b70aace28ea1e5d304b6d793d0920dd78317e3fd16c",
+          "scenario_sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        },
+        "telemetry": {
+          "clock": "Time.get_ticks_usec",
+          "engine_elapsed_ms": 18.254,
+          "frame_budget_ms": 16.7,
+          "frame_budget_passed": false,
+          "headless_frame_delta_ms": [
+            100.0,
+            2.19700000000001,
+            5.918,
+            8.55166666666667,
+            8.33333333333333
+          ],
+          "p95_frame_delta_ms": 100.0,
+          "p95_request_latency_ms": 0.084,
+          "request_budget_ms": 100.0,
+          "request_budget_passed": true,
+          "request_latency_ms": [
+            0.066,
+            0.004,
+            0.063,
+            0.084
+          ]
+        },
+        "terminal_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      }
+    },
+    {
+      "files": {
+        "events.jsonl": {
+          "bytes": 25789,
+          "sha256": "f7dcdc1430e407fee52f2f8708fb095db544bdcb2ec45ae8f13f8f2cfcde8322"
+        },
+        "save.json": {
+          "bytes": 1432,
+          "sha256": "65e39a726708f97defb702e98f19f89cf03c3614427db90747fcd1722d1309c1"
+        },
+        "summary.json": {
+          "bytes": 2495,
+          "sha256": "fbb04ab6e7ec272efc95e928a6b82bf1e5e5209506843a51810586cd46a0bc68"
+        }
+      },
+      "fixture_id": "sealed-lighthouse-timeout-v1",
+      "summary": {
+        "artifacts": {
+          "events_jsonl": "events.jsonl",
+          "save_json": "save.json"
+        },
+        "checks": {
+          "corrupt_save_state_isolation": true,
+          "duplicate_idempotent": true,
+          "early_forbidden_state_isolation": true,
+          "expected_terminal_hash_match": true,
+          "fixture_expectations_match": true,
+          "permitted_hint_after_authorization": true,
+          "replay_hash_match": true,
+          "research_oracle_hash_match": true,
+          "save_load_hash_match": true,
+          "timeout_state_isolation": true
+        },
+        "counts": {
+          "commits": 3,
+          "duplicate_events": 0,
+          "events": 25,
+          "fallbacks": 2,
+          "timeouts": 1
+        },
+        "engine": {
+          "headless": true,
+          "name": "Godot",
+          "version": "4.7.1-stable (official)"
+        },
+        "episode_id": "sealed-lighthouse-episode-timeout-001",
+        "execution_status": "OBSERVED_ENGINE_RUN",
+        "fixture_id": "sealed-lighthouse-timeout-v1",
+        "hash_algorithm": "sha256-canonical-json-v1",
+        "initial_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "loaded_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "replay_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "research_oracle_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "run_id": "godot-headless-timeout-v1",
+        "scenario_id": "sealed-lighthouse-v1",
+        "schema_version": "1.0.0",
+        "seed": 23,
+        "software": {
+          "canonicalizer_sha256": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+          "fixture_sha256": "753620886a5bb7777916a34762368f27bd5f81f75e35fd0bcf9acb135d7a6b35",
+          "machine_sha256": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962",
+          "runner_sha256": "acde3de4c5680f8189c72b70aace28ea1e5d304b6d793d0920dd78317e3fd16c",
+          "scenario_sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        },
+        "telemetry": {
+          "clock": "Time.get_ticks_usec",
+          "engine_elapsed_ms": 18.149,
+          "frame_budget_ms": 16.7,
+          "frame_budget_passed": false,
+          "headless_frame_delta_ms": [
+            98.925,
+            1.313,
+            6.737,
+            0.399,
+            9.29266666666666
+          ],
+          "p95_frame_delta_ms": 98.925,
+          "p95_request_latency_ms": 100.0,
+          "request_budget_ms": 100.0,
+          "request_budget_passed": false,
+          "request_latency_ms": [
+            0.074,
+            0.01,
+            0.07,
+            100.0,
+            0.087
+          ]
+        },
+        "terminal_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      }
+    }
+  ],
+  "schema_version": "1.0.0",
+  "status": "OBSERVED_ENGINE_RUNS"
+}

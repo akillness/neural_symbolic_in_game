@@ -5,12 +5,22 @@ artifacts:
   configs/experiment-matrix.yaml: {writer: experiment-designer, reviewer: statistician}
   configs/metric-catalog.yaml: {writer: statistician, reviewer: experiment-designer}
   game-track/schemas/game-bridge.schema.json: {writer: game-integrator, reviewer: logic-auditor}
-  paper/en/manuscript.md: {writer: bilingual-editor, reviewer: research-orchestrator}
-  paper/ko/manuscript.md: {writer: bilingual-editor, reviewer: research-orchestrator}
-  llm-wiki: {writer: knowledge-curator, reviewer: research-orchestrator}
+  paper/latex/en/main.tex: {writer: bilingual-editor, reviewer: research-orchestrator}
+  paper/latex/ko/main.tex: {writer: bilingual-editor, reviewer: research-orchestrator}
+  ../llm-wiki: {writer: knowledge-curator, reviewer: research-orchestrator}
+  _workspace/current/production: {writer: game-production-director, reviewer: reproducibility-verifier}
+  _workspace/current/design: {writer: game-designer, reviewer: logic-auditor}
+  _workspace/current/pm: {writer: game-pm, reviewer: statistician}
+  _workspace/current/engineering: {writer: game-programmer, reviewer: game-integrator}
+  _workspace/current/ops: {writer: game-programmer, reviewer: reproducibility-verifier}
+  _workspace/current/qa: {writer: game-qa, reviewer: reproducibility-verifier}
+  game-track/godot: {writer: game-programmer, reviewer: game-integrator}
+  game-track/design: {writer: game-designer, reviewer: logic-auditor}
+  game-track/assets/concepts: {writer: game-designer, reviewer: game-qa}
 rules:
   - writer and reviewer must be different roles
   - raw sources and run traces are immutable
   - result claims require trace, analysis, and reviewer identifiers
-  - failed gates remain visible under _workspace/gates
-
+  - failed gates remain visible under _workspace/current/qa and _workspace/current/production/gate-reviews
+  - production lore QA and the independently authored research oracle remain separate
+  - generated concept images never enter the primary structured-state experiment track

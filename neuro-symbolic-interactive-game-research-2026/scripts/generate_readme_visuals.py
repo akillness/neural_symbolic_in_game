@@ -280,7 +280,7 @@ def system_architecture_svg() -> str:
         footnote(
             66,
             788,
-            "Encoded validity is validity for encoded predicates only; unknown top-level candidate fields are currently ignored rather than rejected.",
+            "Encoded validity is validity for encoded predicates only; the shared key contract rejects unknown top-level fields at both parser boundaries.",
         )
     )
     items.append("</svg>")
@@ -428,6 +428,7 @@ def commit_transaction_svg() -> str:
 SECTION_ORDER = (
     "gate_conformance",
     "boundary_sentinels",
+    "closed_boundary_regressions",
     "repair_arms",
     "integrity_faults",
     "integrity_boundaries",
@@ -442,9 +443,14 @@ SECTION_META: dict[str, tuple[str, str, str]] = {
         GREEN,
     ),
     "boundary_sentinels": (
-        "Boundary sentinels",
+        "Open boundary sentinels",
         "documented encoding limitations — accepted on purpose, not safety passes",
         ORANGE,
+    ),
+    "closed_boundary_regressions": (
+        "Closed boundary regression",
+        "post-Stage-8 parser rejection parity — not semantic-safety evidence",
+        GREEN,
     ),
     "repair_arms": (
         "Repair arms",
@@ -579,6 +585,11 @@ STATUS_STYLE: dict[str, tuple[str, str, str]] = {
     "verified-scope-limited-preprint": ("Verified · preprint, narrow scope", PALE_ORANGE, ORANGE),
     "verified-designed-fixture": ("Verified · designed fixture", PALE_BLUE, BLUE),
     "verified-authored-engine-fixture": ("Verified · authored engine fixture", PALE_BLUE, BLUE),
+    "verified-authored-engine-render-fixture": (
+        "Verified · authored engine render fixture",
+        PALE_BLUE,
+        BLUE,
+    ),
     "approved-design-protocol": ("Approved · design protocol", PALE_ORANGE, ORANGE),
     "proposed-contribution": ("Proposed contribution", PALE_ORANGE, ORANGE),
     "TODO-RESULT": ("TODO-RESULT · no evidence", PALE_GRAY, GRAY),
@@ -590,6 +601,7 @@ STATUS_ORDER = (
     "verified-scope-limited-preprint",
     "verified-designed-fixture",
     "verified-authored-engine-fixture",
+    "verified-authored-engine-render-fixture",
     "approved-design-protocol",
     "proposed-contribution",
     "TODO-RESULT",
@@ -774,7 +786,7 @@ def research_workflow_svg() -> str:
         text(
             66,
             476,
-            "62 frozen assignments · Godot policy-mirror runs · Stage 6 meta-review",
+            "64 frozen provenance rows · Godot policy-mirror runs · Stage 6 meta-review",
             css_class="small",
         )
     )

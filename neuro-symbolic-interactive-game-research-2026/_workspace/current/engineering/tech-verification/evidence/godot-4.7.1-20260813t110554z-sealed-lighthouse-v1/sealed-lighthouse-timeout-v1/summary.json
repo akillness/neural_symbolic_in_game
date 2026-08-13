@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "events_jsonl": "events.jsonl",
+    "save_json": "save.json"
+  },
+  "checks": {
+    "corrupt_save_state_isolation": true,
+    "duplicate_idempotent": true,
+    "early_forbidden_state_isolation": true,
+    "expected_terminal_hash_match": true,
+    "fixture_expectations_match": true,
+    "permitted_hint_after_authorization": true,
+    "replay_hash_match": true,
+    "research_oracle_hash_match": true,
+    "save_load_hash_match": true,
+    "timeout_state_isolation": true
+  },
+  "counts": {
+    "commits": 3,
+    "duplicate_events": 0,
+    "events": 25,
+    "fallbacks": 2,
+    "timeouts": 1
+  },
+  "engine": {
+    "headless": true,
+    "name": "Godot",
+    "version": "4.7.1-stable (official)"
+  },
+  "episode_id": "sealed-lighthouse-episode-timeout-001",
+  "execution_status": "OBSERVED_ENGINE_RUN",
+  "fixture_id": "sealed-lighthouse-timeout-v1",
+  "hash_algorithm": "sha256-canonical-json-v1",
+  "initial_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+  "loaded_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+  "replay_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+  "research_oracle_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+  "run_id": "godot-headless-timeout-v1",
+  "scenario_id": "sealed-lighthouse-v1",
+  "schema_version": "1.0.0",
+  "seed": 23,
+  "software": {
+    "canonicalizer_sha256": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "fixture_sha256": "753620886a5bb7777916a34762368f27bd5f81f75e35fd0bcf9acb135d7a6b35",
+    "machine_sha256": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962",
+    "runner_sha256": "acde3de4c5680f8189c72b70aace28ea1e5d304b6d793d0920dd78317e3fd16c",
+    "scenario_sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+  },
+  "telemetry": {
+    "clock": "Time.get_ticks_usec",
+    "engine_elapsed_ms": 16.098,
+    "frame_budget_ms": 16.7,
+    "frame_budget_passed": false,
+    "headless_frame_delta_ms": [
+      100.0,
+      1.488,
+      5.474,
+      9.70466666666667,
+      7.18966666666667
+    ],
+    "p95_frame_delta_ms": 100.0,
+    "p95_request_latency_ms": 100.0,
+    "request_budget_ms": 100.0,
+    "request_budget_passed": false,
+    "request_latency_ms": [
+      0.069,
+      0.004,
+      0.065,
+      100.0,
+      0.091
+    ]
+  },
+  "terminal_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+}

@@ -21,7 +21,7 @@ It follows the local `academic-research` full pipeline and records every mandato
 | 7 | Optional cross-model verification | Not activated; no live cross-model evidence |
 | 8 | Author revision | Executed; Class A/B findings closed, explicitly listed residual findings retained |
 | 9 | Final formatting and AI-use disclosure | Executed; EN 7 pages, KO 6 pages, IEEE Short Paper band |
-| 10 | Reproducibility lock and release | Pending clean-commit regeneration and final claim-faithfulness re-audit |
+| 10 | Reproducibility passport and release lock | Passport compiled; clean-commit regeneration and final claim-faithfulness re-audit pending |
 
 No hosted ten-model or human-study result is represented as completed evidence. Until those studies
 are run, generated numerical results are limited to deterministic, local, offline harness experiments

@@ -46,11 +46,36 @@ claims:
       - research/academic-pipeline/stage-04-pilot/accounting-guards.csv
     status: verified-designed-fixture
   - id: C-PILOT-005
-    claim: The frozen Stage 4 manifest binds 62 published-row provenance records, including fault-specific input specifications, and the tracked release records its input and artifact checksums.
+    claim: The frozen Stage 4 manifest binds 64 published-row provenance records, including the closed unknown-key regression and fault-specific input specifications, and the tracked release records its input and artifact checksums.
     evidence:
       - research/academic-pipeline/stage-04-pilot/pilot-assignment-manifest.json
       - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
     status: verified-designed-fixture
+  - id: C-GAME-DESIGN-001
+    claim: The approved Sealed Lighthouse protocol separates a structured-state/text primary track from a frozen-image VLM/UI secondary track, with image generation prohibited during experiment execution.
+    evidence:
+      - configs/experimental-game.yaml
+      - game-track/assets/concepts/asset-manifest.json
+      - ../.omx/specs/deep-interview-experimental-game-track.md
+    status: approved-design-protocol
+  - id: C-GAME-DESIGN-002
+    claim: The engine-local Godot evidence comprises four authored fixtures. The canonical, duplicate-ID, and timeout fixtures completed their declared multi-step, failure-isolation, save/load, operation-replay, and terminal/reference-hash checks; the corrupt-save fixture separately verified rejection without canonical-state mutation. A stable-envelope projection test exists, but live Python authorization transport remains unexecuted.
+    evidence:
+      - configs/experimental-game.yaml
+      - research/academic-pipeline/stage-06-peer-review-simulation.md
+      - _workspace/current/engineering/tech-verification/godot-headless.md
+      - _workspace/current/engineering/tech-verification/current.json
+    status: verified-authored-engine-fixture
+  - id: C-GAME-DESIGN-003
+    claim: In the retained Godot 4.7.1 render packet, three non-headless 1280x720 primary-track PNGs are content-hashed and bound to canonical scripted-fixture event IDs, delivery indices, validation outcomes, and before/after world-state hashes; this establishes authored engine render/state correspondence only, not live Python authorization, model or player effects, usability, immersion, G4, or G6.
+    evidence:
+      - _workspace/current/engineering/tech-verification/current.json
+      - _workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/evidence-manifest.json
+      - _workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/capture-manifest.json
+      - _workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png
+      - _workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png
+      - _workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png
+    status: verified-authored-engine-render-fixture
   - id: C-RESULT-001
     claim: TRACE-RPG reduces hard violations versus LLM-only baselines.
     evidence: []

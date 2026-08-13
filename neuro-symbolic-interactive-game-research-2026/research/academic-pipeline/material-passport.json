@@ -4,7 +4,7 @@
   "mode": "full",
   "oversight": "very-high",
   "as_of": "2026-08-13",
-  "status": "stage_10_complete_with_open_acceptance_blockers",
+  "status": "stage_10_passport_compiled_clean_release_lock_pending",
   "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
@@ -125,16 +125,24 @@
     ]
   },
   "stage_4_5": {
-    "status": "pass_with_scope_boundaries",
+    "status": "superseded_original_pass_remediated_reaudit_pending",
     "audited_at": "2026-08-13",
     "audit_path": "research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md",
     "audited_revision": "ea96f2e",
     "claims_audited": 22,
-    "classification": {
+    "original_classification_superseded": {
       "faithful": 22,
       "overstated": 0,
       "unsupported": 0,
       "scope_mismatch": 0
+    },
+    "corrected_classification": {
+      "faithful": 19,
+      "overstated": 1,
+      "unsupported": 0,
+      "scope_mismatch": 1,
+      "outdated": 1,
+      "additional_unaudited_body_overstatement": 1
     },
     "mechanical_checks": {
       "unbacked_numbers": 0,
@@ -144,7 +152,7 @@
       "citation_key_parity": true,
       "bibliography_closed": true,
       "todo_result_claims_asserted": 0,
-      "pilot_claims_consistent": "5/5",
+      "pilot_claims_consistent": "post-Stage-8 packet regenerated; final comprehensive claim-faithfulness re-audit pending",
       "current_frozen_bundle_checksums": "35 artifacts + 20 declared inputs; verified by the post-Stage-8 runner"
     },
     "residual_boundaries": [
@@ -229,9 +237,18 @@
     "note": "Three defects passed the Stage 4.5 gate; that verdict was corrected, not defended."
   },
   "downstream_stages": {
-    "status": "all_stages_executed",
-    "not_executed": [],
-    "note": "Stage 7 was gated off, not skipped; see stage-07 record."
+    "status": "stages_8_and_9_executed_stage_10_release_lock_pending",
+    "executed": [
+      "8",
+      "9"
+    ],
+    "optional_not_activated": [
+      "7"
+    ],
+    "pending": [
+      "10_clean_commit_release_lock_and_final_reaudit"
+    ],
+    "note": "Stage 7 was gated off, not executed; see the Stage-7 record."
   },
   "stage_7": {
     "status": "not_activated",
@@ -287,10 +304,10 @@
     "anonymization": "author, affiliation, funding, biography all absent"
   },
   "stage_10": {
-    "status": "passport_compiled",
+    "status": "passport_compiled_clean_commit_release_lock_pending",
     "compiled_at": "2026-08-13",
     "repro_lock": {
-      "note": "documentation only; not a byte-reproducible replay guarantee",
+      "note": "The packet resolves 20/20 declared inputs at the recorded commit, but records git.dirty=true; this is not yet a clean-commit/tag byte-reproducible release lock.",
       "git_commit_of_pilot_inputs": "26724a6bf32711ff69dc70983afd977ccb27f62e",
       "declared_inputs_resolving_at_commit": "20/20",
       "artifact_count": 35,
@@ -320,8 +337,12 @@
     },
     "open_at_release": {
       "acceptance_blockers": {
-        "F13": "P1-P4 asserted in theorem register without proof; P2 antecedent vacuous",
-        "F14": "62-key manifest mixes 19 aggregate rows with 43 executed rows"
+        "clean_release_lock": "pilot manifest records git.dirty=true; regenerate from the final clean commit/tag",
+        "final_claim_reaudit": "rerun the expanded Stage-4.5 gate against the final manuscript and packet"
+      },
+      "resolved_in_current_manuscript": {
+        "F13": "P1-P4 demoted to explicitly asserted encoded-contract implementation invariants; no enforced callback deadline or formal proof claimed",
+        "F14": "64 provenance rows reported as 43 executed fixture rows plus 21 aggregate rows"
       },
       "camera_ready_items": {
         "F17": "IfFileExists/pendingartifact scaffolding still present",
