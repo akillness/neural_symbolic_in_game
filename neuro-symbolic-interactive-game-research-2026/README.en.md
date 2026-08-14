@@ -65,6 +65,95 @@ Detailed venue gate: [`research/journal-targets.md`](research/journal-targets.md
 - RQ4: Can uncertainty-calibrated affect adaptation improve target-curve tracking without regressing hard validity?
 - RQ5: Do controller gains replicate across a ten-model screen and a three-model confirmatory stage?
 
+Each question maps to one `C-RESULT-*` claim, and all five are still `TODO-RESULT`. The tables below
+separate what the repository has built from what it has measured.
+
+## At a glance
+
+| Question | What exists today | What is still missing |
+|---|---|---|
+| Does the code run? | Yes — 96 tests, deterministic pilot, Godot slice, live public-safe Web build | — |
+| Is the pipeline complete? | Yes — all 10 academic stages executed, Stage 10 repro lock passed | — |
+| Is the paper written? | Yes — bilingual IEEE short paper, EN 7 pp / KO 6 pp, 42 references | Journal submission and decision |
+| **Are the research claims proven?** | **No** | Live-model, human, affect, retrieval, memory, and engine-performance studies |
+
+Development is complete for what this package claims. The **experiments are not**: 5 of 18 tracked
+claims are efficacy claims with zero evidence, and they are the ones the research questions ask.
+
+## Experiment design (planned, not executed)
+
+SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). Nothing in this section has
+been run; it is recorded so the scope is auditable.
+
+| Dimension | Stage 1 screening | Stage 2 confirmatory |
+|---|---|---|
+| Models | 10 (all) | 3 (promoted by frozen Pareto rule) |
+| Scenarios per track | 30 | 120 |
+| Repetitions | 3 | 5 |
+| Controller arms | 6 | 6 |
+| Grounding variants | 3 (`none`, `rag`, `kg_temporal_memory`) | 3 |
+| Affect variants | — | 2 (`off`, uncertainty-calibrated) |
+| Ablations | — | 6 |
+| Purpose | Pareto screening; **no causal conclusion** | Preregistered full factorial |
+
+The six controller arms are ordered by how much of the stack they enable, so each comparison isolates
+one mechanism:
+
+| Arm | Gate | Repair | Grounding stack |
+|---|---|---|---|
+| `direct_commit` | none (unsafe baseline, isolated build) | — | — |
+| `structural_constraint_only` | schema/grammar only | — | — |
+| `validator_rejection_only` | state-relative | none | — |
+| `matched_budget_blind_retry` | state-relative | K new proposals, no error feedback | — |
+| `structured_repair` | state-relative | K repairs with structured errors | partial |
+| `trace_rpg_full` | state-relative + external policy | K repairs + defensive revalidation | full |
+
+| Track | Primary endpoint |
+|---|---|
+| `world-generation` | `valid_episode_rate` |
+| `npc-dialogue` | `hard_dialogue_violation_rate` |
+| `affect-adaptation` | `target_curve_rmse` without hard-validity regression |
+
+Controls: seeds `11, 23, 47, 83, 131`; repair budget `K=3`; 60 s timeout; at most 4 proposal-or-repair
+calls, matched across the three comparable arms; per-attempt tokens, latency, cost, and failure class
+recorded. 28 metrics are catalogued in [`configs/metric-catalog.yaml`](configs/metric-catalog.yaml).
+
+## Paper at a glance
+
+Authoritative: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
+[`paper/latex/ko/main.pdf`](paper/latex/ko/main.pdf)
+
+| Item | Value |
+|---|---|
+| Title | TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World |
+| Venue target | IEEE Transactions on Games, **Short Paper** (6–8 pp band) |
+| Length | EN 7 pp · KO 6 pp |
+| Sections | 11, identical in both languages |
+| References | 42, all identity-verified, 0 hallucinated |
+| Review model | double-anonymous |
+
+What the paper claims, and what it explicitly does not:
+
+| Claimed | Not claimed |
+|---|---|
+| A typed contract for state, policy, candidate, and record | That any model is better than another |
+| A deterministic state-relative commit gate over 12 encoded codes | Player experience or narrative quality |
+| Bounded repair with unchanged-state fallback | That the reference repairer is a deployable method |
+| Content-linked records, semantic replay, episode continuity | Writer authentication (checksums are unkeyed) |
+| Assignment-complete failure accounting | Retrieval, memory, or affect benefit |
+| Conformance over **one** authored world state | Generalization to a real game at scale |
+
+Claim ledger ([`research/claim-ledger.yaml`](research/claim-ledger.yaml)), 18 claims:
+
+| Status | Count | Meaning |
+|---|---:|---|
+| `verified-designed-fixture` | 5 | Observed in frozen authored fixtures |
+| `verified-primary` / `-scope-limited` / `-preprint` | 4 | Supported by cited literature |
+| `verified-authored-engine-fixture` / `-render-fixture` | 2 | Godot slice conformance |
+| `approved-design-protocol` | 1 | Design approved, unexecuted |
+| `proposed-contribution` | 1 | Architectural position |
+| **`TODO-RESULT`** | **5** | **`C-RESULT-001`–`005`: no evidence at all** |
+
 ## Quick start
 
 ```bash

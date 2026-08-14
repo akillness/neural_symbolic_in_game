@@ -17,6 +17,28 @@ This repository contains a bilingual paper draft, a ten-model evaluation matrix,
 | [English paper draft](./neuro-symbolic-interactive-game-research-2026/paper/en/manuscript.md) | TRACE-RPG manuscript draft |
 | [Project knowledge index](./llm-wiki/index.md) | Persistent sources, concepts, reports, and graph |
 
+## 완료 상태 / Completion status
+
+| 영역 / Area | 상태 / Status | 근거 / Evidence |
+|---|---|---|
+| 구현 / Implementation | **완료 / Done** | 96 tests, deterministic pilot, Godot 4.7.1 slice, live public-safe Web build |
+| 학술 파이프라인 / Academic pipeline | **완료 / Done** | 10 stages executed; Stage 10 repro lock, 21/21 inputs + 35/35 artifacts |
+| 논문 / Paper | **작성 완료 / Drafted** | Bilingual IEEE short paper, EN 7 pp / KO 6 pp, 42 verified references |
+| 재현성 / Reproducibility | **완료 / Done** | Clean-clone: 96/96 tests, 35/35 artifacts byte-identical |
+| **실험 / Experiments** | **미완료 / NOT DONE** | `C-RESULT-001`–`005` = `TODO-RESULT`, 5 of 18 claims, zero evidence |
+| 투고 / Submission | **미진행 / Not started** | No journal decision, reviewer archive, or DOI deposit |
+
+구현과 리소스는 완료됐고 실험은 완료되지 않았습니다. 연구 질문 5개가 겨냥하는 효능 주장에는
+근거가 전혀 없으며, 라이브 모델·인간 연구·감정·검색·메모리·엔진 성능 실험이 모두 미실행입니다.
+
+Implementation and resources are complete; the experiments are not. The five efficacy claims the
+research questions target have no evidence, and the live-model, human, affect, retrieval, memory,
+and engine-performance studies are all unexecuted.
+
+상세 표(실험 설계 · 논문 요약 · 주장 원장) / Detailed tables:
+[한국어](./neuro-symbolic-interactive-game-research-2026/README.ko.md#한눈에-보기) ·
+[English](./neuro-symbolic-interactive-game-research-2026/README.en.md#at-a-glance)
+
 ## System at a glance
 
 ![Trust boundary: learned proposal, symbolic authority](./neuro-symbolic-interactive-game-research-2026/visuals/system-architecture.svg)
