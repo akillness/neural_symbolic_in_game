@@ -151,6 +151,12 @@ paid/free result.
 ## 6. Verification and reporting
 
 - Full game-track regression command: `./scripts/validate_game_track.sh`.
+- Before pushing, run `./scripts/verify_like_ci.sh` — it replays every
+  `.github/workflows/validate.yml` step in order. The game-track command alone is not sufficient:
+  CI also runs `ruff check`/`ruff format --check` over `src tests scripts examples`, the unit-test
+  discovery, project integrity, README-visual staleness, the offline smoke, harness structure,
+  deep-research and survey contracts, and the wiki lint. `./scripts/verify_like_ci.sh
+  --install-hook` wires it as a `pre-push` hook.
 - Public-safe authored-path check:
   `godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe`.
 - Presentation-invariant reports use explicit `main_3d.tscn -- --evaluate <path> --public-safe` and
