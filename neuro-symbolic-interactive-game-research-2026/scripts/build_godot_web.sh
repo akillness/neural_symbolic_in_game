@@ -50,9 +50,17 @@ run_godot_checked() {
 # The research project keeps headless.tscn as its canonical default because its
 # exact project.godot hash is bound into immutable evidence. Web export happens
 # from this disposable copy and changes only the copy's launch scene.
+#
+# `addons/` is excluded on purpose. The repository tracks no addon file, the game
+# references none, and `project.godot` enables no editor plugin, so nothing in the
+# playable depends on one. A developer with a local editor addon installed under
+# `addons/` would otherwise have it staged into the export, where built-in addon
+# scripts using `class_name` abort the Web build. Excluding it makes the bundle a
+# function of the tracked tree rather than of the developer's editor state.
 rsync -a \
   --exclude '.godot/' \
   --exclude '.omc/' \
+  --exclude 'addons/' \
   --exclude 'scripts/game3d/llm/' \
   "$GODOT_PROJECT/" "$STAGED_PROJECT/"
 cp "$WEB_CONFIG/export_presets.cfg" "$STAGED_PROJECT/export_presets.cfg"
