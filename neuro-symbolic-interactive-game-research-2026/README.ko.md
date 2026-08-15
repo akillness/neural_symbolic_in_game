@@ -67,6 +67,94 @@ assignment-complete outcome record, proposal outcome이 존재할 때의 완전�
 - RQ4: 불확실성 보정된 감정 신호가 하드 유효성을 악화시키지 않고 목표 긴장 곡선 추종을 개선하는가?
 - RQ5: 동일 컨트롤러의 이득이 10개 모델 스크리닝과 3개 모델 확증 단계에서 재현되는가?
 
+각 질문은 하나의 `C-RESULT-*` 주장에 대응하며, 다섯 개 모두 아직 `TODO-RESULT`다. 아래 표는
+저장소가 **구축한 것**과 **측정한 것**을 분리한다.
+
+## 한눈에 보기
+
+| 질문 | 현재 존재하는 것 | 아직 없는 것 |
+|---|---|---|
+| 코드가 동작하는가? | 예 — 테스트 96개, 결정론적 파일럿, Godot 슬라이스, 공개 안전 Web 빌드 | — |
+| 파이프라인이 완료됐는가? | 예 — 학술 10단계 전부 실행, Stage 10 재현 락 통과 | — |
+| 논문이 작성됐는가? | 예 — 이중언어 IEEE short paper, 영문 7쪽 / 국문 6쪽, 참고문헌 42건 | 저널 투고와 심사 결정 |
+| **연구 주장이 입증됐는가?** | **아니오** | 라이브 모델, 인간, 감정, 검색, 메모리, 엔진 성능 연구 |
+
+본 패키지가 주장하는 범위에서 **개발은 완료**됐다. 그러나 **실험은 완료되지 않았다.** 추적 중인
+18개 주장 가운데 5개는 근거가 전혀 없는 효능 주장이며, 그 5개가 바로 연구 질문이 묻는 대상이다.
+
+## 실험 설계 (계획, 미실행)
+
+SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 절의 내용은 하나도
+실행되지 않았다. 범위를 감사 가능하게 남기기 위해 기록한다.
+
+| 차원 | Stage 1 스크리닝 | Stage 2 확증 |
+|---|---|---|
+| 모델 | 10개 (전체) | 3개 (동결 Pareto 규칙으로 승격) |
+| 트랙별 시나리오 | 30 | 120 |
+| 반복 | 3 | 5 |
+| 컨트롤러 arm | 6 | 6 |
+| Grounding 변형 | 3 (`none`, `rag`, `kg_temporal_memory`) | 3 |
+| Affect 변형 | — | 2 (`off`, 불확실성 보정) |
+| Ablation | — | 6 |
+| 목적 | Pareto 선별, **인과 결론 없음** | 사전등록 완전 요인 설계 |
+
+여섯 개 컨트롤러 arm은 활성화하는 스택 범위 순으로 배열해, 각 비교가 하나의 메커니즘만 분리한다.
+
+| Arm | 게이트 | 수리 | Grounding 스택 |
+|---|---|---|---|
+| `direct_commit` | 없음 (안전하지 않은 baseline, 격리 빌드) | — | — |
+| `structural_constraint_only` | schema/grammar만 | — | — |
+| `validator_rejection_only` | 상태 상대 | 없음 | — |
+| `matched_budget_blind_retry` | 상태 상대 | K회 신규 제안, 오류 피드백 없음 | — |
+| `structured_repair` | 상태 상대 | 구조화 오류를 받는 K회 수리 | 부분 |
+| `trace_rpg_full` | 상태 상대 + 외부 정책 | K회 수리 + 방어적 재검증 | 전체 |
+
+| 트랙 | 1차 평가지표 |
+|---|---|
+| `world-generation` | `valid_episode_rate` |
+| `npc-dialogue` | `hard_dialogue_violation_rate` |
+| `affect-adaptation` | 하드 유효성 악화 없는 `target_curve_rmse` |
+
+통제 변수: seed `11, 23, 47, 83, 131`, repair budget `K=3`, 타임아웃 60초, 제안·수리 호출 최대 4회를
+비교 가능한 세 arm에 동일 적용, 시도별 토큰·지연·비용·실패 클래스 기록. 지표 28개는
+[`configs/metric-catalog.yaml`](configs/metric-catalog.yaml)에 정의돼 있다.
+
+## 논문 한눈에 보기
+
+정식 원고: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
+[`paper/latex/ko/main.pdf`](paper/latex/ko/main.pdf)
+
+| 항목 | 값 |
+|---|---|
+| 제목 | TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World |
+| 목표 저널 | IEEE Transactions on Games, **Short Paper** (6–8쪽 밴드) |
+| 분량 | 영문 7쪽 · 국문 6쪽 |
+| 절 수 | 11개, 두 언어 동일 |
+| 참고문헌 | 42건, 동일성 전수 확인, 환각 0건 |
+| 심사 방식 | 이중 익명 |
+
+논문이 주장하는 것과 명시적으로 주장하지 않는 것:
+
+| 주장하는 것 | 주장하지 않는 것 |
+|---|---|
+| 상태·정책·후보·레코드의 타입 계약 | 특정 모델이 다른 모델보다 우수하다는 것 |
+| 인코딩된 12개 코드에 대한 결정론적 상태 상대 커밋 게이트 | 플레이어 경험이나 서사 품질 |
+| 변경 없는 fallback을 갖춘 제한 수리 | 참조 repairer가 배포 가능한 방법이라는 것 |
+| 콘텐츠 연결 레코드, 의미 재생, 에피소드 연속성 | 작성자 인증 (체크섬은 키 없음) |
+| 할당 완전 실패 계수 | 검색·메모리·감정의 이득 |
+| **단일** 작성 world state에 대한 적합성 | 실제 게임 규모로의 일반화 |
+
+주장 원장([`research/claim-ledger.yaml`](research/claim-ledger.yaml)) 18건:
+
+| 상태 | 개수 | 의미 |
+|---|---:|---|
+| `verified-designed-fixture` | 5 | 동결된 작성 fixture에서 관찰 |
+| `verified-primary` / `-scope-limited` / `-preprint` | 4 | 인용 문헌이 뒷받침 |
+| `verified-authored-engine-fixture` / `-render-fixture` | 2 | Godot 슬라이스 적합성 |
+| `approved-design-protocol` | 1 | 설계 승인, 미실행 |
+| `proposed-contribution` | 1 | 아키텍처 관점 |
+| **`TODO-RESULT`** | **5** | **`C-RESULT-001`–`005`: 근거 전무** |
+
 ## 빠른 시작
 
 ```bash
