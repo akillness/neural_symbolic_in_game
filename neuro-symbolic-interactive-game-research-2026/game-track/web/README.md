@@ -4,9 +4,20 @@ Status: **public-safe artifact deployed at
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app); browser
 smoke passed on 2026-08-14**.
 
-This directory holds the reproducible configuration for a procedural-only Godot Web build. The
+This directory holds the reproducible *configuration* for a procedural-only Godot Web build. The
 generated `public/` directory is intentionally ignored and is deployed as a static artifact after
 local browser verification.
+
+**The exported `index.pck` is not byte-reproducible.** Four consecutive Web exports from the same
+clean clone, on one machine with one Godot build, produced four distinct digests and two distinct
+sizes (1,573,408 and 1,573,424 bytes; a 16-byte swing). The `index.html` shipped alongside embeds
+the observed pck size, so it varies with it, while `index.wasm` and the bundled font stay stable.
+Godot's packer is the source of the variance, not the tracked tree or the build script.
+
+Two consequences worth stating plainly. A pck digest recorded below is a **receipt for one specific
+deployed artifact**, not a target a rebuild can be expected to hit; do not treat a mismatch as
+evidence of tampering or drift. And release verification for this bundle rests on browser smoke
+evidence plus the deterministic research artifacts, not on byte-equality of the pck.
 
 The builder copies `game-track/godot/` to a disposable directory and selects `main_3d.tscn` only in
 that copy. The canonical research project continues to launch `headless.tscn`, so the immutable
