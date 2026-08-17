@@ -18,10 +18,10 @@ Current verdict input: `FIX`
 | Presentation evaluation JSON | DONE-ENGINEERING | `SL-PLAY-EVAL-001`: `4/4`, `40/40` + `7/7` = `47/47` |
 | Latest public-safe screenshots | DONE-WORKING-CAPTURES | four 1280×720 PNGs, SHA-256 registered; not immutable evidence |
 | Bundled Korean font | DONE-PROVENANCE | unmodified Nanum Gothic Regular, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256/source; public 4,534-byte OFL notice hash-matched |
-| Staged Web artifact | DONE-ARTIFACT | 11 top-level files, 41,426,198 bytes; latest PCK 1,573,424 bytes after `docs/latest/**` exclusion |
+| Staged Web artifact | DONE-ARTIFACT | 11 top-level files, 41,426,182 bytes; latest PCK 1,573,408 bytes after `docs/latest/**` exclusion |
 | Production HTTP/MIME | DONE | HTML/JS/WASM/PCK/OFL returned 200; WASM `application/wasm`; OFL `text/plain` |
-| Deployed browser layout/glyph smoke | DONE-BOUNDED | Playwriter 1280×720 and 390×844 start/in-game captures; Korean rendering clean |
-| Trusted headless pointer lock | DONE | Playwriter click entered pointer lock; console/page-error counts stayed zero |
+| Deployed browser layout/glyph smoke | DONE-BOUNDED | headless 2026-08-17 1280×720 and 390×844 start/in-game captures; Korean rendering clean |
+| Trusted headless pointer lock | FIX | not reproduced 2026-08-17: headless synthetic click raised `pointerlockerror`, and the real-Chrome Playwriter click issued no pointer-lock request at all; `document.pointerLockElement` stayed null both times; earlier prior-session pass retained as history only; console/page-error counts stayed zero, and the `LOOK ACTIVE` HUD label is not pointer-lock evidence; human-gesture check open |
 | Browser save/reload | FIX | not exercised in the retained deployment smoke |
 | Warmed performance/input/soak | FIX | no warmed p95, long-frame rate, input latency, or 30-minute memory trace |
 | Deployment/response verification | DONE-BOUNDED | production `https://sealed-lighthouse-trace-rpg.vercel.app`; retained desktop/mobile captures and HTTP checks |
@@ -31,6 +31,8 @@ Current verdict input: `FIX`
 Release means a reviewable public-safe experimental playable, not a production service or proof of
 immersion. The procedural artifact is live at `https://sealed-lighthouse-trace-rpg.vercel.app` and
 passed the bounded browser smoke above; pending generated candidates are excluded. The extension
-tab's `WrongDocumentError` was automation-only, while dedicated trusted headless sessions passed.
-G4 remains **UNASSESSED** and G6 remains `FIX` because save/reload, representative warmed
-frame/input measurement, and a 30-minute soak are still missing.
+tab's `WrongDocumentError` stays automation-only and is not evidence that pointer lock works; the
+2026-08-17 retests did not reproduce the earlier trusted headless pointer-lock pass, and automation
+denial is not by itself evidence of a production defect.
+G4 remains **UNASSESSED** and G6 remains `FIX` because save/reload, a human-gesture pointer-lock
+check, representative warmed frame/input measurement, and a 30-minute soak are still missing.

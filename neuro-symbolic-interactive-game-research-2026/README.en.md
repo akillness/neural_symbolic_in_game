@@ -272,7 +272,8 @@ These four 1280×720 files are latest engineering working captures, not immutabl
 Generated candidates are excluded from Web/`--public-safe`; the public build uses procedural
 geometry, VFX, UI, and audio. The evaluation establishes authored-fixture and presentation-
 invariant conformance only. G4, usability, immersion, affect, player efficacy, and model efficacy
-are **UNASSESSED**; G6 remains `FIX` pending save/reload, warmed-frame/input, and soak evidence.
+are **UNASSESSED**; G6 remains `FIX` pending pointer-lock, save/reload, warmed-frame/input, and soak
+evidence.
 
 ```bash
 ./scripts/build_godot_web.sh
@@ -280,8 +281,11 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Playwriter verified clean loading, Korean glyphs, responsive 1280×720 and 390×844 layouts,
-and gesture-triggered pointer lock with zero console/page errors. See
+A headless-browser smoke on 2026-08-17 against `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe` verified clean
+loading, Korean glyphs, responsive 1280×720 and 390×844 layouts, and zero console/page errors.
+Playwriter was used that day only for the Vercel device-approval login and one pointer-lock
+retest that produced no lock, so pointer lock is **not verified**; automation denial is not
+itself a defect, and the open item remains a human-gesture check. See
 [`game-track/web/README.md`](game-track/web/README.md).
 
 ## Execution order

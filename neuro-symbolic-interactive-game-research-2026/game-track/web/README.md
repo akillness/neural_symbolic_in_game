@@ -2,7 +2,7 @@
 
 Status: **public-safe artifact deployed at
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app); browser
-smoke passed on 2026-08-14**.
+smoke passed on 2026-08-17**.
 
 This directory holds the reproducible *configuration* for a procedural-only Godot Web build. The
 generated `public/` directory is intentionally ignored and is deployed as a static artifact after
@@ -32,31 +32,41 @@ cross-origin isolation. It includes the authored scenario JSON explicitly. Pendi
 concept images live outside `res://` and are not shipped; the public build uses the programmatic
 presentation fallback.
 
-The current ignored `public/` artifact contains 11 top-level files and 41,426,198 bytes, including
+The current ignored `public/` artifact contains 11 top-level files and 41,426,182 bytes, including
 `index.html`, JavaScript/audio worklets, `index.pck`, `index.wasm`, and the directly readable
-`NanumGothic-OFL.txt`. Artifact existence is release engineering evidence only.
+`NanumGothic-OFL.txt`. Artifact existence is release engineering evidence only. Local deploy
+metadata written by `vercel link` (`.env.local`, `.vercel/`, a generated `.gitignore`) is not part
+of the shipped artifact and is excluded from that count.
 
-Playwriter browser smoke confirmed:
+Browser smoke confirmed:
 
-- production deployment `dpl_9RFPtxe7iZha8HWEawJzZu8WceED` serves the 2026-08-14 latest-only
+- production deployment `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe` serves the 2026-08-17 latest-only
   public-safe artifact;
-- HTML, JS, WASM, and PCK returned `200`; WASM used `application/wasm`.
+- all 11 shipped files returned `200`; WASM used `application/wasm` and the JS entry plus both
+  audio worklets used `application/javascript`;
+- `index.html`, `index.pck`, `index.wasm`, and `NanumGothic-OFL.txt` fetched from the alias were
+  byte-identical to the locally verified build;
+- the declared `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy` headers were
+  present on the served HTML.
 - Korean glyphs rendered from the bundled OFL Nanum Gothic font.
 - [`NanumGothic-OFL.txt`](https://sealed-lighthouse-trace-rpg.vercel.app/NanumGothic-OFL.txt)
   returned `200 text/plain`, 4,534 bytes, and SHA-256
   `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f`.
-- the deployed PCK is 1,573,424 bytes, has deployment-receipt SHA-256
-  `6e6500e79b48260ae5d6f532133ff664094ccc4e3a98116718a60264aca0b7b1`, and excludes
+- the deployed PCK is 1,573,408 bytes, has deployment-receipt SHA-256
+  `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`, and excludes
   `docs/latest/**` plus every pending concept pack;
 - the start gate and in-game ledger remained readable at 1280×720 and 390×844;
-- a trusted Playwriter click entered pointer lock in headless Chromium;
+- entering the game from the start gate advanced the HUD to `LOOK ACTIVE` and rendered the ledger;
 - console and page-error counts were zero before and after entry.
 
-The extension-connected inspection tab cannot own the root document for pointer lock and produced
-one automation-only `WrongDocumentError`; the dedicated headless Playwriter sessions succeeded.
-Save/reload, representative warmed-frame/input measurements, and a 30-minute soak remain open, so
-G6 stays `FIX`. G4, usability, immersion, affect, player efficacy, and model efficacy remain
-unassessed.
+Pointer lock is **not verified** for this deployment. Headless Chromium raised `pointerlockerror`
+on a synthetic click, and a Playwriter-driven click in real Chrome produced no pointer-lock request
+at all, so neither run is admissible evidence. `LOOK ACTIVE` in the HUD is the game's own state
+label, not `document.pointerLockElement`, so it cannot stand in for the browser-level check.
+Automation denial is not by itself evidence of a production defect; a human-gesture check is the
+open item. Pointer lock, save/reload, representative warmed-frame/input measurements, and a
+30-minute soak all remain open, so G6 stays `FIX`. G4, usability, immersion, affect, player
+efficacy, and model efficacy remain unassessed.
 
 | Desktop entry | Narrow in-game layout |
 | --- | --- |

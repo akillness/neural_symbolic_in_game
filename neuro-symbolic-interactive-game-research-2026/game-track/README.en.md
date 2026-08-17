@@ -70,7 +70,7 @@ geometry, VFX, UI, and audio.
 
 **Claim boundary:** authored-fixture and presentation-invariant conformance only. G4, usability,
 immersion, affect, player efficacy, and model efficacy are **UNASSESSED**. G6 remains `FIX` until
-save/reload, warmed-frame/input, and 30-minute soak measurements exist.
+pointer-lock, save/reload, warmed-frame/input, and 30-minute soak measurements exist.
 
 From the project root:
 
@@ -80,9 +80,14 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Playwriter verified readable Korean text, responsive desktop/narrow layouts, pointer-lock entry,
-and zero console/page errors. Build and browser-smoke details:
-[`web/README.md`](web/README.md).
+A headless browser smoke on 2026-08-17 confirmed readable Korean text, responsive desktop/narrow
+layouts, and zero console/page errors. Pointer-lock entry is **not verified**: on 2026-08-17 a
+headless synthetic click raised `pointerlockerror` and a Playwriter-driven click in real Chrome
+produced no pointer-lock request at all, leaving `document.pointerLockElement` null in both runs.
+The HUD `LOOK ACTIVE` label is the game's own state, not that browser check, and automation denial
+is not by itself evidence of a production defect; a human-gesture check is the open item. Playwriter
+was used on 2026-08-17 only for the Vercel device-approval login and that pointer-lock retest.
+Build and browser-smoke details: [`web/README.md`](web/README.md).
 
 ## Engine render-capture evidence
 

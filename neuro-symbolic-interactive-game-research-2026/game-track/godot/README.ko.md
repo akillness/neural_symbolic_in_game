@@ -2,7 +2,7 @@
 
 상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `47/47`
 검사를 통과했다. 최신 작업 캡처 4개와 public-safe Web 산출물을 빌드·공개했고
-브라우저 스모크를 통과했다**(2026-08-14).
+브라우저 스모크를 통과했다**(2026-08-17).
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -172,13 +172,18 @@ python3 -m http.server 4173 --directory game-track/web/public
 단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 현재
 산출물은 무시 대상 `game-track/web/public/` 아래의 `index.html`, JavaScript/audio worklet,
 PCK, WebAssembly 파일로 구성된다. 배포 상태:
-**[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**. Playwriter로
-한글 표시, 1280×720·390×844 반응형 배치, 포인터 잠금 진입, 콘솔·페이지 오류
-0건을 확인했다. 상세 내용은 [`../web/README.md`](../web/README.md)에 있다.
+**[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**. 2026-08-17
+headless 브라우저 스모크로 한글 표시, 1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을
+확인했다. 포인터 잠금 진입은 **미검증**이다. 2026-08-17 재시험에서 headless 합성 클릭은
+`pointerlockerror`를 냈고 실제 Chrome의 Playwriter 클릭은 포인터 잠금 요청 자체를 만들지
+않았으며 두 실행 모두 `document.pointerLockElement`가 null이었다. HUD `시점 잠김`은 게임 자체
+상태 표시이며 이 브라우저 검사를 대체하지 못한다. 자동화 거부만으로는 운영 결함 근거가 되지
+않으며 사람 제스처 확인이 미해결 항목이다. 2026-08-17 Playwriter는 Vercel 기기 승인 로그인과
+그 포인터 잠금 재시험에만 사용했다. 상세 내용은 [`../web/README.md`](../web/README.md)에 있다.
 
 **Cycle 3 주장 경계:** 저자 fixture와 프레젠테이션 불변조건 엔지니어링 적합성만 다룬다.
-G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 save/reload,
-warmed frame/input, 30분 soak 근거가 없어 `FIX`다.
+G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 포인터 잠금,
+save/reload, warmed frame/input, 30분 soak 근거가 없어 `FIX`다.
 
 ## 증거 경계
 

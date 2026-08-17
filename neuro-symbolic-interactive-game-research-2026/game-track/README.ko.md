@@ -66,8 +66,8 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 사용한다.
 
 **주장 경계:** 저자 fixture와 프레젠테이션 불변조건 적합성만 다룬다. G4, 사용성, 몰입,
-정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 save/reload, warmed frame/input,
-30분 soak 측정 전까지 `FIX`다.
+정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 포인터 잠금, save/reload,
+warmed frame/input, 30분 soak 측정 전까지 `FIX`다.
 
 프로젝트 루트에서 실행한다.
 
@@ -77,9 +77,13 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 배포 상태: **[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Playwriter로 한글 표시, 데스크톱·협폭 반응형 배치, 포인터 잠금 진입, 콘솔·페이지
-오류 0건을 확인했다. 빌드·브라우저 스모크 상세:
-[`web/README.md`](web/README.md).
+2026-08-17 headless 브라우저 스모크로 한글 표시, 데스크톱·협폭 반응형 배치, 콘솔·페이지 오류
+0건을 확인했다. 포인터 잠금 진입은 **미검증**이다. 2026-08-17 재시험에서 headless 합성 클릭은
+`pointerlockerror`를 냈고 실제 Chrome의 Playwriter 클릭은 포인터 잠금 요청 자체를 만들지
+않았으며 두 실행 모두 `document.pointerLockElement`가 null이었다. HUD `시점 잠김`은 게임 자체
+상태 표시이며 이 브라우저 검사를 대체하지 못한다. 자동화 거부만으로는 운영 결함 근거가 되지
+않으며 사람 제스처 확인이 미해결 항목이다. 2026-08-17 Playwriter는 Vercel 기기 승인 로그인과
+그 포인터 잠금 재시험에만 사용했다. 빌드·브라우저 스모크 상세: [`web/README.md`](web/README.md).
 
 ## 엔진 render-capture 근거
 

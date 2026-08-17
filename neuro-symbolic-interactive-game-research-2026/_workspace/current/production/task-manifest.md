@@ -21,8 +21,8 @@ final aggregate regression
 | Execute public-safe 3D smoke | QA | 1.verify | same proposal router as play | G7 engineering | observed-8-of-8 | preserve final command receipt |
 | Execute aggregate regression | QA | 1.verify | `./scripts/validate_game_track.sh` | regression | observed-40-tests-44-subtests | rerun after integration |
 | Bundle Korean Web font with license | release engineer | 1.resources | `assets/fonts/NanumGothic-Regular.ttf`, `OFL.txt`, provenance README, public `NanumGothic-OFL.txt` | provenance | done-OFL-pinned-and-public-hash | retain license with releases |
-| Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-11-files-41425846-bytes | rebuild for future releases |
-| Verify deployed Web in Playwriter | QA + release | 1.verify | six `docs/latest/*web*`/`*vercel*` captures | G1/G6/release | done-bounded-desktop-mobile-zero-errors | save/reload + performance |
+| Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-11-files-41426182-bytes | rebuild for future releases |
+| Verify deployed Web in browser | QA + release | 1.verify | six `docs/latest/*web*`/`*vercel*` captures | G1/G6/release | done-bounded-desktop-mobile-zero-errors | pointer lock + save/reload + performance |
 | Measure Web performance and 30-minute soak | QA | 1.verify | browser performance report | G6 | pending | warmed p95, long frames, input, memory |
 | Conduct approved human presentation study | independent evaluator | later study | participant packet | G4 | not-started | immersion/readability/usability data |
 | Deploy public-safe static artifact | release engineer | 1.release | `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-production-http-browser-smoke | monitor/rollback drill |
@@ -37,20 +37,30 @@ final aggregate regression
 - `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001`: fixtures `4/4`, fixture checks
   `40/40`, presentation checks `7/7`, combined `47/47`; terminal SHA-256 unchanged.
 - Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix.
-- `game-track/web/public/` contains 11 top-level build files and 41,426,198 bytes; the latest PCK is
-  1,573,424 bytes after `docs/latest/**` exclusion. The public 4,534-byte OFL notice hash matches the
-  source license. The artifact remains ignored and non-authoritative.
-- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`; HTML/JS/WASM/PCK/OFL returned
-  200, with WASM served as `application/wasm` and OFL as `text/plain`.
-- Playwriter: clean Korean rendering at 1280×720 and 390×844; trusted headless pointer lock; zero
-  console and page errors. Retained paths: `docs/latest/vercel-start.png`, `vercel-in-game.png`,
+- `game-track/web/public/` contains 11 top-level build files and 41,426,182 bytes; the latest PCK is
+  1,573,408 bytes after `docs/latest/**` exclusion, SHA-256
+  `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`. The public 4,534-byte OFL notice
+  hash matches the source license. Local `vercel link` metadata (`.env.local`, `.vercel/`, generated
+  `.gitignore`) is not a shipped artifact file and is excluded from the count. The artifact remains
+  ignored and non-authoritative.
+- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-17 deploy
+  `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`; HTML/JS/WASM/PCK/OFL returned 200, with WASM served as
+  `application/wasm` and OFL as `text/plain`.
+- 2026-08-17 browser smoke: clean Korean rendering at 1280×720 and 390×844; zero console and page
+  errors. Pointer lock is not verified — a prior session's trusted-headless pointer-lock claim failed
+  reproduction on 2026-08-17 (headless Chromium raised `pointerlockerror`; real Chrome via Playwriter
+  issued no pointer-lock request; `document.pointerLockElement` stayed null both times), so that item
+  is `FIX` pending a human-gesture check. Playwriter was used that day only for the Vercel
+  device-approval login and the pointer-lock retest; the layout, glyph, and HTTP checks ran headless.
+  Retained paths: `docs/latest/vercel-start.png`, `vercel-in-game.png`,
   `vercel-mobile-start.png`, `vercel-mobile-in-game.png`, `web-start.png`, and `web-in-game.png`.
 - Nanum Gothic Regular is bundled under SIL OFL 1.1 with pinned source, license, size, and SHA-256.
 
 These receipts are engineering conformance only and do not modify selected immutable v5 or upgrade
-G4/G6. The extension-connected inspection tab's `WrongDocumentError` is automation-only; dedicated
-trusted headless Playwriter sessions passed. G4 is unassessed and G6 remains `FIX` pending
-save/reload, warmed performance/input, and the 30-minute soak.
+G4/G6. The extension-connected inspection tab's `WrongDocumentError` is automation-only and does not
+imply that any session confirmed pointer lock; automation denial is not by itself evidence of a
+production defect. G4 is unassessed and G6 remains `FIX` pending save/reload, warmed
+performance/input, the 30-minute soak, and the open human-gesture pointer-lock check.
 
 Refresh rule: any lane, generator, authority boundary, entry point, Web export behavior, gate,
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in

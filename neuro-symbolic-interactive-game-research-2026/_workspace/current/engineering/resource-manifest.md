@@ -24,7 +24,7 @@ Status: public-safe playable deployed and browser-smoke verified; performance/so
 | `game-track/web/export_presets.cfg` | Web release lane | single-threaded Web preset, extension support disabled, scenario JSON included, `docs/latest/**` excluded | `[OBSERVED]` deployed artifact built from staged copy |
 | `scripts/build_godot_web.sh` | Web release lane | copy to `mktemp`, select `main_3d.tscn` only in staged copy, fail on Godot script/import errors, copy the OFL notice to the artifact root, sync deploy artifact | `[OBSERVED structure]`; canonical project is not rewritten |
 | `game-track/web/vercel.json` | Web release lane | static security headers without unnecessary cross-origin isolation | `[OBSERVED]` production deployment at `https://sealed-lighthouse-trace-rpg.vercel.app` |
-| `game-track/web/public/` | builder output | ignored disposable static artifact for browser validation/deploy | `[OBSERVED latest]` 11 top-level files, 41,426,198 bytes; PCK 1,573,424 bytes after excluding `docs/latest/**`; public OFL notice 4,534 bytes; HTML/JS/WASM/PCK/OFL returned 200 and WASM `application/wasm`; non-authoritative |
+| `game-track/web/public/` | builder output | ignored disposable static artifact for browser validation/deploy | `[OBSERVED latest]` 2026-08-17 production deploy `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`: 11 top-level files, 41,426,182 bytes; PCK 1,573,408 bytes after excluding `docs/latest/**`, SHA-256 `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`; public OFL notice 4,534 bytes; HTML/JS/WASM/PCK/OFL returned 200 and WASM `application/wasm`; local `vercel link` metadata (`.env.local`, `.vercel/`, generated `.gitignore`) is not a shipped artifact file and is excluded from the count; non-authoritative |
 | Deployed browser captures | Playwriter | start/in-game presentation receipts | `[OBSERVED]` `docs/latest/vercel-start.png`, `vercel-in-game.png`, `vercel-mobile-start.png`, `vercel-mobile-in-game.png`; local Web inspection retained as `web-start.png`, `web-in-game.png` |
 
 ## Public-safe asset boundary
@@ -45,6 +45,19 @@ new immutable evidence ID. The selected Cycle 2 v5 packet and its hashes must no
 relabelled by Cycle 3 presentation work.
 
 The bundled OFL font and deployment receipts are release resources, not research evidence. The
-Playwriter production smoke reported zero console/page errors and trusted headless pointer lock.
+2026-08-17 production browser smoke reported zero console and page errors; its layout, Korean glyph,
+and HTTP/MIME checks ran in a headless browser, and Playwriter was used that day only for the Vercel
+device-approval login and one pointer-lock retest.
+
+A prior session recorded that a trusted headless Playwriter click entered pointer lock. That
+observation is retained here as prior-session history and failed reproduction on 2026-08-17, so it is
+not a current result. Re-tested twice that day: a synthetic click in headless Chromium raised
+`pointerlockerror`, and the click in real Chrome via Playwriter produced no pointer-lock request at
+all; `document.pointerLockElement` stayed null in both. Pointer lock is therefore `FIX` and not
+verified. The HUD label `LOOK ACTIVE` (`시점 잠김`) is the game's own state label and is not evidence of
+pointer lock; only `document.pointerLockElement` is. Automation denial is not by itself evidence of a
+production defect, so the open item is a human-gesture pointer-lock check on the deployed page.
+
 One extension-connected tab produced `WrongDocumentError` because it did not own the root document;
-that is an automation-only limitation, not a deployed-page failure.
+that is an automation-only limitation, not a deployed-page failure, and it does not imply that any
+session confirmed pointer lock.
