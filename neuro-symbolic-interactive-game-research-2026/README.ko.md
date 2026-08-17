@@ -268,8 +268,8 @@ fixture `4/4` 모두
 네 1280×720 파일은 최신 엔지니어링 작업 캡처이며 불변 연구 근거가 아니다. 생성 후보 자산은
 Web/`--public-safe`에서 제외되며 공개 빌드는 절차적 지오메트리·VFX·UI·음향만 사용한다.
 평가는 저자 fixture와 프레젠테이션 불변조건 적합성만 입증한다. G4, 사용성, 몰입, 정서,
-플레이어 효능, 모델 효능은 **UNASSESSED**이며, G6는 save/reload, warmed frame/input,
-30분 soak 근거가 없어
+플레이어 효능, 모델 효능은 **UNASSESSED**이며, G6는 포인터 잠금, save/reload,
+warmed frame/input, 30분 soak 근거가 없어
 `FIX`다.
 
 ```bash
@@ -278,8 +278,11 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 배포 상태: **[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Playwriter로 한글 글리프, 1280×720·390×844 반응형 배치, 제스처 기반 포인터 잠금,
-콘솔·페이지 오류 0건을 확인했다. 상세 안내는
+2026-08-17에 `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`를 대상으로 실행한 헤드리스 브라우저 스모크에서
+정상 로딩, 한글 글리프, 1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을 확인했다.
+Playwriter는 같은 날 Vercel 기기 승인 로그인과 포인터 잠금 재시험 1회에만 사용했고 그
+재시험에서는 잠금이 발생하지 않아 포인터 잠금은 **미확인**이다. 자동화 거부 자체는 결함
+근거가 아니며, 남은 항목은 사람 제스처 확인이다. 상세 안내는
 [`game-track/web/README.md`](game-track/web/README.md)에 있다.
 
 ## 다음 실행 순서

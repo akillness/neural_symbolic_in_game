@@ -2,7 +2,7 @@
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passed `4/4` fixtures and
 `47/47` combined checks; four latest working captures are built; the public-safe Web artifact is
-live and browser-smoke verified** (2026-08-14).
+live and browser-smoke verified** (2026-08-17).
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -172,13 +172,19 @@ The builder copies the Godot project to a temporary directory, selects `main_3d.
 copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
 unchanged. The current artifact contains `index.html`, JavaScript/audio worklets, a PCK, and WebAssembly
 output under ignored `game-track/web/public/`. Deployment status:
-**[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**. Playwriter
-verified Korean rendering, responsive 1280×720 and 390×844 layouts, pointer-lock entry, and zero
-console/page errors. See [`../web/README.md`](../web/README.md).
+**[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**. A headless
+browser smoke on 2026-08-17 verified Korean rendering, responsive 1280×720 and 390×844 layouts, and
+zero console/page errors. Pointer-lock entry is **not verified**: a headless synthetic click raised
+`pointerlockerror` and a Playwriter-driven click in real Chrome produced no pointer-lock request at
+all, leaving `document.pointerLockElement` null in both 2026-08-17 runs. The HUD `LOOK ACTIVE` label
+is the game's own state, not that browser check, and automation denial is not by itself evidence of
+a production defect; a human-gesture check is the open item. Playwriter was used on 2026-08-17 only
+for the Vercel device-approval login and that pointer-lock retest.
+See [`../web/README.md`](../web/README.md).
 
 **Cycle 3 claim boundary:** authored-fixture and presentation-invariant engineering conformance
 only. G4, usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**.
-G6 remains `FIX` pending save/reload, warmed-frame/input, and 30-minute soak evidence.
+G6 remains `FIX` pending pointer-lock, save/reload, warmed-frame/input, and 30-minute soak evidence.
 
 ## Evidence boundary
 

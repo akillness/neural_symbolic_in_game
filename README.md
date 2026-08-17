@@ -112,9 +112,11 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 Deployment / 배포: **[play the public-safe Web build](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Vercel returned `200` for HTML/JS/WASM/PCK, served WASM as `application/wasm`, and Playwriter
-confirmed readable Korean text, a clean load, and gesture-triggered pointer lock with zero console
-or page errors at 1280×720 and 390×844.
+Vercel returned `200` for all 11 shipped files, served WASM as `application/wasm`, and a headless
+browser confirmed readable Korean text, a clean load, and the readable start gate and in-game ledger
+with zero console or page errors at 1280×720 and 390×844. Pointer lock is **not verified**: a
+synthetic click raised `pointerlockerror` and a real-Chrome click produced no lock request, so a
+human-gesture check remains open. / 포인터 잠금은 **미검증**이며 사람 제스처 확인이 남아 있다.
 
 | Deployed desktop / 배포 데스크톱 | Deployed narrow layout / 배포 협폭 |
 |---|---|

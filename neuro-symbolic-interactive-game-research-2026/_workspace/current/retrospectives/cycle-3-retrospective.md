@@ -28,9 +28,9 @@ canonical `project.godot`, whose bytes remain evidence-bound.
 | Selected immutable evidence | v5 pointer unchanged | Cycle 2 evidence remains authoritative for its bounded claim |
 | Latest working screenshots | four 1280×720 public-safe PNGs, all hash-registered | not immutable/G4 evidence |
 | Bundled font | Nanum Gothic Regular, unmodified 2,054,744-byte upstream binary, SIL OFL 1.1, pinned SHA-256 | public-safe release resource |
-| Web artifact | 11 top-level files; latest PCK 1,573,424 bytes after `docs/latest/**` exclusion | deployed; non-authoritative |
+| Web artifact | 11 top-level files, 41,426,182 bytes; latest PCK 1,573,408 bytes after `docs/latest/**` exclusion | deployed 2026-08-17 as `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`; non-authoritative |
 | Production responses | HTML/JS/WASM/PCK 200; WASM `application/wasm` | bounded HTTP/MIME PASS |
-| Playwriter desktop | 1280×720 start/in-game, clean Korean, trusted headless pointer lock, zero console/page errors | bounded browser PASS |
+| Playwriter desktop | 1280×720 start/in-game, clean Korean, zero console/page errors | bounded browser PASS for layout/Korean/zero-errors; the earlier trusted-headless pointer-lock claim failed reproduction on 2026-08-17 and is `FIX`, not part of this PASS |
 | Playwriter narrow | 390×844 start/in-game, clean Korean, zero console/page errors | bounded responsive PASS |
 | Production deployment | `https://sealed-lighthouse-trace-rpg.vercel.app` | live public-safe artifact |
 | Human presentation study | not run | no G4/immersion/usability claim |
@@ -62,6 +62,13 @@ canonical `project.godot`, whose bytes remain evidence-bound.
   acknowledgement latency.
 - G6: save/reload, warmed frame p95, long-frame rate, measured input latency, 30-minute memory soak,
   and a rollback drill remain open despite clean bounded browser smoke.
+- Pointer lock: this checkpoint previously recorded a trusted headless Playwriter click entering
+  pointer lock. That prior observation is retained as history and failed reproduction on 2026-08-17 —
+  headless Chromium raised `pointerlockerror`, real Chrome via Playwriter issued no pointer-lock
+  request, and `document.pointerLockElement` stayed null both times. The item is `FIX` and open
+  pending a human-gesture check. The HUD label `LOOK ACTIVE` (`시점 잠김`) is the game's own state
+  label and is not evidence of pointer lock; only `document.pointerLockElement` is. Automation denial
+  is not by itself evidence of a production defect.
 - Cross-runtime: live Python authorization transport remains absent.
 - Release: the public-safe artifact is live at `https://sealed-lighthouse-trace-rpg.vercel.app`;
   responses/MIME and desktop/narrow Playwriter smoke passed with zero console/page errors.
@@ -70,8 +77,8 @@ canonical `project.godot`, whose bytes remain evidence-bound.
 
 ## Closure rule
 
-The extension-connected tab's `WrongDocumentError` is an automation-only document-ownership issue;
-dedicated trusted headless Playwriter sessions passed. Do not convert this checkpoint into a closed
+The extension-connected tab's `WrongDocumentError` is an automation-only document-ownership issue and
+does not imply that any session confirmed pointer lock. Do not convert this checkpoint into a closed
 retrospective until save/reload, performance/input, the 30-minute soak, rollback, and final
 regression rows have exact evidence.
 Automated screenshots or evaluation JSON may be attached as engineering artifacts but cannot close
