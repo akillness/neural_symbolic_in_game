@@ -17,6 +17,7 @@ const ProceduralAudioFeedbackScript = preload("res://scripts/game3d/procedural_a
 
 const SCENARIO_PATH := "res://data/sealed_lighthouse.json"
 const SAVE_PATH := "user://sl3d_save.json"
+const TUTORIAL_SEEN_PATH := "user://sl3d_tutorial_seen.flag"
 
 var machine: SealedLighthouseMachine
 var scenario: Dictionary
@@ -29,6 +30,8 @@ var _objective_beacon: Node3D
 var commit_count: int = 0
 var refusal_count: int = 0
 var episode_over: bool = false
+var _first_commit_explained: bool = false
+var _first_refusal_explained: bool = false
 var _dialogue_open: bool = false
 var _smoke_mode: bool = false
 var _evaluate_mode: bool = false
@@ -76,6 +79,7 @@ func _ready() -> void:
 	ui.choice_selected.connect(_on_choice)
 	ui.start_requested.connect(_on_start_requested)
 	ui.audio_toggle_requested.connect(_on_audio_toggle_requested)
+	ui.tutorial_closed.connect(_on_tutorial_closed)
 	audio_feedback.audio_unlocked.connect(_sync_audio_state)
 	audio_feedback.mute_changed.connect(func(_muted: bool) -> void: _sync_audio_state())
 
@@ -119,6 +123,13 @@ func _start_experience(unlock_audio: bool) -> void:
 	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
 	director.play_intro(func() -> void:
 		ui.ledger_line("narration", "미라 선장이 부두 끝에서 어두운 탑을 지켜보고 있다.")
+		# First session only: the onboarding folio opens itself, then [T] reopens it.
+		if not FileAccess.file_exists(TUTORIAL_SEEN_PATH):
+			var flag := FileAccess.open(TUTORIAL_SEEN_PATH, FileAccess.WRITE)
+			if flag != null:
+				flag.store_string("seen")
+				flag.close()
+			_open_tutorial()
 	)
 
 
@@ -145,6 +156,7 @@ func _register_input_actions() -> void:
 		"sl_save": KEY_F5,
 		"sl_load": KEY_F9,
 		"sl_motion": KEY_M,
+		"sl_tutorial": KEY_T,
 		"sl_audio": KEY_V,
 	}
 	for action in bindings:
@@ -169,6 +181,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	_unlock_audio_from_event(event)
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode == KEY_ESCAPE and ui.is_tutorial_open():
+			ui.hide_tutorial()
+			return
 		if event.physical_keycode == KEY_ESCAPE and _dialogue_open:
 			_close_dialogue()
 			return
@@ -192,6 +207,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		_save_game()
 	elif event.is_action_pressed("sl_load"):
 		_load_game()
+	elif event.is_action_pressed("sl_tutorial"):
+		if not _dialogue_open and not episode_over:
+			if ui.is_tutorial_open():
+				ui.hide_tutorial()
+			else:
+				_open_tutorial()
 	elif event.is_action_pressed("sl_motion"):
 		_toggle_reduced_motion()
 	elif event.is_action_pressed("sl_audio"):
@@ -324,6 +345,23 @@ func _on_interact(interaction_id: String) -> void:
 				_finish_episode()
 
 
+func _open_tutorial() -> void:
+	ui.hide_prompt()
+	player.input_locked = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	ui.set_cursor_captured(false)
+	ui.show_tutorial()
+
+
+func _on_tutorial_closed() -> void:
+	if _smoke_mode or _evaluate_mode or episode_over or _dialogue_open:
+		return
+	player.input_locked = false
+	if _play_started:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		ui.set_cursor_captured(true)
+
+
 ## ---------------------------------------------------------------- proposals
 
 func _propose(operation: String, arguments: Dictionary, proposal_text: String) -> Dictionary:
@@ -333,11 +371,17 @@ func _propose(operation: String, arguments: Dictionary, proposal_text: String) -
 		commit_count += 1
 		ui.flash("commit")
 		audio_feedback.play_cue("commit")
+		if not _first_commit_explained:
+			_first_commit_explained = true
+			ui.toast("첫 커밋 — 검증을 통과한 행동만 상태를 바꾼다. 장부의 황색 실선을 보라.")
 	else:
 		refusal_count += 1
 		ui.flash("refusal")
 		audio_feedback.play_cue("refusal")
 		director.play_refusal_pulse()
+		if not _first_refusal_explained:
+			_first_refusal_explained = true
+			ui.toast("첫 보류 — 상태는 그대로다. 산호선이 이유와 다음 행동을 알려준다.")
 	return result
 
 
@@ -525,6 +569,10 @@ func _sync_presentation() -> void:
 	var world: Node3D = handles["world"]
 
 	(handles["lens_prop"] as Node3D).visible = lens_in_store
+	ui.set_lens_held(
+		"signal_lens" in state["player"]["inventory"]
+		and "signal_lens_installed" not in state["facts"]
+	)
 	var lens_interact := _interactable("lens_pickup")
 	if lens_interact != null:
 		lens_interact.enabled = lens_in_store
