@@ -9,6 +9,7 @@ extends CanvasLayer
 signal choice_selected(choice_id: String)
 signal start_requested
 signal audio_toggle_requested
+signal tutorial_closed
 
 const PALETTE := SealedLighthouseWorldBuilder.PALETTE
 const NARROW_WIDTH := 900.0
@@ -46,6 +47,17 @@ var _progress_bar: ProgressBar
 var _start_gate: ColorRect
 var _start_card: PanelContainer
 var _start_button: Button
+var _tutorial_panel: PanelContainer
+var _tutorial_title: Label
+var _tutorial_body: Label
+var _tutorial_image: TextureRect
+var _tutorial_progress: Label
+var _tutorial_prev: Button
+var _tutorial_next: Button
+var _tutorial_pages: Array = []
+var _tutorial_index: int = 0
+var _inventory_row: HBoxContainer
+var _inventory_icon: TextureRect
 var _layout_narrow: bool = false
 var _play_started: bool = false
 var _portrait_requested: bool = false
@@ -115,6 +127,7 @@ func _build() -> void:
 	_build_toast()
 	_build_end_card()
 	_build_start_gate()
+	_build_tutorial()
 
 
 func _build_controls_panel() -> void:
@@ -144,7 +157,7 @@ func _build_controls_panel() -> void:
 	header.add_child(_audio_button)
 
 	_controls_label = Label.new()
-	_controls_label.text = "WASD 이동 · 마우스 시점 · [E] 조사 · [Esc] 커서\n[F5] 저장 · [F9] 불러오기 · [M] 모션 · [V] 음향"
+	_controls_label.text = "WASD 이동 · 마우스 시점 · [E] 조사 · [Esc] 커서\n[F5] 저장 · [F9] 불러오기 · [M] 모션 · [V] 음향 · [T] 안내"
 	_controls_label.add_theme_font_size_override("font_size", 13)
 	_controls_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.08))
 	_controls_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -237,6 +250,25 @@ func _build_bottom_panel() -> void:
 	_status_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.1))
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_action_box.add_child(_status_label)
+	_inventory_row = HBoxContainer.new()
+	_inventory_row.add_theme_constant_override("separation", 8)
+	_inventory_row.visible = false
+	_action_box.add_child(_inventory_row)
+	_inventory_icon = TextureRect.new()
+	_inventory_icon.texture = SealedLighthouseWorldBuilder.load_pack_texture(
+		"SL3D-U01-signal-lens-icon.png"
+	)
+	_inventory_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_inventory_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_inventory_icon.custom_minimum_size = Vector2(44.0, 44.0)
+	_inventory_row.add_child(_inventory_icon)
+	var inventory_label := Label.new()
+	inventory_label.text = "신호 렌즈 확보 — 거치대로"
+	inventory_label.add_theme_font_size_override("font_size", 16)
+	inventory_label.add_theme_color_override("font_color", PALETTE.signal_amber)
+	inventory_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inventory_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_inventory_row.add_child(inventory_label)
 
 	_choice_scroll = ScrollContainer.new()
 	_choice_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -284,6 +316,20 @@ func _build_start_gate() -> void:
 	_start_gate.mouse_filter = Control.MOUSE_FILTER_STOP
 	_start_gate.visible = false
 	_root.add_child(_start_gate)
+	var key_art := TextureRect.new()
+	key_art.texture = SealedLighthouseWorldBuilder.load_concept_texture(
+		"SL-C01-environment-key-art.png"
+	)
+	key_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	key_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	key_art.set_anchors_preset(Control.PRESET_FULL_RECT)
+	key_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_start_gate.add_child(key_art)
+	var key_art_veil := ColorRect.new()
+	key_art_veil.color = Color(PALETTE.storm_ink, 0.58)
+	key_art_veil.set_anchors_preset(Control.PRESET_FULL_RECT)
+	key_art_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_start_gate.add_child(key_art_veil)
 	_start_card = PanelContainer.new()
 	_start_card.add_theme_stylebox_override(
 		"panel", _panel_style(Color(PALETTE.storm_ink, 0.98), PALETTE.signal_amber, 2, 24)
@@ -320,6 +366,134 @@ func _build_start_gate() -> void:
 	note.add_theme_font_size_override("font_size", 14)
 	note.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.2))
 	stack.add_child(note)
+
+
+func _build_tutorial() -> void:
+	# Evidence-folio onboarding: controls, then the ledger grammar, then how a
+	# session maps onto the experiment loop. Illustrations are optional reviewed
+	# concept candidates, so the pages stay readable when those bytes are absent.
+	_tutorial_pages = [
+		{
+			"title": "증거철을 펴다 — 조작",
+			"body": "이동 WASD · 시점 마우스 · 조사 [E]\n커서 해제/닫기 [Esc] · 저장 [F5] · 불러오기 [F9]\n모션 감소 [M] · 음향 [V] · 이 안내 [T]\n\n황색 빛기둥이 지금 목표를 가리킨다.\n표식 링이 반짝이는 곳에서 [E]를 눌러 조사한다.",
+			"image": "SL3D-U01-signal-lens-icon.png",
+			"pack": true,
+		},
+		{
+			"title": "장부의 문법 — 제안·커밋·보류",
+			"body": "▸ 황동 점선 = 제안. 아직 아무 일도 일어나지 않았다.\n✔ 황색 실선 = 커밋. 검증을 통과했고 상태 해시가 전진했다.\n✖ 산호색 = 보류. 상태는 그대로이며, 중립적 이유와\n   다음 유효 행동이 함께 온다.\n\n보류는 벌이 아니라 이 항구의 문법이다.\n색은 언제나 문자·기호와 함께 온다.",
+			"image": "SL-C03-investigation-ui.png",
+			"pack": false,
+		},
+		{
+			"title": "이 항구는 실험실이다",
+			"body": "이 슬라이스는 TRACE-RPG 연구의 탐침이다.\n관찰 → 조사 → 제안 → 검증 → 수리 → 커밋의 리듬이\n60–120초 루프를 이룬다.\n\n유효한 커밋만 정식 상태를 바꾸고, 거절·시간초과는\n이전 상태 해시를 그대로 남긴다.\n봉인된 사실은 어떤 대답으로도 열리지 않는다.",
+			"image": "SL-C02-captain-mira-sheet.png",
+			"pack": false,
+		},
+	]
+	_tutorial_panel = PanelContainer.new()
+	_tutorial_panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.97), PALETTE.brass, 2, 24)
+	)
+	_tutorial_panel.anchor_left = 0.14
+	_tutorial_panel.anchor_right = 0.86
+	_tutorial_panel.anchor_top = 0.12
+	_tutorial_panel.anchor_bottom = 0.88
+	_tutorial_panel.visible = false
+	_root.add_child(_tutorial_panel)
+	var stack := VBoxContainer.new()
+	stack.add_theme_constant_override("separation", 12)
+	_tutorial_panel.add_child(stack)
+	_tutorial_title = Label.new()
+	_tutorial_title.add_theme_font_size_override("font_size", 24)
+	_tutorial_title.add_theme_color_override("font_color", PALETTE.signal_amber)
+	_tutorial_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_tutorial_title)
+	var columns := HBoxContainer.new()
+	columns.add_theme_constant_override("separation", 16)
+	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack.add_child(columns)
+	_tutorial_image = TextureRect.new()
+	_tutorial_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_tutorial_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_tutorial_image.custom_minimum_size = Vector2(250.0, 200.0)
+	_tutorial_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	columns.add_child(_tutorial_image)
+	_tutorial_body = Label.new()
+	_tutorial_body.add_theme_font_size_override("font_size", 18)
+	_tutorial_body.add_theme_color_override("font_color", PALETTE.paper_fog)
+	_tutorial_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_tutorial_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_tutorial_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	columns.add_child(_tutorial_body)
+	var nav := HBoxContainer.new()
+	nav.add_theme_constant_override("separation", 10)
+	stack.add_child(nav)
+	_tutorial_prev = Button.new()
+	_tutorial_prev.text = "◂ 이전"
+	_tutorial_prev.custom_minimum_size = Vector2(96.0, 44.0)
+	_tutorial_prev.add_theme_font_size_override("font_size", 17)
+	_tutorial_prev.pressed.connect(func() -> void: _tutorial_go(-1))
+	nav.add_child(_tutorial_prev)
+	_tutorial_progress = Label.new()
+	_tutorial_progress.add_theme_font_size_override("font_size", 16)
+	_tutorial_progress.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.15))
+	_tutorial_progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_tutorial_progress.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	nav.add_child(_tutorial_progress)
+	_tutorial_next = Button.new()
+	_tutorial_next.custom_minimum_size = Vector2(150.0, 44.0)
+	_tutorial_next.add_theme_font_size_override("font_size", 17)
+	_tutorial_next.pressed.connect(func() -> void: _tutorial_go(1))
+	nav.add_child(_tutorial_next)
+
+
+func show_tutorial() -> void:
+	_tutorial_index = 0
+	_tutorial_panel.visible = true
+	_apply_tutorial_page()
+
+
+func hide_tutorial() -> void:
+	_tutorial_panel.visible = false
+	tutorial_closed.emit()
+
+
+func is_tutorial_open() -> bool:
+	return _tutorial_panel != null and _tutorial_panel.visible
+
+
+func _tutorial_go(step: int) -> void:
+	if _tutorial_index + step >= _tutorial_pages.size():
+		hide_tutorial()
+		return
+	_tutorial_index = clampi(_tutorial_index + step, 0, _tutorial_pages.size() - 1)
+	_apply_tutorial_page()
+
+
+func _apply_tutorial_page() -> void:
+	var page: Dictionary = _tutorial_pages[_tutorial_index]
+	_tutorial_title.text = page["title"]
+	_tutorial_body.text = page["body"]
+	var texture := (
+		SealedLighthouseWorldBuilder.load_pack_texture(page["image"])
+		if page["pack"]
+		else SealedLighthouseWorldBuilder.load_concept_texture(page["image"])
+	)
+	_tutorial_image.texture = texture
+	_tutorial_image.visible = texture != null
+	_tutorial_progress.text = "%d / %d" % [_tutorial_index + 1, _tutorial_pages.size()]
+	_tutorial_prev.disabled = _tutorial_index == 0
+	_tutorial_next.text = (
+		"조사 시작 ▸" if _tutorial_index == _tutorial_pages.size() - 1 else "다음 ▸"
+	)
+	_tutorial_next.grab_focus()
+
+
+func set_lens_held(held: bool) -> void:
+	if _inventory_row != null:
+		_inventory_row.visible = held and _inventory_icon.texture != null
 
 
 func _panel_style(background: Color, border: Color, width: int, margin: int) -> StyleBoxFlat:

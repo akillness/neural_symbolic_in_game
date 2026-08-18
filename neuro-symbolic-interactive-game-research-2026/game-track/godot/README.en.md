@@ -186,6 +186,19 @@ See [`../web/README.md`](../web/README.md).
 only. G4, usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**.
 G6 remains `FIX` pending pointer-lock, save/reload, warmed-frame/input, and 30-minute soak evidence.
 
+## Onboarding folio and the out-of-engine soft-proposal channel (2026-08-18)
+
+- A three-page evidence-folio tutorial (controls → ledger grammar → experiment link) opens itself
+  on the first session, reopens with `[T]`, and closes with `[Esc]`. The start gate uses the SL-C01
+  style anchor and the pages use SL-C02/SL-C03/SL3D-U01; all are optional candidates, so absent
+  bytes only hide the image slot and never the prose (web and `--public-safe` never load them).
+- One-shot toasts on the first commit and the first refusal state the rule directly: only validated
+  actions change state, a refusal preserves it. Holding the lens shows an icon chip in the action
+  panel.
+- The LLM stays outside the engine. `scripts/soft_proposal_policy.py` builds the model-visible
+  projection for prompts and screens replies for sealed or stage-gated identifiers
+  (`--projection`, `--proposal`). The screen is a pre-filter, not a semantic oracle.
+
 ## Evidence boundary
 
 The retained artifacts provide authored-fixture engine-local policy-mirror evidence toward Stage 6

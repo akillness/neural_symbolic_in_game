@@ -52,6 +52,22 @@ static func load_pack_texture(file_name: String) -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 
+static func load_concept_texture(file_name: String) -> Texture2D:
+	# Same boundary as load_pack_texture, for the reviewed SL-C0x concept set one
+	# directory up: start-gate key art and tutorial illustrations. Absent bytes
+	# simply leave the image slot hidden.
+	if OS.has_feature("web") or PUBLIC_SAFE_ARG in OS.get_cmdline_user_args():
+		return null
+	var concepts_dir := ProjectSettings.globalize_path("res://").path_join("../assets/concepts")
+	var path := concepts_dir.path_join(file_name)
+	if not FileAccess.file_exists(path):
+		return null
+	var image := Image.load_from_file(path)
+	if image == null:
+		return null
+	return ImageTexture.create_from_image(image)
+
+
 static func load_model_scene(file_name: String) -> Node3D:
 	# Runtime load of the Blender-authored GLB prop kit (assets/models/). Uses
 	# GLTFDocument so no editor import pass is required; returns null when the
