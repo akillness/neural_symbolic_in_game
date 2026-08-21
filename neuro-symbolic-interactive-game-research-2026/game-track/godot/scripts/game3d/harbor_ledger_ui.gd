@@ -29,6 +29,7 @@ var _status_label: Label
 var _objective_label: Label
 var _portrait_box: VBoxContainer
 var _portrait: TextureRect
+var _portrait_frame: PanelContainer
 var _speaker_label: Label
 var _flash: ColorRect
 var _feedback_label: Label
@@ -37,6 +38,7 @@ var _letterbox_bottom: ColorRect
 var _toast: Label
 var _end_card: PanelContainer
 var _end_text: RichTextLabel
+var _end_icon: TextureRect
 var _bottom_panel: PanelContainer
 var _controls_panel: PanelContainer
 var _controls_label: Label
@@ -51,6 +53,7 @@ var _tutorial_panel: PanelContainer
 var _tutorial_title: Label
 var _tutorial_body: Label
 var _tutorial_image: TextureRect
+var _tutorial_columns: BoxContainer
 var _tutorial_progress: Label
 var _tutorial_prev: Button
 var _tutorial_next: Button
@@ -191,6 +194,7 @@ func _build_bottom_panel() -> void:
 	_bottom_panel.anchor_right = 1.0
 	_bottom_panel.anchor_bottom = 1.0
 	_root.add_child(_bottom_panel)
+	_add_parchment_grain(_bottom_panel)
 
 	_columns = BoxContainer.new()
 	_columns.vertical = false
@@ -200,13 +204,26 @@ func _build_bottom_panel() -> void:
 	_portrait_box = VBoxContainer.new()
 	_portrait_box.custom_minimum_size = Vector2(180.0, 0.0)
 	_columns.add_child(_portrait_box)
+	# D-034/D-035: curated Higgsfield portrait first (Web-eligible), candidate
+	# pack art as desktop fallback; both absent leaves the slot hidden.
+	_portrait_frame = PanelContainer.new()
+	_portrait_frame.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.65), Color(PALETTE.brass, 0.9), 2, 4)
+	)
+	_portrait_frame.visible = false
+	_portrait_box.add_child(_portrait_frame)
 	_portrait = TextureRect.new()
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_portrait.custom_minimum_size = Vector2(180.0, 180.0)
-	_portrait.texture = SealedLighthouseWorldBuilder.load_pack_texture("SL3D-P01-mira-dialogue-portrait.png")
+	var portrait_texture := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-mira-portrait.png")
+	if portrait_texture == null:
+		portrait_texture = SealedLighthouseWorldBuilder.load_pack_texture(
+			"SL3D-P01-mira-dialogue-portrait.png"
+		)
+	_portrait.texture = portrait_texture
 	_portrait.visible = false
-	_portrait_box.add_child(_portrait)
+	_portrait_frame.add_child(_portrait)
 	_speaker_label = Label.new()
 	_speaker_label.add_theme_font_size_override("font_size", 18)
 	_speaker_label.add_theme_color_override("font_color", PALETTE.brass)
@@ -255,9 +272,11 @@ func _build_bottom_panel() -> void:
 	_inventory_row.visible = false
 	_action_box.add_child(_inventory_row)
 	_inventory_icon = TextureRect.new()
-	_inventory_icon.texture = SealedLighthouseWorldBuilder.load_pack_texture(
-		"SL3D-U01-signal-lens-icon.png"
-	)
+	# D-034/D-035 curated-first icon; candidate pack art as desktop fallback.
+	var lens_icon := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-icon-signal-lens.png")
+	if lens_icon == null:
+		lens_icon = SealedLighthouseWorldBuilder.load_pack_texture("SL3D-U01-signal-lens-icon.png")
+	_inventory_icon.texture = lens_icon
 	_inventory_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_inventory_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_inventory_icon.custom_minimum_size = Vector2(44.0, 44.0)
@@ -302,11 +321,25 @@ func _build_end_card() -> void:
 	)
 	_end_card.visible = false
 	_root.add_child(_end_card)
+	_add_parchment_grain(_end_card)
+	var stack := VBoxContainer.new()
+	stack.add_theme_constant_override("separation", 10)
+	_end_card.add_child(stack)
 	_end_text = RichTextLabel.new()
 	_end_text.bbcode_enabled = true
 	_end_text.add_theme_font_size_override("normal_font_size", 19)
 	_end_text.add_theme_color_override("default_color", PALETTE.paper_fog)
-	_end_card.add_child(_end_text)
+	_end_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack.add_child(_end_text)
+	# D-034/D-035: decorative tide-route emblem on the episode end card. The
+	# ledger text stays the payoff; absent bytes simply hide the emblem.
+	_end_icon = TextureRect.new()
+	_end_icon.texture = SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-icon-tide-route.png")
+	_end_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_end_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_end_icon.custom_minimum_size = Vector2(96.0, 96.0)
+	_end_icon.visible = _end_icon.texture != null
+	stack.add_child(_end_icon)
 
 
 func _build_start_gate() -> void:
@@ -316,20 +349,44 @@ func _build_start_gate() -> void:
 	_start_gate.mouse_filter = Control.MOUSE_FILTER_STOP
 	_start_gate.visible = false
 	_root.add_child(_start_gate)
-	var key_art := TextureRect.new()
-	key_art.texture = SealedLighthouseWorldBuilder.load_concept_texture(
-		"SL-C01-environment-key-art.png"
-	)
-	key_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	key_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	key_art.set_anchors_preset(Control.PRESET_FULL_RECT)
-	key_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_start_gate.add_child(key_art)
-	var key_art_veil := ColorRect.new()
-	key_art_veil.color = Color(PALETTE.storm_ink, 0.58)
-	key_art_veil.set_anchors_preset(Control.PRESET_FULL_RECT)
-	key_art_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_start_gate.add_child(key_art_veil)
+	# D-034/D-035: curated Higgsfield key art first (ships in the Web PCK), the
+	# reviewed concept sheet as desktop fallback. When both are absent the gate
+	# keeps today's flat storm-ink look exactly.
+	var key_art_texture := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-start-key-art.png")
+	if key_art_texture == null:
+		key_art_texture = SealedLighthouseWorldBuilder.load_concept_texture(
+			"SL-C01-environment-key-art.png"
+		)
+	if key_art_texture != null:
+		var key_art := TextureRect.new()
+		key_art.texture = key_art_texture
+		key_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		key_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		key_art.set_anchors_preset(Control.PRESET_FULL_RECT)
+		key_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_start_gate.add_child(key_art)
+		# Storm-ink gradient scrim: >=0.45 alpha at every text band (0.50 at the
+		# very top, 0.86 at the footer) so card text and the disclosure keep
+		# >=4.5:1 contrast over the art at 1280x720 and 390x844.
+		var scrim := TextureRect.new()
+		var scrim_gradient := Gradient.new()
+		scrim_gradient.set_color(0, Color(PALETTE.storm_ink, 0.50))
+		scrim_gradient.set_color(1, Color(PALETTE.storm_ink, 0.86))
+		var scrim_texture := GradientTexture2D.new()
+		scrim_texture.gradient = scrim_gradient
+		scrim_texture.fill_from = Vector2(0.0, 0.0)
+		scrim_texture.fill_to = Vector2(0.0, 1.0)
+		scrim.texture = scrim_texture
+		scrim.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		scrim.set_anchors_preset(Control.PRESET_FULL_RECT)
+		scrim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_start_gate.add_child(scrim)
+	else:
+		var key_art_veil := ColorRect.new()
+		key_art_veil.color = Color(PALETTE.storm_ink, 0.58)
+		key_art_veil.set_anchors_preset(Control.PRESET_FULL_RECT)
+		key_art_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_start_gate.add_child(key_art_veil)
 	_start_card = PanelContainer.new()
 	_start_card.add_theme_stylebox_override(
 		"panel", _panel_style(Color(PALETTE.storm_ink, 0.98), PALETTE.signal_amber, 2, 24)
@@ -366,6 +423,20 @@ func _build_start_gate() -> void:
 	note.add_theme_font_size_override("font_size", 14)
 	note.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.2))
 	stack.add_child(note)
+	if key_art_texture != null:
+		var disclosure := Label.new()
+		disclosure.text = "일러스트: AI 생성(Higgsfield) · AI-generated art"
+		disclosure.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		disclosure.add_theme_font_size_override("font_size", 12)
+		disclosure.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.72))
+		disclosure.anchor_left = 0.0
+		disclosure.anchor_right = 1.0
+		disclosure.anchor_top = 1.0
+		disclosure.anchor_bottom = 1.0
+		disclosure.offset_top = -30.0
+		disclosure.offset_bottom = -10.0
+		disclosure.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_start_gate.add_child(disclosure)
 
 
 func _build_tutorial() -> void:
@@ -376,6 +447,7 @@ func _build_tutorial() -> void:
 		{
 			"title": "증거철을 펴다 — 조작",
 			"body": "이동 WASD · 시점 마우스 · 조사 [E]\n커서 해제/닫기 [Esc] · 저장 [F5] · 불러오기 [F9]\n모션 감소 [M] · 음향 [V] · 이 안내 [T]\n\n황색 빛기둥이 지금 목표를 가리킨다.\n표식 링이 반짝이는 곳에서 [E]를 눌러 조사한다.",
+			"curated": "ui-tutorial-vignette.png",
 			"image": "SL3D-U01-signal-lens-icon.png",
 			"pack": true,
 		},
@@ -402,6 +474,7 @@ func _build_tutorial() -> void:
 	_tutorial_panel.anchor_bottom = 0.88
 	_tutorial_panel.visible = false
 	_root.add_child(_tutorial_panel)
+	_add_parchment_grain(_tutorial_panel)
 	var stack := VBoxContainer.new()
 	stack.add_theme_constant_override("separation", 12)
 	_tutorial_panel.add_child(stack)
@@ -410,23 +483,24 @@ func _build_tutorial() -> void:
 	_tutorial_title.add_theme_color_override("font_color", PALETTE.signal_amber)
 	_tutorial_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	stack.add_child(_tutorial_title)
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 16)
-	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	stack.add_child(columns)
+	_tutorial_columns = BoxContainer.new()
+	_tutorial_columns.vertical = false
+	_tutorial_columns.add_theme_constant_override("separation", 16)
+	_tutorial_columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack.add_child(_tutorial_columns)
 	_tutorial_image = TextureRect.new()
 	_tutorial_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_tutorial_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_tutorial_image.custom_minimum_size = Vector2(250.0, 200.0)
 	_tutorial_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	columns.add_child(_tutorial_image)
+	_tutorial_columns.add_child(_tutorial_image)
 	_tutorial_body = Label.new()
 	_tutorial_body.add_theme_font_size_override("font_size", 18)
 	_tutorial_body.add_theme_color_override("font_color", PALETTE.paper_fog)
 	_tutorial_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tutorial_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tutorial_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	columns.add_child(_tutorial_body)
+	_tutorial_columns.add_child(_tutorial_body)
 	var nav := HBoxContainer.new()
 	nav.add_theme_constant_override("separation", 10)
 	stack.add_child(nav)
@@ -476,11 +550,16 @@ func _apply_tutorial_page() -> void:
 	var page: Dictionary = _tutorial_pages[_tutorial_index]
 	_tutorial_title.text = page["title"]
 	_tutorial_body.text = page["body"]
-	var texture := (
-		SealedLighthouseWorldBuilder.load_pack_texture(page["image"])
-		if page["pack"]
-		else SealedLighthouseWorldBuilder.load_concept_texture(page["image"])
-	)
+	# D-034/D-035 curated-first tutorial art; candidate pack/concept fallback.
+	var texture: Texture2D = null
+	if page.has("curated"):
+		texture = SealedLighthouseWorldBuilder.load_curated_ui_texture(page["curated"])
+	if texture == null:
+		texture = (
+			SealedLighthouseWorldBuilder.load_pack_texture(page["image"])
+			if page["pack"]
+			else SealedLighthouseWorldBuilder.load_concept_texture(page["image"])
+		)
 	_tutorial_image.texture = texture
 	_tutorial_image.visible = texture != null
 	_tutorial_progress.text = "%d / %d" % [_tutorial_index + 1, _tutorial_pages.size()]
@@ -506,6 +585,22 @@ func _panel_style(background: Color, border: Color, width: int, margin: int) -> 
 	return style
 
 
+func _add_parchment_grain(panel: PanelContainer) -> void:
+	# D-034/D-035 curated parchment grain, darken-modulated toward storm ink so
+	# paper-fog/amber text keeps its contrast on the dark panels. Absent bytes
+	# leave the flat panel style untouched.
+	var texture := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-ledger-parchment.png")
+	if texture == null:
+		return
+	var grain := TextureRect.new()
+	grain.texture = texture
+	grain.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	grain.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	grain.modulate = Color(0.28, 0.30, 0.33, 0.55)
+	grain.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.add_child(grain)
+
+
 func _make_bar(parent: Control, top: bool) -> ColorRect:
 	var bar := ColorRect.new()
 	bar.color = Color.BLACK
@@ -528,6 +623,21 @@ func _apply_responsive_layout() -> void:
 	var viewport_size := get_viewport().get_visible_rect().size
 	_layout_narrow = viewport_size.x < NARROW_WIDTH or viewport_size.x < viewport_size.y * 1.25
 	_columns.vertical = _layout_narrow
+	if _tutorial_columns != null:
+		# 390px-class portrait viewports: the vignette + text row cannot share the
+		# width, so stack the folio vertically and widen the panel instead.
+		_tutorial_columns.vertical = _layout_narrow
+		_tutorial_image.custom_minimum_size = (
+			Vector2(0.0, 150.0) if _layout_narrow else Vector2(250.0, 200.0)
+		)
+		_tutorial_image.size_flags_vertical = (
+			Control.SIZE_SHRINK_CENTER if _layout_narrow else Control.SIZE_EXPAND_FILL
+		)
+		_tutorial_body.add_theme_font_size_override("font_size", 15 if _layout_narrow else 18)
+		_tutorial_panel.anchor_left = 0.04 if _layout_narrow else 0.14
+		_tutorial_panel.anchor_right = 0.96 if _layout_narrow else 0.86
+		_tutorial_panel.anchor_top = 0.10 if _layout_narrow else 0.12
+		_tutorial_panel.anchor_bottom = 0.90 if _layout_narrow else 0.88
 	_bottom_panel.anchor_top = 0.38 if _layout_narrow else 0.58
 	_bottom_panel.offset_left = 6.0
 	_bottom_panel.offset_right = -6.0
@@ -666,6 +776,7 @@ func _update_portrait_visibility() -> void:
 		return
 	_portrait_box.visible = _portrait_requested and not _layout_narrow
 	_portrait.visible = _portrait_requested and not _layout_narrow and _portrait.texture != null
+	_portrait_frame.visible = _portrait.visible
 	_ledger_title.text = "항구 장부 — Harbor Ledger"
 	if _portrait_requested and _layout_narrow and _speaker_name != "":
 		_ledger_title.text += " · " + _speaker_name

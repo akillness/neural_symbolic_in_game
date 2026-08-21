@@ -2,7 +2,7 @@
 
 Status: **public-safe artifact deployed at
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app); browser
-smoke passed on 2026-08-17**.
+smoke passed on 2026-08-21 (desktop 1280×720 and mobile 390×844, curated-art build)**.
 
 This directory holds the reproducible *configuration* for a procedural-only Godot Web build. The
 generated `public/` directory is intentionally ignored and is deployed as a static artifact after
@@ -29,35 +29,39 @@ render-evidence binding to `project.godot` does not drift.
 
 The Web preset is single-threaded and has extension support disabled. It therefore does not require
 cross-origin isolation. It includes the authored scenario JSON explicitly. Pending-review generated
-concept images live outside `res://` and are not shipped; the public build uses the programmatic
-presentation fallback.
+concept images live outside `res://` and are not shipped; since D-034/D-035 the build ships the six
+user-curated, provenance-bound Higgsfield UI art PNGs from `godot/assets/ui/` (AI-generated,
+disclosed on the start gate), and the programmatic presentation remains the complete fallback when
+those files are absent.
 
-The current ignored `public/` artifact contains 11 top-level files and 41,426,182 bytes, including
-`index.html`, JavaScript/audio worklets, `index.pck`, `index.wasm`, and the directly readable
-`NanumGothic-OFL.txt`. Artifact existence is release engineering evidence only. Local deploy
-metadata written by `vercel link` (`.env.local`, `.vercel/`, a generated `.gitignore`) is not part
-of the shipped artifact and is excluded from that count.
+The current ignored `public/` artifact contains 11 top-level files (~44.7 MB), including
+`index.html`, JavaScript/audio worklets, `index.pck` (4,817,404 bytes — grew from 1.57 MB with the
+curated UI art), `index.wasm`, and the directly readable `NanumGothic-OFL.txt`. Artifact existence
+is release engineering evidence only. Local deploy metadata written by `vercel link` (`.env.local`,
+`.vercel/`, a generated `.gitignore`) is not part of the shipped artifact and is excluded from that
+count.
 
-Browser smoke confirmed:
+Browser smoke confirmed (2026-08-21, deployment `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9`):
 
-- production deployment `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe` serves the 2026-08-17 latest-only
-  public-safe artifact;
-- all 11 shipped files returned `200`; WASM used `application/wasm` and the JS entry plus both
-  audio worklets used `application/javascript`;
-- `index.html`, `index.pck`, `index.wasm`, and `NanumGothic-OFL.txt` fetched from the alias were
-  byte-identical to the locally verified build;
-- the declared `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy` headers were
-  present on the served HTML.
-- Korean glyphs rendered from the bundled OFL Nanum Gothic font.
-- [`NanumGothic-OFL.txt`](https://sealed-lighthouse-trace-rpg.vercel.app/NanumGothic-OFL.txt)
-  returned `200 text/plain`, 4,534 bytes, and SHA-256
-  `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f`.
-- the deployed PCK is 1,573,408 bytes, has deployment-receipt SHA-256
-  `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`, and excludes
-  `docs/latest/**` plus every pending concept pack;
-- the start gate and in-game ledger remained readable at 1280×720 and 390×844;
-- entering the game from the start gate advanced the HUD to `LOOK ACTIVE` and rendered the ledger;
-- console and page-error counts were zero before and after entry.
+- the alias serves the latest curated-art public-safe artifact; `index.html`, `index.pck`, and
+  `index.wasm` fetched from the alias were byte-identical to the locally verified build
+  (`index.pck` SHA-256 `e875df7c75c17b98a1372b72418129c6aa3124a0c7a1fe127da25fd6a46d4344`);
+- all shipped files returned `200`; WASM used `application/wasm`, the JS entry plus both audio
+  worklets used `application/javascript`, and the OFL notice `text/plain`;
+- the Higgsfield key-art start gate rendered with its storm-ink scrim, readable Korean/English
+  card text, and the AI-use disclosure footer at 1280×720 and 390×844;
+- entering from the start gate played the intro cinematic and advanced the HUD to `시점 잠김 ·
+  LOOK ACTIVE` with `AUDIO ON`;
+- the first-session tutorial folio opened with the curated vignette; the 390×844 narrow layout
+  stacks the vignette above full-width text (fixed this cycle after the first deploy showed a
+  squeezed text column);
+- the ledger updated to the concrete Mira objective with beacon hint; the brass-framed Mira
+  portrait rendered in dialogue;
+- unexpected console and page errors were zero on both viewports; the single logged
+  `WrongDocumentError` on synthetic entry is the known automation-only pointer-lock artifact.
+- Korean glyphs rendered from the bundled OFL Nanum Gothic font;
+  [`NanumGothic-OFL.txt`](https://sealed-lighthouse-trace-rpg.vercel.app/NanumGothic-OFL.txt)
+  returned `200 text/plain`.
 
 Pointer lock is **not verified** for this deployment. Headless Chromium raised `pointerlockerror`
 on a synthetic click, and a Playwriter-driven click in real Chrome produced no pointer-lock request

@@ -1,5 +1,13 @@
 # Log
 
+## [2026-08-21 15:58:00] report | Sealed Lighthouse feel/연출 deepening + Higgsfield curated UI lane
+- Ran three wave-1 subagents (WorldFeel, LoopFeel, HiggsfieldGen) and one wave-2 subagent (UIIntegrate) for tension-weather/lightning/cinematic 연출, movement/focus/golden-path/audio feel, six provenance-bound Higgsfield gpt_image_2 UI assets, and curated runtime integration.
+- Appended decisions `D-034` (Higgsfield as playable UI art generator) and `D-035` (curated runtime-eligible `assets/ui/` lane with user-directive curation, AI disclosure, and mandatory procedural fallback); re-derived studio `CLAUDE.md` and the task manifest.
+- Fixed a release-smoke defect: 390×844 tutorial folio squeezed text to one glyph per line; the folio now stacks vertically on narrow viewports.
+- Receipts: smoke 8/8 with unchanged terminal SHA `4b2310…8892`; game-track 40 tests/44 subtests; evaluation 4/4 fixtures, 47/47 checks with refreshed captures; Web PCK 4,817,404 bytes `e875df…4344`; Vercel deploy `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` byte-identical on the alias; browser smoke desktop+mobile zero unexpected errors.
+- Boundary unchanged: engineering conformance only; G4 unassessed; G6 `FIX` (human-gesture pointer lock, save/reload, warmed frame/input, 30-minute soak).
+- Full note: [[wiki/reports/2026-08-21-sealed-lighthouse-feel-and-higgsfield-ui]]
+
 ## [2026-08-13 11:49:45] report | Sealed Lighthouse Cycle 2 render evidence
 - Executed four authored Godot headless fixtures and a separate non-headless canonical trace render replay.
 - Selected immutable evidence set `godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`; v1--v4 remain superseded visual-QA/provenance-hardening history.

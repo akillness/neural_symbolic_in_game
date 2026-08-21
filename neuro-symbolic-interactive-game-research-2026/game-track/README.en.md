@@ -40,9 +40,15 @@ result is produced by the design or headless slice.
 
 The current playable `godot/scenes/main_3d.tscn` adds third-person dock exploration, readable
 interaction focus, responsive ledger UI, reduced motion, pooled procedural VFX, and gesture-gated
-locally generated audio. All world-changing intents still pass through the authored proposal and
-validation router. The player restores the harbor-side signal and earns the tide route while the
-offshore lighthouse remains sealed.
+locally generated audio. A 2026-08-21 presentation/feel pass deepened all of it: a tension-driven
+weather arc (fog color grading, wind-sheared rain, sea agitation, sky darkening toward the refusal
+apex), offshore distant lightning with delayed procedural thunder, buoy/lamp/mist harbor
+micro-motion, a slow-FOV intro hold on the dark tower, an ending beat where the harbor-side lamp
+sweeps its beam toward the tide channel (the offshore lighthouse stays dark), snappier movement
+with stride-locked view bob, stronger focus/confirm affordances, escalating commit feedback, and
+seven distinct procedural audio stingers over a wind/water ambience layer. All world-changing
+intents still pass through the authored proposal and validation router. The player restores the
+harbor-side signal and earns the tide route while the offshore lighthouse remains sealed.
 
 | `SL-PLAY-EVAL-001` row | Checks | Result |
 |---|---:|---|
@@ -65,8 +71,12 @@ and [`evaluation-matrix.json`](godot/docs/latest/evaluation-matrix.json).
 | ![Cycle 3 public-safe authorized hint](godot/docs/latest/authorized_hint.png) | ![Cycle 3 public-safe ending](godot/docs/latest/ending.png) |
 
 These are four latest 1280×720 engineering working captures, not the immutable Cycle 2 packet.
-Web and `--public-safe` exclude pending generated candidates; the public build uses procedural
-geometry, VFX, UI, and audio.
+Web and `--public-safe` still exclude every pending-review candidate under `assets/concepts/`.
+Since D-034/D-035 the build additionally ships six user-curated, provenance-bound Higgsfield UI
+art assets from `godot/assets/ui/` (start key art, Mira dialogue portrait, ledger parchment grain,
+two item icons, tutorial vignette — AI-generated, disclosed on the start gate and here). Deleting
+those PNGs leaves the fully playable procedural surface; the smoke receipt is identical with the
+directory absent.
 
 **Claim boundary:** authored-fixture and presentation-invariant conformance only. G4, usability,
 immersion, affect, player efficacy, and model efficacy are **UNASSESSED**. G6 remains `FIX` until
@@ -80,13 +90,16 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-A headless browser smoke on 2026-08-17 confirmed readable Korean text, responsive desktop/narrow
-layouts, and zero console/page errors. Pointer-lock entry is **not verified**: on 2026-08-17 a
-headless synthetic click raised `pointerlockerror` and a Playwriter-driven click in real Chrome
-produced no pointer-lock request at all, leaving `document.pointerLockElement` null in both runs.
-The HUD `LOOK ACTIVE` label is the game's own state, not that browser check, and automation denial
-is not by itself evidence of a production defect; a human-gesture check is the open item. Playwriter
-was used on 2026-08-17 only for the Vercel device-approval login and that pointer-lock retest.
+2026-08-21 production deployment `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` serves the curated-art build:
+11 files, `index.pck` 4,817,404 bytes, SHA-256
+`e875df7c75c17b98a1372b72418129c6aa3124a0c7a1fe127da25fd6a46d4344`; served html/pck/wasm fetched
+back byte-identical to the local artifact. Headless browser smoke on the alias verified the
+key-art start gate with AI disclosure footer, intro cinematic, tutorial folio (including the
+narrow-viewport stacked layout fixed this cycle), ledger/objective updates, and Mira portrait at
+1280×720 and 390×844 with zero unexpected console/page errors. The single logged
+`WrongDocumentError` on synthetic entry is the known automation-only pointer-lock artifact; a
+human-gesture pointer-lock check remains the open item (as on 2026-08-17, when a headless click
+raised `pointerlockerror` and real-Chrome automation issued no pointer-lock request at all).
 Build and browser-smoke details: [`web/README.md`](web/README.md).
 
 ## Engine render-capture evidence

@@ -49,7 +49,9 @@ _workspace/
   and a curation decision.
 - Public Web and `--public-safe` runs must not load generated candidate images from
   `game-track/assets/concepts/` or `game-track/assets/concepts/pack-3d/`. These candidates remain
-  `runtime_eligible: false` until human rights/style review and explicit curation.
+  `runtime_eligible: false` until human rights/style review and explicit curation. The only
+  generated images allowed in public builds are the curated, provenance-bound PNGs under
+  `game-track/godot/assets/ui/` (D-034/D-035).
 - Never commit `.env`, access tokens, `~/.codex/auth.json`, Godot editor caches under `.godot/`, or
   raw participant/personal telemetry.
 
@@ -88,9 +90,11 @@ contracts under `game-track/schemas/`. The public Web builder is `scripts/build_
 - The primary capture surface is structured state/text with programmatic engine graphics. Generated
   concept images remain excluded; if later shown, they must use the separately labelled
   `secondary-vlm-ui` track with their own provenance and analysis.
-- The public-safe playable surface is likewise programmatic: procedural geometry, materials,
-  icons, VFX, UI, and locally generated audio. It is a release/presentation lane, not a third
-  research authority or confirmatory visual arm.
+- The public-safe playable surface is programmatic — procedural geometry, materials, icons, VFX,
+  UI, and locally generated audio — optionally skinned by the curated UI art lane
+  `game-track/godot/assets/ui/` (D-035): user-curated, provenance-bound PNGs that degrade to the
+  procedural build when absent. It is a release/presentation lane, not a third research authority
+  or confirmatory visual arm.
 - Presentation may read a committed snapshot but never mutate canonical state directly.
 - Timeout, invalid proposal, controller failure, or exhausted repair must leave the complete prior
   canonical state unchanged.
@@ -104,19 +108,25 @@ contracts under `game-track/schemas/`. The public Web builder is `scripts/build_
 | Character exploration sheet | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
 | UI concept | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
 | Evidence/item icon sheet | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
+| Playable UI art (key art, portrait, panel texture, icons, tutorial vignette) | `higgsfield-cli` (D-034) | `higgsfield generate create gpt_image_2 --prompt "$(cat <frozen-prompt>)" --aspect_ratio <r> --wait --json` |
 | Paper diagrams and measured plots | repository SVG/Python generators | `uv run python scripts/generate_paper_figures.py` |
 
-- Validate every image prompt with `gti --dry-run` before spending quota.
+- Validate every `gti` image prompt with `gti --dry-run` before spending quota. For
+  `higgsfield-cli`, freeze the prompt file first and record the returned job id in provenance.
 - Generate one style anchor before the full set.
 - Every PNG has adjacent provenance recording exact prompt, reference inputs (including an empty
   list), tool/package, provider/model, UTC time, dimensions, bytes, SHA-256, curation state,
-  intended track, and `runtime_eligible: false`.
+  intended track, and `runtime_eligible: false` at generation time.
 - `god-tibo-imagen` uses an unsupported private backend. It is an offline authoring tool only and
   must never become a game or experiment runtime dependency.
 - The primary confirmatory track uses structured text/state. Frozen images may enter only the
   separately labelled secondary VLM/UI track.
 - Generated images require AI-use disclosure and human rights/style review before publication or
   playable-build promotion.
+- Curated UI lane (D-035): PNGs promoted into `game-track/godot/assets/ui/` may set
+  `runtime_eligible: true` only through an adjacent `curation.json` citing the explicit user
+  directive that stands as the human review for that asset. The Web/public-safe surface must stay
+  fully playable when every curated PNG is deleted; loaders fall back to the procedural build.
 - Excluding candidate images from the public artifact mitigates release risk but does not complete
   or waive their rights/style review.
 

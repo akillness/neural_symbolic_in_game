@@ -14,6 +14,7 @@ const FOCUS_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
 var enabled: bool = true
 var _focused: bool = false
 var _focus_weight: float = 0.0
+var _confirm_weight: float = 0.0
 var _phase: float = 0.0
 var _marker_anchor: Node3D
 var _marker_ring: MeshInstance3D
@@ -99,6 +100,16 @@ func _bind_player() -> void:
 	var callback := Callable(self, "_on_player_focus_changed")
 	if not _player.focus_changed.is_connected(callback):
 		_player.focus_changed.connect(callback)
+	var confirm_callback := Callable(self, "_on_player_interact_requested")
+	if not _player.interact_requested.is_connected(confirm_callback):
+		_player.interact_requested.connect(confirm_callback)
+
+
+func _on_player_interact_requested(fired_id: String) -> void:
+	# Confirm flash: a short, decaying acknowledgement that the press landed.
+	# Presentation only — the proposal outcome arrives separately via the ledger.
+	if fired_id == interaction_id and enabled:
+		_confirm_weight = 1.0
 
 
 func _on_player_focus_changed(current: Interactable3D) -> void:
@@ -124,20 +135,37 @@ func _process(delta: float) -> void:
 	var motion_reduced: bool = (
 		_director != null and bool(_director.get("reduce_motion"))
 	)
-	_focus_weight = move_toward(_focus_weight, 1.0 if _focused else 0.0, delta * 5.5)
+	# Asymmetric focus envelope: fast attack (~0.12 s) so the ring answers the
+	# glance immediately; slower release (~0.3 s) so un-focus reads as a decay,
+	# not a cut.
+	var focus_rate := 8.5 if _focused else 3.4
+	_focus_weight = move_toward(_focus_weight, 1.0 if _focused else 0.0, delta * focus_rate)
+	# Confirm flash decays over ~0.3 s after the interact press is acknowledged.
+	_confirm_weight = move_toward(_confirm_weight, 0.0, delta * 3.3)
 	var scale_value := lerpf(0.82, 1.16, _focus_weight)
+	var emission := lerpf(0.42, 1.45, _focus_weight)
+	var ring_alpha := lerpf(0.42, 0.9, _focus_weight)
 	if motion_reduced:
+		# Reduced motion: steady semantic states only. Focus = brighter, steady
+		# ring; confirm = brief linear brightness step-down, no pulse or pop.
 		_marker_anchor.position.y = 0.22
 		_marker_anchor.rotation.y = 0.0
+		emission += _confirm_weight * 0.8
 	else:
 		_phase += delta * lerpf(1.15, 2.1, _focus_weight)
 		_marker_anchor.position.y = 0.22 + sin(_phase) * lerpf(0.018, 0.055, _focus_weight)
 		_marker_anchor.rotation.y += delta * lerpf(0.28, 0.8, _focus_weight)
-		scale_value += sin(_phase * 1.7) * 0.025 * _focus_weight
+		# Focused breathe: emissive pulse + ≤3% scale swell on the same slow sine.
+		var breathe := sin(_phase * 1.7)
+		scale_value += breathe * 0.03 * _focus_weight
+		emission += maxf(0.0, breathe) * 0.5 * _focus_weight
+		# Confirm flash: bright spike with a small outward pop that decays fast.
+		emission += _confirm_weight * 1.6
+		scale_value += _confirm_weight * 0.09
 	_marker_anchor.scale = Vector3.ONE * scale_value
 	_marker_label.visible = _focused
-	_marker_material.emission_energy_multiplier = lerpf(0.42, 1.45, _focus_weight)
+	_marker_material.emission_energy_multiplier = emission
 	_marker_material.albedo_color = Color(
 		SealedLighthouseWorldBuilder.PALETTE.signal_amber,
-		lerpf(0.42, 0.9, _focus_weight)
+		minf(ring_alpha + _confirm_weight * 0.1, 1.0)
 	)

@@ -7,6 +7,8 @@ extends RefCounted
 ##
 ## Worldview citations: W-001 dock saved, W-002 dark offshore lighthouse,
 ## W-003 Captain Mira harbor watch, W-004 lamp store reachable with signal lens.
+## D-030: the offshore tower stays dark and sealed; every warm payoff element
+## built here (mount light, tide glow, ending signal beam) is harbor-side only.
 
 const PALETTE := {
 	"storm_ink": Color("#17232D"),
@@ -20,9 +22,10 @@ const PALETTE := {
 const PACK_3D_RELATIVE := "../assets/concepts/pack-3d"
 
 # Presentation budget (Web/Compatibility renderer): five preallocated CPU burst
-# emitters, at most 18 live particles per beat, no new VFX-only lights, and
-# instanced repetition for dock dressing. These are starting caps, not a measured
-# frame-performance claim.
+# emitters, at most 18 live particles per beat, no new VFX-only lights (the
+# ending signal beam, waterline mist, and commit halo are unshaded static
+# meshes, not lights), and instanced repetition for dock dressing. These are
+# starting caps, not a measured frame-performance claim.
 const PUBLIC_SAFE_ARG := "--public-safe"
 const PRESENTATION_VFX_BUDGET := {
 	"target_fps": 60,
@@ -31,6 +34,8 @@ const PRESENTATION_VFX_BUDGET := {
 	"max_simultaneous_burst_draw_calls": 1,
 	"web_continuous_rain_particles": 360,
 	"desktop_continuous_rain_particles": 480,
+	"waterline_mist_quads": 3,
+	"vfx_only_lights": 0,
 	"blur_passes": 0,
 	"raymarch_samples": 0,
 }
@@ -66,6 +71,18 @@ static func load_concept_texture(file_name: String) -> Texture2D:
 	if image == null:
 		return null
 	return ImageTexture.create_from_image(image)
+
+
+static func load_curated_ui_texture(file_name: String) -> Texture2D:
+	# D-034/D-035 curated UI art lane (assets/ui/, user-reviewed Higgsfield pack).
+	# Unlike the candidate pack/concept lanes above, these bytes are runtime- and
+	# Web-eligible: they live inside res:// and ship in the PCK. Contract: when a
+	# curated file is absent the caller keeps its procedural look — return null,
+	# never error.
+	var path := "res://assets/ui/".path_join(file_name)
+	if not ResourceLoader.exists(path, "Texture2D"):
+		return null
+	return load(path) as Texture2D
 
 
 static func load_model_scene(file_name: String) -> Node3D:
@@ -226,6 +243,8 @@ static func build(root: Node3D) -> Dictionary:
 	handles["lamp_mount"] = _build_lamp_mount(world)
 	handles["tide_marks"] = _build_tide_marks(world)
 	handles["buoy_light"] = _build_buoy(world)
+	_build_waterline_mist(world)
+	_build_commit_halo(world)
 	var beat_vfx := _build_presentation_vfx(world)
 	for key in beat_vfx:
 		handles[key] = beat_vfx[key]
@@ -263,6 +282,10 @@ static func _build_environment(root: Node3D) -> WorldEnvironment:
 	moon.rotation_degrees = Vector3(-38.0, 152.0, 0.0)
 	moon.shadow_enabled = true
 	root.add_child(moon)
+	# The director drives the tension-staged weather arc (sky grade, ambient
+	# level, moonlight, offshore lightning) through these presentation handles.
+	world_environment.set_meta("storm_moon", moon)
+	world_environment.set_meta("sky_material", sky_material)
 	return world_environment
 
 
@@ -281,12 +304,15 @@ render_mode cull_back;
 uniform vec3 deep_color : source_color = vec3(0.05, 0.09, 0.12);
 uniform vec3 crest_color : source_color = vec3(0.20, 0.29, 0.34);
 uniform float agitation : hint_range(0.0, 2.0) = 1.0;
+// Wave motion is phase-driven by the director so storm-stage speed changes
+// stay continuous (no TIME snap) and reduced motion can hold the sea still.
+uniform float wave_phase = 0.0;
 varying float crest;
 void vertex() {
 	vec3 world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	float wave = sin(world_pos.x * 0.11 + TIME * 0.9) * 0.5
-		+ sin(world_pos.z * 0.07 - TIME * 0.6) * 0.5
-		+ sin((world_pos.x + world_pos.z) * 0.05 + TIME * 0.35) * 0.6;
+	float wave = sin(world_pos.x * 0.11 + wave_phase * 0.9) * 0.5
+		+ sin(world_pos.z * 0.07 - wave_phase * 0.6) * 0.5
+		+ sin((world_pos.x + world_pos.z) * 0.05 + wave_phase * 0.35) * 0.6;
 	VERTEX.y += wave * 0.35 * agitation;
 	crest = clamp(wave * 0.5 + 0.5, 0.0, 1.0);
 }
@@ -445,11 +471,15 @@ static func _build_lamp_store(world: Node3D) -> void:
 	add_box(store, Vector3(2.4, 1.0, 0.8), Vector3(-1.2, 0.5, -1.6), flat_material(PALETTE.wet_slate))
 	add_box(store, Vector3(0.5, 0.3, 0.5), Vector3(-1.2, 1.15, -1.6), brass_material, false)
 	var lamp := OmniLight3D.new()
+	lamp.name = "StoreLamp"
 	lamp.light_color = PALETTE.paper_fog
 	lamp.light_energy = 1.1
 	lamp.omni_range = 7.0
 	lamp.position = Vector3(0.0, 2.4, 0.0)
 	store.add_child(lamp)
+	# Harbor-life micro-motion: the director flickers this existing lamp gently;
+	# no new light is created for the effect.
+	world.set_meta("store_lamp", lamp)
 
 
 static func _build_lighthouse(world: Node3D) -> OmniLight3D:
@@ -547,6 +577,7 @@ static func _build_mira(world: Node3D) -> Node3D:
 	lantern_glow.omni_range = 3.0
 	lantern_glow.position = Vector3(0.35, 1.0, 0.2)
 	mira.add_child(lantern_glow)
+	world.set_meta("mira_lantern", lantern_glow)
 	mira.look_at_from_position(mira.position, Vector3(6.0, 0.0, 62.0), Vector3.UP)
 	mira.rotation.x = 0.0
 	return mira
@@ -612,6 +643,28 @@ static func _build_lamp_mount(world: Node3D) -> Node3D:
 	mount_light.omni_range = 14.0
 	mount_light.position = Vector3(0.0, 3.6, 0.0)
 	mount.add_child(mount_light)
+	# P-B06 ending payoff: the HARBOR-SIDE signal lamp sweeps a soft volumetric-
+	# looking beam toward the tide-marks channel. Unshaded low-alpha mesh, not a
+	# light (D-030: the offshore lighthouse never lights; the payoff is here).
+	var beam_pivot := Node3D.new()
+	beam_pivot.name = "SignalBeamPivot"
+	beam_pivot.position = Vector3(0.0, 3.6, 0.0)
+	mount.add_child(beam_pivot)
+	var beam := MeshInstance3D.new()
+	beam.name = "SignalBeam"
+	var beam_mesh := BoxMesh.new()
+	beam_mesh.size = Vector3(0.34, 0.10, 24.0)
+	beam.mesh = beam_mesh
+	var beam_material := emissive_material(PALETTE.signal_amber, 1.35, 0.0)
+	beam_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	beam.material_override = beam_material
+	beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	beam.position = Vector3(0.0, 0.0, -12.0)
+	beam.visible = false
+	beam_pivot.add_child(beam)
+	beam_pivot.set_meta("beam_mesh", beam)
+	beam_pivot.set_meta("beam_material", beam_material)
+	world.set_meta("signal_beam_pivot", beam_pivot)
 	return mount
 
 
@@ -780,4 +833,58 @@ static func _build_buoy(world: Node3D) -> OmniLight3D:
 	light.omni_range = 8.0
 	light.position = Vector3(0.0, 1.0, 0.0)
 	buoy.add_child(light)
+	world.set_meta("buoy_root", buoy)
 	return light
+
+
+static func _build_waterline_mist(world: Node3D) -> void:
+	# Harbor-life dressing: three large low-alpha unshaded sheets drift slowly
+	# near the waterline under director sine transforms. No particles, no
+	# physics, no lights — three static draw surfaces within the budget's
+	# `waterline_mist_quads` cap. Reduced motion holds them at rest.
+	var sheets: Array = []
+	var sheet_specs := [
+		{"pos": Vector3(-6.0, 0.18, 20.0), "size": Vector2(26.0, 9.0), "alpha": 0.085},
+		{"pos": Vector3(10.0, 0.05, 26.0), "size": Vector2(20.0, 7.0), "alpha": 0.065},
+		{"pos": Vector3(-16.0, 0.30, 30.0), "size": Vector2(16.0, 6.0), "alpha": 0.075},
+	]
+	for index in sheet_specs.size():
+		var spec: Dictionary = sheet_specs[index]
+		var sheet := MeshInstance3D.new()
+		sheet.name = "WaterlineMist%d" % index
+		var quad := PlaneMesh.new()
+		quad.size = spec["size"]
+		sheet.mesh = quad
+		var material := StandardMaterial3D.new()
+		material.albedo_color = Color(PALETTE.paper_fog.darkened(0.30), spec["alpha"])
+		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		sheet.material_override = material
+		sheet.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		sheet.position = spec["pos"]
+		world.add_child(sheet)
+		sheet.set_meta("rest_position", spec["pos"])
+		sheets.append(sheet)
+	world.set_meta("waterline_mist_sheets", sheets)
+
+
+static func _build_commit_halo(world: Node3D) -> void:
+	# P-B03/P-B05 punch-up: one pooled billboard quad the director re-anchors to
+	# whichever authorized light just committed, scale/fade tweened ≤0.6 s.
+	# Unshaded mesh, hidden at rest — zero standing cost, no new light.
+	var halo := MeshInstance3D.new()
+	halo.name = "CommitHalo"
+	var quad := QuadMesh.new()
+	quad.size = Vector2(1.6, 1.6)
+	halo.mesh = quad
+	var material := emissive_material(PALETTE.signal_amber, 1.2, 0.0)
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	material.no_depth_test = true
+	halo.material_override = material
+	halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	halo.visible = false
+	world.add_child(halo)
+	halo.set_meta("halo_material", material)
+	world.set_meta("commit_halo", halo)

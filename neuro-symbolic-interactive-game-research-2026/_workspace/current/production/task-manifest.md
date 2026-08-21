@@ -26,6 +26,11 @@ final aggregate regression
 | Measure Web performance and 30-minute soak | QA | 1.verify | browser performance report | G6 | pending | warmed p95, long frames, input, memory |
 | Conduct approved human presentation study | independent evaluator | later study | participant packet | G4 | not-started | immersion/readability/usability data |
 | Deploy public-safe static artifact | release engineer | 1.release | `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-production-http-browser-smoke | monitor/rollback drill |
+| Deepen weather/cinematic 연출 (tension weather arc, lightning, harbor micro-motion, intro FOV, ending beam) | visual lane (subagent WorldFeel) | 1.presentation | `world_builder.gd`, `narrative_director.gd` | G1/G4 | done-2026-08-21-smoke-and-eval-green | human presentation study |
+| Deepen core-loop feel/balance (movement accel, focus affordance, golden-path retune, escalating commits, 7 stingers + ambience) | programmer + audio lane (subagent LoopFeel) | 1.systems | `player_3d.gd`, `interactable_3d.gd`, `game_3d.gd`, `procedural_audio.gd` | G1/G7 | done-2026-08-21-smoke-and-eval-green | human presentation study |
+| Generate Higgsfield UI art pack (6 assets + provenance) | asset lane (subagent HiggsfieldGen) | 1.resources | `game-track/assets/generated/higgsfield-ui-v1/` | provenance (D-034) | done-6-of-6-accepted-2-retries | keep staging immutable |
+| Curate + integrate UI art lane | UI lane (subagent UIIntegrate) + release | 1.resources | `game-track/godot/assets/ui/` (6 PNGs, provenance, curation.json), `harbor_ledger_ui.gd`, `world_builder.gd` | provenance/G1 (D-035) | done-fallback-proven-smoke-green | human rights/style re-review if repurposed |
+| Fix narrow-viewport tutorial layout (vignette squeezed text at 390px) | orchestrator | 1.verify | `harbor_ledger_ui.gd` responsive tutorial stack | G1/G6 | done-verified-on-prod-390x844 | none |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
@@ -37,15 +42,25 @@ final aggregate regression
 - `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001`: fixtures `4/4`, fixture checks
   `40/40`, presentation checks `7/7`, combined `47/47`; terminal SHA-256 unchanged.
 - Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix.
-- `game-track/web/public/` contains 11 top-level build files and 41,426,182 bytes; the latest PCK is
-  1,573,408 bytes after `docs/latest/**` exclusion, SHA-256
-  `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`. The public 4,534-byte OFL notice
+- `game-track/web/public/` contains 11 top-level build files (~44.7 MB); the 2026-08-21 PCK is
+  4,817,404 bytes (grew from 1,573,408 with the curated UI art), SHA-256
+  `e875df7c75c17b98a1372b72418129c6aa3124a0c7a1fe127da25fd6a46d4344`. The public 4,534-byte OFL notice
   hash matches the source license. Local `vercel link` metadata (`.env.local`, `.vercel/`, generated
   `.gitignore`) is not a shipped artifact file and is excluded from the count. The artifact remains
   ignored and non-authoritative.
-- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-17 deploy
-  `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`; HTML/JS/WASM/PCK/OFL returned 200, with WASM served as
-  `application/wasm` and OFL as `text/plain`.
+- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-21 deploy
+  `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9`; html/pck/wasm fetched from the alias byte-identical to the
+  local artifact; WASM served as `application/wasm`, OFL as `text/plain`. (Prior receipt:
+  2026-08-17 `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.)
+- 2026-08-21 headless browser smoke (local + alias): key-art start gate with AI disclosure footer,
+  intro cinematic, tutorial folio (narrow 390×844 stacked layout fixed this session after the first
+  deploy showed a squeezed text column), ledger/objective updates, brass-framed Mira portrait;
+  zero unexpected console/page errors at 1280×720 and 390×844. The single `WrongDocumentError` on
+  synthetic entry is the known automation-only pointer-lock artifact; pointer lock remains `FIX`
+  pending a human-gesture check (2026-08-17 evidence unchanged: headless click raised
+  `pointerlockerror`; real-Chrome automation issued no pointer-lock request).
+  All six retained `docs/latest/*web*`/`*vercel*` captures were refreshed from the 2026-08-21
+  artifact/deployment.
 - 2026-08-17 browser smoke: clean Korean rendering at 1280×720 and 390×844; zero console and page
   errors. Pointer lock is not verified — a prior session's trusted-headless pointer-lock claim failed
   reproduction on 2026-08-17 (headless Chromium raised `pointerlockerror`; real Chrome via Playwriter
@@ -66,4 +81,5 @@ Refresh rule: any lane, generator, authority boundary, entry point, Web export b
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
-Latest rule refresh: 2026-08-13, decisions `D-027`–`D-033`.
+Latest rule refresh: 2026-08-21, decisions `D-034`–`D-035` (Higgsfield UI generator + curated
+runtime art lane); prior refresh 2026-08-13, decisions `D-027`–`D-033`.

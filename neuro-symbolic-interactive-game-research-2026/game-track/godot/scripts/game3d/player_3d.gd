@@ -9,10 +9,14 @@ signal focus_changed(interactable: Interactable3D)
 signal footstep_requested(step_index: int)
 signal movement_state_changed(active: bool)
 
-const WALK_SPEED := 4.2
-const ACCELERATION := 10.0
+const WALK_SPEED := 4.2  # Full dock diagonal ≈ 26.9 m → ≈ 6.4 s; longest golden-path leg ≈ 3.9 s (< 8 s target) — base speed kept.
+const ACCELERATION := 28.0  # 4.2 / 28 ≈ 0.15 s to reach max speed — snappy start without skating.
+const DECELERATION := 42.0  # 4.2 / 42 ≈ 0.10 s to stop — plants the character for focus/interact.
 const GRAVITY := 18.0
 const MOUSE_SENSITIVITY := 0.0028
+const SPRING_ARM_HEIGHT := 1.7
+const STEP_STRIDE := 1.65  # metres per footstep signal; the view bob shares this cadence.
+const VIEW_BOB_AMPLITUDE := 0.032  # ≤ 3.2 cm on a 5.2 m boom — subtle by design.
 
 var camera: Camera3D
 var input_locked: bool = false
@@ -23,6 +27,8 @@ var _focused: Interactable3D = null
 var _movement_active: bool = false
 var _step_distance: float = 0.0
 var _step_index: int = 0
+var _bob_offset: float = 0.0
+var _director: Node = null
 
 
 static func create() -> PlayerInvestigator3D:
@@ -56,7 +62,7 @@ static func create() -> PlayerInvestigator3D:
 
 	player._spring_arm = SpringArm3D.new()
 	player._spring_arm.spring_length = 5.2
-	player._spring_arm.position = Vector3(0.0, 1.7, 0.0)
+	player._spring_arm.position = Vector3(0.0, SPRING_ARM_HEIGHT, 0.0)
 	player._spring_arm.collision_mask = 1
 	player.add_child(player._spring_arm)
 	player.camera = Camera3D.new()
@@ -97,10 +103,14 @@ func _physics_process(delta: float) -> void:
 		move_input = Input.get_vector("sl_move_left", "sl_move_right", "sl_move_forward", "sl_move_back")
 	var direction := (transform.basis * Vector3(move_input.x, 0.0, move_input.y)).normalized()
 	var target := direction * WALK_SPEED
-	velocity.x = move_toward(velocity.x, target.x, ACCELERATION * delta)
-	velocity.z = move_toward(velocity.z, target.z, ACCELERATION * delta)
+	# Asymmetric smoothing: quick arrival (~0.15 s) but a firmer stop (~0.10 s)
+	# so releasing input plants the investigator right inside a focus ring.
+	var rate := ACCELERATION if direction.length_squared() > 0.01 else DECELERATION
+	velocity.x = move_toward(velocity.x, target.x, rate * delta)
+	velocity.z = move_toward(velocity.z, target.z, rate * delta)
 	move_and_slide()
 	_update_movement_feedback(delta, move_input.length_squared() > 0.01)
+	_update_view_bob(delta)
 	_update_focus()
 
 
@@ -114,10 +124,28 @@ func _update_movement_feedback(delta: float, has_input: bool) -> void:
 		_step_distance = 0.0
 		return
 	_step_distance += horizontal_speed * delta
-	if _step_distance >= 1.65:
-		_step_distance = fmod(_step_distance, 1.65)
+	if _step_distance >= STEP_STRIDE:
+		_step_distance = fmod(_step_distance, STEP_STRIDE)
 		_step_index += 1
 		footstep_requested.emit(_step_index)
+
+
+func _update_view_bob(delta: float) -> void:
+	# Camera-boom bob phase-locked to the footstep stride: the dip bottoms out
+	# exactly when `footstep_requested` fires, so eye and ear agree. Skipped
+	# entirely (and eased back to rest) under reduced motion or locked input.
+	if _spring_arm == null:
+		return
+	if _director == null:
+		_director = get_tree().get_first_node_in_group("sl_presentation_director")
+	var motion_reduced: bool = _director != null and bool(_director.get("reduce_motion"))
+	var target_offset := 0.0
+	if _movement_active and not motion_reduced and not input_locked:
+		# cos(TAU·phase) peaks at phase 0/1 (mid-stride) and dips at the step.
+		var phase := _step_distance / STEP_STRIDE
+		target_offset = -VIEW_BOB_AMPLITUDE * 0.5 * (1.0 - cos(TAU * phase))
+	_bob_offset = lerpf(_bob_offset, target_offset, minf(delta * 14.0, 1.0))
+	_spring_arm.position.y = SPRING_ARM_HEIGHT + _bob_offset
 
 
 func _update_focus() -> void:
@@ -147,7 +175,7 @@ func get_engineering_snapshot() -> Dictionary:
 		"input_locked": input_locked,
 		"mouse_look_requires_capture": true,
 		"resolution_independent_mouse_delta": "screen_relative",
-		"movement_feedback": ["movement_state_changed", "distance-paced-footstep-request"],
+		"movement_feedback": ["movement_state_changed", "distance-paced-footstep-request", "stride-locked-view-bob"],
 		"focused_interaction_id": "" if _focused == null else _focused.interaction_id,
 		"world_change_boundary": "interact_requested signal only; root proposal router owns machine calls",
 	}

@@ -33,6 +33,8 @@ var episode_over: bool = false
 var _first_commit_explained: bool = false
 var _first_refusal_explained: bool = false
 var _dialogue_open: bool = false
+var _met_mira: bool = false
+var _lighthouse_observed: bool = false
 var _smoke_mode: bool = false
 var _evaluate_mode: bool = false
 var _play_started: bool = false
@@ -82,6 +84,11 @@ func _ready() -> void:
 	ui.tutorial_closed.connect(_on_tutorial_closed)
 	audio_feedback.audio_unlocked.connect(_sync_audio_state)
 	audio_feedback.mute_changed.connect(func(_muted: bool) -> void: _sync_audio_state())
+	if director.has_signal("lightning_struck"):
+		# WorldFeel contract: distant offshore lightning (tension-gated, motion-
+		# gated on the director side). Thunder trails the flash like real storm
+		# sound: farther/weaker strikes arrive later and quieter.
+		director.lightning_struck.connect(_on_lightning_struck)
 
 	_sync_presentation()
 	if _smoke_mode:
@@ -123,6 +130,10 @@ func _start_experience(unlock_audio: bool) -> void:
 	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
 	director.play_intro(func() -> void:
 		ui.ledger_line("narration", "미라 선장이 부두 끝에서 어두운 탑을 지켜보고 있다.")
+		# First-session clarity: the concrete first objective lands the moment
+		# control returns (intro ≈4.6 s, instant under reduced motion), inside
+		# the ~6 s onboarding window. The amber beacon marks the same target.
+		ui.ledger_line("hint", "먼저 부두 끝의 미라 선장에게 말을 걸자 — 황색 빛기둥이 목표를 가리킨다.")
 		# First session only: the onboarding folio opens itself, then [T] reopens it.
 		if not FileAccess.file_exists(TUTORIAL_SEEN_PATH):
 			var flag := FileAccess.open(TUTORIAL_SEEN_PATH, FileAccess.WRITE)
@@ -130,6 +141,8 @@ func _start_experience(unlock_audio: bool) -> void:
 				flag.store_string("seen")
 				flag.close()
 			_open_tutorial()
+		else:
+			ui.toast("목표: 미라 선장에게 말 걸기 — 황색 빛기둥을 따라가라.")
 	)
 
 
@@ -265,7 +278,36 @@ func _on_footstep_requested(step_index: int) -> void:
 	audio_feedback.play_cue("step_%d" % (step_index % 2))
 
 
+func _on_lightning_struck(intensity: float) -> void:
+	# Flash-to-thunder gap: strong (near) strikes rumble sooner and louder.
+	# 1.4–3.2 s of delay keeps the pair readable as one storm event without a
+	# startle. play_cue itself stays mute/unlock gated.
+	if episode_over:
+		return
+	var strength := clampf(intensity, 0.0, 1.0)
+	var delay := lerpf(3.2, 1.4, strength)
+	get_tree().create_timer(delay).timeout.connect(func() -> void:
+		audio_feedback.play_cue("thunder", lerpf(-6.0, 0.0, strength))
+	)
+
+
 func _spawn_interactables() -> void:
+	# Golden-path pacing at WALK_SPEED 4.2 m/s (straight-line, trigger-zone edge
+	# to trigger-zone edge; real times run slightly longer around props):
+	#   spawn(0,2) → Mira(3,11)        ≈  6.9 m ≈ 1.6 s
+	#   Mira → lens(-11,1)             ≈ 11.8 m ≈ 2.8 s
+	#   lens → mount(7,13.5)           ≈ 16.5 m ≈ 3.9 s   (longest leg, < 6 s)
+	#   mount → Mira                   overlap  ≈ 0.5 s   (zones adjoin)
+	#   Mira → tide marks(-8.5,15.5)   ≈  7.2 m ≈ 1.7 s
+	# Total pure walking ≈ 10–12 s across the 8–12 min episode target.
+	# Loop shape: S-center → NE → SW → NE → NW; no leg exceeds ~3.9 s and no
+	# revisit happens without a new commit in between (no dead backtracking).
+	# The sealed lighthouse_view sits at the NE rail on the mount→Mira return:
+	# the mount zone masks it while installing (nearest-wins focus), then the
+	# mount interactable disables after the install commit and the view ring
+	# becomes the nearest focus on the walk back — the player meets the sealed
+	# tower (and its nudge toward Mira's forbidden question) mid-loop, before
+	# the tide-marks finale (W-002: observed, never entered).
 	var world: Node3D = handles["world"]
 	var specs := [
 		{
@@ -279,29 +321,34 @@ func _spawn_interactables() -> void:
 			"id": "lens_pickup",
 			"name": "신호 렌즈",
 			"prompt": "신호 렌즈 조사하기",
+			# Prop sits past the dock edge (x=-11 vs planks ending at x=-9):
+			# radius 2.8 leaves ≈0.6 m of standable trigger band on the planks
+			# instead of the ≈5 cm sliver the old 2.2 radius allowed.
 			"position": Vector3(-11.0, 1.0, 1.0),
-			"radius": 2.2,
+			"radius": 2.8,
 		},
 		{
 			"id": "lamp_mount",
 			"name": "부두 신호등 거치대",
 			"prompt": "거치대에 렌즈 설치 제안하기",
 			"position": Vector3(7.0, 1.5, 13.5),
-			"radius": 2.4,
+			"radius": 2.6,
 		},
 		{
 			"id": "lighthouse_view",
 			"name": "봉인된 등대",
 			"prompt": "앞바다의 등대 관찰하기",
-			"position": Vector3(0.0, 1.0, 15.2),
-			"radius": 3.0,
+			# Moved from mid-rail (0, 15.2) onto the NE rail so it lies on the
+			# mount→Mira return leg; radius 2.6 keeps it inside the rail band.
+			"position": Vector3(5.4, 1.0, 14.8),
+			"radius": 2.6,
 		},
 		{
 			"id": "tide_marks",
 			"name": "조수 표식",
 			"prompt": "조수 표식 살펴보기",
 			"position": Vector3(-8.5, 0.6, 15.5),
-			"radius": 2.4,
+			"radius": 2.6,
 		},
 	]
 	for spec in specs:
@@ -338,8 +385,13 @@ func _on_interact(interaction_id: String) -> void:
 		"lamp_mount":
 			_propose_install()
 		"lighthouse_view":
-			# W-002 observation only: the slice never enters the tower.
+			# W-002 observation only: the slice never enters the tower. The tower
+			# stays dark and sealed; the first look nudges the player toward the
+			# forbidden question at Mira — the intended refusal teaching moment.
 			ui.ledger_line("narration", "탑은 침묵한다. 등불이 있어야 할 곳에는 비에 젖은 유리뿐이다. 좁은 물길은 신호 없이는 지날 수 없다.")
+			if not _lighthouse_observed:
+				_lighthouse_observed = true
+				ui.ledger_line("hint", "미라 선장이라면 저 탑의 사정을 알지도 모른다 — 무엇을 물어도 되는지는 별개의 문제다.")
 		"tide_marks":
 			if "tide_marks_hint" in machine.state["facts"]:
 				_finish_episode()
@@ -360,6 +412,10 @@ func _on_tutorial_closed() -> void:
 	if _play_started:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		ui.set_cursor_captured(true)
+		if commit_count == 0 and not _met_mira:
+			# The folio covered the intro hint on first sessions; re-anchor the
+			# first objective the instant real control begins.
+			ui.toast("목표: 미라 선장에게 말 걸기 — 황색 빛기둥을 따라가라.")
 
 
 ## ---------------------------------------------------------------- proposals
@@ -370,10 +426,16 @@ func _propose(operation: String, arguments: Dictionary, proposal_text: String) -
 	if result["accepted"]:
 		commit_count += 1
 		ui.flash("commit")
-		audio_feedback.play_cue("commit")
+		# Reward cadence escalates with earned trust: the first commit is the
+		# explained, gentle one; the second is quicker and brighter; from the
+		# third on the stinger is quickest and most confident (P-01 legibility
+		# first, ceremony reserved for the finale).
+		audio_feedback.play_cue("commit_%d" % mini(commit_count, 3))
 		if not _first_commit_explained:
 			_first_commit_explained = true
 			ui.toast("첫 커밋 — 검증을 통과한 행동만 상태를 바꾼다. 장부의 황색 실선을 보라.")
+		elif commit_count == 2:
+			ui.toast("커밋 %d — 장부가 경로를 기억한다." % commit_count)
 	else:
 		refusal_count += 1
 		ui.flash("refusal")
@@ -385,16 +447,28 @@ func _propose(operation: String, arguments: Dictionary, proposal_text: String) -
 	return result
 
 
-func _refusal_feedback(codes: Array) -> void:
-	# Neutral reason + next valid affordance; hidden oracle labels never surface.
+func _next_affordance_text() -> String:
+	# Single source for "다음:" strings — every refusal path routes through
+	# _refusal_feedback, so this is the one ordering to keep honest. Mirrors
+	# the committed snapshot plus the presentation-only met-Mira flag.
 	var state: Dictionary = machine.state
 	var has_lens: bool = "signal_lens" in state["player"]["inventory"]
 	var installed: bool = "signal_lens_installed" in state["facts"]
-	var next_affordance := "램프 상점에서 신호 렌즈를 회수하자."
-	if has_lens and not installed:
-		next_affordance = "부두 신호등 거치대에 렌즈를 설치하자."
-	elif installed:
-		next_affordance = "미라 선장에게 허가된 단서를 묻자."
+	var hint_known: bool = "tide_marks_hint" in state["facts"]
+	if hint_known:
+		return "서쪽 방파제의 조수 표식을 살펴보자."
+	if installed:
+		return "미라 선장에게 허가된 단서를 묻자."
+	if has_lens:
+		return "부두 신호등 거치대에 렌즈를 설치하자."
+	if not _met_mira:
+		return "부두 끝의 미라 선장에게 말을 걸자."
+	return "램프 상점에서 신호 렌즈를 회수하자."
+
+
+func _refusal_feedback(codes: Array) -> void:
+	# Neutral reason + next valid affordance; hidden oracle labels never surface.
+	var next_affordance := _next_affordance_text()
 	for code in codes:
 		match code:
 			"FORBIDDEN_DISCLOSURE":
@@ -420,7 +494,10 @@ func _propose_acquire() -> void:
 		"acquire_object", {"object_id": "signal_lens"}, "신호 렌즈를 회수한다"
 	)
 	if result["accepted"]:
-		# P-B02: brass-outlined acquisition after the commit.
+		# P-B02: brass-outlined acquisition after the commit. The bright pickup
+		# chime rides above the commit rise so "got the object" reads distinctly
+		# from "the ledger accepted it".
+		audio_feedback.play_cue("pickup")
 		ui.ledger_line("commit", "신호 렌즈 확보 — 회수 기록이 장부에 남는다.")
 		ui.ledger_line("narration", "황동 테두리가 손끝에서 차갑게 빛난다. 부두의 거치대가 떠오른다.")
 		director.set_tension_stage(1)
@@ -448,6 +525,11 @@ func _propose_install() -> void:
 
 func _open_mira_dialogue() -> void:
 	_dialogue_open = true
+	if not _met_mira:
+		# Presentation-only pacing flag: after the first meeting the objective
+		# beacon stops pointing at Mira and follows the committed snapshot.
+		_met_mira = true
+		_sync_presentation()
 	ui.hide_prompt()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui.set_cursor_captured(false)
@@ -588,8 +670,10 @@ func _sync_presentation() -> void:
 		mount_interact.enabled = not installed
 	_update_objective_beacon(lens_in_store, installed, hint_known)
 
-	var objective := "꺼진 등대의 사정을 조사한다"
+	var objective := "부두 끝의 미라 선장에게 말을 건다"
 	var phase := "도착 · ARRIVAL"
+	if _met_mira:
+		objective = "램프 상점에서 신호 렌즈를 회수한다"
 	if hint_known:
 		objective = "조수 표식을 살펴 다음 경로를 확인한다"
 		phase = "단서 기록 · TRACE"
@@ -635,17 +719,20 @@ func _build_objective_beacon() -> Node3D:
 
 
 func _update_objective_beacon(lens_in_store: bool, installed: bool, hint_known: bool) -> void:
+	# The beacon always marks the CURRENT golden-path target and advances with
+	# each commit (or the met-Mira presentation flag): Mira → lens → mount →
+	# Mira → tide marks. Coordinates mirror _spawn_interactables.
 	if _objective_beacon == null:
 		return
-	var target := Vector3(0.0, 0.0, 15.2)
+	var target := Vector3(3.0, 0.0, 11.0)  # Mira: first meeting, and post-install question.
 	if hint_known:
-		target = Vector3(-8.5, 0.0, 15.5)
+		target = Vector3(-8.5, 0.0, 15.5)  # tide marks finale
 	elif installed:
-		target = Vector3(3.0, 0.0, 11.0)
+		target = Vector3(3.0, 0.0, 11.0)  # back to Mira for the authorized hint
 	elif not lens_in_store:
-		target = Vector3(7.0, 0.0, 13.5)
-	else:
-		target = Vector3(-11.0, 0.0, 1.0)
+		target = Vector3(7.0, 0.0, 13.5)  # lens held → mount
+	elif _met_mira:
+		target = Vector3(-11.0, 0.0, 1.0)  # lens still in store
 	_objective_beacon.position = target
 
 
@@ -654,6 +741,16 @@ func _finish_episode() -> void:
 		return
 	episode_over = true
 	ui.hide_prompt()
+	# The tide-route acquisition is the episode's biggest beat: fanfare + commit
+	# flash + golden ledger celebration land immediately, then the P-B06 camera
+	# (or the reduced-motion static card) carries the close. The tower stays
+	# dark and sealed throughout (W-002/D-030) — the payoff is the earned route.
+	audio_feedback.play_cue("ending")
+	ui.flash("commit")
+	ui.ledger_line("commit", "조수 항로 확보 — 세 번째 표식 아래, 썰물이 길을 연다.")
+	ui.ledger_line("narration", "장부의 마지막 줄이 황금빛으로 마른다. 부두의 불빛이 물길 끝까지 이어진다.")
+	ui.toast("획득: 썰물 항로 — 이번 밤의 가장 큰 기록.")
+	ui.set_progress(3, 3, "항로 확보 · ROUTE")
 	director.play_ending(func() -> void:
 		var summary := "\n[color=#F2B84B]봉인된 등대 — 에피소드 종료[/color]\n\n"
 		summary += "등대는 오늘 밤도 봉인된 채로 남는다. 그러나 장부에는 유효한 기록만 남았고,\n"
