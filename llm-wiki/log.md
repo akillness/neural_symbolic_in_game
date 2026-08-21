@@ -1,5 +1,13 @@
 # Log
 
+## [2026-08-21 18:55:00] report | Guided repair operator + diegetic commit ritual (two iterations, two pushes, deploy)
+- Implemented counterexample-guided repair ρ(a,E) (`src/nesy_game/repair.py`) — consumes only the structured error set + prior candidate, never WorldState (poisoned-state sentinel test); pilot now compares rejection-only / blind retry / guided / oracle arms over a frozen guided-repairable vs guided-irreparable fixture taxonomy (+10 cases) with exact per-arm×class counts and an edit-distance minimality proxy.
+- Made the paper's transaction diegetic in the playable: 3-phase verdict ritual VFX, numbered 기록/보류 ledger voice with stamps, Mira 3-beat 서사, tutorial 제안·검증·보류·기록 rule page, episode receipt end card; D-036 curated texture/stamp lane (6 assets, 1.49 MB, fallback-proven); iteration-2 polish fixed a CylinderMesh UV shader bug, stamp/contrast readability, and five per-frame allocation patterns.
+- Deep research produced 10 findings + 4 validated method records; paper gained L1–L9 limitations, 5 artifact+mechanism+evidence contributions, 3 verified references (45 total), and figure rework scored ≥4/5 on the PaperBanana rubric — all EN/KO parity.
+- Receipts: push 1 `02cf434` (97 files) and push 2 both fully CI-green (120/120 tests, drift OK, make check EN 8pp/KO 7pp, smoke SHA `4b2310…8892`, eval 47/47); deploy `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` byte-identical (pck 5,970,516 B `b97069…56eb`); golden-path GIF retained; pilot packet re-locked clean at tag `trace-rpg-guided-repair-inputs-20260821-v1`.
+- Boundary: designed-fixture conformance only — no live-model, human, or efficacy claims; G4/G6 remain FIX.
+- Full note: [[wiki/reports/2026-08-21-guided-repair-and-diegetic-ritual]]
+
 ## [2026-08-21 15:58:00] report | Sealed Lighthouse feel/연출 deepening + Higgsfield curated UI lane
 - Ran three wave-1 subagents (WorldFeel, LoopFeel, HiggsfieldGen) and one wave-2 subagent (UIIntegrate) for tension-weather/lightning/cinematic 연출, movement/focus/golden-path/audio feel, six provenance-bound Higgsfield gpt_image_2 UI assets, and curated runtime integration.
 - Appended decisions `D-034` (Higgsfield as playable UI art generator) and `D-035` (curated runtime-eligible `assets/ui/` lane with user-directive curation, AI disclosure, and mandatory procedural fallback); re-derived studio `CLAUDE.md` and the task manifest.

@@ -31,6 +31,16 @@ const TENSION_CURVE := [0.35, 0.48, 0.72, 0.50]  # arrival, lens found, sealed r
 const LIGHTNING_MIN_TENSION := 0.6
 const LIGHTNING_INTERVAL_MIN_S := 8.0
 const LIGHTNING_INTERVAL_MAX_S := 18.0
+# Objective-beacon breathing (UI marker, never a lighthouse beam — D-030):
+# shader pulse eases 0.55↔0.8 over one 2.5 s sine; reduced motion holds the
+# static midpoint.
+const BEACON_PULSE_PERIOD_S := 2.5
+const BEACON_PULSE_MIN := 0.55
+const BEACON_PULSE_MAX := 0.8
+# Signal-lens hero idle: one full quiet turn every 6 s, and a brass rim glint
+# sweep every ~4 s while the optic is still in the store (both motion-gated).
+const LENS_IDLE_TURN_PERIOD_S := 6.0
+const LENS_GLINT_INTERVAL_S := 4.0
 const BEAT_VFX_KEYS := [
 	"arrival_mist", "lens_glints", "mount_sparks", "refusal_motes", "tide_motes"
 ]
@@ -98,6 +108,7 @@ var _buoy_rest: Vector3
 var _store_lamp: OmniLight3D
 var _mira_lantern: OmniLight3D
 var _mist_sheets: Array = []
+var _mist_rests: PackedVector3Array = PackedVector3Array()
 var _beam_pivot: Node3D
 var _beam_mesh: MeshInstance3D
 var _beam_material: StandardMaterial3D
@@ -137,6 +148,11 @@ var _beat_vfx: Dictionary = {}
 var _active_tweens: Dictionary = {}
 var _cinematic_finish: Callable
 var _cinematic_keep_letterbox: bool = false
+var _beacon_material: ShaderMaterial
+var _lens_prop: Node3D
+var _lens_glint_pivot: Node3D
+var _lens_glint_material: StandardMaterial3D
+var _lens_glint_timer: float = 0.0
 
 
 func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
@@ -160,6 +176,20 @@ func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
 	_store_lamp = world.get_meta("store_lamp", null) as OmniLight3D
 	_mira_lantern = world.get_meta("mira_lantern", null) as OmniLight3D
 	_mist_sheets = world.get_meta("waterline_mist_sheets", [])
+	# Per-frame drift reads from this packed cache, not get_meta — the metas
+	# stay for the reduced-motion rest snap.
+	_mist_rests.resize(_mist_sheets.size())
+	for index in _mist_sheets.size():
+		var sheet := _mist_sheets[index] as MeshInstance3D
+		if sheet != null:
+			_mist_rests[index] = sheet.get_meta("rest_position", sheet.position)
+	var objective_beacon := handles.get("objective_beacon") as Node3D
+	if objective_beacon != null:
+		_beacon_material = objective_beacon.get_meta(&"beacon_material", null) as ShaderMaterial
+	_lens_prop = handles.get("lens_prop") as Node3D
+	if _lens_prop != null:
+		_lens_glint_pivot = _lens_prop.get_meta(&"glint_pivot", null) as Node3D
+		_lens_glint_material = _lens_prop.get_meta(&"glint_material", null) as StandardMaterial3D
 	_beam_pivot = world.get_meta("signal_beam_pivot", null) as Node3D
 	if _beam_pivot != null:
 		_beam_mesh = _beam_pivot.get_meta("beam_mesh", null) as MeshInstance3D
@@ -272,7 +302,7 @@ func _process(delta: float) -> void:
 		if _rain != null:
 			_rain.emitting = false
 		if _sea_material != null:
-			_sea_material.set_shader_parameter("agitation", 0.18)
+			_sea_material.set_shader_parameter(&"agitation", 0.18)
 		if _buoy_light != null:
 			_buoy_light.light_energy = 0.58
 		return
@@ -286,10 +316,24 @@ func _process(delta: float) -> void:
 		_rain.gravity = Vector3(-_wind * 10.0, -22.0, 0.0)
 	if _sea_material != null:
 		_wave_phase += delta * (0.55 + _wind * 0.9 + _tension * 0.35)
-		_sea_material.set_shader_parameter("agitation", _agitation * (0.85 + _tension * 0.35))
-		_sea_material.set_shader_parameter("wave_phase", _wave_phase)
+		_sea_material.set_shader_parameter(&"agitation", _agitation * (0.85 + _tension * 0.35))
+		_sea_material.set_shader_parameter(&"wave_phase", _wave_phase)
 	if _buoy_light != null:
 		_buoy_light.light_energy = 0.35 + absf(sin(_time * 1.4)) * 0.5
+	if _beacon_material != null:
+		# Objective-beacon breathing: 0.55↔0.8 alpha over one 2.5 s sine.
+		var breath := 0.5 + 0.5 * sin(_time * (TAU / BEACON_PULSE_PERIOD_S))
+		_beacon_material.set_shader_parameter(
+			&"pulse", lerpf(BEACON_PULSE_MIN, BEACON_PULSE_MAX, breath)
+		)
+	if _lens_prop != null and _lens_prop.visible:
+		# Hero-item idle: one quiet turn per 6 s while the optic waits in store,
+		# plus a brass rim glint sweep every ~4 s.
+		_lens_prop.rotation.y = fmod(_lens_prop.rotation.y + delta * (TAU / LENS_IDLE_TURN_PERIOD_S), TAU)
+		_lens_glint_timer += delta
+		if _lens_glint_timer >= LENS_GLINT_INTERVAL_S:
+			_lens_glint_timer = fmod(_lens_glint_timer, LENS_GLINT_INTERVAL_S)
+			_play_lens_glint()
 	_update_harbor_life()
 	_update_lightning(delta)
 
@@ -345,12 +389,28 @@ func _update_harbor_life() -> void:
 		var sheet := _mist_sheets[index] as MeshInstance3D
 		if sheet == null:
 			continue
-		var rest: Vector3 = sheet.get_meta("rest_position", sheet.position)
-		sheet.position = rest + Vector3(
+		sheet.position = _mist_rests[index] + Vector3(
 			sin(_time * 0.11 + index * 2.1) * 1.6,
 			sin(_time * 0.23 + index) * 0.05,
 			cos(_time * 0.13 + index * 1.3) * 1.2
 		)
+
+
+func _play_lens_glint() -> void:
+	# Brass rim glint sweep (~0.7 s): the pooled spark brightens, arcs a third
+	# of the way around the rim, and dies out. Rides the optic's own transform,
+	# so it inherits the idle turn and disappears with the pickup. Motion-gated
+	# by the caller; presentation only.
+	if _lens_glint_pivot == null or _lens_glint_material == null:
+		return
+	_lens_glint_pivot.rotation.y = 0.0
+	var tween := _new_tween("lens_glint")
+	tween.tween_property(_lens_glint_material, "albedo_color:a", 0.85, 0.16) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(_lens_glint_pivot, "rotation:y", TAU / 3.0, 0.7) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(_lens_glint_material, "albedo_color:a", 0.0, 0.4) \
+		.set_delay(0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
 func _update_lightning(delta: float) -> void:
@@ -804,7 +864,7 @@ func _apply_motion_policy() -> void:
 		_stop_all_vfx()
 		for key in [
 			"intro", "ending", "lightning", "refusal", "commit_halo", "beam_fade",
-			"verdict_ring", "verdict_seal",
+			"verdict_ring", "verdict_seal", "lens_glint",
 		]:
 			var tween := _active_tweens.get(key) as Tween
 			if tween != null and tween.is_valid():
@@ -839,6 +899,14 @@ func _apply_motion_policy() -> void:
 			_store_lamp.light_energy = 1.1
 		if _mira_lantern != null:
 			_mira_lantern.light_energy = 0.5
+		# Beacon holds its static mid-alpha; the lens rests where it stopped
+		# with the glint spark extinguished — steady semantic states only.
+		if _beacon_material != null:
+			_beacon_material.set_shader_parameter(
+				&"pulse", (BEACON_PULSE_MIN + BEACON_PULSE_MAX) * 0.5
+			)
+		if _lens_glint_material != null:
+			_lens_glint_material.albedo_color.a = 0.0
 		for sheet_value in _mist_sheets:
 			var sheet := sheet_value as MeshInstance3D
 			if sheet != null:

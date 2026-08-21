@@ -31,6 +31,11 @@ var _step_index: int = 0
 var _bob_offset: float = 0.0
 var _roll_offset: float = 0.0
 var _director: Node = null
+# The interactable set is spawned once at scene build and never grows, so the
+# focus sweep reuses one cached group snapshot instead of allocating a fresh
+# Array from get_nodes_in_group every physics frame.
+var _interactables: Array[Interactable3D] = []
+const REDUCE_MOTION_PROPERTY := &"reduce_motion"
 
 
 static func create() -> PlayerInvestigator3D:
@@ -142,7 +147,7 @@ func _update_view_bob(delta: float) -> void:
 		return
 	if _director == null:
 		_director = get_tree().get_first_node_in_group("sl_presentation_director")
-	var motion_reduced: bool = _director != null and bool(_director.get("reduce_motion"))
+	var motion_reduced: bool = _director != null and bool(_director.get(REDUCE_MOTION_PROPERTY))
 	var target_offset := 0.0
 	var target_roll := 0.0
 	if _movement_active and not motion_reduced and not input_locked:
@@ -161,9 +166,13 @@ func _update_view_bob(delta: float) -> void:
 func _update_focus() -> void:
 	var best: Interactable3D = null
 	var best_distance := INF
-	for area in get_tree().get_nodes_in_group("sl_interactables"):
-		var interactable := area as Interactable3D
-		if interactable == null or not interactable.enabled:
+	if _interactables.is_empty():
+		for area in get_tree().get_nodes_in_group("sl_interactables"):
+			var candidate := area as Interactable3D
+			if candidate != null:
+				_interactables.append(candidate)
+	for interactable in _interactables:
+		if not interactable.enabled:
 			continue
 		var distance := global_position.distance_to(interactable.global_position)
 		var radius := 2.2

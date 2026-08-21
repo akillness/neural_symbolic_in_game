@@ -50,6 +50,20 @@ seven distinct procedural audio stingers over a wind/water ambience layer. All w
 intents still pass through the authored proposal and validation router. The player restores the
 harbor-side signal and earns the tide route while the offshore lighthouse remains sealed.
 
+A second 2026-08-21 pass made the paper's transaction diegetic: proposals are weighed in a
+3-phase verdict ritual (amber inspection ring → brass-flash 기록 or slate seal-line 보류 → settle),
+the harbor ledger logs numbered entries in a bureaucratic-poetic voice with stamp iconography,
+Mira gained a 3-beat 서사 (storm night, guarded hope, quiet epilogue), the tutorial's second page
+maps 제안·검증·보류·기록 onto the propose/validate/refuse/commit loop, and the end card carries an
+episode receipt (entries, deferrals, state hash) under the tide-route seal. Curated D-036 world
+textures (wet planks, oxidized brass, sail canvas) and stamp/seal icons ship with full provenance
+and a proven procedural fallback.
+
+![Golden-path opening: start gate, intro cinematic, tutorial folio, first steps](godot/docs/latest/golden-path.gif)
+
+*32-second engineering capture from the deployed alias (start gate → intro → tutorial → dock).
+Working artifact only — not usability, immersion, or performance evidence.*
+
 | `SL-PLAY-EVAL-001` row | Checks | Result |
 |---|---:|---|
 | Canonical fixture | `10/10` | PASS |
@@ -90,15 +104,14 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-2026-08-21 production deployment `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` serves the curated-art build:
-11 files, `index.pck` 4,817,404 bytes, SHA-256
-`e875df7c75c17b98a1372b72418129c6aa3124a0c7a1fe127da25fd6a46d4344`; served html/pck/wasm fetched
+2026-08-21 production deployment `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` serves the ritual+texture build:
+11 files, `index.pck` 5,970,516 bytes, SHA-256
+`b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; served html/pck/wasm fetched
 back byte-identical to the local artifact. Headless browser smoke on the alias verified the
-key-art start gate with AI disclosure footer, intro cinematic, tutorial folio (including the
-narrow-viewport stacked layout fixed this cycle), ledger/objective updates, and Mira portrait at
-1280×720 and 390×844 with zero unexpected console/page errors. The single logged
-`WrongDocumentError` on synthetic entry is the known automation-only pointer-lock artifact; a
-human-gesture pointer-lock check remains the open item (as on 2026-08-17, when a headless click
+key-art start gate with AI disclosure footer, intro cinematic, tutorial folio, diegetic ledger
+voice with stamps, and objective flow at 1280×720 with zero unexpected console/page errors
+(earlier same-day deployment `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` verified the same at 390×844).
+A human-gesture pointer-lock check remains the open item (as on 2026-08-17, when a headless click
 raised `pointerlockerror` and real-Chrome automation issued no pointer-lock request at all).
 Build and browser-smoke details: [`web/README.md`](web/README.md).
 

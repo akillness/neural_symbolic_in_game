@@ -39,8 +39,9 @@ Designed-fixture evidence never promotes itself into an efficacy claim, and a ve
 The original Stage 4.5 `22/22` pass is retained only as a superseded audit record: Stage 6 later
 reproduced three claim defects and one unaudited body-level telemetry defect. Stage 8 corrected the
 manuscript and parser contract, Stage 9 completed the short-paper formatting and AI-use disclosure,
-and the expanded audit passed 42/42 claim families. Stage 5 verifies 42 bibliography identities
-(39 verified, 3 preprints, 0 unmatched/hallucinated). The Stage-10 clean tagged recapture now binds
+and the expanded audit passed 42/42 claim families. Stage 5 verified 42 bibliography identities
+(39 verified, 3 preprints, 0 unmatched/hallucinated); three further identity-verified references
+were added on 2026-08-21 with the guided-repair revision (45 total). The Stage-10 clean tagged recapture bound
 21/21 input digests to commit `c4752df` and verifies 35/35 artifact hashes. Independent efficacy
 studies remain pending. See [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)
 and [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md).
@@ -74,7 +75,7 @@ separate what the repository has built from what it has measured.
 |---|---|---|
 | Does the code run? | Yes — 120 tests, deterministic pilot incl. the guided-repair arm, Godot slice, live public-safe Web build | — |
 | Is the pipeline complete? | Yes — all 10 academic stages executed, clean-tag re-lock at each release checkpoint | — |
-| Is the paper written? | Yes — bilingual IEEE short paper, EN 8 pp / KO 7 pp, 42 references, ρ(a,E) guided-repair method | Journal submission and decision |
+| Is the paper written? | Yes — bilingual IEEE short paper, EN 8 pp / KO 7 pp, 45 references, ρ(a,E) guided-repair method | Journal submission and decision |
 | **Are the research claims proven?** | **No** | Live-model, human, affect, retrieval, memory, and engine-performance studies |
 
 Development is complete for what this package claims. The **experiments are not**: 5 of 18 tracked
@@ -129,7 +130,7 @@ Authoritative: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
 | Venue target | IEEE Transactions on Games, **Short Paper** (6–8 pp band) |
 | Length | EN 8 pp · KO 7 pp |
 | Sections | 11, identical in both languages |
-| References | 42, all identity-verified, 0 hallucinated |
+| References | 45 — 42 identity-verified at Stage 5 + 3 verified 2026-08-21 adds, 0 hallucinated |
 | Review model | double-anonymous |
 
 What the paper claims, and what it explicitly does not:

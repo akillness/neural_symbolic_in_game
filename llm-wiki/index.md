@@ -22,8 +22,9 @@
 - [[wiki/reports/2026-08-13-trace-rpg-academic-stage-04.5-and-05]] — superseded Stage 4.5 pass/correction trail and still-valid Stage 5 citation-identity gate
 - [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] — ToG peer-review simulation; user accepted the Full Paper revise-and-resubmit game-track direction
 - [[wiki/reports/2026-08-13-trace-rpg-sealed-lighthouse-game-track]] — game track baseline: Godot 4.7.1 authored fixtures, immutable v5 render evidence, Cycle-3 public-safe presentation/Web release, and bounded G4/G6 status
-- [[wiki/reports/2026-08-21-sealed-lighthouse-feel-and-higgsfield-ui]] — **current game track**: subagent feel/연출 deepening, D-034/D-035 Higgsfield curated UI art lane, narrow-tutorial fix, and the 2026-08-21 Vercel redeploy receipts
-- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06-to-10]] — **current academic track**: bilingual revision, 42-source identity gate, 42/42 claim re-audit, and 2026-08-14 clean tagged recapture
+- [[wiki/reports/2026-08-21-sealed-lighthouse-feel-and-higgsfield-ui]] — feel/연출 deepening baseline: D-034/D-035 Higgsfield curated UI art lane, narrow-tutorial fix, first 2026-08-21 Vercel redeploy
+- [[wiki/reports/2026-08-21-guided-repair-and-diegetic-ritual]] — **current game + academic track**: guided repair operator ρ(a,E) with per-arm×class designed-fixture results, diegetic verdict ritual/ledger voice, D-036 texture lane, L1–L9 limitations, 45 verified references, second 2026-08-21 deploy + clean tagged re-lock
+- [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06-to-10]] — academic stage history: bilingual revision, 42-source identity gate, 42/42 claim re-audit, and 2026-08-14 clean tagged recapture
 - [[maintenance-log]] — wiki and Graphify maintenance decisions
 
 ## Prompt/output ingest

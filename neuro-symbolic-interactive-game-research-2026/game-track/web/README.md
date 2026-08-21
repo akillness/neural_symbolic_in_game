@@ -2,7 +2,8 @@
 
 Status: **public-safe artifact deployed at
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app); browser
-smoke passed on 2026-08-21 (desktop 1280×720 and mobile 390×844, curated-art build)**.
+smoke passed on 2026-08-21 (ritual+texture build `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`; the earlier
+same-day curated-art deployment verified desktop 1280×720 and mobile 390×844)**.
 
 This directory holds the reproducible *configuration* for a procedural-only Godot Web build. The
 generated `public/` directory is intentionally ignored and is deployed as a static artifact after
@@ -34,12 +35,19 @@ user-curated, provenance-bound Higgsfield UI art PNGs from `godot/assets/ui/` (A
 disclosed on the start gate), and the programmatic presentation remains the complete fallback when
 those files are absent.
 
-The current ignored `public/` artifact contains 11 top-level files (~44.7 MB), including
-`index.html`, JavaScript/audio worklets, `index.pck` (4,817,404 bytes — grew from 1.57 MB with the
-curated UI art), `index.wasm`, and the directly readable `NanumGothic-OFL.txt`. Artifact existence
-is release engineering evidence only. Local deploy metadata written by `vercel link` (`.env.local`,
-`.vercel/`, a generated `.gitignore`) is not part of the shipped artifact and is excluded from that
-count.
+The current ignored `public/` artifact contains 11 top-level files (~45.9 MB), including
+`index.html`, JavaScript/audio worklets, `index.pck` (5,970,516 bytes — grew from 1.57 MB with the
+twelve curated D-034/D-035/D-036 art assets), `index.wasm`, and the directly readable
+`NanumGothic-OFL.txt`. Artifact existence is release engineering evidence only. Local deploy
+metadata written by `vercel link` (`.env.local`, `.vercel/`, a generated `.gitignore`) is not part
+of the shipped artifact and is excluded from that count.
+
+Second 2026-08-21 deployment `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual + texture build): alias
+html/pck/wasm fetched back byte-identical (`index.pck` SHA-256
+`b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`); start gate, intro cinematic,
+tutorial folio, diegetic ledger voice with stamps, and objective flow verified at 1280×720 with
+zero unexpected console/page errors; a 32 s golden-path screencast was retained as
+`godot/docs/latest/golden-path.gif` (engineering working artifact only).
 
 Browser smoke confirmed (2026-08-21, deployment `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9`):
 

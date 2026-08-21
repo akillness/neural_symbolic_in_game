@@ -61,6 +61,7 @@ func _ready() -> void:
 
 	handles = SealedLighthouseWorldBuilder.build(self)
 	_objective_beacon = _build_objective_beacon()
+	handles["objective_beacon"] = _objective_beacon
 	player = PlayerInvestigator3D.create()
 	player.position = Vector3(0.0, 0.2, 2.0)
 	add_child(player)
@@ -275,7 +276,9 @@ func _sync_audio_state() -> void:
 
 
 func _on_footstep_requested(step_index: int) -> void:
-	audio_feedback.play_cue("step_%d" % (step_index % 2))
+	# Steady-walk path: pick between the two literal cue names instead of
+	# formatting a String per stride.
+	audio_feedback.play_cue("step_0" if step_index % 2 == 0 else "step_1")
 
 
 func _on_lightning_struck(intensity: float) -> void:
@@ -724,6 +727,11 @@ func _sync_presentation() -> void:
 	var world: Node3D = handles["world"]
 
 	(handles["lens_prop"] as Node3D).visible = lens_in_store
+	# Hero-item continuity: once the optic leaves the store the vacated cradle
+	# shows a dim retaining ring, so returning players read the change.
+	var cradle_marker := world.get_meta(&"lens_cradle_marker", null) as MeshInstance3D
+	if cradle_marker != null:
+		cradle_marker.visible = not lens_in_store
 	ui.set_lens_held(
 		"signal_lens" in state["player"]["inventory"]
 		and "signal_lens_installed" not in state["facts"]
@@ -774,21 +782,76 @@ func _build_objective_beacon() -> Node3D:
 	# Usability affordance: one soft amber column marks the current objective
 	# target so the next valid action is always discoverable without opening a
 	# menu. Presentation only; it follows the committed snapshot.
+	# Read: a tapered additive column (narrower at top) that dissolves upward
+	# well below the tower silhouette line, plus a small ground-contact ring —
+	# unmistakably a UI marker, never a lighthouse beam (D-030). The director
+	# breathes the shader's pulse 0.55↔0.8 over 2.5 s (static mid-alpha under
+	# reduced motion).
 	var beacon := Node3D.new()
 	beacon.name = "ObjectiveBeacon"
 	var column := MeshInstance3D.new()
 	var mesh := CylinderMesh.new()
-	mesh.top_radius = 0.14
-	mesh.bottom_radius = 0.22
-	mesh.height = 5.0
+	mesh.top_radius = 0.08
+	mesh.bottom_radius = 0.34
+	mesh.height = 4.6
+	mesh.radial_segments = 24
+	mesh.rings = 1
+	mesh.cap_top = false
+	mesh.cap_bottom = false
 	column.mesh = mesh
-	var material := StandardMaterial3D.new()
-	material.albedo_color = Color(SealedLighthouseWorldBuilder.PALETTE.signal_amber, 0.16)
-	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var shader := Shader.new()
+	shader.code = """
+shader_type spatial;
+render_mode blend_add, depth_draw_never, cull_back, unshaded, shadows_disabled;
+// Soft additive objective marker: brightest at the ground, dissolving to
+// nothing by ~82% height, with a view-facing softness so the silhouette
+// edges never read as hard geometry. `pulse` is the director-driven
+// breathing alpha (0.55↔0.8, static 0.675 under reduced motion).
+// Height comes from the local VERTEX (mesh spans ±half_height), NOT UV.y:
+// CylinderMesh packs its side into the V∈[0,0.5] half of the UV atlas, so a
+// UV-based gradient would collapse into the faded band and vanish.
+uniform vec3 tint : source_color = vec3(0.95, 0.72, 0.29);
+uniform float pulse : hint_range(0.0, 1.0) = 0.675;
+uniform float half_height = 2.3;
+varying float column_height;
+void vertex() {
+	column_height = clamp(VERTEX.y / (2.0 * half_height) + 0.5, 0.0, 1.0);
+}
+void fragment() {
+	float body = 1.0 - smoothstep(0.10, 0.82, column_height);
+	float ground_kiss = 1.0 - smoothstep(0.0, 0.07, column_height);
+	float facing = abs(dot(normalize(NORMAL), normalize(VIEW)));
+	float softness = mix(0.55, 1.0, facing * facing);
+	ALBEDO = tint;
+	ALPHA = (body * 0.85 + ground_kiss * 0.35) * softness * pulse;
+}
+"""
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	material.set_shader_parameter(
+		&"tint", SealedLighthouseWorldBuilder.PALETTE.signal_amber
+	)
 	column.material_override = material
-	column.position = Vector3(0.0, 2.5, 0.0)
+	column.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	column.position = Vector3(0.0, 2.3, 0.0)
 	beacon.add_child(column)
+	# Ground-contact glow ring: anchors the column to the target's floor so the
+	# marker reads "stand here", not "light from the sky". Static by design.
+	var contact_ring := MeshInstance3D.new()
+	contact_ring.name = "ContactRing"
+	var ring_mesh := TorusMesh.new()
+	ring_mesh.inner_radius = 0.34
+	ring_mesh.outer_radius = 0.5
+	ring_mesh.rings = 24
+	ring_mesh.ring_segments = 6
+	contact_ring.mesh = ring_mesh
+	contact_ring.material_override = SealedLighthouseWorldBuilder.emissive_material(
+		SealedLighthouseWorldBuilder.PALETTE.signal_amber, 0.55, 0.3
+	)
+	contact_ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	contact_ring.position = Vector3(0.0, 0.05, 0.0)
+	beacon.add_child(contact_ring)
+	beacon.set_meta(&"beacon_material", material)
 	(handles["world"] as Node3D).add_child(beacon)
 	return beacon
 
@@ -832,7 +895,9 @@ func _finish_episode() -> void:
 		summary += "썰물의 표식이 다음 경로를 가리킨다.\n"
 		summary += _episode_receipt_text()
 		summary += "\n[color=#D9D3C4]— 다음 물때에 계속 —[/color]"
-		ui.show_end_card(summary)
+		# The 'ledger closes' beat: brief dim + 기록 완결 toast, then the end
+		# card slides in (reduced motion: immediate card). UI owns the staging.
+		ui.play_ledger_close(summary)
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		ui.set_cursor_captured(false)
 	)
@@ -845,7 +910,7 @@ func _episode_receipt_text() -> String:
 	var receipt := "\n[color=#F2B84B]기록 %d[/color] · [color=#D9685F]보류 %d[/color] · 최종 단계 %d\n" % [
 		commit_count, refusal_count, int(machine.state["quest"]["stage"])
 	]
-	receipt += "[color=#6b7b88]검사기 영수증 — 상태 해시 %s…[/color]\n" % machine.state_hash().substr(0, 16)
+	receipt += "[color=#8FA3B2]검사기 영수증 — 상태 해시 %s…[/color]\n" % machine.state_hash().substr(0, 16)
 	return receipt
 
 

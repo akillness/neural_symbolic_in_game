@@ -7,6 +7,9 @@ extends Area3D
 signal focus_changed(interactable: Interactable3D, focused: bool)
 
 const FOCUS_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
+# Per-frame director poll: a cached StringName avoids one String→StringName
+# conversion per interactable per frame.
+const REDUCE_MOTION_PROPERTY := &"reduce_motion"
 
 @export var interaction_id: String = ""
 @export var display_name: String = ""
@@ -145,7 +148,7 @@ func _process(delta: float) -> void:
 	if _director == null:
 		_director = get_tree().get_first_node_in_group("sl_presentation_director")
 	var motion_reduced: bool = (
-		_director != null and bool(_director.get("reduce_motion"))
+		_director != null and bool(_director.get(REDUCE_MOTION_PROPERTY))
 	)
 	# Asymmetric focus envelope: fast attack (~0.12 s) so the ring answers the
 	# glance immediately; slower release (~0.3 s) so un-focus reads as a decay,

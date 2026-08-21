@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="700" viewBox="0 0 1440 700" role="img" aria-labelledby="svg-title svg-desc">
   <title id="svg-title">TRACE-RPG trust-boundary architecture</title>
-  <desc id="svg-desc">A stochastic proposal is parsed by a strict adapter and checked by an encoded state-relative validator before commit, bounded repair, or unchanged fallback. Soft context z_t is separate from canonical authority c_t.</desc>
+  <desc id="svg-desc">A stochastic proposal is parsed by a strict adapter and checked by an encoded state-relative validator before commit, bounded repair, or unchanged fallback. The validator reads canonical state and stored policy; the repair callback rho consumes only the prior candidate and the structured error set. Soft context z_t is separate from canonical authority c_t.</desc>
   <defs>
     <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
     <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#E69F00"/></marker>
@@ -58,10 +58,10 @@
   <rect x="1170" y="225" width="8" height="100" rx="4" fill="#009E73"/>
   <text x="1276" y="258" class="box-title" text-anchor="middle">Game bridge</text>
   <text x="1276" y="287" class="small" text-anchor="middle"><tspan x="1276" dy="0">versioned JSON</tspan><tspan x="1276" dy="25">committed event</tspan></text>
-  <rect x="905" y="375" width="190" height="100" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
-  <rect x="905" y="375" width="8" height="100" rx="4" fill="#E69F00"/>
+  <rect x="895" y="375" width="210" height="100" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
+  <rect x="895" y="375" width="8" height="100" rx="4" fill="#E69F00"/>
   <text x="1004" y="408" class="box-title" text-anchor="middle">REPAIR</text>
-  <text x="1004" y="437" class="small" text-anchor="middle"><tspan x="1004" dy="0">structured E_j</tspan><tspan x="1004" dy="25">only while j &lt; K</tspan></text>
+  <text x="1004" y="437" class="small" text-anchor="middle"><tspan x="1004" dy="0">rho(a_j, E_j), j &lt; K</tspan><tspan x="1004" dy="25">never reads c_t</tspan></text>
   <rect x="1170" y="375" width="205" height="100" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
   <rect x="1170" y="375" width="8" height="100" rx="4" fill="#7A7A7A"/>
   <text x="1276" y="408" class="box-title" text-anchor="middle">FALLBACK</text>
@@ -72,19 +72,19 @@
   <rect x="817" y="247" width="76" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
   <text x="855" y="268" class="arrow-label" text-anchor="middle" fill="#009E73">valid</text>
   <line x1="1095" y1="275" x2="1170" y2="275" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
-  <path d="M805 340 H850 V425 H905" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
-  <rect x="775" y="374" width="150" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="850" y="395" class="arrow-label" text-anchor="middle" fill="#E69F00">invalid, j &lt; K</text>
+  <path d="M805 340 H850 V425 H895" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <rect x="760" y="384" width="130" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="825" y="405" class="arrow-label" text-anchor="middle" fill="#E69F00">invalid, j &lt; K</text>
   <path d="M805 352 H825 V498 H1125 V425 H1170" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
-  <rect x="955" y="472" width="150" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="1030" y="493" class="arrow-label" text-anchor="middle" fill="#7A7A7A">invalid, j = K</text>
-  <path d="M905 442 H875 V482 H150 V370" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="10 7"/>
+  <rect x="955" y="482" width="150" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="1030" y="503" class="arrow-label" text-anchor="middle" fill="#7A7A7A">invalid, j = K</text>
+  <path d="M895 442 H860 V482 H150 V370" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="10 7"/>
   <rect x="403" y="457" width="245" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
   <text x="525" y="478" class="arrow-label" text-anchor="middle" fill="#E69F00">repaired candidate  a_(j+1)</text>
   <rect x="25" y="525" width="1390" height="150" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
   <rect x="25" y="525" width="9" height="150" fill="#009E73"/>
-  <text x="50" y="560" class="section" text-anchor="start">CANONICAL AUTHORITY  c_t = (G_t, q_t, m_t)</text>
-  <text x="50" y="589" class="small" text-anchor="start" fill="#5F6368">Canonical owner supplies typed world state, action/quest/disclosure policy, and committed prefix</text>
+  <text x="50" y="560" class="section" text-anchor="start">CANONICAL AUTHORITY  c_t = (G_t, q_t)</text>
+  <text x="50" y="589" class="small" text-anchor="start" fill="#5F6368">Canonical owner supplies typed world state and stored policy; record history h_(&lt;t) is kept separately and is never read by validation</text>
   <rect x="55" y="600" width="365" height="55" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
   <rect x="55" y="600" width="8" height="55" rx="4" fill="#009E73"/>
   <text x="241" y="633" class="box-title" text-anchor="middle">Prior canonical state  c_t</text>
@@ -94,6 +94,9 @@
   <rect x="970" y="600" width="405" height="55" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
   <rect x="970" y="600" width="8" height="55" rx="4" fill="#009E73"/>
   <text x="1176" y="633" class="box-title" text-anchor="middle">Final canonical state  c_(t+1)</text>
-  <path d="M1000 325 V560 H1170 V600" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path d="M1000 325 V350 H1140 V600" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <path d="M1270 475 V600" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <line x1="685" y1="600" x2="685" y2="380" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <rect x="598" y="424" width="205" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="700" y="445" class="arrow-label" text-anchor="middle" fill="#0072B2">reads c_t = (G_t, q_t)</text>
 </svg>

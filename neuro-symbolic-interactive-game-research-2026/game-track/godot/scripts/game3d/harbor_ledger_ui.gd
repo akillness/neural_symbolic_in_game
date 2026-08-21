@@ -14,6 +14,14 @@ signal tutorial_closed
 const PALETTE := SealedLighthouseWorldBuilder.PALETTE
 const NARROW_WIDTH := 900.0
 const UI_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
+# Start-gate key-art drift: one shared 12 s sine drives a ±0.5% scale breathe
+# and a ±4 px lateral drift (mouse-independent). The 1.5% base overscan keeps
+# the art covering the gate through both extremes; reduced motion rests at the
+# base pose and absent art bytes disable the effect entirely.
+const GATE_DRIFT_PERIOD_S := 12.0
+const GATE_DRIFT_PIXELS := 4.0
+const GATE_SCALE_BREATHE := 0.005
+const GATE_ART_BASE_SCALE := 1.015
 
 var reduce_motion: bool = false
 var _root: Control
@@ -75,6 +83,8 @@ var _progress_phase: String = "도착 · ARRIVAL"
 var _toast_tween: Tween
 var _flash_tween: Tween
 var _feedback_tween: Tween
+var _start_key_art: TextureRect
+var _gate_time: float = 0.0
 
 
 func _ready() -> void:
@@ -82,6 +92,28 @@ func _ready() -> void:
 	_build()
 	get_viewport().size_changed.connect(_apply_responsive_layout)
 	_apply_responsive_layout()
+	# The only per-frame UI work is the start-gate drift; it runs solely while
+	# the gate is visible with key art present (desktop skips it entirely).
+	_update_gate_motion_state()
+
+
+func _process(delta: float) -> void:
+	if _start_key_art == null:
+		return
+	if reduce_motion:
+		_start_key_art.position = Vector2.ZERO
+		_start_key_art.scale = Vector2.ONE * GATE_ART_BASE_SCALE
+		return
+	_gate_time = fmod(_gate_time + delta, GATE_DRIFT_PERIOD_S)
+	var phase := _gate_time * (TAU / GATE_DRIFT_PERIOD_S)
+	_start_key_art.scale = Vector2.ONE * (GATE_ART_BASE_SCALE + sin(phase) * GATE_SCALE_BREATHE)
+	_start_key_art.position = Vector2(sin(phase) * GATE_DRIFT_PIXELS, 0.0)
+
+
+func _update_gate_motion_state() -> void:
+	set_process(
+		_start_key_art != null and _start_gate != null and _start_gate.visible
+	)
 
 
 func _build() -> void:
@@ -262,15 +294,19 @@ func _build_bottom_panel() -> void:
 	_ledger_stamp = TextureRect.new()
 	_ledger_stamp.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_ledger_stamp.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_ledger_stamp.custom_minimum_size = Vector2(52.0, 52.0)
+	# Capture review: at 52 px the stamp covered the tail of wrapped verdict
+	# lines in the bottom-right of the log. 44 px + slight translucency lets
+	# the newest line stay readable while the ink stamp still lands.
+	_ledger_stamp.custom_minimum_size = Vector2(44.0, 44.0)
 	_ledger_stamp.anchor_left = 1.0
 	_ledger_stamp.anchor_right = 1.0
 	_ledger_stamp.anchor_top = 1.0
 	_ledger_stamp.anchor_bottom = 1.0
-	_ledger_stamp.offset_left = -62.0
-	_ledger_stamp.offset_right = -10.0
-	_ledger_stamp.offset_top = -62.0
-	_ledger_stamp.offset_bottom = -10.0
+	_ledger_stamp.offset_left = -52.0
+	_ledger_stamp.offset_right = -8.0
+	_ledger_stamp.offset_top = -52.0
+	_ledger_stamp.offset_bottom = -8.0
+	_ledger_stamp.self_modulate = Color(1, 1, 1, 0.88)
 	_ledger_stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ledger_stamp.visible = false
 	_ledger_log.add_child(_ledger_stamp)
@@ -387,13 +423,19 @@ func _build_start_gate() -> void:
 			"SL-C01-environment-key-art.png"
 		)
 	if key_art_texture != null:
-		var key_art := TextureRect.new()
-		key_art.texture = key_art_texture
-		key_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		key_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		key_art.set_anchors_preset(Control.PRESET_FULL_RECT)
-		key_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_start_gate.add_child(key_art)
+		_start_key_art = TextureRect.new()
+		_start_key_art.texture = key_art_texture
+		_start_key_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_start_key_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		_start_key_art.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_start_key_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		# Base overscan + centered pivot: the drift breathes around the middle
+		# of the gate and never exposes a bare edge.
+		_start_key_art.scale = Vector2.ONE * GATE_ART_BASE_SCALE
+		_start_key_art.resized.connect(func() -> void:
+			_start_key_art.pivot_offset = _start_key_art.size * 0.5
+		)
+		_start_gate.add_child(_start_key_art)
 		# Storm-ink gradient scrim: >=0.45 alpha at every text band (0.50 at the
 		# very top, 0.86 at the footer) so card text and the disclosure keep
 		# >=4.5:1 contrast over the art at 1280x720 and 390x844.
@@ -744,12 +786,14 @@ func show_start_gate(visible_now: bool) -> void:
 		_play_started = false
 		_cursor_label.text = "● 시작 대기 · READY"
 		_start_button.grab_focus()
+	_update_gate_motion_state()
 
 
 func set_play_started(started: bool) -> void:
 	_play_started = started
 	_start_gate.visible = not started
 	set_cursor_captured(started)
+	_update_gate_motion_state()
 
 
 func set_cursor_captured(captured: bool) -> void:
@@ -948,6 +992,36 @@ func show_end_card(text: String) -> void:
 	_end_text.text = text
 	_end_card.visible = true
 	_bottom_panel.visible = false
+
+
+func play_ledger_close(text: String) -> void:
+	# Ending 'ledger closes' beat: the ledger panel returns dimmed for one last
+	# look, a final 기록-완결 toast lands, and after ~0.6 s the end card slides
+	# in. Reduced motion: the card appears immediately (steady semantic state).
+	# Purely additive presentation — the canonical receipt lives in the card.
+	if reduce_motion:
+		show_end_card(text)
+		return
+	_bottom_panel.visible = true
+	_bottom_panel.modulate = Color(1, 1, 1, 1)
+	toast("기록 완결 — 장부가 닫힌다.")
+	var beat := create_tween()
+	beat.tween_property(_bottom_panel, "modulate:a", 0.55, 0.30) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	beat.tween_interval(0.30)
+	beat.tween_callback(func() -> void:
+		_bottom_panel.visible = false
+		_bottom_panel.modulate = Color(1, 1, 1, 1)
+		_end_text.text = text
+		_end_card.visible = true
+		_end_card.modulate = Color(1, 1, 1, 0)
+		var base_position := _end_card.position
+		_end_card.position = base_position + Vector2(0.0, 26.0)
+		var slide := create_tween()
+		slide.tween_property(_end_card, "position", base_position, 0.34) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		slide.parallel().tween_property(_end_card, "modulate:a", 1.0, 0.30)
+	)
 
 
 func get_engineering_snapshot() -> Dictionary:

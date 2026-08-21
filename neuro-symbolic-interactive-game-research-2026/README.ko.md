@@ -40,7 +40,8 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 결함 3건과 감사 범위 밖의 본문 telemetry 결함 1건을 재현했고, Stage 8에서 원고와 parser
 계약을 수정했으며 Stage 9에서 Short Paper 서식과 AI 사용 고지를 완료했다. 확장 감사는
 주장 family 42/42를 통과했다. Stage 5는 참고문헌 42건(검증 39건, preprint 3건,
-미일치·환각 0건)의 동일성을 확인한다. Stage-10 clean tagged 재캡처는 입력 digest 21/21을
+미일치·환각 0건)의 동일성을 확인했고, 2026-08-21 유도 수리 개정에서 동일성 검증 3건이
+추가되어 총 45건이다. Stage-10 clean tagged 재캡처는 입력 digest 21/21을
 commit `c4752df`에 결합하고 산출물 hash 35/35를 확인했다. 독립 효능 실험은 아직 남아 있다. 상세 내용은
 [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)와
 [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md)에 있다.
@@ -76,7 +77,7 @@ assignment-complete outcome record, proposal outcome이 존재할 때의 완전�
 |---|---|---|
 | 코드가 동작하는가? | 예 — 테스트 120개, 결정론적 파일럿(유도 수리 arm 포함), Godot 슬라이스, 공개 안전 Web 빌드 | — |
 | 파이프라인이 완료됐는가? | 예 — 학술 10단계 전부 실행, 릴리스 체크포인트마다 clean-tag 재결합 | — |
-| 논문이 작성됐는가? | 예 — 이중언어 IEEE short paper, 영문 8쪽 / 국문 7쪽, 참고문헌 42건, ρ(a,E) 유도 수리 방법 | 저널 투고와 심사 결정 |
+| 논문이 작성됐는가? | 예 — 이중언어 IEEE short paper, 영문 8쪽 / 국문 7쪽, 참고문헌 45건, ρ(a,E) 유도 수리 방법 | 저널 투고와 심사 결정 |
 | **연구 주장이 입증됐는가?** | **아니오** | 라이브 모델, 인간, 감정, 검색, 메모리, 엔진 성능 연구 |
 
 본 패키지가 주장하는 범위에서 **개발은 완료**됐다. 그러나 **실험은 완료되지 않았다.** 추적 중인
@@ -130,7 +131,7 @@ SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 �
 | 목표 저널 | IEEE Transactions on Games, **Short Paper** (6–8쪽 밴드) |
 | 분량 | 영문 8쪽 · 국문 7쪽 |
 | 절 수 | 11개, 두 언어 동일 |
-| 참고문헌 | 42건, 동일성 전수 확인, 환각 0건 |
+| 참고문헌 | 45건 — Stage 5 동일성 검증 42건 + 2026-08-21 검증 추가 3건, 환각 0건 |
 | 심사 방식 | 이중 익명 |
 
 논문이 주장하는 것과 명시적으로 주장하지 않는 것:

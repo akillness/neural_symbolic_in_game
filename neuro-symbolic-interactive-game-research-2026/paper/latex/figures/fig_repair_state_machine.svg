@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="780" viewBox="0 0 1440 780" role="img" aria-labelledby="svg-title svg-desc">
   <title id="svg-title">TRACE-RPG bounded validate-repair-commit state machine</title>
-  <desc id="svg-desc">Each candidate attempt is validated and recorded. A repair budget K permits at most K plus one recorded attempts. A successful application performs an additional defensive validation before canonical mutation.</desc>
+  <desc id="svg-desc">Each candidate attempt is validated and recorded. A repair budget K permits at most K plus one recorded attempts. On an invalid attempt with budget remaining, the arm-selected repair callback runs: the guided operator rho consumes only the prior candidate and the structured error set, while the state-reading oracle callback is an upper bound only. A successful application performs an additional defensive validation before canonical mutation.</desc>
   <defs>
     <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
     <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#E69F00"/></marker>
@@ -18,10 +18,14 @@
     </style>
   </defs>
   <rect x="0" y="0" width="1440" height="780" fill="#FFFFFF"/>
-  <rect x="25" y="20" width="1390" height="92" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="25" y="20" width="830" height="92" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
   <rect x="25" y="20" width="9" height="92" fill="#0072B2"/>
   <text x="50" y="55" class="section" text-anchor="start">BOUNDED ATTEMPT CONTRACT</text>
   <text x="50" y="84" class="small" text-anchor="start" fill="#5F6368">≤ K + 1 recorded candidate attempts: j = 0, …, K</text>
+  <rect x="880" y="20" width="535" height="92" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="880" y="20" width="9" height="92" fill="#E69F00"/>
+  <text x="905" y="55" class="section" text-anchor="start">FROZEN REPAIRABILITY CLASSES</text>
+  <text x="905" y="84" class="small" text-anchor="start" fill="#5F6368">guided-repairable · oracle-only · irreparable</text>
   <rect x="45" y="205" width="190" height="100" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
   <rect x="45" y="205" width="8" height="100" rx="4" fill="#7A7A7A"/>
   <text x="144" y="238" class="box-title" text-anchor="middle">Candidate a_j</text>
@@ -46,10 +50,14 @@
   <text x="1341" y="187" class="small" text-anchor="middle"><tspan x="1341" dy="0">atomic</tspan><tspan x="1341" dy="25">T(c_t,a_j)</tspan></text>
   <polygon points="1010,310 1090,380 1010,450 930,380" fill="#FFFFFF" stroke="#E69F00" stroke-width="3"/>
   <text x="1010" y="374" class="box-title" text-anchor="middle"><tspan x="1010" dy="0">j &lt; K?</tspan></text>
-  <rect x="735" y="485" width="240" height="110" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
-  <rect x="735" y="485" width="8" height="110" rx="4" fill="#E69F00"/>
-  <text x="859" y="518" class="box-title" text-anchor="middle">Structured repair</text>
-  <text x="859" y="547" class="small" text-anchor="middle"><tspan x="859" dy="0">consume E_j</tspan><tspan x="859" dy="25">set j ← j + 1</tspan></text>
+  <rect x="620" y="485" width="240" height="110" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
+  <rect x="620" y="485" width="8" height="110" rx="4" fill="#E69F00"/>
+  <text x="744" y="518" class="box-title" text-anchor="middle">Guided repair</text>
+  <text x="744" y="547" class="small" text-anchor="middle"><tspan x="744" dy="0">rho(a_j, E_j) edit from E_j</tspan><tspan x="744" dy="25">never reads state; j ← j+1</tspan></text>
+  <rect x="885" y="485" width="250" height="110" rx="7" fill="#EAF4FA" stroke="#56B4E9" stroke-width="2"/>
+  <rect x="885" y="485" width="8" height="110" rx="4" fill="#56B4E9"/>
+  <text x="1014" y="518" class="box-title" text-anchor="middle">Oracle repair</text>
+  <text x="1014" y="547" class="small" text-anchor="middle"><tspan x="1014" dy="0">reads authoritative state</tspan><tspan x="1014" dy="25">upper bound; j ← j+1</tspan></text>
   <rect x="1185" y="485" width="215" height="110" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
   <rect x="1185" y="485" width="8" height="110" rx="4" fill="#7A7A7A"/>
   <text x="1296" y="518" class="box-title" text-anchor="middle">FALLBACK</text>
@@ -68,20 +76,22 @@
   <path d="M885 325 V355 H930" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
   <rect x="880" y="329" width="50" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
   <text x="905" y="350" class="arrow-label" text-anchor="middle" fill="#E69F00">no</text>
-  <path d="M980 432 V458 H855 V485" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
-  <rect x="877" y="435" width="55" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="904" y="456" class="arrow-label" text-anchor="middle" fill="#E69F00">yes</text>
+  <path d="M1010 450 V465 H740 V485" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path d="M1010 450 V485" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <rect x="875" y="439" width="50" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="900" y="460" class="arrow-label" text-anchor="middle" fill="#E69F00">yes</text>
   <path d="M1090 380 H1140 V540 H1185" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
   <rect x="1111" y="349" width="48" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
   <text x="1135" y="370" class="arrow-label" text-anchor="middle" fill="#7A7A7A">no</text>
-  <path d="M735 540 H665 V625 H140 V305" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="10 7"/>
+  <path d="M1010 595 V625 H140 V305" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="10 7"/>
+  <path d="M740 595 V625" stroke="#E69F00" stroke-width="3" fill="none" stroke-dasharray="10 7"/>
   <rect x="290" y="598" width="280" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
   <text x="430" y="619" class="arrow-label" text-anchor="middle" fill="#E69F00">next recorded candidate attempt</text>
-  <path d="M1338 240 V630 H1180 V650" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
-  <path d="M1292 595 V625 H1245 V650" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <path d="M1338 240 V440 H1420 V632 H1390 V650" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path d="M1292 595 V615 H1260 V650" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
   <rect x="25" y="655" width="850" height="95" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
   <rect x="25" y="655" width="9" height="95" fill="#7A7A7A"/>
   <text x="50" y="690" class="section" text-anchor="start">TERMINATION ASSUMPTION</text>
-  <text x="50" y="719" class="small" text-anchor="start" fill="#5F6368">Each proposal/repair callback returns within its separately enforced deadline</text>
+  <text x="50" y="719" class="small" text-anchor="start" fill="#5F6368">Callbacks are assumed to return; the runtime enforces no wall-clock deadline</text>
   <text x="1400" y="765" class="note" text-anchor="end">The extra defensive validation is not an additional candidate attempt.</text>
 </svg>

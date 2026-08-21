@@ -630,13 +630,41 @@ static func _build_mira(world: Node3D) -> Node3D:
 
 static func _build_lens_prop(world: Node3D) -> Node3D:
 	# W-004: the replacement signal lens rests in the reachable lamp store.
+	# Hero-item treatment: the cradle (pedestal + empty-seat marker) is a
+	# separate sibling node, so hiding the returned handle on pickup (smoke:
+	# presentation_sync_reads_snapshot) removes only the optic — returning
+	# players read the vacated cradle at a glance.
+	var cradle := Node3D.new()
+	cradle.name = "SignalLensCradle"
+	cradle.position = Vector3(-11.0, 0.0, 1.0)
+	world.add_child(cradle)
+	var pedestal_material := flat_material(PALETTE.wet_slate)
+	add_box(cradle, Vector3(0.7, 0.9, 0.7), Vector3(0.0, 0.45, 0.0), pedestal_material, false)
+	# Empty-cradle marker: a dim brass retaining ring around the vacated seat.
+	# Hidden while the lens is in store; presentation sync reveals it after the
+	# acquire commit (기록/보류 ledger stays the authority — this only mirrors it).
+	var empty_marker := MeshInstance3D.new()
+	empty_marker.name = "EmptyCradleMarker"
+	var seat := TorusMesh.new()
+	seat.inner_radius = 0.15
+	seat.outer_radius = 0.23
+	seat.rings = 16
+	seat.ring_segments = 6
+	empty_marker.mesh = seat
+	empty_marker.material_override = emissive_material(PALETTE.brass.darkened(0.2), 0.4, 0.5)
+	empty_marker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	empty_marker.position = Vector3(0.0, 0.94, 0.0)
+	empty_marker.visible = false
+	cradle.add_child(empty_marker)
+	world.set_meta(&"lens_cradle_marker", empty_marker)
+
+	# Optic-only handle, centered on its own axis so the director's slow 6 s
+	# idle turn spins the lens in place above the cradle.
 	var lens := Node3D.new()
 	lens.name = "SignalLensProp"
-	lens.position = Vector3(-11.0, 0.0, 1.0)
+	lens.position = Vector3(-11.0, 1.25, 1.0)
 	world.add_child(lens)
-	var pedestal_material := flat_material(PALETTE.wet_slate)
-	add_box(lens, Vector3(0.7, 0.9, 0.7), Vector3(0.0, 0.45, 0.0), pedestal_material, false)
-	if attach_model(lens, "signal_lens.glb", Vector3(0.0, 1.25, 0.0), 1.35) == null:
+	if attach_model(lens, "signal_lens.glb", Vector3.ZERO, 1.35) == null:
 		var brass_material := brass_fitting_material()
 		var ring := MeshInstance3D.new()
 		var torus := TorusMesh.new()
@@ -644,7 +672,6 @@ static func _build_lens_prop(world: Node3D) -> Node3D:
 		torus.outer_radius = 0.34
 		ring.mesh = torus
 		ring.material_override = brass_material
-		ring.position = Vector3(0.0, 1.25, 0.0)
 		ring.rotation_degrees = Vector3(90.0, 0.0, 0.0)
 		lens.add_child(ring)
 		var glass := MeshInstance3D.new()
@@ -657,14 +684,31 @@ static func _build_lens_prop(world: Node3D) -> Node3D:
 		glass_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		glass_material.roughness = 0.15
 		glass.material_override = glass_material
-		glass.position = Vector3(0.0, 1.25, 0.0)
 		lens.add_child(glass)
+	# Brass rim glint: one pooled spark that orbits the rim when the director
+	# plays the ~4 s sweep (skipped under reduced motion). Invisible at rest and
+	# parented to the optic, so it vanishes with the pickup and costs nothing.
+	var glint_pivot := Node3D.new()
+	glint_pivot.name = "GlintPivot"
+	lens.add_child(glint_pivot)
+	var spark := MeshInstance3D.new()
+	spark.name = "GlintSpark"
+	var spark_mesh := BoxMesh.new()
+	spark_mesh.size = Vector3(0.05, 0.05, 0.2)
+	spark.mesh = spark_mesh
+	var spark_material := emissive_material(PALETTE.signal_amber.lightened(0.25), 1.7, 0.0)
+	spark.material_override = spark_material
+	spark.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	spark.position = Vector3(0.4, 0.0, 0.0)
+	glint_pivot.add_child(spark)
+	lens.set_meta(&"glint_pivot", glint_pivot)
+	lens.set_meta(&"glint_material", spark_material)
 	var glow := OmniLight3D.new()
 	glow.name = "LensGlow"
 	glow.light_color = PALETTE.paper_fog
 	glow.light_energy = 0.4
 	glow.omni_range = 2.0
-	glow.position = Vector3(0.0, 1.3, 0.0)
+	glow.position = Vector3(0.0, 0.05, 0.0)
 	lens.add_child(glow)
 	return lens
 

@@ -254,6 +254,8 @@ def architecture_svg() -> str:
         (
             "A stochastic proposal is parsed by a strict adapter and checked by an encoded "
             "state-relative validator before commit, bounded repair, or unchanged fallback. "
+            "The validator reads canonical state and stored policy; the repair callback "
+            "rho consumes only the prior candidate and the structured error set. "
             "Soft context z_t is separate from canonical authority c_t."
         ),
     )
@@ -361,13 +363,13 @@ def architecture_svg() -> str:
         fill=PALE_GREEN,
     )
     items += component_box(
-        905,
+        895,
         375,
-        190,
+        210,
         100,
         accent=ORANGE,
         title_value="REPAIR",
-        body_lines=("structured E_j", "only while j < K"),
+        body_lines=("rho(a_j, E_j), j < K", "never reads c_t"),
         fill=PALE_ORANGE,
     )
     items += component_box(
@@ -386,13 +388,13 @@ def architecture_svg() -> str:
     items.append(path("M805 292 H855 V275 H905", color=GREEN, marker="green"))
     items += arrow_label(855, 268, "valid", color=GREEN, width=76)
     items.append(line(1095, 275, 1170, 275, color=GREEN, marker="green"))
-    items.append(path("M805 340 H850 V425 H905", color=ORANGE, marker="orange"))
-    items += arrow_label(850, 395, "invalid, j < K", color=ORANGE, width=150)
+    items.append(path("M805 340 H850 V425 H895", color=ORANGE, marker="orange"))
+    items += arrow_label(825, 405, "invalid, j < K", color=ORANGE, width=130)
     items.append(path("M805 352 H825 V498 H1125 V425 H1170", color=GRAY, marker="gray"))
-    items += arrow_label(1030, 493, "invalid, j = K", color=GRAY, width=150)
+    items += arrow_label(1030, 503, "invalid, j = K", color=GRAY, width=150)
     items.append(
         path(
-            "M905 442 H875 V482 H150 V370",
+            "M895 442 H860 V482 H150 V370",
             color=ORANGE,
             marker="orange",
             dash="10 7",
@@ -406,8 +408,8 @@ def architecture_svg() -> str:
         1390,
         150,
         accent=GREEN,
-        title_value="CANONICAL AUTHORITY  c_t = (G_t, q_t, m_t)",
-        subtitle="Canonical owner supplies typed world state, action/quest/disclosure policy, and committed prefix",
+        title_value="CANONICAL AUTHORITY  c_t = (G_t, q_t)",
+        subtitle="Canonical owner supplies typed world state and stored policy; record history h_(<t) is kept separately and is never read by validation",
     )
     items += component_box(
         55,
@@ -436,8 +438,10 @@ def architecture_svg() -> str:
         title_value="Final canonical state  c_(t+1)",
         fill=PALE_GREEN,
     )
-    items.append(path("M1000 325 V560 H1170 V600", color=GREEN, marker="green"))
+    items.append(path("M1000 325 V350 H1140 V600", color=GREEN, marker="green"))
     items.append(path("M1270 475 V600", color=GRAY, marker="gray"))
+    items.append(line(685, 600, 685, 380, color=BLUE, marker="blue"))
+    items += arrow_label(700, 445, "reads c_t = (G_t, q_t)", color=BLUE, width=205)
 
     items.append("</svg>")
     return "\n".join(items) + "\n"
@@ -451,19 +455,31 @@ def repair_state_machine_svg() -> str:
         "TRACE-RPG bounded validate-repair-commit state machine",
         (
             "Each candidate attempt is validated and recorded. A repair budget K permits at most "
-            "K plus one recorded attempts. A successful application performs an additional "
-            "defensive validation before canonical mutation."
+            "K plus one recorded attempts. On an invalid attempt with budget remaining, the "
+            "arm-selected repair callback runs: the guided operator rho consumes only the prior "
+            "candidate and the structured error set, while the state-reading oracle callback is "
+            "an upper bound only. A successful application performs an additional defensive "
+            "validation before canonical mutation."
         ),
     )
 
     items += band(
         25,
         20,
-        1390,
+        830,
         92,
         accent=BLUE,
         title_value="BOUNDED ATTEMPT CONTRACT",
         subtitle="≤ K + 1 recorded candidate attempts: j = 0, …, K",
+    )
+    items += band(
+        880,
+        20,
+        535,
+        92,
+        accent=ORANGE,
+        title_value="FROZEN REPAIRABILITY CLASSES",
+        subtitle="guided-repairable · oracle-only · irreparable",
     )
 
     items += component_box(
@@ -538,14 +554,24 @@ def repair_state_machine_svg() -> str:
     )
     items.append(multiline(1010, 374, ("j < K?",), css_class="box-title"))
     items += component_box(
-        735,
+        620,
         485,
         240,
         110,
         accent=ORANGE,
-        title_value="Structured repair",
-        body_lines=("consume E_j", "set j ← j + 1"),
+        title_value="Guided repair",
+        body_lines=("rho(a_j, E_j) edit from E_j", "never reads state; j ← j+1"),
         fill=PALE_ORANGE,
+    )
+    items += component_box(
+        885,
+        485,
+        250,
+        110,
+        accent=SKY,
+        title_value="Oracle repair",
+        body_lines=("reads authoritative state", "upper bound; j ← j+1"),
+        fill=PALE_BLUE,
     )
     items += component_box(
         1185,
@@ -577,21 +603,23 @@ def repair_state_machine_svg() -> str:
     items.append(line(1240, 182, 1275, 182, color=GREEN, marker="green"))
     items.append(path("M885 325 V355 H930", color=ORANGE, marker="orange"))
     items += arrow_label(905, 350, "no", color=ORANGE, width=50)
-    items.append(path("M980 432 V458 H855 V485", color=ORANGE, marker="orange"))
-    items += arrow_label(904, 456, "yes", color=ORANGE, width=55)
+    items.append(path("M1010 450 V465 H740 V485", color=ORANGE, marker="orange"))
+    items.append(path("M1010 450 V485", color=ORANGE, marker="orange"))
+    items += arrow_label(900, 460, "yes", color=ORANGE, width=50)
     items.append(path("M1090 380 H1140 V540 H1185", color=GRAY, marker="gray"))
     items += arrow_label(1135, 370, "no", color=GRAY, width=48)
     items.append(
         path(
-            "M735 540 H665 V625 H140 V305",
+            "M1010 595 V625 H140 V305",
             color=ORANGE,
             marker="orange",
             dash="10 7",
         )
     )
+    items.append(path("M740 595 V625", color=ORANGE, dash="10 7"))
     items += arrow_label(430, 619, "next recorded candidate attempt", color=ORANGE, width=280)
-    items.append(path("M1338 240 V630 H1180 V650", color=GREEN, marker="green"))
-    items.append(path("M1292 595 V625 H1245 V650", color=GRAY, marker="gray"))
+    items.append(path("M1338 240 V440 H1420 V632 H1390 V650", color=GREEN, marker="green"))
+    items.append(path("M1292 595 V615 H1260 V650", color=GRAY, marker="gray"))
 
     items += band(
         25,
@@ -600,7 +628,7 @@ def repair_state_machine_svg() -> str:
         95,
         accent=GRAY,
         title_value="TERMINATION ASSUMPTION",
-        subtitle="Each proposal/repair callback returns within its separately enforced deadline",
+        subtitle="Callbacks are assumed to return; the runtime enforces no wall-clock deadline",
     )
     items.append(
         text(
@@ -624,8 +652,9 @@ def evidence_boundary_svg() -> str:
         "TRACE-RPG evidence and inference boundary",
         (
             "Frozen designed fixtures feed a deterministic observation pipeline and support only "
-            "mechanism-conformance statements. Live-model efficacy, player benefit, affect, and "
-            "commercial-engine performance remain unmeasured future questions."
+            "mechanism-conformance statements, including the guided-versus-oracle repair "
+            "separation. Live-model efficacy, player benefit, affect, and commercial-engine "
+            "performance remain unmeasured future questions."
         ),
     )
 
@@ -640,7 +669,12 @@ def evidence_boundary_svg() -> str:
     )
     for y, title_value, body_lines, accent in (
         (100, "Gate conformance", ("valid control", "named failure codes"), BLUE),
-        (220, "Repair arms", ("K = 0 / retry / repair", "repairable strata"), ORANGE),
+        (
+            220,
+            "Repair arms",
+            ("K=0 · retry · rho · oracle", "frozen repairability classes"),
+            ORANGE,
+        ),
         (340, "Integrity mutations", ("checksum / replay", "linkage / continuity"), GREEN),
         (460, "Adapter + accounting", ("strict response classes", "assignment guards"), GRAY),
     ):
@@ -746,6 +780,7 @@ def evidence_boundary_svg() -> str:
             "Designed-fixture agreement",
             "Rejected-state immutability",
             "Bounded attempt accounting",
+            "Guided-vs-oracle repair separation",
             "Implemented fault-fixture detection",
             "Mechanism conformance for frozen cases",
         ),
@@ -759,7 +794,7 @@ def evidence_boundary_svg() -> str:
         accent=ORANGE,
         title_value="NOT MEASURED — FUTURE WORK",
         body_lines=(
-            "Live ten-model superiority",
+            "Live-model repair quality or superiority",
             "Player benefit or narrative quality",
             "Affect-adaptation efficacy",
             "Commercial-engine performance",

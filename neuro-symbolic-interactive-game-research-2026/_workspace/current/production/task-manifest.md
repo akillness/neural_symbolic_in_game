@@ -36,6 +36,9 @@ final aggregate regression
 | Generate + curate texture/stamp pack (3 tileable textures, 2 stamps, 1 seal) | asset lane (subagent TexturePack) | 1.resources | `game-track/assets/generated/higgsfield-tex-v1/`, 6 curated files in `assets/ui/`, curation.json 12 assets | provenance (D-036) | done-1.49MB-smoke-green | rights re-review if repurposed |
 | Deep research: limitations/contributions + 4 method records | research lane (subagent DeepResearch) | paper.revision | `_workspace/current/design/paper-limitations-contributions-2026-08-21.md`, `research/deep-research/results/` (14/14 valid) | citation identity | done-2026-08-21 | integrate remaining text in iteration 2 |
 | Guided repair operator ρ(a,E) + fixture battery + bilingual paper update | research engineer (subagent RepairMethod) | paper.method | `src/nesy_game/repair.py`, pilot manifest +10 fixtures, `run_conformance_pilot.py` guided arm, regenerated stage-04 packet (38 artifacts/22 inputs), EN 8pp / KO 7pp PDFs | methods drift + page band | done-120-tests-drift-OK-make-check-pass | clean-tag re-lock at push 2 |
+| Iteration-2 game polish (beacon shader, lens hero glint, start-gate parallax, ledger-close beat, perf allocation audit, stamp/contrast fixes) | polish lane (subagent GamePolish) | 1.presentation | all seven `game3d/*.gd` | G1/G4/G6 | done-2026-08-21-it2-smoke-eval-fallback-green | human presentation study |
+| Iteration-2 paper polish (5-bullet contributions, +3 verified refs S44–S46 → 45 total, L1–L9 limitations, IMRaD parity audit, figure rubric ≥4/5 rework) | paper lane (subagent PaperPolish) | paper.revision | `paper/latex/en+ko/main.tex`, `references.bib`, `generate_paper_figures.py`, rebuilt PDFs EN 8pp/KO 7pp | page band + drift + parity | done-2026-08-21-make-check-pass | clean-tag re-lock |
+| Deploy iteration-2 artifact + golden-path capture | release engineer (orchestrator) | 1.release | deploy `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`, `docs/latest/golden-path.gif` (3.2 MB, 32 s) | release engineering | done-byte-identical-alias-zero-errors | monitor/rollback drill |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
@@ -47,16 +50,22 @@ final aggregate regression
 - `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001`: fixtures `4/4`, fixture checks
   `40/40`, presentation checks `7/7`, combined `47/47`; terminal SHA-256 unchanged.
 - Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix.
-- `game-track/web/public/` contains 11 top-level build files (~44.7 MB); the 2026-08-21 PCK is
-  4,817,404 bytes (grew from 1,573,408 with the curated UI art), SHA-256
-  `e875df7c75c17b98a1372b72418129c6aa3124a0c7a1fe127da25fd6a46d4344`. The public 4,534-byte OFL notice
+- `game-track/web/public/` contains 11 top-level build files (~45.9 MB); the latest 2026-08-21 PCK
+  is 5,970,516 bytes (1.57 MB procedural → 4.82 MB with curated UI art → 5.97 MB with the D-036
+  texture/stamp lane), SHA-256
+  `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`. The public 4,534-byte OFL notice
   hash matches the source license. Local `vercel link` metadata (`.env.local`, `.vercel/`, generated
   `.gitignore`) is not a shipped artifact file and is excluded from the count. The artifact remains
   ignored and non-authoritative.
 - Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-21 deploy
-  `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9`; html/pck/wasm fetched from the alias byte-identical to the
-  local artifact; WASM served as `application/wasm`, OFL as `text/plain`. (Prior receipt:
-  2026-08-17 `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.)
+  `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual+texture build, `index.pck` 5,970,516 bytes, SHA-256
+  `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`); html/pck/wasm fetched from
+  the alias byte-identical to the local artifact. (Prior receipts: same-day
+  `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` — curated-art build, verified desktop+mobile; 2026-08-17
+  `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.)
+- 2026-08-21 golden-path screencast from the deployed alias retained as
+  `docs/latest/golden-path.gif` (640×360, 10 fps, 32 s, 3,245,101 bytes) — engineering working
+  artifact only; not usability, immersion, or performance evidence.
 - 2026-08-21 headless browser smoke (local + alias): key-art start gate with AI disclosure footer,
   intro cinematic, tutorial folio (narrow 390×844 stacked layout fixed this session after the first
   deploy showed a squeezed text column), ledger/objective updates, brass-framed Mira portrait;
