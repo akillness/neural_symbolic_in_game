@@ -26,6 +26,11 @@ from .experiment import (
     write_experiment_jsonl,
 )
 from .metrics import evaluate_trace
+from .repair import (
+    GUIDED_IRREPARABLE_CODES,
+    GUIDED_REPAIRABLE_CODES,
+    counterexample_guided_repair,
+)
 from .runtime import (
     execute_with_repair,
     parse_candidate_record,
@@ -38,6 +43,8 @@ from .runtime import (
 from .validator import validate_candidate
 
 __all__ = [
+    "GUIDED_IRREPARABLE_CODES",
+    "GUIDED_REPAIRABLE_CODES",
     "ActionPolicy",
     "AdapterFailure",
     "CandidateAction",
@@ -52,6 +59,7 @@ __all__ = [
     "ValidationResult",
     "WorldState",
     "candidate_from_mapping",
+    "counterexample_guided_repair",
     "evaluate_trace",
     "execute_with_repair",
     "experiment_assignment_key",

@@ -75,15 +75,18 @@
   <path d="M1065 458 V496 H540 V252 H560" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="7 6"/>
   <text x="810" y="488" class="note" text-anchor="middle" fill="#E69F00">revalidate against the same prior state</text>
   <rect x="40" y="530" width="1400" height="132" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <text x="66" y="566" class="box-title" text-anchor="start">Repair arms exercised on two authored initially-invalid cases</text>
+  <text x="66" y="566" class="box-title" text-anchor="start">Repair arms exercised on 12 authored initially-invalid cases</text>
   <text x="66" y="606" class="small" text-anchor="start">rejection_only</text>
   <text x="66" y="632" class="note" text-anchor="start">K = 0, none</text>
-  <text x="366" y="606" class="small" text-anchor="start" fill="#7A7A7A">0 / 2 commits</text>
-  <text x="526" y="606" class="small" text-anchor="start">unchanged_retry</text>
-  <text x="526" y="632" class="note" text-anchor="start">K = 1, unchanged</text>
-  <text x="826" y="606" class="small" text-anchor="start" fill="#7A7A7A">0 / 2 commits</text>
-  <text x="986" y="606" class="small" text-anchor="start">structured_repair</text>
-  <text x="986" y="632" class="note" text-anchor="start">K = 1, policy_restore</text>
-  <text x="1286" y="606" class="small" text-anchor="start" fill="#009E73">1 / 2 commits</text>
-  <text x="66" y="690" class="note" text-anchor="start">Two designed cases per arm. This is pilot feasibility, not evidence that structured repair generally beats retry.</text>
+  <text x="66" y="656" class="small" text-anchor="start" fill="#7A7A7A">0 / 12 commits</text>
+  <text x="416" y="606" class="small" text-anchor="start">unchanged_retry</text>
+  <text x="416" y="632" class="note" text-anchor="start">K = 1, unchanged</text>
+  <text x="416" y="656" class="small" text-anchor="start" fill="#7A7A7A">0 / 12 commits</text>
+  <text x="766" y="606" class="small" text-anchor="start">guided_repair</text>
+  <text x="766" y="632" class="note" text-anchor="start">K = 1, counterexample_guided</text>
+  <text x="766" y="656" class="small" text-anchor="start" fill="#009E73">5 / 12 commits</text>
+  <text x="1116" y="606" class="small" text-anchor="start">structured_repair</text>
+  <text x="1116" y="632" class="note" text-anchor="start">K = 1, policy_restore</text>
+  <text x="1116" y="656" class="small" text-anchor="start" fill="#009E73">6 / 12 commits</text>
+  <text x="66" y="690" class="note" text-anchor="start">12 designed cases per arm across frozen repairability classes. This is pilot feasibility, not evidence that any repair strategy generally wins.</text>
 </svg>

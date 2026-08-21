@@ -72,9 +72,9 @@ separate what the repository has built from what it has measured.
 
 | Question | What exists today | What is still missing |
 |---|---|---|
-| Does the code run? | Yes — 96 tests, deterministic pilot, Godot slice, live public-safe Web build | — |
-| Is the pipeline complete? | Yes — all 10 academic stages executed, Stage 10 repro lock passed | — |
-| Is the paper written? | Yes — bilingual IEEE short paper, EN 7 pp / KO 6 pp, 42 references | Journal submission and decision |
+| Does the code run? | Yes — 120 tests, deterministic pilot incl. the guided-repair arm, Godot slice, live public-safe Web build | — |
+| Is the pipeline complete? | Yes — all 10 academic stages executed, clean-tag re-lock at each release checkpoint | — |
+| Is the paper written? | Yes — bilingual IEEE short paper, EN 8 pp / KO 7 pp, 42 references, ρ(a,E) guided-repair method | Journal submission and decision |
 | **Are the research claims proven?** | **No** | Live-model, human, affect, retrieval, memory, and engine-performance studies |
 
 Development is complete for what this package claims. The **experiments are not**: 5 of 18 tracked
@@ -127,7 +127,7 @@ Authoritative: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
 |---|---|
 | Title | TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World |
 | Venue target | IEEE Transactions on Games, **Short Paper** (6–8 pp band) |
-| Length | EN 7 pp · KO 6 pp |
+| Length | EN 8 pp · KO 7 pp |
 | Sections | 11, identical in both languages |
 | References | 42, all identity-verified, 0 hallucinated |
 | Review model | double-anonymous |

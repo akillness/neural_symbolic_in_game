@@ -351,6 +351,11 @@
         "strategy": "unchanged"
       },
       {
+        "id": "guided_repair",
+        "repair_budget": 1,
+        "strategy": "counterexample_guided"
+      },
+      {
         "id": "structured_repair",
         "repair_budget": 1,
         "strategy": "policy_restore"
@@ -360,9 +365,11 @@
       {
         "id": "repairable-policy-precondition",
         "repairable": true,
+        "repairability": "guided_repairable",
         "expected_status": {
           "rejection_only": "fallback",
           "unchanged_retry": "fallback",
+          "guided_repair": "commit",
           "structured_repair": "commit"
         },
         "candidate": {
@@ -380,9 +387,11 @@
       {
         "id": "nonrepairable-unreachable-object",
         "repairable": false,
+        "repairability": "irreparable",
         "expected_status": {
           "rejection_only": "fallback",
           "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
           "structured_repair": "fallback"
         },
         "candidate": {
@@ -398,6 +407,219 @@
           "required_objects": [
             "remote_key"
           ]
+        }
+      },
+      {
+        "id": "guided-repairable-effect-omission",
+        "repairable": true,
+        "repairability": "guided_repairable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "commit",
+          "structured_repair": "commit"
+        },
+        "candidate": {
+          "action_id": "guided-repairable-effect-omission",
+          "actor_id": "guard",
+          "action_type": "OPEN_DOOR",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": []
+        }
+      },
+      {
+        "id": "guided-repairable-effect-violation",
+        "repairable": true,
+        "repairability": "guided_repairable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "commit",
+          "structured_repair": "commit"
+        },
+        "candidate": {
+          "action_id": "guided-repairable-effect-violation",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [
+            "unauthorized_effect"
+          ]
+        }
+      },
+      {
+        "id": "guided-repairable-stale-precondition",
+        "repairable": true,
+        "repairability": "guided_repairable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "commit",
+          "structured_repair": "commit"
+        },
+        "candidate": {
+          "action_id": "guided-repairable-stale-precondition",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard",
+            "missing_fact"
+          ],
+          "effects": []
+        }
+      },
+      {
+        "id": "guided-repairable-stage-effect",
+        "repairable": true,
+        "repairability": "guided_repairable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "commit",
+          "structured_repair": "commit"
+        },
+        "candidate": {
+          "action_id": "guided-repairable-stage-effect",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [],
+          "quest_stage_effect": 2
+        }
+      },
+      {
+        "id": "oracle-only-quest-stage-requirement",
+        "repairable": true,
+        "repairability": "oracle_only",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
+          "structured_repair": "commit"
+        },
+        "candidate": {
+          "action_id": "oracle-only-quest-stage-requirement",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [],
+          "required_quest_stage": 2
+        }
+      },
+      {
+        "id": "irreparable-unknown-action",
+        "repairable": false,
+        "repairability": "irreparable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
+          "structured_repair": "fallback"
+        },
+        "candidate": {
+          "action_id": "irreparable-unknown-action",
+          "actor_id": "guard",
+          "action_type": "UNREGISTERED_REPAIR_TARGET",
+          "preconditions": [],
+          "effects": []
+        }
+      },
+      {
+        "id": "irreparable-npc-knowledge",
+        "repairable": false,
+        "repairability": "irreparable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
+          "structured_repair": "fallback"
+        },
+        "candidate": {
+          "action_id": "irreparable-npc-knowledge",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [],
+          "used_facts": [
+            "unverified_rumor"
+          ]
+        }
+      },
+      {
+        "id": "irreparable-disclosure-knowledge",
+        "repairable": false,
+        "repairability": "irreparable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
+          "structured_repair": "fallback"
+        },
+        "candidate": {
+          "action_id": "irreparable-disclosure-knowledge",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [],
+          "disclosed_facts": [
+            "unknown_disclosure_target"
+          ]
+        }
+      },
+      {
+        "id": "irreparable-forbidden-disclosure",
+        "repairable": false,
+        "repairability": "irreparable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
+          "structured_repair": "fallback"
+        },
+        "candidate": {
+          "action_id": "irreparable-forbidden-disclosure",
+          "actor_id": "guard",
+          "action_type": "SAY",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [],
+          "disclosed_facts": [
+            "sealed_secret"
+          ]
+        }
+      },
+      {
+        "id": "irreparable-quest-regression",
+        "repairable": false,
+        "repairability": "irreparable",
+        "expected_status": {
+          "rejection_only": "fallback",
+          "unchanged_retry": "fallback",
+          "guided_repair": "fallback",
+          "structured_repair": "fallback"
+        },
+        "candidate": {
+          "action_id": "irreparable-quest-regression",
+          "actor_id": "guard",
+          "action_type": "ROLLBACK_STAGE",
+          "preconditions": [
+            "met_guard"
+          ],
+          "effects": [],
+          "quest_stage_effect": 0
         }
       }
     ]

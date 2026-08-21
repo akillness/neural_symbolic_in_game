@@ -74,9 +74,9 @@ assignment-complete outcome record, proposal outcome이 존재할 때의 완전�
 
 | 질문 | 현재 존재하는 것 | 아직 없는 것 |
 |---|---|---|
-| 코드가 동작하는가? | 예 — 테스트 96개, 결정론적 파일럿, Godot 슬라이스, 공개 안전 Web 빌드 | — |
-| 파이프라인이 완료됐는가? | 예 — 학술 10단계 전부 실행, Stage 10 재현 락 통과 | — |
-| 논문이 작성됐는가? | 예 — 이중언어 IEEE short paper, 영문 7쪽 / 국문 6쪽, 참고문헌 42건 | 저널 투고와 심사 결정 |
+| 코드가 동작하는가? | 예 — 테스트 120개, 결정론적 파일럿(유도 수리 arm 포함), Godot 슬라이스, 공개 안전 Web 빌드 | — |
+| 파이프라인이 완료됐는가? | 예 — 학술 10단계 전부 실행, 릴리스 체크포인트마다 clean-tag 재결합 | — |
+| 논문이 작성됐는가? | 예 — 이중언어 IEEE short paper, 영문 8쪽 / 국문 7쪽, 참고문헌 42건, ρ(a,E) 유도 수리 방법 | 저널 투고와 심사 결정 |
 | **연구 주장이 입증됐는가?** | **아니오** | 라이브 모델, 인간, 감정, 검색, 메모리, 엔진 성능 연구 |
 
 본 패키지가 주장하는 범위에서 **개발은 완료**됐다. 그러나 **실험은 완료되지 않았다.** 추적 중인
@@ -128,7 +128,7 @@ SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 �
 |---|---|
 | 제목 | TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World |
 | 목표 저널 | IEEE Transactions on Games, **Short Paper** (6–8쪽 밴드) |
-| 분량 | 영문 7쪽 · 국문 6쪽 |
+| 분량 | 영문 8쪽 · 국문 7쪽 |
 | 절 수 | 11개, 두 언어 동일 |
 | 참고문헌 | 42건, 동일성 전수 확인, 환각 0건 |
 | 심사 방식 | 이중 익명 |

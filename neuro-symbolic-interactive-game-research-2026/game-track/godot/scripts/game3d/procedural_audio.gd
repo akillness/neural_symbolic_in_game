@@ -25,12 +25,20 @@ const CUE_VOLUME_DB := {
 	"thunder": -16.0,
 	"commit_3": -12.0,
 	"ending": -10.0,
+	"verdict_inspect": -20.0,
+	"verdict_commit_deep": -15.0,
+	"verdict_refusal_seal": -15.0,
+	"repair_hint": -18.0,
 }
 # Per-cue retrigger cooldowns (ms); default 45.
 const CUE_COOLDOWN_MS := {
 	"focus": 160,
 	"thunder": 1200,
 	"ending": 800,
+	"verdict_inspect": 150,
+	"verdict_commit_deep": 200,
+	"verdict_refusal_seal": 200,
+	"repair_hint": 260,
 }
 
 var _ambient_player: AudioStreamPlayer
@@ -43,6 +51,9 @@ var _last_cue_ms: Dictionary = {}
 
 
 func _ready() -> void:
+	# RitualVfx contract: the presentation director requests verdict-ritual cues
+	# through this group; play_cue keeps every gesture/mute gate in force.
+	add_to_group("sl_audio_feedback")
 	_ambient_player = AudioStreamPlayer.new()
 	_ambient_player.name = "ProceduralHarborAmbience"
 	_ambient_player.volume_db = -30.0
@@ -153,6 +164,10 @@ func _build_streams() -> void:
 	#   pickup    bright two-partial chime for the lens acquisition
 	#   ending    3-note fanfare resolve (E4→G4→C5, longer tonic)
 	#   thunder   low filtered-noise rumble for offshore lightning (delayed)
+	#   verdict_inspect      soft ascending shimmer — the proposal being weighed
+	#   verdict_commit_deep  low warm thump landing under the commit stinger
+	#   verdict_refusal_seal short damped 'stamp' knock — the seal-line stroke
+	#   repair_hint          two quick soft ticks — the proposal being revised
 	_cue_streams = {
 		"start": _make_tone_stream(0.42, [261.63, 392.00], 3.0, 0.018, 11),
 		"focus": _make_tone_stream(0.075, [880.00], 16.0, 0.0, 17),
@@ -187,6 +202,23 @@ func _build_streams() -> void:
 		"thunder": _make_thunder_stream(2.4, 67),
 		"step_0": _make_tone_stream(0.09, [92.50], 22.0, 0.10, 71),
 		"step_1": _make_tone_stream(0.085, [103.83], 24.0, 0.09, 83),
+		"verdict_inspect": _make_sequence_stream([
+			{"at": 0.0, "freqs": [1046.50], "gain": 0.20, "decay": 14.0},
+			{"at": 0.05, "freqs": [1318.51], "gain": 0.22, "decay": 13.0},
+			{"at": 0.10, "freqs": [1567.98, 2093.00], "gain": 0.24, "decay": 11.0},
+		], 0.34, 0.0, 89, false),
+		"verdict_commit_deep": _make_sequence_stream([
+			{"at": 0.0, "freqs": [65.41, 98.00], "gain": 0.60, "decay": 8.0, "noise": 0.05},
+			{"at": 0.05, "freqs": [130.81], "gain": 0.30, "decay": 6.0},
+		], 0.55, 0.0, 97, true),
+		"verdict_refusal_seal": _make_sequence_stream([
+			{"at": 0.0, "freqs": [220.00, 233.08], "gain": 0.50, "decay": 22.0, "noise": 0.16},
+			{"at": 0.07, "freqs": [110.00], "gain": 0.38, "decay": 18.0, "noise": 0.06},
+		], 0.30, 0.0, 101, false),
+		"repair_hint": _make_sequence_stream([
+			{"at": 0.0, "freqs": [783.99], "gain": 0.24, "decay": 26.0},
+			{"at": 0.12, "freqs": [880.00], "gain": 0.26, "decay": 26.0},
+		], 0.26, 0.0, 103, false),
 	}
 
 

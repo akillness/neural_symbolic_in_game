@@ -5,7 +5,14 @@ extends Node
 ## Drives the GDD B-011 tension curve (0.35 → 0.72 → 0.50), the SL-PRESENT-001
 ## beats P-B01..P-B06, the staged weather arc (fog grade, sky darkening,
 ## wind-driven rain, sea agitation, offshore lightning), harbor-life
-## micro-motion, and cinematic camera moves.
+## micro-motion, cinematic camera moves, and the verdict ritual — the paper's
+## validate→repair→commit transaction staged diegetically at the acting prop
+## as ritual sub-beats of P-B03/P-B04/P-B05:
+##   inspect  (~0.25 s) amber ring sweep while the proposal is being weighed;
+##   verdict  commit → warm brass flash + rising motes + light bloom envelope
+##            (P-B03/P-B05 face), refusal → cold slate dip + one horizontal
+##            seal-line shutter stroke (~0.3 s, P-B04 face);
+##   settle   the ring releases; the lasting record lives in the ledger.
 ## Reads committed snapshots only; never proposes or mutates canonical state.
 ##
 ## D-030 hard boundary: the offshore lighthouse stays DARK and SEALED. Lightning
@@ -53,6 +60,13 @@ const BEAT_SPEC := {
 		"support": "tide_motes", "reduced": "static_end_card",
 	},
 }
+# Verdict-ritual sub-beat timings (P-B03/P-B04/P-B05 faces). Reduced motion
+# replaces the whole sequence with one steady verdict-colored ring state.
+const RITUAL_SPEC := {
+	"inspect_s": 0.22,
+	"verdict_s": 0.30,
+	"settle_s": 0.24,
+}
 
 # P-B06 geometry: every aim point is harbor-side water. From the mount at
 # (7, 3.6, 13.5) the sweep runs W → NW (tide marks → channel buoy) and never
@@ -90,6 +104,12 @@ var _beam_material: StandardMaterial3D
 var _commit_halo: MeshInstance3D
 var _halo_material: StandardMaterial3D
 var _mount_light: OmniLight3D
+var _inspection_ring: MeshInstance3D
+var _ring_material: StandardMaterial3D
+var _seal_line: MeshInstance3D
+var _seal_material: StandardMaterial3D
+var _audio_feedback: Node
+var _ritual_light_rest: Dictionary = {}
 var _cinematic_camera: Camera3D
 var _player: PlayerInvestigator3D
 var _tension: float = TENSION_CURVE[0]
@@ -147,6 +167,17 @@ func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
 	_commit_halo = world.get_meta("commit_halo", null) as MeshInstance3D
 	if _commit_halo != null:
 		_halo_material = _commit_halo.get_meta("halo_material", null) as StandardMaterial3D
+	_inspection_ring = world.get_meta("inspection_ring", null) as MeshInstance3D
+	if _inspection_ring != null:
+		_ring_material = _inspection_ring.get_meta("ring_material", null) as StandardMaterial3D
+	_seal_line = world.get_meta("seal_line", null) as MeshInstance3D
+	if _seal_line != null:
+		_seal_material = _seal_line.get_meta("seal_material", null) as StandardMaterial3D
+	# Ritual audio rides the pooled, gesture/mute-gated cue voices owned by the
+	# audio node; the director requests cues, it never owns playback policy.
+	# Resolved lazily too (_request_cue) — setup may run before tree entry.
+	if is_inside_tree():
+		_audio_feedback = get_tree().get_first_node_in_group("sl_audio_feedback")
 	var lamp_mount := handles.get("lamp_mount") as Node3D
 	if lamp_mount != null:
 		_mount_light = lamp_mount.get_node_or_null("MountLight") as OmniLight3D
@@ -157,6 +188,7 @@ func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
 	for key in BEAT_VFX_KEYS:
 		var particles := handles.get(key) as CPUParticles3D
 		if particles != null:
+			particles.set_meta("rest_position", particles.position)
 			_beat_vfx[key] = particles
 	assert(BEAT_SPEC.size() == 6 and _beat_vfx.size() == BEAT_VFX_KEYS.size())
 	for spec in BEAT_SPEC.values():
@@ -441,6 +473,226 @@ func play_refusal_pulse() -> void:
 	tween.parallel().tween_property(self, "_refusal_chill", 0.0, 0.40)
 
 
+func play_verdict_ritual(target: Node3D, committed: bool) -> void:
+	# The paper's validate→repair→commit transaction, staged diegetically at the
+	# acting prop (ritual sub-beats of P-B03/P-B04/P-B05). Three phases:
+	#   (i)  inspect — amber ring sweep (~0.22 s) while the proposal is weighed;
+	#   (ii) verdict — commit: warm brass flash + rising motes + light bloom;
+	#        refusal: cold slate dip + one horizontal seal-line stroke (~0.3 s);
+	#   (iii) settle — the ring releases; the record lives in the ledger.
+	# Additive layering over play_commit_glow/play_refusal_pulse — never a second
+	# state authority: refusals leave every canonical value untouched.
+	# Reduced motion: one steady verdict-colored ring state, no sweep/burst/travel.
+	var anchor := _ritual_anchor(target)
+	var palette: Dictionary = SealedLighthouseWorldBuilder.PALETTE
+	var amber: Color = palette.signal_amber
+	var brass: Color = palette.brass
+	var cold: Color = (palette.warning_coral as Color).lerp(palette.wet_slate, 0.6)
+	_request_cue("verdict_inspect")
+	if _inspection_ring == null or _ring_material == null:
+		# Pool absent (defensive): verdict audio + existing glow/pulse still land.
+		_finish_verdict(target, committed, anchor)
+		return
+	_inspection_ring.global_position = anchor
+	_inspection_ring.rotation = Vector3.ZERO
+	# A re-trigger can interrupt a commit flash mid-tween; start from rest.
+	_ring_material.emission_energy_multiplier = 1.0
+	if _reduce_motion:
+		# Steady semantic state only: verdict-colored ring, no motion, timed release.
+		_ring_material.emission = brass if committed else cold
+		_ring_material.albedo_color = Color(_ring_material.emission, 0.55)
+		_inspection_ring.scale = Vector3.ONE
+		_inspection_ring.visible = true
+		_finish_verdict(target, committed, anchor)
+		var hold := _new_tween("verdict_ring")
+		hold.tween_interval(0.9)
+		hold.tween_callback(func() -> void: _inspection_ring.visible = false)
+		return
+	_ring_material.emission = amber
+	_ring_material.albedo_color = Color(amber, 0.0)
+	_inspection_ring.scale = Vector3.ONE * 0.55
+	_inspection_ring.visible = true
+	var inspect_s: float = RITUAL_SPEC["inspect_s"]
+	var tween := _new_tween("verdict_ring")
+	# (i) inspect: the ring sweeps open and lifts slightly — evidence weighed.
+	tween.tween_property(_ring_material, "albedo_color:a", 0.85, inspect_s * 0.45) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(_inspection_ring, "scale", Vector3.ONE * 1.05, inspect_s) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(
+		_inspection_ring, "global_position:y", anchor.y + 0.14, inspect_s
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	# (ii) verdict.
+	tween.tween_callback(func() -> void: _finish_verdict(target, committed, anchor))
+	if committed:
+		# Warm brass flash + a confident outward pop. Albedo follows emission —
+		# the ring is unshaded, so its visible color = albedo tint + emission.
+		tween.tween_property(_ring_material, "emission", brass.lightened(0.25), 0.06)
+		tween.parallel().tween_property(
+			_ring_material, "albedo_color", Color(brass.lightened(0.2), 0.9), 0.06
+		)
+		tween.parallel().tween_property(_ring_material, "emission_energy_multiplier", 2.2, 0.06)
+		tween.parallel().tween_property(_inspection_ring, "scale", Vector3.ONE * 1.28, 0.10) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tween.tween_property(_ring_material, "emission_energy_multiplier", 1.0, 0.20) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	else:
+		# Cold slate dip: the ring chills and sinks a touch — proposal held.
+		tween.tween_property(_ring_material, "emission", cold, 0.10)
+		tween.parallel().tween_property(_ring_material, "albedo_color", Color(cold, 0.8), 0.10)
+		tween.parallel().tween_property(_inspection_ring, "scale", Vector3.ONE * 0.9, 0.16) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+		tween.parallel().tween_property(
+			_inspection_ring, "global_position:y", anchor.y - 0.05, 0.16
+		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	# (iii) settle: release the ring; the lasting record is the ledger line.
+	var settle_s: float = RITUAL_SPEC["settle_s"]
+	tween.tween_property(_ring_material, "albedo_color:a", 0.0, settle_s) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func() -> void: _inspection_ring.visible = false)
+
+
+func play_repair_hint(target: Node3D) -> void:
+	# Repair visualization: a short double amber blink on the acting prop's own
+	# lamp — "the proposal is being revised toward the next affordance". Light
+	# energy envelope only (no particles, meshes, or new lights). Reduced motion
+	# skips the pulse; the refusal text already names the next affordance.
+	if _reduce_motion:
+		return
+	var light := _find_target_light(target)
+	if light == null:
+		return
+	var key := "repair_%s" % light.get_instance_id()
+	var rest: float = _ritual_light_rest.get(key, light.light_energy)
+	_ritual_light_rest[key] = rest
+	var amber: Color = SealedLighthouseWorldBuilder.PALETTE.signal_amber
+	var peak: float = maxf(rest * 1.6, 0.55)
+	var tween := _new_tween(key)
+	for _blink in range(2):
+		tween.tween_property(light, "light_energy", peak, 0.06) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(light, "light_color", amber, 0.06)
+		tween.tween_property(light, "light_energy", rest, 0.10) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func() -> void: _ritual_light_rest.erase(key))
+
+
+func _finish_verdict(target: Node3D, committed: bool, anchor: Vector3) -> void:
+	# Verdict-phase support layers shared by motion and reduced-motion paths.
+	if committed:
+		_request_cue("verdict_commit_deep")
+		if not _reduce_motion:
+			_emit_vfx("mount_sparks", anchor)
+			_bloom_target_light(target)
+			_settle_nearest_interactable(anchor)
+	else:
+		_request_cue("verdict_refusal_seal")
+		if not _reduce_motion:
+			_play_seal_stroke(anchor)
+
+
+func _play_seal_stroke(anchor: Vector3) -> void:
+	# Refusal seal: one thin horizontal bar strikes down and holds a beat — the
+	# ledger stamp made physical (~0.3 s). Coral→cold slate, then gone.
+	if _seal_line == null or _seal_material == null:
+		return
+	var palette: Dictionary = SealedLighthouseWorldBuilder.PALETTE
+	var coral: Color = palette.warning_coral
+	var cold: Color = coral.lerp(palette.wet_slate, 0.55)
+	_seal_line.global_position = anchor + Vector3(0.0, 0.42, 0.0)
+	_seal_material.emission = coral
+	# Snap in at full alpha — a stamp lands, it does not fade in.
+	_seal_material.albedo_color = Color(coral, 0.9)
+	_seal_line.visible = true
+	var tween := _new_tween("verdict_seal")
+	tween.tween_property(
+		_seal_line, "global_position:y", anchor.y + 0.06, 0.12
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(_seal_material, "emission", cold, 0.12)
+	# Unshaded bar: cool the albedo hue with the emission so the stroke visibly
+	# chills from coral to slate as it seals.
+	tween.parallel().tween_property(_seal_material, "albedo_color", Color(cold, 0.9), 0.12)
+	tween.tween_interval(0.08)
+	tween.tween_property(_seal_material, "albedo_color:a", 0.0, 0.10) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func() -> void: _seal_line.visible = false)
+
+
+func _bloom_target_light(target: Node3D) -> void:
+	# Commit bloom envelope on the prop's own authored lamp (never a new light):
+	# +18% for ~0.12 s, easing home over ~0.35 s. Skipped while a commit-glow
+	# tween is still driving the same light, so envelopes never fight.
+	var light := _find_target_light(target)
+	if light == null:
+		return
+	var glow_key := "commit_%s" % (light.get_parent().get_instance_id() if light.get_parent() != null else 0)
+	var glow_tween := _active_tweens.get(glow_key) as Tween
+	if glow_tween != null and glow_tween.is_valid() and glow_tween.is_running():
+		return
+	var key := "bloom_%s" % light.get_instance_id()
+	var rest: float = _ritual_light_rest.get(key, light.light_energy)
+	if rest <= 0.0:
+		return
+	_ritual_light_rest[key] = rest
+	var tween := _new_tween(key)
+	tween.tween_property(light, "light_energy", rest * 1.18, 0.12) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(light, "light_energy", rest, 0.35) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(func() -> void: _ritual_light_rest.erase(key))
+
+
+func _settle_nearest_interactable(anchor: Vector3) -> void:
+	# Commit settle-bounce: the acting prop's focus marker takes a 2% settle
+	# (guarded — interactables own the envelope; absent method is a no-op).
+	var best: Node = null
+	var best_distance := 3.2
+	for node in get_tree().get_nodes_in_group("sl_interactables"):
+		var interactable := node as Node3D
+		if interactable == null:
+			continue
+		var distance := anchor.distance_to(interactable.global_position)
+		if distance < best_distance:
+			best = interactable
+			best_distance = distance
+	if best != null and best.has_method("play_commit_settle"):
+		best.call("play_commit_settle")
+
+
+func _ritual_anchor(target: Node3D) -> Vector3:
+	# Anchor the ritual at the prop's own lamp when it has one (mount light sits
+	# 3.6 m up the post; the lens glow at 1.3 m), else just above the prop, else
+	# at the investigator — the proposal always visibly belongs to its actor.
+	if target != null:
+		var light := _find_target_light(target)
+		if light != null:
+			return light.global_position
+		return target.global_position + Vector3(0.0, 0.9, 0.0)
+	if _player != null:
+		return _player.global_position + Vector3(0.0, 1.15, 0.0)
+	return Vector3.ZERO
+
+
+func _find_target_light(target: Node3D) -> OmniLight3D:
+	if target == null:
+		return null
+	if target is OmniLight3D:
+		return target as OmniLight3D
+	for child in target.get_children():
+		if child is OmniLight3D:
+			return child as OmniLight3D
+	return null
+
+
+func _request_cue(cue_id: String) -> void:
+	# Pooled, gesture/mute-gated cue request — playback policy stays with the
+	# audio node; the director never bypasses its gating.
+	if _audio_feedback == null and is_inside_tree():
+		_audio_feedback = get_tree().get_first_node_in_group("sl_audio_feedback")
+	if _audio_feedback != null and _audio_feedback.has_method("play_cue"):
+		_audio_feedback.call("play_cue", cue_id)
+
+
 func play_ending(on_finished: Callable) -> void:
 	# P-B06 Route earned: pan from the tide marks up to the sealed tower, hold on
 	# it dark (it stays sealed, D-030), then the HARBOR-SIDE signal lamp sweeps
@@ -525,6 +777,10 @@ func _emit_vfx(key: String, position_override: Variant = null) -> void:
 		return
 	if position_override is Vector3:
 		particles.global_position = position_override
+	else:
+		# The verdict ritual re-anchors pooled emitters to acting props; without
+		# an override the burst returns to its authored rest position.
+		particles.position = particles.get_meta("rest_position", particles.position)
 	particles.emitting = false
 	particles.restart()
 
@@ -541,19 +797,41 @@ func _new_tween(key: String) -> Tween:
 func _apply_motion_policy() -> void:
 	# Reduced motion keeps steady semantic light/color states while removing
 	# camera travel, rain, wave motion, buoy bob, lamp flicker, mist drift,
-	# lightning, halo scaling, and particle bursts.
+	# lightning, halo scaling, verdict-ritual sweeps, and particle bursts.
 	if _rain != null:
 		_rain.emitting = not _reduce_motion
 	if _reduce_motion:
 		_stop_all_vfx()
-		for key in ["intro", "ending", "lightning", "refusal", "commit_halo", "beam_fade"]:
+		for key in [
+			"intro", "ending", "lightning", "refusal", "commit_halo", "beam_fade",
+			"verdict_ring", "verdict_seal",
+		]:
 			var tween := _active_tweens.get(key) as Tween
 			if tween != null and tween.is_valid():
 				tween.kill()
+		# Per-light ritual envelopes (repair blink, commit bloom): kill and
+		# restore each captured rest energy so no lamp is left mid-envelope.
+		for key in _active_tweens.keys():
+			var text_key := String(key)
+			if not (text_key.begins_with("repair_") or text_key.begins_with("bloom_")):
+				continue
+			var envelope := _active_tweens.get(key) as Tween
+			if envelope != null and envelope.is_valid():
+				envelope.kill()
+		for rest_key in _ritual_light_rest.keys():
+			var id_text := String(rest_key).get_slice("_", 1)
+			var light := instance_from_id(int(id_text)) as OmniLight3D
+			if light != null:
+				light.light_energy = _ritual_light_rest[rest_key]
+		_ritual_light_rest.clear()
 		_lightning_boost = 0.0
 		_refusal_chill = 0.0
 		if _commit_halo != null:
 			_commit_halo.visible = false
+		if _inspection_ring != null:
+			_inspection_ring.visible = false
+		if _seal_line != null:
+			_seal_line.visible = false
 		if _buoy_root != null:
 			_buoy_root.position = _buoy_rest
 			_buoy_root.rotation = Vector3.ZERO

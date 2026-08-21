@@ -15,7 +15,9 @@ var enabled: bool = true
 var _focused: bool = false
 var _focus_weight: float = 0.0
 var _confirm_weight: float = 0.0
+var _settle_weight: float = 0.0
 var _phase: float = 0.0
+var _idle_spin: float = 0.0
 var _marker_anchor: Node3D
 var _marker_ring: MeshInstance3D
 var _marker_label: Label3D
@@ -68,6 +70,9 @@ func _build_focus_marker() -> void:
 	)
 	ring_mesh.material = _marker_material
 	_marker_ring.mesh = ring_mesh
+	# A slight fixed tilt makes the slow idle Y-spin below readable (a flat
+	# torus is rotationally symmetric — untilted it would spin invisibly).
+	_marker_ring.rotation_degrees.x = 12.0
 	_marker_anchor.add_child(_marker_ring)
 
 	_marker_label = Label3D.new()
@@ -112,6 +117,13 @@ func _on_player_interact_requested(fired_id: String) -> void:
 		_confirm_weight = 1.0
 
 
+func play_commit_settle() -> void:
+	# Verdict-ritual commit settle: the acting prop's marker takes one ~2%
+	# dip-and-recover bounce (RitualVfx contract; the director calls this
+	# guarded by has_method). Presentation only; skipped under reduced motion.
+	_settle_weight = 1.0
+
+
 func _on_player_focus_changed(current: Interactable3D) -> void:
 	_set_focused(current == self)
 
@@ -142,19 +154,28 @@ func _process(delta: float) -> void:
 	_focus_weight = move_toward(_focus_weight, 1.0 if _focused else 0.0, delta * focus_rate)
 	# Confirm flash decays over ~0.3 s after the interact press is acknowledged.
 	_confirm_weight = move_toward(_confirm_weight, 0.0, delta * 3.3)
+	# Commit settle-bounce decays over ~0.36 s: sin(π·w) dips then recovers.
+	_settle_weight = move_toward(_settle_weight, 0.0, delta * 2.8)
 	var scale_value := lerpf(0.82, 1.16, _focus_weight)
 	var emission := lerpf(0.42, 1.45, _focus_weight)
 	var ring_alpha := lerpf(0.42, 0.9, _focus_weight)
 	if motion_reduced:
 		# Reduced motion: steady semantic states only. Focus = brighter, steady
-		# ring; confirm = brief linear brightness step-down, no pulse or pop.
+		# ring; confirm = brief linear brightness step-down, no pulse, pop,
+		# settle-bounce, or idle spin.
 		_marker_anchor.position.y = 0.22
 		_marker_anchor.rotation.y = 0.0
+		_marker_ring.rotation.y = 0.0
+		_settle_weight = 0.0
 		emission += _confirm_weight * 0.8
 	else:
 		_phase += delta * lerpf(1.15, 2.1, _focus_weight)
 		_marker_anchor.position.y = 0.22 + sin(_phase) * lerpf(0.018, 0.055, _focus_weight)
 		_marker_anchor.rotation.y += delta * lerpf(0.28, 0.8, _focus_weight)
+		# Idle precession: the tilted ring turns once every 4 s — a quiet "this
+		# is standing by" read that costs one rotation write per frame.
+		_idle_spin = fmod(_idle_spin + delta * (TAU / 4.0), TAU)
+		_marker_ring.rotation.y = _idle_spin
 		# Focused breathe: emissive pulse + ≤3% scale swell on the same slow sine.
 		var breathe := sin(_phase * 1.7)
 		scale_value += breathe * 0.03 * _focus_weight
@@ -162,6 +183,8 @@ func _process(delta: float) -> void:
 		# Confirm flash: bright spike with a small outward pop that decays fast.
 		emission += _confirm_weight * 1.6
 		scale_value += _confirm_weight * 0.09
+		# Commit settle: ~2% dip that eases back to rest (verdict ritual beat).
+		scale_value -= sin(_settle_weight * PI) * 0.02
 	_marker_anchor.scale = Vector3.ONE * scale_value
 	_marker_label.visible = _focused
 	_marker_material.emission_energy_multiplier = emission

@@ -108,7 +108,7 @@ contracts under `game-track/schemas/`. The public Web builder is `scripts/build_
 | Character exploration sheet | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
 | UI concept | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
 | Evidence/item icon sheet | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
-| Playable UI art (key art, portrait, panel texture, icons, tutorial vignette) | `higgsfield-cli` (D-034) | `higgsfield generate create gpt_image_2 --prompt "$(cat <frozen-prompt>)" --aspect_ratio <r> --wait --json` |
+| Playable UI art (key art, portrait, panel texture, icons, tutorial vignette) + world-surface textures and ledger stamps (D-036) | `higgsfield-cli` (D-034) | `higgsfield generate create gpt_image_2 --prompt "$(cat <frozen-prompt>)" --aspect_ratio <r> --wait --json` |
 | Paper diagrams and measured plots | repository SVG/Python generators | `uv run python scripts/generate_paper_figures.py` |
 
 - Validate every `gti` image prompt with `gti --dry-run` before spending quota. For

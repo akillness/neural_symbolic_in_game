@@ -17,6 +17,7 @@ const MOUSE_SENSITIVITY := 0.0028
 const SPRING_ARM_HEIGHT := 1.7
 const STEP_STRIDE := 1.65  # metres per footstep signal; the view bob shares this cadence.
 const VIEW_BOB_AMPLITUDE := 0.032  # ≤ 3.2 cm on a 5.2 m boom — subtle by design.
+const VIEW_ROLL_MAX_DEG := 0.35  # ≤ 0.4° camera roll sway, stride-synced with the bob.
 
 var camera: Camera3D
 var input_locked: bool = false
@@ -28,6 +29,7 @@ var _movement_active: bool = false
 var _step_distance: float = 0.0
 var _step_index: int = 0
 var _bob_offset: float = 0.0
+var _roll_offset: float = 0.0
 var _director: Node = null
 
 
@@ -132,20 +134,28 @@ func _update_movement_feedback(delta: float, has_input: bool) -> void:
 
 func _update_view_bob(delta: float) -> void:
 	# Camera-boom bob phase-locked to the footstep stride: the dip bottoms out
-	# exactly when `footstep_requested` fires, so eye and ear agree. Skipped
-	# entirely (and eased back to rest) under reduced motion or locked input.
+	# exactly when `footstep_requested` fires, so eye and ear agree. A ≤0.4°
+	# roll sway rides the same stride phase (left/right alternation), so the
+	# camera leans into each step the ear hears. Both skipped entirely (and
+	# eased back to rest) under reduced motion or locked input.
 	if _spring_arm == null:
 		return
 	if _director == null:
 		_director = get_tree().get_first_node_in_group("sl_presentation_director")
 	var motion_reduced: bool = _director != null and bool(_director.get("reduce_motion"))
 	var target_offset := 0.0
+	var target_roll := 0.0
 	if _movement_active and not motion_reduced and not input_locked:
 		# cos(TAU·phase) peaks at phase 0/1 (mid-stride) and dips at the step.
 		var phase := _step_distance / STEP_STRIDE
 		target_offset = -VIEW_BOB_AMPLITUDE * 0.5 * (1.0 - cos(TAU * phase))
+		# sin alternates sign each half-stride: lean left, then right.
+		var side := -1.0 if _step_index % 2 == 0 else 1.0
+		target_roll = deg_to_rad(VIEW_ROLL_MAX_DEG) * sin(TAU * phase * 0.5) * side
 	_bob_offset = lerpf(_bob_offset, target_offset, minf(delta * 14.0, 1.0))
+	_roll_offset = lerpf(_roll_offset, target_roll, minf(delta * 10.0, 1.0))
 	_spring_arm.position.y = SPRING_ARM_HEIGHT + _bob_offset
+	camera.rotation.z = _roll_offset
 
 
 func _update_focus() -> void:

@@ -1,20 +1,16 @@
 \begin{table}[t]
-\caption{Repair-Callback Control Flow (Not a Comparison)}
+\caption{Repair Arm $\times$ Repairability Class, Exact Counts (Designed Fixtures)}
 \label{tab:pilot-repair}
 \centering\scriptsize
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
- >{\raggedright\arraybackslash}X
- >{\raggedright\arraybackslash}X
- >{\raggedright\arraybackslash}X@{}}
+ >{\raggedright\arraybackslash}X rrrr@{}}
 \toprule
-Callback & Injected defect & Fields it assigns & Terminal path \\
+Arm & Info source & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Edits$^{e}$ \\
 \midrule
-None (K=0) & unreachable object (nonrepairable) & --- & fallback \\
-None (K=0) & policy precondition (repairable) & --- & fallback \\
-Unchanged retry & unreachable object (nonrepairable) & none & fallback \\
-Unchanged retry & policy precondition (repairable) & none & fallback \\
-Policy-restore oracle & unreachable object (nonrepairable) & preconditions, effects & fallback \\
-Policy-restore oracle & policy precondition (repairable) & preconditions, effects & commit \\
+Rejection-only ($K{=}0$) & none & 0/5 & 0/1 & 0/6 & --- \\
+Blind unchanged retry & none & 0/5 & 0/1 & 0/6 & --- \\
+Counterexample-guided $\rho$ & error set $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
+State-reading oracle & state+policy & 5/5 & 1/1 & 0/6 & 1.0 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -38,5 +34,5 @@ Adapter failures & 5 & 7 \\
 Manifest guards rejected & 3 & 3 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$Boundary acceptances document semantic-extraction and policy-completeness limits; they are not safety passes. $^{b}$Replay does not authenticate or re-execute repair generation. $^{c}$The loader enforces this agreement, so it is a construction invariant rather than a measurement. $^{d}$This is post-Stage-8 parser rejection parity, not semantic-safety evidence.}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$Boundary acceptances document semantic-extraction and policy-completeness limits; they are not safety passes. $^{b}$Replay does not authenticate or re-execute repair generation. $^{c}$The loader enforces this agreement, so it is a construction invariant rather than a measurement. $^{d}$This is post-Stage-8 parser rejection parity, not semantic-safety evidence. $^{e}$Mean changed candidate fields over committed repairs (minimality proxy); failed arm executions left the state unchanged. $^{f}$Commits/cases. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable (frozen repairability classes).}
 \end{table}

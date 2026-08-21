@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1400" viewBox="0 0 1480 1400" role="img" aria-labelledby="svg-title svg-desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1468" viewBox="0 0 1480 1468" role="img" aria-labelledby="svg-title svg-desc">
   <title id="svg-title">TRACE-RPG Stage 4 deterministic pilot observations</title>
   <desc id="svg-desc">Exact numerator over denominator for every measure in the frozen pilot summary. All denominators are authored deterministic cases, not samples from a deployment population.</desc>
   <defs>
@@ -17,7 +17,7 @@
       .arrow-label { font-size: 19px; font-weight: 700; }
     </style>
   </defs>
-  <rect x="0" y="0" width="1480" height="1400" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1480" height="1468" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1480" height="96" rx="0" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="0"/>
   <rect x="0" y="0" width="10" height="96" fill="#0072B2"/>
   <text x="34" y="42" class="section" text-anchor="start">V3 · Every pilot number, generated from the frozen artifact</text>
@@ -58,71 +58,79 @@
   <rect x="40" y="498" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
   <rect x="40" y="498" width="8" height="44" fill="#0072B2"/>
   <text x="66" y="528" class="small" text-anchor="start">Repair arms</text>
-  <text x="360" y="528" class="note" text-anchor="start">feasibility observations on two authored invalid cases</text>
+  <text x="360" y="528" class="note" text-anchor="start">feasibility observations per frozen repairability class</text>
   <text x="66" y="576" class="small" text-anchor="start">rejection_only:commits</text>
   <rect x="720" y="560" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <text x="1300" y="578" class="small" text-anchor="start">0 / 2</text>
+  <text x="1300" y="578" class="small" text-anchor="start">0 / 12</text>
   <text x="66" y="610" class="small" text-anchor="start">rejection_only:repair_successes</text>
   <rect x="720" y="594" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <text x="1300" y="612" class="small" text-anchor="start">0 / 2</text>
+  <text x="1300" y="612" class="small" text-anchor="start">0 / 12</text>
   <text x="66" y="644" class="small" text-anchor="start">unchanged_retry:commits</text>
   <rect x="720" y="628" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <text x="1300" y="646" class="small" text-anchor="start">0 / 2</text>
+  <text x="1300" y="646" class="small" text-anchor="start">0 / 12</text>
   <text x="66" y="678" class="small" text-anchor="start">unchanged_retry:repair_successes</text>
   <rect x="720" y="662" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <text x="1300" y="680" class="small" text-anchor="start">0 / 2</text>
-  <text x="66" y="712" class="small" text-anchor="start">structured_repair:commits</text>
+  <text x="1300" y="680" class="small" text-anchor="start">0 / 12</text>
+  <text x="66" y="712" class="small" text-anchor="start">guided_repair:commits</text>
   <rect x="720" y="696" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="696" width="280" height="22" rx="4" fill="#0072B2" fill-opacity="0.85"/>
-  <text x="1300" y="714" class="small" text-anchor="start">1 / 2</text>
-  <text x="66" y="746" class="small" text-anchor="start">structured_repair:repair_successes</text>
+  <rect x="720" y="696" width="233" height="22" rx="4" fill="#0072B2" fill-opacity="0.85"/>
+  <text x="1300" y="714" class="small" text-anchor="start">5 / 12</text>
+  <text x="66" y="746" class="small" text-anchor="start">guided_repair:repair_successes</text>
   <rect x="720" y="730" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="730" width="280" height="22" rx="4" fill="#0072B2" fill-opacity="0.85"/>
-  <text x="1300" y="748" class="small" text-anchor="start">1 / 2</text>
-  <rect x="40" y="766" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="40" y="766" width="8" height="44" fill="#009E73"/>
-  <text x="66" y="796" class="small" text-anchor="start">Integrity faults</text>
-  <text x="360" y="796" class="note" text-anchor="start">named injected mutations detected by their declared checks</text>
-  <text x="66" y="844" class="small" text-anchor="start">named_detectable_faults_detected</text>
-  <rect x="720" y="828" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="828" width="560" height="22" rx="4" fill="#009E73" fill-opacity="0.85"/>
-  <text x="1300" y="846" class="small" text-anchor="start">10 / 10</text>
-  <rect x="40" y="864" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="40" y="864" width="8" height="44" fill="#E69F00"/>
-  <text x="66" y="894" class="small" text-anchor="start">Integrity boundary</text>
-  <text x="360" y="894" class="note" text-anchor="start">repair-generation provenance is deliberately out of replay scope</text>
-  <text x="66" y="942" class="small" text-anchor="start">known_undetectable_boundaries_observed</text>
-  <rect x="720" y="926" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="926" width="560" height="22" rx="4" fill="#E69F00" fill-opacity="0.85"/>
-  <text x="1300" y="944" class="small" text-anchor="start">1 / 1</text>
-  <rect x="40" y="962" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="40" y="962" width="8" height="44" fill="#56B4E9"/>
-  <text x="66" y="992" class="small" text-anchor="start">Adapter accounting</text>
-  <text x="360" y="992" class="note" text-anchor="start">terminal class of each assigned offline case, not provider reliability</text>
-  <text x="66" y="1040" class="small" text-anchor="start">commits</text>
-  <rect x="720" y="1024" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="1024" width="80" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
-  <text x="1300" y="1042" class="small" text-anchor="start">1 / 7</text>
-  <text x="66" y="1074" class="small" text-anchor="start">symbolic_fallbacks</text>
-  <rect x="720" y="1058" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="1058" width="80" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
-  <text x="1300" y="1076" class="small" text-anchor="start">1 / 7</text>
-  <text x="66" y="1108" class="small" text-anchor="start">adapter_failures</text>
+  <rect x="720" y="730" width="233" height="22" rx="4" fill="#0072B2" fill-opacity="0.85"/>
+  <text x="1300" y="748" class="small" text-anchor="start">5 / 12</text>
+  <text x="66" y="780" class="small" text-anchor="start">structured_repair:commits</text>
+  <rect x="720" y="764" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="764" width="280" height="22" rx="4" fill="#0072B2" fill-opacity="0.85"/>
+  <text x="1300" y="782" class="small" text-anchor="start">6 / 12</text>
+  <text x="66" y="814" class="small" text-anchor="start">structured_repair:repair_successes</text>
+  <rect x="720" y="798" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="798" width="280" height="22" rx="4" fill="#0072B2" fill-opacity="0.85"/>
+  <text x="1300" y="816" class="small" text-anchor="start">6 / 12</text>
+  <rect x="40" y="834" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="40" y="834" width="8" height="44" fill="#009E73"/>
+  <text x="66" y="864" class="small" text-anchor="start">Integrity faults</text>
+  <text x="360" y="864" class="note" text-anchor="start">named injected mutations detected by their declared checks</text>
+  <text x="66" y="912" class="small" text-anchor="start">named_detectable_faults_detected</text>
+  <rect x="720" y="896" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="896" width="560" height="22" rx="4" fill="#009E73" fill-opacity="0.85"/>
+  <text x="1300" y="914" class="small" text-anchor="start">10 / 10</text>
+  <rect x="40" y="932" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="40" y="932" width="8" height="44" fill="#E69F00"/>
+  <text x="66" y="962" class="small" text-anchor="start">Integrity boundary</text>
+  <text x="360" y="962" class="note" text-anchor="start">repair-generation provenance is deliberately out of replay scope</text>
+  <text x="66" y="1010" class="small" text-anchor="start">known_undetectable_boundaries_observed</text>
+  <rect x="720" y="994" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="994" width="560" height="22" rx="4" fill="#E69F00" fill-opacity="0.85"/>
+  <text x="1300" y="1012" class="small" text-anchor="start">1 / 1</text>
+  <rect x="40" y="1030" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="40" y="1030" width="8" height="44" fill="#56B4E9"/>
+  <text x="66" y="1060" class="small" text-anchor="start">Adapter accounting</text>
+  <text x="360" y="1060" class="note" text-anchor="start">terminal class of each assigned offline case, not provider reliability</text>
+  <text x="66" y="1108" class="small" text-anchor="start">commits</text>
   <rect x="720" y="1092" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="1092" width="400" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
-  <text x="1300" y="1110" class="small" text-anchor="start">5 / 7</text>
-  <text x="66" y="1142" class="small" text-anchor="start">provider_latency_observed</text>
+  <rect x="720" y="1092" width="80" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
+  <text x="1300" y="1110" class="small" text-anchor="start">1 / 7</text>
+  <text x="66" y="1142" class="small" text-anchor="start">symbolic_fallbacks</text>
   <rect x="720" y="1126" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="1126" width="160" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
-  <text x="1300" y="1144" class="small" text-anchor="start">2 / 7</text>
-  <rect x="40" y="1162" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="40" y="1162" width="8" height="44" fill="#009E73"/>
-  <text x="66" y="1192" class="small" text-anchor="start">Accounting guards</text>
-  <text x="360" y="1192" class="note" text-anchor="start">injected manifest faults rejected by authored guards</text>
-  <text x="66" y="1240" class="small" text-anchor="start">manifest_faults_detected</text>
-  <rect x="720" y="1224" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="720" y="1224" width="560" height="22" rx="4" fill="#009E73" fill-opacity="0.85"/>
-  <text x="1300" y="1242" class="small" text-anchor="start">3 / 3</text>
-  <text x="66" y="1294" class="small" text-anchor="start">Bar length is numerator ÷ denominator for that row only; rows are not comparable to one another.</text>
-  <text x="66" y="1324" class="note" text-anchor="start">No confidence interval, significance test, or causal comparison is claimed. 0/2 and 5/7 are designed outcomes, not regressions.</text>
+  <rect x="720" y="1126" width="80" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
+  <text x="1300" y="1144" class="small" text-anchor="start">1 / 7</text>
+  <text x="66" y="1176" class="small" text-anchor="start">adapter_failures</text>
+  <rect x="720" y="1160" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="1160" width="400" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
+  <text x="1300" y="1178" class="small" text-anchor="start">5 / 7</text>
+  <text x="66" y="1210" class="small" text-anchor="start">provider_latency_observed</text>
+  <rect x="720" y="1194" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="1194" width="160" height="22" rx="4" fill="#56B4E9" fill-opacity="0.85"/>
+  <text x="1300" y="1212" class="small" text-anchor="start">2 / 7</text>
+  <rect x="40" y="1230" width="1400" height="44" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="40" y="1230" width="8" height="44" fill="#009E73"/>
+  <text x="66" y="1260" class="small" text-anchor="start">Accounting guards</text>
+  <text x="360" y="1260" class="note" text-anchor="start">injected manifest faults rejected by authored guards</text>
+  <text x="66" y="1308" class="small" text-anchor="start">manifest_faults_detected</text>
+  <rect x="720" y="1292" width="560" height="22" rx="4" fill="#FFFFFF" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="720" y="1292" width="560" height="22" rx="4" fill="#009E73" fill-opacity="0.85"/>
+  <text x="1300" y="1310" class="small" text-anchor="start">3 / 3</text>
+  <text x="66" y="1362" class="small" text-anchor="start">Bar length is numerator ÷ denominator for that row only; rows are not comparable to one another.</text>
+  <text x="66" y="1392" class="note" text-anchor="start">No confidence interval, significance test, or causal comparison is claimed. 0/2 and 5/7 are designed outcomes, not regressions.</text>
 </svg>

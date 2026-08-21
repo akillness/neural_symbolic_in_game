@@ -23,9 +23,9 @@ const PACK_3D_RELATIVE := "../assets/concepts/pack-3d"
 
 # Presentation budget (Web/Compatibility renderer): five preallocated CPU burst
 # emitters, at most 18 live particles per beat, no new VFX-only lights (the
-# ending signal beam, waterline mist, and commit halo are unshaded static
-# meshes, not lights), and instanced repetition for dock dressing. These are
-# starting caps, not a measured frame-performance claim.
+# ending signal beam, waterline mist, commit halo, and verdict-ritual meshes
+# are unshaded static meshes, not lights), and instanced repetition for dock
+# dressing. These are starting caps, not a measured frame-performance claim.
 const PUBLIC_SAFE_ARG := "--public-safe"
 const PRESENTATION_VFX_BUDGET := {
 	"target_fps": 60,
@@ -35,6 +35,7 @@ const PRESENTATION_VFX_BUDGET := {
 	"web_continuous_rain_particles": 360,
 	"desktop_continuous_rain_particles": 480,
 	"waterline_mist_quads": 3,
+	"verdict_ritual_meshes": 2,
 	"vfx_only_lights": 0,
 	"blur_passes": 0,
 	"raymarch_samples": 0,
@@ -158,6 +159,32 @@ static func textured_material(file_name: String, fallback: Color, uv_scale: Vect
 	return material
 
 
+static func curated_material(file_name: String, fallback: Color, uv_scale: Vector3 = Vector3.ONE) -> StandardMaterial3D:
+	# D-036 curated world-texture lane: reviewed grain PNGs from assets/ui/ are
+	# runtime- and Web-eligible (unlike the pack/concept candidate lanes). The
+	# texture is grain, not a new color — albedo modulation keeps the fallback
+	# palette hue reading through it. Contract: when the curated file is absent
+	# (TexturePack may still be generating), this IS flat_material(fallback);
+	# the world must look correct on pure fallback.
+	var material := flat_material(fallback)
+	var texture := load_curated_ui_texture(file_name)
+	if texture != null:
+		material.albedo_texture = texture
+		# Modulate toward the palette color so grain never overrides hue.
+		material.albedo_color = fallback.lightened(0.35)
+		material.uv1_scale = uv_scale
+	return material
+
+
+static func brass_fitting_material() -> StandardMaterial3D:
+	# Shared oxidized-brass grain for fittings and lamp housings: curated lane
+	# first (Web-eligible), desktop candidate pack second, flat brass last.
+	var material := curated_material("ui-tex-oxidized-brass.png", PALETTE.brass)
+	if material.albedo_texture == null:
+		material = textured_material("SL3D-T02-oxidized-brass.png", PALETTE.brass)
+	return material
+
+
 static func add_box(parent: Node3D, size: Vector3, position: Vector3, material: Material, with_collision: bool = true) -> MeshInstance3D:
 	var mesh_instance := MeshInstance3D.new()
 	var box := BoxMesh.new()
@@ -245,6 +272,7 @@ static func build(root: Node3D) -> Dictionary:
 	handles["buoy_light"] = _build_buoy(world)
 	_build_waterline_mist(world)
 	_build_commit_halo(world)
+	_build_verdict_ritual_pool(world)
 	var beat_vfx := _build_presentation_vfx(world)
 	for key in beat_vfx:
 		handles[key] = beat_vfx[key]
@@ -361,6 +389,17 @@ static func _build_harbor_backdrop(world: Node3D) -> void:
 	add_box(skiff, Vector3(5.2, 0.55, 1.7), Vector3.ZERO, hull_material, false)
 	add_box(skiff, Vector3(3.7, 0.15, 1.25), Vector3(0.0, 0.37, 0.0), flat_material(PALETTE.storm_ink), false)
 	add_box(skiff, Vector3(0.08, 4.8, 0.08), Vector3(0.2, 2.65, 0.0), hull_material, false)
+	# Storm-furled canvas: a rolled sail lashed along the boom plus a small deck
+	# tarp. Curated sail-canvas grain (D-036) when present, flat weathered
+	# paper_fog otherwise — silhouette dressing only, no collision.
+	var canvas_material := curated_material(
+		"ui-tex-sail-canvas.png", PALETTE.paper_fog.darkened(0.35), Vector3(2.0, 1.0, 1.0)
+	)
+	var furled_sail := add_box(
+		skiff, Vector3(2.6, 0.26, 0.30), Vector3(1.35, 1.05, 0.0), canvas_material, false
+	)
+	furled_sail.rotation_degrees.z = -3.5
+	add_box(skiff, Vector3(1.15, 0.09, 0.95), Vector3(-1.35, 0.47, 0.15), canvas_material, false)
 
 	var shed := Node3D.new()
 	shed.name = "HarborShedSilhouette"
@@ -381,9 +420,15 @@ static func _build_dock(world: Node3D) -> void:
 	var dock := Node3D.new()
 	dock.name = "HarborDock"
 	world.add_child(dock)
-	var plank_material := textured_material(
-		"SL3D-T01-wet-slate-planks.png", PALETTE.wet_slate, Vector3(6.0, 6.0, 1.0)
+	# Curated wet-plank grain (D-036, Web-eligible) wins when present; otherwise
+	# the desktop-only candidate pack, then flat wet_slate — never a hard need.
+	var plank_material := curated_material(
+		"ui-tex-wet-planks.png", PALETTE.wet_slate, Vector3(6.0, 6.0, 1.0)
 	)
+	if plank_material.albedo_texture == null:
+		plank_material = textured_material(
+			"SL3D-T01-wet-slate-planks.png", PALETTE.wet_slate, Vector3(6.0, 6.0, 1.0)
+		)
 	add_box(dock, Vector3(18.0, 0.5, 20.0), Vector3(0.0, -0.25, 5.0), plank_material)
 	# One instanced seam surface gives the wet quay scale and direction without a
 	# texture dependency or one draw call per plank.
@@ -467,7 +512,7 @@ static func _build_lamp_store(world: Node3D) -> void:
 	sign.position = Vector3(0.0, 2.45, 2.67)
 	store.add_child(sign)
 	# Interior counter and shelf, brass instruments.
-	var brass_material := textured_material("SL3D-T02-oxidized-brass.png", PALETTE.brass)
+	var brass_material := brass_fitting_material()
 	add_box(store, Vector3(2.4, 1.0, 0.8), Vector3(-1.2, 0.5, -1.6), flat_material(PALETTE.wet_slate))
 	add_box(store, Vector3(0.5, 0.3, 0.5), Vector3(-1.2, 1.15, -1.6), brass_material, false)
 	var lamp := OmniLight3D.new()
@@ -592,7 +637,7 @@ static func _build_lens_prop(world: Node3D) -> Node3D:
 	var pedestal_material := flat_material(PALETTE.wet_slate)
 	add_box(lens, Vector3(0.7, 0.9, 0.7), Vector3(0.0, 0.45, 0.0), pedestal_material, false)
 	if attach_model(lens, "signal_lens.glb", Vector3(0.0, 1.25, 0.0), 1.35) == null:
-		var brass_material := textured_material("SL3D-T02-oxidized-brass.png", PALETTE.brass)
+		var brass_material := brass_fitting_material()
 		var ring := MeshInstance3D.new()
 		var torus := TorusMesh.new()
 		torus.inner_radius = 0.22
@@ -634,7 +679,7 @@ static func _build_lamp_mount(world: Node3D) -> Node3D:
 	else:
 		var post_material := flat_material(PALETTE.storm_ink.lightened(0.1))
 		add_cylinder(mount, 0.12, 3.4, Vector3(0.0, 1.7, 0.0), post_material)
-		var brass_material := textured_material("SL3D-T02-oxidized-brass.png", PALETTE.brass)
+		var brass_material := brass_fitting_material()
 		add_box(mount, Vector3(0.6, 0.6, 0.6), Vector3(0.0, 3.6, 0.0), brass_material, false)
 	var mount_light := OmniLight3D.new()
 	mount_light.name = "MountLight"
@@ -888,3 +933,42 @@ static func _build_commit_halo(world: Node3D) -> void:
 	world.add_child(halo)
 	halo.set_meta("halo_material", material)
 	world.set_meta("commit_halo", halo)
+
+
+static func _build_verdict_ritual_pool(world: Node3D) -> void:
+	# Validate→repair→commit ritual props (P-B03/P-B04 sub-beats): two pooled
+	# unshaded meshes the director re-anchors to the acting interactable —
+	#   InspectionRing  flat torus, amber "weighing" sweep before the verdict;
+	#   SealLine        thin horizontal bar, the refusal "seal" shutter stroke.
+	# Both hidden at rest — zero standing cost, no new lights (budget:
+	# verdict_ritual_meshes = 2).
+	var ring := MeshInstance3D.new()
+	ring.name = "InspectionRing"
+	var ring_mesh := TorusMesh.new()
+	ring_mesh.inner_radius = 0.46
+	ring_mesh.outer_radius = 0.54
+	ring_mesh.rings = 24
+	ring_mesh.ring_segments = 6
+	ring.mesh = ring_mesh
+	var ring_material := emissive_material(PALETTE.signal_amber, 1.0, 0.0)
+	ring_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	ring.material_override = ring_material
+	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	ring.visible = false
+	world.add_child(ring)
+	ring.set_meta("ring_material", ring_material)
+	world.set_meta("inspection_ring", ring)
+
+	var seal_line := MeshInstance3D.new()
+	seal_line.name = "SealLine"
+	var bar := BoxMesh.new()
+	bar.size = Vector3(1.5, 0.045, 0.045)
+	seal_line.mesh = bar
+	var seal_material := emissive_material(PALETTE.warning_coral, 1.0, 0.0)
+	seal_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	seal_line.material_override = seal_material
+	seal_line.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	seal_line.visible = false
+	world.add_child(seal_line)
+	seal_line.set_meta("seal_material", seal_material)
+	world.set_meta("seal_line", seal_line)

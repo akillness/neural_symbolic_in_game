@@ -56,7 +56,7 @@
 \maketitle
 
 \begin{abstract}
-대규모 언어 모델은 표현력 있는 퀘스트와 NPC 대화를 생성할 수 있지만, 유창하거나 스키마에 맞는 텍스트만으로 제안 이벤트의 실행 가능성, 권한 적합성, 정식 게임 상태와의 일관성이 성립하지는 않는다. 본 논문은 신뢰하지 않는 제안을 상태 변경으로부터 격리하는 기호 커밋 게이트 \system{}을 제안한다. 타입 엄격 parser는 공유 candidate-key contract를 강제하여 알려진 필드의 모호한 type과 알 수 없는 top-level candidate field를 거부하고, 외부 공급 행동 정책과 결정론적 상태 상대 술어가 controller가 허용하는 모든 전이를 결정한다. 거부된 후보는 제한된 repair callback에 노출되고, 성공 후보는 변경 직전에 방어적으로 재검증된다. 종단 실험 레코드는 키 없는 SHA-256 콘텐츠 체크섬과 연결되고, 상태 의미 재생은 기록된 전이를 재계산하며, 에피소드 연속성 검사는 단절된 이력을 거부한다. 평가는 단일 작성 world state에 대한 의도적 설계 결정론적 오프라인 픽스처에서 수행하며, 보고 수치 중 무엇이 관찰값이고 무엇이 하니스의 구성 불변량인지 명시한다. 참조 repair callback은 권위 있는 상태에서 정책 필드를 재구성하므로 배포 가능한 수리 방법이 아니라 oracle 상한이며, adapter telemetry 값은 측정값이 아니라 합성 픽스처 상수다. 따라서 근거는 하나의 world에서 선언된 구조화 필드에 대한 구현 적합성만을 확립하며, 실시간 모델 동작, 플레이어 경험, 감정, 검색, 메모리, 상용 엔진 성능에 대해서는 아무것도 확립하지 않는다.
+대규모 언어 모델은 표현력 있는 퀘스트와 NPC 대화를 생성할 수 있지만, 유창하거나 스키마에 맞는 텍스트만으로 제안 이벤트의 실행 가능성, 권한 적합성, 정식 게임 상태와의 일관성이 성립하지는 않는다. 본 논문은 신뢰하지 않는 제안을 상태 변경으로부터 격리하는 기호 커밋 게이트 \system{}을 제안한다. 타입 엄격 parser는 공유 candidate-key contract를 강제하여 알려진 필드의 모호한 type과 알 수 없는 top-level candidate field를 거부하고, 외부 공급 행동 정책과 결정론적 상태 상대 술어가 controller가 허용하는 모든 전이를 결정한다. 거부된 후보는 제한된 repair callback에 노출되고, 성공 후보는 변경 직전에 방어적으로 재검증된다. 종단 실험 레코드는 키 없는 SHA-256 콘텐츠 체크섬과 연결되고, 상태 의미 재생은 기록된 전이를 재계산하며, 에피소드 연속성 검사는 단절된 이력을 거부한다. 평가는 단일 작성 world state에 대한 의도적 설계 결정론적 오프라인 픽스처에서 수행하며, 보고 수치 중 무엇이 관찰값이고 무엇이 하니스의 구성 불변량인지 명시한다. 반례 유도 수리 연산자 $\rho$는 직전 후보와 validator의 구조화 오류 집합만을 소비하고 권위 있는 상태는 결코 읽지 않으며, 동결된 repairability class 위에서 블라인드 동일 후보 retry 및 상태를 읽는 참조 callback과 결정론적 설계 픽스처 비교로 대조된다. 상태를 읽는 callback은 배포 가능한 수리 방법이 아니라 oracle 상한으로 남고, adapter telemetry 값은 측정값이 아니라 합성 픽스처 상수다. 따라서 근거는 하나의 world에서 선언된 구조화 필드에 대한 구현 적합성만을 확립하며, 실시간 모델 동작, 플레이어 경험, 감정, 검색, 메모리, 상용 엔진 성능에 대해서는 아무것도 확립하지 않는다.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -72,8 +72,9 @@
 \begin{enumerate}
   \item 정식 상태, 외부 공급 행동 정책, 후보 이벤트, 실험 레코드, 게임 브리지에 대한 버전 계약;
   \item 결정론적 상태 상대 검증, 변경 없는 fallback을 갖춘 제한된 repair callback, 방어적 커밋 전 검증;
-  \item 콘텐츠 연결 종단 레코드, 상태 의미적 리플레이, 에피소드 연속성 검증; 그리고
-  \item 엄격한 adapter 경계, 동결된 할당 키, 구별되는 종단 실패 클래스, 기술적 treatment-policy 계수를 갖춘 오프라인 harness.
+  \item 콘텐츠 연결 종단 레코드, 상태 의미적 리플레이, 에피소드 연속성 검증;
+  \item 엄격한 adapter 경계, 동결된 할당 키, 구별되는 종단 실패 클래스, 기술적 treatment-policy 계수를 갖춘 오프라인 harness; 그리고
+  \item 직전 후보와 구조화 오류 집합만을 소비하고 권위 있는 상태는 결코 읽지 않는 반례 유도 수리 연산자 $\rho(a,E)$. 동결된 repairability class로 분할된 결정론적 픽스처 배터리에서 블라인드 동일 후보 retry 및 상태를 읽는 oracle 상한과 비교된다.
 \end{enumerate}
 실증의 중심은 단일 작성 world state에 대한 결정론적 설계 픽스처 적합성 파일럿이며, 보존한 Godot 4.7.1 작성형 policy-mirror trace와 render replay가 제한된 엔진 로컬 근거를 추가한다. 해당 픽스처의 headless 실행은 엔진 로컬 타이밍을 기록하며, 본 논문은 이를 있는 그대로 보고한다. 각 실행은 고정 seed의 scripted fixture 하나이며, 요청당 수치는 모델이나 네트워크 추론이 아니라 로컬 픽스처 처리를 측정한다. 네 fixture 실행 모두에서 5개 headless frame sample 중 첫 sample이 가장 컸고 그 범위는 98.760--116.667\,ms였으므로 16.7\,ms frame budget을 충족하지 못했다. 이 startup-sensitive trace는 안정적인 frame benchmark가 아니다. 실시간 모델 호출, 참여자, 감정 또는 검색 실험, live Python--Godot 승인 왕복, 대표성 있는 end-to-end 게임플레이 성능 측정은 없다. 해당 연구는 본 논문의 범위 밖이다.
 
@@ -170,7 +171,33 @@ Quest & 부적격/후퇴 stage & 변경 없음 \\
 \label{alg:commit}
 \end{figure}
 
-검증 오류는 구조화된 error code로 repair callback에 노출된다. repair는 상태를 직접 변경하지 않으며, 예산 소진 시 변경 없는 결정론적 fallback을 반환한다. 그림~\ref{fig:repair}는 종단 경로를 나타낸다. 파일럿에서 사용한 참조 callback은 의도적으로 반례 유도 방식이 \emph{아니다}. 이 callback은 오류 집합을 폐기하고 권위 있는 상태에서 정책이 요구하는 precondition과 effect를 직접 재구성한다. 따라서 제어 흐름을 확인하는 oracle 상한이며, 그 결과를 반례를 소비하는 수리 방법에 대한 근거로 읽어서는 안 된다.
+검증 오류는 구조화된 error code로 repair callback에 노출된다. repair는 상태를 직접 변경하지 않으며, 예산 소진 시 변경 없는 결정론적 fallback을 반환한다. 그림~\ref{fig:repair}는 종단 경로를 나타낸다. 파일럿은 구현된 두 callback을 비교한다. \emph{반례 유도 연산자}는 직전 후보 $a$와 validator의 구조화 오류 집합 $E$만을 소비하며 권위 있는 상태는 결코 읽지 않는다.
+\begin{equation}
+\rho(a,E)=a \oplus \textstyle\bigcup_{e\in E}\delta(e),
+\label{eq:rho}
+\end{equation}
+여기서 각 $\delta(e)$는 표~\ref{tab:rho-rules}의 오류 class별 결정론적 edit이고 $\oplus$는 그 field edit들을 적용한다. 각 edit은 오류 entity당 최대 하나의 candidate field만 수정하므로 시도당 변경 field 수는 $|E|$로 유계이고, 같은 오류 집합으로 $\rho$를 두 번 적용하면 고정점이며, 같은 field에서 동시에 요구되고 거부되는 entity는 수리 불가로 선언되어 수정되지 않는다. \emph{상태를 읽는 참조 callback}은 반대로 오류 집합을 폐기하고 정책이 규율하는 field(precondition, effect, 두 quest-stage field)를 권위 있는 상태에서 직접 재구성한다. 이 callback은 선언 무결성 field(required object, used fact, disclosed fact)를 의도적으로 수정하지 않는다. 의존성이나 disclosure의 선언을 지우는 것은 후보를 수리하는 것이 아니라 위반을 게이트 뒤로 세탁하는 것이기 때문이다. 이는 상태 판독 가능 수리에 대한 oracle 상한이며, 그 결과를 배포 가능한 수리 방법의 근거로 읽어서는 안 된다.
+
+\begin{table}[t]
+\caption{유도 연산자 $\rho$의 오류 class별 edit}
+\label{tab:rho-rules}
+\centering
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Validator 오류 class & 후보에 대한 edit $\delta(e)$ \\
+\midrule
+정책 precondition 누락 & 명명된 predicate 삽입 \\
+정책 effect 누락 & 명명된 effect 삽입 \\
+정책 effect 위반 & 명명된 effect 제거 \\
+불충족 precondition & 명명된 predicate 제거 \\
+비인가 stage 변이 & \texttt{quest\_stage\_effect} 초기화 \\
+알 수 없는 action type & no-op (등록된 대안 없음) \\
+도달 불가 object; knowledge, & no-op (후보 국소 edit은 세탁이거나 \\
+\quad disclosure, stage class & \quad 상태 지식 필요) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}[t]
   \centering
@@ -186,9 +213,9 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 
 \section{결정론적 오프라인 파일럿 방법}
 \subsection{질문과 설계 픽스처}
-파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 작성된 repairable 및 irreparable 사례에서 rejection-only, unchanged retry, structured repair가 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가? (PQ5) proposal 및 replay parser가 그 외에는 완전하고 유효한 candidate에 unknown top-level key 하나를 추가한 사례를 모두 거부하는가?
+파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 동결된 모든 repairability class의 작성 사례에서 rejection-only, 블라인드 동일 후보 retry, 반례 유도 연산자 $\rho$, 상태를 읽는 참조 callback이 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가? (PQ5) proposal 및 replay parser가 그 외에는 완전하고 유효한 candidate에 unknown top-level key 하나를 추가한 사례를 모두 거부하는가?
 
-사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair control flow, record/trace fault injection, adapter/accounting contract이다. 반복된 결정론적 seed가 아니라 고유 사례가 기술적 denominator를 구성한다. 모든 기대값은 실행 전에 명시한다.
+사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair-arm 비교, record/trace fault injection, adapter/accounting contract이다. 모든 repair fixture는 실행 전에 동결된 repairability class를 선언한다. \emph{guided-repairable}(구조화 오류 payload만으로 $\rho$에 충분한 정보가 담김), \emph{oracle-only}(수리에 권위 있는 상태 판독이 추가로 필요함), \emph{irreparable}(구현된 어떤 arm도 commit할 수 없음)이며, class별 arm당 기대 결과는 설계 픽스처 계약의 일부다. 반복된 결정론적 seed가 아니라 고유 사례가 기술적 denominator를 구성한다. 모든 기대값은 실행 전에 명시한다.
 
 \subsection{측정치와 재현성}
 측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation, 사전 명세한 unknown-key 음성 회귀에 대한 proposal/replay 거부 일치를 센다. 마지막 측정은 결정론적 parser-contract parity이며 실증적 safety outcome이 아니다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다.
@@ -236,7 +263,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 
 \input{../generated/pilot_tables_ko.tex}
 
-표~\ref{tab:pilot-repair}와~\ref{tab:pilot-accounting}은 작성된 callback 경로와 raw fixture 계수를 분리하여 이를 전략 비교나 모집단 추정으로 읽지 않게 한다.
+표~\ref{tab:pilot-repair}와~\ref{tab:pilot-accounting}은 정확한 설계 픽스처 count를 보고한다. 수리 표는 동결된 repairability class별로 네 arm을 분리하며, 어느 표도 모집단 또는 live-model 추정을 지지하지 않는다.
 
 \begin{figure}[t]
   \centering
@@ -254,6 +281,8 @@ Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1
 \section{논의}
 \subsection{확립 가능한 범위}
 설계 파일럿은 동결된 사례에 대해서만 mechanism behavior를 확립할 수 있다. 인코딩된 검사가 상태를 격리하는지, bounded repair와 fallback이 선언 경로를 따르는지, 명명된 corruption이 지정된 검사 연산에서 거부되는지, assigned row가 집계를 위해 분류된 상태로 남는지를 평가한다. 거부를 안정적인 typed detector code에 귀속하지는 않는다. 이는 authoring-time validation, continuous-integration regression, recorded-adapter test, engine 이전 replay inspection에 유용하다.
+
+수리 비교의 정직한 해석은 guided-대-oracle 경계다. 상태를 읽는 callback이 상한으로 남는 이유는 권위 있는 상태를 참조할 수 있어서 $\rho$가 구성상 전환할 수 없는 oracle-only 사례를 전환하기 때문이다. 반례 유도 연산자는 validator의 구조화 반례---배포된 어떤 proposer라도 신뢰 경계에서 받게 될 것과 동일한 정보---만을 소비하면서 guided-repairable class에서 oracle과 정확히 일치한다. 발견은 성공률이 아니라 이 분리다. 즉 이 설계 픽스처에서 어떤 수리가 오류 payload만으로 도달 가능하고 어떤 수리가 구조적으로 상태 접근을 요구하는지를 위치시킨다. 동일한 오류 payload로 prompt된 live model이 $\rho$ row에 근접하는지는 본 논문 밖의 열린 실증 질문이다.
 
 이 mechanism은 policy가 올바르게 작성되었는지, 자연어 fact가 완전하게 추출되었는지, 의미적으로 unsafe한 모든 event가 declared field로 표현되었는지를 확립하지 않는다. Key 없는 hash도 writer를 인증하지 않는다. Writer는 single-process ownership을 가정하며 concurrent-writer safety는 입증되지 않았다. Versioned bridge는 interface decoupling이지 engine portability 또는 real-time performance의 근거가 아니다.
 
@@ -274,7 +303,7 @@ Construct validity는 declared field에 한정되며 encoded check는 누락된 
 본 원고 준비 과정에서 대규모 언어 모델은 산문, 코드, 시험 초안 작성, 명령 실행 조율, 근거 감사와 결과 해석, 이번 개정을 이끈 심사 패널 시뮬레이션, 서지 메타데이터 API에 대한 인용 동일성 검사를 보조했다. 보고 수치의 출처로서 결정론적 실행을 대체하지 않았다. 파일럿 count는 작성 fixture에서 프로젝트 runner가 산출하여 기계 생성 조각을 통해 원고에 들어가고, Godot timing과 render 서술은 보존된 engine-evidence packet에서 전사한다. 이번 개정의 구현 및 결과 주장은 source와 artifact에 대조했고, 모든 인용 동일성은 최소 하나의 독립 색인에서 확인했다. 내용에 대한 책임은 전적으로 저자에게 있다.
 
 \section*{데이터 및 코드 가용성}
-Repository에는 구현, 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, build source가 포함된다. 현재 Stage-10 SHA-256 manifest는 산출물 35개와 선언 입력 21개를 포함하고 bound provenance row 64개(실행 fixture row 43개와 aggregate row 21개)를 결합한다. 입력 commit \texttt{c4752df}에는 \texttt{trace-rpg-stage10-inputs-20260814-v1} tag가 있으며 manifest는 \texttt{dirty=false}를 기록한다. 산출물 hash 35개와 입력 hash 21개가 모두 재계산되고, 모든 입력 경로와 정확한 digest가 해당 commit과 일치한다(총 56/56). Manifest의 실행 명령은 이식 가능한 \texttt{uv run python}이며 절대 사용자 경로나 clone 경로를 포함하지 않는다. 이로써 clean-input 재현성 gate는 종결되지만, 익명 심사 archive 또는 DOI 기반 저장소가 이미 존재한다는 뜻은 아니며 본 원고는 어느 것도 주장하지 않는다.
+Repository에는 구현, 파일럿 번들, fixture 및 assignment manifest, 생성 결과 조각, build source가 포함된다. 현재 파일럿 SHA-256 manifest는 산출물 38개와 선언 입력 22개를 포함하고 bound provenance row 121개(실행 fixture row 85개와 aggregate row 36개)를 결합하며, 모든 산출물과 입력 hash는 동결 packet에서 재계산된다. Manifest의 실행 명령은 이식 가능한 \texttt{uv run python}이며 절대 사용자 경로나 clone 경로를 포함하지 않는다. Clean-Git 입력 결합(tag된 입력 commit에서의 \texttt{dirty=false}, 과거 \texttt{trace-rpg-stage10-inputs-20260814-v1} tag에서 종결)은 working tree를 commit하고 tag한 뒤 릴리스 체크포인트마다 재확립된다. 이는 릴리스 gate이지 중간 working tree의 속성이 아니다. 이것이 익명 심사 archive 또는 DOI 기반 저장소가 이미 존재한다는 뜻은 아니며 본 원고는 어느 것도 주장하지 않는다.
 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}

@@ -34,6 +34,7 @@ from nesy_game import (
     RecordedProposalAdapter,
     WorldState,
     candidate_from_mapping,
+    counterexample_guided_repair,
     execute_with_repair,
     parse_candidate_record,
     replay_trace_jsonl,
@@ -65,6 +66,7 @@ ROW_CLASS_BY_SECTION: dict[str, str] = {
     "accounting_guards": "executed",
     "pilot_summary": "aggregate",
     "repair_arm_summary": "aggregate",
+    "repair_class_summary": "aggregate",
 }
 ROW_CLASSES = frozenset(ROW_CLASS_BY_SECTION.values())
 PROVENANCE_COLUMNS = (
@@ -75,6 +77,12 @@ PROVENANCE_COLUMNS = (
     "prior_state_hash",
 )
 NONE_REPAIRER_CODE_HASH = hashlib.sha256(b"none").hexdigest()
+# Frozen repairability taxonomy: which arm can repair a case is declared per fixture
+# BEFORE execution. `guided_repairable` = the error payload alone carries enough
+# information for rho(a, E); `oracle_only` = repair additionally requires reading the
+# authoritative state (only the reference oracle may commit); `irreparable` = no
+# implemented repair arm may commit (declaration-integrity or authorized-by-policy cases).
+REPAIRABILITY_CLASSES = ("guided_repairable", "oracle_only", "irreparable")
 
 
 def _sha256(path: Path) -> str:
@@ -273,14 +281,45 @@ def _validate_manifest_structure(data: Mapping[str, Any]) -> None:
     arm_ids = {arm["id"] for arm in data["repair"]["arms"]}
     for arm in data["repair"]["arms"]:
         _require_keys(arm, {"id", "repair_budget", "strategy"}, f"repair arm {arm['id']}")
+    # The four repair arms are part of the frozen pilot design: weakest to strongest,
+    # rejection-only, blind unchanged retry, counterexample-guided rho(a, E), and the
+    # state-reading reference oracle. Drift in identifiers or strategies fails closed.
+    if [(arm["id"], arm["strategy"], arm["repair_budget"]) for arm in data["repair"]["arms"]] != [
+        ("rejection_only", "none", 0),
+        ("unchanged_retry", "unchanged", 1),
+        ("guided_repair", "counterexample_guided", 1),
+        ("structured_repair", "policy_restore", 1),
+    ]:
+        raise ValueError("repair arm set differs from the frozen four-arm pilot design")
+    # Expected outcome pattern per repairability class, frozen before execution. This is
+    # the designed-fixture contract: expectations may not be edited to match observations.
+    expected_by_class = {
+        "guided_repairable": {"guided_repair": "commit", "structured_repair": "commit"},
+        "oracle_only": {"guided_repair": "fallback", "structured_repair": "commit"},
+        "irreparable": {"guided_repair": "fallback", "structured_repair": "fallback"},
+    }
     for case in data["repair"]["cases"]:
         _require_keys(
             case,
-            {"id", "repairable", "expected_status", "candidate"},
+            {"id", "repairable", "repairability", "expected_status", "candidate"},
             f"repair case {case['id']}",
         )
         _require_keys(case["expected_status"], arm_ids, f"{case['id']}.expected_status")
         _validate_candidate_fixture(case["candidate"], f"{case['id']}.candidate")
+        repairability = case["repairability"]
+        if repairability not in REPAIRABILITY_CLASSES:
+            raise ValueError(f"{case['id']} declares unknown repairability {repairability!r}")
+        expected_pattern = {
+            "rejection_only": "fallback",
+            "unchanged_retry": "fallback",
+            **expected_by_class[repairability],
+        }
+        if case["expected_status"] != expected_pattern:
+            raise ValueError(
+                f"{case['id']} expected_status contradicts its declared repairability class"
+            )
+        if case["repairable"] != (repairability != "irreparable"):
+            raise ValueError(f"{case['id']} repairable flag contradicts its repairability class")
     for boundary in data["integrity_boundaries"]:
         _require_keys(
             boundary,
@@ -616,24 +655,68 @@ def _structured_repair(
     validation: Any,
     attempt: int,
 ) -> CandidateAction:
+    """State-reading reference oracle: reconstruct policy-governed fields from state.
+
+    This callback deliberately discards the error set and copies the authoritative
+    policy requirements. It normalizes the four policy-governed candidate fields —
+    preconditions, effects, quest_stage_effect (dropped when unauthorized), and
+    required_quest_stage (clamped to the current stage when it exceeds it) — and
+    deliberately never touches declaration-integrity fields (required_objects,
+    used_facts, disclosed_facts): undeclaring a dependency or a disclosure would
+    launder the violation past the gate rather than repair the candidate. It is an
+    oracle upper bound over state-readable repairs, not a deployable method.
+    """
+
     del validation, attempt
     policy = state.action_policies.get(candidate.action_type)
     if policy is None:
         return candidate
     repaired_effects = (candidate.effects & policy.allowed_effects) | policy.required_effects
+    repaired_stage_effect = candidate.quest_stage_effect
+    if (
+        repaired_stage_effect is not None
+        and repaired_stage_effect not in policy.allowed_quest_stage_effects
+    ):
+        repaired_stage_effect = None
+    repaired_required_stage = min(candidate.required_quest_stage, state.quest_stage)
     return replace(
         candidate,
         preconditions=policy.required_preconditions,
         effects=repaired_effects,
+        quest_stage_effect=repaired_stage_effect,
+        required_quest_stage=repaired_required_stage,
     )
+
+
+_CANDIDATE_EDIT_FIELDS = (
+    "action_id",
+    "actor_id",
+    "action_type",
+    "preconditions",
+    "effects",
+    "required_objects",
+    "used_facts",
+    "disclosed_facts",
+    "required_quest_stage",
+    "quest_stage_effect",
+    "narrative_text",
+    "metadata",
+)
+
+
+def _edit_field_count(initial: CandidateAction, final: CandidateAction) -> int:
+    """Count changed top-level candidate fields (minimality proxy, not semantics)."""
+
+    return sum(getattr(initial, field) != getattr(final, field) for field in _CANDIDATE_EDIT_FIELDS)
 
 
 def run_repair_arms(
     manifest: Mapping[str, Any], state: WorldState
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     strategies: dict[str, Callable[..., CandidateAction] | None] = {
         "none": None,
         "unchanged": _unchanged_repair,
+        "counterexample_guided": counterexample_guided_repair,
         "policy_restore": _structured_repair,
     }
     rows: list[dict[str, Any]] = []
@@ -669,6 +752,7 @@ def run_repair_arms(
                     ),
                     "case_id": case["id"],
                     "repairable": case["repairable"],
+                    "repairability": case["repairability"],
                     "repair_budget": arm["repair_budget"],
                     "repair_strategy": arm["strategy"],
                     "initial_error_count": len(initial_validation.errors),
@@ -676,6 +760,7 @@ def run_repair_arms(
                     "trace_attempt_count": len(outcome.trace),
                     "final_status": outcome.status,
                     "final_error_count": len(outcome.validation.errors),
+                    "edit_field_count": _edit_field_count(candidate, outcome.candidate),
                     "state_changed": state_changed,
                     "final_state_hash": _state_hash(outcome.state),
                     "replay_passed": replay_passed,
@@ -717,7 +802,63 @@ def run_repair_arms(
                 "passed_case_count": sum(row["passed"] for row in arm_rows),
             }
         )
-    return rows, summary
+
+    # Aggregate per arm x repairability class. Every quantity is an exact count over
+    # the designed fixtures (or a ratio/mean of such counts); nothing here is a
+    # population estimate.
+    class_summary: list[dict[str, Any]] = []
+    for arm in manifest["repair"]["arms"]:
+        for repairability in REPAIRABILITY_CLASSES:
+            class_case_ids = [
+                case["id"]
+                for case in manifest["repair"]["cases"]
+                if case["repairability"] == repairability
+            ]
+            class_rows = [
+                row
+                for row in rows
+                if row["arm_id"] == arm["id"] and row["repairability"] == repairability
+            ]
+            commit_rows = [row for row in class_rows if row["final_status"] == "commit"]
+            failure_rows = [row for row in class_rows if row["final_status"] != "commit"]
+            repaired_commit_rows = [row for row in commit_rows if row["repair_attempt_count"] > 0]
+            class_summary.append(
+                {
+                    **_provenance(
+                        arm["id"],
+                        arm,
+                        {"repairability": repairability, "case_ids": class_case_ids},
+                        to_jsonable(state),
+                    ),
+                    "final_state_hash": _canonical_hash(
+                        [row["final_state_hash"] for row in class_rows]
+                    ),
+                    "group_id": f"{arm['id']}:{repairability}",
+                    "repairability": repairability,
+                    "repair_budget": arm["repair_budget"],
+                    "repair_strategy": arm["strategy"],
+                    "case_count": len(class_rows),
+                    "commit_count": len(commit_rows),
+                    "fallback_count": len(failure_rows),
+                    "commit_rate": len(commit_rows) / len(class_rows),
+                    "mean_recorded_attempts": (
+                        sum(row["repair_attempt_count"] for row in class_rows) / len(class_rows)
+                    ),
+                    "failure_count": len(failure_rows),
+                    "unchanged_state_on_failure_count": sum(
+                        not row["state_changed"] for row in failure_rows
+                    ),
+                    "repaired_commit_count": len(repaired_commit_rows),
+                    "mean_commit_edit_field_count": (
+                        sum(row["edit_field_count"] for row in repaired_commit_rows)
+                        / len(repaired_commit_rows)
+                        if repaired_commit_rows
+                        else None
+                    ),
+                    "passed_case_count": sum(row["passed"] for row in class_rows),
+                }
+            )
+    return rows, summary, class_summary
 
 
 def _exception_detected(operation: Callable[[], Any]) -> tuple[bool, str]:
@@ -1588,7 +1729,10 @@ def _summary_rows(
                     "measure": f"{row['arm_id']}:commits",
                     "numerator": row["commit_count"],
                     "denominator": row["case_count"],
-                    "notes": "two initially invalid designed cases",
+                    "notes": (
+                        f"{row['case_count']} initially invalid designed cases across "
+                        "the frozen repairability classes"
+                    ),
                 },
                 {
                     "section": "repair_arms",
@@ -1669,6 +1813,11 @@ def _actual_published_provenance(result: Mapping[str, Any]) -> dict[str, dict[st
             "repair_arm_summary",
             result["repair_arms"]["raw_counts_by_arm"],
             "arm_id",
+        ),
+        (
+            "repair_class_summary",
+            result["repair_arms"]["raw_counts_by_class"],
+            "group_id",
         ),
         ("integrity_faults", result["integrity_faults"]["rows"], "fault_id"),
         (
@@ -1796,6 +1945,21 @@ def _expected_published_provenance(
             arm,
             {"case_ids": repair_case_ids},
         )
+        for repairability in REPAIRABILITY_CLASSES:
+            add(
+                "repair_class_summary",
+                f"{arm['id']}:{repairability}",
+                arm["id"],
+                arm,
+                {
+                    "repairability": repairability,
+                    "case_ids": [
+                        case["id"]
+                        for case in manifest["repair"]["cases"]
+                        if case["repairability"] == repairability
+                    ],
+                },
+            )
     integrity_fault_specs = _integrity_fault_input_specs(manifest)
     for fault_id in manifest["integrity_faults"]:
         detector_by_fault = {
@@ -1996,6 +2160,24 @@ def _assert_complete(result: Mapping[str, Any]) -> None:
         result["closed_boundary_regressions"]["raw_counts"]["unknown_key_rejection_count"]
         == result["closed_boundary_regressions"]["raw_counts"]["regression_count"],
         all(row["passed"] for row in result["repair_arms"]["rows"]),
+        all(
+            row["passed_case_count"] == row["case_count"]
+            for row in result["repair_arms"]["raw_counts_by_class"]
+        ),
+        all(
+            row["unchanged_state_on_failure_count"] == row["failure_count"]
+            for row in result["repair_arms"]["raw_counts_by_class"]
+        ),
+        # Per-arm commit totals must equal the sum over the repairability partition.
+        all(
+            arm_row["commit_count"]
+            == sum(
+                class_row["commit_count"]
+                for class_row in result["repair_arms"]["raw_counts_by_class"]
+                if class_row["arm_id"] == arm_row["arm_id"]
+            )
+            for arm_row in result["repair_arms"]["raw_counts_by_arm"]
+        ),
         result["integrity_faults"]["raw_counts"]["detected_fault_count"]
         == result["integrity_faults"]["raw_counts"]["fault_count"],
         result["integrity_boundaries"]["raw_counts"]["passed_boundary_count"]
@@ -2186,7 +2368,7 @@ def run_pilot(
     gate_rows, gate_raw = run_gate_conformance(manifest, state)
     boundary_rows, boundary_raw = run_boundary_sentinels(manifest, state)
     closed_rows, closed_raw = run_closed_boundary_regressions(manifest, state)
-    repair_rows, repair_summary = run_repair_arms(manifest, state)
+    repair_rows, repair_summary, repair_class_summary = run_repair_arms(manifest, state)
     integrity_rows, integrity_raw = run_integrity_faults(manifest, state)
     integrity_boundary_rows, integrity_boundary_raw = run_integrity_boundaries(manifest, state)
     adapter_rows, adapter_raw, adapter_records = run_adapter_accounting(manifest, state)
@@ -2223,7 +2405,11 @@ def run_pilot(
         "gate_conformance": {"rows": gate_rows, "raw_counts": gate_raw},
         "boundary_sentinels": {"rows": boundary_rows, "raw_counts": boundary_raw},
         "closed_boundary_regressions": {"rows": closed_rows, "raw_counts": closed_raw},
-        "repair_arms": {"rows": repair_rows, "raw_counts_by_arm": repair_summary},
+        "repair_arms": {
+            "rows": repair_rows,
+            "raw_counts_by_arm": repair_summary,
+            "raw_counts_by_class": repair_class_summary,
+        },
         "integrity_faults": {"rows": integrity_rows, "raw_counts": integrity_raw},
         "integrity_boundaries": {
             "rows": integrity_boundary_rows,
@@ -2336,6 +2522,31 @@ def run_pilot(
     generated.extend(
         write_table_bundle(
             output_dir,
+            "repair-class-summary",
+            repair_class_summary,
+            (
+                *PROVENANCE_COLUMNS,
+                "final_state_hash",
+                "group_id",
+                "repairability",
+                "repair_budget",
+                "repair_strategy",
+                "case_count",
+                "commit_count",
+                "fallback_count",
+                "commit_rate",
+                "mean_recorded_attempts",
+                "failure_count",
+                "unchanged_state_on_failure_count",
+                "repaired_commit_count",
+                "mean_commit_edit_field_count",
+                "passed_case_count",
+            ),
+        )
+    )
+    generated.extend(
+        write_table_bundle(
+            output_dir,
             "boundary-sentinels",
             boundary_rows,
             (
@@ -2390,6 +2601,7 @@ def run_pilot(
                 *PROVENANCE_COLUMNS,
                 "case_id",
                 "repairable",
+                "repairability",
                 "repair_budget",
                 "repair_strategy",
                 "initial_error_count",
@@ -2397,6 +2609,7 @@ def run_pilot(
                 "trace_attempt_count",
                 "final_status",
                 "final_error_count",
+                "edit_field_count",
                 "state_changed",
                 "final_state_hash",
                 "replay_passed",

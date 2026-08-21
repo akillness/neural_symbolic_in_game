@@ -1966,8 +1966,8 @@
       "properties": {
         "arms": {
           "items": false,
-          "maxItems": 3,
-          "minItems": 3,
+          "maxItems": 4,
+          "minItems": 4,
           "prefixItems": [
             {
               "additionalProperties": false,
@@ -2013,6 +2013,26 @@
               "additionalProperties": false,
               "properties": {
                 "id": {
+                  "const": "guided_repair"
+                },
+                "repair_budget": {
+                  "const": 1
+                },
+                "strategy": {
+                  "const": "counterexample_guided"
+                }
+              },
+              "required": [
+                "id",
+                "repair_budget",
+                "strategy"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
                   "const": "structured_repair"
                 },
                 "repair_budget": {
@@ -2034,8 +2054,8 @@
         },
         "cases": {
           "items": false,
-          "maxItems": 2,
-          "minItems": 2,
+          "maxItems": 12,
+          "minItems": 12,
           "prefixItems": [
             {
               "additionalProperties": false,
@@ -2087,6 +2107,9 @@
                 "expected_status": {
                   "additionalProperties": false,
                   "properties": {
+                    "guided_repair": {
+                      "const": "commit"
+                    },
                     "rejection_only": {
                       "const": "fallback"
                     },
@@ -2100,12 +2123,16 @@
                   "required": [
                     "rejection_only",
                     "unchanged_retry",
+                    "guided_repair",
                     "structured_repair"
                   ],
                   "type": "object"
                 },
                 "id": {
                   "const": "repairable-policy-precondition"
+                },
+                "repairability": {
+                  "const": "guided_repairable"
                 },
                 "repairable": {
                   "const": true
@@ -2114,6 +2141,7 @@
               "required": [
                 "id",
                 "repairable",
+                "repairability",
                 "expected_status",
                 "candidate"
               ],
@@ -2181,6 +2209,9 @@
                 "expected_status": {
                   "additionalProperties": false,
                   "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
                     "rejection_only": {
                       "const": "fallback"
                     },
@@ -2194,12 +2225,16 @@
                   "required": [
                     "rejection_only",
                     "unchanged_retry",
+                    "guided_repair",
                     "structured_repair"
                   ],
                   "type": "object"
                 },
                 "id": {
                   "const": "nonrepairable-unreachable-object"
+                },
+                "repairability": {
+                  "const": "irreparable"
                 },
                 "repairable": {
                   "const": false
@@ -2208,6 +2243,908 @@
               "required": [
                 "id",
                 "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "guided-repairable-effect-omission"
+                    },
+                    "action_type": {
+                      "const": "OPEN_DOOR"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "commit"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "commit"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "guided-repairable-effect-omission"
+                },
+                "repairability": {
+                  "const": "guided_repairable"
+                },
+                "repairable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "guided-repairable-effect-violation"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "unauthorized_effect"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "commit"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "commit"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "guided-repairable-effect-violation"
+                },
+                "repairability": {
+                  "const": "guided_repairable"
+                },
+                "repairable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "guided-repairable-stale-precondition"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 2,
+                      "minItems": 2,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        },
+                        {
+                          "const": "missing_fact"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "commit"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "commit"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "guided-repairable-stale-precondition"
+                },
+                "repairability": {
+                  "const": "guided_repairable"
+                },
+                "repairable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "guided-repairable-stage-effect"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "quest_stage_effect": {
+                      "const": 2
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "quest_stage_effect"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "commit"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "commit"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "guided-repairable-stage-effect"
+                },
+                "repairability": {
+                  "const": "guided_repairable"
+                },
+                "repairable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "oracle-only-quest-stage-requirement"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "required_quest_stage": {
+                      "const": 2
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "required_quest_stage"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "commit"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "oracle-only-quest-stage-requirement"
+                },
+                "repairability": {
+                  "const": "oracle_only"
+                },
+                "repairable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "irreparable-unknown-action"
+                    },
+                    "action_type": {
+                      "const": "UNREGISTERED_REPAIR_TARGET"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "fallback"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "irreparable-unknown-action"
+                },
+                "repairability": {
+                  "const": "irreparable"
+                },
+                "repairable": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "irreparable-npc-knowledge"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "used_facts": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "unverified_rumor"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "used_facts"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "fallback"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "irreparable-npc-knowledge"
+                },
+                "repairability": {
+                  "const": "irreparable"
+                },
+                "repairable": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "irreparable-disclosure-knowledge"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "disclosed_facts": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "unknown_disclosure_target"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "disclosed_facts"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "fallback"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "irreparable-disclosure-knowledge"
+                },
+                "repairability": {
+                  "const": "irreparable"
+                },
+                "repairable": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "irreparable-forbidden-disclosure"
+                    },
+                    "action_type": {
+                      "const": "SAY"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "disclosed_facts": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "sealed_secret"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "disclosed_facts"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "fallback"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "irreparable-forbidden-disclosure"
+                },
+                "repairability": {
+                  "const": "irreparable"
+                },
+                "repairable": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
+                "expected_status",
+                "candidate"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "candidate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action_id": {
+                      "const": "irreparable-quest-regression"
+                    },
+                    "action_type": {
+                      "const": "ROLLBACK_STAGE"
+                    },
+                    "actor_id": {
+                      "const": "guard"
+                    },
+                    "effects": {
+                      "items": false,
+                      "maxItems": 0,
+                      "minItems": 0,
+                      "type": "array"
+                    },
+                    "preconditions": {
+                      "items": false,
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "prefixItems": [
+                        {
+                          "const": "met_guard"
+                        }
+                      ],
+                      "type": "array"
+                    },
+                    "quest_stage_effect": {
+                      "const": 0
+                    }
+                  },
+                  "required": [
+                    "action_id",
+                    "actor_id",
+                    "action_type",
+                    "preconditions",
+                    "effects",
+                    "quest_stage_effect"
+                  ],
+                  "type": "object"
+                },
+                "expected_status": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "guided_repair": {
+                      "const": "fallback"
+                    },
+                    "rejection_only": {
+                      "const": "fallback"
+                    },
+                    "structured_repair": {
+                      "const": "fallback"
+                    },
+                    "unchanged_retry": {
+                      "const": "fallback"
+                    }
+                  },
+                  "required": [
+                    "rejection_only",
+                    "unchanged_retry",
+                    "guided_repair",
+                    "structured_repair"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "const": "irreparable-quest-regression"
+                },
+                "repairability": {
+                  "const": "irreparable"
+                },
+                "repairable": {
+                  "const": false
+                }
+              },
+              "required": [
+                "id",
+                "repairable",
+                "repairability",
                 "expected_status",
                 "candidate"
               ],

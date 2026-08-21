@@ -103,6 +103,54 @@ class ConformancePilotTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "pilot manifest fields mismatch"):
                 pilot.load_manifest(path)
 
+    def test_repair_taxonomy_is_frozen_and_fails_closed(self) -> None:
+        arms = [
+            (a["id"], a["strategy"], a["repair_budget"]) for a in self.manifest["repair"]["arms"]
+        ]
+        self.assertEqual(
+            arms,
+            [
+                ("rejection_only", "none", 0),
+                ("unchanged_retry", "unchanged", 1),
+                ("guided_repair", "counterexample_guided", 1),
+                ("structured_repair", "policy_restore", 1),
+            ],
+        )
+        cases = self.manifest["repair"]["cases"]
+        self.assertEqual(len(cases), 12)
+        by_class = {}
+        for case in cases:
+            by_class.setdefault(case["repairability"], []).append(case["id"])
+        self.assertEqual(
+            {key: len(value) for key, value in by_class.items()},
+            {"guided_repairable": 5, "oracle_only": 1, "irreparable": 6},
+        )
+        # Expectations are frozen BEFORE execution; a fixture whose expected_status
+        # contradicts its declared repairability class must be rejected at load.
+        for corruption, pattern in (
+            (("guided_repair", "commit"), "contradicts its declared repairability"),
+            (("rejection_only", "commit"), "contradicts its declared repairability"),
+        ):
+            mutated = deepcopy(self.manifest)
+            irreparable = next(
+                case
+                for case in mutated["repair"]["cases"]
+                if case["repairability"] == "irreparable"
+            )
+            irreparable["expected_status"][corruption[0]] = corruption[1]
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "manifest.json"
+                path.write_text(json.dumps(mutated), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, pattern):
+                    pilot.load_manifest(path)
+        mutated = deepcopy(self.manifest)
+        mutated["repair"]["arms"][2]["strategy"] = "policy_restore"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.json"
+            path.write_text(json.dumps(mutated), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "frozen four-arm pilot design"):
+                pilot.load_manifest(path)
+
     def test_raw_counts_traces_and_provenance_are_complete(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             result, output, _ = self.run_in_temp(Path(directory))
@@ -140,11 +188,41 @@ class ConformancePilotTests(unittest.TestCase):
             self.assertEqual(
                 repair,
                 {
-                    "rejection_only": (0, 2),
-                    "unchanged_retry": (0, 2),
-                    "structured_repair": (1, 1),
+                    "rejection_only": (0, 12),
+                    "unchanged_retry": (0, 12),
+                    "guided_repair": (5, 7),
+                    "structured_repair": (6, 6),
                 },
             )
+            by_class = {
+                (row["arm_id"], row["repairability"]): (row["commit_count"], row["case_count"])
+                for row in result["repair_arms"]["raw_counts_by_class"]
+            }
+            # The designed separation: blind != guided != oracle, per repairability class.
+            self.assertEqual(by_class[("unchanged_retry", "guided_repairable")], (0, 5))
+            self.assertEqual(by_class[("guided_repair", "guided_repairable")], (5, 5))
+            self.assertEqual(by_class[("structured_repair", "guided_repairable")], (5, 5))
+            self.assertEqual(by_class[("guided_repair", "oracle_only")], (0, 1))
+            self.assertEqual(by_class[("structured_repair", "oracle_only")], (1, 1))
+            for arm_id in (
+                "rejection_only",
+                "unchanged_retry",
+                "guided_repair",
+                "structured_repair",
+            ):
+                self.assertEqual(by_class[(arm_id, "irreparable")], (0, 6))
+            for row in result["repair_arms"]["raw_counts_by_class"]:
+                self.assertEqual(row["unchanged_state_on_failure_count"], row["failure_count"])
+                expected_attempts = 0.0 if row["arm_id"] == "rejection_only" else 1.0
+                self.assertEqual(row["mean_recorded_attempts"], expected_attempts)
+            guided_commits = [
+                row
+                for row in result["repair_arms"]["rows"]
+                if row["arm_id"] == "guided_repair" and row["final_status"] == "commit"
+            ]
+            self.assertEqual(len(guided_commits), 5)
+            for row in guided_commits:
+                self.assertLessEqual(row["edit_field_count"], row["initial_error_count"])
             self.assertEqual(
                 result["integrity_faults"]["raw_counts"],
                 {"fault_count": 10, "detected_fault_count": 10},
@@ -185,6 +263,7 @@ class ConformancePilotTests(unittest.TestCase):
                 result["closed_boundary_regressions"]["rows"],
                 result["repair_arms"]["rows"],
                 result["repair_arms"]["raw_counts_by_arm"],
+                result["repair_arms"]["raw_counts_by_class"],
                 result["integrity_faults"]["rows"],
                 result["integrity_boundaries"]["rows"],
                 result["adapter_accounting"]["rows"],
@@ -231,7 +310,7 @@ class ConformancePilotTests(unittest.TestCase):
             assignments = json.loads(
                 (output / "pilot-assignment-manifest.json").read_text(encoding="utf-8")
             )
-            self.assertEqual(assignments["assignment_count"], 64)
+            self.assertEqual(assignments["assignment_count"], 121)
             self.assertEqual(
                 assignments["assignment_set_hash"],
                 pilot._canonical_hash(assignments["expected_provenance_by_key"]),
@@ -256,13 +335,14 @@ class ConformancePilotTests(unittest.TestCase):
                 "gate-conformance": 13,
                 "boundary-sentinels": 2,
                 "closed-boundary-regressions": 1,
-                "repair-arms": 6,
-                "repair-arm-summary": 3,
+                "repair-arms": 48,
+                "repair-arm-summary": 4,
+                "repair-class-summary": 12,
                 "integrity-faults": 10,
                 "integrity-boundaries": 1,
                 "adapter-accounting": 7,
                 "accounting-guards": 3,
-                "pilot-summary": 18,
+                "pilot-summary": 20,
             }
             for stem, denominator in table_stems.items():
                 for suffix in ("csv", "md", "tex"):

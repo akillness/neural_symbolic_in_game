@@ -391,16 +391,18 @@ def commit_transaction_svg() -> str:
 
     # Repair-arm strip, read from the frozen pilot bundle so the numbers cannot drift.
     items.append(rect(40, 530, 1400, 132, fill=LIGHT_GRAY, stroke=BORDER, radius=7))
+    arm_rows = read_repair_arms()
+    case_count = int(arm_rows[0]["initially_invalid_case_count"]) if arm_rows else 0
     items.append(
         text(
             66,
             566,
-            "Repair arms exercised on two authored initially-invalid cases",
+            f"Repair arms exercised on {case_count} authored initially-invalid cases",
             css_class="box-title",
         )
     )
-    for index, arm in enumerate(read_repair_arms()):
-        x = 66 + index * 460
+    for index, arm in enumerate(arm_rows):
+        x = 66 + index * 350
         commits = int(arm["commit_count"])
         cases = int(arm["initially_invalid_case_count"])
         budget = arm["repair_budget"]
@@ -408,14 +410,13 @@ def commit_transaction_svg() -> str:
         accent = GREEN if commits else GRAY
         items.append(text(x, 606, arm["arm_id"], css_class="small"))
         items.append(text(x, 632, f"K = {budget}, {strategy}", css_class="note"))
-        items.append(
-            text(x + 300, 606, f"{commits} / {cases} commits", css_class="small", fill=accent)
-        )
+        items.append(text(x, 656, f"{commits} / {cases} commits", css_class="small", fill=accent))
     items.append(
         footnote(
             66,
             690,
-            "Two designed cases per arm. This is pilot feasibility, not evidence that structured repair generally beats retry.",
+            f"{case_count} designed cases per arm across frozen repairability classes. "
+            "This is pilot feasibility, not evidence that any repair strategy generally wins.",
         )
     )
     items.append("</svg>")
@@ -454,7 +455,7 @@ SECTION_META: dict[str, tuple[str, str, str]] = {
     ),
     "repair_arms": (
         "Repair arms",
-        "feasibility observations on two authored invalid cases",
+        "feasibility observations per frozen repairability class",
         BLUE,
     ),
     "integrity_faults": (

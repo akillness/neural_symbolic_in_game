@@ -4,17 +4,17 @@
   "additionalProperties": false,
   "properties": {
     "aggregate_row_count": {
-      "const": 21
+      "const": 36
     },
     "assignment_count": {
-      "const": 64
+      "const": 121
     },
     "assignment_set_hash": {
       "pattern": "^[a-f0-9]{64}$",
       "type": "string"
     },
     "executed_row_count": {
-      "const": 43
+      "const": 85
     },
     "expected_provenance_by_key": {
       "additionalProperties": false,
@@ -2469,6 +2469,106 @@
           ],
           "type": "object"
         },
+        "pilot_summary/repair_arms:guided_repair:commits/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "pilot_summary/repair_arms:guided_repair:repair_successes/pilot_summary": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
         "pilot_summary/repair_arms:rejection_only:commits/pilot_summary": {
           "additionalProperties": false,
           "properties": {
@@ -2769,6 +2869,56 @@
           ],
           "type": "object"
         },
+        "repair_arm_summary/guided_repair/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
         "repair_arm_summary/rejection_only/rejection_only": {
           "additionalProperties": false,
           "properties": {
@@ -2870,6 +3020,1856 @@
           "type": "object"
         },
         "repair_arm_summary/unchanged_retry/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-omission/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-omission/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-omission/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-omission/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-violation/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-violation/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-violation/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-effect-violation/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stage-effect/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stage-effect/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stage-effect/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stage-effect/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stale-precondition/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stale-precondition/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stale-precondition/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/guided-repairable-stale-precondition/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-disclosure-knowledge/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-disclosure-knowledge/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-disclosure-knowledge/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-disclosure-knowledge/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-forbidden-disclosure/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-forbidden-disclosure/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-forbidden-disclosure/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-forbidden-disclosure/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-npc-knowledge/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-npc-knowledge/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-npc-knowledge/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-npc-knowledge/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-quest-regression/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-quest-regression/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-quest-regression/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-quest-regression/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-unknown-action/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-unknown-action/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-unknown-action/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/irreparable-unknown-action/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/nonrepairable-unreachable-object/guided_repair": {
           "additionalProperties": false,
           "properties": {
             "arm_id": {
@@ -3069,6 +5069,256 @@
           ],
           "type": "object"
         },
+        "repair_arms/oracle-only-quest-stage-requirement/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/oracle-only-quest-stage-requirement/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/oracle-only-quest-stage-requirement/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/oracle-only-quest-stage-requirement/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_arms/repairable-policy-precondition/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
         "repair_arms/repairable-policy-precondition/rejection_only": {
           "additionalProperties": false,
           "properties": {
@@ -3218,6 +5468,606 @@
             "prior_state_hash"
           ],
           "type": "object"
+        },
+        "repair_class_summary/guided_repair:guided_repairable/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/guided_repair:irreparable/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/guided_repair:oracle_only/guided_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/rejection_only:guided_repairable/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/rejection_only:irreparable/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/rejection_only:oracle_only/rejection_only": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/structured_repair:guided_repairable/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/structured_repair:irreparable/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/structured_repair:oracle_only/structured_repair": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/unchanged_retry:guided_repairable/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/unchanged_retry:irreparable/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
+        },
+        "repair_class_summary/unchanged_retry:oracle_only/unchanged_retry": {
+          "additionalProperties": false,
+          "properties": {
+            "arm_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "config_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "input_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "prior_state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "row_class": {
+              "enum": [
+                "aggregate",
+                "executed"
+              ]
+            },
+            "row_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "section": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "state_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "section",
+            "row_id",
+            "row_class",
+            "arm_id",
+            "config_hash",
+            "input_hash",
+            "state_hash",
+            "prior_state_hash"
+          ],
+          "type": "object"
         }
       },
       "required": [
@@ -3239,13 +6089,68 @@
         "closed_boundary_regressions/closed-extra-candidate-field/closed_boundary_regression",
         "repair_arms/repairable-policy-precondition/rejection_only",
         "repair_arms/nonrepairable-unreachable-object/rejection_only",
+        "repair_arms/guided-repairable-effect-omission/rejection_only",
+        "repair_arms/guided-repairable-effect-violation/rejection_only",
+        "repair_arms/guided-repairable-stale-precondition/rejection_only",
+        "repair_arms/guided-repairable-stage-effect/rejection_only",
+        "repair_arms/oracle-only-quest-stage-requirement/rejection_only",
+        "repair_arms/irreparable-unknown-action/rejection_only",
+        "repair_arms/irreparable-npc-knowledge/rejection_only",
+        "repair_arms/irreparable-disclosure-knowledge/rejection_only",
+        "repair_arms/irreparable-forbidden-disclosure/rejection_only",
+        "repair_arms/irreparable-quest-regression/rejection_only",
         "repair_arm_summary/rejection_only/rejection_only",
+        "repair_class_summary/rejection_only:guided_repairable/rejection_only",
+        "repair_class_summary/rejection_only:oracle_only/rejection_only",
+        "repair_class_summary/rejection_only:irreparable/rejection_only",
         "repair_arms/repairable-policy-precondition/unchanged_retry",
         "repair_arms/nonrepairable-unreachable-object/unchanged_retry",
+        "repair_arms/guided-repairable-effect-omission/unchanged_retry",
+        "repair_arms/guided-repairable-effect-violation/unchanged_retry",
+        "repair_arms/guided-repairable-stale-precondition/unchanged_retry",
+        "repair_arms/guided-repairable-stage-effect/unchanged_retry",
+        "repair_arms/oracle-only-quest-stage-requirement/unchanged_retry",
+        "repair_arms/irreparable-unknown-action/unchanged_retry",
+        "repair_arms/irreparable-npc-knowledge/unchanged_retry",
+        "repair_arms/irreparable-disclosure-knowledge/unchanged_retry",
+        "repair_arms/irreparable-forbidden-disclosure/unchanged_retry",
+        "repair_arms/irreparable-quest-regression/unchanged_retry",
         "repair_arm_summary/unchanged_retry/unchanged_retry",
+        "repair_class_summary/unchanged_retry:guided_repairable/unchanged_retry",
+        "repair_class_summary/unchanged_retry:oracle_only/unchanged_retry",
+        "repair_class_summary/unchanged_retry:irreparable/unchanged_retry",
+        "repair_arms/repairable-policy-precondition/guided_repair",
+        "repair_arms/nonrepairable-unreachable-object/guided_repair",
+        "repair_arms/guided-repairable-effect-omission/guided_repair",
+        "repair_arms/guided-repairable-effect-violation/guided_repair",
+        "repair_arms/guided-repairable-stale-precondition/guided_repair",
+        "repair_arms/guided-repairable-stage-effect/guided_repair",
+        "repair_arms/oracle-only-quest-stage-requirement/guided_repair",
+        "repair_arms/irreparable-unknown-action/guided_repair",
+        "repair_arms/irreparable-npc-knowledge/guided_repair",
+        "repair_arms/irreparable-disclosure-knowledge/guided_repair",
+        "repair_arms/irreparable-forbidden-disclosure/guided_repair",
+        "repair_arms/irreparable-quest-regression/guided_repair",
+        "repair_arm_summary/guided_repair/guided_repair",
+        "repair_class_summary/guided_repair:guided_repairable/guided_repair",
+        "repair_class_summary/guided_repair:oracle_only/guided_repair",
+        "repair_class_summary/guided_repair:irreparable/guided_repair",
         "repair_arms/repairable-policy-precondition/structured_repair",
         "repair_arms/nonrepairable-unreachable-object/structured_repair",
+        "repair_arms/guided-repairable-effect-omission/structured_repair",
+        "repair_arms/guided-repairable-effect-violation/structured_repair",
+        "repair_arms/guided-repairable-stale-precondition/structured_repair",
+        "repair_arms/guided-repairable-stage-effect/structured_repair",
+        "repair_arms/oracle-only-quest-stage-requirement/structured_repair",
+        "repair_arms/irreparable-unknown-action/structured_repair",
+        "repair_arms/irreparable-npc-knowledge/structured_repair",
+        "repair_arms/irreparable-disclosure-knowledge/structured_repair",
+        "repair_arms/irreparable-forbidden-disclosure/structured_repair",
+        "repair_arms/irreparable-quest-regression/structured_repair",
         "repair_arm_summary/structured_repair/structured_repair",
+        "repair_class_summary/structured_repair:guided_repairable/structured_repair",
+        "repair_class_summary/structured_repair:oracle_only/structured_repair",
+        "repair_class_summary/structured_repair:irreparable/structured_repair",
         "integrity_faults/checksum_drift/integrity_fault",
         "integrity_faults/rehashed_impossible_state/integrity_fault",
         "integrity_faults/attempts_mutation/integrity_fault",
@@ -3276,6 +6181,8 @@
         "pilot_summary/repair_arms:rejection_only:repair_successes/pilot_summary",
         "pilot_summary/repair_arms:unchanged_retry:commits/pilot_summary",
         "pilot_summary/repair_arms:unchanged_retry:repair_successes/pilot_summary",
+        "pilot_summary/repair_arms:guided_repair:commits/pilot_summary",
+        "pilot_summary/repair_arms:guided_repair:repair_successes/pilot_summary",
         "pilot_summary/repair_arms:structured_repair:commits/pilot_summary",
         "pilot_summary/repair_arms:structured_repair:repair_successes/pilot_summary",
         "pilot_summary/integrity_faults:named_detectable_faults_detected/pilot_summary",

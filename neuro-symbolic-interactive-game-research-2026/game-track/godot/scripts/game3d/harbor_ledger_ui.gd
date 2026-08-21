@@ -39,6 +39,10 @@ var _toast: Label
 var _end_card: PanelContainer
 var _end_text: RichTextLabel
 var _end_icon: TextureRect
+var _ledger_stamp: TextureRect
+var _stamp_commit_texture: Texture2D
+var _stamp_refusal_texture: Texture2D
+var _stamp_tween: Tween
 var _bottom_panel: PanelContainer
 var _controls_panel: PanelContainer
 var _controls_label: Label
@@ -250,6 +254,26 @@ func _build_bottom_panel() -> void:
 	_ledger_log.add_theme_font_size_override("normal_font_size", 18)
 	_ledger_log.add_theme_color_override("default_color", PALETTE.paper_fog)
 	_ledger_box.add_child(_ledger_log)
+	# Curated ledger stamps (D-034/D-035): a brief diegetic ink stamp lands next
+	# to the newest verdict line — commit uses ui-stamp-commit.png, refusal uses
+	# ui-stamp-refusal.png. Absent bytes leave today's text-only ledger intact.
+	_stamp_commit_texture = SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-stamp-commit.png")
+	_stamp_refusal_texture = SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-stamp-refusal.png")
+	_ledger_stamp = TextureRect.new()
+	_ledger_stamp.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_ledger_stamp.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_ledger_stamp.custom_minimum_size = Vector2(52.0, 52.0)
+	_ledger_stamp.anchor_left = 1.0
+	_ledger_stamp.anchor_right = 1.0
+	_ledger_stamp.anchor_top = 1.0
+	_ledger_stamp.anchor_bottom = 1.0
+	_ledger_stamp.offset_left = -62.0
+	_ledger_stamp.offset_right = -10.0
+	_ledger_stamp.offset_top = -62.0
+	_ledger_stamp.offset_bottom = -10.0
+	_ledger_stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ledger_stamp.visible = false
+	_ledger_log.add_child(_ledger_stamp)
 
 	_action_box = VBoxContainer.new()
 	_action_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -334,7 +358,12 @@ func _build_end_card() -> void:
 	# D-034/D-035: decorative tide-route emblem on the episode end card. The
 	# ledger text stays the payoff; absent bytes simply hide the emblem.
 	_end_icon = TextureRect.new()
-	_end_icon.texture = SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-icon-tide-route.png")
+	# The tide-route SEAL is the earned emblem (frozen curated contract name);
+	# the older route icon remains a fallback so existing bytes keep working.
+	var seal_texture := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-seal-tide-route.png")
+	if seal_texture == null:
+		seal_texture = SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-icon-tide-route.png")
+	_end_icon.texture = seal_texture
 	_end_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_end_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_end_icon.custom_minimum_size = Vector2(96.0, 96.0)
@@ -452,14 +481,14 @@ func _build_tutorial() -> void:
 			"pack": true,
 		},
 		{
-			"title": "장부의 문법 — 제안·커밋·보류",
-			"body": "▸ 황동 점선 = 제안. 아직 아무 일도 일어나지 않았다.\n✔ 황색 실선 = 커밋. 검증을 통과했고 상태 해시가 전진했다.\n✖ 산호색 = 보류. 상태는 그대로이며, 중립적 이유와\n   다음 유효 행동이 함께 온다.\n\n보류는 벌이 아니라 이 항구의 문법이다.\n색은 언제나 문자·기호와 함께 온다.",
+			"title": "항구의 규칙 — 제안·검증·보류·기록",
+			"body": "장부는 검증을 통과한 항목만 받아들인다.\n이 항구가 폭풍에서 살아남은 방식이다.\n\n▸ 황동 점선 = 제안. 아직 세계는 그대로다.\n◈ 검증 = 장부가 항목을 대조한다. 눈에 띄지 않게, 매번.\n✖ 산호색 = 보류. 상태는 그대로이며, 중립적 이유와\n   다음 유효 항목이 함께 온다.\n✔ 황색 실선 = 기록. 검증을 통과했고 상태 해시가 전진했다.\n\n보류는 벌이 아니라 이 항구의 문법이다.\n색은 언제나 문자·기호와 함께 온다.",
 			"image": "SL-C03-investigation-ui.png",
 			"pack": false,
 		},
 		{
 			"title": "이 항구는 실험실이다",
-			"body": "이 슬라이스는 TRACE-RPG 연구의 탐침이다.\n관찰 → 조사 → 제안 → 검증 → 수리 → 커밋의 리듬이\n60–120초 루프를 이룬다.\n\n유효한 커밋만 정식 상태를 바꾸고, 거절·시간초과는\n이전 상태 해시를 그대로 남긴다.\n봉인된 사실은 어떤 대답으로도 열리지 않는다.",
+			"body": "이 슬라이스는 TRACE-RPG 연구의 탐침이다.\n관찰 → 조사 → 제안 → 검증 → 수리 → 기록의 리듬이\n60–120초 루프를 이룬다.\n\n유효한 기록만 정식 상태를 바꾸고, 보류·시간초과는\n이전 상태 해시를 그대로 남긴다.\n봉인된 사실은 어떤 대답으로도 열리지 않는다.",
 			"image": "SL-C02-captain-mira-sheet.png",
 			"pack": false,
 		},
@@ -783,6 +812,9 @@ func _update_portrait_visibility() -> void:
 
 
 func ledger_line(kind: String, text: String) -> void:
+	# Bureaucratic-poetic ledger voice (W-005): the ledger is a diegetic record
+	# of accepted evidence. Commits stamp "기록됨", refusals stamp "보류" — the
+	# words of a harbor that survives on valid entries only.
 	var line := ""
 	match kind:
 		"narration":
@@ -792,14 +824,66 @@ func ledger_line(kind: String, text: String) -> void:
 		"proposal":
 			line = "[color=#A77A3A]▸ 제안 ┄┄ %s[/color]" % text
 		"commit":
-			line = "[color=#F2B84B]✔ 커밋 ── %s[/color]" % text
+			line = "[color=#F2B84B]✔ 기록됨 ── %s[/color]" % text
+			_show_ledger_stamp(true)
 		"refusal":
 			line = "[color=#D9685F]✖ 보류 ─┤ %s[/color]" % text
 		"hint":
-			line = "[color=#F2B84B]☀ 허가된 단서 — %s[/color]" % text
+			line = "[color=#F2B84B]☀ 길잡이 — %s[/color]" % text
 		_:
 			line = text
 	_ledger_log.append_text(line + "\n")
+
+
+func ledger_commit(entry_number: int, text: String) -> void:
+	# Numbered commit entry: '기록 #N · 기록됨 — <entry>'. The entry number is the
+	# caller's validated commit count — presentation mirrors it, never invents it.
+	_ledger_log.append_text(
+		"[color=#F2B84B]✔ 기록 #%d · 기록됨 — %s[/color]\n" % [entry_number, text]
+	)
+	_show_ledger_stamp(true)
+
+
+func ledger_refusal(reason: String, next_affordance: String) -> void:
+	# '보류 — <neutral reason>' then '다음 유효 항목: <affordance>'. The reason
+	# stays neutral/non-alarming (P-02) and never exposes hidden oracle labels;
+	# the next valid entry is always concrete and always present.
+	_ledger_log.append_text("[color=#D9685F]✖ 보류 — %s[/color]\n" % reason)
+	_ledger_log.append_text(
+		"[color=#A77A3A]   → 다음 유효 항목: %s[/color]\n" % next_affordance
+	)
+	_show_ledger_stamp(false)
+
+
+func _show_ledger_stamp(committed: bool) -> void:
+	# Tiny diegetic ink stamp beside the newest verdict line. Curated bytes are
+	# optional: a missing texture keeps today's text-only ledger exactly.
+	if _ledger_stamp == null:
+		return
+	var texture := _stamp_commit_texture if committed else _stamp_refusal_texture
+	if texture == null:
+		_ledger_stamp.visible = false
+		return
+	_ledger_stamp.texture = texture
+	_ledger_stamp.visible = true
+	_ledger_stamp.modulate = Color(1, 1, 1, 1)
+	if _stamp_tween != null and _stamp_tween.is_valid():
+		_stamp_tween.kill()
+	if reduce_motion:
+		# Steady state: appear, hold, hide — no press/scale motion.
+		_ledger_stamp.scale = Vector2.ONE
+		_stamp_tween = create_tween()
+		_stamp_tween.tween_interval(1.6)
+		_stamp_tween.tween_callback(func() -> void: _ledger_stamp.visible = false)
+		return
+	_ledger_stamp.pivot_offset = _ledger_stamp.size * 0.5
+	_ledger_stamp.scale = Vector2(1.3, 1.3)
+	_stamp_tween = create_tween()
+	_stamp_tween.tween_property(_ledger_stamp, "scale", Vector2.ONE, 0.18)\
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	_stamp_tween.tween_interval(1.1)
+	_stamp_tween.tween_property(_ledger_stamp, "modulate:a", 0.0, 0.35)
+	_stamp_tween.tween_callback(func() -> void: _ledger_stamp.visible = false)
 
 
 func show_choices(choices: Array) -> void:
@@ -832,7 +916,7 @@ func flash(kind: String) -> void:
 	# the next frame. This is presentation feedback, never action authorization.
 	var is_commit := kind == "commit"
 	var color := Color(PALETTE.signal_amber, 0.22) if is_commit else Color(PALETTE.warning_coral, 0.24)
-	_feedback_label.text = "✔ VALIDATED · 커밋됨" if is_commit else "✖ HELD · 상태 유지"
+	_feedback_label.text = "✔ 기록됨 · VALIDATED" if is_commit else "✖ 보류 · 상태 유지"
 	_feedback_label.add_theme_color_override(
 		"font_color", PALETTE.signal_amber if is_commit else PALETTE.warning_coral
 	)

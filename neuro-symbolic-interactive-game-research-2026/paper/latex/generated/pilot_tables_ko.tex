@@ -1,20 +1,16 @@
 \begin{table}[t]
-\caption{수리 callback 제어 흐름 (비교 아님)}
+\caption{수리 arm $\times$ repairability class 정확 집계 (설계 픽스처)}
 \label{tab:pilot-repair}
 \centering\scriptsize
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
- >{\raggedright\arraybackslash}X
- >{\raggedright\arraybackslash}X
- >{\raggedright\arraybackslash}X@{}}
+ >{\raggedright\arraybackslash}X rrrr@{}}
 \toprule
-Callback & 주입 결함 & 대응 필드 대입 & 종단 경로 \\
+Arm & 정보원 & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & 수정$^{e}$ \\
 \midrule
-없음 (K=0) & 도달 불가 object (수리 불가) & --- & fallback \\
-없음 (K=0) & 정책 precondition (수리 가능) & --- & fallback \\
-동일 후보 재시도 & 도달 불가 object (수리 불가) & 없음 & fallback \\
-동일 후보 재시도 & 정책 precondition (수리 가능) & 없음 & fallback \\
-정책 복원 oracle & 도달 불가 object (수리 불가) & preconditions, effects & fallback \\
-정책 복원 oracle & 정책 precondition (수리 가능) & preconditions, effects & commit \\
+Rejection-only ($K{=}0$) & 없음 & 0/5 & 0/1 & 0/6 & --- \\
+블라인드 retry & 없음 & 0/5 & 0/1 & 0/6 & --- \\
+반례 유도 $\rho$ & 오류 집합 $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
+상태 판독 oracle & 권위 상태+정책 & 5/5 & 1/1 & 0/6 & 1.0 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -38,5 +34,5 @@ Adapter 실패 & 5 & 7 \\
 Manifest guard 거부 & 3 & 3 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$경계 허용은 의미 추출과 정책 완결성 한계를 문서화하며 safety pass가 아니다. $^{b}$Replay는 repair 생성을 인증하거나 다시 실행하지 않는다. $^{c}$Loader가 이 일치를 강제하므로 측정값이 아니라 구성 불변량이다. $^{d}$Stage 8 이후의 parser 거부 parity이며 의미 안전성 증거가 아니다.}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$경계 허용은 의미 추출과 정책 완결성 한계를 문서화하며 safety pass가 아니다. $^{b}$Replay는 repair 생성을 인증하거나 다시 실행하지 않는다. $^{c}$Loader가 이 일치를 강제하므로 측정값이 아니라 구성 불변량이다. $^{d}$Stage 8 이후의 parser 거부 parity이며 의미 안전성 증거가 아니다. $^{e}$commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); 실패한 arm 실행은 상태를 변경하지 않았다. $^{f}$commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable(동결된 repairability class).}
 \end{table}

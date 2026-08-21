@@ -31,6 +31,11 @@ final aggregate regression
 | Generate Higgsfield UI art pack (6 assets + provenance) | asset lane (subagent HiggsfieldGen) | 1.resources | `game-track/assets/generated/higgsfield-ui-v1/` | provenance (D-034) | done-6-of-6-accepted-2-retries | keep staging immutable |
 | Curate + integrate UI art lane | UI lane (subagent UIIntegrate) + release | 1.resources | `game-track/godot/assets/ui/` (6 PNGs, provenance, curation.json), `harbor_ledger_ui.gd`, `world_builder.gd` | provenance/G1 (D-035) | done-fallback-proven-smoke-green | human rights/style re-review if repurposed |
 | Fix narrow-viewport tutorial layout (vignette squeezed text at 390px) | orchestrator | 1.verify | `harbor_ledger_ui.gd` responsive tutorial stack | G1/G6 | done-verified-on-prod-390x844 | none |
+| Verdict ritual VFX + repair hint + curated world textures (D-036) | visual lane (subagent RitualVfx) | 1.presentation | `narrative_director.gd` (`play_verdict_ritual`, `play_repair_hint`), `world_builder.gd` (`curated_material`), `interactable_3d.gd`, `procedural_audio.gd` (4 cues), `player_3d.gd` | G1/G4 | done-2026-08-21-it1-smoke-eval-fallback-green | human presentation study |
+| Diegetic ledger voice + Mira 서사 3-beat + tutorial rule page + episode receipt | narrative lane (subagent NarrativeLoop) | 1.design | `game_3d.gd`, `harbor_ledger_ui.gd` (기록/보류 voice, stamps, end-card receipt) | G1/G7 | done-2026-08-21-it1-router-probe-green | human presentation study |
+| Generate + curate texture/stamp pack (3 tileable textures, 2 stamps, 1 seal) | asset lane (subagent TexturePack) | 1.resources | `game-track/assets/generated/higgsfield-tex-v1/`, 6 curated files in `assets/ui/`, curation.json 12 assets | provenance (D-036) | done-1.49MB-smoke-green | rights re-review if repurposed |
+| Deep research: limitations/contributions + 4 method records | research lane (subagent DeepResearch) | paper.revision | `_workspace/current/design/paper-limitations-contributions-2026-08-21.md`, `research/deep-research/results/` (14/14 valid) | citation identity | done-2026-08-21 | integrate remaining text in iteration 2 |
+| Guided repair operator ρ(a,E) + fixture battery + bilingual paper update | research engineer (subagent RepairMethod) | paper.method | `src/nesy_game/repair.py`, pilot manifest +10 fixtures, `run_conformance_pilot.py` guided arm, regenerated stage-04 packet (38 artifacts/22 inputs), EN 8pp / KO 7pp PDFs | methods drift + page band | done-120-tests-drift-OK-make-check-pass | clean-tag re-lock at push 2 |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
@@ -81,5 +86,5 @@ Refresh rule: any lane, generator, authority boundary, entry point, Web export b
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
-Latest rule refresh: 2026-08-21, decisions `D-034`–`D-035` (Higgsfield UI generator + curated
-runtime art lane); prior refresh 2026-08-13, decisions `D-027`–`D-033`.
+Latest rule refresh: 2026-08-21, decisions `D-034`–`D-036` (Higgsfield UI generator, curated
+runtime art lane, world-texture/stamp extension); prior refresh 2026-08-13, `D-027`–`D-033`.

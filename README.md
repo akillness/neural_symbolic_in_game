@@ -21,10 +21,10 @@ This repository contains a bilingual paper draft, a ten-model evaluation matrix,
 
 | 영역 / Area | 상태 / Status | 근거 / Evidence |
 |---|---|---|
-| 구현 / Implementation | **완료 / Done** | 96 tests, deterministic pilot, Godot 4.7.1 slice, live public-safe Web build |
-| 학술 파이프라인 / Academic pipeline | **완료 / Done** | 10 stages executed; Stage 10 repro lock, 21/21 inputs + 35/35 artifacts |
-| 논문 / Paper | **작성 완료 / Drafted** | Bilingual IEEE short paper, EN 7 pp / KO 6 pp, 42 verified references |
-| 재현성 / Reproducibility | **완료 / Done** | Clean-clone: 96/96 tests, 35/35 artifacts byte-identical |
+| 구현 / Implementation | **완료 / Done** | 120 tests, deterministic pilot incl. guided-repair arm, Godot 4.7.1 slice, live public-safe Web build |
+| 학술 파이프라인 / Academic pipeline | **완료 / Done** | 10 stages executed; pilot packet 22 inputs + 38 artifacts, clean-tag re-lock at each release checkpoint |
+| 논문 / Paper | **작성 완료 / Drafted** | Bilingual IEEE short paper, EN 8 pp / KO 7 pp, 42 verified references, ρ(a,E) guided-repair method |
+| 재현성 / Reproducibility | **완료 / Done** | 120/120 tests; 38/38 artifact + 22/22 input hashes recompute from the frozen packet |
 | **실험 / Experiments** | **미완료 / NOT DONE** | `C-RESULT-001`–`005` = `TODO-RESULT`, 5 of 18 claims, zero evidence |
 | 투고 / Submission | **미진행 / Not started** | No journal decision, reviewer archive, or DOI deposit |
 

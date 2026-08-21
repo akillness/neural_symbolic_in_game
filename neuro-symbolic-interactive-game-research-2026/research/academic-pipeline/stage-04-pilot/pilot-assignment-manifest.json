@@ -1,8 +1,8 @@
 {
-  "aggregate_row_count": 21,
-  "assignment_count": 64,
-  "assignment_set_hash": "a073baa3f593cfc3978ad75836e18ddc55a3d825336b2699a7181ac2d2cdc653",
-  "executed_row_count": 43,
+  "aggregate_row_count": 36,
+  "assignment_count": 121,
+  "assignment_set_hash": "85b2b14f75b6c552995b4dc933906da3662f34dbd63903e25967ccdfd1595fd6",
+  "executed_row_count": 85,
   "expected_provenance_by_key": {
     "accounting_guards/duplicate_expected_assignment/accounting_guard": {
       "arm_id": "accounting_guard",
@@ -494,6 +494,26 @@
       "section": "pilot_summary",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
+    "pilot_summary/repair_arms:guided_repair:commits/pilot_summary": {
+      "arm_id": "pilot_summary",
+      "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
+      "input_hash": "49721184a900e4a8d4c8d83d971be1ce5683b5d158d043a76f5c58942af92997",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "repair_arms:guided_repair:commits",
+      "section": "pilot_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "pilot_summary/repair_arms:guided_repair:repair_successes/pilot_summary": {
+      "arm_id": "pilot_summary",
+      "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
+      "input_hash": "2ae6c46c75a35d07e69f1b8c31f1cbf9238b513b0807ac7c34fe6e620607843b",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "repair_arms:guided_repair:repair_successes",
+      "section": "pilot_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
     "pilot_summary/repair_arms:rejection_only:commits/pilot_summary": {
       "arm_id": "pilot_summary",
       "config_hash": "526c1626a6a0061b1636f4274dd5e9223048d05920b802e1523c75f68c73f9a9",
@@ -554,10 +574,20 @@
       "section": "pilot_summary",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
+    "repair_arm_summary/guided_repair/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "5d2ce4c9d424309901694bbe74111ac4dd684c3e9ee0a6fae9fcf6707684709a",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "guided_repair",
+      "section": "repair_arm_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
     "repair_arm_summary/rejection_only/rejection_only": {
       "arm_id": "rejection_only",
       "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
-      "input_hash": "e2d49ff145d53ea712b007a7220f56122dda45bc754b328ebd293c7a3038b35a",
+      "input_hash": "5d2ce4c9d424309901694bbe74111ac4dd684c3e9ee0a6fae9fcf6707684709a",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "aggregate",
       "row_id": "rejection_only",
@@ -567,7 +597,7 @@
     "repair_arm_summary/structured_repair/structured_repair": {
       "arm_id": "structured_repair",
       "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
-      "input_hash": "e2d49ff145d53ea712b007a7220f56122dda45bc754b328ebd293c7a3038b35a",
+      "input_hash": "5d2ce4c9d424309901694bbe74111ac4dd684c3e9ee0a6fae9fcf6707684709a",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "aggregate",
       "row_id": "structured_repair",
@@ -577,17 +607,387 @@
     "repair_arm_summary/unchanged_retry/unchanged_retry": {
       "arm_id": "unchanged_retry",
       "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
-      "input_hash": "e2d49ff145d53ea712b007a7220f56122dda45bc754b328ebd293c7a3038b35a",
+      "input_hash": "5d2ce4c9d424309901694bbe74111ac4dd684c3e9ee0a6fae9fcf6707684709a",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "aggregate",
       "row_id": "unchanged_retry",
       "section": "repair_arm_summary",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
+    "repair_arms/guided-repairable-effect-omission/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "9c09f2c7b1d36be6d5144f93e93bcb064f210df2200147e278825ed24b21ba48",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-omission",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-omission/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "9c09f2c7b1d36be6d5144f93e93bcb064f210df2200147e278825ed24b21ba48",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-omission",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-omission/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "9c09f2c7b1d36be6d5144f93e93bcb064f210df2200147e278825ed24b21ba48",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-omission",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-omission/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "9c09f2c7b1d36be6d5144f93e93bcb064f210df2200147e278825ed24b21ba48",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-omission",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-violation/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "16354bacddb51d8c0d27c6e5c76461cdf61b06b272b5754e537e8f542e2c571a",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-violation",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-violation/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "16354bacddb51d8c0d27c6e5c76461cdf61b06b272b5754e537e8f542e2c571a",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-violation",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-violation/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "16354bacddb51d8c0d27c6e5c76461cdf61b06b272b5754e537e8f542e2c571a",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-violation",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-effect-violation/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "16354bacddb51d8c0d27c6e5c76461cdf61b06b272b5754e537e8f542e2c571a",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-effect-violation",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stage-effect/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "0ce7ff3d57e150b64a26a75289501c42298f9b6b47809d01bebc0b14bb922190",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stage-effect",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stage-effect/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "0ce7ff3d57e150b64a26a75289501c42298f9b6b47809d01bebc0b14bb922190",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stage-effect",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stage-effect/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "0ce7ff3d57e150b64a26a75289501c42298f9b6b47809d01bebc0b14bb922190",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stage-effect",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stage-effect/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "0ce7ff3d57e150b64a26a75289501c42298f9b6b47809d01bebc0b14bb922190",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stage-effect",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stale-precondition/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "8eb69f13e62cbd9ec1717706f2ab5e24878a0bc8accb7ff839eca4ac99ccbccf",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stale-precondition",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stale-precondition/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "8eb69f13e62cbd9ec1717706f2ab5e24878a0bc8accb7ff839eca4ac99ccbccf",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stale-precondition",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stale-precondition/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "8eb69f13e62cbd9ec1717706f2ab5e24878a0bc8accb7ff839eca4ac99ccbccf",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stale-precondition",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/guided-repairable-stale-precondition/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "8eb69f13e62cbd9ec1717706f2ab5e24878a0bc8accb7ff839eca4ac99ccbccf",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "guided-repairable-stale-precondition",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-disclosure-knowledge/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "e3ed7a17d08346d18d8966c9f473f4f1ebc47294f5433ab683120df3a9cebdf3",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-disclosure-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-disclosure-knowledge/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "e3ed7a17d08346d18d8966c9f473f4f1ebc47294f5433ab683120df3a9cebdf3",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-disclosure-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-disclosure-knowledge/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "e3ed7a17d08346d18d8966c9f473f4f1ebc47294f5433ab683120df3a9cebdf3",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-disclosure-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-disclosure-knowledge/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "e3ed7a17d08346d18d8966c9f473f4f1ebc47294f5433ab683120df3a9cebdf3",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-disclosure-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-forbidden-disclosure/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "bf3079b6c2010ae4d643d46a4f71c5c4c7d725043d61e03341c6cc84d3bbc287",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-forbidden-disclosure",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-forbidden-disclosure/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "bf3079b6c2010ae4d643d46a4f71c5c4c7d725043d61e03341c6cc84d3bbc287",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-forbidden-disclosure",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-forbidden-disclosure/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "bf3079b6c2010ae4d643d46a4f71c5c4c7d725043d61e03341c6cc84d3bbc287",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-forbidden-disclosure",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-forbidden-disclosure/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "bf3079b6c2010ae4d643d46a4f71c5c4c7d725043d61e03341c6cc84d3bbc287",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-forbidden-disclosure",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-npc-knowledge/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "1e2db9f89f44742c8ef76bf4567d3b5f485ae9ecfe90b7e60079d1b3022e2ab0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-npc-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-npc-knowledge/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "1e2db9f89f44742c8ef76bf4567d3b5f485ae9ecfe90b7e60079d1b3022e2ab0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-npc-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-npc-knowledge/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "1e2db9f89f44742c8ef76bf4567d3b5f485ae9ecfe90b7e60079d1b3022e2ab0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-npc-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-npc-knowledge/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "1e2db9f89f44742c8ef76bf4567d3b5f485ae9ecfe90b7e60079d1b3022e2ab0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-npc-knowledge",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-quest-regression/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "c21fc4fa105a580c2ba68f5482199b71c2aa156a30383390b848f8bf8f4d70de",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-quest-regression",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-quest-regression/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "c21fc4fa105a580c2ba68f5482199b71c2aa156a30383390b848f8bf8f4d70de",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-quest-regression",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-quest-regression/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "c21fc4fa105a580c2ba68f5482199b71c2aa156a30383390b848f8bf8f4d70de",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-quest-regression",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-quest-regression/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "c21fc4fa105a580c2ba68f5482199b71c2aa156a30383390b848f8bf8f4d70de",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-quest-regression",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-unknown-action/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "225577caf3c30e74239182cd06273eced0a75ab8c5b689951dfaa64d69f5a728",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-unknown-action",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-unknown-action/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "225577caf3c30e74239182cd06273eced0a75ab8c5b689951dfaa64d69f5a728",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-unknown-action",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-unknown-action/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "225577caf3c30e74239182cd06273eced0a75ab8c5b689951dfaa64d69f5a728",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-unknown-action",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/irreparable-unknown-action/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "225577caf3c30e74239182cd06273eced0a75ab8c5b689951dfaa64d69f5a728",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "irreparable-unknown-action",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/nonrepairable-unreachable-object/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "5cdb0e7c40fa7f22fc44147acc2d36aeb1e95c41916a797971ecfbd5749d9f40",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "nonrepairable-unreachable-object",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
     "repair_arms/nonrepairable-unreachable-object/rejection_only": {
       "arm_id": "rejection_only",
       "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
-      "input_hash": "1eeebdd079b27c1d1a035d64de3123ca6dd775e2bdb9baec54d8a22e9afc1b8a",
+      "input_hash": "5cdb0e7c40fa7f22fc44147acc2d36aeb1e95c41916a797971ecfbd5749d9f40",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "executed",
       "row_id": "nonrepairable-unreachable-object",
@@ -597,7 +997,7 @@
     "repair_arms/nonrepairable-unreachable-object/structured_repair": {
       "arm_id": "structured_repair",
       "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
-      "input_hash": "1eeebdd079b27c1d1a035d64de3123ca6dd775e2bdb9baec54d8a22e9afc1b8a",
+      "input_hash": "5cdb0e7c40fa7f22fc44147acc2d36aeb1e95c41916a797971ecfbd5749d9f40",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "executed",
       "row_id": "nonrepairable-unreachable-object",
@@ -607,17 +1007,67 @@
     "repair_arms/nonrepairable-unreachable-object/unchanged_retry": {
       "arm_id": "unchanged_retry",
       "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
-      "input_hash": "1eeebdd079b27c1d1a035d64de3123ca6dd775e2bdb9baec54d8a22e9afc1b8a",
+      "input_hash": "5cdb0e7c40fa7f22fc44147acc2d36aeb1e95c41916a797971ecfbd5749d9f40",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "executed",
       "row_id": "nonrepairable-unreachable-object",
       "section": "repair_arms",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     },
+    "repair_arms/oracle-only-quest-stage-requirement/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "024c364c8445725d5c631dd21f0ea95002553dafcd90bf08c6b4a769075ee0d0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "oracle-only-quest-stage-requirement",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/oracle-only-quest-stage-requirement/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "024c364c8445725d5c631dd21f0ea95002553dafcd90bf08c6b4a769075ee0d0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "oracle-only-quest-stage-requirement",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/oracle-only-quest-stage-requirement/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "024c364c8445725d5c631dd21f0ea95002553dafcd90bf08c6b4a769075ee0d0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "oracle-only-quest-stage-requirement",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/oracle-only-quest-stage-requirement/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "024c364c8445725d5c631dd21f0ea95002553dafcd90bf08c6b4a769075ee0d0",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "oracle-only-quest-stage-requirement",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_arms/repairable-policy-precondition/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "7c3d0d7734110d4665545c25d648a7a34e23e445dde25e38049e11d9b43a3534",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "executed",
+      "row_id": "repairable-policy-precondition",
+      "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
     "repair_arms/repairable-policy-precondition/rejection_only": {
       "arm_id": "rejection_only",
       "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
-      "input_hash": "b423c1a98ac7d79efd4d513a757b49991bded89c0d9f988390ed59428218329b",
+      "input_hash": "7c3d0d7734110d4665545c25d648a7a34e23e445dde25e38049e11d9b43a3534",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "executed",
       "row_id": "repairable-policy-precondition",
@@ -627,7 +1077,7 @@
     "repair_arms/repairable-policy-precondition/structured_repair": {
       "arm_id": "structured_repair",
       "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
-      "input_hash": "b423c1a98ac7d79efd4d513a757b49991bded89c0d9f988390ed59428218329b",
+      "input_hash": "7c3d0d7734110d4665545c25d648a7a34e23e445dde25e38049e11d9b43a3534",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "executed",
       "row_id": "repairable-policy-precondition",
@@ -637,11 +1087,131 @@
     "repair_arms/repairable-policy-precondition/unchanged_retry": {
       "arm_id": "unchanged_retry",
       "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
-      "input_hash": "b423c1a98ac7d79efd4d513a757b49991bded89c0d9f988390ed59428218329b",
+      "input_hash": "7c3d0d7734110d4665545c25d648a7a34e23e445dde25e38049e11d9b43a3534",
       "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
       "row_class": "executed",
       "row_id": "repairable-policy-precondition",
       "section": "repair_arms",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/guided_repair:guided_repairable/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "c9d527129a201584dcca07e45570c3ee8c986e6d9dc6bddca42211edfec2f37b",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "guided_repair:guided_repairable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/guided_repair:irreparable/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "641d16b72d2d0b08314bf1a44abdc761a2bcb78fe5c2743c88bca265069e6076",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "guided_repair:irreparable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/guided_repair:oracle_only/guided_repair": {
+      "arm_id": "guided_repair",
+      "config_hash": "19e224e08391f9021e17d4f4150d98ebf03ead07649ba47829f20ecf47eceafa",
+      "input_hash": "01ede9a135ad1c4256e877c699c6d35d478ce293695216e4867f08b6e7ece3e4",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "guided_repair:oracle_only",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/rejection_only:guided_repairable/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "c9d527129a201584dcca07e45570c3ee8c986e6d9dc6bddca42211edfec2f37b",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "rejection_only:guided_repairable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/rejection_only:irreparable/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "641d16b72d2d0b08314bf1a44abdc761a2bcb78fe5c2743c88bca265069e6076",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "rejection_only:irreparable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/rejection_only:oracle_only/rejection_only": {
+      "arm_id": "rejection_only",
+      "config_hash": "eae0609bda16f19b2f658569a6edc728efce2823570600cd3483b475075705dd",
+      "input_hash": "01ede9a135ad1c4256e877c699c6d35d478ce293695216e4867f08b6e7ece3e4",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "rejection_only:oracle_only",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/structured_repair:guided_repairable/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "c9d527129a201584dcca07e45570c3ee8c986e6d9dc6bddca42211edfec2f37b",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "structured_repair:guided_repairable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/structured_repair:irreparable/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "641d16b72d2d0b08314bf1a44abdc761a2bcb78fe5c2743c88bca265069e6076",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "structured_repair:irreparable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/structured_repair:oracle_only/structured_repair": {
+      "arm_id": "structured_repair",
+      "config_hash": "97634265cc7977a4cb10efd29e216f9e3ad7c3850d8764458aec28412cb37df9",
+      "input_hash": "01ede9a135ad1c4256e877c699c6d35d478ce293695216e4867f08b6e7ece3e4",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "structured_repair:oracle_only",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/unchanged_retry:guided_repairable/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "c9d527129a201584dcca07e45570c3ee8c986e6d9dc6bddca42211edfec2f37b",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "unchanged_retry:guided_repairable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/unchanged_retry:irreparable/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "641d16b72d2d0b08314bf1a44abdc761a2bcb78fe5c2743c88bca265069e6076",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "unchanged_retry:irreparable",
+      "section": "repair_class_summary",
+      "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
+    },
+    "repair_class_summary/unchanged_retry:oracle_only/unchanged_retry": {
+      "arm_id": "unchanged_retry",
+      "config_hash": "e0157d756b1ad4cfba895c9799dd454354126b24d0feabce3fa6ecdc6a2d9218",
+      "input_hash": "01ede9a135ad1c4256e877c699c6d35d478ce293695216e4867f08b6e7ece3e4",
+      "prior_state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991",
+      "row_class": "aggregate",
+      "row_id": "unchanged_retry:oracle_only",
+      "section": "repair_class_summary",
       "state_hash": "b67c1152189232dc3b53038076612ef18f24d6f50fea9361fba3fb302670f991"
     }
   },

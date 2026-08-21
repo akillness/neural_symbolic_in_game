@@ -1,0 +1,15 @@
+{
+  "name": "Self-Refine (iterative refinement with self-feedback)",
+  "exact_model": "arXiv:2303.17651 (method record, not a servable model)",
+  "release": "2023-03-30",
+  "access": "public preprint (arXiv); no weights, method only",
+  "license": "Paper text CC BY 4.0; describes a prompting method with no released model weights.",
+  "modalities": ["text"],
+  "context_tokens": "not applicable (method record; depends on the host model)",
+  "serving_path": "Not servable; a test-time generate-feedback-refine loop implemented over any host LLM (GPT-3.5/ChatGPT/GPT-4 in the paper).",
+  "game_research_use": "Repair-precedent anchor for TRACE-RPG's counterexample-guided repair operator: Self-Refine is the canonical LLM self-repair loop, but its feedback is model-generated natural language and its evidence is live-model task-preference gains across 7 tasks (~20% absolute avg). TRACE-RPG's guided_repair arm differs on both axes: feedback is the validator's structured error set E, and evidence is deterministic fixture-level exact counts against blind-retry and state-reading-oracle arms.",
+  "key_risk": "Reported gains are live-model, task-level, and preference/accuracy based; they do not transfer to claims about deterministic operator-level repair sufficiency, and Huang et al. (arXiv:2310.01798) report that intrinsic self-correction without external feedback can degrade reasoning performance.",
+  "source_urls": ["https://arxiv.org/abs/2303.17651"],
+  "evidence_status": "verified-primary from the arXiv abstract page as of 2026-08-21.",
+  "uncertain": ["NeurIPS 2023 acceptance is widely indexed but was not re-verified against the NeurIPS proceedings for this record; cite as arXiv preprint unless proceedings are checked."]
+}

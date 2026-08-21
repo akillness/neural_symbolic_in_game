@@ -1,0 +1,15 @@
+{
+  "name": "AutoSpec (CEGIS+ILP safety-rule evolution for LLM agents)",
+  "exact_model": "arXiv:2606.24245 (method record, not a servable model)",
+  "release": "2026-06-23",
+  "access": "public preprint (arXiv); no weights, method only",
+  "license": "arXiv.org perpetual non-exclusive license (nonexclusive-distrib); no released model weights.",
+  "modalities": ["text"],
+  "context_tokens": "not applicable (method record; framework around host LLM agents)",
+  "serving_path": "Not servable; a counterexample-guided inductive synthesis loop guided by inductive logic programming that evolves interpretable safety rules from annotated agent traces (291 traces, F1 0.98/0.93 across two domains).",
+  "game_research_use": "2026 evidence that CEGIS-style counterexample consumption is actively applied to LLM-agent governance outside games: AutoSpec repairs the RULES from counterexample traces, whereas TRACE-RPG's guided_repair arm repairs the CANDIDATE from the validator's error set while rules and state stay frozen. Together they bracket the repair-target design space and confirm no prior work does fixture-level guided-vs-blind-vs-oracle operator comparison for game-action commit gates.",
+  "key_risk": "Different repair target (rule evolution, not candidate repair) and different evidence class (F1 over annotated traces, not deterministic exact counts); citing it as direct precedent for candidate-repair efficacy would overstate the overlap.",
+  "source_urls": ["https://arxiv.org/abs/2606.24245"],
+  "evidence_status": "verified-primary from the arXiv abstract page as of 2026-08-21.",
+  "uncertain": []
+}
