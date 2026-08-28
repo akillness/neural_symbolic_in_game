@@ -44,6 +44,8 @@ non-headless capture refresh (GUI session), and final aggregate regression
 | Execute deterministic archetype balance probe `SL-BALANCE-PROBE-001` (5 rotations, G2 replacement measurements, chart + md + json) | QA + designer (D-038) | 1.verify | `scenes/balance_probe.tscn`, `scripts/balance_probe_runner.gd`, `scripts/game3d/golden_path_layout.gd`, `scripts/run_balance_archetypes.py`, `docs/latest/balance-archetypes.{json,md,svg}` | G2/G3 engineering | done-2026-08-28-5-of-5-pass | human playtest for G2 perception/G3 viability |
 | Open motion/rig intake lane with raw-source guard (Mixamo/Blender/Godot retarget contract) | asset lane + release (D-039) | 1.resources | `game-track/assets/motion/README.md`, `scripts/validate_motion_assets.py`, root `.gitignore` guards | provenance | done-contract-zero-assets | first curated GLB + rig adoption interview |
 | Refresh stale QA registrations (capture SHA-256 ×4, PCK bytes/hash) against current artifacts | QA (bookkeeping) | 1.verify | `qa/gate-measurements.md` | evidence hygiene | done-2026-08-28 | keep in sync at each artifact refresh |
+| Prepare owner-run G4/G6 human measurement packet | QA | 1.verify | `qa/human-measurement-packet.md` | G6/DEF-010 | ready-awaiting-owner-run | record results, close DEF-010, update G6 rows |
+| Freeze RQ2 live-pilot design (D-040) | research engineer | paper.method | `research/directions/rq2-live-pilot-plan.md` | claim promotion | approved-not-executed | implement CodexProposalAdapter, run, promote C-RESULT-003 to pilot-only |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
