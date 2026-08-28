@@ -1,3 +1,11 @@
+# NOTE (2026-08-28): for the planned efficacy claims C-RESULT-001..005 this
+# transition table is currently overridden by the Cycle-1 studio boundary in
+# scripts/validate_game_studio.py::check_claim_boundary, which fail-closes when any
+# of them leaves TODO-RESULT. That boundary is a user-stated non-goal from
+# .omx/specs/deep-interview-experimental-game-track.md, so the pilot-only
+# transition below is unreachable for those five ids until the owner lifts it.
+# The contradiction and the two resolution options are recorded in
+# _workspace/current/conflicts.md. C-PILOT-* claims are unaffected.
 states: [TODO-RESULT, pilot-only, confirmatory-pending-review, verified-empirical, revoked]
 transitions:
   - from: TODO-RESULT

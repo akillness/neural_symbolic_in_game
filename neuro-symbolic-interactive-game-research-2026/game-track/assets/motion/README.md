@@ -32,6 +32,28 @@
 - 현재 슬라이스에는 스켈레탈 애니메이션이 없다. 도입은 별도 결정(플레이어/미라 리그)과
   인터뷰 확인 후 진행한다.
 
+## 실행 시도 기록 — 2026-08-28 (D-041 차단 확정)
+
+플레이어 리깅 도입이 승인(D-041)되어 실행을 시도했고, **서로 독립적인 차단 두 건**을 확인했다.
+
+1. **자산 취득 차단**: Mixamo는 공개 자동화 API가 없고 원본 FBX는 인증된 브라우저 세션에서
+   수동으로 받아야 한다. 로컬 디스크에도 재사용 가능한 FBX가 없다(Unity 패키지 캐시 제외).
+2. **툴체인 차단**: 이 세션의 샌드박스에서 Blender가 **파이썬을 실행하지 못한다.**
+   `--background --factory-startup --python`이 시작 중 크래시하며, 백트레이스 최상단은
+   `MTLBackend::metal_is_supported()` → `GPU_backend_type_selection_detect()` →
+   `wm_homefile_read_ex()` → `WM_init()`이다. 즉 Metal 디바이스 조회가 막혀 GPU 백엔드
+   탐지 단계에서 죽는다. `--version`은 `WM_init` 이전에 끝나므로 정상 동작한다.
+   이 macOS 빌드의 `--gpu-backend`는 **유효값이 `metal` 하나뿐**이라 대체 백엔드로 우회할 수
+   없었고, `opengl`/`vulkan`/환경변수 우회 모두 실패했다.
+
+⚠️ 이 툴체인 차단은 **세션 의존적일 수 있다**. `game-track/godot/assets/models/models-manifest.json`
+은 기존 GLB 5종이 `blender-procedural`(Blender 5.1.2)로 만들어졌다고 기록하므로, 과거에는
+동작했다. 다음 세션에서 다시 판정할 것 — "환경상 불가"로 굳히지 말 것.
+
+결과적으로 리깅 레인은 **계약과 검증기만 존재하고 자산은 0개**인 상태를 유지한다. 진행하려면
+(a) 소유자가 Adobe 로그인으로 Mixamo FBX를 받아 `raw/`에 두고, (b) Blender 파이썬이 실행되는
+환경에서 리타게팅을 수행해야 한다.
+
 ## Boundary (EN summary)
 
 Staging lane only; zero assets today. Raw Mixamo FBX never enters git (Adobe forbids raw-file

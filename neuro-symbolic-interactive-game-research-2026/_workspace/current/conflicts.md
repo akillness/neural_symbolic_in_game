@@ -50,3 +50,21 @@ artifacts predate studio execution and must be preserved.
   at `TODO-RESULT` until a confirmatory cycle opens, or (b) explicitly amend the Cycle-1
   boundary to admit `pilot-only` for planned efficacy claims, updating the spec, the guard,
   and the crosswalk in the same change set.
+
+### 2026-08-28 follow-up — the guard file cannot carry the explanation
+
+Attempting to document the contradiction *inside*
+`scripts/validate_game_studio.py` broke the build: the selected immutable render
+packet binds that file's SHA-256 as `retained_validator_sha256`, so a docstring-only
+edit invalidated the sealed evidence and failed both the unit tests and the
+game-track contract check. The edit was reverted; the evidence-integrity contract
+behaved exactly as intended.
+
+Consequence for whoever resolves this: `scripts/validate_game_studio.py` is
+hash-bound by the retained evidence packet and cannot be edited without promoting a
+new evidence set under the capture contract, which currently also needs a
+non-headless capture (GUI-blocked in the agent sandbox). Any resolution that changes
+the guard is therefore a two-part job: lift the Cycle-1 boundary in
+`.omx/specs/deep-interview-experimental-game-track.md` first, then re-promote
+evidence in the same change set. The explanation lives here and in
+`harness/workflows/result-promotion.yaml`, which is not hash-bound.
