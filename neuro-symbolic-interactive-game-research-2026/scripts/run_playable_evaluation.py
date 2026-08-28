@@ -63,7 +63,9 @@ EXPECTED_PRESENTATION_CHECKS = {
     "procedural_audio_uses_no_external_assets",
     "semantic_feedback_has_non_color_redundancy",
     "responsive_layout_profiles_declared",
+    "wide_layout_preserves_playfield",
     "player_world_changes_route_through_proposals",
+    "input_feedback_latency_probe_emits_sample",
 }
 SCREENSHOT_STAGES = ("arrival", "refusal", "authorized_hint", "ending")
 NOT_EVIDENCE_FOR = (
@@ -314,7 +316,7 @@ def summarize_fixture_run(
 
 
 def summarize_presentation(report: Mapping[str, Any]) -> dict[str, Any]:
-    """Validate and summarize the engine-local seven-check presentation report."""
+    """Validate and summarize the engine-local nine-check presentation report."""
     checks = report.get("checks")
     if not isinstance(checks, list):
         raise TypeError("presentation checks must be a list")
@@ -403,8 +405,8 @@ def build_matrix(
             or screenshot.get("engineering_working_capture_only") is not True
         ):
             raise ValueError(f"invalid latest screenshot receipt: {screenshot.get('stage')}")
-    if presentation.get("counts") != {"checks_passed": 7, "checks_total": 7}:
-        raise ValueError("presentation result must remain exactly 7/7 for this matrix version")
+    if presentation.get("counts") != {"checks_passed": 9, "checks_total": 9}:
+        raise ValueError("presentation result must remain exactly 9/9 for this matrix version")
 
     fixture_checks_passed = sum(int(row["counts"]["checks_passed"]) for row in fixtures)
     fixture_checks_total = sum(int(row["counts"]["checks_total"]) for row in fixtures)
@@ -416,7 +418,7 @@ def build_matrix(
         and presentation.get("passed") is True
         and len(screenshots) == 4
         and fixture_checks_passed == fixture_checks_total == 40
-        and presentation_checks_passed == presentation_checks_total == 7
+        and presentation_checks_passed == presentation_checks_total == 9
     )
     return {
         "schema_version": "1.0.0",
@@ -535,10 +537,11 @@ def render_markdown(matrix: Mapping[str, Any]) -> str:
             ),
             "",
             (
-                "These seven checks cover start-gate visibility, gesture-gated procedural "
+                "These nine checks cover start-gate visibility, gesture-gated procedural "
                 "audio, non-color semantic redundancy, responsive profile declaration, "
-                "proposal routing, and evaluation-state isolation. They do not measure "
-                "player experience."
+                "wide-layout playfield preservation, proposal routing, engine-local "
+                "input-feedback telemetry wiring, and evaluation-state isolation. They do "
+                "not measure player experience or browser input latency."
             ),
             "",
             "## Latest public-safe working captures",

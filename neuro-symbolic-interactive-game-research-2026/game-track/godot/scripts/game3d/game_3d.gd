@@ -39,6 +39,8 @@ var _smoke_mode: bool = false
 var _evaluate_mode: bool = false
 var _play_started: bool = false
 var _evaluation_path: String = ""
+var _pending_input_feedback: Dictionary = {}
+var _input_feedback_samples: Array = []
 
 
 func _enter_tree() -> void:
@@ -295,65 +297,15 @@ func _on_lightning_struck(intensity: float) -> void:
 
 
 func _spawn_interactables() -> void:
-	# Golden-path pacing at WALK_SPEED 4.2 m/s (straight-line, trigger-zone edge
-	# to trigger-zone edge; real times run slightly longer around props):
-	#   spawn(0,2) → Mira(3,11)        ≈  6.9 m ≈ 1.6 s
-	#   Mira → lens(-11,1)             ≈ 11.8 m ≈ 2.8 s
-	#   lens → mount(7,13.5)           ≈ 16.5 m ≈ 3.9 s   (longest leg, < 6 s)
-	#   mount → Mira                   overlap  ≈ 0.5 s   (zones adjoin)
-	#   Mira → tide marks(-8.5,15.5)   ≈  7.2 m ≈ 1.7 s
-	# Total pure walking ≈ 10–12 s across the 8–12 min episode target.
-	# Loop shape: S-center → NE → SW → NE → NW; no leg exceeds ~3.9 s and no
-	# revisit happens without a new commit in between (no dead backtracking).
-	# The sealed lighthouse_view sits at the NE rail on the mount→Mira return:
-	# the mount zone masks it while installing (nearest-wins focus), then the
-	# mount interactable disables after the install commit and the view ring
-	# becomes the nearest focus on the walk back — the player meets the sealed
-	# tower (and its nudge toward Mira's forbidden question) mid-loop, before
-	# the tide-marks finale (W-002: observed, never entered).
+	# Layout, pacing math, and the loop-shape rationale live in
+	# GoldenPathLayout (single owner shared with the headless balance probe).
+	# The mount zone masks lighthouse_view while installing (nearest-wins
+	# focus), then the mount interactable disables after the install commit and
+	# the view ring becomes the nearest focus on the walk back — the player
+	# meets the sealed tower (and its nudge toward Mira's forbidden question)
+	# mid-loop, before the tide-marks finale (W-002: observed, never entered).
 	var world: Node3D = handles["world"]
-	var specs := [
-		{
-			"id": "mira",
-			"name": "미라 선장",
-			"prompt": "미라 선장에게 말 걸기",
-			"position": Vector3(3.0, 1.0, 11.0),
-			"radius": 2.6,
-		},
-		{
-			"id": "lens_pickup",
-			"name": "신호 렌즈",
-			"prompt": "신호 렌즈 조사하기",
-			# Prop sits past the dock edge (x=-11 vs planks ending at x=-9):
-			# radius 2.8 leaves ≈0.6 m of standable trigger band on the planks
-			# instead of the ≈5 cm sliver the old 2.2 radius allowed.
-			"position": Vector3(-11.0, 1.0, 1.0),
-			"radius": 2.8,
-		},
-		{
-			"id": "lamp_mount",
-			"name": "부두 신호등 거치대",
-			"prompt": "거치대에 렌즈 설치 제안하기",
-			"position": Vector3(7.0, 1.5, 13.5),
-			"radius": 2.6,
-		},
-		{
-			"id": "lighthouse_view",
-			"name": "봉인된 등대",
-			"prompt": "앞바다의 등대 관찰하기",
-			# Moved from mid-rail (0, 15.2) onto the NE rail so it lies on the
-			# mount→Mira return leg; radius 2.6 keeps it inside the rail band.
-			"position": Vector3(5.4, 1.0, 14.8),
-			"radius": 2.6,
-		},
-		{
-			"id": "tide_marks",
-			"name": "조수 표식",
-			"prompt": "조수 표식 살펴보기",
-			"position": Vector3(-8.5, 0.6, 15.5),
-			"radius": 2.6,
-		},
-	]
+	var specs: Array = GoldenPathLayout.interactable_specs()
 	for spec in specs:
 		var interactable := Interactable3D.create(
 			spec["id"], spec["name"], spec["prompt"], spec["radius"]
@@ -377,12 +329,75 @@ func _on_focus_changed(interactable: Interactable3D) -> void:
 			audio_feedback.play_cue("focus")
 
 
+func _begin_input_feedback_probe(source: String) -> void:
+	# Presentation-only clock. The sample never enters canonical state or hashes.
+	_pending_input_feedback = {
+		"source": source,
+		"started_us": Time.get_ticks_usec(),
+	}
+
+
+func _complete_input_feedback_probe(visible_feedback: String) -> void:
+	if _pending_input_feedback.is_empty():
+		return
+	var pending := _pending_input_feedback.duplicate(true)
+	_pending_input_feedback.clear()
+	_record_input_feedback_after_draw(pending, visible_feedback)
+
+
+func _record_input_feedback_after_draw(pending: Dictionary, visible_feedback: String) -> void:
+	# Acknowledgement is counted only after the frame containing the UI mutation
+	# reaches the renderer. Headless runs stop at the processed-frame boundary
+	# (dummy renderer; wiring evidence only); browser/user-gesture latency still
+	# requires a retained Web measurement.
+	await get_tree().process_frame
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+	var elapsed_ms := maxf(
+		float(Time.get_ticks_usec() - int(pending["started_us"])) / 1000.0,
+		0.0,
+	)
+	if _input_feedback_samples.size() >= 512:
+		_input_feedback_samples.pop_front()
+	_input_feedback_samples.append({
+		"source": pending["source"],
+		"visible_feedback": visible_feedback,
+		"elapsed_ms": elapsed_ms,
+	})
+
+
+func _percentile_95(values: Array) -> float:
+	if values.is_empty():
+		return 0.0
+	var ordered := values.duplicate()
+	ordered.sort()
+	var index := mini(int(ceil(0.95 * ordered.size())) - 1, ordered.size() - 1)
+	return float(ordered[maxi(index, 0)])
+
+
+func _input_feedback_snapshot() -> Dictionary:
+	var elapsed: Array = []
+	for sample in _input_feedback_samples:
+		elapsed.append(float(sample["elapsed_ms"]))
+	return {
+		"clock": "Time.get_ticks_usec",
+		"visibility_boundary": "RenderingServer.frame_post_draw",
+		"measurement_context": "engine-local; headless samples are wiring evidence, not browser latency",
+		"sample_count": elapsed.size(),
+		"input_to_visible_feedback_ms": elapsed,
+		"p95_input_to_visible_feedback_ms": _percentile_95(elapsed),
+		"samples": _input_feedback_samples.duplicate(true),
+	}
+
+
 func _on_interact(interaction_id: String) -> void:
 	if _dialogue_open or episode_over:
 		return
+	_begin_input_feedback_probe("interact:" + interaction_id)
 	match interaction_id:
 		"mira":
 			_open_mira_dialogue()
+			_complete_input_feedback_probe("mira-dialogue-open")
 		"lens_pickup":
 			_propose_acquire()
 		"lamp_mount":
@@ -395,9 +410,13 @@ func _on_interact(interaction_id: String) -> void:
 			if not _lighthouse_observed:
 				_lighthouse_observed = true
 				ui.ledger_line("hint", "미라 선장이라면 저 탑의 사정을 알지도 모른다 — 무엇을 물어도 되는지는 별개의 문제다.")
+			_complete_input_feedback_probe("lighthouse-observation-ledger-line")
 		"tide_marks":
 			if "tide_marks_hint" in machine.state["facts"]:
 				_finish_episode()
+				_complete_input_feedback_probe("episode-completion-feedback")
+			else:
+				_pending_input_feedback.clear()
 
 
 func _open_tutorial() -> void:
@@ -430,6 +449,7 @@ func _propose(
 	verdict_target: Node3D = null,
 ) -> Dictionary:
 	ui.ledger_line("proposal", proposal_text)
+	_complete_input_feedback_probe("proposal-ledger-line")
 	var result: Dictionary = machine.apply_operation(operation, arguments)
 	if result["accepted"]:
 		commit_count += 1
@@ -474,40 +494,24 @@ func _play_repair_hint(target: Node3D) -> void:
 
 
 func _next_affordance_target() -> Node3D:
-	# Mirrors _next_affordance_text ordering exactly — one honest mapping from
-	# the committed snapshot to the node the repair-hint blink should mark.
-	var state: Dictionary = machine.state
-	var has_lens: bool = "signal_lens" in state["player"]["inventory"]
-	var installed: bool = "signal_lens_installed" in state["facts"]
-	var hint_known: bool = "tide_marks_hint" in state["facts"]
-	if hint_known:
-		return handles.get("tide_marks") as Node3D
-	if installed:
-		return _interactable("mira")
-	if has_lens:
-		return handles.get("lamp_mount") as Node3D
-	if not _met_mira:
-		return _interactable("mira")
-	return handles.get("lens_prop") as Node3D
+	# Delegates the ordering to GoldenPathLayout (single owner, shared with the
+	# balance probe) and maps the target id onto the scene node the repair-hint
+	# blink should mark.
+	match str(GoldenPathLayout.next_affordance(machine.state, _met_mira)["target_id"]):
+		"tide_marks":
+			return handles.get("tide_marks") as Node3D
+		"lamp_mount":
+			return handles.get("lamp_mount") as Node3D
+		"lens_pickup":
+			return handles.get("lens_prop") as Node3D
+		_:
+			return _interactable("mira")
 
 
 func _next_affordance_text() -> String:
 	# Single source for "다음:" strings — every refusal path routes through
-	# _refusal_feedback, so this is the one ordering to keep honest. Mirrors
-	# the committed snapshot plus the presentation-only met-Mira flag.
-	var state: Dictionary = machine.state
-	var has_lens: bool = "signal_lens" in state["player"]["inventory"]
-	var installed: bool = "signal_lens_installed" in state["facts"]
-	var hint_known: bool = "tide_marks_hint" in state["facts"]
-	if hint_known:
-		return "서쪽 방파제의 조수 표식을 살펴보자."
-	if installed:
-		return "미라 선장에게 허가된 단서를 묻자."
-	if has_lens:
-		return "부두 신호등 거치대에 렌즈를 설치하자."
-	if not _met_mira:
-		return "부두 끝의 미라 선장에게 말을 걸자."
-	return "램프 상점에서 신호 렌즈를 회수하자."
+	# _refusal_feedback; the ordering itself lives in GoldenPathLayout.
+	return str(GoldenPathLayout.next_affordance(machine.state, _met_mira)["text"])
 
 
 func _refusal_feedback(codes: Array) -> void:
@@ -632,10 +636,12 @@ func _show_mira_choices() -> void:
 func _on_choice(choice_id: String) -> void:
 	if not _dialogue_open:
 		return
+	_begin_input_feedback_probe("dialogue-choice:" + choice_id)
 	match choice_id:
 		"ask_lighthouse":
 			# W-002: operational fact, already disclosed.
 			ui.ledger_line("dialogue", "「사흘 전부터 등불이 죽었다. 안에서 문을 걸어 잠갔는지, 응답이 없어. 물길 표지는 그게 전부다.」")
+			_complete_input_feedback_probe("mira-dialogue-ledger-line")
 			_show_mira_choices()
 		"ask_secret":
 			# B-006: the one intended early secret request (keeper_betrayal stays sealed).
@@ -647,14 +653,19 @@ func _on_choice(choice_id: String) -> void:
 			_play_verdict_ritual(_interactable("mira"), false)
 			director.set_tension_stage(2)
 			_refusal_feedback(codes)
+			_complete_input_feedback_probe("refusal-ledger-line")
 			_show_mira_choices()
 		"ask_tide":
 			_propose_tide_hint()
 		"ask_after":
 			ui.ledger_line("dialogue", "「썰물 표식을 따라가라. 다음 물때가 길을 열 거다. 탑은… 그때 다시 이야기하지.」")
+			_complete_input_feedback_probe("mira-dialogue-ledger-line")
 			_show_mira_choices()
 		"leave":
 			_close_dialogue()
+			_complete_input_feedback_probe("dialogue-close")
+		_:
+			_pending_input_feedback.clear()
 
 
 func _propose_tide_hint() -> void:
@@ -923,9 +934,27 @@ func _run_engineering_evaluation(path: String) -> void:
 	ui.set_audio_state(audio_feedback.is_unlocked(), audio_feedback.is_muted())
 	await get_tree().process_frame
 	var state_hash_before := machine.state_hash()
+
+	# Exercise the real proposal→ledger acknowledgement path with a synthetic,
+	# state-preserving early hint request. This proves telemetry wiring only.
+	_begin_input_feedback_probe("synthetic-evaluation:early-hint")
+	var probe_result := _propose(
+		"reveal_hint",
+		{"actor_id": "captain_mira", "fact_id": "tide_marks_hint"},
+		"계측용 조수 표식 단서 요청",
+		_interactable("mira"),
+	)
+	if not probe_result["accepted"]:
+		_refusal_feedback(probe_result["codes"])
+	await get_tree().process_frame
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+	await get_tree().process_frame
+
 	var ui_snapshot := ui.get_engineering_snapshot()
 	var audio_snapshot := audio_feedback.get_engineering_snapshot()
 	var player_snapshot := player.get_engineering_snapshot()
+	var input_feedback_snapshot := _input_feedback_snapshot()
 	var checks := [
 		{
 			"check": "evaluation_does_not_mutate_canonical_state",
@@ -954,8 +983,17 @@ func _run_engineering_evaluation(path: String) -> void:
 				and ui_snapshot["responsive_profiles"]["wide"] == "wide-columns",
 		},
 		{
+			"check": "wide_layout_preserves_playfield",
+			"pass": float(ui_snapshot["layout_metrics"]["wide_playfield_fraction"]) >= 0.65,
+		},
+		{
 			"check": "player_world_changes_route_through_proposals",
 			"pass": player_snapshot["world_change_boundary"].begins_with("interact_requested"),
+		},
+		{
+			"check": "input_feedback_latency_probe_emits_sample",
+			"pass": int(input_feedback_snapshot["sample_count"]) >= 1
+				and float(input_feedback_snapshot["p95_input_to_visible_feedback_ms"]) >= 0.0,
 		},
 	]
 	var passed := true
@@ -963,11 +1001,11 @@ func _run_engineering_evaluation(path: String) -> void:
 		if not check["pass"]:
 			passed = false
 	var report := {
-		"schema_version": "1.0.0",
+		"schema_version": "1.1.0",
 		"evaluation": "sealed-lighthouse-3d-presentation-engineering",
 		"engineering_only": true,
-		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy"],
-		"claim_boundary": "Automated presentation invariants only; no participant, neural-model, or gameplay efficacy measurement.",
+		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy", "browser input latency"],
+		"claim_boundary": "Automated presentation invariants and engine-local telemetry wiring only; no participant, neural-model, browser-latency, or gameplay-efficacy measurement.",
 		"passed": passed,
 		"state_sha256_before": state_hash_before,
 		"state_sha256_after": machine.state_hash(),
@@ -975,6 +1013,7 @@ func _run_engineering_evaluation(path: String) -> void:
 		"ui": ui_snapshot,
 		"audio": audio_snapshot,
 		"player": player_snapshot,
+		"input_feedback": input_feedback_snapshot,
 		"checks": checks,
 	}
 	var absolute_path := ProjectSettings.globalize_path(path)

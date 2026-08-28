@@ -13,6 +13,12 @@ build/
 # prompts, manifests, and logs remain tracked). The curated runtime lane
 # game-track/godot/assets/ui/ is the deliberate D-034/D-035 exception.
 /neuro-symbolic-interactive-game-research-2026/game-track/assets/generated/**/*.png
+# Raw motion sources (Mixamo FBX etc.) must never be tracked or redistributed
+# (D-039): only processed GLB + provenance may be staged for review.
+/neuro-symbolic-interactive-game-research-2026/game-track/assets/motion/raw/
+/neuro-symbolic-interactive-game-research-2026/game-track/assets/motion/**/*.fbx
+/neuro-symbolic-interactive-game-research-2026/game-track/assets/motion/**/*.dae
+/neuro-symbolic-interactive-game-research-2026/game-track/assets/motion/**/*.bvh
 /graphify-out/
 neuro-symbolic-interactive-game-research-2026/runs/
 llm-wiki/.state/
@@ -41,6 +47,7 @@ neuro-symbolic-interactive-game-research-2026/.omx/
 neuro-symbolic-interactive-game-research-2026/game-track/godot/.omc/
 neuro-symbolic-interactive-game-research-2026/game-track/godot/addons/RodinBridge/
 neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/*.png.import
+neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/*.svg.import
 neuro-symbolic-interactive-game-research-2026/game-track/web/public/
 neuro-symbolic-interactive-game-research-2026/knowledge/graphify-out/cache/
 neuro-symbolic-interactive-game-research-2026/knowledge/graphify-out/.graphify_root

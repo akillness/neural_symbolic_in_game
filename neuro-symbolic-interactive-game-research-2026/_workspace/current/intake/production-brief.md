@@ -78,7 +78,8 @@ delivery, corrupt save, or exhausted repair must leave complete canonical state 
 6. Human immersion/readability/usability data is collected under an approved protocol before any
    G4 upgrade.
 
-Current engineering evidence now records `4/4` authored fixtures (`40/40`), `7/7` presentation
-checks (`47/47` combined), four hash-registered 1280×720 working captures, and a staged Web artifact.
+Current engineering evidence now records `4/4` authored fixtures (`40/40`), `9/9` presentation
+checks (`49/49` combined), the `SL-BALANCE-PROBE-001` archetype battery (5/5 rotations), four
+hash-registered 1280×720 working captures, and a staged Web artifact.
 Cycle 3 nevertheless remains `FIX` at the studio-gate level until the browser, performance, soak,
 deployment, and human-only checks above exist.

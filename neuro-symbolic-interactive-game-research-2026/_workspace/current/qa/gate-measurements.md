@@ -24,14 +24,32 @@ measurement.
 ## G2 — Rules and balance
 
 - Target: 100% mechanic coverage; applicable values within approved investigation bands.
-- Observed: no balance simulation added in Cycle 3.
-- State: `NOT_SCHEDULED_STAGE_1`.
+- Observed 2026-08-28 (`SL-BALANCE-PROBE-001`, scripted engineering conformance): operation
+  coverage `3/3`; refusal-code coverage `7/9` with `OBJECT_NOT_REACHABLE` and
+  `QUEST_STAGE_PRECONDITION` documented as structurally unexercisable through canonical
+  operations (the second because `acquire_object` immediately raises quest stage to 1 — the
+  guard is defense-in-depth); canonical episode reachability `5/5`; forbidden-disclosure
+  commits `0/3` opportunities; refusal state-hash equality `10/10`; op-log replay hash equality
+  `5/5`. Machine property recorded: duplicate install/hint re-commits mutate revision only
+  (semantic state unchanged) and are UI-guarded; persistent event idempotency remains a live
+  adapter precondition (EG-I05).
+- Missing: human balance perception, tuned band simulation over B-001–B-013, and any live-model
+  arm. Scripted counts cannot pass the gate alone.
+- Evidence: `game-track/godot/docs/latest/balance-archetypes.{json,md,svg}`,
+  `scripts/run_balance_archetypes.py`, `game-track/godot/scripts/balance_probe_runner.gd`.
+- State: `FIX — ENGINEERING MEASUREMENTS ONLY`.
 
 ## G3 — Player-type diversity
 
 - Target: at least five scripted archetypes and three viable paths before final use.
-- Observed: `0` new archetype executions; smoke is one authored conformance path.
-- State: `NOT_SCHEDULED_STAGE_1`.
+- Observed 2026-08-28: five scripted archetype rotations (A-01–A-05) executed deterministically
+  through the canonical machine; all five converge to the canonical semantic terminal state;
+  walking-distance proxies span 50.03–76.23 m (≈11.9–18.2 s at WALK_SPEED) across three distinct
+  route shapes. Scripted execution establishes breadth of the battery, not human viability or
+  dominance.
+- Missing: human sessions per archetype and viability/dominance measurements.
+- Evidence: `game-track/godot/docs/latest/balance-archetypes.json` per-archetype rows.
+- State: `FIX — SCRIPTED BREADTH ONLY, NO HUMAN DATA`.
 
 ## G4 — Presentation impact
 
@@ -39,8 +57,13 @@ measurement.
   zero unresolved S1/S2 readability complaints under an approved protocol.
 - Implemented engineering structure: procedural harbor/VFX/audio, focus redundancy, responsive
   UI, reduced motion, and browser start gate.
-- Fresh automated evidence: `SL-PLAY-EVAL-001` passed all `7/7` presentation invariants; four
-  public-safe 1280×720 working captures were generated and hash-registered.
+- Fresh automated evidence (2026-08-28): `SL-PLAY-EVAL-001` passed all `9/9` presentation
+  invariants (now including `wide_layout_preserves_playfield` ≥ 0.65 and
+  `input_feedback_latency_probe_emits_sample`); the evaluation emits engine-local
+  `input_to_visible_feedback_ms` samples through the proposal→ledger→rendered-frame boundary
+  (headless sample observed at ≈29 ms; wiring evidence only, not a browser/user-gesture
+  measurement). Four public-safe 1280×720 working captures remain hash-registered (carried from
+  2026-08-21; GUI capture refresh pending).
 - Interpretation: smoke, JSON, screenshots, and browser checks cannot measure immersion,
   readability preference, usability, affect, or efficacy.
 - State: `FIX — NO HUMAN DATA`.
@@ -57,12 +80,14 @@ measurement.
   30-minute memory; input `≤100 ms`; safe rollback and exact replay.
 - Carried evidence: four v5 policy-mirror runs match terminal/load/replay/oracle hash. Startup-heavy
   frame p95 remains `116.667/100.000/98.760/112.907 ms`, so it does not pass.
-- Cycle 3 engineering receipts: aggregate `40 tests, 44 subtests`; `SL-PLAY-EVAL-001` passed `4/4`
-  authored fixtures (`40/40`) plus `7/7` presentation checks (`47/47` combined); four working PNGs
-  passed size/hash registration. The latest staged artifact has 11 top-level files and 41,426,182
-  bytes; its PCK is 1,573,408 bytes, SHA-256
-  `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`, after `docs/latest/**`
-  exclusion. Production `https://sealed-lighthouse-trace-rpg.vercel.app` returned 200 for
+- Cycle 3 engineering receipts (refreshed 2026-08-28): aggregate `45 tests, 44 subtests`;
+  `SL-PLAY-EVAL-001` passed `4/4` authored fixtures (`40/40`) plus `9/9` presentation checks
+  (`49/49` combined); four working PNGs passed size/hash registration. Engine-local input-feedback
+  telemetry wiring now exists (D-037) but browser/user-gesture latency remains unmeasured. The
+  latest staged artifact has 11 top-level files and 45,823,290 bytes; its PCK is 5,970,516 bytes,
+  SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb` (2026-08-21 D-036
+  build, deployed and alias byte-identical). Production
+  `https://sealed-lighthouse-trace-rpg.vercel.app` returned 200 for
   HTML/JS/WASM/PCK/OFL, served WASM as `application/wasm`, and exposed the hash-matched 4,534-byte
   OFL notice as `text/plain`. A headless browser verified clean Korean rendering at 1280×720 and
   390×844 with zero console/page errors; Playwriter was used on 2026-08-17 only for the Vercel
@@ -82,10 +107,11 @@ measurement.
 
 - Target: `30–180 s`, at least three actions, at least one information/progression reward, later
   human repeat proxy `≥70%`.
-- Cycle 3 engineering receipt: the canonical, duplicate-event, timeout, and corrupt-save fixtures
-  passed `10/10` checks each (`4/4`, `40/40`) and all reached terminal hash
+- Cycle 3 engineering receipt (refreshed 2026-08-28): the canonical, duplicate-event, timeout, and
+  corrupt-save fixtures passed `10/10` checks each (`4/4`, `40/40`) and all reached terminal hash
   `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. The presentation evaluation
-  added `7/7` non-mutating checks for `47/47` combined.
+  added `9/9` non-mutating checks for `49/49` combined, and the archetype probe recorded scripted
+  loop-shape counts (commits 3–5, refusals 0–5, walk proxy 11.9–18.2 s per rotation).
 - Interpretation: this confirms the state path and public-safe presentation sync; it does not
   measure human duration, comprehension, agency, or repeat behavior.
 - State: `FIX`.
@@ -102,15 +128,16 @@ measurement.
 | Check | Current result | Claim boundary |
 |---|---|---|
 | Fresh authored fixtures | `4/4`, `40/40`, correct shared terminal hash | hard-path conformance only |
-| Presentation evaluation | `7/7`, canonical state unchanged | instrumentation only |
-| Combined `SL-PLAY-EVAL-001` | `47/47` | engineering only |
-| Aggregate studio/game tests | `40 tests, 44 subtests` | regression only |
+| Presentation evaluation | `9/9`, canonical state unchanged | instrumentation only |
+| Combined `SL-PLAY-EVAL-001` | `49/49` | engineering only |
+| Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 rotations; isolation 10/10; replay 5/5 | scripted engineering only |
+| Aggregate studio/game tests | `45 tests, 44 subtests` | regression only |
 | Candidate asset exclusion | Web/`--public-safe` guard present | static track separation; rights review still open |
 | Responsive profiles | wide-column and narrow-stacked declaration check PASS | no visual/human readability result |
 | Browser gesture policy | pointer lock NOT verified — 2026-08-17 retests failed to reproduce the prior claim (headless synthetic click raised `pointerlockerror`; real-Chrome Playwriter click issued no pointer-lock request; `document.pointerLockElement` null in both); zero console/page errors confirmed | `FIX`; human-gesture pointer-lock check and measured input latency pending |
 | Procedural audio | external asset check PASS; nine generated streams, 22,050 Hz, four voices | playback/impact unmeasured |
 | Bundled Korean font | Nanum Gothic Regular, unmodified, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256; public notice 4,534 bytes, SHA-256 `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f` | release resource, not research evidence |
-| Web artifact/deployment | 11 files, 41,426,182 bytes; latest production PCK 1,573,408 bytes, SHA-256 `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`, after excluding `docs/latest/**`; HTML/JS/WASM/PCK/OFL 200; WASM and OFL MIME correct | pointer lock, save/reload, performance, and soak pending |
+| Web artifact/deployment | 11 files, 45,823,290 bytes; latest production PCK 5,970,516 bytes, SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`, after excluding `docs/latest/**`; HTML/JS/WASM/PCK/OFL 200; WASM and OFL MIME correct | pointer lock, save/reload, performance, and soak pending |
 | Deployed responsive rendering | clean Korean at 1280×720 and 390×844; zero console/page errors | bounded browser smoke, not G4 |
 | Latest working captures | `4/4` 1280×720 PNGs with SHA-256 registration | never G4/efficacy evidence |
 
@@ -118,12 +145,13 @@ measurement.
 
 | Artifact | Size/dimensions | SHA-256 / status |
 |---|---:|---|
-| `game-track/godot/docs/latest/arrival.png` | 1280×720 | `acb5295980ee17de09d5860be2ab94d3312fa0b696cda2a50153943dfc73f523` |
-| `game-track/godot/docs/latest/refusal.png` | 1280×720 | `045bcbe59ae0791c501ce79a505ae24c751dd41a78ac27a0cf9a8026375a1d61` |
-| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720 | `8c70fcd8ede97fda4023c0e2a47cf010c79b3d91a10dda8b66ebc4d02f051b9a` |
-| `game-track/godot/docs/latest/ending.png` | 1280×720 | `dc881b9f6e436a1eeb6a21ecd38e41a241fd845f40b667919538d07a770fcbf3` |
-| `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `47/47` | PASS; engineering-only |
-| `game-track/web/public/` | 11 top-level files, 41,426,182 bytes; PCK 1,573,408 bytes | PCK SHA-256 `af6cc93cdf1b6f53c735c62134c24c8ef0ed43de69035759f35e6fecbd20ec02`; deployed static artifact after `docs/latest/**` exclusion with public OFL notice; ignored/non-authoritative |
+| `game-track/godot/docs/latest/arrival.png` | 1280×720, 343,547 B | `640558b81b60cb54a739c2e58773f17cfb07c7b16c4302683779194f14e1b8fc` |
+| `game-track/godot/docs/latest/refusal.png` | 1280×720, 442,979 B | `9dbd699cb5f047e8cdc6c575daefd1912d9f63191c73f7f9ec3895c0ce3f796c` |
+| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 397,346 B | `5ab6ff1edbd8aaff2f3bde325b90d131dcafa0fdea25cfa3fc094473bf414901` |
+| `game-track/godot/docs/latest/ending.png` | 1280×720, 397,478 B | `2cc3b95318f7aec3e25e8ab7d78ad1b7ba6d4d337414dbf438118e68c03e0d9b` |
+| `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `49/49` | PASS; engineering-only |
+| `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
+| `game-track/web/public/` | 11 top-level files, 45,823,290 bytes; PCK 5,970,516 bytes | PCK SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; deployed 2026-08-21 static artifact after `docs/latest/**` exclusion with public OFL notice; ignored/non-authoritative |
 | `docs/latest/vercel-start.png`, `vercel-in-game.png` | 1280×720 | production desktop start/in-game receipts |
 | `docs/latest/vercel-mobile-start.png`, `vercel-mobile-in-game.png` | 390×844 | production narrow start/in-game receipts |
 | `docs/latest/web-start.png`, `web-in-game.png` | 3294×1908 | local/extension-connected Web inspection receipts |

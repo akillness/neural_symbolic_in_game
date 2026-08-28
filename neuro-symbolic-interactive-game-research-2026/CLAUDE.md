@@ -60,8 +60,11 @@ _workspace/
 This is a Godot 4.x headless-first, turn-based narrative investigation micro-RPG with a separate
 playable 3D presentation. Engine entry points are the canonical `game-track/godot/project.godot`
 defaulting to `res://scenes/headless.tscn`, the explicit playable
-`game-track/godot/scenes/main_3d.tscn`, the retained non-headless capture runner, and versioned
-contracts under `game-track/schemas/`. The public Web builder is `scripts/build_godot_web.sh`.
+`game-track/godot/scenes/main_3d.tscn`, the deterministic archetype balance probe
+`game-track/godot/scenes/balance_probe.tscn` (D-038), the retained non-headless capture runner,
+and versioned contracts under `game-track/schemas/`. The public Web builder is
+`scripts/build_godot_web.sh`. Interactable layout and the refusal next-affordance mapping have a
+single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable slice and the probe.
 
 - Lifecycle order is prototype → systems → content → assets → feel → performance → QA → release.
 - Godot owns observation rendering, player input, local save/load, and engine telemetry. In the
@@ -110,6 +113,8 @@ contracts under `game-track/schemas/`. The public Web builder is `scripts/build_
 | Evidence/item icon sheet | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
 | Playable UI art (key art, portrait, panel texture, icons, tutorial vignette) + world-surface textures and ledger stamps (D-036) | `higgsfield-cli` (D-034) | `higgsfield generate create gpt_image_2 --prompt "$(cat <frozen-prompt>)" --aspect_ratio <r> --wait --json` |
 | Paper diagrams and measured plots | repository SVG/Python generators | `uv run python scripts/generate_paper_figures.py` |
+| Balance-probe chart/table working artifacts | `scripts/run_balance_archetypes.py` | `uv run python scripts/run_balance_archetypes.py` |
+| Motion/rig GLB staging (D-039) | manual Mixamo download → Blender scratch-copy edit → GLB + provenance | `uv run python scripts/validate_motion_assets.py` gate; raw FBX/DAE/BVH never git-tracked |
 
 - Validate every `gti` image prompt with `gti --dry-run` before spending quota. For
   `higgsfield-cli`, freeze the prompt file first and record the returned job id in provenance.
@@ -160,7 +165,11 @@ paid/free result.
 
 ## 6. Verification and reporting
 
-- Full game-track regression command: `./scripts/validate_game_track.sh`.
+- Full game-track regression command: `./scripts/validate_game_track.sh` (includes the motion-lane
+  guard and the balance-archetype tests).
+- Non-headless capture refresh requires a real GUI session; a sandboxed shell cannot open a window
+  and a diagnostic non-headless launch may rewrite `project.godot` (2026-08-28 incident: restored
+  via `git checkout`; the evidence-hash validator fails closed on this).
 - Before pushing, run `./scripts/verify_like_ci.sh` — it replays every
   `.github/workflows/validate.yml` step in order. The game-track command alone is not sufficient:
   CI also runs `ruff check`/`ruff format --check` over `src tests scripts examples`, the unit-test

@@ -154,7 +154,7 @@ def _screenshots() -> list[dict]:
     ]
 
 
-def test_matrix_is_exactly_claim_bounded_and_counts_47_of_47() -> None:
+def test_matrix_is_exactly_claim_bounded_and_counts_49_of_49() -> None:
     matrix = build_matrix(
         godot_version="4.7.1.stable.official.test",
         fixtures=_fixture_rows(),
@@ -173,10 +173,10 @@ def test_matrix_is_exactly_claim_bounded_and_counts_47_of_47() -> None:
         "fixtures_total": 4,
         "fixture_checks_passed": 40,
         "fixture_checks_total": 40,
-        "presentation_checks_passed": 7,
-        "presentation_checks_total": 7,
-        "combined_checks_passed": 47,
-        "combined_checks_total": 47,
+        "presentation_checks_passed": 9,
+        "presentation_checks_total": 9,
+        "combined_checks_passed": 49,
+        "combined_checks_total": 49,
         "screenshots_valid": 4,
         "screenshots_total": 4,
     }
@@ -198,7 +198,7 @@ def test_fixture_summary_fails_closed_on_event_count_drift() -> None:
         summarize_fixture_run(fixture, summary, events)
 
 
-def test_presentation_summary_requires_exact_seven_check_contract_and_state_isolation() -> None:
+def test_presentation_summary_requires_exact_nine_check_contract_and_state_isolation() -> None:
     report = {
         "evaluation": "sealed-lighthouse-3d-presentation-engineering",
         "engineering_only": True,
@@ -259,7 +259,7 @@ def test_atomic_latest_outputs_are_byte_stable() -> None:
         assert json.loads(first_json)["all_pass"] is True
         markdown = render_markdown(matrix)
         assert "G4 remains `UNASSESSED`" in markdown
-        assert "47/47" in markdown
+        assert "49/49" in markdown
 
 
 def test_atomic_write_replaces_without_leaving_a_temporary_file() -> None:

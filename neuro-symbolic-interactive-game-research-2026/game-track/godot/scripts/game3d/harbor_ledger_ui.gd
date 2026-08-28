@@ -13,6 +13,8 @@ signal tutorial_closed
 
 const PALETTE := SealedLighthouseWorldBuilder.PALETTE
 const NARROW_WIDTH := 900.0
+const NARROW_LEDGER_TOP := 0.38
+const WIDE_LEDGER_TOP := 0.66
 const UI_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
 # Start-gate key-art drift: one shared 12 s sine drives a ±0.5% scale breathe
 # and a ±4 px lateral drift (mouse-independent). The 1.5% base overscan keeps
@@ -709,7 +711,10 @@ func _apply_responsive_layout() -> void:
 		_tutorial_panel.anchor_right = 0.96 if _layout_narrow else 0.86
 		_tutorial_panel.anchor_top = 0.10 if _layout_narrow else 0.12
 		_tutorial_panel.anchor_bottom = 0.90 if _layout_narrow else 0.88
-	_bottom_panel.anchor_top = 0.38 if _layout_narrow else 0.58
+	# Focus-first desktop layout: keep at least 66% of the viewport for direct
+	# play while retaining the full ledger as a scrollable diegetic record.
+	# Narrow portrait screens keep the existing stacked reading surface.
+	_bottom_panel.anchor_top = NARROW_LEDGER_TOP if _layout_narrow else WIDE_LEDGER_TOP
 	_bottom_panel.offset_left = 6.0
 	_bottom_panel.offset_right = -6.0
 	_bottom_panel.offset_top = 0.0
@@ -1034,6 +1039,11 @@ func get_engineering_snapshot() -> Dictionary:
 		"responsive_profiles": {
 			"narrow": layout_name_for_size(Vector2(720.0, 900.0)),
 			"wide": layout_name_for_size(Vector2(1280.0, 720.0)),
+		},
+		"layout_metrics": {
+			"active_bottom_panel_top_fraction": _bottom_panel.anchor_top,
+			"wide_playfield_fraction": WIDE_LEDGER_TOP,
+			"narrow_playfield_fraction": NARROW_LEDGER_TOP,
 		},
 		"controls_visible": _controls_panel.visible,
 		"control_affordances": ["WASD", "mouse-look", "E", "Escape", "F5", "F9", "M", "V"],

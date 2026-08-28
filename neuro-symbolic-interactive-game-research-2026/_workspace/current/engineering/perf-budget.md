@@ -50,7 +50,7 @@ results.
 |---|---:|---|---|
 | Warmed Web frame p95 | ≤16.7 ms | `[NOT OBSERVED]` | browser profiler after warmup |
 | Long-frame rate | <0.5% | `[NOT OBSERVED]` | retained session sample |
-| Input-to-visible feedback | ≤100 ms | `[NOT OBSERVED]` | browser input/visual timestamps |
+| Input-to-visible feedback | ≤100 ms | `[WIRED 2026-08-28, NOT BROWSER-OBSERVED]` — the playable slice now emits `input_to_visible_feedback_ms` samples through the proposal→ledger→rendered-frame boundary (headless wiring sample ≈29 ms); the gate still requires a real-browser, user-gesture measurement | browser input/visual timestamps |
 | Memory stability | stable over 30 min | `[NOT OBSERVED]` | 30-minute browser/OS memory trace |
 | Audio unlock/resume | gesture-safe and stable | `[NOT OBSERVED IN CLEAN BROWSER]` | start, focus-out/in, mute/unmute test |
 

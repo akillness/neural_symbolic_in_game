@@ -1,0 +1,774 @@
+{
+  "aggregates": {
+	"archetype_count": 5,
+	"g2_replacement_measurements": {
+	  "canonical_episode_reachability": {
+		"attempted": 5,
+		"reached": 5,
+		"target": 1.0
+	  },
+	  "forbidden_disclosure_per_opportunity": {
+		"committed": 0,
+		"opportunities": 3,
+		"target": 0.0
+	  },
+	  "rejected_action_state_hash_equality": {
+		"isolated": 10,
+		"refusals": 10,
+		"target": 1.0
+	  },
+	  "replay_terminal_hash_equality": {
+		"matched": 5,
+		"replayed": 5,
+		"target": 1.0
+	  }
+	},
+	"machine_properties": [
+	  {
+		"archetype_id": "A-03",
+		"property": "duplicate_install_recommits_revision_only",
+		"semantic_state_changed": false,
+		"step_index": 5,
+		"ui_guard": "mount interactable disables after install (game_3d._sync_presentation)"
+	  },
+	  {
+		"archetype_id": "A-03",
+		"property": "duplicate_hint_recommits_revision_only",
+		"semantic_state_changed": false,
+		"step_index": 10,
+		"ui_guard": "post-hint dialogue offers no repeat ask (game_3d._show_mira_choices)"
+	  }
+	],
+	"operation_coverage": {
+	  "exercised": [
+		"acquire_object",
+		"install_lens",
+		"reveal_hint",
+        "polish_lens"
+	  ],
+	  "exercised_count": 4,
+	  "implemented_count": 3
+	},
+	"refusal_code_coverage": {
+	  "exercised_count": 7,
+	  "implemented_count": 9,
+	  "unexercised": [
+		{
+		  "code": "OBJECT_NOT_REACHABLE",
+		  "reason": "canonical scenario keeps its only object reachable; covered by authored pilot fixtures"
+		},
+		{
+		  "code": "QUEST_STAGE_PRECONDITION",
+		  "reason": "acquire_object raises quest stage to 1, so an inventory-held lens with stage<1 cannot occur through canonical operations; the guard is defense-in-depth against loaded/injected states"
+		}
+	  ]
+	},
+	"refusal_guidance": {
+	  "followed_later_in_script": 10,
+	  "interpretation": "scripted-follow conformance of the next-affordance mapping, not player comprehension",
+	  "total_refusals_with_guidance": 10
+	}
+  },
+  "archetypes": [
+	{
+	  "archetype_id": "A-01",
+	  "counts": {
+		"commits": 3,
+		"forbidden_commits": 0,
+		"forbidden_opportunities": 0,
+		"observes": 3,
+		"operations": 3,
+		"refusal_guidance_followed": 0,
+		"refusal_guidance_total": 0,
+		"refusals": 0,
+		"refusals_state_isolated": 0,
+		"steps": 7
+	  },
+	  "exercised_codes": [],
+	  "exercised_operations": [
+		"acquire_object",
+		"install_lens",
+        "reveal_hint"
+	  ],
+	  "machine_properties": [],
+	  "name_en": "Evidence-first investigator",
+	  "name_ko": "증거 우선 조사자",
+	  "pacing_proxy": {
+		"interpretation": "straight-line site-anchor proxy, not measured traversal",
+		"walk_distance_m": 51.87,
+		"walk_time_s_at_walk_speed": 12.35
+	  },
+	  "replay": {
+		"terminal_hash_matches": true
+	  },
+	  "steps": [
+		{
+		  "index": 0,
+		  "kind": "observe",
+		  "leg_m": 11.05,
+		  "note": "lens shelf survey",
+		  "site": "lens_pickup",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 1,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "operation": "acquire_object",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 2,
+		  "kind": "op",
+		  "leg_m": 21.91,
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "index": 3,
+		  "kind": "observe",
+		  "leg_m": 2.06,
+		  "note": "sealed tower observation on return leg",
+		  "site": "lighthouse_view",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "index": 4,
+		  "kind": "met_mira",
+		  "leg_m": 4.49,
+		  "site": "mira",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 5,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		},
+		{
+		  "index": 6,
+		  "kind": "observe",
+		  "leg_m": 12.35,
+		  "note": "tide-route finale",
+		  "site": "tide_marks",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		}
+	  ],
+	  "strategy_ko": "대화 전에 도달 가능한 단서를 먼저 수집한다.",
+	  "terminal": {
+		"full_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+		"matches_canonical_full": true,
+		"matches_canonical_semantic": true,
+		"revision": 3,
+		"semantic_sha256": "c88fd5921668d796a76e61022657cab1605f35ae07221a2306bb88d176c54a47"
+	  }
+	},
+	{
+	  "archetype_id": "A-02",
+	  "counts": {
+		"commits": 3,
+		"forbidden_commits": 0,
+		"forbidden_opportunities": 1,
+		"observes": 1,
+		"operations": 4,
+		"refusal_guidance_followed": 2,
+		"refusal_guidance_total": 2,
+		"refusals": 2,
+		"refusals_state_isolated": 2,
+		"steps": 7
+	  },
+	  "exercised_codes": [
+		"FORBIDDEN_DISCLOSURE",
+        "STAGE_GATED_DISCLOSURE"
+	  ],
+	  "exercised_operations": [
+		"reveal_hint",
+		"acquire_object",
+        "install_lens"
+	  ],
+	  "machine_properties": [],
+	  "name_en": "Dialogue-first negotiator",
+	  "name_ko": "대화 우선 협상가",
+	  "pacing_proxy": {
+		"interpretation": "straight-line site-anchor proxy, not measured traversal",
+		"walk_distance_m": 65.67,
+		"walk_time_s_at_walk_speed": 15.64
+	  },
+	  "replay": {
+		"terminal_hash_matches": true
+	  },
+	  "steps": [
+		{
+		  "index": 0,
+		  "kind": "met_mira",
+		  "leg_m": 9.49,
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "codes": [
+            "FORBIDDEN_DISCLOSURE"
+		  ],
+		  "index": 1,
+		  "kind": "disclosure_probe",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "lens_pickup",
+			"text": "램프 상점에서 신호 렌즈를 회수하자."
+		  },
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "STAGE_GATED_DISCLOSURE"
+		  ],
+		  "index": 2,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "lens_pickup",
+			"text": "램프 상점에서 신호 렌즈를 회수하자."
+		  },
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 3,
+		  "kind": "op",
+		  "leg_m": 17.2,
+		  "operation": "acquire_object",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 4,
+		  "kind": "op",
+		  "leg_m": 21.91,
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 5,
+		  "kind": "op",
+		  "leg_m": 4.72,
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		},
+		{
+		  "index": 6,
+		  "kind": "observe",
+		  "leg_m": 12.35,
+		  "note": "tide-route finale",
+		  "site": "tide_marks",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		}
+	  ],
+	  "strategy_ko": "가능한 한 일찍 미라를 심문하고 금지 경계를 건드린다.",
+	  "terminal": {
+		"full_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+		"matches_canonical_full": true,
+		"matches_canonical_semantic": true,
+		"revision": 3,
+		"semantic_sha256": "c88fd5921668d796a76e61022657cab1605f35ae07221a2306bb88d176c54a47"
+	  }
+	},
+	{
+	  "archetype_id": "A-03",
+	  "counts": {
+		"commits": 5,
+		"forbidden_commits": 0,
+		"forbidden_opportunities": 0,
+		"observes": 1,
+		"operations": 10,
+		"refusal_guidance_followed": 5,
+		"refusal_guidance_total": 5,
+		"refusals": 5,
+		"refusals_state_isolated": 5,
+		"steps": 12
+	  },
+	  "exercised_codes": [
+		"MISSING_REQUIRED_OBJECT",
+		"UNKNOWN_OPERATION",
+		"OBJECT_NOT_PRESENT",
+		"UNKNOWN_ACTOR",
+        "NPC_DOES_NOT_KNOW_FACT"
+	  ],
+	  "exercised_operations": [
+		"install_lens",
+		"polish_lens",
+		"acquire_object",
+        "reveal_hint"
+	  ],
+	  "machine_properties": [
+		{
+		  "archetype_id": "A-03",
+		  "property": "duplicate_install_recommits_revision_only",
+		  "semantic_state_changed": false,
+		  "step_index": 5,
+		  "ui_guard": "mount interactable disables after install (game_3d._sync_presentation)"
+		},
+		{
+		  "archetype_id": "A-03",
+		  "property": "duplicate_hint_recommits_revision_only",
+		  "semantic_state_changed": false,
+		  "step_index": 10,
+		  "ui_guard": "post-hint dialogue offers no repeat ask (game_3d._show_mira_choices)"
+		}
+	  ],
+	  "name_en": "Boundary-probing skeptic",
+	  "name_ko": "경계 시험 회의론자",
+	  "pacing_proxy": {
+		"interpretation": "straight-line site-anchor proxy, not measured traversal",
+		"walk_distance_m": 74.36,
+		"walk_time_s_at_walk_speed": 17.7
+	  },
+	  "replay": {
+		"terminal_hash_matches": true
+	  },
+	  "steps": [
+		{
+		  "accepted": false,
+		  "codes": [
+            "MISSING_REQUIRED_OBJECT"
+		  ],
+		  "index": 0,
+		  "kind": "op",
+		  "leg_m": 13.46,
+		  "next_affordance": {
+			"target_id": "mira",
+			"text": "부두 끝의 미라 선장에게 말을 걸자."
+		  },
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "UNKNOWN_OPERATION"
+		  ],
+		  "index": 1,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "mira",
+			"text": "부두 끝의 미라 선장에게 말을 걸자."
+		  },
+		  "operation": "polish_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 2,
+		  "kind": "op",
+		  "leg_m": 21.91,
+		  "operation": "acquire_object",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "OBJECT_NOT_PRESENT"
+		  ],
+		  "index": 3,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "lamp_mount",
+			"text": "부두 신호등 거치대에 렌즈를 설치하자."
+		  },
+		  "operation": "acquire_object",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 4,
+		  "kind": "op",
+		  "leg_m": 21.91,
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 5,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "9b34f645156128f7118d6e44ccc15d20226349736dc7b367c3d709920fa255c3"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "UNKNOWN_ACTOR"
+		  ],
+		  "index": 6,
+		  "kind": "op",
+		  "leg_m": 4.72,
+		  "next_affordance": {
+			"target_id": "mira",
+			"text": "미라 선장에게 허가된 단서를 묻자."
+		  },
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "9b34f645156128f7118d6e44ccc15d20226349736dc7b367c3d709920fa255c3"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "NPC_DOES_NOT_KNOW_FACT"
+		  ],
+		  "index": 7,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "mira",
+			"text": "미라 선장에게 허가된 단서를 묻자."
+		  },
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "9b34f645156128f7118d6e44ccc15d20226349736dc7b367c3d709920fa255c3"
+		},
+		{
+		  "index": 8,
+		  "kind": "corrupt_load",
+		  "leg_m": 0.0,
+		  "rejected": true,
+		  "site": "mira",
+		  "state_sha256": "9b34f645156128f7118d6e44ccc15d20226349736dc7b367c3d709920fa255c3"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 9,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "98ce902982dc97e7cebdf8225f878ac7bfdd29716af61dc11db475196586ee17"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 10,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "19b11f42e926c2f54727a01df1fbec24ff5214aa58f1f3fe6fb1cfda8394d58c"
+		},
+		{
+		  "index": 11,
+		  "kind": "observe",
+		  "leg_m": 12.35,
+		  "note": "tide-route finale",
+		  "site": "tide_marks",
+		  "state_sha256": "19b11f42e926c2f54727a01df1fbec24ff5214aa58f1f3fe6fb1cfda8394d58c"
+		}
+	  ],
+	  "strategy_ko": "무효·중복·손상 요청을 반복해 상태 격리를 시험한다.",
+	  "terminal": {
+		"full_sha256": "19b11f42e926c2f54727a01df1fbec24ff5214aa58f1f3fe6fb1cfda8394d58c",
+		"matches_canonical_full": false,
+		"matches_canonical_semantic": true,
+		"revision": 5,
+		"semantic_sha256": "c88fd5921668d796a76e61022657cab1605f35ae07221a2306bb88d176c54a47"
+	  }
+	},
+	{
+	  "archetype_id": "A-04",
+	  "counts": {
+		"commits": 3,
+		"forbidden_commits": 0,
+		"forbidden_opportunities": 0,
+		"observes": 1,
+		"operations": 3,
+		"refusal_guidance_followed": 0,
+		"refusal_guidance_total": 0,
+		"refusals": 0,
+		"refusals_state_isolated": 0,
+		"steps": 4
+	  },
+	  "exercised_codes": [],
+	  "exercised_operations": [
+		"acquire_object",
+		"install_lens",
+        "reveal_hint"
+	  ],
+	  "machine_properties": [],
+	  "name_en": "Shortest-path optimizer",
+	  "name_ko": "최단 경로 최적화자",
+	  "pacing_proxy": {
+		"interpretation": "straight-line site-anchor proxy, not measured traversal",
+		"walk_distance_m": 50.03,
+		"walk_time_s_at_walk_speed": 11.91
+	  },
+	  "replay": {
+		"terminal_hash_matches": true
+	  },
+	  "steps": [
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 0,
+		  "kind": "op",
+		  "leg_m": 11.05,
+		  "operation": "acquire_object",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 1,
+		  "kind": "op",
+		  "leg_m": 21.91,
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 2,
+		  "kind": "op",
+		  "leg_m": 4.72,
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		},
+		{
+		  "index": 3,
+		  "kind": "observe",
+		  "leg_m": 12.35,
+		  "note": "tide-route finale",
+		  "site": "tide_marks",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		}
+	  ],
+	  "strategy_ko": "관찰 없이 최소 커밋만으로 에피소드를 닫는다.",
+	  "terminal": {
+		"full_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+		"matches_canonical_full": true,
+		"matches_canonical_semantic": true,
+		"revision": 3,
+		"semantic_sha256": "c88fd5921668d796a76e61022657cab1605f35ae07221a2306bb88d176c54a47"
+	  }
+	},
+	{
+	  "archetype_id": "A-05",
+	  "counts": {
+		"commits": 3,
+		"forbidden_commits": 0,
+		"forbidden_opportunities": 2,
+		"observes": 3,
+		"operations": 5,
+		"refusal_guidance_followed": 3,
+		"refusal_guidance_total": 3,
+		"refusals": 3,
+		"refusals_state_isolated": 3,
+		"steps": 12
+	  },
+	  "exercised_codes": [
+		"FORBIDDEN_DISCLOSURE",
+        "STAGE_GATED_DISCLOSURE"
+	  ],
+	  "exercised_operations": [
+		"reveal_hint",
+		"acquire_object",
+        "install_lens"
+	  ],
+	  "machine_properties": [],
+	  "name_en": "Completionist explorer",
+	  "name_ko": "완전 탐사자",
+	  "pacing_proxy": {
+		"interpretation": "straight-line site-anchor proxy, not measured traversal",
+		"walk_distance_m": 76.23,
+		"walk_time_s_at_walk_speed": 18.15
+	  },
+	  "replay": {
+		"terminal_hash_matches": true
+	  },
+	  "steps": [
+		{
+		  "index": 0,
+		  "kind": "met_mira",
+		  "leg_m": 9.49,
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "codes": [
+            "FORBIDDEN_DISCLOSURE"
+		  ],
+		  "index": 1,
+		  "kind": "disclosure_probe",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "lens_pickup",
+			"text": "램프 상점에서 신호 렌즈를 회수하자."
+		  },
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "FORBIDDEN_DISCLOSURE"
+		  ],
+		  "index": 2,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "lens_pickup",
+			"text": "램프 상점에서 신호 렌즈를 회수하자."
+		  },
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": false,
+		  "codes": [
+            "STAGE_GATED_DISCLOSURE"
+		  ],
+		  "index": 3,
+		  "kind": "op",
+		  "leg_m": 0.0,
+		  "next_affordance": {
+			"target_id": "lens_pickup",
+			"text": "램프 상점에서 신호 렌즈를 회수하자."
+		  },
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "index": 4,
+		  "kind": "observe",
+		  "leg_m": 4.49,
+		  "note": "pre-commit tower observation",
+		  "site": "lighthouse_view",
+		  "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 5,
+		  "kind": "op",
+		  "leg_m": 21.43,
+		  "operation": "acquire_object",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "index": 6,
+		  "kind": "save_load",
+		  "leg_m": 0.0,
+		  "roundtrip": "hash-verified",
+		  "site": "lens_pickup",
+		  "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 7,
+		  "kind": "op",
+		  "leg_m": 21.91,
+		  "operation": "install_lens",
+		  "site": "lamp_mount",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "index": 8,
+		  "kind": "observe",
+		  "leg_m": 2.06,
+		  "note": "post-install tower revisit",
+		  "site": "lighthouse_view",
+		  "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+		},
+		{
+		  "accepted": true,
+		  "codes": [],
+		  "index": 9,
+		  "kind": "op",
+		  "leg_m": 4.49,
+		  "operation": "reveal_hint",
+		  "site": "mira",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		},
+		{
+		  "index": 10,
+		  "kind": "corrupt_load",
+		  "leg_m": 0.0,
+		  "rejected": true,
+		  "site": "mira",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		},
+		{
+		  "index": 11,
+		  "kind": "observe",
+		  "leg_m": 12.35,
+		  "note": "tide-route finale",
+		  "site": "tide_marks",
+		  "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+		}
+	  ],
+	  "strategy_ko": "상태 변화 후 모든 관찰을 재방문하고 저장·복원까지 확인한다.",
+	  "terminal": {
+		"full_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+		"matches_canonical_full": true,
+		"matches_canonical_semantic": true,
+		"revision": 3,
+		"semantic_sha256": "c88fd5921668d796a76e61022657cab1605f35ae07221a2306bb88d176c54a47"
+	  }
+	}
+  ],
+  "canonical_semantic_sha256": "c88fd5921668d796a76e61022657cab1605f35ae07221a2306bb88d176c54a47",
+  "canonical_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+  "claim_boundary": "Scripted archetype conformance and layout-proxy pacing only; no human player, fun, usability, immersion, affect, or efficacy measurement. G3 viability and G7 repeat behavior remain human gates.",
+  "engineering_only": true,
+  "failures": [],
+  "not_evidence_for": [
+	"G3 human viability",
+	"G4",
+	"G7 fun/repeat",
+	"usability",
+	"immersion",
+	"affect",
+	"model efficacy",
+    "player efficacy"
+  ],
+  "passed": true,
+  "probe_id": "SL-BALANCE-PROBE-001",
+  "schema_version": "1.0.0",
+  "walk_speed_mps": 4.2
+}

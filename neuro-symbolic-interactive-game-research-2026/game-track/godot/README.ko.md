@@ -1,8 +1,9 @@
 # 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
-상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `47/47`
-검사를 통과했다. 최신 작업 캡처 4개와 public-safe Web 산출물을 빌드·공개했고
-브라우저 스모크를 통과했다**(2026-08-17).
+상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `49/49`
+검사를 통과했다(2026-08-28: 입력→표시 계측·플레이필드 보존 검사 추가). 아키타입 밸런스
+프로브 `SL-BALANCE-PROBE-001`이 5/5 통과했고, public-safe Web 산출물은 2026-08-21 배포본이
+최신이다.**
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -142,8 +143,9 @@ godot --path game-track/godot res://scenes/main_3d.tscn -- \
 | 중복 이벤트 fixture | `10/10` | PASS |
 | timeout fixture | `10/10` | PASS |
 | 손상 저장 fixture | `10/10` | PASS |
-| 프레젠테이션 불변조건 | `7/7` | PASS |
-| **합계** | **`47/47`** | **PASS** |
+| 프레젠테이션 불변조건 | `9/9` | PASS |
+| **합계** | **`49/49`** | **PASS** |
+| 아키타입 밸런스 프로브 | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 fixture `4/4` 모두 정확한 종료 SHA-256
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`에 도달했다.

@@ -66,13 +66,20 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 | 중복 이벤트 fixture | `10/10` | PASS |
 | timeout fixture | `10/10` | PASS |
 | 손상 저장 fixture | `10/10` | PASS |
-| 프레젠테이션 불변조건 | `7/7` | PASS |
-| **합계** | **`47/47`** | **PASS** |
+| 프레젠테이션 불변조건 | `9/9` | PASS |
+| **합계** | **`49/49`** | **PASS** |
+| 아키타입 밸런스 프로브 | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 저자 fixture `4/4` 모두 정확한 종료 상태 SHA-256
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`에 도달했다. 전체 표와
 기계 판독 기록은 [`godot/docs/latest/evaluation-matrix.md`](godot/docs/latest/evaluation-matrix.md),
 [`evaluation-matrix.json`](godot/docs/latest/evaluation-matrix.json)에 있다.
+
+아키타입 밸런스 프로브(스크립트 실행 적합성, 사람 대상 아님):
+[`balance-archetypes.md`](godot/docs/latest/balance-archetypes.md) ·
+[JSON](godot/docs/latest/balance-archetypes.json)
+
+![아키타입 밸런스 프로브 차트](godot/docs/latest/balance-archetypes.svg)
 
 | 도착 | 보류 |
 |---|---|

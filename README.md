@@ -83,8 +83,9 @@ harbor-side signal and earns the tide route while the offshore lighthouse remain
 | Duplicate-event fixture | `10/10` | PASS |
 | Timeout fixture | `10/10` | PASS |
 | Corrupt-save fixture | `10/10` | PASS |
-| Presentation invariants | `7/7` | PASS |
-| **Combined** | **`47/47`** | **PASS** |
+| Presentation invariants | `9/9` | PASS |
+| **Combined** | **`49/49`** | **PASS** |
+| Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 All `4/4` authored fixtures reached the exact terminal SHA-256
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. See the

@@ -1,8 +1,9 @@
 # The Sealed Lighthouse — Godot conformance, playable, capture, and Web passes
 
-Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passed `4/4` fixtures and
-`47/47` combined checks; four latest working captures are built; the public-safe Web artifact is
-live and browser-smoke verified** (2026-08-17).
+Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
+`49/49` combined checks (2026-08-28: input-feedback telemetry and playfield-preservation checks
+added); the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; the live public-safe Web
+artifact is the 2026-08-21 deployment.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -142,8 +143,9 @@ rights/style review.
 | Duplicate-event fixture | `10/10` | PASS |
 | Timeout fixture | `10/10` | PASS |
 | Corrupt-save fixture | `10/10` | PASS |
-| Presentation invariants | `7/7` | PASS |
-| **Combined** | **`47/47`** | **PASS** |
+| Presentation invariants | `9/9` | PASS |
+| **Combined** | **`49/49`** | **PASS** |
+| Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 All `4/4` fixture runs reached the exact terminal SHA-256
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. Open the

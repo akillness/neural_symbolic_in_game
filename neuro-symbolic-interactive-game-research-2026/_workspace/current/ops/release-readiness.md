@@ -18,7 +18,7 @@ Current verdict input: `FIX`
 | Presentation evaluation JSON | DONE-ENGINEERING | `SL-PLAY-EVAL-001`: `4/4`, `40/40` + `7/7` = `47/47` |
 | Latest public-safe screenshots | DONE-WORKING-CAPTURES | four 1280×720 PNGs, SHA-256 registered; not immutable evidence |
 | Bundled Korean font | DONE-PROVENANCE | unmodified Nanum Gothic Regular, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256/source; public 4,534-byte OFL notice hash-matched |
-| Staged Web artifact | DONE-ARTIFACT | 11 top-level files, 41,426,182 bytes; latest PCK 1,573,408 bytes after `docs/latest/**` exclusion |
+| Staged Web artifact | DONE-ARTIFACT | 11 top-level files, 45,823,290 bytes; latest PCK 5,970,516 bytes after `docs/latest/**` exclusion (2026-08-21 D-036 build) |
 | Production HTTP/MIME | DONE | HTML/JS/WASM/PCK/OFL returned 200; WASM `application/wasm`; OFL `text/plain` |
 | Deployed browser layout/glyph smoke | DONE-BOUNDED | headless 2026-08-17 1280×720 and 390×844 start/in-game captures; Korean rendering clean |
 | Trusted headless pointer lock | FIX | not reproduced 2026-08-17: headless synthetic click raised `pointerlockerror`, and the real-Chrome Playwriter click issued no pointer-lock request at all; `document.pointerLockElement` stayed null both times; earlier prior-session pass retained as history only; console/page-error counts stayed zero, and the `LOOK ACTIVE` HUD label is not pointer-lock evidence; human-gesture check open |

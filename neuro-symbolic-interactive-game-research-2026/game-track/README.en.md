@@ -70,13 +70,20 @@ Working artifact only — not usability, immersion, or performance evidence.*
 | Duplicate-event fixture | `10/10` | PASS |
 | Timeout fixture | `10/10` | PASS |
 | Corrupt-save fixture | `10/10` | PASS |
-| Presentation invariants | `7/7` | PASS |
-| **Combined** | **`47/47`** | **PASS** |
+| Presentation invariants | `9/9` | PASS |
+| **Combined** | **`49/49`** | **PASS** |
+| Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 All `4/4` authored fixtures reached the exact terminal state SHA-256
 `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. The complete table and
 machine record are [`godot/docs/latest/evaluation-matrix.md`](godot/docs/latest/evaluation-matrix.md)
 and [`evaluation-matrix.json`](godot/docs/latest/evaluation-matrix.json).
+
+Archetype balance probe (scripted conformance, not human data):
+[`balance-archetypes.md`](godot/docs/latest/balance-archetypes.md) ·
+[JSON](godot/docs/latest/balance-archetypes.json)
+
+![Archetype balance probe chart](godot/docs/latest/balance-archetypes.svg)
 
 | Arrival | Refusal |
 |---|---|

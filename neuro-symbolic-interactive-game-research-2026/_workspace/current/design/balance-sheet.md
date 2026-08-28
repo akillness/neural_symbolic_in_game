@@ -99,9 +99,15 @@ No currency, XP purchase, loot rarity, premium option, or paid shortcut is permi
 
 ## Gate state / 게이트 상태
 
-- G2: **FIX** — genre bands are drafted but no balance simulation exists.
+- G2: **FIX** — 2026-08-28 `SL-BALANCE-PROBE-001` measured the proposed replacement metrics at
+  the machine level ([OBSERVED scripted]: reachability 5/5, forbidden-per-opportunity 0/3,
+  refusal hash equality 10/10, replay equality 5/5; refusal-code coverage 7/9 with two
+  structurally unexercisable codes documented). Human balance perception and band tuning remain
+  unmeasured, so the gate stays FIX.
 - G5: **FIX** — zero-economy override is approved by `D-006`; required absence checks are unmeasured.
-- G7: **FIX** — deterministic policy-mirror implementation exists; interactive duration and
-  `≥70%` repeat proxy do not.
+- G7: **FIX** — deterministic policy-mirror implementation exists; scripted walk proxies
+  (11.9–18.2 s per rotation, [OBSERVED scripted lower bound]) confirm traversal is a small
+  fraction of the 60–120 s loop band, but interactive duration and the `≥70%` repeat proxy
+  remain unmeasured.
 - No number in this file is an observed efficacy or play-quality result unless explicitly labelled
   `[OBSERVED]` with an evidence path.

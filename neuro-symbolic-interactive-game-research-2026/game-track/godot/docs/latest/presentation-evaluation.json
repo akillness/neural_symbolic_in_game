@@ -38,19 +38,45 @@
       "pass": true
     },
     {
+      "check": "wide_layout_preserves_playfield",
+      "pass": true
+    },
+    {
       "check": "player_world_changes_route_through_proposals",
+      "pass": true
+    },
+    {
+      "check": "input_feedback_latency_probe_emits_sample",
       "pass": true
     }
   ],
-  "claim_boundary": "Automated presentation invariants only; no participant, neural-model, or gameplay efficacy measurement.",
+  "claim_boundary": "Automated presentation invariants and engine-local telemetry wiring only; no participant, neural-model, browser-latency, or gameplay-efficacy measurement.",
   "engineering_only": true,
   "evaluation": "sealed-lighthouse-3d-presentation-engineering",
+  "input_feedback": {
+    "clock": "Time.get_ticks_usec",
+    "input_to_visible_feedback_ms": [
+      22.2
+    ],
+    "measurement_context": "engine-local; headless samples are wiring evidence, not browser latency",
+    "p95_input_to_visible_feedback_ms": 22.2,
+    "sample_count": 1,
+    "samples": [
+      {
+        "elapsed_ms": 22.2,
+        "source": "synthetic-evaluation:early-hint",
+        "visible_feedback": "proposal-ledger-line"
+      }
+    ],
+    "visibility_boundary": "RenderingServer.frame_post_draw"
+  },
   "not_evidence_for": [
     "G4",
     "usability",
     "immersion",
     "affect",
-    "efficacy"
+    "efficacy",
+    "browser input latency"
   ],
   "passed": true,
   "player": {
@@ -67,7 +93,7 @@
     "resolution_independent_mouse_delta": "screen_relative",
     "world_change_boundary": "interact_requested signal only; root proposal router owns machine calls"
   },
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
   "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
   "supported_screenshot_stages": [
@@ -91,6 +117,11 @@
     "controls_visible": true,
     "engineering_only": true,
     "layout": "narrow-stacked",
+    "layout_metrics": {
+      "active_bottom_panel_top_fraction": 0.379999995231628,
+      "narrow_playfield_fraction": 0.38,
+      "wide_playfield_fraction": 0.66
+    },
     "play_started": false,
     "progress": {
       "phase": "도착 · ARRIVAL",

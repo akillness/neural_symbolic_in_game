@@ -8,8 +8,8 @@ Table ID: `SL-PLAY-EVAL-001` · Status: **PASS**
 - Execution: fresh temporary project import; headless fixtures; public-safe procedural presentation evaluation
 - Exact terminal state SHA-256: `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`
 - Authored fixture checks: `40/40`
-- Presentation checks: `7/7`
-- Combined checks: `47/47`
+- Presentation checks: `9/9`
+- Combined checks: `49/49`
 - Immutable research evidence: not modified
 
 ## Authored fixture matrix
@@ -25,9 +25,9 @@ Table ID: `SL-PLAY-EVAL-001` · Status: **PASS**
 
 | Surface | Mode | Checks | Canonical state | Result |
 | --- | --- | ---: | --- | --- |
-| `sealed-lighthouse-3d-presentation-engineering` | public-safe procedural | 7/7 | unchanged | PASS |
+| `sealed-lighthouse-3d-presentation-engineering` | public-safe procedural | 9/9 | unchanged | PASS |
 
-These seven checks cover start-gate visibility, gesture-gated procedural audio, non-color semantic redundancy, responsive profile declaration, proposal routing, and evaluation-state isolation. They do not measure player experience.
+These nine checks cover start-gate visibility, gesture-gated procedural audio, non-color semantic redundancy, responsive profile declaration, wide-layout playfield preservation, proposal routing, engine-local input-feedback telemetry wiring, and evaluation-state isolation. They do not measure player experience or browser input latency.
 
 ## Latest public-safe working captures
 

@@ -10,6 +10,12 @@ future provider responses use `recorded_provider_latency_ms`, while frame sample
 `engine_frame_ms` and interactive input samples from `input_to_visible_feedback_ms`. Do not merge
 the designed timeout cap with response-observed provider latency.
 
+2026-08-28 (D-037): the playable slice emits `input_to_visible_feedback_ms` samples from the
+proposal→ledger→rendered-frame boundary into the `--evaluate` report (`input_feedback` block,
+p95 via the shared percentile rule). Headless samples are engine-local wiring evidence only and
+never enter canonical-state hashing; the G4/G6 latency clauses still require retained
+real-browser measurements.
+
 ## Event envelope
 
 Every JSONL record carries scenario/run/episode/event identity, logical `sequence`, unique

@@ -23,7 +23,8 @@
 - [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06]] — ToG peer-review simulation; user accepted the Full Paper revise-and-resubmit game-track direction
 - [[wiki/reports/2026-08-13-trace-rpg-sealed-lighthouse-game-track]] — game track baseline: Godot 4.7.1 authored fixtures, immutable v5 render evidence, Cycle-3 public-safe presentation/Web release, and bounded G4/G6 status
 - [[wiki/reports/2026-08-21-sealed-lighthouse-feel-and-higgsfield-ui]] — feel/연출 deepening baseline: D-034/D-035 Higgsfield curated UI art lane, narrow-tutorial fix, first 2026-08-21 Vercel redeploy
-- [[wiki/reports/2026-08-21-guided-repair-and-diegetic-ritual]] — **current game + academic track**: guided repair operator ρ(a,E) with per-arm×class designed-fixture results, diegetic verdict ritual/ledger voice, D-036 texture lane, L1–L9 limitations, 45 verified references, second 2026-08-21 deploy + clean tagged re-lock
+- [[wiki/reports/2026-08-21-guided-repair-and-diegetic-ritual]] — guided repair operator ρ(a,E) with per-arm×class designed-fixture results, diegetic verdict ritual/ledger voice, D-036 texture lane, L1–L9 limitations, 45 verified references, second 2026-08-21 deploy + clean tagged re-lock
+- [[wiki/reports/2026-08-28-balance-probe-input-telemetry-and-motion-lane]] — **current game + academic track**: D-037 input→visible telemetry + 9-check contract (49/49), D-038 archetype balance probe `SL-BALANCE-PROBE-001` (5 rotations, G2 replacement measurements, structural guard findings), D-039 Mixamo/Blender motion intake lane with raw-source guard; QA hash-drift corrections; G2–G8 remain FIX
 - [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06-to-10]] — academic stage history: bilingual revision, 42-source identity gate, 42/42 claim re-audit, and 2026-08-14 clean tagged recapture
 - [[maintenance-log]] — wiki and Graphify maintenance decisions
 

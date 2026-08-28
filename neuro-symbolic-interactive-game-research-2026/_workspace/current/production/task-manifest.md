@@ -1,10 +1,11 @@
-# Task Manifest — Cycle 3
+# Task Manifest — Cycle 3 (+ 2026-08-28 밸런스·텔레메트리 확장 패스)
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
-Current stage: Stage 1 re-entry — playable presentation/Web release engineering
+Current stage: Stage 1 re-entry — playable presentation/Web release engineering; 2026-08-28
+balance/telemetry/motion-lane extension recorded as D-037–D-039
 Operating mode: public-safe procedural runtime; immutable research evidence remains separate
-Next beat: browser save/reload, representative warmed frame/input measurements, 30-minute soak, and
-final aggregate regression
+Next beat: browser save/reload, representative warmed frame/input measurements, 30-minute soak,
+non-headless capture refresh (GUI session), and final aggregate regression
 
 | task | owner | stage.phase | artifact | gate | status | next evidence |
 |---|---|---|---|---|---|---|
@@ -39,6 +40,10 @@ final aggregate regression
 | Iteration-2 game polish (beacon shader, lens hero glint, start-gate parallax, ledger-close beat, perf allocation audit, stamp/contrast fixes) | polish lane (subagent GamePolish) | 1.presentation | all seven `game3d/*.gd` | G1/G4/G6 | done-2026-08-21-it2-smoke-eval-fallback-green | human presentation study |
 | Iteration-2 paper polish (5-bullet contributions, +3 verified refs S44–S46 → 45 total, L1–L9 limitations, IMRaD parity audit, figure rubric ≥4/5 rework) | paper lane (subagent PaperPolish) | paper.revision | `paper/latex/en+ko/main.tex`, `references.bib`, `generate_paper_figures.py`, rebuilt PDFs EN 8pp/KO 7pp | page band + drift + parity | done-2026-08-21-make-check-pass | clean-tag re-lock |
 | Deploy iteration-2 artifact + golden-path capture | release engineer (orchestrator) | 1.release | deploy `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`, `docs/latest/golden-path.gif` (3.2 MB, 32 s) | release engineering | done-byte-identical-alias-zero-errors | monitor/rollback drill |
+| Instrument input→visible feedback telemetry + 9-check presentation contract + playfield-first wide layout (0.66) | programmer + UI lane (D-037) | 1.systems | `game_3d.gd` probe/`_input_feedback_snapshot`, `harbor_ledger_ui.gd` layout metrics, `run_playable_evaluation.py` 9/9, `SL-PLAY-EVAL-001` `49/49` | G4/G6 wiring | done-2026-08-28-headless-wiring-only | browser/user-gesture latency measurement |
+| Execute deterministic archetype balance probe `SL-BALANCE-PROBE-001` (5 rotations, G2 replacement measurements, chart + md + json) | QA + designer (D-038) | 1.verify | `scenes/balance_probe.tscn`, `scripts/balance_probe_runner.gd`, `scripts/game3d/golden_path_layout.gd`, `scripts/run_balance_archetypes.py`, `docs/latest/balance-archetypes.{json,md,svg}` | G2/G3 engineering | done-2026-08-28-5-of-5-pass | human playtest for G2 perception/G3 viability |
+| Open motion/rig intake lane with raw-source guard (Mixamo/Blender/Godot retarget contract) | asset lane + release (D-039) | 1.resources | `game-track/assets/motion/README.md`, `scripts/validate_motion_assets.py`, root `.gitignore` guards | provenance | done-contract-zero-assets | first curated GLB + rig adoption interview |
+| Refresh stale QA registrations (capture SHA-256 ×4, PCK bytes/hash) against current artifacts | QA (bookkeeping) | 1.verify | `qa/gate-measurements.md` | evidence hygiene | done-2026-08-28 | keep in sync at each artifact refresh |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
@@ -47,9 +52,24 @@ final aggregate regression
   → `8/8`, terminal state SHA-256
   `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`.
 - `./scripts/validate_game_track.sh` → `40 tests, 44 subtests` in the current Cycle 3 session.
-- `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001`: fixtures `4/4`, fixture checks
-  `40/40`, presentation checks `7/7`, combined `47/47`; terminal SHA-256 unchanged.
-- Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix.
+- `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001` (2026-08-28): fixtures `4/4`, fixture
+  checks `40/40`, presentation checks `9/9` (adds `wide_layout_preserves_playfield` and
+  `input_feedback_latency_probe_emits_sample`), combined `49/49`; terminal SHA-256 unchanged.
+  The evaluation now also emits `input_feedback` telemetry (engine-local wiring evidence only).
+- `scripts/run_balance_archetypes.py` → `SL-BALANCE-PROBE-001` (2026-08-28): archetypes `5/5`,
+  refusal state isolation `10/10`, forbidden-disclosure commits `0/3` opportunities, replay hash
+  equality `5/5`, refusal-code coverage `7/9` with two structurally unexercisable codes documented;
+  artifacts `docs/latest/balance-archetypes.{json,md,svg}`.
+- Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix;
+  they are carried from 2026-08-21 — the 2026-08-28 session could not open a GUI window from its
+  sandbox, so a non-headless capture refresh with the new 0.66 wide layout is pending.
+- 2026-08-28 incident note: the canonical `game-track/godot/project.godot` was rewritten twice
+  during this session — once by a diagnostic non-headless launch and once during the first cold
+  `--import` after new engine files were added (editor-style normalization that also flipped
+  `run/main_scene`). The studio validator failed closed on the evidence hash both times and the
+  file was restored via `git checkout`; a warm-cache re-run of the same import no longer rewrites
+  it. Rule of thumb: after adding engine resources, run the suite once, then re-check
+  `git status -- game-track/godot/project.godot` before staging.
 - `game-track/web/public/` contains 11 top-level build files (~45.9 MB); the latest 2026-08-21 PCK
   is 5,970,516 bytes (1.57 MB procedural → 4.82 MB with curated UI art → 5.97 MB with the D-036
   texture/stamp lane), SHA-256
