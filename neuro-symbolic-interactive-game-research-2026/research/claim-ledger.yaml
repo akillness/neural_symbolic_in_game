@@ -26,10 +26,17 @@ claims:
       - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
     status: verified-designed-fixture
   - id: C-PILOT-002
-    claim: In two authored invalid cases, rejection-only and unchanged retry committed 0/2 each, while the policy-restore callback committed 1/2; the callback is an oracle control-flow probe, not a repair-method comparison.
+    claim: Across the 12 authored initially-invalid repair cases at matched budget K=1, rejection-only committed 0/12 and unchanged retry committed 0/12, while counterexample-guided repair committed 5/12 and the state-reading policy-restore oracle committed 6/12; every non-committing arm left the prior state hash unchanged.
     evidence:
       - research/academic-pipeline/stage-04-pilot/pilot-results.json
       - research/academic-pipeline/stage-04-pilot/repair-arms.csv
+      - research/academic-pipeline/stage-04-pilot/repair-arm-summary.csv
+    status: verified-designed-fixture
+  - id: C-PILOT-006
+    claim: Per frozen repairability class, guided repair committed 5/5 guided_repairable, 0/1 oracle_only, and 0/6 irreparable, while the oracle arm additionally committed the single oracle_only case; guided commits used a mean changed-field edit distance of 1.0. This separates model-free counterexample repair from state-reading repair on authored fixtures and is not a live-model repair-quality result.
+    evidence:
+      - research/academic-pipeline/stage-04-pilot/repair-class-summary.csv
+      - research/academic-pipeline/stage-04-pilot/pilot-results.json
     status: verified-designed-fixture
   - id: C-PILOT-003
     claim: All 10 faults prespecified as detectable were rejected by their designated operations without detector-layer attribution, while substitution of a different invalid precursor before the same valid repair was replay-accepted 1/1 as the separately declared provenance boundary.
@@ -88,6 +95,29 @@ claims:
     claim: Structured counterexample repair is more sample-efficient than blind retry at matched K.
     evidence: []
     status: TODO-RESULT
+    note: >-
+      The 2026-08-28 live screening pilot (SL-RQ2-LIVE-001) did NOT support this claim.
+      See C-PILOT-007: the live proposer's error distribution did not overlap the
+      guided-repairable class, so guided and blind arms were indistinguishable in every
+      executed condition. The claim stays TODO-RESULT rather than being promoted.
+  - id: C-PILOT-007
+    claim: >-
+      In an executed live screening pilot over one frozen base state (gpt-5.6-sol via the
+      Codex CLI, 5 seeds x 3 pre-registered conditions, matched budget K=1, one proposal
+      shared by both arms), guided repair and blind unchanged retry were indistinguishable.
+      With the constraint table visible and with it withheld, the proposer returned 5/5
+      first-shot valid candidates, so no repair was exercised. Under the goal-directed
+      condition that forbids a zero-effect action, the proposer returned 5/5 invalid
+      candidates whose errors were all QUEST_STAGE_REGRESSION, a frozen guided-irreparable
+      class, so both arms committed 0/5 and every fallback left the prior state hash
+      unchanged. This is screening-tier evidence about one base state and one hosted
+      revision, not a repair-method refutation.
+    evidence:
+      - research/academic-pipeline/rq2-live-pilot/policy_visible/summary.json
+      - research/academic-pipeline/rq2-live-pilot/policy_blind/summary.json
+      - research/academic-pipeline/rq2-live-pilot/goal_directed_blind/summary.json
+      - research/academic-pipeline/rq2-live-pilot/goal_directed_blind/results.jsonl
+    status: pilot-only
   - id: C-RESULT-004
     claim: Graph retrieval plus event-sourced temporal memory reduces long-horizon contradictions at matched validity.
     evidence: []

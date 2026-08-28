@@ -1,6 +1,6 @@
 {
-  "addendum": "Five prior-work citations added at Stage 8 and one direct game comparator added during the final refresh; each verified in Crossref, OpenAlex, and Semantic Scholar.",
-  "audit_date": "2026-08-13",
+  "addendum": "Five prior-work citations added at Stage 8 and one direct game comparator added during the final refresh; each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure.",
+  "audit_date": "2026-08-28",
   "entries": [
     {
       "arxiv": "2606.13348",
@@ -745,6 +745,66 @@
       "rate_limited_indices": [],
       "status": "VERIFIED",
       "year_note": null
+    },
+    {
+      "arxiv": "2605.24719",
+      "bib_year": "2026",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2026",
+        "openalex": "2026",
+        "semantic_scholar": null
+      },
+      "key": "S44_gongora2026worldstate",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "PREPRINT",
+      "year_note": null
+    },
+    {
+      "arxiv": "2303.17651",
+      "bib_year": "2023",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2023",
+        "openalex": "2023",
+        "semantic_scholar": null
+      },
+      "key": "S45_madaan2023selfrefine",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "PREPRINT",
+      "year_note": null
+    },
+    {
+      "arxiv": "2304.05128",
+      "bib_year": "2023",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2023",
+        "openalex": "2023",
+        "semantic_scholar": null
+      },
+      "key": "S46_chen2023selfdebug",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "PREPRINT",
+      "year_note": null
     }
   ],
   "indices": {
@@ -758,10 +818,10 @@
   "stage": "5",
   "title_match_threshold": 0.85,
   "totals": {
-    "entries": 42,
+    "entries": 45,
     "hallucinated": 0,
-    "preprint": 3,
-    "semantic_scholar_rate_limited": 9,
+    "preprint": 6,
+    "semantic_scholar_rate_limited": 12,
     "unmatched": 0,
     "verified": 39
   }

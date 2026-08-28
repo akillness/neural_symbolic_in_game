@@ -593,6 +593,7 @@ STATUS_STYLE: dict[str, tuple[str, str, str]] = {
     ),
     "approved-design-protocol": ("Approved · design protocol", PALE_ORANGE, ORANGE),
     "proposed-contribution": ("Proposed contribution", PALE_ORANGE, ORANGE),
+    "pilot-only": ("Pilot-only · screening evidence", PALE_ORANGE, ORANGE),
     "TODO-RESULT": ("TODO-RESULT · no evidence", PALE_GRAY, GRAY),
 }
 
@@ -605,6 +606,7 @@ STATUS_ORDER = (
     "verified-authored-engine-render-fixture",
     "approved-design-protocol",
     "proposed-contribution",
+    "pilot-only",
     "TODO-RESULT",
 )
 

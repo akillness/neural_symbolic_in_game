@@ -239,14 +239,26 @@ def run_prompt(
     model: str | None = None,
     timeout: int = 300,
     runner: Runner | None = None,
+    output_schema: Path | None = None,
+    instruction: str | None = None,
+    validator: Callable[[Any, str], bool] | None = None,
 ) -> tuple[int, dict[str, Any]]:
-    """Run one isolated Codex request and return a validated soft proposal."""
+    """Run one isolated Codex request and return a validated soft proposal.
 
+    The default schema/instruction/validator triple is the free-text soft proposal.
+    Callers may substitute a different structured-output contract (for example the
+    live candidate-action schema) without weakening the authority boundary: the
+    replacement validator still runs locally after model-side schema enforcement,
+    and the returned payload is still a non-authoritative candidate.
+    """
+
+    schema_path = OUTPUT_SCHEMA if output_schema is None else output_schema
+    validate = validate_proposal if validator is None else validator
     if not REQUEST_ID_PATTERN.fullmatch(request_id):
         return 2, _error_payload(request_id, "invalid_request_id")
     if not user_prompt.strip():
         return 2, _error_payload(request_id, "empty_prompt")
-    if not OUTPUT_SCHEMA.is_file():
+    if not schema_path.is_file():
         return 4, _error_payload(request_id, "output_schema_missing")
 
     auth = query_auth_status(runner=runner)
@@ -269,7 +281,7 @@ def run_prompt(
                 "--ignore-user-config",
                 "--ignore-rules",
                 "--output-schema",
-                str(OUTPUT_SCHEMA),
+                str(schema_path),
                 "--output-last-message",
                 str(output_path),
                 "--color",
@@ -282,7 +294,9 @@ def run_prompt(
             command.append("-")
             completed = _run(runner)(
                 command,
-                input=_instruction(request_id, user_prompt),
+                input=(
+                    _instruction(request_id, user_prompt) if instruction is None else instruction
+                ),
                 cwd=str(isolated_root),
                 check=False,
                 capture_output=True,
@@ -302,7 +316,7 @@ def run_prompt(
     except OSError:
         return 4, _error_payload(request_id, "codex_exec_launch_failed")
 
-    if not validate_proposal(proposal, request_id):
+    if not validate(proposal, request_id):
         return 5, _error_payload(request_id, "soft_proposal_contract_failed")
     return 0, proposal
 
