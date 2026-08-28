@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0.0",
+  "config_id": "SL-LIVE-STATES-001",
+  "purpose": "Base states for the RQ2 live screening pilot (D-040). The frozen offline packet at configs/pilot-manifest.json is immutable and is NOT edited by this file.",
+  "preregistration_note": "Declared before the 2026-08-28 second live run. The `signal-repair` state is deliberately constructed so that a plausible wrong answer lands in the guided-repairable class: every action type carries required preconditions and required effects, and no zero-effect or quest-stage-rollback action exists. A guided advantage measured on this state therefore demonstrates that the mechanism transfers to live proposals in a regime that contains repairable errors. It does NOT show that this regime is representative of general play, and it cannot be reported as a population effect. Executing signal-repair v1 revealed a state-design defect (missing knowledge set for the acting actor); v1 is retained as superseded and v2 is the corrected pre-registered state. The correction removes an irreparable co-occurring error; it does not change which repair strategy is being compared.",
+  "states": {
+    "frozen-pilot-base": {
+      "state_id": "frozen-pilot-base",
+      "description": "Pointer to the immutable offline packet base state; loaded from configs/pilot-manifest.json so it can never drift.",
+      "source": "configs/pilot-manifest.json#base_state",
+      "known_limitation": "Its SAY policy has no required effects, so a zero-effect valid action always exists and first-shot validity does not discriminate repair strategies (observed 2026-08-28)."
+    },
+    "signal-repair": {
+      "state_id": "live-pilot-signal-repair-v1",
+      "description": "Harbor signal-restoration state with no trivially valid action: both action types require preconditions and required effects, and neither permits a quest-stage effect.",
+      "locations": [
+        "harbor_dock",
+        "lamp_store",
+        "signal_mast"
+      ],
+      "reachable_locations": [
+        "harbor_dock",
+        "lamp_store",
+        "signal_mast"
+      ],
+      "object_locations": {
+        "signal_lens": "harbor_dock",
+        "brass_bracket": "harbor_dock"
+      },
+      "inventory": [
+        "signal_lens"
+      ],
+      "facts": [
+        "dock_saved",
+        "lighthouse_dark",
+        "met_keeper",
+        "lens_in_hand"
+      ],
+      "quest_stage": 1,
+      "action_policies": {
+        "INSTALL_LENS": {
+          "required_preconditions": [
+            "lens_in_hand",
+            "met_keeper"
+          ],
+          "allowed_effects": [
+            "signal_restored",
+            "mast_lit"
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": []
+        },
+        "RAISE_MAST": {
+          "required_preconditions": [
+            "met_keeper"
+          ],
+          "allowed_effects": [
+            "mast_raised"
+          ],
+          "required_effects": [
+            "mast_raised"
+          ],
+          "allowed_quest_stage_effects": []
+        }
+      },
+      "npc_knowledge": {
+        "captain_mira": [
+          "dock_saved",
+          "lighthouse_dark",
+          "tide_marks_hint"
+        ]
+      },
+      "forbidden_disclosures": {
+        "captain_mira": [
+          "keeper_betrayal"
+        ]
+      },
+      "status": "superseded-2026-08-28",
+      "defect": "Design defect found on execution: npc_knowledge listed only captain_mira, so any used_fact declared by the acting actor raised NPC_KNOWLEDGE_VIOLATION, a guided-irreparable code that co-occurred in every case and masked the repairable errors. Retained for the record; superseded by signal-repair-v2."
+    },
+    "signal-repair-v2": {
+      "state_id": "live-pilot-signal-repair-v2",
+      "description": "Corrected signal-restoration state: the acting actor now has a knowledge set, so a plausible wrong answer lands in the guided-repairable class instead of co-occurring with an irreparable knowledge violation.",
+      "locations": [
+        "harbor_dock",
+        "lamp_store",
+        "signal_mast"
+      ],
+      "reachable_locations": [
+        "harbor_dock",
+        "lamp_store",
+        "signal_mast"
+      ],
+      "object_locations": {
+        "signal_lens": "harbor_dock",
+        "brass_bracket": "harbor_dock"
+      },
+      "inventory": [
+        "signal_lens"
+      ],
+      "facts": [
+        "dock_saved",
+        "lighthouse_dark",
+        "met_keeper",
+        "lens_in_hand"
+      ],
+      "quest_stage": 1,
+      "action_policies": {
+        "INSTALL_LENS": {
+          "required_preconditions": [
+            "lens_in_hand",
+            "met_keeper"
+          ],
+          "allowed_effects": [
+            "signal_restored",
+            "mast_lit"
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": []
+        },
+        "RAISE_MAST": {
+          "required_preconditions": [
+            "met_keeper"
+          ],
+          "allowed_effects": [
+            "mast_raised"
+          ],
+          "required_effects": [
+            "mast_raised"
+          ],
+          "allowed_quest_stage_effects": []
+        }
+      },
+      "npc_knowledge": {
+        "player": [
+          "dock_saved",
+          "lighthouse_dark",
+          "met_keeper",
+          "lens_in_hand"
+        ],
+        "captain_mira": [
+          "dock_saved",
+          "lighthouse_dark",
+          "tide_marks_hint"
+        ]
+      },
+      "forbidden_disclosures": {
+        "captain_mira": [
+          "keeper_betrayal"
+        ]
+      }
+    }
+  }
+}

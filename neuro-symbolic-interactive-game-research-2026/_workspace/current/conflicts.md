@@ -34,3 +34,19 @@ artifacts predate studio execution and must be preserved.
   `MiraLLM`/`sl_llm`/`free_question` hooks in the controller and UI). The Godot-side tutorial
   wiring that depended on those hooks is withheld with them, pending an owner decision on whether
   to route the channel through `scripts/codex_oauth_llm.py` instead.
+
+## 2026-08-28 — C-RESULT-003 promotion: two contracts disagree
+
+- `harness/workflows/result-promotion.yaml` permits `TODO-RESULT -> pilot-only` when
+  `trace_manifest`, `schema_pass`, and `pilot_label` exist. After the D-040 second live run
+  all three exist for `C-RESULT-003`.
+- `scripts/validate_game_studio.py::check_claim_boundary` hard-fails if any `C-RESULT-00N`
+  leaves `TODO-RESULT`, enforcing the Cycle-1 boundary in
+  `.omx/specs/deep-interview-experimental-game-track.md` ("leaves C-RESULT-001--005 TODO").
+- Action taken: the promotion was **reverted**, not forced. The guard was not weakened and
+  the spec was not edited. Live evidence stays recorded under `C-PILOT-007` and
+  `C-PILOT-008`, which are pilot claims and therefore outside the guarded range.
+- Owner decision required: either (a) keep the Cycle-1 boundary and leave every `C-RESULT-*`
+  at `TODO-RESULT` until a confirmatory cycle opens, or (b) explicitly amend the Cycle-1
+  boundary to admit `pilot-only` for planned efficacy claims, updating the spec, the guard,
+  and the crosswalk in the same change set.

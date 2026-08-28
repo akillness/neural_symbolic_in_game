@@ -93,30 +93,63 @@ claims:
     status: TODO-RESULT
   - id: C-RESULT-003
     claim: Structured counterexample repair is more sample-efficient than blind retry at matched K.
-    evidence: []
+    evidence:
+      - research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json
+      - research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/results.jsonl
+      - research/academic-pipeline/rq2-live-pilot/promotion-manifest.json
+      - research/academic-pipeline/stage-04-pilot/repair-arm-summary.csv
     status: TODO-RESULT
-    note: >-
-      The 2026-08-28 live screening pilot (SL-RQ2-LIVE-001) did NOT support this claim.
-      See C-PILOT-007: the live proposer's error distribution did not overlap the
-      guided-repairable class, so guided and blind arms were indistinguishable in every
-      executed condition. The claim stays TODO-RESULT rather than being promoted.
+    promotion_blocked_by: >-
+      scripts/validate_game_studio.py check_claim_boundary hard-fails when any
+      C-RESULT-00N leaves TODO-RESULT (Cycle-1 boundary from
+      .omx/specs/deep-interview-experimental-game-track.md). harness/workflows/
+      result-promotion.yaml separately permits TODO-RESULT -> pilot-only once
+      trace_manifest, schema_pass, and pilot_label exist, which they now do. The two
+      contracts contradict each other, so the promotion is withheld rather than resolved
+      by weakening the guard. The evidence itself is recorded under C-PILOT-007 and
+      C-PILOT-008; only the claim-status change awaits an explicit director decision.
+    scope_note: >-
+      Live support exists ONLY in the regime where the proposer's errors fall in the
+      guided-repairable class. On the corrected pre-registered signal-repair-v2 state with
+      the constraint table withheld, guided repair committed 5/5 and blind unchanged retry
+      committed 0/5 over the identical per-seed proposal at matched K=1. The same
+      comparison was null in three other executed regimes (see C-PILOT-007). The state was
+      deliberately constructed to contain repairable failure modes, so this is a
+      mechanism-transfer demonstration, not evidence that the regime is representative.
+      Confirmatory promotion still requires templated scenarios, an independent semantic
+      oracle, and a preregistration hash.
   - id: C-PILOT-007
     claim: >-
-      In an executed live screening pilot over one frozen base state (gpt-5.6-sol via the
-      Codex CLI, 5 seeds x 3 pre-registered conditions, matched budget K=1, one proposal
-      shared by both arms), guided repair and blind unchanged retry were indistinguishable.
-      With the constraint table visible and with it withheld, the proposer returned 5/5
-      first-shot valid candidates, so no repair was exercised. Under the goal-directed
-      condition that forbids a zero-effect action, the proposer returned 5/5 invalid
-      candidates whose errors were all QUEST_STAGE_REGRESSION, a frozen guided-irreparable
-      class, so both arms committed 0/5 and every fallback left the prior state hash
-      unchanged. This is screening-tier evidence about one base state and one hosted
-      revision, not a repair-method refutation.
+      Executed live screening pilot (gpt-5.6-sol via the Codex CLI, 5 seeds per cell,
+      matched budget K=1, one proposal shared by both arms). The guided-vs-blind separation
+      is regime-dependent. On the frozen offline base state the proposer returned 5/5
+      first-shot valid candidates with and without the constraint table, because that state
+      admits a zero-effect valid action, so no repair was exercised; forbidding a zero-effect
+      action there produced 5/5 invalid candidates whose errors were all
+      QUEST_STAGE_REGRESSION, a guided-irreparable class, and both arms committed 0/5. On the
+      corrected signal-repair-v2 state with the table withheld, live errors were
+      POLICY_EFFECT_OMISSION, POLICY_EFFECT_VIOLATION, and POLICY_PRECONDITION_OMISSION, and
+      guided repair cleared every error to commit 5/5 while blind retry committed 0/5. Every
+      fallback in every cell preserved the prior state hash.
     evidence:
-      - research/academic-pipeline/rq2-live-pilot/policy_visible/summary.json
-      - research/academic-pipeline/rq2-live-pilot/policy_blind/summary.json
-      - research/academic-pipeline/rq2-live-pilot/goal_directed_blind/summary.json
-      - research/academic-pipeline/rq2-live-pilot/goal_directed_blind/results.jsonl
+      - research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/policy_visible/summary.json
+      - research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/policy_blind/summary.json
+      - research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/goal_directed_blind/summary.json
+      - research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json
+      - research/academic-pipeline/rq2-live-pilot/promotion-manifest.json
+    status: pilot-only
+  - id: C-PILOT-008
+    claim: >-
+      In the live pilot, proposer errors co-occurred rather than appearing singly, and a
+      single guided-irreparable code blocked commit even when the repairable codes were
+      cleared. On the superseded signal-repair v1 state the operator reduced the error set
+      from three codes to one (removing POLICY_EFFECT_OMISSION and POLICY_EFFECT_VIOLATION)
+      but could not commit because NPC_KNOWLEDGE_VIOLATION remained, which the operator
+      declines to repair by contract. Per-error repair therefore does not compose into a
+      commit unless every co-occurring error is repairable at the given budget.
+    evidence:
+      - research/academic-pipeline/rq2-live-pilot/signal-repair/policy_blind/results.jsonl
+      - research/academic-pipeline/rq2-live-pilot/promotion-manifest.json
     status: pilot-only
   - id: C-RESULT-004
     claim: Graph retrieval plus event-sourced temporal memory reduces long-horizon contradictions at matched validity.

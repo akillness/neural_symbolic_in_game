@@ -2,7 +2,7 @@
 
 ```yaml
 plan_id: SL-RQ2-LIVE-001
-status: EXECUTED-2026-08-28 (null result; see C-PILOT-007)
+status: EXECUTED-2026-08-28 (regime-dependent; C-RESULT-003 promotion withheld by the Cycle-1 guard)
 approval: 사용자 인터뷰 응답 "승인, 바로 진행" (2026-08-28); ChatGPT 쿼터 사용 승인 포함
 target_claim: C-RESULT-003 (guided repair vs blind retry sample efficiency at matched K)
 promotion_ceiling: pilot-only   # verified-empirical 전이는 금지(M2/M3/M5 미충족)
@@ -61,7 +61,27 @@ promotion_ceiling: pilot-only   # verified-empirical 전이는 금지(M2/M3/M5 �
   않았다**. 라이브 오류 분포가 guided-repairable 클래스와 겹치지 않았기 때문이다.
 - 모든 폴백에서 이전 상태 해시가 보존됐다(안전 경계는 라이브에서도 유지).
 
-## 다음 설계 수정 (다음 세션)
+
+## 2차 실행 (상태 변형) — 유도수리 우위 라이브 재현
+
+| 기저 상태 | 조건 | 최초 유효 | guided 커밋 | blind 커밋 | 관측 오류 |
+|---|---|---:|---:|---:|---|
+| `frozen-pilot-base` | `policy_visible` | 5/5 | 5/5 | 5/5 | 수리 미발생 |
+| `frozen-pilot-base` | `policy_blind` | 5/5 | 5/5 | 5/5 | 수리 미발생 |
+| `frozen-pilot-base` | `goal_directed_blind` | 0/5 | 0/5 | 0/5 | `QUEST_STAGE_REGRESSION`(수리 불가) |
+| `signal-repair` v1 (폐기) | `policy_blind` | 0/5 | 0/5 | 0/5 | 지식 위반 동반(설계 결함) |
+| **`signal-repair-v2`** | **`policy_blind`** | **0/5** | **5/5** | **0/5** | 효과 누락·효과 위반·전제 누락 |
+| `signal-repair-v2` | `policy_visible` | 5/5 | 5/5 | 5/5 | 수리 미발생 |
+
+- **핵심**: ρ의 우위는 **오류가 수리 가능 클래스에 들어올 때만** 나타난다. 그 조건에서는
+  라이브에서도 5/5 대 0/5로 재현됐고, 다중 오류(코드 2~3개)도 전부 해소해 커밋했다.
+- v1 실행에서 나온 부수 발견: 라이브 오류는 **단독이 아니라 동반 발생**하며, 수리 불가
+  코드가 하나라도 섞이면 나머지를 고쳐도 커밋되지 않는다(3코드 → 1코드로 줄었으나 폴백).
+  → `C-PILOT-008`로 기록.
+- v1 자체는 **상태 설계 결함**(행동 주체에 지식 집합 미부여)이었고, 폐기 표시 후 v2로 대체했다.
+  동결 오프라인 패킷은 건드리지 않았다.
+
+## 남은 설계 과제
 
 1. 기저 상태를 **자명 통과 행동이 없는 상태**로 확장하거나, `SAY`에 필수 효과를 부여한
    변형 시나리오를 추가한다(동결 패킷은 불변 유지, 새 시나리오 ID로).

@@ -17,6 +17,7 @@ from nesy_game.codex_adapter import (
 from scripts.run_live_pilot_rq2 import (
     ARMS,
     REPAIR_BUDGET,
+    load_base_state,
     run_seed,
     summarize,
     world_state_from_manifest,
@@ -221,18 +222,21 @@ def test_summary_separates_invalid_only_denominator() -> None:
         assert summary["per_arm"][arm]["commits_among_initially_invalid"] == 0
 
 
-def test_executed_live_artifacts_record_all_three_conditions() -> None:
+def test_every_promoted_live_cell_keeps_its_claim_boundary_and_state_isolation() -> None:
     root = ROOT / "research/academic-pipeline/rq2-live-pilot"
     if not root.is_dir():
         pytest.skip("promoted live-pilot artifacts are not present in this checkout")
-    for condition in ("policy_visible", "policy_blind", "goal_directed_blind"):
-        summary = json.loads((root / condition / "summary.json").read_text(encoding="utf-8"))
-        assert summary["condition"] == condition
+    cells = sorted(root.glob("*/*/summary.json"))
+    assert cells, "no promoted live-pilot cells found"
+    for summary_path in cells:
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        assert summary["condition"] == summary_path.parent.name
         assert summary["evidence_tier"] == "screening-pilot-only"
         assert summary["repair_budget"] == REPAIR_BUDGET
+        assert summary["matched_candidate_per_seed"] is True
         rows = [
             json.loads(line)
-            for line in (root / condition / "results.jsonl")
+            for line in (summary_path.parent / "results.jsonl")
             .read_text(encoding="utf-8")
             .splitlines()
             if line.strip()
@@ -241,11 +245,55 @@ def test_executed_live_artifacts_record_all_three_conditions() -> None:
         for row in rows:
             if row["status"] != "proposed":
                 continue
-            state = _state()
-            del state
             for arm in ARMS:
                 if row["arms"][arm]["status"] == "fallback":
                     assert row["arms"][arm]["state_unchanged"] is True
+
+
+def test_promoted_headline_cell_reproduces_the_guided_advantage() -> None:
+    cell = (
+        ROOT
+        / "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json"
+    )
+    if not cell.is_file():
+        pytest.skip("headline live-pilot cell is not present in this checkout")
+    summary = json.loads(cell.read_text(encoding="utf-8"))
+    assert summary["counts"]["initially_invalid"] == summary["counts"]["proposals_returned"]
+    guided = summary["per_arm"]["guided_repair"]
+    blind = summary["per_arm"]["unchanged_retry"]
+    assert guided["commits"] > blind["commits"], "headline separation must remain recorded"
+    assert blind["commits"] == 0
+    assert blind["non_commit_state_isolated"] == blind["non_commits"]
+
+
+def test_variant_states_are_preregistered_and_v1_is_marked_superseded() -> None:
+    catalog = json.loads((ROOT / "configs/live-pilot-states.json").read_text(encoding="utf-8"))
+    assert "preregistration_note" in catalog
+    assert catalog["states"]["signal-repair"]["status"] == "superseded-2026-08-28"
+    assert "defect" in catalog["states"]["signal-repair"]
+    v2 = catalog["states"]["signal-repair-v2"]
+    assert "player" in v2["npc_knowledge"]
+    for policy in v2["action_policies"].values():
+        assert policy["required_effects"], "no zero-effect escape may exist in the variant"
+        assert policy["allowed_quest_stage_effects"] == []
+
+
+def test_frozen_base_state_is_read_from_the_immutable_packet() -> None:
+    """The frozen base state must never be served from a drifting copy."""
+    state, label = load_base_state(
+        "frozen-pilot-base",
+        manifest_path=ROOT / "configs/pilot-manifest.json",
+        states_path=ROOT / "configs/live-pilot-states.json",
+    )
+    assert label == "frozen-pilot-base"
+    assert state.state_id == MANIFEST["base_state"]["state_id"]
+
+    with pytest.raises(SystemExit, match="unknown or non-executable base state"):
+        load_base_state(
+            "no-such-state",
+            manifest_path=ROOT / "configs/pilot-manifest.json",
+            states_path=ROOT / "configs/live-pilot-states.json",
+        )
 
 
 def test_hard_validator_still_rejects_a_forbidden_disclosure_candidate() -> None:

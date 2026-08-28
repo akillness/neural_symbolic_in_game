@@ -40,6 +40,7 @@ from nesy_game.codex_adapter import CodexProposalAdapter
 
 PILOT_ID = "SL-RQ2-LIVE-001"
 DEFAULT_MANIFEST = ROOT / "configs/pilot-manifest.json"
+DEFAULT_STATES = ROOT / "configs/live-pilot-states.json"
 DEFAULT_OUTPUT = ROOT / "runs/live-pilot-rq2"
 DEFAULT_SCENARIO = ROOT / "game-track/godot/data/sealed_lighthouse.json"
 DEFAULT_SEEDS = (11, 23, 47, 83, 131)
@@ -65,6 +66,25 @@ def _canonical_hash(payload: Any) -> str:
         to_jsonable(payload), ensure_ascii=False, separators=(",", ":"), sort_keys=True
     )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def load_base_state(
+    state_key: str, *, manifest_path: Path, states_path: Path
+) -> tuple[WorldState, str]:
+    """Resolve one pre-registered base state and return it with its state id.
+
+    ``frozen-pilot-base`` always reads the immutable offline packet, so the frozen
+    manifest stays the single source for that state and cannot drift into a copy.
+    """
+
+    if state_key == "frozen-pilot-base":
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        return world_state_from_manifest(manifest["base_state"]), "frozen-pilot-base"
+    catalog = json.loads(states_path.read_text(encoding="utf-8"))
+    entry = catalog["states"].get(state_key)
+    if entry is None or "action_policies" not in entry:
+        raise SystemExit(f"unknown or non-executable base state: {state_key}")
+    return world_state_from_manifest(entry), str(entry["state_id"])
 
 
 def world_state_from_manifest(data: Mapping[str, Any]) -> WorldState:
@@ -256,6 +276,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="Exact hosted revision string recorded in every row (no inference)",
     )
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    parser.add_argument("--states", type=Path, default=DEFAULT_STATES)
+    parser.add_argument(
+        "--state",
+        default="frozen-pilot-base",
+        help="Pre-registered base state key from configs/live-pilot-states.json",
+    )
     parser.add_argument("--scenario", type=Path, default=DEFAULT_SCENARIO)
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--timeout", type=int, default=300)
@@ -277,9 +303,10 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
-    manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     scenario = json.loads(args.scenario.read_text(encoding="utf-8"))
-    state = world_state_from_manifest(manifest["base_state"])
+    state, state_label = load_base_state(
+        args.state, manifest_path=args.manifest, states_path=args.states
+    )
     scenario_id = str(scenario.get("scenario_id", "sealed-lighthouse-v1"))
 
     adapter = CodexProposalAdapter(
@@ -290,19 +317,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         timeout=args.timeout,
         condition=args.condition,
     )
-    output_dir = args.output or (DEFAULT_OUTPUT / args.condition)
+    output_dir = args.output or (DEFAULT_OUTPUT / args.state / args.condition)
     rows = [
         run_seed(adapter, state, scenario_id=scenario_id, seed=seed) for seed in sorted(args.seeds)
     ]
     summary = summarize(
         rows, model_id=args.model, revision=args.model_revision, condition=args.condition
     )
+    summary["base_state"] = args.state
+    summary["base_state_id"] = state_label
     write_outputs(output_dir, rows, summary)
     counts = summary["counts"]
     guided = summary["per_arm"]["guided_repair"]
     blind = summary["per_arm"]["unchanged_retry"]
     print(
-        f"{PILOT_ID} [{args.condition}]: seeds {counts['seeds']}, "
+        f"{PILOT_ID} [{args.state}/{args.condition}]: seeds {counts['seeds']}, "
         f"proposals {counts['proposals_returned']}, "
         f"initially valid {counts['initially_valid']}, initially invalid {counts['initially_invalid']}; "
         f"guided commits {guided['commits']}/{guided['cases']} "

@@ -75,6 +75,32 @@ Status: **ENGINEERING CONFORMANCE ONLY; NO HUMAN OR MODEL RESULT; G2/G3/G4/G6 RE
   주석으로 남겼다. 실제 관측은 신규 `C-PILOT-007`로 `pilot-only` 등급에 기록했다.
   다음 설계 수정(자명 통과 행동이 없는 시나리오 변형 등)은 계획서에 정리했다.
 
+## D-040 2차 실행 — 상태 변형에서 유도수리 우위 라이브 재현
+
+1차 귀무 결과의 원인(자명 통과 경로, 수리 불가 오류 편중)을 제거한 **사전 등록 상태 변형**
+`signal-repair-v2`(모든 행동에 필수 전제·필수 효과, 스테이지 효과 없음, 행동 주체에 지식 집합
+부여)를 추가해 재실행했다.
+
+| 기저 상태 / 조건 | 최초 유효 | guided | blind |
+|---|---:|---:|---:|
+| `frozen-pilot-base` / 공개·비공개 | 5/5 | 5/5 | 5/5 |
+| `frozen-pilot-base` / 효과0 금지 | 0/5 | 0/5 | 0/5 |
+| **`signal-repair-v2` / 비공개** | **0/5** | **5/5** | **0/5** |
+| `signal-repair-v2` / 공개 | 5/5 | 5/5 | 5/5 |
+
+- 제약표를 감추자 라이브 오류가 `POLICY_EFFECT_OMISSION`·`POLICY_EFFECT_VIOLATION`·
+  `POLICY_PRECONDITION_OMISSION`으로 나타났고, ρ가 **전부 해소해 5/5 커밋**했다(최종 코드 공란).
+  블라인드 재시도는 0/5. 동일 제안을 두 아암이 공유했으므로 차이는 전략에서만 온다.
+- `C-RESULT-003` 승격을 시도했으나 **스튜디오 가드가 차단**했다: `validate_game_studio.py`는
+  `C-RESULT-*`가 `TODO-RESULT`를 벗어나면 fail-closed다(Cycle-1 경계). 반면
+  `result-promotion.yaml`은 요건 충족 시 `pilot-only`를 허용한다 — 두 계약이 모순이다.
+  **가드를 약화시키지 않고 승격을 되돌렸고**, 모순을 `_workspace/current/conflicts.md`에
+  기록해 소유자 결정 대기로 뒀다. 라이브 근거 자체는 `C-PILOT-007`·`C-PILOT-008`에 남는다.
+  범위 주석에는 **귀무였던 3개 레짐을 함께 명시**해 선택적 보고를 차단했다.
+- 부수 발견 `C-PILOT-008`: 라이브 오류는 동반 발생하며, 수리 불가 코드가 하나라도 섞이면
+  나머지를 고쳐도 커밋되지 않는다(v1에서 3코드 → 1코드로 축소됐으나 폴백).
+- v1은 상태 설계 결함(주체 지식 집합 누락)으로 폐기 표시하고 기록을 보존했다.
+
 ## 선행 정리 (감사 권고 3건)
 
 - `C-PILOT-002`를 2-케이스 문구에서 **동결 12-케이스 실측**으로 정정(rejection 0/12,
