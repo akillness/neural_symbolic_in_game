@@ -86,6 +86,8 @@ var _toast_tween: Tween
 var _flash_tween: Tween
 var _feedback_tween: Tween
 var _start_key_art: TextureRect
+var _start_key_art_landscape: Texture2D = null
+var _start_key_art_portrait: Texture2D = null
 var _gate_time: float = 0.0
 
 
@@ -424,6 +426,14 @@ func _build_start_gate() -> void:
 		key_art_texture = SealedLighthouseWorldBuilder.load_concept_texture(
 			"SL-C01-environment-key-art.png"
 		)
+	_start_key_art_landscape = key_art_texture
+	# D-042: the 16:9 gate art loses ~74% of its width to STRETCH_KEEP_ASPECT_COVERED
+	# on a 390x844 phone viewport, so a 9:16 companion is selected on portrait
+	# layouts. Absent bytes fall back to the landscape art and, absent that too,
+	# to the flat storm-ink gate — the procedural surface stays fully playable.
+	_start_key_art_portrait = SealedLighthouseWorldBuilder.load_curated_ui_texture(
+		"ui-start-key-art-portrait.png"
+	)
 	if key_art_texture != null:
 		_start_key_art = TextureRect.new()
 		_start_key_art.texture = key_art_texture
@@ -759,6 +769,7 @@ func _apply_responsive_layout() -> void:
 	_end_card.anchor_right = 0.96 if _layout_narrow else 0.82
 	_end_card.anchor_top = 0.13 if _layout_narrow else 0.16
 	_end_card.anchor_bottom = 0.88 if _layout_narrow else 0.84
+	_apply_start_key_art()
 	_start_card.anchor_left = 0.05 if _layout_narrow else 0.21
 	_start_card.anchor_right = 0.95 if _layout_narrow else 0.79
 	_start_card.anchor_top = 0.19 if _layout_narrow else 0.22
@@ -768,6 +779,32 @@ func _apply_responsive_layout() -> void:
 	_objective_label.add_theme_font_size_override("font_size", 16 if _layout_narrow else 18)
 	_status_label.add_theme_font_size_override("font_size", 15 if _layout_narrow else 17)
 	_update_portrait_visibility()
+
+
+func _apply_start_key_art() -> void:
+	# Orientation-matched gate art (D-042). Falls back to whichever texture exists.
+	if _start_key_art == null:
+		return
+	var chosen: Texture2D = null
+	if _layout_narrow and _start_key_art_portrait != null:
+		chosen = _start_key_art_portrait
+	elif _start_key_art_landscape != null:
+		chosen = _start_key_art_landscape
+	else:
+		chosen = _start_key_art_portrait
+	if chosen != null and _start_key_art.texture != chosen:
+		_start_key_art.texture = chosen
+
+
+func start_key_art_orientation() -> String:
+	# Engineering-snapshot helper; reports which gate art the layout selected.
+	if _start_key_art == null or _start_key_art.texture == null:
+		return "none"
+	if _start_key_art.texture == _start_key_art_portrait:
+		return "portrait"
+	if _start_key_art.texture == _start_key_art_landscape:
+		return "landscape"
+	return "unknown"
 
 
 func layout_name_for_size(viewport_size: Vector2) -> String:
@@ -1040,6 +1077,7 @@ func get_engineering_snapshot() -> Dictionary:
 			"narrow": layout_name_for_size(Vector2(720.0, 900.0)),
 			"wide": layout_name_for_size(Vector2(1280.0, 720.0)),
 		},
+		"start_key_art_orientation": start_key_art_orientation(),
 		"layout_metrics": {
 			"active_bottom_panel_top_fraction": _bottom_panel.anchor_top,
 			"wide_playfield_fraction": WIDE_LEDGER_TOP,
