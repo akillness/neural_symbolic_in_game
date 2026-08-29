@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="908" viewBox="0 0 1480 908" role="img" aria-labelledby="title description">
+<title id="title">TRACE-RPG KG ontology simulation evaluation matrix</title>
+<desc id="description">Deterministic engineering-only comparison of seven typed-link proposal strategies.</desc>
+<rect width="1480" height="908" fill="#F6F2E8"/>
+<style>text{font-family:Arial,sans-serif;fill:#18231D}.title{font-size:34px;font-weight:700}.sub{font-size:17px;fill:#5D6B63}.head{font-size:15px;font-weight:700}.cell{font-size:15px}.small{font-size:13px;fill:#5D6B63}</style>
+<text id="heading" x="56" y="66" class="title">[SIMULATED] Typed-link proposal ratchet</text>
+<text x="56" y="98" class="sub">Authored closed-world holdout · engineering only · excludes C-RESULT-001…005</text>
+<rect x="56" y="126" width="1368" height="112" rx="12" fill="#FFFFFF" stroke="#C9C5B8"/>
+<text x="84" y="164" class="head">43 OKF nodes</text>
+<text x="314" y="164" class="head">106 reference edges</text>
+<text x="586" y="164" class="head">24 typed edges</text>
+<text x="814" y="164" class="head">CQ 100%</text>
+<text x="1002" y="164" class="head">ontology violations 0</text>
+<text x="84" y="204" class="small">Precision is optimized only after recall, coverage, and Sem@3 constraints pass.</text>
+<text x="56" y="282" class="head">Strategy</text>
+<text x="590" y="282" class="head">Decision</text>
+<text x="742" y="282" class="head">Precision</text>
+<text x="882" y="282" class="head">Recall</text>
+<text x="1002" y="282" class="head">MRR</text>
+<text x="1118" y="282" class="head">Brier ↓</text>
+<text x="1254" y="282" class="head">Sem@3</text>
+<rect x="56" y="306" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="306" width="10" height="58" rx="5" fill="#A78BFA"/>
+<text x="84" y="331" class="cell">S0-degree-baseline</text>
+<text x="84" y="351" class="small">Untyped target-degree baseline.</text>
+<text x="590" y="341" class="cell">baseline</text>
+<text x="742" y="341" class="cell">0.000</text>
+<text x="882" y="341" class="cell">0.000</text>
+<text x="1002" y="341" class="cell">0.282</text>
+<text x="1118" y="341" class="cell">0.315</text>
+<text x="1254" y="341" class="cell">0.556</text>
+<rect x="56" y="380" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="380" width="10" height="58" rx="5" fill="#B8B5AA"/>
+<text x="84" y="405" class="cell">S1-lexical</text>
+<text x="84" y="425" class="small">Question and endpoint token overlap only.</text>
+<text x="590" y="415" class="cell">discard</text>
+<text x="742" y="415" class="cell">1.000</text>
+<text x="882" y="415" class="cell">1.000</text>
+<text x="1002" y="415" class="cell">0.944</text>
+<text x="1118" y="415" class="cell">0.156</text>
+<text x="1254" y="415" class="cell">0.778</text>
+<rect x="56" y="454" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="454" width="10" height="58" rx="5" fill="#F0A43A"/>
+<text x="84" y="479" class="cell">S2-typed-lexical-loose</text>
+<text x="84" y="499" class="small">Domain/range fit plus lexical overlap with a loose threshold.</text>
+<text x="590" y="489" class="cell">keep · winner</text>
+<text x="742" y="489" class="cell">1.000</text>
+<text x="882" y="489" class="cell">1.000</text>
+<text x="1002" y="489" class="cell">0.944</text>
+<text x="1118" y="489" class="cell">0.131</text>
+<text x="1254" y="489" class="cell">1.000</text>
+<rect x="56" y="528" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="528" width="10" height="58" rx="5" fill="#B8B5AA"/>
+<text x="84" y="553" class="cell">S3-typed-lexical-strict</text>
+<text x="84" y="573" class="small">Same features with a stricter proposal threshold.</text>
+<text x="590" y="563" class="cell">discard</text>
+<text x="742" y="563" class="cell">1.000</text>
+<text x="882" y="563" class="cell">0.500</text>
+<text x="1002" y="563" class="cell">0.944</text>
+<text x="1118" y="563" class="cell">0.131</text>
+<text x="1254" y="563" class="cell">1.000</text>
+<rect x="56" y="602" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="602" width="10" height="58" rx="5" fill="#B8B5AA"/>
+<text x="84" y="627" class="cell">S4-typed-lexical-path</text>
+<text x="84" y="647" class="small">Typed lexical score with heldout-safe graph-path support.</text>
+<text x="590" y="637" class="cell">discard</text>
+<text x="742" y="637" class="cell">0.833</text>
+<text x="882" y="637" class="cell">0.833</text>
+<text x="1002" y="637" class="cell">0.861</text>
+<text x="1118" y="637" class="cell">0.137</text>
+<text x="1254" y="637" class="cell">1.000</text>
+<rect x="56" y="676" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="676" width="10" height="58" rx="5" fill="#B8B5AA"/>
+<text x="84" y="701" class="cell">S5-path-heavy</text>
+<text x="84" y="721" class="small">A deliberately path-heavy mutation used to test reversion.</text>
+<text x="590" y="711" class="cell">discard</text>
+<text x="742" y="711" class="cell">0.500</text>
+<text x="882" y="711" class="cell">0.500</text>
+<text x="1002" y="711" class="cell">0.625</text>
+<text x="1118" y="711" class="cell">0.174</text>
+<text x="1254" y="711" class="cell">1.000</text>
+<rect x="56" y="750" width="1368" height="58" rx="9" fill="#FFFFFF" stroke="#C9C5B8"/>
+<rect x="56" y="750" width="10" height="58" rx="5" fill="#B8B5AA"/>
+<text x="84" y="775" class="cell">S6-degree-mix</text>
+<text x="84" y="795" class="small">Adds a popularity prior to test whether hub bias helps.</text>
+<text x="590" y="785" class="cell">discard</text>
+<text x="742" y="785" class="cell">0.500</text>
+<text x="882" y="785" class="cell">0.500</text>
+<text x="1002" y="785" class="cell">0.639</text>
+<text x="1118" y="785" class="cell">0.141</text>
+<text x="1254" y="785" class="cell">1.000</text>
+<line x1="56" y1="842" x2="1424" y2="842" stroke="#C9C5B8"/>
+<text x="56" y="874" class="small">Closed application ontology, not OWL/SHACL · link recovery, not runtime KG efficacy</text>
+</svg>

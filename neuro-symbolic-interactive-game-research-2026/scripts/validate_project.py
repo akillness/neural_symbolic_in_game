@@ -25,6 +25,16 @@ REQUIRED = [
     "configs/metric-catalog.yaml",
     "configs/scenario-catalog.yaml",
     "configs/experimental-game.yaml",
+    "configs/kg-ontology-simulation.json",
+    "knowledge/ontology/trace-rpg-ontology.json",
+    "knowledge/ontology/curated-relations.json",
+    "knowledge/ontology/knowledge-graph-schema.sql",
+    "research/simulation/kg-ontology/README.md",
+    "research/simulation/kg-ontology/latest/evaluation-matrix.json",
+    "research/simulation/kg-ontology/latest/evaluation-matrix.md",
+    "research/simulation/kg-ontology/latest/figures/evaluation-matrix.svg",
+    "paper/latex/generated/kg_ontology_simulation_en.tex",
+    "paper/latex/generated/kg_ontology_simulation_ko.tex",
     "research/source-ledger.yaml",
     "research/claim-ledger.yaml",
     "research/original-link-audit.yaml",
@@ -83,6 +93,41 @@ def check_bilingual_claims() -> None:
         fail("bilingual TODO-RESULT counts differ")
     if "TODO-RESULT" not in ko or "TODO-RESULT" not in en:
         fail("result lock marker missing")
+
+    latex_en = (ROOT / "paper/latex/en/main.tex").read_text(encoding="utf-8")
+    latex_ko = (ROOT / "paper/latex/ko/main.tex").read_text(encoding="utf-8")
+    label_pattern = r"\\label\{([^}]+)\}"
+    labels_en = set(re.findall(label_pattern, latex_en))
+    labels_ko = set(re.findall(label_pattern, latex_ko))
+    if labels_en != labels_ko:
+        fail(
+            f"authoritative LaTeX label mismatch: EN-only={labels_en - labels_ko}, "
+            f"KO-only={labels_ko - labels_en}"
+        )
+    input_pattern = r"\\input\{\.\./generated/([^}]+)\}"
+    inputs_en = {name.replace("_en.tex", ".tex") for name in re.findall(input_pattern, latex_en)}
+    inputs_ko = {name.replace("_ko.tex", ".tex") for name in re.findall(input_pattern, latex_ko)}
+    if inputs_en != inputs_ko:
+        fail(
+            f"authoritative LaTeX generated-input mismatch: EN-only={inputs_en - inputs_ko}, "
+            f"KO-only={inputs_ko - inputs_en}"
+        )
+    latex_claim_pattern = r"C-(?:METHOD|DATA|AFFECT|SYSTEM|PILOT|GAME-DESIGN|RESULT|SIM)-\d{3}"
+    generated_en = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in sorted((ROOT / "paper/latex/generated").glob("*_en.tex"))
+    )
+    generated_ko = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in sorted((ROOT / "paper/latex/generated").glob("*_ko.tex"))
+    )
+    claims_en = set(re.findall(latex_claim_pattern, latex_en + generated_en))
+    claims_ko = set(re.findall(latex_claim_pattern, latex_ko + generated_ko))
+    if claims_en != claims_ko:
+        fail(
+            f"authoritative LaTeX claim mismatch: EN-only={claims_en - claims_ko}, "
+            f"KO-only={claims_ko - claims_en}"
+        )
 
 
 def check_json_and_bridge() -> None:
@@ -255,6 +300,65 @@ def check_evidence_and_analysis_contracts() -> None:
         fail(f"confirmatory analysis contract is incomplete: {sorted(missing_statistics)}")
 
 
+def check_kg_ontology_simulation() -> None:
+    from nesy_game.kg_ontology_simulation import build_artifact_payloads, check_artifacts
+
+    payloads, matrix, _ = build_artifact_payloads(ROOT)
+    mismatches = check_artifacts(ROOT, payloads)
+    if mismatches:
+        fail(f"KG/ontology simulation artifacts are stale: {mismatches}")
+    if matrix["ontology_violations"] != 0:
+        fail("KG/ontology simulation reports ontology violations")
+    if matrix["graph"]["competency_question_coverage"] != 1.0:
+        fail("KG/ontology competency-question coverage is incomplete")
+    if any(row["source_coverage"] != 1.0 for row in matrix["graph"]["competency_questions"]):
+        fail("KG/ontology competency-question source coverage is incomplete")
+    metrics = matrix["winner"]["metrics"]
+    if metrics["semantic_at_k"] != 1.0:
+        fail("KG/ontology winner violates the frozen Sem@K constraint")
+    readme_sections = {
+        "EN": (
+            ROOT / "README.en.md",
+            "## KG/ontology graph store and proposal simulation",
+        ),
+        "KO": (
+            ROOT / "README.ko.md",
+            "## KG/온톨로지 그래프 저장소와 제안 시뮬레이션",
+        ),
+    }
+    parity_tokens = {
+        matrix["simulation_id"],
+        matrix["winner"]["strategy_id"],
+        str(matrix["graph"]["nodes"]),
+        str(matrix["graph"]["reference_edges"]),
+        str(matrix["graph"]["curated_typed_edges"]),
+        str(matrix["budget"]["candidate_scores_per_trial"]),
+        str(matrix["budget"]["candidate_scores_total"]),
+        f"P=R=F1={metrics['f1']:.3f}",
+        f"MRR={metrics['mrr_realistic']:.3f}",
+        f"BS={metrics['brier_score']:.3f}",
+        f"Sem@3={metrics['semantic_at_k']:.3f}",
+    }
+    for language, (path, heading) in readme_sections.items():
+        text = path.read_text(encoding="utf-8")
+        if heading not in text:
+            fail(f"{language} README KG/ontology section is missing")
+        section = text.split(heading, 1)[1].split("\n## ", 1)[0]
+        missing = sorted(token for token in parity_tokens if token not in section)
+        if missing:
+            fail(f"{language} README KG/ontology numeric parity drift: {missing}")
+    for language in ("en", "ko"):
+        tex = (ROOT / f"paper/latex/generated/kg_ontology_simulation_{language}.tex").read_text(
+            encoding="utf-8"
+        )
+        missing_claims = sorted(
+            claim_id for claim_id in matrix["scope"]["not_evidence_for"][-5:] if claim_id not in tex
+        )
+        if missing_claims:
+            fail(f"{language.upper()} KG/ontology TeX claim-boundary drift: {missing_claims}")
+    ET.parse(ROOT / "research/simulation/kg-ontology/latest/figures/evaluation-matrix.svg")
+
+
 def check_graphify_layers() -> None:
     authoritative = REPO / "llm-wiki/graphify-out/graph.json"
     prompt_graph = REPO / "llm-wiki/graphify-out/prompts/graph.json"
@@ -277,9 +381,11 @@ def main() -> None:
     check_scraped_sources()
     check_raw_manifest()
     check_evidence_and_analysis_contracts()
+    check_kg_ontology_simulation()
     check_graphify_layers()
     print(
-        "PASS: structure, bilingual claims, bridge, SVG, captures, raw hashes, and Graphify layers"
+        "PASS: structure, bilingual claims/LaTeX, bridge, SVG, captures, raw hashes, "
+        "KG simulation, and Graphify layers"
     )
 
 

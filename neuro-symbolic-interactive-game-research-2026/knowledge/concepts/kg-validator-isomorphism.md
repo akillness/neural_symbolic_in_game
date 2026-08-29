@@ -10,8 +10,12 @@ timestamp: 2026-08-14T12:00:00Z
 
 도메인/레인지↔policy · 경로 도달성↔reach · 속성 전제↔pre · 지식 부분그래프↔know ·
 접근 엣지↔disc · 순서 DAG↔quest. 상세: `research/directions/consensus-vs-symbolic-gate.md` §1.
+현재 machine registry는 이 여섯 대응을 이름 수준에서 검사하지만 runtime domain KG나
+독립 semantic oracle을 구현하지 않는다. 따라서 6/6은 구성 coverage이며 효능·완전성 수치가 아니다.
 
 # Relations
 
 - 게이트 정의: [기호 커밋 게이트](/concepts/commit-gate.md)
+- machine registry: [TRACE-RPG application ontology](/concepts/trace-rpg-application-ontology.md)
+- 구성 검사: [KG 온톨로지 제안 시뮬레이션](/protocols/kg-ontology-simulation.md)
 - 이 동형성이 동기화하는 실험: [H5 컨센서스 대 게이트](/contrasts/h5-consensus-vs-gate.md)

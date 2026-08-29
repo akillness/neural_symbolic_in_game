@@ -2,25 +2,27 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 Owner: game-programmer
-Status: public-safe playable deployed and browser-smoke verified; performance/soak evidence pending
+Status: 2026-08-30 English/curated-player artifact deployed and desktop-verified; current mobile, performance, soak, and rollback evidence pending
 
 | Resource | Generator/owner | Runtime role | Current evidence status |
 |---|---|---|---|
 | `game-track/godot/project.godot` | game-programmer | canonical research project; default remains `res://scenes/headless.tscn` | `[OBSERVED]` preserved for immutable evidence/hash binding |
 | `game-track/godot/scenes/main_3d.tscn` | game-programmer | explicit playable 3D entry | `[OBSERVED structure]` public-safe smoke `8/8`, terminal hash `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892` |
-| `scripts/game3d/game_3d.gd` | game-programmer | proposal router, save/load, presentation sync, Web start gate, `--smoke`, `--evaluate`, `--shot` | `[OBSERVED]` `SL-PLAY-EVAL-001` `47/47` and latest working captures |
-| `scripts/game3d/player_3d.gd` | game-programmer | third-person movement, mouse look, focus, interaction signal, distance-paced footsteps | `[OBSERVED structure]`; engine-local input-feedback wiring exists (D-037); browser latency/feel unmeasured |
+| `scripts/game3d/game_3d.gd` | game-programmer | proposal router, save/load, presentation sync, Web start gate, `--smoke`, `--evaluate`, `--shot` | `[OBSERVED]` `SL-PLAY-EVAL-001` `49/49`; public-safe smoke `8/8` includes fall-recovery/state-hash parity |
+| `scripts/game3d/player_3d.gd` | game-programmer | third-person movement, mouse look, focus, interaction signal, distance-paced footsteps, below-world physical recovery, presentation-only Idle/Walk blend | `[OBSERVED]` local Web recovery and tracked rig animation; symbolic state unchanged in smoke; browser latency/feel unmeasured |
 | `scripts/game3d/golden_path_layout.gd` | game-designer + programmer | single owner of interactable layout, walking-distance proxy, refusal next-affordance mapping | `[OBSERVED]` shared by playable slice and balance probe |
 | `scripts/balance_probe_runner.gd` + `scenes/balance_probe.tscn` | QA | deterministic 5-archetype battery over the canonical machine (`SL-BALANCE-PROBE-001`) | `[OBSERVED]` 5/5 rotations pass; scripted engineering only |
 | `scripts/run_balance_archetypes.py` | QA + tooling | staged headless probe driver; revalidation; md/svg/json working artifacts | `[OBSERVED]` outputs under `docs/latest/` |
 | `game-track/godot/assets/ui/ui-start-key-art-portrait.png` | asset lane (D-043) | 9:16 gate art selected when the layout is narrow-stacked; landscape and flat-gate fallbacks retained | `[OBSERVED]` evaluate reports `start_key_art_orientation: portrait` at narrow, `landscape` at wide; delete-test smoke unchanged |
-| `game-track/godot/assets/rig/` (untracked) + `load_player_rig()` | asset lane (D-046) | optional local Mixamo rig replacing the procedural body on desktop only | `[OBSERVED]` desktop `player_rig_active: true` (`mixamo_com`); public-safe `false`; identical terminal hash both ways |
+| `game-track/godot/assets/player/higgsfield-player.glb` + provenance/curation | asset lane (D-050) | tracked public-safe player mesh and presentation-only `Idle`/`Casual_Walk` animation | `[OBSERVED]` 9,677,324 bytes, SHA-256 `d575f8c580fbf0ee7207fbe6c09150c34a93cffc4e69b53b7210c971482ff1dd`; extracted texture 8,311,199 bytes / `37c939772e57d381c77e419b836632bf107b5301bde63f041b40e3094669f739`, byte-identical to the GLB-embedded image; 26 nodes, 15,463 triangles, 24 joints; `--evaluate` reports `higgsfield-tracked`, active `Idle` |
+| `scripts/validate_player_asset.py` | asset lane + release | fail-closed GLB/provenance/curation/mesh/skin/clip/root-scale validator | `[OBSERVED]` PASS; Web release regression binds the tracked path and movement-state hook |
+| `game-track/godot/assets/rig/` (untracked) + local Mixamo recipe | asset lane (D-046) | optional owner-local fallback only; raw Adobe bytes never redistributed | `[OBSERVED history]` superseded for public runtime by D-050; directory remains excluded from Web staging and Git |
 | `game-track/assets/motion/` + `scripts/validate_motion_assets.py` | asset lane + release | motion/rig intake contract (D-039); raw-source redistribution guard | `[OBSERVED]` 0 staged assets; guard PASS |
 | `scripts/game3d/world_builder.gd` | game-programmer + visual lane | procedural harbor, instanced dressing, rain, public-safe asset guard, five pooled beat VFX emitters | `[OBSERVED structure]`; frame performance unmeasured |
 | `scripts/game3d/narrative_director.gd` | visual lane | six authored presentation beats, tension, cinematics, reduced-motion policy, pooled VFX triggering | `[OBSERVED structure]`; no affect/immersion result |
 | `scripts/game3d/interactable_3d.gd` | visual lane | text/icon/color-redundant focus marker | `[OBSERVED structure]`; readability unmeasured |
-| `scripts/game3d/harbor_ledger_ui.gd` | UI lane | wide-column/narrow-stacked layouts, 44 px choice targets, progress, start gate, pointer/audio status | `[OBSERVED]` Korean rendering clean at 1280×720 and 390×844 in Playwriter |
-| `scripts/game3d/procedural_audio.gd` | audio lane | deterministic 22,050 Hz ambient/cues, four cue voices, gesture lock, mute and focus-out policy | `[OBSERVED structure]`; no external audio assets; browser playback pending |
+| `scripts/game3d/harbor_ledger_ui.gd` | UI lane | English wide-column/narrow-stacked layouts, 44 px choice targets, progress, start gate, pointer/audio status, ASCII bracket markers | `[OBSERVED]` current start/tutorial/full route rendered with zero console/page errors; responsive profile invariants pass; current narrow human readability unassessed |
+| `scripts/game3d/procedural_audio.gd` | audio lane | deterministic 22,050 Hz ambient/cues, 18 generated streams, max five cue voices, gesture lock, mute and focus-out policy | `[OBSERVED structure]`; no external audio assets; browser playback pending |
 | `game-track/godot/assets/models/*.glb` | Blender procedural authoring | five byte-locked harbor prop/landmark meshes, with procedural fallback | `[OBSERVED artifact]` 5/5 size/SHA-256 receipts in `models-manifest.json`; AI generation false; no third-party mesh/texture inputs recorded; source generator was not retained, so exact regeneration is not claimed |
 | `game-track/godot/assets/fonts/NanumGothic-Regular.ttf` | upstream Google Fonts/Nanum; Sandoll Communication | bundled Korean/Latin UI and focus-label glyph coverage | `[OBSERVED provenance]` unmodified upstream binary, 2,054,744 bytes, SHA-256 `76f45ef4a6bcff344c837c95a7dcc26e017e38b5846d5ae0cdcb5b86be2e2d31`, SIL OFL 1.1 in adjacent `OFL.txt`, retrieved 2026-08-13 |
 | `game-track/godot/data/sealed_lighthouse.json` | game-programmer from approved concept | frozen canonical scenario | `[OBSERVED]` schema-valid carried fixture |
@@ -28,20 +30,24 @@ Status: public-safe playable deployed and browser-smoke verified; performance/so
 | `data/fixtures/experimental-game-*.json` | game-programmer | canonical, duplicate, timeout, and corrupt-save inputs | `[OBSERVED]` schema-valid carried fixtures |
 | `engineering/tech-verification/current.json` → selected v5 | immutable evidence pipeline | selected headless and non-headless Cycle 2 evidence | `[OBSERVED carried]` `godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`; unchanged |
 | `game-track/web/export_presets.cfg` | Web release lane | single-threaded Web preset, extension support disabled, scenario JSON included, `docs/latest/**` excluded | `[OBSERVED]` deployed artifact built from staged copy |
-| `scripts/build_godot_web.sh` | Web release lane | copy to `mktemp`, select `main_3d.tscn` only in staged copy, fail on Godot script/import errors, copy the OFL notice to the artifact root, sync deploy artifact | `[OBSERVED structure]`; canonical project is not rewritten |
+| `scripts/build_godot_web.sh` | Web release lane | copy to `mktemp`, select `main_3d.tscn` only in staged copy, subtract exact sandboxed macOS font/certificate diagnostics, fail on every remaining Godot script/import error, copy OFL, sync artifact | `[OBSERVED]` deployed build passed; player validator and synthetic real-error gate passed; canonical project unchanged |
 | `game-track/web/vercel.json` | Web release lane | static security headers without unnecessary cross-origin isolation | `[OBSERVED]` production deployment at `https://sealed-lighthouse-trace-rpg.vercel.app` |
-| `game-track/web/public/` | builder output | ignored disposable static artifact for browser validation/deploy | `[OBSERVED latest]` 2026-08-21 production deploy `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`: 11 top-level files, 45,823,290 bytes; PCK 5,970,516 bytes after excluding `docs/latest/**`, SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; public OFL notice 4,534 bytes; HTML/JS/WASM/PCK/OFL returned 200 and WASM `application/wasm`; local `vercel link` metadata (`.env.local`, `.vercel/`, generated `.gitignore`) is not a shipped artifact file and is excluded from the count; non-authoritative |
+| `game-track/web/public/` | builder output | ignored disposable static artifact for browser validation/deploy | `[OBSERVED production 2026-08-30]` deploy `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`; 11 manifest files, 50,745,203 bytes; PCK 10,892,428 bytes, SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`; includes tracked player; 10 runtime files returned 200 and matched local bytes; `vercel.json` is non-public deployment configuration. `[OBSERVED history]` 2026-08-21 deploy `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`: PCK 5,970,516 bytes / `b9706912…56eb`; non-authoritative |
 | Deployed browser captures | Playwriter | start/in-game presentation receipts | `[OBSERVED]` `docs/latest/vercel-start.png`, `vercel-in-game.png`, `vercel-mobile-start.png`, `vercel-mobile-in-game.png`; local Web inspection retained as `web-start.png`, `web-in-game.png` |
+| `_workspace/current/qa/browser-qa.md` | browser QA | current local Web golden-path, save/refresh/load, fall-recovery, and pointer-lock receipt | `[OBSERVED]` full ending reached; local save continuity/recovery pass; pointer lock still unverified |
 
 ## Public-safe asset boundary
 
-The public snapshot retains only `game-track/assets/concepts/public-exclusion.json`, which binds the
-omitted generated candidates by ID and SHA-256. The original bytes remain pending human
-rights/style review with `runtime_eligible: false`. `world_builder.gd` returns no candidate texture when the engine has the
-`web` feature or receives `--public-safe`; the Web project also packages only `res://` resources.
-Therefore the public release lane uses procedural geometry, materials, icons, VFX, UI, and audio.
-This exclusion does not complete the candidate pack's human rights/style review; it prevents that
-unreviewed pack from entering the public playable artifact.
+Within the pending concept lane, the public snapshot retains only
+`game-track/assets/concepts/public-exclusion.json`, which binds omitted candidates by ID and
+SHA-256. Those original bytes remain pending human rights/style review with
+`runtime_eligible: false`. `world_builder.gd` returns no pending candidate texture when the engine
+has the `web` feature or receives `--public-safe`; the Web project packages only `res://` resources.
+Therefore the public release lane uses the separately curated Higgsfield UI assets and tracked
+Higgsfield player GLB over procedural world geometry, materials, VFX, and audio. The player lane is
+presentation-only and cannot write save/schema/canonical state. This exclusion does not complete
+the pending concept pack's human rights/style review; it prevents that unreviewed pack from entering
+the public playable artifact.
 
 ## Evidence boundary
 

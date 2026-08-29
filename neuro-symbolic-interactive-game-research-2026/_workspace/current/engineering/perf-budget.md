@@ -38,7 +38,9 @@ The five-frame headless samples are exact observations but not a warmed performa
 | One-shot VFX | five pooled emitters; at most `18` particles per burst; no VFX-only lights | static cap |
 | Repeated dressing | `MultiMeshInstance3D`, decorative instances without collision | static structure |
 | Expensive post effects | blur `0`, raymarch `0` | static cap |
-| Procedural audio | mono `22,050 Hz`, four pooled cue voices, generated once per scene | static structure |
+| Procedural audio | mono `22,050 Hz`, five pooled cue voices, generated once per scene | static structure |
+| Curated player asset | 9,677,324-byte GLB; 15,463 measured triangles; 26 nodes; 24 joints; two required clips | measured asset structure, not frame cost |
+| Current deployed Web pack | 10,892,428-byte PCK (`+4,921,912` bytes versus the retained 5,970,516-byte prior-production control) | artifact receipt, not runtime performance |
 | Reduced motion | player-toggleable; VFX/camera motion policy is suppressed or shortened | static structure |
 
 These caps define a starting performance envelope; they are not measured FPS, memory, or input
@@ -50,10 +52,12 @@ results.
 |---|---:|---|---|
 | Warmed Web frame p95 | ≤16.7 ms | `[NOT OBSERVED]` | browser profiler after warmup |
 | Long-frame rate | <0.5% | `[NOT OBSERVED]` | retained session sample |
-| Input-to-visible feedback | ≤100 ms | `[WIRED 2026-08-28, NOT BROWSER-OBSERVED]` — the playable slice now emits `input_to_visible_feedback_ms` samples through the proposal→ledger→rendered-frame boundary (headless wiring sample ≈29 ms); the gate still requires a real-browser, user-gesture measurement | browser input/visual timestamps |
+| Input-to-visible feedback | ≤100 ms | `[WIRED, NOT BROWSER-OBSERVED]` — latest engine-local proposal→ledger→rendered-frame sample `3.53 ms`; one headless sample is wiring evidence, while the gate still requires a real-browser, user-gesture measurement | browser input/visual timestamps |
 | Memory stability | stable over 30 min | `[NOT OBSERVED]` | 30-minute browser/OS memory trace |
 | Audio unlock/resume | gesture-safe and stable | `[NOT OBSERVED IN CLEAN BROWSER]` | start, focus-out/in, mute/unmute test |
 
-The public-safe 3D smoke `8/8` and aggregate `40 tests, 44 subtests` validate authored engineering
-behavior only. G6 remains `FIX` until the missing browser and soak measurements are recorded with
+The public-safe 3D smoke `8/8`, game-track selection `46 passed, 2 skipped`, full Pytest
+`172 passed, 2 skipped`, and unittest discovery `131` with `2` skipped validate authored engineering
+behavior only. Local refresh-persistent save/load and below-world recovery now pass, but G6 remains
+`FIX` until the missing browser and soak measurements are recorded with
 exact commands, timestamps, and retained outputs.

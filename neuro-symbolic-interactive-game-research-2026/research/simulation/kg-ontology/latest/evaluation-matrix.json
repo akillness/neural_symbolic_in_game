@@ -1,0 +1,3415 @@
+{
+  "budget": {
+    "candidate_scores_per_trial": 30,
+    "candidate_scores_total": 210,
+    "candidates_per_query": 5,
+    "decision_k": 1,
+    "queries_per_trial": 6,
+    "ranking_k": 3,
+    "strategy_trials": 7
+  },
+  "database": {
+    "default_artifact": "research/simulation/kg-ontology/latest/trace-rpg-knowledge.sqlite",
+    "reason": "SQLite bytes are runtime output; deterministic JSON/SVG/TeX receipts are tracked.",
+    "schema": "knowledge/ontology/knowledge-graph-schema.sql",
+    "tracked": false
+  },
+  "graph": {
+    "competency_question_coverage": 1.0,
+    "competency_questions": [
+      {
+        "answers": 5,
+        "answers_by_source": {
+          "/contrasts/h1-gate-vs-direct.md": 1,
+          "/contrasts/h2-repair-vs-retry.md": 1,
+          "/contrasts/h3-memory.md": 1,
+          "/contrasts/h4-affect.md": 1,
+          "/contrasts/h5-consensus-vs-gate.md": 1
+        },
+        "id": "CQ-01",
+        "minimum_answers": 5,
+        "pass": true,
+        "required_sources": {
+          "/contrasts/h1-gate-vs-direct.md": 1,
+          "/contrasts/h2-repair-vs-retry.md": 1,
+          "/contrasts/h3-memory.md": 1,
+          "/contrasts/h4-affect.md": 1,
+          "/contrasts/h5-consensus-vs-gate.md": 1
+        },
+        "source_coverage": 1.0
+      },
+      {
+        "answers": 6,
+        "answers_by_source": {
+          "/experiments/stage-1-screening.md": 2,
+          "/experiments/stage-2-confirmatory.md": 4
+        },
+        "id": "CQ-02",
+        "minimum_answers": 6,
+        "pass": true,
+        "required_sources": {
+          "/experiments/stage-1-screening.md": 2,
+          "/experiments/stage-2-confirmatory.md": 4
+        },
+        "source_coverage": 1.0
+      },
+      {
+        "answers": 2,
+        "answers_by_source": {
+          "/engine/llm-channel-demo.md": 1,
+          "/engine/m6-engine-fixture.md": 1
+        },
+        "id": "CQ-03",
+        "minimum_answers": 2,
+        "pass": true,
+        "required_sources": {
+          "/engine/llm-channel-demo.md": 1,
+          "/engine/m6-engine-fixture.md": 1
+        },
+        "source_coverage": 1.0
+      },
+      {
+        "answers": 4,
+        "answers_by_source": {
+          "/experiments/pilot-measurement.md": 1,
+          "/experiments/stage-1-screening.md": 1,
+          "/experiments/stage-2-confirmatory.md": 2
+        },
+        "id": "CQ-04",
+        "minimum_answers": 4,
+        "pass": true,
+        "required_sources": {
+          "/experiments/pilot-measurement.md": 1,
+          "/experiments/stage-1-screening.md": 1,
+          "/experiments/stage-2-confirmatory.md": 2
+        },
+        "source_coverage": 1.0
+      },
+      {
+        "answers": 1,
+        "answers_by_source": {
+          "/citations/kg-ontology-evaluation-literature.md": 1
+        },
+        "id": "CQ-05",
+        "minimum_answers": 1,
+        "pass": true,
+        "required_sources": {
+          "/citations/kg-ontology-evaluation-literature.md": 1
+        },
+        "source_coverage": 1.0
+      },
+      {
+        "answers": 2,
+        "answers_by_source": {
+          "/experiments/consensus-arms.md": 1,
+          "/experiments/controller-arms.md": 1
+        },
+        "id": "CQ-06",
+        "minimum_answers": 2,
+        "pass": true,
+        "required_sources": {
+          "/experiments/consensus-arms.md": 1,
+          "/experiments/controller-arms.md": 1
+        },
+        "source_coverage": 1.0
+      }
+    ],
+    "curated_typed_edges": 24,
+    "declared_node_types": 21,
+    "encoded_relation_coverage": {
+      "eligible": 6,
+      "interpretation": "construction invariant, not semantic completeness",
+      "mapped": 6,
+      "ratio": 1.0
+    },
+    "game_state_relation_types": 6,
+    "method_relation_types": 7,
+    "nodes": 43,
+    "reference_edges": 106
+  },
+  "input_receipts": {
+    "claim_ledger": "f4235b0864371c5f04c603c543e8b8fc783695989ac24422bcd56c8098b37703",
+    "config": "8517b3f7cc89dd2efc8d5fb8250a0a198dd1e5171691af6e4536895c8830f6a2",
+    "curated_relations": "300d4b39a58ec4d463a6ef8e7a84b27d9f237cafcbde1f8d679ada034b38750a",
+    "ontology": "a50acd3089314bd31fa520a3c965671d33ee82554401a9fcb1cb587f726616a6",
+    "simulator": "a737e3ddec5e255c1ca2feb0442138c56f8a58f598919a48cd5b4a1fff31eb77",
+    "source_ledger": "2b59679579ac28410438236a3269b76f9408a75abca6d5f488501005fa54302d",
+    "sqlite_schema": "fcc90022d34f564c5a317071add2ddc0d427d7e70066bb4ebcb8505ae914a041"
+  },
+  "ontology_violations": 0,
+  "schema_version": "1.0.0",
+  "scope": {
+    "benchmark_design": "authored closed-world typed-link holdout",
+    "engineering_only": true,
+    "not_evidence_for": [
+      "runtime graph retrieval efficacy",
+      "long-horizon contradiction reduction",
+      "semantic completeness",
+      "player or human outcomes",
+      "C-RESULT-001",
+      "C-RESULT-002",
+      "C-RESULT-003",
+      "C-RESULT-004",
+      "C-RESULT-005"
+    ],
+    "simulation_only": true
+  },
+  "selection_rule": {
+    "coverage_floor": 0.95,
+    "recall_floor": 0.8,
+    "semantic_at_k_floor": 1.0,
+    "strict_improvement_order": [
+      "precision",
+      "mrr_realistic",
+      "ndcg_at_k",
+      "negative_brier_score",
+      "negative_nonzero_weight_count"
+    ]
+  },
+  "simulation_id": "SL-KG-ONTOLOGY-SIM-001",
+  "status": "PASS",
+  "terminology": {
+    "graph_store": "SQLite property-graph mirror of repository-local OKF method atoms",
+    "keep": "offline strategy retained after strict constrained improvement; no Git reset",
+    "ontology": "closed application ontology registry; not OWL or SHACL",
+    "precision": "TP / (TP + FP) over selected heldout-link candidates",
+    "proposal": "candidate typed link in an authored closed-world holdout",
+    "recall": "TP / (TP + FN) over one frozen relevant link per query",
+    "semantic_at_k": "domain/range-conforming candidates among the top K"
+  },
+  "trials": [
+    {
+      "decision": "baseline",
+      "decision_reason": "Baseline recorded before any mutation.",
+      "description": "Untyped target-degree baseline.",
+      "eligible": false,
+      "metrics": {
+        "brier_score": 0.315333333333,
+        "coverage": 0.666666666667,
+        "f1": 0.0,
+        "false_negative": 6,
+        "false_positive": 4,
+        "hits_at_1": 0.0,
+        "hits_at_k": 0.666666666667,
+        "mrr_realistic": 0.281878306878,
+        "ndcg_at_k": 0.376976584524,
+        "nonzero_weight_count": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "selected": 4,
+        "semantic_at_k": 0.555555555556,
+        "true_positive": 0
+      },
+      "objective": [
+        0.0,
+        0.281878306878,
+        0.376976584524,
+        -0.315333333333,
+        -1.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 1.0,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.5,
+              "target": "/protocols/execution-controls.md"
+            },
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.2,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.2,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/metrics/tension-rmse.md"
+            }
+          ],
+          "realistic_gold_rank": 3.5,
+          "selected": [
+            "Q1-C3"
+          ]
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 1.0,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.3,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/scenarios/scenario-families.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.2,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 3.0,
+          "selected": [
+            "Q2-C4"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.9,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.1,
+              "target": "/protocols/missingness-policy.md"
+            },
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.0,
+              "target": "/metrics/tension-rmse.md"
+            }
+          ],
+          "realistic_gold_rank": 5.0,
+          "selected": [
+            "Q3-C3"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.5,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/citations/cost-evaluation-literature.md"
+            },
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.2,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.2,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 4.5,
+          "selected": []
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.5,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.2,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.2,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.2,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 4.0,
+          "selected": []
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 1.0,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.4,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3,
+              "target": "/concepts/invariants.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.2,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 2.5,
+          "selected": [
+            "Q6-C5"
+          ]
+        }
+      ],
+      "strategy_id": "S0-degree-baseline",
+      "threshold": 0.6,
+      "weights": {
+        "degree": 1.0,
+        "lexical": 0.0,
+        "path": 0.0,
+        "type_fit": 0.0
+      }
+    },
+    {
+      "decision": "discard",
+      "decision_reason": "Failed one or more frozen recall, coverage, or Sem@K constraints.",
+      "description": "Question and endpoint token overlap only.",
+      "eligible": false,
+      "metrics": {
+        "brier_score": 0.155749638279,
+        "coverage": 1.0,
+        "f1": 1.0,
+        "false_negative": 0,
+        "false_positive": 0,
+        "hits_at_1": 1.0,
+        "hits_at_k": 1.0,
+        "mrr_realistic": 0.944444444444,
+        "ndcg_at_k": 1.0,
+        "nonzero_weight_count": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "selected": 6,
+        "semantic_at_k": 0.777777777778,
+        "true_positive": 6
+      },
+      "objective": [
+        1.0,
+        0.944444444444,
+        1.0,
+        -0.155749638279,
+        -1.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.130434782609,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.038461538462,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.032258064516,
+              "target": "/protocols/execution-controls.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.018518518519,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q1-C1"
+          ]
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.19512195122,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.044444444444,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.041666666667,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.038461538462,
+              "target": "/scenarios/scenario-families.md"
+            },
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q2-C1"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.1875,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.039215686275,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.037735849057,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/protocols/missingness-policy.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q3-C1"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.137254901961,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.127272727273,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.086206896552,
+              "target": "/citations/cost-evaluation-literature.md"
+            },
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.078431372549,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.017543859649,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q4-C1"
+          ]
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.058823529412,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q5-C1"
+          ]
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.032786885246,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.032786885246,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.016393442623,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.016393442623,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/concepts/invariants.md"
+            }
+          ],
+          "realistic_gold_rank": 1.5,
+          "selected": [
+            "Q6-C1"
+          ]
+        }
+      ],
+      "strategy_id": "S1-lexical",
+      "threshold": 0.03,
+      "weights": {
+        "degree": 0.0,
+        "lexical": 1.0,
+        "path": 0.0,
+        "type_fit": 0.0
+      }
+    },
+    {
+      "decision": "keep",
+      "decision_reason": "Strict lexicographic improvement under all frozen constraints.",
+      "description": "Domain/range fit plus lexical overlap with a loose threshold.",
+      "eligible": true,
+      "metrics": {
+        "brier_score": 0.130984080248,
+        "coverage": 1.0,
+        "f1": 1.0,
+        "false_negative": 0,
+        "false_positive": 0,
+        "hits_at_1": 1.0,
+        "hits_at_k": 1.0,
+        "mrr_realistic": 0.944444444444,
+        "ndcg_at_k": 1.0,
+        "nonzero_weight_count": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "selected": 6,
+        "semantic_at_k": 1.0,
+        "true_positive": 6
+      },
+      "objective": [
+        1.0,
+        0.944444444444,
+        1.0,
+        -0.130984080248,
+        -2.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.478260869565,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.423076923077,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.411111111111,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.01935483871,
+              "target": "/protocols/execution-controls.md"
+            },
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q1-C1"
+          ]
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.517073170732,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.426666666666,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.425,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.023076923077,
+              "target": "/scenarios/scenario-families.md"
+            },
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q2-C1"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.5125,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.423529411765,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.422641509434,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/protocols/missingness-policy.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q3-C1"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.482352941177,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.447058823529,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.410526315789,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.076363636364,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.051724137931,
+              "target": "/citations/cost-evaluation-literature.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q4-C1"
+          ]
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.435294117647,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q5-C1"
+          ]
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.419672131148,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.419672131148,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/concepts/invariants.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.009836065574,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.009836065574,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.5,
+          "selected": [
+            "Q6-C1"
+          ]
+        }
+      ],
+      "strategy_id": "S2-typed-lexical-loose",
+      "threshold": 0.4,
+      "weights": {
+        "degree": 0.0,
+        "lexical": 0.6,
+        "path": 0.0,
+        "type_fit": 0.4
+      }
+    },
+    {
+      "decision": "discard",
+      "decision_reason": "Failed one or more frozen recall, coverage, or Sem@K constraints.",
+      "description": "Same features with a stricter proposal threshold.",
+      "eligible": false,
+      "metrics": {
+        "brier_score": 0.130984080248,
+        "coverage": 0.5,
+        "f1": 0.666666666667,
+        "false_negative": 3,
+        "false_positive": 0,
+        "hits_at_1": 1.0,
+        "hits_at_k": 1.0,
+        "mrr_realistic": 0.944444444444,
+        "ndcg_at_k": 1.0,
+        "nonzero_weight_count": 2,
+        "precision": 1.0,
+        "recall": 0.5,
+        "selected": 3,
+        "semantic_at_k": 1.0,
+        "true_positive": 3
+      },
+      "objective": [
+        1.0,
+        0.944444444444,
+        1.0,
+        -0.130984080248,
+        -2.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.478260869565,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.423076923077,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.411111111111,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.01935483871,
+              "target": "/protocols/execution-controls.md"
+            },
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": []
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.517073170732,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.426666666666,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.425,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.023076923077,
+              "target": "/scenarios/scenario-families.md"
+            },
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q2-C1"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.5125,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.423529411765,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.422641509434,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/protocols/missingness-policy.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q3-C1"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.482352941177,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.447058823529,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.410526315789,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.076363636364,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.051724137931,
+              "target": "/citations/cost-evaluation-literature.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q4-C1"
+          ]
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.435294117647,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": []
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.419672131148,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.419672131148,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.4,
+              "target": "/concepts/invariants.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.009836065574,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.009836065574,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.5,
+          "selected": []
+        }
+      ],
+      "strategy_id": "S3-typed-lexical-strict",
+      "threshold": 0.48,
+      "weights": {
+        "degree": 0.0,
+        "lexical": 0.6,
+        "path": 0.0,
+        "type_fit": 0.4
+      }
+    },
+    {
+      "decision": "discard",
+      "decision_reason": "Tie or regression against the current kept strategy.",
+      "description": "Typed lexical score with heldout-safe graph-path support.",
+      "eligible": true,
+      "metrics": {
+        "brier_score": 0.137157438626,
+        "coverage": 1.0,
+        "f1": 0.833333333333,
+        "false_negative": 1,
+        "false_positive": 1,
+        "hits_at_1": 0.833333333333,
+        "hits_at_k": 1.0,
+        "mrr_realistic": 0.861111111111,
+        "ndcg_at_k": 0.938488292262,
+        "nonzero_weight_count": 3,
+        "precision": 0.833333333333,
+        "recall": 0.833333333333,
+        "selected": 6,
+        "semantic_at_k": 1.0,
+        "true_positive": 5
+      },
+      "objective": [
+        0.833333333333,
+        0.861111111111,
+        0.938488292262,
+        -0.137157438626,
+        -3.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.465217391304,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.406730769231,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.359259259259,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.066129032258,
+              "target": "/protocols/execution-controls.md"
+            },
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.05,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q1-C1"
+          ]
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.49756097561,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.420833333333,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.409722222222,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.094230769231,
+              "target": "/scenarios/scenario-families.md"
+            },
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.075,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q2-C1"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.444607843137,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.44375,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.406367924528,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.03,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.03,
+              "target": "/protocols/missingness-policy.md"
+            }
+          ],
+          "realistic_gold_rank": 2.0,
+          "selected": [
+            "Q3-C4"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.46862745098,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.464215686274,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.408771929824,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.138636363637,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.118103448276,
+              "target": "/citations/cost-evaluation-literature.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q4-C1"
+          ]
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.429411764706,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.425,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.425,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.425,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0375,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q5-C1"
+          ]
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.416393442623,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.416393442623,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3875,
+              "target": "/concepts/invariants.md"
+            },
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.083196721311,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.058196721311,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 1.5,
+          "selected": [
+            "Q6-C1"
+          ]
+        }
+      ],
+      "strategy_id": "S4-typed-lexical-path",
+      "threshold": 0.4,
+      "weights": {
+        "degree": 0.0,
+        "lexical": 0.5,
+        "path": 0.15,
+        "type_fit": 0.35
+      }
+    },
+    {
+      "decision": "discard",
+      "decision_reason": "Failed one or more frozen recall, coverage, or Sem@K constraints.",
+      "description": "A deliberately path-heavy mutation used to test reversion.",
+      "eligible": false,
+      "metrics": {
+        "brier_score": 0.173777527466,
+        "coverage": 1.0,
+        "f1": 0.5,
+        "false_negative": 3,
+        "false_positive": 3,
+        "hits_at_1": 0.5,
+        "hits_at_k": 0.833333333333,
+        "mrr_realistic": 0.625,
+        "ndcg_at_k": 0.688488292262,
+        "nonzero_weight_count": 3,
+        "precision": 0.5,
+        "recall": 0.5,
+        "selected": 6,
+        "semantic_at_k": 1.0,
+        "true_positive": 3
+      },
+      "objective": [
+        0.5,
+        0.625,
+        0.688488292262,
+        -0.173777527466,
+        -3.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.459420289855,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.395192307692,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.253703703704,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.189784946236,
+              "target": "/protocols/execution-controls.md"
+            },
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.183333333333,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q1-C1"
+          ]
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.472357723577,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.441666666667,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.396388888889,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.282692307692,
+              "target": "/scenarios/scenario-families.md"
+            },
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.275,
+              "target": "/oracles/semantic-oracle.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q2-C1"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.532843137255,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.395047169811,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.2875,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.11,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.11,
+              "target": "/protocols/missingness-policy.md"
+            }
+          ],
+          "realistic_gold_rank": 3.0,
+          "selected": [
+            "Q3-C4"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.54068627451,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.460784313725,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.436842105263,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.300454545455,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.29224137931,
+              "target": "/citations/cost-evaluation-literature.md"
+            }
+          ],
+          "realistic_gold_rank": 2.0,
+          "selected": [
+            "Q4-C2"
+          ]
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.525,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.525,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.525,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.445098039216,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.1375,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 4.0,
+          "selected": [
+            "Q5-C2"
+          ]
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.439890710382,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.439890710382,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3875,
+              "target": "/concepts/invariants.md"
+            },
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.278278688525,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.186612021858,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 1.5,
+          "selected": [
+            "Q6-C1"
+          ]
+        }
+      ],
+      "strategy_id": "S5-path-heavy",
+      "threshold": 0.3,
+      "weights": {
+        "degree": 0.0,
+        "lexical": 0.2,
+        "path": 0.55,
+        "type_fit": 0.25
+      }
+    },
+    {
+      "decision": "discard",
+      "decision_reason": "Failed one or more frozen recall, coverage, or Sem@K constraints.",
+      "description": "Adds a popularity prior to test whether hub bias helps.",
+      "eligible": false,
+      "metrics": {
+        "brier_score": 0.140774460257,
+        "coverage": 1.0,
+        "f1": 0.5,
+        "false_negative": 3,
+        "false_positive": 3,
+        "hits_at_1": 0.5,
+        "hits_at_k": 1.0,
+        "mrr_realistic": 0.638888888889,
+        "ndcg_at_k": 0.771821625595,
+        "nonzero_weight_count": 4,
+        "precision": 0.5,
+        "recall": 0.5,
+        "selected": 6,
+        "semantic_at_k": 1.0,
+        "true_positive": 3
+      },
+      "objective": [
+        0.5,
+        0.638888888889,
+        0.771821625595,
+        -0.140774460257,
+        -4.0
+      ],
+      "queries": [
+        {
+          "id": "Q-REPAIR-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q1-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.130434782609,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.428695652174,
+              "target": "/metrics/repair-at-k.md"
+            },
+            {
+              "candidate_id": "Q1-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.038461538462,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.374807692308,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q1-C5",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.018518518519,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.308333333334,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q1-C3",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.15,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q1-C4",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.032258064516,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.114516129032,
+              "target": "/protocols/execution-controls.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q1-C1"
+          ]
+        },
+        {
+          "id": "Q-MEMORY-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q2-C1",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.19512195122,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.467804878049,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C2",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.041666666667,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.38875,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.044444444444,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3875,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q2-C4",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.175,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q2-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.038461538462,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.122307692308,
+              "target": "/scenarios/scenario-families.md"
+            }
+          ],
+          "realistic_gold_rank": 1.0,
+          "selected": [
+            "Q2-C1"
+          ]
+        },
+        {
+          "id": "Q-AFFECT-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q3-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.039215686275,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.422647058824,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.037735849057,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.384481132076,
+              "target": "/metrics/long-horizon-contradiction-rate.md"
+            },
+            {
+              "candidate_id": "Q3-C1",
+              "features": {
+                "degree": 0.0,
+                "lexical": 0.1875,
+                "path": 0.0,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.384375,
+              "target": "/metrics/tension-rmse.md"
+            },
+            {
+              "candidate_id": "Q3-C3",
+              "features": {
+                "degree": 0.9,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.12,
+              "target": "/concepts/claim-boundary.md"
+            },
+            {
+              "candidate_id": "Q3-C5",
+              "features": {
+                "degree": 0.1,
+                "lexical": 0.0,
+                "path": 0.2,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.04,
+              "target": "/protocols/missingness-policy.md"
+            }
+          ],
+          "realistic_gold_rank": 3.0,
+          "selected": [
+            "Q3-C4"
+          ]
+        },
+        {
+          "id": "Q-COST-METRIC",
+          "ranking": [
+            {
+              "candidate_id": "Q4-C2",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.078431372549,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.440294117647,
+              "target": "/metrics/valid-episode-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.137254901961,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.431764705882,
+              "target": "/metrics/cost-of-valid-episode.md"
+            },
+            {
+              "candidate_id": "Q4-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.017543859649,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.377894736842,
+              "target": "/metrics/hard-violation-rate.md"
+            },
+            {
+              "candidate_id": "Q4-C3",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.127272727273,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.182272727273,
+              "target": "/experiments/consensus-arms.md"
+            },
+            {
+              "candidate_id": "Q4-C5",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.086206896552,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.143793103448,
+              "target": "/citations/cost-evaluation-literature.md"
+            }
+          ],
+          "realistic_gold_rank": 2.0,
+          "selected": [
+            "Q4-C2"
+          ]
+        },
+        {
+          "id": "Q-CONFIRMATORY-CONTRAST",
+          "ranking": [
+            {
+              "candidate_id": "Q5-C2",
+              "features": {
+                "degree": 0.5,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.425,
+              "target": "/contrasts/h1-gate-vs-direct.md"
+            },
+            {
+              "candidate_id": "Q5-C3",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.405,
+              "target": "/contrasts/h2-repair-vs-retry.md"
+            },
+            {
+              "candidate_id": "Q5-C1",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.058823529412,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.396470588235,
+              "target": "/contrasts/h3-memory.md"
+            },
+            {
+              "candidate_id": "Q5-C4",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.5,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.395,
+              "target": "/contrasts/h4-affect.md"
+            },
+            {
+              "candidate_id": "Q5-C5",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.0575,
+              "target": "/metrics/repair-at-k.md"
+            }
+          ],
+          "realistic_gold_rank": 3.0,
+          "selected": [
+            "Q5-C2"
+          ]
+        },
+        {
+          "id": "Q-ENGINE-PROTOCOL",
+          "ranking": [
+            {
+              "candidate_id": "Q6-C1",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": true,
+              "score": 0.404754098361,
+              "target": "/protocols/validate-repair-commit.md"
+            },
+            {
+              "candidate_id": "Q6-C2",
+              "features": {
+                "degree": 0.4,
+                "lexical": 0.032786885246,
+                "path": 0.333333333333,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.404754098361,
+              "target": "/concepts/commit-gate.md"
+            },
+            {
+              "candidate_id": "Q6-C4",
+              "features": {
+                "degree": 0.3,
+                "lexical": 0.0,
+                "path": 0.25,
+                "type_fit": 1.0
+              },
+              "relevant": false,
+              "score": 0.3675,
+              "target": "/concepts/invariants.md"
+            },
+            {
+              "candidate_id": "Q6-C5",
+              "features": {
+                "degree": 1.0,
+                "lexical": 0.016393442623,
+                "path": 0.5,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.18237704918,
+              "target": "/oracles/semantic-oracle.md"
+            },
+            {
+              "candidate_id": "Q6-C3",
+              "features": {
+                "degree": 0.2,
+                "lexical": 0.016393442623,
+                "path": 0.333333333333,
+                "type_fit": 0.0
+              },
+              "relevant": false,
+              "score": 0.07737704918,
+              "target": "/metrics/hard-violation-rate.md"
+            }
+          ],
+          "realistic_gold_rank": 1.5,
+          "selected": [
+            "Q6-C1"
+          ]
+        }
+      ],
+      "strategy_id": "S6-degree-mix",
+      "threshold": 0.38,
+      "weights": {
+        "degree": 0.1,
+        "lexical": 0.45,
+        "path": 0.15,
+        "type_fit": 0.3
+      }
+    }
+  ],
+  "winner": {
+    "metrics": {
+      "brier_score": 0.130984080248,
+      "coverage": 1.0,
+      "f1": 1.0,
+      "false_negative": 0,
+      "false_positive": 0,
+      "hits_at_1": 1.0,
+      "hits_at_k": 1.0,
+      "mrr_realistic": 0.944444444444,
+      "ndcg_at_k": 1.0,
+      "nonzero_weight_count": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "selected": 6,
+      "semantic_at_k": 1.0,
+      "true_positive": 6
+    },
+    "strategy_id": "S2-typed-lexical-loose",
+    "top_proposals": [
+      {
+        "candidate_id": "Q1-C1",
+        "query_id": "Q-REPAIR-METRIC",
+        "relevant": true,
+        "score": 0.478260869565,
+        "target": "/metrics/repair-at-k.md"
+      },
+      {
+        "candidate_id": "Q2-C1",
+        "query_id": "Q-MEMORY-METRIC",
+        "relevant": true,
+        "score": 0.517073170732,
+        "target": "/metrics/long-horizon-contradiction-rate.md"
+      },
+      {
+        "candidate_id": "Q3-C1",
+        "query_id": "Q-AFFECT-METRIC",
+        "relevant": true,
+        "score": 0.5125,
+        "target": "/metrics/tension-rmse.md"
+      },
+      {
+        "candidate_id": "Q4-C1",
+        "query_id": "Q-COST-METRIC",
+        "relevant": true,
+        "score": 0.482352941177,
+        "target": "/metrics/cost-of-valid-episode.md"
+      },
+      {
+        "candidate_id": "Q5-C1",
+        "query_id": "Q-CONFIRMATORY-CONTRAST",
+        "relevant": true,
+        "score": 0.435294117647,
+        "target": "/contrasts/h3-memory.md"
+      },
+      {
+        "candidate_id": "Q6-C1",
+        "query_id": "Q-ENGINE-PROTOCOL",
+        "relevant": true,
+        "score": 0.419672131148,
+        "target": "/protocols/validate-repair-commit.md"
+      }
+    ]
+  },
+  "zero_denominator_policy": "return 0.0 and retain the explicit count"
+}

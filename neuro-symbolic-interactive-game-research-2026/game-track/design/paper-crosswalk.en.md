@@ -37,6 +37,8 @@ claim. The submission manuscript remains authoritative in `../../paper/latex/en/
 | Target tension RMSE | `sqrt(mean((predicted_tension - target_tension)^2))` | tested only after hard-validity non-inferiority |
 | Replay equality | `I(engine_terminal_hash = research_terminal_hash)` | engine correctness only, not RQ efficacy |
 | Rejection immutability | `I(pre_state_hash = post_state_hash)` for reject/timeout/failure | engine/controller boundary correctness |
+| Authored typed-link proposal precision/recall | `P=TP/(TP+FP)`, `R=TP/(TP+FN)` | `SL-KG-ONTOLOGY-SIM-001` closed-world method links only; never RQ3 efficacy |
+| Ontology fit at K | `Sem@K = conforming_top_K / (K × queries)` | encoded domain/range construction check, not semantic completeness |
 
 ## 4. Stage 6 C1 closure map
 
@@ -88,6 +90,7 @@ requiring a verifier host to impersonate the capture host.
 | Novelty survey | `SL-SURVEY-001`, `SL-NOVELTY-001` | bounded official-description comparison with limitations | universal novelty or player impression claim |
 | Frozen concept pack | `SL-C01`–`SL-C04` | disclose AI-assisted concept authoring and visual condition | infer game quality or RQ result from image quality |
 | Non-headless render bundle | `SL-CAPTURE-001` (paper label; not a manifest field), `C-GAME-DESIGN-003` | show three deterministic structured-state Godot render surfaces with exact manifest capture IDs and source binding | claim live Python integration, model/visual efficacy, usability, immersion, human outcomes, G4, or G6 |
+| Typed methods-graph simulation | `SL-KG-ONTOLOGY-SIM-001` | report the authored six-query link-holdout method, exact formulas, and construction checks under a simulation-only label | infer runtime retrieval, temporal-memory benefit, semantic completeness, player usefulness, or any `C-RESULT-*` promotion |
 
 ## 7. Paper-ready wording controls
 

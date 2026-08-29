@@ -1,508 +1,1552 @@
 {
-  "nodes": [
-    {
-      "id": "/README.md",
-      "type": "Bundle Guide",
-      "title": "TRACE-RPG Methods Knowledge Bundle"
-    },
-    {
-      "id": "/metrics/valid-episode-rate.md",
-      "type": "Metric Definition",
-      "title": "Valid Episode Rate"
-    },
-    {
-      "id": "/metrics/cost-of-valid-episode.md",
-      "type": "Metric Definition",
-      "title": "Cost-of-Valid-Episode [PROPOSED]"
-    },
-    {
-      "id": "/metrics/hard-violation-rate.md",
-      "type": "Metric Definition",
-      "title": "Hard Dialogue Violation Rate"
-    },
-    {
-      "id": "/metrics/tension-rmse.md",
-      "type": "Metric Definition",
-      "title": "Tension RMSE"
-    },
-    {
-      "id": "/metrics/repair-at-k.md",
-      "type": "Metric Definition",
-      "title": "repair@K"
-    },
-    {
-      "id": "/oracles/semantic-oracle.md",
-      "type": "Oracle",
-      "title": "의미 오라클"
-    },
-    {
-      "id": "/oracles/gold-isolation.md",
-      "type": "Protocol",
-      "title": "골드 격리"
-    },
-    {
-      "id": "/oracles/encoding-oracle.md",
-      "type": "Oracle",
-      "title": "인코딩 오라클"
-    },
-    {
-      "id": "/experiments/consensus-arms.md",
-      "type": "Controller Arm Set",
-      "title": "컨센서스 arm C1–C3 [PROPOSED]"
-    },
-    {
-      "id": "/experiments/stage-2-confirmatory.md",
-      "type": "Experiment Stage",
-      "title": "Stage 2 확증"
-    },
-    {
-      "id": "/experiments/controller-arms.md",
-      "type": "Controller Arm Set",
-      "title": "컨트롤러 arm A0–A5와 예산 계약"
-    },
-    {
-      "id": "/experiments/pilot-measurement.md",
-      "type": "Experiment Stage",
-      "title": "결정론적 오프라인 파일럿 (PQ1–PQ5)"
-    },
-    {
-      "id": "/experiments/stage-1-screening.md",
-      "type": "Experiment Stage",
-      "title": "Stage 1 스크리닝"
-    },
-    {
-      "id": "/concepts/kg-validator-isomorphism.md",
-      "type": "Concept",
-      "title": "KG 관계–validator 술어 동형성"
-    },
-    {
-      "id": "/concepts/invariants.md",
-      "type": "Concept",
-      "title": "구현 불변량 I1–I4"
-    },
-    {
-      "id": "/concepts/commit-gate.md",
-      "type": "Concept",
-      "title": "기호 커밋 게이트 (Symbolic Commit Gate)"
-    },
-    {
-      "id": "/concepts/claim-boundary.md",
-      "type": "Claim Boundary",
-      "title": "근거 경계 (Claim Boundary)"
-    },
-    {
-      "id": "/scenarios/scenario-families.md",
-      "type": "Scenario Family Set",
-      "title": "확증 시나리오 패밀리 7종"
-    },
-    {
-      "id": "/scenarios/sealed-lighthouse-dev.md",
-      "type": "Scenario Family Set",
-      "title": "SL-DEV-001 — 봉인된 등대 개발 fixture"
-    },
-    {
-      "id": "/citations/consensus-cost-literature.md",
-      "type": "Citation Set",
-      "title": "컨센서스·테스트타임 컴퓨트 문헌 (13편 검증)"
-    },
-    {
-      "id": "/citations/neurosymbolic-kg-literature.md",
-      "type": "Citation Set",
-      "title": "뉴로심볼릭·KG 검증 문헌 (15편 검증)"
-    },
-    {
-      "id": "/citations/cost-evaluation-literature.md",
-      "type": "Citation Set",
-      "title": "비용 인지·예산 매칭 평가 문헌 (14편 검증)"
-    },
-    {
-      "id": "/engine/m6-engine-fixture.md",
-      "type": "Engine Evidence",
-      "title": "M6 엔진 fixture (Godot 4.7.1)"
-    },
-    {
-      "id": "/engine/render-capture-evidence.md",
-      "type": "Engine Evidence",
-      "title": "Render Capture v5 (SL-CAPTURE-001)"
-    },
-    {
-      "id": "/engine/llm-channel-demo.md",
-      "type": "Engine Evidence",
-      "title": "Codex OAuth LLM 채널 (엔지니어링 데모)"
-    },
-    {
-      "id": "/contrasts/h1-gate-vs-direct.md",
-      "type": "Contrast Family",
-      "title": "H1 — 게이트 대 직접 커밋"
-    },
-    {
-      "id": "/contrasts/h3-memory.md",
-      "type": "Contrast Family",
-      "title": "H3 — KG 시간 메모리 대 무메모리"
-    },
-    {
-      "id": "/contrasts/h5-consensus-vs-gate.md",
-      "type": "Contrast Family",
-      "title": "H5 — 컨센서스 대 기호 게이트 [PROPOSED]"
-    },
-    {
-      "id": "/contrasts/h2-repair-vs-retry.md",
-      "type": "Contrast Family",
-      "title": "H2 — 구조화 수리 대 맹목 재시도"
-    },
-    {
-      "id": "/contrasts/h4-affect.md",
-      "type": "Contrast Family",
-      "title": "H4 — 감정 적응 게이트키핑"
-    },
-    {
-      "id": "/protocols/config-drift-check.md",
-      "type": "Runbook",
-      "title": "방법 원자 ↔ 동결 설정 드리프트 검사"
-    },
-    {
-      "id": "/protocols/episode-execution.md",
-      "type": "Runbook",
-      "title": "게임 에피소드 실험 실행 절차"
-    },
-    {
-      "id": "/protocols/bundle-validation.md",
-      "type": "Runbook",
-      "title": "OKF 번들 구조 린트"
-    },
-    {
-      "id": "/protocols/execution-controls.md",
-      "type": "Protocol",
-      "title": "실행 통제 (decoding·seed·timeout)"
-    },
-    {
-      "id": "/protocols/validate-repair-commit.md",
-      "type": "Protocol",
-      "title": "Validate–Repair–Commit 루프"
-    },
-    {
-      "id": "/protocols/missingness-policy.md",
-      "type": "Protocol",
-      "title": "결측·실패 treatment-policy"
-    },
-    {
-      "id": "/protocols/leakage-guards.md",
-      "type": "Protocol",
-      "title": "누출 방지 가드"
-    }
-  ],
+  "claim_boundary": "Documentation graph only; never an authorization source or C-RESULT evidence.",
+  "directed": true,
   "edges": [
     {
+      "curated": false,
+      "evidence": "knowledge/README.md",
+      "id": "REF-262c91d7aca74f76fc73",
+      "label": "TRACE-RPG application ontology",
+      "relation": "references",
+      "source": "/README.md",
+      "target": "/concepts/trace-rpg-application-ontology.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/README.md",
+      "id": "REF-6f7a0f9454d41dd9c4fc",
+      "label": "KG 링크 제안 품질",
+      "relation": "references",
+      "source": "/README.md",
+      "target": "/metrics/kg-proposal-quality.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/README.md",
+      "id": "REF-e44c9c362def6a8bcef3",
+      "label": "OKF 구조 린트",
+      "relation": "references",
       "source": "/README.md",
       "target": "/protocols/bundle-validation.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/README.md",
+      "id": "REF-1001de24706b27fe5cb5",
+      "label": "설정 드리프트 검사",
+      "relation": "references",
       "source": "/README.md",
       "target": "/protocols/config-drift-check.md"
     },
     {
-      "source": "/metrics/valid-episode-rate.md",
-      "target": "/contrasts/h1-gate-vs-direct.md"
+      "curated": false,
+      "evidence": "knowledge/README.md",
+      "id": "REF-71e2cffae83a46e1a6c5",
+      "label": "KG 온톨로지 제안 시뮬레이션",
+      "relation": "references",
+      "source": "/README.md",
+      "target": "/protocols/kg-ontology-simulation.md"
     },
     {
-      "source": "/metrics/valid-episode-rate.md",
-      "target": "/contrasts/h4-affect.md"
-    },
-    {
-      "source": "/metrics/cost-of-valid-episode.md",
-      "target": "/contrasts/h5-consensus-vs-gate.md"
-    },
-    {
-      "source": "/metrics/cost-of-valid-episode.md",
-      "target": "/metrics/repair-at-k.md"
-    },
-    {
-      "source": "/metrics/hard-violation-rate.md",
-      "target": "/oracles/semantic-oracle.md"
-    },
-    {
-      "source": "/metrics/tension-rmse.md",
-      "target": "/contrasts/h4-affect.md"
-    },
-    {
-      "source": "/metrics/repair-at-k.md",
-      "target": "/contrasts/h2-repair-vs-retry.md"
-    },
-    {
-      "source": "/metrics/repair-at-k.md",
-      "target": "/experiments/controller-arms.md"
-    },
-    {
-      "source": "/oracles/semantic-oracle.md",
-      "target": "/protocols/leakage-guards.md"
-    },
-    {
-      "source": "/oracles/gold-isolation.md",
-      "target": "/engine/llm-channel-demo.md"
-    },
-    {
-      "source": "/oracles/encoding-oracle.md",
-      "target": "/oracles/semantic-oracle.md"
-    },
-    {
-      "source": "/oracles/encoding-oracle.md",
-      "target": "/oracles/gold-isolation.md"
-    },
-    {
-      "source": "/experiments/consensus-arms.md",
-      "target": "/experiments/controller-arms.md"
-    },
-    {
-      "source": "/experiments/consensus-arms.md",
-      "target": "/contrasts/h5-consensus-vs-gate.md"
-    },
-    {
-      "source": "/experiments/consensus-arms.md",
-      "target": "/engine/llm-channel-demo.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/contrasts/h1-gate-vs-direct.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/contrasts/h2-repair-vs-retry.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/contrasts/h3-memory.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/contrasts/h4-affect.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/oracles/encoding-oracle.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/oracles/semantic-oracle.md"
-    },
-    {
-      "source": "/experiments/stage-2-confirmatory.md",
-      "target": "/protocols/leakage-guards.md"
-    },
-    {
-      "source": "/experiments/controller-arms.md",
-      "target": "/engine/llm-channel-demo.md"
-    },
-    {
-      "source": "/experiments/controller-arms.md",
-      "target": "/protocols/execution-controls.md"
-    },
-    {
-      "source": "/experiments/pilot-measurement.md",
-      "target": "/concepts/claim-boundary.md"
-    },
-    {
-      "source": "/experiments/pilot-measurement.md",
-      "target": "/experiments/stage-1-screening.md"
-    },
-    {
-      "source": "/experiments/stage-1-screening.md",
-      "target": "/experiments/controller-arms.md"
-    },
-    {
-      "source": "/experiments/stage-1-screening.md",
-      "target": "/experiments/stage-2-confirmatory.md"
-    },
-    {
-      "source": "/concepts/kg-validator-isomorphism.md",
-      "target": "/concepts/commit-gate.md"
-    },
-    {
-      "source": "/concepts/kg-validator-isomorphism.md",
-      "target": "/contrasts/h5-consensus-vs-gate.md"
-    },
-    {
-      "source": "/concepts/invariants.md",
-      "target": "/concepts/commit-gate.md"
-    },
-    {
-      "source": "/concepts/invariants.md",
-      "target": "/engine/m6-engine-fixture.md"
-    },
-    {
-      "source": "/concepts/commit-gate.md",
-      "target": "/concepts/invariants.md"
-    },
-    {
-      "source": "/concepts/commit-gate.md",
-      "target": "/protocols/validate-repair-commit.md"
-    },
-    {
-      "source": "/concepts/commit-gate.md",
-      "target": "/concepts/claim-boundary.md"
-    },
-    {
-      "source": "/concepts/claim-boundary.md",
-      "target": "/experiments/pilot-measurement.md"
-    },
-    {
-      "source": "/concepts/claim-boundary.md",
-      "target": "/engine/render-capture-evidence.md"
-    },
-    {
-      "source": "/concepts/claim-boundary.md",
-      "target": "/engine/llm-channel-demo.md"
-    },
-    {
-      "source": "/scenarios/scenario-families.md",
-      "target": "/scenarios/sealed-lighthouse-dev.md"
-    },
-    {
-      "source": "/scenarios/sealed-lighthouse-dev.md",
-      "target": "/protocols/leakage-guards.md"
-    },
-    {
-      "source": "/scenarios/sealed-lighthouse-dev.md",
-      "target": "/engine/m6-engine-fixture.md"
-    },
-    {
+      "curated": false,
+      "evidence": "knowledge/citations/consensus-cost-literature.md",
+      "id": "REF-85fefb774d137bca0003",
+      "label": "H5",
+      "relation": "references",
       "source": "/citations/consensus-cost-literature.md",
       "target": "/contrasts/h5-consensus-vs-gate.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/citations/consensus-cost-literature.md",
+      "id": "REF-291724b711268a8344cb",
+      "label": "컨센서스 arm",
+      "relation": "references",
       "source": "/citations/consensus-cost-literature.md",
       "target": "/experiments/consensus-arms.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/citations/cost-evaluation-literature.md",
+      "id": "REF-1f9e7ca3b99c5f61dcbf",
+      "label": "H5",
+      "relation": "references",
+      "source": "/citations/cost-evaluation-literature.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/citations/cost-evaluation-literature.md",
+      "id": "REF-edb994b13202f188d0a6",
+      "label": "cost-of-valid-episode",
+      "relation": "references",
+      "source": "/citations/cost-evaluation-literature.md",
+      "target": "/metrics/cost-of-valid-episode.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/citations/cost-evaluation-literature.md",
+      "id": "REF-fd657f08f8c8a87bed1d",
+      "label": "실행 통제",
+      "relation": "references",
+      "source": "/citations/cost-evaluation-literature.md",
+      "target": "/protocols/execution-controls.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/citations/kg-ontology-evaluation-literature.md",
+      "id": "REF-411c2207b4c439636b14",
+      "label": "TRACE-RPG application ontology",
+      "relation": "references",
+      "source": "/citations/kg-ontology-evaluation-literature.md",
+      "target": "/concepts/trace-rpg-application-ontology.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/citations/kg-ontology-evaluation-literature.md",
+      "id": "REF-c4f128562c21b2d46743",
+      "label": "KG 링크 제안 품질",
+      "relation": "references",
+      "source": "/citations/kg-ontology-evaluation-literature.md",
+      "target": "/metrics/kg-proposal-quality.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/citations/kg-ontology-evaluation-literature.md",
+      "id": "REF-15490f671b2889413b22",
+      "label": "KG 온톨로지 제안 시뮬레이션",
+      "relation": "references",
+      "source": "/citations/kg-ontology-evaluation-literature.md",
+      "target": "/protocols/kg-ontology-simulation.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/citations/neurosymbolic-kg-literature.md",
+      "id": "REF-3d10f083d17aa6b4b503",
+      "label": "KG–validator 동형성",
+      "relation": "references",
       "source": "/citations/neurosymbolic-kg-literature.md",
       "target": "/concepts/kg-validator-isomorphism.md"
     },
     {
-      "source": "/citations/cost-evaluation-literature.md",
+      "curated": false,
+      "evidence": "knowledge/concepts/claim-boundary.md",
+      "id": "REF-277994c403edcb9610d0",
+      "label": "LLM 채널 데모",
+      "relation": "references",
+      "source": "/concepts/claim-boundary.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/claim-boundary.md",
+      "id": "REF-459c373ae2881fcb01d3",
+      "label": "엔진 증거",
+      "relation": "references",
+      "source": "/concepts/claim-boundary.md",
+      "target": "/engine/render-capture-evidence.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/claim-boundary.md",
+      "id": "REF-fe667432b9e88fbd3496",
+      "label": "파일럿 측정",
+      "relation": "references",
+      "source": "/concepts/claim-boundary.md",
+      "target": "/experiments/pilot-measurement.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/commit-gate.md",
+      "id": "REF-edf9e41b73266f015b83",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/concepts/commit-gate.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/commit-gate.md",
+      "id": "REF-c18303d7ea917ccb1519",
+      "label": "구현 불변량 I1–I4",
+      "relation": "references",
+      "source": "/concepts/commit-gate.md",
+      "target": "/concepts/invariants.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/commit-gate.md",
+      "id": "REF-4ec4ad65e049fa78588d",
+      "label": "validate–repair–commit 루프",
+      "relation": "references",
+      "source": "/concepts/commit-gate.md",
+      "target": "/protocols/validate-repair-commit.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/invariants.md",
+      "id": "REF-9db549bf44dd8e6cbfb1",
+      "label": "기호 커밋 게이트",
+      "relation": "references",
+      "source": "/concepts/invariants.md",
+      "target": "/concepts/commit-gate.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/invariants.md",
+      "id": "REF-269d083dfade7851d814",
+      "label": "M6 엔진 fixture",
+      "relation": "references",
+      "source": "/concepts/invariants.md",
+      "target": "/engine/m6-engine-fixture.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/kg-validator-isomorphism.md",
+      "id": "REF-55570e78eddf46b60f00",
+      "label": "기호 커밋 게이트",
+      "relation": "references",
+      "source": "/concepts/kg-validator-isomorphism.md",
+      "target": "/concepts/commit-gate.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/kg-validator-isomorphism.md",
+      "id": "REF-b2fc58082e0ef38f616e",
+      "label": "TRACE-RPG application ontology",
+      "relation": "references",
+      "source": "/concepts/kg-validator-isomorphism.md",
+      "target": "/concepts/trace-rpg-application-ontology.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/kg-validator-isomorphism.md",
+      "id": "REF-3469040dee70acf0525f",
+      "label": "H5 컨센서스 대 게이트",
+      "relation": "references",
+      "source": "/concepts/kg-validator-isomorphism.md",
       "target": "/contrasts/h5-consensus-vs-gate.md"
     },
     {
-      "source": "/citations/cost-evaluation-literature.md",
-      "target": "/metrics/cost-of-valid-episode.md"
+      "curated": false,
+      "evidence": "knowledge/concepts/kg-validator-isomorphism.md",
+      "id": "REF-0de3c7feec752f2f4c40",
+      "label": "KG 온톨로지 제안 시뮬레이션",
+      "relation": "references",
+      "source": "/concepts/kg-validator-isomorphism.md",
+      "target": "/protocols/kg-ontology-simulation.md"
     },
     {
-      "source": "/citations/cost-evaluation-literature.md",
-      "target": "/protocols/execution-controls.md"
-    },
-    {
-      "source": "/engine/m6-engine-fixture.md",
+      "curated": false,
+      "evidence": "knowledge/concepts/trace-rpg-application-ontology.md",
+      "id": "REF-125a87743d9a98720892",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/concepts/trace-rpg-application-ontology.md",
       "target": "/concepts/claim-boundary.md"
     },
     {
-      "source": "/engine/render-capture-evidence.md",
-      "target": "/concepts/claim-boundary.md"
+      "curated": false,
+      "evidence": "knowledge/concepts/trace-rpg-application-ontology.md",
+      "id": "REF-23b3343a08245fb54b0a",
+      "label": "KG–validator 동형성",
+      "relation": "references",
+      "source": "/concepts/trace-rpg-application-ontology.md",
+      "target": "/concepts/kg-validator-isomorphism.md"
     },
     {
-      "source": "/engine/llm-channel-demo.md",
+      "curated": false,
+      "evidence": "knowledge/concepts/trace-rpg-application-ontology.md",
+      "id": "REF-6f034e876c6f1dc4ec4e",
+      "label": "KG 링크 제안 품질",
+      "relation": "references",
+      "source": "/concepts/trace-rpg-application-ontology.md",
+      "target": "/metrics/kg-proposal-quality.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/concepts/trace-rpg-application-ontology.md",
+      "id": "REF-fc881e48159bb93ab17a",
+      "label": "KG 온톨로지 제안 시뮬레이션",
+      "relation": "references",
+      "source": "/concepts/trace-rpg-application-ontology.md",
+      "target": "/protocols/kg-ontology-simulation.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h1-gate-vs-direct.md",
+      "id": "REF-4c944d4778fad6defb6f",
+      "label": "A0·A5",
+      "relation": "references",
+      "source": "/contrasts/h1-gate-vs-direct.md",
       "target": "/experiments/controller-arms.md"
     },
     {
-      "source": "/engine/llm-channel-demo.md",
-      "target": "/oracles/gold-isolation.md"
-    },
-    {
-      "source": "/engine/llm-channel-demo.md",
-      "target": "/concepts/claim-boundary.md"
-    },
-    {
-      "source": "/contrasts/h1-gate-vs-direct.md",
-      "target": "/metrics/valid-episode-rate.md"
-    },
-    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h1-gate-vs-direct.md",
+      "id": "REF-5c702b9dbfd6642e6554",
+      "label": "hard dialogue violation rate",
+      "relation": "references",
       "source": "/contrasts/h1-gate-vs-direct.md",
       "target": "/metrics/hard-violation-rate.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h1-gate-vs-direct.md",
+      "id": "REF-bc5670dc1f6db7c655da",
+      "label": "valid episode rate",
+      "relation": "references",
       "source": "/contrasts/h1-gate-vs-direct.md",
-      "target": "/experiments/controller-arms.md"
-    },
-    {
-      "source": "/contrasts/h3-memory.md",
-      "target": "/scenarios/scenario-families.md"
-    },
-    {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
-      "target": "/experiments/consensus-arms.md"
-    },
-    {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
-      "target": "/experiments/controller-arms.md"
-    },
-    {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
-      "target": "/metrics/cost-of-valid-episode.md"
-    },
-    {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
       "target": "/metrics/valid-episode-rate.md"
     },
     {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
-      "target": "/oracles/semantic-oracle.md"
+      "curated": false,
+      "evidence": "knowledge/contrasts/h2-repair-vs-retry.md",
+      "id": "REF-fff4c924efb2130d61f5",
+      "label": "controller arms",
+      "relation": "references",
+      "source": "/contrasts/h2-repair-vs-retry.md",
+      "target": "/experiments/controller-arms.md"
     },
     {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
-      "target": "/concepts/kg-validator-isomorphism.md"
-    },
-    {
-      "source": "/contrasts/h5-consensus-vs-gate.md",
-      "target": "/citations/consensus-cost-literature.md"
-    },
-    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h2-repair-vs-retry.md",
+      "id": "REF-51d43490b9837e91f571",
+      "label": "repair@K",
+      "relation": "references",
       "source": "/contrasts/h2-repair-vs-retry.md",
       "target": "/metrics/repair-at-k.md"
     },
     {
-      "source": "/contrasts/h2-repair-vs-retry.md",
-      "target": "/experiments/controller-arms.md"
+      "curated": false,
+      "evidence": "knowledge/contrasts/h3-memory.md",
+      "id": "REF-bbec5fe0943e0af8bf89",
+      "label": "장기 모순율",
+      "relation": "references",
+      "source": "/contrasts/h3-memory.md",
+      "target": "/metrics/long-horizon-contradiction-rate.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h3-memory.md",
+      "id": "REF-24573549e990009db63f",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/contrasts/h3-memory.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h3-memory.md",
+      "id": "REF-7efc4c9c90d992855111",
+      "label": "시간 기억 패밀리 NPC-MEMORY-020",
+      "relation": "references",
+      "source": "/contrasts/h3-memory.md",
+      "target": "/scenarios/scenario-families.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h4-affect.md",
+      "id": "REF-f5c1c81525001f43e4b6",
+      "label": "tension RMSE",
+      "relation": "references",
       "source": "/contrasts/h4-affect.md",
       "target": "/metrics/tension-rmse.md"
     },
     {
-      "source": "/protocols/episode-execution.md",
-      "target": "/scenarios/scenario-families.md"
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-6e73ac726ea185ad2545",
+      "label": "컨센서스·비용 문헌",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/citations/consensus-cost-literature.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-1fa86469a1d169feedab",
+      "label": "KG–validator 동형성",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/concepts/kg-validator-isomorphism.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-f833139e87a7d2d54ba7",
+      "label": "컨센서스 arm C1–C3",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/experiments/consensus-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-6dc7ce097d18b23220e0",
+      "label": "A0–A5",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-d1f65f792500f0c8f9dd",
+      "label": "cost-of-valid-episode",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/metrics/cost-of-valid-episode.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-55425d661a066061db6d",
+      "label": "valid episode rate",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/metrics/valid-episode-rate.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "id": "REF-29d8a2685de739a45394",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/engine/llm-channel-demo.md",
+      "id": "REF-e480cf8ddcedb658e9df",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/engine/llm-channel-demo.md",
+      "id": "REF-c127a4d3752b631c8aa7",
+      "label": "A4 structured_repair",
+      "relation": "references",
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/engine/llm-channel-demo.md",
+      "id": "REF-3cc31c672258df2083a3",
+      "label": "골드 격리",
+      "relation": "references",
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/oracles/gold-isolation.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/engine/llm-channel-demo.md",
+      "id": "REF-976baa1bf6527454d9c2",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/engine/llm-channel-demo.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/engine/m6-engine-fixture.md",
+      "id": "REF-9e95b88323a86e99235a",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/engine/m6-engine-fixture.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/engine/render-capture-evidence.md",
+      "id": "REF-e5e9a2d0a0bb29ca34d5",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/engine/render-capture-evidence.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/consensus-arms.md",
+      "id": "REF-9bec3923934b7b4644d3",
+      "label": "H5",
+      "relation": "references",
+      "source": "/experiments/consensus-arms.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/consensus-arms.md",
+      "id": "REF-ed48c606b113734b345a",
+      "label": "LLM 채널 데모",
+      "relation": "references",
+      "source": "/experiments/consensus-arms.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/consensus-arms.md",
+      "id": "REF-89af428beee8b7bc9bed",
+      "label": "A0–A5",
+      "relation": "references",
+      "source": "/experiments/consensus-arms.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/controller-arms.md",
+      "id": "REF-fde3fbf36b4815116f22",
+      "label": "LLM 채널 데모",
+      "relation": "references",
+      "source": "/experiments/controller-arms.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/controller-arms.md",
+      "id": "REF-6c58cdcbe7eef34f1fb8",
+      "label": "실행 통제",
+      "relation": "references",
+      "source": "/experiments/controller-arms.md",
+      "target": "/protocols/execution-controls.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/pilot-measurement.md",
+      "id": "REF-1416a90cd88fef5e5e8e",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/experiments/pilot-measurement.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/pilot-measurement.md",
+      "id": "REF-1db700775ae70ac048b6",
+      "label": "Stage 1 스크리닝",
+      "relation": "references",
+      "source": "/experiments/pilot-measurement.md",
+      "target": "/experiments/stage-1-screening.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-1-screening.md",
+      "id": "REF-eca070ce721b9be06ac0",
+      "label": "A0–A5 전체",
+      "relation": "references",
+      "source": "/experiments/stage-1-screening.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-1-screening.md",
+      "id": "REF-1b7afb886c114fe6f3c4",
+      "label": "Stage 2 확증",
+      "relation": "references",
+      "source": "/experiments/stage-1-screening.md",
+      "target": "/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-074ee2d6af492ab2a9dd",
+      "label": "H1",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h1-gate-vs-direct.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-fdf8f69c679e11893da2",
+      "label": "H2",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h2-repair-vs-retry.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-c227febc64ef087e5a25",
+      "label": "H3",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h3-memory.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-d78c7a135ab612e47ac3",
+      "label": "H4",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/contrasts/h4-affect.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-8314213b4cd839d04616",
+      "label": "인코딩 오라클",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/oracles/encoding-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-946910809038d2efa95b",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md",
+      "id": "REF-9576a6450e6e32ecd41e",
+      "label": "leakage guards",
+      "relation": "references",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "target": "/protocols/leakage-guards.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/cost-of-valid-episode.md",
+      "id": "REF-a0abe62370afd55be827",
+      "label": "H5",
+      "relation": "references",
+      "source": "/metrics/cost-of-valid-episode.md",
+      "target": "/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/cost-of-valid-episode.md",
+      "id": "REF-be181409f02a1ba3bd85",
+      "label": "repair@K",
+      "relation": "references",
+      "source": "/metrics/cost-of-valid-episode.md",
+      "target": "/metrics/repair-at-k.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/hard-violation-rate.md",
+      "id": "REF-99c3c81f18a583c08b7d",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/metrics/hard-violation-rate.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/kg-proposal-quality.md",
+      "id": "REF-17bd34ba3639d9ca5416",
+      "label": "KG·온톨로지 제안 평가 1차 출처",
+      "relation": "references",
+      "source": "/metrics/kg-proposal-quality.md",
+      "target": "/citations/kg-ontology-evaluation-literature.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/kg-proposal-quality.md",
+      "id": "REF-6c2beacbc5d09d1e70d2",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/metrics/kg-proposal-quality.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/kg-proposal-quality.md",
+      "id": "REF-5a9ce2e83443b2e8805a",
+      "label": "TRACE-RPG application ontology",
+      "relation": "references",
+      "source": "/metrics/kg-proposal-quality.md",
+      "target": "/concepts/trace-rpg-application-ontology.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/kg-proposal-quality.md",
+      "id": "REF-3ed2fe246f6d44ab898c",
+      "label": "KG 온톨로지 제안 시뮬레이션",
+      "relation": "references",
+      "source": "/metrics/kg-proposal-quality.md",
+      "target": "/protocols/kg-ontology-simulation.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/long-horizon-contradiction-rate.md",
+      "id": "REF-b241350d83e967b39ed8",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/metrics/long-horizon-contradiction-rate.md",
+      "target": "/concepts/claim-boundary.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/long-horizon-contradiction-rate.md",
+      "id": "REF-4b69de5cdf3e8b3f042d",
+      "label": "H3 KG 시간 메모리",
+      "relation": "references",
+      "source": "/metrics/long-horizon-contradiction-rate.md",
+      "target": "/contrasts/h3-memory.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/long-horizon-contradiction-rate.md",
+      "id": "REF-5a153aba3f65f8cb5ea4",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/metrics/long-horizon-contradiction-rate.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/long-horizon-contradiction-rate.md",
+      "id": "REF-5b92d53e416712d73651",
+      "label": "leakage guards",
+      "relation": "references",
+      "source": "/metrics/long-horizon-contradiction-rate.md",
+      "target": "/protocols/leakage-guards.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/repair-at-k.md",
+      "id": "REF-e59363738069ec90133c",
+      "label": "H2",
+      "relation": "references",
+      "source": "/metrics/repair-at-k.md",
+      "target": "/contrasts/h2-repair-vs-retry.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/repair-at-k.md",
+      "id": "REF-d87fbca32be1fd2e3260",
+      "label": "controller arms",
+      "relation": "references",
+      "source": "/metrics/repair-at-k.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/tension-rmse.md",
+      "id": "REF-63681c8cb7e28f1bba30",
+      "label": "H4",
+      "relation": "references",
+      "source": "/metrics/tension-rmse.md",
+      "target": "/contrasts/h4-affect.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/valid-episode-rate.md",
+      "id": "REF-27ba9f9f8413d15813a5",
+      "label": "H1",
+      "relation": "references",
+      "source": "/metrics/valid-episode-rate.md",
+      "target": "/contrasts/h1-gate-vs-direct.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/metrics/valid-episode-rate.md",
+      "id": "REF-91b64863cf89cd99b730",
+      "label": "H4 비열등 게이트",
+      "relation": "references",
+      "source": "/metrics/valid-episode-rate.md",
+      "target": "/contrasts/h4-affect.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/oracles/encoding-oracle.md",
+      "id": "REF-0d08546176333a1f4ba5",
+      "label": "골드 격리",
+      "relation": "references",
+      "source": "/oracles/encoding-oracle.md",
+      "target": "/oracles/gold-isolation.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/oracles/encoding-oracle.md",
+      "id": "REF-706e9190ab2067775880",
+      "label": "의미 오라클",
+      "relation": "references",
+      "source": "/oracles/encoding-oracle.md",
+      "target": "/oracles/semantic-oracle.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/oracles/gold-isolation.md",
+      "id": "REF-fa8c5b61cf898d5bed55",
+      "label": "LLM 채널 데모",
+      "relation": "references",
+      "source": "/oracles/gold-isolation.md",
+      "target": "/engine/llm-channel-demo.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/oracles/semantic-oracle.md",
+      "id": "REF-597cdb1236ecba1ec989",
+      "label": "leakage guards",
+      "relation": "references",
+      "source": "/oracles/semantic-oracle.md",
+      "target": "/protocols/leakage-guards.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/episode-execution.md",
+      "id": "REF-630c9d9bdb04c127dda3",
+      "label": "M6 fixture",
+      "relation": "references",
       "source": "/protocols/episode-execution.md",
       "target": "/engine/m6-engine-fixture.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/protocols/episode-execution.md",
+      "id": "REF-631dfb3e288e02ce2b17",
+      "label": "인코딩",
+      "relation": "references",
       "source": "/protocols/episode-execution.md",
       "target": "/oracles/encoding-oracle.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/protocols/episode-execution.md",
+      "id": "REF-f6cfaf2dc20f3dd352cb",
+      "label": "의미",
+      "relation": "references",
       "source": "/protocols/episode-execution.md",
       "target": "/oracles/semantic-oracle.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/protocols/episode-execution.md",
+      "id": "REF-0243017356a4b0c86ef0",
+      "label": "treatment-policy",
+      "relation": "references",
       "source": "/protocols/episode-execution.md",
       "target": "/protocols/missingness-policy.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/protocols/episode-execution.md",
+      "id": "REF-bbb2e2d31f90d91c5a57",
+      "label": "시나리오 패밀리",
+      "relation": "references",
+      "source": "/protocols/episode-execution.md",
+      "target": "/scenarios/scenario-families.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/execution-controls.md",
+      "id": "REF-c116207f9a8fff60749b",
+      "label": "드리프트 검사",
+      "relation": "references",
       "source": "/protocols/execution-controls.md",
       "target": "/protocols/config-drift-check.md"
     },
     {
-      "source": "/protocols/validate-repair-commit.md",
-      "target": "/concepts/invariants.md"
+      "curated": false,
+      "evidence": "knowledge/protocols/kg-ontology-simulation.md",
+      "id": "REF-8a3f5cc4131e2961a0dd",
+      "label": "KG·온톨로지 제안 평가 1차 출처",
+      "relation": "references",
+      "source": "/protocols/kg-ontology-simulation.md",
+      "target": "/citations/kg-ontology-evaluation-literature.md"
     },
     {
-      "source": "/protocols/validate-repair-commit.md",
-      "target": "/experiments/controller-arms.md"
+      "curated": false,
+      "evidence": "knowledge/protocols/kg-ontology-simulation.md",
+      "id": "REF-3e0f74c5210a1791f3c0",
+      "label": "claim boundary",
+      "relation": "references",
+      "source": "/protocols/kg-ontology-simulation.md",
+      "target": "/concepts/claim-boundary.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/protocols/kg-ontology-simulation.md",
+      "id": "REF-f898be3843f2dd7e8b37",
+      "label": "TRACE-RPG application ontology",
+      "relation": "references",
+      "source": "/protocols/kg-ontology-simulation.md",
+      "target": "/concepts/trace-rpg-application-ontology.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/kg-ontology-simulation.md",
+      "id": "REF-d7c5662629592a20b843",
+      "label": "KG 링크 제안 품질",
+      "relation": "references",
+      "source": "/protocols/kg-ontology-simulation.md",
+      "target": "/metrics/kg-proposal-quality.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/kg-ontology-simulation.md",
+      "id": "REF-82556af6dd5d4366e82e",
+      "label": "execution controls",
+      "relation": "references",
+      "source": "/protocols/kg-ontology-simulation.md",
+      "target": "/protocols/execution-controls.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/leakage-guards.md",
+      "id": "REF-5bfe3f59dcb026488c82",
+      "label": "Stage 2",
+      "relation": "references",
       "source": "/protocols/leakage-guards.md",
       "target": "/experiments/stage-2-confirmatory.md"
     },
     {
+      "curated": false,
+      "evidence": "knowledge/protocols/leakage-guards.md",
+      "id": "REF-24d498f3a4dd35547656",
+      "label": "골드 격리",
+      "relation": "references",
       "source": "/protocols/leakage-guards.md",
       "target": "/oracles/gold-isolation.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/validate-repair-commit.md",
+      "id": "REF-ab4cb2a397847913c9ad",
+      "label": "invariants",
+      "relation": "references",
+      "source": "/protocols/validate-repair-commit.md",
+      "target": "/concepts/invariants.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/protocols/validate-repair-commit.md",
+      "id": "REF-991c96d8bf6da89e62be",
+      "label": "controller arms",
+      "relation": "references",
+      "source": "/protocols/validate-repair-commit.md",
+      "target": "/experiments/controller-arms.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/scenarios/scenario-families.md",
+      "id": "REF-b91d4853b209b6c47089",
+      "label": "Sealed Lighthouse 개발 fixture",
+      "relation": "references",
+      "source": "/scenarios/scenario-families.md",
+      "target": "/scenarios/sealed-lighthouse-dev.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/scenarios/sealed-lighthouse-dev.md",
+      "id": "REF-40955cbdd220b902a0a4",
+      "label": "M6 fixture",
+      "relation": "references",
+      "source": "/scenarios/sealed-lighthouse-dev.md",
+      "target": "/engine/m6-engine-fixture.md"
+    },
+    {
+      "curated": false,
+      "evidence": "knowledge/scenarios/sealed-lighthouse-dev.md",
+      "id": "REF-456ac1c8fd9583869e44",
+      "label": "leakage guards",
+      "relation": "references",
+      "source": "/scenarios/sealed-lighthouse-dev.md",
+      "target": "/protocols/leakage-guards.md"
     }
-  ]
+  ],
+  "graph_id": "TRACE-RPG-OKF-METHODS-001",
+  "multigraph": false,
+  "nodes": [
+    {
+      "description": "OKF v0.1 번들 — TRACE-RPG 실험 방법론의 지식 원자를 상호 링크로 연결한 방법 그래프.",
+      "id": "/README.md",
+      "sha256": "d6ce1c4cdb8db79e76e3217a162906f425d850a7e58d0100269dac76ee808b65",
+      "source_path": "knowledge/README.md",
+      "tags": [
+        "methods",
+        "okf",
+        "trace-rpg"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "TRACE-RPG Methods Knowledge Bundle",
+      "type": "Bundle Guide"
+    },
+    {
+      "description": "자기일관성·토론·앙상블·검증기 문헌 — 다수결의 비단조성(Chen NeurIPS 2024)과 기호 검증의 무표본 이득(Logic-LM +18.4%p)이 핵심.",
+      "id": "/citations/consensus-cost-literature.md",
+      "sha256": "4bd674eaa1e29ca12397868fe5f3fb9dc96814aafc5e5ea43bb8287d94700f97",
+      "source_path": "knowledge/citations/consensus-cost-literature.md",
+      "tags": [
+        "citations",
+        "consensus",
+        "verified"
+      ],
+      "timestamp": "2026-08-14T15:00:00Z",
+      "title": "컨센서스·테스트타임 컴퓨트 문헌 (13편 검증)",
+      "type": "Citation Set"
+    },
+    {
+      "description": "Cost-of-Pass·FrugalGPT·isoFLOP 선례·비용 벡터 보고·클러스터 통계 등 H5 평가방법의 검증된 근거.",
+      "id": "/citations/cost-evaluation-literature.md",
+      "sha256": "240961f4f2f75592c506d2bd01f0e6d9be3b3cc9dfbc2e001c9b95cc027689a4",
+      "source_path": "knowledge/citations/cost-evaluation-literature.md",
+      "tags": [
+        "citations",
+        "cost",
+        "evaluation",
+        "verified"
+      ],
+      "timestamp": "2026-08-14T15:00:00Z",
+      "title": "비용 인지·예산 매칭 평가 문헌 (14편 검증)",
+      "type": "Citation Set"
+    },
+    {
+      "description": "Typed graph constraint, ranking, precision-recall, calibration, competency question, keep/discard 규율의 1차·공식 출처.",
+      "id": "/citations/kg-ontology-evaluation-literature.md",
+      "sha256": "889949b84dd07f3b1bc774565a948a69157932100c3dbaa34fa9366cf764e6c5",
+      "source_path": "knowledge/citations/kg-ontology-evaluation-literature.md",
+      "tags": [
+        "citations",
+        "evaluation",
+        "kg",
+        "ontology",
+        "verified"
+      ],
+      "timestamp": "2026-08-30T00:00:00Z",
+      "title": "KG·온톨로지 제안 평가 1차 출처",
+      "type": "Citation Set"
+    },
+    {
+      "description": "KG 근거 내러티브(KNUDGE·PANGeA 28→98%)와 기호 검증(G-Retriever 엣지 12→76%, PICARD 12→2%, Sabre 절제)의 검증된 근거.",
+      "id": "/citations/neurosymbolic-kg-literature.md",
+      "sha256": "d9c2ac387fb2f35b46424709ddb322a3685e334f14103ee9504ccc22034b4a83",
+      "source_path": "knowledge/citations/neurosymbolic-kg-literature.md",
+      "tags": [
+        "citations",
+        "kg",
+        "neurosymbolic",
+        "verified"
+      ],
+      "timestamp": "2026-08-14T15:00:00Z",
+      "title": "뉴로심볼릭·KG 검증 문헌 (15편 검증)",
+      "type": "Citation Set"
+    },
+    {
+      "description": "파일럿 근거는 단일 작성 world의 선언된 구조화 필드에 대한 구현 적합성까지만이며, 효능·경험·성능 주장을 금지한다.",
+      "id": "/concepts/claim-boundary.md",
+      "sha256": "eb77003848a10df8402ce7cb86e9f120bf7a8bf79cfc5bd1f7412b8022ff2fe5",
+      "source_path": "knowledge/concepts/claim-boundary.md",
+      "tags": [
+        "boundary",
+        "honesty"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "근거 경계 (Claim Boundary)",
+      "type": "Claim Boundary"
+    },
+    {
+      "description": "신뢰하지 않는 생성 제안을 정식 상태 변경으로부터 격리하는 TRACE-RPG의 핵심 트랜잭션 경계.",
+      "id": "/concepts/commit-gate.md",
+      "sha256": "dcf324ceb76351a0ff8a618a1132ae64973b0d3db7cfcf9ef9d6a13974d5c048",
+      "source_path": "knowledge/concepts/commit-gate.md",
+      "tags": [
+        "architecture",
+        "authority"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "기호 커밋 게이트 (Symbolic Commit Gate)",
+      "type": "Concept"
+    },
+    {
+      "description": "소진 실패 불변성, 제한된 기록 시도(K+1), 효과 권한, 상태 의미적 리플레이 — 파일럿이 fixture로 시험하는 네 약속.",
+      "id": "/concepts/invariants.md",
+      "sha256": "531e36bf965888a5a79b22b5dc7b1689721aa9cf382c41ef88d9035ca54f4c53",
+      "source_path": "knowledge/concepts/invariants.md",
+      "tags": [
+        "invariants",
+        "pilot"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "구현 불변량 I1–I4",
+      "type": "Concept"
+    },
+    {
+      "description": "지식그래프의 타입 엣지·경로·접근 제약과 TRACE-RPG validator 7-튜플은 같은 선언적 형식을 공유한다는 구조 논거.",
+      "id": "/concepts/kg-validator-isomorphism.md",
+      "sha256": "252c6e0bf7fe52f0d83ace153093190ea9f8beb22e717c3b704821802fbaeadc",
+      "source_path": "knowledge/concepts/kg-validator-isomorphism.md",
+      "tags": [
+        "kg",
+        "neurosymbolic",
+        "proposed"
+      ],
+      "timestamp": "2026-08-14T12:00:00Z",
+      "title": "KG 관계–validator 술어 동형성",
+      "type": "Concept"
+    },
+    {
+      "description": "OKF 방법론 관계와 인코딩된 게임 상태 술어를 분리해 등록하는 폐쇄형 애플리케이션 온톨로지.",
+      "id": "/concepts/trace-rpg-application-ontology.md",
+      "sha256": "87af613273aed983db5fba9200ae3702e32b1388eb7af23363be621994e51de4",
+      "source_path": "knowledge/concepts/trace-rpg-application-ontology.md",
+      "tags": [
+        "kg",
+        "ontology",
+        "simulation-only",
+        "typed-relations"
+      ],
+      "timestamp": "2026-08-25T00:00:00Z",
+      "title": "TRACE-RPG application ontology",
+      "type": "Application Ontology"
+    },
+    {
+      "description": "A5 vs A0을 world/dialogue 두 트랙에서 비교, Holm 보정 양측 α=.05의 혼합효과 로지스틱.",
+      "id": "/contrasts/h1-gate-vs-direct.md",
+      "sha256": "cad600e264328278eead5bb5fef13dd606a3782743efc89296a6b057145892ff",
+      "source_path": "knowledge/contrasts/h1-gate-vs-direct.md",
+      "tags": [
+        "h1",
+        "primary"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "H1 — 게이트 대 직접 커밋",
+      "type": "Contrast Family"
+    },
+    {
+      "description": "동일 예산(최대 4호출)에서 A4 vs A3 — repair@K와 tokens/비용/지연, 단일 양측 α=.05.",
+      "id": "/contrasts/h2-repair-vs-retry.md",
+      "sha256": "ea5767f0fe1be8a819d41d9b486073540404243748ec957c250d144d14b64bb8",
+      "source_path": "knowledge/contrasts/h2-repair-vs-retry.md",
+      "tags": [
+        "h2",
+        "repair"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "H2 — 구조화 수리 대 맹목 재시도",
+      "type": "Contrast Family"
+    },
+    {
+      "description": "5/10/20턴 관계 기억 회상의 조건부 모순율 비교, 단일 양측 α=.05.",
+      "id": "/contrasts/h3-memory.md",
+      "sha256": "4a8ac865390282fc101c6513c80e252b990e1fa37a53a262c0abaa92fa4ae7db",
+      "source_path": "knowledge/contrasts/h3-memory.md",
+      "tags": [
+        "h3",
+        "memory"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "H3 — KG 시간 메모리 대 무메모리",
+      "type": "Contrast Family"
+    },
+    {
+      "description": "A5 위 affect on/off — ① 유효성 비열등(한계 2pp, 단측 α=.025) 통과 후에만 ② 긴장 RMSE 우월(양측 α=.05).",
+      "id": "/contrasts/h4-affect.md",
+      "sha256": "46952e0ab42ac0228173cbd15632eed06b5766fe0d29ebdbaf8bd13d2c672744",
+      "source_path": "knowledge/contrasts/h4-affect.md",
+      "tags": [
+        "affect",
+        "h4",
+        "noninferiority"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "H4 — 감정 적응 게이트키핑",
+      "type": "Contrast Family"
+    },
+    {
+      "description": "동일 예산 계정에서 컨센서스 검증(C1/C2)과 기호 게이트(A5), 하이브리드(C3)의 비용-유효성 Pareto 위치를 비교하는 제안 대조.",
+      "id": "/contrasts/h5-consensus-vs-gate.md",
+      "sha256": "37bf9b8f5c96471aacbbe319e48f118db652021d76dfd04db9edf054d003b81c",
+      "source_path": "knowledge/contrasts/h5-consensus-vs-gate.md",
+      "tags": [
+        "consensus",
+        "h5",
+        "not-registered",
+        "proposed"
+      ],
+      "timestamp": "2026-08-14T12:00:00Z",
+      "title": "H5 — 컨센서스 대 기호 게이트 [PROPOSED]",
+      "type": "Contrast Family"
+    },
+    {
+      "description": "엔진 밖 Python CLI로 실행되는 소프트 제안 채널 — 봉투 계약 검증에 공개-정책 렉시컬 스크린을 더한 논문 외 구성요소.",
+      "id": "/engine/llm-channel-demo.md",
+      "sha256": "3ee2c54bf50b79dce9298790d55d6ba7bb27e44dc896f0124d4703edb6d05614",
+      "source_path": "knowledge/engine/llm-channel-demo.md",
+      "tags": [
+        "llm",
+        "not-paper-evidence",
+        "soft-proposal"
+      ],
+      "timestamp": "2026-08-18T00:00:00Z",
+      "title": "Codex OAuth 소프트 제안 채널 (엔지니어링)",
+      "type": "Engine Evidence"
+    },
+    {
+      "description": "저자 정책 미러의 헤드리스 적합성 실행 — 동결 종단 해시 4b2310…8892 일치, 3종 보존 실행.",
+      "id": "/engine/m6-engine-fixture.md",
+      "sha256": "252568d3ae7894ebdcd087b20bd999366b6b9c27070b77a593430b660b6ee6fa",
+      "source_path": "knowledge/engine/m6-engine-fixture.md",
+      "tags": [
+        "engine",
+        "observed"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "M6 엔진 fixture (Godot 4.7.1)",
+      "type": "Engine Evidence"
+    },
+    {
+      "description": "non-headless 1280×720 리플레이 3패널 — 각 PNG가 event/검증/상태 해시에 매니페스트로 결합된 논문 그림 근거.",
+      "id": "/engine/render-capture-evidence.md",
+      "sha256": "0c06cb9c746022cd1d126a2fb60b2f8dd83debb567b9098f45b60e8cf598dda5",
+      "source_path": "knowledge/engine/render-capture-evidence.md",
+      "tags": [
+        "observed",
+        "render"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Render Capture v5 (SL-CAPTURE-001)",
+      "type": "Engine Evidence"
+    },
+    {
+      "description": "consensus_vote_n(N=5 다수결), multiagent_debate_r(2×2 토론), consensus_then_gate(랭킹→게이트 최종 권한) 제안 arm 3종.",
+      "id": "/experiments/consensus-arms.md",
+      "sha256": "8622d97a7932ee4f751da00eaf1ae7628cb556a8dd3f8dfeff127adffcdbdc9b",
+      "source_path": "knowledge/experiments/consensus-arms.md",
+      "tags": [
+        "arms",
+        "consensus",
+        "proposed"
+      ],
+      "timestamp": "2026-08-14T12:00:00Z",
+      "title": "컨센서스 arm C1–C3 [PROPOSED]",
+      "type": "Controller Arm Set"
+    },
+    {
+      "description": "direct_commit부터 trace_rpg_full까지 6개 arm — A3/A4/A5는 최대 호출 4(1+K), K=3으로 예산 매칭.",
+      "id": "/experiments/controller-arms.md",
+      "sha256": "3fb6ea963f37813e928223c9c29955cbb90c07f122acd0a7ddf36088d0fa7059",
+      "source_path": "knowledge/experiments/controller-arms.md",
+      "tags": [
+        "arms",
+        "budget"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "컨트롤러 arm A0–A5와 예산 계약",
+      "type": "Controller Arm Set"
+    },
+    {
+      "description": "설계 fixture에 대한 정확한 count만 보고하는 적합성 파일럿 — p-value·모집단 CI 부여 금지.",
+      "id": "/experiments/pilot-measurement.md",
+      "sha256": "532160f66c1162a52043ce20de3dc65c265fc058792ac57ca2b804c687e0affc",
+      "source_path": "knowledge/experiments/pilot-measurement.md",
+      "tags": [
+        "conformance",
+        "pilot"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "결정론적 오프라인 파일럿 (PQ1–PQ5)",
+      "type": "Experiment Stage"
+    },
+    {
+      "description": "등록 모델 10개 전체를 트랙당 시나리오 30 × 반복 3으로 Pareto 선별한다 — 논문 수준 인과 결론 없음.",
+      "id": "/experiments/stage-1-screening.md",
+      "sha256": "2a14c4202a65e03e3a00237c17aa43688d429c462d99181e90348ce4691a4480",
+      "source_path": "knowledge/experiments/stage-1-screening.md",
+      "tags": [
+        "planned",
+        "screening"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Stage 1 스크리닝",
+      "type": "Experiment Stage"
+    },
+    {
+      "description": "승격 3개 모델을 트랙당 시나리오 120 × seed 5(11·23·47·83·131)로 사전등록 full factorial + ablation 분석한다.",
+      "id": "/experiments/stage-2-confirmatory.md",
+      "sha256": "37f98c2a158ec5a00da44be10540efd3a2efd9f3dc069d7cda8611f4e5bd07e4",
+      "source_path": "knowledge/experiments/stage-2-confirmatory.md",
+      "tags": [
+        "confirmatory",
+        "planned"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Stage 2 확증",
+      "type": "Experiment Stage"
+    },
+    {
+      "description": "유효 에피소드 1건당 기대 비용 E[cost]/P(valid) — 비용과 정확도를 접는 결정 지표(문헌의 cost-of-pass 형식).",
+      "id": "/metrics/cost-of-valid-episode.md",
+      "sha256": "6f4cd5b369e3b39b78cd78fc7e2c806ba77737070c8ed9dc61f23ee9b665e905",
+      "source_path": "knowledge/metrics/cost-of-valid-episode.md",
+      "tags": [
+        "cost",
+        "metric",
+        "proposed"
+      ],
+      "timestamp": "2026-08-14T12:00:00Z",
+      "title": "Cost-of-Valid-Episode [PROPOSED]",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "금지 공개·비지식 발화 등 하드 대화 위반이 발생한 비율 — dialogue 트랙 1차 종점.",
+      "id": "/metrics/hard-violation-rate.md",
+      "sha256": "a35398824114b0228d8312accb9c9b1fe4516e069ba8b830449fed233782e3a8",
+      "source_path": "knowledge/metrics/hard-violation-rate.md",
+      "tags": [
+        "metric",
+        "primary-endpoint"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Hard Dialogue Violation Rate",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "동결된 타입 관계 holdout에서 링크 제안 전략의 정밀도·재현율·순위·캘리브레이션·온톨로지 적합성을 계산한다.",
+      "id": "/metrics/kg-proposal-quality.md",
+      "sha256": "d5dd49965c5aa138768dc7a723b38ecb6cc3e0cbddf033339b5622c40df78ee5",
+      "source_path": "knowledge/metrics/kg-proposal-quality.md",
+      "tags": [
+        "kg",
+        "metric",
+        "ontology",
+        "simulation-only"
+      ],
+      "timestamp": "2026-08-25T00:00:00Z",
+      "title": "KG 링크 제안 품질",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "동일 유효성 조건에서 5·10·20턴 창마다 독립 오라클이 확인한 모순 에피소드 비율.",
+      "id": "/metrics/long-horizon-contradiction-rate.md",
+      "sha256": "39cab4f15e1638d107285cf0110363081aae741ec9e73c18a14dcd8f16fd817e",
+      "source_path": "knowledge/metrics/long-horizon-contradiction-rate.md",
+      "tags": [
+        "contradiction",
+        "memory",
+        "metric",
+        "proposed"
+      ],
+      "timestamp": "2026-08-25T00:00:00Z",
+      "title": "장기 모순율",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "예산 K 내 수리로 유효 커밋에 도달한 비율 — H2의 1차 종점, tokens·비용·지연과 함께 보고.",
+      "id": "/metrics/repair-at-k.md",
+      "sha256": "4521c5acc665bc7392eb8333c0d95dd3df8184f61e9b8b3f02db427db04704c6",
+      "source_path": "knowledge/metrics/repair-at-k.md",
+      "tags": [
+        "metric",
+        "repair"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "repair@K",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "목표 긴장 곡선(B-011: 0.35→0.72→0.50) 대비 실측 긴장의 RMSE — 유효성 게이트 통과 후에만 평가.",
+      "id": "/metrics/tension-rmse.md",
+      "sha256": "1af30b97427fef75c3516ee98ece5d4228f669077d37ec05f90d18e5237bf7ea",
+      "source_path": "knowledge/metrics/tension-rmse.md",
+      "tags": [
+        "affect",
+        "metric"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Tension RMSE",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "에피소드가 하드 유효성 위반 없이 종결된 비율 — world 트랙 1차 종점.",
+      "id": "/metrics/valid-episode-rate.md",
+      "sha256": "73c6b3617978759af052c7bbebe2b99fdad16e8eed4015a581279eaf47c82b79",
+      "source_path": "knowledge/metrics/valid-episode-rate.md",
+      "tags": [
+        "metric",
+        "primary-endpoint"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Valid Episode Rate",
+      "type": "Metric Definition"
+    },
+    {
+      "description": "독립 작성 전이 그래프·접근성·전제조건·NPC 지식·공개 allow-list로 encoded_valid와 예상 delta를 판정한다.",
+      "id": "/oracles/encoding-oracle.md",
+      "sha256": "9562b87a0615ec438505c8e9d0e6081111a5d3f2932878204f28df3551c56c61",
+      "source_path": "knowledge/oracles/encoding-oracle.md",
+      "tags": [
+        "encoding",
+        "oracle"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "인코딩 오라클",
+      "type": "Oracle"
+    },
+    {
+      "description": "항목별 골드값은 unblinding 전까지 접근 통제 저장소에만 두고, 생성/컨트롤러 로그에는 항목 ID만 흐른다.",
+      "id": "/oracles/gold-isolation.md",
+      "sha256": "788ac8b7d60c04699ddb89d492eaebd997104f135fc947ece3a0e342ef542266",
+      "source_path": "knowledge/oracles/gold-isolation.md",
+      "tags": [
+        "blinding",
+        "gold"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "골드 격리",
+      "type": "Protocol"
+    },
+    {
+      "description": "불가능 행동·금지 공개·미지 사실·필수 누락·모순·근거 없는 변경을 판정하는 블라인드 annotation 스키마.",
+      "id": "/oracles/semantic-oracle.md",
+      "sha256": "c8e368736abcab844855cc6a8d19124cdfb2fb4fc244e4d067e047527ed4b0b1",
+      "source_path": "knowledge/oracles/semantic-oracle.md",
+      "tags": [
+        "oracle",
+        "semantic"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "의미 오라클",
+      "type": "Oracle"
+    },
+    {
+      "description": "type·title·description 필수 필드와 frontmatter 닫힘을 검사한다.",
+      "id": "/protocols/bundle-validation.md",
+      "sha256": "4b85beef337aad11a4e17543ad85ade64c7d39addfd3caca1d0c6c23c93c3ff0",
+      "source_path": "knowledge/protocols/bundle-validation.md",
+      "tags": [
+        "lint",
+        "okf"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "OKF 번들 구조 린트",
+      "type": "Runbook"
+    },
+    {
+      "description": "OKF 원자에 인용된 수치가 experiment-matrix.yaml의 동결값과 일치하는지 기계 검증한다.",
+      "id": "/protocols/config-drift-check.md",
+      "sha256": "cded9368c84c203bd51f53c27cefbc78cc8496cfbe0200dca1965edb74ee4e81",
+      "source_path": "knowledge/protocols/config-drift-check.md",
+      "tags": [
+        "drift",
+        "preregistration"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "방법 원자 ↔ 동결 설정 드리프트 검사",
+      "type": "Runbook"
+    },
+    {
+      "description": "동결 시나리오부터 확증 분석까지 — 게임 에피소드가 실험 단위가 되는 6단계.",
+      "id": "/protocols/episode-execution.md",
+      "sha256": "d00bee6aff2a22a4445e0d5127d1cf21de4c509991a494f9abd711da88e00d37",
+      "source_path": "knowledge/protocols/episode-execution.md",
+      "tags": [
+        "pipeline",
+        "runbook"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "게임 에피소드 실험 실행 절차",
+      "type": "Runbook"
+    },
+    {
+      "description": "temperature 0.7 · top_p 0.95 · max_output_tokens 1024 · seeds [11,23,47,83,131] · K=3 · timeout 60s · cold-cache 1차.",
+      "id": "/protocols/execution-controls.md",
+      "sha256": "5259540813082cd6a5b89211ef159df5175f0f6a14120b8b1639666c4cb624e3",
+      "source_path": "knowledge/protocols/execution-controls.md",
+      "tags": [
+        "controls",
+        "frozen-config"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "실행 통제 (decoding·seed·timeout)",
+      "type": "Protocol"
+    },
+    {
+      "description": "동결된 링크 holdout과 후보 풀에서 제안 전략을 기준선부터 순차 평가하고 제약 충족 개선만 keep하는 재현 절차.",
+      "id": "/protocols/kg-ontology-simulation.md",
+      "sha256": "fc7e8bacc9817dbe75a13caafb9bd1b12cb6ef6a52eead1c263863a2de586c37",
+      "source_path": "knowledge/protocols/kg-ontology-simulation.md",
+      "tags": [
+        "autoresearch",
+        "kg",
+        "ontology",
+        "simulation-only"
+      ],
+      "timestamp": "2026-08-25T00:00:00Z",
+      "title": "KG 온톨로지 제안 시뮬레이션",
+      "type": "Protocol"
+    },
+    {
+      "description": "템플릿 결합 단위 분할·개발 fixture 제외·fingerprint 이동·단독 판정 금지·전면 해시의 5중 가드.",
+      "id": "/protocols/leakage-guards.md",
+      "sha256": "510e7ae776c4e4cc4b06fed6b73604eb370631f2e11686c2809a153915e5f5fd",
+      "source_path": "knowledge/protocols/leakage-guards.md",
+      "tags": [
+        "holdout",
+        "leakage"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "누출 방지 가드",
+      "type": "Protocol"
+    },
+    {
+      "description": "timeout/파싱 실패는 adapter failure로, 수리 소진은 symbolic fallback으로 유지 — 추정량에서 제거하지 않는다.",
+      "id": "/protocols/missingness-policy.md",
+      "sha256": "dc17251666eac914a8177f253c6fa2daadd7d58a4456910d6c788cfae13269ff",
+      "source_path": "knowledge/protocols/missingness-policy.md",
+      "tags": [
+        "estimand",
+        "missingness"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "결측·실패 treatment-policy",
+      "type": "Protocol"
+    },
+    {
+      "description": "구조화 오류를 수리 callback에 노출하고, 예산 K 소진 시 무변경 fallback, 성공 시 커밋 직전 방어적 재검증.",
+      "id": "/protocols/validate-repair-commit.md",
+      "sha256": "600d8a1695e2d0769885a69c660bdc0bd346b23d96e6e5537b5e5d2228276b6b",
+      "source_path": "knowledge/protocols/validate-repair-commit.md",
+      "tags": [
+        "loop",
+        "repair"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "Validate–Repair–Commit 루프",
+      "type": "Protocol"
+    },
+    {
+      "description": "세계 접근성·인과, NPC 공개, 시간 기억, 인물 기만, 감정 상승·불확실 — 각 패밀리는 등록 앵커와 1차 종점을 가진다.",
+      "id": "/scenarios/scenario-families.md",
+      "sha256": "831737c88faf835afe6ce1ec22dbfd25bf271532a80db77cb94fc4ffd59ea8fe",
+      "source_path": "knowledge/scenarios/scenario-families.md",
+      "tags": [
+        "families",
+        "scenarios"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "확증 시나리오 패밀리 7종",
+      "type": "Scenario Family Set"
+    },
+    {
+      "description": "공개 개발 fixture이자 Stage 6 M6 엔진 fixture — 확증 효과 추정에서는 제외한다.",
+      "id": "/scenarios/sealed-lighthouse-dev.md",
+      "sha256": "d65912a063fe16cc070bf8faec1d9eb73e04a073d030ad06d851a3aeaf4bd3f5",
+      "source_path": "knowledge/scenarios/sealed-lighthouse-dev.md",
+      "tags": [
+        "dev-fixture",
+        "sealed-lighthouse"
+      ],
+      "timestamp": "2026-08-14T00:00:00Z",
+      "title": "SL-DEV-001 — 봉인된 등대 개발 fixture",
+      "type": "Scenario Family Set"
+    }
+  ],
+  "schema_version": "2.0.0",
+  "summary": {
+    "nodes": 43,
+    "reference_edges": 106
+  }
 }

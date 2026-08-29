@@ -26,6 +26,7 @@ const EXACT_TERMINAL_HASH := "4b2310173dc059071fdc98e7705608d383dda81559706c3dd3
 # Machine-implemented refusal codes; OBJECT_NOT_REACHABLE is not exercisable in
 # the canonical scenario (its only object sits in a reachable location) and is
 # covered instead by the authored Python-side pilot fixtures.
+const IMPLEMENTED_OPERATIONS := ["acquire_object", "install_lens", "reveal_hint"]
 const IMPLEMENTED_CODES := [
 	"FORBIDDEN_DISCLOSURE",
 	"STAGE_GATED_DISCLOSURE",
@@ -266,7 +267,7 @@ func _run_probe() -> Dictionary:
 			"operation_coverage": {
 				"exercised": exercised_operations.keys(),
 				"exercised_count": exercised_operations.size(),
-				"implemented_count": 3,
+				"implemented_count": IMPLEMENTED_OPERATIONS.size(),
 			},
 			"refusal_code_coverage": {
 				"exercised_count": exercised_codes.size(),
@@ -377,7 +378,8 @@ func _run_archetype(
 				var before_hash := machine.state_hash()
 				var result: Dictionary = machine.apply_operation(operation, arguments)
 				op_log.append({"operation": operation, "arguments": arguments})
-				exercised_operations[operation] = true
+				if operation in IMPLEMENTED_OPERATIONS:
+					exercised_operations[operation] = true
 				var accepted: bool = result["accepted"]
 				if accepted != bool(step["expect_accepted"]):
 					_fail(

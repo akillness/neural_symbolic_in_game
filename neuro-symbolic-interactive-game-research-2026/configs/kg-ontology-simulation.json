@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0.0",
+  "simulation_id": "SL-KG-ONTOLOGY-SIM-001",
+  "scope": {
+    "engineering_only": true,
+    "simulation_only": true,
+    "benchmark_design": "authored closed-world typed-link holdout",
+    "not_evidence_for": [
+      "runtime graph retrieval efficacy",
+      "long-horizon contradiction reduction",
+      "semantic completeness",
+      "player or human outcomes",
+      "C-RESULT-001",
+      "C-RESULT-002",
+      "C-RESULT-003",
+      "C-RESULT-004",
+      "C-RESULT-005"
+    ]
+  },
+  "inputs": {
+    "ontology": "knowledge/ontology/trace-rpg-ontology.json",
+    "curated_relations": "knowledge/ontology/curated-relations.json",
+    "knowledge_root": "knowledge",
+    "sqlite_schema": "knowledge/ontology/knowledge-graph-schema.sql"
+  },
+  "budget": {
+    "strategy_trials": 7,
+    "queries_per_trial": 6,
+    "candidates_per_query": 5,
+    "candidate_scores_per_trial": 30,
+    "candidate_scores_total": 210,
+    "ranking_k": 3,
+    "decision_k": 1
+  },
+  "selection_rule": {
+    "recall_floor": 0.8,
+    "coverage_floor": 0.95,
+    "semantic_at_k_floor": 1.0,
+    "strict_improvement_order": [
+      "precision",
+      "mrr_realistic",
+      "ndcg_at_k",
+      "negative_brier_score",
+      "negative_nonzero_weight_count"
+    ]
+  },
+  "holdout_relation_ids": ["CR-002", "CR-003", "CR-004", "CR-005", "CR-008", "CR-017"],
+  "queries": [
+    {
+      "id": "Q-REPAIR-METRIC",
+      "question_en": "Which metric measures structured repair success at fixed K?",
+      "question_ko": "고정 K에서 구조화 수리 성공을 측정하는 지표는 무엇인가?",
+      "source": "/contrasts/h2-repair-vs-retry.md",
+      "relation": "evaluated_by",
+      "holdout_relation_id": "CR-002",
+      "candidates": [
+        {"id": "Q1-C1", "target": "/metrics/repair-at-k.md", "relevant": true},
+        {"id": "Q1-C2", "target": "/metrics/cost-of-valid-episode.md", "relevant": false},
+        {"id": "Q1-C3", "target": "/oracles/semantic-oracle.md", "relevant": false},
+        {"id": "Q1-C4", "target": "/protocols/execution-controls.md", "relevant": false},
+        {"id": "Q1-C5", "target": "/metrics/tension-rmse.md", "relevant": false}
+      ]
+    },
+    {
+      "id": "Q-MEMORY-METRIC",
+      "question_en": "Which metric measures long-horizon memory contradiction rate?",
+      "question_ko": "장기 메모리 모순율을 측정하는 지표는 무엇인가?",
+      "source": "/contrasts/h3-memory.md",
+      "relation": "evaluated_by",
+      "holdout_relation_id": "CR-003",
+      "candidates": [
+        {"id": "Q2-C1", "target": "/metrics/long-horizon-contradiction-rate.md", "relevant": true},
+        {"id": "Q2-C2", "target": "/metrics/hard-violation-rate.md", "relevant": false},
+        {"id": "Q2-C3", "target": "/scenarios/scenario-families.md", "relevant": false},
+        {"id": "Q2-C4", "target": "/oracles/semantic-oracle.md", "relevant": false},
+        {"id": "Q2-C5", "target": "/metrics/valid-episode-rate.md", "relevant": false}
+      ]
+    },
+    {
+      "id": "Q-AFFECT-METRIC",
+      "question_en": "Which metric measures tension-curve tracking error?",
+      "question_ko": "긴장 곡선 추적 오차를 측정하는 지표는 무엇인가?",
+      "source": "/contrasts/h4-affect.md",
+      "relation": "evaluated_by",
+      "holdout_relation_id": "CR-004",
+      "candidates": [
+        {"id": "Q3-C1", "target": "/metrics/tension-rmse.md", "relevant": true},
+        {"id": "Q3-C2", "target": "/metrics/long-horizon-contradiction-rate.md", "relevant": false},
+        {"id": "Q3-C3", "target": "/concepts/claim-boundary.md", "relevant": false},
+        {"id": "Q3-C4", "target": "/metrics/valid-episode-rate.md", "relevant": false},
+        {"id": "Q3-C5", "target": "/protocols/missingness-policy.md", "relevant": false}
+      ]
+    },
+    {
+      "id": "Q-COST-METRIC",
+      "question_en": "Which metric measures cost per valid episode?",
+      "question_ko": "유효 에피소드당 비용을 측정하는 지표는 무엇인가?",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "relation": "evaluated_by",
+      "holdout_relation_id": "CR-005",
+      "candidates": [
+        {"id": "Q4-C1", "target": "/metrics/cost-of-valid-episode.md", "relevant": true},
+        {"id": "Q4-C2", "target": "/metrics/valid-episode-rate.md", "relevant": false},
+        {"id": "Q4-C3", "target": "/experiments/consensus-arms.md", "relevant": false},
+        {"id": "Q4-C4", "target": "/metrics/hard-violation-rate.md", "relevant": false},
+        {"id": "Q4-C5", "target": "/citations/cost-evaluation-literature.md", "relevant": false}
+      ]
+    },
+    {
+      "id": "Q-CONFIRMATORY-CONTRAST",
+      "question_en": "Which memory contrast is exercised by Stage 2 confirmatory evaluation?",
+      "question_ko": "2단계 확증 평가는 어떤 메모리 대조를 실행하는가?",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "tests_contrast",
+      "holdout_relation_id": "CR-008",
+      "candidates": [
+        {"id": "Q5-C1", "target": "/contrasts/h3-memory.md", "relevant": true},
+        {"id": "Q5-C2", "target": "/contrasts/h1-gate-vs-direct.md", "relevant": false},
+        {"id": "Q5-C3", "target": "/contrasts/h2-repair-vs-retry.md", "relevant": false},
+        {"id": "Q5-C4", "target": "/contrasts/h4-affect.md", "relevant": false},
+        {"id": "Q5-C5", "target": "/metrics/repair-at-k.md", "relevant": false}
+      ]
+    },
+    {
+      "id": "Q-ENGINE-PROTOCOL",
+      "question_en": "Which protocol constrains the non-authoritative soft proposal channel before commit?",
+      "question_ko": "비권위 소프트 제안 채널의 커밋 전 경계를 정하는 프로토콜은 무엇인가?",
+      "source": "/engine/llm-channel-demo.md",
+      "relation": "implements",
+      "holdout_relation_id": "CR-017",
+      "candidates": [
+        {"id": "Q6-C1", "target": "/protocols/validate-repair-commit.md", "relevant": true},
+        {"id": "Q6-C2", "target": "/concepts/commit-gate.md", "relevant": false},
+        {"id": "Q6-C3", "target": "/metrics/hard-violation-rate.md", "relevant": false},
+        {"id": "Q6-C4", "target": "/concepts/invariants.md", "relevant": false},
+        {"id": "Q6-C5", "target": "/oracles/semantic-oracle.md", "relevant": false}
+      ]
+    }
+  ],
+  "strategies": [
+    {
+      "id": "S0-degree-baseline",
+      "description": "Untyped target-degree baseline.",
+      "threshold": 0.6,
+      "weights": {"degree": 1.0, "lexical": 0.0, "path": 0.0, "type_fit": 0.0}
+    },
+    {
+      "id": "S1-lexical",
+      "description": "Question and endpoint token overlap only.",
+      "threshold": 0.03,
+      "weights": {"degree": 0.0, "lexical": 1.0, "path": 0.0, "type_fit": 0.0}
+    },
+    {
+      "id": "S2-typed-lexical-loose",
+      "description": "Domain/range fit plus lexical overlap with a loose threshold.",
+      "threshold": 0.4,
+      "weights": {"degree": 0.0, "lexical": 0.6, "path": 0.0, "type_fit": 0.4}
+    },
+    {
+      "id": "S3-typed-lexical-strict",
+      "description": "Same features with a stricter proposal threshold.",
+      "threshold": 0.48,
+      "weights": {"degree": 0.0, "lexical": 0.6, "path": 0.0, "type_fit": 0.4}
+    },
+    {
+      "id": "S4-typed-lexical-path",
+      "description": "Typed lexical score with heldout-safe graph-path support.",
+      "threshold": 0.4,
+      "weights": {"degree": 0.0, "lexical": 0.5, "path": 0.15, "type_fit": 0.35}
+    },
+    {
+      "id": "S5-path-heavy",
+      "description": "A deliberately path-heavy mutation used to test reversion.",
+      "threshold": 0.3,
+      "weights": {"degree": 0.0, "lexical": 0.2, "path": 0.55, "type_fit": 0.25}
+    },
+    {
+      "id": "S6-degree-mix",
+      "description": "Adds a popularity prior to test whether hub bias helps.",
+      "threshold": 0.38,
+      "weights": {"degree": 0.1, "lexical": 0.45, "path": 0.15, "type_fit": 0.3}
+    }
+  ]
+}

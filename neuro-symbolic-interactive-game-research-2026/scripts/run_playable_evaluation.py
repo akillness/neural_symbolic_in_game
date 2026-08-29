@@ -32,6 +32,7 @@ FIXTURE_ROOT = ROOT / "data/fixtures"
 
 MATRIX_ID = "SL-PLAY-EVAL-001"
 EXACT_TERMINAL_HASH = "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+PRESENTATION_MODE = "public-safe curated Higgsfield player rig with procedural world fallback"
 FIXTURE_FILES = (
     "experimental-game-canonical.json",
     "experimental-game-duplicate-event.json",
@@ -78,6 +79,11 @@ NOT_EVIDENCE_FOR = (
 )
 ANSI_ESCAPE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 GODOT_ERROR = re.compile(r"(?:SCRIPT ERROR|ERROR):")
+SANDBOXED_MACOS_HOST_ERROR = re.compile(
+    r"ERROR: Can't open file from path '/System/Library/Fonts/[^'\n]+\.ttc'\."
+    r'|ERROR: Condition "ret != noErr" is true\. Returning: ""'
+    r"(?=\n\s+at: get_system_ca_certificates)"
+)
 SHA256_HEX = re.compile(r"[0-9a-f]{64}")
 SEMVER_PREFIX = re.compile(r"^(\d+\.\d+\.\d+)")
 
@@ -159,6 +165,7 @@ def _run_godot(
     *,
     label: str,
     timeout: int,
+    allowed_errors: re.Pattern[str] | None = None,
 ) -> subprocess.CompletedProcess[str]:
     result = subprocess.run(
         command,
@@ -175,7 +182,8 @@ def _run_godot(
             if log_path.is_file():
                 log_output = log_path.read_text(encoding="utf-8", errors="replace")
     output = ANSI_ESCAPE.sub("", result.stdout + result.stderr + log_output)
-    if result.returncode != 0 or GODOT_ERROR.search(output):
+    checked_output = allowed_errors.sub("", output) if allowed_errors else output
+    if result.returncode != 0 or GODOT_ERROR.search(checked_output):
         excerpt = output[-6000:]
         raise RuntimeError(f"{label} failed (exit={result.returncode}). Godot output:\n{excerpt}")
     return result
@@ -441,7 +449,7 @@ def build_matrix(
             "fresh_temporary_project_import": True,
             "authored_fixture_runs_headless": True,
             "presentation_evaluation_headless": True,
-            "presentation_mode": "public-safe procedural fallback",
+            "presentation_mode": PRESENTATION_MODE,
             "immutable_evidence_modified": False,
         },
         "terminal_state": {
@@ -486,7 +494,7 @@ def render_markdown(matrix: Mapping[str, Any]) -> str:
         f"- Godot: `{matrix['execution']['godot_version']}`",
         (
             "- Execution: fresh temporary project import; headless fixtures; "
-            "public-safe procedural presentation evaluation"
+            f"{PRESENTATION_MODE} presentation evaluation"
         ),
         f"- Exact terminal state SHA-256: `{matrix['terminal_state']['exact_sha256']}`",
         (
@@ -530,7 +538,7 @@ def render_markdown(matrix: Mapping[str, Any]) -> str:
             "| Surface | Mode | Checks | Canonical state | Result |",
             "| --- | --- | ---: | --- | --- |",
             (
-                f"| `{presentation['evaluation']}` | public-safe procedural | "
+                f"| `{presentation['evaluation']}` | {PRESENTATION_MODE} | "
                 f"{presentation['counts']['checks_passed']}/"
                 f"{presentation['counts']['checks_total']} | unchanged | "
                 f"{'PASS' if presentation['passed'] else 'FAIL'} |"
@@ -634,6 +642,7 @@ def _capture_screenshots(godot: str, project: Path, output: Path, logs: Path) ->
             ],
             label=f"public-safe screenshot capture ({stage})",
             timeout=60,
+            allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
         )
         validate_render_png(shot_path)
 
@@ -676,6 +685,7 @@ def run_evaluation(
             ],
             label="fresh Godot project import",
             timeout=120,
+            allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
         )
 
         fixture_rows: list[dict[str, Any]] = []
@@ -700,6 +710,7 @@ def run_evaluation(
                 ],
                 label=f"authored fixture {fixture['fixture_id']}",
                 timeout=60,
+                allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
             )
             summary = _load_json_object(output / "summary.json")
             events = _read_events(output / "events.jsonl")
@@ -728,6 +739,7 @@ def run_evaluation(
             ],
             label="public-safe presentation engineering evaluation",
             timeout=60,
+            allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
         )
         presentation_report = _load_json_object(presentation_path)
         presentation = summarize_presentation(presentation_report)

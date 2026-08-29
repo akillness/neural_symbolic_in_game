@@ -1,11 +1,12 @@
 # Task Manifest — Cycle 3 (+ 2026-08-28 밸런스·텔레메트리 확장 패스)
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
-Current stage: Stage 1 re-entry — playable presentation/Web release engineering; 2026-08-28
-balance/telemetry/motion-lane extension recorded as D-037–D-039
-Operating mode: public-safe procedural runtime; immutable research evidence remains separate
-Next beat: browser save/reload, representative warmed frame/input measurements, 30-minute soak,
-non-headless capture refresh (GUI session), and final aggregate regression
+Current stage: Stage 1 re-entry — playable presentation/Web release engineering; 2026-08-30
+balance/telemetry/motion/live-screening/recovery/English-player/KG/deployment extension recorded as D-037–D-053
+Operating mode: curated public-safe UI/player over a procedural world; immutable research evidence remains separate
+Next beat: production save/reload and current mobile re-verification, human-gesture pointer
+lock/audio, representative warmed frame/input measurements, 30-minute soak, rollback drill, and
+LaTeX PDF rebuild
 
 | task | owner | stage.phase | artifact | gate | status | next evidence |
 |---|---|---|---|---|---|---|
@@ -13,20 +14,20 @@ non-headless capture refresh (GUI session), and final aggregate regression
 | Correct episode promise | designer | 1.design | `design/concept.md` | G1/G7 | done | audit public strings |
 | Preserve sealed lighthouse; restore harbor signal/earn tide route | designer + lore QA | 1.design | concept, presentation, content-worldview audit | G1 | done-in-docs | browser-visible content audit |
 | Build public-safe procedural harbor and pooled VFX | visual lane | 1.presentation | `world_builder.gd`, `narrative_director.gd`, `interactable_3d.gd` | G4/G6 | implemented-structure | screenshots + frame measurements |
-| Build playable movement/focus boundary | programmer | 1.systems | `player_3d.gd`, `game_3d.gd` | G6/G7 | implemented-structure | browser input probe |
-| Build responsive ledger and browser start gate | UI lane | 1.presentation | `harbor_ledger_ui.gd`, `game_3d.gd` | G1/G4/G6 | verified-1280x720-and-390x844 | human G4 study |
+| Build playable movement/focus boundary | programmer | 1.systems | `player_3d.gd`, `game_3d.gd` | G6/G7 | implemented-and-rig-animation-bound | browser input probe |
+| Build responsive English ledger and browser start gate | UI lane | 1.presentation | `harbor_ledger_ui.gd`, `game_3d.gd` | G1/G4/G6 | verified-current-browser-and-profile-invariants | current narrow human review |
 | Build gesture-gated procedural audio | audio lane | 1.presentation | `procedural_audio.gd` | G4/G6 | implemented-structure | clean-browser unlock/mute/focus test |
 | Enforce generated-asset public exclusion | programmer + release | 1.resources | public-safe guard, Web staging | provenance | implemented-structure | inspect exported artifact |
 | Add disposable single-threaded Web export | release engineer | 1.release | `game-track/web/**`, `scripts/build_godot_web.sh` | G6/release | implemented-structure | clean build receipt |
-| Add presentation evaluation and latest shot modes | programmer + QA | 1.verify | `docs/latest/evaluation-matrix.*`, four PNGs | engineering | done-4-fixtures-47-of-47-four-shots | README/browser review |
+| Add presentation evaluation and latest working captures | programmer + QA | 1.verify | `docs/latest/evaluation-matrix.*`, four PNGs | engineering | done-4-fixtures-49-of-49-four-browser-stage-shots | keep hashes synchronized |
 | Execute public-safe 3D smoke | QA | 1.verify | same proposal router as play | G7 engineering | observed-8-of-8 | preserve final command receipt |
-| Execute aggregate regression | QA | 1.verify | `./scripts/validate_game_track.sh` | regression | observed-40-tests-44-subtests | rerun after integration |
+| Execute aggregate regression | QA | 1.verify | full Pytest/unittest/game selection + Ruff | regression | observed-172-pass-2-skip; unittest-131-2-skip; game-46-pass-2-skip | rerun after integration |
 | Bundle Korean Web font with license | release engineer | 1.resources | `assets/fonts/NanumGothic-Regular.ttf`, `OFL.txt`, provenance README, public `NanumGothic-OFL.txt` | provenance | done-OFL-pinned-and-public-hash | retain license with releases |
-| Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-11-files-41426182-bytes | rebuild for future releases |
+| Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-production-11-manifest-files-50745203-bytes-pck-10892428 | monitor and retain exact receipts |
 | Verify deployed Web in browser | QA + release | 1.verify | six `docs/latest/*web*`/`*vercel*` captures | G1/G6/release | done-bounded-desktop-mobile-zero-errors | pointer lock + save/reload + performance |
 | Measure Web performance and 30-minute soak | QA | 1.verify | browser performance report | G6 | pending | warmed p95, long frames, input, memory |
 | Conduct approved human presentation study | independent evaluator | later study | participant packet | G4 | not-started | immersion/readability/usability data |
-| Deploy public-safe static artifact | release engineer | 1.release | `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-production-http-browser-smoke | monitor/rollback drill |
+| Deploy public-safe static artifact | release engineer | 1.release | `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` at `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-ready-10-runtime-files-byte-identical-desktop-zero-errors | production save/reload, mobile recheck, monitor/rollback drill |
 | Deepen weather/cinematic 연출 (tension weather arc, lightning, harbor micro-motion, intro FOV, ending beam) | visual lane (subagent WorldFeel) | 1.presentation | `world_builder.gd`, `narrative_director.gd` | G1/G4 | done-2026-08-21-smoke-and-eval-green | human presentation study |
 | Deepen core-loop feel/balance (movement accel, focus affordance, golden-path retune, escalating commits, 7 stingers + ambience) | programmer + audio lane (subagent LoopFeel) | 1.systems | `player_3d.gd`, `interactable_3d.gd`, `game_3d.gd`, `procedural_audio.gd` | G1/G7 | done-2026-08-21-smoke-and-eval-green | human presentation study |
 | Generate Higgsfield UI art pack (6 assets + provenance) | asset lane (subagent HiggsfieldGen) | 1.resources | `game-track/assets/generated/higgsfield-ui-v1/` | provenance (D-034) | done-6-of-6-accepted-2-retries | keep staging immutable |
@@ -42,29 +43,44 @@ non-headless capture refresh (GUI session), and final aggregate regression
 | Deploy iteration-2 artifact + golden-path capture | release engineer (orchestrator) | 1.release | deploy `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`, `docs/latest/golden-path.gif` (3.2 MB, 32 s) | release engineering | done-byte-identical-alias-zero-errors | monitor/rollback drill |
 | Instrument input→visible feedback telemetry + 9-check presentation contract + playfield-first wide layout (0.66) | programmer + UI lane (D-037) | 1.systems | `game_3d.gd` probe/`_input_feedback_snapshot`, `harbor_ledger_ui.gd` layout metrics, `run_playable_evaluation.py` 9/9, `SL-PLAY-EVAL-001` `49/49` | G4/G6 wiring | done-2026-08-28-headless-wiring-only | browser/user-gesture latency measurement |
 | Execute deterministic archetype balance probe `SL-BALANCE-PROBE-001` (5 rotations, G2 replacement measurements, chart + md + json) | QA + designer (D-038) | 1.verify | `scenes/balance_probe.tscn`, `scripts/balance_probe_runner.gd`, `scripts/game3d/golden_path_layout.gd`, `scripts/run_balance_archetypes.py`, `docs/latest/balance-archetypes.{json,md,svg}` | G2/G3 engineering | done-2026-08-28-5-of-5-pass | human playtest for G2 perception/G3 viability |
-| Open motion/rig intake lane with raw-source guard (Mixamo/Blender/Godot retarget contract) | asset lane + release (D-039) | 1.resources | `game-track/assets/motion/README.md`, `scripts/validate_motion_assets.py`, root `.gitignore` guards | provenance | done-contract-zero-assets | first curated GLB + rig adoption interview |
+| Open motion/rig intake lane with raw-source guard (Mixamo/Blender/Godot retarget contract) | asset lane + release (D-039) | 1.resources | `game-track/assets/motion/README.md`, `scripts/validate_motion_assets.py`, root `.gitignore` guards | provenance | done-contract-zero-staged-assets | retain local-only Mixamo boundary |
+| Generate, curate, validate, and bind public Higgsfield player (D-050) | asset + programmer + QA | 1.resources | `godot/assets/player/`, `validate_player_asset.py`, `player_3d.gd`, Web test | provenance/G6 presentation | done-9677324-bytes-15463-triangles-idle-walk-web-active | human motion/feel review; performance measurement |
+| Convert player-visible runtime UI to English/ASCII-safe text (D-050) | UI + narrative + QA | 1.presentation | four `scripts/game3d/*.gd`, browser receipt | G1/G4 | done-zero-runtime-Hangul-full-route-and-tutorial-zero-errors | current narrow human review |
 | Refresh stale QA registrations (capture SHA-256 ×4, PCK bytes/hash) against current artifacts | QA (bookkeeping) | 1.verify | `qa/gate-measurements.md` | evidence hygiene | done-2026-08-28 | keep in sync at each artifact refresh |
 | Prepare owner-run G4/G6 human measurement packet | QA | 1.verify | `qa/human-measurement-packet.md` | G6/DEF-010 | ready-awaiting-owner-run | record results, close DEF-010, update G6 rows |
-| Freeze RQ2 live-pilot design (D-040) | research engineer | paper.method | `research/directions/rq2-live-pilot-plan.md` | claim promotion | approved-not-executed | implement CodexProposalAdapter, run, promote C-RESULT-003 to pilot-only |
+| Execute RQ2 live-screening pilot (D-040) | research engineer | paper.method | `research/academic-pipeline/rq2-live-pilot/`, `research/claim-ledger.yaml` | claim boundary | executed-pilot-only-C-PILOT-007-008 | keep `C-RESULT-003` `TODO-RESULT`; confirmatory preregistration remains |
+| Harden host-error and balance-coverage gates (D-047) | game-programmer + QA | 1.verify | evaluator drivers, Web builder, regression tests | fail-closed engineering | done-eval-49-of-49-balance-3-of-3 | retain exact filters and implemented-op denominator |
+| Add below-world recovery and current Web browser QA (D-048) | game-programmer + QA | 1.verify | `player_3d.gd`, smoke, Web test, `qa/browser-qa.md` | state isolation/G6 engineering | done-local-ending-save-refresh-load-recovery | human pointer/audio, performance; DEF-021 layout retune |
+| Generate bilingual live-screening paper addendum (D-049) | research engineer | paper.revision | generator, four generated fragments, EN/KO manuscripts | pilot-only claim parity | done-source-and-static-parity | rebuild PDFs with LaTeX toolchain; review before commit |
+| Publish first bilingual progress report | director + QA | current pickup | `production/first-progress-report.md` | evidence-bounded status | done-2026-08-29 | user review; no commit/push without approval |
+| Build typed methods-graph DB/ontology and fixed-budget link-proposal simulation (D-051) | research engineer + QA | paper.method | ontology/curated relations, SQLite schema, `SL-KG-ONTOLOGY-SIM-001`, JSON/Markdown/TSV/SVG/TeX | simulation-only claim boundary | done-43-nodes-106-reference-24-typed-0-violations-6-of-6-CQ | independent open-world annotation before any semantic/usefulness claim; runtime KG remains future work |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
 
-- `godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe`
-  → `8/8`, terminal state SHA-256
+- `godot --headless --path <disposable-copy> res://scenes/main_3d.tscn -- --smoke --public-safe`
+  → `8/8`, real `project.godot` hash unchanged, terminal state SHA-256
   `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`.
-- `./scripts/validate_game_track.sh` → `40 tests, 44 subtests` in the current Cycle 3 session.
-- `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001` (2026-08-28): fixtures `4/4`, fixture
-  checks `40/40`, presentation checks `9/9` (adds `wide_layout_preserves_playfield` and
-  `input_feedback_latency_probe_emits_sample`), combined `49/49`; terminal SHA-256 unchanged.
-  The evaluation now also emits `input_feedback` telemetry (engine-local wiring evidence only).
-- `scripts/run_balance_archetypes.py` → `SL-BALANCE-PROBE-001` (2026-08-28): archetypes `5/5`,
-  refusal state isolation `10/10`, forbidden-disclosure commits `0/3` opportunities, replay hash
-  equality `5/5`, refusal-code coverage `7/9` with two structurally unexercisable codes documented;
-  artifacts `docs/latest/balance-archetypes.{json,md,svg}`.
-- Four `docs/latest/*.png` working captures are 1280×720 and SHA-256 registered in the matrix;
-  they are carried from 2026-08-21 — the 2026-08-28 session could not open a GUI window from its
-  sandbox, so a non-headless capture refresh with the new 0.66 wide layout is pending.
+- Current Python 3.12 full Pytest → `172 passed, 2 skipped`; unittest discovery → `131` with `2`
+  skipped; game-track selection → `46 passed, 2 skipped`; studio/concept/motion/player validators
+  PASS; Ruff check and format are clean.
+- `scripts/run_kg_ontology_simulation.py` → `SL-KG-ONTOLOGY-SIM-001`: OKF nodes `43`, reference
+  edges `106`, curated typed edges `24`, ontology violations `0`, competency questions `6/6`;
+  `S2-typed-lexical-loose` retained on the authored 6×5 holdout (`P/R/F1=1.000`, realistic-tie
+  `MRR=0.944`, `BS=0.131`, `Sem@3=1.000`). Simulation-only construction evidence; not runtime KG,
+  semantic completeness, player evidence, or support for any `C-RESULT-*` claim.
+- `scripts/run_playable_evaluation.py` → `SL-PLAY-EVAL-001` (2026-08-30): fixtures `4/4`, fixture
+  checks `40/40`, presentation checks `9/9`, combined `49/49`; terminal SHA-256 unchanged.
+  Presentation reports `higgsfield-tracked`, active `Idle`, both required clips, and one `3.53 ms`
+  engine-local input-feedback sample (wiring evidence only).
+- `scripts/run_balance_archetypes.py` → `SL-BALANCE-PROBE-001` (2026-08-29): archetypes `5/5`,
+  implemented-operation coverage `3/3`, refusal state isolation `10/10`, forbidden-disclosure
+  commits `0/3` opportunities, replay hash equality `5/5`, refusal-code coverage `7/9` with two
+  structurally unexercisable codes documented; artifacts `docs/latest/balance-archetypes.{json,md,svg}`.
+- Four `docs/latest/*.png` working captures were refreshed 2026-08-30 at exact 1280×720 and
+  SHA-256 registered in the matrix. Godot `--shot` cannot render in this sandbox, so a disposable
+  Web-stage-only query hook and 2× DPR browser capture/downsample lane produced them; tracked source
+  has no capture hook and the images remain engineering-only.
 - 2026-08-28 incident note: the canonical `game-track/godot/project.godot` was rewritten twice
   during this session — once by a diagnostic non-headless launch and once during the first cold
   `--import` after new engine files were added (editor-style normalization that also flipped
@@ -72,19 +88,23 @@ non-headless capture refresh (GUI session), and final aggregate regression
   file was restored via `git checkout`; a warm-cache re-run of the same import no longer rewrites
   it. Rule of thumb: after adding engine resources, run the suite once, then re-check
   `git status -- game-track/godot/project.godot` before staging.
-- `game-track/web/public/` contains 11 top-level build files (~45.9 MB); the latest 2026-08-21 PCK
-  is 5,970,516 bytes (1.57 MB procedural → 4.82 MB with curated UI art → 5.97 MB with the D-036
-  texture/stamp lane), SHA-256
-  `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`. The public 4,534-byte OFL notice
-  hash matches the source license. Local `vercel link` metadata (`.env.local`, `.vercel/`, generated
-  `.gitignore`) is not a shipped artifact file and is excluded from the count. The artifact remains
-  ignored and non-authoritative.
-- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-21 deploy
-  `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual+texture build, `index.pck` 5,970,516 bytes, SHA-256
-  `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`); html/pck/wasm fetched from
-  the alias byte-identical to the local artifact. (Prior receipts: same-day
-  `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` — curated-art build, verified desktop+mobile; 2026-08-17
-  `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.)
+- 2026-08-30 correction: an editor/import attempt rewrote the evidence-bound header again, so the
+  stronger rule replaces that old rule of thumb: **never run editor/import against the real
+  `game-track/godot` project**. Import, smoke, evaluation, Web export, and capture must use disposable
+  staged copies; before/after SHA-256 must remain
+  `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`.
+- Current `game-track/web/public/` contains 11 manifest files / 50,745,203 bytes; PCK 10,892,428
+  bytes, SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+  It includes the tracked player and remains ignored/non-authoritative. Production deployment
+  `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` is byte-identical across all 10 public runtime files;
+  `vercel.json` is deployment configuration and correctly non-public. The public 4,534-byte OFL
+  notice hash still matches the source license; local Vercel metadata is not shipped.
+- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-30 deploy
+  `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` (`index.pck` 10,892,428 bytes, SHA-256 `de670404…31ba`), READY;
+  production desktop start → in-game → Field Guide smoke logged zero console/page errors. Historical
+  receipts: 2026-08-21 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual+texture) and
+  `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` (curated-art, retained desktop+mobile captures); 2026-08-17
+  `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.
 - 2026-08-21 golden-path screencast from the deployed alias retained as
   `docs/latest/golden-path.gif` (640×360, 10 fps, 32 s, 3,245,101 bytes) — engineering working
   artifact only; not usability, immersion, or performance evidence.
@@ -97,6 +117,14 @@ non-headless capture refresh (GUI session), and final aggregate regression
   `pointerlockerror`; real-Chrome automation issued no pointer-lock request).
   All six retained `docs/latest/*web*`/`*vercel*` captures were refreshed from the 2026-08-21
   artifact/deployment.
+- 2026-08-29/30 current local Web QA: rebuilt disposable export completed the English start and
+  three-page ASCII-safe tutorial plus Mira refusal → lens → mount → authorized hint → tide-marks
+  ending with the tracked player and zero console/page errors. `F5` after lens pickup survived a
+  full page refresh; `F9` restored lens inventory/objective from IndexedDB `/userfs`. Forced
+  below-world movement returned to spawn, while the `8/8` smoke independently asserts unchanged
+  symbolic state. Pointer lock still did not engage, and the lens anchor at `(-11,1,1)` remains a
+  narrow edge approach (DEF-021). Receipt:
+  `_workspace/current/qa/browser-qa.md`.
 - 2026-08-17 browser smoke: clean Korean rendering at 1280×720 and 390×844; zero console and page
   errors. Pointer lock is not verified — a prior session's trusted-headless pointer-lock claim failed
   reproduction on 2026-08-17 (headless Chromium raised `pointerlockerror`; real Chrome via Playwriter
@@ -110,12 +138,16 @@ non-headless capture refresh (GUI session), and final aggregate regression
 These receipts are engineering conformance only and do not modify selected immutable v5 or upgrade
 G4/G6. The extension-connected inspection tab's `WrongDocumentError` is automation-only and does not
 imply that any session confirmed pointer lock; automation denial is not by itself evidence of a
-production defect. G4 is unassessed and G6 remains `FIX` pending save/reload, warmed
-performance/input, the 30-minute soak, and the open human-gesture pointer-lock check.
+production defect. G4 is unassessed and G6 remains `FIX`. Production desktop re-verification passed;
+production save/reload, current mobile verification, warmed performance/input, the 30-minute soak,
+rollback, audio focus, and the open human-gesture pointer-lock check remain.
 
 Refresh rule: any lane, generator, authority boundary, entry point, Web export behavior, gate,
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
-Latest rule refresh: 2026-08-21, decisions `D-034`–`D-036` (Higgsfield UI generator, curated
-runtime art lane, world-texture/stamp extension); prior refresh 2026-08-13, `D-027`–`D-033`.
+Latest rule refresh: 2026-08-30, decisions `D-037`–`D-053` (telemetry, balance, motion/rig,
+RQ2 screening, fail-closed host filtering, physical recovery, bilingual pilot-only paper addendum,
+English runtime UI, curated tracked Higgsfield player, rights receipt correction, simulation-only
+typed methods graph, and verified production deployment); prior refresh 2026-08-21,
+`D-034`–`D-036`.

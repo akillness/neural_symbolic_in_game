@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
 """Frozen-prompt generation run for the SL3D presentation resource pack.
 
 Dry-run validates each prompt before quota is spent; provenance is written
 beside each PNG. Safe to re-run: existing PNGs are skipped.
 """
+
 import datetime
 import hashlib
 import json
@@ -55,14 +55,14 @@ ASSETS = [
 
 
 def log(message):
-    line = f"{datetime.datetime.now(datetime.timezone.utc).strftime('%H:%M:%SZ')} {message}"
+    line = f"{datetime.datetime.now(datetime.UTC).strftime('%H:%M:%SZ')} {message}"
     print(line, flush=True)
     with open(LOG, "a") as handle:
         handle.write(line + "\n")
 
 
 def run(cmd):
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, check=False)
     if result.stdout.strip():
         log(result.stdout.strip()[-2000:])
     if result.stderr.strip():
@@ -75,6 +75,7 @@ def tool_version():
         ["npm", "ls", "-g", "god-tibo-imagen", "--depth=0"],
         capture_output=True,
         text=True,
+        check=False,
     )
     for token in result.stdout.split():
         if token.startswith("god-tibo-imagen@"):
@@ -84,7 +85,7 @@ def tool_version():
 
 def sips_dimension(png, flag):
     out = subprocess.run(
-        ["sips", "-g", flag, png], capture_output=True, text=True
+        ["sips", "-g", flag, png], capture_output=True, text=True, check=False
     ).stdout
     return int(out.strip().split()[-1])
 
@@ -92,21 +93,22 @@ def sips_dimension(png, flag):
 def write_provenance(asset, version):
     png = os.path.join(ROOT, asset["base"] + ".png")
     prompt_path = os.path.join(ROOT, "prompts", asset["base"] + ".txt")
-    data = open(png, "rb").read()
+    with open(png, "rb") as png_handle:
+        data = png_handle.read()
+    with open(prompt_path, "rb") as prompt_handle:
+        prompt_sha256 = hashlib.sha256(prompt_handle.read()).hexdigest()
     doc = {
         "schema_version": "1.0.0",
         "asset_id": asset["id"],
         "asset_class": asset["cls"],
         "file": asset["base"] + ".png",
         "prompt_file": "prompts/" + asset["base"] + ".txt",
-        "prompt_sha256": hashlib.sha256(open(prompt_path, "rb").read()).hexdigest(),
+        "prompt_sha256": prompt_sha256,
         "reference_inputs": [os.path.basename(asset["ref"])],
         "tool": "god-tibo-imagen",
         "tool_version": version,
         "provider": "private-codex",
-        "generated_at_utc": datetime.datetime.now(datetime.timezone.utc).strftime(
-            "%Y-%m-%dT%H:%M:%SZ"
-        ),
+        "generated_at_utc": datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "requested_size": asset["size"],
         "observed_width": sips_dimension(png, "pixelWidth"),
         "observed_height": sips_dimension(png, "pixelHeight"),
@@ -137,9 +139,9 @@ def main():
         if os.path.exists(png) and os.path.getsize(png) > 0:
             log(f"SKIP-EXISTING {asset['id']}")
             continue
-        prompt = open(
-            os.path.join(ROOT, "prompts", asset["base"] + ".txt")
-        ).read().strip()
+        prompt_path = os.path.join(ROOT, "prompts", asset["base"] + ".txt")
+        with open(prompt_path, encoding="utf-8") as prompt_handle:
+            prompt = prompt_handle.read().strip()
         log(f"DRY-RUN {asset['id']}")
         if not run(["gti", "--prompt", prompt, "--dry-run"]):
             log(f"DRY-RUN-FAILED {asset['id']}")

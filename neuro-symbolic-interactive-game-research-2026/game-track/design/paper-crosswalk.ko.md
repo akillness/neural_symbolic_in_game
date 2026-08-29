@@ -37,6 +37,8 @@ Markdown 파일은 대체된 프로토콜 청사진이다. [OBSERVED]
 | 목표 긴장 RMSE | `sqrt(mean((predicted_tension - target_tension)^2))` | 하드 유효성 비열등 뒤에만 검정 |
 | 재생 동일성 | `I(engine_terminal_hash = research_terminal_hash)` | 엔진 정확성만, RQ 효과 아님 |
 | 거절 불변성 | 거절/timeout/실패에서 `I(pre_state_hash = post_state_hash)` | 엔진/컨트롤러 경계 정확성 |
+| 작성형 typed-link 제안 정밀도/재현율 | `P=TP/(TP+FP)`, `R=TP/(TP+FN)` | `SL-KG-ONTOLOGY-SIM-001` closed-world 방법론 링크만, RQ3 효능 아님 |
+| K에서 온톨로지 적합도 | `Sem@K = conforming_top_K / (K × queries)` | 인코딩된 domain/range 구성 검사, 의미 완전성 아님 |
 
 ## 4. Stage 6 C1 해소 연결
 
@@ -87,6 +89,7 @@ version을 기록하되 verifier host가 capture host를 가장하도록 요구�
 | 참신성 조사 | `SL-SURVEY-001`, `SL-NOVELTY-001` | 한계를 포함한 공식 설명 범위 비교 | 보편적 참신성 또는 플레이어 인상 주장 |
 | 동결 콘셉트 팩 | `SL-C01`–`SL-C04` | AI 보조 콘셉트 제작과 시각 조건 공개 | 이미지 품질로 게임 품질/RQ 결과 추론 |
 | Non-headless render bundle | `SL-CAPTURE-001`(manifest 필드가 아닌 논문 label), `C-GAME-DESIGN-003` | 정확한 manifest capture ID와 source 결속을 포함한 결정론적 구조화 상태 Godot render 표면 3개 제시 | 라이브 Python 통합, 모델/시각 효능, 사용성, 몰입, 인간 결과, G4 또는 G6 주장 |
+| Typed methods-graph 시뮬레이션 | `SL-KG-ONTOLOGY-SIM-001` | simulation-only label 아래 작성형 6질의 링크 holdout 방법, 정확한 수식, 구성 검사를 보고 | 런타임 검색, 시간 메모리 효익, 의미 완전성, 플레이어 유용성, 어떤 `C-RESULT-*` 승격도 추론 금지 |
 
 ## 7. 논문 문구 통제
 

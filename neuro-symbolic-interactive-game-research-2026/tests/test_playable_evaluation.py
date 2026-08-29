@@ -17,6 +17,7 @@ from scripts.run_playable_evaluation import (
     GODOT_PROJECT,
     LATEST_DOCS,
     NOT_EVIDENCE_FOR,
+    SANDBOXED_MACOS_HOST_ERROR,
     SCREENSHOT_STAGES,
     _run_godot,
     atomic_write,
@@ -286,6 +287,28 @@ def test_godot_runner_fails_on_silent_script_error_in_log(monkeypatch: pytest.Mo
                 label="silent-error-test",
                 timeout=1,
             )
+
+
+def test_godot_runner_allows_known_sandboxed_macos_import_errors(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    output = (
+        "ERROR: Can't open file from path '/System/Library/Fonts/Apple Color Emoji.ttc'.\n"
+        "   at: get_file_as_bytes (core/io/file_access.cpp:907)\n"
+        'ERROR: Condition "ret != noErr" is true. Returning: ""\n'
+        "   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)"
+    )
+
+    def fake_run(*_args: object, **_kwargs: object) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(["godot"], 0, output, "")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    _run_godot(
+        ["godot"],
+        label="sandboxed-import-test",
+        timeout=1,
+        allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
+    )
 
 
 def test_latest_working_screenshots_pass_the_png_contract() -> None:

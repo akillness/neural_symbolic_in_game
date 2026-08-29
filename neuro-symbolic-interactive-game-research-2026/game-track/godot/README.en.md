@@ -1,9 +1,8 @@
 # The Sealed Lighthouse — Godot conformance, playable, capture, and Web passes
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
-`49/49` combined checks (2026-08-28: input-feedback telemetry and playfield-preservation checks
-added); the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; the live public-safe Web
-artifact is the 2026-08-21 deployment.**
+`49/49` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
+deployment `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` is live with the English tracked-player artifact.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -114,26 +113,32 @@ SL-PRESENT-001 beats (P-B01..P-B06) and the B-011 tension curve `0.35->0.72->0.5
 presentation layer only. Live play and the headless smoke sweep share the same proposal routing.
 
 ```bash
-# Play (WASD move, mouse look, E interact, F5/F9 save/load, M reduced motion)
-godot --path game-track/godot res://scenes/main_3d.tscn
+# Every Godot command below must target a disposable imported copy, never game-track/godot.
+STAGED_GODOT_PROJECT=/tmp/sl3d-disposable-project
+
+# Play (WASD, mouse look, E, F5/F9, M reduced motion, V audio, T guide)
+godot --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn
 
 # Public-safe headless smoke (8 checks: refusal immutability, stage gates, corrupt-save rejection)
-godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe
+godot --headless --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn -- --smoke --public-safe
 
-# Presentation-invariant JSON (engineering only)
-godot --headless --path game-track/godot res://scenes/main_3d.tscn -- \
-  --evaluate /tmp/sl3d-evaluation.json --public-safe
+# Staged fixture + presentation matrix (engineering only)
+python3 scripts/run_playable_evaluation.py --godot /path/to/Godot
 
-# Development verification shot (non-headless; not promotable capture evidence)
-godot --path game-track/godot res://scenes/main_3d.tscn -- \
+# Curated public-player asset/provenance/clip contract
+python3 scripts/validate_player_asset.py
+
+# Development verification shot (GUI host only; unavailable in this sandbox; never promotable)
+godot --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn -- \
   --shot /tmp/sl3d-shot.png --shot-stage arrival --public-safe
 ```
 
-The 8-check smoke sweep passed on Godot 4.7.1 (2026-08-13) and its final state hash matches the
-frozen hash `4b2310...8892`. Web and `--public-safe` never load generated candidates under
-`../assets/concepts/` or `../assets/concepts/pack-3d/`; they use procedural geometry, materials,
-VFX, UI, and audio. Publication promotion of those candidates still requires the pending human
-rights/style review.
+The 8-check smoke sweep passed again on Godot 4.7.1 (2026-08-30) and its final state hash matches the
+frozen hash `4b2310...8892`. Web and `--public-safe` never load pending-review candidates under
+`../assets/concepts/` or `../assets/concepts/pack-3d/`. They do load the separately curated UI lane
+and tracked `assets/player/higgsfield-player.glb` with `Idle`/`Casual_Walk`, over the procedural
+world/VFX/audio fallback. Player visuals and clip state never enter canonical state or saves.
+Publication promotion of the pending concept candidates still requires human rights/style review.
 
 ## Cycle 3 evaluation matrix and latest working captures
 
@@ -158,8 +163,9 @@ or [raw presentation evaluation](docs/latest/presentation-evaluation.json).
 | Authorized hint | Ending |
 | ![Cycle 3 public-safe authorized hint](docs/latest/authorized_hint.png) | ![Cycle 3 public-safe ending](docs/latest/ending.png) |
 
-The four 1280×720 PNGs are latest engineering working captures generated from a fresh disposable
-project copy. They do not replace or amend the immutable v5 packet.
+The four 1280×720 PNGs are latest engineering working captures generated from a disposable staged
+Web build because this sandbox cannot render Godot `--shot`. The capture-only query hook never enters
+tracked source. The PNGs do not replace or amend the immutable v5 packet.
 
 ## Build the public-safe Web artifact
 
@@ -172,9 +178,13 @@ python3 -m http.server 4173 --directory game-track/web/public
 
 The builder copies the Godot project to a temporary directory, selects `main_3d.tscn` only in that
 copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
-unchanged. The current artifact contains `index.html`, JavaScript/audio worklets, a PCK, and WebAssembly
-output under ignored `game-track/web/public/`. Deployment status:
-**[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**. A headless
+unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-08-30
+ignored artifact has 11 manifest files / 50,745,203 bytes; `index.pck` is 10,892,428 bytes with
+SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`. It is deployed as
+**[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` is deployment
+configuration rather than a public asset. Production desktop smoke completed start → in-game →
+Field Guide with zero console/page errors. A historical headless
 browser smoke on 2026-08-17 verified Korean rendering, responsive 1280×720 and 390×844 layouts, and
 zero console/page errors. Pointer-lock entry is **not verified**: a headless synthetic click raised
 `pointerlockerror` and a Playwriter-driven click in real Chrome produced no pointer-lock request at
@@ -186,14 +196,15 @@ See [`../web/README.md`](../web/README.md).
 
 **Cycle 3 claim boundary:** authored-fixture and presentation-invariant engineering conformance
 only. G4, usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**.
-G6 remains `FIX` pending pointer-lock, save/reload, warmed-frame/input, and 30-minute soak evidence.
+G6 remains `FIX` pending production save/reload, current mobile verification, human pointer/audio
+confirmation, warmed-frame/input, a 30-minute soak, and rollback evidence.
 
 ## Onboarding folio and the out-of-engine soft-proposal channel (2026-08-18)
 
-- A three-page evidence-folio tutorial (controls → ledger grammar → experiment link) opens itself
-  on the first session, reopens with `[T]`, and closes with `[Esc]`. The start gate uses the SL-C01
-  style anchor and the pages use SL-C02/SL-C03/SL3D-U01; all are optional candidates, so absent
-  bytes only hide the image slot and never the prose (web and `--public-safe` never load them).
+- A three-page English evidence-folio tutorial (controls -> ledger grammar -> experiment link)
+  opens on the first session, reopens with `[T]`, and closes with `[Esc]`. Its user-curated
+  Higgsfield illustrations ship through `assets/ui/`; deleting them hides only the image slot and
+  leaves the prose and full procedural fallback playable. Pending concept-pack bytes remain excluded.
 - One-shot toasts on the first commit and the first refusal state the rule directly: only validated
   actions change state, a refusal preserves it. Holding the lens shows an icon chip in the action
   panel.

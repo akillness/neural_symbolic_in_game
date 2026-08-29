@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{Live Screening Pilot, Exact Counts (Five Proposals per Cell, $K{=}1$)}
+\label{tab:live-screening}
+\centering\scriptsize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X rrr >{\raggedright\arraybackslash}X@{}}
+\toprule
+Base / condition & Initial valid & $\rho$ commits & Blind commits & Initial errors \\
+\midrule
+Frozen / visible & 5/5 & 5/5 & 5/5 & --- \\
+Frozen / blind & 5/5 & 5/5 & 5/5 & --- \\
+Frozen / goal-blind & 0/5 & 0/5 & 0/5 & QSR \\
+Signal-v2 / visible & 5/5 & 5/5 & 5/5 & --- \\
+Signal-v2 / blind & 0/5 & 5/5 & 0/5 & PEO+PEV+PPO \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. All counts are screening-pilot-only, without inferential statistics; the superseded v1 diagnostic is excluded.}
+\end{table}

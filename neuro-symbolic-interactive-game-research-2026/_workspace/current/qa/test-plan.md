@@ -10,14 +10,16 @@ Status: `IN_PROGRESS`
    corrupt save, exact replay, and terminal oracle hash.
 2. **Playable authority:** movement/focus emit intent only; valid proposals commit; rejected actions
    preserve the complete prior state.
-3. **Public-safe assets:** Web and `--public-safe` load no pending generated candidates; procedural
-   fallbacks remain complete.
+3. **Public-safe assets:** Web and `--public-safe` load no pending-review concept candidates; the
+   curated Higgsfield UI/player lanes are provenance-validated and the procedural world remains
+   complete.
 4. **Presentation invariants:** start gate, gesture-locked audio, color/icon/text redundancy,
-   responsive profiles, reduced motion, and evaluation non-mutation.
+   responsive profiles, reduced motion, curated player `Idle`/`Casual_Walk` binding, and evaluation
+   non-mutation.
 5. **Latest captures:** arrival, refusal, authorized hint, and ending working shots have explicit
    state hashes and engineering-only labels; no implicit immutable promotion.
-6. **Browser behavior:** click start, pointer capture/recovery, Korean glyphs, wide/narrow layout,
-   audio unlock/mute/focus, console, save/reload, and tab focus.
+6. **Browser behavior:** click start, pointer capture/recovery, English/ASCII-safe runtime text,
+   wide/narrow layout, audio unlock/mute/focus, console, save/reload, and tab focus.
 7. **Performance:** warmed frame p95, long-frame rate, input-to-visible latency, and 30-minute memory
    trace.
 8. **Provenance:** selected v5 remains immutable; Web build comes from a disposable copy; deployed
@@ -42,12 +44,12 @@ Status: `IN_PROGRESS`
 
 - Wide desktop: `1280×720`.
 - Narrow portrait proxy: `720×900`.
-- At both sizes: verify controls, ledger, objective/status, choice buttons, start gate, Korean/English
-  glyphs, pointer state, and no overlap/clipping.
+- At both sizes: verify controls, ledger, objective/status, choice buttons, start gate, English
+  glyphs and bracket markers, pointer state, and no overlap/clipping.
 
 ## Exit rule
 
 No S1 defect, exact state-hash replay, exported public-safe asset separation, clean browser startup,
-complete Korean/English visible-content audit, and director verdict backed by gate measurements.
+complete English player-visible content audit, and director verdict backed by gate measurements.
 Even if all automation passes, G4 remains `FIX` without human data and G6 remains `FIX` without the
 required warmed/input/soak measurements.

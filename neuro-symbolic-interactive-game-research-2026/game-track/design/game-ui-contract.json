@@ -1,0 +1,250 @@
+{
+  "contract_version": 1,
+  "project": {
+    "name": "The Sealed Lighthouse",
+    "build": "task-16 English UI and player presentation upgrade",
+    "target_devices": [
+      "desktop web",
+      "responsive narrow display"
+    ],
+    "input_methods": [
+      "keyboard and mouse"
+    ],
+    "locales": [
+      "English"
+    ]
+  },
+  "player_decisions": [
+    {
+      "decision": "Identify the current lead and reach its in-world marker.",
+      "required_information": "Concrete target, why it matters now, interaction key, and progress phase.",
+      "urgency": "continuous current-goal support"
+    },
+    {
+      "decision": "Interpret whether a proposal was committed or held and choose the next valid entry.",
+      "required_information": "Verdict word, icon, color-redundant ledger line, neutral reason, and next valid action.",
+      "urgency": "immediate after every consequential action"
+    },
+    {
+      "decision": "Choose what to ask Captain Mira without confusing a safe hold with punishment.",
+      "required_information": "Readable choices, visible focus, prior dialogue context, and a safe leave action.",
+      "urgency": "dialogue"
+    }
+  ],
+  "screens": [
+    {
+      "id": "start-gate",
+      "type": "full-screen entry gate",
+      "decision": "Begin with pointer/audio activation or review the essential controls.",
+      "states": [
+        "ready",
+        "focused start action",
+        "narrow layout"
+      ],
+      "entry": "Web launch before gameplay starts.",
+      "exit": "Begin Investigation starts the experience inside the browser gesture boundary.",
+      "back_behavior": "Not applicable before play.",
+      "initial_focus": "Begin Investigation"
+    },
+    {
+      "id": "case-hud-ledger",
+      "type": "gameplay HUD and bottom ledger",
+      "decision": "Follow the current lead, inspect a target, and read the latest proposal verdict.",
+      "states": [
+        "arrival",
+        "lens held",
+        "signal restored",
+        "route hint authorized",
+        "commit feedback",
+        "hold feedback"
+      ],
+      "entry": "Gameplay begins or returns from tutorial/dialogue.",
+      "exit": "Dialogue, tutorial, or ending overlay takes focus.",
+      "back_behavior": "Escape releases the pointer; it never mutates game state.",
+      "initial_focus": "World control with the current lead persistently visible."
+    },
+    {
+      "id": "field-guide",
+      "type": "tutorial overlay",
+      "decision": "Learn controls, ledger grammar, and the research boundary.",
+      "states": [
+        "controls",
+        "ledger grammar",
+        "experiment boundary"
+      ],
+      "entry": "First session automatically or T during play.",
+      "exit": "Finish or Escape returns to gameplay without changing canonical state.",
+      "back_behavior": "Escape closes the guide safely.",
+      "initial_focus": "Tutorial Next action"
+    },
+    {
+      "id": "mira-dialogue",
+      "type": "dialogue choice overlay within the ledger",
+      "decision": "Ask an available question or leave.",
+      "states": [
+        "initial questions",
+        "held disclosure with repair direction",
+        "authorized route question",
+        "epilogue"
+      ],
+      "entry": "Interact with Captain Mira.",
+      "exit": "Leave or Escape restores world control.",
+      "back_behavior": "Escape closes dialogue and never selects a choice.",
+      "initial_focus": "First available dialogue choice"
+    },
+    {
+      "id": "episode-complete",
+      "type": "ending overlay",
+      "decision": "Read the earned route and compact validator receipt.",
+      "states": [
+        "ledger closing",
+        "complete receipt"
+      ],
+      "entry": "Inspect authorized tide marks.",
+      "exit": "Episode remains complete; no hidden continuation action is implied.",
+      "back_behavior": "No destructive or accidental confirmation path.",
+      "initial_focus": "Static completion summary"
+    }
+  ],
+  "information_hierarchy": {
+    "critical": [
+      "commit versus hold verdict",
+      "hold reason and next valid entry",
+      "save integrity rejection"
+    ],
+    "current": [
+      "current lead",
+      "interaction prompt",
+      "dialogue choices",
+      "case progress"
+    ],
+    "contextual": [
+      "full control reference",
+      "older ledger entries",
+      "experiment explanation"
+    ],
+    "hidden": [
+      "oracle labels",
+      "forbidden disclosure payloads",
+      "uncommitted candidate state"
+    ]
+  },
+  "navigation": {
+    "methods": [
+      "pointer",
+      "keyboard"
+    ],
+    "focus_order": [
+      "primary start or tutorial action",
+      "dialogue choices",
+      "safe leave or close action"
+    ],
+    "device_switch": "Pointer release or recapture preserves the current lead and dialogue state.",
+    "modal_behavior": "Tutorial and dialogue lock world input, keep visible focus, and restore gameplay control on safe close.",
+    "destructive_behavior": "No UI action deletes progress; corrupt load is rejected while current state remains visible."
+  },
+  "layout": {
+    "aspect_families": [
+      "wide desktop",
+      "narrow portrait display"
+    ],
+    "safe_area": "Critical text and actions stay within the viewport while decorative key art may crop.",
+    "anchors": [
+      "compact case status remains in the safe top-left region",
+      "interaction prompt remains centered above the ledger",
+      "ledger and action columns own the bottom region on wide displays and stack on narrow displays"
+    ],
+    "text_scaling": "English copy uses wrapping containers, shorter labels, and 44 px minimum choice targets; no critical label relies on truncation.",
+    "reflow": "Below the existing narrow threshold, portrait art is selected and ledger/action columns stack without changing information order.",
+    "scrolling": "The ledger and dialogue choice collection retain explicit independent scroll ownership."
+  },
+  "localization": {
+    "externalized": "This task intentionally ships one English runtime copy set in the existing Godot UI and narrative owners; multi-locale extraction is out of scope and is not claimed.",
+    "expansion": "Labels and buttons wrap; critical outcome words stay short and untruncated.",
+    "bidirectional": "Not in the declared English-only locale scope.",
+    "fonts": "The bundled OFL font covers English text; runtime status and icon redundancy use ASCII bracket markers only.",
+    "input_glyphs": "Prompts include readable physical-key labels such as E, Esc, F5, F9, M, V, and T."
+  },
+  "accessibility": {
+    "signals": [
+      "commit and hold use text, icon, line pattern, and color",
+      "the current lead remains written even when the objective beacon is off-screen",
+      "focus is visible on every start, tutorial, and dialogue action",
+      "audio and pointer state are persistent text labels"
+    ],
+    "settings_entry": "Reduced motion, audio, and tutorial controls are visible before or during play.",
+    "motion": "Reduced motion removes camera bob and decorative transition motion while preserving stable verdict text and necessary locomotion state.",
+    "media_alternatives": "No decision depends on sound or animation alone."
+  },
+  "data_bindings": [
+    {
+      "element": "current lead and case progress",
+      "source": "committed canonical state plus the presentation-only first-meeting flag",
+      "initial_state": "Direct the player to Captain Mira.",
+      "update": "Advance only after the corresponding committed fact or permitted presentation event.",
+      "stale": "Recompute from the loaded committed snapshot.",
+      "error": "Keep the prior valid lead and surface the load rejection.",
+      "permission": "Never expose forbidden fact identifiers or oracle payloads."
+    },
+    {
+      "element": "ledger verdict",
+      "source": "proposal result returned by the canonical machine",
+      "initial_state": "No verdict is implied before a proposal.",
+      "update": "Render committed or held immediately with redundant signals.",
+      "stale": "The ledger mirrors the latest returned result and never authors canonical truth.",
+      "error": "Use a neutral hold and a concrete next valid entry.",
+      "permission": "Hidden labels remain outside player-visible copy."
+    }
+  ],
+  "verification": {
+    "matrix": [
+      {
+        "state": "start gate and field guide",
+        "device": "1280x720 desktop web",
+        "input": "keyboard and mouse",
+        "locale": "English",
+        "setting": "default motion",
+        "expected": "Primary action, essential controls, focus, and key art hierarchy are readable without Korean or duplicate bilingual copy."
+      },
+      {
+        "state": "commit, held proposal, and dialogue choices",
+        "device": "1280x720 desktop web",
+        "input": "keyboard and mouse",
+        "locale": "English",
+        "setting": "reduced motion",
+        "expected": "The verdict remains distinguishable without motion or color alone and every held proposal names a next valid action."
+      },
+      {
+        "state": "complete golden path and episode receipt",
+        "device": "narrow portrait display",
+        "input": "layout inspection only; touch gameplay is not claimed",
+        "locale": "English",
+        "setting": "default motion",
+        "expected": "The stacked layout keeps the ending summary, receipt, and essential labels visible without clipping."
+      }
+    ],
+    "acceptance": [
+      "No player-visible Korean remains in the playable Godot runtime.",
+      "Every declared overlay is reachable and has a safe exit where gameplay can continue.",
+      "Commit, hold, current lead, and input state remain readable through redundant non-color signals.",
+      "The full browser golden path reaches the English episode-complete card without changing symbolic rules."
+    ],
+    "evidence": "Record source scan, build/test receipts, wide and narrow captures, and a full browser playthrough through the ending."
+  },
+  "decisions": [
+    {
+      "decision": "Use an English-only polish pass rather than adding a new localization subsystem.",
+      "basis": "The user requested English output and the smallest safe diff preserves the established research and UI owners.",
+      "owner": "game UI/UX"
+    },
+    {
+      "decision": "Keep the evidence-folio layout while reducing duplicated bilingual copy and persistent control clutter.",
+      "basis": "The existing art direction is explicit and already bound to public-safe assets; hierarchy, focus, and concise copy are the actual defects.",
+      "owner": "game UI/UX"
+    }
+  ],
+  "route_out": {
+    "next_owner": "Godot UI implementation and browser verification",
+    "reason": "The player decisions, state hierarchy, responsive behavior, and acceptance evidence are frozen for this task."
+  }
+}

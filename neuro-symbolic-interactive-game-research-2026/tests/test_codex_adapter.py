@@ -214,6 +214,8 @@ def test_summary_separates_invalid_only_denominator() -> None:
     summary = summarize(rows, model_id="stub-model", revision="stub-rev", condition="policy_blind")
 
     assert summary["evidence_tier"] == "screening-pilot-only"
+    assert "C-PILOT-007/008 only" in summary["claim_boundary"]
+    assert "C-RESULT-003 remains TODO-RESULT" in summary["claim_boundary"]
     assert summary["token_accounting_available"] is False
     assert summary["matched_candidate_per_seed"] is True
     assert summary["counts"]["initially_valid"] == 2

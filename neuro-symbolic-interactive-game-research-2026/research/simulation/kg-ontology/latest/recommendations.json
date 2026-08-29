@@ -1,0 +1,125 @@
+{
+  "deferred_improvements": [
+    {
+      "priority": 1,
+      "proposal": "Add a separately generated claim/evidence overlay from research/claim-ledger.yaml.",
+      "reason": "Keep epistemic status separate from document links and require an explicit promotion design."
+    },
+    {
+      "priority": 2,
+      "proposal": "Compile a versioned runtime domain graph into existing WorldState inputs.",
+      "reason": "Runtime retrieval is not implemented and must remain non-authoritative until independently evaluated."
+    },
+    {
+      "priority": 3,
+      "proposal": "Add RDF/SHACL interchange only after the closed ontology stabilizes.",
+      "reason": "The current stdlib validator is dependency-light and does not claim SHACL conformance."
+    },
+    {
+      "priority": 4,
+      "proposal": "Evaluate novel-link usefulness with independent annotators and open-world negatives.",
+      "reason": "The authored closed-world holdout cannot establish semantic truth or human usefulness."
+    }
+  ],
+  "excluded_claims": [
+    "C-RESULT-001",
+    "C-RESULT-002",
+    "C-RESULT-003",
+    "C-RESULT-004",
+    "C-RESULT-005"
+  ],
+  "implemented_improvements": [
+    {
+      "priority": 1,
+      "proposal": "Keep Graphify navigation and the typed OKF method graph as separate layers.",
+      "receipt": "knowledge/graphify-out/okf-links.json"
+    },
+    {
+      "priority": 2,
+      "proposal": "Validate node types, relation vocabulary, endpoints, domain/range, duplicates, and self-edges before export.",
+      "receipt": "knowledge/ontology/trace-rpg-ontology.json"
+    },
+    {
+      "priority": 3,
+      "proposal": "Materialize a normalized SQLite property-graph mirror with source hashes and foreign keys.",
+      "receipt": "knowledge/ontology/knowledge-graph-schema.sql"
+    },
+    {
+      "priority": 4,
+      "proposal": "Gate link-proposal strategies with recall, coverage, and Sem@K floors before precision ratcheting.",
+      "receipt": "configs/kg-ontology-simulation.json"
+    },
+    {
+      "priority": 5,
+      "proposal": "Track exact formulas and deterministic JSON, Markdown, TSV, SVG, and TeX outputs.",
+      "receipt": "research/simulation/kg-ontology/latest/evaluation-matrix.json"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "scope": "engineering-only typed-link proposals",
+  "simulation_id": "SL-KG-ONTOLOGY-SIM-001",
+  "winner": {
+    "metrics": {
+      "brier_score": 0.130984080248,
+      "coverage": 1.0,
+      "f1": 1.0,
+      "false_negative": 0,
+      "false_positive": 0,
+      "hits_at_1": 1.0,
+      "hits_at_k": 1.0,
+      "mrr_realistic": 0.944444444444,
+      "ndcg_at_k": 1.0,
+      "nonzero_weight_count": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "selected": 6,
+      "semantic_at_k": 1.0,
+      "true_positive": 6
+    },
+    "strategy_id": "S2-typed-lexical-loose",
+    "top_proposals": [
+      {
+        "candidate_id": "Q1-C1",
+        "query_id": "Q-REPAIR-METRIC",
+        "relevant": true,
+        "score": 0.478260869565,
+        "target": "/metrics/repair-at-k.md"
+      },
+      {
+        "candidate_id": "Q2-C1",
+        "query_id": "Q-MEMORY-METRIC",
+        "relevant": true,
+        "score": 0.517073170732,
+        "target": "/metrics/long-horizon-contradiction-rate.md"
+      },
+      {
+        "candidate_id": "Q3-C1",
+        "query_id": "Q-AFFECT-METRIC",
+        "relevant": true,
+        "score": 0.5125,
+        "target": "/metrics/tension-rmse.md"
+      },
+      {
+        "candidate_id": "Q4-C1",
+        "query_id": "Q-COST-METRIC",
+        "relevant": true,
+        "score": 0.482352941177,
+        "target": "/metrics/cost-of-valid-episode.md"
+      },
+      {
+        "candidate_id": "Q5-C1",
+        "query_id": "Q-CONFIRMATORY-CONTRAST",
+        "relevant": true,
+        "score": 0.435294117647,
+        "target": "/contrasts/h3-memory.md"
+      },
+      {
+        "candidate_id": "Q6-C1",
+        "query_id": "Q-ENGINE-PROTOCOL",
+        "relevant": true,
+        "score": 0.419672131148,
+        "target": "/protocols/validate-repair-commit.md"
+      }
+    ]
+  }
+}

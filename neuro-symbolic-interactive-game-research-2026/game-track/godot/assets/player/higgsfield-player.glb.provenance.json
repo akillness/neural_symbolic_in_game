@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "asset_id": "HF3D-P01-PLAYER",
+  "asset_class": "rigged-animated-player-glb",
+  "file": "higgsfield-player.glb",
+  "prompt_file": "../../../assets/generated/higgsfield-player-v1/prompts/HF3D-P01-player-reference.txt",
+  "prompt_sha256": "d7c6544438845bd26e815c737b7790e6187a6b250a45cb0f824614fae81aaab3",
+  "reference_inputs": [
+    {
+      "asset_id": "HF3D-P01-REF",
+      "file": "../../../assets/generated/higgsfield-player-v1/HF3D-P01-player-reference.png",
+      "bytes": 1009360,
+      "sha256": "9fc11a54bc894eb4100d35a3d6f16df23eb118f15013babbbd5d2236a5f8eea9",
+      "tracked_in_git": false,
+      "purpose": "single-character A-pose reconstruction input"
+    }
+  ],
+  "runtime_dependencies": [
+    {
+      "file": "higgsfield-player_texture_0.png",
+      "role": "Godot-extracted copy of the GLB-embedded base-color texture",
+      "bytes": 8311199,
+      "sha256": "37c939772e57d381c77e419b836632bf107b5301bde63f041b40e3094669f739"
+    }
+  ],
+  "tool": "higgsfield-cli",
+  "tool_version": "1.1.23",
+  "provider": "Higgsfield",
+  "models": {
+    "reference_image": "gpt_image_2",
+    "base_player": "image_to_3d",
+    "additional_animation": "3d_rigging"
+  },
+  "job_ids": {
+    "reference_image": "8fe5f2c8-31ac-41b8-ac61-f7bd31bb0b12",
+    "base_idle_rig": "fff1a477-3c33-4245-902f-5d09b3efdf54",
+    "casual_walk": "19ad751d-8333-4ef7-830b-2546cd0496f2"
+  },
+  "generated_at_utc": "2026-08-29T14:39:52Z",
+  "requested": {
+    "height_meters": 1.75,
+    "target_triangles": 15000,
+    "topology": "triangle",
+    "pose_mode": "a-pose",
+    "symmetry_mode": "auto",
+    "pbr": false,
+    "rigging": true,
+    "seed": 20260829,
+    "animation_actions": {
+      "Idle": 0,
+      "Casual_Walk": 30
+    }
+  },
+  "observed": {
+    "bytes": 9677324,
+    "nodes": 26,
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 15463,
+    "skins": 1,
+    "joints": 24,
+    "materials": 1,
+    "images": 1,
+    "clips": [
+      {
+        "name": "Armature|Idle|baselayer",
+        "duration_s": 4.033333,
+        "channels": 72
+      },
+      {
+        "name": "Idle",
+        "duration_s": 4.033333,
+        "channels": 72
+      },
+      {
+        "name": "Casual_Walk",
+        "duration_s": 4.233333,
+        "channels": 72
+      }
+    ]
+  },
+  "bytes": 9677324,
+  "sha256": "d575f8c580fbf0ee7207fbe6c09150c34a93cffc4e69b53b7210c971482ff1dd",
+  "curation_state": "curated-runtime",
+  "intended_track": "game-track-runtime",
+  "runtime_eligible": true,
+  "primary_experiment_eligible": false,
+  "rights_review": "accepted-public-runtime-higgsfield-workspace-commercial-use",
+  "rights_sources": [
+    {
+      "url": "https://higgsfield.ai/terms-of-use-agreement",
+      "section": "4.4",
+      "last_updated": "2026-07-26",
+      "verified_at_utc": "2026-08-29T22:47:13Z",
+      "finding": "Higgsfield does not claim ownership of outputs and does not restrict their commercial use."
+    },
+    {
+      "url": "https://higgsfield.ai/creator-hub/help-center/account/who-owns-my-generations-and-can-i-use-them-commercially",
+      "section": "Commercial use",
+      "verified_at_utc": "2026-08-29T22:47:13Z",
+      "finding": "Commercial use applies to all users and includes products incorporating AI-generated visuals."
+    }
+  ],
+  "ai_generated_content": true,
+  "post_processing": {
+    "tool": "glb_merge_anims.py",
+    "tool_source": "higgsfield-websites skill",
+    "operations": [
+      "renamed duplicate Idle clip to exact runtime name",
+      "merged Casual_Walk onto the shared skeleton by node name",
+      "rewrote non-unit root scale to 1.0 and divided matching translation",
+      "forced material alphaMode OPAQUE and doubleSided true"
+    ],
+    "raw_outputs": [
+      {
+        "role": "base_idle_rig",
+        "bytes": 9495916,
+        "sha256": "9b0d016e0313c64729d443ccef37e4c1c4f47ba7be03652c9a5148427df2efcc"
+      },
+      {
+        "role": "casual_walk",
+        "bytes": 9590144,
+        "sha256": "c6d285f63397685500173db32d246cc22b4e4d0c7b3a6172c2cd4e43eb740182"
+      }
+    ]
+  },
+  "limitations": [
+    "Presentation-only asset; never enters canonical state, save data, symbolic evaluation, or primary research evidence.",
+    "PBR generation was disabled for the Web budget; one opaque double-sided material carries the embedded texture.",
+    "The requested 15000-triangle target produced 15463 measured triangles.",
+    "Idle and Casual_Walk are the only runtime locomotion states; interaction-specific animation remains out of scope."
+  ],
+  "derived_from": "HF3D-P01-REF"
+}

@@ -88,15 +88,16 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 | ![Cycle 3 public-safe 승인 단서](godot/docs/latest/authorized_hint.png) | ![Cycle 3 public-safe 결말](godot/docs/latest/ending.png) |
 
 네 파일은 최신 1280×720 엔지니어링 작업 캡처이며 불변 Cycle 2 패킷이 아니다. Web과
-`--public-safe`는 `assets/concepts/` 아래 검토 대기 후보를 계속 제외한다. D-034/D-035 이후
-공개 빌드는 `godot/assets/ui/`의 사용자 큐레이션·출처 기록이 붙은 Higgsfield UI 아트 6종
-(시작 키 아트, 미라 대화 초상, 장부 양피지 결, 아이템 아이콘 2종, 안내 삽화 — AI 생성이며
-시작 게이트와 본 문서에 공개 표기)을 함께 실어 나른다. 이 PNG를 지워도 완전한 절차
-플레이어블이 남으며, 디렉터리 부재 상태의 스모크 영수증은 동일하다.
+`--public-safe`는 `assets/concepts/` 아래 검토 대기 후보를 계속 제외한다. 공개 빌드는 별도
+큐레이션·출처 기록이 붙은 Higgsfield UI lane과 `godot/assets/player/higgsfield-player.glb`의
+`Idle`/`Casual_Walk`을 함께 싣는다(9,677,324바이트, 15,463 triangle, 24 joint). UI PNG를
+지워도 절차 표면은 플레이 가능하다. 플레이어 외형과 클립 상태는 프레젠테이션 전용이며 정식
+상태나 저장 데이터에 들어가지 않는다.
 
 **주장 경계:** 저자 fixture와 프레젠테이션 불변조건 적합성만 다룬다. G4, 사용성, 몰입,
-정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 포인터 잠금, save/reload,
-warmed frame/input, 30분 soak 측정 전까지 `FIX`다.
+정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. 프로덕션 데스크톱 재검증은 통과했다.
+G6는 프로덕션 save/reload, 현 배포 모바일 검증, 사람 포인터/음향 확인, warmed frame/input,
+30분 soak, rollback 근거가 생길 때까지 `FIX`다.
 
 프로젝트 루트에서 실행한다.
 
@@ -105,8 +106,14 @@ warmed frame/input, 30분 soak 측정 전까지 `FIX`다.
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-배포 상태: **[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`가 의식+텍스처 빌드를 서빙한다:
+현재 영문 UI + 추적 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,203바이트,
+PCK 10,892,428바이트, SHA-256
+`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+배포 상태: **[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했고 `vercel.json`은 배포 설정으로
+소비됐다. 프로덕션 데스크톱 스모크는 시작 → 인게임 → Field Guide 전환과 콘솔·페이지 오류
+0건을 확인했다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는
+의식+텍스처 빌드를 서빙했다:
 파일 11개, `index.pck` 5,970,516바이트, SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; 서빙된 html/pck/wasm을
 다시 받아 로컬 산출물과 바이트 동일함을 확인했다. 별칭 대상 headless 브라우저 스모크로 AI

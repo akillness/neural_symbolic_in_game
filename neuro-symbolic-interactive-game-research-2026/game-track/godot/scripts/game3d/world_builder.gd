@@ -27,6 +27,7 @@ const PACK_3D_RELATIVE := "../assets/concepts/pack-3d"
 # are unshaded static meshes, not lights), and instanced repetition for dock
 # dressing. These are starting caps, not a measured frame-performance claim.
 const PUBLIC_SAFE_ARG := "--public-safe"
+const TRACKED_PLAYER_RIG_PATH := "res://assets/player/higgsfield-player.glb"
 const PRESENTATION_VFX_BUDGET := {
 	"target_fps": 60,
 	"pooled_burst_emitters": 5,
@@ -74,23 +75,44 @@ static func load_concept_texture(file_name: String) -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 
-static func load_player_rig() -> PackedScene:
-	# D-046 rig lane (`res://assets/rig/`, gitignored). Mixamo's terms forbid
-	# redistributing raw character/animation files and this repository is public, so
-	# the bytes are never tracked and never shipped: Web and `--public-safe` runs
-	# refuse to load them, and `build_godot_web.sh` excludes the directory from the
-	# staged export. When the lane is empty the caller keeps the procedural body,
-	# so the public surface is unchanged and fully playable.
+static func load_player_rig() -> Node3D:
+	# The curated Higgsfield GLB is rights-reviewed, tracked, and eligible for every
+	# runtime surface, including Web and `--public-safe`. Prefer Godot's imported
+	# PackedScene, then parse the source GLB directly for clean/headless checkouts.
+	# D-046 remains intact for the local Mixamo fallback under `res://assets/rig/`:
+	# those raw bytes are never tracked or shipped.
+	var tracked_rig: Node3D = null
+	if ResourceLoader.exists(TRACKED_PLAYER_RIG_PATH, "PackedScene"):
+		var curated := load(TRACKED_PLAYER_RIG_PATH) as PackedScene
+		if curated != null:
+			tracked_rig = curated.instantiate() as Node3D
+	else:
+		var tracked_path := ProjectSettings.globalize_path(TRACKED_PLAYER_RIG_PATH)
+		if FileAccess.file_exists(tracked_path):
+			var document := GLTFDocument.new()
+			var state := GLTFState.new()
+			if document.append_from_file(tracked_path, state) == OK:
+				tracked_rig = document.generate_scene(state) as Node3D
+	if tracked_rig != null:
+		tracked_rig.set_meta(&"trace_rig_source", "higgsfield-tracked")
+		return tracked_rig
 	if OS.has_feature("web") or PUBLIC_SAFE_ARG in OS.get_cmdline_user_args():
 		return null
 	var rig_dir := "res://assets/rig/"
 	var directory := DirAccess.open(rig_dir)
 	if directory == null:
 		return null
-	for file_name in directory.get_files():
+	var file_names := directory.get_files()
+	file_names.sort()
+	for file_name in file_names:
 		var candidate := rig_dir.path_join(file_name.trim_suffix(".import"))
 		if ResourceLoader.exists(candidate, "PackedScene"):
-			return load(candidate) as PackedScene
+			var local_scene := load(candidate) as PackedScene
+			if local_scene != null:
+				var local_rig := local_scene.instantiate() as Node3D
+				if local_rig != null:
+					local_rig.set_meta(&"trace_rig_source", "mixamo-local")
+					return local_rig
 	return null
 
 
@@ -523,7 +545,7 @@ static func _build_lamp_store(world: Node3D) -> void:
 	add_box(store, Vector3(0.18, 1.2, 0.18), Vector3(-3.3, -0.05, 0.7), wall_material, false)
 	var sign := Label3D.new()
 	sign.name = "LampStoreSign"
-	sign.text = "LAMP & SIGNAL\n등불 · 신호"
+	sign.text = "LAMP & SIGNAL\nHARBOR WORKS"
 	sign.font_size = 34
 	sign.pixel_size = 0.008
 	sign.modulate = PALETTE.paper_fog
@@ -652,7 +674,7 @@ static func _build_lens_prop(world: Node3D) -> Node3D:
 	# W-004: the replacement signal lens rests in the reachable lamp store.
 	# Hero-item treatment: the cradle (pedestal + empty-seat marker) is a
 	# separate sibling node, so hiding the returned handle on pickup (smoke:
-	# presentation_sync_reads_snapshot) removes only the optic — returning
+	# presentation_sync_and_fall_recovery) removes only the optic — returning
 	# players read the vacated cradle at a glance.
 	var cradle := Node3D.new()
 	cradle.name = "SignalLensCradle"
@@ -662,7 +684,7 @@ static func _build_lens_prop(world: Node3D) -> Node3D:
 	add_box(cradle, Vector3(0.7, 0.9, 0.7), Vector3(0.0, 0.45, 0.0), pedestal_material, false)
 	# Empty-cradle marker: a dim brass retaining ring around the vacated seat.
 	# Hidden while the lens is in store; presentation sync reveals it after the
-	# acquire commit (기록/보류 ledger stays the authority — this only mirrors it).
+	# acquire commit (the commit/hold ledger stays authoritative; this only mirrors it).
 	var empty_marker := MeshInstance3D.new()
 	empty_marker.name = "EmptyCradleMarker"
 	var seat := TorusMesh.new()

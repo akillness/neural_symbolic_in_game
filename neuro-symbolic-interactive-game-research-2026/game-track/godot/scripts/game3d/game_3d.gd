@@ -81,6 +81,7 @@ func _ready() -> void:
 	player.interact_requested.connect(_on_interact)
 	player.focus_changed.connect(_on_focus_changed)
 	player.footstep_requested.connect(_on_footstep_requested)
+	player.fall_recovered.connect(_on_player_fall_recovered)
 	ui.choice_selected.connect(_on_choice)
 	ui.start_requested.connect(_on_start_requested)
 	ui.audio_toggle_requested.connect(_on_audio_toggle_requested)
@@ -130,13 +131,13 @@ func _start_experience(unlock_audio: bool) -> void:
 	ui.set_cursor_captured(true)
 	_sync_audio_state()
 	# W-001/W-002: the saved dock, the dark tower.
-	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
+	ui.ledger_line("narration", "Brinewake Dock survived. Offshore, the lighthouse stands dark in the storm.")
 	director.play_intro(func() -> void:
-		ui.ledger_line("narration", "미라 선장이 부두 끝에서 어두운 탑을 지켜보고 있다.")
+		ui.ledger_line("narration", "Captain Mira watches the dark tower from the end of the dock.")
 		# First-session clarity: the concrete first objective lands the moment
 		# control returns (intro ≈4.6 s, instant under reduced motion), inside
 		# the ~6 s onboarding window. The amber beacon marks the same target.
-		ui.ledger_line("hint", "먼저 부두 끝의 미라 선장에게 말을 걸자 — 황색 빛기둥이 목표를 가리킨다.")
+		ui.ledger_line("hint", "Speak with Captain Mira first. The amber beacon marks your current lead.")
 		# First session only: the onboarding folio opens itself, then [T] reopens it.
 		if not FileAccess.file_exists(TUTORIAL_SEEN_PATH):
 			var flag := FileAccess.open(TUTORIAL_SEEN_PATH, FileAccess.WRITE)
@@ -145,7 +146,7 @@ func _start_experience(unlock_audio: bool) -> void:
 				flag.close()
 			_open_tutorial()
 		else:
-			ui.toast("목표: 미라 선장에게 말 걸기 — 황색 빛기둥을 따라가라.")
+			ui.toast("CURRENT LEAD | Follow the amber beacon to Captain Mira.")
 	)
 
 
@@ -239,7 +240,7 @@ func _toggle_reduced_motion() -> void:
 	var reduced := not director.reduce_motion
 	director.reduce_motion = reduced
 	ui.reduce_motion = reduced
-	ui.toast("모션 감소: " + ("켜짐" if reduced else "꺼짐"))
+	ui.toast("REDUCED MOTION | " + ("ON" if reduced else "OFF"))
 
 
 func _unlock_audio_from_event(event: InputEvent) -> void:
@@ -260,7 +261,7 @@ func _on_audio_toggle_requested() -> void:
 		audio_feedback.unlock_from_gesture()
 		audio_feedback.play_cue("start")
 		_sync_audio_state()
-		ui.toast("음향: 켜짐")
+		ui.toast("AUDIO | ON")
 		return
 	_toggle_audio()
 
@@ -270,7 +271,7 @@ func _toggle_audio() -> void:
 	_sync_audio_state()
 	if not muted:
 		audio_feedback.play_cue("start")
-	ui.toast("음향: " + ("꺼짐" if muted else "켜짐"))
+	ui.toast("AUDIO | " + ("OFF" if muted else "ON"))
 
 
 func _sync_audio_state() -> void:
@@ -281,6 +282,10 @@ func _on_footstep_requested(step_index: int) -> void:
 	# Steady-walk path: pick between the two literal cue names instead of
 	# formatting a String per stride.
 	audio_feedback.play_cue("step_0" if step_index % 2 == 0 else "step_1")
+
+
+func _on_player_fall_recovered() -> void:
+	ui.toast("FALL RECOVERY | Returned to the dock entrance.")
 
 
 func _on_lightning_struck(intensity: float) -> void:
@@ -406,10 +411,10 @@ func _on_interact(interaction_id: String) -> void:
 			# W-002 observation only: the slice never enters the tower. The tower
 			# stays dark and sealed; the first look nudges the player toward the
 			# forbidden question at Mira — the intended refusal teaching moment.
-			ui.ledger_line("narration", "탑은 침묵한다. 등불이 있어야 할 곳에는 비에 젖은 유리뿐이다. 좁은 물길은 신호 없이는 지날 수 없다.")
+			ui.ledger_line("narration", "The tower is silent. Rain-dark glass fills the lantern room. The narrow channel cannot be crossed without a signal.")
 			if not _lighthouse_observed:
 				_lighthouse_observed = true
-				ui.ledger_line("hint", "미라 선장이라면 저 탑의 사정을 알지도 모른다 — 무엇을 물어도 되는지는 별개의 문제다.")
+				ui.ledger_line("hint", "Captain Mira may know what happened to the tower. What she is allowed to reveal is another matter.")
 			_complete_input_feedback_probe("lighthouse-observation-ledger-line")
 		"tide_marks":
 			if "tide_marks_hint" in machine.state["facts"]:
@@ -437,7 +442,7 @@ func _on_tutorial_closed() -> void:
 		if commit_count == 0 and not _met_mira:
 			# The folio covered the intro hint on first sessions; re-anchor the
 			# first objective the instant real control begins.
-			ui.toast("목표: 미라 선장에게 말 걸기 — 황색 빛기둥을 따라가라.")
+			ui.toast("CURRENT LEAD | Follow the amber beacon to Captain Mira.")
 
 
 ## ---------------------------------------------------------------- proposals
@@ -462,9 +467,9 @@ func _propose(
 		_play_verdict_ritual(verdict_target, true)
 		if not _first_commit_explained:
 			_first_commit_explained = true
-			ui.toast("첫 기록 — 검증을 통과한 항목만 상태를 바꾼다. 장부의 황색 실선을 보라.")
+			ui.toast("FIRST COMMIT | Only validated entries change state. Watch the solid amber line.")
 		elif commit_count == 2:
-			ui.toast("기록 %d — 장부가 경로를 기억한다." % commit_count)
+			ui.toast("ENTRY %d | The ledger remembers the route." % commit_count)
 	else:
 		refusal_count += 1
 		ui.flash("refusal")
@@ -473,7 +478,7 @@ func _propose(
 		_play_verdict_ritual(verdict_target, false)
 		if not _first_refusal_explained:
 			_first_refusal_explained = true
-			ui.toast("첫 보류 — 상태는 그대로다. 산호선이 이유와 다음 유효 항목을 알려준다.")
+			ui.toast("FIRST HOLD | State is unchanged. The coral line names the reason and next valid entry.")
 	return result
 
 
@@ -509,7 +514,7 @@ func _next_affordance_target() -> Node3D:
 
 
 func _next_affordance_text() -> String:
-	# Single source for "다음:" strings — every refusal path routes through
+	# Single source for "Next valid entry" strings — every refusal path routes through
 	# _refusal_feedback; the ordering itself lives in GoldenPathLayout.
 	return str(GoldenPathLayout.next_affordance(machine.state, _met_mira)["text"])
 
@@ -522,20 +527,20 @@ func _refusal_feedback(codes: Array) -> void:
 	for code in codes:
 		match code:
 			"FORBIDDEN_DISCLOSURE":
-				# Canonical early-secret fallback (safe_fallback.text_ko).
-				ui.ledger_line("dialogue", scenario["safe_fallback"]["text_ko"])
-				ui.ledger_refusal("이 요청은 지금 답할 수 없다 — 장부가 답을 미룬다.", next_affordance)
+				# Canonical early-secret fallback (safe_fallback.text_en).
+				ui.ledger_line("dialogue", scenario["safe_fallback"]["text_en"])
+				ui.ledger_refusal("This request cannot be answered yet. The ledger defers it.", next_affordance)
 			"STAGE_GATED_DISCLOSURE":
-				ui.ledger_line("dialogue", "「아직 그 이야기를 할 때가 아니야. 순서가 있어.」")
-				ui.ledger_refusal("공개 조건이 충족되지 않았다 — 장부는 순서를 지킨다.", next_affordance)
+				ui.ledger_line("dialogue", "Not yet. There is an order to these things.")
+				ui.ledger_refusal("Disclosure conditions are not met. The ledger keeps the sequence.", next_affordance)
 			"MISSING_REQUIRED_OBJECT":
-				ui.ledger_refusal("설치할 렌즈가 손에 없다 — 장부는 빈손을 기록하지 않는다.", next_affordance)
+				ui.ledger_refusal("There is no lens to install. The ledger will not record empty hands.", next_affordance)
 			"QUEST_STAGE_PRECONDITION":
-				ui.ledger_refusal("아직 준비가 되지 않았다 — 물때가 오지 않은 항목이다.", next_affordance)
+				ui.ledger_refusal("The entry is not ready. Its tide has not come in.", next_affordance)
 			"OBJECT_NOT_PRESENT", "OBJECT_NOT_REACHABLE":
-				ui.ledger_refusal("지금 여기서는 가져올 수 없다 — 닿지 않는 것은 장부 밖이다.", next_affordance)
+				ui.ledger_refusal("It cannot be taken from here. What cannot be reached stays outside the ledger.", next_affordance)
 			_:
-				ui.ledger_refusal("항목이 보류되었다 — 장부가 답을 미룬다.", next_affordance)
+				ui.ledger_refusal("The entry was held. The ledger defers it.", next_affordance)
 	# RitualVfx repair-hint blink marks the same next-valid target in-world.
 	_play_repair_hint(_next_affordance_target())
 
@@ -545,7 +550,7 @@ func _propose_acquire() -> void:
 	var result := _propose(
 		"acquire_object",
 		{"object_id": "signal_lens"},
-		"신호 렌즈를 회수한다",
+		"Recover the signal lens",
 		handles.get("lens_prop") as Node3D,
 	)
 	if result["accepted"]:
@@ -553,8 +558,8 @@ func _propose_acquire() -> void:
 		# chime rides above the commit rise so "got the object" reads distinctly
 		# from "the ledger accepted it".
 		audio_feedback.play_cue("pickup")
-		ui.ledger_commit(commit_count, "신호 렌즈 확보. 회수 항목, 검증 통과.")
-		ui.ledger_line("narration", "황동 테두리가 손끝에서 차갑게 빛난다. 부두의 거치대가 떠오른다.")
+		ui.ledger_commit(commit_count, "Signal lens secured. Retrieval entry validated.")
+		ui.ledger_line("narration", "The brass rim gleams cold against your fingers. The harbor signal mount comes to mind.")
 		director.set_tension_stage(1)
 	else:
 		_refusal_feedback(result["codes"])
@@ -566,12 +571,12 @@ func _propose_install() -> void:
 	var result := _propose(
 		"install_lens",
 		{"object_id": "signal_lens"},
-		"거치대에 렌즈를 설치한다",
+		"Install the lens in the harbor signal mount",
 		handles.get("lamp_mount") as Node3D,
 	)
 	if result["accepted"]:
-		ui.ledger_commit(commit_count, "신호 렌즈 설치. 허가된 단서 항목이 열렸다.")
-		ui.ledger_line("narration", "거치대의 등불이 낮고 따뜻하게 살아난다. 탑은 여전히 어둡지만, 물길의 이야기가 열렸다.")
+		ui.ledger_commit(commit_count, "Signal lens installed. An authorized lead is now available.")
+		ui.ledger_line("narration", "A low, warm light wakes in the mount. The tower remains dark, but the channel's story opens.")
 		director.set_tension_stage(2)
 		director.play_commit_glow(handles["lamp_mount"], "MountLight", 2.4)
 	else:
@@ -593,7 +598,7 @@ func _open_mira_dialogue() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui.set_cursor_captured(false)
 	audio_feedback.play_cue("dialogue")
-	ui.set_portrait_visible(true, "미라 선장 · 항만 감시")
+	ui.set_portrait_visible(true, "CAPTAIN MIRA | HARBOR WATCH")
 	# W-003: duty-bounded operational knowledge, no keeper authority. Greeting
 	# beats are presentation-only and branch on the committed snapshot; every
 	# choice id and flow below stays untouched.
@@ -603,18 +608,18 @@ func _open_mira_dialogue() -> void:
 	if first_meeting:
 		# Beat (a) — her account of the storm night and the sealing (W-001/W-002):
 		# operational facts only; the WHY stays outside her authority (F-H01).
-		ui.ledger_line("dialogue", "「부두를 구해줘서 고맙다. 그 불이 번졌으면 장부째 바다에 가라앉을 뻔했지.」")
-		ui.ledger_line("dialogue", "「탑은 사흘째 어둡다. 폭풍 한가운데서 등불이 죽었고, 신호를 두 번 보냈지만 두 번 다 어둠뿐이었다. 장부에는 한 줄만 남았지 — 봉인.」")
-		ui.ledger_line("dialogue", "「그래서 오늘 밤은 아무도 물길에 못 들어간다. 항만 감시는 확인된 것만 말한다. 이 항구가 살아남은 방식이다.」")
+		ui.ledger_line("dialogue", "Thank you for saving the dock. If that fire had spread, the ledger would have gone under with it.")
+		ui.ledger_line("dialogue", "The tower has been dark for three days. Its light died in the heart of the storm. We signaled twice and received only darkness. The ledger has one word left: sealed.")
+		ui.ledger_line("dialogue", "No one enters the channel tonight. Harbor watch reports only what it can verify. That is how this harbor survived.")
 	elif hint_known:
 		# Beat (c) — quiet epilogue: the harbor survives on valid entries only.
-		ui.ledger_line("dialogue", "「장부를 봐라. 오늘 밤 남은 건 전부 유효한 항목뿐이다. 이 항구는 그런 밤들을 쌓아서 버텨 왔어.」")
+		ui.ledger_line("dialogue", "Read the ledger. Every entry that remains tonight is valid. This harbor survived by stacking nights like this one.")
 	elif installed:
 		# Beat (b) — guarded hope after the lens install: she almost writes hope
 		# into the ledger, but the ledger only takes what is verified.
-		ui.ledger_line("dialogue", "「거치대 불빛이 물길 입구까지 닿더군. …희망이라고 적을 뻔했다. 장부는 확인된 것만 받으니, 아직은 적지 않겠다.」")
+		ui.ledger_line("dialogue", "The mount's light reaches the channel entrance now. I nearly wrote hope. The ledger accepts only what we can verify, so not yet.")
 	else:
-		ui.ledger_line("dialogue", "「아직 물때는 기다려주지 않는다. 저 탑이 저러고 있으니, 오늘 밤은 아무도 물길에 못 들어간다.」")
+		ui.ledger_line("dialogue", "The tide will not wait for us. With that tower dark, no one enters the channel tonight.")
 	_show_mira_choices()
 
 
@@ -624,12 +629,12 @@ func _show_mira_choices() -> void:
 	var hint_known: bool = "tide_marks_hint" in state["facts"]
 	var choices: Array = []
 	if not hint_known:
-		choices.append({"id": "ask_lighthouse", "text": "등대에 무슨 일이 있었죠?"})
-		choices.append({"id": "ask_secret", "text": "등대지기가 숨기는 게 있죠? 말해줘요."})
-		choices.append({"id": "ask_tide", "text": "조수 표식에 대해 알려줘요."})
+		choices.append({"id": "ask_lighthouse", "text": "What happened to the lighthouse?"})
+		choices.append({"id": "ask_secret", "text": "The keeper is hiding something. Tell me."})
+		choices.append({"id": "ask_tide", "text": "What do the tide marks mean?"})
 	else:
-		choices.append({"id": "ask_after", "text": "이제 어디로 가야 하죠?"})
-	choices.append({"id": "leave", "text": "물러난다"})
+		choices.append({"id": "ask_after", "text": "Where do I go now?"})
+	choices.append({"id": "leave", "text": "Step away"})
 	ui.show_choices(choices)
 
 
@@ -640,7 +645,7 @@ func _on_choice(choice_id: String) -> void:
 	match choice_id:
 		"ask_lighthouse":
 			# W-002: operational fact, already disclosed.
-			ui.ledger_line("dialogue", "「사흘 전부터 등불이 죽었다. 안에서 문을 걸어 잠갔는지, 응답이 없어. 물길 표지는 그게 전부다.」")
+			ui.ledger_line("dialogue", "The light died three days ago. The door may be barred from inside. There has been no answer. That is all we know.")
 			_complete_input_feedback_probe("mira-dialogue-ledger-line")
 			_show_mira_choices()
 		"ask_secret":
@@ -658,7 +663,7 @@ func _on_choice(choice_id: String) -> void:
 		"ask_tide":
 			_propose_tide_hint()
 		"ask_after":
-			ui.ledger_line("dialogue", "「썰물 표식을 따라가라. 다음 물때가 길을 열 거다. 탑은… 그때 다시 이야기하지.」")
+			ui.ledger_line("dialogue", "Follow the low-tide marks. The next tide will open the path. The tower can wait until then.")
 			_complete_input_feedback_probe("mira-dialogue-ledger-line")
 			_show_mira_choices()
 		"leave":
@@ -673,13 +678,13 @@ func _propose_tide_hint() -> void:
 	var result := _propose(
 		"reveal_hint",
 		{"actor_id": "captain_mira", "fact_id": "tide_marks_hint"},
-		"미라에게 조수 표식 단서를 요청한다",
+		"Request the tide-marks lead from Captain Mira",
 		_interactable("mira"),
 	)
 	if result["accepted"]:
 		# P-B05: one ledger link turns solid; restrained bell, signal glow.
-		ui.ledger_line("dialogue", "「좋아. 렌즈를 달았으니 말해주지. 서쪽 방파제의 조수 표식 — 썰물이 세 번째 표식 아래로 내려가면, 바위 사이로 길이 드러난다.」")
-		ui.ledger_commit(commit_count, "조수 표식 단서 공개. 허가 확인, 항목 유효.")
+		ui.ledger_line("dialogue", "Good. The lens is in place, so I can tell you. At the tide marks on the west breakwater, the path appears when the water falls below the third mark.")
+		ui.ledger_commit(commit_count, "Tide-marks lead disclosed. Authorization confirmed; entry valid.")
 		audio_feedback.play_cue("hint")
 		director.set_tension_stage(3)
 		var world: Node3D = handles["world"]
@@ -708,23 +713,23 @@ func _save_game() -> void:
 	var handle := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	handle.store_string(JSON.stringify(payload, "  "))
 	handle.close()
-	ui.toast("저장됨 — 상태 해시 " + machine.state_hash().substr(0, 12) + "…")
+	ui.toast("SAVED | State hash " + machine.state_hash().substr(0, 12) + "...")
 
 
 func _load_game() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):
-		ui.toast("저장 파일이 없다.")
+		ui.toast("NO SAVE FILE FOUND")
 		return
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
 	if not (parsed is Dictionary) or not parsed.has("state") or not parsed.has("state_sha256"):
-		ui.toast("저장 파일을 읽을 수 없다 — 불러오기 거절.")
+		ui.toast("LOAD HELD | The save file could not be read.")
 		return
 	if machine.load_state_if_hash_matches(parsed["state"], parsed["state_sha256"]):
-		ui.toast("불러옴 — 손상 검사 통과.")
+		ui.toast("LOADED | Integrity check passed.")
 		_sync_presentation()
 	else:
 		# GDI-02: a corrupt save must never become authoritative.
-		ui.toast("저장 해시 불일치 — 불러오기 거절, 현재 상태 유지.")
+		ui.toast("LOAD HELD | Save hash mismatch; current state preserved.")
 
 
 ## ------------------------------------------------------------- presentation
@@ -764,24 +769,24 @@ func _sync_presentation() -> void:
 
 	# Objective copy audit: bureaucratic-poetic but concrete — each line names
 	# WHO/WHERE and WHY NOW; the beacon marks the same target in-world.
-	var objective := "부두 끝의 미라 선장에게 말을 건다 — 물길이 닫힌 이유를 아는 사람"
-	var phase := "도착 · ARRIVAL"
+	var objective := "Speak with Captain Mira at the end of the dock | She knows why the channel is closed"
+	var phase := "ARRIVAL"
 	if _met_mira:
-		objective = "램프 상점에서 신호 렌즈를 회수한다 — 신호 없이는 물길이 열리지 않는다"
+		objective = "Recover the signal lens from the lamp store | The channel cannot open without a signal"
 	if hint_known:
-		objective = "서쪽 방파제의 조수 표식을 살핀다 — 썰물이 길을 여는 시각을 읽는다"
-		phase = "단서 기록 · TRACE"
+		objective = "Inspect the tide marks on the west breakwater | Read when low tide opens the path"
+		phase = "TRACE LOGGED"
 	elif installed:
-		objective = "미라 선장에게 돌아가 허가된 단서를 묻는다 — 신호가 살았으니 말할 수 있다"
-		phase = "신호 복구 · SIGNAL"
+		objective = "Return to Captain Mira for the authorized lead | The harbor signal is restored"
+		phase = "SIGNAL RESTORED"
 	elif not lens_in_store:
-		objective = "부두 북동쪽 거치대에 렌즈를 설치한다 — 항구 신호부터 살린다"
-		phase = "렌즈 확보 · LENS"
+		objective = "Install the lens at the northeast harbor mount | Restore the harbor signal"
+		phase = "LENS SECURED"
 	var inventory: Array = state["player"]["inventory"]
 	var exploration_progress := 3 if hint_known else int(state["quest"]["stage"])
-	var status := "상태 단계 %d · 소지품: %s\n기록 %d · 보류 %d\n장부는 검증을 통과한 항목만 받아들인다." % [
+	var status := "STAGE %d | INVENTORY: %s\nENTRIES %d | HOLDS %d" % [
 		int(state["quest"]["stage"]),
-		"신호 렌즈" if "signal_lens" in inventory else "없음",
+		"SIGNAL LENS" if "signal_lens" in inventory else "EMPTY",
 		commit_count,
 		refusal_count,
 	]
@@ -896,17 +901,17 @@ func _finish_episode() -> void:
 	# dark and sealed throughout (W-002/D-030) — the payoff is the earned route.
 	audio_feedback.play_cue("ending")
 	ui.flash("commit")
-	ui.ledger_line("commit", "기록 완결 — 조수 항로 확보. 세 번째 표식 아래, 썰물이 길을 연다.")
-	ui.ledger_line("narration", "장부의 마지막 줄이 황금빛으로 마른다. 부두의 불빛이 물길 끝까지 이어진다.")
-	ui.toast("획득: 썰물 항로 — 이번 밤의 가장 큰 기록.")
-	ui.set_progress(3, 3, "항로 확보 · ROUTE")
+	ui.ledger_line("commit", "Case complete. Tide route secured; below the third mark, low tide opens the path.")
+	ui.ledger_line("narration", "The ledger's final line dries to gold. Harbor light reaches the end of the channel.")
+	ui.toast("ACQUIRED | LOW-TIDE ROUTE")
+	ui.set_progress(3, 3, "ROUTE SECURED")
 	director.play_ending(func() -> void:
-		var summary := "\n[color=#F2B84B]봉인된 등대 — 에피소드 종료[/color]\n\n"
-		summary += "등대는 오늘 밤도 봉인된 채로 남는다. 그러나 장부에는 유효한 항목만 남았고,\n"
-		summary += "썰물의 표식이 다음 경로를 가리킨다.\n"
+		var summary := "\n[color=#F2B84B]THE SEALED LIGHTHOUSE | CASE COMPLETE[/color]\n\n"
+		summary += "The lighthouse remains sealed tonight, but every entry in the ledger is valid.\n"
+		summary += "The low-tide marks point to the next route.\n"
 		summary += _episode_receipt_text()
-		summary += "\n[color=#D9D3C4]— 다음 물때에 계속 —[/color]"
-		# The 'ledger closes' beat: brief dim + 기록 완결 toast, then the end
+		summary += "\n[color=#D9D3C4]CONTINUE AT THE NEXT TIDE[/color]"
+		# The 'ledger closes' beat: brief dim + case-complete toast, then the end
 		# card slides in (reduced motion: immediate card). UI owns the staging.
 		ui.play_ledger_close(summary)
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -915,13 +920,13 @@ func _finish_episode() -> void:
 
 
 func _episode_receipt_text() -> String:
-	# Compact episode receipt: 기록 N · 보류 N · 상태 해시 <short>. One shared
+	# Compact episode receipt: entries N | holds N | state hash <short>. One shared
 	# rendering for the live end card and the ending screenshot stage — the
 	# counts and hash come straight from the committed snapshot, never invented.
-	var receipt := "\n[color=#F2B84B]기록 %d[/color] · [color=#D9685F]보류 %d[/color] · 최종 단계 %d\n" % [
+	var receipt := "\n[color=#F2B84B]ENTRIES %d[/color] | [color=#D9685F]HOLDS %d[/color] | FINAL STAGE %d\n" % [
 		commit_count, refusal_count, int(machine.state["quest"]["stage"])
 	]
-	receipt += "[color=#8FA3B2]검사기 영수증 — 상태 해시 %s…[/color]\n" % machine.state_hash().substr(0, 16)
+	receipt += "[color=#8FA3B2]VALIDATOR RECEIPT | STATE HASH %s...[/color]\n" % machine.state_hash().substr(0, 16)
 	return receipt
 
 
@@ -941,7 +946,7 @@ func _run_engineering_evaluation(path: String) -> void:
 	var probe_result := _propose(
 		"reveal_hint",
 		{"actor_id": "captain_mira", "fact_id": "tide_marks_hint"},
-		"계측용 조수 표식 단서 요청",
+		"Synthetic tide-marks lead request",
 		_interactable("mira"),
 	)
 	if not probe_result["accepted"]:
@@ -1100,13 +1105,13 @@ func _run_screenshot(path: String, stage: String = "arrival") -> void:
 
 
 func _prepare_screenshot_stage(stage: String) -> void:
-	ui.ledger_line("narration", "브라인웨이크 부두는 살아남았다. 그러나 앞바다의 등대는 폭풍 속에서 어둡다.")
+	ui.ledger_line("narration", "Brinewake Dock survived. Offshore, the lighthouse stands dark in the storm.")
 	match stage:
 		"arrival":
-			ui.ledger_line("narration", "미라 선장이 부두 끝에서 어두운 탑을 지켜보고 있다.")
+			ui.ledger_line("narration", "Captain Mira watches the dark tower from the end of the dock.")
 		"refusal":
-			ui.set_portrait_visible(true, "미라 선장 · 항만 감시")
-			ui.ledger_line("proposal", "봉인된 사실을 지금 공개해 달라고 요청한다")
+			ui.set_portrait_visible(true, "CAPTAIN MIRA | HARBOR WATCH")
+			ui.ledger_line("proposal", "Request disclosure of the sealed fact now")
 			var before := machine.state_hash()
 			var codes: Array = machine.validate_disclosure(["keeper_betrayal"])
 			refusal_count += 1
@@ -1118,8 +1123,8 @@ func _prepare_screenshot_stage(stage: String) -> void:
 			_propose_install()
 			_propose_tide_hint()
 			if stage == "ending":
-				var summary := "\n[color=#F2B84B]봉인된 등대 — 에피소드 종료[/color]\n\n"
-				summary += "장부에는 유효한 항목만 남았고, 썰물의 표식이 다음 경로를 가리킨다.\n"
+				var summary := "\n[color=#F2B84B]THE SEALED LIGHTHOUSE | CASE COMPLETE[/color]\n\n"
+				summary += "Every ledger entry is valid, and the low-tide marks point to the next route.\n"
 				summary += _episode_receipt_text()
 				ui.show_end_card(summary)
 	_sync_presentation()
@@ -1188,10 +1193,35 @@ func _run_smoke() -> void:
 	})
 
 	_sync_presentation()
+	var state_before_fall := machine.state_hash()
+	player.global_position = Vector3(0.0, -4.0, 2.0)
+	var fall_recovered := player.recover_from_fall_if_needed()
+	# Extend the existing presentation check rather than adding a ninth smoke
+	# item: the current movement signal must cross-fade a valid rig to walk and
+	# back to idle while leaving the canonical state hash untouched. Procedural
+	# fallback remains a valid play-safe result when no curated rig is present.
+	player.movement_state_changed.emit(true)
+	var walk_snapshot := player.get_engineering_snapshot()
+	player.movement_state_changed.emit(false)
+	var idle_snapshot := player.get_engineering_snapshot()
+	var locomotion_animation_ok := true
+	if bool(walk_snapshot["player_rig_active"]):
+		locomotion_animation_ok = (
+			walk_snapshot["player_rig_active_animation"] == "Casual_Walk"
+			and walk_snapshot["player_rig_engine_animation"] == "Casual_Walk"
+			and bool(walk_snapshot["player_rig_animation_playing"])
+			and idle_snapshot["player_rig_active_animation"] == "Idle"
+			and idle_snapshot["player_rig_engine_animation"] == "Idle"
+			and bool(idle_snapshot["player_rig_animation_playing"])
+		)
 	checks.append({
-		"check": "presentation_sync_reads_snapshot",
+		"check": "presentation_sync_and_fall_recovery",
 		"pass": (handles["tide_marks"] as Node3D).visible
-			and not (handles["lens_prop"] as Node3D).visible,
+			and not (handles["lens_prop"] as Node3D).visible
+			and fall_recovered
+			and player.global_position.distance_to(PlayerInvestigator3D.FALL_RECOVERY_POSITION) < 0.01
+			and locomotion_animation_ok
+			and machine.state_hash() == state_before_fall,
 	})
 
 	var save_hash := machine.state_hash()

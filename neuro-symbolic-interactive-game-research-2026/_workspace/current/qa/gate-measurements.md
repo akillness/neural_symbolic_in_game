@@ -14,17 +14,19 @@ measurement.
   generated environment-candidate conflict (`SL-C01`) quarantined from runtime.
 - Correction: payoff is harbor-side signal restoration plus earned tide route; the offshore
   lighthouse remains dark and sealed.
-- Browser evidence: bundled OFL Nanum Gothic rendered Korean cleanly in a headless browser at
-  desktop 1280×720 and narrow 390×844 start/in-game states, with zero console/page errors.
-- Missing: a complete all-dialogue/state accessibility audit beyond the retained start/in-game
-  browser samples.
+- Browser evidence: the current local artifact completed the English start/tutorial and full
+  authored route; runtime scripts contain no Korean player-visible string, ASCII bracket markers
+  rendered, and the final bundle logged zero console/page errors. The older deployed artifact also
+  retains bounded clean Korean samples at 1280×720 and 390×844.
+- Missing: an independent wide/narrow accessibility and human-readability audit of the current
+  English surface.
 - Evidence: `qa/content-worldview-audit.md`, `design/concept.md`, public-safe guard.
 - State: `FIX`.
 
 ## G2 — Rules and balance
 
 - Target: 100% mechanic coverage; applicable values within approved investigation bands.
-- Observed 2026-08-28 (`SL-BALANCE-PROBE-001`, scripted engineering conformance): operation
+- Observed 2026-08-29 (`SL-BALANCE-PROBE-001`, scripted engineering conformance): operation
   coverage `3/3`; refusal-code coverage `7/9` with `OBJECT_NOT_REACHABLE` and
   `QUEST_STAGE_PRECONDITION` documented as structurally unexercisable through canonical
   operations (the second because `acquire_object` immediately raises quest stage to 1 — the
@@ -42,7 +44,7 @@ measurement.
 ## G3 — Player-type diversity
 
 - Target: at least five scripted archetypes and three viable paths before final use.
-- Observed 2026-08-28: five scripted archetype rotations (A-01–A-05) executed deterministically
+- Observed 2026-08-29: five scripted archetype rotations (A-01–A-05) executed deterministically
   through the canonical machine; all five converge to the canonical semantic terminal state;
   walking-distance proxies span 50.03–76.23 m (≈11.9–18.2 s at WALK_SPEED) across three distinct
   route shapes. Scripted execution establishes breadth of the battery, not human viability or
@@ -55,15 +57,14 @@ measurement.
 
 - Target: median human immersion `≥4.0/5`, measured local input-to-visible feedback `≤100 ms`, and
   zero unresolved S1/S2 readability complaints under an approved protocol.
-- Implemented engineering structure: procedural harbor/VFX/audio, focus redundancy, responsive
-  UI, reduced motion, and browser start gate.
-- Fresh automated evidence (2026-08-28): `SL-PLAY-EVAL-001` passed all `9/9` presentation
-  invariants (now including `wide_layout_preserves_playfield` ≥ 0.65 and
-  `input_feedback_latency_probe_emits_sample`); the evaluation emits engine-local
-  `input_to_visible_feedback_ms` samples through the proposal→ledger→rendered-frame boundary
-  (headless sample observed at ≈29 ms; wiring evidence only, not a browser/user-gesture
-  measurement). Four public-safe 1280×720 working captures remain hash-registered (carried from
-  2026-08-21; GUI capture refresh pending).
+- Implemented engineering structure: procedural harbor/VFX/audio, curated tracked Higgsfield player
+  with `Idle`/`Casual_Walk`, focus redundancy, English responsive UI, reduced motion, and browser
+  start gate.
+- Fresh automated evidence (2026-08-30): `SL-PLAY-EVAL-001` passed all `9/9` presentation
+  invariants, reported `player_rig_active: true` / `higgsfield-tracked` / active `Idle`, and emitted
+  one `3.53 ms` engine-local proposal→ledger→rendered-frame sample. This is wiring evidence only,
+  not a browser/user-gesture measurement. Four public-safe 1280×720 working captures were freshly
+  regenerated through a disposable staged Web capture lane and hash-registered.
 - Interpretation: smoke, JSON, screenshots, and browser checks cannot measure immersion,
   readability preference, usability, affect, or efficacy.
 - State: `FIX — NO HUMAN DATA`.
@@ -80,38 +81,45 @@ measurement.
   30-minute memory; input `≤100 ms`; safe rollback and exact replay.
 - Carried evidence: four v5 policy-mirror runs match terminal/load/replay/oracle hash. Startup-heavy
   frame p95 remains `116.667/100.000/98.760/112.907 ms`, so it does not pass.
-- Cycle 3 engineering receipts (refreshed 2026-08-28): aggregate `45 tests, 44 subtests`;
-  `SL-PLAY-EVAL-001` passed `4/4` authored fixtures (`40/40`) plus `9/9` presentation checks
-  (`49/49` combined); four working PNGs passed size/hash registration. Engine-local input-feedback
-  telemetry wiring now exists (D-037) but browser/user-gesture latency remains unmeasured. The
-  latest staged artifact has 11 top-level files and 45,823,290 bytes; its PCK is 5,970,516 bytes,
-  SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb` (2026-08-21 D-036
-  build, deployed and alias byte-identical). Production
-  `https://sealed-lighthouse-trace-rpg.vercel.app` returned 200 for
-  HTML/JS/WASM/PCK/OFL, served WASM as `application/wasm`, and exposed the hash-matched 4,534-byte
-  OFL notice as `text/plain`. A headless browser verified clean Korean rendering at 1280×720 and
-  390×844 with zero console/page errors; Playwriter was used on 2026-08-17 only for the Vercel
-  device-approval login and one pointer-lock retest. Pointer lock is NOT verified: the prior
-  trusted-headless-pointer-lock observation failed to reproduce twice on 2026-08-17 — a synthetic
-  headless Chromium click raised `pointerlockerror`, and a real-Chrome Playwriter click issued no
-  pointer-lock request at all — with `document.pointerLockElement` null in both retests. The HUD
-  `LOOK ACTIVE` (`시점 잠김`) label is the game's own state label, not pointer-lock evidence, and
-  automation denial alone is not evidence of a production defect.
-- Missing: browser save/reload, human-gesture pointer-lock confirmation, representative warmed
-  frames, long-frame rate, measured input latency, 30-minute memory soak, and rollback drill.
-- Evidence: selected v5, `engineering/perf-budget.md`, current source, current-session aggregate
-  receipt. No new immutable performance packet exists.
+- Cycle 3 engineering receipts (refreshed 2026-08-30): full Pytest `172 passed, 2 skipped`, unittest
+  discovery `131` with `2` skipped, and the game-track selection `46 passed, 2 skipped`; Ruff check
+  and format are clean. `SL-PLAY-EVAL-001` passed `4/4` authored fixtures (`40/40`) plus `9/9`
+  presentation checks (`49/49` combined); four working PNGs passed size/hash registration. The
+  curated player validator passed 9,677,324 bytes, 15,463 triangles, and both required clips.
+  Engine-local input-feedback wiring exists but browser/user-gesture latency remains unmeasured.
+  The current ignored artifact has 11 manifest files and 50,745,203 bytes; its PCK is 10,892,428
+  bytes, SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+  Production deployment `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` at
+  `https://sealed-lighthouse-trace-rpg.vercel.app` returned 200 for all 10 runtime files, matched
+  local bytes, served WASM as `application/wasm`, exposed the 4,534-byte OFL notice as `text/plain`,
+  and kept the configured security headers; `vercel.json` correctly remained non-public. Desktop
+  smoke completed start → in-game → Field Guide with zero console/page errors. The separately
+  retained 2026-08-21 production PCK was 5,970,516 bytes, SHA-256
+  `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; its 1280×720 and 390×844
+  captures remain historical and do not verify the current deployment's mobile layout. Pointer lock
+  is NOT verified: prior 2026-08-17 automation did not reproduce it, and the current production smoke
+  did not assert it. The HUD `LOOK ACTIVE` label is game state, not pointer-lock evidence. On the
+  local current build, `F5` after lens pickup survived a full refresh and `F9` restored
+  inventory/objective from IndexedDB `/userfs`; a forced fall below `y=-3.0` returned to spawn, and
+  the `8/8` smoke proves that recovery leaves the symbolic hash unchanged.
+- Missing: current-production save/reload and 390×844 rechecks, human-gesture pointer-lock/audio
+  confirmation, representative warmed frames, long-frame rate, measured input latency, 30-minute
+  memory soak, and rollback drill.
+- Evidence: selected v5, `engineering/perf-budget.md`, `_workspace/current/qa/browser-qa.md`, current
+  source, current-session aggregate receipt. No new immutable performance packet exists.
 - State: `FIX`.
 
 ## G7 — Core loop
 
 - Target: `30–180 s`, at least three actions, at least one information/progression reward, later
   human repeat proxy `≥70%`.
-- Cycle 3 engineering receipt (refreshed 2026-08-28): the canonical, duplicate-event, timeout, and
+- Cycle 3 engineering receipt (refreshed 2026-08-29): the canonical, duplicate-event, timeout, and
   corrupt-save fixtures passed `10/10` checks each (`4/4`, `40/40`) and all reached terminal hash
   `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. The presentation evaluation
   added `9/9` non-mutating checks for `49/49` combined, and the archetype probe recorded scripted
-  loop-shape counts (commits 3–5, refusals 0–5, walk proxy 11.9–18.2 s per rotation).
+  loop-shape counts (commits 3–5, refusals 0–5, walk proxy 11.9–18.2 s per rotation). On the
+  2026-08-29 rebuilt local Web artifact, browser automation completed the actual Mira → lens → mount
+  → authorized hint → tide-marks ending path; the narrow lens-edge approach is retained as DEF-021.
 - Interpretation: this confirms the state path and public-safe presentation sync; it does not
   measure human duration, comprehension, agency, or repeat behavior.
 - State: `FIX`.
@@ -131,39 +139,42 @@ measurement.
 | Presentation evaluation | `9/9`, canonical state unchanged | instrumentation only |
 | Combined `SL-PLAY-EVAL-001` | `49/49` | engineering only |
 | Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 rotations; isolation 10/10; replay 5/5 | scripted engineering only |
-| Aggregate studio/game tests | `45 tests, 44 subtests` | regression only |
-| Candidate asset exclusion | Web/`--public-safe` guard present | static track separation; rights review still open |
+| Aggregate studio/game tests | full Pytest `172 passed, 2 skipped`; unittest `131` (`2` skipped); game selection `46 passed, 2 skipped`; Ruff check/format clean | regression only |
+| Candidate asset boundary | pending concept packs excluded; curated UI lane and validated tracked player GLB allowed | static track separation; pending-pack rights review still open |
 | Responsive profiles | wide-column and narrow-stacked declaration check PASS | no visual/human readability result |
-| Browser gesture policy | pointer lock NOT verified — 2026-08-17 retests failed to reproduce the prior claim (headless synthetic click raised `pointerlockerror`; real-Chrome Playwriter click issued no pointer-lock request; `document.pointerLockElement` null in both); zero console/page errors confirmed | `FIX`; human-gesture pointer-lock check and measured input latency pending |
-| Procedural audio | external asset check PASS; nine generated streams, 22,050 Hz, four voices | playback/impact unmeasured |
+| Browser gesture policy | pointer lock NOT verified — 2026-08-17 retests and the 2026-08-29 current local build all left `document.pointerLockElement` null; canvas stayed active but scripted horizontal mouse motion did not rotate the camera | `FIX`; human-gesture pointer-lock check and measured input latency pending |
+| Browser save/reload | lens state saved, full page refreshed after 6.5 s, then `F9` restored inventory/objective from IndexedDB `/userfs` | PASS on current local build; current production recheck pending |
+| Below-world recovery | forced fall returned to spawn; public-safe smoke `8/8` asserts canonical state hash unchanged | physical recovery engineering evidence only |
+| Procedural audio | external asset check PASS; 18 generated streams, 22,050 Hz, max five cue voices | playback/impact unmeasured |
 | Bundled Korean font | Nanum Gothic Regular, unmodified, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256; public notice 4,534 bytes, SHA-256 `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f` | release resource, not research evidence |
-| Web artifact/deployment | 11 files, 45,823,290 bytes; latest production PCK 5,970,516 bytes, SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`, after excluding `docs/latest/**`; HTML/JS/WASM/PCK/OFL 200; WASM and OFL MIME correct | pointer lock, save/reload, performance, and soak pending |
-| Deployed responsive rendering | clean Korean at 1280×720 and 390×844; zero console/page errors | bounded browser smoke, not G4 |
+| Web artifact/deployment | current production: 11 manifest files, 50,745,203 bytes, PCK 10,892,428 bytes / `de670404…31ba`; all 10 runtime files 200 and byte-identical; correct WASM/OFL MIME; `vercel.json` non-public | English/rig desktop smoke passed; production save/reload, current mobile, pointer lock, performance, and soak pending |
+| Deployed responsive rendering | current desktop start/in-game/Field Guide zero console/page errors; retained older 1280×720 and 390×844 captures are historical | bounded browser smoke, not G4; current mobile recheck open |
 | Latest working captures | `4/4` 1280×720 PNGs with SHA-256 registration | never G4/efficacy evidence |
 
 ## Cycle 3 fresh working artifacts
 
 | Artifact | Size/dimensions | SHA-256 / status |
 |---|---:|---|
-| `game-track/godot/docs/latest/arrival.png` | 1280×720, 343,547 B | `640558b81b60cb54a739c2e58773f17cfb07c7b16c4302683779194f14e1b8fc` |
-| `game-track/godot/docs/latest/refusal.png` | 1280×720, 442,979 B | `9dbd699cb5f047e8cdc6c575daefd1912d9f63191c73f7f9ec3895c0ce3f796c` |
-| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 397,346 B | `5ab6ff1edbd8aaff2f3bde325b90d131dcafa0fdea25cfa3fc094473bf414901` |
-| `game-track/godot/docs/latest/ending.png` | 1280×720, 397,478 B | `2cc3b95318f7aec3e25e8ab7d78ad1b7ba6d4d337414dbf438118e68c03e0d9b` |
+| `game-track/godot/docs/latest/arrival.png` | 1280×720, 493,925 B | `0516c561fee938e62ae5279f1facdb85d39248cfb9b522c800e74bc953d2f9d8` |
+| `game-track/godot/docs/latest/refusal.png` | 1280×720, 579,733 B | `2041fa1e1dd8e5f5d62373cf25c0462530b40e430f649a87c18f8ebfa1ab0b61` |
+| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 631,606 B | `cc5e766adbf0a8eb47e519b61fa2032fd5fac268e3d3be845aa711b6f00f37fe` |
+| `game-track/godot/docs/latest/ending.png` | 1280×720, 499,210 B | `4c312110e04ed342c3ab7961120b07873a6d97a39f446f6a99ddb839d4622e9f` |
 | `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `49/49` | PASS; engineering-only |
 | `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
-| `game-track/web/public/` | 11 top-level files, 45,823,290 bytes; PCK 5,970,516 bytes | PCK SHA-256 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; deployed 2026-08-21 static artifact after `docs/latest/**` exclusion with public OFL notice; ignored/non-authoritative |
-| `docs/latest/vercel-start.png`, `vercel-in-game.png` | 1280×720 | production desktop start/in-game receipts |
-| `docs/latest/vercel-mobile-start.png`, `vercel-mobile-in-game.png` | 390×844 | production narrow start/in-game receipts |
+| `game-track/web/public/` | current production 11 manifest files, 50,745,203 bytes; PCK 10,892,428 bytes | PCK SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`; includes curated player; ignored/non-authoritative builder output |
+| `docs/latest/vercel-start.png`, `vercel-in-game.png` | 1280×720 | retained 2026-08-21 production desktop receipts |
+| `docs/latest/vercel-mobile-start.png`, `vercel-mobile-in-game.png` | 390×844 | retained 2026-08-21 production narrow receipts; not current mobile evidence |
 | `docs/latest/web-start.png`, `web-in-game.png` | 3294×1908 | local/extension-connected Web inspection receipts |
 
 The public-safe working PNGs, font, and Web/deployment artifacts are not promoted immutable research
 evidence. The extension-connected tab produced one automation-only `WrongDocumentError` because it
 did not own the root document; that note stays automation-only and does not imply pointer lock was
-confirmed working. Pointer lock did not reproduce on 2026-08-17 in either a headless synthetic click
-or a real-Chrome Playwriter click, so it remains open pending a human-gesture check. G4, usability,
-immersion, affect, player efficacy, and model efficacy remain **UNASSESSED**. G6 remains `FIX`
-because save/reload, pointer-lock confirmation, warmed performance/input, and the 30-minute soak are
-absent.
+confirmed working. Pointer lock did not reproduce on 2026-08-17 or the 2026-08-29 current local
+build, so it remains open pending a human-gesture check. Local refresh-persistent save/reload and
+below-world recovery now pass, and production desktop smoke passed. G4, usability, immersion,
+affect, player efficacy, and confirmatory model efficacy remain **UNASSESSED**. G6 remains `FIX`
+because production save/reload, current mobile verification, pointer-lock/audio confirmation,
+warmed performance/input, the 30-minute soak, and rollback evidence are absent.
 
 ## Selected Cycle 2 immutable capture evidence (carried unchanged)
 

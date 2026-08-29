@@ -1,9 +1,8 @@
 # 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
 상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `49/49`
-검사를 통과했다(2026-08-28: 입력→표시 계측·플레이필드 보존 검사 추가). 아키타입 밸런스
-프로브 `SL-BALANCE-PROBE-001`이 5/5 통과했고, public-safe Web 산출물은 2026-08-21 배포본이
-최신이다.**
+검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
+배포 `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`에 영문 추적 플레이어 산출물이 공개됐다.**
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -115,25 +114,32 @@ verifier는 지원되는 다른 Python 버전에서도 실행할 수 있으며, 
 스모크 스윕이 같은 코드 경로를 쓴다.
 
 ```bash
-# 플레이 (WASD 이동, 마우스 시점, E 상호작용, F5/F9 저장·불러오기, M 모션 감소)
-godot --path game-track/godot res://scenes/main_3d.tscn
+# 아래 모든 Godot 명령은 game-track/godot이 아닌 임시 import 복사본만 대상으로 한다.
+STAGED_GODOT_PROJECT=/tmp/sl3d-disposable-project
+
+# 플레이 (WASD, 마우스 시점, E, F5/F9, M 모션 감소, V 음향, T 안내)
+godot --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn
 
 # Public-safe 헤드리스 스모크 (거절 불변·단계 게이트·손상 저장 거절 8종)
-godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe
+godot --headless --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn -- --smoke --public-safe
 
-# 프레젠테이션 불변조건 JSON (엔지니어링 전용)
-godot --headless --path game-track/godot res://scenes/main_3d.tscn -- \
-  --evaluate /tmp/sl3d-evaluation.json --public-safe
+# 임시 fixture + 프레젠테이션 매트릭스 (엔지니어링 전용)
+python3 scripts/run_playable_evaluation.py --godot /path/to/Godot
 
-# 개발용 검증 샷 (non-headless, 승격 불가 작업 캡처)
-godot --path game-track/godot res://scenes/main_3d.tscn -- \
+# 큐레이션된 공개 플레이어 자산·출처·클립 계약
+python3 scripts/validate_player_asset.py
+
+# 개발용 검증 샷 (GUI host 전용, 이 sandbox에서는 불가, 승격 불가)
+godot --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn -- \
   --shot /tmp/sl3d-shot.png --shot-stage arrival --public-safe
 ```
 
-스모크 스윕 8검사는 2026-08-13 Godot 4.7.1에서 통과했고 종료 상태 해시는 동결 해시
+스모크 스윕 8검사는 2026-08-30 Godot 4.7.1에서 다시 통과했고 종료 상태 해시는 동결 해시
 `4b2310…8892`와 일치한다. Web과 `--public-safe`는 `../assets/concepts/` 및
-`../assets/concepts/pack-3d/`의 생성 후보를 로드하지 않고 절차 지오메트리·재질·VFX·UI·음향을
-사용한다. 후보 생성 자산의 인권·권리 검토 전 공개 승격은 계속 불가하다.
+`../assets/concepts/pack-3d/`의 검토 대기 후보를 로드하지 않는다. 대신 별도 큐레이션 UI
+lane과 추적 대상 `assets/player/higgsfield-player.glb`의 `Idle`/`Casual_Walk`을 절차 월드·VFX·
+음향 위에 사용한다. 플레이어 외형과 클립 상태는 정식 상태나 저장 데이터에 들어가지 않는다.
+검토 대기 콘셉트 후보의 공개 승격에는 계속 사람 권리·스타일 검토가 필요하다.
 
 ## Cycle 3 평가 매트릭스와 최신 작업 캡처
 
@@ -158,7 +164,8 @@ fixture `4/4` 모두 정확한 종료 SHA-256
 | 승인 단서 | 항로 획득 결말 |
 | ![Cycle 3 public-safe 승인 단서](docs/latest/authorized_hint.png) | ![Cycle 3 public-safe 결말](docs/latest/ending.png) |
 
-네 1280×720 PNG는 새로운 임시 프로젝트 복사본에서 생성한 최신 엔지니어링 작업 캡처다.
+네 1280×720 PNG는 이 샌드박스에서 Godot `--shot` 렌더가 불가능해 임시 Web stage와 브라우저로
+생성한 최신 엔지니어링 작업 캡처다. 캡처 전용 query hook은 추적 source에 들어가지 않았다.
 불변 v5 패킷을 대체하거나 수정하지 않는다.
 
 ## Public-safe Web 산출물 빌드
@@ -171,12 +178,15 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 빌더는 Godot 프로젝트를 임시 디렉터리로 복사하고 그 복사본에서만 `main_3d.tscn`을 선택한다.
-단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 현재
-산출물은 무시 대상 `game-track/web/public/` 아래의 `index.html`, JavaScript/audio worklet,
-PCK, WebAssembly 파일로 구성된다. 배포 상태:
-**[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**. 2026-08-17
-headless 브라우저 스모크로 한글 표시, 1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을
-확인했다. 포인터 잠금 진입은 **미검증**이다. 2026-08-17 재시험에서 headless 합성 클릭은
+단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 근거
+결속된 실제 프로젝트에는 Godot editor/import를 실행하지 않는다. 2026-08-30 무시 대상
+산출물은 manifest 파일 11개, 50,745,203바이트이며 `index.pck`은 10,892,428바이트, SHA-256
+`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`이다. 이 산출물은
+**[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
+배포됐다. 공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했고 `vercel.json`은
+배포 설정으로 소비됐다. 프로덕션 데스크톱 스모크는 시작 → 인게임 → Field Guide 전환과
+콘솔·페이지 오류 0건을 확인했다. 2026-08-17의 과거 headless 브라우저 스모크는 한글 표시,
+1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을 확인했다. 포인터 잠금 진입은 **미검증**이다. 2026-08-17 재시험에서 headless 합성 클릭은
 `pointerlockerror`를 냈고 실제 Chrome의 Playwriter 클릭은 포인터 잠금 요청 자체를 만들지
 않았으며 두 실행 모두 `document.pointerLockElement`가 null이었다. HUD `시점 잠김`은 게임 자체
 상태 표시이며 이 브라우저 검사를 대체하지 못한다. 자동화 거부만으로는 운영 결함 근거가 되지
@@ -184,15 +194,16 @@ headless 브라우저 스모크로 한글 표시, 1280×720·390×844 반응형 
 그 포인터 잠금 재시험에만 사용했다. 상세 내용은 [`../web/README.md`](../web/README.md)에 있다.
 
 **Cycle 3 주장 경계:** 저자 fixture와 프레젠테이션 불변조건 엔지니어링 적합성만 다룬다.
-G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 포인터 잠금,
-save/reload, warmed frame/input, 30분 soak 근거가 없어 `FIX`다.
+G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 프로덕션
+save/reload, 현 배포 모바일 검증, 사람 포인터/음향 확인, warmed frame/input, 30분 soak,
+rollback 근거가 없어 `FIX`다.
 
 ## 온보딩 증거철과 엔진 밖 소프트 제안 채널 (2026-08-18)
 
-- `[T]` 증거철 안내 3면(조작 → 장부 문법 → 실험 연결)이 첫 실행 시 자동으로 열리고 이후
-  `[T]`로 재열람, `[Esc]`로 닫힌다. 시작 게이트 배경에 스타일 앵커 SL-C01, 안내 삽화에
-  SL-C02·SL-C03·SL3D-U01을 쓴다 — 모두 선택적 후보라 바이트가 없으면 슬롯만 숨고 문안은
-  그대로 읽힌다(web/`--public-safe`에서는 애초에 로드하지 않는다).
+- 영문 `[T]` 증거철 안내 3면(조작 -> 장부 문법 -> 실험 연결)이 첫 실행 시 자동으로 열리고
+  이후 `[T]`로 재열람, `[Esc]`로 닫힌다. 사용자 큐레이션 Higgsfield 삽화는 `assets/ui/`로
+  공개 빌드에 포함된다. 이를 지워도 이미지 슬롯만 숨고 문안과 절차 fallback은 완전하게 남는다.
+  검토 대기 콘셉트 팩 바이트는 계속 제외한다.
 - 첫 커밋·첫 보류에 일회성 설명 토스트가 붙어 "검증 통과만 상태를 바꾼다 / 보류는 상태를
   보존한다"를 즉시 전달한다. 렌즈를 들면 행동 패널에 아이콘 칩이 뜬다.
 - LLM은 엔진 밖에만 있다. `scripts/soft_proposal_policy.py`가 프롬프트용 모델 가시 투영을

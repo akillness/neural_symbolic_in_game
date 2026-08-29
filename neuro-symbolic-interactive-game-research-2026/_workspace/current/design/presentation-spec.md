@@ -42,10 +42,11 @@ portrait viewport switches to a stacked ledger/action layout. Choice controls ha
 minimum height; body copy targets `16–18 px` depending on the layout. The controls panel names
 `WASD`, mouse look, `[E]`, `[Esc]`, `[F5]`, `[F9]`, `[M]`, and `[V]`.
 
-[OBSERVED structure] Web starts behind an explicit bilingual click gate so pointer capture and
+[OBSERVED structure] Web starts behind an explicit English click gate so pointer capture and
 audio resume occur inside a browser user gesture. `[Esc]` releases the pointer; click recaptures
-it. Responsive layout declarations and the gate are exercised by `--evaluate`, but clean-browser
-and Korean glyph verification is still pending.
+it. Responsive layout declarations and the gate are exercised by `--evaluate`; the current English
+HUD and all three tutorial pages were browser-checked with ASCII-safe bracket markers and zero
+console/page errors. Current narrow-layout human readability remains unassessed.
 
 ## Scene and feedback beats / 장면·피드백 비트
 
@@ -58,8 +59,9 @@ and Korean glyph verification is still pending.
 | P-B05 Authorized hint | harbor mount and tide marks gain amber emphasis | pooled sparks/motes and bounded glow | generated hint harmonic | only after valid lens-install commit |
 | P-B06 Route earned | ending card states the tower remains sealed and tide route is next | restrained ending cinematic | no quality-reward sound claim | does not invent lighthouse entry |
 
-The implementation contains a local acknowledgement target of `≤100 ms`, but no timestamped
-input-to-visible measurement has run. The target is not provider/model response latency.
+The implementation contains a local acknowledgement target of `≤100 ms`. The latest automated
+engine-local wiring probe measured one proposal→ledger→rendered-frame sample at `3.53 ms`; this is
+not browser/user-gesture latency and is not provider/model response latency.
 
 ## Runtime presentation budget / 런타임 연출 예산
 
@@ -71,7 +73,7 @@ input-to-visible measurement has run. The target is not provider/model response 
 | Desktop continuous rain | 480 particles | desktop starting budget |
 | VFX-only lights | 0 new | reuse authored scene lights |
 | Blur/raymarch | 0 passes / 0 samples | Compatibility/Web constraint |
-| Audio cue voices | 4 | fixed local pool |
+| Audio cue voices | 5 | fixed local pool |
 | Audio mix rate | 22,050 Hz mono | deterministic local generation |
 
 These are implementation caps, not G6 measurements.
@@ -85,16 +87,18 @@ canonical dark/sealed state. It is therefore excluded from runtime and public-sa
 future regenerated environment candidate must place any amber signal on the harbor side and keep
 the lighthouse dark.
 
-`world_builder.gd` loads no generated candidate texture when `OS.has_feature("web")` or
-`--public-safe` is present. The public presentation consequently uses only programmatic geometry,
-materials, focus markers, VFX, UI, and procedural audio.
+`world_builder.gd` loads no pending-review candidate texture when `OS.has_feature("web")` or
+`--public-safe` is present. The public presentation instead uses the separately curated Higgsfield
+UI lane and tracked `higgsfield-player.glb` (`Idle` + `Casual_Walk`) over the programmatic world,
+materials, focus markers, VFX, and procedural audio. Player rig identity, transforms, and clip state
+remain presentation-only and never enter canonical state or save data.
 
 ## Track separation / 트랙 분리
 
 | Track | Visual/audio input | Authority | Claim scope |
 |---|---|---|---|
 | Primary structured research | text, icons, canonical fields | structured state/policy | RQ1–RQ5 confirmatory target |
-| Public-safe playable | programmatic 3D, UI, VFX, locally generated audio | presentation reads committed snapshots | engineering conformance only |
+| Public-safe playable | curated Higgsfield UI/player assets, programmatic world/VFX, locally generated audio | presentation reads committed snapshots | engineering conformance only |
 | Secondary VLM/UI | reviewed and SHA-256-frozen image pack | soft image context only | exploratory after separate preregistration |
 
 Regeneration during an episode is forbidden. Primary, public-safe, and secondary manifests remain

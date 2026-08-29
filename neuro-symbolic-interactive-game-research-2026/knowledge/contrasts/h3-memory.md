@@ -9,3 +9,5 @@ timestamp: 2026-08-14T00:00:00Z
 # Relations
 
 - 시나리오: [시간 기억 패밀리 NPC-MEMORY-020](/scenarios/scenario-families.md)
+- 지표: [장기 모순율](/metrics/long-horizon-contradiction-rate.md)
+- 채점: [의미 오라클](/oracles/semantic-oracle.md)

@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
@@ -18,6 +19,9 @@ def test_web_release_preserves_the_research_default_scene() -> None:
     assert "--exclude 'scripts/game3d/llm/'" in builder
     assert "run_godot_checked" in builder
     assert "SCRIPT ERROR" in builder
+    assert "System/Library/Fonts" in builder
+    assert "get_system_ca_certificates" in builder
+    assert 'python3 "$PROJECT_ROOT/scripts/validate_player_asset.py"' in builder
 
     runtime_sources = "\n".join(
         path.read_text(encoding="utf-8") for path in GODOT_PROJECT.rglob("*.gd")
@@ -77,3 +81,55 @@ def test_vercel_config_does_not_claim_unneeded_cross_origin_isolation() -> None:
     assert "Cross-Origin-Opener-Policy" not in config
     assert "Cross-Origin-Embedder-Policy" not in config
     assert "X-Content-Type-Options" in config
+
+
+def test_public_play_recovers_from_falling_outside_the_dock() -> None:
+    player = (GODOT_PROJECT / "scripts/game3d/player_3d.gd").read_text(encoding="utf-8")
+    controller = (GODOT_PROJECT / "scripts/game3d/game_3d.gd").read_text(encoding="utf-8")
+
+    assert "FALL_RECOVERY_Y" in player
+    assert "FALL_RECOVERY_POSITION" in player
+    assert "fall_recovered.emit()" in player
+    assert "recover_from_fall_if_needed()" in player
+    assert "presentation_sync_and_fall_recovery" in controller
+    assert "machine.state_hash() == state_before_fall" in controller
+
+
+def test_public_player_asset_is_curated_and_animation_bound() -> None:
+    player = (GODOT_PROJECT / "scripts/game3d/player_3d.gd").read_text(encoding="utf-8")
+    builder = (GODOT_PROJECT / "scripts/game3d/world_builder.gd").read_text(encoding="utf-8")
+
+    assert 'TRACKED_PLAYER_RIG_PATH := "res://assets/player/higgsfield-player.glb"' in builder
+    assert "movement_state_changed.connect(_on_movement_state_changed)" in player
+    assert 'RIG_IDLE_ANIMATION := &"Idle"' in player
+    assert 'RIG_WALK_ANIMATION := &"Casual_Walk"' in player
+    assert "_play_rig_animation(active, motion_reduced)" in player
+    assert '"player_rig_engine_animation"' in player
+    assert '"player_rig_animation_playing"' in player
+
+    provenance = json.loads(
+        (GODOT_PROJECT / "assets/player/higgsfield-player.glb.provenance.json").read_text()
+    )
+    assert any(
+        source.get("url") == "https://higgsfield.ai/terms-of-use-agreement"
+        and source.get("section") == "4.4"
+        for source in provenance["rights_sources"]
+    )
+
+    runtime_literals = []
+    for script_path in (GODOT_PROJECT / "scripts" / "game3d").glob("*.gd"):
+        source = script_path.read_text(encoding="utf-8")
+        source_without_shaders = re.sub(r'""".*?"""', "", source, flags=re.DOTALL)
+        runtime_literals.extend(re.findall(r'"(?:\\.|[^"\\])*"', source_without_shaders))
+    assert runtime_literals
+    assert all(literal.isascii() for literal in runtime_literals)
+
+    validator = ROOT / "scripts" / "validate_player_asset.py"
+    namespace: dict[str, object] = {
+        "__file__": str(validator),
+        "__name__": "validate_player_asset",
+    }
+    exec(  # noqa: S102 - execute the checked-in validator in an isolated namespace.
+        compile(validator.read_text(encoding="utf-8"), str(validator), "exec"), namespace
+    )
+    assert namespace["main"]() == 0

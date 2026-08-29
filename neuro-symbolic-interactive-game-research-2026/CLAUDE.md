@@ -35,6 +35,14 @@ _workspace/
 - Treat Cycle 3 `--shot` PNGs and `--evaluate` JSON as working engineering artifacts. They are not
   immutable evidence unless a new unique evidence set is promoted under the existing capture
   contract; they never establish G4, G6, usability, immersion, affect, or efficacy by themselves.
+- Treat `research/academic-pipeline/rq2-live-pilot/` as a separate `screening-pilot-only` lane
+  (D-049). Its 14-file promotion manifest may support only `C-PILOT-007/008`; it must not alter the
+  frozen offline denominators or promote any `C-RESULT-*` claim from `TODO-RESULT`.
+- Treat `research/simulation/kg-ontology/` as a separate `simulation-only` methods-graph lane
+  (D-051). `SL-KG-ONTOLOGY-SIM-001` may measure only authored closed-world typed-link recovery.
+  The generated SQLite mirror is ignored and non-authoritative; it must not replace Graphify,
+  `WorldState`, the validator, or support any `C-RESULT-*` claim. Run its `--check` gate after any
+  OKF atom, ontology, curated relation, metric formula, claim boundary, or generator change.
 - Label potentially ambiguous statements `[OBSERVED]`, `[INFERENCE]`, or `[TARGET]`. A design target
   is not a measured game result.
 - Every gate claim cites the measurement, method/command, timestamp, and repository-relative
@@ -50,8 +58,9 @@ _workspace/
 - Public Web and `--public-safe` runs must not load generated candidate images from
   `game-track/assets/concepts/` or `game-track/assets/concepts/pack-3d/`. These candidates remain
   `runtime_eligible: false` until human rights/style review and explicit curation. The only
-  generated images allowed in public builds are the curated, provenance-bound PNGs under
-  `game-track/godot/assets/ui/` (D-034/D-035).
+  generated assets allowed in public builds are the curated, provenance-bound PNGs under
+  `game-track/godot/assets/ui/` (D-034/D-035) and the validated tracked Higgsfield player GLB under
+  `game-track/godot/assets/player/` (D-050).
 - Never commit `.env`, access tokens, `~/.codex/auth.json`, Godot editor caches under `.godot/`, or
   raw participant/personal telemetry.
 
@@ -76,12 +85,16 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
 - The non-headless capture runner may render only frozen, deterministic beats derived from the
   authored fixture/run packet. It does not authorize actions, revise canonical state, call a model,
   or replace the headless conformance run.
-- The playable 3D pass may add movement, focus, UI, VFX, local audio, and working screenshots, but
-  these systems may only read committed snapshots or emit proposal intent. Only the hard writer may
-  mutate canonical state.
+- The playable 3D pass may add movement, player mesh/animation, focus, English UI, VFX, local audio,
+  and working screenshots, but these systems may only read committed snapshots or emit proposal
+  intent. Only the hard writer may mutate canonical state. Never add rig identity, transforms, or
+  clip state to saves, schemas, or `canonical_state.gd`.
 - Web export must copy the Godot project to a disposable directory, select `main_3d.tscn` only in
-  that copy, and fail on import/script errors. Never edit the evidence-bound canonical
-  `project.godot` merely to make a release build.
+  that copy, subtract only the exact audited sandboxed macOS font/certificate diagnostics, and fail
+  on every remaining import/script error. Never run Godot editor/import, smoke, evaluation, Web
+  export, or screenshot capture against the real `game-track/godot` project; use a disposable
+  staged copy and verify the canonical `project.godot` SHA-256 remains
+  `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`.
 - Browser pointer capture and audio resume must begin from an explicit user gesture. Provide a
   visible start gate, cursor-release/recovery state, audio mute, and reduced-motion control.
 - The canonical episode payoff is restoration of the harbor-side signal and acquisition of the
@@ -93,14 +106,20 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
 - The primary capture surface is structured state/text with programmatic engine graphics. Generated
   concept images remain excluded; if later shown, they must use the separately labelled
   `secondary-vlm-ui` track with their own provenance and analysis.
-- The public-safe playable surface is programmatic — procedural geometry, materials, icons, VFX,
-  UI, and locally generated audio — optionally skinned by the curated UI art lane
-  `game-track/godot/assets/ui/` (D-035): user-curated, provenance-bound PNGs that degrade to the
-  procedural build when absent. It is a release/presentation lane, not a third research authority
+- The public-safe playable surface uses a procedural world/VFX/audio base, the curated UI art lane
+  `game-track/godot/assets/ui/` (D-035), and the curated tracked Higgsfield player
+  `game-track/godot/assets/player/higgsfield-player.glb` (D-050). UI PNGs degrade to the
+  programmatic fallback when absent; the player GLB must pass `scripts/validate_player_asset.py`
+  with `Idle` and `Casual_Walk`. This is a release/presentation lane, not a third research authority
   or confirmatory visual arm.
+- Player-visible runtime UI is English-only and ASCII-safe under the bundled font. Preserve the
+  existing text+icon redundancy with bracket markers; decorative glyphs such as `◂ ▸ ✔ ✖ ☀ ◈ ● ○
+  ┄ ─ ┤` must not re-enter runtime strings.
 - Presentation may read a committed snapshot but never mutate canonical state directly.
-- Timeout, invalid proposal, controller failure, or exhausted repair must leave the complete prior
-  canonical state unchanged.
+- Below-world recovery is physical presentation recovery only: when `y < -3.0`, return to
+  `(0.0, 0.2, 2.0)`, clear velocity, and leave the complete symbolic state hash unchanged (D-048).
+- Timeout, invalid proposal, controller failure, exhausted repair, or physical fall recovery must
+  leave the complete prior canonical state unchanged.
 - Use Godot/GDScript guidance only. Unity editor, prefab, package, or C# assumptions do not apply.
 
 ## 3. Asset generation: one owner per class
@@ -113,8 +132,10 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
 | Evidence/item icon sheet | `god-tibo-imagen` | `gti --prompt <frozen-prompt> --size 1536x1024 --output <asset.png>` |
 | Playable UI art (key art, portrait, panel texture, icons, tutorial vignette) + world-surface textures and ledger stamps (D-036) | `higgsfield-cli` (D-034) | `higgsfield generate create gpt_image_2 --prompt "$(cat <frozen-prompt>)" --aspect_ratio <r> --wait --json` |
 | Paper diagrams and measured plots | repository SVG/Python generators | `uv run python scripts/generate_paper_figures.py` |
+| KG/ontology typed-link simulation (D-051) | `scripts/run_kg_ontology_simulation.py` | `PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py --check`; tracked JSON/Markdown/TSV/SVG/TeX, ignored SQLite |
 | Balance-probe chart/table working artifacts | `scripts/run_balance_archetypes.py` | `uv run python scripts/run_balance_archetypes.py` |
-| Motion/rig GLB staging (D-039) | manual Mixamo download → Blender scratch-copy edit → GLB + provenance | `uv run python scripts/validate_motion_assets.py` gate; raw FBX/DAE/BVH never git-tracked |
+| Public player mesh + clips (D-050) | Higgsfield image-to-3D → rig → `Idle`/`Casual_Walk` merge | `python3 scripts/validate_player_asset.py`; tracked GLB + provenance + curation |
+| Local-only motion/rig fallback (D-039/D-046) | manual Mixamo download → optional scratch-copy edit | `uv run python scripts/validate_motion_assets.py`; raw FBX/DAE/BVH and Adobe character/animation bytes never git-tracked |
 
 - Validate every `gti` image prompt with `gti --dry-run` before spending quota. For
   `higgsfield-cli`, freeze the prompt file first and record the returned job id in provenance.
@@ -132,6 +153,10 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   `runtime_eligible: true` only through an adjacent `curation.json` citing the explicit user
   directive that stands as the human review for that asset. The Web/public-safe surface must stay
   fully playable when every curated PNG is deleted; loaders fall back to the procedural build.
+- Curated player lane (D-050): the tracked GLB must have adjacent provenance and curation, exact
+  bytes/SHA-256, measured topology/skin counts, required locomotion clips, rights review, and a
+  fail-closed validator. Mixamo remains local-only because raw character/animation redistribution
+  is prohibited.
 - Excluding candidate images from the public artifact mitigates release risk but does not complete
   or waive their rights/style review.
 
@@ -167,17 +192,21 @@ paid/free result.
 
 - Full game-track regression command: `./scripts/validate_game_track.sh` (includes the motion-lane
   guard and the balance-archetype tests).
-- Non-headless capture refresh requires a real GUI session; a sandboxed shell cannot open a window
-  and a diagnostic non-headless launch may rewrite `project.godot` (2026-08-28 incident: restored
-  via `git checkout`; the evidence-hash validator fails closed on this).
+- Godot `--shot` cannot refresh working PNGs in this sandbox: the dummy renderer has no texture and
+  windowed launch aborts. Working screenshots may use a disposable Web-stage-only query hook plus
+  browser capture/downsample, but the hook must never enter tracked source and the PNGs remain
+  engineering-only. Immutable capture promotion still requires the separate non-headless evidence
+  contract.
 - Before pushing, run `./scripts/verify_like_ci.sh` — it replays every
   `.github/workflows/validate.yml` step in order. The game-track command alone is not sufficient:
   CI also runs `ruff check`/`ruff format --check` over `src tests scripts examples`, the unit-test
   discovery, project integrity, README-visual staleness, the offline smoke, harness structure,
   deep-research and survey contracts, and the wiki lint. `./scripts/verify_like_ci.sh
   --install-hook` wires it as a `pre-push` hook.
-- Public-safe authored-path check:
-  `godot --headless --path game-track/godot res://scenes/main_3d.tscn -- --smoke --public-safe`.
+- Public-safe authored-path check must run the same `main_3d.tscn -- --smoke --public-safe` command
+  only against a disposable imported project copy. It must report exactly 8/8 and terminal SHA-256
+  `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`; verify the real
+  `project.godot` hash before and after.
 - Presentation-invariant reports use explicit `main_3d.tscn -- --evaluate <path> --public-safe` and
   must declare `engineering_only: true` plus the excluded claim classes.
 - Reproducible Web build command: `./scripts/build_godot_web.sh`. Its ignored `game-track/web/public/`
@@ -194,8 +223,9 @@ paid/free result.
 - The current cycle may only pass a draft gate with direct evidence. G2--G5 and final G6--G8 remain
   `FIX` until their required simulations, archetypes, participants, or performance runs exist.
 - G4 remains `FIX` without independent human presentation data and measured local acknowledgement
-  latency. G6 remains `FIX` without a clean Web run, warmed frame/long-frame/input measurements, and
-  a 30-minute memory soak. Automated smoke, evaluation JSON, screenshots, or deployment existence
-  cannot substitute for those measurements.
+  latency. G6 remains `FIX` without production save/reload, current mobile re-verification, a
+  human-gesture pointer/audio check, warmed frame/long-frame/input measurements, a 30-minute memory
+  soak, and rollback evidence. Current local save/reload/fall-recovery and production desktop smoke
+  PASS do not substitute for those measurements.
 - Leave the workspace pick-up-ready: task status, latest verified command, owner, blocker, and next
   beat must be readable without chat history.

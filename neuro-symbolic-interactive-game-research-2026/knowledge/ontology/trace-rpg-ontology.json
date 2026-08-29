@@ -1,0 +1,200 @@
+{
+  "schema_version": "1.0.0",
+  "ontology_id": "TRACE-RPG-ONTOLOGY-001",
+  "scope": "Closed application ontology for the repository-local methods graph and the encoded game-state predicate vocabulary.",
+  "claim_boundary": "This registry is not OWL, SHACL, an independent semantic oracle, a runtime retrieval system, or evidence for any C-RESULT claim.",
+  "node_types": [
+    "ActionType",
+    "Actor",
+    "Application Ontology",
+    "Bundle Guide",
+    "Citation Set",
+    "Claim Boundary",
+    "Concept",
+    "Contrast Family",
+    "Controller Arm Set",
+    "Engine Evidence",
+    "Experiment Stage",
+    "Fact",
+    "Item",
+    "Location",
+    "Metric Definition",
+    "Oracle",
+    "Policy",
+    "Protocol",
+    "Quest Stage",
+    "Runbook",
+    "Scenario Family Set"
+  ],
+  "relation_types": {
+    "references": {
+      "layer": "methods",
+      "domain": ["*"],
+      "range": ["*"],
+      "validator_predicate": null
+    },
+    "evaluated_by": {
+      "layer": "methods",
+      "domain": ["Contrast Family", "Controller Arm Set", "Experiment Stage"],
+      "range": ["Metric Definition"],
+      "validator_predicate": null
+    },
+    "uses_oracle": {
+      "layer": "methods",
+      "domain": ["Contrast Family", "Experiment Stage", "Protocol", "Runbook"],
+      "range": ["Oracle"],
+      "validator_predicate": null
+    },
+    "governed_by": {
+      "layer": "methods",
+      "domain": ["Controller Arm Set", "Engine Evidence", "Experiment Stage"],
+      "range": ["Protocol", "Runbook"],
+      "validator_predicate": null
+    },
+    "tests_contrast": {
+      "layer": "methods",
+      "domain": ["Experiment Stage"],
+      "range": ["Contrast Family"],
+      "validator_predicate": null
+    },
+    "implements": {
+      "layer": "methods",
+      "domain": ["Engine Evidence"],
+      "range": ["Concept", "Protocol"],
+      "validator_predicate": null
+    },
+    "supports": {
+      "layer": "methods",
+      "domain": ["Citation Set", "Engine Evidence", "Experiment Stage"],
+      "range": ["Application Ontology", "Claim Boundary", "Concept", "Contrast Family"],
+      "validator_predicate": null
+    },
+    "authorized_by": {
+      "layer": "game-state",
+      "domain": ["ActionType"],
+      "range": ["Policy"],
+      "validator_predicate": "v_policy"
+    },
+    "requires_precondition": {
+      "layer": "game-state",
+      "domain": ["ActionType"],
+      "range": ["Fact"],
+      "validator_predicate": "v_pre"
+    },
+    "requires_reachable_item": {
+      "layer": "game-state",
+      "domain": ["ActionType"],
+      "range": ["Item"],
+      "validator_predicate": "v_reach"
+    },
+    "knows": {
+      "layer": "game-state",
+      "domain": ["Actor"],
+      "range": ["Fact"],
+      "validator_predicate": "v_know"
+    },
+    "forbids_disclosure": {
+      "layer": "game-state",
+      "domain": ["Actor"],
+      "range": ["Fact"],
+      "validator_predicate": "v_disc"
+    },
+    "advances_stage": {
+      "layer": "game-state",
+      "domain": ["ActionType"],
+      "range": ["Quest Stage"],
+      "validator_predicate": "v_quest"
+    }
+  },
+  "constraints": {
+    "node_type_required": true,
+    "declared_relation_required": true,
+    "resolved_endpoints_required": true,
+    "domain_range_conformance_required": true,
+    "duplicate_edges_forbidden": true,
+    "self_edges_forbidden": true
+  },
+  "competency_questions": [
+    {
+      "id": "CQ-01",
+      "question_en": "Which metrics evaluate each contrast family?",
+      "question_ko": "각 대조 패밀리는 어떤 지표로 평가되는가?",
+      "source_type": "Contrast Family",
+      "relation": "evaluated_by",
+      "target_type": "Metric Definition",
+      "required_sources": {
+        "/contrasts/h1-gate-vs-direct.md": 1,
+        "/contrasts/h2-repair-vs-retry.md": 1,
+        "/contrasts/h3-memory.md": 1,
+        "/contrasts/h4-affect.md": 1,
+        "/contrasts/h5-consensus-vs-gate.md": 1
+      },
+      "minimum_answers": 5
+    },
+    {
+      "id": "CQ-02",
+      "question_en": "Which contrasts are exercised by an experiment stage?",
+      "question_ko": "각 실험 단계는 어떤 대조를 실행하는가?",
+      "source_type": "Experiment Stage",
+      "relation": "tests_contrast",
+      "target_type": "Contrast Family",
+      "required_sources": {
+        "/experiments/stage-1-screening.md": 2,
+        "/experiments/stage-2-confirmatory.md": 4
+      },
+      "minimum_answers": 6
+    },
+    {
+      "id": "CQ-03",
+      "question_en": "Which protocols are implemented by engine evidence?",
+      "question_ko": "엔진 근거는 어떤 프로토콜을 구현하는가?",
+      "source_type": "Engine Evidence",
+      "relation": "implements",
+      "target_type": "Protocol",
+      "required_sources": {
+        "/engine/llm-channel-demo.md": 1,
+        "/engine/m6-engine-fixture.md": 1
+      },
+      "minimum_answers": 2
+    },
+    {
+      "id": "CQ-04",
+      "question_en": "Which oracles score an experiment stage?",
+      "question_ko": "실험 단계는 어떤 오라클로 채점되는가?",
+      "source_type": "Experiment Stage",
+      "relation": "uses_oracle",
+      "target_type": "Oracle",
+      "required_sources": {
+        "/experiments/pilot-measurement.md": 1,
+        "/experiments/stage-1-screening.md": 1,
+        "/experiments/stage-2-confirmatory.md": 2
+      },
+      "minimum_answers": 4
+    },
+    {
+      "id": "CQ-05",
+      "question_en": "Which application ontology is supported by the KG/ontology evaluation citation set?",
+      "question_ko": "KG/온톨로지 평가 인용 집합은 어떤 application ontology를 뒷받침하는가?",
+      "source_type": "Citation Set",
+      "relation": "supports",
+      "target_type": "Application Ontology",
+      "required_sources": {
+        "/citations/kg-ontology-evaluation-literature.md": 1
+      },
+      "minimum_answers": 1
+    },
+    {
+      "id": "CQ-06",
+      "question_en": "Which protocols govern controller arms?",
+      "question_ko": "컨트롤러 arm은 어떤 프로토콜의 통제를 받는가?",
+      "source_type": "Controller Arm Set",
+      "relation": "governed_by",
+      "target_type": "Protocol",
+      "required_sources": {
+        "/experiments/consensus-arms.md": 1,
+        "/experiments/controller-arms.md": 1
+      },
+      "minimum_answers": 2
+    }
+  ]
+}

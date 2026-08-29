@@ -594,7 +594,7 @@ STATUS_STYLE: dict[str, tuple[str, str, str]] = {
     "approved-design-protocol": ("Approved · design protocol", PALE_ORANGE, ORANGE),
     "proposed-contribution": ("Proposed contribution", PALE_ORANGE, ORANGE),
     "pilot-only": ("Pilot-only · screening evidence", PALE_ORANGE, ORANGE),
-    "TODO-RESULT": ("TODO-RESULT · no evidence", PALE_GRAY, GRAY),
+    "TODO-RESULT": ("TODO-RESULT · no confirmatory result", PALE_GRAY, GRAY),
 }
 
 STATUS_ORDER = (
@@ -656,9 +656,9 @@ def claim_status_svg() -> str:
         height,
         "TRACE-RPG claim ledger status",
         (
-            "Every tracked claim with its current epistemic state. Efficacy claims "
-            "C-RESULT-001 through C-RESULT-005 have no evidence and are rendered as "
-            "TODO-RESULT."
+            "Every tracked claim with its current epistemic state. C-RESULT-001 through "
+            "C-RESULT-005 have no confirmatory result and remain TODO-RESULT; screening "
+            "receipts are reported only under their pilot claim IDs."
         ),
     )
     items += title_band(

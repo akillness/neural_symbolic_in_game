@@ -1,6 +1,6 @@
 # TRACE-RPG Research Package 2026
 
-> Status: the user accepted the revision direction produced by the simulated Stage 6 Major Revision review. The expanded claim-faithfulness audit and the Stage-10 clean tagged input recapture have passed; this closes F6's reproducibility gate, not the separate G4/G6 game gates. This is not a journal decision, paper acceptance, reviewer archive, or DOI deposit. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. Existing numbers remain deterministic authored-fixture conformance counts.
+> Status: the user accepted the revision direction produced by the simulated Stage 6 Major Revision review. The expanded claim-faithfulness audit and guided-repair clean tagged input recapture have passed; this closes F6's reproducibility gate, not the separate G4/G6 game gates. This is not a journal decision, paper acceptance, reviewer archive, or DOI deposit. No confirmatory efficacy result has been produced; `C-RESULT-001`--`005` remain `TODO-RESULT`. A separate single-model RQ2 screening packet is reported only as `pilot-only`, apart from the deterministic authored-fixture counts.
 
 TRACE-RPG never writes an LLM proposal directly into canonical game state. Each successfully parsed proposal becomes a typed candidate event and is committed only after an externally supplied action policy and deterministic checks over preconditions, reachability, NPC knowledge, disclosure, and quest stage. An invalid candidate yields structured validation errors and may receive a bounded repair opportunity; adapter and controller failures remain classified terminal rows. Knowledge-graph retrieval and game-engine integration remain separate confirmatory tracks connected through the versioned event contract; neither is represented as completed pilot evidence.
 
@@ -73,18 +73,19 @@ separate what the repository has built from what it has measured.
 
 | Question | What exists today | What is still missing |
 |---|---|---|
-| Does the code run? | Yes — 120 tests, deterministic pilot incl. the guided-repair arm, Godot slice, live public-safe Web build | — |
-| Is the pipeline complete? | Yes — all 10 academic stages executed, clean-tag re-lock at each release checkpoint | — |
-| Is the paper written? | Yes — bilingual IEEE short paper, EN 8 pp / KO 7 pp, 45 references, ρ(a,E) guided-repair method | Journal submission and decision |
-| **Are the research claims proven?** | **No** | Live-model, human, affect, retrieval, memory, and engine-performance studies |
+| Does the code run? | Yes — 172 full pytest checks pass (131 unittest-discovered), deterministic pilot, Godot slice, live public-safe Web build | — |
+| Is the pipeline complete? | Stage 8 source revision and release lock are complete | Stage 9 PDF rebuild and format checks with the live-screening and KG-simulation addenda |
+| Is the paper written? | Yes — bilingual IEEE sources, 45 paper references, ρ(a,E) guided repair, and separate live-screening/KG-simulation addenda | Last PDFs predate both addenda (EN 8 pp / KO 7 pp); rebuild, page-band review, journal submission, and decision remain |
+| **Are the research claims proven?** | **No** | Only a five-call-per-cell RQ2 screening pilot exists; confirmatory multi-model, human, affect, retrieval, memory, and engine-performance studies are missing |
 
-Development is complete for what this package claims. The **experiments are not**: 5 of 18 tracked
-claims are efficacy claims with zero evidence, and they are the ones the research questions ask.
+Development is complete for what this package claims. The **experiments are not**: 5 of 21 tracked
+claims are efficacy claims with no promotion-qualifying evidence, and they are the ones the research questions ask.
 
 ## Experiment design (planned, not executed)
 
-SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). Nothing in this section has
-been run; it is recorded so the scope is auditable.
+SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). This confirmatory matrix has
+not been run; the separate RQ2 screening pilot is not a substitute for it. The matrix is recorded so
+the scope is auditable.
 
 | Dimension | Stage 1 screening | Stage 2 confirmatory |
 |---|---|---|
@@ -119,6 +120,45 @@ Controls: seeds `11, 23, 47, 83, 131`; repair budget `K=3`; 60 s timeout; at mos
 calls, matched across the three comparable arms; per-attempt tokens, latency, cost, and failure class
 recorded. 28 metrics are catalogued in [`configs/metric-catalog.yaml`](configs/metric-catalog.yaml).
 
+## KG/ontology graph store and proposal simulation
+
+The project now keeps three meanings separate: the sibling Graphify artifact is a document-navigation
+index, Python `WorldState` remains the hard runtime authority, and the new SQLite file is only a
+repository-local **methods-graph mirror**. The closed application ontology declares 21 node types,
+13 relation types, domain/range rules, six validator-predicate mappings, and six executable,
+source-scoped competency questions. It is not OWL/SHACL and does not implement runtime graph retrieval.
+
+![Simulation-only KG/ontology evaluation matrix](research/simulation/kg-ontology/latest/figures/evaluation-matrix.svg)
+
+`SL-KG-ONTOLOGY-SIM-001` runs seven fixed strategies over six authored queries × five candidates: 30 candidate scores per strategy and 210 total.
+For selected links $S_q$ and one frozen relevant link $G_q$ per query,
+$P=TP/(TP+FP)$, $R=TP/(TP+FN)$, $F_1=2PR/(P+R)$,
+$MRR=|Q|^{-1}\sum_q r_q^{-1}$ with realistic tie ranks,
+$BS=N^{-1}\sum_i(s_i-y_i)^2$, and
+$Sem@K=(K|Q|)^{-1}\sum_{q,i}I[domain/range\ valid]$.
+The ratchet keeps a strategy only after recall ≥0.80, coverage ≥0.95, `Sem@3=1`, and strict
+lexicographic improvement.
+
+Current deterministic packet: **43 OKF nodes, 106 reference edges, 24 curated typed edges, 0 ontology
+violations, 6/6 competency questions**. The retained `S2-typed-lexical-loose` strategy recovered
+6/6 authored holdouts (`P=R=F1=1.000`, realistic-tie `MRR=0.944`, `BS=0.131`, `Sem@3=1.000`).
+These are closed-world construction results, not independent semantic truth, user usefulness,
+runtime KG efficacy, long-horizon memory evidence, or support for any `C-RESULT-*` claim.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py
+PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py --check
+sqlite3 research/simulation/kg-ontology/latest/trace-rpg-knowledge.sqlite \
+  'SELECT relation, COUNT(*) FROM edge GROUP BY relation ORDER BY relation;'
+```
+
+Outputs: exact [JSON matrix](research/simulation/kg-ontology/latest/evaluation-matrix.json),
+[formula/strategy report](research/simulation/kg-ontology/latest/evaluation-matrix.md),
+[TSV trials](research/simulation/kg-ontology/latest/strategy-trials.tsv),
+[recommendations](research/simulation/kg-ontology/latest/recommendations.json), SVG, bilingual generated
+TeX, hashes, and the ignored runtime SQLite mirror. The machine ontology is
+[`knowledge/ontology/trace-rpg-ontology.json`](knowledge/ontology/trace-rpg-ontology.json).
+
 ## Paper at a glance
 
 Authoritative: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
@@ -144,16 +184,17 @@ What the paper claims, and what it explicitly does not:
 | Assignment-complete failure accounting | Retrieval, memory, or affect benefit |
 | Conformance over **one** authored world state | Generalization to a real game at scale |
 
-Claim ledger ([`research/claim-ledger.yaml`](research/claim-ledger.yaml)), 18 claims:
+Claim ledger ([`research/claim-ledger.yaml`](research/claim-ledger.yaml)), 21 claims:
 
 | Status | Count | Meaning |
 |---|---:|---|
-| `verified-designed-fixture` | 5 | Observed in frozen authored fixtures |
+| `verified-designed-fixture` | 6 | Observed in frozen authored fixtures |
 | `verified-primary` / `-scope-limited` / `-preprint` | 4 | Supported by cited literature |
 | `verified-authored-engine-fixture` / `-render-fixture` | 2 | Godot slice conformance |
+| `pilot-only` | 2 | Single-model live screening evidence with no population promotion |
 | `approved-design-protocol` | 1 | Design approved, unexecuted |
 | `proposed-contribution` | 1 | Architectural position |
-| **`TODO-RESULT`** | **5** | **`C-RESULT-001`–`005`: no evidence at all** |
+| **`TODO-RESULT`** | **5** | **`C-RESULT-001`–`005`: no confirmatory efficacy result** |
 
 ## Quick start
 
@@ -201,18 +242,24 @@ persistent live transport, MLflow/energy telemetry, and human recruitment remain
 ## Stage 4 paper and bounded pilot
 
 The authoritative IEEE short-paper drafts are `paper/latex/en/main.pdf` and
-`paper/latex/ko/main.pdf`. Their tables are generated from
+`paper/latex/ko/main.pdf`. The offline tables are generated from
 `research/academic-pipeline/stage-04-pilot/pilot-results.json`: gate agreement `13/13`
-across 12 encoded error codes; repair-arm commits `0/2`, `0/2`, and `1/2`; named
-detectable integrity faults `10/10`; one separately declared repair-provenance boundary
-replay-accepted `1/1`; adapter outcomes 1 commit, 1 symbolic fallback, and 5 classified
-failures out of 7; assignment guards `3/3`. These are raw authored-fixture counts, not
-live-model, player, or population efficacy estimates.
+across 12 encoded error codes; 12 invalid repair cases partitioned as 5 guided-repairable,
+1 oracle-only, and 6 irreparable; blind commits `0/12`, guided commits `5/5` in its reachable
+class, and oracle commits `5/5` plus `1/1`; detectable integrity faults `10/10`; one declared
+repair-provenance boundary replay-accepted `1/1`; adapter outcomes 1 commit, 1 symbolic fallback,
+and 5 classified failures out of 7; assignment guards `3/3`. These are raw authored-fixture counts,
+not live-model, player, or population efficacy estimates.
 
-The clean Stage-10 recapture records input commit
-`c4752df43196761dcc64f02110f32bbaecfa235f`, tag
-`trace-rpg-stage10-inputs-20260814-v1`, and `dirty=false`. All 21 input paths and exact digests match
-that commit, all 35 artifact hashes recompute (56/56 total), and the manifest uses the portable
+A separate generated live-screening table reads only the tracked
+`research/academic-pipeline/rq2-live-pilot/` packet. In the constructed `signal-repair-v2` blind
+cell at `K=1`, guided repair committed `5/5` and blind retry `0/5`; four other current cells showed
+no guided advantage, and all `15/15` current noncommit arm outcomes preserved prior state. This is
+`screening-pilot-only`; `C-RESULT-003` remains `TODO-RESULT`.
+
+The guided-repair recapture records tag `trace-rpg-guided-repair-inputs-20260821-v1` and
+`dirty=false`. All 22 declared inputs and 38 artifact hashes recompute, and the 121 provenance rows
+remain partitioned as 85 executed fixture rows plus 36 aggregate rows. The manifest uses the portable
 `uv run python` invocation without absolute user or clone paths. This closes F6; no reviewer archive
 or DOI deposit is claimed.
 
@@ -232,9 +279,11 @@ Type 3 font, missing-glyph, undefined-reference, citation, and overfull-box regr
 
 *The Sealed Lighthouse* is an 8--12 minute target, turn-based narrative investigation micro-RPG
 chosen through a five-round deep interview. Its primary planned experiment uses structured text and
-canonical state. A separately labelled secondary VLM/UI track may use reviewed, checksum-locked
-derivatives in a future internal packet; this public-safe snapshot contains only their exclusion
-IDs and hashes, never generated image bytes. Image generation never occurs during an experiment.
+canonical state. A separately labelled secondary VLM/UI research track may use reviewed,
+checksum-locked derivatives in a future internal packet; its pending concept candidates remain
+excluded here by ID/hash. Separately curated Higgsfield UI and player assets do ship in the
+presentation lane, but never enter experiment inputs or canonical state. Image generation never
+occurs during an experiment.
 Start with `game-track/design/gdd.en.md`,
 `game-track/design/paper-crosswalk.en.md`, and `configs/experimental-game.yaml`.
 
@@ -271,18 +320,29 @@ All `4/4` fixtures reached
 | ![Public-safe authorized hint](game-track/godot/docs/latest/authorized_hint.png) | ![Public-safe ending](game-track/godot/docs/latest/ending.png) |
 
 These four 1280×720 files are latest engineering working captures, not immutable research evidence.
-Generated candidates are excluded from Web/`--public-safe`; the public build uses procedural
-geometry, VFX, UI, and audio. The evaluation establishes authored-fixture and presentation-
-invariant conformance only. G4, usability, immersion, affect, player efficacy, and model efficacy
-are **UNASSESSED**; G6 remains `FIX` pending pointer-lock, save/reload, warmed-frame/input, and soak
-evidence.
+Pending-review concept candidates are excluded from Web/`--public-safe`; the current local build
+uses curated Higgsfield UI assets and a validated tracked Higgsfield player GLB with
+`Idle`/`Casual_Walk` over the procedural world/VFX/audio surface. Animation remains
+presentation-only and cannot change canonical state or saves. The evaluation establishes authored-fixture and presentation-
+invariant conformance only. G4, usability, immersion, affect, player efficacy, and confirmatory
+model efficacy are **UNASSESSED**. On 2026-08-29/30, the current English Web build completed the
+ending, refresh-persistent save/reload, state-isolated fall recovery, tracked-player load, and
+ASCII-safe three-page tutorial with zero console/page errors. Production deployment
+`dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` then passed desktop start → in-game → Field Guide smoke with zero
+console/page errors. G6 remains `FIX` pending production save/reload, current mobile verification,
+human-gesture pointer/audio checks, warmed frame/input, 30-minute soak, and rollback evidence.
 
 ```bash
 ./scripts/build_godot_web.sh
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+The current English/curated-player artifact is deployed: 11 manifest files / 50,745,203 bytes; PCK
+10,892,428 bytes, SHA-256
+`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+Deployment status: **[`dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` was consumed as
+deployment configuration and is not a public asset.
 A headless-browser smoke on 2026-08-17 against `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe` verified clean
 loading, Korean glyphs, responsive 1280×720 and 390×844 layouts, and zero console/page errors.
 Playwriter was used that day only for the Vercel device-approval login and one pointer-lock

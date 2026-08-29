@@ -6,7 +6,7 @@ status: READY-NOT-EXECUTED
 prepared: 2026-08-28 (user request: "지금 준비해줘")
 participant: 프로젝트 소유자 1인 (자기 측정; G4의 독립 참가자 연구를 대체하지 않음)
 target_url: https://sealed-lighthouse-trace-rpg.vercel.app
-build: dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW (index.pck 5,970,516 B, b97069…56eb)
+build: dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN (index.pck 10,892,428 B, de6704…31ba)
 ```
 
 이 패킷은 자동화가 대신할 수 없는 **사람 제스처 항목**을 소유자 1회 플레이로 닫기 위한
@@ -17,7 +17,7 @@ G6의 save/reload 항목을 닫고 G6 성능 항목의 1차 실측이 된다.
 ## A. 포인터록 사람 제스처 확인 (DEF-010, 약 2분)
 
 1. 데스크톱 Chrome 일반 창(시크릿 아님)에서 위 URL 접속.
-2. `조사 시작 — BEGIN` 버튼을 **마우스로 직접 클릭**.
+2. `BEGIN INVESTIGATION` 버튼을 **마우스로 직접 클릭**.
 3. 확인: 커서가 사라지고 마우스로 시점이 도는가? HUD 좌상단이 `시점 잠김 · LOOK ACTIVE`인가?
 4. `Esc` → 커서 복귀 확인 → 화면 클릭 → 재잠김 확인.
 5. (선택) DevTools 콘솔에 `document.pointerLockElement` 입력 — canvas 요소가 나오면 확정.

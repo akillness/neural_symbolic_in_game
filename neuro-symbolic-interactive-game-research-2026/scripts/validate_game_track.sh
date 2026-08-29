@@ -7,6 +7,7 @@ cd "$PROJECT_ROOT"
 uv run python scripts/validate_game_studio.py
 uv run python scripts/validate_concept_assets.py
 uv run python scripts/validate_motion_assets.py
+uv run python scripts/validate_player_asset.py
 uv run python -m pytest -q \
   tests/test_godot_experimental_game.py \
   tests/test_godot_web_release.py \
@@ -23,6 +24,7 @@ uv run ruff check \
   scripts/validate_game_studio.py \
   scripts/validate_concept_assets.py \
   scripts/validate_motion_assets.py \
+  scripts/validate_player_asset.py \
   scripts/verify_motion_ingest.py \
   tests/test_codex_oauth_llm.py \
   tests/test_godot_experimental_game.py \
@@ -39,6 +41,7 @@ uv run ruff format --check \
   scripts/validate_game_studio.py \
   scripts/validate_concept_assets.py \
   scripts/validate_motion_assets.py \
+  scripts/validate_player_asset.py \
   scripts/verify_motion_ingest.py \
   tests/test_codex_oauth_llm.py \
   tests/test_godot_experimental_game.py \

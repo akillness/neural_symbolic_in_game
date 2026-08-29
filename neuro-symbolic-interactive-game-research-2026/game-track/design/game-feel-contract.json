@@ -1,0 +1,197 @@
+{
+  "contract_version": 1,
+  "mechanic": {
+    "name": "investigator locomotion presentation",
+    "build": "task-16 Higgsfield player and motion upgrade",
+    "scene": "The Sealed Lighthouse harbor investigation",
+    "target_devices": [
+      "desktop web keyboard and mouse"
+    ],
+    "network_state": "offline canonical simulation",
+    "camera": "third-person spring-arm follow camera"
+  },
+  "goal": "Make walking and stopping readable through a coherent public-safe player character and Idle/Walk animation without changing movement speed, collision, focus, interaction, save data, or canonical state.",
+  "baseline": {
+    "capture": "Existing Web gameplay capture plus player engineering snapshot and source trace.",
+    "observations": [
+      "The public Web build uses a procedural capsule because the local Mixamo lane is intentionally excluded.",
+      "The local Mixamo fallback plays only its first clip and does not switch on movement state.",
+      "Movement already emits movement_state_changed and distance-paced footstep signals while the camera bob shares the same stride cadence."
+    ],
+    "measured_stages": [
+      "input read",
+      "character velocity",
+      "movement-state signal",
+      "footstep request",
+      "rendered player animation"
+    ],
+    "inferred_stages": [
+      "player intent",
+      "perceived locomotion coherence"
+    ]
+  },
+  "response_chain": [
+    {
+      "stage": "intent",
+      "owner": "player and input design",
+      "evidence": "WASD expresses directional movement while world interaction remains on E.",
+      "status": "observed"
+    },
+    {
+      "stage": "input",
+      "owner": "PlayerInvestigator3D",
+      "evidence": "The existing physical-key InputMap feeds Input.get_vector without changing the proposal router.",
+      "status": "measured"
+    },
+    {
+      "stage": "simulation",
+      "owner": "CharacterBody3D controller",
+      "evidence": "Velocity, acceleration, deceleration, gravity, collision, and fall recovery remain the trusted movement path.",
+      "status": "measured"
+    },
+    {
+      "stage": "state",
+      "owner": "canonical SealedLighthouseMachine",
+      "evidence": "Player rig and locomotion animation are absent from canonical state and the terminal hash must match the control.",
+      "status": "measured"
+    },
+    {
+      "stage": "render",
+      "owner": "player rig AnimationPlayer",
+      "evidence": "The curated 15,463-triangle rig exposes measured Idle (4.033333 s) and Casual_Walk (4.233333 s) clips; smoke and browser captures verify rest-to-walk switching.",
+      "status": "measured"
+    },
+    {
+      "stage": "feedback",
+      "owner": "player presentation and procedural audio",
+      "evidence": "The 9/9 presentation evaluation and full browser route show walk animation, alternating footsteps, and stride-locked camera feedback driven by the same movement state.",
+      "status": "measured"
+    },
+    {
+      "stage": "recovery",
+      "owner": "PlayerInvestigator3D",
+      "evidence": "The extended 8/8 public-safe smoke check verifies walk-to-idle recovery and the unchanged terminal state hash after fall recovery.",
+      "status": "measured"
+    }
+  ],
+  "primary_hypothesis": {
+    "weak_link": "public player readability and locomotion-state continuity",
+    "problem": "The capsule communicates position but not an investigator identity, while the local rig remains visually static during movement.",
+    "change": "Load one tracked Higgsfield-generated humanoid GLB in public-safe builds and cross-fade only between its Idle and Casual_Walk clips from the existing movement-state signal.",
+    "expected_signal": "Matched captures show a recognizable harbor investigator at rest and a visibly distinct walk cycle while route timing and terminal canonical hash remain unchanged.",
+    "falsifier": "The character clips, faces backward, slides excessively, obscures the interaction view, exceeds the Web asset budget, or changes any authoritative state or route result.",
+    "competing_explanation": "Weak movement feel may come from camera framing or footstep timing rather than the character model."
+  },
+  "event_channels": [
+    {
+      "event": "movement begins",
+      "importance": "routine",
+      "channels": [
+        "walk animation",
+        "distance-paced footsteps",
+        "subtle camera bob where motion is enabled"
+      ],
+      "necessary_information": "The investigator is moving under player input.",
+      "accessibility_alternative": "The world translation and footstep sound remain available; reduced motion removes decorative camera sway but not necessary locomotion state."
+    },
+    {
+      "event": "movement stops or input locks",
+      "importance": "routine",
+      "channels": [
+        "idle animation",
+        "camera returns to rest",
+        "footsteps stop"
+      ],
+      "necessary_information": "The investigator is planted and ready to inspect or choose.",
+      "accessibility_alternative": "Stable pose and stopped world translation communicate rest without sound."
+    }
+  ],
+  "safety": {
+    "simulation_truth": "WALK_SPEED, acceleration, deceleration, gravity, collision capsule, focus radius, interaction routing, save schema, quest rules, and canonical transforms remain unchanged.",
+    "input_policy": "No binding, buffering, pointer-lock, dialogue-lock, or additional fall-recovery rule changes; the existing D-048 local recovery is preserved.",
+    "return_to_rest": "Idle is restored after stop, input lock, fall recovery, or missing clip; missing/corrupt assets fall back to the procedural capsule or local rig.",
+    "multiplayer_authority": "Not applicable; the slice is offline and every world mutation still routes through the canonical proposal machine."
+  },
+  "accessibility": {
+    "settings": [
+      {
+        "control": "reduced motion",
+        "affected_channels": [
+          "camera bob",
+          "camera roll",
+          "decorative cross-fade duration"
+        ],
+        "behavior": "The camera rests and animation transitions become immediate while necessary character locomotion continues.",
+        "persistence": "Use the existing M toggle and presentation director state."
+      },
+      {
+        "control": "audio",
+        "affected_channels": [
+          "footsteps"
+        ],
+        "behavior": "Muted play retains visible world movement and character animation.",
+        "persistence": "Use the existing V toggle and audio state label."
+      }
+    ],
+    "redundant_signals": "Movement and rest remain distinguishable without animation, camera motion, or audio as the sole channel."
+  },
+  "comparison": {
+    "control": "Current public Web build with procedural capsule and current movement constants.",
+    "variant": "Same build with only the curated player GLB, animation-state binding, and UI presentation changed.",
+    "matched_conditions": [
+      "same canonical scenario and save schema",
+      "same movement and collision constants",
+      "same golden-path route and interaction sequence",
+      "same 1280x720 Web viewport",
+      "same smoke and engineering validators"
+    ],
+    "repetition_basis": "Verify startup, idle, movement, stop, dialogue lock, fall recovery, missing-asset fallback, reduced motion, and the complete ending route.",
+    "acceptance": [
+      "Idle and Casual_Walk are visibly distinct and return to rest after stop or lock.",
+      "The procedural capsule fallback still completes smoke when the generated asset is removed from a staged copy.",
+      "The public-safe and fallback runs produce the same terminal canonical hash.",
+      "The Web build and browser golden path reach the English completion card without new script, console, or page errors."
+    ]
+  },
+  "performance": {
+    "budgets": "Use the existing project-owned Web frame, PCK, draw-call, and memory review surfaces; this contract does not invent new thresholds.",
+    "basis": "Compare staged builds and engineering snapshots against the current public-safe control.",
+    "measurement": "Record GLB bytes, clip list, imported node counts, output PCK delta, browser console errors, and the available frame/latency receipts.",
+    "measured_results": {
+      "player_glb_bytes": 9677324,
+      "player_glb_sha256": "d575f8c580fbf0ee7207fbe6c09150c34a93cffc4e69b53b7210c971482ff1dd",
+      "player_texture_bytes": 8311199,
+      "player_texture_sha256": "37c939772e57d381c77e419b836632bf107b5301bde63f041b40e3094669f739",
+      "player_nodes": 26,
+      "player_triangles": 15463,
+      "player_joints": 24,
+      "required_clips": {
+        "Idle_seconds": 4.033333,
+        "Casual_Walk_seconds": 4.233333
+      },
+      "web_pck_bytes": 10892428,
+      "web_pck_sha256": "de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba",
+      "web_pck_delta_bytes_from_control": 4921912,
+      "presentation_checks": "9/9",
+      "public_safe_smoke_checks": "8/8",
+      "input_to_visible_feedback_ms": 3.53,
+      "browser_console_errors": 0
+    }
+  },
+  "decisions": [
+    {
+      "decision": "Use Higgsfield native image-to-3D rigging and animation for the shippable player, retaining Mixamo only as a local fallback.",
+      "basis": "Higgsfield output may be used commercially and tracked, while Adobe permits games but forbids raw Mixamo character or animation redistribution in this public repository.",
+      "owner": "player presentation"
+    },
+    {
+      "decision": "Bind animation to the existing movement_state_changed signal instead of creating a second locomotion state machine.",
+      "basis": "The existing signal already owns the observed moving/rest transition and preserves one source of truth.",
+      "owner": "game programming"
+    }
+  ],
+  "route_out": {
+    "next_owner": "Godot player presentation implementation and Web verification",
+    "reason": "The controlled change, fallback, authoritative boundary, accessibility behavior, and acceptance evidence are frozen."
+  }
+}

@@ -26,6 +26,7 @@ try:
         EXACT_TERMINAL_HASH,
         GODOT_PROJECT,
         LATEST_DOCS,
+        SANDBOXED_MACOS_HOST_ERROR,
         _run_godot,
         atomic_write,
         find_godot_4,
@@ -36,6 +37,7 @@ except ModuleNotFoundError:  # Direct `python scripts/...` execution.
         EXACT_TERMINAL_HASH,
         GODOT_PROJECT,
         LATEST_DOCS,
+        SANDBOXED_MACOS_HOST_ERROR,
         _run_godot,
         atomic_write,
         find_godot_4,
@@ -44,6 +46,7 @@ except ModuleNotFoundError:  # Direct `python scripts/...` execution.
 
 PROBE_ID = "SL-BALANCE-PROBE-001"
 EXPECTED_ARCHETYPE_IDS = ("A-01", "A-02", "A-03", "A-04", "A-05")
+EXPECTED_OPERATIONS = ("acquire_object", "install_lens", "reveal_hint")
 CHART_WIDTH = 980
 CHART_HEIGHT = 430
 BAR_COLORS = {"commits": "#F2B84B", "refusals": "#D9685F", "observes": "#8FA3B2"}
@@ -69,6 +72,7 @@ def validate_probe(report: Mapping[str, Any]) -> None:
     forbidden_commits = sum(int(row["counts"]["forbidden_commits"]) for row in rows)
     aggregates = report["aggregates"]
     g2 = aggregates["g2_replacement_measurements"]
+    operation_coverage = aggregates["operation_coverage"]
     checks = (
         (g2["rejected_action_state_hash_equality"]["refusals"] == refusals, "refusal totals"),
         (g2["rejected_action_state_hash_equality"]["isolated"] == isolated, "isolation totals"),
@@ -92,6 +96,16 @@ def validate_probe(report: Mapping[str, Any]) -> None:
         (
             all(row["replay"]["terminal_hash_matches"] is True for row in rows),
             "per-archetype replay",
+        ),
+        (
+            tuple(sorted(operation_coverage["exercised"])) == EXPECTED_OPERATIONS,
+            "implemented operation coverage",
+        ),
+        (
+            operation_coverage["exercised_count"]
+            == operation_coverage["implemented_count"]
+            == len(EXPECTED_OPERATIONS),
+            "implemented operation totals",
         ),
     )
     failed = [label for ok, label in checks if not ok]
@@ -339,6 +353,7 @@ def run_probe(*, godot: str, output_dir: Path) -> dict[str, Any]:
             ],
             label="fresh Godot project import",
             timeout=120,
+            allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
         )
         _run_godot(
             [
@@ -358,6 +373,7 @@ def run_probe(*, godot: str, output_dir: Path) -> dict[str, Any]:
             ],
             label="headless balance/archetype probe",
             timeout=60,
+            allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
         )
         report = json.loads(probe_path.read_text(encoding="utf-8"))
     if not isinstance(report, dict):

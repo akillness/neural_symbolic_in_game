@@ -8,6 +8,7 @@ import pytest
 
 from scripts.run_balance_archetypes import (
     EXPECTED_ARCHETYPE_IDS,
+    EXPECTED_OPERATIONS,
     PROBE_ID,
     render_chart,
     render_markdown,
@@ -29,6 +30,9 @@ def test_latest_probe_artifact_passes_full_revalidation() -> None:
     assert report["probe_id"] == PROBE_ID
     assert report["canonical_terminal_sha256"] == EXACT_TERMINAL_HASH
     assert tuple(row["archetype_id"] for row in report["archetypes"]) == EXPECTED_ARCHETYPE_IDS
+    coverage = report["aggregates"]["operation_coverage"]
+    assert tuple(sorted(coverage["exercised"])) == EXPECTED_OPERATIONS
+    assert coverage["exercised_count"] == coverage["implemented_count"] == 3
 
 
 def test_probe_validation_fails_closed_on_isolation_and_forbidden_drift() -> None:
@@ -54,6 +58,14 @@ def test_probe_validation_fails_closed_on_isolation_and_forbidden_drift() -> Non
     failed["passed"] = False
     with pytest.raises(ValueError, match="probe reported failures"):
         validate_probe(failed)
+
+    unknown_counted_as_implemented = deepcopy(report)
+    unknown_counted_as_implemented["aggregates"]["operation_coverage"]["exercised"].append(
+        "polish_lens"
+    )
+    unknown_counted_as_implemented["aggregates"]["operation_coverage"]["exercised_count"] = 4
+    with pytest.raises(ValueError, match="implemented operation"):
+        validate_probe(unknown_counted_as_implemented)
 
 
 def test_markdown_and_chart_are_claim_bounded_and_deterministic() -> None:

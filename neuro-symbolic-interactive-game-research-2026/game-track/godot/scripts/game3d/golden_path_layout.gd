@@ -24,15 +24,15 @@ static func interactable_specs() -> Array:
 	return [
 		{
 			"id": "mira",
-			"name": "미라 선장",
-			"prompt": "미라 선장에게 말 걸기",
+			"name": "Captain Mira",
+			"prompt": "Speak with Captain Mira",
 			"position": Vector3(3.0, 1.0, 11.0),
 			"radius": 2.6,
 		},
 		{
 			"id": "lens_pickup",
-			"name": "신호 렌즈",
-			"prompt": "신호 렌즈 조사하기",
+			"name": "Signal Lens",
+			"prompt": "Inspect the signal lens",
 			# Prop sits past the dock edge (x=-11 vs planks ending at x=-9):
 			# radius 2.8 leaves ≈0.6 m of standable trigger band on the planks
 			# instead of the ≈5 cm sliver the old 2.2 radius allowed.
@@ -41,15 +41,15 @@ static func interactable_specs() -> Array:
 		},
 		{
 			"id": "lamp_mount",
-			"name": "부두 신호등 거치대",
-			"prompt": "거치대에 렌즈 설치 제안하기",
+			"name": "Harbor Signal Mount",
+			"prompt": "Propose installing the lens",
 			"position": Vector3(7.0, 1.5, 13.5),
 			"radius": 2.6,
 		},
 		{
 			"id": "lighthouse_view",
-			"name": "봉인된 등대",
-			"prompt": "앞바다의 등대 관찰하기",
+			"name": "Sealed Lighthouse",
+			"prompt": "Observe the offshore lighthouse",
 			# NE rail so it lies on the mount→Mira return leg; radius 2.6 keeps
 			# it inside the rail band (W-002: observed, never entered).
 			"position": Vector3(5.4, 1.0, 14.8),
@@ -57,8 +57,8 @@ static func interactable_specs() -> Array:
 		},
 		{
 			"id": "tide_marks",
-			"name": "조수 표식",
-			"prompt": "조수 표식 살펴보기",
+			"name": "Tide Marks",
+			"prompt": "Inspect the tide marks",
 			"position": Vector3(-8.5, 0.6, 15.5),
 			"radius": 2.6,
 		},
@@ -88,17 +88,17 @@ static func walk_distance(from_site: String, to_site: String) -> float:
 static func next_affordance(state: Dictionary, met_mira: bool) -> Dictionary:
 	# One honest ordering from the committed snapshot (plus the presentation-only
 	# met-Mira flag) to the next valid affordance. `game_3d.gd` renders these as
-	# the "다음:" refusal line and the repair-hint blink target; the balance
-	# probe records the same mapping for refusal-actionability measurement.
+	# the "Next valid entry" refusal line and the repair-hint blink target; the
+	# balance probe records the same mapping for refusal-actionability measurement.
 	var has_lens: bool = "signal_lens" in state["player"]["inventory"]
 	var installed: bool = "signal_lens_installed" in state["facts"]
 	var hint_known: bool = "tide_marks_hint" in state["facts"]
 	if hint_known:
-		return {"target_id": "tide_marks", "text": "서쪽 방파제의 조수 표식을 살펴보자."}
+		return {"target_id": "tide_marks", "text": "Inspect the tide marks on the west breakwater."}
 	if installed:
-		return {"target_id": "mira", "text": "미라 선장에게 허가된 단서를 묻자."}
+		return {"target_id": "mira", "text": "Ask Captain Mira for the authorized lead."}
 	if has_lens:
-		return {"target_id": "lamp_mount", "text": "부두 신호등 거치대에 렌즈를 설치하자."}
+		return {"target_id": "lamp_mount", "text": "Install the lens in the harbor signal mount."}
 	if not met_mira:
-		return {"target_id": "mira", "text": "부두 끝의 미라 선장에게 말을 걸자."}
-	return {"target_id": "lens_pickup", "text": "램프 상점에서 신호 렌즈를 회수하자."}
+		return {"target_id": "mira", "text": "Speak with Captain Mira at the end of the dock."}
+	return {"target_id": "lens_pickup", "text": "Recover the signal lens from the lamp store."}

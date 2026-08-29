@@ -1,6 +1,6 @@
 # TRACE-RPG 연구 패키지 2026
 
-> 상태: 사용자가 Stage 6 모의 Major Revision 심사에서 나온 개정 방향을 수용했다. 확장 주장 충실성 감사와 Stage-10 clean tagged input 재캡처가 통과하여 F6 재현성 gate는 종결됐지만, 별도 G4/G6 게임 gate는 종결되지 않았다. 이는 저널 결정, 논문 게재 승인, 심사 archive 또는 DOI deposit이 아니다. 확증 효능 결과는 아직 없으며 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 기존 수치는 저자가 설계한 결정론적 fixture 적합성 count다.
+> 상태: 사용자가 Stage 6 모의 Major Revision 심사에서 나온 개정 방향을 수용했다. 확장 주장 충실성 감사와 guided-repair clean tagged input 재캡처가 통과하여 F6 재현성 gate는 종결됐지만, 별도 G4/G6 게임 gate는 종결되지 않았다. 이는 저널 결정, 논문 게재 승인, 심사 archive 또는 DOI deposit이 아니다. 확증 효능 결과는 아직 없으며 `C-RESULT-001`--`005`는 `TODO-RESULT`다. 별도 단일 모델 RQ2 스크리닝 패킷만 결정론적 작성 fixture count와 분리해 `pilot-only`로 보고한다.
 
 TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 상태에 기록하지 않는다. Parsing에 성공한 제안은 typed candidate event가 되고, 외부에서 공급된 행동 정책과 precondition·도달 가능성·NPC 지식·정보 공개·quest stage에 대한 결정론적 검사를 통과한 경우에만 커밋된다. 유효하지 않은 후보는 구조화 validation error를 만들고 제한된 repair 기회를 받을 수 있으며, adapter와 controller failure는 분류된 terminal row로 남는다. 지식 그래프 검색과 게임 엔진 연동은 versioned event contract로 연결되는 별도 확증 트랙이며, 현재 파일럿에서 완료된 근거로 표현하지 않는다.
 
@@ -75,18 +75,19 @@ assignment-complete outcome record, proposal outcome이 존재할 때의 완전�
 
 | 질문 | 현재 존재하는 것 | 아직 없는 것 |
 |---|---|---|
-| 코드가 동작하는가? | 예 — 테스트 120개, 결정론적 파일럿(유도 수리 arm 포함), Godot 슬라이스, 공개 안전 Web 빌드 | — |
-| 파이프라인이 완료됐는가? | 예 — 학술 10단계 전부 실행, 릴리스 체크포인트마다 clean-tag 재결합 | — |
-| 논문이 작성됐는가? | 예 — 이중언어 IEEE short paper, 영문 8쪽 / 국문 7쪽, 참고문헌 45건, ρ(a,E) 유도 수리 방법 | 저널 투고와 심사 결정 |
-| **연구 주장이 입증됐는가?** | **아니오** | 라이브 모델, 인간, 감정, 검색, 메모리, 엔진 성능 연구 |
+| 코드가 동작하는가? | 예 — 전체 pytest 172개 통과(그중 unittest discovery 131개), 결정론적 파일럿, Godot 슬라이스, 공개 안전 Web 빌드 | — |
+| 파이프라인이 완료됐는가? | Stage 8 source revision과 release lock까지 완료 | live-screening·KG-simulation addendum을 포함한 Stage 9 PDF 재빌드·형식 검사 |
+| 논문이 작성됐는가? | 예 — 이중언어 IEEE source, 논문 참고문헌 45건, ρ(a,E) 유도 수리와 별도 live-screening/KG-simulation addendum | 마지막 PDF는 두 addendum 전 영문 8쪽 / 국문 7쪽이므로 재빌드·쪽수 밴드 검토 후 저널 투고·심사 필요 |
+| **연구 주장이 입증됐는가?** | **아니오** | 셀당 5회 RQ2 스크리닝 파일럿만 존재하며, 확증 다중 모델·인간·감정·검색·메모리·엔진 성능 연구는 없다 |
 
 본 패키지가 주장하는 범위에서 **개발은 완료**됐다. 그러나 **실험은 완료되지 않았다.** 추적 중인
-18개 주장 가운데 5개는 근거가 전혀 없는 효능 주장이며, 그 5개가 바로 연구 질문이 묻는 대상이다.
+21개 주장 가운데 5개는 승격 요건을 만족하는 근거가 없는 효능 주장이며, 그 5개가 바로 연구 질문이 묻는 대상이다.
 
 ## 실험 설계 (계획, 미실행)
 
-SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 절의 내용은 하나도
-실행되지 않았다. 범위를 감사 가능하게 남기기 위해 기록한다.
+SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 확증 matrix는
+실행되지 않았고 별도 RQ2 스크리닝 파일럿이 이를 대체하지 않는다. 범위를 감사 가능하게 남기기
+위해 기록한다.
 
 | 차원 | Stage 1 스크리닝 | Stage 2 확증 |
 |---|---|---|
@@ -120,6 +121,46 @@ SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 �
 비교 가능한 세 arm에 동일 적용, 시도별 토큰·지연·비용·실패 클래스 기록. 지표 28개는
 [`configs/metric-catalog.yaml`](configs/metric-catalog.yaml)에 정의돼 있다.
 
+## KG/온톨로지 그래프 저장소와 제안 시뮬레이션
+
+프로젝트는 세 의미를 분리한다. 형제 Graphify 산출물은 문서 탐색 index이고, Python
+`WorldState`는 계속 하드 런타임 권위이며, 새 SQLite 파일은 저장소 로컬 **방법론 그래프
+mirror**일 뿐이다. 폐쇄형 application ontology는 node type 21개, relation type 13개,
+domain/range 규칙, validator 술어 대응 6개, source별 최소치를 둔 실행 가능 competency question
+6개를 선언한다. OWL/SHACL이 아니며 런타임 그래프 검색을 구현하지 않는다.
+
+![시뮬레이션 전용 KG/온톨로지 평가 matrix](research/simulation/kg-ontology/latest/figures/evaluation-matrix.svg)
+
+`SL-KG-ONTOLOGY-SIM-001`은 작성 질의 6개 × 후보 5개에서 고정 전략 7개를 실행한다. 전략당 후보 점수 30개, 전체 210개다.
+선택 링크 $S_q$와 질의당 동결 관련 링크 하나 $G_q$에 대해
+$P=TP/(TP+FP)$, $R=TP/(TP+FN)$, $F_1=2PR/(P+R)$,
+realistic tie rank를 쓰는 $MRR=|Q|^{-1}\sum_q r_q^{-1}$,
+$BS=N^{-1}\sum_i(s_i-y_i)^2$,
+$Sem@K=(K|Q|)^{-1}\sum_{q,i}I[domain/range\ valid]$를 계산한다.
+Ratchet은 recall ≥0.80, coverage ≥0.95, `Sem@3=1`을 통과하고 사전식으로 엄격히 개선된
+전략만 keep한다.
+
+현재 결정론적 packet은 **OKF node 43개, reference edge 106개, curated typed edge 24개,
+ontology violation 0개, competency question 6/6**이다. 선택된
+`S2-typed-lexical-loose`는 작성 holdout 6/6을 복원했다
+(`P=R=F1=1.000`, realistic-tie `MRR=0.944`, `BS=0.131`, `Sem@3=1.000`).
+이는 closed-world 구성 결과일 뿐 독립적 의미 진실, 사용자 유용성, 런타임 KG 효능,
+장기 메모리 근거 또는 어떤 `C-RESULT-*` claim의 근거도 아니다.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py
+PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py --check
+sqlite3 research/simulation/kg-ontology/latest/trace-rpg-knowledge.sqlite \
+  'SELECT relation, COUNT(*) FROM edge GROUP BY relation ORDER BY relation;'
+```
+
+산출물은 정확한 [JSON matrix](research/simulation/kg-ontology/latest/evaluation-matrix.json),
+[수식·전략 보고서](research/simulation/kg-ontology/latest/evaluation-matrix.md),
+[TSV trial](research/simulation/kg-ontology/latest/strategy-trials.tsv),
+[개선 제안](research/simulation/kg-ontology/latest/recommendations.json), SVG, 영문·국문 generated
+TeX, hash, ignored runtime SQLite mirror다. machine ontology는
+[`knowledge/ontology/trace-rpg-ontology.json`](knowledge/ontology/trace-rpg-ontology.json)에 있다.
+
 ## 논문 한눈에 보기
 
 정식 원고: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
@@ -145,16 +186,17 @@ SSOT: [`configs/experiment-matrix.yaml`](configs/experiment-matrix.yaml). 이 �
 | 할당 완전 실패 계수 | 검색·메모리·감정의 이득 |
 | **단일** 작성 world state에 대한 적합성 | 실제 게임 규모로의 일반화 |
 
-주장 원장([`research/claim-ledger.yaml`](research/claim-ledger.yaml)) 18건:
+주장 원장([`research/claim-ledger.yaml`](research/claim-ledger.yaml)) 21건:
 
 | 상태 | 개수 | 의미 |
 |---|---:|---|
-| `verified-designed-fixture` | 5 | 동결된 작성 fixture에서 관찰 |
+| `verified-designed-fixture` | 6 | 동결된 작성 fixture에서 관찰 |
 | `verified-primary` / `-scope-limited` / `-preprint` | 4 | 인용 문헌이 뒷받침 |
 | `verified-authored-engine-fixture` / `-render-fixture` | 2 | Godot 슬라이스 적합성 |
+| `pilot-only` | 2 | 모집단 승격 없는 단일 모델 라이브 스크리닝 근거 |
 | `approved-design-protocol` | 1 | 설계 승인, 미실행 |
 | `proposed-contribution` | 1 | 아키텍처 관점 |
-| **`TODO-RESULT`** | **5** | **`C-RESULT-001`–`005`: 근거 전무** |
+| **`TODO-RESULT`** | **5** | **`C-RESULT-001`–`005`: 확증 효능 결과 없음** |
 
 ## 빠른 시작
 
@@ -202,19 +244,25 @@ Python↔Godot 권한 transport, 10개 모델 추론, 영속 라이브 transport
 ## Stage 4 원고와 범위가 제한된 파일럿
 
 정식 IEEE short-paper 원고는 `paper/latex/en/main.pdf`와 `paper/latex/ko/main.pdf`다.
-표는 `research/academic-pipeline/stage-04-pilot/pilot-results.json`에서 생성된다.
-인코딩 오류 코드 12종에 대한 게이트 일치 `13/13`, 수리 arm 커밋 `0/2`, `0/2`,
-`1/2`, 사전 지정한 탐지 가능 무결성 결함 `10/10`, 별도로 선언한 repair-provenance
-경계의 replay 허용 `1/1`, adapter 결과 7건 중 commit 1건·기호 fallback 1건·분류된
-failure 5건, 배정 guard `3/3`이다. 이는 저자가 설계한 fixture의 원시 count이며 live
-model, player 또는 모집단 효능 추정치가 아니다.
+오프라인 표는 `research/academic-pipeline/stage-04-pilot/pilot-results.json`에서 생성된다.
+인코딩 오류 코드 12종에 대한 게이트 일치 `13/13`, 무효 수리 사례 12개를 guided-repairable
+5개·oracle-only 1개·irreparable 6개로 분할, blind commit `0/12`, 도달 가능한 class에서 guided
+`5/5`, oracle `5/5`와 `1/1`, 탐지 가능 무결성 결함 `10/10`, repair-provenance 경계 replay
+허용 `1/1`, adapter 결과 7건 중 commit 1건·기호 fallback 1건·분류된 failure 5건, 배정 guard
+`3/3`이다. 이는 저자가 설계한 fixture의 원시 count이며 live model, player 또는 모집단 효능
+추정치가 아니다.
 
-Clean Stage-10 재캡처는 입력 commit
-`c4752df43196761dcc64f02110f32bbaecfa235f`, tag
-`trace-rpg-stage10-inputs-20260814-v1`, `dirty=false`를 기록한다. 입력 경로와 정확한 digest
-21/21이 해당 commit과 일치하고 산출물 hash 35/35가 재계산된다(총 56/56). Manifest는 절대
-사용자·clone 경로 없이 이식 가능한 `uv run python` 명령을 사용한다. 이로써 F6는 종결되지만
-심사 archive 또는 DOI deposit은 주장하지 않는다.
+별도 생성 라이브 스크리닝 표는 추적된 `research/academic-pipeline/rq2-live-pilot/` 패킷만
+읽는다. `K=1`의 구성된 `signal-repair-v2` blind 셀에서 guided는 `5/5`, blind retry는 `0/5`를
+commit했고 다른 현재 셀 4개에서는 guided 우위가 없었다. 현재 셀의 noncommit arm 결과
+`15/15`는 prior state를 보존했다. 이는 `screening-pilot-only`이며 `C-RESULT-003`은
+`TODO-RESULT`로 남는다.
+
+Guided-repair 재캡처는 tag `trace-rpg-guided-repair-inputs-20260821-v1`와 `dirty=false`를
+기록한다. 선언 입력 22개와 산출물 hash 38개가 모두 재계산되고 provenance row 121개는 실행
+fixture row 85개와 aggregate row 36개로 나뉜다. Manifest는 절대 사용자·clone 경로 없이
+이식 가능한 `uv run python` 명령을 사용한다. 이로써 F6는 종결되지만 심사 archive 또는 DOI
+deposit은 주장하지 않는다.
 
 두 PDF는 `make -C paper/latex all`로 재생성·검증한다. 빌드는 SVG 원본을 보존하면서
 Type 3 font를 피하기 위한 고해상도 PNG를 포함하고, 쪽수·Type 3 font·누락 glyph·정의되지
@@ -231,9 +279,10 @@ Type 3 font를 피하기 위한 고해상도 PNG를 포함하고, 쪽수·Type 3
 ## 실험 게임 트랙
 
 *봉인된 등대*는 5회 심층 인터뷰로 확정한 8--12분 목표의 턴 기반 내러티브 수사
-micro-RPG다. 1차 계획 실험은 구조화 텍스트와 정식 상태를 사용한다. 별도 2차 VLM/UI 트랙은
-향후 인간 검토를 통과한 체크섬 동결 파생본만 내부 패킷에서 사용할 수 있다. 이 공개 안전
-스냅샷은 제외 ID와 해시만 보존하고 생성 이미지 바이트는 포함하지 않으며, 실험 중 이미지
+micro-RPG다. 1차 계획 실험은 구조화 텍스트와 정식 상태를 사용한다. 별도 2차 VLM/UI 연구
+트랙은 향후 인간 검토를 통과한 체크섬 동결 파생본만 내부 패킷에서 사용할 수 있으며, 검토 대기
+콘셉트 후보는 여기서 ID/해시로만 제외 관리한다. 별도 큐레이션 Higgsfield UI·플레이어 자산은
+프레젠테이션 lane에 포함되지만 실험 입력이나 정식 상태에는 들어가지 않는다. 실험 중 이미지
 생성도 금지한다. `game-track/design/gdd.ko.md`,
 `game-track/design/paper-crosswalk.ko.md`, `configs/experimental-game.yaml`에서 시작한다.
 
@@ -267,19 +316,29 @@ fixture `4/4` 모두
 | 승인 단서 | 항로 획득 결말 |
 | ![Public-safe 승인 단서](game-track/godot/docs/latest/authorized_hint.png) | ![Public-safe 결말](game-track/godot/docs/latest/ending.png) |
 
-네 1280×720 파일은 최신 엔지니어링 작업 캡처이며 불변 연구 근거가 아니다. 생성 후보 자산은
-Web/`--public-safe`에서 제외되며 공개 빌드는 절차적 지오메트리·VFX·UI·음향만 사용한다.
+네 1280×720 파일은 최신 엔지니어링 작업 캡처이며 불변 연구 근거가 아니다. 검토 대기 콘셉트
+후보는 Web/`--public-safe`에서 제외된다. 현재 로컬 빌드는 절차 월드·VFX·음향 위에 큐레이션
+Higgsfield UI와 검증된 추적 Higgsfield 플레이어 GLB의 `Idle`/`Casual_Walk`을 사용한다. 애니메이션은
+프레젠테이션 전용이며 정식 상태나 저장 데이터를 바꾸지 못한다.
 평가는 저자 fixture와 프레젠테이션 불변조건 적합성만 입증한다. G4, 사용성, 몰입, 정서,
-플레이어 효능, 모델 효능은 **UNASSESSED**이며, G6는 포인터 잠금, save/reload,
-warmed frame/input, 30분 soak 근거가 없어
-`FIX`다.
+플레이어 효능, 확증 모델 효능은 **UNASSESSED**다. 2026-08-29/30 현재 영문 Web 빌드에서
+전체 결말, 페이지 새로고침을 통과한 save/reload, symbolic hash를 바꾸지 않는 추락 복구,
+추적 플레이어 로드, ASCII-safe 안내 3면, 콘솔·페이지 오류 0건을 확인했다. 프로덕션 배포
+`dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`도 데스크톱 시작 → 인게임 → Field Guide 스모크에서
+콘솔·페이지 오류 0건을 기록했다. 프로덕션 save/reload, 현 배포 모바일 검증, 사람 제스처
+포인터 잠금·음향, warmed frame/input, 30분 soak, rollback 근거가 없어 G6는 `FIX`다.
 
 ```bash
 ./scripts/build_godot_web.sh
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-배포 상태: **[public-safe Vercel 빌드 공개](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+현재 영문/큐레이션 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,203바이트,
+PCK 10,892,428바이트, SHA-256
+`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+배포 상태: **[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했다. `vercel.json`은 배포 설정으로
+소비되므로 공개 자산이 아니다.
 2026-08-17에 `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`를 대상으로 실행한 헤드리스 브라우저 스모크에서
 정상 로딩, 한글 글리프, 1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을 확인했다.
 Playwriter는 같은 날 Vercel 기기 승인 로그인과 포인터 잠금 재시험 1회에만 사용했고 그

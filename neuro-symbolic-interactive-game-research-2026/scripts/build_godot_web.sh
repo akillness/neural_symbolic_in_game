@@ -22,6 +22,8 @@ if [[ "$VERSION" != 4.* ]]; then
   exit 1
 fi
 
+PYTHONDONTWRITEBYTECODE=1 python3 "$PROJECT_ROOT/scripts/validate_player_asset.py"
+
 STAGE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/sealed-lighthouse-web.XXXXXX")"
 cleanup() {
   rm -rf "$STAGE_DIR"
@@ -40,8 +42,22 @@ run_godot_checked() {
     exit 1
   fi
   # Godot can prefix diagnostics with ANSI/control text, so do not anchor the
-  # error marker at the beginning of the captured line.
-  if grep -Eq '(SCRIPT ERROR|ERROR):' "$log_path"; then
+  # error marker at the beginning of the captured line. This sandbox blocks a
+  # small set of macOS system-font and certificate reads; remove only those
+  # exact host diagnostics before applying the fail-closed game-error gate.
+  local checked_log="$log_path.checked"
+  awk '
+    index($0, "/System/Library/Fonts/") && /ERROR: Can.t open file from path .*\.ttc/ { next }
+    /ERROR: Condition "ret != noErr" is true\. Returning: ""/ { held = $0; next }
+    held != "" {
+      if ($0 ~ /at: get_system_ca_certificates/) { held = ""; next }
+      print held
+      held = ""
+    }
+    { print }
+    END { if (held != "") print held }
+  ' "$log_path" > "$checked_log"
+  if grep -Eq '(SCRIPT ERROR|ERROR):' "$checked_log"; then
     echo "Godot reported an import or script error: $*" >&2
     exit 1
   fi
@@ -65,9 +81,9 @@ rsync -a \
   --exclude 'assets/rig/' \
   "$GODOT_PROJECT/" "$STAGED_PROJECT/"
 cp "$WEB_CONFIG/export_presets.cfg" "$STAGED_PROJECT/export_presets.cfg"
-perl -0pi -e \
-  's@run/main_scene="res://scenes/headless\.tscn"@run/main_scene="res://scenes/main_3d.tscn"@' \
-  "$STAGED_PROJECT/project.godot"
+sed 's@run/main_scene="res://scenes/headless\.tscn"@run/main_scene="res://scenes/main_3d.tscn"@' \
+  "$STAGED_PROJECT/project.godot" > "$STAGED_PROJECT/project.godot.tmp"
+mv "$STAGED_PROJECT/project.godot.tmp" "$STAGED_PROJECT/project.godot"
 
 if ! grep -q 'run/main_scene="res://scenes/main_3d.tscn"' "$STAGED_PROJECT/project.godot"; then
   echo "The staged Web project did not select the playable scene." >&2

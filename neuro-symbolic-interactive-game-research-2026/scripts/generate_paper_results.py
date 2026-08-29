@@ -3,12 +3,31 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).parents[1]
 RESULTS_PATH = ROOT / "research/academic-pipeline/stage-04-pilot/pilot-results.json"
+LIVE_ROOT = ROOT / "research/academic-pipeline/rq2-live-pilot"
+LIVE_MANIFEST_PATH = LIVE_ROOT / "promotion-manifest.json"
+LIVE_CURRENT_CELLS = (
+    ("frozen_visible", "frozen-pilot-base/policy_visible/summary.json"),
+    ("frozen_blind", "frozen-pilot-base/policy_blind/summary.json"),
+    ("frozen_goal_blind", "frozen-pilot-base/goal_directed_blind/summary.json"),
+    ("signal_v2_visible", "signal-repair-v2/policy_visible/summary.json"),
+    ("signal_v2_blind", "signal-repair-v2/policy_blind/summary.json"),
+)
+LIVE_DIAGNOSTIC_SUMMARY = "signal-repair/policy_blind/summary.json"
+LIVE_DIAGNOSTIC_RESULTS = "signal-repair/policy_blind/results.jsonl"
+LIVE_SUPPORTED_CLAIMS = ["C-PILOT-007", "C-PILOT-008"]
+LIVE_EXCLUDED_CLAIMS = ["C-RESULT-003"]
+LIVE_RECEIPT_CLAIM_BOUNDARY = (
+    "Live-proposer screening pilot on a single frozen base state with a tiny seed grid. "
+    "Supports C-RESULT-003 only at pilot-only. Not a population effect, not a promoted-model "
+    "result, and not statistical evidence."
+)
 OUT = ROOT / "paper/latex/generated"
 
 
@@ -34,6 +53,106 @@ def _class_counts(data: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]
 
 def _fmt_mean(value: Any) -> str:
     return "---" if value is None else f"{value:.1f}"
+
+
+def _load_live_packet() -> dict[str, Any]:
+    manifest = json.loads(LIVE_MANIFEST_PATH.read_text(encoding="utf-8"))
+    if manifest.get("pilot_id") != "SL-RQ2-LIVE-001":
+        raise ValueError("unexpected live-pilot identity")
+    if manifest.get("evidence_tier") != "screening-pilot-only":
+        raise ValueError("live packet exceeds the screening-only claim boundary")
+    if manifest.get("supported_claim_ids") != LIVE_SUPPORTED_CLAIMS:
+        raise ValueError("live-pilot supported claim drift")
+    if manifest.get("excluded_claim_ids") != LIVE_EXCLUDED_CLAIMS:
+        raise ValueError("live-pilot excluded claim drift")
+    if "C-RESULT-003 remains TODO-RESULT" not in manifest.get("claim_boundary", ""):
+        raise ValueError("live-pilot current claim boundary drift")
+
+    files = manifest.get("files", {})
+    if not files:
+        raise ValueError("live-pilot promotion manifest has no files")
+    for relative_path, receipt in sorted(files.items()):
+        payload = (LIVE_ROOT / relative_path).read_bytes()
+        if len(payload) != receipt["bytes"]:
+            raise ValueError(f"live-pilot byte count drift: {relative_path}")
+        if hashlib.sha256(payload).hexdigest() != receipt["sha256"]:
+            raise ValueError(f"live-pilot checksum drift: {relative_path}")
+
+    current: dict[str, dict[str, Any]] = {}
+    for key, relative_path in LIVE_CURRENT_CELLS:
+        summary = json.loads((LIVE_ROOT / relative_path).read_text(encoding="utf-8"))
+        if summary.get("pilot_id") != manifest["pilot_id"]:
+            raise ValueError(f"live-pilot id drift: {relative_path}")
+        if summary.get("evidence_tier") != "screening-pilot-only":
+            raise ValueError(f"live-pilot evidence tier drift: {relative_path}")
+        if summary.get("claim_boundary") != LIVE_RECEIPT_CLAIM_BOUNDARY:
+            raise ValueError(f"live-pilot receipt boundary drift: {relative_path}")
+        if summary.get("repair_budget") != 1:
+            raise ValueError(f"live-pilot repair budget drift: {relative_path}")
+        if summary.get("matched_candidate_per_seed") is not True:
+            raise ValueError(f"live-pilot candidate matching drift: {relative_path}")
+        if summary.get("token_accounting_available") is not False:
+            raise ValueError(f"live-pilot token-accounting boundary drift: {relative_path}")
+        if summary.get("counts", {}).get("seeds") != 5:
+            raise ValueError(f"live-pilot seed count drift: {relative_path}")
+        if set(summary.get("per_arm", {})) != {"guided_repair", "unchanged_retry"}:
+            raise ValueError(f"live-pilot arm set drift: {relative_path}")
+        current[key] = summary
+
+    expected_signatures = {
+        "frozen_visible": (5, 5, 5, ()),
+        "frozen_blind": (5, 5, 5, ()),
+        "frozen_goal_blind": (0, 0, 0, ("QUEST_STAGE_REGRESSION",)),
+        "signal_v2_visible": (5, 5, 5, ()),
+        "signal_v2_blind": (
+            0,
+            5,
+            0,
+            (
+                "POLICY_EFFECT_OMISSION",
+                "POLICY_EFFECT_VIOLATION",
+                "POLICY_PRECONDITION_OMISSION",
+            ),
+        ),
+    }
+    for key, expected in expected_signatures.items():
+        summary = current[key]
+        observed = (
+            summary["counts"]["initially_valid"],
+            summary["per_arm"]["guided_repair"]["commits"],
+            summary["per_arm"]["unchanged_retry"]["commits"],
+            tuple(summary["observed_initial_error_codes"]),
+        )
+        if observed != expected:
+            raise ValueError(f"live-pilot promoted cell drift: {key}: {observed!r}")
+
+    diagnostic_summary = json.loads(
+        (LIVE_ROOT / LIVE_DIAGNOSTIC_SUMMARY).read_text(encoding="utf-8")
+    )
+    diagnostic_rows = [
+        json.loads(line)
+        for line in (LIVE_ROOT / LIVE_DIAGNOSTIC_RESULTS).read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    if diagnostic_summary.get("base_state_id") != "live-pilot-signal-repair-v1":
+        raise ValueError("superseded diagnostic identity drift")
+    if diagnostic_summary.get("claim_boundary") != LIVE_RECEIPT_CLAIM_BOUNDARY:
+        raise ValueError("superseded diagnostic receipt boundary drift")
+    if len(diagnostic_rows) != 5:
+        raise ValueError("superseded diagnostic row-count drift")
+    for row in diagnostic_rows:
+        guided = row["arms"]["guided_repair"]
+        if guided["status"] != "fallback":
+            raise ValueError("superseded diagnostic unexpectedly committed")
+        if guided["final_error_codes"] != ["NPC_KNOWLEDGE_VIOLATION"]:
+            raise ValueError("superseded diagnostic residual-error drift")
+
+    return {
+        "manifest": manifest,
+        "current": current,
+        "diagnostic_summary": diagnostic_summary,
+        "diagnostic_rows": diagnostic_rows,
+    }
 
 
 def _result_text(data: dict[str, Any], korean: bool) -> str:
@@ -247,17 +366,136 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
     )
 
 
+def _live_result_text(packet: dict[str, Any], korean: bool) -> str:
+    cells = packet["current"]
+    headline = cells["signal_v2_blind"]
+    model_id = _escape(headline["model_id"])
+    call_count = headline["counts"]["seeds"]
+    repair_budget = headline["repair_budget"]
+    guided_commits = headline["per_arm"]["guided_repair"]["commits"]
+    blind_commits = headline["per_arm"]["unchanged_retry"]["commits"]
+    noncommits = sum(
+        arm["non_commits"] for summary in cells.values() for arm in summary["per_arm"].values()
+    )
+    isolated = sum(
+        arm["non_commit_state_isolated"]
+        for summary in cells.values()
+        for arm in summary["per_arm"].values()
+    )
+    max_initial_errors = max(len(row["initial_error_codes"]) for row in packet["diagnostic_rows"])
+
+    if korean:
+        return (
+            rf"""
+\subsection{{라이브 스크리닝 파일럿 (pilot-only)}}
+별도 스크리닝 파일럿은 Codex CLI를 통해 {model_id}을 호출했다. 셀마다 seed로 구분한 제안 호출 {call_count}회와 수리 예산 $K={repair_budget}$을 사용했고, 각 호출의 최초 후보 하나를 블라인드 동일 후보 retry와 $\rho$가 공유했다. Hosted revision은 고정되지 않았고 token 회계는 제공되지 않았으며 seed는 hosted sampler를 제어하지 않으므로 이 호출들은 독립 무작위 표본이 아니라 준반복이다. 따라서 추론 통계나 모델 순위를 보고하지 않는다.
+
+표~\ref{{tab:live-screening}}에서 유도 우위는 의도적으로 guided-repairable 오류가 나오도록 구성한 \texttt{{signal-repair-v2}}의 policy-blind 셀에서만 나타났다. 최초 후보 {call_count}/{call_count}가 모두 무효였고 $\rho$는 {guided_commits}/{call_count}, 블라인드는 {blind_commits}/{call_count}를 commit했다. 나머지 현재 셀 4개는 유도 우위를 보이지 않았다. 세 셀은 최초 후보가 이미 유효했고, 동결 기저의 goal-directed 셀은 수리 불가 quest-stage regression이었다. 현재 셀의 모든 noncommit arm 결과 {isolated}/{noncommits}가 prior-state hash를 보존했다. 이 결과는 해당 오류 regime에서의 mechanism transfer만 지지하며 모집단 효능, 모델 승격, 표본 효율 일반화는 지지하지 않는다. 따라서 \texttt{{C-PILOT-007}}과 \texttt{{C-PILOT-008}}은 pilot-only이고 \texttt{{C-RESULT-003}}은 \texttt{{TODO-RESULT}}로 남는다. 폐기된 v1 진단에서는 동반 오류가 최대 {max_initial_errors}개에서 수리 불가 knowledge 오류 1개로 줄었지만 commit되지 않아, 오류 하나라도 수리 불가이면 부분 수리가 합성되지 않음을 보여 주었다.
+""".strip()
+            + "\n"
+        )
+    return (
+        rf"""
+\subsection{{Live Screening Pilot (Pilot-Only)}}
+A separate screening pilot called {model_id} through the Codex CLI. It used {call_count} seed-indexed proposal calls per cell and repair budget $K={repair_budget}$; within each call, blind unchanged retry and $\rho$ received the same initial candidate. The hosted revision was unpinned, token accounting was unavailable, and the seeds did not control the hosted sampler, so the calls are quasi-replicates rather than independent randomized samples. We report neither inferential statistics nor a model ranking.
+
+In Table~\ref{{tab:live-screening}}, a guided advantage appeared only in the policy-blind \texttt{{signal-repair-v2}} cell, a state deliberately constructed to elicit guided-repairable errors. All {call_count}/{call_count} initial candidates were invalid; $\rho$ committed {guided_commits}/{call_count}, whereas blind retry committed {blind_commits}/{call_count}. The other four current cells showed no guided advantage: three had already-valid initial candidates, and the frozen-base goal-directed cell produced irreparable quest-stage regressions. All {isolated}/{noncommits} noncommit arm outcomes in the current cells preserved the prior-state hash. This supports mechanism transfer only in that error regime, not population efficacy, model promotion, or a general sample-efficiency claim. Accordingly, \texttt{{C-PILOT-007}} and \texttt{{C-PILOT-008}} are pilot-only while \texttt{{C-RESULT-003}} remains \texttt{{TODO-RESULT}}. In the superseded v1 diagnostic, guided repair reduced up to {max_initial_errors} co-occurring errors to one irreparable knowledge error but still could not commit, showing that partial per-error repairs do not compose when any residual error is irreparable.
+""".strip()
+        + "\n"
+    )
+
+
+def _live_tables(packet: dict[str, Any], korean: bool) -> str:
+    cells = packet["current"]
+    ordered = (
+        ("frozen_visible", "Frozen / visible", "동결 / 공개"),
+        ("frozen_blind", "Frozen / blind", "동결 / 비공개"),
+        ("frozen_goal_blind", "Frozen / goal-blind", "동결 / 목표-비공개"),
+        ("signal_v2_visible", "Signal-v2 / visible", "Signal-v2 / 공개"),
+        ("signal_v2_blind", "Signal-v2 / blind", "Signal-v2 / 비공개"),
+    )
+    code_labels = {
+        "QUEST_STAGE_REGRESSION": "QSR",
+        "POLICY_EFFECT_OMISSION": "PEO",
+        "POLICY_EFFECT_VIOLATION": "PEV",
+        "POLICY_PRECONDITION_OMISSION": "PPO",
+    }
+    rows = []
+    for key, english_label, korean_label in ordered:
+        summary = cells[key]
+        error_label = "+".join(
+            code_labels[code] for code in summary["observed_initial_error_codes"]
+        )
+        if not error_label:
+            error_label = "---"
+        rows.append(
+            f"{korean_label if korean else english_label} & "
+            f"{summary['counts']['initially_valid']}/{summary['counts']['seeds']} & "
+            f"{summary['per_arm']['guided_repair']['commits']}/{summary['counts']['seeds']} & "
+            f"{summary['per_arm']['unchanged_retry']['commits']}/{summary['counts']['seeds']} & "
+            rf"{error_label} \\"
+        )
+    caption = (
+        "라이브 스크리닝 파일럿 정확 집계 (셀당 제안 5회, $K{=}1$)"
+        if korean
+        else "Live Screening Pilot, Exact Counts (Five Proposals per Cell, $K{=}1$)"
+    )
+    header = (
+        "기저 / 조건 & 최초 유효 & $\\rho$ commit & Blind commit & 최초 오류"
+        if korean
+        else "Base / condition & Initial valid & $\\rho$ commits & Blind commits & Initial errors"
+    )
+    footnote = (
+        "QSR = quest-stage regression, PEO = policy-effect omission, "
+        "PEV = policy-effect violation, PPO = policy-precondition omission. "
+        "모든 수치는 screening-pilot-only이며 추론 통계가 아니다. 폐기된 v1 진단은 표에서 제외한다."
+        if korean
+        else "QSR = quest-stage regression, PEO = policy-effect omission, "
+        "PEV = policy-effect violation, PPO = policy-precondition omission. "
+        "All counts are screening-pilot-only, without inferential statistics; the superseded v1 "
+        "diagnostic is excluded."
+    )
+    return (
+        rf"""
+\begin{{table}}[t]
+\caption{{{caption}}}
+\label{{tab:live-screening}}
+\centering\scriptsize
+\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X rrr >{{\raggedright\arraybackslash}}X@{{}}}}
+\toprule
+{header} \\
+\midrule
+{chr(10).join(rows)}
+\bottomrule
+\end{{tabularx}}
+\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {footnote}}}
+\end{{table}}
+""".strip()
+        + "\n"
+    )
+
+
 def main() -> None:
     data = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
     if data.get("inference") != "none; raw designed-fixture counts only":
         raise ValueError("pilot result scope is not the expected descriptive-only contract")
+    live_packet = _load_live_packet()
     OUT.mkdir(parents=True, exist_ok=True)
     for language, korean in (("en", False), ("ko", True)):
         (OUT / f"pilot_results_{language}.tex").write_text(
             _result_text(data, korean), encoding="utf-8"
         )
         (OUT / f"pilot_tables_{language}.tex").write_text(_tables(data, korean), encoding="utf-8")
-    print(f"generated bilingual result inputs from {RESULTS_PATH.relative_to(ROOT)}")
+        (OUT / f"live_pilot_results_{language}.tex").write_text(
+            _live_result_text(live_packet, korean), encoding="utf-8"
+        )
+        (OUT / f"live_pilot_tables_{language}.tex").write_text(
+            _live_tables(live_packet, korean), encoding="utf-8"
+        )
+    print(
+        "generated bilingual offline and live-screening inputs from "
+        f"{RESULTS_PATH.relative_to(ROOT)} and {LIVE_MANIFEST_PATH.relative_to(ROOT)}"
+    )
 
 
 if __name__ == "__main__":

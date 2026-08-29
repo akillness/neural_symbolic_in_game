@@ -11,7 +11,7 @@ Design (frozen in `research/directions/rq2-live-pilot-plan.md`):
 
 Claim boundary: screening-tier evidence. Hosted model revisions drift, token
 accounting is unavailable through the CLI wrapper, and the sample is tiny. Results
-may support `C-RESULT-003` at `pilot-only` and never at `verified-empirical`.
+may support `C-PILOT-007/008` only; `C-RESULT-003` remains `TODO-RESULT`.
 """
 
 from __future__ import annotations
@@ -209,11 +209,13 @@ def summarize(
         "evidence_tier": "screening-pilot-only",
         "claim_boundary": (
             "Live-proposer screening pilot on a single frozen base state with a tiny seed "
-            "grid. Supports C-RESULT-003 only at pilot-only. Not a population effect, not a "
-            "promoted-model result, and not statistical evidence."
+            "grid. Supports C-PILOT-007/008 only; C-RESULT-003 remains TODO-RESULT. Not a "
+            "population effect, confirmatory efficacy result, promoted-model result, or "
+            "statistical evidence."
         ),
         "not_evidence_for": [
-            "verified-empirical promotion",
+            "C-RESULT promotion",
+            "confirmatory efficacy",
             "population efficacy",
             "model ranking",
             "human experience",

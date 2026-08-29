@@ -14,27 +14,32 @@ It follows the local `academic-research` full pipeline and records every mandato
 | 2 | Source shortlist and claim boundaries | Approved 2026-08-12 |
 | 2.5 | Pre-write claim/provenance integrity gate | Passed with fail-closed scope boundaries |
 | 3 | IEEE ToG IMRaD outline and evidence map | Approved 2026-08-12 |
-| 4 | Deterministic offline pilot and bilingual IEEE drafts | Approved 2026-08-13; post-Stage-8 packet regenerated |
-| 4.5 | Claim-faithfulness integrity gate (L3) | Expanded final re-audit passed 2026-08-13 after correcting six additional claim defects and completing all figure/table references; clean tagged recapture verified 2026-08-14 |
-| 5 | Citation verification | Passed 2026-08-13; current closure after addenda: 42 entries, 39 verified, 3 preprint, 0 unmatched/hallucinated |
+| 4 | Deterministic offline pilot and bilingual IEEE drafts | Approved 2026-08-13; guided-repair packet regenerated 2026-08-21 |
+| 4.5 | Claim-faithfulness integrity gate (L3) | Expanded final re-audit passed; clean guided-repair input tag verified 2026-08-21 |
+| 5 | Citation verification | Current closure: 45 entries, 0 unmatched/hallucinated |
 | 6 | EIC + R1/R2/R3 + Devil's Advocate peer-review simulation | Revise-and-resubmit direction accepted and revision findings actioned |
-| 7 | Optional cross-model verification | Not activated; no live cross-model evidence |
-| 8 | Author revision | Executed; Class A/B findings closed, explicitly listed residual findings retained |
-| 9 | Final formatting and AI-use disclosure | Executed; EN 7 pages, KO 6 pages, IEEE Short Paper band |
-| 10 | Reproducibility passport and release lock | Passed 2026-08-14: clean tagged input commit, 21/21 input digest binding, 35/35 artifact hashes, 56/56 total |
+| 7 | Optional cross-model verification | Single-model RQ2 live screening executed 2026-08-28; no cross-model or confirmatory evidence |
+| 8 | Author revision | Executed; live screening addendum now separated from offline denominators |
+| 9 | Final formatting and AI-use disclosure | Last built PDFs: EN 8 pages, KO 7 pages; live-addendum sources require rebuild |
+| 10 | Reproducibility passport and release lock | Guided-repair release: 38 artifacts, 22 inputs, 121 provenance rows |
 
-No hosted ten-model or human-study result is represented as completed evidence. Until those studies
-are run, generated numerical results are limited to deterministic, local, offline harness experiments
-and must be labelled **pilot engineering evidence**.
+No hosted ten-model, confirmatory multi-model, or human-study result is represented as completed
+evidence. A separate single-model RQ2 screening pilot is reported only through `C-PILOT-007/008` at
+**screening-pilot-only**; `C-RESULT-003` remains `TODO-RESULT` under the unchanged promotion guard.
 
-The current SHA packet records `dirty=false` at input commit
-`c4752df43196761dcc64f02110f32bbaecfa235f`, tagged
-`trace-rpg-stage10-inputs-20260814-v1`. All 21 input paths and exact digests match that commit, all
-35 artifact hashes recompute, and the 64 provenance rows remain partitioned as 43 executed plus 21
-aggregate rows. The manifest carries no absolute user/clone paths and records the portable
-`uv run python` invocation. F6's clean-recapture release gate is closed. No reviewer archive or DOI
-deposit is claimed, `C-RESULT-001`--`005` remain `TODO-RESULT`, and G4/G6 remain separate game gates.
+The current offline SHA packet records `dirty=false` at the tagged guided-repair input commit
+`trace-rpg-guided-repair-inputs-20260821-v1`. All 22 declared inputs and 38 artifact hashes
+recompute, and 121 provenance rows remain partitioned as 85 executed fixture rows plus 36 aggregate
+rows. The manifest carries no absolute user/clone paths and records the portable `uv run python`
+invocation. The separate `rq2-live-pilot/promotion-manifest.json` binds 14 JSON/JSONL receipt files
+and retains the superseded v1 diagnostic apart from the corrected current cells. The hash-bound cell
+summaries keep their earlier intended-promotion wording byte-for-byte; the outer manifest now
+records the stricter current interpretation, allowing only `C-PILOT-007/008` and explicitly
+excluding `C-RESULT-003`. No reviewer archive or DOI deposit is claimed, `C-RESULT-001`--`005`
+remain `TODO-RESULT`, and G4/G6 remain separate game gates.
 
-호스팅 10개 모델 실험과 인간 대상 연구는 완료된 결과로 표현하지 않는다. 해당 연구가
-실행되기 전까지 수치 결과는 결정론적 로컬·오프라인 하니스 실험에 한하며 반드시
-**파일럿 엔지니어링 근거**로 표시한다.
+호스팅 10개 모델 확증 실험과 인간 대상 연구는 완료된 결과로 표현하지 않는다. 별도의 단일
+모델 RQ2 스크리닝 파일럿만 `C-PILOT-007/008`의 **screening-pilot-only** 근거로 보고하며,
+`C-RESULT-003`은 기존 승격 가드에 따라 `TODO-RESULT`로 유지한다. 해시로 묶인 셀 summary의
+이전 승격 의도 문구는 바이트 단위로 보존하고, 바깥 promotion manifest가 현재의 더 엄격한
+해석을 명시적으로 우선한다.

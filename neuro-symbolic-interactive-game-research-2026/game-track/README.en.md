@@ -93,15 +93,15 @@ Archetype balance probe (scripted conformance, not human data):
 
 These are four latest 1280×720 engineering working captures, not the immutable Cycle 2 packet.
 Web and `--public-safe` still exclude every pending-review candidate under `assets/concepts/`.
-Since D-034/D-035 the build additionally ships six user-curated, provenance-bound Higgsfield UI
-art assets from `godot/assets/ui/` (start key art, Mira dialogue portrait, ledger parchment grain,
-two item icons, tutorial vignette — AI-generated, disclosed on the start gate and here). Deleting
-those PNGs leaves the fully playable procedural surface; the smoke receipt is identical with the
-directory absent.
+The build ships the separately curated, provenance-bound Higgsfield UI lane and the tracked
+`godot/assets/player/higgsfield-player.glb` with `Idle`/`Casual_Walk` (9,677,324 bytes; 15,463
+triangles; 24 joints). Deleting the UI PNGs leaves the procedural surface playable. Player visuals
+and clip state remain presentation-only and never enter canonical state or saves.
 
 **Claim boundary:** authored-fixture and presentation-invariant conformance only. G4, usability,
-immersion, affect, player efficacy, and model efficacy are **UNASSESSED**. G6 remains `FIX` until
-pointer-lock, save/reload, warmed-frame/input, and 30-minute soak measurements exist.
+immersion, affect, player efficacy, and model efficacy are **UNASSESSED**. Production desktop
+re-verification passed; G6 remains `FIX` pending production save/reload, current mobile verification,
+human pointer/audio confirmation, warmed-frame/input, a 30-minute soak, and rollback evidence.
 
 From the project root:
 
@@ -110,8 +110,14 @@ From the project root:
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-Deployment status: **[public-safe Vercel build live](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-2026-08-21 production deployment `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` serves the ritual+texture build:
+The current English UI + tracked-player artifact is deployed: 11 manifest files / 50,745,203 bytes;
+PCK 10,892,428 bytes, SHA-256
+`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+Deployment status: **[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` was consumed as
+deployment configuration. The production desktop smoke completed start → in-game → Field Guide
+with zero console/page errors. The prior 2026-08-21 deployment
+`dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` served the ritual+texture build:
 11 files, `index.pck` 5,970,516 bytes, SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; served html/pck/wasm fetched
 back byte-identical to the local artifact. Headless browser smoke on the alias verified the

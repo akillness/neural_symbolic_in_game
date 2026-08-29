@@ -4,8 +4,11 @@
     "signal-repair": "SUPERSEDED v1 - missing knowledge set for the acting actor injected an irreparable co-occurring error",
     "signal-repair-v2": "corrected pre-registered state designed to contain guided-repairable failure modes"
   },
-  "claim_boundary": "Screening pilot across 2 executable base states and 3 conditions with one hosted revision. Supports C-RESULT-003 at pilot-only within the regime where live errors fall in the guided-repairable class, and records the null regimes where they do not. Not a population effect and not a promoted-model result.",
+  "claim_boundary": "Current paper boundary: this screening packet supports only C-PILOT-007 and C-PILOT-008. C-RESULT-003 remains TODO-RESULT. The hash-bound cell summaries retain their earlier intended-promotion wording and are not rewritten; this outer manifest supersedes that scope without altering receipt bytes. Not a population effect, confirmatory efficacy result, or promoted-model result.",
   "evidence_tier": "screening-pilot-only",
+  "excluded_claim_ids": [
+    "C-RESULT-003"
+  ],
   "files": {
     "frozen-pilot-base/goal_directed_blind/results.jsonl": {
       "bytes": 4905,
@@ -66,5 +69,10 @@
   },
   "pilot_id": "SL-RQ2-LIVE-001",
   "promoted_utc": "2026-08-28",
+  "receipt_boundary_note": "The 14 hash-bound JSON/JSONL receipts are preserved byte-for-byte. Their C-RESULT-003 pilot-only wording records the original intended scope, not the current paper claim status.",
+  "supported_claim_ids": [
+    "C-PILOT-007",
+    "C-PILOT-008"
+  ],
   "source_working_dir": "runs/live-pilot-rq2 (gitignored working output)"
 }

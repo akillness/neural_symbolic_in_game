@@ -34,6 +34,7 @@ var _choice_box: VBoxContainer
 var _choice_scroll: ScrollContainer
 var _action_box: VBoxContainer
 var _columns: BoxContainer
+var _prompt_panel: PanelContainer
 var _prompt_label: Label
 var _status_label: Label
 var _objective_label: Label
@@ -81,7 +82,7 @@ var _portrait_requested: bool = false
 var _speaker_name: String = ""
 var _progress_stage: int = 0
 var _progress_total: int = 3
-var _progress_phase: String = "도착 · ARRIVAL"
+var _progress_phase: String = "ARRIVAL"
 var _toast_tween: Tween
 var _flash_tween: Tween
 var _feedback_tween: Tween
@@ -155,16 +156,19 @@ func _build() -> void:
 	_feedback_label.visible = false
 	_root.add_child(_feedback_label)
 
+	_prompt_panel = PanelContainer.new()
+	_prompt_panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.94), PALETTE.signal_amber, 2, 10)
+	)
+	_prompt_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_prompt_panel.visible = false
+	_root.add_child(_prompt_panel)
 	_prompt_label = Label.new()
-	_prompt_label.add_theme_font_size_override("font_size", 20)
+	_prompt_label.add_theme_font_size_override("font_size", 18)
 	_prompt_label.add_theme_color_override("font_color", PALETTE.paper_fog)
-	_prompt_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.92))
-	_prompt_label.add_theme_constant_override("shadow_offset_x", 2)
-	_prompt_label.add_theme_constant_override("shadow_offset_y", 2)
 	_prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_prompt_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_prompt_label.visible = false
-	_root.add_child(_prompt_label)
+	_prompt_panel.add_child(_prompt_label)
 
 	_build_bottom_panel()
 	_build_toast()
@@ -176,32 +180,39 @@ func _build() -> void:
 func _build_controls_panel() -> void:
 	_controls_panel = PanelContainer.new()
 	_controls_panel.add_theme_stylebox_override(
-		"panel", _panel_style(Color(PALETTE.storm_ink, 0.88), Color(PALETTE.brass, 0.72), 1, 8)
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.92), Color(PALETTE.brass, 0.78), 1, 8)
 	)
 	_root.add_child(_controls_panel)
 	var stack := VBoxContainer.new()
-	stack.add_theme_constant_override("separation", 2)
+	stack.add_theme_constant_override("separation", 4)
 	_controls_panel.add_child(stack)
+
+	var case_label := Label.new()
+	case_label.text = "TRACE-RPG | CASE 01"
+	case_label.add_theme_font_size_override("font_size", 11)
+	case_label.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.68))
+	stack.add_child(case_label)
 
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 8)
 	stack.add_child(header)
 	_cursor_label = Label.new()
-	_cursor_label.text = "● 시작 대기 · READY"
+	_cursor_label.text = "[READY] CASE READY"
 	_cursor_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_cursor_label.add_theme_font_size_override("font_size", 14)
 	_cursor_label.add_theme_color_override("font_color", PALETTE.signal_amber)
 	header.add_child(_cursor_label)
 	_audio_button = Button.new()
-	_audio_button.text = "AUDIO LOCKED · [V]"
-	_audio_button.custom_minimum_size = Vector2(142.0, 26.0)
-	_audio_button.add_theme_font_size_override("font_size", 13)
+	_audio_button.text = "AUDIO LOCKED | V"
+	_audio_button.custom_minimum_size = Vector2(132.0, 28.0)
+	_audio_button.add_theme_font_size_override("font_size", 12)
+	_style_button(_audio_button)
 	_audio_button.pressed.connect(func() -> void: audio_toggle_requested.emit())
 	header.add_child(_audio_button)
 
 	_controls_label = Label.new()
-	_controls_label.text = "WASD 이동 · 마우스 시점 · [E] 조사 · [Esc] 커서\n[F5] 저장 · [F9] 불러오기 · [M] 모션 · [V] 음향 · [T] 안내"
-	_controls_label.add_theme_font_size_override("font_size", 13)
+	_controls_label.text = "WASD MOVE | MOUSE LOOK | [E] INSPECT | [Esc] CURSOR\n[F5] SAVE | [F9] LOAD | [M] REDUCE MOTION | [V] AUDIO | [T] GUIDE"
+	_controls_label.add_theme_font_size_override("font_size", 12)
 	_controls_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.08))
 	_controls_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	stack.add_child(_controls_label)
@@ -277,7 +288,7 @@ func _build_bottom_panel() -> void:
 	_ledger_box.size_flags_stretch_ratio = 2.2
 	_columns.add_child(_ledger_box)
 	_ledger_title = Label.new()
-	_ledger_title.text = "항구 장부 — Harbor Ledger"
+	_ledger_title.text = "HARBOR LEDGER | CASE FILE"
 	_ledger_title.add_theme_font_size_override("font_size", 18)
 	_ledger_title.add_theme_color_override("font_color", PALETTE.brass)
 	_ledger_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -346,7 +357,7 @@ func _build_bottom_panel() -> void:
 	_inventory_icon.custom_minimum_size = Vector2(44.0, 44.0)
 	_inventory_row.add_child(_inventory_icon)
 	var inventory_label := Label.new()
-	inventory_label.text = "신호 렌즈 확보 — 거치대로"
+	inventory_label.text = "SIGNAL LENS SECURED | GO TO THE MOUNT"
 	inventory_label.add_theme_font_size_override("font_size", 16)
 	inventory_label.add_theme_color_override("font_color", PALETTE.signal_amber)
 	inventory_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -479,28 +490,35 @@ func _build_start_gate() -> void:
 	stack.alignment = BoxContainer.ALIGNMENT_CENTER
 	stack.add_theme_constant_override("separation", 14)
 	_start_card.add_child(stack)
+	var eyebrow := Label.new()
+	eyebrow.text = "TRACE-RPG | CASE 01"
+	eyebrow.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	eyebrow.add_theme_font_size_override("font_size", 13)
+	eyebrow.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.72))
+	stack.add_child(eyebrow)
 	var title := Label.new()
-	title.text = "봉인된 등대 · THE SEALED LIGHTHOUSE"
+	title.text = "THE SEALED LIGHTHOUSE"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.add_theme_font_size_override("font_size", 27)
 	title.add_theme_color_override("font_color", PALETTE.signal_amber)
 	stack.add_child(title)
 	var premise := Label.new()
-	premise.text = "폭풍 속 항구에서 유효한 기록만 남기고, 허가된 단서를 찾아라.\nOnly validated actions become part of the harbor ledger."
+	premise.text = "Recover the harbor signal. Earn the tide route.\nOnly validated actions enter the ledger."
 	premise.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	premise.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	premise.add_theme_font_size_override("font_size", 17)
 	premise.add_theme_color_override("font_color", PALETTE.paper_fog)
 	stack.add_child(premise)
 	_start_button = Button.new()
-	_start_button.text = "조사 시작 — 클릭하여 시점과 음향 활성화\nBEGIN — CLICK TO CAPTURE"
-	_start_button.custom_minimum_size = Vector2(0.0, 66.0)
+	_start_button.text = "BEGIN INVESTIGATION"
+	_start_button.custom_minimum_size = Vector2(0.0, 58.0)
 	_start_button.add_theme_font_size_override("font_size", 18)
+	_style_button(_start_button, true)
 	_start_button.pressed.connect(func() -> void: start_requested.emit())
 	stack.add_child(_start_button)
 	var note := Label.new()
-	note.text = "[Esc] 커서 해제 · [V] 음향 끄기 · [M] 모션 감소"
+	note.text = "WASD Move | [E] Inspect | [T] Field Guide | [M] Reduce Motion"
 	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.add_theme_font_size_override("font_size", 14)
@@ -508,7 +526,7 @@ func _build_start_gate() -> void:
 	stack.add_child(note)
 	if key_art_texture != null:
 		var disclosure := Label.new()
-		disclosure.text = "일러스트: AI 생성(Higgsfield) · AI-generated art"
+		disclosure.text = "AI-generated art | Higgsfield"
 		disclosure.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		disclosure.add_theme_font_size_override("font_size", 12)
 		disclosure.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.72))
@@ -528,21 +546,21 @@ func _build_tutorial() -> void:
 	# concept candidates, so the pages stay readable when those bytes are absent.
 	_tutorial_pages = [
 		{
-			"title": "증거철을 펴다 — 조작",
-			"body": "이동 WASD · 시점 마우스 · 조사 [E]\n커서 해제/닫기 [Esc] · 저장 [F5] · 불러오기 [F9]\n모션 감소 [M] · 음향 [V] · 이 안내 [T]\n\n황색 빛기둥이 지금 목표를 가리킨다.\n표식 링이 반짝이는 곳에서 [E]를 눌러 조사한다.",
+			"title": "OPEN THE FIELD GUIDE | CONTROLS",
+			"body": "Move with WASD | Look with the mouse | Inspect with [E]\nRelease or close with [Esc] | Save [F5] | Load [F9]\nReduce motion [M] | Audio [V] | Reopen this guide [T]\n\nThe amber beacon marks your current lead.\nWhen a focus ring glows, press [E] to inspect.",
 			"curated": "ui-tutorial-vignette.png",
 			"image": "SL3D-U01-signal-lens-icon.png",
 			"pack": true,
 		},
 		{
-			"title": "항구의 규칙 — 제안·검증·보류·기록",
-			"body": "장부는 검증을 통과한 항목만 받아들인다.\n이 항구가 폭풍에서 살아남은 방식이다.\n\n▸ 황동 점선 = 제안. 아직 세계는 그대로다.\n◈ 검증 = 장부가 항목을 대조한다. 눈에 띄지 않게, 매번.\n✖ 산호색 = 보류. 상태는 그대로이며, 중립적 이유와\n   다음 유효 항목이 함께 온다.\n✔ 황색 실선 = 기록. 검증을 통과했고 상태 해시가 전진했다.\n\n보류는 벌이 아니라 이 항구의 문법이다.\n색은 언제나 문자·기호와 함께 온다.",
+			"title": "HOW THE HARBOR LEDGER WORKS",
+			"body": "The ledger accepts only entries that pass validation.\nThat is how this harbor survived the storm.\n\n[P] Brass dotted line = PROPOSAL. The world has not changed.\n[V] VALIDATION = the ledger checks every entry.\n[H] Coral line = HELD. State stays unchanged, with a neutral reason\n    and one concrete next valid entry.\n[C] Amber line = COMMITTED. Validation passed and the state advanced.\n\nA hold is guidance, not punishment.\nColor always appears with text and symbols.",
 			"image": "SL-C03-investigation-ui.png",
 			"pack": false,
 		},
 		{
-			"title": "이 항구는 실험실이다",
-			"body": "이 슬라이스는 TRACE-RPG 연구의 탐침이다.\n관찰 → 조사 → 제안 → 검증 → 수리 → 기록의 리듬이\n60–120초 루프를 이룬다.\n\n유효한 기록만 정식 상태를 바꾸고, 보류·시간초과는\n이전 상태 해시를 그대로 남긴다.\n봉인된 사실은 어떤 대답으로도 열리지 않는다.",
+			"title": "THIS HARBOR IS AN EXPERIMENT",
+			"body": "This slice is a TRACE-RPG research probe.\nObserve -> inspect -> propose -> validate -> repair -> commit.\n\nOnly committed entries change canonical state.\nHeld or timed-out proposals keep the prior state hash.\nNo answer can unlock a permanently sealed fact.",
 			"image": "SL-C02-captain-mira-sheet.png",
 			"pack": false,
 		},
@@ -574,7 +592,7 @@ func _build_tutorial() -> void:
 	_tutorial_image = TextureRect.new()
 	_tutorial_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_tutorial_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_tutorial_image.custom_minimum_size = Vector2(250.0, 200.0)
+	_tutorial_image.custom_minimum_size = Vector2(340.0, 240.0)
 	_tutorial_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tutorial_columns.add_child(_tutorial_image)
 	_tutorial_body = Label.new()
@@ -588,9 +606,10 @@ func _build_tutorial() -> void:
 	nav.add_theme_constant_override("separation", 10)
 	stack.add_child(nav)
 	_tutorial_prev = Button.new()
-	_tutorial_prev.text = "◂ 이전"
+	_tutorial_prev.text = "< BACK"
 	_tutorial_prev.custom_minimum_size = Vector2(96.0, 44.0)
-	_tutorial_prev.add_theme_font_size_override("font_size", 17)
+	_tutorial_prev.add_theme_font_size_override("font_size", 16)
+	_style_button(_tutorial_prev)
 	_tutorial_prev.pressed.connect(func() -> void: _tutorial_go(-1))
 	nav.add_child(_tutorial_prev)
 	_tutorial_progress = Label.new()
@@ -601,7 +620,8 @@ func _build_tutorial() -> void:
 	nav.add_child(_tutorial_progress)
 	_tutorial_next = Button.new()
 	_tutorial_next.custom_minimum_size = Vector2(150.0, 44.0)
-	_tutorial_next.add_theme_font_size_override("font_size", 17)
+	_tutorial_next.add_theme_font_size_override("font_size", 16)
+	_style_button(_tutorial_next, true)
 	_tutorial_next.pressed.connect(func() -> void: _tutorial_go(1))
 	nav.add_child(_tutorial_next)
 
@@ -648,7 +668,7 @@ func _apply_tutorial_page() -> void:
 	_tutorial_progress.text = "%d / %d" % [_tutorial_index + 1, _tutorial_pages.size()]
 	_tutorial_prev.disabled = _tutorial_index == 0
 	_tutorial_next.text = (
-		"조사 시작 ▸" if _tutorial_index == _tutorial_pages.size() - 1 else "다음 ▸"
+		"START CASE >" if _tutorial_index == _tutorial_pages.size() - 1 else "NEXT >"
 	)
 	_tutorial_next.grab_focus()
 
@@ -658,12 +678,39 @@ func set_lens_held(held: bool) -> void:
 		_inventory_row.visible = held and _inventory_icon.texture != null
 
 
+func _style_button(button: Button, primary: bool = false) -> void:
+	# One shared focus/hover language keeps every actionable surface readable.
+	# The 2 px amber focus ring is independent of pointer hover and survives the
+	# English copy pass without adding a second component system.
+	var normal_bg := Color(PALETTE.brass, 0.88) if primary else Color(PALETTE.storm_ink, 0.92)
+	var hover_bg := PALETTE.signal_amber if primary else Color(PALETTE.wet_slate, 0.98)
+	var text_color := PALETTE.storm_ink if primary else PALETTE.paper_fog
+	button.add_theme_stylebox_override(
+		"normal", _panel_style(normal_bg, Color(PALETTE.brass, 0.78), 1, 8)
+	)
+	button.add_theme_stylebox_override(
+		"hover", _panel_style(hover_bg, PALETTE.signal_amber, 2, 8)
+	)
+	button.add_theme_stylebox_override(
+		"pressed", _panel_style(PALETTE.brass.darkened(0.12), PALETTE.signal_amber, 2, 8)
+	)
+	button.add_theme_stylebox_override(
+		"focus", _panel_style(Color(0, 0, 0, 0), PALETTE.signal_amber, 2, 8)
+	)
+	button.add_theme_color_override("font_color", text_color)
+	button.add_theme_color_override("font_hover_color", PALETTE.storm_ink)
+	button.add_theme_color_override("font_pressed_color", PALETTE.paper_fog)
+	button.add_theme_color_override("font_focus_color", text_color)
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+
+
 func _panel_style(background: Color, border: Color, width: int, margin: int) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = background
 	style.border_color = border
 	style.set_border_width_all(width)
-	style.set_corner_radius_all(4)
+	style.set_corner_radius_all(8)
 	style.set_content_margin_all(margin)
 	return style
 
@@ -711,10 +758,10 @@ func _apply_responsive_layout() -> void:
 		# width, so stack the folio vertically and widen the panel instead.
 		_tutorial_columns.vertical = _layout_narrow
 		_tutorial_image.custom_minimum_size = (
-			Vector2(0.0, 150.0) if _layout_narrow else Vector2(250.0, 200.0)
+			Vector2(0.0, 150.0) if _layout_narrow else Vector2(340.0, 240.0)
 		)
 		_tutorial_image.size_flags_vertical = (
-			Control.SIZE_SHRINK_CENTER if _layout_narrow else Control.SIZE_EXPAND_FILL
+			Control.SIZE_SHRINK_CENTER if _layout_narrow else Control.SIZE_SHRINK_BEGIN
 		)
 		_tutorial_body.add_theme_font_size_override("font_size", 15 if _layout_narrow else 18)
 		_tutorial_panel.anchor_left = 0.04 if _layout_narrow else 0.14
@@ -740,31 +787,31 @@ func _apply_responsive_layout() -> void:
 	_controls_panel.offset_left = 0.0
 	_controls_panel.offset_right = 0.0
 	_controls_panel.offset_top = 0.0
-	_controls_panel.offset_bottom = 106.0 if _layout_narrow else 102.0
-	_prompt_label.anchor_left = 0.08
-	_prompt_label.anchor_right = 0.92
-	_prompt_label.anchor_top = _bottom_panel.anchor_top
-	_prompt_label.anchor_bottom = _bottom_panel.anchor_top
-	_prompt_label.offset_left = 0.0
-	_prompt_label.offset_right = 0.0
-	_prompt_label.offset_top = -42.0
-	_prompt_label.offset_bottom = -8.0
+	_controls_panel.offset_bottom = 128.0 if _layout_narrow else 124.0
+	_prompt_panel.anchor_left = 0.08 if _layout_narrow else 0.24
+	_prompt_panel.anchor_right = 0.92 if _layout_narrow else 0.76
+	_prompt_panel.anchor_top = _bottom_panel.anchor_top
+	_prompt_panel.anchor_bottom = _bottom_panel.anchor_top
+	_prompt_panel.offset_left = 0.0
+	_prompt_panel.offset_right = 0.0
+	_prompt_panel.offset_top = -56.0
+	_prompt_panel.offset_bottom = -8.0
 	_feedback_label.anchor_left = 0.20
 	_feedback_label.anchor_right = 0.80
 	_feedback_label.anchor_top = 0.0
 	_feedback_label.anchor_bottom = 0.0
 	_feedback_label.offset_left = 0.0
 	_feedback_label.offset_right = 0.0
-	_feedback_label.offset_top = 116.0
-	_feedback_label.offset_bottom = 148.0
+	_feedback_label.offset_top = 136.0
+	_feedback_label.offset_bottom = 168.0
 	_toast.anchor_left = 0.12
 	_toast.anchor_right = 0.88
 	_toast.anchor_top = 0.0
 	_toast.anchor_bottom = 0.0
 	_toast.offset_left = 0.0
 	_toast.offset_right = 0.0
-	_toast.offset_top = 152.0
-	_toast.offset_bottom = 184.0
+	_toast.offset_top = 174.0
+	_toast.offset_bottom = 206.0
 	_end_card.anchor_left = 0.04 if _layout_narrow else 0.18
 	_end_card.anchor_right = 0.96 if _layout_narrow else 0.82
 	_end_card.anchor_top = 0.13 if _layout_narrow else 0.16
@@ -826,7 +873,7 @@ func show_start_gate(visible_now: bool) -> void:
 	_start_gate.visible = visible_now
 	if visible_now:
 		_play_started = false
-		_cursor_label.text = "● 시작 대기 · READY"
+		_cursor_label.text = "[READY] CASE READY"
 		_start_button.grab_focus()
 	_update_gate_motion_state()
 
@@ -840,20 +887,20 @@ func set_play_started(started: bool) -> void:
 
 func set_cursor_captured(captured: bool) -> void:
 	if not _play_started:
-		_cursor_label.text = "● 시작 대기 · READY"
+		_cursor_label.text = "[READY] CASE READY"
 	elif captured:
-		_cursor_label.text = "● 시점 잠김 · LOOK ACTIVE"
+		_cursor_label.text = "[LOOK] LOOK ACTIVE"
 	else:
-		_cursor_label.text = "○ 커서 자유 · 클릭하여 복귀"
+		_cursor_label.text = "[CURSOR] CURSOR FREE | CLICK TO RETURN"
 
 
 func set_audio_state(unlocked: bool, muted: bool) -> void:
 	if not unlocked:
-		_audio_button.text = "AUDIO LOCKED · [V]"
+		_audio_button.text = "AUDIO LOCKED | V"
 	elif muted:
-		_audio_button.text = "AUDIO OFF · [V]"
+		_audio_button.text = "AUDIO OFF | V"
 	else:
-		_audio_button.text = "AUDIO ON · [V]"
+		_audio_button.text = "AUDIO ON | V"
 
 
 func set_progress(stage: int, total: int, phase: String) -> void:
@@ -867,16 +914,16 @@ func set_progress(stage: int, total: int, phase: String) -> void:
 
 func _update_progress_text() -> void:
 	if _progress_label != null:
-		_progress_label.text = "탐사 %d/%d · %s" % [_progress_stage, _progress_total, _progress_phase]
+		_progress_label.text = "CASE %d/%d | %s" % [_progress_stage, _progress_total, _progress_phase]
 
 
 func show_prompt(text: String) -> void:
-	_prompt_label.text = "[E] " + text
-	_prompt_label.visible = text != ""
+	_prompt_label.text = "[E]  |  " + text
+	_prompt_panel.visible = text != ""
 
 
 func hide_prompt() -> void:
-	_prompt_label.visible = false
+	_prompt_panel.visible = false
 
 
 func set_portrait_visible(visible_now: bool, speaker: String = "") -> void:
@@ -892,51 +939,51 @@ func _update_portrait_visibility() -> void:
 	_portrait_box.visible = _portrait_requested and not _layout_narrow
 	_portrait.visible = _portrait_requested and not _layout_narrow and _portrait.texture != null
 	_portrait_frame.visible = _portrait.visible
-	_ledger_title.text = "항구 장부 — Harbor Ledger"
+	_ledger_title.text = "HARBOR LEDGER | CASE FILE"
 	if _portrait_requested and _layout_narrow and _speaker_name != "":
-		_ledger_title.text += " · " + _speaker_name
+		_ledger_title.text += " | " + _speaker_name
 
 
 func ledger_line(kind: String, text: String) -> void:
 	# Bureaucratic-poetic ledger voice (W-005): the ledger is a diegetic record
-	# of accepted evidence. Commits stamp "기록됨", refusals stamp "보류" — the
+	# of accepted evidence. Commits stamp "COMMITTED", refusals stamp "HELD" — the
 	# words of a harbor that survives on valid entries only.
 	var line := ""
 	match kind:
 		"narration":
 			line = "[color=#D9D3C4]%s[/color]" % text
 		"dialogue":
-			line = "[color=#D9D3C4][i]“%s”[/i][/color]" % text
+			line = "[color=#D9D3C4][i]'%s'[/i][/color]" % text
 		"proposal":
-			line = "[color=#A77A3A]▸ 제안 ┄┄ %s[/color]" % text
+			line = "[color=#A77A3A][P] PROPOSAL ... %s[/color]" % text
 		"commit":
-			line = "[color=#F2B84B]✔ 기록됨 ── %s[/color]" % text
+			line = "[color=#F2B84B][C] COMMITTED -- %s[/color]" % text
 			_show_ledger_stamp(true)
 		"refusal":
-			line = "[color=#D9685F]✖ 보류 ─┤ %s[/color]" % text
+			line = "[color=#D9685F][H] HELD -| %s[/color]" % text
 		"hint":
-			line = "[color=#F2B84B]☀ 길잡이 — %s[/color]" % text
+			line = "[color=#F2B84B][L] LEAD - %s[/color]" % text
 		_:
 			line = text
 	_ledger_log.append_text(line + "\n")
 
 
 func ledger_commit(entry_number: int, text: String) -> void:
-	# Numbered commit entry: '기록 #N · 기록됨 — <entry>'. The entry number is the
+	# Numbered commit entry: 'ENTRY #N | COMMITTED — <entry>'. The entry number is the
 	# caller's validated commit count — presentation mirrors it, never invents it.
 	_ledger_log.append_text(
-		"[color=#F2B84B]✔ 기록 #%d · 기록됨 — %s[/color]\n" % [entry_number, text]
+		"[color=#F2B84B][C] ENTRY #%d | COMMITTED - %s[/color]\n" % [entry_number, text]
 	)
 	_show_ledger_stamp(true)
 
 
 func ledger_refusal(reason: String, next_affordance: String) -> void:
-	# '보류 — <neutral reason>' then '다음 유효 항목: <affordance>'. The reason
+	# 'HELD — <neutral reason>' then 'NEXT VALID ENTRY: <affordance>'. The reason
 	# stays neutral/non-alarming (P-02) and never exposes hidden oracle labels;
 	# the next valid entry is always concrete and always present.
-	_ledger_log.append_text("[color=#D9685F]✖ 보류 — %s[/color]\n" % reason)
+	_ledger_log.append_text("[color=#D9685F][H] HELD - %s[/color]\n" % reason)
 	_ledger_log.append_text(
-		"[color=#A77A3A]   → 다음 유효 항목: %s[/color]\n" % next_affordance
+		"[color=#A77A3A][N] NEXT VALID ENTRY: %s[/color]\n" % next_affordance
 	)
 	_show_ledger_stamp(false)
 
@@ -980,6 +1027,7 @@ func show_choices(choices: Array) -> void:
 		button.custom_minimum_size = Vector2(0.0, 44.0)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.add_theme_font_size_override("font_size", 16 if _layout_narrow else 18)
+		_style_button(button)
 		var choice_id: String = choice["id"]
 		button.pressed.connect(func() -> void: choice_selected.emit(choice_id))
 		_choice_box.add_child(button)
@@ -993,7 +1041,7 @@ func clear_choices() -> void:
 
 
 func set_status(objective: String, status: String) -> void:
-	_objective_label.text = "◈ 목표: " + objective
+	_objective_label.text = "[L] CURRENT LEAD | " + objective
 	_status_label.text = status
 
 
@@ -1002,7 +1050,7 @@ func flash(kind: String) -> void:
 	# the next frame. This is presentation feedback, never action authorization.
 	var is_commit := kind == "commit"
 	var color := Color(PALETTE.signal_amber, 0.22) if is_commit else Color(PALETTE.warning_coral, 0.24)
-	_feedback_label.text = "✔ 기록됨 · VALIDATED" if is_commit else "✖ 보류 · 상태 유지"
+	_feedback_label.text = "[C] COMMITTED | VALIDATED" if is_commit else "[H] HELD | STATE UNCHANGED"
 	_feedback_label.add_theme_color_override(
 		"font_color", PALETTE.signal_amber if is_commit else PALETTE.warning_coral
 	)
@@ -1038,7 +1086,7 @@ func show_end_card(text: String) -> void:
 
 func play_ledger_close(text: String) -> void:
 	# Ending 'ledger closes' beat: the ledger panel returns dimmed for one last
-	# look, a final 기록-완결 toast lands, and after ~0.6 s the end card slides
+	# look, a final case-complete toast lands, and after ~0.6 s the end card slides
 	# in. Reduced motion: the card appears immediately (steady semantic state).
 	# Purely additive presentation — the canonical receipt lives in the card.
 	if reduce_motion:
@@ -1046,7 +1094,7 @@ func play_ledger_close(text: String) -> void:
 		return
 	_bottom_panel.visible = true
 	_bottom_panel.modulate = Color(1, 1, 1, 1)
-	toast("기록 완결 — 장부가 닫힌다.")
+	toast("CASE COMPLETE | The ledger is closing.")
 	var beat := create_tween()
 	beat.tween_property(_bottom_panel, "modulate:a", 0.55, 0.30) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

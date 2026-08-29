@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0.0",
+  "graph_id": "TRACE-RPG-METHODS-RELATIONS-001",
+  "claim_boundary": "Curated method relations are design metadata. They do not authorize game state, establish semantic completeness, or support C-RESULT claims.",
+  "edges": [
+    {
+      "id": "CR-001",
+      "source": "/contrasts/h1-gate-vs-direct.md",
+      "relation": "evaluated_by",
+      "target": "/metrics/valid-episode-rate.md",
+      "evidence": "knowledge/contrasts/h1-gate-vs-direct.md"
+    },
+    {
+      "id": "CR-002",
+      "source": "/contrasts/h2-repair-vs-retry.md",
+      "relation": "evaluated_by",
+      "target": "/metrics/repair-at-k.md",
+      "evidence": "knowledge/contrasts/h2-repair-vs-retry.md"
+    },
+    {
+      "id": "CR-003",
+      "source": "/contrasts/h3-memory.md",
+      "relation": "evaluated_by",
+      "target": "/metrics/long-horizon-contradiction-rate.md",
+      "evidence": "knowledge/metrics/long-horizon-contradiction-rate.md"
+    },
+    {
+      "id": "CR-004",
+      "source": "/contrasts/h4-affect.md",
+      "relation": "evaluated_by",
+      "target": "/metrics/tension-rmse.md",
+      "evidence": "knowledge/contrasts/h4-affect.md"
+    },
+    {
+      "id": "CR-005",
+      "source": "/contrasts/h5-consensus-vs-gate.md",
+      "relation": "evaluated_by",
+      "target": "/metrics/cost-of-valid-episode.md",
+      "evidence": "knowledge/contrasts/h5-consensus-vs-gate.md"
+    },
+    {
+      "id": "CR-006",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "tests_contrast",
+      "target": "/contrasts/h1-gate-vs-direct.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-007",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "tests_contrast",
+      "target": "/contrasts/h2-repair-vs-retry.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-008",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "tests_contrast",
+      "target": "/contrasts/h3-memory.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-009",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "tests_contrast",
+      "target": "/contrasts/h4-affect.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-010",
+      "source": "/experiments/stage-1-screening.md",
+      "relation": "tests_contrast",
+      "target": "/contrasts/h1-gate-vs-direct.md",
+      "evidence": "knowledge/experiments/stage-1-screening.md"
+    },
+    {
+      "id": "CR-011",
+      "source": "/experiments/stage-1-screening.md",
+      "relation": "tests_contrast",
+      "target": "/contrasts/h2-repair-vs-retry.md",
+      "evidence": "knowledge/experiments/stage-1-screening.md"
+    },
+    {
+      "id": "CR-012",
+      "source": "/experiments/pilot-measurement.md",
+      "relation": "uses_oracle",
+      "target": "/oracles/encoding-oracle.md",
+      "evidence": "knowledge/experiments/pilot-measurement.md"
+    },
+    {
+      "id": "CR-013",
+      "source": "/experiments/stage-1-screening.md",
+      "relation": "uses_oracle",
+      "target": "/oracles/semantic-oracle.md",
+      "evidence": "knowledge/experiments/stage-1-screening.md"
+    },
+    {
+      "id": "CR-014",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "uses_oracle",
+      "target": "/oracles/encoding-oracle.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-015",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "uses_oracle",
+      "target": "/oracles/semantic-oracle.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-016",
+      "source": "/engine/m6-engine-fixture.md",
+      "relation": "implements",
+      "target": "/protocols/validate-repair-commit.md",
+      "evidence": "knowledge/engine/m6-engine-fixture.md"
+    },
+    {
+      "id": "CR-017",
+      "source": "/engine/llm-channel-demo.md",
+      "relation": "implements",
+      "target": "/protocols/validate-repair-commit.md",
+      "evidence": "knowledge/engine/llm-channel-demo.md"
+    },
+    {
+      "id": "CR-018",
+      "source": "/citations/neurosymbolic-kg-literature.md",
+      "relation": "supports",
+      "target": "/concepts/kg-validator-isomorphism.md",
+      "evidence": "knowledge/citations/neurosymbolic-kg-literature.md"
+    },
+    {
+      "id": "CR-019",
+      "source": "/experiments/controller-arms.md",
+      "relation": "governed_by",
+      "target": "/protocols/execution-controls.md",
+      "evidence": "knowledge/experiments/controller-arms.md"
+    },
+    {
+      "id": "CR-020",
+      "source": "/experiments/consensus-arms.md",
+      "relation": "governed_by",
+      "target": "/protocols/execution-controls.md",
+      "evidence": "knowledge/experiments/consensus-arms.md"
+    },
+    {
+      "id": "CR-021",
+      "source": "/experiments/stage-1-screening.md",
+      "relation": "governed_by",
+      "target": "/protocols/leakage-guards.md",
+      "evidence": "knowledge/experiments/stage-1-screening.md"
+    },
+    {
+      "id": "CR-022",
+      "source": "/experiments/stage-2-confirmatory.md",
+      "relation": "governed_by",
+      "target": "/protocols/leakage-guards.md",
+      "evidence": "knowledge/experiments/stage-2-confirmatory.md"
+    },
+    {
+      "id": "CR-023",
+      "source": "/engine/llm-channel-demo.md",
+      "relation": "supports",
+      "target": "/concepts/claim-boundary.md",
+      "evidence": "knowledge/engine/llm-channel-demo.md"
+    },
+    {
+      "id": "CR-024",
+      "source": "/citations/kg-ontology-evaluation-literature.md",
+      "relation": "supports",
+      "target": "/concepts/trace-rpg-application-ontology.md",
+      "evidence": "knowledge/citations/kg-ontology-evaluation-literature.md"
+    }
+  ]
+}

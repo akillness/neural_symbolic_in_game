@@ -2,7 +2,7 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 Timestamp: 2026-08-13 Asia/Seoul
-Method: source enumeration plus manual semantic review; clean exported-browser review pending
+Method: source enumeration plus manual semantic review; current English exported-browser route reviewed
 Verdict: `FIX` for G1; `0` known conflicts in reviewed public-safe runtime source, `1` candidate-art
 conflict quarantined from runtime
 
@@ -15,8 +15,9 @@ conflict quarantined from runtime
 | Harbor signal mount | lens-install interaction and narration | `W-004`, `F-004`, `F-005` | aligned only when described as harbor-side signal; it does not light the lighthouse |
 | Authorized tide hint | `tide_marks_hint` event path | `F-005`, `F-006`, `M-DISC-01` | aligned after quest stage 2 |
 | Episode ending | `game_3d.gd:_finish_episode` | `W-002`, `L-003`, `F-006` | aligned: lighthouse remains sealed; tide marks reveal the next route |
-| Browser start gate and controls | `harbor_ledger_ui.gd` | `W-005` | copy does not claim hidden truth; Korean glyph/browser rendering unverified |
-| Commit/refusal feedback | ledger + focus/VFX/audio cues | `W-005`, `E-003` | semantic color has text/icon redundancy; human readability unverified |
+| Browser start gate and controls | `harbor_ledger_ui.gd` | `W-005` | English-only runtime copy does not claim hidden truth; ASCII-safe bracket markers rendered in the current browser build |
+| Curated player avatar | `assets/player/higgsfield-player.glb`, `player_3d.gd` | presentation only | tracked Higgsfield mesh with `Idle`/`Casual_Walk`; visual identity and clip state never enter canonical state or saves |
+| Commit/refusal feedback | ledger + focus/VFX/audio cues | `W-005`, `E-003` | semantic color has text/icon redundancy; full route rendered in English, human readability unverified |
 | `SL-C01` environment candidate | generated concept pack | `W-002`, `L-001`, `L-003` | **conflict/quarantine:** “one amber light” can depict a lit offshore lighthouse; excluded from runtime/Web and must be regenerated or curated before use |
 | `SL-C02` Mira candidate | generated concept pack | `E-002`, `M-VOICE-01` | concept-only; representation/rights review pending; public-safe excluded |
 | `SL-C03` UI candidate | generated concept pack | `W-005` | layout-only; blinding/accessibility untested; public-safe excluded |
@@ -32,7 +33,8 @@ future copy, captures, and candidate curation to this reading.
 
 ## Remaining G1 gap
 
-Static review of the current source does not replace an exported player-visible string inventory.
-G1 remains `FIX` until a clean Web build is reviewed at wide/narrow sizes for Korean/English glyphs,
-clipping, controls, dialogue, ending text, save/load messages, and accessibility states. Hidden
-oracle labels are never treated as player-visible lore.
+The current runtime scripts contain no Korean player-visible string, while retained `title_ko` and
+`text_ko` data fields remain unrendered research content. A local Web run completed the English
+start/tutorial, controls, dialogue, refusal, ending, save/load, and fall-recovery surfaces with zero
+console/page errors. G1 remains `FIX` pending an independent wide/narrow accessibility and human
+readability review; hidden oracle labels are never treated as player-visible lore.

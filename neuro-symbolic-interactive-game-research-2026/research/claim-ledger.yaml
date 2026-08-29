@@ -53,7 +53,7 @@ claims:
       - research/academic-pipeline/stage-04-pilot/accounting-guards.csv
     status: verified-designed-fixture
   - id: C-PILOT-005
-    claim: The frozen Stage 4 manifest binds 64 published-row provenance records, including the closed unknown-key regression and fault-specific input specifications, and the tracked release records its input and artifact checksums.
+    claim: The frozen Stage 4 manifest binds 121 provenance records (85 executed fixture rows and 36 aggregate rows), including the closed unknown-key regression and fault-specific input specifications, and the tracked release records its input and artifact checksums.
     evidence:
       - research/academic-pipeline/stage-04-pilot/pilot-assignment-manifest.json
       - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
@@ -100,14 +100,13 @@ claims:
       - research/academic-pipeline/stage-04-pilot/repair-arm-summary.csv
     status: TODO-RESULT
     promotion_blocked_by: >-
-      scripts/validate_game_studio.py check_claim_boundary hard-fails when any
-      C-RESULT-00N leaves TODO-RESULT (Cycle-1 boundary from
-      .omx/specs/deep-interview-experimental-game-track.md). harness/workflows/
-      result-promotion.yaml separately permits TODO-RESULT -> pilot-only once
-      trace_manifest, schema_pass, and pilot_label exist, which they now do. The two
-      contracts contradict each other, so the promotion is withheld rather than resolved
-      by weakening the guard. The evidence itself is recorded under C-PILOT-007 and
-      C-PILOT-008; only the claim-status change awaits an explicit director decision.
+      The current paper boundary deliberately keeps every C-RESULT-00N at TODO-RESULT.
+      scripts/validate_game_studio.py enforces that Cycle-1 guard, and D-049 records the
+      explicit decision not to use the more permissive generic workflow transition for
+      this five-seed, single-model screening packet. The evidence is reported only under
+      C-PILOT-007 and C-PILOT-008. Promotion requires the confirmatory preregistration,
+      templated scenario battery, independent semantic oracle, and planned model scope;
+      it is not waiting on a metadata-only status change.
     scope_note: >-
       Live support exists ONLY in the regime where the proposer's errors fall in the
       guided-repairable class. On the corrected pre-registered signal-repair-v2 state with
@@ -155,6 +154,12 @@ claims:
     claim: Graph retrieval plus event-sourced temporal memory reduces long-horizon contradictions at matched validity.
     evidence: []
     status: TODO-RESULT
+    non_supporting_artifacts:
+      - research/simulation/kg-ontology/latest/evaluation-matrix.json
+    exclusion_reason: >-
+      SL-KG-ONTOLOGY-SIM-001 is an authored closed-world methods-link holdout. It does not execute
+      runtime graph retrieval, temporal memory, or long-horizon game episodes and therefore cannot
+      promote this claim.
   - id: C-RESULT-005
     claim: The controller effect is directionally consistent across model access and scale strata.
     evidence: []
