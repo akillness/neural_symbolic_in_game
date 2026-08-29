@@ -32,27 +32,39 @@
 - 현재 슬라이스에는 스켈레탈 애니메이션이 없다. 도입은 별도 결정(플레이어/미라 리그)과
   인터뷰 확인 후 진행한다.
 
-## 실행 시도 기록 — 2026-08-28 (D-041 차단 확정)
+## 실행 기록 — 2026-08-28 (D-045: 취득 성공, Blender 불필요 확인)
 
-플레이어 리깅 도입이 승인(D-041)되어 실행을 시도했고, **서로 독립적인 차단 두 건**을 확인했다.
+사용자가 Adobe/Google 소셜 로그인으로 Mixamo 세션을 열어 자산 취득 차단이 해소됐고,
+실제로 받아서 검증했다. 그 과정에서 **이 레인의 전제 하나가 틀렸음**이 드러났다.
 
-1. **자산 취득 차단**: Mixamo는 공개 자동화 API가 없고 원본 FBX는 인증된 브라우저 세션에서
-   수동으로 받아야 한다. 로컬 디스크에도 재사용 가능한 FBX가 없다(Unity 패키지 캐시 제외).
-2. **툴체인 차단**: 이 세션의 샌드박스에서 Blender가 **파이썬을 실행하지 못한다.**
-   `--background --factory-startup --python`이 시작 중 크래시하며, 백트레이스 최상단은
-   `MTLBackend::metal_is_supported()` → `GPU_backend_type_selection_detect()` →
-   `wm_homefile_read_ex()` → `WM_init()`이다. 즉 Metal 디바이스 조회가 막혀 GPU 백엔드
-   탐지 단계에서 죽는다. `--version`은 `WM_init` 이전에 끝나므로 정상 동작한다.
-   이 macOS 빌드의 `--gpu-backend`는 **유효값이 `metal` 하나뿐**이라 대체 백엔드로 우회할 수
-   없었고, `opengl`/`vulkan`/환경변수 우회 모두 실패했다.
+### 정정: 직선 반입에는 Blender가 필요 없다
 
-⚠️ 이 툴체인 차단은 **세션 의존적일 수 있다**. `game-track/godot/assets/models/models-manifest.json`
-은 기존 GLB 5종이 `blender-procedural`(Blender 5.1.2)로 만들어졌다고 기록하므로, 과거에는
-동작했다. 다음 세션에서 다시 판정할 것 — "환경상 불가"로 굳히지 말 것.
+이 문서는 원래 Mixamo → Blender → GLB → Godot 경로를 전제했다. 실측 결과 **Godot 4.7.1이
+FBX를 네이티브(ufbx)로 직접 임포트**하며, Blender를 거치지 않아도 스켈레톤과 애니메이션이
+그대로 만들어진다. 측정값(`Peasant Man` + `Breathing Idle`, 4,172,928 B):
 
-결과적으로 리깅 레인은 **계약과 검증기만 존재하고 자산은 0개**인 상태를 유지한다. 진행하려면
-(a) 소유자가 Adobe 로그인으로 Mixamo FBX를 받아 `raw/`에 두고, (b) Blender 파이썬이 실행되는
-환경에서 리타게팅을 수행해야 한다.
+- `Skeleton3D` 1개, **본 43개**
+- `AnimationPlayer` 1개, 애니메이션 `mixamo_com`
+- `MeshInstance3D` 1개
+
+재현: `uv run python scripts/verify_motion_ingest.py <파일>`.
+따라서 Blender는 **선택**이며, 다른 스켈레톤으로 리타게팅하거나 메시를 편집할 때만 필요하다.
+(이 세션의 샌드박스에서는 Blender가 파이썬 실행 중 `MTLBackend::metal_is_supported()`에서
+크래시하고 이 빌드의 `--gpu-backend`는 유효값이 `metal` 뿐이라 우회가 없었다. 다만 기존 GLB
+5종은 과거에 Blender로 만들어졌으므로 세션 의존 현상으로 보고 재판정 대상으로 남긴다.)
+
+### 자산 바이트는 의도적으로 커밋하지 않는다
+
+Adobe 약관이 원본 캐릭터·애니메이션 파일의 재배포를 금지하고 이 저장소는 공개이므로,
+받은 FBX는 `raw/`(gitignore)에 두고 **바이트 대신 반입 레시피와 프로븐어런스만** 추적한다:
+`ingest-verification.json`이 소스 해시·크기·임포트 결과를 담고, `verify_motion_ingest.py`가
+누구든 자기가 받은 파일로 같은 검증을 재현하게 한다.
+
+### 남은 단계
+
+런타임 도입(플레이어 캐릭터 교체, 이동 상태와 애니메이션 연결)은 **연출 결정**이라 별도
+승인이 필요하다. 현재 슬라이스는 절차적 캐릭터로 동작하며 이 레인은 아직 런타임에 연결되지
+않았다.
 
 ## Boundary (EN summary)
 

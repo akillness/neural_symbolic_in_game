@@ -23,6 +23,7 @@ uv run ruff check \
   scripts/validate_game_studio.py \
   scripts/validate_concept_assets.py \
   scripts/validate_motion_assets.py \
+  scripts/verify_motion_ingest.py \
   tests/test_codex_oauth_llm.py \
   tests/test_godot_experimental_game.py \
   tests/test_godot_web_release.py \
@@ -38,6 +39,7 @@ uv run ruff format --check \
   scripts/validate_game_studio.py \
   scripts/validate_concept_assets.py \
   scripts/validate_motion_assets.py \
+  scripts/verify_motion_ingest.py \
   tests/test_codex_oauth_llm.py \
   tests/test_godot_experimental_game.py \
   tests/test_godot_web_release.py \
