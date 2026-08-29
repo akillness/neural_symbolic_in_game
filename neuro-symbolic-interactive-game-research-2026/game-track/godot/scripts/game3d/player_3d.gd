@@ -31,6 +31,8 @@ var _step_index: int = 0
 var _bob_offset: float = 0.0
 var _roll_offset: float = 0.0
 var _director: Node = null
+var _rig: Node3D = null
+var _rig_animation: AnimationPlayer = null
 # The interactable set is spawned once at scene build and never grows, so the
 # focus sweep reuses one cached group snapshot instead of allocating a fresh
 # Array from get_nodes_in_group every physics frame.
@@ -58,7 +60,29 @@ static func create() -> PlayerInvestigator3D:
 	var coat := StandardMaterial3D.new()
 	coat.albedo_color = SealedLighthouseWorldBuilder.PALETTE.paper_fog.darkened(0.45)
 	visual.material_override = coat
+	visual.name = "ProceduralBody"
 	player.add_child(visual)
+
+	# D-046: an optional local rig replaces the procedural body. It is presentation
+	# only — movement, focus, and every world change still route through the same
+	# proposal path, and canonical state never sees it. Absent lane keeps the capsule.
+	var rig_scene := SealedLighthouseWorldBuilder.load_player_rig()
+	if rig_scene != null:
+		var rig := rig_scene.instantiate() as Node3D
+		if rig != null:
+			rig.name = "PlayerRig"
+			rig.position = Vector3(0.0, 0.0, 0.0)
+			player.add_child(rig)
+			player._rig = rig
+			visual.visible = false
+			for child in rig.get_children():
+				if child is AnimationPlayer:
+					player._rig_animation = child
+					break
+			if player._rig_animation != null:
+				var clips := player._rig_animation.get_animation_list()
+				if not clips.is_empty():
+					player._rig_animation.play(clips[0])
 
 	var lantern := OmniLight3D.new()
 	lantern.light_color = SealedLighthouseWorldBuilder.PALETTE.signal_amber
@@ -197,4 +221,11 @@ func get_engineering_snapshot() -> Dictionary:
 		"movement_feedback": ["movement_state_changed", "distance-paced-footstep-request", "stride-locked-view-bob"],
 		"focused_interaction_id": "" if _focused == null else _focused.interaction_id,
 		"world_change_boundary": "interact_requested signal only; root proposal router owns machine calls",
+		# D-046: observable proof that the optional local rig lane is refused on
+		# public-safe/Web runs and used only when a local rig is present.
+		"player_rig_active": _rig != null,
+		"player_rig_animation": (
+			"" if _rig_animation == null else ",".join(_rig_animation.get_animation_list())
+		),
+		"player_rig_lane_is_presentation_only": true,
 	}

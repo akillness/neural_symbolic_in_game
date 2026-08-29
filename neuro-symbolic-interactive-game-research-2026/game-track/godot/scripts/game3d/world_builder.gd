@@ -74,6 +74,26 @@ static func load_concept_texture(file_name: String) -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 
+static func load_player_rig() -> PackedScene:
+	# D-046 rig lane (`res://assets/rig/`, gitignored). Mixamo's terms forbid
+	# redistributing raw character/animation files and this repository is public, so
+	# the bytes are never tracked and never shipped: Web and `--public-safe` runs
+	# refuse to load them, and `build_godot_web.sh` excludes the directory from the
+	# staged export. When the lane is empty the caller keeps the procedural body,
+	# so the public surface is unchanged and fully playable.
+	if OS.has_feature("web") or PUBLIC_SAFE_ARG in OS.get_cmdline_user_args():
+		return null
+	var rig_dir := "res://assets/rig/"
+	var directory := DirAccess.open(rig_dir)
+	if directory == null:
+		return null
+	for file_name in directory.get_files():
+		var candidate := rig_dir.path_join(file_name.trim_suffix(".import"))
+		if ResourceLoader.exists(candidate, "PackedScene"):
+			return load(candidate) as PackedScene
+	return null
+
+
 static func load_curated_ui_texture(file_name: String) -> Texture2D:
 	# D-034/D-035 curated UI art lane (assets/ui/, user-reviewed Higgsfield pack).
 	# Unlike the candidate pack/concept lanes above, these bytes are runtime- and

@@ -62,6 +62,7 @@ rsync -a \
   --exclude '.omc/' \
   --exclude 'addons/' \
   --exclude 'scripts/game3d/llm/' \
+  --exclude 'assets/rig/' \
   "$GODOT_PROJECT/" "$STAGED_PROJECT/"
 cp "$WEB_CONFIG/export_presets.cfg" "$STAGED_PROJECT/export_presets.cfg"
 perl -0pi -e \
