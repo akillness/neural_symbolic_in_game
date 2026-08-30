@@ -337,11 +337,11 @@ fixture `4/4` 모두
 Higgsfield UI와 검증된 추적 Higgsfield 플레이어 GLB의 `Idle`/`Casual_Walk`을 사용한다. 애니메이션은
 프레젠테이션 전용이며 정식 상태나 저장 데이터를 바꾸지 못한다.
 평가는 저자 fixture와 프레젠테이션 불변조건 적합성만 입증한다. G4, 사용성, 몰입, 정서,
-플레이어 효능, 확증 모델 효능은 **UNASSESSED**다. 2026-08-29/30 현재 영문 Web 빌드에서
+플레이어 효능, 확증 모델 효능은 **UNASSESSED**다. 2026-08-29/30 선행 영문 Web 빌드에서
 전체 결말, 페이지 새로고침을 통과한 save/reload, symbolic hash를 바꾸지 않는 추락 복구,
 추적 플레이어 로드, ASCII-safe 안내 3면, 콘솔·페이지 오류 0건을 확인했다. 프로덕션 배포
-`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`도 데스크톱 시작 → 인게임 → Field Guide 스모크에서
-콘솔·페이지 오류 0건을 기록했다. 프로덕션 save/reload, 현 배포 모바일 검증, 사람 제스처
+`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`도 데스크톱 시작 게이트 → 안내 3면 → 인게임
+스모크에서 콘솔·페이지 오류 0건을 기록했다. 프로덕션 save/reload, 현 배포 모바일 검증, 사람 제스처
 포인터 잠금·음향, warmed frame/input, 30분 soak, rollback 근거가 없어 G6는 `FIX`다.
 
 ```bash
@@ -349,16 +349,17 @@ Higgsfield UI와 검증된 추적 Higgsfield 플레이어 GLB의 `Idle`/`Casual_
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-현재 영문/큐레이션 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,187바이트,
-PCK 10,892,412바이트, SHA-256
-`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
-배포 상태: **[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-현재 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
+현재 영문/큐레이션 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,746,755바이트,
+공개 런타임 파일 10개 / 50,746,242바이트, PCK 10,893,980바이트, SHA-256
+`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
+배포 상태: **[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+보존 선행 버전 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
 (`1280×720`, 30 fps, 69.067초, 5,662,128바이트, SHA-256
-`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 위 배포와 바이트가
-일치하는 로컬 빌드에서 캡처했으며 사용성·성능 근거가 아닌 엔지니어링 시연이다.
-공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했다. `vercel.json`은 배포 설정으로
-소비되므로 공개 자산이 아니다.
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 렌즈 접근 데크 변경 전
+바이트 동일 선행 배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`에서 캡처했으며 사용성·성능 근거가
+아닌 엔지니어링 시연이다. 공개 런타임 파일 10개는 익명 요청에서 모두 `200`이며 로컬
+바이트와 일치했다. WASM은 `application/wasm`, OFL 고지는 `text/plain`이었고 설정된 응답
+헤더가 유지됐으며 `vercel.json`은 `404`를 반환했다.
 2026-08-17에 `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`를 대상으로 실행한 헤드리스 브라우저 스모크에서
 정상 로딩, 한글 글리프, 1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을 확인했다.
 Playwriter는 같은 날 Vercel 기기 승인 로그인과 포인터 잠금 재시험 1회에만 사용했고 그

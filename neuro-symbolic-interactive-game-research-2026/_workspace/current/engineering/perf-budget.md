@@ -40,7 +40,7 @@ The five-frame headless samples are exact observations but not a warmed performa
 | Expensive post effects | blur `0`, raymarch `0` | static cap |
 | Procedural audio | mono `22,050 Hz`, five pooled cue voices, generated once per scene | static structure |
 | Curated player asset | 9,677,324-byte GLB; 15,463 measured triangles; 26 nodes; 24 joints; two required clips | measured asset structure, not frame cost |
-| Current deployed Web pack | 10,892,412-byte PCK (`+4,921,896` bytes versus the retained 5,970,516-byte prior-production control) | artifact receipt, not runtime performance |
+| Current deployed Web pack | 10,893,980-byte PCK (`+4,923,464` bytes versus the retained 5,970,516-byte prior-production control) | artifact receipt, not runtime performance |
 | Reduced motion | player-toggleable; VFX/camera motion policy is suppressed or shortened | static structure |
 
 These caps define a starting performance envelope; they are not measured FPS, memory, or input

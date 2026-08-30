@@ -343,11 +343,11 @@ uses curated Higgsfield UI assets and a validated tracked Higgsfield player GLB 
 `Idle`/`Casual_Walk` over the procedural world/VFX/audio surface. Animation remains
 presentation-only and cannot change canonical state or saves. The evaluation establishes authored-fixture and presentation-
 invariant conformance only. G4, usability, immersion, affect, player efficacy, and confirmatory
-model efficacy are **UNASSESSED**. On 2026-08-29/30, the current English Web build completed the
+model efficacy are **UNASSESSED**. On 2026-08-29/30, the predecessor English Web build completed the
 ending, refresh-persistent save/reload, state-isolated fall recovery, tracked-player load, and
 ASCII-safe three-page tutorial with zero console/page errors. Production deployment
-`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` then passed desktop start → in-game → Field Guide smoke with zero
-console/page errors. G6 remains `FIX` pending production save/reload, current mobile verification,
+`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` then passed a desktop start gate → three-page tutorial → in-game
+smoke with zero console/page errors. G6 remains `FIX` pending production save/reload, current mobile verification,
 human-gesture pointer/audio checks, warmed frame/input, 30-minute soak, and rollback evidence.
 
 ```bash
@@ -355,16 +355,18 @@ human-gesture pointer/audio checks, warmed frame/input, 30-minute soak, and roll
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-The current English/curated-player artifact is deployed: 11 manifest files / 50,745,187 bytes; PCK
-10,892,412 bytes, SHA-256
-`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
-Deployment status: **[`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Current full-route gameplay recording: **[Compresso-compressed H.264 MP4](game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
+The current English/curated-player artifact is deployed: 11 manifest files / 50,746,755 bytes;
+10 public runtime files / 50,746,242 bytes; PCK 10,893,980 bytes, SHA-256
+`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
+Deployment status: **[`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+Retained predecessor full-route gameplay recording: **[Compresso-compressed H.264 MP4](game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
 (`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It was captured from the
-exact local build source deployed above and remains engineering demonstration, not usability or performance evidence.
-All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` was consumed as
-deployment configuration and is not a public asset.
+byte-identical predecessor deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` before the lens-approach
+deck change and remains an engineering demonstration, not usability or performance evidence.
+All 10 public runtime files returned anonymous `200` responses and matched the local bytes; WASM
+used `application/wasm`, the OFL notice used `text/plain`, configured response headers were present,
+and `vercel.json` returned `404`.
 A headless-browser smoke on 2026-08-17 against `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe` verified clean
 loading, Korean glyphs, responsive 1280×720 and 390×844 layouts, and zero console/page errors.
 Playwriter was used that day only for the Vercel device-approval login and one pointer-lock

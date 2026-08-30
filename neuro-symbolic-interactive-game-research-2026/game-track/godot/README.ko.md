@@ -2,7 +2,7 @@
 
 상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `49/49`
 검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
-배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`에 영문 추적 플레이어 산출물이 공개됐다.**
+배포 `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`에 영문 추적 플레이어 산출물이 공개됐다.**
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -173,10 +173,10 @@ fixture `4/4` 모두 정확한 종료 SHA-256
 생성한 최신 엔지니어링 작업 캡처다. 캡처 전용 query hook은 추적 source에 들어가지 않았다.
 불변 v5 패킷을 대체하거나 수정하지 않는다.
 
-현재 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
+보존 선행 버전 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
 (`1280×720`, 30 fps, 69.067초, 5,662,128바이트, SHA-256
-`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 아래 배포와 바이트가
-일치하는 로컬 빌드에서 캡처한 엔지니어링 시연이다.
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 렌즈 접근 데크 변경 전
+바이트 동일 선행 배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`에서 캡처한 엔지니어링 시연이다.
 
 ## Public-safe Web 산출물 빌드
 
@@ -190,12 +190,14 @@ python3 -m http.server 4173 --directory game-track/web/public
 빌더는 Godot 프로젝트를 임시 디렉터리로 복사하고 그 복사본에서만 `main_3d.tscn`을 선택한다.
 단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 근거
 결속된 실제 프로젝트에는 Godot editor/import를 실행하지 않는다. 2026-08-30 무시 대상
-산출물은 manifest 파일 11개, 50,745,187바이트이며 `index.pck`은 10,892,412바이트, SHA-256
-`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`이다. 이 산출물은
-**[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
-배포됐다. 공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했고 `vercel.json`은
-배포 설정으로 소비됐다. 프로덕션 데스크톱 스모크는 시작 → 인게임 → Field Guide 전환과
-콘솔·페이지 오류 0건을 확인했다. 2026-08-17의 과거 headless 브라우저 스모크는 한글 표시,
+산출물은 manifest 파일 11개 / 50,746,755바이트, 런타임 파일 10개 / 50,746,242바이트이며
+`index.pck`은 10,893,980바이트, SHA-256
+`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`이다. 이 산출물은
+**[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
+배포됐다. 공개 런타임 파일 10개는 익명 요청에서 모두 `200`이며 로컬 바이트와 일치했다.
+WASM은 `application/wasm`, OFL 고지는 `text/plain`이었고 설정된 응답 헤더가 유지됐으며
+`vercel.json`은 `404`를 반환했다. 프로덕션 데스크톱 스모크는 시작 게이트 → 안내 3면 →
+인게임 전환과 콘솔·페이지 오류 0건을 확인했다. 2026-08-17의 과거 headless 브라우저 스모크는 한글 표시,
 1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을 확인했다. 포인터 잠금 진입은 **미검증**이다. 2026-08-17 재시험에서 headless 합성 클릭은
 `pointerlockerror`를 냈고 실제 Chrome의 Playwriter 클릭은 포인터 잠금 요청 자체를 만들지
 않았으며 두 실행 모두 `document.pointerLockElement`가 null이었다. HUD `시점 잠김`은 게임 자체

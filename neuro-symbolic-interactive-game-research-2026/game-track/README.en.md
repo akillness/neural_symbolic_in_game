@@ -61,10 +61,12 @@ provenance and a proven procedural fallback.
 
 ![Golden-path opening: start gate, intro cinematic, tutorial folio, first steps](godot/docs/latest/golden-path.gif)
 
-**[Current full-route gameplay recording (Compresso-compressed H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**
+**[Retained predecessor full-route gameplay recording (Compresso-compressed H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**
 shows the start gate, refusal hold, signal lens, lamp mount, authorized hint, tide marks, and ending
-receipt from the exact local build bytes deployed below (`1280×720`, 30 fps, 69.067 s, 5,662,128
-bytes; SHA-256 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It is an engineering
+receipt from the exact local build bytes deployed as predecessor
+`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, before the lens-approach-deck change (`1280×720`, 30 fps,
+69.067 s, 5,662,128 bytes; SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It is an engineering
 demonstration, not usability, immersion, or performance evidence.
 
 *Historical 32-second engineering capture from prior deployment
@@ -118,13 +120,14 @@ From the project root:
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-The current English UI + tracked-player artifact is deployed: 11 manifest files / 50,745,187 bytes;
-PCK 10,892,412 bytes, SHA-256
-`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
-Deployment status: **[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` was consumed as
-deployment configuration. The production desktop smoke completed start → in-game → Field Guide
-with zero console/page errors. The prior 2026-08-21 deployment
+The current English UI + tracked-player artifact is deployed: 11 manifest files / 50,746,755 bytes;
+10 public runtime files / 50,746,242 bytes; PCK 10,893,980 bytes, SHA-256
+`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
+Deployment status: **[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+All 10 public runtime files returned anonymous `200` responses and matched the local bytes; WASM
+used `application/wasm`, the OFL notice used `text/plain`, configured response headers were present,
+and `vercel.json` returned `404`. The production desktop smoke completed start gate → three-page
+tutorial → in-game with zero console/page errors. The prior 2026-08-21 deployment
 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` served the ritual+texture build:
 11 files, `index.pck` 5,970,516 bytes, SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; served html/pck/wasm fetched

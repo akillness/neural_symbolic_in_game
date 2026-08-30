@@ -2,7 +2,7 @@
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
 `49/49` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
-deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` is live with the English tracked-player artifact.**
+deployment `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` is live with the English tracked-player artifact.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -172,10 +172,11 @@ The four 1280×720 PNGs are latest engineering working captures generated from a
 Web build because this sandbox cannot render Godot `--shot`. The capture-only query hook never enters
 tracked source. The PNGs do not replace or amend the immutable v5 packet.
 
-Current full-route gameplay: **[Compresso-compressed H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
+Retained predecessor full-route gameplay: **[Compresso-compressed H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
 (`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). The recording comes from
-the exact local build bytes deployed below and is an engineering demonstration only.
+the byte-identical predecessor deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` before the
+lens-approach-deck change and is an engineering demonstration only.
 
 ## Build the public-safe Web artifact
 
@@ -189,12 +190,14 @@ python3 -m http.server 4173 --directory game-track/web/public
 The builder copies the Godot project to a temporary directory, selects `main_3d.tscn` only in that
 copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
 unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-08-30
-ignored artifact has 11 manifest files / 50,745,187 bytes; `index.pck` is 10,892,412 bytes with
-SHA-256 `29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`. It is deployed as
-**[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` is deployment
-configuration rather than a public asset. Production desktop smoke completed start → in-game →
-Field Guide with zero console/page errors. A historical headless
+ignored artifact has 11 manifest files / 50,746,755 bytes and 10 runtime files / 50,746,242 bytes;
+`index.pck` is 10,893,980 bytes with SHA-256
+`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`. It is deployed as
+**[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+All 10 public runtime files returned anonymous `200` responses and matched the local bytes; WASM
+used `application/wasm`, the OFL notice used `text/plain`, configured response headers were present,
+and `vercel.json` returned `404`. Production desktop smoke completed start gate → three-page
+tutorial → in-game with zero console/page errors. A historical headless
 browser smoke on 2026-08-17 verified Korean rendering, responsive 1280×720 and 390×844 layouts, and
 zero console/page errors. Pointer-lock entry is **not verified**: a headless synthetic click raised
 `pointerlockerror` and a Playwriter-driven click in real Chrome produced no pointer-lock request at

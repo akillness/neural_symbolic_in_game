@@ -87,13 +87,14 @@ measurement.
   presentation checks (`49/49` combined); four working PNGs passed size/hash registration. The
   curated player validator passed 9,677,324 bytes, 15,463 triangles, and both required clips.
   Engine-local input-feedback wiring exists but browser/user-gesture latency remains unmeasured.
-  The current ignored artifact has 11 manifest files and 50,745,187 bytes, including 10 public
-  runtime files / 50,744,674 bytes; its PCK is 10,892,412 bytes, SHA-256 `29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
-  Production deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` at
-  `https://sealed-lighthouse-trace-rpg.vercel.app` returned 200 for all 10 runtime files, matched
-  local bytes, served WASM as `application/wasm`, exposed the 4,534-byte OFL notice as `text/plain`,
-  and kept the configured security headers; `vercel.json` correctly remained non-public. Desktop
-  smoke completed start → in-game → Field Guide with zero console/page errors. The separately
+  The current ignored artifact has 11 manifest files / 50,746,755 bytes, including 10 public
+  runtime files / 50,746,242 bytes; its PCK is 10,893,980 bytes, SHA-256
+  `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
+  Production deployment `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` at
+  `https://sealed-lighthouse-trace-rpg.vercel.app` returned anonymous 200 responses for all 10
+  runtime files, matched local bytes, served WASM as `application/wasm`, exposed the 4,534-byte OFL
+  notice as `text/plain`, and kept the configured security headers; `vercel.json` returned `404`.
+  Desktop smoke completed start gate → three-page tutorial → in-game with zero console/page errors. The separately
   retained 2026-08-21 production PCK was 5,970,516 bytes, SHA-256
   `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; its 1280×720 and 390×844
   captures remain historical and do not verify the current deployment's mobile layout. Pointer lock
@@ -150,8 +151,8 @@ measurement.
 | Lens approach geometry | enabled `BoxShape3D` matches deck mesh, contains the `GoldenPathLayout` lens anchor, overlaps quay west edge, wraps lamp-store wall; disposable-copy engine test executes stable smoke item 8 and PASS | DEF-021 implementation closed; owner navigation still required for human-impact gates |
 | Procedural audio | external asset check PASS; 18 generated streams, 22,050 Hz, max five cue voices | playback/impact unmeasured |
 | Bundled Korean font | Nanum Gothic Regular, unmodified, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256; public notice 4,534 bytes, SHA-256 `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f` | release resource, not research evidence |
-| Web artifact/deployment | current production: 11 manifest files / 50,745,187 bytes; 10 runtime files / 50,744,674 bytes; PCK 10,892,412 bytes / `29e3d8b6…8f76`; all runtime files 200 and byte-identical; correct WASM/OFL MIME; `vercel.json` non-public | English/rig desktop smoke passed; production save/reload, current mobile, pointer lock, performance, and soak pending |
-| Deployed responsive rendering | current desktop start/in-game/Field Guide zero console/page errors; retained older 1280×720 and 390×844 captures are historical | bounded browser smoke, not G4; current mobile recheck open |
+| Web artifact/deployment | current production `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`: 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes / `654c1f13…a58e7`; all runtime files anonymous 200 and byte-identical; correct WASM/OFL MIME; configured headers present; `vercel.json` 404 | English/rig desktop smoke passed; production save/reload, current mobile, pointer lock, performance, and soak pending |
+| Deployed responsive rendering | current desktop start gate/tutorial/in-game zero console/page errors; retained older 1280×720 and 390×844 captures are historical | bounded browser smoke, not G4; current mobile recheck open |
 | Latest working captures | `4/4` 1280×720 PNGs with SHA-256 registration | never G4/efficacy evidence |
 
 ## Cycle 3 fresh working artifacts
@@ -164,8 +165,8 @@ measurement.
 | `game-track/godot/docs/latest/ending.png` | 1280×720, 499,210 B | `4c312110e04ed342c3ab7961120b07873a6d97a39f446f6a99ddb839d4622e9f` |
 | `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `49/49` | PASS; engineering-only |
 | `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
-| `game-track/web/public/` | current production 11 manifest files / 50,745,187 bytes; 10 runtime files / 50,744,674 bytes; PCK 10,892,412 bytes | PCK SHA-256 `29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`; includes curated player; ignored/non-authoritative builder output |
-| `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | H.264 High, 1280×720, 30 fps, 69.067 s, 5,662,128 B | `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`; fast-start; engineering demonstration only |
+| `game-track/web/public/` | current production 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes | PCK SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`; includes curated player; ignored/non-authoritative builder output |
+| `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | H.264 High, 1280×720, 30 fps, 69.067 s, 5,662,128 B | `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`; predecessor `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, pre-lens-deck; fast-start; engineering demonstration only |
 | `docs/latest/vercel-start.png`, `vercel-in-game.png` | 1280×720 | retained 2026-08-21 production desktop receipts |
 | `docs/latest/vercel-mobile-start.png`, `vercel-mobile-in-game.png` | 390×844 | retained 2026-08-21 production narrow receipts; not current mobile evidence |
 | `docs/latest/web-start.png`, `web-in-game.png` | 3294×1908 | local/extension-connected Web inspection receipts |

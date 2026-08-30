@@ -57,9 +57,10 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 
 ![골든 패스 오프닝: 시작 게이트, 인트로 시네마틱, 안내 폴리오, 첫 걸음](godot/docs/latest/golden-path.gif)
 
-**[현재 전체 경로 플레이 영상(Compresso 압축 H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**은
-배포본과 바이트가 일치하는 로컬 빌드의 시작 게이트, 보류, 신호 렌즈, 램프 장착, 승인 단서,
-썰물 표식, 결말 영수증을 담는다(`1280×720`, 30 fps, 69.067초, 5,662,128바이트; SHA-256
+**[보존 선행 버전 전체 경로 플레이 영상(Compresso 압축 H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**은
+렌즈 접근 데크 변경 전 선행 배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`와 바이트가 일치하는
+로컬 빌드의 시작 게이트, 보류, 신호 렌즈, 램프 장착, 승인 단서, 썰물 표식, 결말 영수증을
+담는다(`1280×720`, 30 fps, 69.067초, 5,662,128바이트; SHA-256
 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 사용성·몰입·성능 근거가
 아닌 엔지니어링 시연이다.
 
@@ -113,13 +114,14 @@ G6는 프로덕션 save/reload, 현 배포 모바일 검증, 사람 포인터/�
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-현재 영문 UI + 추적 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,187바이트,
-PCK 10,892,412바이트, SHA-256
-`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
-배포 상태: **[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했고 `vercel.json`은 배포 설정으로
-소비됐다. 프로덕션 데스크톱 스모크는 시작 → 인게임 → Field Guide 전환과 콘솔·페이지 오류
-0건을 확인했다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는
+현재 영문 UI + 추적 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,746,755바이트,
+공개 런타임 파일 10개 / 50,746,242바이트, PCK 10,893,980바이트, SHA-256
+`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
+배포 상태: **[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+공개 런타임 파일 10개는 익명 요청에서 모두 `200`이며 로컬 바이트와 일치했다. WASM은
+`application/wasm`, OFL 고지는 `text/plain`이었고 설정된 응답 헤더가 유지됐으며
+`vercel.json`은 `404`를 반환했다. 프로덕션 데스크톱 스모크는 시작 게이트 → 안내 3면 →
+인게임 전환과 콘솔·페이지 오류 0건을 확인했다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는
 의식+텍스처 빌드를 서빙했다:
 파일 11개, `index.pck` 5,970,516바이트, SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; 서빙된 html/pck/wasm을
