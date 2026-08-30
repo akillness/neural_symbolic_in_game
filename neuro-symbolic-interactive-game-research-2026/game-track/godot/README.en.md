@@ -2,7 +2,7 @@
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
 `49/49` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
-deployment `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` is live with the English tracked-player artifact.**
+deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` is live with the English tracked-player artifact.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -72,8 +72,9 @@ The authoritative retained 2026-08-13 evidence set is selected by
 `../../_workspace/current/engineering/tech-verification/current.json` and currently resolves to
 `evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`. The canonical,
 duplicate-ID, timeout, and corrupt-save runs each made three commits and reached the frozen
-terminal/oracle hash; the corrupt-save probe was rejected before live-state mutation. The current
-Cycle 3 aggregate receipt reports `40 tests, 44 subtests`. Performance budgets did not all pass:
+terminal/oracle hash; the corrupt-save probe was rejected before live-state mutation. The selected
+retained Cycle 2 packet reports `40 tests, 44 subtests`; the current game-track gate reports
+`46 passed, 2 skipped`. Performance budgets did not all pass:
 five-sample headless frame p95 values included startup transients and were `116.667`, `100.000`,
 `98.760`, and `112.907 ms`, respectively, in the selected retained packet.
 
@@ -167,6 +168,11 @@ The four 1280×720 PNGs are latest engineering working captures generated from a
 Web build because this sandbox cannot render Godot `--shot`. The capture-only query hook never enters
 tracked source. The PNGs do not replace or amend the immutable v5 packet.
 
+Current full-route gameplay: **[Compresso-compressed H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
+(`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). The recording comes from
+the exact local build bytes deployed below and is an engineering demonstration only.
+
 ## Build the public-safe Web artifact
 
 From the repository project root:
@@ -179,9 +185,9 @@ python3 -m http.server 4173 --directory game-track/web/public
 The builder copies the Godot project to a temporary directory, selects `main_3d.tscn` only in that
 copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
 unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-08-30
-ignored artifact has 11 manifest files / 50,745,203 bytes; `index.pck` is 10,892,428 bytes with
-SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`. It is deployed as
-**[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+ignored artifact has 11 manifest files / 50,745,187 bytes; `index.pck` is 10,892,412 bytes with
+SHA-256 `29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`. It is deployed as
+**[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**.
 All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` is deployment
 configuration rather than a public asset. Production desktop smoke completed start → in-game →
 Field Guide with zero console/page errors. A historical headless

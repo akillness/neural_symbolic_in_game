@@ -4,6 +4,16 @@
 
 TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 상태에 기록하지 않는다. Parsing에 성공한 제안은 typed candidate event가 되고, 외부에서 공급된 행동 정책과 precondition·도달 가능성·NPC 지식·정보 공개·quest stage에 대한 결정론적 검사를 통과한 경우에만 커밋된다. 유효하지 않은 후보는 구조화 validation error를 만들고 제한된 repair 기회를 받을 수 있으며, adapter와 controller failure는 분류된 terminal row로 남는다. 지식 그래프 검색과 게임 엔진 연동은 versioned event contract로 연결되는 별도 확증 트랙이며, 현재 파일럿에서 완료된 근거로 표현하지 않는다.
 
+## 근거 지도
+
+| 레인 | 현재 근거 | 정직한 경계 |
+|---|---|---|
+| 결정론적 오프라인 파일럿 | 단일 작성 세계의 parser, validator, repair, replay, integrity, accounting fixture | 인코딩된 필드의 mechanism 적합성만 지지 |
+| 라이브 RQ2 스크리닝 | hosted proposer 하나, 의도적으로 수리 가능한 policy-blind 셀에서만 guided `5/5` 대 blind `0/5` | `C-PILOT-007/008`만 지지, 모집단·모델 순위·`C-RESULT-003` 승격 없음 |
+| KG/온톨로지 시뮬레이션 | OKF node 43개, reference edge 106개, curated typed edge 24개, 작성 holdout 6/6 | closed-world `simulation-only`, 런타임 검색·의미 완전성 아님 |
+| Godot/Web 엔지니어링 | fixture 4/4, combined check 49/49, 추적 플레이어, 프로덕션 데스크톱 스모크 | 작성 fixture·presentation 적합성, usability·재미·G4·최종 G6 아님 |
+| 확증 연구 | 미실행 | `C-RESULT-001`–`005`는 `TODO-RESULT` 유지 |
+
 ## 시각 자료
 
 여섯 개 SVG는 모두 `scripts/generate_readme_visuals.py`가 생성한다. V2 하단, V3, V4는 동결된 파일럿 CSV와 주장 원장에서 직접 읽으므로 원본 수치와 어긋날 수 없다. 실선은 구현되어 파일럿에서 실행된 요소이고, 점선은 명세만 있고 근거가 없는 미구현 요소다.
@@ -20,7 +30,7 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 
 예산 안에서 어떤 후보도 검증을 통과하지 못하면 정식 상태는 그대로 유지된다. 최초 후보가 실패해도 수리 후 commit될 수 있으며, 완료된 candidate attempt는 종단 결과 전에 모두 기록된다. 하단 repair arm 수치는 `repair-arm-summary.csv`에서 읽는다.
 
-### V3 · 파일럿 관찰값 전체
+### V3 · Stage 4 오프라인 파일럿 관찰값 전체
 
 ![동결된 아티팩트에서 생성한 모든 파일럿 수치](visuals/pilot-evidence.svg)
 
@@ -38,11 +48,11 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 
 원래 Stage 4.5의 `22/22` 통과 판정은 대체된 감사 기록으로만 보존한다. Stage 6에서 주장
 결함 3건과 감사 범위 밖의 본문 telemetry 결함 1건을 재현했고, Stage 8에서 원고와 parser
-계약을 수정했으며 Stage 9에서 Short Paper 서식과 AI 사용 고지를 완료했다. 확장 감사는
-주장 family 42/42를 통과했다. Stage 5는 참고문헌 42건(검증 39건, preprint 3건,
-미일치·환각 0건)의 동일성을 확인했고, 2026-08-21 유도 수리 개정에서 동일성 검증 3건이
-추가되어 총 45건이다. Stage-10 clean tagged 재캡처는 입력 digest 21/21을
-commit `c4752df`에 결합하고 산출물 hash 35/35를 확인했다. 독립 효능 실험은 아직 남아 있다. 상세 내용은
+계약을 수정했으며 확장 감사는 주장 family 42/42를 통과했다. Stage 5에는 미일치·환각 0건의
+동일성 검증 참고문헌 45건이 있다. Stage 10은 선언 입력 22/22, 산출물 38/38, provenance row
+121개를 clean guided-repair release tag에 결합한다. 최종 Stage 9 영문·국문 PDF는 이제
+live-screening과 KG-simulation addendum을 포함한다. 둘 다 8쪽이며 쪽수 밴드, Type 3 font,
+LaTeX log gate를 통과했다. 독립 효능 실험과 저널 투고는 아직 남아 있다. 상세 내용은
 [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)와
 [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md)에 있다.
 
@@ -75,12 +85,12 @@ assignment-complete outcome record, proposal outcome이 존재할 때의 완전�
 
 | 질문 | 현재 존재하는 것 | 아직 없는 것 |
 |---|---|---|
-| 코드가 동작하는가? | 예 — 전체 pytest 172개 통과(그중 unittest discovery 131개), 결정론적 파일럿, Godot 슬라이스, 공개 안전 Web 빌드 | — |
-| 파이프라인이 완료됐는가? | Stage 8 source revision과 release lock까지 완료 | live-screening·KG-simulation addendum을 포함한 Stage 9 PDF 재빌드·형식 검사 |
-| 논문이 작성됐는가? | 예 — 이중언어 IEEE source, 논문 참고문헌 45건, ρ(a,E) 유도 수리와 별도 live-screening/KG-simulation addendum | 마지막 PDF는 두 addendum 전 영문 8쪽 / 국문 7쪽이므로 재빌드·쪽수 밴드 검토 후 저널 투고·심사 필요 |
+| 코드가 동작하는가? | 예 — 전체 pytest 172 passed, 2 skipped; unittest discovery 131 passed, 2 skipped; 결정론적 파일럿, Godot 슬라이스, 공개 안전 Web 빌드 | — |
+| 파이프라인이 완료됐는가? | Stage 10까지의 저장소 단계 산출물은 최종 영문·국문 PDF 재빌드와 형식 검사를 포함해 완료 | 독립 효능 실험, 저널 투고, 심사 결정은 남아 있음 |
+| 논문이 작성됐는가? | 예 — 최신 이중언어 IEEE source와 8쪽 PDF, 논문 참고문헌 45건, ρ(a,E) 유도 수리, 별도 live-screening/KG-simulation addendum | 저널 투고, 심사, 그 결과에 따른 개정은 남아 있음 |
 | **연구 주장이 입증됐는가?** | **아니오** | 셀당 5회 RQ2 스크리닝 파일럿만 존재하며, 확증 다중 모델·인간·감정·검색·메모리·엔진 성능 연구는 없다 |
 
-본 패키지가 주장하는 범위에서 **개발은 완료**됐다. 그러나 **실험은 완료되지 않았다.** 추적 중인
+현재 적합성 주장을 뒷받침하는 구현은 완료됐다. 그러나 **확증 실험은 완료되지 않았다.** 추적 중인
 21개 주장 가운데 5개는 승격 요건을 만족하는 근거가 없는 효능 주장이며, 그 5개가 바로 연구 질문이 묻는 대상이다.
 
 ## 실험 설계 (계획, 미실행)
@@ -163,14 +173,17 @@ TeX, hash, ignored runtime SQLite mirror다. machine ontology는
 
 ## 논문 한눈에 보기
 
-정식 원고: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
-[`paper/latex/ko/main.pdf`](paper/latex/ko/main.pdf)
+정식 source: [`paper/latex/en/main.tex`](paper/latex/en/main.tex) ·
+[`paper/latex/ko/main.tex`](paper/latex/ko/main.tex)
+
+현재 재빌드 PDF: [`English`](paper/latex/en/main.pdf) ·
+[`한국어`](paper/latex/ko/main.pdf)
 
 | 항목 | 값 |
 |---|---|
 | 제목 | TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World |
 | 목표 저널 | IEEE Transactions on Games, **Short Paper** (6–8쪽 밴드) |
-| 분량 | 영문 8쪽 · 국문 7쪽 |
+| 현재 PDF 분량 | 영문 8쪽 · 국문 8쪽, 두 PDF 모두 live-screening·KG-simulation addendum을 포함하고 저장소 논문 검사를 통과 |
 | 절 수 | 11개, 두 언어 동일 |
 | 참고문헌 | 45건 — Stage 5 동일성 검증 42건 + 2026-08-21 검증 추가 3건, 환각 0건 |
 | 심사 방식 | 이중 익명 |
@@ -324,7 +337,7 @@ Higgsfield UI와 검증된 추적 Higgsfield 플레이어 GLB의 `Idle`/`Casual_
 플레이어 효능, 확증 모델 효능은 **UNASSESSED**다. 2026-08-29/30 현재 영문 Web 빌드에서
 전체 결말, 페이지 새로고침을 통과한 save/reload, symbolic hash를 바꾸지 않는 추락 복구,
 추적 플레이어 로드, ASCII-safe 안내 3면, 콘솔·페이지 오류 0건을 확인했다. 프로덕션 배포
-`dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`도 데스크톱 시작 → 인게임 → Field Guide 스모크에서
+`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`도 데스크톱 시작 → 인게임 → Field Guide 스모크에서
 콘솔·페이지 오류 0건을 기록했다. 프로덕션 save/reload, 현 배포 모바일 검증, 사람 제스처
 포인터 잠금·음향, warmed frame/input, 30분 soak, rollback 근거가 없어 G6는 `FIX`다.
 
@@ -333,10 +346,14 @@ Higgsfield UI와 검증된 추적 Higgsfield 플레이어 GLB의 `Idle`/`Casual_
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-현재 영문/큐레이션 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,203바이트,
-PCK 10,892,428바이트, SHA-256
-`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
-배포 상태: **[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+현재 영문/큐레이션 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,187바이트,
+PCK 10,892,412바이트, SHA-256
+`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
+배포 상태: **[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+현재 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
+(`1280×720`, 30 fps, 69.067초, 5,662,128바이트, SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 위 배포와 바이트가
+일치하는 로컬 빌드에서 캡처했으며 사용성·성능 근거가 아닌 엔지니어링 시연이다.
 공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했다. `vercel.json`은 배포 설정으로
 소비되므로 공개 자산이 아니다.
 2026-08-17에 `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`를 대상으로 실행한 헤드리스 브라우저 스모크에서

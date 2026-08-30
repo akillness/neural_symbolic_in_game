@@ -515,8 +515,8 @@ def pilot_evidence_svg() -> str:
     )
     items += title_band(
         width,
-        "V3 · Every pilot number, generated from the frozen artifact",
-        f"Source: research/academic-pipeline/stage-04-pilot/pilot-summary.csv   ·   config_hash {config_hash[:16]}…",
+        "V3 · Every Stage 4 offline-pilot number",
+        f"Source: research/academic-pipeline/stage-04-pilot/pilot-summary.csv   ·   separate from live screening   ·   config_hash {config_hash[:16]}…",
     )
 
     bar_x = 720
@@ -718,8 +718,8 @@ def research_workflow_svg() -> str:
         height,
         "TRACE-RPG academic pipeline status",
         (
-            "Stages 1 through 5 passed their gates. The user accepted the Stage 6 revise-and-"
-            "resubmit direction; bounded game-track evidence generation is active."
+            "Stages 1 through 10 have recorded repository deliverables, including current bilingual "
+            "PDFs. Confirmatory efficacy studies and journal submission remain outside this completed lane."
         ),
     )
     items += title_band(
@@ -730,13 +730,13 @@ def research_workflow_svg() -> str:
 
     stages = (
         ("Stage 1", "Research packet", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 2", "36-source shortlist", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stage 2", "Source shortlist", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 2.5", "Integrity gate", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 3", "IEEE outline", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 4", "Draft + pilot + PDFs", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stage 4", "Offline pilot + sources", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 4.5", "Claim audit", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 5", "Citation integrity", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 6", "Peer review + game revision", "REVISION ACTIVE", PALE_ORANGE, ORANGE),
+        ("Stage 5", "45 citation identities", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stages 6–10", "Review, live screen, PDFs, lock", "COMPLETE", PALE_GREEN, GREEN),
     )
     card_w = 165
     gap = 12
@@ -783,13 +783,13 @@ def research_workflow_svg() -> str:
     items.append(rect(40, 380, 690, 130, fill="#FFFFFF", stroke=GREEN, radius=7))
     items.append(text(66, 416, "Produced by the executed stages", css_class="box-title"))
     items.append(
-        text(66, 448, "bilingual IEEE PDFs · verified 36-record bibliography", css_class="small")
+        text(66, 448, "bilingual IEEE sources · verified 45-entry bibliography", css_class="small")
     )
     items.append(
         text(
             66,
             476,
-            "64 frozen provenance rows · Godot policy-mirror runs · Stage 6 meta-review",
+            "38 artifacts · 22 inputs · 121 provenance rows · single-model live screening",
             css_class="small",
         )
     )
@@ -800,7 +800,7 @@ def research_workflow_svg() -> str:
         text(
             776,
             448,
-            "live model calls · human study · live Python↔Godot authorization",
+            "confirmatory multi-model study · human study · live Python↔Godot authorization",
             css_class="small",
         )
     )
@@ -808,7 +808,7 @@ def research_workflow_svg() -> str:
         text(
             776,
             476,
-            "retrieval/memory efficacy · affect efficacy · stable performance study",
+            "runtime retrieval/memory efficacy · affect efficacy · stable performance study",
             css_class="small",
         )
     )

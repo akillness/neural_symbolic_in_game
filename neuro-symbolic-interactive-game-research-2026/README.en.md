@@ -4,6 +4,16 @@
 
 TRACE-RPG never writes an LLM proposal directly into canonical game state. Each successfully parsed proposal becomes a typed candidate event and is committed only after an externally supplied action policy and deterministic checks over preconditions, reachability, NPC knowledge, disclosure, and quest stage. An invalid candidate yields structured validation errors and may receive a bounded repair opportunity; adapter and controller failures remain classified terminal rows. Knowledge-graph retrieval and game-engine integration remain separate confirmatory tracks connected through the versioned event contract; neither is represented as completed pilot evidence.
 
+## Evidence map
+
+| Lane | Current evidence | Honest boundary |
+|---|---|---|
+| Deterministic offline pilot | Parser, validator, repair, replay, integrity, and accounting fixtures over one authored world | Encoded-field mechanism conformance only |
+| Live RQ2 screening | One hosted proposer; guided `5/5` versus blind `0/5` only in the deliberately repairable policy-blind cell | `C-PILOT-007/008` only; no population, model-ranking, or `C-RESULT-003` promotion |
+| KG/ontology simulation | 43 OKF nodes, 106 reference edges, 24 curated typed edges, 6/6 authored holdouts | Closed-world `simulation-only`; not runtime retrieval or semantic completeness |
+| Godot/Web engineering | 4/4 fixtures, 49/49 combined checks, tracked player, desktop production smoke | Authored-fixture and presentation conformance; not usability, fun, G4, or final G6 |
+| Confirmatory study | Not executed | `C-RESULT-001`–`005` remain `TODO-RESULT` |
+
 ## Visuals
 
 All six SVGs are produced by `scripts/generate_readme_visuals.py`. The V2 footer, V3, and V4 are read directly from the frozen pilot CSVs and the claim ledger, so their numbers cannot drift from their sources. Solid elements are implemented and exercised by the pilot; dashed elements are specified, unimplemented, and carry no evidence.
@@ -20,9 +30,9 @@ The proposer may observe the affect estimate `z_t`, graph retrieval, and tempora
 
 If no candidate within budget validates, canonical state remains unchanged; a failed initial candidate may still be repaired and committed. Every completed candidate attempt is recorded before the terminal outcome. The repair-arm figures in the footer are read from `repair-arm-summary.csv`.
 
-### V3 · Every pilot observation
+### V3 · Every Stage 4 offline-pilot observation
 
-![Every pilot number, generated from the frozen artifact](visuals/pilot-evidence.svg)
+![Every Stage 4 offline-pilot number, generated from the frozen artifact](visuals/pilot-evidence.svg)
 
 Each denominator counts designed cases for that row alone, so rows are not comparable to one another. `0/2` and `5/7` are designed outcomes, not regressions. No confidence interval, significance test, or causal comparison is claimed.
 
@@ -38,12 +48,12 @@ Designed-fixture evidence never promotes itself into an efficacy claim, and a ve
 
 The original Stage 4.5 `22/22` pass is retained only as a superseded audit record: Stage 6 later
 reproduced three claim defects and one unaudited body-level telemetry defect. Stage 8 corrected the
-manuscript and parser contract, Stage 9 completed the short-paper formatting and AI-use disclosure,
-and the expanded audit passed 42/42 claim families. Stage 5 verified 42 bibliography identities
-(39 verified, 3 preprints, 0 unmatched/hallucinated); three further identity-verified references
-were added on 2026-08-21 with the guided-repair revision (45 total). The Stage-10 clean tagged recapture bound
-21/21 input digests to commit `c4752df` and verifies 35/35 artifact hashes. Independent efficacy
-studies remain pending. See [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)
+manuscript and parser contract, and the expanded audit passed 42/42 claim families. Stage 5 now
+contains 45 identity-verified references with 0 unmatched or hallucinated entries. Stage 10 binds
+22/22 declared inputs, 38/38 artifacts, and 121 provenance rows to the clean guided-repair release
+tag. The final Stage 9 bilingual PDFs now include the live-screening and KG-simulation addenda;
+both are 8 pages and pass the page-band, Type 3 font, and LaTeX log gates. Independent efficacy
+studies and journal submission remain pending. See [`research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md`](research/academic-pipeline/stage-04.5-claim-faithfulness-gate.md)
 and [`research/academic-pipeline/stage-08-revision.md`](research/academic-pipeline/stage-08-revision.md).
 
 ### V6 · Planned confirmatory design (not executed)
@@ -73,13 +83,14 @@ separate what the repository has built from what it has measured.
 
 | Question | What exists today | What is still missing |
 |---|---|---|
-| Does the code run? | Yes — 172 full pytest checks pass (131 unittest-discovered), deterministic pilot, Godot slice, live public-safe Web build | — |
-| Is the pipeline complete? | Stage 8 source revision and release lock are complete | Stage 9 PDF rebuild and format checks with the live-screening and KG-simulation addenda |
-| Is the paper written? | Yes — bilingual IEEE sources, 45 paper references, ρ(a,E) guided repair, and separate live-screening/KG-simulation addenda | Last PDFs predate both addenda (EN 8 pp / KO 7 pp); rebuild, page-band review, journal submission, and decision remain |
+| Does the code run? | Yes — full pytest: 172 passed, 2 skipped; unittest discovery: 131 passed, 2 skipped; deterministic pilot, Godot slice, live public-safe Web build | — |
+| Is the pipeline complete? | Yes for the staged repository deliverables through Stage 10, including the final bilingual PDF rebuild and format checks | Independent efficacy studies, journal submission, and a decision remain |
+| Is the paper written? | Yes — current bilingual IEEE sources and 8-page PDFs, 45 paper references, ρ(a,E) guided repair, and separate live-screening/KG-simulation addenda | Journal submission, review, and any resulting revision remain |
 | **Are the research claims proven?** | **No** | Only a five-call-per-cell RQ2 screening pilot exists; confirmatory multi-model, human, affect, retrieval, memory, and engine-performance studies are missing |
 
-Development is complete for what this package claims. The **experiments are not**: 5 of 21 tracked
-claims are efficacy claims with no promotion-qualifying evidence, and they are the ones the research questions ask.
+The implementation needed for the current conformance claims is complete. The **confirmatory
+experiments are not**: 5 of 21 tracked claims are efficacy claims with no promotion-qualifying
+evidence, and they are the ones the research questions ask.
 
 ## Experiment design (planned, not executed)
 
@@ -161,14 +172,17 @@ TeX, hashes, and the ignored runtime SQLite mirror. The machine ontology is
 
 ## Paper at a glance
 
-Authoritative: [`paper/latex/en/main.pdf`](paper/latex/en/main.pdf) ·
-[`paper/latex/ko/main.pdf`](paper/latex/ko/main.pdf)
+Authoritative sources: [`paper/latex/en/main.tex`](paper/latex/en/main.tex) ·
+[`paper/latex/ko/main.tex`](paper/latex/ko/main.tex)
+
+Current rebuilt PDFs: [`English`](paper/latex/en/main.pdf) ·
+[`한국어`](paper/latex/ko/main.pdf)
 
 | Item | Value |
 |---|---|
 | Title | TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World |
 | Venue target | IEEE Transactions on Games, **Short Paper** (6–8 pp band) |
-| Length | EN 8 pp · KO 7 pp |
+| Current PDF length | EN 8 pp · KO 8 pp; both include the live-screening and KG-simulation addenda and pass the repository paper checks |
 | Sections | 11, identical in both languages |
 | References | 45 — 42 identity-verified at Stage 5 + 3 verified 2026-08-21 adds, 0 hallucinated |
 | Review model | double-anonymous |
@@ -328,7 +342,7 @@ invariant conformance only. G4, usability, immersion, affect, player efficacy, a
 model efficacy are **UNASSESSED**. On 2026-08-29/30, the current English Web build completed the
 ending, refresh-persistent save/reload, state-isolated fall recovery, tracked-player load, and
 ASCII-safe three-page tutorial with zero console/page errors. Production deployment
-`dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` then passed desktop start → in-game → Field Guide smoke with zero
+`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` then passed desktop start → in-game → Field Guide smoke with zero
 console/page errors. G6 remains `FIX` pending production save/reload, current mobile verification,
 human-gesture pointer/audio checks, warmed frame/input, 30-minute soak, and rollback evidence.
 
@@ -337,10 +351,14 @@ human-gesture pointer/audio checks, warmed frame/input, 30-minute soak, and roll
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-The current English/curated-player artifact is deployed: 11 manifest files / 50,745,203 bytes; PCK
-10,892,428 bytes, SHA-256
-`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
-Deployment status: **[`dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+The current English/curated-player artifact is deployed: 11 manifest files / 50,745,187 bytes; PCK
+10,892,412 bytes, SHA-256
+`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
+Deployment status: **[`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+Current full-route gameplay recording: **[Compresso-compressed H.264 MP4](game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
+(`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It was captured from the
+exact local build source deployed above and remains engineering demonstration, not usability or performance evidence.
 All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` was consumed as
 deployment configuration and is not a public asset.
 A headless-browser smoke on 2026-08-17 against `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe` verified clean

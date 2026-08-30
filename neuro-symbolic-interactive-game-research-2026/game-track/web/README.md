@@ -1,9 +1,13 @@
 # The Sealed Lighthouse — Web release lane
 
-Status: **production deployment `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` is `READY` and live at
+Status: **production deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` is `READY` and live at
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app)**.
 Its deployment-scoped URL is
-[`sealed-lighthouse-trace-bqbsk7j00-akillness-projects.vercel.app`](https://sealed-lighthouse-trace-bqbsk7j00-akillness-projects.vercel.app).
+[`sealed-lighthouse-trace-hmonq88f1-akillness-projects.vercel.app`](https://sealed-lighthouse-trace-hmonq88f1-akillness-projects.vercel.app).
+Current full-route gameplay: **[Compresso-compressed H.264 MP4](../godot/docs/latest/trace-rpg-gameplay.mp4)**
+(`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It was captured from the
+exact local build bytes deployed above and is an engineering demonstration only.
 
 This directory holds the reproducible *configuration* for a public-safe Godot Web build with a
 procedural world and separately curated UI/player assets. The
@@ -37,9 +41,9 @@ provenance-bound Higgsfield UI lane from `godot/assets/ui/` and, since D-050, th
 start gate. Deleting optional UI PNGs leaves the programmatic world/UI fallback playable; player
 visuals and clip state stay outside canonical state and saves.
 
-The current ignored 2026-08-30 `public/` artifact contains 11 top-level files / 50,745,203 bytes,
-including `index.html`, JavaScript/audio worklets, `index.pck` (10,892,428 bytes, SHA-256
-`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`), `index.wasm`, and the
+The current ignored 2026-08-30 `public/` artifact contains 11 top-level files / 50,745,187 bytes,
+including `index.html`, JavaScript/audio worklets, `index.pck` (10,892,412 bytes, SHA-256
+`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`), `index.wasm`, and the
 directly readable `NanumGothic-OFL.txt`. It includes the tracked player and is deployed. All 10
 runtime files fetched from the production alias returned `200` and were byte-identical to the local
 artifact; `vercel.json` is deployment configuration and correctly returns `404` as a public route.

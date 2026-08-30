@@ -2,7 +2,7 @@
 
 상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `49/49`
 검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
-배포 `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`에 영문 추적 플레이어 산출물이 공개됐다.**
+배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`에 영문 추적 플레이어 산출물이 공개됐다.**
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -72,8 +72,9 @@ JSON Schema로 검증한다.
 `../../_workspace/current/engineering/tech-verification/current.json`이 지정하며 현재
 `evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`로 해석된다. 정식,
 중복 ID, timeout, 손상 저장 실행은 각각 commit 3회를 수행하고 동결 종료/oracle 해시에
-도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 현재 Cycle 3 aggregate
-receipt는 `40 tests, 44 subtests`다. 성능 budget은 모두 통과하지 않았다. 시작 transient를
+도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 선택된 보존 Cycle 2
+packet은 `40 tests, 44 subtests`를 기록하고, 현재 game-track gate는 `46 passed, 2 skipped`를
+기록한다. 성능 budget은 모두 통과하지 않았다. 시작 transient를
 포함한 5개 표본의 헤드리스 frame p95는 선택 보존 패킷에서 각각 `116.667`, `100.000`,
 `98.760`, `112.907 ms`다.
 
@@ -168,6 +169,11 @@ fixture `4/4` 모두 정확한 종료 SHA-256
 생성한 최신 엔지니어링 작업 캡처다. 캡처 전용 query hook은 추적 source에 들어가지 않았다.
 불변 v5 패킷을 대체하거나 수정하지 않는다.
 
+현재 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
+(`1280×720`, 30 fps, 69.067초, 5,662,128바이트, SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 아래 배포와 바이트가
+일치하는 로컬 빌드에서 캡처한 엔지니어링 시연이다.
+
 ## Public-safe Web 산출물 빌드
 
 저장소 프로젝트 루트에서 실행한다.
@@ -180,9 +186,9 @@ python3 -m http.server 4173 --directory game-track/web/public
 빌더는 Godot 프로젝트를 임시 디렉터리로 복사하고 그 복사본에서만 `main_3d.tscn`을 선택한다.
 단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 근거
 결속된 실제 프로젝트에는 Godot editor/import를 실행하지 않는다. 2026-08-30 무시 대상
-산출물은 manifest 파일 11개, 50,745,203바이트이며 `index.pck`은 10,892,428바이트, SHA-256
-`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`이다. 이 산출물은
-**[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
+산출물은 manifest 파일 11개, 50,745,187바이트이며 `index.pck`은 10,892,412바이트, SHA-256
+`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`이다. 이 산출물은
+**[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
 배포됐다. 공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했고 `vercel.json`은
 배포 설정으로 소비됐다. 프로덕션 데스크톱 스모크는 시작 → 인게임 → Field Guide 전환과
 콘솔·페이지 오류 0건을 확인했다. 2026-08-17의 과거 headless 브라우저 스모크는 한글 표시,

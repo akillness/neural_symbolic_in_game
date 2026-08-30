@@ -423,7 +423,7 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
     rows = []
     for key, english_label, korean_label in ordered:
         summary = cells[key]
-        error_label = "+".join(
+        error_label = "+\\allowbreak ".join(
             code_labels[code] for code in summary["observed_initial_error_codes"]
         )
         if not error_label:

@@ -57,8 +57,15 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 
 ![골든 패스 오프닝: 시작 게이트, 인트로 시네마틱, 안내 폴리오, 첫 걸음](godot/docs/latest/golden-path.gif)
 
-*배포 별칭에서 캡처한 32초 엔지니어링 기록(시작 게이트 → 인트로 → 안내 → 부두). 작업
-아티팩트일 뿐 사용성·몰입·성능 근거가 아니다.*
+**[현재 전체 경로 플레이 영상(Compresso 압축 H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**은
+배포본과 바이트가 일치하는 로컬 빌드의 시작 게이트, 보류, 신호 렌즈, 램프 장착, 승인 단서,
+썰물 표식, 결말 영수증을 담는다(`1280×720`, 30 fps, 69.067초, 5,662,128바이트; SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 사용성·몰입·성능 근거가
+아닌 엔지니어링 시연이다.
+
+*이전 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`에서 캡처한 과거 32초 엔지니어링 기록
+(시작 게이트 → 인트로 → 안내 → 부두)이다. 추적 플레이어와 현재 영문 산출물보다 오래됐다.
+작업 아티팩트일 뿐 사용성·몰입·성능 근거가 아니다.*
 
 | `SL-PLAY-EVAL-001` 행 | 검사 | 결과 |
 |---|---:|---|
@@ -106,10 +113,10 @@ G6는 프로덕션 save/reload, 현 배포 모바일 검증, 사람 포인터/�
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-현재 영문 UI + 추적 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,203바이트,
-PCK 10,892,428바이트, SHA-256
-`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
-배포 상태: **[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+현재 영문 UI + 추적 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,745,187바이트,
+PCK 10,892,412바이트, SHA-256
+`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
+배포 상태: **[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
 공개 런타임 파일 10개는 모두 `200`이며 로컬 바이트와 일치했고 `vercel.json`은 배포 설정으로
 소비됐다. 프로덕션 데스크톱 스모크는 시작 → 인게임 → Field Guide 전환과 콘솔·페이지 오류
 0건을 확인했다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는

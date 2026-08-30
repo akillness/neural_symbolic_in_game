@@ -6,7 +6,7 @@ status: READY-NOT-EXECUTED
 prepared: 2026-08-28 (user request: "지금 준비해줘")
 participant: 프로젝트 소유자 1인 (자기 측정; G4의 독립 참가자 연구를 대체하지 않음)
 target_url: https://sealed-lighthouse-trace-rpg.vercel.app
-build: dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN (index.pck 10,892,428 B, de6704…31ba)
+build: dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y (index.pck 10,892,412 B, 29e3d8b6…8f76)
 ```
 
 이 패킷은 자동화가 대신할 수 없는 **사람 제스처 항목**을 소유자 1회 플레이로 닫기 위한

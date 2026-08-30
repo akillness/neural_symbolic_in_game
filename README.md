@@ -5,35 +5,40 @@
 [![Knowledge](https://img.shields.io/badge/knowledge-llm--wiki%20%2B%20Graphify-6f42c1)](./llm-wiki/index.md)
 [![Research status](https://img.shields.io/badge/status-experimental-orange)](./neuro-symbolic-interactive-game-research-2026/README.en.md)
 
-도전적인 뉴로-심볼릭 인터랙티브 게임 연구를 위한 이중언어 논문 초안, 10개 모델 평가 매트릭스, 결정론적 정책 검증 런타임, semantic trace replay, recorded-response 실험 runner, 게임 브리지, 지속 갱신 가능한 연구 하네스입니다. 실제 모델/엔진 어댑터와 인간 실험은 다음 구현 단계입니다.
+TRACE-RPG는 생성 모델의 제안을 정식 게임 상태와 분리하고, 외부 행동 정책과 결정론적 검증을 통과한 이벤트만 커밋하는 뉴로-심볼릭 연구 하네스입니다. 이 저장소에는 이중언어 IEEE 원고 source, 동결 오프라인 적합성 파일럿, `pilot-only` 단일 모델 RQ2 스크리닝, `simulation-only` KG/온톨로지 레인, Godot 4.7.1 Web 플레이어블이 함께 있습니다. 다중 모델 확증 연구, 인간 연구, 감정·런타임 검색 효능은 아직 미실행입니다.
 
-This repository contains a bilingual paper draft, a ten-model evaluation matrix, deterministic policy validation, semantic trace replay, a recorded-response experiment runner, a game bridge, and a refreshable research harness. Real model and engine adapters plus the human study remain future work.
+TRACE-RPG separates generated proposals from canonical game state and commits only events accepted by an external action policy and deterministic validation. The repository contains bilingual IEEE sources, a frozen offline conformance pilot, a `pilot-only` single-model RQ2 screen, a `simulation-only` KG/ontology lane, and a Godot 4.7.1 Web playable. Confirmatory multi-model, human, affect, and runtime-retrieval efficacy studies remain unexecuted.
 
 | Start here | Description |
 |---|---|
 | [한국어 안내](./neuro-symbolic-interactive-game-research-2026/README.ko.md) | 연구 질문, 구조, 실행 순서 |
 | [English guide](./neuro-symbolic-interactive-game-research-2026/README.en.md) | Research questions, architecture, execution |
-| [한국어 논문 초안](./neuro-symbolic-interactive-game-research-2026/paper/ko/manuscript.md) | TRACE-RPG manuscript draft |
-| [English paper draft](./neuro-symbolic-interactive-game-research-2026/paper/en/manuscript.md) | TRACE-RPG manuscript draft |
+| [정식 한국어 논문 source](./neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex) | Current TRACE-RPG manuscript source |
+| [Authoritative English paper source](./neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex) | Current TRACE-RPG manuscript source |
+| [Public Web playable](https://sealed-lighthouse-trace-rpg.vercel.app) | Current production alias |
+| [Current gameplay recording](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4) | Compresso-compressed 69.067 s H.264 MP4 |
 | [Project knowledge index](./llm-wiki/index.md) | Persistent sources, concepts, reports, and graph |
 
 ## 완료 상태 / Completion status
 
 | 영역 / Area | 상태 / Status | 근거 / Evidence |
 |---|---|---|
-| 구현 / Implementation | **완료 / Done** | 120 tests, deterministic pilot incl. guided-repair arm, Godot 4.7.1 slice, live public-safe Web build |
-| 학술 파이프라인 / Academic pipeline | **완료 / Done** | 10 stages executed; pilot packet 22 inputs + 38 artifacts, clean-tag re-lock at each release checkpoint |
-| 논문 / Paper | **작성 완료 / Drafted** | Bilingual IEEE short paper, EN 8 pp / KO 7 pp, 45 verified references, ρ(a,E) guided-repair method |
-| 재현성 / Reproducibility | **완료 / Done** | 120/120 tests; 38/38 artifact + 22/22 input hashes recompute from the frozen packet |
-| **실험 / Experiments** | **미완료 / NOT DONE** | `C-RESULT-001`–`005` = `TODO-RESULT`, 5 of 18 claims, zero evidence |
+| 구현 / Implementation | **현재 적합성 범위 완료 / Done for current conformance scope** | pytest 172 passed, 2 skipped; unittest 131 passed, 2 skipped; Godot 4/4 fixtures and 49/49 combined checks |
+| 학술 파이프라인 / Academic pipeline | **저장소 단계 완료 / Repository stages complete** | Stages 1–10, including final bilingual PDF rebuild and format checks, are complete; efficacy studies and submission remain separate |
+| 논문 / Paper | **source·PDF 최신 / Sources and PDFs current** | Bilingual IEEE sources and 8-page PDFs, 45 identity-verified references, live-screening and KG-simulation addenda; paper checks pass |
+| 재현성 / Reproducibility | **동결 패킷 완료 / Frozen packet complete** | 38/38 artifacts, 22/22 inputs, 121 provenance rows recompute from the guided-repair release packet |
+| 라이브 스크리닝 / Live screening | **`pilot-only`** | `C-PILOT-007/008`; guided 5/5 vs blind 0/5 only in one constructed repairable regime |
+| **확증 실험 / Confirmatory experiments** | **미완료 / NOT DONE** | `C-RESULT-001`–`005` = `TODO-RESULT`, 5 of 21 claims with no promotion-qualifying evidence |
 | 투고 / Submission | **미진행 / Not started** | No journal decision, reviewer archive, or DOI deposit |
 
-구현과 리소스는 완료됐고 실험은 완료되지 않았습니다. 연구 질문 5개가 겨냥하는 효능 주장에는
-근거가 전혀 없으며, 라이브 모델·인간 연구·감정·검색·메모리·엔진 성능 실험이 모두 미실행입니다.
+현재 적합성 주장을 위한 구현은 완료됐지만 확증 실험은 완료되지 않았습니다. 단일 모델 라이브
+스크리닝은 제한된 mechanism evidence일 뿐 `C-RESULT-*`를 승격하지 않습니다. 인간 연구,
+감정·런타임 검색·메모리 효능, 대표성 있는 엔진 성능 연구도 미실행입니다.
 
-Implementation and resources are complete; the experiments are not. The five efficacy claims the
-research questions target have no evidence, and the live-model, human, affect, retrieval, memory,
-and engine-performance studies are all unexecuted.
+Implementation for the current conformance claims is complete, but the confirmatory experiments are
+not. The single-model live screen is bounded mechanism evidence and promotes no `C-RESULT-*` claim.
+Human, affect, runtime-retrieval, memory-efficacy, and representative engine-performance studies
+remain unexecuted.
 
 상세 표(실험 설계 · 논문 요약 · 주장 원장) / Detailed tables:
 [한국어](./neuro-symbolic-interactive-game-research-2026/README.ko.md#한눈에-보기) ·
@@ -50,15 +55,22 @@ A learned model proposes; only the deterministic gate commits. Retrieval, memory
 
 ## What the numbers actually say
 
-아래 두 그림은 동결된 파일럿 CSV와 주장 원장에서 직접 생성되므로 원본 수치와 어긋날 수 없습니다. CI가 재생성 결과와 커밋된 SVG의 일치를 강제합니다.
-Both figures below are generated directly from the frozen pilot CSVs and the claim ledger, so they cannot drift from their sources; CI enforces that the committed SVGs match a fresh regeneration.
+첫 그림은 동결된 **Stage 4 오프라인** 파일럿만, 둘째 그림은 전체 주장 원장을 보여 줍니다.
+라이브 스크리닝은 별도 패킷이며 첫 그림의 분모에 섞이지 않습니다. 두 SVG는 원본에서 직접
+생성되고 CI가 재생성 결과와 커밋된 파일의 일치를 강제합니다.
 
-![Every pilot number, generated from the frozen artifact](./neuro-symbolic-interactive-game-research-2026/visuals/pilot-evidence.svg)
+The first figure covers only the frozen **Stage 4 offline** pilot; the second covers the complete
+claim ledger. Live screening remains a separate packet and never enters the first figure's
+denominators. Both SVGs are generated from source data, and CI enforces byte-stable regeneration.
+
+![Every Stage 4 offline-pilot number, generated from the frozen artifact](./neuro-symbolic-interactive-game-research-2026/visuals/pilot-evidence.svg)
 
 ![Claim ledger status](./neuro-symbolic-interactive-game-research-2026/visuals/claim-status.svg)
 
-분모는 전부 저자가 설계한 결정론적 사례입니다. 효능 주장 `C-RESULT-001`–`005`는 근거가 없는 `TODO-RESULT`입니다.
-Every denominator is an authored deterministic case. The efficacy claims `C-RESULT-001`–`005` are `TODO-RESULT` with no evidence.
+첫 그림의 분모는 전부 저자가 설계한 결정론적 사례입니다. 효능 주장 `C-RESULT-001`–`005`는
+승격 가능한 확증 근거가 없는 `TODO-RESULT`입니다.
+Every denominator in the first figure is an authored deterministic case. The efficacy claims
+`C-RESULT-001`–`005` remain `TODO-RESULT` with no promotion-qualifying confirmatory evidence.
 
 ![Academic pipeline status](./neuro-symbolic-interactive-game-research-2026/visuals/research-workflow.svg)
 
@@ -99,12 +111,14 @@ and [machine-readable JSON](./neuro-symbolic-interactive-game-research-2026/game
 | ![Cycle 3 public-safe authorized hint](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/authorized_hint.png) | ![Cycle 3 public-safe ending](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/ending.png) |
 
 These are latest **engineering working captures**, not the immutable Cycle 2 research packet.
-Generated candidates listed in `game-track/assets/concepts/public-exclusion.json` are excluded from Web and
-`--public-safe`; the public artifact uses procedural geometry, VFX, UI, and audio.
+Generated candidates listed in `game-track/assets/concepts/public-exclusion.json` are excluded from
+Web and `--public-safe`. The public artifact uses the curated UI lane and validated tracked
+Higgsfield player with `Idle`/`Casual_Walk` over the procedural world, VFX, and audio fallback.
 
 **Claim boundary / 주장 경계:** fixture and presentation-invariant conformance only. G4,
 usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**. G6 remains
-`FIX` pending save/reload, warmed-frame/input, and 30-minute soak evidence.
+`FIX` pending production save/reload, current mobile verification, human pointer/audio confirmation,
+warmed-frame/input measurements, a 30-minute soak, and rollback evidence.
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026
@@ -112,16 +126,22 @@ cd neuro-symbolic-interactive-game-research-2026
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-Deployment / 배포: **[play the public-safe Web build](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-Vercel returned `200` for all 11 shipped files, served WASM as `application/wasm`, and a headless
-browser confirmed readable Korean text, a clean load, and the readable start gate and in-game ledger
-with zero console or page errors at 1280×720 and 390×844. Pointer lock is **not verified**: a
-synthetic click raised `pointerlockerror` and a real-Chrome click produced no lock request, so a
-human-gesture check remains open. / 포인터 잠금은 **미검증**이며 사람 제스처 확인이 남아 있다.
+Deployment / 배포: **[play the public-safe Web build](https://sealed-lighthouse-trace-rpg.vercel.app)**
+(Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, `READY`). Current gameplay / 현재 플레이 영상:
+**[69.067 s H.264 MP4](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
+(`1280×720`, 30 fps, 5,662,128 bytes, SHA-256
+`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`).
+The current production artifact serves 10 runtime files with `200`; `vercel.json` is consumed as
+deployment configuration and correctly returns `404`. The current desktop smoke completed start →
+in-game → Field Guide with zero console or page errors. Current 390×844 mobile verification and
+pointer lock remain open; automation denial is not itself proof of a defect. / 현재 모바일과 포인터
+잠금은 **미검증**이며 사람 확인이 남아 있다.
 
-| Deployed desktop / 배포 데스크톱 | Deployed narrow layout / 배포 협폭 |
+Retained 2026-08-21 layout captures below are historical and do not verify the current deployment:
+
+| Historical desktop / 과거 데스크톱 | Historical narrow layout / 과거 협폭 |
 |---|---|
-| ![Vercel desktop in-game smoke](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-in-game.png) | ![Vercel 390 by 844 in-game smoke](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-mobile-in-game.png) |
+| ![Historical Vercel desktop in-game smoke](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-in-game.png) | ![Historical Vercel 390 by 844 in-game smoke](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-mobile-in-game.png) |
 
 ## Quick validation
 

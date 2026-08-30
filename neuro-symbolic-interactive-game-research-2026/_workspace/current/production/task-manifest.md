@@ -23,11 +23,12 @@ LaTeX PDF rebuild
 | Execute public-safe 3D smoke | QA | 1.verify | same proposal router as play | G7 engineering | observed-8-of-8 | preserve final command receipt |
 | Execute aggregate regression | QA | 1.verify | full Pytest/unittest/game selection + Ruff | regression | observed-172-pass-2-skip; unittest-131-2-skip; game-46-pass-2-skip | rerun after integration |
 | Bundle Korean Web font with license | release engineer | 1.resources | `assets/fonts/NanumGothic-Regular.ttf`, `OFL.txt`, provenance README, public `NanumGothic-OFL.txt` | provenance | done-OFL-pinned-and-public-hash | retain license with releases |
-| Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-production-11-manifest-files-50745203-bytes-pck-10892428 | monitor and retain exact receipts |
+| Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-production-11-manifest-files-50745187-bytes-pck-10892412 | monitor and retain exact receipts |
 | Verify deployed Web in browser | QA + release | 1.verify | six `docs/latest/*web*`/`*vercel*` captures | G1/G6/release | done-bounded-desktop-mobile-zero-errors | pointer lock + save/reload + performance |
 | Measure Web performance and 30-minute soak | QA | 1.verify | browser performance report | G6 | pending | warmed p95, long frames, input, memory |
 | Conduct approved human presentation study | independent evaluator | later study | participant packet | G4 | not-started | immersion/readability/usability data |
-| Deploy public-safe static artifact | release engineer | 1.release | `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` at `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-ready-10-runtime-files-byte-identical-desktop-zero-errors | production save/reload, mobile recheck, monitor/rollback drill |
+| Deploy public-safe static artifact | release engineer | 1.release | `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` at `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-ready-10-runtime-files-byte-identical-desktop-zero-errors | production save/reload, mobile recheck, monitor/rollback drill |
+| Record current full route and compress for README | release engineer | 1.release | `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | release engineering | done-69.067s-h264-1280x720-5662128b-verified | human usability/performance study remains separate |
 | Deepen weather/cinematic 연출 (tension weather arc, lightning, harbor micro-motion, intro FOV, ending beam) | visual lane (subagent WorldFeel) | 1.presentation | `world_builder.gd`, `narrative_director.gd` | G1/G4 | done-2026-08-21-smoke-and-eval-green | human presentation study |
 | Deepen core-loop feel/balance (movement accel, focus affordance, golden-path retune, escalating commits, 7 stingers + ambience) | programmer + audio lane (subagent LoopFeel) | 1.systems | `player_3d.gd`, `interactable_3d.gd`, `game_3d.gd`, `procedural_audio.gd` | G1/G7 | done-2026-08-21-smoke-and-eval-green | human presentation study |
 | Generate Higgsfield UI art pack (6 assets + provenance) | asset lane (subagent HiggsfieldGen) | 1.resources | `game-track/assets/generated/higgsfield-ui-v1/` | provenance (D-034) | done-6-of-6-accepted-2-retries | keep staging immutable |
@@ -93,18 +94,22 @@ LaTeX PDF rebuild
   `game-track/godot` project**. Import, smoke, evaluation, Web export, and capture must use disposable
   staged copies; before/after SHA-256 must remain
   `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`.
-- Current `game-track/web/public/` contains 11 manifest files / 50,745,203 bytes; PCK 10,892,428
-  bytes, SHA-256 `de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
+- Current `game-track/web/public/` contains 11 manifest files / 50,745,187 bytes; PCK 10,892,412
+  bytes, SHA-256 `29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
   It includes the tracked player and remains ignored/non-authoritative. Production deployment
-  `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` is byte-identical across all 10 public runtime files;
+  `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` is byte-identical across all 10 public runtime files;
   `vercel.json` is deployment configuration and correctly non-public. The public 4,534-byte OFL
   notice hash still matches the source license; local Vercel metadata is not shipped.
 - Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-30 deploy
-  `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` (`index.pck` 10,892,428 bytes, SHA-256 `de670404…31ba`), READY;
+  `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` (`index.pck` 10,892,412 bytes, SHA-256 `29e3d8b6…8f76`), READY;
   production desktop start → in-game → Field Guide smoke logged zero console/page errors. Historical
   receipts: 2026-08-21 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual+texture) and
   `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` (curated-art, retained desktop+mobile captures); 2026-08-17
   `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.
+- Current full-route recording from the exact local bytes deployed in `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`:
+  `docs/latest/trace-rpg-gameplay.mp4` (H.264 High, 1280×720, 30 fps, 69.067 s, 5,662,128 bytes,
+  SHA-256 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`, fast-start enabled) —
+  engineering demonstration only.
 - 2026-08-21 golden-path screencast from the deployed alias retained as
   `docs/latest/golden-path.gif` (640×360, 10 fps, 32 s, 3,245,101 bytes) — engineering working
   artifact only; not usability, immersion, or performance evidence.

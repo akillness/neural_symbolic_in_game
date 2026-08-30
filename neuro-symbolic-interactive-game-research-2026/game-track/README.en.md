@@ -51,18 +51,26 @@ intents still pass through the authored proposal and validation router. The play
 harbor-side signal and earns the tide route while the offshore lighthouse remains sealed.
 
 A second 2026-08-21 pass made the paper's transaction diegetic: proposals are weighed in a
-3-phase verdict ritual (amber inspection ring → brass-flash 기록 or slate seal-line 보류 → settle),
-the harbor ledger logs numbered entries in a bureaucratic-poetic voice with stamp iconography,
-Mira gained a 3-beat 서사 (storm night, guarded hope, quiet epilogue), the tutorial's second page
-maps 제안·검증·보류·기록 onto the propose/validate/refuse/commit loop, and the end card carries an
-episode receipt (entries, deferrals, state hash) under the tide-route seal. Curated D-036 world
-textures (wet planks, oxidized brass, sail canvas) and stamp/seal icons ship with full provenance
-and a proven procedural fallback.
+3-phase verdict ritual (amber inspection ring → brass-flash record or slate seal-line deferral →
+settle), the harbor ledger logs numbered entries in a bureaucratic-poetic voice with stamp
+iconography, Mira gained a 3-beat arc (storm night, guarded hope, quiet epilogue), the tutorial's
+second page maps propose/validate/refuse/commit onto the same transaction loop, and the end card
+carries an episode receipt (entries, deferrals, state hash) under the tide-route seal. Curated D-036
+world textures (wet planks, oxidized brass, sail canvas) and stamp/seal icons ship with full
+provenance and a proven procedural fallback.
 
 ![Golden-path opening: start gate, intro cinematic, tutorial folio, first steps](godot/docs/latest/golden-path.gif)
 
-*32-second engineering capture from the deployed alias (start gate → intro → tutorial → dock).
-Working artifact only — not usability, immersion, or performance evidence.*
+**[Current full-route gameplay recording (Compresso-compressed H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**
+shows the start gate, refusal hold, signal lens, lamp mount, authorized hint, tide marks, and ending
+receipt from the exact local build bytes deployed below (`1280×720`, 30 fps, 69.067 s, 5,662,128
+bytes; SHA-256 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It is an engineering
+demonstration, not usability, immersion, or performance evidence.
+
+*Historical 32-second engineering capture from prior deployment
+`dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (start gate → intro → tutorial → dock). It predates the tracked
+player and current English artifact. Working artifact only — not usability, immersion, or
+performance evidence.*
 
 | `SL-PLAY-EVAL-001` row | Checks | Result |
 |---|---:|---|
@@ -110,10 +118,10 @@ From the project root:
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-The current English UI + tracked-player artifact is deployed: 11 manifest files / 50,745,203 bytes;
-PCK 10,892,428 bytes, SHA-256
-`de670404769bf86c8eac0e8f4aa57957e1bef4fde6dc9d7fc4daa605376c31ba`.
-Deployment status: **[Vercel `dpl_2mcMB3qomEKPyUj2oBtXVLzLXraN` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+The current English UI + tracked-player artifact is deployed: 11 manifest files / 50,745,187 bytes;
+PCK 10,892,412 bytes, SHA-256
+`29e3d8b6b898482fb1a7979966cf1acec88caf7578a26398e889fc7af10f8f76`.
+Deployment status: **[Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
 All 10 public runtime files returned `200` and matched the local bytes; `vercel.json` was consumed as
 deployment configuration. The production desktop smoke completed start → in-game → Field Guide
 with zero console/page errors. The prior 2026-08-21 deployment
