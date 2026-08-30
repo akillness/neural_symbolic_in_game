@@ -135,7 +135,11 @@ godot --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn -- \
 ```
 
 The 8-check smoke sweep passed again on Godot 4.7.1 (2026-08-30) and its final state hash matches the
-frozen hash `4b2310...8892`. Web and `--public-safe` never load pending-review candidates under
+frozen hash `4b2310...8892`. Its stable presentation item now also asserts that an enabled
+`BoxShape3D` matches the visible lens-approach deck, contains the `GoldenPathLayout` anchor, overlaps
+the quay, and wraps the lamp-store wall; this closes DEF-021 as an engineering defect without claiming
+human navigation success. The Godot-available local test runs this smoke from a disposable copy. Web and
+`--public-safe` never load pending-review candidates under
 `../assets/concepts/` or `../assets/concepts/pack-3d/`. They do load the separately curated UI lane
 and tracked `assets/player/higgsfield-player.glb` with `Idle`/`Casual_Walk`, over the procedural
 world/VFX/audio fallback. Player visuals and clip state never enter canonical state or saves.

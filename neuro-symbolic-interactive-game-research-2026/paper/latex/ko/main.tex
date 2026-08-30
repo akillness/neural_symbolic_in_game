@@ -70,13 +70,13 @@
 
 본 논문은 이러한 관심사를 감사 가능한 트랜잭션 프로토콜로 결합한 구현인 \system{}을 제시한다. 현재 기여는 다음과 같다.
 \begin{enumerate}
-  \item state, policy, candidate, record, game bridge에 대한 \emph{버전형 신뢰경계 contract}와, proposal/replay 경계에서 known field의 모호한 타입 및 candidate unknown key를 거부하는 type-strict parser;
-  \item 상태 기준 predicate 6개, bounded repair, unchanged fallback, defensive pre-commit revalidation을 갖춘 \emph{validate--repair--commit controller};
-  \item unkeyed SHA-256 content link, state-semantic replay, episode-continuity check를 묶은 \emph{감사 근거 layer};
-  \item 동결 assignment key, 분류된 terminal failure, proposal trace가 존재할 수 없는 failure까지 보존하는 assignment-complete accounting을 갖춘 \emph{오프라인 적합성 harness};
-  \item prior candidate와 structured error만 읽는 \emph{counterexample-guided operator} $\rho(a,E)$ 및 blind unchanged retry, state-reading oracle upper bound, 동결 repairability class 비교.
+  \item \textbf{C1---계약:} state, policy, candidate, record, game bridge에 대한 \emph{버전형 신뢰경계 contract}와, proposal/replay 경계에서 known field의 모호한 타입 및 candidate unknown key를 거부하는 type-strict parser;
+  \item \textbf{C2---controller:} 상태 기준 predicate 6개, bounded repair, unchanged fallback, defensive pre-commit revalidation을 갖춘 \emph{validate--repair--commit controller};
+  \item \textbf{C3---감사:} unkeyed SHA-256 content link, state-semantic replay, episode-continuity check를 묶은 \emph{감사 근거 layer};
+  \item \textbf{C4---harness:} 동결 assignment key, 분류된 terminal failure, proposal trace가 존재할 수 없는 failure까지 보존하는 assignment-complete accounting을 갖춘 \emph{오프라인 적합성 harness};
+  \item \textbf{C5---수리:} prior candidate와 structured error만 읽는 \emph{counterexample-guided operator} $\rho(a,E)$ 및 blind unchanged retry, state-reading oracle upper bound, 동결 repairability class 비교.
 \end{enumerate}
-결정론적 parser, state-isolation, repair, fault-injection, manifest fixture가 이 다섯 구현 기여의 정확 집계 근거다.
+별도 구조화 crosscheck는 C1--C5를 선행 주제, citation key, claim ID, 저장소 근거, 실험 레인, 추론 상한에 결합한다. 결정론적 parser, state-isolation, repair, fault-injection, manifest fixture가 이 다섯 구현 기여의 정확 집계 근거다.
 근거 지도는 서로 대체할 수 없는 세 레인으로 구성된다. 첫째, 실증의 중심은 단일 작성 world state의 결정론적 적합성 파일럿으로, 인코딩된 parser·validation·repair·replay·accounting 동작을 측정하며 모집단 효능은 측정하지 않는다. 둘째, 셀당 5회 라이브 스크리닝 확장은 하나의 hosted proposer에서 repair transfer를 탐색하지만, 고정되지 않은 revision, sampling을 제어하지 못하는 seed label, 의도적으로 구성한 state 때문에 pilot-only가 상한이다. 셋째, closed-world KG/온톨로지 시뮬레이션은 작성된 typed-link proposal을 평가할 뿐 런타임 검색을 구현하지 않고 어떤 \texttt{C-RESULT-*} claim도 지지하지 않는다. 보존한 Godot 4.7.1 policy-mirror trace와 render replay는 엔진 로컬 적합성 근거만 추가한다. 네 fixture 실행 모두에서 headless frame sample 5개 중 최대값은 첫 sample이었고 범위는 98.760--116.667\,ms로 16.7\,ms budget을 넘었다. 이 startup-sensitive trace는 안정적인 frame benchmark가 아니다. 참여자, 감정 또는 런타임 검색 실험, live Python--Godot 승인 왕복, 대표성 있는 end-to-end 게임플레이 성능 측정은 없다.
 
 \section{관련 연구와 연구 공백}
@@ -96,7 +96,7 @@ G-Retriever, HippoRAG, Mem0는 관련 하위 그래프 검색과 장기 메모�
 \subsection{감사 가능성과 재현성}
 과정 지표는 중간 실패를 보존할 동기를 제공하고 \cite{S16_ma2024agentboard}, 강건한 평가는 소수 확률적 실행의 과도한 해석을 경고한다 \cite{S31_agarwal2021precipice}. 재현성과 환경 보고 지침은 동결된 산출물과 명시적 측정 경계를 뒷받침한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}. 인간 및 LLM 평가는 구성개념, 평가자, 편향 통제를 요구하며 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}, 향후 비열등성과 참여자 분석에는 정당화된 margin과 random-effects 구조가 필요하다 \cite{S32_lakens2018equivalence,S35_barr2013random}.
 
-제한된 novelty는 개별 구성요소의 발명이 아니라 구현된 결합이다. 행동 개입(interposition) 자체는 오래된 기법이다. 내러티브 mediation은 사용자나 에이전트의 행동을 실행 전에 가로채 차단하거나 계획을 수정해 수용하고 \cite{S37_riedl2003managing}, 고전 계획법은 precondition과 effect로 적용 가능성을 정의하며 \cite{S39_fikes1971strips}, 런타임 강제는 신뢰하지 않는 행위자를 monitor로 감싸 허용된 전이만 통과시키고 \cite{S40_schneider2000enforceable}, 작성형 논리 기반 인터랙티브 드라마는 본 저널의 전신에서 캐릭터가 할 수 있는 발화를 규율했으며 \cite{S38_evans2013versu}, 신념 인지 내러티브 계획법은 캐릭터가 아는 바를 추론한다 \cite{S41_ware2021sabre}. 이는 본 논문의 knowledge/disclosure 술어가 훨씬 거칠게 인코딩하는 관심사다. \system{}은 interposition을 발명했다고 주장하지 않는다. 더 좁은 기여는 신뢰하지 않는 생성 proposer 아래에서 그 게이트에 결합된 근거 계층이다. 즉 콘텐츠 체크섬과 연결된 종단 레코드, 기록된 전이의 상태 의미 재생, 에피소드 연속성 검증, 그리고 proposal trace가 존재할 수 없는 사례까지 보존하는 할당 완전 실패 계수다. 보고서에 기능이 없다고 해서 모든 구현에 그 기능이 없다고 추론하지 않는다.
+제한된 novelty는 개별 구성요소의 발명이 아니라 구현된 결합이다. 행동 개입(interposition) 자체는 오래된 기법이다. 내러티브 mediation은 사용자나 에이전트의 행동을 실행 전에 가로채 차단하거나 계획을 수정해 수용하고 \cite{S37_riedl2003managing}, 고전 계획법은 precondition과 effect로 적용 가능성을 정의하며 \cite{S39_fikes1971strips}, 런타임 강제는 신뢰하지 않는 행위자를 monitor로 감싸 허용된 전이만 통과시키고 \cite{S40_schneider2000enforceable}, 작성형 논리 기반 인터랙티브 드라마는 본 저널의 전신에서 캐릭터가 할 수 있는 발화를 규율했으며 \cite{S38_evans2013versu}, 신념 인지 내러티브 계획법은 캐릭터가 아는 바를 추론한다 \cite{S41_ware2021sabre}. 이는 본 논문의 knowledge/disclosure 술어가 훨씬 거칠게 인코딩하는 관심사다. \system{}은 interposition을 발명했다고 주장하지 않는다. C1--C2는 strict contract와 validate--repair--commit controller를 이 계보 위에 배치하고, C3--C4는 checksum-linked terminal record, state-semantic replay, episode continuity, proposal trace가 존재할 수 없는 사례까지 포함한 assignment-complete accounting을 결합하며, C5는 실행 전 typed validator error만 소비하는 수리 연산자를 분리한다. 보고서에 기능이 없다고 해서 모든 구현에 그 기능이 없다고 추론하지 않는다.
 
 \section{문제 정의와 보장 경계}
 설명을 위해 시점 $t$에서 validation이 사용하는 controller 입력을 다음과 같이 분해한다.
@@ -212,22 +212,22 @@ Validator 오류 class & 후보에 대한 edit $\delta(e)$ \\
 
 Terminal record class는 commit, symbolic fallback, adapter failure, controller failure이다. Controller-failure row는 동결된 assignment denominator에 남고 상태를 변경하지 않지만, candidate outcome이 생성되지 않았다면 완성된 proposal trace가 없어도 된다. 따라서 result completeness가 모든 terminal row의 trace 존재를 뜻하지 않는다. 실행 전 assignment key는 $(\mathrm{run},\allowbreak\mathrm{arm},\allowbreak\mathrm{scenario},\allowbreak\mathrm{seed},\allowbreak\mathrm{model},\allowbreak\mathrm{revision},\allowbreak h_{\mathrm{controller}},\allowbreak h_{\mathrm{input}},\allowbreak h_{\mathrm{prior}})$이다. 집계는 중복, 누락, 예기치 않은 key를 거부하고 symbolic, adapter, controller failure를 각각 보고한다.
 
-\section{파일럿 방법과 근거 경계}
-\subsection{질문과 설계 픽스처}
+\section{실험 레인과 근거 경계}
+\subsection{\textbf{E1} 오프라인 적합성 설계}
 파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 동결된 모든 repairability class의 작성 사례에서 rejection-only, 블라인드 동일 후보 retry, 반례 유도 연산자 $\rho$, 상태를 읽는 참조 callback이 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가? (PQ5) proposal 및 replay parser가 그 외에는 완전하고 유효한 candidate에 unknown top-level key 하나를 추가한 사례를 모두 거부하는가?
 
 사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair-arm 비교, record/trace fault injection, adapter/accounting contract이다. 모든 repair fixture는 실행 전에 동결된 repairability class를 선언한다. \emph{guided-repairable}(구조화 오류 payload만으로 $\rho$에 충분한 정보가 담김), \emph{oracle-only}(수리에 권위 있는 상태 판독이 추가로 필요함), \emph{irreparable}(구현된 어떤 arm도 commit할 수 없음)이며, class별 arm당 기대 결과는 설계 픽스처 계약의 일부다. 반복된 결정론적 seed가 아니라 고유 사례가 기술적 denominator를 구성한다. 모든 기대값은 실행 전에 명시한다.
 
-\subsection{측정치와 재현성}
+\subsection{\textbf{E1} 측정치와 동결 산출물}
 측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation, 사전 명세한 unknown-key 음성 회귀에 대한 proposal/replay 거부 일치를 센다. 마지막 측정은 결정론적 parser-contract parity이며 실증적 safety outcome이 아니다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다.
 
 릴리스 패킷은 fixture 및 assignment manifest, schema, outcome/trace record를 포함한 result JSON 산출물, 환경과 코드 revision, 생성 table, checksum을 동결한다. 보고는 재현성과 측정 경계 지침을 따른다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
-\subsection{별도 KG/온톨로지 링크 제안 시뮬레이션}
-\texttt{SL-KG-ONTOLOGY-SIM-001}은 Graphify 문서 탐색 그래프 및 권한을 가진 typed \texttt{WorldState}와 분리된 engineering-only closed-world 레인이다. 저장소 로컬 OKF node 43개와 reference edge 106개를 내보내고, 검토된 typed edge 24개를 overlay하며, type/domain/range 무결성과 source별 competency question 6개를 검사하고, 권한이 없는 SQLite mirror를 생성한다. 고정 전략 7개는 작성형 질의 6개와 질의당 후보 5개를 평가했다. Retained \texttt{S2-typed-lexical-loose}는 holdout 6/6을 복원했고($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$), degree baseline은 하나도 복원하지 못했다. Machine-generated JSON, TSV, TeX, SVG 산출물이 전체 수식과 trial을 보존한다. 이는 구성 결과이며 OWL/SHACL 적합성, 의미 완전성, runtime retrieval, 장기 모순 감소, 어떤 \texttt{C-RESULT-*} claim의 근거도 아니다.
-
-\subsection{별도 라이브 스크리닝 확장}
+\subsection{\textbf{E2} 라이브 RQ2 스크리닝}
 라이브 확장은 블라인드 동일 후보 retry와 $\rho$를 동일한 $K{=}1$에서 비교한다. 각 셀에서 seed로 구분한 Codex CLI 호출 5회가 \texttt{gpt-5.6-sol} 후보 하나씩을 만들고, 두 arm은 같은 최초 후보를 받아 호출 내 제안 차이를 제거한다. 조건은 policy 공개 여부와 자명한 효과 0 경로의 존재를 바꾼다. 승격 패킷은 정정된 현재 셀과 폐기된 v1 진단을 함께 보존하고 모든 JSON/JSONL 영수증을 SHA-256으로 결합하며 근거를 \texttt{screening-pilot-only}로 표시한다. Seed label은 hosted sampler를 제어하지 않고, hosted revision은 고정되지 않았으며, token 회계는 없고, 구성 상태는 모집단 표본이 아니다. 따라서 $p$-value, confidence interval, 모델 순위 없이 정확한 기술 count와 실패 class만 보고한다.
+
+\subsection{\textbf{E3} KG/온톨로지 링크 제안 시뮬레이션}
+\texttt{SL-KG-ONTOLOGY-SIM-001}은 Graphify 문서 탐색 그래프 및 권한을 가진 typed \texttt{WorldState}와 분리된 engineering-only closed-world 레인이다. 저장소 로컬 OKF node 43개와 reference edge 106개를 내보내고, 검토된 typed edge 24개를 overlay하며, type/domain/range 무결성과 source별 competency question 6개를 검사하고, 권한이 없는 SQLite mirror를 생성한다. 고정 전략 7개는 작성형 질의 6개와 질의당 후보 5개를 평가했다. Retained \texttt{S2-typed-lexical-loose}는 holdout 6/6을 복원했고($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$), degree baseline은 하나도 복원하지 못했다. Machine-generated JSON, TSV, TeX, SVG 산출물이 전체 수식과 trial을 보존한다. 이는 구성 결과이며 OWL/SHACL 적합성, 의미 완전성, runtime retrieval, 장기 모순 감소, 어떤 \texttt{C-RESULT-*} claim의 근거도 아니다.
 
 \section{파일럿 결과}
 \begin{figure*}[!t]
@@ -285,7 +285,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 
 그림~\ref{fig:evidence}는 오프라인 보고 경계를 명시한다. 동결 fixture와 지정 검사 연산이 허용한 row만 오프라인 생성 표에 들어간다. 라이브 표는 SHA-256으로 결합한 screening promotion manifest를 통과하는 별도 경로를 사용하며, 그 row는 동결 오프라인 denominator에 들어가지 않는다.
 
-Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1280$\times$720 SubViewport에서 리플레이했다. Manifest는 각 PNG를 event/delivery index, validation, state hash에 결합한다. 그림~\ref{fig:godot-render-fixture}(b)는 변경 전 hash를 보존하고, (c)는 valid commit 뒤 이를 변경한다. 모든 원본 panel은 생성 자산이 없는 primary-track render이며, 아래 illustrative crop은 작성된 status/event callout만 확대한다.
+\noindent\textbf{ENG1.} Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1280$\times$720 SubViewport에서 리플레이했다. Manifest는 각 PNG를 event/delivery index, validation, state hash에 결합한다. 그림~\ref{fig:godot-render-fixture}(b)는 변경 전 hash를 보존하고, (c)는 valid commit 뒤 이를 변경한다. 모든 원본 panel은 생성 자산이 없는 primary-track render이며, 아래 illustrative crop은 작성된 status/event callout만 확대한다.
 
 선택 v5 packet은 하나의 scripted fixture의 render/state 대응만 확립하며 live model 또는 Python transport, participant 또는 player input, adaptation intervention, narrative-quality result를 추가하지 않는다.
 
@@ -312,7 +312,7 @@ Godot 4.7.1은 보존한 \emph{Sealed Lighthouse} 정식 trace를 non-headless 1
 Large language model은 prose, code와 test drafting, command orchestration, evidence review, 결과 해석, simulated peer review, citation-identity check를 보조했고, hosted model은 별도 표기된 live-screening candidate도 생성했다. 모든 보고 count는 deterministic runner 또는 hash-bound receipt에서 오며 offline, live-screening, engine evidence는 분리된다. 저자는 claim을 source artifact에 대조했고 내용에 대한 책임을 진다.
 
 \section*{데이터 및 코드 가용성}
-Repository에는 implementation, build source, 분리된 offline/live-screening packet이 있다. Offline manifest는 artifact 38개, input 22개, provenance row 121개(executed 85개, aggregate 36개)를, live promotion manifest는 JSON/JSONL receipt 14개와 superseded v1 diagnostic을 결합한다. Portable offline invocation에는 absolute clone path가 없고 clean-Git input binding은 tag \texttt{trace-rpg-guided-repair-inputs-20260821-v1}에서 다시 성립한다. Anonymized reviewer archive나 DOI deposit은 주장하지 않는다.
+Repository에는 implementation, build source, 분리된 offline/live-screening packet과 \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, \texttt{experiment-evidence-matrix.csv}가 있다. Offline manifest는 artifact 38개, input 22개, provenance row 121개(executed 85개, aggregate 36개)를, live promotion manifest는 JSON/JSONL receipt 14개와 superseded v1 diagnostic을 결합한다. Portable offline invocation에는 absolute clone path가 없고 clean-Git input binding은 tag \texttt{trace-rpg-guided-repair-inputs-20260821-v1}에서 다시 성립한다. Anonymized reviewer archive나 DOI deposit은 주장하지 않는다.
 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}

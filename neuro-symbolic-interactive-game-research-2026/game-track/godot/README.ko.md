@@ -136,7 +136,11 @@ godot --path "$STAGED_GODOT_PROJECT" res://scenes/main_3d.tscn -- \
 ```
 
 스모크 스윕 8검사는 2026-08-30 Godot 4.7.1에서 다시 통과했고 종료 상태 해시는 동결 해시
-`4b2310…8892`와 일치한다. Web과 `--public-safe`는 `../assets/concepts/` 및
+`4b2310…8892`와 일치한다. 기존 프레젠테이션 검사는 활성화된 `BoxShape3D`가 보이는
+렌즈 접근 덱과 일치하고 `GoldenPathLayout`의 앵커를 포함하며 부두와 겹치고 램프 상점 벽을
+감싸는지도 확인한다. 이는 DEF-021의 공학 결함만 닫으며 사람의 길찾기 성공을 주장하지 않는다.
+Godot을 사용할 수 있는 로컬 테스트는 disposable copy에서 이 스모크를 실행한다.
+Web과 `--public-safe`는 `../assets/concepts/` 및
 `../assets/concepts/pack-3d/`의 검토 대기 후보를 로드하지 않는다. 대신 별도 큐레이션 UI
 lane과 추적 대상 `assets/player/higgsfield-player.glb`의 `Idle`/`Casual_Walk`을 절차 월드·VFX·
 음향 위에 사용한다. 플레이어 외형과 클립 상태는 정식 상태나 저장 데이터에 들어가지 않는다.

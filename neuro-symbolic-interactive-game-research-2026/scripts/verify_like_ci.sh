@@ -61,6 +61,7 @@ step "Install locked environment" uv sync --extra research --extra dev
 step "Unit tests" uv run python -m unittest discover -s tests
 step "Ruff lint and format" ruff_gate
 step "Project integrity" uv run python scripts/validate_project.py
+step "Contribution and reference crosswalk" uv run python scripts/validate_contribution_crosswalk.py
 step "README visuals match their sources" visuals_are_current
 step "Offline experiment smoke" uv run python examples/recorded_experiment.py
 step "Harness structure" uv run python scripts/validate_harness.py

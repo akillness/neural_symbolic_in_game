@@ -538,6 +538,22 @@ static func _build_lamp_store(world: Node3D) -> void:
 	add_box(store, Vector3(2.0, 3.0, 0.25), Vector3(2.0, 1.5, 2.5), wall_material)
 	add_box(store, Vector3(2.0, 0.8, 0.25), Vector3(0.0, 2.6, 2.5), wall_material)
 	add_box(store, Vector3(6.6, 0.25, 5.6), Vector3(0.0, 3.1, 0.0), roof_material)
+	# DEF-021: the unchanged lens anchor sits 2 m west of the main quay edge.
+	# Extend only collision-bearing presentation geometry beneath the recovery
+	# bench and around the hut's +z wall, overlapping the quay by 0.3 m. This
+	# keeps the authored interaction anchor, canonical state, and trace hashes
+	# untouched while giving beacon-following players a continuous route.
+	var approach_material := curated_material(
+		"ui-tex-wet-planks.png", PALETTE.wet_slate, Vector3(3.0, 5.0, 1.0)
+	)
+	if approach_material.albedo_texture == null:
+		approach_material = textured_material(
+			"SL3D-T01-wet-slate-planks.png", PALETTE.wet_slate, Vector3(3.0, 5.0, 1.0)
+		)
+	var lens_approach := add_box(
+		store, Vector3(4.4, 0.5, 7.2), Vector3(-4.9, -0.25, 0.9), approach_material
+	)
+	lens_approach.name = "LensApproachDeck"
 	# The west-side recovery bench aligns the visible lens with its existing
 	# interaction volume at world x=-11, while keeping it reachable from the quay.
 	add_box(store, Vector3(4.0, 0.22, 2.2), Vector3(-4.8, 0.55, 0.0), roof_material, false)

@@ -14,6 +14,10 @@ TRACE-RPG never writes an LLM proposal directly into canonical game state. Each 
 | Godot/Web engineering | 4/4 fixtures, 49/49 combined checks, tracked player, desktop production smoke | Authored-fixture and presentation conformance; not usability, fun, G4, or final G6 |
 | Confirmatory study | Not executed | `C-RESULT-001`–`005` remain `TODO-RESULT` |
 
+The evidence ceilings for contributions C1–C5, all 45 references across nine topics, the three
+experiment lanes, and the engineering lane are cross-checked together in
+[`contribution-reference-crosscheck.md`](research/academic-pipeline/contribution-reference-crosscheck.md).
+
 ## Visuals
 
 All six SVGs are produced by `scripts/generate_readme_visuals.py`. The V2 footer, V3, and V4 are read directly from the frozen pilot CSVs and the claim ledger, so their numbers cannot drift from their sources. Solid elements are implemented and exercised by the pilot; dashed elements are specified, unimplemented, and carry no evidence.

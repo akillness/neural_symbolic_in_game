@@ -1,17 +1,21 @@
-# RQ2 라이브 파일럿 실행 계획 — Live Pilot Plan (C-RESULT-003 → pilot-only)
+# RQ2 라이브 파일럿 실행 계획 — Live Pilot Plan (C-PILOT-007/008, C-RESULT-003 보류)
 
 ```yaml
 plan_id: SL-RQ2-LIVE-001
 status: EXECUTED-2026-08-28 (regime-dependent; C-RESULT-003 promotion withheld by the Cycle-1 guard)
 approval: 사용자 인터뷰 응답 "승인, 바로 진행" (2026-08-28); ChatGPT 쿼터 사용 승인 포함
-target_claim: C-RESULT-003 (guided repair vs blind retry sample efficiency at matched K)
-promotion_ceiling: pilot-only   # verified-empirical 전이는 금지(M2/M3/M5 미충족)
+target_hypothesis: C-RESULT-003 (guided repair vs blind retry sample efficiency at matched K)
+promoted_claims: [C-PILOT-007, C-PILOT-008]
+blocked_claim: C-RESULT-003
+evidence_ceiling: screening-pilot-only   # verified-empirical 전이는 금지(M2/M3/M5 미충족)
 ```
 
-## 동결 설계 (실행 전 변경 금지)
+## 실행 설계와 사후 이탈 기록 (동결 receipt 변경 금지)
 
 - **비교 아암**: `unchanged_retry`(A3, blind) vs `guided_repair`(A4, ρ(a,E)) — 두 아암 모두
-  라이브 제안자 1개, 매칭 예산 `1+K=4` (`configs/experiment-matrix.yaml` 준수).
+  라이브 최초 제안 1개를 공유하고 실행 receipt의 수리 예산은 `K=1`, 즉 아암당 최대
+  `1+K=2` 호출이다. 초기 계획의 `K=3`/4-call 예산은 실행되지 않았으며 confirmatory
+  battery의 향후 목표로만 남는다.
 - **케이스(실행 시 정정)**: 동결 12 fixtures는 *이미 무효인 후보*이므로 라이브 제안자와
   결합할 수 없다. 실행 설계는 **시드당 라이브 제안 1회 → 동일 후보를 두 아암이 공유**로
   고정했다(샘플링 잡음 배제). 시드 `[11, 23, 47, 83, 131]`.
@@ -27,16 +31,19 @@ promotion_ceiling: pilot-only   # verified-empirical 전이는 금지(M2/M3/M5 �
   `research/academic-pipeline/stage-04-pilot/`은 바이트 불변 유지.
 - **엔드포인트**: repair@K 커밋률, 시도 수, 토큰, 지연, 실패 분류. p-값·모집단 주장 없음.
 
-## 실행 순서 (다음 세션 첫 작업)
+## 재현용 실행 순서 (완료)
 
 1. 선행 정리(감사 권고): `research/claim-ledger.yaml`의 C-PILOT-002 문구를 12-케이스
    기준으로 갱신, S44–S46을 stage-05 인용 게이트에 병합, `pyproject.toml`에
    `testpaths=["tests"]` 추가.
 2. `CodexProposalAdapter` + 단위 테스트(모킹) 구현 → 스위트 그린.
-3. 라이브 스모크 1회(`codex_oauth_llm.py smoke`) → 성공 시 12×2아암×5시드 실행.
-4. trace manifest + sha256 잠금 → `C-RESULT-003`을 `pilot-only`로 승격(전이 요건:
-   trace_manifest, schema_pass, pilot_label).
-5. 한글 보고 갱신 → 영어 패리티 → push.
+3. 라이브 스모크 1회(`codex_oauth_llm.py smoke`) 뒤 동결 기저 3셀×5회, 폐기 진단 v1
+   2셀×5회, 정정 v2 2셀×5회를 실행했다. 각 셀의 guided와 blind 아암은 최초 후보를
+   공유했고 guided 수리 예산은 `K=1`이었다.
+4. JSON/JSONL receipt 14개를 trace manifest + SHA-256으로 잠갔다. 내부 receipt의 과거
+   `C-RESULT-003 pilot-only` 문구는 바이트 불변 기록으로 남지만, 외곽 promotion manifest가
+   이를 덮어써 `C-PILOT-007/008`만 승격하고 `C-RESULT-003`은 `TODO-RESULT`로 유지한다.
+5. 한글 보고를 갱신하고 영어 패리티와 생성 원고 조각을 검증했다.
 
 ## 확인된 전제 (2026-08-28)
 

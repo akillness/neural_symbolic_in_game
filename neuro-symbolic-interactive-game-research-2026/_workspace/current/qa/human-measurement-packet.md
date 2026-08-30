@@ -18,7 +18,7 @@ G6의 save/reload 항목을 닫고 G6 성능 항목의 1차 실측이 된다.
 
 1. 데스크톱 Chrome 일반 창(시크릿 아님)에서 위 URL 접속.
 2. `BEGIN INVESTIGATION` 버튼을 **마우스로 직접 클릭**.
-3. 확인: 커서가 사라지고 마우스로 시점이 도는가? HUD 좌상단이 `시점 잠김 · LOOK ACTIVE`인가?
+3. 확인: 커서가 사라지고 마우스로 시점이 도는가? HUD 좌상단이 정확히 `[LOOK] LOOK ACTIVE`인가?
 4. `Esc` → 커서 복귀 확인 → 화면 클릭 → 재잠김 확인.
 5. (선택) DevTools 콘솔에 `document.pointerLockElement` 입력 — canvas 요소가 나오면 확정.
 
@@ -26,16 +26,20 @@ G6의 save/reload 항목을 닫고 G6 성능 항목의 1차 실측이 된다.
 
 ## B. 저장·복원 왕복 (G6 save/reload, 약 2분)
 
-1. 렌즈 획득(기록 #1) 후 `F5` 저장 — "저장됨 — 상태 해시 …" 토스트 확인.
-2. 렌즈 설치(기록 #2)까지 진행 후 `F9` 복원 — "불러옴 — 손상 검사 통과." 확인.
+1. 렌즈 획득(기록 #1) 후 `F5` 저장 — `SAVED | State hash …` 토스트 확인.
+2. 렌즈 설치(기록 #2)까지 진행 후 `F9` 복원 — `LOADED | Integrity check passed.` 확인.
 3. 확인: 상태가 기록 #1 직후로 돌아갔는가(목표 문구·소지품·기록 수)?
 4. 페이지 새로고침 후 `F9` — 브라우저 재시작 간 저장이 유지되는가?
 
-보고: 각 단계 토스트 문구 / 복원 후 기록·보류 카운트.
+읽을 수 없거나 hash가 맞지 않는 저장은 각각 `LOAD HELD | The save file could not be read.`와
+`LOAD HELD | Save hash mismatch; current state preserved.`로 시작한다. 별도 지시 없이 save를
+고의로 손상시키지는 않는다.
+
+보고: 각 단계의 정확한 toast prefix / 복원 후 기록·보류 카운트.
 
 ## C. 입력→화면 반응 체감 + 실측 (G4/G6 ≤100 ms, 약 5분)
 
-1. 에피소드를 처음부터 끝까지 1회 플레이(8–12분 목표 대비 실제 소요를 메모).
+1. 에피소드를 처음부터 끝까지 1회 플레이(8–12분 목표 대비 실제 소요를 메모). 첫 amber beacon을 따라 렌즈까지 이동할 때 부두 바닥이 끊기거나 강제 추락하지 않는지도 확인한다(DEF-021).
 2. 상호작용 `E` 를 누를 때 장부 반응이 즉각적인지 체감 메모(지연·끊김 있으면 위치 기록).
 3. 실측(선택, 권장): DevTools → Performance → Record 상태에서 `E` 상호작용 3회 →
    기록 중지 → `keydown` 이벤트에서 다음 화면 페인트까지 간격을 3건 읽어 적기.
@@ -59,7 +63,7 @@ executed_utc:
 browser_and_version: 
 A_pointer_lock: {locked: , relocked: , pointerLockElement: }
 B_save_reload: {save_toast: , load_toast: , state_rolled_back: , survives_refresh: }
-C_input: {feel: , measured_ms: [ , , ], episode_minutes: , commits: , refusals: }
+C_input: {lens_route_continuous: , feel: , measured_ms: [ , , ], episode_minutes: , commits: , refusals: }
 D_soak: {start_mb: , end_mb: , stutter: }
 ```
 

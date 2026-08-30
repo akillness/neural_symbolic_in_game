@@ -1214,10 +1214,46 @@ func _run_smoke() -> void:
 			and idle_snapshot["player_rig_engine_animation"] == "Idle"
 			and bool(idle_snapshot["player_rig_animation_playing"])
 		)
+	# DEF-021 stays inside the existing presentation check so the published 8/8
+	# smoke denominator remains stable. Verify that the enabled collider matches
+	# the visible deck, contains the single-owned lens anchor, overlaps the quay's
+	# west edge, and wraps the hut wall.
+	var lens_approach := (
+		(handles["world"] as Node3D).get_node_or_null("LampStore/LensApproachDeck")
+		as MeshInstance3D
+	)
+	var lens_approach_ok := false
+	if (
+		lens_approach != null
+		and lens_approach.mesh is BoxMesh
+		and lens_approach.get_child_count() > 0
+	):
+		var approach_body := lens_approach.get_child(0) as StaticBody3D
+		if approach_body != null and approach_body.get_child_count() > 0:
+			var approach_shape := approach_body.get_child(0) as CollisionShape3D
+			if approach_shape != null and approach_shape.shape is BoxShape3D:
+				var approach_size := (lens_approach.mesh as BoxMesh).size
+				var collider_size := (approach_shape.shape as BoxShape3D).size
+				var approach_center := lens_approach.global_position
+				var lens_anchor_local := lens_approach.to_local(
+					GoldenPathLayout.site_position("lens_pickup")
+				)
+				lens_approach_ok = (
+					not approach_shape.disabled
+					and approach_body.collision_layer != 0
+					and approach_body.position.is_equal_approx(Vector3.ZERO)
+					and approach_shape.position.is_equal_approx(Vector3.ZERO)
+					and collider_size.is_equal_approx(approach_size)
+					and absf(lens_anchor_local.x) <= approach_size.x * 0.5
+					and absf(lens_anchor_local.z) <= approach_size.z * 0.5
+					and approach_center.x + approach_size.x * 0.5 >= -9.0
+					and approach_center.z + approach_size.z * 0.5 >= 4.0
+				)
 	checks.append({
 		"check": "presentation_sync_and_fall_recovery",
 		"pass": (handles["tide_marks"] as Node3D).visible
 			and not (handles["lens_prop"] as Node3D).visible
+			and lens_approach_ok
 			and fall_recovered
 			and player.global_position.distance_to(PlayerInvestigator3D.FALL_RECOVERY_POSITION) < 0.01
 			and locomotion_animation_ok

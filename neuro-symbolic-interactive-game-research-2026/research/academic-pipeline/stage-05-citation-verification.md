@@ -2,9 +2,13 @@
 
 Status: **PASS_NO_HALLUCINATED_CITATIONS**
 
-Audit date: 2026-08-13
+Audit date: 2026-08-28 (current machine record; original audit 2026-08-13)
 
 Machine-readable record: `stage-05-citation-verification.json`
+
+Current topical/claim-use crosscheck: `reference-topic-crosswalk.csv`. Intermediate totals in the
+Stage-8 and game-comparator addenda below are time-stamped historical snapshots superseded by the
+current 45-entry summary.
 
 Gate semantics: a `HALLUCINATED` citation must be removed or replaced before Stage 6. None was
 found, so Stage 6 is unblocked. Preprint citations are flagged advisory and do not block.
@@ -35,18 +39,18 @@ return an unrelated record's year.
 
 | Status | Count |
 | --- | --- |
-| `VERIFIED` | 33 |
-| `PREPRINT` | 3 |
+| `VERIFIED` | 39 |
+| `PREPRINT` | 6 |
 | `UNMATCHED` | 0 |
 | `HALLUCINATED` | 0 |
-| Total | 36 |
+| Total | 45 |
 
-Every one of the 36 entries was matched by at least one independent index. The bibliography is
-closed against the manuscripts: 36 unique cite keys, 36 bibliography entries, no cited-but-absent
+Every one of the 45 entries was matched by at least one answering independent index. The bibliography
+is closed against the manuscripts: 45 unique cite keys, 45 bibliography entries, no cited-but-absent
 key and no present-but-uncited entry, and an identical key set in the English and Korean sources.
 
-36개 항목 모두 최소 하나 이상의 독립 색인에서 확인됐다. 인용 키 36개와 참고문헌 36건이
-정확히 일치하며, 영문·국문 원고의 키 집합도 동일하다.
+45개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. 인용 키 45개와 참고문헌 45건이
+정확히 일치하며, 영문·국문 원고의 키 집합도 동일하다. `S43`은 의도적 결번이다.
 
 ## Preprints (advisory) / 프리프린트
 
@@ -55,11 +59,14 @@ key and no present-but-uncited entry, and an identical key set in the English an
 | S01 | IVIE: neuro-symbolic incremental IF world generation | 2606.13348 | OpenAlex, Semantic Scholar, arXiv |
 | S02 | Symbolically Scaffolded Play | 2510.25820 | arXiv |
 | S26 | VLM engagement understanding in games | 2603.18480 | OpenAlex, Semantic Scholar, arXiv |
+| S44 | World-State Transformations for Neuro-symbolic Interactive Storytelling | 2605.24719 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
+| S45 | Self-Refine | 2303.17651 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
+| S46 | Teaching Large Language Models to Self-Debug | 2304.05128 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
 
-These three carry no publisher DOI and remain preprints. The manuscripts already describe S01 as a
-preprint comparator and S26 as a preprint reporting VLM engagement limitations, and claim
-`C-AFFECT-001` was independently downgraded to `verified-scope-limited-preprint` in the claim
-ledger. No conclusion in the manuscripts depends on treating a preprint as an archival record.
+These six carry no publisher DOI in the frozen record and remain preprints. The manuscripts describe
+their status or use them only as bounded motivation/comparators. Claim `C-AFFECT-001` remains
+`verified-scope-limited-preprint`, and no conclusion depends on treating a preprint as an archival
+record.
 
 ## Conditional record / 조건부 레코드
 
@@ -99,29 +106,30 @@ archival 연도가 옳다. 수정이 필요하지 않다.
 
 ## Coverage limitation / 검증 범위 한계
 
-Semantic Scholar returned HTTP 429 for 9 of 36 entries even after three backoff rounds, which
-repeats the rate-limit condition already recorded at Stage 2. Those 9 entries are:
-S02, S03, S04, S05, S08, S12, S18, S33, S34.
+Semantic Scholar returned HTTP 429 for 12 of 45 entries in the frozen audit. Those entries are:
+S02, S03, S04, S05, S08, S12, S18, S33, S34, S44, S45, S46.
 
-This is an access limitation of the primary index, not evidence about the citations. Each of the 9
-is still matched by at least one other index, and S02 is confirmed directly on arXiv. No entry is
-reported as verified on the strength of an index that did not answer.
+This is an access limitation of the third index, not evidence about the citations. Every one of the
+12 is matched by at least one other index; preprints S02 and S44--S46 are confirmed on arXiv.
+A 2026-08-30 live batch spot-check observed title records for S02 and S44--S46 before later calls
+returned 429 again, so the frozen 12-entry coverage flag remains until a complete reproducible
+reaudit is captured. No entry is reported as verified on the strength of an index that did not answer.
 
-Semantic Scholar가 36건 중 9건에서 HTTP 429를 반환했다. 이는 색인 접근 제한이며 인용에 관한
-근거가 아니다. 9건 모두 다른 색인에서 확인됐고, 응답하지 않은 색인을 근거로 검증됐다고
-표시한 항목은 없다.
+Semantic Scholar가 동결 감사의 45건 중 12건에서 HTTP 429를 반환했다. 이는 세 번째 색인의
+coverage 제한이며 인용 불일치가 아니다. 12건 모두 다른 색인에서 확인됐고, 응답하지 않은
+색인을 근거로 검증됐다고 표시한 항목은 없다.
 
 ## Gate decision / 게이트 판정
 
 | Field | Value |
 | --- | --- |
-| Entries audited | 36 |
+| Entries audited | 45 |
 | Hallucinated | 0 |
 | Unmatched | 0 |
 | Removals or replacements required | 0 |
 | Blocking findings | 0 |
 | Stage 6 | unblocked |
-| Carried caveats | S23 issue metadata recheck at submission; 3 preprints remain advisory; Semantic Scholar coverage incomplete for 9 entries |
+| Carried caveats | S23 issue metadata recheck at submission; 6 preprints remain advisory; Semantic Scholar coverage incomplete for 12 entries |
 
 This gate verifies citation identity only. It does not assess whether each cited work supports the
 sentence that cites it; that judgement belongs to Stage 6 peer-review simulation.
@@ -162,3 +170,13 @@ Revised totals: **42 entries, 39 verified, 3 preprint, 0 unmatched, 0 hallucinat
 Korean LaTeX cite identical 42-key sets, and the bibliography contains exactly those 42 entries.
 Identity verification does not transfer PANGeA's reported accuracy to TRACE-RPG and does not make
 its LLM self-reflection validator a deterministic authorization oracle.
+
+
+## 2026-08-28 repair-lineage addendum / 수리 계보 추가
+
+S44--S46 were added with the guided-repair revision. arXiv and OpenAlex independently matched each
+title and year; Semantic Scholar returned HTTP 429 and is recorded as rate-limited rather than as a
+match failure. This raises the current frozen total to **45 entries: 39 verified, 6 preprints,
+0 unmatched, 0 hallucinated**. Their topical and contribution roles are recorded in
+`reference-topic-crosswalk.csv`; S44 is a game-specific authored-transformation comparator, while
+S45--S46 are feedback-repair precedents with different feedback channels and authority boundaries.

@@ -14,6 +14,9 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 | Godot/Web 엔지니어링 | fixture 4/4, combined check 49/49, 추적 플레이어, 프로덕션 데스크톱 스모크 | 작성 fixture·presentation 적합성, usability·재미·G4·최종 G6 아님 |
 | 확증 연구 | 미실행 | `C-RESULT-001`–`005`는 `TODO-RESULT` 유지 |
 
+기여도 C1–C5, 45개 레퍼런스의 9개 주제, 세 실험 레인과 엔지니어링 레인의 근거 상한은
+[`contribution-reference-crosscheck.md`](research/academic-pipeline/contribution-reference-crosscheck.md)에서 함께 교차검증한다.
+
 ## 시각 자료
 
 여섯 개 SVG는 모두 `scripts/generate_readme_visuals.py`가 생성한다. V2 하단, V3, V4는 동결된 파일럿 CSV와 주장 원장에서 직접 읽으므로 원본 수치와 어긋날 수 없다. 실선은 구현되어 파일럿에서 실행된 요소이고, 점선은 명세만 있고 근거가 없는 미구현 요소다.

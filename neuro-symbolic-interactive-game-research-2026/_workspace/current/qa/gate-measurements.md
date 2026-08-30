@@ -119,7 +119,9 @@ measurement.
   added `9/9` non-mutating checks for `49/49` combined, and the archetype probe recorded scripted
   loop-shape counts (commits 3–5, refusals 0–5, walk proxy 11.9–18.2 s per rotation). On the
   2026-08-29 rebuilt local Web artifact, browser automation completed the actual Mira → lens → mount
-  → authorized hint → tide-marks ending path; the narrow lens-edge approach is retained as DEF-021.
+  → authorized hint → tide-marks ending path. On 2026-08-30, DEF-021 was closed locally by a
+  collision-bearing deck that contains the unchanged lens anchor, overlaps the quay, and wraps the
+  lamp-store wall; the stable eighth smoke item now includes this geometry contract and passes 8/8.
 - Interpretation: this confirms the state path and public-safe presentation sync; it does not
   measure human duration, comprehension, agency, or repeat behavior.
 - State: `FIX`.
@@ -145,6 +147,7 @@ measurement.
 | Browser gesture policy | pointer lock NOT verified — 2026-08-17 retests and the 2026-08-29 current local build all left `document.pointerLockElement` null; canvas stayed active but scripted horizontal mouse motion did not rotate the camera | `FIX`; human-gesture pointer-lock check and measured input latency pending |
 | Browser save/reload | lens state saved, full page refreshed after 6.5 s, then `F9` restored inventory/objective from IndexedDB `/userfs` | PASS on current local build; current production recheck pending |
 | Below-world recovery | forced fall returned to spawn; public-safe smoke `8/8` asserts canonical state hash unchanged | physical recovery engineering evidence only |
+| Lens approach geometry | enabled `BoxShape3D` matches deck mesh, contains the `GoldenPathLayout` lens anchor, overlaps quay west edge, wraps lamp-store wall; disposable-copy engine test executes stable smoke item 8 and PASS | DEF-021 implementation closed; owner navigation still required for human-impact gates |
 | Procedural audio | external asset check PASS; 18 generated streams, 22,050 Hz, max five cue voices | playback/impact unmeasured |
 | Bundled Korean font | Nanum Gothic Regular, unmodified, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256; public notice 4,534 bytes, SHA-256 `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f` | release resource, not research evidence |
 | Web artifact/deployment | current production: 11 manifest files / 50,745,187 bytes; 10 runtime files / 50,744,674 bytes; PCK 10,892,412 bytes / `29e3d8b6…8f76`; all runtime files 200 and byte-identical; correct WASM/OFL MIME; `vercel.json` non-public | English/rig desktop smoke passed; production save/reload, current mobile, pointer lock, performance, and soak pending |

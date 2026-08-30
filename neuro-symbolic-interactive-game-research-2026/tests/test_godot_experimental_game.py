@@ -20,6 +20,7 @@ from scripts.capture_godot_evidence import (
 )
 from scripts.png_contract import validate_render_png
 from scripts.project_experimental_bridge import SUPPORTED_TYPES, project_event
+from scripts.run_playable_evaluation import stage_project
 
 ROOT = Path(__file__).parents[1]
 GODOT_PROJECT = ROOT / "game-track" / "godot"
@@ -550,23 +551,22 @@ class GodotExperimentalGameContractTests(unittest.TestCase):
 
 class GodotExperimentalGameRuntimeTests(unittest.TestCase):
     @staticmethod
-    def _ensure_project_imported(godot: str) -> None:
-        """Import the Godot project so a fresh checkout runs fixtures deterministically.
+    def _ensure_project_imported(godot: str, staged_project: Path) -> None:
+        """Import a disposable Godot copy so fixtures run without touching the source tree.
 
-        `.godot/` is a build artifact and is gitignored, so a fresh clone has no import
-        cache. Godot then spends its first invocation importing instead of running the
-        fixture, which produces no summary and fails the test for an environment reason
+        `.godot/` is a build artifact and is gitignored, so a fresh staged copy has no
+        import cache. Godot then spends its first invocation importing instead of running
+        the fixture, which produces no summary and fails the test for an environment reason
         rather than a real one.
 
-        The import command is idempotent, so it runs unconditionally rather than trusting
-        the mere existence of `.godot/`: a partial or failed cache would otherwise be
-        mistaken for a usable one and produce a misleading downstream failure. A nonzero
-        exit fails here, with engine output attached, instead of surfacing later as a
-        missing summary file.
+        The import command runs unconditionally against the disposable copy rather than
+        trusting the mere existence of `.godot/`: a partial or failed cache would otherwise
+        be mistaken for a usable one. A nonzero exit fails here, with engine output attached,
+        instead of surfacing later as a missing summary file.
         """
 
         result = subprocess.run(
-            [godot, "--headless", "--path", str(GODOT_PROJECT), "--import"],
+            [godot, "--headless", "--path", str(staged_project), "--import"],
             check=False,
             capture_output=True,
             text=True,
@@ -582,8 +582,6 @@ class GodotExperimentalGameRuntimeTests(unittest.TestCase):
         godot = find_godot_4()
         if godot is None:
             self.skipTest("Godot 4.x is not installed; no engine execution is claimed")
-        self._ensure_project_imported(godot)
-
         event_schema = load_json(SCHEMA_DIR / "experimental-game-event.schema.json")
         save_schema = load_json(SCHEMA_DIR / "experimental-game-save.schema.json")
         summary_schema = load_json(SCHEMA_DIR / "experimental-game-summary.schema.json")
@@ -592,7 +590,11 @@ class GodotExperimentalGameRuntimeTests(unittest.TestCase):
         summary_validator = Draft202012Validator(summary_schema)
 
         with tempfile.TemporaryDirectory() as directory:
-            output_root = Path(directory)
+            temporary_root = Path(directory)
+            staged_project = temporary_root / "project"
+            stage_project(GODOT_PROJECT, staged_project)
+            self._ensure_project_imported(godot, staged_project)
+            output_root = temporary_root / "outputs"
             for fixture_path in FIXTURE_PATHS:
                 fixture = load_json(fixture_path)
                 output = output_root / fixture["fixture_id"]
@@ -600,7 +602,7 @@ class GodotExperimentalGameRuntimeTests(unittest.TestCase):
                     godot,
                     "--headless",
                     "--path",
-                    str(GODOT_PROJECT),
+                    str(staged_project),
                     "--quit-after",
                     "120",
                     "--",
@@ -695,6 +697,52 @@ class GodotExperimentalGameRuntimeTests(unittest.TestCase):
                         )
                     else:
                         self.assertTrue(load_event["payload"]["load_applied"])
+
+            smoke_command = [
+                godot,
+                "--headless",
+                "--path",
+                str(staged_project),
+                "res://scenes/main_3d.tscn",
+                "--",
+                "--smoke",
+                "--public-safe",
+            ]
+            smoke_result = subprocess.run(
+                smoke_command,
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            with self.subTest(smoke="sealed-lighthouse-3d"):
+                smoke_output = smoke_result.stdout + smoke_result.stderr
+                self.assertEqual(smoke_result.returncode, 0, smoke_output)
+                json_start = smoke_result.stdout.find("{")
+                json_end = smoke_result.stdout.rfind("}")
+                self.assertGreaterEqual(json_start, 0, smoke_output)
+                self.assertGreater(json_end, json_start, smoke_output)
+                smoke = json.loads(smoke_result.stdout[json_start : json_end + 1])
+                self.assertTrue(smoke["passed"])
+                self.assertEqual(smoke["smoke"], "sealed-lighthouse-3d")
+                self.assertEqual(
+                    [check["check"] for check in smoke["checks"]],
+                    [
+                        "early_secret_refused_without_mutation",
+                        "early_hint_stage_gated",
+                        "install_without_lens_refused",
+                        "lens_acquired",
+                        "lens_installed_stage_2",
+                        "authorized_hint_disclosed",
+                        "presentation_sync_and_fall_recovery",
+                        "corrupt_save_rejected",
+                    ],
+                )
+                self.assertTrue(all(check["pass"] for check in smoke["checks"]))
+                self.assertEqual(
+                    smoke["final_state_sha256"],
+                    "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+                )
 
 
 if __name__ == "__main__":
