@@ -311,9 +311,24 @@ human-gesture pointer/audio checks, warmed frame/input, a 30-minute soak, and ro
 
 ```bash
 ./scripts/build_godot_web.sh                       # disposable-copy Web export
-python3 -m http.server 4173 --directory game-track/web/public
+python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web   # /public/ = game, /dashboard/ = live dashboard
 uv run python scripts/run_playable_evaluation.py   # SL-PLAY-EVAL-001 on a disposable copy
 ```
+
+#### Live commit-gate dashboard
+
+![Live dashboard: the embedded Web build on the left; on the right the commit-gate graph lights the six predicate families green on a commit and coral on a hold, the session panel tracks entries, holds by predicate family, and the trace hash chain](game-track/godot/docs/latest/dashboard-route.gif)
+
+[`game-track/web/dashboard/`](game-track/web/dashboard/README.md) embeds the public-safe Web build and, in the
+AgentSight idiom (effect-weighted nodes, animated replay, a live `top` table), draws every proposal the game
+routes through the gate: green pulses run proposer → parser → six predicate families → COMMIT → TRACE, coral
+pulses stop at the family that held the entry → HOLD → TRACE with the state hash unchanged, and the session
+panel shows entries, holds by predicate family with engine codes, the trace hash chain (C3), and the frozen
+E1/E2 counts beside the live session. The game mirrors typed events through `window.parent.postMessage` only
+when embedded; the page has no channel back into the game and never receives sealed fact IDs. A browser-driven
+route on 2026-09-02 produced 3 commits, 1 hold (`FORBIDDEN_DISCLOSURE` → DISCLOSURE), and the hash chain
+`f488d9c4…812c → 19b474dc…c498 → 93381457…b900 → 4b231017…8892`, ending on the same terminal hash the headless
+smoke reports. Engineering demonstration only; it promotes no claim, G4, or G6 status.
 
 Deployment: **[`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**
 (PCK 10,893,980 bytes, SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`);

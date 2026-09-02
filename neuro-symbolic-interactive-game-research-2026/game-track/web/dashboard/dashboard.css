@@ -1,0 +1,77 @@
+:root {
+  --bg: #0b1118;
+  --card: #111a24;
+  --card-2: #0e161f;
+  --line: #22303d;
+  --ink: #d9d3c4;
+  --muted: #8fa3b2;
+  --amber: #f2b84b;
+  --coral: #d9685f;
+  --green: #6fcf8a;
+  --blue: #6db3f2;
+  --mono: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+.mono { font-family: var(--mono); }
+.bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; border-bottom: 1px solid var(--line); background: #0d1520; }
+.bar.foot { border-top: 1px solid var(--line); border-bottom: 0; color: var(--muted); font-size: 12px; }
+.brand { font-weight: 700; letter-spacing: .08em; color: var(--amber); }
+.sub { margin-left: 10px; color: var(--muted); }
+.status { display: flex; gap: 10px; align-items: center; font-size: 12px; }
+.pill { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+.pill.waiting { color: var(--muted); }
+.pill.live { color: var(--green); border-color: #2c5a3a; }
+.pill.boundary { color: var(--amber); border-color: #5a4a1e; }
+.grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "game nebula"
+    "game metrics"
+    "timeline minimap"
+    "log log";
+  gap: 12px; padding: 12px 18px;
+}
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.card-head h2 { font-size: 13px; margin: 0; letter-spacing: .04em; text-transform: uppercase; color: var(--amber); }
+h3 { font-size: 12px; margin: 12px 0 4px; color: var(--ink); text-transform: uppercase; letter-spacing: .04em; }
+.hint { color: var(--muted); font-size: 11px; }
+.game { grid-area: game; }
+.frame-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; }
+#game { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.nebula { grid-area: nebula; }
+#nebula { width: 100%; height: auto; display: block; }
+.metrics { grid-area: metrics; }
+.kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.kpi { background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+.kpi .k { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.kpi .v { font-size: 22px; font-weight: 700; color: var(--amber); }
+.kpi .v.coral { color: var(--coral); }
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th, .tbl td { text-align: left; padding: 3px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl th { color: var(--muted); font-weight: 500; }
+.tbl td.num { text-align: right; font-family: var(--mono); }
+.bar-cell { position: relative; }
+.bar-fill { position: absolute; left: 0; top: 4px; bottom: 4px; background: rgba(217, 104, 95, .35); border-radius: 3px; }
+.chain { margin: 0; padding-left: 18px; font-size: 11px; color: var(--muted); }
+.chain li.head { color: var(--green); }
+.chain li .tag { color: var(--amber); }
+.timeline { grid-area: timeline; }
+#timeline { width: 100%; height: 150px; display: block; }
+.minimap { grid-area: minimap; }
+#minimap { width: 100%; height: auto; display: block; }
+.log { grid-area: log; }
+#log { max-height: 160px; overflow: auto; margin: 0; font-size: 11px; color: var(--muted); white-space: pre-wrap; }
+#log .commit { color: var(--green); }
+#log .hold { color: var(--coral); }
+#log .proposal { color: var(--amber); }
+.flash-commit { animation: flashc .8s ease-out; }
+.flash-hold { animation: flashh .8s ease-out; }
+@keyframes flashc { from { box-shadow: 0 0 0 3px rgba(111,207,138,.8);} to { box-shadow: none; } }
+@keyframes flashh { from { box-shadow: 0 0 0 3px rgba(217,104,95,.8);} to { box-shadow: none; } }
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: 1fr; grid-template-areas: "game" "nebula" "metrics" "timeline" "minimap" "log"; }
+}

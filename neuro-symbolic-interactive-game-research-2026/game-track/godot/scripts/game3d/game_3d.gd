@@ -38,6 +38,17 @@ var _lighthouse_observed: bool = false
 var _smoke_mode: bool = false
 var _evaluate_mode: bool = false
 var _autoplay_mode: bool = false
+## Presentation-only dashboard bridge (D-065): when the Web build is embedded
+## in a page, typed events are mirrored to the parent via postMessage. It reads
+## only the snapshots the hard writer returns plus presentation counters and
+## never carries sealed fact IDs, hidden oracle labels, or rig identity. The
+## page has no authority over canonical state.
+const DASHBOARD_CHANNEL := "trace-rpg-dashboard"
+const DASHBOARD_TICK_SECONDS := 0.25
+var _dashboard_enabled: bool = false
+var _dashboard_seq: int = 0
+var _dashboard_tick_elapsed: float = 0.0
+var _dashboard_focus: String = ""
 var _play_started: bool = false
 var _evaluation_path: String = ""
 var _pending_input_feedback: Dictionary = {}
@@ -97,6 +108,7 @@ func _ready() -> void:
 		director.lightning_struck.connect(_on_lightning_struck)
 
 	_sync_presentation()
+	_dashboard_setup()
 	if _smoke_mode:
 		_run_smoke.call_deferred()
 		return
@@ -122,6 +134,72 @@ func _ready() -> void:
 		_run_autoplay.call_deferred()
 		return
 	_start_experience(false)
+
+
+## ------------------------------------------------------------ dashboard bridge
+
+func _dashboard_setup() -> void:
+	if not OS.has_feature("web") or _smoke_mode or _evaluate_mode:
+		return
+	var embedded = JavaScriptBridge.eval("(window.parent && window.parent !== window) ? 1 : 0")
+	_dashboard_enabled = int(embedded) == 1
+
+
+func _emit_dashboard(kind: String, payload: Dictionary) -> void:
+	if not _dashboard_enabled:
+		return
+	_dashboard_seq += 1
+	var envelope := {
+		"channel": DASHBOARD_CHANNEL,
+		"seq": _dashboard_seq,
+		"kind": kind,
+		"t_ms": Time.get_ticks_msec(),
+		"engineering_only": true,
+		"payload": payload,
+	}
+	JavaScriptBridge.eval("window.parent.postMessage(%s, '*')" % JSON.stringify(envelope))
+
+
+func _dashboard_state_summary() -> Dictionary:
+	# Reads only the committed snapshot the machine exposes plus presentation
+	# counters; fact IDs are deliberately not listed (sealed facts stay sealed).
+	return {
+		"state_sha256": machine.state_hash(),
+		"revision": int(machine.state.get("revision", 0)),
+		"stage": int(machine.state["quest"]["stage"]),
+		"fact_count": (machine.state["facts"] as Array).size(),
+		"commit_count": commit_count,
+		"refusal_count": refusal_count,
+	}
+
+
+func _dashboard_sites() -> Array:
+	var sites: Array = []
+	for spec in GoldenPathLayout.interactable_specs():
+		var position: Vector3 = spec["position"]
+		sites.append({"id": str(spec["id"]), "x": position.x, "z": position.z})
+	return sites
+
+
+func _process(delta: float) -> void:
+	if not _dashboard_enabled or player == null:
+		return
+	_dashboard_tick_elapsed += delta
+	if _dashboard_tick_elapsed < DASHBOARD_TICK_SECONDS:
+		return
+	_dashboard_tick_elapsed = 0.0
+	_emit_dashboard("tick", {
+		"x": snappedf(player.global_position.x, 0.01),
+		"z": snappedf(player.global_position.z, 0.01),
+		"yaw": snappedf(player.rotation.y, 0.001),
+		"focus": _dashboard_focus,
+		"play_started": _play_started,
+		"dialogue_open": _dialogue_open,
+		"tutorial_open": ui.is_tutorial_open(),
+		"episode_over": episode_over,
+		"stage": int(machine.state["quest"]["stage"]),
+		"state_sha256": machine.state_hash(),
+	})
 
 
 ## ------------------------------------------------------------------ autoplay
@@ -203,6 +281,11 @@ func _start_experience(unlock_audio: bool) -> void:
 	ui.set_play_started(true)
 	ui.set_cursor_captured(true)
 	_sync_audio_state()
+	_emit_dashboard("session", {
+		"scenario_id": str(scenario.get("scenario_id", scenario.get("id", "sealed-lighthouse"))),
+		"sites": _dashboard_sites(),
+		"spawn": {"x": 0.0, "z": 2.0},
+	}.merged(_dashboard_state_summary()))
 	# W-001/W-002: the saved dock, the dark tower.
 	ui.ledger_line("narration", "Brinewake Dock survived. Offshore, the lighthouse stands dark in the storm.")
 	director.play_intro(func() -> void:
@@ -399,6 +482,8 @@ func _interactable(id: String) -> Interactable3D:
 
 
 func _on_focus_changed(interactable: Interactable3D) -> void:
+	_dashboard_focus = "" if interactable == null else str(interactable.interaction_id)
+	_emit_dashboard("focus", {"interaction_id": _dashboard_focus})
 	if interactable == null or _dialogue_open:
 		ui.hide_prompt()
 	else:
@@ -528,6 +613,7 @@ func _propose(
 ) -> Dictionary:
 	ui.ledger_line("proposal", proposal_text)
 	_complete_input_feedback_probe("proposal-ledger-line")
+	_emit_dashboard("proposal", {"operation": operation, "text": proposal_text})
 	var result: Dictionary = machine.apply_operation(operation, arguments)
 	if result["accepted"]:
 		commit_count += 1
@@ -550,6 +636,14 @@ func _propose(
 			"stage_from": delta["stage_from"],
 			"stage_to": delta["stage_to"],
 		})
+		_emit_dashboard("commit", {
+			"operation": operation,
+			"labels": contribution_labels,
+			"stage_from": delta["stage_from"],
+			"stage_to": delta["stage_to"],
+			"state_sha256_before": CanonicalState.sha256(result["prior_state"]),
+			"mutated": bool(result["mutated"]),
+		}.merged(_dashboard_state_summary()))
 		if not _first_commit_explained:
 			_first_commit_explained = true
 			ui.toast("FIRST COMMIT | Only validated entries change state. Watch the solid amber line.")
@@ -751,6 +845,14 @@ func _refusal_feedback(codes: Array) -> void:
 	# the ledger defers, it never punishes. Each hold also names the predicate
 	# family that held it so the in-game ledger mirrors the paper's commit gate.
 	var next_affordance := _next_affordance_text()
+	var hold_gates: Array = []
+	for code in codes:
+		hold_gates.append(gate_for_code(str(code)))
+	_emit_dashboard("hold", {
+		"codes": codes.duplicate(),
+		"gates": hold_gates,
+		"next_affordance": next_affordance,
+	}.merged(_dashboard_state_summary()))
 	for code in codes:
 		var gate := gate_for_code(str(code))
 		_record_hold(gate)
@@ -840,6 +942,7 @@ func _propose_install() -> void:
 
 func _open_mira_dialogue() -> void:
 	_dialogue_open = true
+	_emit_dashboard("dialogue", {"phase": "open", "npc": "captain_mira"})
 	var first_meeting := not _met_mira
 	if not _met_mira:
 		# Presentation-only pacing flag: after the first meeting the objective
@@ -894,6 +997,7 @@ func _on_choice(choice_id: String) -> void:
 	if not _dialogue_open:
 		return
 	_begin_input_feedback_probe("dialogue-choice:" + choice_id)
+	_emit_dashboard("dialogue", {"phase": "choice", "npc": "captain_mira", "choice_id": choice_id})
 	match choice_id:
 		"ask_lighthouse":
 			# W-002: operational fact, already disclosed.
@@ -949,6 +1053,7 @@ func _propose_tide_hint() -> void:
 
 
 func _close_dialogue() -> void:
+	_emit_dashboard("dialogue", {"phase": "close", "npc": "captain_mira"})
 	_dialogue_open = false
 	ui.clear_choices()
 	ui.set_portrait_visible(false)
@@ -1150,6 +1255,9 @@ func _finish_episode() -> void:
 	if episode_over:
 		return
 	episode_over = true
+	_emit_dashboard("episode_complete", {
+		"holds_by_gate": _holds_by_gate.duplicate(),
+	}.merged(_dashboard_state_summary()))
 	ui.hide_prompt()
 	# The tide-route acquisition is the episode's biggest beat: fanfare + commit
 	# flash + golden ledger celebration land immediately, then the P-B06 camera

@@ -1,0 +1,150 @@
+{
+  "generated_from": [
+    "research/academic-pipeline/stage-04-pilot/pilot-results.json",
+    "research/academic-pipeline/stage-04-pilot/repair-class-summary.csv",
+    "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json"
+  ],
+  "claim_boundary": "Frozen offline (E1) and screening-pilot-only (E2) counts shown for orientation beside the live session; the live session is an engineering demonstration and promotes no claim.",
+  "e1": {
+    "gate_fixtures": [
+      13,
+      13
+    ],
+    "implemented_codes": 12,
+    "repair_arms": {
+      "rejection_only": {
+        "guided_repairable": {
+          "cases": 5,
+          "commits": 0
+        },
+        "oracle_only": {
+          "cases": 1,
+          "commits": 0
+        },
+        "irreparable": {
+          "cases": 6,
+          "commits": 0
+        }
+      },
+      "unchanged_retry": {
+        "guided_repairable": {
+          "cases": 5,
+          "commits": 0
+        },
+        "oracle_only": {
+          "cases": 1,
+          "commits": 0
+        },
+        "irreparable": {
+          "cases": 6,
+          "commits": 0
+        }
+      },
+      "guided_repair": {
+        "guided_repairable": {
+          "cases": 5,
+          "commits": 5
+        },
+        "oracle_only": {
+          "cases": 1,
+          "commits": 0
+        },
+        "irreparable": {
+          "cases": 6,
+          "commits": 0
+        }
+      },
+      "structured_repair": {
+        "guided_repairable": {
+          "cases": 5,
+          "commits": 5
+        },
+        "oracle_only": {
+          "cases": 1,
+          "commits": 1
+        },
+        "irreparable": {
+          "cases": 6,
+          "commits": 0
+        }
+      }
+    },
+    "integrity_faults": [
+      10,
+      10
+    ],
+    "guards": [
+      3,
+      3
+    ],
+    "adapter": {
+      "commit": 1,
+      "fallback": 1,
+      "failure": 5
+    }
+  },
+  "e2": {
+    "cell": "signal-repair-v2 / policy_blind",
+    "K": 1,
+    "initially_invalid": 5,
+    "guided_commits": 5,
+    "blind_commits": 0,
+    "seeds": 5
+  },
+  "paper_predicates": [
+    {
+      "family": "POLICY",
+      "symbol": "v_policy",
+      "paper": "action policy: required preconditions / allowed effects",
+      "engine_codes": [
+        "UNKNOWN_OPERATION"
+      ]
+    },
+    {
+      "family": "PRECONDITION",
+      "symbol": "v_pre",
+      "paper": "required predicates hold in state",
+      "engine_codes": [
+        "MISSING_REQUIRED_OBJECT"
+      ]
+    },
+    {
+      "family": "REACHABILITY",
+      "symbol": "v_reach",
+      "paper": "required objects present and reachable",
+      "engine_codes": [
+        "OBJECT_NOT_PRESENT",
+        "OBJECT_NOT_REACHABLE"
+      ]
+    },
+    {
+      "family": "KNOWLEDGE",
+      "symbol": "v_know",
+      "paper": "speaker knows every used fact",
+      "engine_codes": []
+    },
+    {
+      "family": "DISCLOSURE",
+      "symbol": "v_disc",
+      "paper": "no forbidden or stage-gated disclosure",
+      "engine_codes": [
+        "FORBIDDEN_DISCLOSURE",
+        "STAGE_GATED_DISCLOSURE"
+      ]
+    },
+    {
+      "family": "QUEST STAGE",
+      "symbol": "v_quest",
+      "paper": "stage precondition and monotone stage effect",
+      "engine_codes": [
+        "QUEST_STAGE_PRECONDITION",
+        "STAGE_GATED_DISCLOSURE"
+      ]
+    }
+  ],
+  "claims": {
+    "commit_path": "C2 validate-repair-commit controller (E1, ENG1)",
+    "trace": "C3 audit-linked evidence layer: state-semantic replay, hash continuity (E1, ENG1)",
+    "hold": "I1 exhausted-failure immutability: state equals prior state"
+  }
+}

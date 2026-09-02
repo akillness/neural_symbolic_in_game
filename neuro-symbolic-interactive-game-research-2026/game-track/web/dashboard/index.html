@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRACE-RPG live commit-gate dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="title">
+      <span class="brand">TRACE-RPG</span>
+      <span class="sub">live commit-gate dashboard · <em>The Sealed Lighthouse</em></span>
+    </div>
+    <div class="status">
+      <span id="link-state" class="pill waiting">waiting for game events</span>
+      <span id="session-hash" class="mono" title="SHA-256 of the committed canonical snapshot">state —</span>
+      <span class="pill boundary" title="Events are mirrored from the game's presentation layer; the page has no authority over canonical state.">engineering demonstration · not evidence</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="game card">
+      <div class="card-head">
+        <h2>Playable (public-safe Web build, embedded)</h2>
+        <span class="hint">click the canvas, then WASD / mouse / [E] · every proposal below goes through the same gate</span>
+      </div>
+      <div class="frame-wrap">
+        <iframe id="game" src="../public/index.html" title="The Sealed Lighthouse" allow="autoplay; fullscreen"></iframe>
+      </div>
+    </section>
+
+    <section class="nebula card">
+      <div class="card-head">
+        <h2>Commit gate — live transaction graph</h2>
+        <span class="hint">node weight = events through it · green pulse = commit · coral pulse = hold (state unchanged)</span>
+      </div>
+      <svg id="nebula" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated commit-gate pipeline"></svg>
+    </section>
+
+    <section class="metrics card">
+      <div class="card-head"><h2>Session top</h2><span class="hint">reads only committed snapshots and presentation counters</span></div>
+      <div class="kpis">
+        <div class="kpi"><div class="k">entries (commits)</div><div class="v" id="kpi-commits">0</div></div>
+        <div class="kpi"><div class="k">holds</div><div class="v coral" id="kpi-holds">0</div></div>
+        <div class="kpi"><div class="k">quest stage</div><div class="v" id="kpi-stage">0</div></div>
+        <div class="kpi"><div class="k">revision</div><div class="v" id="kpi-revision">0</div></div>
+        <div class="kpi"><div class="k">facts</div><div class="v" id="kpi-facts">0</div></div>
+        <div class="kpi"><div class="k">episode</div><div class="v" id="kpi-episode">open</div></div>
+      </div>
+      <h3>Holds by predicate family <span class="hint">(paper Table II · engine codes)</span></h3>
+      <table id="gate-table" class="tbl"></table>
+      <h3>Trace hash chain <span class="hint">(C3: each commit links a new snapshot hash; holds leave it unchanged)</span></h3>
+      <ol id="hash-chain" class="chain mono"></ol>
+      <h3>Session vs frozen paper counts</h3>
+      <table id="ref-table" class="tbl"></table>
+    </section>
+
+    <section class="timeline card">
+      <div class="card-head"><h2>Event timeline</h2><span class="hint" id="timeline-hint">last 90 s · lanes: proposal · verdict · dialogue · focus</span></div>
+      <svg id="timeline" viewBox="0 0 1000 150" preserveAspectRatio="none" role="img" aria-label="Event timeline"></svg>
+    </section>
+
+    <section class="minimap card">
+      <div class="card-head"><h2>Harbor plan</h2><span class="hint">player trail · sites · current lead</span></div>
+      <svg id="minimap" viewBox="0 0 320 260" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Harbor mini-map"></svg>
+    </section>
+
+    <section class="log card">
+      <div class="card-head"><h2>Raw event feed</h2><span class="hint mono" id="log-count">0 events</span></div>
+      <pre id="log" class="mono"></pre>
+    </section>
+  </main>
+
+  <footer class="bar foot">
+    <span>Data path: Godot presentation layer → <code>window.parent.postMessage</code> → this page. No page code can propose, repair, or commit; it renders what the hard writer already returned. Frozen reference counts come from <code>paper-reference.json</code> (generated from the Stage-4 packet and the RQ2 screening summary).</span>
+  </footer>
+  <script src="dashboard.js"></script>
+</body>
+</html>

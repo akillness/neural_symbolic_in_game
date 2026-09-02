@@ -102,3 +102,7 @@ efficacy remain unassessed.
 | Retained desktop entry | Retained narrow in-game layout |
 | --- | --- |
 | ![Retained desktop start gate](../godot/docs/latest/vercel-start.png) | ![Retained 390 by 844 in-game layout](../godot/docs/latest/vercel-mobile-in-game.png) |
+
+## Live dashboard
+
+`dashboard/` embeds `public/index.html` and renders the game's presentation-only `postMessage` mirror (D-065). Serve the `game-track/web` directory (`python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web`) and open `/dashboard/`. See [`dashboard/README.md`](dashboard/README.md).

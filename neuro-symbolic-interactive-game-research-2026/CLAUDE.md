@@ -135,6 +135,13 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   handlers a player would, so canonical state still changes only through the proposal router.
   Run it only under `--write-movie` on a disposable copy; its MP4/GIF are engineering
   demonstrations, never usability, latency, G4, or G6 evidence.
+- The Web dashboard (`game-track/web/dashboard/`, D-065) is a presentation-only observer: the
+  embedded build mirrors typed events (`session|proposal|commit|hold|dialogue|focus|tick|
+  episode_complete`) through `JavaScriptBridge` → `window.parent.postMessage` only when embedded,
+  carrying committed-snapshot hashes, codes, and predicate families but never sealed fact IDs,
+  hidden oracle labels, saves, or rig identity. The page has no channel back into the game and
+  its live counts are engineering demonstration only; `paper-reference.json` is derived from the
+  frozen Stage-4 and RQ2 packets and must be regenerated when they change.
 - Use Godot/GDScript guidance only. Unity editor, prefab, package, or C# assumptions do not apply.
 
 ## 3. Asset generation: one owner per class

@@ -291,9 +291,23 @@ usability, 몰입, 감정, 플레이어 효능, 확증 모델 효능은 **UNASSE
 
 ```bash
 ./scripts/build_godot_web.sh                       # 일회용 복사본 Web export
-python3 -m http.server 4173 --directory game-track/web/public
+python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web   # /public/ = 게임, /dashboard/ = 라이브 대시보드
 uv run python scripts/run_playable_evaluation.py   # 일회용 복사본에서 SL-PLAY-EVAL-001
 ```
+
+#### 라이브 커밋 게이트 대시보드
+
+![라이브 대시보드: 왼쪽에 임베드된 Web 빌드, 오른쪽에서 커밋 게이트 그래프가 commit 시 여섯 술어 family를 녹색으로, hold 시 코럴로 밝히고, 세션 패널이 entries·술어 family별 hold·trace 해시 체인을 추적한다](game-track/godot/docs/latest/dashboard-route.gif)
+
+[`game-track/web/dashboard/`](game-track/web/dashboard/README.md)는 공개 안전 Web 빌드를 임베드하고, AgentSight의
+관용구(효과 가중 노드, 애니메이션 리플레이, 라이브 `top` 표)로 게임이 게이트에 통과시키는 모든 제안을 그린다. 녹색
+펄스는 proposer → parser → 여섯 술어 family → COMMIT → TRACE로 흐르고, 코럴 펄스는 항목을 막은 family에서 멈춰
+HOLD → TRACE로 가며 상태 해시는 변하지 않는다. 세션 패널은 entries, 엔진 code가 붙은 술어 family별 hold, trace 해시
+체인(C3), 그리고 라이브 세션 옆의 동결 E1/E2 count를 보여준다. 게임은 임베드된 경우에만
+`window.parent.postMessage`로 typed event를 미러링하며, 페이지는 게임으로 되돌아가는 채널이 없고 봉인된 fact ID를
+받지 않는다. 2026-09-02 브라우저 구동 경로는 commit 3, hold 1(`FORBIDDEN_DISCLOSURE` → DISCLOSURE), 해시 체인
+`f488d9c4…812c → 19b474dc…c498 → 93381457…b900 → 4b231017…8892`를 만들었고, headless 스모크가 보고하는 종단
+해시와 같은 값으로 끝났다. 엔지니어링 시연일 뿐이며 어떤 claim, G4, G6 상태도 승격하지 않는다.
 
 배포: **[`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` Vercel READY](https://sealed-lighthouse-trace-rpg.vercel.app)**
 (PCK 10,893,980 bytes, SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`);

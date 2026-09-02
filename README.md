@@ -17,6 +17,7 @@ TRACE-RPG separates generated proposals from canonical game state and commits on
 | [Authoritative English paper source](./neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex) | Current TRACE-RPG manuscript source |
 | [Public Web playable](https://sealed-lighthouse-trace-rpg.vercel.app) | Current production alias |
 | [Current gameplay recording](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4) | 63.433 s H.264 MP4 of the scripted golden-path route (Godot Movie Maker, 2026-09-02); [GIF](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif) |
+| [Live commit-gate dashboard](./neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/README.md) | Embedded Web build + AgentSight-style live gate graph, metrics, timeline ([GIF](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/dashboard-route.gif)) |
 | [Project knowledge index](./llm-wiki/index.md) | Persistent sources, concepts, reports, and graph |
 
 ## 완료 상태 / Completion status
