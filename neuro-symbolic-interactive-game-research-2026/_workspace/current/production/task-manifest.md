@@ -2,7 +2,7 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 Current stage: Stage 1 re-entry — playable presentation/Web release engineering; 2026-08-30
-balance/telemetry/motion/live-screening/recovery/English-player/KG/deployment extension recorded as D-037–D-058
+balance/telemetry/motion/live-screening/recovery/English-player/KG/deployment extension recorded as D-037–D-058; 2026-09-02 paper-legibility/top-venue/replication/ledger-gate pass recorded as D-060
 Operating mode: curated public-safe UI/player over a procedural world; immutable research evidence remains separate
 Next beat: production save/reload and current mobile re-verification, human-gesture pointer
 lock/audio, representative warmed frame/input measurements, 30-minute soak, and rollback drill
@@ -58,6 +58,9 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 | Bind C1–C5 to all references and evidence lanes with a CI gate (D-055) | research engineer + reproducibility verifier | paper.revision | three CSV matrices, bilingual manuscript IDs, crosscheck report, validator | claim/citation/method-result parity | done-5-contributions-45-references-9-topics-3-plus-1-lanes | retain every `C-RESULT-*` as unpromoted until confirmatory evidence |
 | Publish first bilingual progress report | director + QA | current pickup | `production/first-progress-report.md` | evidence-bounded status | done-2026-08-29 | user review; no commit/push without approval |
 | Build typed methods-graph DB/ontology and fixed-budget link-proposal simulation (D-051) | research engineer + QA | paper.method | ontology/curated relations, SQLite schema, `SL-KG-ONTOLOGY-SIM-001`, JSON/Markdown/TSV/SVG/TeX | simulation-only claim boundary | done-43-nodes-106-reference-24-typed-0-violations-6-of-6-CQ | independent open-world annotation before any semantic/usefulness claim; runtime KG remains future work |
+| Generate contribution/lane tables from the structured matrices, link guided-repair results to Table-rho codes, and add five top-venue lineage references (D-060) | research engineer + reproducibility verifier | paper.revision | `generate_paper_results.py` (`contribution_map_*`, `evidence_lanes_*`), `references.bib` S45/S47–S51, Stage-5 JSON/MD, crosswalk CSVs, EN/KO manuscripts | claim/citation/method-result parity + page band | done-2026-09-02-50-refs-8pp-EN-KO-zero-overfull | journal submission remains |
+| Replicate the frozen Stage-4 conformance packet in an isolated directory (D-060) | reproducibility verifier | paper.method | `research/academic-pipeline/stage-04-replication-2026-09-02.md` | reproducibility | done-11-of-11-CSV-byte-identical | rerun at each release tag |
+| Mirror the paper's predicate families in the playable ledger hold line and end-card receipt (D-060) | game-programmer + QA | 1.presentation | `game_3d.gd` (`GATE_BY_CODE`, `_holds_by_gate`), `harbor_ledger_ui.gd` (`ledger_refusal` gate line), refreshed `docs/latest` captures | G1/G7 engineering | done-smoke-8-of-8-eval-49-of-49-terminal-hash-unchanged | rebuild+deploy Web with approval; human readability review |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts

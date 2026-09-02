@@ -159,10 +159,10 @@ measurement.
 
 | Artifact | Size/dimensions | SHA-256 / status |
 |---|---:|---|
-| `game-track/godot/docs/latest/arrival.png` | 1280×720, 493,925 B | `0516c561fee938e62ae5279f1facdb85d39248cfb9b522c800e74bc953d2f9d8` |
-| `game-track/godot/docs/latest/refusal.png` | 1280×720, 579,733 B | `2041fa1e1dd8e5f5d62373cf25c0462530b40e430f649a87c18f8ebfa1ab0b61` |
-| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 631,606 B | `cc5e766adbf0a8eb47e519b61fa2032fd5fac268e3d3be845aa711b6f00f37fe` |
-| `game-track/godot/docs/latest/ending.png` | 1280×720, 499,210 B | `4c312110e04ed342c3ab7961120b07873a6d97a39f446f6a99ddb839d4622e9f` |
+| `game-track/godot/docs/latest/arrival.png` | 1280×720, 315,788 B | `0648435c8d38688f28360903136053289673f7b3672e7da28f5a44b08bf8adee` |
+| `game-track/godot/docs/latest/refusal.png` | 1280×720, 433,123 B | `fe78a48aa85d625ec30fb60909bccfbd5e050ad0fd1d3b20f152c2e7dc4280ee` |
+| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 387,621 B | `37349468eefedff46d184680b4175b0e32f142c6d02c19df1eda972d9d0c1d87` |
+| `game-track/godot/docs/latest/ending.png` | 1280×720, 409,861 B | `edb3b6e3d787bd84120505f5ea153cd09b202cbbf6fb56e9f3c1fca983d26b9e` |
 | `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `49/49` | PASS; engineering-only |
 | `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
 | `game-track/web/public/` | current production 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes | PCK SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`; includes curated player; ignored/non-authoritative builder output |

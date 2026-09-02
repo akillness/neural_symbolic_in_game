@@ -519,30 +519,65 @@ func _next_affordance_text() -> String:
 	return str(GoldenPathLayout.next_affordance(machine.state, _met_mira)["text"])
 
 
+## Engine-mirror validator code -> the manuscript's state-relative predicate
+## family (Table II: policy, precondition, reachability, knowledge, disclosure,
+## quest stage). Surfaced diegetically so a hold names the gate that held it.
+const GATE_BY_CODE := {
+	"FORBIDDEN_DISCLOSURE": "DISCLOSURE",
+	"STAGE_GATED_DISCLOSURE": "DISCLOSURE/QUEST STAGE",
+	"MISSING_REQUIRED_OBJECT": "PRECONDITION",
+	"QUEST_STAGE_PRECONDITION": "QUEST STAGE",
+	"OBJECT_NOT_PRESENT": "REACHABILITY",
+	"OBJECT_NOT_REACHABLE": "REACHABILITY",
+}
+var _holds_by_gate: Dictionary = {}
+
+
+func gate_for_code(code: String) -> String:
+	return str(GATE_BY_CODE.get(code, "POLICY"))
+
+
+func _record_hold(gate: String) -> void:
+	_holds_by_gate[gate] = int(_holds_by_gate.get(gate, 0)) + 1
+
+
 func _refusal_feedback(codes: Array) -> void:
 	# Neutral reason + one world-flavor clause + the concrete next valid entry.
 	# Hidden oracle labels never surface; the flavor stays non-alarming (P-02) —
-	# the ledger defers, it never punishes.
+	# the ledger defers, it never punishes. Each hold also names the predicate
+	# family that held it so the in-game ledger mirrors the paper's commit gate.
 	var next_affordance := _next_affordance_text()
 	for code in codes:
+		var gate := gate_for_code(str(code))
+		_record_hold(gate)
 		match code:
 			"FORBIDDEN_DISCLOSURE":
 				# Canonical early-secret fallback (safe_fallback.text_en).
 				ui.ledger_line("dialogue", scenario["safe_fallback"]["text_en"])
-				ui.ledger_refusal("This request cannot be answered yet. The ledger defers it.", next_affordance)
+				ui.ledger_refusal("This request cannot be answered yet. The ledger defers it.", next_affordance, gate)
 			"STAGE_GATED_DISCLOSURE":
 				ui.ledger_line("dialogue", "Not yet. There is an order to these things.")
-				ui.ledger_refusal("Disclosure conditions are not met. The ledger keeps the sequence.", next_affordance)
+				ui.ledger_refusal("Disclosure conditions are not met. The ledger keeps the sequence.", next_affordance, gate)
 			"MISSING_REQUIRED_OBJECT":
-				ui.ledger_refusal("There is no lens to install. The ledger will not record empty hands.", next_affordance)
+				ui.ledger_refusal("There is no lens to install. The ledger will not record empty hands.", next_affordance, gate)
 			"QUEST_STAGE_PRECONDITION":
-				ui.ledger_refusal("The entry is not ready. Its tide has not come in.", next_affordance)
+				ui.ledger_refusal("The entry is not ready. Its tide has not come in.", next_affordance, gate)
 			"OBJECT_NOT_PRESENT", "OBJECT_NOT_REACHABLE":
-				ui.ledger_refusal("It cannot be taken from here. What cannot be reached stays outside the ledger.", next_affordance)
+				ui.ledger_refusal("It cannot be taken from here. What cannot be reached stays outside the ledger.", next_affordance, gate)
 			_:
-				ui.ledger_refusal("The entry was held. The ledger defers it.", next_affordance)
+				ui.ledger_refusal("The entry was held. The ledger defers it.", next_affordance, gate)
 	# RitualVfx repair-hint blink marks the same next-valid target in-world.
 	_play_repair_hint(_next_affordance_target())
+
+
+func _holds_by_gate_text() -> String:
+	# Deterministic order so the end card and any capture stay stable.
+	var keys: Array = _holds_by_gate.keys()
+	keys.sort()
+	var parts: Array = []
+	for key in keys:
+		parts.append("%s %d" % [key, int(_holds_by_gate[key])])
+	return " | ".join(parts) if not parts.is_empty() else "none"
 
 
 func _propose_acquire() -> void:
@@ -927,6 +962,7 @@ func _episode_receipt_text() -> String:
 		commit_count, refusal_count, int(machine.state["quest"]["stage"])
 	]
 	receipt += "[color=#8FA3B2]VALIDATOR RECEIPT | STATE HASH %s...[/color]\n" % machine.state_hash().substr(0, 16)
+	receipt += "[color=#8FA3B2]HOLDS BY GATE | %s[/color]\n" % _holds_by_gate_text()
 	return receipt
 
 

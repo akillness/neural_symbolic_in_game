@@ -977,11 +977,18 @@ func ledger_commit(entry_number: int, text: String) -> void:
 	_show_ledger_stamp(true)
 
 
-func ledger_refusal(reason: String, next_affordance: String) -> void:
+func ledger_refusal(reason: String, next_affordance: String, gate: String = "") -> void:
 	# 'HELD — <neutral reason>' then 'NEXT VALID ENTRY: <affordance>'. The reason
 	# stays neutral/non-alarming (P-02) and never exposes hidden oracle labels;
 	# the next valid entry is always concrete and always present.
 	_ledger_log.append_text("[color=#D9685F][H] HELD - %s[/color]\n" % reason)
+	if gate != "":
+		# Diegetic mirror of the paper's state-relative predicate that held the
+		# entry (Table II of the manuscript). Names the gate, never the hidden
+		# oracle, and restates the invariant every hold shares: state unchanged.
+		_ledger_log.append_text(
+			"[color=#8FA3B2][V] GATE %s | state unchanged[/color]\n" % gate
+		)
 	_ledger_log.append_text(
 		"[color=#A77A3A][N] NEXT VALID ENTRY: %s[/color]\n" % next_affordance
 	)
