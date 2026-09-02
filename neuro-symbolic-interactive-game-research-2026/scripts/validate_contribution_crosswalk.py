@@ -219,8 +219,8 @@ def _validate_headline_sources(experiment_rows: dict[str, dict[str, str]]) -> No
 def main() -> None:
     bibliography = _bib_entries(BIBLIOGRAPHY.read_text(encoding="utf-8"))
     bib_keys = set(bibliography)
-    if len(bib_keys) != 45:
-        raise ValueError(f"expected 45 paper references, found {len(bib_keys)}")
+    if len(bib_keys) != 50:
+        raise ValueError(f"expected 50 paper references, found {len(bib_keys)}")
 
     audit = json.loads(CITATION_AUDIT.read_text(encoding="utf-8"))
     audit_by_key = {entry["key"]: entry for entry in audit["entries"]}
@@ -228,14 +228,14 @@ def main() -> None:
         raise ValueError("Stage-5 citation keys do not equal bibliography keys")
     status_counts = Counter(entry["status"] for entry in audit["entries"])
     rate_limited = sum(bool(entry["rate_limited_indices"]) for entry in audit["entries"])
-    if status_counts != {"VERIFIED": 39, "PREPRINT": 6} or rate_limited != 12:
+    if status_counts != {"VERIFIED": 45, "PREPRINT": 5} or rate_limited != 17:
         raise ValueError(
             f"Stage-5 citation totals drift: status={status_counts!r}, rate_limited={rate_limited}"
         )
 
     reference_rows = _read_csv(REFERENCES)
     reference_by_key = {row["bib_key"]: row for row in reference_rows}
-    if len(reference_rows) != 45 or set(reference_by_key) != bib_keys:
+    if len(reference_rows) != 50 or set(reference_by_key) != bib_keys:
         raise ValueError("reference-topic crosswalk must cover each bibliography key exactly once")
     if {row["primary_topic_id"] for row in reference_rows} != TOPIC_IDS:
         raise ValueError("reference-topic crosswalk must exercise T1 through T9")
@@ -344,7 +344,7 @@ def main() -> None:
 
     print(
         "contribution/reference crosswalk passed: "
-        "5 contributions, 45 references, 9 topics, 3 experiment lanes + 1 engineering lane"
+        "5 contributions, 50 references, 9 topics, 3 experiment lanes + 1 engineering lane"
     )
 
 

@@ -51,6 +51,10 @@ LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/generated/live_pilot_results_ko.tex",
     "paper/latex/generated/live_pilot_tables_en.tex",
     "paper/latex/generated/live_pilot_tables_ko.tex",
+    "paper/latex/generated/contribution_map_en.tex",
+    "paper/latex/generated/contribution_map_ko.tex",
+    "paper/latex/generated/evidence_lanes_en.tex",
+    "paper/latex/generated/evidence_lanes_ko.tex",
     "game-track/godot/docs/latest/balance-archetypes.svg",
 )
 
@@ -707,6 +711,8 @@ class Validator:
                 "scripts",
                 "research/academic-pipeline/stage-04-pilot",
                 "research/academic-pipeline/rq2-live-pilot",
+                "research/academic-pipeline/contribution-evidence-matrix.csv",
+                "research/academic-pipeline/experiment-evidence-matrix.csv",
                 "research/claim-ledger.yaml",
                 "game-track/godot/docs/latest/balance-archetypes.json",
             ):

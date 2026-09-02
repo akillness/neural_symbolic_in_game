@@ -2,13 +2,13 @@
 
 Status: **PASS_NO_HALLUCINATED_CITATIONS**
 
-Audit date: 2026-08-28 (current machine record; original audit 2026-08-13)
+Audit date: 2026-09-02 (current machine record; original audit 2026-08-13; top-venue refresh S47–S51 on 2026-09-02)
 
 Machine-readable record: `stage-05-citation-verification.json`
 
 Current topical/claim-use crosscheck: `reference-topic-crosswalk.csv`. Intermediate totals in the
 Stage-8 and game-comparator addenda below are time-stamped historical snapshots superseded by the
-current 45-entry summary.
+current 50-entry summary.
 
 Gate semantics: a `HALLUCINATED` citation must be removed or replaced before Stage 6. None was
 found, so Stage 6 is unblocked. Preprint citations are flagged advisory and do not block.
@@ -39,17 +39,17 @@ return an unrelated record's year.
 
 | Status | Count |
 | --- | --- |
-| `VERIFIED` | 39 |
-| `PREPRINT` | 6 |
+| `VERIFIED` | 45 |
+| `PREPRINT` | 5 |
 | `UNMATCHED` | 0 |
 | `HALLUCINATED` | 0 |
-| Total | 45 |
+| Total | 50 |
 
-Every one of the 45 entries was matched by at least one answering independent index. The bibliography
-is closed against the manuscripts: 45 unique cite keys, 45 bibliography entries, no cited-but-absent
+Every one of the 50 entries was matched by at least one answering independent index. The bibliography
+is closed against the manuscripts: 50 unique cite keys, 50 bibliography entries, no cited-but-absent
 key and no present-but-uncited entry, and an identical key set in the English and Korean sources.
 
-45개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. 인용 키 45개와 참고문헌 45건이
+50개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. 인용 키 50개와 참고문헌 50건이
 정확히 일치하며, 영문·국문 원고의 키 집합도 동일하다. `S43`은 의도적 결번이다.
 
 ## Preprints (advisory) / 프리프린트
@@ -60,10 +60,11 @@ key and no present-but-uncited entry, and an identical key set in the English an
 | S02 | Symbolically Scaffolded Play | 2510.25820 | arXiv |
 | S26 | VLM engagement understanding in games | 2603.18480 | OpenAlex, Semantic Scholar, arXiv |
 | S44 | World-State Transformations for Neuro-symbolic Interactive Storytelling | 2605.24719 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
-| S45 | Self-Refine | 2303.17651 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
 | S46 | Teaching Large Language Models to Self-Debug | 2304.05128 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
 
-These six carry no publisher DOI in the frozen record and remain preprints. The manuscripts describe
+These five carry no publisher DOI in the frozen record and remain preprints. S45 (Self-Refine) left this
+list on 2026-09-02 when its NeurIPS 36 proceedings DOI `10.52202/075280-2019` resolved in Crossref
+and OpenAlex; S46 stays a preprint because OpenReview returned no API record during the refresh. The manuscripts describe
 their status or use them only as bounded motivation/comparators. Claim `C-AFFECT-001` remains
 `verified-scope-limited-preprint`, and no conclusion depends on treating a preprint as an archival
 record.
@@ -107,7 +108,10 @@ archival 연도가 옳다. 수정이 필요하지 않다.
 ## Coverage limitation / 검증 범위 한계
 
 Semantic Scholar returned HTTP 429 for 12 of 45 entries in the frozen audit. Those entries are:
-S02, S03, S04, S05, S08, S12, S18, S33, S34, S44, S45, S46.
+S02, S03, S04, S05, S08, S12, S18, S33, S34, S44, S45, S46. The 2026-09-02 refresh received HTTP 429
+for every Semantic Scholar lookup, so S47–S51 are also recorded as rate-limited there (17 of 50 in
+total); each of the five was matched in Crossref and OpenAlex, or in PMLR HTML citation metadata plus
+OpenAlex for the two PMLR volumes.
 
 This is an access limitation of the third index, not evidence about the citations. Every one of the
 12 is matched by at least one other index; preprints S02 and S44--S46 are confirmed on arXiv.
@@ -180,3 +184,21 @@ match failure. This raises the current frozen total to **45 entries: 39 verified
 0 unmatched, 0 hallucinated**. Their topical and contribution roles are recorded in
 `reference-topic-crosswalk.csv`; S44 is a game-specific authored-transformation comparator, while
 S45--S46 are feedback-repair precedents with different feedback channels and authority boundaries.
+
+## Top-venue refresh addendum (2026-09-02) / 주요 학회 보강
+
+Five references were added so the manuscript's core technique cites its archival lineage directly,
+and one existing preprint entry was resolved to its proceedings record. Semantic Scholar was
+rate-limited for every call; DBLP was unreachable; Crossref, OpenAlex, and PMLR page metadata answered.
+
+| Key | Venue | Identity | Role |
+| --- | --- | --- | --- |
+| S45 | NeurIPS 36 (2023), pp. 46534–46594 | DOI `10.52202/075280-2019` (Crossref, OpenAlex) | preprint → `VERIFIED` |
+| S47 | ASPLOS 2006, pp. 404–415 | DOI `10.1145/1168857.1168907` (Crossref, OpenAlex) | counterexample-guided synthesis lineage for ρ (T9, C5) |
+| S48 | NeurIPS 36 (2023), pp. 8634–8652 | DOI `10.52202/075280-0377` (Crossref, OpenAlex) | feedback-repair comparator (T9, C5) |
+| S49 | ACM Computing Surveys 15(4), 1983 | DOI `10.1145/289.291` (Crossref, OpenAlex) | commit/abort transaction lineage (T8, C2/C3) |
+| S50 | ICML 2024, PMLR 235:22895–22907 | PMLR citation metadata; OpenAlex indexes arXiv 2402.01817 | generate-and-verify lineage (T8, C2/C5) |
+| S51 | CoRL 2022, PMLR 205:287–318 (2023) | PMLR citation metadata; OpenAlex indexes arXiv 2204.01691 | affordance-gated admission (T8, C2) |
+
+주요 학회·저널에 등재된 5편을 추가하고 S45를 proceedings 레코드로 승격했다. 어떤 추가 인용도
+효능 주장을 지지하지 않으며, 계보와 비교 대상의 정확한 출처만 강화한다.

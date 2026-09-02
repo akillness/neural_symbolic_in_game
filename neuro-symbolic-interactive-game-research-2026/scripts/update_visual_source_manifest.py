@@ -263,6 +263,22 @@ def build_manifest() -> dict[str, Any]:
             anchors=("tab:live-screening",),
         ),
         table_source(
+            "contribution-and-lane-paper-tables",
+            layouts=(
+                "paper/latex/generated/contribution_map_en.tex",
+                "paper/latex/generated/contribution_map_ko.tex",
+                "paper/latex/generated/evidence_lanes_en.tex",
+                "paper/latex/generated/evidence_lanes_ko.tex",
+            ),
+            generator=PAPER_TABLE_GENERATOR,
+            data=(
+                "research/academic-pipeline/contribution-evidence-matrix.csv",
+                "research/academic-pipeline/experiment-evidence-matrix.csv",
+            ),
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:contribution-map", "tab:evidence-lanes"),
+        ),
+        table_source(
             "kg-ontology-paper-fragments",
             layouts=(
                 "paper/latex/generated/kg_ontology_simulation_en.tex",

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -29,6 +30,110 @@ LIVE_RECEIPT_CLAIM_BOUNDARY = (
     "result, and not statistical evidence."
 )
 OUT = ROOT / "paper/latex/generated"
+PIPELINE = ROOT / "research/academic-pipeline"
+CONTRIBUTION_MATRIX = PIPELINE / "contribution-evidence-matrix.csv"
+EXPERIMENT_MATRIX = PIPELINE / "experiment-evidence-matrix.csv"
+# Bilingual short labels for the nine prior-work topics of reference-topic-crosswalk.csv.
+TOPIC_LABELS = {
+    "T1": ("grounded game worlds", "근거 게임 세계"),
+    "T2": ("retrieval/memory agents", "검색·메모리 에이전트"),
+    "T3": ("structured generation", "구조 생성"),
+    "T4": ("environments/benchmarks", "환경·벤치마크"),
+    "T5": ("player experience", "플레이어 경험"),
+    "T6": ("human/LLM evaluation", "인간·LLM 평가"),
+    "T7": ("statistics/reproducibility", "통계·재현성"),
+    "T8": ("planning/runtime interposition", "계획·런타임 개입"),
+    "T9": ("feedback repair", "피드백 수리"),
+}
+# Compact lane descriptors. Every numeric token is asserted against the
+# experiment matrix so the table cannot drift from its CSV source.
+LANE_ROWS = {
+    "E1": {
+        "en": (
+            "Offline conformance",
+            "authored frozen fixtures, one world",
+            "13 gate; 12 repair/arm; 10 faults; 7 adapter; 3 guards",
+            "reject vs blind vs $\\rho$ vs oracle",
+            "mechanism conformance",
+        ),
+        "ko": (
+            "오프라인 적합성",
+            "작성·동결 fixture, 단일 world",
+            "gate 13; arm당 repair 12; fault 10; adapter 7; guard 3",
+            "reject / blind / $\\rho$ / oracle",
+            "메커니즘 적합성",
+        ),
+        "tokens": (
+            "13 gate fixtures",
+            "12 initially-invalid",
+            "10 prespecified",
+            "7 adapter",
+            "3 accounting",
+        ),
+    },
+    "E2": {
+        "en": (
+            "Live RQ2 screening",
+            "one hosted proposer, matched candidate",
+            "5 cells $\\times$ 5 calls; $K{=}1$",
+            "$\\rho$ vs blind per regime",
+            "pilot-only transfer screen",
+        ),
+        "ko": (
+            "라이브 RQ2 스크리닝",
+            "hosted proposer 1개, matched candidate",
+            "5 cell $\\times$ 5 call; $K{=}1$",
+            "regime별 $\\rho$ / blind",
+            "pilot-only 전이 screen",
+        ),
+        "tokens": ("5 current cells x 5 calls", "K=1"),
+    },
+    "E3": {
+        "en": (
+            "KG/ontology simulation",
+            "closed-world typed-link holdout",
+            "43 nodes; 106 ref.\\ edges; 24 typed; 210 scores",
+            "degree baseline vs 6 fixed strategies",
+            "construction result only",
+        ),
+        "ko": (
+            "KG/온톨로지 시뮬레이션",
+            "closed-world typed-link holdout",
+            "node 43; 참조 edge 106; typed 24; score 210",
+            "degree baseline / 고정 전략 6종",
+            "구성 결과만",
+        ),
+        "tokens": (
+            "43 OKF nodes",
+            "106 reference edges",
+            "24 curated typed edges",
+            "210 scores",
+            "7 strategies",
+        ),
+    },
+    "ENG1": {
+        "en": (
+            "Godot/Web engineering",
+            "engine-local policy mirror, no participants",
+            "4 fixtures; 49 checks; 8 smoke; 5 archetypes",
+            "authored fixture paths",
+            "engine-local conformance",
+        ),
+        "ko": (
+            "Godot/Web 엔지니어링",
+            "엔진 로컬 policy mirror, 참여자 없음",
+            "fixture 4; check 49; smoke 8; archetype 5",
+            "작성 fixture 경로",
+            "엔진 로컬 적합성",
+        ),
+        "tokens": (
+            "4 authored fixtures",
+            "49 combined",
+            "8 production smoke",
+            "5 balance archetypes",
+        ),
+    },
+}
 
 
 def _escape(value: Any) -> str:
@@ -188,7 +293,7 @@ def _result_text(data: dict[str, Any], korean: bool) -> str:
 파일럿 loader는 구현된 validator code를 정확히 한 번씩 고립시키는 fixture 집합과 유효 control 1개만을 허용한다. 따라서 {gate["passed_fixture_count"]}/{gate["fixture_count"]} 일치와 구현된 오류 코드 {gate["implemented_code_count"]}종의 관찰은 측정된 성공률이 아니라 \emph{{하니스의 구성 불변량}}이다. 이 실행이 보여주는 것은 loader가 강제하지 않는 부분, 즉 고립된 음성 fixture {gate["negative_fixture_count"]}개가 각각 다른 코드가 아니라 작성된 기대 코드와 일치했고 비commit 경로가 전체 정준 상태를 유지했다는 관찰이다. 이는 단일 world state에서 저자가 설계한 구조 필드 oracle에 대한 구현 적합성이며 독립 의미 판정의 정확도가 아니다.
 
 \subsection{{설계 픽스처에서의 수리 arm 비교}}
-처음부터 유효하지 않은 설계 case {case_total}개는 guided-repairable {g_cases}개, oracle-only {o_cases}개, irreparable {i_cases}개의 동결된 repairability class로 분할된다. Rejection-only와 블라인드 동일 후보 retry는 각각 0/{case_total} commit이었다. 반례 유도 연산자 $\rho$는 guided-repairable case {guided_commits}/{g_cases}를 commit했고, 설계상 oracle-only {guided_oracle_only}/{o_cases}, irreparable {guided_irreparable}/{i_cases}였다. 모든 $\rho$ commit은 candidate field를 평균 {guided_mean_edit}개 수정했으며, 실패한 모든 arm 실행은 정준 상태를 변경 없이 유지했다. 상태를 읽는 참조 callback은 guided-repairable {oracle_guided}/{g_cases}와 oracle-only {oracle_only}/{o_cases}를 commit했고 irreparable은 {oracle_irreparable}/{i_cases}였다. 이 정확한 count는 세 메커니즘을 설계 픽스처 위에서 분리한다. 블라인드 retry는 반례를 commit으로 전환하지 못하고, $\rho$는 오류 payload에 충분한 정보가 담긴 case만 전환하며, oracle은 상태 지식이 필요한 case를 추가로 전환한다. 이는 동결 픽스처에 대한 연산자 적합성이며, 어떤 live model의 수리 품질도 아니다.
+처음부터 유효하지 않은 설계 case {case_total}개는 guided-repairable {g_cases}개, oracle-only {o_cases}개, irreparable {i_cases}개의 동결된 repairability class로 분할된다. Rejection-only와 블라인드 동일 후보 retry는 각각 0/{case_total} commit이었다. 반례 유도 연산자 $\rho$는 guided-repairable case {guided_commits}/{g_cases}를 commit했고, 설계상 oracle-only {guided_oracle_only}/{o_cases}, irreparable {guided_irreparable}/{i_cases}였다. 모든 $\rho$ commit은 candidate field를 평균 {guided_mean_edit}개 수정했으며, 실패한 모든 arm 실행은 정준 상태를 변경 없이 유지했다. 상태를 읽는 참조 callback은 guided-repairable {oracle_guided}/{g_cases}와 oracle-only {oracle_only}/{o_cases}를 commit했고 irreparable은 {oracle_irreparable}/{i_cases}였다. 이 정확한 count는 세 메커니즘을 설계 픽스처 위에서 분리한다. 블라인드 retry는 반례를 commit으로 전환하지 못하고, $\rho$는 오류 payload에 충분한 정보가 담긴 case만 전환하며, oracle은 상태 지식이 필요한 case를 추가로 전환한다. {_guided_code_sentence(data, True)} 이는 동결 픽스처에 대한 연산자 적합성이며, 어떤 live model의 수리 품질도 아니다.
 
 \subsection{{무결성, 경계, 배정 회계}}
 현재 명세가 검출 가능하다고 지정한 {integrity["fault_count"]}개 fault fixture는 모두 지정된 검사 연산에서 거부됐다({integrity["detected_fault_count"]}/{integrity["fault_count"]}). 이 파일럿은 안정적인 typed detector code까지 대조하지 않으므로 detector layer 귀속을 입증하지 않는다. 별도로, 동일하게 기록된 유효 수리 앞의 무효 선행 후보를 다른 무효 후보로 치환하고 체크섬을 재계산한 알려진 provenance 경계는 예상대로 재생을 통과했다({integrity_boundary["observed_undetected_count"]}/{integrity_boundary["boundary_count"]} 미검출). 따라서 키 없는 체크섬을 재계산할 수 있는 작성자를 방어하지 않으며, 재생은 repair 생성 연산의 출처를 인증하지 않는다. 열린 경계 sentinel 두 건---자연어 disclosure 미추출과 required object의 후보·정책 동시 누락---은 {boundary["encoded_acceptance_count"]}/{boundary["sentinel_count"]}가 의도대로 인코딩상 허용됐고 safety pass는 {boundary["safety_pass_count"]}건이었다. 과거 unknown top-level field 허용 경계는 Stage 8 이후 닫힌 음성 회귀로 재분류되었으며, 완전한 12-field candidate에 unknown key 하나를 추가한 fixture를 proposal·replay parser 모두 구체적으로 거부했다({closed_boundary["passed_regression_count"]}/{closed_boundary["regression_count"]}). 이는 parser rejection parity이지 의미 안전성의 증거가 아니다. Adapter/accounting 7개 배정에서는 commit {adapter["commit_count"]}, 기호 fallback {adapter["fallback_count"]}, adapter failure {adapter["adapter_failure_count"]}였다. 합성 telemetry 필드는 {adapter["provider_latency_observed_count"]}/7 배정에서 채워져 전파됐으며, 이는 측정값이 아니라 회계 필드 전파 확인이다. 배정 guard {guards["detected_guard_count"]}/{guards["guard_count"]}가 중복·누락을 거부했다. 이 수치는 모두 합성 offline fixture의 raw count다.
@@ -201,12 +306,187 @@ def _result_text(data: dict[str, Any], korean: bool) -> str:
 The pilot loader admits a fixture set only when it isolates every implemented validator code exactly once alongside one valid control, so the {gate["passed_fixture_count"]}/{gate["fixture_count"]} agreement and the observation of all {gate["implemented_code_count"]} implemented error codes are \emph{{construction invariants of the harness}}, not measured success rates. What the run adds is the part the loader does not enforce: each of the {gate["negative_fixture_count"]} isolated negative fixtures showed observed agreement with its authored expected code rather than reaching a different one, and every noncommit path preserved the complete canonical state. This is implementation conformance to an authored structured-field oracle over a single world state, not accuracy against independent semantic labels.
 
 \subsection{{Repair-Arm Comparison on Designed Fixtures}}
-The {case_total} initially invalid designed cases are partitioned into frozen repairability classes: {g_cases} guided-repairable, {o_cases} oracle-only, and {i_cases} irreparable. Rejection-only and blind unchanged-candidate retry each committed 0/{case_total}. The counterexample-guided operator $\rho$ committed {guided_commits}/{g_cases} guided-repairable cases and, by design, {guided_oracle_only}/{o_cases} oracle-only and {guided_irreparable}/{i_cases} irreparable cases; every $\rho$ commit edited a mean of {guided_mean_edit} candidate fields, and every failed arm execution left the canonical state unchanged. The state-reading reference callback committed {oracle_guided}/{g_cases} guided-repairable and {oracle_only}/{o_cases} oracle-only cases, with {oracle_irreparable}/{i_cases} irreparable. These exact counts separate the three mechanisms on the designed fixtures: blind retry never converts a counterexample into a commit, $\rho$ converts exactly the cases whose error payload carries sufficient information, and the oracle additionally converts the case requiring state knowledge. This is operator conformance on frozen fixtures, not repair quality of any live model.
+The {case_total} initially invalid designed cases are partitioned into frozen repairability classes: {g_cases} guided-repairable, {o_cases} oracle-only, and {i_cases} irreparable. Rejection-only and blind unchanged-candidate retry each committed 0/{case_total}. The counterexample-guided operator $\rho$ committed {guided_commits}/{g_cases} guided-repairable cases and, by design, {guided_oracle_only}/{o_cases} oracle-only and {guided_irreparable}/{i_cases} irreparable cases; every $\rho$ commit edited a mean of {guided_mean_edit} candidate fields, and every failed arm execution left the canonical state unchanged. The state-reading reference callback committed {oracle_guided}/{g_cases} guided-repairable and {oracle_only}/{o_cases} oracle-only cases, with {oracle_irreparable}/{i_cases} irreparable. These exact counts separate the three mechanisms on the designed fixtures: blind retry never converts a counterexample into a commit, $\rho$ converts exactly the cases whose error payload carries sufficient information, and the oracle additionally converts the case requiring state knowledge. {_guided_code_sentence(data, False)} This is operator conformance on frozen fixtures, not repair quality of any live model.
 
 \subsection{{Integrity, Boundaries, and Assignment Accounting}}
 All {integrity["fault_count"]} faults prespecified as detectable were rejected by their designated check operations ({integrity["detected_fault_count"]}/{integrity["fault_count"]}). Because this pilot does not compare stable typed detector codes, it does not establish detector-layer attribution. Separately, the known provenance-boundary fixture substituted a different invalid precursor before the same recorded valid repair, recomputed the checksum, and passed replay as expected ({integrity_boundary["observed_undetected_count"]}/{integrity_boundary["boundary_count"]} undetected). Thus, the mechanism does not protect against a writer who can recompute unkeyed checksums, and replay does not authenticate the repair-generation operation. Two open boundary sentinels---unextracted narrative disclosure and simultaneous omission of a required object from candidate and policy---were intentionally accepted at the encoded layer ({boundary["encoded_acceptance_count"]}/{boundary["sentinel_count"]}), with {boundary["safety_pass_count"]} labelled as safety passes. The former unknown-top-level-field acceptance boundary was reclassified after Stage 8 as a closed negative regression: both proposal and replay parsers specifically rejected a complete 12-field candidate carrying one unknown key ({closed_boundary["passed_regression_count"]}/{closed_boundary["regression_count"]}). This establishes parser rejection parity, not semantic safety. Among seven adapter/accounting assignments, outcomes were {adapter["commit_count"]} commit, {adapter["fallback_count"]} symbolic fallback, and {adapter["adapter_failure_count"]} adapter failures. Synthetic telemetry fields were populated and propagated for {adapter["provider_latency_observed_count"]}/7 assignments; these are schema-pinned constants verifying accounting-field propagation, not measurements. All {guards["detected_guard_count"]}/{guards["guard_count"]} injected duplicate or missing-assignment guards failed closed. These are raw counts from synthetic offline fixtures.
 """.strip()
         + "\n"
+    )
+
+
+def _guided_commit_error_codes(data: dict[str, Any]) -> list[tuple[str, list[str]]]:
+    """Return (case_id, initial validator codes) for each committed guided-repair case."""
+    out: list[tuple[str, list[str]]] = []
+    for row in data["repair_arms"]["rows"]:
+        if row["arm_id"] != "guided_repair" or row["final_status"] != "commit":
+            continue
+        first = row["outcome_record"]["trace"][0]
+        codes = sorted({error["code"] for error in first["validation"]["errors"]})
+        if len(codes) != row["initial_error_count"] and len(codes) < 1:
+            raise ValueError(f"guided case {row['case_id']} has no initial validator codes")
+        out.append((row["case_id"], codes))
+    return out
+
+
+def _guided_code_sentence(data: dict[str, Any], korean: bool) -> str:
+    cases = _guided_commit_error_codes(data)
+    if not cases:
+        raise ValueError("no committed guided-repair cases in the frozen packet")
+    parts = []
+    for _, codes in cases:
+        labels = [_escape(code).replace("\\_", "\\_\\allowbreak{}") for code in codes]
+        parts.append("+".join(rf"\texttt{{{label}}}" for label in labels))
+    listing = ", ".join(parts)
+    n = len(cases)
+    if korean:
+        return (
+            rf"commit된 guided case {n}건이 처음 받은 validator code는 각각 {listing}이며, "
+            r"각 case는 표~\ref{tab:rho-rules}의 해당 edit $\delta(e)$만으로 유효해졌다."
+        )
+    return (
+        rf"The {n} committed guided cases initially carried {listing}, respectively, and each "
+        r"became valid through the corresponding Table~\ref{tab:rho-rules} edit $\delta(e)$ alone."
+    )
+
+
+def _read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def _contribution_map(korean: bool) -> str:
+    rows = _read_csv(CONTRIBUTION_MATRIX)
+    if [row["contribution_id"] for row in rows] != ["C1", "C2", "C3", "C4", "C5"]:
+        raise ValueError("contribution matrix must list C1 through C5 in order")
+    names = {
+        "C1": ("Trust-boundary contracts", "신뢰경계 contract"),
+        "C2": ("Validate--repair--commit controller", "validate--repair--commit controller"),
+        "C3": ("Audit-linked evidence layer", "감사 연결 근거 계층"),
+        "C4": ("Assignment-complete harness", "assignment-complete harness"),
+        "C5": ("Counterexample-guided operator $\\rho$", "반례 유도 연산자 $\\rho$"),
+    }
+    ceilings = {
+        "C1": ("encoded-field contract conformance", "인코딩 필드 계약 적합성"),
+        "C2": ("mechanism behavior on frozen cases", "동결 사례의 메커니즘 동작"),
+        "C3": ("integrity/replay on named fixtures", "명명 fixture의 무결성·재생"),
+        "C4": ("exact designed-case accounting", "설계 사례 정확 집계"),
+        "C5": ("frozen classes + one regime screen", "동결 class + 단일 regime screen"),
+    }
+    body = []
+    for row in rows:
+        cid = row["contribution_id"]
+        topics = ", ".join(row["prior_topic_ids"].split("|"))
+        lanes = ", ".join(row["evidence_lane_ids"].split("|"))
+        refs = len(row["reference_keys"].split("|"))
+        name = names[cid][1 if korean else 0]
+        ceiling = ceilings[cid][1 if korean else 0]
+        body.append(rf"{cid} & {name} & {topics} ({refs}) & {lanes} & {ceiling} \\")
+    legend = "; ".join(
+        f"{tid} = {label[1 if korean else 0]}" for tid, label in TOPIC_LABELS.items()
+    )
+    if korean:
+        caption = "기여, 선행 주제, 근거 레인, 추론 상한(구조화 매트릭스에서 생성)"
+        head = r"ID & 기여 & 선행 주제 (참고문헌 수) & 레인 & 추론 상한 \\"
+        note = (
+            rf"{legend}. 레인은 표~\ref{{tab:evidence-lanes}}에 정의한다. "
+            r"모든 행은 구현·작성 fixture 검증 상태이며 어떤 \texttt{C-RESULT-*} 효능 claim도 지지하지 않는다."
+        )
+    else:
+        caption = "Contributions, Prior Topics, Evidence Lanes, and Inference Ceilings (Generated from the Structured Matrices)"
+        head = r"ID & Contribution & Prior topics (refs) & Lanes & Inference ceiling \\"
+        note = (
+            rf"{legend}. Lanes are defined in Table~\ref{{tab:evidence-lanes}}. "
+            r"All rows are authored-fixture verified; none supports a \texttt{C-RESULT-*} efficacy claim."
+        )
+    return (
+        "% Generated by scripts/generate_paper_results.py from contribution-evidence-matrix.csv; do not hand-edit.\n"
+        r"\begin{table}[t]"
+        "\n"
+        rf"\caption{{{caption}}}"
+        "\n"
+        r"\label{tab:contribution-map}"
+        "\n"
+        r"\centering\scriptsize"
+        "\n"
+        r"\setlength{\tabcolsep}{2.6pt}"
+        "\n"
+        r"\renewcommand{\arraystretch}{1.12}"
+        "\n"
+        r"\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.2\columnwidth}l>{\raggedright\arraybackslash}p{0.24\columnwidth}@{}}"
+        "\n"
+        r"\toprule"
+        "\n" + head + "\n"
+        r"\midrule"
+        "\n" + "\n".join(body) + "\n"
+        r"\bottomrule"
+        "\n"
+        r"\end{tabularx}"
+        "\n"
+        rf"\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {note}}}"
+        "\n"
+        r"\end{table}"
+        "\n"
+    )
+
+
+def _lane_table(korean: bool) -> str:
+    rows = {row["evidence_lane_id"]: row for row in _read_csv(EXPERIMENT_MATRIX)}
+    if set(rows) != set(LANE_ROWS):
+        raise ValueError("experiment matrix lanes do not match the generated lane table")
+    body = []
+    for lane_id, spec in LANE_ROWS.items():
+        source = rows[lane_id]
+        haystack = " ".join(
+            source[key] for key in ("design", "unit_or_budget", "comparison_or_checks")
+        )
+        for token in spec["tokens"]:
+            if token not in haystack:
+                raise ValueError(f"{lane_id} lane table token missing from matrix: {token}")
+        name, design, unit, comparison, ceiling = spec["ko" if korean else "en"]
+        body.append(rf"{lane_id} & {name}: {design} & {unit} & {comparison} & {ceiling} \\")
+    if korean:
+        caption = "실험 레인 요약: 설계, 단위, 비교, 추론 상한(실험 매트릭스에서 생성)"
+        head = r"레인 & 설계 & 단위 / 예산 & 비교 & 상한 \\"
+        note = (
+            r"E1--E3와 ENG1은 서로 대체할 수 없으며 분모가 다르다. 어떤 레인도 모집단 효능, "
+            r"모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다."
+        )
+    else:
+        caption = "Evidence Lanes at a Glance: Design, Unit, Comparison, and Ceiling (Generated from the Experiment Matrix)"
+        head = r"Lane & Design & Unit / budget & Comparison & Ceiling \\"
+        note = (
+            r"Lanes are non-interchangeable with different denominators; none establishes population efficacy, "
+            r"model ranking, player experience, retrieval benefit, or commercial-engine performance."
+        )
+    return (
+        "% Generated by scripts/generate_paper_results.py from experiment-evidence-matrix.csv; do not hand-edit.\n"
+        r"\begin{table}[t]"
+        "\n"
+        rf"\caption{{{caption}}}"
+        "\n"
+        r"\label{tab:evidence-lanes}"
+        "\n"
+        r"\centering\scriptsize"
+        "\n"
+        r"\setlength{\tabcolsep}{2.4pt}"
+        "\n"
+        r"\renewcommand{\arraystretch}{1.12}"
+        "\n"
+        r"\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}p{0.19\columnwidth}>{\raggedright\arraybackslash}p{0.16\columnwidth}@{}}"
+        "\n"
+        r"\toprule"
+        "\n" + head + "\n"
+        r"\midrule"
+        "\n" + "\n".join(body) + "\n"
+        r"\bottomrule"
+        "\n"
+        r"\end{tabularx}"
+        "\n"
+        rf"\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {note}}}"
+        "\n"
+        r"\end{table}"
+        "\n"
     )
 
 
@@ -550,6 +830,10 @@ def main() -> None:
         (OUT / f"live_pilot_tables_{language}.tex").write_text(
             _live_tables(live_packet, korean), encoding="utf-8"
         )
+        (OUT / f"contribution_map_{language}.tex").write_text(
+            _contribution_map(korean), encoding="utf-8"
+        )
+        (OUT / f"evidence_lanes_{language}.tex").write_text(_lane_table(korean), encoding="utf-8")
     print(
         "generated bilingual offline and live-screening inputs from "
         f"{RESULTS_PATH.relative_to(ROOT)} and {LIVE_MANIFEST_PATH.relative_to(ROOT)}"

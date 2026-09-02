@@ -14,9 +14,10 @@ TRACE-RPG never writes an LLM proposal directly into canonical game state. Each 
 | Godot/Web engineering | 4/4 fixtures, 49/49 combined checks, tracked player, desktop production smoke | Authored-fixture and presentation conformance; not usability, fun, G4, or final G6 |
 | Confirmatory study | Not executed | `C-RESULT-001`–`005` remain `TODO-RESULT` |
 
-The evidence ceilings for contributions C1–C5, all 45 references across nine topics, the three
+The evidence ceilings for contributions C1–C5, all 50 references across nine topics, the three
 experiment lanes, and the engineering lane are cross-checked together in
 [`contribution-reference-crosscheck.md`](research/academic-pipeline/contribution-reference-crosscheck.md).
+The manuscript now carries two tables generated from those matrices (contributions × prior topics × lanes × inference ceiling, and evidence lanes × design × unit × comparison × ceiling), names the validator codes each committed guided-repair case resolved through the Table-ρ edits, and cites the archival lineage of the gate and repair operator directly (ASPLOS 2006 CEGIS, NeurIPS 2023 Self-Refine/Reflexion, ACM CSUR 1983 transactions, ICML 2024 LLM-Modulo, CoRL 2022 SayCan). The frozen Stage-4 packet was replicated byte-for-byte on 2026-09-02 ([receipt](research/academic-pipeline/stage-04-replication-2026-09-02.md)).
 
 ## Visuals
 
@@ -89,7 +90,7 @@ separate what the repository has built from what it has measured.
 |---|---|---|
 | Does the code run? | Yes — full pytest: 172 passed, 2 skipped; unittest discovery: 131 passed, 2 skipped; deterministic pilot, Godot slice, live public-safe Web build | — |
 | Is the pipeline complete? | Yes for the staged repository deliverables through Stage 10, including the final bilingual PDF rebuild and format checks | Independent efficacy studies, journal submission, and a decision remain |
-| Is the paper written? | Yes — current bilingual IEEE sources and 8-page PDFs, 45 paper references, ρ(a,E) guided repair, and separate live-screening/KG-simulation addenda | Journal submission, review, and any resulting revision remain |
+| Is the paper written? | Yes — current bilingual IEEE sources and 8-page PDFs, 50 paper references, ρ(a,E) guided repair, and separate live-screening/KG-simulation addenda | Journal submission, review, and any resulting revision remain |
 | **Are the research claims proven?** | **No** | Only a five-call-per-cell RQ2 screening pilot exists; confirmatory multi-model, human, affect, retrieval, memory, and engine-performance studies are missing |
 
 The implementation needed for the current conformance claims is complete. The **confirmatory

@@ -783,7 +783,7 @@ def research_workflow_svg() -> str:
     items.append(rect(40, 380, 690, 130, fill="#FFFFFF", stroke=GREEN, radius=7))
     items.append(text(66, 416, "Produced by the executed stages", css_class="box-title"))
     items.append(
-        text(66, 448, "bilingual IEEE sources · verified 45-entry bibliography", css_class="small")
+        text(66, 448, "bilingual IEEE sources · verified 50-entry bibliography", css_class="small")
     )
     items.append(
         text(

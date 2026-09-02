@@ -2,7 +2,7 @@
 
 상태: **VERIFIED-SCOPE-LIMITED**
 
-점검일: **2026-08-30**
+점검일: **2026-09-02** (최초 2026-08-30; 2026-09-02 top-venue 보강 S47--S51)
 
 대상 원고: `paper/latex/{en,ko}/main.tex`
 
@@ -46,7 +46,7 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 
 ## 3. 레퍼런스 ↔ 주제 교차검증
 
-`reference-topic-crosswalk.csv`는 BibTeX의 45개 논문 레코드를 다음 9개 주제로 전수 매핑한다.
+`reference-topic-crosswalk.csv`는 BibTeX의 50개 논문 레코드를 다음 9개 주제로 전수 매핑한다.
 `S43`은 의도적 결번이며 가짜 레코드를 만들지 않는다.
 
 | 주제 | 범위 | 원고에서의 역할 | 대표 기여 연결 |
@@ -61,7 +61,7 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 | T8 | planning / runtime / interposition | novelty의 역사적 계보와 비발명 경계 | C2, C3 |
 | T9 | feedback repair | $\rho$의 feedback channel·authority 차이 | C5 |
 
-Stage-5 기계 기록 기준 집계는 **45개 = VERIFIED 39 + PREPRINT 6**, unmatched 0,
+Stage-5 기계 기록 기준 집계는 **50개 = VERIFIED 45 + PREPRINT 5**, unmatched 0,
 hallucinated 0이다. 12개 레코드는 당시 Semantic Scholar가 429를 반환해 `rate_limited`로
 남았지만 Crossref, OpenAlex, arXiv 또는 공식 레코드에서 정체성이 확인됐다. 2026-08-30
 live batch spot-check에서는 S02, S44, S45, S46의 제목 레코드를 추가 관찰했으나, 뒤이은 API
@@ -90,7 +90,7 @@ ENG1의 남은 사람 측정은 `_workspace/current/qa/human-measurement-packet.
 - **PASS:** E1, E2, E3, ENG1의 단위와 분모가 서로 섞이지 않는다.
 - **PASS:** E2는 `C-PILOT-007/008`만 지원하고 `C-RESULT-003`은 승격하지 않는다.
 - **PASS:** E3는 모든 `C-RESULT-*`에 비지원으로 표시된다.
-- **PASS:** 영문·국문 원고가 같은 45개 BibTeX key를 인용하고 같은 기여 ID와 레인 ID를 쓴다.
+- **PASS:** 영문·국문 원고가 같은 50개 BibTeX key를 인용하고 같은 기여 ID와 레인 ID를 쓴다.
 - **OPEN:** 확증 다중모델·독립 semantic oracle·인간 참가자·affect·runtime retrieval/memory·live transport 실험.
 - **OPEN:** G4와 사람 제스처·latency·soak·rollback이 필요한 G6.
 

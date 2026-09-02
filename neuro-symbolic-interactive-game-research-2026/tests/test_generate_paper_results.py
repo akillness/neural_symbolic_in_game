@@ -36,7 +36,22 @@ class GeneratePaperResultsTests(unittest.TestCase):
                     "live_pilot_results_ko.tex",
                     "live_pilot_tables_en.tex",
                     "live_pilot_tables_ko.tex",
+                    "contribution_map_en.tex",
+                    "contribution_map_ko.tex",
+                    "evidence_lanes_en.tex",
+                    "evidence_lanes_ko.tex",
                 },
+            )
+            contribution_map = (output / "contribution_map_en.tex").read_text(encoding="utf-8")
+            self.assertIn(r"\label{tab:contribution-map}", contribution_map)
+            for contribution_id in ("C1", "C2", "C3", "C4", "C5"):
+                self.assertIn(f"{contribution_id} & ", contribution_map)
+            lanes = (output / "evidence_lanes_ko.tex").read_text(encoding="utf-8")
+            self.assertIn(r"\label{tab:evidence-lanes}", lanes)
+            for lane_id in ("E1", "E2", "E3", "ENG1"):
+                self.assertIn(f"{lane_id} & ", lanes)
+            self.assertIn(
+                r"\allowbreak{}", (output / "pilot_results_en.tex").read_text(encoding="utf-8")
             )
 
         with tempfile.TemporaryDirectory() as directory:

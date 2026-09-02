@@ -14,8 +14,9 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 | Godot/Web 엔지니어링 | fixture 4/4, combined check 49/49, 추적 플레이어, 프로덕션 데스크톱 스모크 | 작성 fixture·presentation 적합성, usability·재미·G4·최종 G6 아님 |
 | 확증 연구 | 미실행 | `C-RESULT-001`–`005`는 `TODO-RESULT` 유지 |
 
-기여도 C1–C5, 45개 레퍼런스의 9개 주제, 세 실험 레인과 엔지니어링 레인의 근거 상한은
+기여도 C1–C5, 50개 레퍼런스의 9개 주제, 세 실험 레인과 엔지니어링 레인의 근거 상한은
 [`contribution-reference-crosscheck.md`](research/academic-pipeline/contribution-reference-crosscheck.md)에서 함께 교차검증한다.
+원고에는 이 매트릭스에서 생성한 두 표(기여 × 선행 주제 × 레인 × 추론 상한, 실험 레인 × 설계 × 단위 × 비교 × 상한)가 들어가고, commit된 guided-repair 사례마다 Table-ρ edit으로 해소한 validator code를 명시하며, 게이트와 수리 연산자의 archival 계보(ASPLOS 2006 CEGIS, NeurIPS 2023 Self-Refine/Reflexion, ACM CSUR 1983 트랜잭션, ICML 2024 LLM-Modulo, CoRL 2022 SayCan)를 직접 인용한다. 동결 Stage-4 패킷은 2026-09-02에 바이트 동일하게 재현됐다([영수증](research/academic-pipeline/stage-04-replication-2026-09-02.md)).
 
 ## 시각 자료
 

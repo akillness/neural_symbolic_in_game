@@ -1,6 +1,6 @@
 {
-  "addendum": "Five prior-work citations added at Stage 8 and one direct game comparator added during the final refresh; each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure.",
-  "audit_date": "2026-08-28",
+  "addendum": "Five prior-work citations added at Stage 8 and one direct game comparator added during the final refresh; each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure. On 2026-09-02 a top-venue refresh added S47-S51 (ASPLOS 2006, NeurIPS 2023, ACM Computing Surveys 1983, ICML 2024, CoRL 2022) and resolved S45 to its NeurIPS 2023 proceedings DOI; Crossref/OpenAlex answered, PMLR HTML metadata confirmed the two PMLR volumes, Semantic Scholar returned HTTP 429 for every lookup and is recorded as rate-limited, and OpenReview could not be queried for S46, which therefore stays PREPRINT.",
+  "audit_date": "2026-09-02",
   "entries": [
     {
       "arxiv": "2606.13348",
@@ -769,22 +769,24 @@
     {
       "arxiv": "2303.17651",
       "bib_year": "2023",
-      "doi": null,
+      "doi": "10.52202/075280-2019",
       "index_years": {
         "arxiv": "2023",
+        "crossref": "2023",
         "openalex": "2023",
         "semantic_scholar": null
       },
       "key": "S45_madaan2023selfrefine",
       "matched_indices": [
-        "arxiv",
-        "openalex"
+        "crossref",
+        "openalex",
+        "arxiv"
       ],
       "rate_limited_indices": [
         "semantic_scholar"
       ],
-      "status": "PREPRINT",
-      "year_note": null
+      "status": "VERIFIED",
+      "year_note": "Proceedings identity resolved on 2026-09-02: NeurIPS 36 (2023), pp. 46534-46594, Crossref DOI 10.52202/075280-2019."
     },
     {
       "arxiv": "2304.05128",
@@ -805,12 +807,113 @@
       ],
       "status": "PREPRINT",
       "year_note": null
+    },
+    {
+      "added_at": "top-venue-refresh-2026-09-02",
+      "bib_year": "2006",
+      "doi": "10.1145/1168857.1168907",
+      "index_years": {
+        "crossref": "2006",
+        "openalex": "2006",
+        "semantic_scholar": null
+      },
+      "key": "S47_solarlezama2006sketching",
+      "matched_indices": [
+        "crossref",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "VERIFIED",
+      "year_note": null
+    },
+    {
+      "added_at": "top-venue-refresh-2026-09-02",
+      "bib_year": "2023",
+      "doi": "10.52202/075280-0377",
+      "index_years": {
+        "crossref": "2023",
+        "openalex": "2023",
+        "semantic_scholar": null
+      },
+      "key": "S48_shinn2023reflexion",
+      "matched_indices": [
+        "crossref",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "VERIFIED",
+      "year_note": null
+    },
+    {
+      "added_at": "top-venue-refresh-2026-09-02",
+      "bib_year": "1983",
+      "doi": "10.1145/289.291",
+      "index_years": {
+        "crossref": "1983",
+        "openalex": "1983",
+        "semantic_scholar": null
+      },
+      "key": "S49_haerder1983transaction",
+      "matched_indices": [
+        "crossref",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "VERIFIED",
+      "year_note": null
+    },
+    {
+      "added_at": "top-venue-refresh-2026-09-02",
+      "bib_year": "2024",
+      "doi": null,
+      "index_years": {
+        "openalex": "2024",
+        "pmlr": "2024",
+        "semantic_scholar": null
+      },
+      "key": "S50_kambhampati2024llmmodulo",
+      "matched_indices": [
+        "pmlr",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "VERIFIED",
+      "year_note": "PMLR 235:22895-22907 verified from proceedings.mlr.press metadata; OpenAlex indexes only the arXiv record."
+    },
+    {
+      "added_at": "top-venue-refresh-2026-09-02",
+      "bib_year": "2023",
+      "doi": null,
+      "index_years": {
+        "openalex": "2023",
+        "pmlr": "2023",
+        "semantic_scholar": null
+      },
+      "key": "S51_ichter2023saycan",
+      "matched_indices": [
+        "pmlr",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "status": "VERIFIED",
+      "year_note": "CoRL 2022 paper published in PMLR 205:287-318 (2023); bib year follows the PMLR record."
     }
   ],
   "indices": {
     "arxiv": "http://export.arxiv.org/api/query (preprint confirmation)",
     "crossref": "https://api.crossref.org (advisory)",
     "openalex": "https://api.openalex.org (advisory)",
+    "pmlr": "https://proceedings.mlr.press (HTML citation metadata; used only for PMLR volumes)",
     "semantic_scholar": "https://api.semanticscholar.org/graph/v1 (primary; partially rate-limited)"
   },
   "method": "three-index triangulation over metadata APIs; no publisher-page scraping",
@@ -818,11 +921,11 @@
   "stage": "5",
   "title_match_threshold": 0.85,
   "totals": {
-    "entries": 45,
+    "entries": 50,
     "hallucinated": 0,
-    "preprint": 6,
-    "semantic_scholar_rate_limited": 12,
+    "preprint": 5,
+    "semantic_scholar_rate_limited": 17,
     "unmatched": 0,
-    "verified": 39
+    "verified": 45
   }
 }
