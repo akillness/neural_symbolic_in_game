@@ -581,20 +581,16 @@ def pilot_evidence_svg() -> str:
 # V4 · claim status (data-driven)
 # --------------------------------------------------------------------------
 STATUS_STYLE: dict[str, tuple[str, str, str]] = {
-    "verified-primary": ("Verified · primary source", PALE_GREEN, GREEN),
-    "verified-scope-limited": ("Verified · narrower scope", PALE_GREEN, GREEN),
-    "verified-scope-limited-preprint": ("Verified · preprint, narrow scope", PALE_ORANGE, ORANGE),
-    "verified-designed-fixture": ("Verified · designed fixture", PALE_BLUE, BLUE),
-    "verified-authored-engine-fixture": ("Verified · authored engine fixture", PALE_BLUE, BLUE),
-    "verified-authored-engine-render-fixture": (
-        "Verified · authored engine render fixture",
-        PALE_BLUE,
-        BLUE,
-    ),
-    "approved-design-protocol": ("Approved · design protocol", PALE_ORANGE, ORANGE),
+    "verified-primary": ("Verified · primary", PALE_GREEN, GREEN),
+    "verified-scope-limited": ("Verified · narrow scope", PALE_GREEN, GREEN),
+    "verified-scope-limited-preprint": ("Preprint · narrow", PALE_ORANGE, ORANGE),
+    "verified-designed-fixture": ("Verified · designed", PALE_BLUE, BLUE),
+    "verified-authored-engine-fixture": ("Verified · engine", PALE_BLUE, BLUE),
+    "verified-authored-engine-render-fixture": ("Verified · render", PALE_BLUE, BLUE),
+    "approved-design-protocol": ("Approved · protocol", PALE_ORANGE, ORANGE),
     "proposed-contribution": ("Proposed contribution", PALE_ORANGE, ORANGE),
-    "pilot-only": ("Pilot-only · screening evidence", PALE_ORANGE, ORANGE),
-    "TODO-RESULT": ("TODO-RESULT · no confirmatory result", PALE_GRAY, GRAY),
+    "pilot-only": ("Pilot-only · screening", PALE_ORANGE, ORANGE),
+    "TODO-RESULT": ("TODO · no result", PALE_GRAY, GRAY),
 }
 
 STATUS_ORDER = (
@@ -647,63 +643,111 @@ def claim_status_svg() -> str:
     for status in STATUS_ORDER:
         ordered.extend(claim for claim in claims if claim["status"] == status)
 
+    cards = []
+    for claim in ordered:
+        status = str(claim["status"])
+        label, fill, accent = STATUS_STYLE[status]
+        body = wrap(str(claim["claim"]), 64)
+        evidence = claim.get("evidence") or []
+        name_counts: dict[str, int] = {}
+        for item in evidence:
+            name = Path(str(item)).name
+            name_counts[name] = name_counts.get(name, 0) + 1
+        names = [f"{name} ×{count}" if count > 1 else name for name, count in name_counts.items()]
+        evidence_text = f"evidence: {', '.join(names)}" if names else "evidence: none recorded"
+        evidence_lines = wrap(evidence_text, 78)
+        body_last = 34 + (len(body) - 1) * 27
+        evidence_start = body_last + 32
+        card_h = max(116, evidence_start + (len(evidence_lines) - 1) * 24 + 18)
+        cards.append(
+            {
+                "claim": claim,
+                "label": label,
+                "fill": fill,
+                "accent": accent,
+                "body": body,
+                "evidence_lines": evidence_lines,
+                "evidence_start": evidence_start,
+                "height": card_h,
+            }
+        )
+
+    counts = {
+        status: sum(1 for claim in claims if claim["status"] == status) for status in STATUS_ORDER
+    }
+    legend_items = [
+        f"{STATUS_STYLE[status][0]}: {counts[status]}" for status in STATUS_ORDER if counts[status]
+    ]
+    legend_lines: list[str] = []
+    for item in legend_items:
+        candidate = " · ".join((*legend_lines[-1:], item)) if legend_lines else item
+        if legend_lines and len(candidate) <= 100:
+            legend_lines[-1] = candidate
+        else:
+            legend_lines.append(item)
+    note_lines = wrap(
+        "Pilot and screening data cannot transition directly to verified-empirical; a verified "
+        "result is revoked if an upstream hash changes.",
+        108,
+    )
+    cards_bottom = 136 + sum(int(card["height"]) + 12 for card in cards)
+    legend_y = cards_bottom + 10
+    legend_h = 34 + len(legend_lines) * 28 + len(note_lines) * 25 + 18
     width = 1480
-    card_h = 104
-    height = 96 + 40 + len(ordered) * (card_h + 12) + 130
+    height = legend_y + legend_h + 20
 
     items = svg_header(
         width,
         height,
         "TRACE-RPG claim ledger status",
         (
-            "Every tracked claim with its current epistemic state. C-RESULT-001 through "
-            "C-RESULT-005 have no confirmatory result and remain TODO-RESULT; screening "
-            "receipts are reported only under their pilot claim IDs."
+            "Every tracked claim with its full current wording and epistemic state. "
+            "C-RESULT-001 through C-RESULT-005 have no confirmatory result and remain "
+            "TODO-RESULT; screening receipts appear only under their pilot claim IDs."
         ),
     )
     items += title_band(
         width,
         "V4 · What is actually claimed, and on what evidence",
-        "Source: research/claim-ledger.yaml   ·   a designed-fixture claim never promotes itself to an efficacy claim",
+        "Source: research/claim-ledger.yaml   ·   no claim or evidence list is visually truncated",
     )
 
     y = 136
-    for claim in ordered:
-        status = str(claim["status"])
-        label, fill, accent = STATUS_STYLE[status]
-        evidence = claim.get("evidence") or []
+    for card_data in cards:
+        claim = card_data["claim"]
+        card_h = int(card_data["height"])
+        fill = str(card_data["fill"])
+        accent = str(card_data["accent"])
         items.append(rect(40, y, 1400, card_h, fill=fill, stroke=accent, radius=7))
         items.append(f'  <rect x="40" y="{y}" width="8" height="{card_h}" fill="{accent}"/>')
         items.append(text(66, y + 34, str(claim["id"]), css_class="box-title"))
-        items += status_pill(66, y + 48, 300, label, fill="#FFFFFF", stroke=accent)
-
-        body = wrap(str(claim["claim"]), 92)[:2]
-        for index, value in enumerate(body):
+        items += status_pill(
+            66,
+            y + 48,
+            300,
+            str(card_data["label"]),
+            fill="#FFFFFF",
+            stroke=accent,
+        )
+        for index, value in enumerate(card_data["body"]):
             items.append(text(400, y + 34 + index * 27, value, css_class="small"))
-
-        if evidence:
-            names = ", ".join(Path(str(item)).name for item in evidence)
-            summary = f"evidence: {wrap(names, 78)[0]}"
-        else:
-            summary = "evidence: none recorded"
-        items.append(text(400, y + card_h - 14, summary, css_class="note"))
+        for index, value in enumerate(card_data["evidence_lines"]):
+            items.append(
+                text(
+                    400,
+                    y + int(card_data["evidence_start"]) + index * 24,
+                    value,
+                    css_class="note",
+                )
+            )
         y += card_h + 12
 
-    counts = {
-        status: sum(1 for claim in claims if claim["status"] == status) for status in STATUS_ORDER
-    }
-    legend = "   ·   ".join(
-        f"{STATUS_STYLE[status][0]}: {counts[status]}" for status in STATUS_ORDER if counts[status]
-    )
-    items.append(rect(40, y + 10, 1400, 76, fill=LIGHT_GRAY, stroke=BORDER, radius=7))
-    items.append(text(66, y + 46, legend, css_class="small"))
-    items.append(
-        footnote(
-            66,
-            y + 74,
-            "Pilot and screening data cannot transition directly to verified-empirical; a verified result is revoked if an upstream hash changes.",
-        )
-    )
+    items.append(rect(40, legend_y, 1400, legend_h, fill=LIGHT_GRAY, stroke=BORDER, radius=7))
+    for index, value in enumerate(legend_lines):
+        items.append(text(66, legend_y + 36 + index * 28, value, css_class="small"))
+    note_start = legend_y + 36 + len(legend_lines) * 28 + 8
+    for index, value in enumerate(note_lines):
+        items.append(footnote(66, note_start + index * 25, value))
     items.append("</svg>")
     return "\n".join(items) + "\n"
 
@@ -735,7 +779,7 @@ def research_workflow_svg() -> str:
         ("Stage 3", "IEEE outline", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 4", "Offline pilot + sources", "COMPLETE", PALE_GREEN, GREEN),
         ("Stage 4.5", "Claim audit", "COMPLETE", PALE_GREEN, GREEN),
-        ("Stage 5", "45 citation identities", "COMPLETE", PALE_GREEN, GREEN),
+        ("Stage 5", "50 matched citations", "COMPLETE", PALE_GREEN, GREEN),
         ("Stages 6–10", "Review, live screen, PDFs, lock", "COMPLETE", PALE_GREEN, GREEN),
     )
     card_w = 165

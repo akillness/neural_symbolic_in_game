@@ -1,6 +1,6 @@
 # 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
-상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `49/49`
+상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `52/52`
 검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
 배포 `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`에 영문 추적 플레이어 산출물이 공개됐다.**
 
@@ -73,7 +73,7 @@ JSON Schema로 검증한다.
 `evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`로 해석된다. 정식,
 중복 ID, timeout, 손상 저장 실행은 각각 commit 3회를 수행하고 동결 종료/oracle 해시에
 도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 선택된 보존 Cycle 2
-packet은 `40 tests, 44 subtests`를 기록하고, 현재 game-track gate는 `46 passed, 2 skipped`를
+packet은 `40 tests, 44 subtests`를 기록하고, 현재 game-track gate는 `50 passed, 48 subtests`를
 기록한다. 성능 budget은 모두 통과하지 않았다. 시작 transient를
 포함한 5개 표본의 헤드리스 frame p95는 선택 보존 패킷에서 각각 `116.667`, `100.000`,
 `98.760`, `112.907 ms`다.
@@ -154,8 +154,8 @@ lane과 추적 대상 `assets/player/higgsfield-player.glb`의 `Idle`/`Casual_Wa
 | 중복 이벤트 fixture | `10/10` | PASS |
 | timeout fixture | `10/10` | PASS |
 | 손상 저장 fixture | `10/10` | PASS |
-| 프레젠테이션 불변조건 | `9/9` | PASS |
-| **합계** | **`49/49`** | **PASS** |
+| 프레젠테이션 불변조건 | `12/12` | PASS |
+| **합계** | **`52/52`** | **PASS** |
 | 아키타입 밸런스 프로브 | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 fixture `4/4` 모두 정확한 종료 SHA-256

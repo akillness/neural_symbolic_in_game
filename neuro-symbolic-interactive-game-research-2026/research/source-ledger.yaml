@@ -1,4 +1,4 @@
-as_of: 2026-08-30
+as_of: 2026-09-02
 evidence_policy: primary-source-first
 sources:
   - id: ivie-2026
@@ -167,3 +167,49 @@ sources:
     status: verified-primary
     retrieval_date: 2026-08-30
     scope_note: baseline-first fixed-evaluator keep/discard discipline only; no claim of the upstream five-minute GPU training contract
+  - id: agentspec-2025
+    title: "AgentSpec: Customizable Runtime Enforcement for Safe and Reliable LLM Agents"
+    url: https://arxiv.org/abs/2503.18666
+    type: preprint
+    provenance: arxiv-api-plus-openalex-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-09-02
+    bib_key: S52_wang2025agentspec
+    scope_note: general LLM-agent runtime-enforcement precedent; arXiv comment states ICSE 2026 acceptance but no proceedings DOI resolved, so cited as preprint
+  - id: setting-the-dc-2025
+    title: "Setting the DC: Tool-Grounded D&D Simulations to Test LLM Agents"
+    url: https://openreview.net/forum?id=3Op7kJOvaD
+    type: workshop-paper-non-archival
+    provenance: official-neurips-2025-program-record-plus-genprocc-accepted-list
+    status: verified-primary
+    retrieval_date: 2026-09-02
+    bib_key: S53_li2025settingdc
+    unresolved_conflicts: OpenReview forum and API returned HTTP 403 browser challenge (not bypassed); not indexed by OpenAlex, Crossref, or arXiv; author order follows the venue record (Li, Zeng, Xi, Zhu, Ammanabrolu), which differs from the feedback report (Zeng first)
+    scope_note: tool-grounded game-state admission comparator only; no evidence about TRACE-RPG
+  - id: story2game-2025
+    title: "STORY2GAME: Generating (Almost) Everything in an Interactive Fiction Game"
+    url: https://arxiv.org/abs/2505.03547
+    type: preprint
+    provenance: arxiv-api-plus-openalex-title-search
+    status: verified-primary
+    retrieval_date: 2026-09-02
+    bib_key: S54_zhou2025story2game
+    scope_note: LLM-generated precondition/effect comparator; contrasts with the fixed external policy, proves nothing about TRACE-RPG
+  - id: beyond-state-consistency-2026
+    title: "Beyond State Consistency: Behavior Consistency in Text-Based World Models"
+    url: https://arxiv.org/abs/2604.13824
+    type: preprint
+    provenance: arxiv-api-plus-openalex-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-09-02
+    bib_key: S55_huang2026beyond
+    scope_note: limitation citation for threat L1 only; state consistency is not behavioral or narrative coherence
+  - id: agentrr-2025
+    title: "Get Experience from Practice: LLM Agents with Record & Replay"
+    url: https://arxiv.org/abs/2505.17716
+    type: preprint
+    provenance: arxiv-api-plus-openalex-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-09-02
+    bib_key: S56_feng2025agentrr
+    scope_note: record-and-replay paradigm precedent; TRACE-RPG claims semantic replay of admitted transitions only

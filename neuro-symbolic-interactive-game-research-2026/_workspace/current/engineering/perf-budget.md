@@ -56,8 +56,8 @@ results.
 | Memory stability | stable over 30 min | `[NOT OBSERVED]` | 30-minute browser/OS memory trace |
 | Audio unlock/resume | gesture-safe and stable | `[NOT OBSERVED IN CLEAN BROWSER]` | start, focus-out/in, mute/unmute test |
 
-The public-safe 3D smoke `8/8`, game-track selection `46 passed, 2 skipped`, full Pytest
-`172 passed, 2 skipped`, and unittest discovery `131` with `2` skipped validate authored engineering
+The public-safe 3D smoke `8/8`, game-track selection `50 passed, 48 subtests`, full Pytest
+`181 passed, 81 subtests`, and unittest discovery `138 passed` validate authored engineering
 behavior only. Local refresh-persistent save/load and below-world recovery now pass, but G6 remains
 `FIX` until the missing browser and soak measurements are recorded with
 exact commands, timestamps, and retained outputs.

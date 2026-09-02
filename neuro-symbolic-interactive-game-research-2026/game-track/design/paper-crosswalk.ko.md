@@ -90,6 +90,7 @@ version을 기록하되 verifier host가 capture host를 가장하도록 요구�
 | 동결 콘셉트 팩 | `SL-C01`–`SL-C04` | AI 보조 콘셉트 제작과 시각 조건 공개 | 이미지 품질로 게임 품질/RQ 결과 추론 |
 | Non-headless render bundle | `SL-CAPTURE-001`(manifest 필드가 아닌 논문 label), `C-GAME-DESIGN-003` | 정확한 manifest capture ID와 source 결속을 포함한 결정론적 구조화 상태 Godot render 표면 3개 제시 | 라이브 Python 통합, 모델/시각 효능, 사용성, 몰입, 인간 결과, G4 또는 G6 주장 |
 | Typed methods-graph 시뮬레이션 | `SL-KG-ONTOLOGY-SIM-001` | simulation-only label 아래 작성형 6질의 링크 holdout 방법, 정확한 수식, 구성 검사를 보고 | 런타임 검색, 시간 메모리 효익, 의미 완전성, 플레이어 유용성, 어떤 `C-RESULT-*` 승격도 추론 금지 |
+| 기여 판독 표면(`CONTRIBUTION #N`, `RULE LEARNED`, `CASE CHAIN`, 2부 구성 엔드카드 영수증) | `SL-GDD-T4`, `SL-HYP-001`, `SL-PLAY-EVAL-001` 검사 `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, `case_chain_mirrors_committed_snapshot` | 플레이어블 장부가 원고의 predicate family(표 II)를 어떻게 반영하고 모든 commit을 snapshot delta에 연결하는지를 엔지니어링 적합성(ENG1, C2/C3 표면)으로 기술 | 재미, 지각된 주체성, 유능감, 좌절 감소, G4 또는 어떤 플레이어 결과 주장; `SL-GDD-T4`의 `[TARGET]` 질문에는 데이터가 없음 |
 
 ## 7. 논문 문구 통제
 

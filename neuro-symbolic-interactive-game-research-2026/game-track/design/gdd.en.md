@@ -3,7 +3,7 @@
 ```yaml
 pair_id: SL-GDD-001
 language: en
-version: 0.1.0
+version: 0.2.0
 run_id: 20260813-sealed-lighthouse-cycle-1
 engine: Godot 4.x headless-first
 episode_target_minutes: [8, 12]
@@ -141,3 +141,29 @@ holdout, independent oracle, model arms, analysis, and review gates in `SL-ORACL
 
 Current result state: **no player, live-model, independent-oracle, visual-model, or engine-performance
 efficacy result is claimed by this GDD.** [OBSERVED]
+
+## 11. Contribution legibility
+
+The player investigation is operationalized as a sequence of committed decisions (CONTRIBUTION clauses) and rejected attempts (RULE LEARNED). Three surfaces expose these patterns during and after gameplay:
+
+1. **CASE CHAIN line**: persistent HUD element showing three investigation links (`LENS`, `MOUNT`, `LEAD`) whose fill state mirrors the committed facts `signal_lens_acquired`, `signal_lens_installed`, and `tide_marks_hint`; the same line carries `RULES LEARNED n | <gates>`. Re-derived from the committed snapshot on every presentation sync. ASCII-only, display-only, no hidden labels. [OBSERVED structure]
+
+2. **CONTRIBUTION clause**: appended under every `ENTRY #N | COMMITTED` line as `CONTRIBUTION #N | <fact labels> | STAGE a>b | CHAIN k/3` (`STAGE n` when the stage is unchanged) followed by `UNLOCKED | <next valid entry>`. Fact labels are emitted only from the public `FACT_LABEL` allowlist (e.g., "Signal lens secured"); unknown or future fact IDs stay internal and render as generic "State recorded" copy. The delta is the pure function `contribution_delta(prior_state, next_state)` over the two snapshots the hard writer returned, so it can neither invent a fact nor expose a sealed one. [OBSERVED structure]
+
+3. **RULE LEARNED line**: appended after the first hold on a predicate gate as `RULE LEARNED | <GATE>: <rule>` (e.g., `RULE LEARNED | KNOWLEDGE: A speaker can only disclose what they know.`); later holds on the same gate render `RULE RECALLED (n) | ...`. The gate comes from `GATE_BY_CODE` (Table II predicate families) and the sentence from the authored `RULE_BY_CODE` table; neither names an oracle label. [OBSERVED structure]
+
+The end-card receipt contains two new sections before the technical receipt:
+
+- **INVESTIGATOR'S CONTRIBUTION**: lists all CONTRIBUTION lines with commit numbers and fact labels, enabling players to review their decision sequence.
+- **RULES LEARNED**: sorted list of unique gates discovered, showing policy boundaries in one place.
+
+These surfaces do not mutate state, expose hidden labels (`keeper_betrayal`, `omitted_object_hazard`, `unknown_field_hazard`), or add new mechanics. They derive from committed snapshots and hold history; `SL-PLAY-EVAL-001` checks `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, and `case_chain_mirrors_committed_snapshot` guard exactly that. Saves still carry only canonical state: after a load, `CASE CHAIN` is re-derived from the loaded facts, whereas the ledger history, the per-entry contribution list, the rules-learned set, and the ENTRIES/HOLDS counters are session-local presentation memory that restarts with the session. [OBSERVED engineering conformance] Their effect on perceived competence, agency, or frustration is unmeasured. [TARGET]
+
+Evidence of player perception is collected via post-episode questions (see Table SL-GDD-T4) and open-ended written reflection, not automated telemetry. Hypothesis H-CONTRIB-01 through H-RECEIPT-04 in `game-design-hypothesis.json` operationalize the causal links between visibility and perceived competence/rule discovery. [TARGET]
+
+| Table SL-GDD-T4 ID | Metric | Target | State |
+|---|---|---|---|
+| B-014 | CONTRIBUTION clause appears with the commit stamp | same rendered acknowledgement cycle, assessed under the inherited B-009 local-feedback budget | [TARGET] |
+| B-015 | Post-episode comprehension: player explains the causality of ≥2 actions using visible CONTRIBUTION/RULE surfaces | study-owner sufficiency rule frozen before recruitment; open-ended causal explanation required | [TARGET] |
+| B-016 | RULE LEARNED distinct gates per episode | descriptive count only; 0 is valid on a hold-free golden path, and >0 requires an encountered distinct hold gate | [TARGET] |
+| B-017 | CASE CHAIN links | exactly 3 (LENS, MOUNT, LEAD) matching `CASE n/3` count | [TARGET] |

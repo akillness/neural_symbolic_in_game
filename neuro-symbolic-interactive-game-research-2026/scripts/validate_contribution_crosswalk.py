@@ -10,6 +10,8 @@ import re
 from collections import Counter
 from pathlib import Path
 
+from nesy_game.validator import VALIDATOR_CHECKS
+
 ROOT = Path(__file__).parents[1]
 PIPELINE = ROOT / "research/academic-pipeline"
 CONTRIBUTIONS = PIPELINE / "contribution-evidence-matrix.csv"
@@ -212,15 +214,15 @@ def _validate_headline_sources(experiment_rows: dict[str, dict[str, str]]) -> No
         balance["aggregates"]["archetype_count"],
         balance["passed"],
     )
-    if game_signature != (4, 4, 49, 49, 5, True):
+    if game_signature != (4, 4, 52, 52, 5, True):
         raise ValueError(f"ENG1 headline drift: {game_signature!r}")
 
 
 def main() -> None:
     bibliography = _bib_entries(BIBLIOGRAPHY.read_text(encoding="utf-8"))
     bib_keys = set(bibliography)
-    if len(bib_keys) != 50:
-        raise ValueError(f"expected 50 paper references, found {len(bib_keys)}")
+    if len(bib_keys) != 55:
+        raise ValueError(f"expected 55 paper references, found {len(bib_keys)}")
 
     audit = json.loads(CITATION_AUDIT.read_text(encoding="utf-8"))
     audit_by_key = {entry["key"]: entry for entry in audit["entries"]}
@@ -228,14 +230,14 @@ def main() -> None:
         raise ValueError("Stage-5 citation keys do not equal bibliography keys")
     status_counts = Counter(entry["status"] for entry in audit["entries"])
     rate_limited = sum(bool(entry["rate_limited_indices"]) for entry in audit["entries"])
-    if status_counts != {"VERIFIED": 45, "PREPRINT": 5} or rate_limited != 17:
+    if status_counts != {"VERIFIED": 46, "PREPRINT": 9} or rate_limited != 22:
         raise ValueError(
             f"Stage-5 citation totals drift: status={status_counts!r}, rate_limited={rate_limited}"
         )
 
     reference_rows = _read_csv(REFERENCES)
     reference_by_key = {row["bib_key"]: row for row in reference_rows}
-    if len(reference_rows) != 50 or set(reference_by_key) != bib_keys:
+    if len(reference_rows) != 55 or set(reference_by_key) != bib_keys:
         raise ValueError("reference-topic crosswalk must cover each bibliography key exactly once")
     if {row["primary_topic_id"] for row in reference_rows} != TOPIC_IDS:
         raise ValueError("reference-topic crosswalk must exercise T1 through T9")
@@ -254,7 +256,16 @@ def main() -> None:
         language: (ROOT / f"paper/latex/{language}/main.tex").read_text(encoding="utf-8")
         for language in ("en", "ko")
     }
+    if len(VALIDATOR_CHECKS) != 7:
+        raise ValueError(f"paper check-count contract drift: {VALIDATOR_CHECKS!r}")
+    validator_count_markers = {
+        "en": ("seven deterministic checks", "six state-relative families"),
+        "ko": ("일곱 개의 결정론적 검사", "여섯 상태 상대 계열"),
+    }
     for language, tex in manuscript_texts.items():
+        for marker in validator_count_markers[language]:
+            if marker not in tex:
+                raise ValueError(f"{language} manuscript lacks validator-count marker: {marker}")
         cited = _citation_keys(tex)
         if cited != bib_keys:
             missing = sorted(bib_keys - cited)
@@ -320,6 +331,10 @@ def main() -> None:
             raise ValueError(f"{contribution_id} contains an unknown evidence lane")
         if "efficacy" in row["evidence_status"].lower():
             raise ValueError(f"{contribution_id} improperly claims efficacy")
+    c2_mechanism = contribution_by_id["C2"]["manuscript_claim"]
+    for marker in ("Seven deterministic checks", "six state-relative families"):
+        if marker not in c2_mechanism:
+            raise ValueError(f"C2 matrix lacks validator-count marker: {marker}")
 
     experiment_rows = _read_csv(EXPERIMENTS)
     experiment_by_id = {row["evidence_lane_id"]: row for row in experiment_rows}
@@ -344,7 +359,7 @@ def main() -> None:
 
     print(
         "contribution/reference crosswalk passed: "
-        "5 contributions, 50 references, 9 topics, 3 experiment lanes + 1 engineering lane"
+        "5 contributions, 55 references, 9 topics, 3 experiment lanes + 1 engineering lane"
     )
 
 

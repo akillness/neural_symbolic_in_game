@@ -4,7 +4,7 @@
 artifact_id: SL-PRESENT-001
 run_id: 20260813-sealed-lighthouse-cycle-3
 owner: game-designer
-version: 0.2.0
+version: 0.3.0
 gate: G4
 runtime_style_anchor: procedural-maritime-evidence-folio
 status: implemented-engineering-structure-human-impact-unverified
@@ -58,6 +58,8 @@ console/page errors. Current narrow-layout human readability remains unassessed.
 | P-B04 Rejected secret | coral stop, icon, text, ledger refusal | fixed refusal motes/pulse | generated restrained refusal cue | prior canonical hash retained |
 | P-B05 Authorized hint | harbor mount and tide marks gain amber emphasis | pooled sparks/motes and bounded glow | generated hint harmonic | only after valid lens-install commit |
 | P-B06 Route earned | ending card states the tower remains sealed and tide route is next | restrained ending cinematic | no quality-reward sound claim | does not invent lighthouse entry |
+| P-B07 Contribution clause (D-062) | `CONTRIBUTION #N \| <fact labels> \| STAGE a>b \| CHAIN k/3` (`STAGE n` when unchanged) then `UNLOCKED \| <next affordance>` appended under every `ENTRY #N \| COMMITTED` line; HUD line `CASE CHAIN \| LENS [x] > MOUNT [ ] > LEAD [ ]` | text only; same frame as the commit stamp | no new cue (rides the existing commit cue) | derived only from the snapshot pair the hard writer returned (`contribution_delta`); `FACT_LABEL` names, never oracle labels; no state change |
+| P-B08 Rule learned (D-062) | `RULE LEARNED \| <GATE>: <rule>` on the first hold of a gate, `RULE RECALLED (n) \| ...` afterwards; HUD `RULES LEARNED n \| <gates>`; end card opens with `INVESTIGATOR'S CONTRIBUTION` + `RULES LEARNED` before the technical receipt | text only; reduced motion unaffected | no new cue (rides the refusal cue) | rule sentences are the authored `RULE_BY_CODE` table (Table II predicate families); prior canonical hash retained; not evidence of reduced frustration or learning |
 
 The implementation contains a local acknowledgement target of `≤100 ms`. The latest automated
 engine-local wiring probe measured one proposal→ledger→rendered-frame sample at `3.53 ms`; this is

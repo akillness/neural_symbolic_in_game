@@ -38,6 +38,7 @@ var _prompt_panel: PanelContainer
 var _prompt_label: Label
 var _status_label: Label
 var _objective_label: Label
+var _case_chain_label: Label
 var _portrait_box: VBoxContainer
 var _portrait: TextureRect
 var _portrait_frame: PanelContainer
@@ -83,6 +84,10 @@ var _speaker_name: String = ""
 var _progress_stage: int = 0
 var _progress_total: int = 3
 var _progress_phase: String = "ARRIVAL"
+var _case_chain_snapshot: Dictionary = {}
+var _rules_learned_snapshot: Array = []
+var _last_rule_line: String = ""
+var _contribution_lines: int = 0
 var _toast_tween: Tween
 var _flash_tween: Tween
 var _feedback_tween: Tween
@@ -342,6 +347,11 @@ func _build_bottom_panel() -> void:
 	_status_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.1))
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_action_box.add_child(_status_label)
+	_case_chain_label = Label.new()
+	_case_chain_label.add_theme_font_size_override("font_size", 14)
+	_case_chain_label.add_theme_color_override("font_color", PALETTE.paper_fog)
+	_case_chain_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_action_box.add_child(_case_chain_label)
 	_inventory_row = HBoxContainer.new()
 	_inventory_row.add_theme_constant_override("separation", 8)
 	_inventory_row.visible = false
@@ -917,6 +927,27 @@ func _update_progress_text() -> void:
 		_progress_label.text = "CASE %d/%d | %s" % [_progress_stage, _progress_total, _progress_phase]
 
 
+func set_case_chain(chain: Dictionary, rules_learned: Array) -> void:
+	# Case-chain HUD line (Aside search-feedback 2026-09-02 pattern 1): named
+	# relationship links, not a bare fraction, so a filled link explains what
+	# the last commit contributed. Rules learned ride the same line so the
+	# player can recall which policy families the ledger has already taught.
+	# Text-only; presentation reads the committed snapshot and never invents
+	# a link state or a rule that was not actually taught by a hold.
+	_case_chain_snapshot = chain.duplicate(true)
+	_rules_learned_snapshot = rules_learned.duplicate()
+	if _case_chain_label == null:
+		return
+	var parts: Array = []
+	for link in chain.get("links", []):
+		var mark := "[x]" if bool(link["filled"]) else "[ ]"
+		parts.append("%s %s" % [str(link["id"]), mark])
+	var rules_text := ", ".join(rules_learned) if not rules_learned.is_empty() else "none"
+	_case_chain_label.text = "CASE CHAIN | %s  |  RULES LEARNED %d | %s" % [
+		" > ".join(parts), rules_learned.size(), rules_text
+	]
+
+
 func show_prompt(text: String) -> void:
 	_prompt_label.text = "[E]  |  " + text
 	_prompt_panel.visible = text != ""
@@ -993,6 +1024,52 @@ func ledger_refusal(reason: String, next_affordance: String, gate: String = "") 
 		"[color=#A77A3A][N] NEXT VALID ENTRY: %s[/color]\n" % next_affordance
 	)
 	_show_ledger_stamp(false)
+
+
+func ledger_contribution(
+	entry_number: int, labels: Array, stage_from: int, stage_to: int, filled: int, total: int
+) -> void:
+	# Causal delta per commit (Aside search-feedback 2026-09-02 pattern 2):
+	# names what the entry actually established, not just that it validated.
+	# Counts and labels come straight from the caller's committed-snapshot
+	# diff (contribution_delta); this function only renders them.
+	var label_text := "; ".join(labels) if not labels.is_empty() else "State recorded"
+	_ledger_log.append_text(
+		"[color=#F2B84B][C] CONTRIBUTION #%d | %s | %s | CHAIN %d/%d[/color]\n" % [
+			entry_number, label_text, stage_clause(stage_from, stage_to), filled, total
+		]
+	)
+	_contribution_lines += 1
+
+
+static func stage_clause(stage_from: int, stage_to: int) -> String:
+	# 'STAGE 0>1' when a commit advanced the quest, plain 'STAGE 2' when it did
+	# not: an unchanged stage is still a fact worth stating, but '2>2' reads as
+	# a failed transition. Shared by the ledger line and the end-card receipt.
+	if stage_from == stage_to:
+		return "STAGE %d" % stage_to
+	return "STAGE %d>%d" % [stage_from, stage_to]
+
+
+func ledger_unlocked(text: String) -> void:
+	# Names the newly available action (Aside search-feedback 2026-09-02
+	# pattern 2/3), computed by the caller AFTER the commit so it reflects
+	# the state the entry just unlocked, not the state before it.
+	_ledger_log.append_text("[color=#A77A3A][N] UNLOCKED | %s[/color]\n" % text)
+
+
+func ledger_rule(gate: String, rule_text: String, first_time: bool, recall_count: int) -> void:
+	# Struggle-is-Spiel companion (Aside search-feedback 2026-09-02 patterns
+	# 2 and E): a hold teaches exactly one testable rule the first time it
+	# holds a gate, then recalls the same rule on repeat holds of that gate.
+	# Neutral paper-fog voice -- a rule is information, never a penalty.
+	var plain_line := (
+		"RULE LEARNED | %s: %s" % [gate, rule_text]
+		if first_time
+		else "RULE RECALLED (%d) | %s: %s" % [recall_count, gate, rule_text]
+	)
+	_ledger_log.append_text("[color=#D9D3C4][V] %s[/color]\n" % plain_line)
+	_last_rule_line = plain_line
 
 
 func _show_ledger_stamp(committed: bool) -> void:
@@ -1145,4 +1222,8 @@ func get_engineering_snapshot() -> Dictionary:
 		"progress": {"stage": _progress_stage, "total": _progress_total, "phase": _progress_phase},
 		"reduced_motion": reduce_motion,
 		"semantic_feedback_redundancy": ["color", "icon", "text", "ledger-line"],
+		"case_chain": _case_chain_snapshot,
+		"rules_learned": _rules_learned_snapshot,
+		"contribution_lines": _contribution_lines,
+		"last_rule_line": _last_rule_line,
 	}

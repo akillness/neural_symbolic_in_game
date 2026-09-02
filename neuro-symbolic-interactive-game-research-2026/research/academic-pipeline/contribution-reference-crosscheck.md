@@ -46,7 +46,7 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 
 ## 3. 레퍼런스 ↔ 주제 교차검증
 
-`reference-topic-crosswalk.csv`는 BibTeX의 50개 논문 레코드를 다음 9개 주제로 전수 매핑한다.
+`reference-topic-crosswalk.csv`는 BibTeX의 55개 논문 레코드를 다음 9개 주제로 전수 매핑한다.
 `S43`은 의도적 결번이며 가짜 레코드를 만들지 않는다.
 
 | 주제 | 범위 | 원고에서의 역할 | 대표 기여 연결 |
@@ -61,12 +61,12 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 | T8 | planning / runtime / interposition | novelty의 역사적 계보와 비발명 경계 | C2, C3 |
 | T9 | feedback repair | $\rho$의 feedback channel·authority 차이 | C5 |
 
-Stage-5 기계 기록 기준 집계는 **50개 = VERIFIED 45 + PREPRINT 5**, unmatched 0,
-hallucinated 0이다. 12개 레코드는 당시 Semantic Scholar가 429를 반환해 `rate_limited`로
-남았지만 Crossref, OpenAlex, arXiv 또는 공식 레코드에서 정체성이 확인됐다. 2026-08-30
-live batch spot-check에서는 S02, S44, S45, S46의 제목 레코드를 추가 관찰했으나, 뒤이은 API
-호출이 다시 429가 되었으므로 동결 Stage-5 JSON의 12건 표시는 재현 가능한 전체 재감사 전까지
-그대로 유지한다. 이는 **미일치 12건**이 아니라 **세 번째 색인 coverage gap 12건**이다.
+Stage-5 기계 기록 기준 집계는 **55개 = VERIFIED 46 + PREPRINT 9**, unmatched 0,
+hallucinated 0이다. Semantic Scholar가 429를 반환한 22개 레코드는 `rate_limited`로 명시했고,
+각 정체성은 Crossref, OpenAlex, PMLR, arXiv 또는 공식 학회 프로그램에서 별도로 확인했다.
+2026-08-30 spot-check에서 S02, S44, S45, S46의 제목 레코드를 관찰했지만 이는 재현 가능한
+전수 재감사를 대체하지 않는다. 따라서 이 수치는 **미일치 22건**이 아니라 **세 번째 색인
+coverage gap 22건**이다.
 
 ## 4. 실험을 네 레인으로 정리
 
@@ -75,7 +75,7 @@ live batch spot-check에서는 S02, S44, S45, S46의 제목 레코드를 추가 
 | E1 오프라인 conformance | 작성 fixture와 동결 repairability class | gate 13/13; commit 0/12 rejection, 0/12 blind, 5/12 $\rho$, 6/12 oracle; detectable fault 10/10; guard 3/3 | C1–C5의 구현·메커니즘 적합성 | 모집단 효능, 모델 품질, safety rate |
 | E2 live RQ2 screening | 5개 cell × seed-indexed call 5회, matched $K=1$ | `signal-repair-v2/policy_blind`에서만 initial invalid 5/5, $\rho$ 5/5, blind 0/5; 다른 4 cell은 guided advantage 없음; noncommit 15/15 state-isolated | C5의 regime-specific mechanism transfer, `pilot-only` | `C-RESULT-003`, 모델 순위, 일반 sample efficiency |
 | E3 KG/ontology simulation | 7 strategy × 6 query × 5 candidate = 210 score | retained strategy P=R=F1=1.000, MRR 0.944, Brier 0.131, Sem@3 1.000; baseline 0/6 | closed-world construction result | runtime retrieval, long-horizon memory, `C-RESULT-004` |
-| ENG1 Godot/Web engineering | authored fixture 4개, combined 49 checks, smoke 8, balance archetype 5 | 4/4, 49/49, 8/8, 5/5 통과 | 엔진 로컬 정책 mirror·presentation conformance | usability, fun, G4, 최종 G6, live Python transport |
+| ENG1 Godot/Web engineering | authored fixture 4개, combined 52 checks, smoke 8, balance archetype 5 | 4/4, 52/52, 8/8, 5/5 통과 | 엔진 로컬 정책 mirror·presentation conformance | usability, fun, G4, 최종 G6, live Python transport |
 
 E1은 확률 표본이 아니므로 $p$-value나 모집단 신뢰구간을 붙이지 않는다. E2의 실행 receipt는
 모두 `K=1`(아암당 최대 `1+K=2`)이며 초기 계획의 `K=3`은 실행되지 않았다. E2의 seed는 hosted
@@ -90,14 +90,14 @@ ENG1의 남은 사람 측정은 `_workspace/current/qa/human-measurement-packet.
 - **PASS:** E1, E2, E3, ENG1의 단위와 분모가 서로 섞이지 않는다.
 - **PASS:** E2는 `C-PILOT-007/008`만 지원하고 `C-RESULT-003`은 승격하지 않는다.
 - **PASS:** E3는 모든 `C-RESULT-*`에 비지원으로 표시된다.
-- **PASS:** 영문·국문 원고가 같은 50개 BibTeX key를 인용하고 같은 기여 ID와 레인 ID를 쓴다.
+- **PASS:** 영문·국문 원고가 같은 55개 BibTeX key를 인용하고 같은 기여 ID와 레인 ID를 쓴다.
 - **OPEN:** 확증 다중모델·독립 semantic oracle·인간 참가자·affect·runtime retrieval/memory·live transport 실험.
 - **OPEN:** G4와 사람 제스처·latency·soak·rollback이 필요한 G6.
 
 ## English summary
 
 The three CSVs bind all five manuscript contributions to prior-work topics, repository evidence,
-experiment lanes, claim IDs, and explicit inference ceilings; map all 45 bibliography records to nine
+experiment lanes, claim IDs, and explicit inference ceilings; map all 55 bibliography records to nine
 topics; and keep offline conformance, live screening, KG simulation, and engine engineering as
 non-interchangeable units. The contribution is the audited integration, not invention of planning,
 interposition, constrained decoding, retrieval, or feedback repair. No `C-RESULT-*` claim is promoted.

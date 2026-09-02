@@ -13,7 +13,7 @@ naturalness, repeat intent, or player benefit.
 |---|---|---|
 | Public-safe 3D smoke | `8/8` checks pass | authored proposal/state/presentation-sync conformance |
 | Terminal state | `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892` | content integrity against frozen oracle |
-| Aggregate regression | full Pytest `172 passed, 2 skipped`; game selection `46 passed, 2 skipped`; Ruff check/format clean | current engineering regression |
+| Aggregate regression | full Pytest `181 passed, 81 subtests`; unittest `138 passed`; game selection `50 passed, 48 subtests`; Ruff check/format clean | current engineering regression |
 | Local Web golden path | English start/tutorial and ending reached; tracked rig loaded; refresh-persistent save/load passed; zero console/page errors | browser engineering QA only |
 | Fall recovery | below-world return observed; smoke proves symbolic hash unchanged | physical recovery, not a state mutation |
 | Pointer lock | unverified; DOM lock remained null in automation | human-gesture check still required |

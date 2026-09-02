@@ -4,7 +4,7 @@
 artifact_id: SL-LOOP-001
 run_id: 20260813-sealed-lighthouse-cycle-1
 owner: game-designer
-version: 0.1.0
+version: 0.2.0
 gate: G7
 target_period_s: [60, 120]
 target_actions_per_loop: [3, 5]
@@ -17,7 +17,7 @@ status: modeled-not-playtested
 
 ```text
 READ STATE → OBSERVE → SELECT EVIDENCE/ACTION → PROPOSE
-          → VALIDATE → {COMMIT → REWARD | REPAIR/FALLBACK → LEGIBLE REASON}
+          → VALIDATE → {COMMIT → REWARD + CONTRIBUTION | REPAIR/FALLBACK → LEGIBLE REASON + RULE}
           → READ NEW OR UNCHANGED STATE
 ```
 
@@ -88,3 +88,13 @@ Python authorization integration path or RQ1–RQ5 model efficacy.
 
 These five rotations satisfy the *planned* G3 test breadth but do not establish independent
 viability or dominance. Those require executed sessions and measurements.
+
+## Contribution legibility / 기여 가독성
+
+After each commit the ledger appends a **CONTRIBUTION clause** (`CONTRIBUTION #N | <fact labels> | STAGE a>b | CHAIN k/3`, `STAGE n` when unchanged, then `UNLOCKED | <next valid entry>`). After each hold, a **RULE LEARNED** line names the predicate gate that held the entry and states one testable rule (`RULE RECALLED (n)` on repeats). A persistent **CASE CHAIN** HUD line tracks three investigation links (LENS, MOUNT, LEAD) by fill state plus `RULES LEARNED n`. At episode end the **two-part receipt** lists the investigator's contributions and rules learned before the technical snapshot.
+
+Labels come from the `FACT_LABEL` table, rule sentences from the `RULE_BY_CODE` table (grouped by `GATE_BY_CODE` gate), and the chain is a live projection of committed facts onto three checkpoints; `contribution_delta` is a pure diff of the two snapshots the hard writer returned. Source: `_workspace/current/intake/aside-feedback-2026-09-02-game-ui-fun-contribution.md` (patterns 1, 2, E; recommendations 1–4, 9).
+
+This augmentation does not change mechanics, logic, or quest flow. It reads committed snapshots and hold history, never mutating state or exposing oracle labels (keeper_betrayal, omitted_object_hazard, unknown_field_hazard). The surfaces are designed to increase perceived agency and reduce frustration around hold rejection—a causal hypothesis documented in `game-design-hypothesis.json` (H-CONTRIB-01, H-RULE-02, H-CHAIN-03, H-RECEIPT-04).
+
+Status: `implemented-engineering-structure-human-impact-unverified`.

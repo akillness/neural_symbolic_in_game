@@ -112,11 +112,7 @@ def build_manifest() -> dict[str, Any]:
     game_readmes = ("game-track/README.en.md", "game-track/README.ko.md")
 
     paper_assets = []
-    for stem, asset_id in (
-        ("fig_architecture", "paper-architecture"),
-        ("fig_repair_state_machine", "paper-repair-state-machine"),
-        ("fig_evidence_boundary", "paper-evidence-boundary"),
-    ):
+    for stem, asset_id in (("fig_architecture", "paper-architecture"),):
         base = f"paper/latex/figures/{stem}"
         paper_assets.append(
             visual_asset(

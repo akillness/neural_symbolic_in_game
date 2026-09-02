@@ -13,6 +13,17 @@ import generate_paper_results as generator
 
 
 class GeneratePaperResultsTests(unittest.TestCase):
+    def test_guided_repair_code_count_drift_fails_closed(self) -> None:
+        data = json.loads(generator.RESULTS_PATH.read_text(encoding="utf-8"))
+        guided_commit = next(
+            row
+            for row in data["repair_arms"]["rows"]
+            if row["arm_id"] == "guided_repair" and row["final_status"] == "commit"
+        )
+        guided_commit["initial_error_count"] += 1
+        with self.assertRaisesRegex(ValueError, "initial validator-code count drift"):
+            generator._guided_commit_error_codes(data)
+
     def test_live_packet_generation_and_claim_boundary_fail_closed(self) -> None:
         packet = generator._load_live_packet()
         self.assertEqual(set(packet["current"]), {key for key, _ in generator.LIVE_CURRENT_CELLS})

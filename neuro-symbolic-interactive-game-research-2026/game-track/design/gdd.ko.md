@@ -3,7 +3,7 @@
 ```yaml
 pair_id: SL-GDD-001
 language: ko
-version: 0.1.0
+version: 0.2.0
 run_id: 20260813-sealed-lighthouse-cycle-1
 engine: Godot 4.x headless-first
 episode_target_minutes: [8, 12]
@@ -137,3 +137,29 @@ evidence_state: TARGET-DESIGN-PLUS-OBSERVED-AUTHORED-ENGINE-FIXTURE
 
 현재 결과 상태: **이 GDD는 플레이어, 라이브 모델, 독립 오라클, 시각 모델, 엔진 성능 효과 결과를
 주장하지 않는다.** [OBSERVED]
+
+## 11. 기여 가독성
+
+플레이어의 수사는 커밋된 결정의 수열(CONTRIBUTION 절)과 거절된 시도(RULE LEARNED)로 구체화한다. 세 표면이 게임 중과 후에 이 패턴을 노출한다:
+
+1. **CASE CHAIN 줄**: 세 수사 링크(`LENS`, `MOUNT`, `LEAD`)의 채움 상태가 커밋된 사실 `signal_lens_acquired`, `signal_lens_installed`, `tide_marks_hint`를 그대로 반영하는 지속 HUD 요소이며, 같은 줄에 `RULES LEARNED n | <gates>`를 함께 표시한다. 프레젠테이션 동기화마다 커밋된 스냅샷에서 다시 파생한다. ASCII만 사용하고 표시 전용이며 숨은 레이블을 노출하지 않는다. [OBSERVED structure]
+
+2. **CONTRIBUTION 절**: 모든 `ENTRY #N | COMMITTED` 줄 아래에 `CONTRIBUTION #N | <fact labels> | STAGE a>b | CHAIN k/3`(단계가 그대로면 `STAGE n`)과 `UNLOCKED | <next valid entry>`로 추가한다. 사실 레이블은 공개 `FACT_LABEL` 허용목록(예: "Signal lens secured")에 있을 때만 출력하고, 알 수 없거나 미래에 추가된 사실 ID는 내부에 남겨 일반 문구 "State recorded"로 표시한다. delta는 하드 writer가 반환한 두 스냅샷에 대한 순수 함수 `contribution_delta(prior_state, next_state)`이므로 사실을 지어내거나 봉인 비밀을 노출할 수 없다. [OBSERVED structure]
+
+3. **RULE LEARNED 줄**: 어떤 predicate 게이트의 첫 보류 뒤 `RULE LEARNED | <GATE>: <rule>`로 추가한다(예: `RULE LEARNED | KNOWLEDGE: A speaker can only disclose what they know.`). 같은 게이트의 이후 보류는 `RULE RECALLED (n) | ...`을 렌더한다. 게이트는 `GATE_BY_CODE`(표 II predicate family)에서, 문장은 작성된 `RULE_BY_CODE` 표에서 오며 어느 쪽도 오라클 레이블을 이름짓지 않는다. [OBSERVED structure]
+
+end-card 수령에는 기술 수령 앞에 두 구간이 있다:
+
+- **INVESTIGATOR'S CONTRIBUTION**: 모든 CONTRIBUTION 줄을 commit 번호와 사실 레이블로 나열하고 플레이어가 결정 수열을 검토하도록 한다.
+- **RULES LEARNED**: 발견한 독특 게이트의 정렬 목록이고 정책 경계를 한 곳에 보여준다.
+
+이 표면은 상태를 변경하지 않으며, 숨은 레이블(`keeper_betrayal`, `omitted_object_hazard`, `unknown_field_hazard`)을 노출하거나 새 역학을 추가하지 않는다. 커밋된 스냅샷과 보류 기록에서만 파생하며, `SL-PLAY-EVAL-001` 검사 `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, `case_chain_mirrors_committed_snapshot`이 정확히 그 점을 지킨다. 세이브는 여전히 canonical state만 담는다. 로드 뒤 `CASE CHAIN`은 로드된 facts에서 다시 파생되지만, 장부 이력·항목별 기여 목록·학습한 규칙 집합·ENTRIES/HOLDS 카운터는 세션과 함께 다시 시작하는 세션 로컬 프레젠테이션 메모리다. [OBSERVED engineering conformance] 지각된 유능감·주체성·좌절에 대한 효과는 측정되지 않았다. [TARGET]
+
+플레이어 인식의 근거는 post-episode 질문(표 SL-GDD-T4 참조)과 열린 글쓰기 성찰로 수집하고 자동화 텔레메트리는 사용하지 않는다. 가설 H-CONTRIB-01~H-RECEIPT-04가 `game-design-hypothesis.json`에서 가시성과 인식된 역량/규칙 발견 사이 인과 링크를 구체화한다. [TARGET]
+
+| 표 SL-GDD-T4 ID | 측정 | 목표 | 상태 |
+|---|---|---|---|
+| B-014 | CONTRIBUTION 절이 commit stamp와 함께 나타남 | 기존 B-009 로컬 피드백 예산 아래 같은 렌더 확인 주기에서 평가 | [TARGET] |
+| B-015 | Post-episode 이해: 플레이어가 가시 CONTRIBUTION/RULE 표면을 써 ≥2 행동의 인과성 설명 | 모집 전에 연구 책임자가 근거와 함께 충분성 규칙을 동결; 열린 인과 설명 필수 | [TARGET] |
+| B-016 | episode당 RULE LEARNED 고유 게이트 수 | 기술 통계만 사용; hold 없는 황금 경로는 0이 유효하고, 0 초과는 서로 다른 hold gate를 실제 경험했을 때만 가능 | [TARGET] |
+| B-017 | CASE CHAIN 링크 | `CASE n/3` 수와 일치하는 정확히 3개(LENS, MOUNT, LEAD) | [TARGET] |

@@ -237,8 +237,8 @@ def render_chart(report: Mapping[str, Any]) -> str:
     max_walk = max(float(row["pacing_proxy"]["walk_time_s_at_walk_speed"]) for row in rows)
     count_scale = max(1, max_count)
     walk_scale = max(1.0, max_walk)
-    left, top = 70, 64
-    panel_width, panel_height = 520, 300
+    left, top = 70, 84
+    panel_width, panel_height = 520, 280
     group_width = panel_width / len(rows)
     bar_width = 26
     parts = [
@@ -262,12 +262,13 @@ def render_chart(report: Mapping[str, Any]) -> str:
             "only · not human balance, G3, G7, usability, or efficacy evidence</text>"
         ),
     ]
+    legend_y = 58
     for index, (label, color) in enumerate(BAR_COLORS.items()):
         legend_x = left + index * 150
         korean = {"commits": "기록", "refusals": "보류", "observes": "관찰"}[label]
-        parts.append(f'<rect x="{legend_x}" y="{top - 6}" width="12" height="12" fill="{color}"/>')
+        parts.append(f'<rect x="{legend_x}" y="{legend_y}" width="12" height="12" fill="{color}"/>')
         parts.append(
-            f'<text x="{legend_x + 18}" y="{top + 5}" fill="#D9D3C4" font-size="12">'
+            f'<text x="{legend_x + 18}" y="{legend_y + 11}" fill="#D9D3C4" font-size="12">'
             f"{korean} {label}</text>"
         )
     axis_bottom = top + 20 + panel_height

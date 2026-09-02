@@ -15,8 +15,8 @@ Current verdict input: `FIX`
 | Disposable Web staging | DONE-STRUCTURE | builder changes only a temporary project copy |
 | Single-threaded Web preset | DONE-STRUCTURE | thread/extensions disabled; scenario JSON included |
 | Static-host configuration | DONE-STRUCTURE | content/referrer/permissions headers declared |
-| Aggregate engineering regression | PASS-CURRENT-SESSION | full Pytest `172 passed, 2 skipped`; unittest `131` with `2` skipped; game selection `46 passed, 2 skipped`; Ruff check/format clean |
-| Presentation evaluation JSON | DONE-ENGINEERING | `SL-PLAY-EVAL-001`: `4/4`, `40/40` + `9/9` = `49/49` |
+| Aggregate engineering regression | PASS-CURRENT-SESSION | full Pytest `181 passed, 81 subtests`; unittest `138 passed`; game selection `50 passed, 48 subtests`; Ruff check/format clean |
+| Presentation evaluation JSON | DONE-ENGINEERING | `SL-PLAY-EVAL-001`: `4/4`, `40/40` + `12/12` = `52/52`; `[OBSERVED 2026-09-02]` three added checks (`contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, `case_chain_mirrors_committed_snapshot`) are contribution-legibility conformance, not fun/usability/G4 evidence |
 | Latest public-safe screenshots | DONE-WORKING-CAPTURES | four fresh 1280×720 PNGs from disposable browser stage, SHA-256 registered; not immutable evidence |
 | Bundled Korean font | DONE-PROVENANCE | unmodified Nanum Gothic Regular, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256/source; public 4,534-byte OFL notice hash-matched |
 | Staged Web artifact | DONE-PRODUCTION | current 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes, SHA-256 `654c1f13…a58e7`; includes curated player; deployed production is byte-identical |

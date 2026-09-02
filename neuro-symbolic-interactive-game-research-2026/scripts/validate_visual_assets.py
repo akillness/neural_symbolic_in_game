@@ -33,8 +33,6 @@ SVG_INVENTORY_ROOTS = (
 
 LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
-    "paper/latex/figures/fig_repair_state_machine.svg",
-    "paper/latex/figures/fig_evidence_boundary.svg",
     "visuals/system-architecture.svg",
     "visuals/commit-transaction.svg",
     "visuals/pilot-evidence.svg",
@@ -171,7 +169,7 @@ class Validator:
         for inventory_root in SVG_INVENTORY_ROOTS:
             if inventory_root.is_dir():
                 disk_svgs.update(
-                    str(path.relative_to(ROOT)) for path in inventory_root.glob("*.svg")
+                    str(path.relative_to(ROOT)) for path in inventory_root.rglob("*.svg")
                 )
         missing = disk_svgs - manifest_svgs
         extra = manifest_svgs - disk_svgs
@@ -242,16 +240,24 @@ class Validator:
         self.check("desc" in child_names, f"{relative}: missing <desc>")
         self.check("viewBox" in root.attrib, f"{relative}: missing viewBox")
 
+        style = "\n".join(
+            "".join(element.itertext())
+            for element in root.iter()
+            if self._local_name(element.tag) == "style"
+        )
+        sizes = [float(value) for value in re.findall(r"font-size:\s*([0-9.]+)px", style)]
+        sizes.extend(
+            float(value)
+            for element in root.iter()
+            if (value := element.attrib.get("font-size", ""))
+            .removesuffix("px")
+            .replace(".", "", 1)
+            .isdigit()
+        )
         if paper:
-            style = "\n".join(
-                "".join(element.itertext())
-                for element in root.iter()
-                if self._local_name(element.tag) == "style"
-            )
-            sizes = [float(value) for value in re.findall(r"font-size:\s*([0-9.]+)px", style)]
-            self.check(bool(sizes), f"{relative}: no CSS font sizes found")
+            self.check(bool(sizes), f"{relative}: no SVG font sizes found")
             if sizes:
-                self.check(min(sizes) >= 24.0, f"{relative}: paper label below 24 SVG px")
+                self.check(min(sizes) >= 28.0, f"{relative}: paper label below 28 SVG px")
             groups = [
                 element
                 for element in root.iter()
@@ -281,6 +287,10 @@ class Validator:
                 if "connector" in element.attrib.get("class", "").split()
             ]
             self.check(bool(connectors), f"{relative}: connector paths are not classed")
+        elif relative.parts and relative.parts[0] == "visuals":
+            self.check(bool(sizes), f"{relative}: no SVG font sizes found")
+            if sizes:
+                self.check(min(sizes) >= 12.0, f"{relative}: README label below 12 SVG px")
 
         if path.name == "balance-archetypes.svg":
             grid_lines = [
@@ -326,9 +336,13 @@ class Validator:
         return sum(factors) * font_size
 
     @staticmethod
-    def _path_segments(path_data: str) -> list[tuple[float, float, float, float]]:
+    def _path_segments(
+        path_data: str,
+    ) -> list[tuple[float, float, float, float]] | None:
+        """Return line segments, or None when the gated path syntax is unsupported."""
+
         if re.search(r"[CQASTZcqastz]", path_data):
-            return []
+            return None
         tokens = re.findall(r"[MLHVmlhv]|-?(?:\d+(?:\.\d*)?|\.\d+)", path_data)
         segments: list[tuple[float, float, float, float]] = []
         command = ""
@@ -411,12 +425,34 @@ class Validator:
                     return class_sizes[class_name]
             return 16.0
 
-        text_boxes: list[tuple[str, tuple[float, float, float, float]]] = []
+        view_x, view_y, view_width, view_height = (
+            float(value) for value in root.attrib["viewBox"].split()
+        )
+        view_box = (view_x, view_y, view_x + view_width, view_y + view_height)
+        rectangles = []
+        for element in root.iter():
+            if self._local_name(element.tag) != "rect":
+                continue
+            try:
+                rectangle = (
+                    float(element.attrib.get("x", "0")),
+                    float(element.attrib.get("y", "0")),
+                    float(element.attrib["width"]),
+                    float(element.attrib["height"]),
+                )
+            except (KeyError, ValueError):
+                continue
+            if rectangle[2] >= view_width - 1 and rectangle[3] >= view_height - 1:
+                continue
+            rectangles.append(rectangle)
+
+        text_boxes: list[tuple[str, tuple[float, float, float, float], bool]] = []
         for text in root.iter(f"{{{SVG_NS}}}text"):
-            if has_protected_ancestor(text) or "transform" in text.attrib:
+            if "transform" in text.attrib:
                 continue
-            if "paint-order" in text.attrib or "paint-order" in text.attrib.get("style", ""):
-                continue
+            connector_protected = has_protected_ancestor(text) or (
+                "paint-order" in text.attrib or "paint-order" in text.attrib.get("style", "")
+            )
             spans = [child for child in text if self._local_name(child.tag) == "tspan"] or [text]
             anchor = text.attrib.get("text-anchor", "start")
             try:
@@ -446,7 +482,33 @@ class Validator:
                     left, right = x - width, x
                 else:
                     left, right = x, x + width
-                text_boxes.append((value, (left, y - (0.82 * size), right, y + (0.22 * size))))
+                box = (left, y - (0.82 * size), right, y + (0.22 * size))
+                text_boxes.append((value, box, connector_protected))
+                if (
+                    box[0] < view_box[0] - 1
+                    or box[1] < view_box[1] - 1
+                    or box[2] > view_box[2] + 1
+                    or box[3] > view_box[3] + 1
+                ):
+                    self.errors.append(f"{relative}: text leaves SVG viewBox: {value!r}")
+                candidates = [
+                    rectangle
+                    for rectangle in rectangles
+                    if rectangle[0] <= (box[0] + box[2]) / 2 <= rectangle[0] + rectangle[2]
+                    and rectangle[1] <= (box[1] + box[3]) / 2 <= rectangle[1] + rectangle[3]
+                ]
+                if candidates:
+                    container = min(candidates, key=lambda item: item[2] * item[3])
+                    c_left, c_top, c_width, c_height = container
+                    if (
+                        box[0] < c_left - 1
+                        or box[1] < c_top - 1
+                        or box[2] > c_left + c_width + 1
+                        or box[3] > c_top + c_height + 1
+                    ):
+                        self.errors.append(
+                            f"{relative}: text exceeds its nearest container: {value!r}"
+                        )
 
         connectors: list[tuple[str, list[tuple[float, float, float, float]]]] = []
         for element in root.iter():
@@ -465,20 +527,28 @@ class Validator:
                 ]
             elif local_name == "path":
                 segments = self._path_segments(element.attrib.get("d", ""))
+                if segments is None:
+                    self.errors.append(
+                        f"{relative}: unsupported connector path syntax cannot be geometry-checked: "
+                        f"{element.attrib.get('d', '')}"
+                    )
+                    continue
             else:
                 segments = []
             if segments:
                 connectors.append((element.attrib.get("d", "line"), segments))
 
-        for value, box in text_boxes:
+        for value, box, connector_protected in text_boxes:
+            if connector_protected:
+                continue
             for connector_name, segments in connectors:
                 if any(self._segment_hits_rect(segment, box) for segment in segments):
                     self.errors.append(
                         f"{relative}: unshielded connector overlaps text {value!r} ({connector_name})"
                     )
 
-        for index, (left_value, left_box) in enumerate(text_boxes):
-            for right_value, right_box in text_boxes[index + 1 :]:
+        for index, (left_value, left_box, _) in enumerate(text_boxes):
+            for right_value, right_box, _ in text_boxes[index + 1 :]:
                 overlap_width = min(left_box[2], right_box[2]) - max(left_box[0], right_box[0])
                 overlap_height = min(left_box[3], right_box[3]) - max(left_box[1], right_box[1])
                 if overlap_width > 1 and overlap_height > 1:
@@ -536,6 +606,47 @@ class Validator:
 
     def _validate_tables(self, manifest: dict[str, Any]) -> None:
         table_sources = manifest.get("table_sources", [])
+        surfaces = manifest.get("rendered_surfaces", [])
+        surface_ids = [surface.get("id") for surface in surfaces]
+        self.check(len(surface_ids) == len(set(surface_ids)), "rendered surface ids must be unique")
+
+        input_pattern = re.compile(r"\\input\{([^}]+)\}")
+
+        def source_closure(entry: Path) -> tuple[set[str], str]:
+            pending = [entry]
+            paths: set[str] = set()
+            texts: list[str] = []
+            while pending:
+                current = pending.pop()
+                try:
+                    relative = str(current.resolve().relative_to(ROOT))
+                except ValueError:
+                    self.errors.append(f"paper source escapes project: {current}")
+                    continue
+                if relative in paths:
+                    continue
+                if not current.is_file():
+                    self.errors.append(f"paper source is missing: {relative}")
+                    continue
+                paths.add(relative)
+                text = current.read_text(encoding="utf-8")
+                texts.append(text)
+                for target in input_pattern.findall(text):
+                    child = current.parent / target
+                    if child.suffix == "":
+                        child = child.with_suffix(".tex")
+                    pending.append(child)
+            return paths, "\n".join(texts)
+
+        surface_closures: dict[str, tuple[set[str], str]] = {}
+        for surface in surfaces:
+            surface_id = surface.get("id")
+            source = surface.get("editable_source", {}).get("path")
+            if not isinstance(surface_id, str) or not isinstance(source, str):
+                self.errors.append("rendered surface needs string id and editable_source.path")
+                continue
+            surface_closures[surface_id] = source_closure(ROOT / source)
+
         covered_layouts = {
             record["path"]
             for source in table_sources
@@ -553,7 +664,44 @@ class Validator:
         )
 
         for source in table_sources:
-            rendered = bool(source.get("rendered_in"))
+            source_id = source.get("id", "<missing-id>")
+            rendered_in = source.get("rendered_in", [])
+            self.check(isinstance(rendered_in, list), f"{source_id}: rendered_in must be a list")
+            if not isinstance(rendered_in, list):
+                rendered_in = []
+            unknown_surfaces = sorted(set(rendered_in) - set(surface_closures))
+            self.check(
+                not unknown_surfaces,
+                f"{source_id}: unknown rendered surfaces {unknown_surfaces}",
+            )
+            anchors = source.get("anchors", [])
+            self.check(isinstance(anchors, list), f"{source_id}: anchors must be a list")
+            if not isinstance(anchors, list):
+                anchors = []
+            layout_paths = {record["path"] for record in source.get("layout_sources", [])}
+            for surface_id in rendered_in:
+                if surface_id not in surface_closures:
+                    continue
+                closure_paths, closure_text = surface_closures[surface_id]
+                self.check(
+                    bool(layout_paths & closure_paths),
+                    f"{source_id}: {surface_id} does not include a declared layout source",
+                )
+                for anchor in anchors:
+                    self.check(
+                        rf"\label{{{anchor}}}" in closure_text,
+                        f"{source_id}: {surface_id} is missing table anchor {anchor}",
+                    )
+            for surface_id, (_, closure_text) in surface_closures.items():
+                if surface_id in rendered_in:
+                    continue
+                for anchor in anchors:
+                    self.check(
+                        rf"\label{{{anchor}}}" not in closure_text,
+                        f"{source_id}: anchor {anchor} is rendered in undeclared surface {surface_id}",
+                    )
+
+            rendered = bool(rendered_in)
             for record in source.get("layout_sources", []):
                 relative = record["path"]
                 path = ROOT / relative

@@ -4,17 +4,17 @@
   <desc id="svg-desc">A candidate is parsed, validated against the prior state, optionally repaired within a bounded budget, defensively revalidated, and only then committed. Three repair arms were exercised offline.</desc>
   <defs>
     <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
-    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#E69F00"/></marker>
-    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#009E73"/></marker>
-    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7A7A7A"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#A05A00"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#007A59"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#666A6D"/></marker>
     <style>
       text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
-      .section { font-size: 28px; font-weight: 700; }
-      .box-title { font-size: 26px; font-weight: 700; }
-      .body { font-size: 25px; font-weight: 400; }
-      .small { font-size: 24px; font-weight: 400; }
-      .note { font-size: 24px; font-style: italic; fill: #5F6368; }
-      .arrow-label { font-size: 24px; font-weight: 700; }
+      .section { font-size: 32px; font-weight: 700; }
+      .box-title { font-size: 30px; font-weight: 700; }
+      .body { font-size: 29px; font-weight: 400; }
+      .small { font-size: 28px; font-weight: 400; }
+      .note { font-size: 28px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 28px; font-weight: 700; }
     </style>
   </defs>
   <rect x="0" y="0" width="1480" height="700" fill="#FFFFFF"/>
@@ -40,53 +40,53 @@
   <text x="586" y="251" class="small" text-anchor="start">same prior c_t</text>
   <path class="connector" d="M260 216 H300" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
   <path class="connector" d="M520 216 H560" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-  <rect x="880" y="150" width="260" height="132" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
-  <rect x="880" y="150" width="8" height="132" fill="#009E73"/>
+  <rect x="880" y="150" width="260" height="132" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <rect x="880" y="150" width="8" height="132" fill="#007A59"/>
   <text x="906" y="190" class="box-title" text-anchor="start">Defensive check</text>
   <text x="906" y="224" class="small" text-anchor="start">one extra validation</text>
   <text x="906" y="251" class="small" text-anchor="start">immediately before T</text>
-  <rect x="1190" y="150" width="250" height="132" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
-  <rect x="1190" y="150" width="8" height="132" fill="#009E73"/>
+  <rect x="1190" y="150" width="250" height="132" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <rect x="1190" y="150" width="8" height="132" fill="#007A59"/>
   <text x="1216" y="190" class="box-title" text-anchor="start">Commit</text>
   <text x="1216" y="224" class="small" text-anchor="start">c_(t+1) = T(c_t, a_j)</text>
   <text x="1216" y="251" class="small" text-anchor="start">typed event appended</text>
-  <path class="connector" d="M780 216 H880" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
-  <text x="830" y="200" class="note" text-anchor="middle" fill="#009E73">all v_i = 1</text>
-  <path class="connector" d="M1140 216 H1190" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
-  <rect x="560" y="330" width="320" height="128" rx="7" fill="#FFFFFF" stroke="#E69F00" stroke-width="2"/>
-  <rect x="560" y="330" width="8" height="128" fill="#E69F00"/>
+  <path class="connector" d="M780 216 H880" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="830" y="200" class="note" text-anchor="middle" fill="#007A59">all v_i = 1</text>
+  <path class="connector" d="M1140 216 H1190" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="560" y="330" width="320" height="128" rx="7" fill="#FFFFFF" stroke="#A05A00" stroke-width="2"/>
+  <rect x="560" y="330" width="8" height="128" fill="#A05A00"/>
   <text x="586" y="370" class="box-title" text-anchor="start">Record attempt j</text>
   <text x="586" y="404" class="small" text-anchor="start">candidate + error set E_j</text>
   <text x="586" y="431" class="small" text-anchor="start">attempt hash chain</text>
-  <path class="connector" d="M670 282 V330" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
-  <text x="686" y="312" class="small" text-anchor="start" fill="#E69F00">some v_i = 0</text>
-  <rect x="940" y="330" width="250" height="128" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
-  <rect x="940" y="330" width="8" height="128" fill="#E69F00"/>
+  <path class="connector" d="M670 282 V330" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <text x="686" y="312" class="small" text-anchor="start" fill="#A05A00">some v_i = 0</text>
+  <rect x="940" y="330" width="250" height="128" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
+  <rect x="940" y="330" width="8" height="128" fill="#A05A00"/>
   <text x="966" y="370" class="box-title" text-anchor="start">Repair, j &lt; K</text>
   <text x="966" y="404" class="small" text-anchor="start">consume E_j</text>
   <text x="966" y="431" class="small" text-anchor="start">emit revised a_(j+1)</text>
-  <rect x="1240" y="330" width="200" height="128" rx="7" fill="#EEF0F2" stroke="#7A7A7A" stroke-width="2"/>
-  <rect x="1240" y="330" width="8" height="128" fill="#7A7A7A"/>
+  <rect x="1240" y="330" width="200" height="128" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2"/>
+  <rect x="1240" y="330" width="8" height="128" fill="#666A6D"/>
   <text x="1266" y="370" class="box-title" text-anchor="start">Fallback</text>
   <text x="1266" y="404" class="small" text-anchor="start">j = K</text>
   <text x="1266" y="431" class="small" text-anchor="start">c_(t+1) = c_t</text>
-  <path class="connector" d="M880 394 H940" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
-  <path class="connector" d="M1190 394 H1240" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
-  <path class="connector" d="M1065 458 V496 H540 V252 H560" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="7 6"/>
-  <text x="810" y="488" class="note" text-anchor="middle" fill="#E69F00">revalidate against the same prior state</text>
+  <path class="connector" d="M880 394 H940" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path class="connector" d="M1190 394 H1240" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <path class="connector" d="M1065 458 V496 H540 V252 H560" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="7 6"/>
+  <text x="810" y="488" class="note" text-anchor="middle" fill="#A05A00">revalidate against the same prior state</text>
   <rect x="40" y="530" width="1400" height="132" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
   <text x="66" y="566" class="box-title" text-anchor="start">Repair arms exercised on 12 authored initially-invalid cases</text>
   <text x="66" y="606" class="small" text-anchor="start">rejection_only</text>
   <text x="66" y="632" class="note" text-anchor="start">K = 0, none</text>
-  <text x="66" y="656" class="small" text-anchor="start" fill="#7A7A7A">0 / 12 commits</text>
+  <text x="66" y="656" class="small" text-anchor="start" fill="#666A6D">0 / 12 commits</text>
   <text x="416" y="606" class="small" text-anchor="start">unchanged_retry</text>
   <text x="416" y="632" class="note" text-anchor="start">K = 1, unchanged</text>
-  <text x="416" y="656" class="small" text-anchor="start" fill="#7A7A7A">0 / 12 commits</text>
+  <text x="416" y="656" class="small" text-anchor="start" fill="#666A6D">0 / 12 commits</text>
   <text x="766" y="606" class="small" text-anchor="start">guided_repair</text>
   <text x="766" y="632" class="note" text-anchor="start">K = 1, counterexample_guided</text>
-  <text x="766" y="656" class="small" text-anchor="start" fill="#009E73">5 / 12 commits</text>
+  <text x="766" y="656" class="small" text-anchor="start" fill="#007A59">5 / 12 commits</text>
   <text x="1116" y="606" class="small" text-anchor="start">structured_repair</text>
   <text x="1116" y="632" class="note" text-anchor="start">K = 1, policy_restore</text>
-  <text x="1116" y="656" class="small" text-anchor="start" fill="#009E73">6 / 12 commits</text>
+  <text x="1116" y="656" class="small" text-anchor="start" fill="#007A59">6 / 12 commits</text>
   <text x="66" y="690" class="note" text-anchor="start">12 designed cases per arm across frozen repairability classes. This is pilot feasibility, not evidence that any repair strategy generally wins.</text>
 </svg>

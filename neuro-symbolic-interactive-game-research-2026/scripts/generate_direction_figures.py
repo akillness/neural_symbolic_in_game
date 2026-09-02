@@ -152,7 +152,7 @@ def pareto_figure() -> str:
             f'stroke="{INK}" stroke-width="1.2"/>'
         ),
         label(
-            left + width / 2, top + height + 40, "에피소드당 기대 비용 (토큰·호출·$) →", INK, 12.5
+            left + width / 2, top + height + 35, "에피소드당 기대 비용 (토큰·호출·$) →", INK, 12.5
         ),
         (
             f'<text x="40" y="{top + height / 2}" text-anchor="middle" font-family="{MONO}" '
@@ -181,7 +181,7 @@ def pareto_figure() -> str:
     parts.append(
         label(
             430,
-            392,
+            410,
             "H5 질문: 컨센서스 arm이 게이트의 Pareto 전선을 개선하는가, 흡수되는가?",
             INK,
             12,

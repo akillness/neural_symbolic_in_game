@@ -11,6 +11,8 @@ This directory is the stable, paper-citable companion to the live studio materia
 | `SL-GDD-001` | [gdd.en.md](gdd.en.md) | [gdd.ko.md](gdd.ko.md) | Product and interaction specification / 제품·상호작용 명세 |
 | `SL-ORACLE-001` | [scenario-oracle-plan.en.md](scenario-oracle-plan.en.md) | [scenario-oracle-plan.ko.md](scenario-oracle-plan.ko.md) | Scenario split, holdout, and independent oracle protocol / 시나리오 분할·홀드아웃·독립 오라클 |
 | `SL-XWALK-001` | [paper-crosswalk.en.md](paper-crosswalk.en.md) | [paper-crosswalk.ko.md](paper-crosswalk.ko.md) | RQ1–RQ5 and Stage 6 C1/M6 mapping / RQ1–RQ5 및 Stage 6 C1/M6 연결 |
+| `SL-HYP-001` | [game-design-hypothesis.json](game-design-hypothesis.json) | (language-neutral JSON) | Design hypothesis H-CONTRIB-01 through H-RECEIPT-04 with falsifier and evidence plan / 설계 가설 H-CONTRIB-01~H-RECEIPT-04 위조자·증거 계획 |
+| `SL-UI-01` | [game-ui-contract.json](game-ui-contract.json) | (language-neutral JSON) | UI/UX contract v1 with CONTRIBUTION/RULE LEARNED/CASE CHAIN/end-card surfaces / UI/UX 계약 v1 CONTRIBUTION/RULE LEARNED/CASE CHAIN/end-card 표면 |
 
 ## Status vocabulary / 상태 어휘
 

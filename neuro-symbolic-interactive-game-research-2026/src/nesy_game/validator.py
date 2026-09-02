@@ -4,18 +4,19 @@ from __future__ import annotations
 
 from .contracts import CandidateAction, ValidationError, ValidationResult, WorldState
 
+VALIDATOR_CHECKS = (
+    "action_policy",
+    "precondition",
+    "object_reachability",
+    "npc_knowledge",
+    "forbidden_disclosure",
+    "quest_stage",
+    "quest_stage_monotonicity",
+)
+
 
 def validate_candidate(state: WorldState, action: CandidateAction) -> ValidationResult:
     errors: list[ValidationError] = []
-    checks = (
-        "action_policy",
-        "precondition",
-        "object_reachability",
-        "npc_knowledge",
-        "forbidden_disclosure",
-        "quest_stage",
-        "quest_stage_monotonicity",
-    )
 
     policy = state.action_policies.get(action.action_type)
     if policy is None:
@@ -142,4 +143,4 @@ def validate_candidate(state: WorldState, action: CandidateAction) -> Validation
             )
         )
 
-    return ValidationResult(not errors, tuple(errors), checks)
+    return ValidationResult(not errors, tuple(errors), VALIDATOR_CHECKS)

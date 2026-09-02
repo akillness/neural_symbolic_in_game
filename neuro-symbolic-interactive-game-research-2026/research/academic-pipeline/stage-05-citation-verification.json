@@ -1,5 +1,5 @@
 {
-  "addendum": "Five prior-work citations added at Stage 8 and one direct game comparator added during the final refresh; each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure. On 2026-09-02 a top-venue refresh added S47-S51 (ASPLOS 2006, NeurIPS 2023, ACM Computing Surveys 1983, ICML 2024, CoRL 2022) and resolved S45 to its NeurIPS 2023 proceedings DOI; Crossref/OpenAlex answered, PMLR HTML metadata confirmed the two PMLR volumes, Semantic Scholar returned HTTP 429 for every lookup and is recorded as rate-limited, and OpenReview could not be queried for S46, which therefore stays PREPRINT.",
+  "addendum": "The Stage-8 additions and direct game comparator S37-S42 were each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure. On 2026-09-02 a top-venue refresh added S47-S51 (ASPLOS 2006, NeurIPS 2023, ACM Computing Surveys 1983, ICML 2024, CoRL 2022) and resolved S45 to its NeurIPS 2023 proceedings DOI; Crossref/OpenAlex answered, PMLR HTML metadata confirmed the two PMLR volumes, Semantic Scholar returned HTTP 429 for every lookup and is recorded as rate-limited, and OpenReview could not be queried for S46, which therefore stays PREPRINT. On 2026-09-02 a related-work refresh added S52-S56 (AgentSpec, Setting the DC, STORY2GAME, Beyond State Consistency, AgentRR) from the paper-framing feedback: the four arXiv preprints matched title, authors, and year on the arXiv API and OpenAlex (three of them only through arXiv-DOI lookup because OpenAlex title search returned unrelated records); Setting the DC is a non-archival NeurIPS 2025 GenProCC workshop paper whose OpenReview forum and API returned a browser challenge (HTTP 403) that was not bypassed, so its identity rests on the official NeurIPS 2025 virtual program record and the GenProCC accepted-paper list, which agree on title, five authors, and author order (Li, Zeng, Xi, Zhu, Ammanabrolu). Semantic Scholar returned HTTP 429 for all five and is recorded as rate-limited.",
   "audit_date": "2026-09-02",
   "entries": [
     {
@@ -907,25 +907,237 @@
       ],
       "status": "VERIFIED",
       "year_note": "CoRL 2022 paper published in PMLR 205:287-318 (2023); bib year follows the PMLR record."
+    },
+    {
+      "added_at": "related-work-refresh-2026-09-02",
+      "arxiv": "2503.18666",
+      "bib_year": "2025",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2025",
+        "openalex": "2025",
+        "semantic_scholar": null
+      },
+      "key": "S52_wang2025agentspec",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "retrieval": {
+        "arxiv_authors": [
+          "Haoyu Wang",
+          "Christopher M. Poskitt",
+          "Jun Sun"
+        ],
+        "arxiv_title": "AgentSpec: Customizable Runtime Enforcement for Safe and Reliable LLM Agents",
+        "arxiv_url": "http://export.arxiv.org/api/query?id_list=2503.18666",
+        "date": "2026-09-02",
+        "matched_fields": [
+          "title",
+          "authors",
+          "year"
+        ],
+        "openalex_url": "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2503.18666"
+      },
+      "status": "PREPRINT",
+      "year_note": "arXiv v3 comment states ICSE 2026 acceptance; no proceedings DOI resolvable, so cited as the preprint. OpenAlex matched only by arXiv DOI lookup (title search returned unrelated records)."
+    },
+    {
+      "added_at": "related-work-refresh-2026-09-02",
+      "arxiv": null,
+      "bib_year": "2025",
+      "doi": null,
+      "index_years": {
+        "arxiv": null,
+        "crossref": null,
+        "genprocc_workshop": "2025",
+        "neurips_virtual": "2025",
+        "openalex": null,
+        "semantic_scholar": null
+      },
+      "key": "S53_li2025settingdc",
+      "matched_indices": [
+        "neurips_virtual",
+        "genprocc_workshop"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "retrieval": {
+        "date": "2026-09-02",
+        "genprocc_url": "https://genprocc.github.io/",
+        "matched_fields": [
+          "title",
+          "authors",
+          "venue",
+          "year"
+        ],
+        "neurips_virtual_url": "https://neurips.cc/virtual/2025/128312",
+        "openreview_url": "https://openreview.net/forum?id=3Op7kJOvaD",
+        "venue_authors": [
+          "Shengqi Li",
+          "Ziyi Zeng",
+          "Jiajun Xi",
+          "Andrew Zhu",
+          "Prithviraj Ammanabrolu"
+        ],
+        "venue_title": "Setting the DC: Tool-Grounded D&D Simulations to Test LLM Agents"
+      },
+      "status": "VERIFIED",
+      "year_note": "Non-archival NeurIPS 2025 GenProCC workshop paper (OpenReview 3Op7kJOvaD). OpenReview forum and API were challenge-gated (HTTP 403) and were not bypassed; identity was confirmed from the official NeurIPS 2025 virtual program record and the workshop accepted-paper list, which both list the author order Li, Zeng, Xi, Zhu, Ammanabrolu. Not indexed by OpenAlex, Crossref, or arXiv at retrieval."
+    },
+    {
+      "added_at": "related-work-refresh-2026-09-02",
+      "arxiv": "2505.03547",
+      "bib_year": "2025",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2025",
+        "openalex": "2025",
+        "semantic_scholar": null
+      },
+      "key": "S54_zhou2025story2game",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "retrieval": {
+        "arxiv_authors": [
+          "Eric Zhou",
+          "Shreyas Basavatia",
+          "Moontashir Siam",
+          "Zexin Chen",
+          "Mark O. Riedl"
+        ],
+        "arxiv_title": "STORY2GAME: Generating (Almost) Everything in an Interactive Fiction Game",
+        "arxiv_url": "http://export.arxiv.org/api/query?id_list=2505.03547",
+        "date": "2026-09-02",
+        "matched_fields": [
+          "title",
+          "authors",
+          "year"
+        ],
+        "openalex_url": "https://api.openalex.org/works?search=STORY2GAME%3A%20Generating%20%28Almost%29%20Everything%20in%20an%20Interactive%20Fiction%20Game"
+      },
+      "status": "PREPRINT",
+      "year_note": null
+    },
+    {
+      "added_at": "related-work-refresh-2026-09-02",
+      "arxiv": "2604.13824",
+      "bib_year": "2026",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2026",
+        "openalex": "2026",
+        "semantic_scholar": null
+      },
+      "key": "S55_huang2026beyond",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "retrieval": {
+        "arxiv_authors": [
+          "Youling Huang",
+          "Guanqiao Chen",
+          "Junchi Yao",
+          "Lu Wang",
+          "Fangkai Yang",
+          "Chao Du",
+          "ChenZhuo Zhao",
+          "Pu Zhao",
+          "Qingwei Lin",
+          "Saravan Rajmohan",
+          "Dongmei Zhang"
+        ],
+        "arxiv_title": "Beyond State Consistency: Behavior Consistency in Text-Based World Models",
+        "arxiv_url": "http://export.arxiv.org/api/query?id_list=2604.13824",
+        "date": "2026-09-02",
+        "matched_fields": [
+          "title",
+          "authors",
+          "year"
+        ],
+        "openalex_url": "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2604.13824"
+      },
+      "status": "PREPRINT",
+      "year_note": "OpenAlex matched only by arXiv DOI lookup (title search returned unrelated records)."
+    },
+    {
+      "added_at": "related-work-refresh-2026-09-02",
+      "arxiv": "2505.17716",
+      "bib_year": "2025",
+      "doi": null,
+      "index_years": {
+        "arxiv": "2025",
+        "openalex": "2025",
+        "semantic_scholar": null
+      },
+      "key": "S56_feng2025agentrr",
+      "matched_indices": [
+        "arxiv",
+        "openalex"
+      ],
+      "rate_limited_indices": [
+        "semantic_scholar"
+      ],
+      "retrieval": {
+        "arxiv_authors": [
+          "Erhu Feng",
+          "Wenbo Zhou",
+          "Zibin Liu",
+          "Le Chen",
+          "Yunpeng Dong",
+          "Cheng Zhang",
+          "Yisheng Zhao",
+          "Dong Du",
+          "Zhichao Hua",
+          "Yubin Xia",
+          "Haibo Chen"
+        ],
+        "arxiv_title": "Get Experience from Practice: LLM Agents with Record & Replay",
+        "arxiv_url": "http://export.arxiv.org/api/query?id_list=2505.17716",
+        "date": "2026-09-02",
+        "matched_fields": [
+          "title",
+          "authors",
+          "year"
+        ],
+        "openalex_url": "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2505.17716"
+      },
+      "status": "PREPRINT",
+      "year_note": "OpenAlex matched only by arXiv DOI lookup (title search returned unrelated records)."
     }
   ],
   "indices": {
     "arxiv": "http://export.arxiv.org/api/query (preprint confirmation)",
     "crossref": "https://api.crossref.org (advisory)",
+    "genprocc_workshop": "https://genprocc.github.io (official workshop accepted-paper list; used only for S53)",
+    "neurips_virtual": "https://neurips.cc/virtual (official program record; used only for S53)",
     "openalex": "https://api.openalex.org (advisory)",
     "pmlr": "https://proceedings.mlr.press (HTML citation metadata; used only for PMLR volumes)",
     "semantic_scholar": "https://api.semanticscholar.org/graph/v1 (primary; partially rate-limited)"
   },
-  "method": "three-index triangulation over metadata APIs; no publisher-page scraping",
+  "method": "metadata-API triangulation plus named official primary pages; no broad publisher-page scraping",
   "schema_version": "1.0.0",
   "stage": "5",
   "title_match_threshold": 0.85,
   "totals": {
-    "entries": 50,
+    "entries": 55,
     "hallucinated": 0,
-    "preprint": 5,
-    "semantic_scholar_rate_limited": 17,
+    "preprint": 9,
+    "semantic_scholar_rate_limited": 22,
     "unmatched": 0,
-    "verified": 45
+    "verified": 46
   }
 }

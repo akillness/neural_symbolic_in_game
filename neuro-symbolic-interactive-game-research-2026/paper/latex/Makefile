@@ -1,10 +1,20 @@
 SHELL := /bin/sh
 
-.PHONY: all figures english korean check clean
+# Pin timestamps and PDF identifiers so identical sources rebuild byte-identically.
+SOURCE_DATE_EPOCH ?= $(shell git -C ../.. log -1 --format=%ct 2>/dev/null || printf '0')
+export SOURCE_DATE_EPOCH
+export FORCE_SOURCE_DATE := 1
+export TZ := UTC
 
-all: figures english korean check
+.PHONY: all generated figures english korean check clean
 
-figures:
+all: check
+
+generated:
+	cd ../.. && uv run python scripts/generate_paper_results.py
+	cd ../.. && uv run python scripts/run_kg_ontology_simulation.py --check --no-database
+
+figures: generated
 	cd ../.. && uv run python scripts/generate_paper_figures.py
 	for svg in figures/*.svg; do \
 		base="$${svg%.svg}"; \
@@ -12,7 +22,7 @@ figures:
 		rsvg-convert -f png -o "$$base.png" "$$svg"; \
 		rsvg-convert -f eps -o "$$base.eps.tmp" "$$svg"; \
 		printf '\n[ /Title (source-sha256:%s) /DOCINFO pdfmark\n' "$$hash" >> "$$base.eps.tmp"; \
-		ps2pdf -dEPSCrop "$$base.eps.tmp" "$$base.pdf"; \
+		ps2pdf -dEPSCrop -dOmitInfoDate=true -dOmitID=true -dOmitXMP=true "$$base.eps.tmp" "$$base.pdf"; \
 		rm -f "$$base.eps.tmp"; \
 	done
 
@@ -26,7 +36,7 @@ korean: figures
 # including references (source: transactions.games author information, retrieved 2026-08-13).
 # Assert the band rather than a fixed count so a legibility fix cannot silently push the
 # paper out of its article type; anything above 6 is in-band but billable.
-check:
+check: english korean
 	@for lang in en ko; do \
 		pages=$$(pdfinfo $$lang/main.pdf | awk '/^Pages:/ {print $$2}'); \
 		if [ "$$pages" -lt 6 ] || [ "$$pages" -gt 8 ]; then \

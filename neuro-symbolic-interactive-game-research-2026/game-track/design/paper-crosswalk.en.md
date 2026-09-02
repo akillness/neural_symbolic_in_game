@@ -91,6 +91,7 @@ requiring a verifier host to impersonate the capture host.
 | Frozen concept pack | `SL-C01`–`SL-C04` | disclose AI-assisted concept authoring and visual condition | infer game quality or RQ result from image quality |
 | Non-headless render bundle | `SL-CAPTURE-001` (paper label; not a manifest field), `C-GAME-DESIGN-003` | show three deterministic structured-state Godot render surfaces with exact manifest capture IDs and source binding | claim live Python integration, model/visual efficacy, usability, immersion, human outcomes, G4, or G6 |
 | Typed methods-graph simulation | `SL-KG-ONTOLOGY-SIM-001` | report the authored six-query link-holdout method, exact formulas, and construction checks under a simulation-only label | infer runtime retrieval, temporal-memory benefit, semantic completeness, player usefulness, or any `C-RESULT-*` promotion |
+| Contribution readout (`CONTRIBUTION #N`, `RULE LEARNED`, `CASE CHAIN`, two-part end-card receipt) | `SL-GDD-T4`, `SL-HYP-001`, `SL-PLAY-EVAL-001` checks `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, `case_chain_mirrors_committed_snapshot` | describe how the playable ledger mirrors the manuscript's predicate families (Table II) and links every commit to its snapshot delta as engineering conformance (ENG1, C2/C3 surfaces) | claim fun, perceived agency, competence, reduced frustration, G4, or any player outcome; the `[TARGET]` questions in `SL-GDD-T4` have no data |
 
 ## 7. Paper-ready wording controls
 

@@ -2,13 +2,13 @@
 
 Status: **PASS_NO_HALLUCINATED_CITATIONS**
 
-Audit date: 2026-09-02 (current machine record; original audit 2026-08-13; top-venue refresh S47–S51 on 2026-09-02)
+Audit date: 2026-09-02 (current machine record; original audit 2026-08-13; top-venue refresh S47–S51 and related-work refresh S52–S56 on 2026-09-02)
 
 Machine-readable record: `stage-05-citation-verification.json`
 
 Current topical/claim-use crosscheck: `reference-topic-crosswalk.csv`. Intermediate totals in the
-Stage-8 and game-comparator addenda below are time-stamped historical snapshots superseded by the
-current 50-entry summary.
+Stage-8, game-comparator, repair-lineage, and top-venue addenda below are time-stamped historical
+snapshots superseded by the current 55-entry summary.
 
 Gate semantics: a `HALLUCINATED` citation must be removed or replaced before Stage 6. None was
 found, so Stage 6 is unblocked. Preprint citations are flagged advisory and do not block.
@@ -28,6 +28,7 @@ Crossref/OpenAlex/Semantic Scholar over rendered abstract pages.
 | OpenAlex | advisory | `api.openalex.org` |
 | Crossref | advisory | `api.crossref.org` |
 | arXiv | preprint confirmation | `export.arxiv.org/api/query` |
+| NeurIPS virtual program / GenProCC workshop list | venue confirmation (S53 only) | `neurips.cc/virtual`, `genprocc.github.io` |
 
 Each entry was resolved by DOI when the bibliography supplied one and by bibliographic title search
 otherwise. A title match counted as a hit only at a normalized similarity of at least 0.85, so a
@@ -39,18 +40,20 @@ return an unrelated record's year.
 
 | Status | Count |
 | --- | --- |
-| `VERIFIED` | 45 |
-| `PREPRINT` | 5 |
+| `VERIFIED` | 46 |
+| `PREPRINT` | 9 |
 | `UNMATCHED` | 0 |
 | `HALLUCINATED` | 0 |
-| Total | 50 |
+| Total | 55 |
 
-Every one of the 50 entries was matched by at least one answering independent index. The bibliography
-is closed against the manuscripts: 50 unique cite keys, 50 bibliography entries, no cited-but-absent
-key and no present-but-uncited entry, and an identical key set in the English and Korean sources.
+Every one of the 55 entries was matched by at least one answering independent index. The bibliography
+is closed against the manuscripts once the S52–S56 citations land in both sources: 55 unique cite keys,
+55 bibliography entries, no cited-but-absent key and no present-but-uncited entry, and an identical key
+set in the English and Korean sources.
 
-50개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. 인용 키 50개와 참고문헌 50건이
-정확히 일치하며, 영문·국문 원고의 키 집합도 동일하다. `S43`은 의도적 결번이다.
+55개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. S52–S56 인용이 두 원고에 반영되면
+인용 키 55개와 참고문헌 55건이 정확히 일치하며, 영문·국문 원고의 키 집합도 동일하다. `S43`은
+의도적 결번이다.
 
 ## Preprints (advisory) / 프리프린트
 
@@ -61,8 +64,13 @@ key and no present-but-uncited entry, and an identical key set in the English an
 | S26 | VLM engagement understanding in games | 2603.18480 | OpenAlex, Semantic Scholar, arXiv |
 | S44 | World-State Transformations for Neuro-symbolic Interactive Storytelling | 2605.24719 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
 | S46 | Teaching Large Language Models to Self-Debug | 2304.05128 | OpenAlex, arXiv; Semantic Scholar rate-limited in frozen audit |
+| S52 | AgentSpec: customizable runtime enforcement for LLM agents | 2503.18666 | arXiv, OpenAlex (arXiv-DOI lookup); Semantic Scholar rate-limited; ICSE 2026 acceptance stated on arXiv, no proceedings DOI |
+| S54 | STORY2GAME: generating (almost) everything in an IF game | 2505.03547 | arXiv, OpenAlex; Semantic Scholar rate-limited |
+| S55 | Beyond State Consistency: behavior consistency in text-based world models | 2604.13824 | arXiv, OpenAlex (arXiv-DOI lookup); Semantic Scholar rate-limited |
+| S56 | Get Experience from Practice: LLM agents with record & replay (AgentRR) | 2505.17716 | arXiv, OpenAlex (arXiv-DOI lookup); Semantic Scholar rate-limited |
 
-These five carry no publisher DOI in the frozen record and remain preprints. S45 (Self-Refine) left this
+The first five carry no publisher DOI in the frozen record and remain preprints; S52, S54, S55, and S56
+were added on 2026-09-02 and are likewise preprints. S45 (Self-Refine) left this
 list on 2026-09-02 when its NeurIPS 36 proceedings DOI `10.52202/075280-2019` resolved in Crossref
 and OpenAlex; S46 stays a preprint because OpenReview returned no API record during the refresh. The manuscripts describe
 their status or use them only as bounded motivation/comparators. Claim `C-AFFECT-001` remains
@@ -107,33 +115,34 @@ archival 연도가 옳다. 수정이 필요하지 않다.
 
 ## Coverage limitation / 검증 범위 한계
 
-Semantic Scholar returned HTTP 429 for 12 of 45 entries in the frozen audit. Those entries are:
-S02, S03, S04, S05, S08, S12, S18, S33, S34, S44, S45, S46. The 2026-09-02 refresh received HTTP 429
-for every Semantic Scholar lookup, so S47–S51 are also recorded as rate-limited there (17 of 50 in
-total); each of the five was matched in Crossref and OpenAlex, or in PMLR HTML citation metadata plus
-OpenAlex for the two PMLR volumes.
+The frozen 45-entry audit recorded Semantic Scholar HTTP 429 for S02, S03, S04, S05, S08,
+S12, S18, S33, S34, S44, S45, and S46. The 2026-09-02 refresh then received HTTP 429 for all ten
+new lookups, S47--S56, bringing the explicit coverage gap to **22 of 55**. The ten additions were
+matched through Crossref/OpenAlex, PMLR plus OpenAlex, arXiv plus OpenAlex, or, for S53, the official
+NeurIPS program and GenProCC accepted-paper list.
 
-This is an access limitation of the third index, not evidence about the citations. Every one of the
-12 is matched by at least one other index; preprints S02 and S44--S46 are confirmed on arXiv.
-A 2026-08-30 live batch spot-check observed title records for S02 and S44--S46 before later calls
-returned 429 again, so the frozen 12-entry coverage flag remains until a complete reproducible
-reaudit is captured. No entry is reported as verified on the strength of an index that did not answer.
+This is an access limitation of the third index, not citation-mismatch evidence. All 22 affected
+records are matched by at least one other named source. A 2026-08-30 spot-check observed Semantic
+Scholar title records for S02 and S44--S46 before later calls returned 429 again; those observations
+do not replace a reproducible complete re-audit. No entry is reported as verified on the strength of
+an index that did not answer.
 
-Semantic Scholar가 동결 감사의 45건 중 12건에서 HTTP 429를 반환했다. 이는 세 번째 색인의
-coverage 제한이며 인용 불일치가 아니다. 12건 모두 다른 색인에서 확인됐고, 응답하지 않은
-색인을 근거로 검증됐다고 표시한 항목은 없다.
+동결된 45건 감사에서는 Semantic Scholar 조회 12건이 HTTP 429였고, 2026-09-02에 추가한
+S47--S56 조회 10건도 모두 429를 반환했다. 따라서 현재 coverage gap은 **55건 중 22건**이다.
+이는 인용 불일치가 아니라 세 번째 색인의 접근 제한이다. 영향받은 22건은 모두 명시된 다른
+출처에서 확인했으며, 응답하지 않은 색인을 근거로 검증됐다고 표시한 항목은 없다.
 
 ## Gate decision / 게이트 판정
 
 | Field | Value |
 | --- | --- |
-| Entries audited | 45 |
+| Entries audited | 55 |
 | Hallucinated | 0 |
 | Unmatched | 0 |
 | Removals or replacements required | 0 |
 | Blocking findings | 0 |
 | Stage 6 | unblocked |
-| Carried caveats | S23 issue metadata recheck at submission; 6 preprints remain advisory; Semantic Scholar coverage incomplete for 12 entries |
+| Carried caveats | S23 issue metadata recheck at submission; 9 preprints remain advisory; Semantic Scholar coverage incomplete for 22 entries |
 
 This gate verifies citation identity only. It does not assess whether each cited work supports the
 sentence that cites it; that judgement belongs to Stage 6 peer-review simulation.
@@ -202,3 +211,29 @@ rate-limited for every call; DBLP was unreachable; Crossref, OpenAlex, and PMLR 
 
 주요 학회·저널에 등재된 5편을 추가하고 S45를 proceedings 레코드로 승격했다. 어떤 추가 인용도
 효능 주장을 지지하지 않으며, 계보와 비교 대상의 정확한 출처만 강화한다.
+
+## Related-work refresh addendum (2026-09-02) / 관련 연구 보강
+
+Five references named by the paper-framing feedback were added so the related-work section can state
+an intersection claim against its closest 2025–2026 neighbours. Verification used metadata APIs and
+official venue program pages only; no publisher page was scraped and the OpenReview browser challenge
+was not bypassed. Semantic Scholar returned HTTP 429 for every call. Retrieval date: 2026-09-02.
+
+| Key | Identity (arXiv API title / authors) | Indices matched | Role |
+| --- | --- | --- | --- |
+| S52 | *AgentSpec: Customizable Runtime Enforcement for Safe and Reliable LLM Agents* — Haoyu Wang; Christopher M. Poskitt; Jun Sun (arXiv 2503.18666v3, published 2025-03-24) | arXiv API; OpenAlex W6947676652 via arXiv-DOI lookup (title search missed it) | general runtime-enforcement precedent (T8, C2); arXiv comment states ICSE 2026 acceptance, no proceedings DOI, so cited as preprint |
+| S53 | *Setting the DC: Tool-Grounded D&D Simulations to Test LLM Agents* — Shengqi Li; Ziyi Zeng; Jiajun Xi; Andrew Zhu; Prithviraj Ammanabrolu (NeurIPS 2025 GenProCC workshop, OpenReview `3Op7kJOvaD`) | `neurips.cc/virtual/2025/128312`; `genprocc.github.io` accepted paper 50; OpenReview forum/API HTTP 403 challenge; not indexed by OpenAlex, Crossref, or arXiv | tool-grounded game-state admission comparator (T1, C1/C2); `VERIFIED` by official venue record, non-archival |
+| S54 | *STORY2GAME: Generating (Almost) Everything in an Interactive Fiction Game* — Eric Zhou; Shreyas Basavatia; Moontashir Siam; Zexin Chen; Mark O. Riedl (arXiv 2505.03547v1, 2025-05-06) | arXiv API; OpenAlex W4415248313 (title search, type preprint) | generated-precondition comparator (T1, C1/C2) |
+| S55 | *Beyond State Consistency: Behavior Consistency in Text-Based World Models* — Youling Huang; Guanqiao Chen; Junchi Yao; Lu Wang; Fangkai Yang; Chao Du; ChenZhuo Zhao; Pu Zhao; Qingwei Lin; Saravan Rajmohan; Dongmei Zhang (arXiv 2604.13824v1, 2026-04-15) | arXiv API; OpenAlex W7154587752 via arXiv-DOI lookup | limitation citation for L1 (T5, `BOUNDARY-FUTURE`) |
+| S56 | *Get Experience from Practice: LLM Agents with Record & Replay* — Erhu Feng; Wenbo Zhou; Zibin Liu; Le Chen; Yunpeng Dong; Cheng Zhang; Yisheng Zhao; Dong Du; Zhichao Hua; Yubin Xia; Haibo Chen (arXiv 2505.17716v1, 2025-05-23) | arXiv API; OpenAlex W6910287059 via arXiv-DOI lookup | record-and-replay paradigm precedent (T7, C3) |
+
+The author order for S53 follows the two official venue records (Li first); the feedback report listed
+Zeng first, and the OpenReview record could not be read to arbitrate, so the venue order is used and
+the discrepancy is recorded here. Revised totals: **55 entries, 46 verified, 9 preprints, 0 unmatched,
+0 hallucinated; Semantic Scholar rate-limited for 22.** None of the five additions supports an
+efficacy, fun, or usability claim; they bound the intersection claim and the L1 threat only.
+
+관련 연구 5편(S52–S56)을 메타데이터 API와 공식 학회 프로그램 페이지로만 확인해 추가했다.
+OpenReview는 브라우저 챌린지를 반환했고 우회하지 않았다. S53의 저자 순서는 공식 NeurIPS 기록을
+따른다. 어떤 추가 인용도 효능·재미·사용성 주장을 지지하지 않으며, 교집합 주장과 L1 위협의
+경계만 규정한다.

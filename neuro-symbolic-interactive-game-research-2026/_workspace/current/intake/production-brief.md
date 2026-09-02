@@ -3,7 +3,7 @@
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 Cycle: 3, Stage 1 re-entry
 Status: `IN_PROGRESS — bounded production deployment complete; G4/G6 evidence remains open`
-Latest observed engineering receipt: public-safe 3D smoke `8/8`; full Pytest `172 passed, 2 skipped`; game selection `46 passed, 2 skipped`; Ruff clean
+Latest observed engineering receipt: public-safe 3D smoke `8/8`; full Pytest `181 passed, 81 subtests`; unittest discovery `138 passed`; game selection `50 passed, 48 subtests`; Ruff clean
 Next public beat: human-gesture pointer lock/audio, warmed input/frame sampling, 30-minute soak, rollback drill, then approved human evaluation
 
 ## Outcome
@@ -34,7 +34,7 @@ fixture:
 - [OBSERVED boundary] Web and `--public-safe` runs do not load pending-review concept packs. Public
   presentation uses separately curated Higgsfield UI and a tracked Higgsfield player GLB with
   `Idle`/`Casual_Walk` over the procedural world; animation remains outside canonical state/saves.
-- [OBSERVED boundary] four working screenshots and the `49/49` engineering matrix exist; the
+- [OBSERVED boundary] four working screenshots and the `52/52` engineering matrix exist; the
   2026-08-29 local Web pass also completed the full ending, refresh-persistent save/load, and
   below-world recovery. These remain engineering evidence, not G4 or efficacy data.
 
@@ -82,9 +82,11 @@ delivery, corrupt save, or exhausted repair must leave complete canonical state 
 6. Human immersion/readability/usability data is collected under an approved protocol before any
    G4 upgrade.
 
-Current engineering evidence now records `4/4` authored fixtures (`40/40`), `9/9` presentation
-checks (`49/49` combined), the `SL-BALANCE-PROBE-001` archetype battery (5/5 rotations), four
-hash-registered 1280×720 working captures, and a staged Web artifact.
+Current engineering evidence now records `4/4` authored fixtures (`40/40`), `12/12` presentation
+checks (`52/52` combined; `[OBSERVED 2026-09-02]` three checks — pure per-commit contribution
+delta, gate-scoped rule teaching, and case-chain mirroring — are contribution-legibility
+conformance only, not fun/usability/G4 evidence), the `SL-BALANCE-PROBE-001` archetype battery
+(5/5 rotations), four hash-registered 1280×720 working captures, and a staged Web artifact.
 Cycle 3 nevertheless remains `FIX` at the studio-gate level until the remaining pointer/audio,
 performance, soak, rollback, production save/reload/current-mobile re-verification, and human-only
 checks above exist.

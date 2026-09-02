@@ -115,20 +115,20 @@ LANE_ROWS = {
         "en": (
             "Godot/Web engineering",
             "engine-local policy mirror, no participants",
-            "4 fixtures; 49 checks; 8 smoke; 5 archetypes",
+            "4 fixtures; 52 checks; 8 smoke; 5 archetypes",
             "authored fixture paths",
             "engine-local conformance",
         ),
         "ko": (
             "Godot/Web 엔지니어링",
             "엔진 로컬 policy mirror, 참여자 없음",
-            "fixture 4; check 49; smoke 8; archetype 5",
+            "fixture 4; check 52; smoke 8; archetype 5",
             "작성 fixture 경로",
             "엔진 로컬 적합성",
         ),
         "tokens": (
             "4 authored fixtures",
-            "49 combined",
+            "52 combined",
             "8 production smoke",
             "5 balance archetypes",
         ),
@@ -323,8 +323,11 @@ def _guided_commit_error_codes(data: dict[str, Any]) -> list[tuple[str, list[str
             continue
         first = row["outcome_record"]["trace"][0]
         codes = sorted({error["code"] for error in first["validation"]["errors"]})
-        if len(codes) != row["initial_error_count"] and len(codes) < 1:
-            raise ValueError(f"guided case {row['case_id']} has no initial validator codes")
+        if len(codes) != row["initial_error_count"] or len(codes) < 1:
+            raise ValueError(
+                f"guided case {row['case_id']} initial validator-code count drift: "
+                f"expected {row['initial_error_count']}, found {len(codes)}"
+            )
         out.append((row["case_id"], codes))
     return out
 

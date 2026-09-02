@@ -19,7 +19,7 @@
 \maketitle
 
 \begin{abstract}
-Large language models can generate expressive quests and non-player-character dialogue, but fluent or schema-valid text does not establish that a proposed event is executable, authorized, or consistent with canonical game state. We present \system, a symbolic commit gate that isolates untrusted proposals from state mutation. A type-strict parser, an externally supplied action policy, and six deterministic state-relative predicates decide every admitted transition; rejected candidates may enter bounded repair, and accepted candidates are revalidated before mutation. The counterexample-guided operator $\rho$ reads only the prior candidate and the typed validation errors, never authoritative state. Unkeyed SHA-256 content links, state-semantic replay, episode-continuity checks, and assignment-complete accounting make the traces auditable within that integrity boundary. Three evidence lanes stay separate: a deterministic offline conformance pilot over one authored world, a single-model live screening extension, and a closed-world KG/ontology link-proposal simulation with no runtime authority. The offline lane establishes mechanism conformance only; at $K{=}1$ the live lane observed 5/5 guided versus 0/5 blind commits only in a deliberately repairable policy-blind regime and null results elsewhere, so it remains pilot-only. No lane establishes population efficacy, model superiority, player experience, affect, retrieval or memory benefit, or commercial-engine performance.
+Large language models can generate expressive quests and dialogue, but fluent or schema-valid text does not establish that a proposed event is executable, authorized, or consistent with canonical game state. We present \system, a symbolic commit gate that treats every generated event as an untrusted transaction proposal. A type-strict parser, an externally supplied action policy, and seven deterministic checks grouped into six state-relative families decide each admitted transition; a failing candidate may enter bounded repair for at most $K+1$ recorded attempts, and a passing candidate is revalidated before mutation. The counterexample-guided operator $\rho$ reads only the prior candidate and its typed validation errors, never authoritative state. Unkeyed SHA-256 content links, state-semantic replay, and assignment-complete accounting make every terminal outcome auditable. Three evidence lanes stay separate: a deterministic offline conformance pilot over one authored world, a single-model live screening extension, and a closed-world knowledge-graph link-proposal simulation with no runtime authority. The offline lane establishes mechanism conformance only; at $K{=}1$ the live lane observed 5/5 guided versus 0/5 blind commits solely in a deliberately repairable policy-blind regime, so it remains pilot-only. No lane establishes population efficacy, model superiority, player experience, or commercial-engine performance.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -27,49 +27,52 @@ game artificial intelligence, interactive narrative, symbolic validation, constr
 \end{IEEEkeywords}
 
 \section{Introduction}
-\IEEEPARstart{I}{nteractive} generation is more than a language task. A candidate event may be natural yet require an absent item, assert a fact unknown to its speaker, reveal forbidden quest information, introduce an unauthorized effect, or regress a quest stage. Executable text environments make the distinction between a plausible utterance and a valid transition explicit \cite{S11_cote2019textworld,S12_wang2022scienceworld}. Grounded dialogue and personalized quest systems further show the value of quest, entity, and graph context \cite{S03_weir2024ontologically,S20_ashby2023personalized}, but context does not itself authorize canonical mutation.
+\IEEEPARstart{I}{nteractive} generation is more than a language task. A candidate event may be natural yet require an absent item, assert a fact unknown to its speaker, reveal forbidden quest information, introduce an unauthorized effect, or regress a quest stage. Executable text environments make the distinction between a plausible utterance and a valid transition explicit \cite{S11_cote2019textworld,S12_wang2022scienceworld}. Grounded dialogue and personalized quest systems further show the value of quest, entity, and graph context \cite{S03_weir2024ontologically,S20_ashby2023personalized}, but context does not itself authorize canonical mutation. \textbf{\system{} treats generated game events as untrusted transaction proposals and permits canonical state mutation only through an external, deterministic commit gate.} Fig.~\ref{fig:architecture} reads one such transaction left to right.
 
 Structural constraints solve an adjacent problem: grammar-constrained decoding, query languages, and incremental parsers restrict generated structures \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}, yet a syntactically admissible event can still be false relative to the current world. Retrieval and memory supply useful evidence \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}, but retrieved content is not a state-transition authority either.
 
 This paper presents \system, an implementation that combines these concerns as an auditable transaction protocol. Its current contributions are:
 \begin{enumerate}
-  \item \textbf{C1---Contracts:} \emph{versioned trust-boundary contracts} for state, policy, candidate, record, and game bridge, with a type-strict parser that rejects ambiguous known-field types and unknown candidate keys at proposal and replay boundaries;
-  \item \textbf{C2---Controller:} \emph{a validate--repair--commit controller} with six state-relative predicates, bounded repair, unchanged fallback, and defensive pre-commit revalidation;
-  \item \textbf{C3---Audit:} \emph{an audit-evidence layer} using unkeyed SHA-256 content links, state-semantic replay, and episode-continuity checks;
-  \item \textbf{C4---Harness:} \emph{an offline conformance harness} with frozen assignment keys, classified terminal failures, and assignment-complete accounting, including failures for which no proposal trace can exist; and
-  \item \textbf{C5---Repair:} \emph{a counterexample-guided operator} $\rho(a,E)$ that reads only the prior candidate and structured errors, compared with blind unchanged retry and a state-reading oracle upper bound across frozen repairability classes.
+  \item \textbf{C1---Contracts:} versioned trust-boundary contracts and a type-strict parser that rejects unknown keys and ambiguous types at proposal and replay boundaries (Sec.~\ref{sec:arch}; E1);
+  \item \textbf{C2---Controller:} a validate--repair--commit controller with seven checks across six state-relative families, bounded repair, unchanged fallback, and pre-commit revalidation (Sec.~\ref{sec:repair}; E1, ENG1);
+  \item \textbf{C3---Audit:} SHA-256-linked records, state-semantic replay, and episode-continuity checks (Sec.~\ref{sec:audit}; E1, ENG1);
+  \item \textbf{C4---Harness:} an assignment-complete offline conformance harness that keeps a classified terminal row even when no proposal trace can exist (Sec.~\ref{sec:lanes}; E1); and
+  \item \textbf{C5---Repair:} the counterexample-guided operator $\rho(a,E)$, compared with blind retry and a state-reading oracle across frozen repairability classes (Sec.~\ref{sec:repair}; E1, E2).
 \end{enumerate}
-Table~\ref{tab:contribution-map}, generated from the machine-checked contribution matrix, binds C1--C5 to their prior-work topics, evidence lanes, and inference ceilings; Table~\ref{tab:evidence-lanes} defines the lanes. Deterministic parser, state-isolation, repair, fault-injection, and manifest fixtures provide the exact-count evidence for these five implementation contributions.
+Table~\ref{tab:contribution-map}, generated from the machine-checked contribution matrix, binds C1--C5 to their prior-work topics, evidence lanes, and inference ceilings; Table~\ref{tab:evidence-lanes} defines the lanes.
 
 \input{../generated/contribution_map_en.tex}
 
-The lanes are non-interchangeable. The empirical center (\textbf{E1}) is a deterministic conformance pilot over one authored world state that measures encoded parser, validation, repair, replay, and accounting behavior, not population efficacy. A five-call-per-cell live screening extension (\textbf{E2}) with one hosted proposer is capped at pilot-only by its unpinned revision, uncontrolled seed labels, and constructed states. A closed-world KG/ontology simulation (\textbf{E3}) evaluates authored typed-link proposals without implementing runtime retrieval. A retained Godot 4.7.1 policy-mirror trace and render replay (ENG1) add engine-local conformance only; their startup-dominated headless frame samples (98.760--116.667\,ms) are not a frame benchmark. There are no participants, affect or runtime-retrieval experiments, live Python--Godot authorization round trips, or end-to-end gameplay performance measurements.
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{../figures/fig_architecture.pdf}
+  \caption{One generated event as a transaction. A typed candidate crosses the trust boundary; seven checks in six state-relative families consult external policy and $c_t$. Typed errors $E$ feed bounded $\rho$ (dashed) or unchanged fallback; passing candidates are rechecked, committed, recorded, and replayed. Tags mark measurement scope, not claims; the lower strip is the committed-snapshot ledger grammar.}
+  \label{fig:architecture}
+\end{figure}
+
+The lanes are non-interchangeable (Table~\ref{tab:evidence-lanes}): \textbf{E1} is a deterministic conformance pilot over one authored world and measures encoded mechanism behavior, not population efficacy; \textbf{E2} is a five-call-per-cell live screening capped at pilot-only by its unpinned revision, uncontrolled seed labels, and constructed states; \textbf{E3} scores authored typed-link proposals in a closed world without runtime retrieval; and ENG1 adds engine-local Godot 4.7.1 conformance only, with startup-dominated frame samples (98.760--116.667\,ms) that are not a benchmark. There are no participants, affect experiments, or live Python--Godot round trips.
 
 \section{Related Work and Research Gap}
 \subsection{Interactive Narrative and Game Agents}
 KNUDGE grounds branching NPC dialogue in quest and entity specifications \cite{S03_weir2024ontologically}; knowledge-graph quest generation \cite{S20_ashby2023personalized}, memory--reflection--planning agents \cite{S07_park2023generative}, and trainable role-playing agents \cite{S08_shao2023character} address complementary aspects of grounded, believable behavior. Player-facing studies evaluate preference and perceived dialogue quality \cite{S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized}, and a 2025 preprint reports role-sensitive stability--improvisation trade-offs \cite{S02_figueiredo2025scaffolded}; both motivate separating hard admissibility from optional naturalness and player-experience constructs.
 
-Experience-driven generation \cite{S24_yannakakis2011experiencedriven}, observer-labelled engagement \cite{S25_melhart2020engagement}, and reported limits of vision-language engagement inference \cite{S26_wang2026engagement} motivate a future adaptation track; affect remains non-authoritative and absent from the present evidence.
+Experience-driven generation \cite{S24_yannakakis2011experiencedriven}, observer-labelled engagement \cite{S25_melhart2020engagement}, and limits of vision-language engagement inference \cite{S26_wang2026engagement} motivate a future adaptation track; affect is non-authoritative and absent from the present evidence.
 
 \subsection{Environments and Benchmarks}
 TextWorld and ScienceWorld expose explicit interactive state \cite{S11_cote2019textworld,S12_wang2022scienceworld}, MineDojo adds open-ended embodied tasks \cite{S13_fan2022minedojo}, and GVGAI separates agent, game, and content tracks \cite{S14_perezliebana2019gvgai}. AgentBench, AgentBoard, SOTOPIA, and BALROG evaluate agents across heterogeneous, process-diagnosed, social, and long-horizon game settings \cite{S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog}; automated play-style agents complement rather than replace human evaluation \cite{S19_lepelletier2022playtesting}. None prescribes a transactional authorization boundary.
 
 \subsection{Constraints, Neuro-Symbolic Validation, and Retrieval}
-Constrained decoders improve output structure \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}; \system{} instead treats structure as an input condition to independent state-relative authorization. The same generate-and-verify division is established outside games: LLM-Modulo frameworks let a model propose plans that external sound critics accept or reject \cite{S50_kambhampati2024llmmodulo}, and SayCan admits a language-proposed skill only after a state-dependent affordance check \cite{S51_ichter2023saycan}. \system{} instantiates the critic as a deterministic, state-relative commit gate that returns typed counterexamples. Two direct game-specific comparators span complementary boundaries. PANGeA combines memory, validation, a REST service, and Unity integration, but its documented validation asks an LLM to judge and iteratively refine content against designer rules \cite{S42_buongiorno2024pangea}. IVIE, currently a preprint associated with non-archival ICCC 2026 material, incrementally generates interactive-fiction worlds with symbolic validation \cite{S01_vaucher2026ivie}. A 2026 system in the same lineage restricts LLMs to selecting authored world-state transformations and reports an exploratory eight-participant study of player expression \cite{S44_gongora2026worldstate}; it maintains consistency by construction but provides no transactional gate, audit-linked records, or repair-operator evidence. Neither comparison implies superiority: each reinforces that validity is only validity for the objectives and predicates its system encodes.
+Constrained decoders improve output structure \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}; \system{} instead treats structure as an input condition to independent state-relative authorization. The same generate-and-verify division is established outside games: LLM-Modulo frameworks let a model propose plans that external sound critics accept or reject \cite{S50_kambhampati2024llmmodulo}, and SayCan admits a language-proposed skill only after a state-dependent affordance check \cite{S51_ichter2023saycan}. AgentSpec expresses runtime rules for LLM agents as trigger--predicate--enforcement triples \cite{S52_wang2025agentspec}; \system{} fixes the predicates to game state and adds a repair contract and replayable records. Setting the DC grounds D\&D agents in tool calls with precondition checks \cite{S53_li2025settingdc}, whereas \system{} admits free-text proposals only after parsing and external policy evaluation. STORY2GAME lets the LLM generate the action preconditions and effects it plays under \cite{S54_zhou2025story2game}; here the policy is authored independently of the proposer. \system{} instantiates the critic as a deterministic, state-relative commit gate that returns typed counterexamples. Game-specific comparators span complementary boundaries: PANGeA validates content by asking an LLM to judge and refine it against designer rules \cite{S42_buongiorno2024pangea}; IVIE, a preprint associated with non-archival ICCC 2026 material, incrementally generates interactive-fiction worlds with symbolic validation \cite{S01_vaucher2026ivie}; and a 2026 successor restricts the LLM to selecting authored world-state transformations \cite{S44_gongora2026worldstate}, gaining consistency by construction without a transactional gate, audit-linked records, or repair-operator evidence. No comparison implies superiority: validity is only validity for the predicates a system encodes.
 
 G-Retriever, HippoRAG, and Mem0 address subgraph retrieval and long-term memory \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}; Generative Agents and Character-LLM address behavioral memory and persona \cite{S07_park2023generative,S08_shao2023character}. \system{} may consume such context but denies it commit authority; their benefits are not measured here.
 
 \subsection{Auditability and Reproducibility}
-Process metrics motivate retaining intermediate failures \cite{S16_ma2024agentboard}; robust evaluation cautions against overinterpreting sparse stochastic runs \cite{S31_agarwal2021precipice}. Reproducibility and environmental reporting motivate frozen artifacts and explicit measurement boundaries \cite{S33_pineau2021reproducibility,S34_henderson2020energy}. Human and LLM evaluation require construct, rater, and bias controls \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}, while future non-inferiority and participant analyses require justified margins and random-effects structures \cite{S32_lakens2018equivalence,S35_barr2013random}.
+Process metrics motivate retaining intermediate failures \cite{S16_ma2024agentboard}; robust evaluation cautions against overinterpreting sparse stochastic runs \cite{S31_agarwal2021precipice}. Reproducibility and environmental reporting motivate frozen artifacts and explicit measurement boundaries \cite{S33_pineau2021reproducibility,S34_henderson2020energy}. Human and LLM evaluation require construct, rater, and bias controls \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}, while future non-inferiority and participant analyses require justified margins and random-effects structures \cite{S32_lakens2018equivalence,S35_barr2013random}. Record-and-replay is an established agent paradigm for experience reuse \cite{S56_feng2025agentrr}; \system{} claims only semantic replay of admitted state transitions.
 
-The bounded novelty is the implemented combination, not the invention of its individual parts. Action interposition is long established. Narrative mediation intercepts a user or agent action before it executes and either blocks it or accommodates it by revising the plan \cite{S37_riedl2003managing}; classical planning defines applicability through preconditions and effects \cite{S39_fikes1971strips}; runtime enforcement wraps an untrusted actor in a monitor that admits only permitted transitions \cite{S40_schneider2000enforceable}; transaction processing defines the commit/abort discipline under which a failed transaction leaves the prior state intact \cite{S49_haerder1983transaction}; authored-logic interactive drama governs which utterances a character may make, in this journal's predecessor title \cite{S38_evans2013versu}; and belief-aware narrative planning reasons over what characters know, which is the concern our knowledge and disclosure predicates encode far more coarsely \cite{S41_ware2021sabre}. \system{} does not claim to have invented interposition. C1--C2 place strict contracts and a validate--repair--commit controller over this lineage; C3--C4 combine checksum-linked terminal records, state-semantic replay, episode continuity, and assignment-complete accounting that retains cases for which no proposal trace can exist; C5 isolates a repair operator that consumes only typed pre-execution validator errors. We do not infer that a feature absent from a report is absent from every implementation.
+The bounded novelty is the implemented combination, not the invention of its individual parts. Prior work separately demonstrates runtime enforcement for general agents \cite{S52_wang2025agentspec}, symbolic state management in generated game worlds \cite{S53_li2025settingdc,S54_zhou2025story2game}, feedback-driven repair \cite{S45_madaan2023selfrefine}, and agent record-and-replay \cite{S56_feng2025agentrr}; \system{} studies their intersection at a game-state commit boundary, where parsed proposals are checked against an independent policy and deterministic predicates, optionally repaired from bounded validator feedback, and recorded for semantic replay. Action interposition is long established: narrative mediation intercepts an action before it executes \cite{S37_riedl2003managing}; classical planning defines applicability through preconditions and effects \cite{S39_fikes1971strips}; runtime enforcement admits only permitted transitions \cite{S40_schneider2000enforceable}; transaction processing leaves the prior state intact on abort \cite{S49_haerder1983transaction}; authored-logic interactive drama governs which utterances a character may make \cite{S38_evans2013versu}; and belief-aware narrative planning reasons over what characters know, which our knowledge and disclosure predicates encode far more coarsely \cite{S41_ware2021sabre}. C1--C2 place strict contracts and a validate--repair--commit controller over this lineage; C3--C4 add checksum-linked records, state-semantic replay, episode continuity, and assignment-complete accounting that retains cases with no proposal trace; C5 isolates a repair operator that consumes only typed pre-execution validator errors. We do not infer that a feature absent from a report is absent from every implementation.
 
 \section{Problem Definition and Guarantee Boundary}
-For exposition, the controller input used by validation at step $t$ is decomposed as
-\begin{equation}
-c_t=(G_t,q_t),
-\end{equation}
-where $G_t$ denotes typed snapshot fields and $q_t$ denotes the externally authored action-policy, disclosure, and quest-stage constraints stored with that snapshot. Terminal record history $h_{<t}$ is maintained separately from the \texttt{WorldState} snapshot; no validation predicate reads it, and the implementation does not reconstruct state from the log. Retrieval, narrative scores, model rationales, memory summaries, and any future affect estimate are non-authoritative proposal context.
+For exposition, the controller input used by validation at step $t$ is decomposed as $c_t=(G_t,q_t)$, where $G_t$ denotes typed snapshot fields and $q_t$ denotes the externally authored action-policy, disclosure, and quest-stage constraints stored with that snapshot. Terminal record history $h_{<t}$ is maintained separately from the \texttt{WorldState} snapshot; no validation predicate reads it, and the implementation does not reconstruct state from the log. Retrieval, narrative scores, model rationales, memory summaries, and any future affect estimate are non-authoritative proposal context.
 
 An untrusted proposer emits candidate $a_t$. Strict parsing first enforces the shared candidate-key contract, including rejection of unknown top-level fields, and establishes the declared schema. The validator returns
 \begin{equation}
@@ -88,17 +91,10 @@ The controller asserts the following implementation invariants under its encoded
 
 These invariants assume correct policy authorship, faithful extraction into declared candidate fields, deterministic software versions, returning callbacks, and single-process file ownership. Replay revalidates the recorded structured candidate and transition; it does \emph{not} verify the provenance, prompts, or stochastic generation of intermediate repairs, and natural-language implications omitted from structured fields remain outside the guarantee.
 
-\section{TRACE-RPG Architecture and Algorithms}
+\section{TRACE-RPG Architecture and Algorithms}\label{sec:arch}
 \subsection{Trust Boundary and Contracts}
-Fig.~\ref{fig:architecture} places the model or recorded adapter outside the canonical owner. The parser rejects ambiguous numeric and collection types for known fields and unknown top-level candidate fields under the shared key contract; the action policy is supplied separately and defines required preconditions and allowed effects; the versioned game bridge carries observations, proposals, validations, rejections, fallbacks, or commits, and only a valid commit authorizes canonical mutation. This decouples interfaces without demonstrating commercial-engine portability.
-Table~\ref{tab:validators} summarizes the encoded rejection boundary; it is not a claim of semantic completeness.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_architecture.pdf}
-  \caption{Trust boundary. Retrieved context and generated candidates remain non-authoritative until known-field type checks and state-relative validation complete.}
-  \label{fig:architecture}
-\end{figure}
+Fig.~\ref{fig:architecture} places the model or recorded adapter outside the canonical owner. The parser rejects ambiguous numeric and collection types for known fields and unknown top-level candidate fields; the action policy is supplied separately and defines required preconditions and allowed effects; the versioned game bridge carries observations, proposals, validations, rejections, fallbacks, or commits, and only a valid commit authorizes canonical mutation. This decouples interfaces without demonstrating commercial-engine portability.
+Table~\ref{tab:validators} groups the seven implementation checks into six semantic families: quest eligibility and quest-stage monotonicity remain separate checks. This encoded boundary is not a claim of semantic completeness.
 
 \begin{table}[t]
 \caption{Encoded Validator Boundary}
@@ -121,7 +117,7 @@ Quest & ineligible/regressive stage & unchanged \\
 \end{tabular}
 \end{table}
 
-\subsection{Validate--Repair--Commit}
+\subsection{Validate--Repair--Commit}\label{sec:repair}
 Fig.~\ref{alg:commit} gives the controller's dependency-free pseudocode. ``Record'' denotes an append to the in-memory trace representation; persistent writing occurs only after terminal consistency checks.
 
 \begin{figure}[t]
@@ -141,7 +137,7 @@ Fig.~\ref{alg:commit} gives the controller's dependency-free pseudocode. ``Recor
 \label{alg:commit}
 \end{figure}
 
-Validation errors are exposed to a repair callback as structured error codes. Repair never directly mutates state, and exhaustion returns an unchanged deterministic fallback. Fig.~\ref{fig:repair} shows terminal paths. The pilot compares two implemented callbacks. The \emph{counterexample-guided operator} consumes only the prior candidate $a$ and the validator's structured error set $E$, never the authoritative state:
+Validation errors are exposed to a repair callback as structured error codes. Repair never directly mutates state, and exhaustion returns an unchanged deterministic fallback. Fig.~\ref{fig:architecture} shows the terminal paths. The pilot compares two implemented callbacks. The \emph{counterexample-guided operator} consumes only the prior candidate $a$ and the validator's structured error set $E$, never the authoritative state:
 \begin{equation}
 \rho(a,E)=a \oplus \textstyle\bigcup_{e\in E}\delta(e),
 \label{eq:rho}
@@ -171,19 +167,12 @@ Unreachable object; knowledge, & no-op (candidate-local edit would \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_repair_state_machine.pdf}
-  \caption{Proposal, validation, bounded repair, fallback, commit, and replay states. Controller failure is terminal and may have no completed proposal trace.}
-  \label{fig:repair}
-\end{figure}
-
-\subsection{Integrity, Semantic Replay, and Accounting}
+\subsection{Integrity, Semantic Replay, and Accounting}\label{sec:audit}
 Each result row carries an unkeyed SHA-256 \emph{integrity checksum}, and proposal outcomes link to a trace checksum; these detect accidental or tested content changes but are not signatures, writer identity, or protection against an actor who rewrites content and checksums. Semantic replay strictly parses the prior state and every recorded candidate/validation pair, requires every nonfinal attempt to be invalid, recomputes the terminal transition, compares the stated final state, and requires continuity between adjacent JSONL records; it does not re-execute the repair step that produced candidate $j+1$.
 
 The terminal record classes are commit, symbolic fallback, adapter failure, and controller failure. A controller-failure row remains in the frozen assignment denominator and leaves state unchanged, but it may legitimately lack a completed proposal trace because no candidate outcome was produced. Accordingly, result completeness does not imply trace existence for every terminal row. The pre-execution assignment key contains run, arm, scenario, seed, model, revision, controller-configuration hash, assignment-input hash, and prior-state hash. Aggregation rejects duplicate, missing, or unexpected keys and separately reports symbolic, adapter, and controller failures.
 
-\section{Evidence Lanes and Boundaries}
+\section{Evidence Lanes and Boundaries}\label{sec:lanes}
 \input{../generated/evidence_lanes_en.tex}
 Table~\ref{tab:evidence-lanes} fixes each lane's design, unit, comparison, and ceiling before any count is read.
 \subsection{\textbf{E1} Offline Conformance Design}
@@ -191,7 +180,6 @@ The pilot asks whether (PQ1) valid candidates commit while named invalid-policy 
 
 Cases are purposively designed conformance fixtures in four domains (validator/state isolation, repair-arm comparison, record/trace fault injection, adapter/accounting contracts), not samples from a model or game population. Every repair fixture declares a frozen repairability class before execution: \emph{guided-repairable} (the error payload alone suffices for $\rho$), \emph{oracle-only} (repair needs the authoritative state), or \emph{irreparable} (no arm may commit); each class's expected outcome per arm is part of the fixture contract, unique cases form the denominators, and all expectations precede execution.
 
-\subsection{\textbf{E1} Measures and Frozen Artifacts}
 Measures are exact counts: validator-class agreement; rejected or failed cases with state mutation; commit and attempt outcomes by arm and repairability class; detectable faults rejected by their designated operation; replayed traces; rejected manifest violations; and proposal/replay parity on the unknown-key regression, which is parser-contract parity rather than a safety outcome. Exception class alone does not identify a stable detector layer, so no detector attribution is reported, and no $p$-values or population intervals are attached. Adapter cases carry JSON-Schema-pinned synthetic latency and token constants that exercise accounting propagation only. The release packet freezes fixture and assignment manifests, schemas, the result JSON with embedded traces, environment and code revision, generated tables, and checksums, following reproducibility and measurement-boundary guidance \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
 \subsection{\textbf{E2} Live RQ2 Screening}
@@ -200,79 +188,55 @@ The live extension compares blind unchanged retry with $\rho$ at matched $K{=}1$
 \subsection{\textbf{E3} KG/Ontology Link-Proposal Simulation}
 \texttt{SL-KG-ONTOLOGY-SIM-001} is an engineering-only closed-world lane separate from the authoritative \texttt{WorldState}: 43 OKF nodes and 106 reference edges, 24 reviewed typed edges, passing type/domain/range checks and six competency questions, with six authored queries scored under seven fixed strategies. The retained \texttt{S2-typed-lexical-loose} strategy recovered 6/6 authored holdouts ($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$); the degree baseline recovered none. These are construction results, not OWL/SHACL conformance, semantic completeness, runtime retrieval, or support for any \texttt{C-RESULT-*} claim.
 
-\section{Pilot Results}
+\section{Pilot Results}\label{sec:results}
 \begin{figure*}[!t]
   \centering
-  \begin{minipage}[c]{0.56\textwidth}
-    \centering
-    \begin{minipage}[t]{0.32\linewidth}
-      \centering
-      \includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png}\\[-0.3ex]
-      \scriptsize (a) Arrival observation
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.32\linewidth}
-      \centering
-      \includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png}\\[-0.3ex]
-      \scriptsize (b) Unchanged-state rejection
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.32\linewidth}
-      \centering
-      \includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png}\\[-0.3ex]
-      \scriptsize (c) Authorized commit
-    \end{minipage}
-  \end{minipage}\hfill
-  \begin{minipage}[c]{0.42\textwidth}
-  \scriptsize
-  \setlength{\tabcolsep}{3pt}
+  \begin{minipage}[t]{0.28\textwidth}\centering\includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png}\\[-0.2ex]\footnotesize (1) observed\end{minipage}\hfill
+  \begin{minipage}[t]{0.28\textwidth}\centering\includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png}\\[-0.2ex]\footnotesize (2) held, state unchanged\end{minipage}\hfill
+  \begin{minipage}[t]{0.28\textwidth}\centering\includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png}\\[-0.2ex]\footnotesize (3) committed, state changed\end{minipage}
+  \vspace{0.5ex}
+
+  {\scriptsize
+  \setlength{\tabcolsep}{4pt}
   \renewcommand{\arraystretch}{1.12}
-  \begin{tabular}{@{}clll@{}}
+  \begin{tabular}{@{}cllll@{}}
     \toprule
-    Panel & Event & Validation & State \\
+    Panel & Capture & Event id & Validation & State after the event \\
     \midrule
-    (a) & \texttt{evt-000-observe} & n/a & $=$ before \\
-    (b) & \texttt{evt-002-fallback-secret} & invalid & $=$ before \\
-    (c) & \texttt{evt-005-commit-hint} & valid & $\ne$ before \\
+    (1) & \texttt{sl-rc-001-arrival} & \texttt{evt-000-observe} & not applicable & $=$ before \\
+    (2) & \texttt{sl-rc-002-rejected-secret} & \texttt{evt-002-fallback-secret} & invalid: forbidden, stage-gated disclosure & $=$ before \\
+    (3) & \texttt{sl-rc-003-authorized-hint} & \texttt{evt-005-commit-hint} & valid & \texttt{facts} $\mathrel{+}=$ \texttt{tide\_marks\_hint}; $\ne$ before \\
     \bottomrule
-  \end{tabular}\par
-  \vspace{0.4ex}
-  Captures \texttt{sl-rc-001}, \texttt{-002}, \texttt{-003} (\texttt{.png}) under \nolinkurl{godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/}.
-  \end{minipage}
-  \caption{Status/event crops from the authored Godot render replay with manifest metadata; trace-bound correspondence only, not live-transport, performance, usability, or efficacy evidence.}
+  \end{tabular}\par}
+  \caption{One causal sequence from the authored Godot render replay: (1) arrival observed, (2) a forbidden disclosure held, state hash unchanged, (3) an authorized hint committed, state hash changed. Rows come from the bound v5 capture manifest and event log (\nolinkurl{godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/}); crops enlarge authored status/event callouts only. Trace-bound correspondence, not live-transport, performance, usability, or efficacy evidence.}
   \label{fig:godot-render-fixture}
 \end{figure*}
 
-\input{../generated/pilot_results_en.tex}
-
 \input{../generated/pilot_tables_en.tex}
+
+\input{../generated/pilot_results_en.tex}
 
 \input{../generated/live_pilot_results_en.tex}
 
 \input{../generated/live_pilot_tables_en.tex}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.pdf}
-  \caption{Evidence boundary from frozen fixture through a designated check operation and generated table. Counts are admitted only through generated artifacts.}
-  \label{fig:evidence}
-\end{figure}
+Tables~\ref{tab:pilot-repair} and~\ref{tab:pilot-accounting} report exact designed-fixture counts; neither supports a population or live-model estimate.
 
-Fig.~\ref{fig:evidence} makes the offline reporting boundary explicit: only rows admitted by the frozen fixture and designated check operation enter the offline tables, whereas the live table arrives through the hash-bound screening promotion manifest and never enters the offline denominator.
+The reporting boundary is explicit: only rows admitted by the frozen fixture and its designated check operation enter the offline tables, whereas the live table arrives through the hash-bound screening promotion manifest and never enters the offline denominator; Table~\ref{tab:evidence-lanes} lists what each lane leaves unmeasured.
 
-\noindent\textbf{ENG1.} Godot 4.7.1 replayed the retained \emph{Sealed Lighthouse} canonical trace in a non-headless 1280$\times$720 SubViewport; its manifest binds each PNG to event/delivery indices, validation, and state hashes, so Fig.~\ref{fig:godot-render-fixture}(b) preserves the before hash whereas (c) changes it after a valid commit. The crops enlarge only authored status/event callouts of generated-asset-free renders. The v5 packet establishes one scripted fixture's render/state correspondence only; it adds no live model or Python transport, participant input, adaptation intervention, or narrative-quality result.
+\noindent\textbf{ENG1.} Godot 4.7.1 replayed the retained \emph{Sealed Lighthouse} canonical trace in a non-headless 1280$\times$720 SubViewport; Fig.~\ref{fig:godot-render-fixture}(2) preserves the before hash whereas (3) changes it after a valid commit. The playable slice's ledger readout (case chain, rules learned, per-commit contribution clauses; Fig.~\ref{fig:architecture}, lower strip) derives only from committed snapshots and is covered by 12 presentation invariants among 52 combined engineering checks: engineering conformance, not fun, usability, or efficacy evidence. The v5 packet establishes one scripted fixture's render/state correspondence only, with no live model or Python transport, participant input, or narrative-quality result.
 
 \section{Discussion}
 \subsection{Established Scope}
-The designed pilot establishes mechanism behavior only for its frozen cases: encoded checks isolate state, bounded repair and fallback follow their declared paths, named corruptions are rejected by their designated operations, and assigned rows remain classified. It does not attribute a rejection to a stable detector code. This suffices for authoring-time validation, CI regression, recorded-adapter tests, and pre-engine replay inspection.
+The designed pilot establishes mechanism behavior only for its frozen cases: encoded checks isolate state, bounded repair and fallback follow their declared paths, named corruptions are rejected by their designated operations, and assigned rows remain classified. It does not attribute a rejection to a stable detector code.
 
-The guided-versus-oracle boundary is the honest reading of the offline repair comparison: the state-reading callback may consult authoritative state and so converts the oracle-only case that $\rho$ by construction cannot, while $\rho$ matches the oracle exactly on the guided-repairable class using only the validator's counterexamples. The live extension separated $\rho$ from blind retry only when the constructed state placed every proposal in the guided-repairable class; already-valid and guided-irreparable regimes were null. This regime dependence, the unpinned hosted revision, and quasi-replicated calls block any general sample-efficiency or model-capability claim. Feedback-consuming repair loops are precedented: Self-Refine feeds back language generated by the same untrusted model \cite{S45_madaan2023selfrefine}, Reflexion stores verbal self-reflections across trials \cite{S48_shinn2023reflexion}, and Self-Debugging consumes execution results from a trusted full-program runtime \cite{S46_chen2023selfdebug}. $\rho$ differs in channel and authority: its feedback is a typed error set computed by the deterministic validator before execution, and every failed live arm remains state-isolated. Its name follows counterexample-guided inductive synthesis, in which a verifier's counterexample rather than the full specification state drives the next candidate \cite{S47_solarlezama2006sketching}; here the verifier is the commit gate itself.
+The guided-versus-oracle boundary is the honest reading of the offline repair comparison: the state-reading callback converts the oracle-only case that $\rho$ by construction cannot, while $\rho$ matches the oracle on the guided-repairable class using only the validator's counterexamples. The live extension separated $\rho$ from blind retry only when the constructed state placed every proposal in the guided-repairable class; already-valid and guided-irreparable regimes were null, so regime dependence, the unpinned hosted revision, and quasi-replicated calls block any general sample-efficiency or model-capability claim. Feedback-consuming repair loops are precedented: Self-Refine feeds back language generated by the same untrusted model \cite{S45_madaan2023selfrefine}, Reflexion stores verbal self-reflections across trials \cite{S48_shinn2023reflexion}, and Self-Debugging consumes execution results from a trusted full-program runtime \cite{S46_chen2023selfdebug}. $\rho$ differs in channel and authority: its feedback is a typed error set computed by the deterministic validator before execution, and every failed live arm remains state-isolated. Its name follows counterexample-guided inductive synthesis, in which a verifier's counterexample rather than the full specification state drives the next candidate \cite{S47_solarlezama2006sketching}; here the verifier is the commit gate itself.
 
 \subsection{Relationship to Prior Work}
-\system{} applies state-relative authorization after parsing, complementing constrained decoders \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}; withholds commit authority from retrieval and memory components \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}; and complements rather than replaces executable environments and benchmarks \cite{S11_cote2019textworld,S12_wang2022scienceworld,S15_liu2024agentbench,S18_paglieri2025balrog}. Process-linked traces instantiate a measurement concern emphasized by AgentBoard \cite{S16_ma2024agentboard}, not evidence that \system{} outperforms any system.
-
-The studies that would test confirmatory efficacy---a preregistered multi-model comparison with an independently labelled semantic oracle and a genuine blind-retry comparator, retrieval and memory ablations at matched encoded validity, and a blinded matched-validity human study with justified power and mixed-effects analysis---remain outside this paper. The screening pilot does not substitute for any of them \cite{S15_liu2024agentbench,S27_vanderlee2019best,S31_agarwal2021precipice,S35_barr2013random}.
+\system{} complements rather than replaces constrained decoders \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}, retrieval and memory components \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}, and executable environments and benchmarks \cite{S11_cote2019textworld,S12_wang2022scienceworld,S15_liu2024agentbench,S18_paglieri2025balrog}; process-linked traces instantiate AgentBoard's measurement concern \cite{S16_ma2024agentboard}, not evidence of outperformance. The confirmatory studies---a preregistered multi-model comparison with an independent semantic oracle and a genuine blind-retry comparator, retrieval and memory ablations at matched encoded validity, and a blinded matched-validity human study with justified power and mixed-effects analysis---remain outside this paper; the screening pilot substitutes for none of them \cite{S15_liu2024agentbench,S27_vanderlee2019best,S31_agarwal2021precipice,S35_barr2013random}.
 
 \section{Threats, Ethics, and Artifact Scope}
-The evidence has nine explicit boundaries. \textbf{L1:} encoded predicates cannot detect semantics omitted from structured fields. \textbf{L2:} one authored world and one constructed live state do not establish cross-world, cross-policy, or scale generalization. \textbf{L3:} the state-reading callback is an oracle; offline classes and regime-dependent screening do not establish general repair quality or sample efficiency. \textbf{L4:} the single hosted proposer has an unpinned revision, no token accounting, and uncontrolled seeds; no live Python--Godot round trip exists. \textbf{L5:} no participant or affect data exist. \textbf{L6:} unkeyed hashes give integrity, not writer authentication or tamper resistance. \textbf{L7:} record consistency assumes one writer. \textbf{L8:} engine evidence is one Godot fixture with startup-dominated samples, not a portability or real-time result. \textbf{L9:} selected fixtures and screening cells support no population, safety-rate, or model-ranking inference. Internal validity also depends on independent policy expectations and no fixture leakage.
+The evidence has nine explicit boundaries. \textbf{L1:} encoded predicates cannot detect semantics omitted from structured fields, and state consistency alone is not behavioral or narrative coherence \cite{S55_huang2026beyond}. \textbf{L2:} one authored world and one constructed live state do not establish cross-world, cross-policy, or scale generalization. \textbf{L3:} the state-reading callback is an oracle; offline classes and regime-dependent screening do not establish general repair quality or sample efficiency. \textbf{L4:} the single hosted proposer has an unpinned revision, no token accounting, and uncontrolled seeds; no live Python--Godot round trip exists. \textbf{L5:} no participant or affect data exist. \textbf{L6:} unkeyed hashes give integrity, not writer authentication or tamper resistance. \textbf{L7:} record consistency assumes one writer. \textbf{L8:} engine evidence is one Godot fixture with startup-dominated samples, not a portability or real-time result. \textbf{L9:} selected fixtures and screening cells support no population, safety-rate, or model-ranking inference. Internal validity also assumes independent policy expectations and no fixture leakage.
 
 The pilot processes no participants or personal telemetry; future human and affect work requires ethics review, informed consent, minimization, retention rules, and opt-out. LLM judges, if used, remain auxiliary because automated and crowd judgements both require calibration and bias controls \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
@@ -285,9 +249,9 @@ The pilot processes no participants or personal telemetry; future human and affe
 Large language models assisted prose, code and test drafting, command orchestration, evidence review, simulated peer review, and citation-identity checks; a hosted model produced the separately labelled live-screening candidates. Every reported count comes from deterministic runners or hash-bound receipts. The authors cross-checked claims against source artifacts and take full responsibility for the content.
 
 \section*{Data and Code Availability}
-The repository contains the implementation, build sources, the separated offline and live-screening packets, and the machine-checked \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, and \texttt{experiment-evidence-matrix.csv} from which Tables~\ref{tab:contribution-map} and~\ref{tab:evidence-lanes} are generated. The offline manifest binds 38 artifacts, 22 inputs, and 121 provenance rows; the live promotion manifest binds 14 JSON/JSONL receipts. Clean-Git input binding is re-established at tag \texttt{trace-rpg-\allowbreak guided-repair-\allowbreak inputs-\allowbreak 20260821-v1}. No reviewer archive or DOI deposit is claimed.
+The repository contains the implementation, build sources, the separated offline and live-screening packets, and the machine-checked \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, and \texttt{experiment-evidence-matrix.csv} from which Tables~\ref{tab:contribution-map} and~\ref{tab:evidence-lanes} are generated. The offline manifest binds 38 artifacts, 22 inputs, and 121 provenance rows; the live promotion manifest binds 14 JSON/JSONL receipts. The Godot 4 Web slice ships with its ledger readout and the deterministic evaluation covering it (52 combined engineering checks, 12 presentation invariants), which is engineering conformance, not fun or usability evidence. Clean-Git input binding is re-established at tag \texttt{trace-rpg-\allowbreak guided-repair-\allowbreak inputs-\allowbreak 20260821-v1}. No reviewer archive or DOI deposit is claimed.
 
-% Keep the 50-entry audit bibliography inside the eight-page release band.
+% Keep the 55-entry audit bibliography inside the eight-page release band.
 % This remains at the same 6.5 pt floor used for paper-figure labels.
 \renewcommand{\footnotesize}{\fontsize{6.5}{6.8}\selectfont}
 \bibliographystyle{IEEEtran}

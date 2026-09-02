@@ -1,0 +1,168 @@
+{
+  "contract_version": 1,
+  "design_question": "Does making each commit's contribution delta (CONTRIBUTION clause + CASE CHAIN) and each hold's learned rule (RULE LEARNED) visible increase perceived competence/agency and reduce hold frustration in the 8–12 minute episode?",
+  "context": {
+    "build": "sealed-lighthouse-d-062-contribution-legibility",
+    "player_context": "Adult players familiar with narrative and adventure games, using desktop web or responsive narrow display (390×844 px), keyboard/mouse input, English locale, optional reduced motion.",
+    "evidence": [
+      "Aside intake report (2026-09-02): Pattern 1 observes that Outer Wilds preserves relationships between discoveries; Pattern 2 notes Golden Idol sub-puzzles made players feel productive; Pattern 4 recommends coarse partial correctness instead of binary feedback.",
+      "Aside intake report identifies falsifier: players follow NEXT VALID ENTRY literally but cannot explain why the final action became valid, indicating quest-checklist UI rather than rule-discovery interface.",
+      "Two post-episode questions are specified to test understanding, but no participant response exists yet: explain why the final commit was valid, and list one rule that blocked earlier attempts."
+    ],
+    "decision": "Whether the next iteration ships CONTRIBUTION/RULE/CASE CHAIN presentation surfaces (variant) or remains at ENTRY/HELD/NEXT-AFFORDANCE only (control)."
+  },
+  "desired_experience": {
+    "statement": "The player perceives themselves as forming and testing hypotheses about valid game state, not following a predetermined quest list. Rejections teach testable rules rather than frustrate.",
+    "observable_signals": [
+      "Post-episode: player can explain in their own words why the final action became valid (e.g., 'Mira needed to know about the mount before I could ask her').",
+      "Post-episode: player identifies at least one rule that caused an earlier rejection (e.g., 'The harbor mount had no lens, so I had to get one first').",
+      "Within-episode: player's verbal or written explanation of NEXT VALID ENTRY references a causal relationship, not merely the affordance text."
+    ]
+  },
+  "lens": {
+    "name": "learning/mastery (Koster) with MDA translation as secondary",
+    "why": "Koster models fun as progress in prediction and mastery. The hypothesis claims that causal delta plus learned rules improve the player's mental model of the world's constraints. MDA adds that the mechanic (visible contribution) should produce a dynamic (updated understanding of game rules) and an aesthetic (felt competence).",
+    "limitations": "The lens does not claim to measure actual learning retention beyond the episode, does not isolate individual UI elements (CASE CHAIN vs RULE LEARNED separately), and does not account for narrative, pacing, or aesthetic appeal independent of the interface."
+  },
+  "causal_chain": [
+    {
+      "id": "H-CONTRIB-01",
+      "mechanic": "Every ledger commit includes a CONTRIBUTION clause showing facts added, inventory changes, stage progression, and next valid affordance.",
+      "interaction": "The player reads a compact summary of what the world state changed and why it matters immediately after each action.",
+      "dynamic": "The player's mental model of cause-and-effect relationships is reinforced through explicit feedback.",
+      "perceived_signal": "Ledger feedback answers what changed and why it mattered without requiring the player to infer state deltas.",
+      "experience": "Perceived competence: the player understood why that action worked.",
+      "assumption": "Visible state deltas will be read and internalized during the rendered commit acknowledgement without exposing hidden oracle labels; this has not been tested with players.",
+      "evidence": "Post-episode player explanation uses causal language ('the lens was in my inventory', 'Mira had seen the mount'). Within-episode observation shows no early abandonment due to UI clutter."
+    },
+    {
+      "id": "H-RULE-02",
+      "mechanic": "Every first hold on a given gate appends RULE LEARNED with the gate name and rule text; later holds on the same gate append RULE RECALLED with attempt count.",
+      "interaction": "The player reads an explicit statement of a constraint they just discovered by testing the boundary.",
+      "dynamic": "Temporary failure becomes information: the player can predict a related future proposal will also fail for the same reason.",
+      "perceived_signal": "A neutral, non-blaming explanation paired with a next valid affordance.",
+      "experience": "Reduced frustration: rejection is framed as rule discovery, not punishment.",
+      "assumption": "Rule text is accurate and explains the constraint without revealing hidden oracle labels or sealed secrets.",
+      "evidence": "Post-episode: player names at least one rule that caused a rejection. Within-episode: repeated holds on the same gate decrease or remain stable."
+    },
+    {
+      "id": "H-CHAIN-03",
+      "mechanic": "A CASE CHAIN line shows link states (LENS [x] > MOUNT [x] > LEAD [ ]) updated on each commit.",
+      "interaction": "The player tracks overall progress through a compact, persistent goal state visible on every page.",
+      "dynamic": "Progress becomes visible without requiring the player to re-read the full ledger.",
+      "perceived_signal": "A visual and textual summary of case completion as a fraction (n of 3 links).",
+      "experience": "Autonomy and clarity: the player can see what remains and decide whether to continue.",
+      "assumption": "The three links map consistently to in-world quest stages and committed facts in meaningful order.",
+      "evidence": "Post-episode: player can name the next unfilled link from memory or describes the chain as representing investigation structure."
+    },
+    {
+      "id": "H-RECEIPT-04",
+      "mechanic": "End-card receipt separates INVESTIGATOR'S CONTRIBUTION (per-commit summary) and RULES LEARNED (gate list) from TECHNICAL RECEIPT (hash and count diagnostic).",
+      "interaction": "The player sees a two-part summary: what they accomplished and what the system recorded.",
+      "dynamic": "Narrative closure combines with reproducibility evidence.",
+      "perceived_signal": "A receipt that honors both the player's story and the research state.",
+      "experience": "Earned closure and respect for the investigation effort.",
+      "assumption": "Player-facing and technical receipts do not compete for cognitive space. Gate names are meaningful without exposed oracle labels.",
+      "evidence": "Post-episode: player reports end-card felt complete and meaningful; no confusion about technical versus narrative sections."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-CONTRIB-01",
+      "claim": "Visible CONTRIBUTION clauses increase perceived competence in understanding state causality.",
+      "change": "Add CONTRIBUTION lines after every commit showing allowlisted public fact labels, stage progression, and chain position. Render only labels present in FACT_LABEL; unmapped or newly introduced fact IDs stay internal and collapse to generic 'State recorded' copy. Keep validator, repair, and commit logic unchanged.",
+      "expected_signal": "Post-episode: player explains the final action using causal language (lens was in inventory, Mira had seen the mount) rather than quest-step language (quest progressed).",
+      "falsifier": "Post-episode: player cannot explain causality even with CONTRIBUTION lines visible, or reports detailed state summary feels distracting or overwhelming.",
+      "competing_explanation": "Improved explanation may reflect better ledger readability, clearer reward feedback, or player maturity independent of CONTRIBUTION visibility.",
+      "unchanged": "Commit gate logic, validation rules, repair operator, facts schema, inventory model, quest stage definitions, and affordance generation."
+    },
+    {
+      "id": "H-RULE-02",
+      "claim": "Visible RULE LEARNED lines reduce frustration and increase perceived understanding of holds.",
+      "change": "First hold on any gate: append RULE LEARNED showing gate name and rule text. Later holds on the same gate: append RULE RECALLED showing gate name and attempt count. Use established gate-to-rule mapping (FORBIDDEN_DISCLOSURE, STAGE_GATED_DISCLOSURE, MISSING_REQUIRED_OBJECT, QUEST_STAGE_PRECONDITION, OBJECT_NOT_PRESENT, NPC_DOES_NOT_KNOW_FACT, UNKNOWN_ACTOR, UNKNOWN_OPERATION, default).",
+      "expected_signal": "Post-episode: player identifies at least one rule that caused a rejection, demonstrating the HOLD to RULE connection was learned. Within-episode: no increase in repeated identical holds on the same gate.",
+      "falsifier": "Post-episode: player cannot name any learned rule. Repeated holds on same gate increase rather than decrease. Player reports rule language feels punitive or confusing.",
+      "competing_explanation": "Fewer repeated holds may reflect improved tutorial clarity, smaller action space, or player experience independent of RULE visibility.",
+      "unchanged": "Hold gate logic, validation predicates, next-affordance generation, and repair outcomes."
+    },
+    {
+      "id": "H-CHAIN-03",
+      "claim": "Visible CASE CHAIN clarifies episode goal structure and increases autonomy perception.",
+      "change": "Render CASE CHAIN line on every observation state and ledger page showing LENS MOUNT LEAD links with filled or unfilled markers. Update fill states on commits that add corresponding facts. Show only the three canonical golden-path links.",
+      "expected_signal": "Within-episode: player can state the next unfilled link without re-reading the ledger. Post-episode: player perceives the chain as representing investigation structure, not an arbitrary progress bar.",
+      "falsifier": "Player ignores or misreads the chain. Player perceives it as a progress bar divorced from world causality.",
+      "competing_explanation": "Improved clarity may reflect named link content being meaningful in-world terms, not the visual arrangement.",
+      "unchanged": "The three links themselves, their unlock conditions based on committed facts, and their in-world correspondence."
+    },
+    {
+      "id": "H-RECEIPT-04",
+      "claim": "Two-part end-card receipt improves closure perception and research reproducibility without player confusion.",
+      "change": "Render three distinct receipt sections: INVESTIGATOR'S CONTRIBUTION (one line per commit), RULES LEARNED (sorted list of gates encountered), and TECHNICAL RECEIPT (state hash, entry count, hold count). Keep each section distinct with separate titles.",
+      "expected_signal": "Player reports end-card felt complete and meaningful. No evidence of player confusion about technical versus narrative receipt.",
+      "falsifier": "Player finds receipt overwhelming or misinterprets technical data as score or grading.",
+      "competing_explanation": "Positive closure may reflect natural episode ending, satisfying final action, or narrative pacing independent of receipt format.",
+      "unchanged": "The underlying facts, holds, stage data, and state hashes."
+    }
+  ],
+  "prototype": {
+    "control": "Pre-D-062 ledger: shows ENTRY number and COMMITTED or HELD status, with NEXT VALID ENTRY affordance. No CONTRIBUTION, RULE LEARNED, or CASE CHAIN lines. End-card shows ENTRIES, HOLDS, FINAL STAGE, VALIDATOR RECEIPT only.",
+    "variant": "Post-D-062 ledger: adds CONTRIBUTION line after each commit, RULE LEARNED line on first gate hold with appropriate gate name and rule text, CASE CHAIN line on every observation. End-card adds INVESTIGATOR'S CONTRIBUTION block and RULES LEARNED list before technical receipt.",
+    "scope": "Single 8–12 minute episode. One canonical golden-path playthrough per build. No new mechanics, validator rules, repair logic, or world state changes. Identical facts, inventory, quest stages, NPC knowledge, and disclosure rules between control and variant.",
+    "risks": "Order effects: variant players may benefit from exposure to explicit causality. Design debt: if rule texts or contribution labels are confusing, the variant may underperform. Player maturity: experienced narrative-game players may not benefit as much as newcomers."
+  },
+  "evidence_plan": {
+    "participants_context": "Before recruitment, the study owner must justify and freeze the number of independent adult players per arm from the decision risk and expected evidence strength; no universal sample size is set here. Use a randomized control/variant allocation among players with prior adventure or narrative game experience. Record age range, prior familiarity with Sealed Lighthouse, input device, locale, and accessibility settings. No incentive is tied to performance.",
+    "observations": [
+      "Post-episode open-ended explanation: ask player to explain why the final commit was valid (why was installing the lens at the harbor mount successful) without reference to the UI. Record transcribed answer.",
+      "Post-episode rule recall: ask player to name one rule or constraint that caused a rejection during play. Record transcribed answer.",
+      "Within-episode action log: timestamp and sequence every proposal, verdict, and resulting ledger state. Record whether holds on the same gate are repeated.",
+      "Post-episode impression: ask whether player felt they understood why actions succeeded or failed, and whether any UI text felt unhelpful."
+    ],
+    "behavioral_measures": [
+      "Unique holds per gate: count distinct gates producing at least one hold and report the distribution descriptively; no direction is assumed.",
+      "Repeated holds on same gate: count holds greater than one on an identical gate within an episode; a lower variant count is a hypothesis, not a pass threshold.",
+      "Episode duration and commit count: report total playtime and successful commits as possible exposure and pacing confounds; do not attach significance claims without a separately justified analysis plan."
+    ],
+    "qualitative_prompts": [
+      "Explain why installing the lens at the harbor mount was valid. (Tests H-CONTRIB-01 and H-CHAIN-03.)",
+      "Name one rule or constraint that caused a rejection in this play session. (Tests H-RULE-02.)",
+      "Did you feel frustrated when a proposal was rejected? Why or why not? (Tests H-RULE-02 and H-RECEIPT-04.)",
+      "Did the ledger text help you understand what was happening? Which parts were most helpful? (Tests readability and cognitive load.)"
+    ],
+    "decision_rule": "Before data collection, the study owner must freeze an evidence-sufficiency rule and analysis plan justified by recruitment feasibility, decision risk, and the expected qualitative variation. Keep the variant only if exposed variant players provide more causal action explanations and rule recall than the control while accessibility review and contradictory feedback show no meaningful cognitive-load barrier. If exposure or implementation integrity fails, rerun; if evidence is mixed, report inconclusive; if the predicted pattern is absent or reverses, revise or reject. This packet intentionally sets no universal percentage or sample-size threshold.",
+    "integrity_checks": [
+      "Confirm control and variant differ only in UI presentation. Validator, commit gate, repair, and world state are identical.",
+      "Record Godot build version, state schema version, and policy version for both arms.",
+      "Preserve original ledger captures from both builds for later audit.",
+      "Confirm accessibility requirements are active in both builds during test."
+    ]
+  },
+  "ethics": {
+    "dark_patterns": "The variant does not add pressure, urgency, reward scoring, or cosmetic progression meters. It does not withhold information to extend play time. CONTRIBUTION, RULE LEARNED, and CASE CHAIN lines derive deterministically from committed state and policy without hidden reward adjustments.",
+    "accessibility": "CONTRIBUTION, RULE LEARNED, and CASE CHAIN text use ASCII-only wording and color-redundant filled/unfilled markers. The study protocol must verify 200 percent text scaling, narrow reflow, reduced-motion behavior, and static readability on the tested build; current engineering captures do not establish those human-facing outcomes. Rule text is never audio-only.",
+    "privacy": "Store only consented gameplay events (ledger state, proposals, verdicts, timestamps) required for this decision. Do not record personal information, video, audio, or behavioral inference beyond stated observations. Logs stored locally by study owner; no telemetry to external services.",
+    "consent_and_opt_out": "Recruit with written informed consent explaining this is research playtest, not final game. Clarify UI features are experimental. Offer opt-out during or after play without penalty. Store consent records separately from gameplay data."
+  },
+  "decisions": [
+    {
+      "decision": "Focus hypothesis on interface legibility (CONTRIBUTION/RULE/CHAIN visibility), not model quality or narrative content.",
+      "basis": "Aside intake report patterns 1–5 address UI and ledger feedback. Falsifier explicitly targets player understanding of causal rules, not model hallucination.",
+      "owner": "design-docs"
+    },
+    {
+      "decision": "Claim only competence and agency perceptions, not retention or skill transfer beyond the episode.",
+      "basis": "Game Design Theory guidance prohibits invented universal sample sizes and thresholds. Evidence sufficiency must be frozen by the study owner before recruitment; post-episode questions test perceived understanding during the session, not retention or generalization.",
+      "owner": "design-docs"
+    },
+    {
+      "decision": "Define control strictly as pre-D-062 ledger (ENTRY/HELD/NEXT only) without competing UI features that might confound the comparison.",
+      "basis": "MDA and Koster prediction loop isolate the effect of visible causal feedback.",
+      "owner": "design-docs"
+    }
+  ],
+  "route_out": {
+    "next_owner": "human presentation study (owner-run, no automated data collection)",
+    "reason": "The causal claim requires post-episode explanation and qualitative feedback. No telemetry or retention metric can answer whether a player perceived competence. Results are inconclusive unless multiple control/variant pairs participate and both support or both contradict the hypothesis.",
+    "evidence_decision": "inconclusive (no human data yet; engineering structure verified; human impact unverified)"
+  }
+}

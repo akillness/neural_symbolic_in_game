@@ -2,7 +2,7 @@
   "contract_version": 1,
   "project": {
     "name": "The Sealed Lighthouse",
-    "build": "task-16 English UI and player presentation upgrade",
+    "build": "sealed-lighthouse-d-062-contribution-legibility",
     "target_devices": [
       "desktop web",
       "responsive narrow display"
@@ -29,6 +29,26 @@
       "decision": "Choose what to ask Captain Mira without confusing a safe hold with punishment.",
       "required_information": "Readable choices, visible focus, prior dialogue context, and a safe leave action.",
       "urgency": "dialogue"
+    },
+    {
+      "decision": "Understand what this action changed in the world and why it matters.",
+      "required_information": "CONTRIBUTION clause with facts added, inventory changes, stage progression, and case chain position.",
+      "urgency": "immediate after every commit"
+    },
+    {
+      "decision": "Learn a rule or constraint that caused a rejection.",
+      "required_information": "RULE LEARNED or RULE RECALLED with gate name and rule text.",
+      "urgency": "immediate after every hold"
+    },
+    {
+      "decision": "Track overall progress through the case investigation.",
+      "required_information": "CASE CHAIN line showing LENS MOUNT LEAD links with fill state.",
+      "urgency": "persistent on every page"
+    },
+    {
+      "decision": "Review what was accomplished and verify investigation integrity.",
+      "required_information": "Two-part end-card: INVESTIGATOR'S CONTRIBUTION and RULES LEARNED before TECHNICAL RECEIPT.",
+      "urgency": "at episode end"
     }
   ],
   "screens": [
@@ -104,19 +124,78 @@
       "exit": "Episode remains complete; no hidden continuation action is implied.",
       "back_behavior": "No destructive or accidental confirmation path.",
       "initial_focus": "Static completion summary"
+    },
+    {
+      "id": "hud-case-chain",
+      "type": "persistent HUD line",
+      "decision": "Track case completion state at a glance.",
+      "states": [
+        "ready",
+        "updated-on-commit",
+        "restored-from-save"
+      ],
+      "entry": "Visible from the first observation.",
+      "exit": "Remains visible until episode end.",
+      "back_behavior": "Not applicable; persistent HUD element.",
+      "initial_focus": "Not focusable; display-only element."
+    },
+    {
+      "id": "ledger-contribution",
+      "type": "ledger entry line",
+      "decision": "Understand the state change and its causal meaning.",
+      "states": [
+        "rendered-post-commit",
+        "visible-in-scroll",
+        "referenced-in-receipt"
+      ],
+      "entry": "Appended to ledger after every successful commit.",
+      "exit": "Persists in scroll history and summarized in end-card.",
+      "back_behavior": "Not applicable; static ledger line.",
+      "initial_focus": "Not focusable if rendered during scroll; accessible via ledger review."
+    },
+    {
+      "id": "ledger-rule-learned",
+      "type": "ledger entry line",
+      "decision": "Understand the rule that caused a rejection.",
+      "states": [
+        "rule-learned-first-hold",
+        "rule-recalled-repeated-hold"
+      ],
+      "entry": "Appended to ledger after first hold on any gate; updated on later holds on same gate.",
+      "exit": "Persists in scroll history and included in RULES LEARNED receipt section.",
+      "back_behavior": "Not applicable; static ledger line.",
+      "initial_focus": "Not focusable; display-only element."
+    },
+    {
+      "id": "end-card-receipt",
+      "type": "full-screen modal",
+      "decision": "Review accomplishments and research data.",
+      "states": [
+        "rendered-at-episode-end",
+        "scrollable-ledger-history",
+        "dismissed"
+      ],
+      "entry": "Shown when episode reaches terminal quest stage.",
+      "exit": "Player dismisses the modal to return to world view or main menu.",
+      "back_behavior": "Back dismisses without mutation.",
+      "initial_focus": "INVESTIGATOR'S CONTRIBUTION section title or first contribution line."
     }
   ],
   "information_hierarchy": {
     "critical": [
       "commit versus hold verdict",
       "hold reason and next valid entry",
-      "save integrity rejection"
+      "save integrity rejection",
+      "RULE LEARNED gate name and text after rejection",
+      "CASE CHAIN link fill state reflecting committed facts"
     ],
     "current": [
       "current lead",
       "interaction prompt",
       "dialogue choices",
-      "case progress"
+      "case progress",
+      "CONTRIBUTION clause showing facts added and stage progression after commit",
+      "INVESTIGATOR'S CONTRIBUTION summary in end-card"
     ],
     "contextual": [
       "full control reference",
@@ -126,7 +205,9 @@
     "hidden": [
       "oracle labels",
       "forbidden disclosure payloads",
-      "uncommitted candidate state"
+      "uncommitted candidate state",
+      "hidden oracle labels (keeper_betrayal, omitted_object_hazard, unknown_field_hazard)",
+      "sealed secret payloads (only test IDs exposed during validation)"
     ]
   },
   "navigation": {
@@ -194,6 +275,42 @@
       "stale": "The ledger mirrors the latest returned result and never authors canonical truth.",
       "error": "Use a neutral hold and a concrete next valid entry.",
       "permission": "Hidden labels remain outside player-visible copy."
+    },
+    {
+      "element": "case chain link fill states",
+      "source": "committed_snapshot.facts (LENS=signal_lens_acquired, MOUNT=signal_lens_installed, LEAD=tide_marks_hint)",
+      "initial_state": "Render unfilled chain at episode start (0/3).",
+      "update": "Update link fill on every commit that adds a matching fact.",
+      "stale": "Never stale during episode; regenerated from committed snapshot at save/load.",
+      "error": "No error state; chain is derived from authoritative facts.",
+      "permission": "Never expose fact IDs or implementation details; only render link names (LENS, MOUNT, LEAD)."
+    },
+    {
+      "element": "contribution clause text",
+      "source": "contribution_delta(prior_state, next_state) returning facts_added, inventory_added/removed, stage_from, stage_to",
+      "initial_state": "No contribution shown at episode start (first observation has no prior state).",
+      "update": "Render CONTRIBUTION after every commit using only labels explicitly allowlisted in FACT_LABEL; never render a raw fact ID.",
+      "stale": "Preserved in ledger scroll; not regenerated.",
+      "error": "If no added fact has an allowlisted public label, show generic 'State recorded' instead of an identifier.",
+      "permission": "Never expose hidden oracle labels or sealed secrets; all text derives from approved FACT_LABEL and gate-to-rule mappings."
+    },
+    {
+      "element": "rule learned line",
+      "source": "hold_gate_code mapped to GATE_BY_CODE, then to rule text",
+      "initial_state": "No rules shown until first hold.",
+      "update": "Append RULE LEARNED | GATE_NAME: rule_text on first hold on any gate. Append RULE RECALLED (n) | GATE_NAME on subsequent holds on the same gate.",
+      "stale": "Preserved in ledger scroll; gate name and rule text do not change retroactively.",
+      "error": "If gate does not match any known rule, render 'The policy held this entry.' as fallback.",
+      "permission": "Gate names and rule texts come from approved GATE_BY_CODE mapping; never expose oracle-only labels like keeper_betrayal."
+    },
+    {
+      "element": "end-card two-part receipt",
+      "source": "_contribution_log (list of commits), rules_learned_set (unique gates), and technical_snapshot (state_hash, entry_count, hold_count)",
+      "initial_state": "Modal rendered with all three sections populated.",
+      "update": "Static at end-card render time; no live updates.",
+      "stale": "N/A; rendered once at episode end.",
+      "error": "If _contribution_log is empty, show 'No entries were committed this session.'; if no gate has held, show 'RULES LEARNED 0 | none'.",
+      "permission": "INVESTIGATOR'S CONTRIBUTION uses the FACT_LABEL map. RULES LEARNED shows unique gate names (DISCLOSURE/QUEST STAGE, PRECONDITION, etc.). The technical receipt shows only ENTRIES/HOLDS/FINAL STAGE counts, the state-hash prefix, and HOLDS BY GATE; no hidden oracle label, sealed fact, or player-identifying data."
     }
   ],
   "verification": {
@@ -221,15 +338,51 @@
         "locale": "English",
         "setting": "default motion",
         "expected": "The stacked layout keeps the ending summary, receipt, and essential labels visible without clipping."
+      },
+      {
+        "state": "committed entry with CONTRIBUTION and CASE CHAIN visible",
+        "device": "desktop wide 1280\u00d7720",
+        "input": "keyboard and mouse",
+        "locale": "English",
+        "setting": "default motion",
+        "expected": "CONTRIBUTION clause rendered below COMMITTED line. CASE CHAIN shows filled link. No decorative glyphs, ASCII-only text, all text legible at 1\u00d7 scale and responsive to 200% scaling."
+      },
+      {
+        "state": "first hold on a new gate with RULE LEARNED line",
+        "device": "narrow responsive 390\u00d7844",
+        "input": "keyboard",
+        "locale": "English",
+        "setting": "reduced motion",
+        "expected": "RULE LEARNED | GATE: rule_text rendered below HELD line. Gate name and rule text are ASCII-only, sentence-case. Text wraps or reflows without clipping. No color-only encoding of gate type."
+      },
+      {
+        "state": "end-card receipt with INVESTIGATOR'S CONTRIBUTION and RULES LEARNED sections",
+        "device": "desktop wide 1280\u00d7720",
+        "input": "keyboard and mouse",
+        "locale": "English",
+        "setting": "default motion",
+        "expected": "Three distinct sections: INVESTIGATOR'S CONTRIBUTION (contributions list), RULES LEARNED (sorted gate list), and TECHNICAL RECEIPT (hash, counts). Each section has a title and remains ordered in the end card's one shared receipt region; no independent section scrolling is claimed."
+      },
+      {
+        "state": "episode save/load cycle: CASE CHAIN re-derived, CONTRIBUTION and RULE lines not persisted",
+        "device": "narrow responsive 390\u00d7844",
+        "input": "keyboard",
+        "locale": "English",
+        "setting": "reduced motion",
+        "expected": "Load restores only the canonical snapshot (saves carry no presentation data); CASE CHAIN is re-derived from the loaded facts and matches CASE n/3. CONTRIBUTION, UNLOCKED, and RULE lines plus ENTRIES/HOLDS counters are presentation-only and restart with the session; the ledger shows the LOADED integrity line instead of replaying them. State-hash integrity is verified on load."
       }
     ],
     "acceptance": [
-      "No player-visible Korean remains in the playable Godot runtime.",
-      "Every declared overlay is reachable and has a safe exit where gameplay can continue.",
-      "Commit, hold, current lead, and input state remain readable through redundant non-color signals.",
-      "The full browser golden path reaches the English episode-complete card without changing symbolic rules."
+      "CASE CHAIN line is visible and updates correctly on every commit reflecting LENS, MOUNT, LEAD fill state.",
+      "CONTRIBUTION clause appears immediately after every COMMITTED entry with accurate facts_added, inventory_added/removed, and stage progression.",
+      "RULE LEARNED or RULE RECALLED line appears after holds with matching gate name and rule text from approved mapping.",
+      "End-card two-part receipt renders three distinct sections with no visual or informational overlap.",
+      "All presentation surfaces use ASCII-only text, sentence-case, and color-redundant symbols.",
+      "No hidden oracle labels (keeper_betrayal, etc.) appear in player-facing text.",
+      "Text scales to 200% without losing content or readability.",
+      "Reduced motion disables any CONTRIBUTION/RULE/CHAIN animations; static text always readable."
     ],
-    "evidence": "Record source scan, build/test receipts, wide and narrow captures, and a full browser playthrough through the ending."
+    "evidence": "Record Godot build version, project.godot SHA-256, viewport dimensions, input method, locale, and screenshot/video of ledger scroll and end-card for each matrix row."
   },
   "decisions": [
     {
@@ -241,10 +394,15 @@
       "decision": "Keep the evidence-folio layout while reducing duplicated bilingual copy and persistent control clutter.",
       "basis": "The existing art direction is explicit and already bound to public-safe assets; hierarchy, focus, and concise copy are the actual defects.",
       "owner": "game UI/UX"
+    },
+    {
+      "decision": "Add CONTRIBUTION, RULE LEARNED, and CASE CHAIN presentation surfaces to the ledger and end-card.",
+      "basis": "Aside intake report (2026-09-02) identifies legible progress and refusals as essential for perceived competence and rule discovery. Design hypothesis H-CONTRIB-01, H-RULE-02, H-CHAIN-03, H-RECEIPT-04 operationalize these patterns. Decision D-062 assigns responsibility for engineering-side UI contract to design-docs lane.",
+      "owner": "design-docs"
     }
   ],
   "route_out": {
-    "next_owner": "Godot UI implementation and browser verification",
-    "reason": "The player decisions, state hierarchy, responsive behavior, and acceptance evidence are frozen for this task."
+    "next_owner": "human presentation study (owner-run playtest, no automated data collection)",
+    "reason": "The UI contract is engineering-frozen; player perception of competence, rule discovery, and frustration reduction require qualitative post-episode feedback from actual players. Variant vs. control comparison is design decision gate, not engineering validation gate."
   }
 }

@@ -267,7 +267,7 @@ game-action commit gate — and nothing more.
    parser that rejects ambiguous known-field types and unknown top-level candidate keys;
    evidenced by deterministic parser-contract fixtures, including proposal/replay rejection
    parity on a prespecified unknown-key negative.
-2. **A validate–repair–commit controller** whose six state-relative predicates decide every
+2. **A validate–repair–commit controller** whose seven checks across six state-relative families decide every
    admitted transition, with bounded repair budget, unchanged deterministic fallback, and
    defensive pre-commit revalidation; evidenced by exact-count validator/state-isolation and
    repair-control-flow fixtures over a single authored world.
@@ -317,7 +317,7 @@ game-action commit gate — and nothing more.
    브리지 계약을 타입 엄격 파서가 강제하며, 모호한 기지 필드 타입과 미지의 최상위 후보 키를
    거부한다. 증거: 사전 지정된 미지-키 부정 사례에 대한 제안/재생 거부 동등성을 포함한
    결정론적 파서 계약 픽스처.
-2. **검증–수리–커밋 컨트롤러** — 여섯 개의 상태 상대 술어가 허용되는 모든 전이를 결정하고,
+2. **검증–수리–커밋 컨트롤러** — 여섯 상태 상대 계열에 걸친 검사 7개가 허용되는 모든 전이를 결정하고,
    유계 수리 예산, 불변 결정론적 폴백, 커밋 직전 방어적 재검증을 갖춘다. 증거: 단일 저작
    세계에 대한 정확 수치의 검증기/상태 격리 및 수리 제어 흐름 픽스처.
 3. **감사 증거 계층** — 종단 기록을 키 없는 SHA-256 콘텐츠 체크섬에 결속하고, 기록된 전이를

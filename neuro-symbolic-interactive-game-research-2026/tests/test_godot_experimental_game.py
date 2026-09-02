@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -222,6 +223,30 @@ class GodotExperimentalGameContractTests(unittest.TestCase):
         for operation in ("acquire_object", "install_lens", "reveal_hint"):
             with self.subTest(operation=operation):
                 self.assertIn(f'"{operation}"', machine)
+
+    def test_game_ledger_classifies_every_machine_rejection_code(self) -> None:
+        machine = (GODOT_PROJECT / "scripts" / "sealed_lighthouse_machine.gd").read_text(
+            encoding="utf-8"
+        )
+        game = (GODOT_PROJECT / "scripts" / "game3d" / "game_3d.gd").read_text(encoding="utf-8")
+        emitted_codes = set(re.findall(r'"([A-Z][A-Z0-9_]{2,})"', machine))
+        mapping_body = game.split("const GATE_BY_CODE := {", 1)[1].split("}\n", 1)[0]
+        gate_by_code = dict(re.findall(r'"([A-Z][A-Z0-9_]+)":\s*"([A-Z/ ]+)"', mapping_body))
+        self.assertEqual(set(gate_by_code), emitted_codes)
+        self.assertEqual(gate_by_code["NPC_DOES_NOT_KNOW_FACT"], "KNOWLEDGE")
+        self.assertEqual(gate_by_code["UNKNOWN_ACTOR"], "POLICY")
+        self.assertEqual(gate_by_code["UNKNOWN_OPERATION"], "POLICY")
+
+    def test_contribution_labels_fail_closed_on_unknown_fact_ids(self) -> None:
+        game = (GODOT_PROJECT / "scripts" / "game3d" / "game_3d.gd").read_text(encoding="utf-8")
+        mapping_body = game.split("const FACT_LABEL := {", 1)[1].split("}\n", 1)[0]
+        helper_body = game.split("static func player_visible_fact_labels", 1)[1].split("\n\n", 1)[0]
+        self.assertIn("FACT_LABEL.has(fact_id)", helper_body)
+        self.assertNotIn("FACT_LABEL.get(fact, str(fact))", game)
+        self.assertIn('player_visible_fact_labels(delta["facts_added"])', game)
+        for hidden_fact in ("keeper_betrayal", "omitted_object_hazard", "unknown_field_hazard"):
+            with self.subTest(hidden_fact=hidden_fact):
+                self.assertNotIn(hidden_fact, mapping_body)
 
     def test_render_capture_scene_is_non_headless_and_trace_bound(self) -> None:
         runner = (GODOT_PROJECT / "scripts" / "evidence_capture_runner.gd").read_text(

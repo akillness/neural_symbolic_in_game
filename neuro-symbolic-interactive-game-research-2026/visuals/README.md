@@ -47,7 +47,7 @@ uv run python scripts/update_visual_source_manifest.py
 uv run python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration
 ```
 
-`validate_visual_assets.py`는 manifest freshness, SVG XML과 접근성 metadata, 편집 원본 존재, paper SVG/PDF/PNG 동거, PDF에 포함된 SVG 원본 hash, raster object와 Type 3 font가 없는 벡터 PDF 삽입, line-label shield, 논문 그림·balance chart의 source-level line/text collision, 표의 booktabs/행간/비교 구조를 검사한다. 경량 생성물 20개는 임시 사본에서 두 번 재생성해 byte equality도 검사한다. 최종 판정은 `make check`와 `./scripts/verify_like_ci.sh`까지 포함한다.
+`validate_visual_assets.py`는 manifest freshness, SVG XML과 접근성 metadata, 편집 원본 존재, paper SVG/PDF/PNG 동거, PDF에 포함된 SVG 원본 hash, raster object와 Type 3 font가 없는 벡터 PDF 삽입, line-label shield, 논문 그림·balance chart의 source-level line/text collision, 표의 booktabs/행간/비교 구조를 검사한다. 경량 생성물 22개는 임시 사본에서 두 번 재생성해 byte equality도 검사한다. 최종 판정은 `make check`와 `./scripts/verify_like_ci.sh`까지 포함한다.
 
 ## English parity
 
