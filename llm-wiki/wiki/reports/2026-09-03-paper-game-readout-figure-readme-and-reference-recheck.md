@@ -47,7 +47,7 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
 ## 4. README (루트 `README.md` EN 기본 + `README.ko.md` 전환)
 
 - 배지(validate 워크플로, EN/KO PDF, Vercel 플레이, Godot 4.7.1, Python 3.11+, 증거 52/52·8/8·5/5,
-  last-commit, 슬라이드), 골든패스 GIF, 그림 1, 논문 페이지 시트(`docs/readme/paper-*-pages.png`),
+  last-commit, 슬라이드), 골든패스 GIF, 그림 1, 논문 페이지 시트(`docs/readme/paper-*-pages.jpg`),
   캡처 4장, 모바일 2장, 대시보드 GIF + 스틸 4장(`docs/readme/dashboard/`), 밸런스 SVG, KG SVG,
   한국어 덱 16장(`docs/readme/slides/ko-*.jpg`, `docs/slides/trace-rpg-overview.ko.html` 추적).
 - 라이선스 파일이 없어 라이선스 배지는 넣지 않았다("to be announced").
@@ -64,6 +64,18 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
   55 references / 9 topics PASS; `validate_visual_assets.py --require-pdf-tools --check-regeneration` PASS(16 sources
   double-regenerated, 2 engine-evidence exceptions); `validate_project.py` PASS; `./scripts/verify_like_ci.sh` 전 단계
   PASS.
+
+## 5. D-067 후속 정정 (같은 날 두 번째 푸시)
+
+- 독립 검토 지적: 그림 3이 갱신 가능한 `docs/latest` Web-stage 캡처를 가리켰고 매니페스트 소스로는 그 바이트를
+  재생성할 수 없었으며, KO PDF는 한글 어절 사이 공백이 전부 붙은 채 출력됐고(xeCJK 기본 `CJKspace=false`),
+  AI 사용 고지가 그림에 포함된 생성 이미지를 언급하지 않았다.
+- 조치: `run_playable_evaluation.py --capture`가 `SHOT-SAVED` 페이로드를 `<stage>.shot.json`(캡처 방법, 스테이지
+  전후 canonical state hash)으로 남기고 매트릭스 영수증에 병합; `docs/latest`를 네이티브 경로로 갱신하고 QA 핀
+  갱신; 그림 3 소스를 `paper/latex/captures/playable-readout-20260903/`(PNG + shot.json + receipt.json, trim 박스
+  기록)에 동결하고 매니페스트에 `engine-working-capture`(illustration only) 예외로 바인딩; 캡션·ENG1에 "예시일 뿐
+  근거가 아니다" 명시; `\xeCJKsetup{CJKspace=true}`로 한글 공백 복원(8쪽 유지); 두 언어 고지에 curated 생성 UI
+  아트 문장 추가; E2 문구를 "hosted proposer"로 도구 중립화; CLAUDE.md의 캡처 갱신 규칙 두 항목을 일치시킴.
 
 ## Boundary
 

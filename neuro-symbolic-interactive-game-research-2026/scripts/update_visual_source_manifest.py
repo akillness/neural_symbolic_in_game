@@ -45,6 +45,8 @@ EVIDENCE_ROOT = (
     "_workspace/current/engineering/tech-verification/evidence/"
     "godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5"
 )
+# Frozen engineering working captures the manuscripts crop for Fig. 3 (illustration only).
+PLAYABLE_READOUT_SET = "paper/latex/captures/playable-readout-20260903"
 
 
 def receipt(relative_path: str) -> dict[str, Any]:
@@ -277,28 +279,34 @@ def build_manifest() -> dict[str, Any]:
         },
         {
             "id": "sealed-lighthouse-playable-readout-panels",
-            "kind": "engine-evidence",
+            "kind": "engine-working-capture",
             "editable": False,
+            "illustration_only": True,
             "rendered": receipts(
                 (
-                    "game-track/godot/docs/latest/refusal.png",
-                    "game-track/godot/docs/latest/authorized_hint.png",
-                    "game-track/godot/docs/latest/ending.png",
+                    f"{PLAYABLE_READOUT_SET}/refusal.png",
+                    f"{PLAYABLE_READOUT_SET}/authorized_hint.png",
+                    f"{PLAYABLE_READOUT_SET}/ending.png",
                 )
             ),
             "reproducible_sources": receipts(
                 (
-                    "game-track/godot/docs/latest/evaluation-matrix.json",
-                    "game-track/godot/docs/latest/presentation-evaluation.json",
+                    f"{PLAYABLE_READOUT_SET}/receipt.json",
+                    f"{PLAYABLE_READOUT_SET}/refusal.shot.json",
+                    f"{PLAYABLE_READOUT_SET}/authorized_hint.shot.json",
+                    f"{PLAYABLE_READOUT_SET}/ending.shot.json",
+                    "scripts/run_playable_evaluation.py",
                     "game-track/godot/scripts/game3d/game_3d.gd",
                     "game-track/godot/scripts/game3d/harbor_ledger_ui.gd",
-                    "scripts/run_playable_evaluation.py",
                 )
             ),
             "reason": (
-                "The panels are working captures of the scripted presentation stages; the paper "
-                "crops them only through LaTeX trim parameters. Retouching is forbidden; "
-                "regenerate from the playable slice and its evaluation runner."
+                "Frozen engineering working captures of the scripted presentation stages, "
+                "illustration only: they are not promoted evidence and support no claim. "
+                "Each PNG is bound by its SHOT-SAVED receipt (capture method, canonical state "
+                "hashes before and after the stage); the manuscripts crop them only through "
+                "LaTeX trim parameters. Retouching is forbidden; a refresh creates a new dated "
+                "set through the playable evaluation runner and re-measures the trim boxes."
             ),
         },
     ]

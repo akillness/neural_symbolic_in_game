@@ -47,7 +47,7 @@
 | Disclosure | 5 | 금지된 fact |
 | Quest | 6, 7 | 자격 없는 stage; stage 후퇴 |
 
-[![한국어 원고 여덟 쪽의 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
+[![한국어 원고 여덟 쪽의 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
 
 ## 근거
 

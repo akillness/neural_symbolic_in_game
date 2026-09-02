@@ -47,7 +47,7 @@ The seven checks, grouped into six state-relative families. Every failure leaves
 | Disclosure | 5 | Forbidden fact |
 | Quest | 6, 7 | Ineligible stage; stage regression |
 
-[![Contact sheet of the eight English manuscript pages](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
+[![Contact sheet of the eight English manuscript pages](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 
 ## Evidence
 

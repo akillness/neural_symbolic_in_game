@@ -130,13 +130,14 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   `--evaluate` must report exactly 12 presentation checks (`SL-PLAY-EVAL-001` 52/52) and the
   smoke denominator stays 8/8; these counts are engineering conformance, not fun, agency, or G4
   evidence.
-- The manuscripts' Fig. 3 (`fig:playable-readout`, D-066) shows the tracked working captures
-  `docs/latest/{refusal,authorized_hint,ending}.png` only through LaTeX `trim`/`clip`
-  parameters, bound as the second non-editable evidence exception in
-  `visuals/source-manifest.json`. Never retouch those PNGs; a refresh regenerates them through
-  `scripts/run_playable_evaluation.py --capture`, keeps generated UI art outside the crops, and
-  rebuilds the manifest and both PDFs in the same change. The panels remain engineering
-  captures, never usability, immersion, affect, or efficacy evidence.
+- The manuscripts' Fig. 3 (`fig:playable-readout`, D-066/D-067) crops a frozen, dated copy of
+  three working captures under `paper/latex/captures/playable-readout-<date>/` (PNG + `.shot.json`
+  + `receipt.json` with the trim boxes), bound in `visuals/source-manifest.json` as an
+  `engine-working-capture` exception that is illustration only, never promoted evidence. Never
+  retouch those PNGs and never point the manuscripts at the refreshable `docs/latest/` copies: a
+  refresh re-runs `--capture`, creates a new dated set, re-measures the trim boxes against the new
+  ledger layout, keeps generated UI art outside the crops, and rebuilds the manifest and both PDFs
+  in the same change. Both manuscripts' AI-usage disclosures name the curated generated UI art.
 - The dev-only `main_3d.tscn -- --autoplay --public-safe` route (D-064) is a movie-capture
   autopilot: it substitutes for keyboard/mouse input and drives the same interaction and choice
   handlers a player would, so canonical state still changes only through the proposal router.
@@ -221,11 +222,14 @@ paid/free result.
 
 - Full game-track regression command: `./scripts/validate_game_track.sh` (includes the motion-lane
   guard and the balance-archetype tests).
-- Godot `--shot` cannot refresh working PNGs in this sandbox: the dummy renderer has no texture and
-  windowed launch aborts. Working screenshots may use a disposable Web-stage-only query hook plus
-  browser capture/downsample, but the hook must never enter tracked source and the PNGs remain
-  engineering-only. Immutable capture promotion still requires the separate non-headless evidence
-  contract.
+- Working PNG refresh path: whenever a display is available, `scripts/run_playable_evaluation.py
+  --capture` drives the windowed `--shot` route on a disposable staged copy and writes each PNG
+  with a `<stage>.shot.json` receipt (capture method, canonical state hash before/after the
+  stage); the matrix binds those receipts. Only in a display-less sandbox (dummy renderer, no
+  texture, windowed launch aborts) may working screenshots come from a disposable Web-stage-only
+  query hook plus browser capture/downsample; that hook must never enter tracked source and such
+  PNGs carry no shot receipt. Either way the PNGs remain engineering-only, and immutable capture
+  promotion still requires the separate non-headless evidence contract.
 - Before pushing, run `./scripts/verify_like_ci.sh` — it replays every
   `.github/workflows/validate.yml` step in order. The game-track command alone is not sufficient:
   CI also runs `ruff check`/`ruff format --check` over `src tests scripts examples`, the unit-test

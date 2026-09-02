@@ -366,7 +366,13 @@ def summarize_presentation(report: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def screenshot_receipts(directory: Path) -> list[dict[str, Any]]:
-    """Validate the four latest working captures and return stable receipts."""
+    """Validate the four latest working captures and return stable receipts.
+
+    A ``<stage>.shot.json`` sidecar written by ``--capture`` binds the PNG to the
+    ``SHOT-SAVED`` payload (capture method and the canonical state hashes before and
+    after the scripted stage). Captures without a sidecar stay valid but carry no
+    state binding.
+    """
     receipts: list[dict[str, Any]] = []
     for stage in SCREENSHOT_STAGES:
         path = directory / f"{stage}.png"
@@ -375,17 +381,25 @@ def screenshot_receipts(directory: Path) -> list[dict[str, Any]]:
                 f"latest screenshot is missing: {path}; rerun with --capture to regenerate"
             )
         stats = validate_render_png(path)
-        receipts.append(
-            {
-                "stage": stage,
-                "file": path.name,
-                "bytes": path.stat().st_size,
-                "sha256": _sha256(path),
-                "width": stats.width,
-                "height": stats.height,
-                "engineering_working_capture_only": True,
-            }
-        )
+        digest = _sha256(path)
+        receipt: dict[str, Any] = {
+            "stage": stage,
+            "file": path.name,
+            "bytes": path.stat().st_size,
+            "sha256": digest,
+            "width": stats.width,
+            "height": stats.height,
+            "engineering_working_capture_only": True,
+        }
+        sidecar = directory / f"{stage}.shot.json"
+        if sidecar.is_file():
+            shot = json.loads(sidecar.read_text(encoding="utf-8"))
+            if shot.get("stage") != stage or shot.get("sha256") != digest:
+                raise ValueError(f"shot receipt does not bind {path.name}: {sidecar}")
+            receipt["capture_method"] = shot["capture_method"]
+            receipt["state_sha256_before"] = shot["state_sha256_before"]
+            receipt["state_sha256_after"] = shot["state_sha256_after"]
+        receipts.append(receipt)
     return receipts
 
 
@@ -564,10 +578,15 @@ def render_markdown(matrix: Mapping[str, Any]) -> str:
         ]
     )
     for shot in matrix["screenshots"]:
+        binding = (
+            f"state `{shot['state_sha256_before'][:16]}…` → `{shot['state_sha256_after'][:16]}…`"
+            if "state_sha256_after" in shot
+            else "no shot receipt"
+        )
         lines.append(
             f"| `{shot['stage']}` | [{shot['file']}]({shot['file']}) | "
             f"{shot['width']}×{shot['height']} | `{shot['sha256']}` | "
-            "engineering working capture only |"
+            f"engineering working capture only; {binding} |"
         )
     lines.extend(
         [
@@ -606,15 +625,46 @@ def _copy_capture_set(source: Path, output_dir: Path) -> None:
         source_path = source / f"{stage}.png"
         validate_render_png(source_path)
     for stage in SCREENSHOT_STAGES:
-        source_path = source / f"{stage}.png"
-        atomic_write(output_dir / source_path.name, source_path.read_bytes())
+        for name in (f"{stage}.png", f"{stage}.shot.json"):
+            source_path = source / name
+            atomic_write(output_dir / name, source_path.read_bytes())
+
+
+SHOT_CAPTURE_METHOD = (
+    "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window "
+    "--audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 "
+    "--fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe "
+    "(disposable staged copy; native display; get_viewport().get_texture().get_image())"
+)
+
+
+def _shot_receipt(stdout: str, stage: str) -> dict[str, Any]:
+    """Bind one working capture to the SHOT-SAVED payload the scene printed for it."""
+    for line in stdout.splitlines():
+        if not line.startswith("SHOT-SAVED "):
+            continue
+        payload = json.loads(line[len("SHOT-SAVED ") :])
+        if payload.get("stage") != stage or payload.get("written") is not True:
+            raise ValueError(f"SHOT-SAVED payload does not match stage {stage}: {payload!r}")
+        return {
+            "schema_version": "1.0.0",
+            "stage": stage,
+            "capture_method": SHOT_CAPTURE_METHOD,
+            "state_sha256_before": payload["state_sha256_before"],
+            "state_sha256_after": payload["state_sha256_after"],
+            "width": payload["width"],
+            "height": payload["height"],
+            "engineering_only": True,
+            "not_evidence_for": list(payload.get("not_evidence_for", [])),
+        }
+    raise ValueError(f"capture output for stage {stage} carries no SHOT-SAVED payload")
 
 
 def _capture_screenshots(godot: str, project: Path, output: Path, logs: Path) -> None:
     output.mkdir(parents=True, exist_ok=True)
     for stage in SCREENSHOT_STAGES:
         shot_path = output / f"{stage}.png"
-        _run_godot(
+        result = _run_godot(
             [
                 godot,
                 "--path",
@@ -650,6 +700,14 @@ def _capture_screenshots(godot: str, project: Path, output: Path, logs: Path) ->
             allowed_errors=SANDBOXED_MACOS_HOST_ERROR,
         )
         validate_render_png(shot_path)
+        receipt = _shot_receipt(ANSI_ESCAPE.sub("", result.stdout), stage)
+        receipt["sha256"] = _sha256(shot_path)
+        atomic_write(
+            output / f"{stage}.shot.json",
+            (json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode(
+                "utf-8"
+            ),
+        )
 
 
 def run_evaluation(

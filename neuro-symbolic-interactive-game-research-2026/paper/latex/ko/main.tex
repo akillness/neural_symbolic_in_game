@@ -4,6 +4,7 @@
 \ifXeTeX
   \usepackage{fontspec}
   \usepackage{xeCJK}
+  \xeCJKsetup{CJKspace=true}
   \defaultfontfeatures{Ligatures=TeX}
   \IfFontExistsTF{TeX Gyre Termes}{%
     \setmainfont{TeX Gyre Termes}%
@@ -232,7 +233,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation, 사전 명세한 unknown-key 음성 회귀에 대한 proposal/replay 거부 일치를 센다. 마지막 측정은 결정론적 parser-contract parity이며 실증적 safety outcome이 아니다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다. 동결된 오프라인 packet은 fixture, assignment, schema, trace를 포함한 result, 코드 revision, checksum을 결합하며, 보고는 재현성과 측정 경계 지침을 따른다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
 \subsection{\textbf{E2} 라이브 RQ2 스크리닝}
-라이브 확장은 블라인드 동일 후보 retry와 $\rho$를 동일한 $K{=}1$에서 비교한다. 각 셀에서 seed로 구분한 hosted \texttt{gpt-5.6-sol} API 호출 5회가 후보 하나씩을 만들고, 두 arm은 같은 최초 후보를 받아 호출 내 제안 차이를 제거한다. 조건은 policy 공개 여부와 자명한 효과 0 경로의 존재를 바꾼다. 동결된 packet은 현재 셀과 폐기된 v1 진단을 함께 보존하고 모든 영수증을 SHA-256으로 결합하며 pilot-only로 표시된다. Seed label은 hosted sampler를 제어하지 않고, hosted revision은 고정되지 않았으며, token 회계는 없고, 구성 상태는 모집단 표본이 아니다. 따라서 $p$-value, confidence interval, 모델 순위 없이 정확한 기술 count와 실패 class만 보고한다.
+라이브 확장은 블라인드 동일 후보 retry와 $\rho$를 동일한 $K{=}1$에서 비교한다. 각 셀에서 seed로 구분한 hosted proposer \texttt{gpt-5.6-sol} 호출 5회가 후보 하나씩을 만들고, 두 arm은 같은 최초 후보를 받아 호출 내 제안 차이를 제거한다. 조건은 policy 공개 여부와 자명한 효과 0 경로의 존재를 바꾼다. 동결된 packet은 현재 셀과 폐기된 v1 진단을 함께 보존하고 모든 영수증을 SHA-256으로 결합하며 pilot-only로 표시된다. Seed label은 hosted sampler를 제어하지 않고, hosted revision은 고정되지 않았으며, token 회계는 없고, 구성 상태는 모집단 표본이 아니다. 따라서 $p$-value, confidence interval, 모델 순위 없이 정확한 기술 count와 실패 class만 보고한다.
 
 \subsection{\textbf{E3} KG/온톨로지 링크 제안 시뮬레이션}
 세 번째 레인은 권한을 가진 \texttt{WorldState}와 분리된 engineering-only closed-world 시뮬레이션이다. graph node 43개와 reference edge 106개, 검토된 typed edge 24개가 type/domain/range 검사와 competency question 6개를 통과하며, 작성형 질의 6개를 고정 전략 7개로 채점했다. Retained typed-lexical 전략(S2)은 작성된 holdout 6/6을 복원했고($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$), degree baseline은 하나도 복원하지 못했다. 이는 구성 결과이며 OWL/SHACL 적합성, 의미 완전성, runtime retrieval, 어떤 효능 주장의 근거도 아니다.
@@ -254,16 +255,16 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \begin{figure}[!t]
   \centering
   {\footnotesize\bfseries (a) 보류된 제안: 게이트 계열, 변경 없는 상태, 다음 유효 항목, 학습된 규칙\par}\vspace{1pt}
-  \includegraphics[width=\columnwidth,trim=106 157 760 505,clip]{../../../game-track/godot/docs/latest/refusal.png}\\[3pt]
+  \includegraphics[width=\columnwidth,trim=212 54 360 533,clip]{../captures/playable-readout-20260903/refusal.png}\\[3pt]
   {\footnotesize\bfseries (b) 커밋된 제안: 항목, 기여 절, 해제된 행동\par}\vspace{1pt}
-  \includegraphics[width=\columnwidth,trim=4 130 894 551,clip]{../../../game-track/godot/docs/latest/authorized_hint.png}\\[3pt]
+  \includegraphics[width=\columnwidth,trim=12 147 520 513,clip]{../captures/playable-readout-20260903/authorized_hint.png}\\[3pt]
   {\footnotesize\bfseries (c) 세 번의 커밋 뒤 엔드카드 영수증\par}\vspace{1pt}
-  \includegraphics[width=0.96\columnwidth,trim=240 448 774 178,clip]{../../../game-track/godot/docs/latest/ending.png}
-  \caption{플레이어가 Godot slice에서 읽는 commit gate(작성된 fixture 하나의 scripted presentation stage 세 개에서 잘라낸 ledger, 1280$\times$720). (a) 금지된 disclosure가 \emph{보류}된다. ledger는 게이트 계열을 이름 짓고, canonical state가 변경되지 않았음을 밝히며, 다음 유효 항목을 가리키고, 보류를 플레이어가 재사용할 수 있는 규칙으로 바꾼다. (b) 유효한 제안이 \emph{커밋}된다. 항목, committed snapshot의 차분만으로 파생된 기여 절(추가된 fact, 퀘스트 단계 $1{>}2$, case chain $2/3$), 그리고 그것이 해제하는 행동이 이어진다. (c) 엔드카드는 기여 절 세 개, 보류 횟수, 그리고 ENG1이 고정한 종단 state hash(\texttt{4b2310\ldots})를 담은 validator 영수증을 나열한다. 모든 줄은 committed snapshot의 presentation-only 판독이며(그림~\ref{fig:architecture} 아래 strip), oracle label, 숨겨진 fact, live model, participant는 개입하지 않는다. 패널은 엔지니어링 적합성이지 usability나 efficacy 근거가 아니다.}
+  \includegraphics[width=0.96\columnwidth,trim=250 284 490 240,clip]{../captures/playable-readout-20260903/ending.png}
+  \caption{플레이어가 Godot slice에서 읽는 commit gate. 작성된 fixture 하나의 scripted presentation stage 세 개에서 잘라낸 ledger(엔지니어링 작업 캡처, 1280$\times$720; 예시일 뿐 근거가 아니다). (a) 금지된 disclosure가 \emph{보류}된다. ledger는 게이트 계열을 이름 짓고, canonical state가 변경되지 않았음을 밝히며, 다음 유효 항목을 가리키고, 보류를 플레이어가 재사용할 수 있는 규칙으로 바꾼다. (b) 유효한 제안이 \emph{커밋}된다. 항목, committed snapshot의 차분만으로 파생된 기여 절(추가된 fact, 퀘스트 단계 $1{>}2$, case chain $2/3$), 그리고 그것이 해제하는 행동이 이어진다. (c) 엔드카드는 기여 절 세 개, 보류 횟수, 그리고 리플레이가 보고하는 종단 state hash(\texttt{4b2310\ldots})를 담은 validator 영수증을 나열한다. 모든 줄은 committed snapshot의 presentation-only 판독이며(그림~\ref{fig:architecture} 아래 strip), oracle label, 숨겨진 fact, live model, participant는 개입하지 않는다. 패널은 usability, immersion, efficacy 어느 주장도 뒷받침하지 않는다.}
   \label{fig:playable-readout}
 \end{figure}
 
-\noindent\textbf{ENG1.} Godot 4.7.1 slice에 임베드된 같은 게이트의 두 번째 구현이 작성된 정식 trace를 리플레이했다. 보류된 금지 disclosure는 이전 state hash를 보존했고 승인된 commit은 이를 전진시켰으며, 종단 hash는 오프라인 runner와 정확히 일치했다. 그림~\ref{fig:playable-readout}은 이 두 결과와 에피소드 끝에서 플레이어가 읽는 내용을 보여준다. 보류는 게이트 계열과 다음 유효 항목을 이름 짓고, commit은 기여 절을 덧붙이며 다음 행동을 해제하고, 엔드카드는 hash가 담긴 영수증을 싣는다. 이는 scripted fixture 하나의 엔진 로컬 적합성이다. live model이나 Python transport, participant input, narrative-quality result는 없으며, 판독은 committed snapshot에서만 파생되어(그림~\ref{fig:architecture} 아래 strip) usability나 efficacy 근거가 아니다.
+\noindent\textbf{ENG1.} Godot 4.7.1 slice에 임베드된 같은 게이트의 두 번째 구현이 작성된 정식 trace를 리플레이했다. 보류된 금지 disclosure는 이전 state hash를 보존했고 승인된 commit은 이를 전진시켰으며, 종단 hash는 오프라인 runner와 정확히 일치했다. 그림~\ref{fig:playable-readout}은 이 두 결과와 에피소드 끝에서 플레이어가 읽는 내용을 예시한다. 보류는 게이트 계열과 다음 유효 항목을 이름 짓고, commit은 기여 절을 덧붙이며 다음 행동을 해제하고, 엔드카드는 hash가 담긴 영수증을 싣는다. 적합성 근거는 리플레이된 trace와 그 결정론적 평가이지 이 픽셀이 아니다. 이는 scripted fixture 하나의 엔진 로컬 적합성이다. live model이나 Python transport, participant input, narrative-quality result는 없으며, 판독은 committed snapshot에서만 파생되어(그림~\ref{fig:architecture} 아래 strip) usability나 efficacy 근거가 아니다.
 
 \section{논의}
 \subsection{확립 가능한 범위}
@@ -285,7 +286,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \begingroup
 \renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}
 \section*{AI 사용 고지}
-Large language model은 prose, code와 test drafting, citation-identity check를 보조했고, hosted model은 별도 표기된 live-screening candidate를 생성했다. 모든 보고 count는 deterministic runner 또는 hash-bound receipt에서 온다. 저자는 claim을 source artifact에 대조했고 내용에 대한 책임을 진다.
+Large language model은 prose, code와 test drafting, citation-identity check를 보조했고, hosted model은 별도 표기된 live-screening candidate를 생성했다. 모든 보고 count는 deterministic runner 또는 hash-bound receipt에서 온다. playable slice의 UI 아트(초상, 인장, 패널 텍스처)는 파일별 provenance를 갖춘 curated AI 생성 이미지이며, 그림~\ref{fig:playable-readout}의 모든 상태 값, hash, ledger 줄은 committed snapshot에서 엔진이 렌더링한 것이다. 저자는 claim을 source artifact에 대조했고 내용에 대한 책임을 진다.
 
 \section*{데이터 및 코드 가용성}
 Repository에는 implementation, build source, 동결된 offline 및 live packet, 결정론적 평가를 갖춘 playable Godot slice, 그리고 표~\ref{tab:contribution-map}과~\ref{tab:evidence-lanes}를 생성하는 기계 검증 기여·참조 주제·실험 매트릭스가 들어 있다. Reviewer archive나 DOI deposit은 주장하지 않는다.

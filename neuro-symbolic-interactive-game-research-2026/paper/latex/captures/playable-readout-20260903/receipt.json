@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0.0",
+  "set_id": "playable-readout-20260903",
+  "classification": "engineering working captures; illustration only; not evidence for any claim, usability, immersion, affect, efficacy, G4, or G6",
+  "used_by": [
+    "paper/latex/en/main.tex",
+    "paper/latex/ko/main.tex"
+  ],
+  "figure_label": "fig:playable-readout",
+  "frozen_from": {
+    "directory": "game-track/godot/docs/latest",
+    "evaluation": "SL-PLAY-EVAL-001",
+    "evaluation_matrix_sha256": "e3bf24bde28ecb14736c6040f17c40c92da4eaf2844cc41a2aa848acf5b684a6",
+    "godot_version": "4.7.1.stable.official.a13da4feb",
+    "totals": {
+      "combined_checks_passed": 52,
+      "combined_checks_total": 52,
+      "fixture_checks_passed": 40,
+      "fixture_checks_total": 40,
+      "fixtures_passed": 4,
+      "fixtures_total": 4,
+      "presentation_checks_passed": 12,
+      "presentation_checks_total": 12,
+      "screenshots_total": 4,
+      "screenshots_valid": 4
+    },
+    "frozen_on": "2026-09-03"
+  },
+  "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+  "runner": "scripts/run_playable_evaluation.py --capture (disposable staged copy of game-track/godot; canonical project.godot untouched)",
+  "refresh_rule": "Never edit these bytes. To refresh, re-run the runner, copy the new PNG + .shot.json pair into a NEW dated set directory, re-measure the trim boxes against the new ledger layout, update both manuscripts and the visual manifest in the same change, and keep generated UI art (portrait, seals) outside the trimmed regions.",
+  "files": [
+    {
+      "file": "refusal.png",
+      "stage": "refusal",
+      "sha256": "41c69c36e1e8913885d48b5aa730909b4eedcb278ce5e0a3d0a3fb31c8dc4105",
+      "bytes": 452783,
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "shot_receipt": "refusal.shot.json",
+      "panel": "a",
+      "trim_bp": [
+        212,
+        54,
+        360,
+        533
+      ],
+      "ledger_lines": [
+        "[P] PROPOSAL",
+        "[H] HELD",
+        "[V] GATE DISCLOSURE | state unchanged",
+        "[N] NEXT VALID ENTRY",
+        "[V] RULE LEARNED | DISCLOSURE"
+      ]
+    },
+    {
+      "file": "authorized_hint.png",
+      "stage": "authorized_hint",
+      "sha256": "f068f274c608d8cf4ab9f4f8c226702b02bf01240c0179e23c4fbe7d76402122",
+      "bytes": 400089,
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "shot_receipt": "authorized_hint.shot.json",
+      "panel": "b",
+      "trim_bp": [
+        12,
+        147,
+        520,
+        513
+      ],
+      "ledger_lines": [
+        "[C] ENTRY #2 | COMMITTED",
+        "[C] CONTRIBUTION #2 | STAGE 1>2 | CHAIN 2/3",
+        "[N] UNLOCKED"
+      ]
+    },
+    {
+      "file": "ending.png",
+      "stage": "ending",
+      "sha256": "b61eb311e1040b57eb4e6c52e6348ada725f43489486272d51cfc9937b38adaf",
+      "bytes": 440450,
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "shot_receipt": "ending.shot.json",
+      "panel": "c",
+      "trim_bp": [
+        250,
+        284,
+        490,
+        240
+      ],
+      "ledger_lines": [
+        "INVESTIGATOR'S CONTRIBUTION #1-#3",
+        "RULES LEARNED 0",
+        "ENTRIES 3 | HOLDS 0 | FINAL STAGE 2",
+        "VALIDATOR RECEIPT | STATE HASH 4b2310...",
+        "HOLDS BY GATE | none"
+      ]
+    }
+  ]
+}

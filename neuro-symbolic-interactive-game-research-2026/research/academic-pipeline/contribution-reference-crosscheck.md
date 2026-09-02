@@ -2,7 +2,7 @@
 
 상태: **VERIFIED-SCOPE-LIMITED**
 
-점검일: **2026-09-02** (최초 2026-08-30; 2026-09-02 top-venue 보강 S47--S51)
+점검일: **2026-09-03** (최초 2026-08-30; 2026-09-02 top-venue 보강 S47--S51; 2026-09-03 1차 소스 + Aside 브라우저 교차검증)
 
 대상 원고: `paper/latex/{en,ko}/main.tex`
 
@@ -61,7 +61,7 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 | T8 | planning / runtime / interposition | novelty의 역사적 계보와 비발명 경계 | C2, C3 |
 | T9 | feedback repair | $\rho$의 feedback channel·authority 차이 | C5 |
 
-Stage-5 기계 기록 기준 집계는 **55개 = VERIFIED 46 + PREPRINT 9**, unmatched 0,
+Stage-5 기계 기록 기준 집계는 **55개 = VERIFIED 48 + PREPRINT 7** (2026-09-03 교차검증에서 S01 IVIE가 ICCC'26 아카이벌 proceedings로, S46 Self-Debug가 ICLR 2024 채택작으로 승격; S53 저자 순서·S06 volume/pages·S12·S19 제목·S25 proceedings 제목 수정), unmatched 0,
 hallucinated 0이다. Semantic Scholar가 429를 반환한 22개 레코드는 `rate_limited`로 명시했고,
 각 정체성은 Crossref, OpenAlex, PMLR, arXiv 또는 공식 학회 프로그램에서 별도로 확인했다.
 2026-08-30 spot-check에서 S02, S44, S45, S46의 제목 레코드를 관찰했지만 이는 재현 가능한

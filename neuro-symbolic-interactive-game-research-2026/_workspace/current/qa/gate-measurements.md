@@ -173,10 +173,10 @@ measurement.
 
 | Artifact | Size/dimensions | SHA-256 / status |
 |---|---:|---|
-| `game-track/godot/docs/latest/arrival.png` | 1280×720, 301,813 B (refreshed 2026-09-02, contribution readout build) | `a8174d47ab3cc850e8ae7f87f3d9bafe0bf842c10d4f79574d9e2196a5bdcfa9` |
-| `game-track/godot/docs/latest/refusal.png` | 1280×720, 356,877 B (refreshed 2026-09-02) | `d1c2fb6ff38cd857bef1ffa2b041bb2e9c885b19ff27c2444de8911c28156015` |
-| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 363,629 B (refreshed 2026-09-02) | `87ec7d60382103cbc9932ecf2b935bce1eca6f54c17e561cb6036062c74970b5` |
-| `game-track/godot/docs/latest/ending.png` | 1280×720, 389,709 B (refreshed 2026-09-02) | `792aa4427f7bce5e5161471f492d2392e55bf1ab9ebc0d55edaf0bb6a4a41b8b` |
+| `game-track/godot/docs/latest/arrival.png` | 1280×720, 322,457 B (refreshed 2026-09-03 via `run_playable_evaluation.py --capture`, native `--shot`; state `f488d9c4…` → `f488d9c4…`) | `1960493fdb2f3da263c1290faef569a1ad6b1d58d33e751f66915597b0a15703` |
+| `game-track/godot/docs/latest/refusal.png` | 1280×720, 452,783 B (refreshed 2026-09-03 via `run_playable_evaluation.py --capture`, native `--shot`; state `f488d9c4…` → `f488d9c4…`) | `41c69c36e1e8913885d48b5aa730909b4eedcb278ce5e0a3d0a3fb31c8dc4105` |
+| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 400,089 B (refreshed 2026-09-03 via `run_playable_evaluation.py --capture`, native `--shot`; state `f488d9c4…` → `4b231017…`) | `f068f274c608d8cf4ab9f4f8c226702b02bf01240c0179e23c4fbe7d76402122` |
+| `game-track/godot/docs/latest/ending.png` | 1280×720, 440,450 B (refreshed 2026-09-03 via `run_playable_evaluation.py --capture`, native `--shot`; state `f488d9c4…` → `4b231017…`) | `b61eb311e1040b57eb4e6c52e6348ada725f43489486272d51cfc9937b38adaf` |
 | `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `52/52` | PASS; engineering-only |
 | `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
 | `game-track/web/public/` | current production 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes | PCK SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`; includes curated player; ignored/non-authoritative builder output |
