@@ -2,7 +2,7 @@
 
 상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `52/52`
 검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
-배포 `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF`는 사이트 루트에서 라이브 commit-gate 대시보드를 서빙하고 영문 추적 플레이어 산출물을 `/public/`에 임베드한다.**
+배포 `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`는 사이트 루트에서 라이브 commit-gate 대시보드를 서빙하고 영문 추적 플레이어 산출물을 `/public/`에 임베드한다.**
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -192,7 +192,7 @@ python3 -m http.server 4173 --directory game-track/web/public
 결속된 실제 프로젝트에는 Godot editor/import를 실행하지 않는다. 2026-08-30 무시 대상
 2026-09-03 산출물은 런타임 파일 10개 / 50,754,386바이트이며 `index.pck`은 10,902,124바이트, SHA-256
 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`이다. 이 산출물은
-**[Vercel `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
+**[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
 `scripts/deploy_vercel_dashboard.sh`로 배포됐다. 사이트 루트는 `/dashboard/`(D-065 라이브 commit-gate
 대시보드, 파일 4개 / 32,117바이트)로 리다이렉트되고, 게임은 `/public/`에서 서빙되며, 예전 `/index.html`
 링크는 그쪽으로 리다이렉트된다. 런타임 파일 10개와 대시보드 파일 4개는 익명 요청에서 모두 `200`이며

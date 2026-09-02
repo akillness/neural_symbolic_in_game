@@ -377,6 +377,10 @@
   }
 
   window.addEventListener("message", (event) => {
+    // Only the embedded game frame on this origin may feed the dashboard; an opener or a
+    // foreign frame posting a well-formed envelope must not be able to paint a fake chain.
+    const game = document.getElementById("game");
+    if (!game || event.source !== game.contentWindow || event.origin !== location.origin) return;
     const data = event.data;
     if (!data || data.channel !== CHANNEL) return;
     try { handle(data); } catch (error) { console.error("dashboard handler failed", error, data); }

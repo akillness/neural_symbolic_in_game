@@ -83,7 +83,7 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
   실행 가이드와 동일(`/dashboard/` + `/public/`), 루트 `/` → `/dashboard/` 리다이렉트, 예전 `/index.html` →
   `/public/index.html`. 첫 배포는 Vercel "Other" 프리셋의 `public/`-as-root 기본값 때문에 게임만 서빙됐고,
   `vercel.dashboard.json`에 `outputDirectory: dist`를 두어 해결.
-- 영수증: `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF` READY at `https://sealed-lighthouse-trace-rpg.vercel.app`; 런타임 10 + 대시보드 4 파일 바이트 일치(PCK `b92af65d854d…`);
+- 영수증: `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY at `https://sealed-lighthouse-trace-rpg.vercel.app`; 런타임 10 + 대시보드 4 파일 바이트 일치(PCK `b92af65d854d…`);
   headless 데스크톱에서 게임 시작 후 헤더 `live · receiving game events`, `state f488d9c4…812c`, 4xx·콘솔 오류 0;
   390×844 가로 넘침 없음(KPI 카드 3열 래핑 추가, favicon 링크 추가). 캡처 `docs/latest/vercel-dashboard*.png`.
 - 경계: 대시보드는 presentation-only·단방향 브리지이며 배포는 어떤 연구·G4·G6 상태도 승격하지 않는다.

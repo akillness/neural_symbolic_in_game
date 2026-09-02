@@ -2,7 +2,7 @@
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
 `52/52` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
-deployment `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF` serves the live commit-gate dashboard at the site root with the English tracked-player artifact embedded at `/public/`.**
+deployment `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` serves the live commit-gate dashboard at the site root with the English tracked-player artifact embedded at `/public/`.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -192,7 +192,7 @@ copy, uses a single-threaded extension-free Web preset, and leaves canonical `pr
 unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-09-03
 ignored artifact has 10 runtime files / 50,754,386 bytes; `index.pck` is 10,902,124 bytes with SHA-256
 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. It is deployed as
-**[Vercel `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF`](https://sealed-lighthouse-trace-rpg.vercel.app)** through `scripts/deploy_vercel_dashboard.sh`:
+**[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`](https://sealed-lighthouse-trace-rpg.vercel.app)** through `scripts/deploy_vercel_dashboard.sh`:
 the site root redirects to `/dashboard/` (the D-065 live commit-gate dashboard, 4 files / 32,117 bytes),
 the game is served from `/public/`, and old `/index.html` links redirect there. All 10 runtime files and
 the 4 dashboard files returned anonymous `200` responses and matched the staged bytes; WASM used
