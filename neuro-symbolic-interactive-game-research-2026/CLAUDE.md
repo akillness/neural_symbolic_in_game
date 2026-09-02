@@ -236,8 +236,9 @@ paid/free result.
 - Before pushing, run `./scripts/verify_like_ci.sh` — it replays every
   `.github/workflows/validate.yml` step in order. The game-track command alone is not sufficient:
   CI also runs `ruff check`/`ruff format --check` over `src tests scripts examples`, the unit-test
-  discovery, project integrity, README-visual staleness, the offline smoke, harness structure,
-  deep-research and survey contracts, and the wiki lint. `./scripts/verify_like_ci.sh
+  discovery, project integrity, the contribution/reference crosswalk, the editable visual and
+  table sources, the offline smoke, harness structure, deep-research and survey contracts, and
+  the wiki lint. `./scripts/verify_like_ci.sh
   --install-hook` wires it as a `pre-push` hook.
 - Public-safe authored-path check must run the same `main_3d.tscn -- --smoke --public-safe` command
   only against a disposable imported project copy. It must report exactly 8/8 and terminal SHA-256
