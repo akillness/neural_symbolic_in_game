@@ -1,38 +1,47 @@
 \begin{table}[t]
-\caption{수리 arm $\times$ repairability class 정확 집계 (설계 픽스처)}
+\caption{수리 arm별 repairability class 정확 집계 (설계 픽스처)}
 \label{tab:pilot-repair}
 \centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{1.12}
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
  >{\raggedright\arraybackslash}X rrrr@{}}
 \toprule
-Arm & 정보원 & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & 수정$^{e}$ \\
+Arm & 정보원 & \multicolumn{3}{c}{Commit / 사례} & 평균 수정$^{e}$ \\
+\cmidrule(lr){3-5}
+ & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & 필드 수 \\
 \midrule
 Rejection-only ($K{=}0$) & 없음 & 0/5 & 0/1 & 0/6 & --- \\
 블라인드 retry & 없음 & 0/5 & 0/1 & 0/6 & --- \\
+\addlinespace[2pt]
 반례 유도 $\rho$ & 오류 집합 $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
 상태 판독 oracle & 권위 상태+정책 & 5/5 & 1/1 & 0/6 & 1.0 \\
 \bottomrule
 \end{tabularx}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{e}$Commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); 실패한 arm 실행은 상태를 변경하지 않았다. $^{f}$Commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable(동결 repairability class).}
 \end{table}
 
 \begin{table}[t]
-\caption{동결 파일럿 원시 집계}
+\caption{동결 파일럿 검사와 종단 결과 (행 간 직접 비교 불가)}
 \label{tab:pilot-accounting}
-\centering\footnotesize
-\begin{tabularx}{\columnwidth}{@{}Xrr@{}}
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}p{0.27\columnwidth}
+ >{\raggedright\arraybackslash}p{0.29\columnwidth}@{}}
 \toprule
-검사 & 분자 & 분모 \\
+검사 또는 종단군 & 정확 결과 & 해석 범위 \\
 \midrule
-게이트 fixture 일치$^{c}$ & 13 & 13 \\
-알려진 경계 허용$^{a}$ & 2 & 2 \\
-닫힌 unknown-key 경계 거부$^{d}$ & 1 & 1 \\
-탐지 가능 무결성 결함 거부 & 10 & 10 \\
-알려진 무결성 경계 replay 허용$^{b}$ & 1 & 1 \\
-Adapter 커밋 & 1 & 7 \\
-기호 fallback & 1 & 7 \\
-Adapter 실패 & 5 & 7 \\
-Manifest guard 거부 & 3 & 3 \\
+게이트 fixture 일치 & 13/13 & 저자 oracle 일치 \\
+알려진 경계 허용 & 2/2 & 인코딩 한계, safety pass 아님 \\
+닫힌 unknown-key 거부 & 1/1 & proposal/replay parser parity \\
+탐지 가능 무결성 결함 거부 & 10/10 & 지정된 검사 연산 \\
+알려진 provenance 경계 허용 & 1/1 & repair 생성 출처 미인증 \\
+\addlinespace[2pt]
+Adapter 종단 class & 1 commit; 1 fallback; 5 실패 / 배정 7 & 배정 7건의 분류 완전성 \\
+Manifest guard 거부 & 3/3 & 주입 결함 fail-closed \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$경계 허용은 의미 추출과 정책 완결성 한계를 문서화하며 safety pass가 아니다. $^{b}$Replay는 repair 생성을 인증하거나 다시 실행하지 않는다. $^{c}$Loader가 이 일치를 강제하므로 측정값이 아니라 구성 불변량이다. $^{d}$Stage 8 이후의 parser 거부 parity이며 의미 안전성 증거가 아니다. $^{e}$commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); 실패한 arm 실행은 상태를 변경하지 않았다. $^{f}$commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable(동결된 repairability class).}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize 행마다 분모와 성공 방향이 다르므로 비율처럼 순위를 비교하지 않는다. 모든 값은 설계 픽스처의 정확한 감사 사실이다.}
 \end{table}

@@ -9,12 +9,12 @@
     <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7A7A7A"/></marker>
     <style>
       text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
-      .section { font-size: 25px; font-weight: 700; }
-      .box-title { font-size: 24px; font-weight: 700; }
-      .body { font-size: 21px; font-weight: 400; }
-      .small { font-size: 19px; font-weight: 400; }
-      .note { font-size: 19px; font-style: italic; fill: #5F6368; }
-      .arrow-label { font-size: 19px; font-weight: 700; }
+      .section { font-size: 28px; font-weight: 700; }
+      .box-title { font-size: 26px; font-weight: 700; }
+      .body { font-size: 25px; font-weight: 400; }
+      .small { font-size: 24px; font-weight: 400; }
+      .note { font-size: 24px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 24px; font-weight: 700; }
     </style>
   </defs>
   <rect x="0" y="0" width="1480" height="700" fill="#FFFFFF"/>
@@ -22,7 +22,7 @@
   <rect x="0" y="0" width="10" height="96" fill="#0072B2"/>
   <text x="34" y="42" class="section" text-anchor="start">V2 · One transaction: parse → validate → repair(K) → defensive check → commit</text>
   <text x="34" y="74" class="small" text-anchor="start" fill="#5F6368">A rejected candidate leaves canonical state byte-identical; every attempt is recorded before the terminal outcome</text>
-  <line x1="0" y1="96" x2="1480" y2="96" stroke="#C9CDD1" stroke-width="2" fill="none"/>
+  <line class="connector" x1="0" y1="96" x2="1480" y2="96" stroke="#C9CDD1" stroke-width="2" fill="none"/>
   <rect x="40" y="150" width="220" height="132" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
   <rect x="40" y="150" width="8" height="132" fill="#0072B2"/>
   <text x="66" y="190" class="box-title" text-anchor="start">Candidate a_j</text>
@@ -38,8 +38,8 @@
   <text x="586" y="190" class="box-title" text-anchor="start">Validate</text>
   <text x="586" y="224" class="small" text-anchor="start">V(c_t, a_j)</text>
   <text x="586" y="251" class="small" text-anchor="start">same prior c_t</text>
-  <path d="M260 216 H300" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-  <path d="M520 216 H560" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <path class="connector" d="M260 216 H300" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <path class="connector" d="M520 216 H560" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
   <rect x="880" y="150" width="260" height="132" rx="7" fill="#E8F5EF" stroke="#009E73" stroke-width="2"/>
   <rect x="880" y="150" width="8" height="132" fill="#009E73"/>
   <text x="906" y="190" class="box-title" text-anchor="start">Defensive check</text>
@@ -50,15 +50,15 @@
   <text x="1216" y="190" class="box-title" text-anchor="start">Commit</text>
   <text x="1216" y="224" class="small" text-anchor="start">c_(t+1) = T(c_t, a_j)</text>
   <text x="1216" y="251" class="small" text-anchor="start">typed event appended</text>
-  <path d="M780 216 H880" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path class="connector" d="M780 216 H880" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <text x="830" y="200" class="note" text-anchor="middle" fill="#009E73">all v_i = 1</text>
-  <path d="M1140 216 H1190" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path class="connector" d="M1140 216 H1190" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <rect x="560" y="330" width="320" height="128" rx="7" fill="#FFFFFF" stroke="#E69F00" stroke-width="2"/>
   <rect x="560" y="330" width="8" height="128" fill="#E69F00"/>
   <text x="586" y="370" class="box-title" text-anchor="start">Record attempt j</text>
   <text x="586" y="404" class="small" text-anchor="start">candidate + error set E_j</text>
   <text x="586" y="431" class="small" text-anchor="start">attempt hash chain</text>
-  <path d="M670 282 V330" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path class="connector" d="M670 282 V330" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
   <text x="686" y="312" class="small" text-anchor="start" fill="#E69F00">some v_i = 0</text>
   <rect x="940" y="330" width="250" height="128" rx="7" fill="#FFF2DD" stroke="#E69F00" stroke-width="2"/>
   <rect x="940" y="330" width="8" height="128" fill="#E69F00"/>
@@ -70,9 +70,9 @@
   <text x="1266" y="370" class="box-title" text-anchor="start">Fallback</text>
   <text x="1266" y="404" class="small" text-anchor="start">j = K</text>
   <text x="1266" y="431" class="small" text-anchor="start">c_(t+1) = c_t</text>
-  <path d="M880 394 H940" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
-  <path d="M1190 394 H1240" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
-  <path d="M1065 458 V496 H540 V252 H560" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="7 6"/>
+  <path class="connector" d="M880 394 H940" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path class="connector" d="M1190 394 H1240" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <path class="connector" d="M1065 458 V496 H540 V252 H560" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="7 6"/>
   <text x="810" y="488" class="note" text-anchor="middle" fill="#E69F00">revalidate against the same prior state</text>
   <rect x="40" y="530" width="1400" height="132" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
   <text x="66" y="566" class="box-title" text-anchor="start">Repair arms exercised on 12 authored initially-invalid cases</text>

@@ -1,38 +1,47 @@
 \begin{table}[t]
-\caption{Repair Arm $\times$ Repairability Class, Exact Counts (Designed Fixtures)}
+\caption{Exact Repair-Arm Counts by Repairability Class (Designed Fixtures)}
 \label{tab:pilot-repair}
 \centering\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{1.12}
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
  >{\raggedright\arraybackslash}X rrrr@{}}
 \toprule
-Arm & Info source & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Edits$^{e}$ \\
+Arm & Info source & \multicolumn{3}{c}{Commits / cases} & Mean edits$^{e}$ \\
+\cmidrule(lr){3-5}
+ & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Fields \\
 \midrule
 Rejection-only ($K{=}0$) & none & 0/5 & 0/1 & 0/6 & --- \\
 Blind unchanged retry & none & 0/5 & 0/1 & 0/6 & --- \\
+\addlinespace[2pt]
 Counterexample-guided $\rho$ & error set $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
 State-reading oracle & state+policy & 5/5 & 1/1 & 0/6 & 1.0 \\
 \bottomrule
 \end{tabularx}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{e}$Mean changed candidate fields over committed repairs (minimality proxy); failed arm executions left the state unchanged. $^{f}$Commits/cases. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable (frozen repairability classes).}
 \end{table}
 
 \begin{table}[t]
-\caption{Frozen-Pilot Raw Accounting}
+\caption{Frozen-Pilot Checks and Terminal Outcomes (Rows Are Not Comparable)}
 \label{tab:pilot-accounting}
-\centering\footnotesize
-\begin{tabularx}{\columnwidth}{@{}Xrr@{}}
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}p{0.27\columnwidth}
+ >{\raggedright\arraybackslash}p{0.29\columnwidth}@{}}
 \toprule
-Check & Numerator & Denominator \\
+Check or terminal family & Exact outcome & Interpretation \\
 \midrule
-Gate fixture agreement$^{c}$ & 13 & 13 \\
-Known-boundary acceptances$^{a}$ & 2 & 2 \\
-Closed unknown-key boundary rejected$^{d}$ & 1 & 1 \\
-Detectable integrity faults rejected & 10 & 10 \\
-Known integrity boundary replay-accepted$^{b}$ & 1 & 1 \\
-Adapter commits & 1 & 7 \\
-Symbolic fallbacks & 1 & 7 \\
-Adapter failures & 5 & 7 \\
-Manifest guards rejected & 3 & 3 \\
+Gate fixture agreement & 13/13 & authored-oracle agreement \\
+Known-boundary acceptance & 2/2 & encoded limit, not a safety pass \\
+Closed unknown-key rejection & 1/1 & proposal/replay parser parity \\
+Detectable integrity-fault rejection & 10/10 & designated check operations \\
+Known provenance-boundary acceptance & 1/1 & repair provenance unauthenticated \\
+\addlinespace[2pt]
+Adapter terminal classes & 1 commit; 1 fallback; 5 failures / 7 assigned & complete classification of 7 assignments \\
+Manifest-guard rejection & 3/3 & injected faults failed closed \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{a}$Boundary acceptances document semantic-extraction and policy-completeness limits; they are not safety passes. $^{b}$Replay does not authenticate or re-execute repair generation. $^{c}$The loader enforces this agreement, so it is a construction invariant rather than a measurement. $^{d}$This is post-Stage-8 parser rejection parity, not semantic-safety evidence. $^{e}$Mean changed candidate fields over committed repairs (minimality proxy); failed arm executions left the state unchanged. $^{f}$Commits/cases. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable (frozen repairability classes).}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize Rows have different denominators and favorable directions; they must not be ranked as rates. Every value is an exact audit fact for designed fixtures.}
 \end{table}

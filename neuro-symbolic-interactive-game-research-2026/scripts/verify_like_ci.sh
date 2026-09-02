@@ -2,8 +2,8 @@
 # Run the exact .github/workflows/validate.yml sequence locally.
 #
 # The CI job lints and tests a wider surface than any single project script:
-# ruff covers src, tests, scripts, and examples, and nine other gates run after
-# it. Running only ./scripts/validate_game_track.sh before a push therefore
+# ruff covers src, tests, scripts, and examples, and the remaining repository
+# gates run after it. Running only ./scripts/validate_game_track.sh before a push therefore
 # passes locally and still fails CI. Use this script instead, or install it as a
 # pre-push hook with --install-hook.
 #
@@ -43,15 +43,6 @@ step() {
   fi
 }
 
-visuals_are_current() {
-  uv run python scripts/generate_readme_visuals.py || return 1
-  if [ -n "$(git status --porcelain -- visuals)" ]; then
-    echo "README visuals are stale; commit the regenerated visuals/."
-    git status --porcelain -- visuals
-    return 1
-  fi
-}
-
 ruff_gate() {
   uv run ruff check src tests scripts examples || return 1
   uv run ruff format --check src tests scripts examples || return 1
@@ -62,7 +53,8 @@ step "Unit tests" uv run python -m unittest discover -s tests
 step "Ruff lint and format" ruff_gate
 step "Project integrity" uv run python scripts/validate_project.py
 step "Contribution and reference crosswalk" uv run python scripts/validate_contribution_crosswalk.py
-step "README visuals match their sources" visuals_are_current
+step "Editable visual and table sources" uv run python scripts/validate_visual_assets.py \
+  --require-pdf-tools --check-regeneration
 step "Offline experiment smoke" uv run python examples/recorded_experiment.py
 step "Harness structure" uv run python scripts/validate_harness.py
 step "Experimental game-track contracts" ./scripts/validate_game_track.sh

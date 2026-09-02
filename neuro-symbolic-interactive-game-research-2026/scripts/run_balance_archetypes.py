@@ -235,6 +235,8 @@ def render_chart(report: Mapping[str, Any]) -> str:
         for row in rows
     )
     max_walk = max(float(row["pacing_proxy"]["walk_time_s_at_walk_speed"]) for row in rows)
+    count_scale = max(1, max_count)
+    walk_scale = max(1.0, max_walk)
     left, top = 70, 64
     panel_width, panel_height = 520, 300
     group_width = panel_width / len(rows)
@@ -243,7 +245,12 @@ def render_chart(report: Mapping[str, Any]) -> str:
         (
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{CHART_WIDTH}" '
             f'height="{CHART_HEIGHT}" viewBox="0 0 {CHART_WIDTH} {CHART_HEIGHT}" '
-            'font-family="sans-serif">'
+            'role="img" aria-labelledby="svg-title svg-desc" font-family="sans-serif">'
+        ),
+        '<title id="svg-title">봉인된 등대 아키타입 밸런스 프로브</title>',
+        (
+            '<desc id="svg-desc">다섯 스크립트 아키타입의 기록, 보류, 관찰 횟수와 '
+            "직선 이동시간 하한을 나란히 비교한 엔지니어링 전용 차트.</desc>"
         ),
         f'<rect width="{CHART_WIDTH}" height="{CHART_HEIGHT}" fill="#141A21"/>',
         (
@@ -265,10 +272,11 @@ def render_chart(report: Mapping[str, Any]) -> str:
         )
     axis_bottom = top + 20 + panel_height
     for tick in range(max_count + 1):
-        tick_y = axis_bottom - (tick / max_count) * panel_height
+        tick_y = axis_bottom - (tick / count_scale) * panel_height
         parts.append(
-            f'<line x1="{left - 8}" y1="{tick_y:.1f}" x2="{left + panel_width}" '
-            f'y2="{tick_y:.1f}" stroke="#26303A" stroke-width="1"/>'
+            f'<line class="grid-line" x1="{left - 8}" y1="{tick_y:.1f}" '
+            f'x2="{left + panel_width}" y2="{tick_y:.1f}" '
+            f'stroke="#26303A" stroke-width="1"/>'
         )
         parts.append(
             f'<text x="{left - 14}" y="{tick_y + 4:.1f}" fill="#8FA3B2" font-size="11" '
@@ -279,7 +287,7 @@ def render_chart(report: Mapping[str, Any]) -> str:
         group_x = left + row_index * group_width
         for bar_index, (key, color) in enumerate(BAR_COLORS.items()):
             value = int(counts[key])
-            bar_height = (value / max_count) * panel_height
+            bar_height = (value / count_scale) * panel_height
             bar_x = group_x + 8 + bar_index * (bar_width + 4)
             bar_y = axis_bottom - bar_height
             parts.append(
@@ -287,8 +295,10 @@ def render_chart(report: Mapping[str, Any]) -> str:
                 f'height="{bar_height:.1f}" fill="{color}"/>'
             )
             parts.append(
-                f'<text x="{bar_x + bar_width / 2:.1f}" y="{bar_y - 4:.1f}" fill="#D9D3C4" '
-                f'font-size="11" text-anchor="middle">{value}</text>'
+                f'<text class="bar-value" x="{bar_x + bar_width / 2:.1f}" '
+                f'y="{bar_y - 7:.1f}" fill="#F8F5EC" font-size="11" font-weight="700" '
+                'text-anchor="middle" paint-order="stroke" stroke="#141A21" '
+                f'stroke-width="4" stroke-linejoin="round">{value}</text>'
             )
         parts.append(
             f'<text x="{group_x + group_width / 2:.1f}" y="{axis_bottom + 18}" fill="#D9D3C4" '
@@ -313,7 +323,7 @@ def render_chart(report: Mapping[str, Any]) -> str:
     for row_index, row in enumerate(rows):
         seconds = float(row["pacing_proxy"]["walk_time_s_at_walk_speed"])
         bar_y = walk_axis_top + row_index * walk_row_height + 8
-        bar_length = (seconds / max_walk) * (walk_width - 120)
+        bar_length = (seconds / walk_scale) * (walk_width - 120)
         parts.append(
             f'<text x="{walk_left}" y="{bar_y + 12:.1f}" fill="#D9D3C4" font-size="11">'
             f"{row['archetype_id']}</text>"
@@ -323,8 +333,10 @@ def render_chart(report: Mapping[str, Any]) -> str:
             'fill="#4A7B96"/>'
         )
         parts.append(
-            f'<text x="{walk_left + 54 + bar_length:.1f}" y="{bar_y + 12:.1f}" fill="#8FA3B2" '
-            f'font-size="11">{seconds} s</text>'
+            f'<text class="bar-value" x="{walk_left + 54 + bar_length:.1f}" '
+            f'y="{bar_y + 12:.1f}" fill="#D9D3C4" font-size="11" font-weight="700" '
+            'paint-order="stroke" stroke="#141A21" stroke-width="3" '
+            f'stroke-linejoin="round">{seconds} s</text>'
         )
     parts.append("</svg>")
     return "\n".join(parts) + "\n"

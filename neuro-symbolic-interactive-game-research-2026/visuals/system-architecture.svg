@@ -9,12 +9,12 @@
     <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7A7A7A"/></marker>
     <style>
       text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
-      .section { font-size: 25px; font-weight: 700; }
-      .box-title { font-size: 24px; font-weight: 700; }
-      .body { font-size: 21px; font-weight: 400; }
-      .small { font-size: 19px; font-weight: 400; }
-      .note { font-size: 19px; font-style: italic; fill: #5F6368; }
-      .arrow-label { font-size: 19px; font-weight: 700; }
+      .section { font-size: 28px; font-weight: 700; }
+      .box-title { font-size: 26px; font-weight: 700; }
+      .body { font-size: 25px; font-weight: 400; }
+      .small { font-size: 24px; font-weight: 400; }
+      .note { font-size: 24px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 24px; font-weight: 700; }
     </style>
   </defs>
   <rect x="0" y="0" width="1480" height="860" fill="#FFFFFF"/>
@@ -22,7 +22,7 @@
   <rect x="0" y="0" width="10" height="96" fill="#0072B2"/>
   <text x="34" y="42" class="section" text-anchor="start">V1 · Trust boundary: learned proposal, symbolic authority</text>
   <text x="34" y="74" class="small" text-anchor="start" fill="#5F6368">Solid = implemented and exercised by the offline pilot   ·   Dashed = specified, not implemented, no evidence</text>
-  <line x1="0" y1="96" x2="1480" y2="96" stroke="#C9CDD1" stroke-width="2" fill="none"/>
+  <line class="connector" x1="0" y1="96" x2="1480" y2="96" stroke="#C9CDD1" stroke-width="2" fill="none"/>
   <text x="40" y="148" class="arrow-label" text-anchor="start" fill="#5F6368">UNTRUSTED PROPOSAL</text>
   <text x="560" y="148" class="arrow-label" text-anchor="start" fill="#B4436C">DETERMINISTIC AUTHORITY</text>
   <text x="1080" y="148" class="arrow-label" text-anchor="start" fill="#5F6368">CANONICAL RECORD</text>
@@ -45,7 +45,7 @@
   <rect x="560" y="170" width="440" height="502" rx="9" fill="#FBECEF" stroke="#B4436C" stroke-width="3"/>
   <text x="586" y="212" class="box-title" text-anchor="start">Hard commit gate</text>
   <text x="586" y="242" class="small" text-anchor="start" fill="#5F6368">state-relative, externally supplied policy</text>
-  <line x1="586" y1="258" x2="974" y2="258" stroke="#B4436C" stroke-width="2" fill="none"/>
+  <line class="connector" x1="586" y1="258" x2="974" y2="258" stroke="#B4436C" stroke-width="2" fill="none"/>
   <text x="586" y="292" class="small" text-anchor="start">v_policy</text>
   <text x="704" y="292" class="small" text-anchor="start" fill="#5F6368">action + effects allowed</text>
   <text x="586" y="324" class="small" text-anchor="start">v_pre</text>
@@ -83,16 +83,16 @@
   <text x="1106" y="630" class="box-title" text-anchor="start">Game bridge</text>
   <text x="1106" y="664" class="small" text-anchor="start">versioned event contract</text>
   <text x="1106" y="691" class="small" text-anchor="start">engine transport unimplemented</text>
-  <path d="M265 320 V390" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="7 6"/>
+  <path class="connector" d="M265 320 V390" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="7 6"/>
   <text x="285" y="362" class="note" text-anchor="start">conditions the prompt</text>
-  <path d="M265 574 V540" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="7 6"/>
-  <path d="M490 465 H560" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <path class="connector" d="M265 574 V540" stroke="#7A7A7A" stroke-width="3" fill="none" marker-end="url(#arrow-gray)" stroke-dasharray="7 6"/>
+  <path class="connector" d="M490 465 H560" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
   <text x="525" y="452" class="note" text-anchor="middle">candidate</text>
-  <path d="M1000 245 H1080" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path class="connector" d="M1000 245 H1080" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <text x="1006" y="233" class="note" text-anchor="start" fill="#009E73">commit</text>
-  <path d="M1000 470 H1080" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path class="connector" d="M1000 470 H1080" stroke="#009E73" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <text x="1006" y="458" class="note" text-anchor="start" fill="#009E73">record</text>
-  <path d="M700 672 V712 H525 V478" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path class="connector" d="M700 672 V712 H525 V478" stroke="#E69F00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
   <text x="612" y="704" class="note" text-anchor="middle" fill="#E69F00">repair attempt</text>
   <rect x="40" y="720" width="1400" height="96" rx="7" fill="#EEF0F2" stroke="#C9CDD1" stroke-width="2"/>
   <text x="66" y="756" class="small" text-anchor="start">Invariant: no model output, retrieved fact, memory summary, or affect score may change canonical state without passing the gate.</text>

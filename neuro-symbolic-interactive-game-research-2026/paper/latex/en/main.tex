@@ -92,7 +92,7 @@ Table~\ref{tab:validators} summarizes the encoded rejection boundary; it is not 
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_architecture.png}
+  \includegraphics[width=\columnwidth]{../figures/fig_architecture.pdf}
   \caption{Trust boundary. Retrieved context and generated candidates remain non-authoritative until known-field type checks and state-relative validation complete.}
   \label{fig:architecture}
 \end{figure}
@@ -102,6 +102,8 @@ Table~\ref{tab:validators} summarizes the encoded rejection boundary; it is not 
 \label{tab:validators}
 \centering
 \footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.14}
 \begin{tabular}{@{}lll@{}}
 \toprule
 Predicate & Rejects & On failure \\
@@ -121,6 +123,7 @@ Fig.~\ref{alg:commit} gives the controller's dependency-free pseudocode. ``Recor
 
 \begin{figure}[t]
 \footnotesize
+\renewcommand{\arraystretch}{1.10}
 \begin{tabular}{@{}rl@{}}
 1: & $a\leftarrow\textsc{Propose}(c)$; $j\leftarrow0$ \\
 2: & \textbf{repeat} \\
@@ -147,6 +150,8 @@ where each $\delta(e)$ is the deterministic per-error-class edit of Table~\ref{t
 \label{tab:rho-rules}
 \centering
 \footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.14}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Validator error class & Edit $\delta(e)$ on the candidate \\
@@ -165,7 +170,7 @@ Unreachable object; knowledge, & no-op (candidate-local edit would \\
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_repair_state_machine.png}
+  \includegraphics[width=\columnwidth]{../figures/fig_repair_state_machine.pdf}
   \caption{Proposal, validation, bounded repair, fallback, commit, and replay states. Controller failure is terminal and may have no completed proposal trace.}
   \label{fig:repair}
 \end{figure}
@@ -213,6 +218,7 @@ The live extension compares blind unchanged retry with $\rho$ at matched $K{=}1$
   \vspace{0.45ex}
 
   {\footnotesize
+  \renewcommand{\arraystretch}{1.12}
   \begin{tabular}{@{}cllll@{}}
     \toprule
     Panel & Capture & Event & Validation & State relation \\
@@ -241,7 +247,7 @@ Tables~\ref{tab:pilot-repair} and~\ref{tab:pilot-accounting} report exact design
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.png}
+  \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.pdf}
   \caption{Evidence boundary from frozen fixture through a designated check operation and generated table. Counts are admitted only through generated artifacts.}
   \label{fig:evidence}
 \end{figure}
@@ -279,6 +285,9 @@ Large language models assisted prose, code and test drafting, command orchestrat
 \section*{Data and Code Availability}
 The repository contains the implementation, build sources, separated offline and live-screening packets, and \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, and \texttt{experiment-evidence-matrix.csv}. The offline manifest binds 38 artifacts, 22 inputs, and 121 provenance rows (85 executed and 36 aggregate); the live promotion manifest binds 14 JSON/JSONL receipts and retains the superseded v1 diagnostic. The portable offline invocation contains no absolute clone path, and clean-Git input binding is re-established at tag \texttt{trace-rpg-\allowbreak guided-repair-\allowbreak inputs-\allowbreak 20260821-v1}. No anonymized reviewer archive or DOI deposit is claimed.
 
+% Keep the 45-entry audit bibliography inside the eight-page release band.
+% This remains at the same 6.5 pt floor used for paper-figure labels.
+\renewcommand{\footnotesize}{\fontsize{6.5}{6.8}\selectfont}
 \bibliographystyle{IEEEtran}
 \bibliography{../references}
 \endgroup

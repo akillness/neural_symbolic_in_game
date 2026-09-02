@@ -6,9 +6,11 @@ image models. Output: research/directions/figures/*.svg. The Pareto panel is a
 conceptual target sketch and is labeled as such — it plots no measured data.
 """
 
-import os
+from html import escape
+from pathlib import Path
 
-OUT_DIR = "research/directions/figures"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+OUT_DIR = PROJECT_ROOT / "research" / "directions" / "figures"
 
 INK = "#1B2830"
 SOFT = "#4A5A64"
@@ -18,7 +20,18 @@ CARD = "#FFFDF6"
 BRASS = "#8A6228"
 AMBER = "#B97F1E"
 CORAL = "#B84A41"
-MONO = "ui-monospace, Menlo, monospace"
+MONO = "Noto Sans KR, Apple SD Gothic Neo, Helvetica, Arial, sans-serif"
+
+
+def svg_header(width, height, title, description):
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
+        f'viewBox="0 0 {width} {height}" role="img" aria-labelledby="svg-title svg-desc" '
+        f'font-family="{MONO}">'
+        f'<title id="svg-title">{escape(title)}</title>'
+        f'<desc id="svg-desc">{escape(description)}</desc>'
+    )
 
 
 def box(x, y, w, h, stroke, label_lines, fill=CARD, size=12.5, color=INK):
@@ -28,7 +41,7 @@ def box(x, y, w, h, stroke, label_lines, fill=CARD, size=12.5, color=INK):
     for index, line in enumerate(label_lines):
         text += (
             f'<text x="{x + w / 2}" y="{start + index * line_height}" text-anchor="middle" '
-            f'font-family="{MONO}" font-size="{size}" fill="{color}">{line}</text>'
+            f'font-family="{MONO}" font-size="{size}" fill="{color}">{escape(line)}</text>'
         )
     rect = (
         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{fill}" '
@@ -40,21 +53,31 @@ def box(x, y, w, h, stroke, label_lines, fill=CARD, size=12.5, color=INK):
 def arrow(x1, y1, x2, y2, color=SOFT, dash=""):
     dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
     return (
-        f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" '
-        f'stroke-width="1.4" marker-end="url(#arr)"{dash_attr}/>'
+        f'<line class="connector" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
+        f'stroke="{color}" stroke-width="1.4" marker-end="url(#arr)"{dash_attr}/>'
     )
 
 
-def label(x, y, text, color=MUTED, size=11, anchor="middle"):
+def label(x, y, value, color=MUTED, size=11, anchor="middle", halo=False):
+    halo_attrs = (
+        f' paint-order="stroke" stroke="{PANEL}" stroke-width="5" stroke-linejoin="round"'
+        if halo
+        else ""
+    )
     return (
         f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{MONO}" '
-        f'font-size="{size}" fill="{color}">{text}</text>'
+        f'font-size="{size}" fill="{color}"{halo_attrs}>{escape(value)}</text>'
     )
 
 
 def lanes_figure() -> str:
     parts = [
-        (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" font-family="{MONO}">'),
+        svg_header(
+            900,
+            430,
+            "세 가지 검증 체제 비교",
+            "동일 시나리오, 모델, 예산 계정 아래 기호 게이트, 컨센서스, 하이브리드를 비교한다.",
+        ),
         (
             f'<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" '
             f'markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="{SOFT}"/></marker></defs>'
@@ -112,7 +135,12 @@ def pareto_figure() -> str:
     # Conceptual target sketch only — axes carry no measured values.
     left, top, width, height = 90, 60, 700, 280
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" font-family="{MONO}">',
+        svg_header(
+            860,
+            420,
+            "비용-유효성 Pareto 개념 스케치",
+            "측정 데이터가 아닌 목표 스케치로, 기호 게이트와 컨센서스 후보의 예상 위치를 비교한다.",
+        ),
         f'<rect x="0" y="0" width="860" height="420" fill="{PANEL}"/>',
         label(430, 30, "개념적 목표 스케치 — 측정 데이터 아님 [TARGET]", CORAL, 13),
         (
@@ -132,6 +160,12 @@ def pareto_figure() -> str:
             "하드 유효성 →</text>"
         ),
     ]
+    # Draw the conceptual frontier before its point labels. Haloed labels then
+    # interrupt the stroke instead of letting it print across glyphs.
+    parts.append(
+        f'<path class="connector" d="M130 300 C 250 160, 330 110, 340 95 L 470 78" '
+        f'fill="none" stroke="{AMBER}" stroke-width="1.2" stroke-dasharray="5 4"/>'
+    )
     points = [
         ("A0 direct", 130, 300, MUTED),
         ("A3 blind retry", 300, 205, MUTED),
@@ -143,11 +177,7 @@ def pareto_figure() -> str:
     ]
     for name, x, y, color in points:
         parts.append(f'<circle cx="{x}" cy="{y}" r="7" fill="{color}"/>')
-        parts.append(label(x, y - 14, name, color, 11.5))
-    parts.append(
-        f'<path d="M130 300 C 250 160, 330 110, 340 95 L 470 78" fill="none" '
-        f'stroke="{AMBER}" stroke-width="1.2" stroke-dasharray="5 4"/>'
-    )
+        parts.append(label(x, y - 14, name, color, 11.5, halo=True))
     parts.append(
         label(
             430,
@@ -162,16 +192,15 @@ def pareto_figure() -> str:
 
 
 def main() -> None:
-    os.makedirs(OUT_DIR, exist_ok=True)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     figures = {
         "fig_consensus_gate_lanes.svg": lanes_figure(),
         "fig_cost_validity_pareto_concept.svg": pareto_figure(),
     }
     for name, svg in figures.items():
-        path = os.path.join(OUT_DIR, name)
-        with open(path, "w") as handle:
-            handle.write(svg)
-        print("wrote", path)
+        target = OUT_DIR / name
+        target.write_text(svg, encoding="utf-8", newline="\n")
+        print("wrote", target.relative_to(PROJECT_ROOT))
 
 
 if __name__ == "__main__":

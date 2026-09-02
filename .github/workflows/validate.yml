@@ -16,6 +16,8 @@ jobs:
         with:
           python-version: "3.11"
       - uses: astral-sh/setup-uv@v6
+      - name: Install PDF inspection tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: Install locked environment
         run: uv sync --extra research --extra dev
       - name: Unit tests
@@ -28,16 +30,8 @@ jobs:
         run: uv run python scripts/validate_project.py
       - name: Contribution and reference crosswalk
         run: uv run python scripts/validate_contribution_crosswalk.py
-      - name: README visuals match their sources
-        run: |
-          uv run python scripts/generate_readme_visuals.py
-          # Catches both edited and uncommitted-new SVGs, so a changed pilot
-          # number or claim status can never leave a stale figure behind.
-          if [ -n "$(git status --porcelain -- visuals)" ]; then
-            echo "README visuals are stale; run scripts/generate_readme_visuals.py and commit visuals/."
-            git status --porcelain -- visuals
-            exit 1
-          fi
+      - name: Editable visual and table sources
+        run: uv run python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration
       - name: Offline experiment smoke
         run: uv run python examples/recorded_experiment.py
       - name: Harness structure

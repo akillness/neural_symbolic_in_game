@@ -2,16 +2,19 @@
 \caption{Live Screening Pilot, Exact Counts (Five Proposals per Cell, $K{=}1$)}
 \label{tab:live-screening}
 \centering\scriptsize
-\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X rrr >{\raggedright\arraybackslash}X@{}}
+\setlength{\tabcolsep}{2.7pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X r c r >{\raggedright\arraybackslash}X@{}}
 \toprule
-Base / condition & Initial valid & $\rho$ commits & Blind commits & Initial errors \\
+Base / condition & Initial valid & $\rho$ vs blind commits & $\Delta$ & Initial errors \\
 \midrule
-Frozen / visible & 5/5 & 5/5 & 5/5 & --- \\
-Frozen / blind & 5/5 & 5/5 & 5/5 & --- \\
-Frozen / goal-blind & 0/5 & 0/5 & 0/5 & QSR \\
-Signal-v2 / visible & 5/5 & 5/5 & 5/5 & --- \\
-Signal-v2 / blind & 0/5 & 5/5 & 0/5 & PEO+\allowbreak PEV+\allowbreak PPO \\
+Frozen / visible & 5/5 & 5/5 vs 5/5 & +0 & --- \\
+Frozen / blind & 5/5 & 5/5 vs 5/5 & +0 & --- \\
+Frozen / goal-blind & 0/5 & 0/5 vs 0/5 & +0 & QSR \\
+\addlinespace[2pt]
+Signal-v2 / visible & 5/5 & 5/5 vs 5/5 & +0 & --- \\
+Signal-v2 / blind & 0/5 & \textbf{5/5 vs 0/5} & \textbf{+5} & PEO+\allowbreak PEV+\allowbreak PPO \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. All counts are screening-pilot-only, without inferential statistics; the superseded v1 diagnostic is excluded.}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. $\Delta$ is $\rho$ commits minus blind commits for matched candidates. All counts are screening-pilot-only, without inferential statistics; the superseded v1 diagnostic is excluded.}
 \end{table}

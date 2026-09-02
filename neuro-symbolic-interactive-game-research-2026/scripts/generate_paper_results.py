@@ -220,13 +220,18 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
     closed_boundary = data["closed_boundary_regressions"]["raw_counts"]
     by_class = _class_counts(data)
     caption1 = (
-        "수리 arm $\\times$ repairability class 정확 집계 (설계 픽스처)"
+        "수리 arm별 repairability class 정확 집계 (설계 픽스처)"
         if korean
-        else "Repair Arm $\\times$ Repairability Class, Exact Counts (Designed Fixtures)"
+        else "Exact Repair-Arm Counts by Repairability Class (Designed Fixtures)"
     )
-    caption2 = "동결 파일럿 원시 집계" if korean else "Frozen-Pilot Raw Accounting"
+    caption2 = (
+        "동결 파일럿 검사와 종단 결과 (행 간 직접 비교 불가)"
+        if korean
+        else "Frozen-Pilot Checks and Terminal Outcomes (Rows Are Not Comparable)"
+    )
     if korean:
-        arm_header = "Arm & 정보원 & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & 수정$^{e}$"
+        arm_header_top = "Arm & 정보원 & \\multicolumn{3}{c}{Commit / 사례} & 평균 수정$^{e}$"
+        arm_header_bottom = " & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & 필드 수"
         arm_labels = (
             "Rejection-only ($K{=}0$)",
             "블라인드 retry",
@@ -234,33 +239,40 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
             "상태 판독 oracle",
         )
         arm_sources = ("없음", "없음", "오류 집합 $E$", "권위 상태+정책")
-        count_header = "검사 & 분자 & 분모"
-        count_labels = (
-            "게이트 fixture 일치$^{c}$",
-            "알려진 경계 허용$^{a}$",
-            "닫힌 unknown-key 경계 거부$^{d}$",
+        accounting_header = "검사 또는 종단군 & 정확 결과 & 해석 범위"
+        accounting_labels = (
+            "게이트 fixture 일치",
+            "알려진 경계 허용",
+            "닫힌 unknown-key 거부",
             "탐지 가능 무결성 결함 거부",
-            "알려진 무결성 경계 replay 허용$^{b}$",
-            "Adapter 커밋",
-            "기호 fallback",
-            "Adapter 실패",
+            "알려진 provenance 경계 허용",
+            "Adapter 종단 class",
             "Manifest guard 거부",
         )
-        footnote = (
-            "$^{a}$경계 허용은 의미 추출과 정책 완결성 한계를 "
-            "문서화하며 safety pass가 아니다. "
-            "$^{b}$Replay는 repair 생성을 인증하거나 다시 실행하지 않는다. "
-            "$^{c}$Loader가 이 일치를 강제하므로 측정값이 아니라 구성 불변량이다. "
-            "$^{d}$Stage 8 이후의 parser 거부 parity이며 의미 안전성 증거가 아니다."
+        accounting_scopes = (
+            "저자 oracle 일치",
+            "인코딩 한계, safety pass 아님",
+            "proposal/replay parser parity",
+            "지정된 검사 연산",
+            "repair 생성 출처 미인증",
+            "배정 7건의 분류 완전성",
+            "주입 결함 fail-closed",
+        )
+        accounting_footnote = (
+            "행마다 분모와 성공 방향이 다르므로 비율처럼 순위를 비교하지 않는다. "
+            "모든 값은 설계 픽스처의 정확한 감사 사실이다."
         )
         footnote_e = (
-            " $^{e}$commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); "
+            "$^{e}$Commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); "
             "실패한 arm 실행은 상태를 변경하지 않았다. "
-            "$^{f}$commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, "
-            "Irrep. = irreparable(동결된 repairability class)."
+            "$^{f}$Commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, "
+            "Irrep. = irreparable(동결 repairability class)."
         )
     else:
-        arm_header = "Arm & Info source & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Edits$^{e}$"
+        arm_header_top = (
+            "Arm & Info source & \\multicolumn{3}{c}{Commits / cases} & Mean edits$^{e}$"
+        )
+        arm_header_bottom = " & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Fields"
         arm_labels = (
             "Rejection-only ($K{=}0$)",
             "Blind unchanged retry",
@@ -268,27 +280,31 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
             "State-reading oracle",
         )
         arm_sources = ("none", "none", "error set $E$", "state+policy")
-        count_header = "Check & Numerator & Denominator"
-        count_labels = (
-            "Gate fixture agreement$^{c}$",
-            "Known-boundary acceptances$^{a}$",
-            "Closed unknown-key boundary rejected$^{d}$",
-            "Detectable integrity faults rejected",
-            "Known integrity boundary replay-accepted$^{b}$",
-            "Adapter commits",
-            "Symbolic fallbacks",
-            "Adapter failures",
-            "Manifest guards rejected",
+        accounting_header = "Check or terminal family & Exact outcome & Interpretation"
+        accounting_labels = (
+            "Gate fixture agreement",
+            "Known-boundary acceptance",
+            "Closed unknown-key rejection",
+            "Detectable integrity-fault rejection",
+            "Known provenance-boundary acceptance",
+            "Adapter terminal classes",
+            "Manifest-guard rejection",
         )
-        footnote = (
-            "$^{a}$Boundary acceptances document semantic-extraction and policy-completeness "
-            "limits; they are not safety passes. $^{b}$Replay does not "
-            "authenticate or re-execute repair generation. $^{c}$The loader enforces this "
-            "agreement, so it is a construction invariant rather than a measurement. "
-            "$^{d}$This is post-Stage-8 parser rejection parity, not semantic-safety evidence."
+        accounting_scopes = (
+            "authored-oracle agreement",
+            "encoded limit, not a safety pass",
+            "proposal/replay parser parity",
+            "designated check operations",
+            "repair provenance unauthenticated",
+            "complete classification of 7 assignments",
+            "injected faults failed closed",
+        )
+        accounting_footnote = (
+            "Rows have different denominators and favorable directions; they must not be ranked "
+            "as rates. Every value is an exact audit fact for designed fixtures."
         )
         footnote_e = (
-            " $^{e}$Mean changed candidate fields over committed repairs (minimality proxy); "
+            "$^{e}$Mean changed candidate fields over committed repairs (minimality proxy); "
             "failed arm executions left the state unchanged. "
             "$^{f}$Commits/cases. G-rep. = guided-repairable, O-only = oracle-only, "
             "Irrep. = irreparable (frozen repairability classes)."
@@ -324,42 +340,70 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
         rf"{_cell(arm, 'irreparable')} & {_mean_edit(arm)} \\"
         for arm in arm_ids
     ]
+    arm_rows.insert(2, r"\addlinespace[2pt]")
+    adapter_outcome = (
+        f"{adapter['commit_count']} commit; {adapter['fallback_count']} fallback; "
+        f"{adapter['adapter_failure_count']} 실패 / 배정 {adapter['assigned_case_count']}"
+        if korean
+        else f"{adapter['commit_count']} commit; {adapter['fallback_count']} fallback; "
+        f"{adapter['adapter_failure_count']} failures / {adapter['assigned_case_count']} assigned"
+    )
+    accounting_outcomes = (
+        f"{gate['passed_fixture_count']}/{gate['fixture_count']}",
+        f"{boundary['encoded_acceptance_count']}/{boundary['sentinel_count']}",
+        (f"{closed_boundary['passed_regression_count']}/{closed_boundary['regression_count']}"),
+        f"{integrity['detected_fault_count']}/{integrity['fault_count']}",
+        (
+            f"{integrity_boundary['observed_undetected_count']}/"
+            f"{integrity_boundary['boundary_count']}"
+        ),
+        adapter_outcome,
+        f"{guards['detected_guard_count']}/{guards['guard_count']}",
+    )
+    accounting_rows = [
+        rf"{label} & {outcome} & {scope} \\"
+        for label, outcome, scope in zip(
+            accounting_labels, accounting_outcomes, accounting_scopes, strict=True
+        )
+    ]
+    accounting_rows.insert(5, r"\addlinespace[2pt]")
     return (
         rf"""
 \begin{{table}}[t]
 \caption{{{caption1}}}
 \label{{tab:pilot-repair}}
 \centering\scriptsize
+\setlength{{\tabcolsep}}{{2.6pt}}
+\renewcommand{{\arraystretch}}{{1.12}}
 \begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X
  >{{\raggedright\arraybackslash}}X rrrr@{{}}}}
 \toprule
-{arm_header} \\
+{arm_header_top} \\
+\cmidrule(lr){{3-5}}
+{arm_header_bottom} \\
 \midrule
 {chr(10).join(arm_rows)}
 \bottomrule
 \end{{tabularx}}
+\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {footnote_e}}}
 \end{{table}}
 
 \begin{{table}}[t]
 \caption{{{caption2}}}
 \label{{tab:pilot-accounting}}
-\centering\footnotesize
-\begin{{tabularx}}{{\columnwidth}}{{@{{}}Xrr@{{}}}}
+\centering\scriptsize
+\setlength{{\tabcolsep}}{{3pt}}
+\renewcommand{{\arraystretch}}{{1.12}}
+\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X
+ >{{\raggedright\arraybackslash}}p{{0.27\columnwidth}}
+ >{{\raggedright\arraybackslash}}p{{0.29\columnwidth}}@{{}}}}
 \toprule
-{count_header} \\
+{accounting_header} \\
 \midrule
-{count_labels[0]} & {gate["passed_fixture_count"]} & {gate["fixture_count"]} \\
-{count_labels[1]} & {boundary["encoded_acceptance_count"]} & {boundary["sentinel_count"]} \\
-{count_labels[2]} & {closed_boundary["passed_regression_count"]} & {closed_boundary["regression_count"]} \\
-{count_labels[3]} & {integrity["detected_fault_count"]} & {integrity["fault_count"]} \\
-{count_labels[4]} & {integrity_boundary["observed_undetected_count"]} & {integrity_boundary["boundary_count"]} \\
-{count_labels[5]} & {adapter["commit_count"]} & {adapter["assigned_case_count"]} \\
-{count_labels[6]} & {adapter["fallback_count"]} & {adapter["assigned_case_count"]} \\
-{count_labels[7]} & {adapter["adapter_failure_count"]} & {adapter["assigned_case_count"]} \\
-{count_labels[8]} & {guards["detected_guard_count"]} & {guards["guard_count"]} \\
+{chr(10).join(accounting_rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {footnote}{footnote_e}}}
+\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {accounting_footnote}}}
 \end{{table}}
 """.strip()
         + "\n"
@@ -428,11 +472,21 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
         )
         if not error_label:
             error_label = "---"
+        seeds = summary["counts"]["seeds"]
+        guided = summary["per_arm"]["guided_repair"]["commits"]
+        blind = summary["per_arm"]["unchanged_retry"]["commits"]
+        delta = guided - blind
+        comparison = f"{guided}/{seeds} vs {blind}/{seeds}"
+        delta_text = f"{delta:+d}"
+        if delta:
+            comparison = rf"\textbf{{{comparison}}}"
+            delta_text = rf"\textbf{{{delta_text}}}"
+        if key == "signal_v2_visible":
+            rows.append(r"\addlinespace[2pt]")
         rows.append(
             f"{korean_label if korean else english_label} & "
-            f"{summary['counts']['initially_valid']}/{summary['counts']['seeds']} & "
-            f"{summary['per_arm']['guided_repair']['commits']}/{summary['counts']['seeds']} & "
-            f"{summary['per_arm']['unchanged_retry']['commits']}/{summary['counts']['seeds']} & "
+            f"{summary['counts']['initially_valid']}/{seeds} & "
+            f"{comparison} & {delta_text} & "
             rf"{error_label} \\"
         )
     caption = (
@@ -441,17 +495,19 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
         else "Live Screening Pilot, Exact Counts (Five Proposals per Cell, $K{=}1$)"
     )
     header = (
-        "기저 / 조건 & 최초 유효 & $\\rho$ commit & Blind commit & 최초 오류"
+        "기저 / 조건 & 최초 유효 & $\\rho$ vs blind commit & $\\Delta$ & 최초 오류"
         if korean
-        else "Base / condition & Initial valid & $\\rho$ commits & Blind commits & Initial errors"
+        else "Base / condition & Initial valid & $\\rho$ vs blind commits & $\\Delta$ & Initial errors"
     )
     footnote = (
         "QSR = quest-stage regression, PEO = policy-effect omission, "
         "PEV = policy-effect violation, PPO = policy-precondition omission. "
+        "$\\Delta$는 동일 후보에서 $\\rho$ commit 수 minus blind commit 수다. "
         "모든 수치는 screening-pilot-only이며 추론 통계가 아니다. 폐기된 v1 진단은 표에서 제외한다."
         if korean
         else "QSR = quest-stage regression, PEO = policy-effect omission, "
         "PEV = policy-effect violation, PPO = policy-precondition omission. "
+        "$\\Delta$ is $\\rho$ commits minus blind commits for matched candidates. "
         "All counts are screening-pilot-only, without inferential statistics; the superseded v1 "
         "diagnostic is excluded."
     )
@@ -461,7 +517,9 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
 \caption{{{caption}}}
 \label{{tab:live-screening}}
 \centering\scriptsize
-\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X rrr >{{\raggedright\arraybackslash}}X@{{}}}}
+\setlength{{\tabcolsep}}{{2.7pt}}
+\renewcommand{{\arraystretch}}{{1.12}}
+\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X r c r >{{\raggedright\arraybackslash}}X@{{}}}}
 \toprule
 {header} \\
 \midrule

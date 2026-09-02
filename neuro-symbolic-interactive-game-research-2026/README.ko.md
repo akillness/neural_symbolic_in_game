@@ -19,7 +19,7 @@ TRACE-RPG는 LLM이 제안한 세계 변화와 NPC 발화를 곧바로 게임 �
 
 ## 시각 자료
 
-여섯 개 SVG는 모두 `scripts/generate_readme_visuals.py`가 생성한다. V2 하단, V3, V4는 동결된 파일럿 CSV와 주장 원장에서 직접 읽으므로 원본 수치와 어긋날 수 없다. 실선은 구현되어 파일럿에서 실행된 요소이고, 점선은 명세만 있고 근거가 없는 미구현 요소다.
+여섯 개 SVG는 모두 `scripts/generate_readme_visuals.py`가 생성한다. V2 하단, V3, V4는 동결된 파일럿 CSV와 주장 원장에서 직접 읽으므로 원본 수치와 어긋날 수 없다. 실선은 구현되어 파일럿에서 실행된 요소이고, 점선은 명세만 있고 근거가 없는 미구현 요소다. 이중언어 [편집 가능 시각 자료 계약](visuals/README.md)과 [기계 판독 원본 매니페스트](visuals/source-manifest.json)는 모든 렌더 그림·표를 생성기, 편집 원본, 데이터에 연결한다.
 
 ### V1 · 신뢰 경계
 
@@ -254,7 +254,7 @@ Python↔Godot 권한 transport, 10개 모델 추론, 영속 라이브 transport
 | `research/` | 원본 보존, Scrapling 캡처, 근거·주장 원장, 심층연구 |
 | `harness/` | 에이전트 역할, 워크플로우, 검증 게이트 |
 | `../llm-wiki/` | 프로젝트 지식 위키와 Graphify 그래프 |
-| `visuals/` | README·논문용 SVG 원본 (`scripts/generate_readme_visuals.py`가 생성) |
+| `visuals/` | README SVG 원본, 편집 가능 시각 자료 계약, 원본 매니페스트 |
 | `scripts/` | 검증기, 파일럿 runner, 논문 그림·표·README 시각 자료 생성기 |
 
 ## Stage 4 원고와 범위가 제한된 파일럿

@@ -5,7 +5,15 @@
   \usepackage{fontspec}
   \usepackage{xeCJK}
   \defaultfontfeatures{Ligatures=TeX}
-  \IfFontExistsTF{TeX Gyre Termes}{\setmainfont{TeX Gyre Termes}}{}
+  \IfFontExistsTF{TeX Gyre Termes}{%
+    \setmainfont{TeX Gyre Termes}%
+  }{%
+    \IfFontExistsTF{Times New Roman}{%
+      \setmainfont{Times New Roman}%
+    }{%
+      \setmainfont{STIX Two Text}%
+    }%
+  }
   \IfFontExistsTF{NanumBarunGothicOTF}{%
     \setCJKmainfont[
       ItalicFont={NanumBarunGothicOTF},
@@ -129,7 +137,7 @@ Controller는 인코딩된 계약 아래 다음 구현 불변량을 주장한다
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_architecture.png}
+  \includegraphics[width=\columnwidth]{../figures/fig_architecture.pdf}
   \caption{신뢰 경계. 검색 맥락과 생성 후보는 알려진 필드의 타입 검사와 상태 상대 validation이 완료될 때까지 비권위적이다.}
   \label{fig:architecture}
 \end{figure}
@@ -139,6 +147,8 @@ Controller는 인코딩된 계약 아래 다음 구현 불변량을 주장한다
 \label{tab:validators}
 \centering
 \footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.14}
 \begin{tabular}{@{}lll@{}}
 \toprule
 술어 & 거부 대상 & 실패 시 상태 \\
@@ -158,6 +168,7 @@ Quest & 부적격/후퇴 stage & 변경 없음 \\
 
 \begin{figure}[t]
 \footnotesize
+\renewcommand{\arraystretch}{1.10}
 \begin{tabular}{@{}rl@{}}
 1: & $a\leftarrow\textsc{Propose}(c)$; $j\leftarrow0$ \\
 2: & \textbf{repeat} \\
@@ -184,6 +195,8 @@ Quest & 부적격/후퇴 stage & 변경 없음 \\
 \label{tab:rho-rules}
 \centering
 \footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.14}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Validator 오류 class & 후보에 대한 edit $\delta(e)$ \\
@@ -202,7 +215,7 @@ Validator 오류 class & 후보에 대한 edit $\delta(e)$ \\
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_repair_state_machine.png}
+  \includegraphics[width=\columnwidth]{../figures/fig_repair_state_machine.pdf}
   \caption{Proposal, validation, 제한된 repair, fallback, commit, replay 상태. Controller failure는 종단 상태이며 완성된 proposal trace가 없을 수 있다.}
   \label{fig:repair}
 \end{figure}
@@ -250,6 +263,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
   \vspace{0.45ex}
 
   {\footnotesize
+  \renewcommand{\arraystretch}{1.12}
   \begin{tabular}{@{}cllll@{}}
     \toprule
     패널 & 캡처 & 이벤트 & 검증 & 상태 관계 \\
@@ -278,7 +292,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.png}
+  \includegraphics[width=\columnwidth]{../figures/fig_evidence_boundary.pdf}
   \caption{동결된 fixture에서 지정된 검사 연산과 생성 table로 이어지는 근거 경계. 수치는 생성 산출물을 통해서만 반영한다.}
   \label{fig:evidence}
 \end{figure}
@@ -308,14 +322,14 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \section{결론}
 \system{}은 작성된 candidate-event payload를 encoded 기호 commit gate를 통해 canonical mutation으로부터 격리하고, linked record와 state-semantic replay로 terminal outcome을 감사 가능하게 만든다. 결정론적 오프라인 파일럿은 동결된 작성 fixture에서 mechanism 적합성을 확립한다. 별도 라이브 스크리닝 파일럿은 구성한 수리 가능 regime에서만 guided 5/5 대 blind 0/5 분리를 관찰하고 다른 regime에서는 귀무였으므로 pilot-only로 남는다. Cross-model superiority, player-experience benefit, retrieval 또는 memory effectiveness, affect efficacy, commercial-engine performance는 명시적인 확증 확장으로 남는다.
 
+\begingroup
+\renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}
 \section*{AI 사용 고지}
 Large language model은 prose, code와 test drafting, command orchestration, evidence review, 결과 해석, simulated peer review, citation-identity check를 보조했고, hosted model은 별도 표기된 live-screening candidate도 생성했다. 모든 보고 count는 deterministic runner 또는 hash-bound receipt에서 오며 offline, live-screening, engine evidence는 분리된다. 저자는 claim을 source artifact에 대조했고 내용에 대한 책임을 진다.
 
 \section*{데이터 및 코드 가용성}
 Repository에는 implementation, build source, 분리된 offline/live-screening packet과 \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, \texttt{experiment-evidence-matrix.csv}가 있다. Offline manifest는 artifact 38개, input 22개, provenance row 121개(executed 85개, aggregate 36개)를, live promotion manifest는 JSON/JSONL receipt 14개와 superseded v1 diagnostic을 결합한다. Portable offline invocation에는 absolute clone path가 없고 clean-Git input binding은 tag \texttt{trace-rpg-guided-repair-inputs-20260821-v1}에서 다시 성립한다. Anonymized reviewer archive나 DOI deposit은 주장하지 않는다.
 
-\begingroup
-\renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}
 \bibliographystyle{IEEEtran}
 \bibliography{../references}
 \endgroup

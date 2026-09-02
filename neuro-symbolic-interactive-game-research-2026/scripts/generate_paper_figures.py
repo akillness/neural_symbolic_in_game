@@ -58,12 +58,12 @@ def svg_header(width: int, height: int, title: str, description: str) -> list[st
         ],
         "    <style>",
         "      text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }",
-        "      .section { font-size: 25px; font-weight: 700; }",
-        "      .box-title { font-size: 24px; font-weight: 700; }",
-        "      .body { font-size: 21px; font-weight: 400; }",
-        "      .small { font-size: 19px; font-weight: 400; }",
-        "      .note { font-size: 19px; font-style: italic; fill: #5F6368; }",
-        "      .arrow-label { font-size: 19px; font-weight: 700; }",
+        "      .section { font-size: 28px; font-weight: 700; }",
+        "      .box-title { font-size: 26px; font-weight: 700; }",
+        "      .body { font-size: 25px; font-weight: 400; }",
+        "      .small { font-size: 24px; font-weight: 400; }",
+        "      .note { font-size: 24px; font-style: italic; fill: #5F6368; }",
+        "      .arrow-label { font-size: 24px; font-weight: 700; }",
         "    </style>",
         "  </defs>",
         f'  <rect x="0" y="0" width="{width}" height="{height}" fill="#FFFFFF"/>',
@@ -104,7 +104,7 @@ def line(
     marker_attr = f' marker-end="url(#arrow-{marker})"' if marker else ""
     dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
     return (
-        f'  <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
+        f'  <line class="connector" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" '
         f'stroke="{color}" stroke-width="{width}" fill="none"'
         f"{marker_attr}{dash_attr}/>"
     )
@@ -121,7 +121,7 @@ def path(
     marker_attr = f' marker-end="url(#arrow-{marker})"' if marker else ""
     dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
     return (
-        f'  <path d="{d}" stroke="{color}" stroke-width="{width}" '
+        f'  <path class="connector" d="{d}" stroke="{color}" stroke-width="{width}" '
         f'fill="none"{marker_attr}{dash_attr}/>'
     )
 
@@ -239,9 +239,43 @@ def arrow_label(
     color: str,
     width: int,
 ) -> list[str]:
+    """Return a connector label with an opaque clearance shield."""
+
     return [
-        rect(x - width // 2, y - 21, width, 29, fill="#FFFFFF", stroke="#FFFFFF", radius=2),
-        text(x, y, value, css_class="arrow-label", anchor="middle", fill=color),
+        '  <g class="connector-label" data-line-clearance="shielded">',
+        (
+            f'    <rect class="label-shield" x="{x - width // 2}" y="{y - 21}" '
+            f'width="{width}" height="29" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>'
+        ),
+        (
+            f'    <text x="{x}" y="{y}" class="arrow-label" text-anchor="middle" '
+            f'fill="{color}">{escape(value)}</text>'
+        ),
+        "  </g>",
+    ]
+
+
+def vertical_label_chip(
+    x: int,
+    y: int,
+    value: str,
+    *,
+    color: str,
+    height: int,
+) -> list[str]:
+    """Return a vertical label that interrupts, rather than overlaps, a rule."""
+
+    return [
+        '  <g class="connector-label" data-line-clearance="shielded">',
+        (
+            f'    <rect class="label-shield" x="{x - 24}" y="{y - height // 2}" '
+            f'width="48" height="{height}" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>'
+        ),
+        (
+            f'    <text x="{x}" y="{y}" class="section" text-anchor="middle" '
+            f'fill="{color}" transform="rotate(-90 {x} {y})">{escape(value)}</text>'
+        ),
+        "  </g>",
     ]
 
 
@@ -271,33 +305,33 @@ def architecture_svg() -> str:
     )
     items += component_box(
         55,
-        85,
+        100,
         285,
-        60,
+        48,
         accent=GRAY,
         title_value="Retrieval / memory",
     )
     items += component_box(
         375,
-        85,
+        100,
         285,
-        60,
+        48,
         accent=GRAY,
         title_value="Soft narrative scores",
     )
     items += component_box(
         695,
-        85,
+        100,
         285,
-        60,
+        48,
         accent=GRAY,
         title_value="Model rationale",
     )
     items += component_box(
         1015,
-        85,
+        100,
         355,
-        60,
+        48,
         accent=GRAY,
         title_value="Future affect estimate",
         dashed=True,
@@ -413,34 +447,36 @@ def architecture_svg() -> str:
     )
     items += component_box(
         55,
-        600,
+        608,
         365,
-        55,
+        48,
         accent=GREEN,
         title_value="Prior canonical state  c_t",
         fill=PALE_GREEN,
     )
     items += component_box(
         495,
-        600,
+        608,
         380,
-        55,
+        48,
         accent=BLUE,
         title_value="Externally supplied policy  q_t",
         fill=PALE_BLUE,
     )
     items += component_box(
         970,
-        600,
+        608,
         405,
-        55,
+        48,
         accent=GREEN,
         title_value="Final canonical state  c_(t+1)",
         fill=PALE_GREEN,
     )
-    items.append(path("M1000 325 V350 H1140 V600", color=GREEN, marker="green"))
-    items.append(path("M1270 475 V600", color=GRAY, marker="gray"))
-    items.append(line(685, 600, 685, 380, color=BLUE, marker="blue"))
+    # Route the successful branch around the right edge of the authority band;
+    # the prior path crossed the long band subtitle at x=1140.
+    items.append(path("M1272 325 H1398 V632 H1375", color=GREEN, marker="green"))
+    items.append(path("M1270 475 V608", color=GRAY, marker="gray"))
+    items.append(line(685, 608, 685, 380, color=BLUE, marker="blue"))
     items += arrow_label(700, 445, "reads c_t = (G_t, q_t)", color=BLUE, width=205)
 
     items.append("</svg>")
@@ -757,16 +793,12 @@ def evidence_boundary_svg() -> str:
             dash="12 8",
         )
     )
-    items.append(
-        text(
-            831,
-            325,
-            "INFERENCE BOUNDARY",
-            css_class="section",
-            anchor="middle",
-            fill=ORANGE,
-            rotate=-90,
-        )
+    items += vertical_label_chip(
+        840,
+        325,
+        "INFERENCE BOUNDARY",
+        color=ORANGE,
+        height=320,
     )
 
     items += component_box(
@@ -820,10 +852,441 @@ def evidence_boundary_svg() -> str:
     return "\n".join(items) + "\n"
 
 
+def compact_architecture_svg() -> str:
+    """Render a single-column, print-legible trust-boundary diagram."""
+
+    width, height = 900, 600
+    items = svg_header(
+        width,
+        height,
+        "TRACE-RPG compact trust-boundary architecture",
+        (
+            "Non-authoritative context conditions an untrusted proposal. A strict adapter and "
+            "state-relative validator select commit, bounded repair, or unchanged fallback."
+        ),
+    )
+    items += band(
+        20,
+        15,
+        860,
+        95,
+        accent=GRAY,
+        title_value="NON-AUTHORITATIVE CONTEXT  z_t",
+        subtitle="retrieval / memory / soft scores / rationale / future affect",
+    )
+    items += band(
+        20,
+        125,
+        860,
+        310,
+        accent=BLUE,
+        title_value="PROPOSAL TO VALIDATION TO TERMINAL OUTCOME",
+        subtitle="solid = deterministic path / dashed = bounded retry",
+    )
+    items += component_box(
+        40,
+        210,
+        125,
+        92,
+        accent=GRAY,
+        title_value="Proposal",
+        body_lines=("a_j", "untrusted"),
+        fill=PALE_GRAY,
+    )
+    items += component_box(
+        190,
+        210,
+        135,
+        92,
+        accent=BLUE,
+        title_value="Adapter",
+        body_lines=("schema", "known keys"),
+        fill=PALE_BLUE,
+    )
+    items += component_box(
+        355,
+        200,
+        165,
+        112,
+        accent=BLUE,
+        title_value="Validator",
+        body_lines=("V(c_t,a_j)", "hard gates"),
+        fill=PALE_BLUE,
+    )
+    items += component_box(
+        590,
+        185,
+        125,
+        92,
+        accent=GREEN,
+        title_value="COMMIT",
+        body_lines=("atomic T",),
+        fill=PALE_GREEN,
+    )
+    items += component_box(
+        745,
+        185,
+        120,
+        92,
+        accent=GREEN,
+        title_value="Bridge",
+        body_lines=("versioned", "event"),
+        fill=PALE_GREEN,
+    )
+    items += component_box(
+        575,
+        330,
+        150,
+        82,
+        accent=ORANGE,
+        title_value="REPAIR",
+        body_lines=("rho(a_j,E_j)",),
+        fill=PALE_ORANGE,
+    )
+    items += component_box(
+        725,
+        330,
+        140,
+        82,
+        accent=GRAY,
+        title_value="FALLBACK",
+        body_lines=("unchanged",),
+        fill=PALE_GRAY,
+    )
+
+    items.append(line(165, 256, 190, 256, color=GRAY, marker="gray"))
+    items.append(line(325, 256, 355, 256, color=BLUE, marker="blue"))
+    items.append(path("M520 230 H590", color=GREEN, marker="green"))
+    items += arrow_label(555, 218, "valid", color=GREEN, width=72)
+    items.append(line(715, 230, 745, 230, color=GREEN, marker="green"))
+    items.append(path("M520 278 H548 V371 H575", color=ORANGE, marker="orange"))
+    items += arrow_label(550, 344, "invalid", color=ORANGE, width=86)
+    items.append(path("M520 295 H535 V425 H795 V412", color=GRAY, marker="gray"))
+    items += arrow_label(680, 421, "budget exhausted", color=GRAY, width=170)
+    items.append(path("M575 386 H545 V302 H520", color=ORANGE, marker="orange", dash="9 6"))
+
+    items += band(
+        20,
+        450,
+        860,
+        130,
+        accent=GREEN,
+        title_value="CANONICAL AUTHORITY",
+    )
+    items += component_box(
+        40,
+        515,
+        235,
+        48,
+        accent=GREEN,
+        title_value="Prior state  G_t",
+        fill=PALE_GREEN,
+    )
+    items += component_box(
+        330,
+        515,
+        235,
+        48,
+        accent=BLUE,
+        title_value="Stored policy  q_t",
+        fill=PALE_BLUE,
+    )
+    items += component_box(
+        630,
+        515,
+        235,
+        48,
+        accent=GREEN,
+        title_value="Final state  c_(t+1)",
+        fill=PALE_GREEN,
+    )
+    items.append(path("M448 515 V312", color=BLUE, marker="blue"))
+    items += arrow_label(540, 468, "validator reads", color=BLUE, width=156)
+    items.append(path("M865 230 H875 V500 H748 V515", color=GREEN, marker="green"))
+    items.append(path("M805 412 V515", color=GRAY, marker="gray"))
+    items.append("</svg>")
+    return "\n".join(items) + "\n"
+
+
+def compact_repair_state_machine_svg() -> str:
+    """Render the bounded transaction as a single-column state machine."""
+
+    width, height = 900, 620
+    items = svg_header(
+        width,
+        height,
+        "TRACE-RPG compact validate-repair-commit state machine",
+        (
+            "Every candidate is validated and recorded. Valid candidates receive a defensive "
+            "check before commit; invalid candidates repair within K or fall back unchanged."
+        ),
+    )
+    items += band(
+        20,
+        15,
+        520,
+        90,
+        accent=BLUE,
+        title_value="BOUNDED ATTEMPTS",
+        subtitle="at most K + 1 recorded candidates",
+    )
+    items += band(
+        560,
+        15,
+        320,
+        90,
+        accent=ORANGE,
+        title_value="FROZEN CLASSES",
+        subtitle="guided / oracle / none",
+    )
+    items += component_box(
+        30,
+        155,
+        130,
+        90,
+        accent=GRAY,
+        title_value="Candidate",
+        body_lines=("a_j",),
+        fill=PALE_GRAY,
+    )
+    items += component_box(
+        190,
+        155,
+        130,
+        90,
+        accent=BLUE,
+        title_value="Validate",
+        body_lines=("V(c_t,a_j)",),
+        fill=PALE_BLUE,
+    )
+    items += component_box(
+        350,
+        145,
+        155,
+        110,
+        accent=BLUE,
+        title_value="Record j",
+        body_lines=("candidate", "errors+hash"),
+        fill=PALE_BLUE,
+    )
+    items.append(
+        polygon("575,135 645,200 575,265 505,200", fill="#FFFFFF", stroke=BLUE, stroke_width=3)
+    )
+    items.append(multiline(575, 194, ("valid?",), css_class="box-title"))
+    items += component_box(
+        675,
+        125,
+        190,
+        95,
+        accent=GREEN,
+        title_value="Defense check",
+        body_lines=("before mutation",),
+        fill=PALE_GREEN,
+    )
+    items += component_box(
+        700,
+        250,
+        150,
+        82,
+        accent=GREEN,
+        title_value="COMMIT",
+        body_lines=("atomic T",),
+        fill=PALE_GREEN,
+    )
+    items.append(
+        polygon(
+            "575,285 645,345 575,405 505,345",
+            fill="#FFFFFF",
+            stroke=ORANGE,
+            stroke_width=3,
+        )
+    )
+    items.append(multiline(575, 339, ("j < K?",), css_class="box-title"))
+    items += component_box(
+        245,
+        430,
+        180,
+        88,
+        accent=ORANGE,
+        title_value="Guided repair",
+        body_lines=("rho(a_j,E_j)",),
+        fill=PALE_ORANGE,
+    )
+    items += component_box(
+        450,
+        430,
+        180,
+        88,
+        accent=SKY,
+        title_value="Oracle repair",
+        body_lines=("state upper bound",),
+        fill=PALE_BLUE,
+    )
+    items += component_box(
+        700,
+        430,
+        165,
+        88,
+        accent=GRAY,
+        title_value="FALLBACK",
+        body_lines=("no mutation",),
+        fill=PALE_GRAY,
+    )
+
+    items.append(line(160, 200, 190, 200, color=GRAY, marker="gray"))
+    items.append(line(320, 200, 350, 200, color=BLUE, marker="blue"))
+    items.append(path("M645 180 H675", color=GREEN, marker="green"))
+    items += arrow_label(655, 168, "yes", color=GREEN, width=46)
+    items.append(path("M770 220 V250", color=GREEN, marker="green"))
+    items.append(path("M575 265 V285", color=ORANGE, marker="orange"))
+    items += arrow_label(605, 278, "no", color=ORANGE, width=50)
+    items.append(path("M535 385 V410 H335 V430", color=ORANGE, marker="orange"))
+    items.append(path("M615 385 V410 H540 V430", color=SKY, marker="blue"))
+    items += arrow_label(470, 405, "selected arm", color=ORANGE, width=146)
+    items.append(path("M645 345 H675 V474 H700", color=GRAY, marker="gray"))
+    items += arrow_label(669, 336, "no", color=GRAY, width=50)
+    items.append(path("M540 518 V538 H95 V245", color=ORANGE, marker="orange", dash="9 6"))
+    items.append(path("M335 518 V538", color=ORANGE, dash="9 6"))
+    items += arrow_label(310, 532, "next candidate attempt", color=ORANGE, width=225)
+
+    items += band(
+        20,
+        548,
+        500,
+        58,
+        accent=GRAY,
+        title_value="Callback return assumed",
+    )
+    items += component_box(
+        560,
+        540,
+        320,
+        66,
+        accent=BLUE,
+        title_value="Finalize trace",
+        body_lines=("semantic replay",),
+        fill=PALE_BLUE,
+    )
+    items.append(path("M775 332 H885 V573 H880", color=GREEN, marker="green"))
+    items.append(path("M782 518 V540", color=GRAY, marker="gray"))
+    items.append("</svg>")
+    return "\n".join(items) + "\n"
+
+
+def compact_evidence_boundary_svg() -> str:
+    """Render designed inputs, checks, and claim ceiling at column width."""
+
+    width, height = 900, 560
+    items = svg_header(
+        width,
+        height,
+        "TRACE-RPG compact evidence boundary",
+        (
+            "Designed fixtures flow through deterministic checks to mechanism-conformance "
+            "statements only. Efficacy, player benefit, affect, and performance remain future work."
+        ),
+    )
+    items += band(
+        15,
+        15,
+        245,
+        525,
+        accent=GRAY,
+        title_value="FROZEN FIXTURES",
+        subtitle="frozen inputs",
+    )
+    for y, title_value, body, accent in (
+        (90, "Gate cases", "valid + named errors", BLUE),
+        (190, "Repair arms", "K=0 / blind / rho / oracle", ORANGE),
+        (290, "Faults", "checksum / replay", GREEN),
+        (390, "Accounting", "adapter + assignment", GRAY),
+    ):
+        items += component_box(
+            35,
+            y,
+            205,
+            78,
+            accent=accent,
+            title_value=title_value,
+            body_lines=(body,),
+        )
+
+    items += band(
+        280,
+        15,
+        280,
+        525,
+        accent=BLUE,
+        title_value="DETERMINISTIC",
+        subtitle="versioned exact counts",
+    )
+    for y, title_value, body, accent, fill in (
+        (90, "Manifest + hashes", "IDs / config / state", BLUE, PALE_BLUE),
+        (190, "Offline runner", "proposal to outcome", BLUE, PALE_BLUE),
+        (290, "Check operations", "schema / continuity", GREEN, PALE_GREEN),
+        (390, "Generated tables", "raw count / exact ratio", GREEN, PALE_GREEN),
+    ):
+        items += component_box(
+            300,
+            y,
+            240,
+            78,
+            accent=accent,
+            title_value=title_value,
+            body_lines=(body,),
+            fill=fill,
+        )
+
+    for y, color in ((129, BLUE), (229, ORANGE), (329, GREEN), (429, GRAY)):
+        items.append(line(240, y, 300, y, color=color, marker="blue" if color == BLUE else "gray"))
+    items.append(line(585, 25, 585, 535, color=ORANGE, width=4, dash="11 7"))
+    items += vertical_label_chip(585, 280, "INFERENCE BOUNDARY", color=ORANGE, height=300)
+
+    items += component_box(
+        615,
+        35,
+        270,
+        235,
+        accent=GREEN,
+        title_value="OBSERVED",
+        body_lines=(
+            "fixture agreement",
+            "state immutability",
+            "attempt accounting",
+            "guided/oracle split",
+            "named fault detection",
+            "mechanism conformance",
+        ),
+        fill=PALE_GREEN,
+    )
+    items += component_box(
+        615,
+        295,
+        270,
+        235,
+        accent=ORANGE,
+        title_value="NOT MEASURED",
+        body_lines=(
+            "live repair superiority",
+            "player or narrative benefit",
+            "affect efficacy",
+            "commercial performance",
+            "semantic completeness",
+            "authentication",
+        ),
+        fill=PALE_ORANGE,
+        dashed=True,
+    )
+    items.append(path("M540 429 H570 V270 H750", color=GREEN, marker="green"))
+    items += arrow_label(665, 286, "supports", color=GREEN, width=98)
+    items.append("</svg>")
+    return "\n".join(items) + "\n"
+
+
 FIGURES = {
-    "fig_architecture.svg": architecture_svg,
-    "fig_repair_state_machine.svg": repair_state_machine_svg,
-    "fig_evidence_boundary.svg": evidence_boundary_svg,
+    "fig_architecture.svg": compact_architecture_svg,
+    "fig_repair_state_machine.svg": compact_repair_state_machine_svg,
+    "fig_evidence_boundary.svg": compact_evidence_boundary_svg,
 }
 
 

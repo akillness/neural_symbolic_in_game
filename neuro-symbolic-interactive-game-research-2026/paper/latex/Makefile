@@ -7,8 +7,13 @@ all: figures english korean check
 figures:
 	cd ../.. && uv run python scripts/generate_paper_figures.py
 	for svg in figures/*.svg; do \
-		rsvg-convert -f png -o "$${svg%.svg}.png" "$$svg"; \
-		magick "$${svg%.svg}.png" -units PixelsPerInch -density 144 "$${svg%.svg}.pdf"; \
+		base="$${svg%.svg}"; \
+		hash=$$(python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest())' "$$svg"); \
+		rsvg-convert -f png -o "$$base.png" "$$svg"; \
+		rsvg-convert -f eps -o "$$base.eps.tmp" "$$svg"; \
+		printf '\n[ /Title (source-sha256:%s) /DOCINFO pdfmark\n' "$$hash" >> "$$base.eps.tmp"; \
+		ps2pdf -dEPSCrop "$$base.eps.tmp" "$$base.pdf"; \
+		rm -f "$$base.eps.tmp"; \
 	done
 
 english: figures
