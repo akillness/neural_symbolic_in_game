@@ -175,7 +175,7 @@ Refresh rule: any lane, generator, authority boundary, entry point, Web export b
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
-Latest rule refresh: 2026-09-02, decisions `D-055`–`D-063` (contribution/reference crosswalk,
+Latest rule refresh: 2026-09-03, decision `D-066` (paper game-readout figure, presentation-flow manuscripts, reference re-verification, image-first root README); prior refresh 2026-09-02, decisions `D-055`–`D-063` (contribution/reference crosswalk,
 disposable Godot verification, collider-backed lens route, production receipt, editable-visual
 contract, contribution-first paper hardening, and presentation-only contribution legibility);
 prior refresh 2026-08-30, decisions `D-037`–`D-053`.

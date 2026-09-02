@@ -1,6 +1,6 @@
 {
-  "addendum": "The Stage-8 additions and direct game comparator S37-S42 were each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure. On 2026-09-02 a top-venue refresh added S47-S51 (ASPLOS 2006, NeurIPS 2023, ACM Computing Surveys 1983, ICML 2024, CoRL 2022) and resolved S45 to its NeurIPS 2023 proceedings DOI; Crossref/OpenAlex answered, PMLR HTML metadata confirmed the two PMLR volumes, Semantic Scholar returned HTTP 429 for every lookup and is recorded as rate-limited, and OpenReview could not be queried for S46, which therefore stays PREPRINT. On 2026-09-02 a related-work refresh added S52-S56 (AgentSpec, Setting the DC, STORY2GAME, Beyond State Consistency, AgentRR) from the paper-framing feedback: the four arXiv preprints matched title, authors, and year on the arXiv API and OpenAlex (three of them only through arXiv-DOI lookup because OpenAlex title search returned unrelated records); Setting the DC is a non-archival NeurIPS 2025 GenProCC workshop paper whose OpenReview forum and API returned a browser challenge (HTTP 403) that was not bypassed, so its identity rests on the official NeurIPS 2025 virtual program record and the GenProCC accepted-paper list, which agree on title, five authors, and author order (Li, Zeng, Xi, Zhu, Ammanabrolu). Semantic Scholar returned HTTP 429 for all five and is recorded as rate-limited.",
-  "audit_date": "2026-09-02",
+  "addendum": "The Stage-8 additions and direct game comparator S37-S42 were each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure. On 2026-09-02 a top-venue refresh added S47-S51 (ASPLOS 2006, NeurIPS 2023, ACM Computing Surveys 1983, ICML 2024, CoRL 2022) and resolved S45 to its NeurIPS 2023 proceedings DOI; Crossref/OpenAlex answered, PMLR HTML metadata confirmed the two PMLR volumes, Semantic Scholar returned HTTP 429 for every lookup and is recorded as rate-limited, and OpenReview could not be queried for S46, which therefore stays PREPRINT. On 2026-09-02 a related-work refresh added S52-S56 (AgentSpec, Setting the DC, STORY2GAME, Beyond State Consistency, AgentRR) from the paper-framing feedback: the four arXiv preprints matched title, authors, and year on the arXiv API and OpenAlex (three of them only through arXiv-DOI lookup because OpenAlex title search returned unrelated records); Setting the DC is a non-archival NeurIPS 2025 GenProCC workshop paper whose OpenReview forum and API returned a browser challenge (HTTP 403) that was not bypassed, so its identity rests on the official NeurIPS 2025 virtual program record and the GenProCC accepted-paper list, which agree on title, five authors, and author order (Li, Zeng, Xi, Zhu, Ammanabrolu). Semantic Scholar returned HTTP 429 for all five and is recorded as rate-limited. On 2026-09-03 all 55 entries were re-verified against primary records (Crossref JSON, arXiv abstracts, OpenReview, publisher landing pages) for resolvability, metadata, and citation-context fit: 55 KEEP, 0 metadata fixes, 0 drops; the ACM DOI 10.1145/3742413.3789221 answers 403 to non-browser clients but is confirmed by Crossref; preprints S01, S26, S44, S46, S52-S56 remain preprints and are labelled as such in the bibliography notes. A second, independent pass by three Aside browser-research sessions on 2026-09-03 confirmed 55/55 resolvable and surfaced four corrections applied here: S46 is an ICLR 2024 accepted poster (OpenReview is the archival record; status PREPRINT -> VERIFIED), S53 lists Ziyi Zeng as first author, S25 carries the full FDG 2020 proceedings title and article number, and the S23 issue note is current (Volume 58, September 2026). The same pass also promoted S01 (IVIE) from preprint to the archival ICCC 2026 proceedings, added the ECAI 2025 volume and pages for S06, and aligned the S12 and S19 titles with their Anthology/OJS records; totals are now 48 VERIFIED and 7 PREPRINT with the 22 rate-limited lookups unchanged.",
+  "audit_date": "2026-09-03",
   "entries": [
     {
       "arxiv": "2606.13348",
@@ -9,17 +9,19 @@
       "index_years": {
         "arxiv": "2026",
         "openalex": "2026",
-        "semantic_scholar": "2026"
+        "semantic_scholar": "2026",
+        "iccc_proceedings": "2026"
       },
       "key": "S01_vaucher2026ivie",
       "matched_indices": [
+        "arxiv",
+        "iccc_proceedings",
         "openalex",
-        "semantic_scholar",
-        "arxiv"
+        "semantic_scholar"
       ],
       "rate_limited_indices": [],
-      "status": "PREPRINT",
-      "year_note": null
+      "status": "VERIFIED",
+      "year_note": "arXiv preprint 2026-06; archival ICCC 2026 proceedings (ACC, ISBN 978-989-54160-8-0, published 2026-08-19) verified in the browser on 2026-09-03"
     },
     {
       "arxiv": "2510.25820",
@@ -790,23 +792,25 @@
     },
     {
       "arxiv": "2304.05128",
-      "bib_year": "2023",
+      "bib_year": "2024",
       "doi": null,
       "index_years": {
         "arxiv": "2023",
         "openalex": "2023",
-        "semantic_scholar": null
+        "semantic_scholar": null,
+        "openreview": "2024"
       },
       "key": "S46_chen2023selfdebug",
       "matched_indices": [
         "arxiv",
-        "openalex"
+        "openalex",
+        "openreview"
       ],
       "rate_limited_indices": [
         "semantic_scholar"
       ],
-      "status": "PREPRINT",
-      "year_note": null
+      "status": "VERIFIED",
+      "year_note": "arXiv preprint 2023; ICLR 2024 accepted poster (OpenReview KuPixIqPiq) verified in the browser on 2026-09-03"
     },
     {
       "added_at": "top-venue-refresh-2026-09-02",
@@ -1126,7 +1130,9 @@
     "neurips_virtual": "https://neurips.cc/virtual (official program record; used only for S53)",
     "openalex": "https://api.openalex.org (advisory)",
     "pmlr": "https://proceedings.mlr.press (HTML citation metadata; used only for PMLR volumes)",
-    "semantic_scholar": "https://api.semanticscholar.org/graph/v1 (primary; partially rate-limited)"
+    "semantic_scholar": "https://api.semanticscholar.org/graph/v1 (primary; partially rate-limited)",
+    "openreview": "https://openreview.net (official venue record; used for S46 and S53)",
+    "iccc_proceedings": "https://computationalcreativity.net/iccc26/proceedings/ (official proceedings page; used for S01)"
   },
   "method": "metadata-API triangulation plus named official primary pages; no broad publisher-page scraping",
   "schema_version": "1.0.0",

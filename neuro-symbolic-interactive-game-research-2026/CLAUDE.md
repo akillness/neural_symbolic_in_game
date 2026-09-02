@@ -130,6 +130,13 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   `--evaluate` must report exactly 12 presentation checks (`SL-PLAY-EVAL-001` 52/52) and the
   smoke denominator stays 8/8; these counts are engineering conformance, not fun, agency, or G4
   evidence.
+- The manuscripts' Fig. 3 (`fig:playable-readout`, D-066) shows the tracked working captures
+  `docs/latest/{refusal,authorized_hint,ending}.png` only through LaTeX `trim`/`clip`
+  parameters, bound as the second non-editable evidence exception in
+  `visuals/source-manifest.json`. Never retouch those PNGs; a refresh regenerates them through
+  `scripts/run_playable_evaluation.py --capture`, keeps generated UI art outside the crops, and
+  rebuilds the manifest and both PDFs in the same change. The panels remain engineering
+  captures, never usability, immersion, affect, or efficacy evidence.
 - The dev-only `main_3d.tscn -- --autoplay --public-safe` route (D-064) is a movie-capture
   autopilot: it substitutes for keyboard/mouse input and drives the same interaction and choice
   handlers a player would, so canonical state still changes only through the proposal router.

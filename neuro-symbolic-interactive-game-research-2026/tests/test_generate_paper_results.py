@@ -29,7 +29,8 @@ class GeneratePaperResultsTests(unittest.TestCase):
         self.assertEqual(set(packet["current"]), {key for key, _ in generator.LIVE_CURRENT_CELLS})
         self.assertIn("5/5", generator._live_result_text(packet, korean=False))
         self.assertIn("15/15", generator._live_result_text(packet, korean=True))
-        self.assertIn("C-PILOT-007", generator._live_result_text(packet, korean=False))
+        self.assertIn("pilot-only", generator._live_result_text(packet, korean=False))
+        self.assertNotIn("C-PILOT", generator._live_result_text(packet, korean=False))
         self.assertIn("0/5", generator._live_tables(packet, korean=False))
 
         with tempfile.TemporaryDirectory() as directory:

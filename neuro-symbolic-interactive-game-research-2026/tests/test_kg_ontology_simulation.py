@@ -186,9 +186,13 @@ class KgOntologySimulationTests(unittest.TestCase):
         for row in numeric_rows:
             self.assertIn(row, english)
             self.assertIn(row, korean)
+        self.assertIn("or evidence for any efficacy claim.", english)
+        self.assertIn("어떤 효능 주장의 근거도 아니다.", korean)
         for claim_id in EXCLUDED_RESULT_CLAIMS:
-            self.assertIn(claim_id, english)
-            self.assertIn(claim_id, korean)
+            self.assertNotIn(claim_id, english)
+            self.assertNotIn(claim_id, korean)
+        self.assertIn("S2 typed-lexical & ", english)
+        self.assertNotIn("OKF", korean)
 
     def test_claim_boundary_drift_fails_before_evaluation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -268,15 +268,16 @@ def check_kg_ontology_simulation() -> None:
     metrics = matrix["winner"]["metrics"]
     if metrics["semantic_at_k"] != 1.0:
         fail("KG/ontology winner violates the frozen Sem@K constraint")
-    for language in ("en", "ko"):
+    boundary_phrases = {
+        "en": "or evidence for any efficacy claim.",
+        "ko": "어떤 효능 주장의 근거도 아니다.",
+    }
+    for language, phrase in boundary_phrases.items():
         tex = (ROOT / f"paper/latex/generated/kg_ontology_simulation_{language}.tex").read_text(
             encoding="utf-8"
         )
-        missing_claims = sorted(
-            claim_id for claim_id in matrix["scope"]["not_evidence_for"][-5:] if claim_id not in tex
-        )
-        if missing_claims:
-            fail(f"{language.upper()} KG/ontology TeX claim-boundary drift: {missing_claims}")
+        if phrase not in tex:
+            fail(f"{language.upper()} KG/ontology TeX claim-boundary drift: missing {phrase!r}")
     ET.parse(ROOT / "research/simulation/kg-ontology/latest/figures/evaluation-matrix.svg")
 
 

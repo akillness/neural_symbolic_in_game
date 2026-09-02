@@ -1144,17 +1144,24 @@ def render_svg(matrix: dict[str, Any]) -> str:
     return "\n".join(parts) + "\n"
 
 
+STRATEGY_TEX_LABELS = {"S2-typed-lexical-loose": "S2 typed-lexical"}
+
+
+def _strategy_tex_label(strategy_id: str) -> str:
+    """Plain table label for a strategy id; unknown ids fall back to the escaped id."""
+    return STRATEGY_TEX_LABELS.get(strategy_id, strategy_id.replace("_", "\\_"))
+
+
 def render_paper_tex(matrix: dict[str, Any], *, korean: bool) -> str:
     baseline = matrix["trials"][0]["metrics"]
     winner = matrix["winner"]["metrics"]
     graph = matrix["graph"]
-    winner_name = matrix["winner"]["strategy_id"].replace("_", "\\_")
-    excluded_claims = ", ".join(EXCLUDED_RESULT_CLAIMS)
+    winner_name = _strategy_tex_label(matrix["winner"]["strategy_id"])
     if korean:
         caption = "동결된 타입 링크 holdout에서의 시뮬레이션 전용 제안 전략 평가"
         boundary = (
             "\\noindent\\textbf{범위.} 이 표는 설계된 closed-world 링크 복원 결과이며 "
-            f"런타임 KG 검색, 의미 완전성, 장기 모순 감소 또는 {excluded_claims}의 근거가 아니다."
+            "런타임 KG 검색, 의미 완전성, 장기 모순 감소 또는 어떤 효능 주장의 근거도 아니다."
         )
         labels = ("전략", "정밀도", "재현율", "MRR", "Brier", "Sem@3")
     else:
@@ -1162,7 +1169,7 @@ def render_paper_tex(matrix: dict[str, Any], *, korean: bool) -> str:
         boundary = (
             "\\noindent\\textbf{Scope.} This table reports authored closed-world link recovery, "
             "not runtime KG retrieval, semantic completeness, long-horizon contradiction reduction, "
-            f"or evidence for {excluded_claims}."
+            "or evidence for any efficacy claim."
         )
         labels = ("Strategy", "Precision", "Recall", "MRR", "Brier", "Sem@3")
     return "\n".join(
@@ -1193,11 +1200,11 @@ def render_paper_tex(matrix: dict[str, Any], *, korean: bool) -> str:
             "\\end{table}",
             boundary,
             (
-                f"\\noindent The deterministic methods graph contains {graph['nodes']} OKF nodes, "
+                f"\\noindent The deterministic methods graph contains {graph['nodes']} graph nodes, "
                 f"{graph['reference_edges']} reference edges, and "
                 f"{graph['curated_typed_edges']} curated typed edges; all ontology checks pass."
                 if not korean
-                else f"\\noindent 결정론적 방법론 그래프는 OKF 노드 {graph['nodes']}개, "
+                else f"\\noindent 결정론적 방법론 그래프는 graph node {graph['nodes']}개, "
                 f"reference edge {graph['reference_edges']}개, curated typed edge "
                 f"{graph['curated_typed_edges']}개를 포함하며 온톨로지 검사를 모두 통과한다."
             ),

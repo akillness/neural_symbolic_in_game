@@ -274,7 +274,33 @@ def build_manifest() -> dict[str, Any]:
                 "The pixels are trace-bound engine evidence. Retouching is forbidden; "
                 "regenerate from the bound scene, event/state packet, and capture runner."
             ),
-        }
+        },
+        {
+            "id": "sealed-lighthouse-playable-readout-panels",
+            "kind": "engine-evidence",
+            "editable": False,
+            "rendered": receipts(
+                (
+                    "game-track/godot/docs/latest/refusal.png",
+                    "game-track/godot/docs/latest/authorized_hint.png",
+                    "game-track/godot/docs/latest/ending.png",
+                )
+            ),
+            "reproducible_sources": receipts(
+                (
+                    "game-track/godot/docs/latest/evaluation-matrix.json",
+                    "game-track/godot/docs/latest/presentation-evaluation.json",
+                    "game-track/godot/scripts/game3d/game_3d.gd",
+                    "game-track/godot/scripts/game3d/harbor_ledger_ui.gd",
+                    "scripts/run_playable_evaluation.py",
+                )
+            ),
+            "reason": (
+                "The panels are working captures of the scripted presentation stages; the paper "
+                "crops them only through LaTeX trim parameters. Retouching is forbidden; "
+                "regenerate from the playable slice and its evaluation runner."
+            ),
+        },
     ]
 
     return {

@@ -230,7 +230,7 @@ def main() -> None:
         raise ValueError("Stage-5 citation keys do not equal bibliography keys")
     status_counts = Counter(entry["status"] for entry in audit["entries"])
     rate_limited = sum(bool(entry["rate_limited_indices"]) for entry in audit["entries"])
-    if status_counts != {"VERIFIED": 46, "PREPRINT": 9} or rate_limited != 22:
+    if status_counts != {"VERIFIED": 48, "PREPRINT": 7} or rate_limited != 22:
         raise ValueError(
             f"Stage-5 citation totals drift: status={status_counts!r}, rate_limited={rate_limited}"
         )
@@ -281,13 +281,14 @@ def main() -> None:
                 raise ValueError(f"{language} manuscript lacks evidence-lane marker {lane_id}")
         if r"\textbf{ENG1.}" not in tex:
             raise ValueError(f"{language} manuscript lacks evidence-lane marker ENG1")
-        for file_name in (
-            "contribution-evidence-matrix.csv",
-            "reference-topic-crosswalk.csv",
-            "experiment-evidence-matrix.csv",
-        ):
-            if file_name not in tex:
-                raise ValueError(f"{language} data-availability text omits {file_name}")
+        availability_marker = {
+            "en": "machine-checked contribution, reference-topic, and experiment matrices",
+            "ko": "기계 검증 기여·참조 주제·실험 매트릭스",
+        }[language]
+        if availability_marker not in tex:
+            raise ValueError(
+                f"{language} data-availability text omits the machine-checked matrices"
+            )
 
     claim_ids = set(
         re.findall(r"^\s*- id:\s*(\S+)\s*$", CLAIM_LEDGER.read_text(encoding="utf-8"), re.MULTILINE)
