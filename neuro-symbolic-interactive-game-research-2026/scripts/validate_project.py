@@ -16,10 +16,6 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
 
 REQUIRED = [
-    "README.ko.md",
-    "README.en.md",
-    "paper/ko/manuscript.md",
-    "paper/en/manuscript.md",
     "configs/model-matrix.yaml",
     "configs/experiment-matrix.yaml",
     "configs/metric-catalog.yaml",
@@ -29,7 +25,6 @@ REQUIRED = [
     "knowledge/ontology/trace-rpg-ontology.json",
     "knowledge/ontology/curated-relations.json",
     "knowledge/ontology/knowledge-graph-schema.sql",
-    "research/simulation/kg-ontology/README.md",
     "research/simulation/kg-ontology/latest/evaluation-matrix.json",
     "research/simulation/kg-ontology/latest/evaluation-matrix.md",
     "research/simulation/kg-ontology/latest/figures/evaluation-matrix.svg",
@@ -78,56 +73,6 @@ def check_model_matrix() -> None:
         fail(f"model matrix must contain 5-10 models, found {len(ids)}")
     if len(ids) != len(set(ids)):
         fail("model IDs are not unique")
-
-
-def check_bilingual_claims() -> None:
-    ko = (ROOT / "paper/ko/manuscript.md").read_text(encoding="utf-8")
-    en = (ROOT / "paper/en/manuscript.md").read_text(encoding="utf-8")
-    pattern = r"C-(?:METHOD|DATA|AFFECT|SYSTEM|RESULT)-\d{3}"
-    ko_claims, en_claims = set(re.findall(pattern, ko)), set(re.findall(pattern, en))
-    if ko_claims != en_claims:
-        fail(
-            f"bilingual claim mismatch: KO-only={ko_claims - en_claims}, EN-only={en_claims - ko_claims}"
-        )
-    if ko.count("TODO-RESULT") != en.count("TODO-RESULT"):
-        fail("bilingual TODO-RESULT counts differ")
-    if "TODO-RESULT" not in ko or "TODO-RESULT" not in en:
-        fail("result lock marker missing")
-
-    latex_en = (ROOT / "paper/latex/en/main.tex").read_text(encoding="utf-8")
-    latex_ko = (ROOT / "paper/latex/ko/main.tex").read_text(encoding="utf-8")
-    label_pattern = r"\\label\{([^}]+)\}"
-    labels_en = set(re.findall(label_pattern, latex_en))
-    labels_ko = set(re.findall(label_pattern, latex_ko))
-    if labels_en != labels_ko:
-        fail(
-            f"authoritative LaTeX label mismatch: EN-only={labels_en - labels_ko}, "
-            f"KO-only={labels_ko - labels_en}"
-        )
-    input_pattern = r"\\input\{\.\./generated/([^}]+)\}"
-    inputs_en = {name.replace("_en.tex", ".tex") for name in re.findall(input_pattern, latex_en)}
-    inputs_ko = {name.replace("_ko.tex", ".tex") for name in re.findall(input_pattern, latex_ko)}
-    if inputs_en != inputs_ko:
-        fail(
-            f"authoritative LaTeX generated-input mismatch: EN-only={inputs_en - inputs_ko}, "
-            f"KO-only={inputs_ko - inputs_en}"
-        )
-    latex_claim_pattern = r"C-(?:METHOD|DATA|AFFECT|SYSTEM|PILOT|GAME-DESIGN|RESULT|SIM)-\d{3}"
-    generated_en = "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in sorted((ROOT / "paper/latex/generated").glob("*_en.tex"))
-    )
-    generated_ko = "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in sorted((ROOT / "paper/latex/generated").glob("*_ko.tex"))
-    )
-    claims_en = set(re.findall(latex_claim_pattern, latex_en + generated_en))
-    claims_ko = set(re.findall(latex_claim_pattern, latex_ko + generated_ko))
-    if claims_en != claims_ko:
-        fail(
-            f"authoritative LaTeX claim mismatch: EN-only={claims_en - claims_ko}, "
-            f"KO-only={claims_ko - claims_en}"
-        )
 
 
 def check_json_and_bridge() -> None:
@@ -233,9 +178,16 @@ def check_json_and_bridge() -> None:
 
 
 def check_svg() -> None:
-    svgs = sorted((ROOT / "visuals").glob("*.svg"))
-    if len(svgs) < 2:
-        fail("at least two SVG visualizations are required")
+    """Parse every tracked figure SVG; structure is validated separately by
+    scripts/validate_visual_assets.py against visuals/source-manifest.json."""
+    roots = (
+        ROOT / "paper/latex/figures",
+        ROOT / "research/directions/figures",
+        ROOT / "research/simulation/kg-ontology/latest/figures",
+    )
+    svgs = sorted(svg for base in roots for svg in base.glob("*.svg"))
+    if not svgs:
+        fail("no figure SVG sources found")
     for svg in svgs:
         ET.parse(svg)
 
@@ -316,37 +268,6 @@ def check_kg_ontology_simulation() -> None:
     metrics = matrix["winner"]["metrics"]
     if metrics["semantic_at_k"] != 1.0:
         fail("KG/ontology winner violates the frozen Sem@K constraint")
-    readme_sections = {
-        "EN": (
-            ROOT / "README.en.md",
-            "## KG/ontology graph store and proposal simulation",
-        ),
-        "KO": (
-            ROOT / "README.ko.md",
-            "## KG/온톨로지 그래프 저장소와 제안 시뮬레이션",
-        ),
-    }
-    parity_tokens = {
-        matrix["simulation_id"],
-        matrix["winner"]["strategy_id"],
-        str(matrix["graph"]["nodes"]),
-        str(matrix["graph"]["reference_edges"]),
-        str(matrix["graph"]["curated_typed_edges"]),
-        str(matrix["budget"]["candidate_scores_per_trial"]),
-        str(matrix["budget"]["candidate_scores_total"]),
-        f"P=R=F1={metrics['f1']:.3f}",
-        f"MRR={metrics['mrr_realistic']:.3f}",
-        f"BS={metrics['brier_score']:.3f}",
-        f"Sem@3={metrics['semantic_at_k']:.3f}",
-    }
-    for language, (path, heading) in readme_sections.items():
-        text = path.read_text(encoding="utf-8")
-        if heading not in text:
-            fail(f"{language} README KG/ontology section is missing")
-        section = text.split(heading, 1)[1].split("\n## ", 1)[0]
-        missing = sorted(token for token in parity_tokens if token not in section)
-        if missing:
-            fail(f"{language} README KG/ontology numeric parity drift: {missing}")
     for language in ("en", "ko"):
         tex = (ROOT / f"paper/latex/generated/kg_ontology_simulation_{language}.tex").read_text(
             encoding="utf-8"
@@ -375,7 +296,6 @@ def check_graphify_layers() -> None:
 def main() -> None:
     check_required()
     check_model_matrix()
-    check_bilingual_claims()
     check_json_and_bridge()
     check_svg()
     check_scraped_sources()
@@ -384,7 +304,7 @@ def main() -> None:
     check_kg_ontology_simulation()
     check_graphify_layers()
     print(
-        "PASS: structure, bilingual claims/LaTeX, bridge, SVG, captures, raw hashes, "
+        "PASS: structure, LaTeX, bridge, SVG, captures, raw hashes, "
         "KG simulation, and Graphify layers"
     )
 

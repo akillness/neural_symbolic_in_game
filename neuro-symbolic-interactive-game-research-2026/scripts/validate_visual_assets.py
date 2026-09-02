@@ -33,12 +33,6 @@ SVG_INVENTORY_ROOTS = (
 
 LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
-    "visuals/system-architecture.svg",
-    "visuals/commit-transaction.svg",
-    "visuals/pilot-evidence.svg",
-    "visuals/claim-status.svg",
-    "visuals/research-workflow.svg",
-    "visuals/confirmatory-design.svg",
     "research/directions/figures/fig_consensus_gate_lanes.svg",
     "research/directions/figures/fig_cost_validity_pareto_concept.svg",
     "paper/latex/generated/pilot_results_en.tex",
@@ -287,10 +281,6 @@ class Validator:
                 if "connector" in element.attrib.get("class", "").split()
             ]
             self.check(bool(connectors), f"{relative}: connector paths are not classed")
-        elif relative.parts and relative.parts[0] == "visuals":
-            self.check(bool(sizes), f"{relative}: no SVG font sizes found")
-            if sizes:
-                self.check(min(sizes) >= 12.0, f"{relative}: README label below 12 SVG px")
 
         if path.name == "balance-archetypes.svg":
             grid_lines = [
@@ -826,7 +816,6 @@ class Validator:
     def _run_lightweight_generators(self, staged_root: Path) -> None:
         commands = (
             [sys.executable, "scripts/generate_paper_figures.py"],
-            [sys.executable, "scripts/generate_readme_visuals.py"],
             [sys.executable, "scripts/generate_direction_figures.py"],
             [sys.executable, "scripts/generate_paper_results.py"],
             [

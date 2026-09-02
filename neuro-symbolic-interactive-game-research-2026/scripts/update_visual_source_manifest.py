@@ -13,7 +13,6 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "visuals" / "source-manifest.json"
 
 PAPER_FIGURE_GENERATOR = "scripts/generate_paper_figures.py"
-README_VISUAL_GENERATOR = "scripts/generate_readme_visuals.py"
 DIRECTION_GENERATOR = "scripts/generate_direction_figures.py"
 PAPER_TABLE_GENERATOR = "scripts/generate_paper_results.py"
 KG_GENERATOR = "src/nesy_game/kg_ontology_simulation.py"
@@ -107,9 +106,7 @@ def table_source(
 
 def build_manifest() -> dict[str, Any]:
     paper_usage = ("paper/latex/en/main.tex", "paper/latex/ko/main.tex")
-    root_readmes = ("README.en.md", "README.ko.md")
     direction_note = ("research/directions/consensus-vs-symbolic-gate.md",)
-    game_readmes = ("game-track/README.en.md", "game-track/README.ko.md")
 
     paper_assets = []
     for stem, asset_id in (("fig_architecture", "paper-architecture"),):
@@ -124,60 +121,6 @@ def build_manifest() -> dict[str, Any]:
                 used_by=paper_usage,
             )
         )
-
-    readme_assets = [
-        visual_asset(
-            "readme-system-architecture",
-            "diagram",
-            rendered=("visuals/system-architecture.svg",),
-            editable=("visuals/system-architecture.svg",),
-            generator=README_VISUAL_GENERATOR,
-            used_by=root_readmes,
-        ),
-        visual_asset(
-            "readme-commit-transaction",
-            "diagram",
-            rendered=("visuals/commit-transaction.svg",),
-            editable=("visuals/commit-transaction.svg",),
-            generator=README_VISUAL_GENERATOR,
-            data=("research/academic-pipeline/stage-04-pilot/repair-arm-summary.csv",),
-            used_by=root_readmes,
-        ),
-        visual_asset(
-            "readme-pilot-evidence",
-            "chart",
-            rendered=("visuals/pilot-evidence.svg",),
-            editable=("visuals/pilot-evidence.svg",),
-            generator=README_VISUAL_GENERATOR,
-            data=("research/academic-pipeline/stage-04-pilot/pilot-summary.csv",),
-            used_by=root_readmes,
-        ),
-        visual_asset(
-            "readme-claim-status",
-            "chart",
-            rendered=("visuals/claim-status.svg",),
-            editable=("visuals/claim-status.svg",),
-            generator=README_VISUAL_GENERATOR,
-            data=("research/claim-ledger.yaml",),
-            used_by=root_readmes,
-        ),
-        visual_asset(
-            "readme-research-workflow",
-            "diagram",
-            rendered=("visuals/research-workflow.svg",),
-            editable=("visuals/research-workflow.svg",),
-            generator=README_VISUAL_GENERATOR,
-            used_by=root_readmes,
-        ),
-        visual_asset(
-            "readme-confirmatory-design",
-            "diagram",
-            rendered=("visuals/confirmatory-design.svg",),
-            editable=("visuals/confirmatory-design.svg",),
-            generator=README_VISUAL_GENERATOR,
-            used_by=root_readmes,
-        ),
-    ]
 
     adjacent_assets = [
         visual_asset(
@@ -206,7 +149,7 @@ def build_manifest() -> dict[str, Any]:
                 "research/simulation/kg-ontology/latest/evaluation-matrix.json",
                 "research/simulation/kg-ontology/latest/strategy-trials.tsv",
             ),
-            used_by=root_readmes,
+            used_by=(),
         ),
         visual_asset(
             "game-balance-archetypes",
@@ -215,7 +158,7 @@ def build_manifest() -> dict[str, Any]:
             editable=("game-track/godot/docs/latest/balance-archetypes.svg",),
             generator=BALANCE_GENERATOR,
             data=("game-track/godot/docs/latest/balance-archetypes.json",),
-            used_by=game_readmes,
+            used_by=("game-track/godot/docs/latest/balance-archetypes.md",),
         ),
     ]
 
@@ -337,9 +280,8 @@ def build_manifest() -> dict[str, Any]:
     return {
         "schema_version": 1,
         "generated_by": "scripts/update_visual_source_manifest.py",
-        "contract": receipt("visuals/README.md"),
         "rendered_surfaces": rendered_surfaces,
-        "visual_assets": paper_assets + readme_assets + adjacent_assets,
+        "visual_assets": paper_assets + adjacent_assets,
         "table_sources": table_sources,
         "noneditable_evidence": noneditable_evidence,
     }

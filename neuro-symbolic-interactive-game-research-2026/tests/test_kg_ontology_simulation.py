@@ -190,29 +190,6 @@ class KgOntologySimulationTests(unittest.TestCase):
             self.assertIn(claim_id, english)
             self.assertIn(claim_id, korean)
 
-        metrics = self.matrix["winner"]["metrics"]
-        parity_tokens = {
-            self.matrix["simulation_id"],
-            self.matrix["winner"]["strategy_id"],
-            str(self.matrix["graph"]["nodes"]),
-            str(self.matrix["graph"]["reference_edges"]),
-            str(self.matrix["graph"]["curated_typed_edges"]),
-            str(self.matrix["budget"]["candidate_scores_per_trial"]),
-            str(self.matrix["budget"]["candidate_scores_total"]),
-            f"P=R=F1={metrics['f1']:.3f}",
-            f"MRR={metrics['mrr_realistic']:.3f}",
-            f"BS={metrics['brier_score']:.3f}",
-            f"Sem@3={metrics['semantic_at_k']:.3f}",
-        }
-        sections = [
-            (ROOT / "README.en.md", "## KG/ontology graph store and proposal simulation"),
-            (ROOT / "README.ko.md", "## KG/온톨로지 그래프 저장소와 제안 시뮬레이션"),
-        ]
-        for path, heading in sections:
-            text = path.read_text(encoding="utf-8")
-            section = text.split(heading, 1)[1].split("\n## ", 1)[0]
-            self.assertEqual({token for token in parity_tokens if token not in section}, set())
-
     def test_claim_boundary_drift_fails_before_evaluation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             temporary_root = Path(directory)
