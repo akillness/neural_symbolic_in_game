@@ -10,6 +10,30 @@ python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web
 open http://127.0.0.1:4173/dashboard/                          # game at /public/, dashboard at /dashboard/
 ```
 
+Serve `game-track/web`, not `public/`: the dashboard loads the game from `../public/index.html`. Click
+inside the embedded canvas (browsers require a gesture before pointer lock and audio), press **BEGIN
+INVESTIGATION**, and the header pill flips to `live · receiving game events` on the first envelope.
+Full step-by-step walkthrough: [README.en.md](../../../README.en.md#run-guide) ·
+[README.ko.md](../../../README.ko.md).
+
+![Hold: the coral pulse stops at the DISCLOSURE predicate and the state hash is unchanged](screenshots/dashboard-hold.png)
+
+A held request: the coral pulse stops at the predicate family that rejected it, `HOLDS` counts the
+engine code, and the canonical state hash in the header does not move.
+
+![Commit: a green pulse runs through all six predicate families into COMMIT and TRACE](screenshots/dashboard-commit.png)
+
+A committed entry: every predicate is exercised, `ENTRIES` and the quest stage advance, and the new
+snapshot hash is appended to the trace chain.
+
+![Episode complete with a four-link trace hash chain ending at 4b231017...8892](screenshots/dashboard-complete.png)
+
+Episode complete: the final hash equals the terminal hash the headless smoke reports.
+
+![Timeline, harbor plan, and raw event feed](screenshots/dashboard-panels.png)
+
+The lower panels: event timeline, harbor plan with the player trail, and the raw envelopes received.
+
 ## What it shows
 
 | Panel | Source | Paper linkage |

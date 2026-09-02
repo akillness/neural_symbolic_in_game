@@ -309,6 +309,70 @@ HOLD → TRACE로 가며 상태 해시는 변하지 않는다. 세션 패널은 
 `f488d9c4…812c → 19b474dc…c498 → 93381457…b900 → 4b231017…8892`를 만들었고, headless 스모크가 보고하는 종단
 해시와 같은 값으로 끝났다. 엔지니어링 시연일 뿐이며 어떤 claim, G4, G6 상태도 승격하지 않는다.
 
+##### 실행 가이드
+
+사전 조건: `PATH`에 Godot 4.7.x, Python 3.11+, 그리고 5단계 오프라인 검사에만 필요한 `uv`.
+
+**1 · Web 빌드 내보내기.** 스크립트가 프로젝트를 먼저 일회용 디렉터리로 복사하므로 정식
+`game-track/godot/project.godot`은 열리거나 다시 쓰이지 않는다. 성공하면 PCK 영수증을 출력한다.
+
+```bash
+./scripts/build_godot_web.sh          # 무시되는 game-track/web/public/ 생성
+```
+
+**2 · `public/`이 아니라 `game-track/web`을 서빙한다.** 대시보드는 게임을 `../public/index.html`에서
+불러오므로 서빙 루트가 상위 디렉터리여야 한다.
+
+```bash
+python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web
+```
+
+**3 · 대시보드 열기** — <http://127.0.0.1:4173/dashboard/>. 왼쪽에 게임이 임베드되어 있다. 캔버스
+안을 클릭하고(브라우저는 포인터 잠금과 오디오 전에 제스처를 요구한다) **BEGIN INVESTIGATION**을
+누른다. 첫 envelope가 도착하면 헤더 pill이 `waiting for game events`에서
+`live · receiving game events`로 바뀐다.
+
+**4 · 골든 패스를 플레이하며 게이트를 관찰한다.** 이동은 `WASD` + 마우스 시점, 상호작용은 `[E]`이며,
+호박색 beacon이 항상 현재 단서를 가리킨다.
+
+| # | 게임에서 | 대시보드에서 |
+|---|---|---|
+| 1 | 부두 끝의 Captain Mira에게 걸어가 `[E]` | 타임라인에 `focus`·`dialogue` 표시가 찍히고, harbor plan이 해당 site를 강조하며 이동 궤적을 그린다 |
+| 2 | *"The keeper is hiding something. Tell me."* 선택 | **Hold** — 코럴 펄스가 parser → `v_disc` → HOLD → TRACE로 흐르고 `HOLDS`가 1이 되며 `DISCLOSURE` 행에 `FORBIDDEN_DISCLOSURE ×1`이 집계된다. 헤더의 상태 해시는 **변하지 않는다** |
+| 3 | 램프 저장고에서 signal lens 회수, `[E]` | **Commit #1** — 녹색 펄스가 여섯 술어 family를 모두 지나 COMMIT → TRACE로 흐른다. `ENTRIES` 1, stage 0→1, trace 체인에 새 해시가 추가된다 |
+| 4 | 항구 신호 mount에 렌즈 설치, `[E]` | Commit #2, stage 1→2, revision 2 |
+| 5 | Mira에게 *"What do the tide marks mean?"* | Commit #3 — 조석 표식 단서가 기록된다 |
+| 6 | 서쪽 방파제의 tide marks 조사, `[E]` | `episode_complete`; `EPISODE`가 **complete**가 되고 최종 해시는 `4b231017…8892` |
+
+![Hold: 코럴 펄스가 DISCLOSURE 술어에서 멈추고 HOLDS가 1, FORBIDDEN_DISCLOSURE x1이 집계되며 헤더 상태 해시는 그대로다](game-track/web/dashboard/screenshots/dashboard-hold.png)
+
+*2단계 — 보류된 요청. 게이트가 막은 술어 family를 명시하고 정식 상태 해시는 그대로 유지된다.*
+
+![Commit: 녹색 펄스가 여섯 술어 family를 모두 지나 COMMIT과 TRACE로 흐르고 entries 1, stage 1, trace 체인에 두 번째 해시가 추가된다](game-track/web/dashboard/screenshots/dashboard-commit.png)
+
+*3단계 — 커밋된 항목. 모든 술어를 거친 뒤 스냅샷 해시가 trace 체인에서 전진한다.*
+
+![에피소드 완료: entries 3, holds 1, stage 2, revision 3, 그리고 4b231017...8892로 끝나는 네 개짜리 trace 해시 체인](game-track/web/dashboard/screenshots/dashboard-complete.png)
+
+*6단계 — 에피소드 완료. 최종 해시는 headless 스모크가 보고하는 종단 해시와 같다.*
+
+![proposal·verdict·dialogue·focus 레인의 타임라인, 이동 궤적이 있는 harbor plan, episode_complete로 끝나는 raw event feed](game-track/web/dashboard/screenshots/dashboard-panels.png)
+
+*하단 패널 — 이벤트 타임라인, harbor plan 궤적, 페이지가 수신한 raw envelope.*
+
+**5 · 같은 메커니즘을 오프라인에서 교차 확인한다.** 대시보드는 라이브 세션을 보여주고, 아래 두 명령은
+동일한 게이트의 동결·headless 관점을 보여준다.
+
+```bash
+uv run python scripts/run_playable_evaluation.py    # 일회용 복사본에서 fixture 4/4, check 52/52
+uv run python scripts/run_conformance_pilot.py --output-dir /tmp/runs --release-dir /tmp/release
+```
+
+**문제 해결.** pill이 계속 `waiting for game events`이면 페이지가 부모 프레임이 아니다. `/public/`을
+직접 열지 말고 `/dashboard/`를 연다. 브리지는 빌드가 임베드된 경우에만 활성화된다. 캔버스가 비어
+있거나 404가 나면 대개 `game-track/web` 대신 `public/`을 서빙한 경우다. 오디오와 포인터 잠금은 캔버스
+안을 클릭하기 전까지 꺼져 있다.
+
 배포: **[`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` Vercel READY](https://sealed-lighthouse-trace-rpg.vercel.app)**
 (PCK 10,893,980 bytes, SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`);
 공개 런타임 파일 10개 모두 익명 `200` 응답이며 로컬 바이트와 일치했다. 게이트 라인, 기여 readout,
@@ -327,6 +391,9 @@ uv run python scripts/validate_visual_assets.py --require-pdf-tools --check-rege
 uv run python examples/recorded_experiment.py
 ./scripts/verify_like_ci.sh                        # CI 단계 전부를 순서대로
 ```
+
+라이브 커밋 게이트 대시보드로 슬라이스를 플레이하려면 위의
+[실행 가이드](#실행-가이드)를 따른다.
 
 선택적 로컬 LLM 접근은 공식 Codex device-code 흐름을 사용한다. 래퍼는 자격 증명을 읽거나 출력하지
 않고, 각 prompt를 일회용 읽기 전용 workspace에서 임시로 실행하며, 비권위적 soft proposal만 반환한다.

@@ -330,6 +330,71 @@ route on 2026-09-02 produced 3 commits, 1 hold (`FORBIDDEN_DISCLOSURE` → DISCL
 `f488d9c4…812c → 19b474dc…c498 → 93381457…b900 → 4b231017…8892`, ending on the same terminal hash the headless
 smoke reports. Engineering demonstration only; it promotes no claim, G4, or G6 status.
 
+##### Run guide
+
+Prerequisites: Godot 4.7.x on `PATH`, Python 3.11+, and `uv` (only for the offline checks in step 5).
+
+**1 · Export the Web build.** The script copies the project to a disposable directory first, so the
+canonical `game-track/godot/project.godot` is never opened or rewritten. It prints the PCK receipt on
+success.
+
+```bash
+./scripts/build_godot_web.sh          # writes the ignored game-track/web/public/
+```
+
+**2 · Serve `game-track/web`, not `public/`.** The dashboard loads the game from `../public/index.html`,
+so the served root must be the parent directory.
+
+```bash
+python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web
+```
+
+**3 · Open the dashboard** at <http://127.0.0.1:4173/dashboard/>. The game is embedded on the left;
+click inside its canvas (browsers require a gesture before pointer lock and audio) and press
+**BEGIN INVESTIGATION**. The header pill flips from `waiting for game events` to
+`live · receiving game events` as soon as the first envelope arrives.
+
+**4 · Play the golden path and watch the gate.** Movement is `WASD` + mouse look, interaction is `[E]`,
+and the amber beacon always marks the current lead.
+
+| # | In the game | On the dashboard |
+|---|---|---|
+| 1 | Walk to Captain Mira at the end of the dock, press `[E]` | `focus` and `dialogue` marks land on the timeline; the harbor plan highlights the site and draws your trail |
+| 2 | Ask *"The keeper is hiding something. Tell me."* | **Hold** — a coral pulse runs parser → `v_disc` → HOLD → TRACE, `HOLDS` becomes 1, the `DISCLOSURE` row counts `FORBIDDEN_DISCLOSURE ×1`, and the header state hash **does not change** |
+| 3 | Recover the signal lens from the lamp store, `[E]` | **Commit #1** — a green pulse runs through all six predicate families → COMMIT → TRACE; `ENTRIES` 1, stage 0→1, and a new hash is appended to the trace chain |
+| 4 | Install the lens in the harbor signal mount, `[E]` | Commit #2, stage 1→2, revision 2 |
+| 5 | Ask Mira *"What do the tide marks mean?"* | Commit #3 — the tide-marks lead is recorded |
+| 6 | Inspect the tide marks on the west breakwater, `[E]` | `episode_complete`; `EPISODE` reads **complete** and the final hash is `4b231017…8892` |
+
+![Hold: the coral pulse stops at the DISCLOSURE predicate, HOLDS becomes 1 with FORBIDDEN_DISCLOSURE x1, and the header state hash is unchanged](game-track/web/dashboard/screenshots/dashboard-hold.png)
+
+*Step 2 — a held request. The gate names the predicate family that stopped it and the canonical state hash stays put.*
+
+![Commit: a green pulse runs through all six predicate families into COMMIT and TRACE; entries 1, stage 1, and a second hash joins the trace chain](game-track/web/dashboard/screenshots/dashboard-commit.png)
+
+*Step 3 — a committed entry. Every predicate is exercised, then the snapshot hash advances in the trace chain.*
+
+![Episode complete: entries 3, holds 1, stage 2, revision 3, and a four-link trace hash chain ending at 4b231017...8892](game-track/web/dashboard/screenshots/dashboard-complete.png)
+
+*Step 6 — episode complete. The final hash equals the terminal hash the headless smoke reports.*
+
+![Timeline lanes for proposal, verdict, dialogue and focus; harbor plan with the player trail; raw event feed ending in episode_complete](game-track/web/dashboard/screenshots/dashboard-panels.png)
+
+*Lower panels — the event timeline, the harbor plan trail, and the raw envelopes the page received.*
+
+**5 · Cross-check the same mechanism offline.** The dashboard shows the live session; these two commands
+show the frozen and headless views of the identical gate.
+
+```bash
+uv run python scripts/run_playable_evaluation.py    # 4/4 fixtures, 52/52 checks, on a disposable copy
+uv run python scripts/run_conformance_pilot.py --output-dir /tmp/runs --release-dir /tmp/release
+```
+
+**Troubleshooting.** If the pill stays on `waiting for game events`, the page is not the parent frame —
+open `/dashboard/`, not `/public/` directly; the bridge activates only when the build is embedded. A
+blank canvas or a 404 usually means `public/` was served instead of `game-track/web`. Audio and pointer
+lock stay off until you click inside the canvas.
+
 Deployment: **[`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY on Vercel](https://sealed-lighthouse-trace-rpg.vercel.app)**
 (PCK 10,893,980 bytes, SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`);
 all 10 public runtime files returned anonymous `200` responses and matched the local bytes. The
@@ -349,6 +414,9 @@ uv run python scripts/validate_visual_assets.py --require-pdf-tools --check-rege
 uv run python examples/recorded_experiment.py
 ./scripts/verify_like_ci.sh                        # every CI step, in order
 ```
+
+To play the slice with the live commit-gate dashboard, follow the
+[run guide](#run-guide) above.
 
 Optional local LLM access uses the official Codex device-code flow; the wrapper never reads or
 prints credentials, runs each prompt ephemerally in a disposable read-only workspace, and returns
