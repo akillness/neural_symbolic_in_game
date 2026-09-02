@@ -228,8 +228,11 @@ paid/free result.
   stage); the matrix binds those receipts. Only in a display-less sandbox (dummy renderer, no
   texture, windowed launch aborts) may working screenshots come from a disposable Web-stage-only
   query hook plus browser capture/downsample; that hook must never enter tracked source and such
-  PNGs carry no shot receipt. Either way the PNGs remain engineering-only, and immutable capture
-  promotion still requires the separate non-headless evidence contract.
+  PNGs carry no shot receipt: a fallback refresh must delete the stale `<stage>.shot.json`
+  sidecars first, because `screenshot_receipts` fails closed ("shot receipt does not bind") when
+  a sidecar's SHA-256 no longer matches its PNG, which also fails `--evaluate`, the tests, and CI.
+  Either way the PNGs remain engineering-only, and immutable capture promotion still requires the
+  separate non-headless evidence contract.
 - Before pushing, run `./scripts/verify_like_ci.sh` — it replays every
   `.github/workflows/validate.yml` step in order. The game-track command alone is not sufficient:
   CI also runs `ruff check`/`ruff format --check` over `src tests scripts examples`, the unit-test
