@@ -4,7 +4,7 @@ Status: **production deployment `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` is `READY` an
 [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app)**.
 Its deployment-scoped URL is
 [`sealed-lighthouse-trace-akc33emxv-akillness-projects.vercel.app`](https://sealed-lighthouse-trace-akc33emxv-akillness-projects.vercel.app).
-Retained predecessor full-route gameplay: **[Compresso-compressed H.264 MP4](../godot/docs/latest/trace-rpg-gameplay.mp4)**
+Current full-route gameplay recording of the local build (Godot Movie Maker `--autoplay` route, 2026-09-02): **[H.264 MP4, 63.433 s](../godot/docs/latest/trace-rpg-gameplay.mp4)**
 (`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It was captured from the
 byte-identical predecessor deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` before the lens-approach
@@ -62,8 +62,8 @@ Prior 2026-08-21 deployment `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual + texture
 html/pck/wasm fetched back byte-identical (`index.pck` SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`); start gate, intro cinematic,
 tutorial folio, diegetic ledger voice with stamps, and objective flow verified at 1280×720 with
-zero unexpected console/page errors; a 32 s golden-path screencast was retained as
-`godot/docs/latest/golden-path.gif` (engineering working artifact only).
+zero unexpected console/page errors; the golden-path GIF at
+`godot/docs/latest/golden-path.gif` is now the 2026-09-02 Movie Maker route (engineering working artifact only).
 
 Historical browser smoke confirmed on 2026-08-21 for deployment
 `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9`:

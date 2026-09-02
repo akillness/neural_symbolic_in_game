@@ -55,7 +55,7 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 영수증(기록·보류·상태 해시)을 싣는다. 큐레이션된 D-036 세계 텍스처(젖은 판자, 산화 황동,
 돛 캔버스)와 도장/인장 아이콘은 전체 출처 기록과 검증된 절차 폴백과 함께 배포된다.
 
-![골든 패스 오프닝: 시작 게이트, 인트로 시네마틱, 안내 폴리오, 첫 걸음](godot/docs/latest/golden-path.gif)
+![스크립트 골든패스 경로(63초, 1.5배속): 인트로, 게이트를 명시한 보류, 렌즈 회수, 신호 복구, 조석 단서, 사건 종결 영수증](godot/docs/latest/golden-path.gif)
 
 **[보존 선행 버전 전체 경로 플레이 영상(Compresso 압축 H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**은
 렌즈 접근 데크 변경 전 선행 배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`와 바이트가 일치하는
@@ -74,8 +74,8 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 | 중복 이벤트 fixture | `10/10` | PASS |
 | timeout fixture | `10/10` | PASS |
 | 손상 저장 fixture | `10/10` | PASS |
-| 프레젠테이션 불변조건 | `9/9` | PASS |
-| **합계** | **`49/49`** | **PASS** |
+| 프레젠테이션 불변조건 | `12/12` | PASS |
+| **합계** | **`52/52`** | **PASS** |
 | 아키타입 밸런스 프로브 | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 저자 fixture `4/4` 모두 정확한 종료 상태 SHA-256

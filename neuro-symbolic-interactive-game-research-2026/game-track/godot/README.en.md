@@ -1,7 +1,7 @@
 # The Sealed Lighthouse — Godot conformance, playable, capture, and Web passes
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
-`49/49` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
+`52/52` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
 deployment `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` is live with the English tracked-player artifact.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
@@ -74,7 +74,7 @@ The authoritative retained 2026-08-13 evidence set is selected by
 duplicate-ID, timeout, and corrupt-save runs each made three commits and reached the frozen
 terminal/oracle hash; the corrupt-save probe was rejected before live-state mutation. The selected
 retained Cycle 2 packet reports `40 tests, 44 subtests`; the current game-track gate reports
-`46 passed, 2 skipped`. Performance budgets did not all pass:
+`50 passed, 48 subtests`. Performance budgets did not all pass:
 five-sample headless frame p95 values included startup transients and were `116.667`, `100.000`,
 `98.760`, and `112.907 ms`, respectively, in the selected retained packet.
 
@@ -153,8 +153,8 @@ Publication promotion of the pending concept candidates still requires human rig
 | Duplicate-event fixture | `10/10` | PASS |
 | Timeout fixture | `10/10` | PASS |
 | Corrupt-save fixture | `10/10` | PASS |
-| Presentation invariants | `9/9` | PASS |
-| **Combined** | **`49/49`** | **PASS** |
+| Presentation invariants | `12/12` | PASS |
+| **Combined** | **`52/52`** | **PASS** |
 | Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 All `4/4` fixture runs reached the exact terminal SHA-256
@@ -172,7 +172,7 @@ The four 1280×720 PNGs are latest engineering working captures generated from a
 Web build because this sandbox cannot render Godot `--shot`. The capture-only query hook never enters
 tracked source. The PNGs do not replace or amend the immutable v5 packet.
 
-Retained predecessor full-route gameplay: **[Compresso-compressed H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
+Current full-route gameplay (dev-only `main_3d.tscn -- --autoplay --public-safe` under `--write-movie`, 2026-09-02): **[H.264 MP4, 63.433 s](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
 (`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). The recording comes from
 the byte-identical predecessor deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` before the

@@ -65,6 +65,12 @@ measurement.
   one `3.53 ms` engine-local proposal→ledger→rendered-frame sample. This is wiring evidence only,
   not a browser/user-gesture measurement. Four public-safe 1280×720 working captures were freshly
   regenerated through a disposable staged Web capture lane and hash-registered.
+- Fresh automated evidence (2026-09-02): `SL-PLAY-EVAL-001` extended to `12/12` presentation
+  invariants (`52/52` combined with the fixture checks). The three added checks —
+  `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, and
+  `case_chain_mirrors_committed_snapshot` — are engineering conformance for contribution
+  legibility (a pure per-commit delta derivation, gate-scoped rule teaching on holds, and
+  case-chain mirroring of committed facts). `[OBSERVED]`; not fun, usability, or G4 evidence.
 - Interpretation: smoke, JSON, screenshots, and browser checks cannot measure immersion,
   readability preference, usability, affect, or efficacy.
 - State: `FIX — NO HUMAN DATA`.
@@ -81,10 +87,10 @@ measurement.
   30-minute memory; input `≤100 ms`; safe rollback and exact replay.
 - Carried evidence: four v5 policy-mirror runs match terminal/load/replay/oracle hash. Startup-heavy
   frame p95 remains `116.667/100.000/98.760/112.907 ms`, so it does not pass.
-- Cycle 3 engineering receipts (refreshed 2026-08-30): full Pytest `172 passed, 2 skipped`, unittest
-  discovery `131` with `2` skipped, and the game-track selection `46 passed, 2 skipped`; Ruff check
-  and format are clean. `SL-PLAY-EVAL-001` passed `4/4` authored fixtures (`40/40`) plus `9/9`
-  presentation checks (`49/49` combined); four working PNGs passed size/hash registration. The
+- Cycle 3 engineering receipts (refreshed 2026-09-02): full Pytest `181 passed, 81 subtests`,
+  unittest discovery `138 passed`, and the game-track selection `50 passed, 48 subtests`; Ruff check
+  and format are clean. `SL-PLAY-EVAL-001` passed `4/4` authored fixtures (`40/40`) plus `12/12`
+  presentation checks (`52/52` combined); four working PNGs passed size/hash registration. The
   curated player validator passed 9,677,324 bytes, 15,463 triangles, and both required clips.
   Engine-local input-feedback wiring exists but browser/user-gesture latency remains unmeasured.
   The current ignored artifact has 11 manifest files / 50,746,755 bytes, including 10 public
@@ -123,6 +129,13 @@ measurement.
   → authorized hint → tide-marks ending path. On 2026-08-30, DEF-021 was closed locally by a
   collision-bearing deck that contains the unchanged lens anchor, overlaps the quay, and wraps the
   lamp-store wall; the stable eighth smoke item now includes this geometry contract and passes 8/8.
+- Cycle 3 engineering receipt (refreshed 2026-09-02): the presentation evaluation now adds `12/12`
+  non-mutating checks for `52/52` combined; the three new checks
+  (`contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`,
+  `case_chain_mirrors_committed_snapshot`) verify that per-commit case-chain progress and
+  gate-scoped rule text are derived purely from committed snapshots. `[OBSERVED]`; engineering
+  conformance for contribution legibility only, not core-loop duration, comprehension, agency,
+  repeat-rate, or G4/fun/usability evidence.
 - Interpretation: this confirms the state path and public-safe presentation sync; it does not
   measure human duration, comprehension, agency, or repeat behavior.
 - State: `FIX`.
@@ -139,12 +152,13 @@ measurement.
 | Check | Current result | Claim boundary |
 |---|---|---|
 | Fresh authored fixtures | `4/4`, `40/40`, correct shared terminal hash | hard-path conformance only |
-| Presentation evaluation | `9/9`, canonical state unchanged | instrumentation only |
-| Combined `SL-PLAY-EVAL-001` | `49/49` | engineering only |
+| Presentation evaluation | `12/12`, canonical state unchanged | instrumentation only |
+| Combined `SL-PLAY-EVAL-001` | `52/52` | engineering only |
 | Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 rotations; isolation 10/10; replay 5/5 | scripted engineering only |
-| Aggregate studio/game tests | full Pytest `172 passed, 2 skipped`; unittest `131` (`2` skipped); game selection `46 passed, 2 skipped`; Ruff check/format clean | regression only |
+| Aggregate studio/game tests | full Pytest `181 passed, 81 subtests`; unittest `138 passed`; game selection `50 passed, 48 subtests`; Ruff check/format clean | regression only |
 | Candidate asset boundary | pending concept packs excluded; curated UI lane and validated tracked player GLB allowed | static track separation; pending-pack rights review still open |
 | Responsive profiles | wide-column and narrow-stacked declaration check PASS | no visual/human readability result |
+| Contribution legibility (2026-09-02) | `[OBSERVED]` `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, `case_chain_mirrors_committed_snapshot` PASS; pure delta derivation, fail-closed public label allowlist (sealed/unmapped IDs suppressed), gate-scoped rule teaching, and case-chain mirroring of committed facts | engineering conformance only; not fun, usability, or G4 evidence |
 | Browser gesture policy | pointer lock NOT verified — 2026-08-17 retests and the 2026-08-29 current local build all left `document.pointerLockElement` null; canvas stayed active but scripted horizontal mouse motion did not rotate the camera | `FIX`; human-gesture pointer-lock check and measured input latency pending |
 | Browser save/reload | lens state saved, full page refreshed after 6.5 s, then `F9` restored inventory/objective from IndexedDB `/userfs` | PASS on current local build; current production recheck pending |
 | Below-world recovery | forced fall returned to spawn; public-safe smoke `8/8` asserts canonical state hash unchanged | physical recovery engineering evidence only |
@@ -159,14 +173,15 @@ measurement.
 
 | Artifact | Size/dimensions | SHA-256 / status |
 |---|---:|---|
-| `game-track/godot/docs/latest/arrival.png` | 1280×720, 315,788 B | `0648435c8d38688f28360903136053289673f7b3672e7da28f5a44b08bf8adee` |
-| `game-track/godot/docs/latest/refusal.png` | 1280×720, 433,123 B | `fe78a48aa85d625ec30fb60909bccfbd5e050ad0fd1d3b20f152c2e7dc4280ee` |
-| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 387,621 B | `37349468eefedff46d184680b4175b0e32f142c6d02c19df1eda972d9d0c1d87` |
-| `game-track/godot/docs/latest/ending.png` | 1280×720, 409,861 B | `edb3b6e3d787bd84120505f5ea153cd09b202cbbf6fb56e9f3c1fca983d26b9e` |
-| `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `49/49` | PASS; engineering-only |
+| `game-track/godot/docs/latest/arrival.png` | 1280×720, 301,813 B (refreshed 2026-09-02, contribution readout build) | `a8174d47ab3cc850e8ae7f87f3d9bafe0bf842c10d4f79574d9e2196a5bdcfa9` |
+| `game-track/godot/docs/latest/refusal.png` | 1280×720, 356,877 B (refreshed 2026-09-02) | `d1c2fb6ff38cd857bef1ffa2b041bb2e9c885b19ff27c2444de8911c28156015` |
+| `game-track/godot/docs/latest/authorized_hint.png` | 1280×720, 363,629 B (refreshed 2026-09-02) | `87ec7d60382103cbc9932ecf2b935bce1eca6f54c17e561cb6036062c74970b5` |
+| `game-track/godot/docs/latest/ending.png` | 1280×720, 389,709 B (refreshed 2026-09-02) | `792aa4427f7bce5e5161471f492d2392e55bf1ab9ebc0d55edaf0bb6a4a41b8b` |
+| `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `52/52` | PASS; engineering-only |
 | `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
 | `game-track/web/public/` | current production 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes | PCK SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`; includes curated player; ignored/non-authoritative builder output |
-| `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | H.264 High, 1280×720, 30 fps, 69.067 s, 5,662,128 B | `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`; predecessor `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, pre-lens-deck; fast-start; engineering demonstration only |
+| `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | H.264 High, 1280×720, 30 fps, 63.433 s, 1,903 frames, 7,734,997 B | `be86c2a7578a09dce2455274f0d2809547429c647466168d346d4e5addf16e00`; 2026-09-02 Godot Movie Maker capture of the current local build via the dev-only `--autoplay --public-safe` route (3 commits, 1 hold, terminal SHA-256 `4b231017…108892`); engineering demonstration only, not usability or performance evidence |
+| `game-track/godot/docs/latest/golden-path.gif` | 560×315, 8 fps, 338 frames (1.5× speed), 4,675,182 B | `adc6b52883a91cc10c11c671938baf82478725a1f20b83367b54b419cd8ea1d2`; derived from the MP4 above for the README; same boundary |
 | `docs/latest/vercel-start.png`, `vercel-in-game.png` | 1280×720 | retained 2026-08-21 production desktop receipts |
 | `docs/latest/vercel-mobile-start.png`, `vercel-mobile-in-game.png` | 390×844 | retained 2026-08-21 production narrow receipts; not current mobile evidence |
 | `docs/latest/web-start.png`, `web-in-game.png` | 3294×1908 | local/extension-connected Web inspection receipts |

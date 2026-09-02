@@ -59,9 +59,9 @@ carries an episode receipt (entries, deferrals, state hash) under the tide-route
 world textures (wet planks, oxidized brass, sail canvas) and stamp/seal icons ship with full
 provenance and a proven procedural fallback.
 
-![Golden-path opening: start gate, intro cinematic, tutorial folio, first steps](godot/docs/latest/golden-path.gif)
+![Scripted golden-path route (63 s, 1.5x): intro, held request naming the gate, lens recovery, signal restoration, tide lead, case-complete receipt](godot/docs/latest/golden-path.gif)
 
-**[Retained predecessor full-route gameplay recording (Compresso-compressed H.264 MP4)](godot/docs/latest/trace-rpg-gameplay.mp4)**
+**[Current full-route gameplay recording (Godot Movie Maker `--autoplay` route, H.264 MP4, 63.433 s)](godot/docs/latest/trace-rpg-gameplay.mp4)**
 shows the start gate, refusal hold, signal lens, lamp mount, authorized hint, tide marks, and ending
 receipt from the exact local build bytes deployed as predecessor
 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, before the lens-approach-deck change (`1280×720`, 30 fps,
@@ -80,8 +80,8 @@ performance evidence.*
 | Duplicate-event fixture | `10/10` | PASS |
 | Timeout fixture | `10/10` | PASS |
 | Corrupt-save fixture | `10/10` | PASS |
-| Presentation invariants | `9/9` | PASS |
-| **Combined** | **`49/49`** | **PASS** |
+| Presentation invariants | `12/12` | PASS |
+| **Combined** | **`52/52`** | **PASS** |
 | Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 All `4/4` authored fixtures reached the exact terminal state SHA-256

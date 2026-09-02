@@ -37,6 +37,7 @@ var _met_mira: bool = false
 var _lighthouse_observed: bool = false
 var _smoke_mode: bool = false
 var _evaluate_mode: bool = false
+var _autoplay_mode: bool = false
 var _play_started: bool = false
 var _evaluation_path: String = ""
 var _pending_input_feedback: Dictionary = {}
@@ -50,6 +51,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	var user_args := OS.get_cmdline_user_args()
 	_smoke_mode = "--smoke" in user_args
+	_autoplay_mode = "--autoplay" in user_args
 	var evaluate_index := user_args.find("--evaluate")
 	_evaluate_mode = evaluate_index != -1
 	if _evaluate_mode:
@@ -116,7 +118,78 @@ func _ready() -> void:
 		ui.show_start_gate(true)
 		ui.set_cursor_captured(false)
 		return
+	if _autoplay_mode:
+		_run_autoplay.call_deferred()
+		return
 	_start_experience(false)
+
+
+## ------------------------------------------------------------------ autoplay
+
+## Development-only scripted golden-path route for Movie Maker capture
+## (`--write-movie`). Every beat goes through the same interaction and choice
+## handlers a player would trigger, so canonical state changes only via the
+## proposal router; the autopilot only substitutes for keyboard and mouse input.
+## Not evidence of usability, fun, latency, or G4/G6.
+func _run_autoplay() -> void:
+	_start_experience(false)
+	await _autoplay_wait(5.2)
+	if ui.is_tutorial_open():
+		ui.hide_tutorial()
+		_on_tutorial_closed()
+		await _autoplay_wait(0.6)
+	await _autoplay_walk_to("mira")
+	_on_interact("mira")
+	await _autoplay_wait(1.8)
+	_on_choice("ask_lighthouse")
+	await _autoplay_wait(2.6)
+	_on_choice("ask_secret")
+	await _autoplay_wait(3.4)
+	_on_choice("leave")
+	await _autoplay_wait(0.8)
+	await _autoplay_walk_to("lens_pickup")
+	_on_interact("lens_pickup")
+	await _autoplay_wait(2.6)
+	await _autoplay_walk_to("lamp_mount")
+	_on_interact("lamp_mount")
+	await _autoplay_wait(3.0)
+	await _autoplay_walk_to("mira")
+	_on_interact("mira")
+	await _autoplay_wait(1.6)
+	_on_choice("ask_tide")
+	await _autoplay_wait(3.0)
+	_on_choice("leave")
+	await _autoplay_wait(0.8)
+	await _autoplay_walk_to("tide_marks")
+	_on_interact("tide_marks")
+	await _autoplay_wait(11.0)
+	print("AUTOPLAY-DONE " + JSON.stringify({
+		"engineering_only": true,
+		"commits": commit_count,
+		"holds": refusal_count,
+		"episode_over": episode_over,
+		"state_sha256": machine.state_hash(),
+	}))
+	get_tree().quit(0 if episode_over else 1)
+
+
+func _autoplay_wait(seconds: float) -> void:
+	await get_tree().create_timer(seconds).timeout
+
+
+func _autoplay_walk_to(site_id: String) -> void:
+	var target: Vector3 = GoldenPathLayout.site_position(site_id)
+	player.autopilot_target = target
+	player.autopilot_active = true
+	var remaining := 14.0
+	while remaining > 0.0:
+		var planar := Vector2(player.global_position.x - target.x, player.global_position.z - target.z)
+		if planar.length() <= 1.7:
+			break
+		await get_tree().physics_frame
+		remaining -= get_physics_process_delta_time()
+	player.autopilot_active = false
+	await _autoplay_wait(0.6)
 
 
 func _start_experience(unlock_audio: bool) -> void:
@@ -465,6 +538,18 @@ func _propose(
 		# first, ceremony reserved for the finale).
 		audio_feedback.play_cue("commit_%d" % mini(commit_count, 3))
 		_play_verdict_ritual(verdict_target, true)
+		# Contribution clause per commit (Aside search-feedback 2026-09-02
+		# pattern 2): a pure diff of the two committed snapshots names what
+		# this entry actually established. Never reads canonical state beyond
+		# the snapshots the machine already returned.
+		var delta := contribution_delta(result["prior_state"], result["state"])
+		var contribution_labels := player_visible_fact_labels(delta["facts_added"])
+		_contribution_log.append({
+			"entry": commit_count,
+			"labels": contribution_labels,
+			"stage_from": delta["stage_from"],
+			"stage_to": delta["stage_to"],
+		})
 		if not _first_commit_explained:
 			_first_commit_explained = true
 			ui.toast("FIRST COMMIT | Only validated entries change state. Watch the solid amber line.")
@@ -529,12 +614,131 @@ const GATE_BY_CODE := {
 	"QUEST_STAGE_PRECONDITION": "QUEST STAGE",
 	"OBJECT_NOT_PRESENT": "REACHABILITY",
 	"OBJECT_NOT_REACHABLE": "REACHABILITY",
+	"NPC_DOES_NOT_KNOW_FACT": "KNOWLEDGE",
+	"UNKNOWN_ACTOR": "POLICY",
+	"UNKNOWN_OPERATION": "POLICY",
 }
 var _holds_by_gate: Dictionary = {}
 
 
 func gate_for_code(code: String) -> String:
 	return str(GATE_BY_CODE.get(code, "POLICY"))
+
+
+## Human-readable allowlist for newly established facts (contribution_delta's
+## facts_added), keyed by canonical fact id. Unknown facts stay internal and
+## collapse to the UI's generic "State recorded" copy, never a raw identifier.
+const FACT_LABEL := {
+	"signal_lens_acquired": "Signal lens secured",
+	"signal_lens_installed": "Harbor signal restored",
+	"lighthouse_hint_authorized": "Lead authorized",
+	"tide_marks_hint": "Tide-marks lead recorded",
+}
+
+## Rule text a hold teaches, keyed by validator code (Table II predicate
+## family). Neutral, non-alarming, and never names the hidden oracle (P-02);
+## the gate label groups codes, this const gives each one its own testable
+## sentence so repeated holds on one gate can still recall distinct rules.
+const RULE_BY_CODE := {
+	"FORBIDDEN_DISCLOSURE": "Some facts stay sealed for good; the ledger never records them.",
+	"STAGE_GATED_DISCLOSURE": "A lead is disclosed only after its stage is reached.",
+	"MISSING_REQUIRED_OBJECT": "Installation requires a carried signal lens.",
+	"QUEST_STAGE_PRECONDITION": "This entry needs an earlier stage first.",
+	"OBJECT_NOT_PRESENT": "Only a reachable object can be taken.",
+	"OBJECT_NOT_REACHABLE": "Only a reachable object can be taken.",
+	"NPC_DOES_NOT_KNOW_FACT": "A speaker can only disclose what they know.",
+	"UNKNOWN_ACTOR": "The policy names who may act and how.",
+	"UNKNOWN_OPERATION": "The policy names who may act and how.",
+}
+
+## Case-chain link order: HUD id -> the fact that fills it. Presentation
+## only; the single source of truth stays the committed snapshot's facts.
+const CASE_LINKS := [
+	["LENS", "signal_lens_acquired"],
+	["MOUNT", "signal_lens_installed"],
+	["LEAD", "tide_marks_hint"],
+]
+
+var _contribution_log: Array[Dictionary] = []
+var _rules_learned_by_gate: Dictionary = {}
+
+
+## Fail-closed presentation boundary: only explicitly authored public labels
+## may leave the canonical snapshot. Unknown or future fact ids stay internal.
+static func player_visible_fact_labels(facts: Array) -> Array:
+	var labels: Array = []
+	for fact in facts:
+		var fact_id := str(fact)
+		if FACT_LABEL.has(fact_id):
+			labels.append(str(FACT_LABEL[fact_id]))
+	return labels
+
+
+## Pure, presentation-only diff between two committed snapshots. Never reads
+## or mutates `machine` — callers always pass result["prior_state"]/
+## result["state"] (or hand-built probes in the engineering evaluation).
+static func contribution_delta(prior: Dictionary, next: Dictionary) -> Dictionary:
+	var prior_facts: Array = prior.get("facts", [])
+	var next_facts: Array = next.get("facts", [])
+	var facts_added: Array = []
+	for fact in next_facts:
+		if fact not in prior_facts:
+			facts_added.append(fact)
+	var prior_inventory: Array = prior.get("player", {}).get("inventory", [])
+	var next_inventory: Array = next.get("player", {}).get("inventory", [])
+	var inventory_added: Array = []
+	for item in next_inventory:
+		if item not in prior_inventory:
+			inventory_added.append(item)
+	var inventory_removed: Array = []
+	for item in prior_inventory:
+		if item not in next_inventory:
+			inventory_removed.append(item)
+	var disclosed_added: Array = []
+	var next_npcs: Dictionary = next.get("npcs", {})
+	var prior_npcs: Dictionary = prior.get("npcs", {})
+	for actor_id in next_npcs.keys():
+		var next_disclosed: Array = next_npcs[actor_id].get("disclosed", [])
+		var prior_disclosed: Array = prior_npcs.get(actor_id, {}).get("disclosed", [])
+		for fact in next_disclosed:
+			if fact not in prior_disclosed:
+				disclosed_added.append(fact)
+	return {
+		"stage_from": int(prior.get("quest", {}).get("stage", 0)),
+		"stage_to": int(next.get("quest", {}).get("stage", 0)),
+		"facts_added": CanonicalState.sorted_unique(facts_added),
+		"inventory_added": CanonicalState.sorted_unique(inventory_added),
+		"inventory_removed": CanonicalState.sorted_unique(inventory_removed),
+		"disclosed_added": CanonicalState.sorted_unique(disclosed_added),
+	}
+
+
+func _case_chain_from_state(state: Dictionary) -> Dictionary:
+	# Mirrors CASE_LINKS against the committed snapshot's facts. Presentation
+	# only; called fresh every time so it can never drift from machine.state.
+	var facts: Array = state.get("facts", [])
+	var links: Array = []
+	var filled := 0
+	for link in CASE_LINKS:
+		var is_filled: bool = str(link[1]) in facts
+		if is_filled:
+			filled += 1
+		links.append({"id": str(link[0]), "filled": is_filled})
+	return {"links": links, "filled": filled, "total": CASE_LINKS.size()}
+
+
+func _ledger_last_contribution() -> void:
+	# Shared by every accepted proposal right after its ledger_commit line:
+	# the CONTRIBUTION clause reads the entry _propose just appended, the
+	# chain reads the snapshot the commit produced, and UNLOCKED names the
+	# affordance the commit opened (computed after the commit on purpose).
+	var chain := _case_chain_from_state(machine.state)
+	var entry: Dictionary = _contribution_log[-1]
+	ui.ledger_contribution(
+		commit_count, entry["labels"], entry["stage_from"], entry["stage_to"],
+		chain["filled"], chain["total"]
+	)
+	ui.ledger_unlocked(_next_affordance_text())
 
 
 func _record_hold(gate: String) -> void:
@@ -566,6 +770,17 @@ func _refusal_feedback(codes: Array) -> void:
 				ui.ledger_refusal("It cannot be taken from here. What cannot be reached stays outside the ledger.", next_affordance, gate)
 			_:
 				ui.ledger_refusal("The entry was held. The ledger defers it.", next_affordance, gate)
+		# W-005 rule-teaching companion (Aside search-feedback 2026-09-02
+		# patterns 2/E): the first hold on a gate teaches one testable rule;
+		# later holds on the same gate recall it instead of repeating verbatim.
+		var rule_text := str(RULE_BY_CODE.get(str(code), "The policy held this entry."))
+		var first_time := not _rules_learned_by_gate.has(gate)
+		if first_time:
+			_rules_learned_by_gate[gate] = rule_text
+		ui.ledger_rule(gate, rule_text, first_time, int(_holds_by_gate.get(gate, 0)) - 1)
+	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
+	rules_learned_sorted.sort()
+	ui.set_case_chain(_case_chain_from_state(machine.state), rules_learned_sorted)
 	# RitualVfx repair-hint blink marks the same next-valid target in-world.
 	_play_repair_hint(_next_affordance_target())
 
@@ -594,6 +809,7 @@ func _propose_acquire() -> void:
 		# from "the ledger accepted it".
 		audio_feedback.play_cue("pickup")
 		ui.ledger_commit(commit_count, "Signal lens secured. Retrieval entry validated.")
+		_ledger_last_contribution()
 		ui.ledger_line("narration", "The brass rim gleams cold against your fingers. The harbor signal mount comes to mind.")
 		director.set_tension_stage(1)
 	else:
@@ -611,6 +827,7 @@ func _propose_install() -> void:
 	)
 	if result["accepted"]:
 		ui.ledger_commit(commit_count, "Signal lens installed. An authorized lead is now available.")
+		_ledger_last_contribution()
 		ui.ledger_line("narration", "A low, warm light wakes in the mount. The tower remains dark, but the channel's story opens.")
 		director.set_tension_stage(2)
 		director.play_commit_glow(handles["lamp_mount"], "MountLight", 2.4)
@@ -720,6 +937,7 @@ func _propose_tide_hint() -> void:
 		# P-B05: one ledger link turns solid; restrained bell, signal glow.
 		ui.ledger_line("dialogue", "Good. The lens is in place, so I can tell you. At the tide marks on the west breakwater, the path appears when the water falls below the third mark.")
 		ui.ledger_commit(commit_count, "Tide-marks lead disclosed. Authorization confirmed; entry valid.")
+		_ledger_last_contribution()
 		audio_feedback.play_cue("hint")
 		director.set_tension_stage(3)
 		var world: Node3D = handles["world"]
@@ -827,6 +1045,9 @@ func _sync_presentation() -> void:
 	]
 	ui.set_status(objective, status)
 	ui.set_progress(exploration_progress, 3, phase)
+	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
+	rules_learned_sorted.sort()
+	ui.set_case_chain(_case_chain_from_state(state), rules_learned_sorted)
 
 
 func _build_objective_beacon() -> Node3D:
@@ -955,10 +1176,33 @@ func _finish_episode() -> void:
 
 
 func _episode_receipt_text() -> String:
-	# Compact episode receipt: entries N | holds N | state hash <short>. One shared
-	# rendering for the live end card and the ending screenshot stage — the
-	# counts and hash come straight from the committed snapshot, never invented.
-	var receipt := "\n[color=#F2B84B]ENTRIES %d[/color] | [color=#D9685F]HOLDS %d[/color] | FINAL STAGE %d\n" % [
+	# Two-part receipt (Aside search-feedback 2026-09-02 pattern 8/"End
+	# receipt"): the investigator's contribution and the rules the ledger
+	# taught come first, in player-meaningful language; the technical receipt
+	# (counts, hash, holds-by-gate) stays a separate, clearly labeled block.
+	# One shared rendering for the live end card and the ending screenshot
+	# stage — every count comes straight from committed snapshots or
+	# presentation counters (_contribution_log, _rules_learned_by_gate),
+	# never invented.
+	var receipt := "\n[color=#F2B84B][font_size=24]INVESTIGATOR'S CONTRIBUTION[/font_size][/color]\n"
+	if _contribution_log.is_empty():
+		receipt += "[color=#D9D3C4]No entries were committed this session.[/color]\n"
+	else:
+		for entry in _contribution_log:
+			var labels: Array = entry["labels"]
+			var label_text := "; ".join(labels) if not labels.is_empty() else "State recorded"
+			receipt += "[color=#D9D3C4]#%d %s | %s[/color]\n" % [
+				int(entry["entry"]),
+				label_text,
+				HarborLedgerUI.stage_clause(int(entry["stage_from"]), int(entry["stage_to"])),
+			]
+	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
+	rules_learned_sorted.sort()
+	receipt += "[color=#8FA3B2]RULES LEARNED %d | %s[/color]\n" % [
+		rules_learned_sorted.size(),
+		", ".join(rules_learned_sorted) if not rules_learned_sorted.is_empty() else "none",
+	]
+	receipt += "\n[color=#F2B84B]ENTRIES %d[/color] | [color=#D9685F]HOLDS %d[/color] | FINAL STAGE %d\n" % [
 		commit_count, refusal_count, int(machine.state["quest"]["stage"])
 	]
 	receipt += "[color=#8FA3B2]VALIDATOR RECEIPT | STATE HASH %s...[/color]\n" % machine.state_hash().substr(0, 16)
@@ -996,6 +1240,28 @@ func _run_engineering_evaluation(path: String) -> void:
 	var audio_snapshot := audio_feedback.get_engineering_snapshot()
 	var player_snapshot := player.get_engineering_snapshot()
 	var input_feedback_snapshot := _input_feedback_snapshot()
+
+	# Presentation-only contribution_delta probe: hand-built snapshots (never
+	# derived from `machine`) exercise the pure diff function without any
+	# canonical mutation. Reused for both the check and the report's
+	# "contribution" block.
+	var contribution_probe_prior: Dictionary = machine.state.duplicate(true)
+	var contribution_probe_next: Dictionary = contribution_probe_prior.duplicate(true)
+	contribution_probe_next["facts"].append("signal_lens_acquired")
+	contribution_probe_next["quest"]["stage"] = 1
+	contribution_probe_next["player"]["inventory"].append("signal_lens")
+	contribution_probe_next["quest"]["flags"].append("signal_lens_acquired")
+	var contribution_probe := contribution_delta(contribution_probe_prior, contribution_probe_next)
+	var visible_label_probe := player_visible_fact_labels([
+		"signal_lens_acquired", "keeper_betrayal", "future_private_fact"
+	])
+	var case_chain_link_ids: Array = []
+	for link in ui_snapshot["case_chain"]["links"]:
+		case_chain_link_ids.append(str(link["id"]))
+	var direct_case_chain_filled := 0
+	for link in CASE_LINKS:
+		if str(link[1]) in machine.state["facts"]:
+			direct_case_chain_filled += 1
 	var checks := [
 		{
 			"check": "evaluation_does_not_mutate_canonical_state",
@@ -1036,13 +1302,33 @@ func _run_engineering_evaluation(path: String) -> void:
 			"pass": int(input_feedback_snapshot["sample_count"]) >= 1
 				and float(input_feedback_snapshot["p95_input_to_visible_feedback_ms"]) >= 0.0,
 		},
+		{
+			"check": "contribution_delta_is_pure_and_names_facts",
+			"pass": contribution_probe["facts_added"] == ["signal_lens_acquired"]
+				and int(contribution_probe["stage_from"]) == 0
+				and int(contribution_probe["stage_to"]) == 1
+				and contribution_probe["inventory_added"] == ["signal_lens"]
+				and visible_label_probe == ["Signal lens secured"]
+				and machine.state_hash() == state_hash_before,
+		},
+		{
+			"check": "hold_teaches_rule_for_its_gate",
+			"pass": gate_for_code("STAGE_GATED_DISCLOSURE") in ui_snapshot["rules_learned"]
+				and str(ui_snapshot["last_rule_line"]).begins_with("RULE LEARNED"),
+		},
+		{
+			"check": "case_chain_mirrors_committed_snapshot",
+			"pass": int(ui_snapshot["case_chain"]["total"]) == 3
+				and case_chain_link_ids == ["LENS", "MOUNT", "LEAD"]
+				and int(ui_snapshot["case_chain"]["filled"]) == direct_case_chain_filled,
+		},
 	]
 	var passed := true
 	for check in checks:
 		if not check["pass"]:
 			passed = false
 	var report := {
-		"schema_version": "1.1.0",
+		"schema_version": "1.2.0",
 		"evaluation": "sealed-lighthouse-3d-presentation-engineering",
 		"engineering_only": true,
 		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy", "browser input latency"],
@@ -1055,6 +1341,12 @@ func _run_engineering_evaluation(path: String) -> void:
 		"audio": audio_snapshot,
 		"player": player_snapshot,
 		"input_feedback": input_feedback_snapshot,
+		"contribution": {
+			"probe": contribution_probe,
+			"visible_label_probe": visible_label_probe,
+			"case_chain": ui_snapshot["case_chain"],
+			"rules_learned": ui_snapshot["rules_learned"],
+		},
 		"checks": checks,
 	}
 	var absolute_path := ProjectSettings.globalize_path(path)

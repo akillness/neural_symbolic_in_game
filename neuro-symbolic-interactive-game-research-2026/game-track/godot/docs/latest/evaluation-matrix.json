@@ -172,7 +172,10 @@
   "presentation": {
     "check_ids": [
       "audio_remains_locked_before_user_gesture",
+      "case_chain_mirrors_committed_snapshot",
+      "contribution_delta_is_pure_and_names_facts",
       "evaluation_does_not_mutate_canonical_state",
+      "hold_teaches_rule_for_its_gate",
       "input_feedback_latency_probe_emits_sample",
       "player_world_changes_route_through_proposals",
       "procedural_audio_uses_no_external_assets",
@@ -182,8 +185,8 @@
       "wide_layout_preserves_playfield"
     ],
     "counts": {
-      "checks_passed": 9,
-      "checks_total": 9
+      "checks_passed": 12,
+      "checks_total": 12
     },
     "engineering_only": true,
     "evaluation": "sealed-lighthouse-3d-presentation-engineering",
@@ -211,38 +214,38 @@
   },
   "screenshots": [
     {
-      "bytes": 315788,
+      "bytes": 301813,
       "engineering_working_capture_only": true,
       "file": "arrival.png",
       "height": 720,
-      "sha256": "0648435c8d38688f28360903136053289673f7b3672e7da28f5a44b08bf8adee",
+      "sha256": "a8174d47ab3cc850e8ae7f87f3d9bafe0bf842c10d4f79574d9e2196a5bdcfa9",
       "stage": "arrival",
       "width": 1280
     },
     {
-      "bytes": 433123,
+      "bytes": 356877,
       "engineering_working_capture_only": true,
       "file": "refusal.png",
       "height": 720,
-      "sha256": "fe78a48aa85d625ec30fb60909bccfbd5e050ad0fd1d3b20f152c2e7dc4280ee",
+      "sha256": "d1c2fb6ff38cd857bef1ffa2b041bb2e9c885b19ff27c2444de8911c28156015",
       "stage": "refusal",
       "width": 1280
     },
     {
-      "bytes": 387621,
+      "bytes": 363629,
       "engineering_working_capture_only": true,
       "file": "authorized_hint.png",
       "height": 720,
-      "sha256": "37349468eefedff46d184680b4175b0e32f142c6d02c19df1eda972d9d0c1d87",
+      "sha256": "87ec7d60382103cbc9932ecf2b935bce1eca6f54c17e561cb6036062c74970b5",
       "stage": "authorized_hint",
       "width": 1280
     },
     {
-      "bytes": 409861,
+      "bytes": 389709,
       "engineering_working_capture_only": true,
       "file": "ending.png",
       "height": 720,
-      "sha256": "edb3b6e3d787bd84120505f5ea153cd09b202cbbf6fb56e9f3c1fca983d26b9e",
+      "sha256": "792aa4427f7bce5e5161471f492d2392e55bf1ab9ebc0d55edaf0bb6a4a41b8b",
       "stage": "ending",
       "width": 1280
     }
@@ -254,14 +257,14 @@
     "hash_algorithm": "sha256-canonical-json-v1"
   },
   "totals": {
-    "combined_checks_passed": 49,
-    "combined_checks_total": 49,
+    "combined_checks_passed": 52,
+    "combined_checks_total": 52,
     "fixture_checks_passed": 40,
     "fixture_checks_total": 40,
     "fixtures_passed": 4,
     "fixtures_total": 4,
-    "presentation_checks_passed": 9,
-    "presentation_checks_total": 9,
+    "presentation_checks_passed": 12,
+    "presentation_checks_total": 12,
     "screenshots_total": 4,
     "screenshots_valid": 4
   }

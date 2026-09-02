@@ -120,6 +120,21 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   `(0.0, 0.2, 2.0)`, clear velocity, and leave the complete symbolic state hash unchanged (D-048).
 - Timeout, invalid proposal, controller failure, exhausted repair, or physical fall recovery must
   leave the complete prior canonical state unchanged.
+- The contribution readout (`CASE CHAIN` HUD line, `CONTRIBUTION #N` + `UNLOCKED` after every
+  commit, `RULE LEARNED`/`RULE RECALLED` after every hold, two-part end-card receipt; D-062/D-063)
+  is presentation-only: it derives from the two snapshots the hard writer returns
+  (`contribution_delta`), the authored `FACT_LABEL`/`RULE_BY_CODE` tables, and presentation
+  counters, never from a second state model. `FACT_LABEL` is a fail-closed display allowlist:
+  unknown/future fact IDs stay internal and render as generic `State recorded` copy. It may not
+  name a hidden oracle label or sealed fact.
+  `--evaluate` must report exactly 12 presentation checks (`SL-PLAY-EVAL-001` 52/52) and the
+  smoke denominator stays 8/8; these counts are engineering conformance, not fun, agency, or G4
+  evidence.
+- The dev-only `main_3d.tscn -- --autoplay --public-safe` route (D-064) is a movie-capture
+  autopilot: it substitutes for keyboard/mouse input and drives the same interaction and choice
+  handlers a player would, so canonical state still changes only through the proposal router.
+  Run it only under `--write-movie` on a disposable copy; its MP4/GIF are engineering
+  demonstrations, never usability, latency, G4, or G6 evidence.
 - Use Godot/GDScript guidance only. Unity editor, prefab, package, or C# assumptions do not apply.
 
 ## 3. Asset generation: one owner per class

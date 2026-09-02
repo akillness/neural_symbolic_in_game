@@ -16,16 +16,16 @@ TRACE-RPG separates generated proposals from canonical game state and commits on
 | [정식 한국어 논문 source](./neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex) | Current TRACE-RPG manuscript source |
 | [Authoritative English paper source](./neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex) | Current TRACE-RPG manuscript source |
 | [Public Web playable](https://sealed-lighthouse-trace-rpg.vercel.app) | Current production alias |
-| [Current gameplay recording](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4) | Compresso-compressed 69.067 s H.264 MP4 |
+| [Current gameplay recording](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4) | 63.433 s H.264 MP4 of the scripted golden-path route (Godot Movie Maker, 2026-09-02); [GIF](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif) |
 | [Project knowledge index](./llm-wiki/index.md) | Persistent sources, concepts, reports, and graph |
 
 ## 완료 상태 / Completion status
 
 | 영역 / Area | 상태 / Status | 근거 / Evidence |
 |---|---|---|
-| 구현 / Implementation | **현재 적합성 범위 완료 / Done for current conformance scope** | pytest 172 passed, 2 skipped; unittest 131 passed, 2 skipped; Godot 4/4 fixtures and 49/49 combined checks |
+| 구현 / Implementation | **현재 적합성 범위 완료 / Done for current conformance scope** | pytest 181 passed, 81 subtests; unittest 138 passed; Godot 4/4 fixtures and 52/52 combined checks; scripted golden-path recording |
 | 학술 파이프라인 / Academic pipeline | **저장소 단계 완료 / Repository stages complete** | Stages 1–10, including final bilingual PDF rebuild and format checks, are complete; efficacy studies and submission remain separate |
-| 논문 / Paper | **source·PDF 최신 / Sources and PDFs current** | Bilingual IEEE sources and 8-page PDFs, 45 identity-verified references, live-screening and KG-simulation addenda; paper checks pass |
+| 논문 / Paper | **source·PDF 최신 / Sources and PDFs current** | Bilingual IEEE sources and 8-page PDFs, 55 link-audited references (46 VERIFIED + 9 PREPRINT), live-screening and KG-simulation addenda; paper checks pass |
 | 재현성 / Reproducibility | **동결 패킷 완료 / Frozen packet complete** | 38/38 artifacts, 22/22 inputs, 121 provenance rows recompute from the guided-repair release packet |
 | 라이브 스크리닝 / Live screening | **`pilot-only`** | `C-PILOT-007/008`; guided 5/5 vs blind 0/5 only in one constructed repairable regime |
 | **확증 실험 / Confirmatory experiments** | **미완료 / NOT DONE** | `C-RESULT-001`–`005` = `TODO-RESULT`, 5 of 21 claims with no promotion-qualifying evidence |
@@ -127,8 +127,8 @@ python3 -m http.server 4173 --directory game-track/web/public
 ```
 
 Deployment / 배포: **[play the public-safe Web build](https://sealed-lighthouse-trace-rpg.vercel.app)**
-(Vercel `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, `READY`). Current gameplay / 현재 플레이 영상:
-**[69.067 s H.264 MP4](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4)**
+(Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`, `READY`). Current gameplay / 현재 플레이 영상:
+**[63.433 s H.264 MP4](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](./neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif)**
 (`1280×720`, 30 fps, 5,662,128 bytes, SHA-256
 `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`).
 The current production artifact serves 10 runtime files with `200`; `vercel.json` is consumed as

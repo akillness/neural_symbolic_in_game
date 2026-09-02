@@ -47,6 +47,12 @@ var _active_rig_animation: StringName = &""
 # focus sweep reuses one cached group snapshot instead of allocating a fresh
 # Array from get_nodes_in_group every physics frame.
 var _interactables: Array[Interactable3D] = []
+## Development-only movie-capture autopilot (`--autoplay`): when active the
+## investigator faces `autopilot_target` and walks forward through the normal
+## physics path. It substitutes for keyboard input only; it never touches
+## canonical state, saves, or the proposal router.
+var autopilot_active: bool = false
+var autopilot_target: Vector3 = Vector3.ZERO
 const REDUCE_MOTION_PROPERTY := &"reduce_motion"
 
 
@@ -227,6 +233,13 @@ func _physics_process(delta: float) -> void:
 	var move_input := Vector2.ZERO
 	if not input_locked:
 		move_input = Input.get_vector("sl_move_left", "sl_move_right", "sl_move_forward", "sl_move_back")
+		if autopilot_active:
+			var to_target := autopilot_target - global_position
+			to_target.y = 0.0
+			if to_target.length() > 0.05:
+				_yaw = atan2(-to_target.x, -to_target.z)
+				_apply_camera_rotation()
+			move_input = Vector2(0.0, -1.0)
 	var direction := (transform.basis * Vector3(move_input.x, 0.0, move_input.y)).normalized()
 	_update_rig_facing(delta, move_input)
 	var target := direction * WALK_SPEED
