@@ -248,6 +248,12 @@ paid/free result.
   must declare `engineering_only: true` plus the excluded claim classes.
 - Reproducible Web build command: `./scripts/build_godot_web.sh`. Its ignored `game-track/web/public/`
   output is non-authoritative and must be rebuilt and browser-verified before deployment.
+- Production deploys through `./scripts/deploy_vercel_dashboard.sh` (D-068): the site root `/`
+  redirects to `/dashboard/` (the live commit-gate dashboard), the public-safe Web export lives at
+  `/public/` (old `/index.html` links redirect there), and `game-track/web/vercel.dashboard.json`
+  sets `outputDirectory: dist` so Vercel's `public/`-as-root default cannot swallow the dashboard.
+  The dashboard is presentation-only and one-directional; deploying it promotes no research, G4, or
+  G6 status. Record the deployment ID, staged receipts, and a zero-error browser check per deploy.
 - A render capture is valid only when the run used a non-headless display driver, awaited a rendered
   frame, produced the registered dimensions, passed non-blank/opacity checks, and was promoted with
   the source-run and file-digest metadata. A headless PNG substitute is invalid evidence.

@@ -2,7 +2,7 @@
 
 상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `52/52`
 검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
-배포 `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`에 영문 추적 플레이어 산출물이 공개됐다.**
+배포 `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF`는 사이트 루트에서 라이브 commit-gate 대시보드를 서빙하고 영문 추적 플레이어 산출물을 `/public/`에 임베드한다.**
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -190,20 +190,19 @@ python3 -m http.server 4173 --directory game-track/web/public
 빌더는 Godot 프로젝트를 임시 디렉터리로 복사하고 그 복사본에서만 `main_3d.tscn`을 선택한다.
 단일 스레드·확장 비활성 Web preset을 사용하며 정식 `project.godot`은 변경하지 않는다. 근거
 결속된 실제 프로젝트에는 Godot editor/import를 실행하지 않는다. 2026-08-30 무시 대상
-산출물은 manifest 파일 11개 / 50,746,755바이트, 런타임 파일 10개 / 50,746,242바이트이며
-`index.pck`은 10,893,980바이트, SHA-256
-`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`이다. 이 산출물은
-**[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
-배포됐다. 공개 런타임 파일 10개는 익명 요청에서 모두 `200`이며 로컬 바이트와 일치했다.
-WASM은 `application/wasm`, OFL 고지는 `text/plain`이었고 설정된 응답 헤더가 유지됐으며
-`vercel.json`은 `404`를 반환했다. 프로덕션 데스크톱 스모크는 시작 게이트 → 안내 3면 →
-인게임 전환과 콘솔·페이지 오류 0건을 확인했다. 2026-08-17의 과거 headless 브라우저 스모크는 한글 표시,
-1280×720·390×844 반응형 배치, 콘솔·페이지 오류 0건을 확인했다. 포인터 잠금 진입은 **미검증**이다. 2026-08-17 재시험에서 headless 합성 클릭은
-`pointerlockerror`를 냈고 실제 Chrome의 Playwriter 클릭은 포인터 잠금 요청 자체를 만들지
-않았으며 두 실행 모두 `document.pointerLockElement`가 null이었다. HUD `시점 잠김`은 게임 자체
-상태 표시이며 이 브라우저 검사를 대체하지 못한다. 자동화 거부만으로는 운영 결함 근거가 되지
-않으며 사람 제스처 확인이 미해결 항목이다. 2026-08-17 Playwriter는 Vercel 기기 승인 로그인과
-그 포인터 잠금 재시험에만 사용했다. 상세 내용은 [`../web/README.md`](../web/README.md)에 있다.
+2026-09-03 산출물은 런타임 파일 10개 / 50,754,386바이트이며 `index.pck`은 10,902,124바이트, SHA-256
+`b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`이다. 이 산출물은
+**[Vercel `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
+`scripts/deploy_vercel_dashboard.sh`로 배포됐다. 사이트 루트는 `/dashboard/`(D-065 라이브 commit-gate
+대시보드, 파일 4개 / 32,117바이트)로 리다이렉트되고, 게임은 `/public/`에서 서빙되며, 예전 `/index.html`
+링크는 그쪽으로 리다이렉트된다. 런타임 파일 10개와 대시보드 파일 4개는 익명 요청에서 모두 `200`이며
+스테이징 바이트와 일치했다. WASM은 `application/wasm`, 설정된 응답 헤더가 유지됐으며 `vercel.json`은
+`404`를 반환했다. headless 프로덕션 검사는 대시보드를 열고 임베드된 게임을 시작해 헤더에서 초기 snapshot
+hash `f488d9c4…812c`를 받았고, 1440×900 데스크톱에서 콘솔·페이지 오류 0건, 390×844에서 가로 넘침 없음을
+확인했다(`docs/latest/vercel-dashboard.png`, `vercel-dashboard-mobile.png`). 포인터 잠금 진입은 자동화로는
+여전히 **미검증**이다. 2026-08-17 headless 합성 클릭은 `pointerlockerror`를 냈고 Playwriter 클릭은 포인터
+잠금 요청을 만들지 않았으며, HUD `시점 잠김`은 게임 자체 상태 표시라 사람 제스처 확인이 미해결 항목이다.
+배포 절차: `scripts/deploy_vercel_dashboard.sh`(`--dry-run`은 스테이징 영수증만 출력).
 
 **Cycle 3 주장 경계:** 저자 fixture와 프레젠테이션 불변조건 엔지니어링 적합성만 다룬다.
 G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 프로덕션

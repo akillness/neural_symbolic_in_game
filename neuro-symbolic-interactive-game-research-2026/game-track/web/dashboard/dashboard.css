@@ -75,3 +75,7 @@ h3 { font-size: 12px; margin: 12px 0 4px; color: var(--ink); text-transform: upp
 @media (max-width: 1100px) {
   .grid { grid-template-columns: 1fr; grid-template-areas: "game" "nebula" "metrics" "timeline" "minimap" "log"; }
 }
+@media (max-width: 720px) {
+  .kpis { grid-template-columns: repeat(3, 1fr); }
+  .bar { flex-wrap: wrap; gap: 6px; }
+}

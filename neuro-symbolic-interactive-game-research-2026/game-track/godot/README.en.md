@@ -2,7 +2,7 @@
 
 Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
 `52/52` combined checks; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
-deployment `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` is live with the English tracked-player artifact.**
+deployment `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF` serves the live commit-gate dashboard at the site root with the English tracked-player artifact embedded at `/public/`.**
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -189,23 +189,22 @@ python3 -m http.server 4173 --directory game-track/web/public
 
 The builder copies the Godot project to a temporary directory, selects `main_3d.tscn` only in that
 copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
-unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-08-30
-ignored artifact has 11 manifest files / 50,746,755 bytes and 10 runtime files / 50,746,242 bytes;
-`index.pck` is 10,893,980 bytes with SHA-256
-`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`. It is deployed as
-**[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-All 10 public runtime files returned anonymous `200` responses and matched the local bytes; WASM
-used `application/wasm`, the OFL notice used `text/plain`, configured response headers were present,
-and `vercel.json` returned `404`. Production desktop smoke completed start gate → three-page
-tutorial → in-game with zero console/page errors. A historical headless
-browser smoke on 2026-08-17 verified Korean rendering, responsive 1280×720 and 390×844 layouts, and
-zero console/page errors. Pointer-lock entry is **not verified**: a headless synthetic click raised
-`pointerlockerror` and a Playwriter-driven click in real Chrome produced no pointer-lock request at
-all, leaving `document.pointerLockElement` null in both 2026-08-17 runs. The HUD `LOOK ACTIVE` label
-is the game's own state, not that browser check, and automation denial is not by itself evidence of
-a production defect; a human-gesture check is the open item. Playwriter was used on 2026-08-17 only
-for the Vercel device-approval login and that pointer-lock retest.
-See [`../web/README.md`](../web/README.md).
+unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-09-03
+ignored artifact has 10 runtime files / 50,754,386 bytes; `index.pck` is 10,902,124 bytes with SHA-256
+`b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. It is deployed as
+**[Vercel `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF`](https://sealed-lighthouse-trace-rpg.vercel.app)** through `scripts/deploy_vercel_dashboard.sh`:
+the site root redirects to `/dashboard/` (the D-065 live commit-gate dashboard, 4 files / 32,117 bytes),
+the game is served from `/public/`, and old `/index.html` links redirect there. All 10 runtime files and
+the 4 dashboard files returned anonymous `200` responses and matched the staged bytes; WASM used
+`application/wasm`, configured response headers were present, and `vercel.json` returned `404`.
+A headless production check loaded the dashboard, started the embedded game, and received the initial
+snapshot hash `f488d9c4…812c` in the header with zero console/page errors on a 1440×900 desktop viewport
+and no horizontal overflow at 390×844 (`docs/latest/vercel-dashboard.png`,
+`vercel-dashboard-mobile.png`). Pointer-lock entry remains **not verified** by automation: a headless
+synthetic click raised `pointerlockerror` on 2026-08-17 and a Playwriter-driven click produced no
+pointer-lock request; the HUD `LOOK ACTIVE` label is the game's own state, and a human-gesture check is
+the open item.
+Deployment recipe: `scripts/deploy_vercel_dashboard.sh` (`--dry-run` prints the staged receipts).
 
 **Cycle 3 claim boundary:** authored-fixture and presentation-invariant engineering conformance
 only. G4, usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**.

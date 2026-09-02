@@ -7,7 +7,8 @@
 [![validate](https://github.com/akillness/neural_symbolic_in_game/actions/workflows/validate.yml/badge.svg)](https://github.com/akillness/neural_symbolic_in_game/actions/workflows/validate.yml)
 [![Paper · EN PDF](https://img.shields.io/badge/Paper-EN%20PDF-b31b1b)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 [![Paper · KO PDF](https://img.shields.io/badge/Paper-KO%20PDF-b31b1b)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
-[![Play in browser](https://img.shields.io/badge/Play-in%20browser-2ea44f)](https://sealed-lighthouse-trace-rpg.vercel.app)
+[![Live dashboard](https://img.shields.io/badge/Live-dashboard%20%2B%20game-2ea44f)](https://sealed-lighthouse-trace-rpg.vercel.app)
+[![Play in browser](https://img.shields.io/badge/Play-game%20only-1f6feb)](https://sealed-lighthouse-trace-rpg.vercel.app/public/)
 [![Godot 4.7.1](https://img.shields.io/badge/Godot-4.7.1-478cbf)](neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776ab)](neuro-symbolic-interactive-game-research-2026/pyproject.toml)
 [![Evidence 52/52 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
@@ -81,7 +82,7 @@
 
 ## 게임
 
-*The Sealed Lighthouse*는 3D 항구 장면 안의 턴제 서사 수사 micro-RPG다(Godot 4.7.1, 영어 UI). 보상은 항구 쪽 신호를 복구하고 저조 항로를 얻는 것이며, 바다 건너 등대 자체는 봉인된 채 어둡게 남는다. 브라우저에서 바로 플레이할 수 있다: [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app).
+*The Sealed Lighthouse*는 3D 항구 장면 안의 턴제 서사 수사 micro-RPG다(Godot 4.7.1, 영어 UI). 보상은 항구 쪽 신호를 복구하고 저조 항로를 얻는 것이며, 바다 건너 등대 자체는 봉인된 채 어둡게 남는다. 브라우저에서 바로 플레이할 수 있다: [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app)은 게임이 임베드된 라이브 대시보드를 열고, [`/public/`](https://sealed-lighthouse-trace-rpg.vercel.app/public/)은 게임만 연다.
 
 **골든 패스** — commit 세 번, 선택적으로 hold 한 번:
 
@@ -163,7 +164,11 @@ End card INVESTIGATOR'S CONTRIBUTION #1–#3 · RULES LEARNED · ENTRIES/HOLDS/F
   </tr>
 </table>
 
-대시보드는 로컬 Web 빌드를 내장하므로 로컬에서 서빙한다:
+**라이브:** [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app) — 프로덕션 사이트 루트는 `/dashboard/`로 리다이렉트되고, 임베드된 게임은 `/public/`에서 서빙된다(2026-09-03 `scripts/deploy_vercel_dashboard.sh`로 배포; 데스크톱과 390×844 뷰포트에서 콘솔·페이지 오류 0).
+
+<p align="center"><img width="70%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="임베드된 프레임 안에서 게임이 실행 중인 프로덕션 대시보드: 헤더 필 live · receiving game events, state hash f488d9c4…812c, 세션 패널은 entries 0"></p>
+
+로컬에서 실행하려면, 대시보드가 로컬 Web 빌드를 내장하므로 로컬에서 서빙한다:
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026

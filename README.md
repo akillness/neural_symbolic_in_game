@@ -7,7 +7,8 @@
 [![validate](https://github.com/akillness/neural_symbolic_in_game/actions/workflows/validate.yml/badge.svg)](https://github.com/akillness/neural_symbolic_in_game/actions/workflows/validate.yml)
 [![Paper · EN PDF](https://img.shields.io/badge/Paper-EN%20PDF-b31b1b)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 [![Paper · KO PDF](https://img.shields.io/badge/Paper-KO%20PDF-b31b1b)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
-[![Play in browser](https://img.shields.io/badge/Play-in%20browser-2ea44f)](https://sealed-lighthouse-trace-rpg.vercel.app)
+[![Live dashboard](https://img.shields.io/badge/Live-dashboard%20%2B%20game-2ea44f)](https://sealed-lighthouse-trace-rpg.vercel.app)
+[![Play in browser](https://img.shields.io/badge/Play-game%20only-1f6feb)](https://sealed-lighthouse-trace-rpg.vercel.app/public/)
 [![Godot 4.7.1](https://img.shields.io/badge/Godot-4.7.1-478cbf)](neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776ab)](neuro-symbolic-interactive-game-research-2026/pyproject.toml)
 [![Evidence 52/52 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
@@ -81,7 +82,7 @@ Four lanes, four ceilings. Every number is a raw count from a deterministic runn
 
 ## The game
 
-*The Sealed Lighthouse* is a turn-based narrative investigation micro-RPG in a 3D harbor scene (Godot 4.7.1, English UI). The payoff is restoring the harbor-side signal and earning the low-tide route; the offshore lighthouse itself stays sealed and dark. Play it in the browser at [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app).
+*The Sealed Lighthouse* is a turn-based narrative investigation micro-RPG in a 3D harbor scene (Godot 4.7.1, English UI). The payoff is restoring the harbor-side signal and earning the low-tide route; the offshore lighthouse itself stays sealed and dark. Play it in the browser: [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app) opens the live dashboard with the game embedded; [`/public/`](https://sealed-lighthouse-trace-rpg.vercel.app/public/) is the game alone.
 
 **Golden path** — three commits, optionally one hold:
 
@@ -163,7 +164,11 @@ All captures above are tracked 1280×720 engineering captures, not usability evi
   </tr>
 </table>
 
-The dashboard embeds the local Web build, so it is served locally:
+**Live:** [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app) — the production site root redirects to `/dashboard/`, and the embedded game is served from `/public/` (deployed 2026-09-03 through `scripts/deploy_vercel_dashboard.sh`; zero console/page errors on desktop and a 390×844 viewport).
+
+<p align="center"><img width="70%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="The production dashboard with the game running in the embedded frame: header pill live · receiving game events, state hash f488d9c4…812c, session panel at zero entries"></p>
+
+To run it locally, the dashboard embeds the local Web build:
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026

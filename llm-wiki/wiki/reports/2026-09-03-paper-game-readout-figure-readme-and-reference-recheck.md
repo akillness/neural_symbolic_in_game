@@ -77,6 +77,17 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
   근거가 아니다" 명시; `\xeCJKsetup{CJKspace=true}`로 한글 공백 복원(8쪽 유지); 두 언어 고지에 curated 생성 UI
   아트 문장 추가; E2 문구를 "hosted proposer"로 도구 중립화; CLAUDE.md의 캡처 갱신 규칙 두 항목을 일치시킴.
 
+## 7. D-068 프로덕션을 대시보드 버전으로 배포
+
+- 사용자 지시("vercel 배포는 대시보드버전으로")에 따라 `scripts/deploy_vercel_dashboard.sh`로 배포. 레이아웃은 로컬
+  실행 가이드와 동일(`/dashboard/` + `/public/`), 루트 `/` → `/dashboard/` 리다이렉트, 예전 `/index.html` →
+  `/public/index.html`. 첫 배포는 Vercel "Other" 프리셋의 `public/`-as-root 기본값 때문에 게임만 서빙됐고,
+  `vercel.dashboard.json`에 `outputDirectory: dist`를 두어 해결.
+- 영수증: `dpl_G58qo7siKGUP2E55RH2Xxj8pPgtF` READY at `https://sealed-lighthouse-trace-rpg.vercel.app`; 런타임 10 + 대시보드 4 파일 바이트 일치(PCK `b92af65d854d…`);
+  headless 데스크톱에서 게임 시작 후 헤더 `live · receiving game events`, `state f488d9c4…812c`, 4xx·콘솔 오류 0;
+  390×844 가로 넘침 없음(KPI 카드 3열 래핑 추가, favicon 링크 추가). 캡처 `docs/latest/vercel-dashboard*.png`.
+- 경계: 대시보드는 presentation-only·단방향 브리지이며 배포는 어떤 연구·G4·G6 상태도 승격하지 않는다.
+
 ## Boundary
 
 그림 3의 캡처는 엔지니어링 작업 캡처이며 사용성·몰입·감정·효능 근거가 아니다. README와 원고 어디에도
