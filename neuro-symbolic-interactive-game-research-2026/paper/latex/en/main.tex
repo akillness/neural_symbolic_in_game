@@ -50,7 +50,7 @@ Table~\ref{tab:contribution-map}, generated from the machine-checked contributio
   \label{fig:architecture}
 \end{figure}
 
-The lanes are non-interchangeable (Table~\ref{tab:evidence-lanes}): \textbf{E1} is a deterministic conformance pilot over one authored world and measures encoded mechanism behavior, not population efficacy; \textbf{E2} is a five-call-per-cell live screening capped at pilot-only by its unpinned revision, uncontrolled seed labels, and constructed states; \textbf{E3} scores authored typed-link proposals in a closed world without runtime retrieval; and ENG1 adds engine-local Godot 4.7.1 conformance only, with startup-dominated frame samples (98.760--116.667\,ms) that are not a benchmark. There are no participants, affect experiments, or live Python--Godot round trips.
+The lanes are non-interchangeable (Table~\ref{tab:evidence-lanes}): \textbf{E1} is a deterministic conformance pilot over one authored world and measures encoded mechanism behavior, not population efficacy; \textbf{E2} is a five-call-per-cell live screening capped at pilot-only by its unpinned revision, uncontrolled seed labels, and constructed states; \textbf{E3} scores authored typed-link proposals in a closed world without runtime retrieval; and ENG1 adds engine-local Godot 4.7.1 conformance only. There are no participants, affect experiments, or live Python--Godot round trips.
 
 \section{Related Work and Research Gap}
 \subsection{Interactive Narrative and Game Agents}
@@ -186,31 +186,9 @@ Measures are exact counts: validator-class agreement; rejected or failed cases w
 The live extension compares blind unchanged retry with $\rho$ at matched $K{=}1$: per cell, five seed-indexed Codex CLI calls request one candidate from \texttt{gpt-5.6-sol}, and the same candidate feeds both arms, eliminating within-call proposal differences. Conditions vary policy visibility and whether a trivial zero-effect route exists. The promoted packet retains the current cells and the superseded v1 diagnostic, binds every JSON/JSONL receipt by SHA-256, and labels the evidence \texttt{screening-pilot-only}. Because seed labels do not control the hosted sampler, the revision is unpinned, token accounting is unavailable, and constructed states are not population samples, we report exact counts and failure classes without $p$-values, confidence intervals, or model ranking.
 
 \subsection{\textbf{E3} KG/Ontology Link-Proposal Simulation}
-\texttt{SL-KG-ONTOLOGY-SIM-001} is an engineering-only closed-world lane separate from the authoritative \texttt{WorldState}: 43 OKF nodes and 106 reference edges, 24 reviewed typed edges, passing type/domain/range checks and six competency questions, with six authored queries scored under seven fixed strategies. The retained \texttt{S2-typed-lexical-loose} strategy recovered 6/6 authored holdouts ($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$); the degree baseline recovered none. These are construction results, not OWL/SHACL conformance, semantic completeness, runtime retrieval, or support for any \texttt{C-RESULT-*} claim.
+The third lane is an engineering-only closed-world simulation, separate from the authoritative \texttt{WorldState}: 43 OKF nodes and 106 reference edges, 24 reviewed typed edges, passing type/domain/range checks and six competency questions, with six authored queries scored under seven fixed strategies. The retained \texttt{S2-typed-lexical-loose} strategy recovered 6/6 authored holdouts ($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$); the degree baseline recovered none. These are construction results: not OWL/SHACL conformance, semantic completeness, runtime retrieval, or evidence of any efficacy claim.
 
 \section{Pilot Results}\label{sec:results}
-\begin{figure*}[!t]
-  \centering
-  \begin{minipage}[t]{0.28\textwidth}\centering\includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png}\\[-0.2ex]\footnotesize (1) observed\end{minipage}\hfill
-  \begin{minipage}[t]{0.28\textwidth}\centering\includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png}\\[-0.2ex]\footnotesize (2) held, state unchanged\end{minipage}\hfill
-  \begin{minipage}[t]{0.28\textwidth}\centering\includegraphics[width=\linewidth,trim=815 465 20 90,clip]{../../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png}\\[-0.2ex]\footnotesize (3) committed, state changed\end{minipage}
-  \vspace{0.5ex}
-
-  {\scriptsize
-  \setlength{\tabcolsep}{4pt}
-  \renewcommand{\arraystretch}{1.12}
-  \begin{tabular}{@{}cllll@{}}
-    \toprule
-    Panel & Capture & Event id & Validation & State after the event \\
-    \midrule
-    (1) & \texttt{sl-rc-001-arrival} & \texttt{evt-000-observe} & not applicable & $=$ before \\
-    (2) & \texttt{sl-rc-002-rejected-secret} & \texttt{evt-002-fallback-secret} & invalid: forbidden, stage-gated disclosure & $=$ before \\
-    (3) & \texttt{sl-rc-003-authorized-hint} & \texttt{evt-005-commit-hint} & valid & \texttt{facts} $\mathrel{+}=$ \texttt{tide\_marks\_hint}; $\ne$ before \\
-    \bottomrule
-  \end{tabular}\par}
-  \caption{One causal sequence from the authored Godot render replay: (1) arrival observed, (2) a forbidden disclosure held, state hash unchanged, (3) an authorized hint committed, state hash changed. Rows come from the bound v5 capture manifest and event log (\nolinkurl{godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/}); crops enlarge authored status/event callouts only. Trace-bound correspondence, not live-transport, performance, usability, or efficacy evidence.}
-  \label{fig:godot-render-fixture}
-\end{figure*}
 
 \input{../generated/pilot_tables_en.tex}
 
@@ -224,7 +202,7 @@ Tables~\ref{tab:pilot-repair} and~\ref{tab:pilot-accounting} report exact design
 
 The reporting boundary is explicit: only rows admitted by the frozen fixture and its designated check operation enter the offline tables, whereas the live table arrives through the hash-bound screening promotion manifest and never enters the offline denominator; Table~\ref{tab:evidence-lanes} lists what each lane leaves unmeasured.
 
-\noindent\textbf{ENG1.} Godot 4.7.1 replayed the retained \emph{Sealed Lighthouse} canonical trace in a non-headless 1280$\times$720 SubViewport; Fig.~\ref{fig:godot-render-fixture}(2) preserves the before hash whereas (3) changes it after a valid commit. The playable slice's ledger readout (case chain, rules learned, per-commit contribution clauses; Fig.~\ref{fig:architecture}, lower strip) derives only from committed snapshots and is covered by 12 presentation invariants among 52 combined engineering checks: engineering conformance, not fun, usability, or efficacy evidence. The v5 packet establishes one scripted fixture's render/state correspondence only, with no live model or Python transport, participant input, or narrative-quality result.
+\noindent\textbf{ENG1.} A second implementation of the same gate, embedded in a Godot 4.7.1 slice, replayed the authored canonical trace: a held forbidden disclosure preserved the prior state hash and an authorized commit advanced it, matching the offline runner's terminal hash exactly. This is engine-local conformance of one scripted fixture. It carries no live model or Python transport, no participant input, and no narrative-quality result; its player-facing readout derives only from committed snapshots (Fig.~\ref{fig:architecture}, lower strip) and is not usability or efficacy evidence.
 
 \section{Discussion}
 \subsection{Established Scope}
@@ -249,7 +227,7 @@ The pilot processes no participants or personal telemetry; future human and affe
 Large language models assisted prose, code and test drafting, command orchestration, evidence review, simulated peer review, and citation-identity checks; a hosted model produced the separately labelled live-screening candidates. Every reported count comes from deterministic runners or hash-bound receipts. The authors cross-checked claims against source artifacts and take full responsibility for the content.
 
 \section*{Data and Code Availability}
-The repository contains the implementation, build sources, the separated offline and live-screening packets, and the machine-checked \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, and \texttt{experiment-evidence-matrix.csv} from which Tables~\ref{tab:contribution-map} and~\ref{tab:evidence-lanes} are generated. The offline manifest binds 38 artifacts, 22 inputs, and 121 provenance rows; the live promotion manifest binds 14 JSON/JSONL receipts. The Godot 4 Web slice ships with its ledger readout and the deterministic evaluation covering it (52 combined engineering checks, 12 presentation invariants), which is engineering conformance, not fun or usability evidence. Clean-Git input binding is re-established at tag \texttt{trace-rpg-\allowbreak guided-repair-\allowbreak inputs-\allowbreak 20260821-v1}. No reviewer archive or DOI deposit is claimed.
+The repository contains the implementation, build sources, the separated offline and live-screening packets, and the machine-checked \texttt{contribution-evidence-matrix.csv}, \texttt{reference-topic-crosswalk.csv}, and \texttt{experiment-evidence-matrix.csv} from which Tables~\ref{tab:contribution-map} and~\ref{tab:evidence-lanes} are generated. The offline manifest binds 38 artifacts, 22 inputs, and 121 provenance rows; the live promotion manifest binds 14 JSON/JSONL receipts. The Godot slice ships with the deterministic evaluation that covers it. Clean-Git input binding is re-established at tag \texttt{trace-rpg-\allowbreak guided-repair-\allowbreak inputs-\allowbreak 20260821-v1}. No reviewer archive or DOI deposit is claimed.
 
 % Keep the 55-entry audit bibliography inside the eight-page release band.
 % This remains at the same 6.5 pt floor used for paper-figure labels.

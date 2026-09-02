@@ -230,7 +230,6 @@ def build_manifest() -> dict[str, Any]:
                 "tab:validators",
                 "alg:commit",
                 "tab:rho-rules",
-                "fig:godot-render-fixture",
             ),
         ),
         table_source(
