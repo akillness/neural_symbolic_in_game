@@ -15,6 +15,14 @@ const PALETTE := SealedLighthouseWorldBuilder.PALETTE
 const NARROW_WIDTH := 900.0
 const NARROW_LEDGER_TOP := 0.38
 const WIDE_LEDGER_TOP := 0.66
+# D-070: WIDE_LEDGER_TOP is a percentage anchor with no absolute pixel floor.
+# On a shrunk canvas (e.g. embedded in the commit-gate dashboard iframe,
+# which can render well below the project's authored 1280x720), 34% of a
+# short viewport leaves less room than the action/ledger columns need,
+# pushing dialogue choice buttons below the visible canvas edge instead of
+# reflowing or scrolling. This is the minimum panel height (px) the wide
+# layout guarantees regardless of viewport height.
+const MIN_BOTTOM_PANEL_HEIGHT := 260.0
 const UI_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
 # Start-gate key-art drift: one shared 12 s sine drives a ±0.5% scale breathe
 # and a ±4 px lateral drift (mouse-independent). The 1.5% base overscan keeps
@@ -781,7 +789,14 @@ func _apply_responsive_layout() -> void:
 	# Focus-first desktop layout: keep at least 66% of the viewport for direct
 	# play while retaining the full ledger as a scrollable diegetic record.
 	# Narrow portrait screens keep the existing stacked reading surface.
-	_bottom_panel.anchor_top = NARROW_LEDGER_TOP if _layout_narrow else WIDE_LEDGER_TOP
+	# D-070: clamp the wide-layout anchor so the bottom panel never gets less
+	# than MIN_BOTTOM_PANEL_HEIGHT px, even when a host page (e.g. the
+	# dashboard iframe) hands this scene a canvas shorter than 1280x720.
+	var wide_ledger_top := WIDE_LEDGER_TOP
+	if viewport_size.y > 0.0:
+		var min_top_for_floor: float = 1.0 - (MIN_BOTTOM_PANEL_HEIGHT / viewport_size.y)
+		wide_ledger_top = clampf(min(WIDE_LEDGER_TOP, min_top_for_floor), 0.0, WIDE_LEDGER_TOP)
+	_bottom_panel.anchor_top = NARROW_LEDGER_TOP if _layout_narrow else wide_ledger_top
 	_bottom_panel.offset_left = 6.0
 	_bottom_panel.offset_right = -6.0
 	_bottom_panel.offset_top = 0.0
