@@ -50,6 +50,8 @@ h3 { font-size: 12px; margin: 12px 0 4px; color: var(--ink); text-transform: upp
 .frame-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 720px; background: #000; border-radius: 6px; overflow: hidden; }
 #game { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .nebula { grid-area: nebula; }
+.diagram-boundary { font-size: 11px; line-height: 1.5; color: var(--muted); margin: 0 0 8px; padding: 8px 10px; background: var(--card-2); border: 1px solid var(--line); border-left: 3px solid var(--amber); border-radius: 6px; }
+.diagram-boundary code { font-family: var(--mono); font-size: 10px; color: var(--ink); background: rgba(255,255,255,.06); padding: 1px 4px; border-radius: 3px; }
 #nebula { width: 100%; height: auto; display: block; }
 .metrics { grid-area: metrics; }
 .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }

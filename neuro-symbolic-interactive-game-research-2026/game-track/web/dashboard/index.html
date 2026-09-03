@@ -24,7 +24,7 @@
     <section class="game card">
       <div class="card-head">
         <h2>Playable (public-safe Web build, embedded)</h2>
-        <span class="hint">click the canvas, then WASD / mouse / [E] · every proposal below goes through the same gate</span>
+        <span class="hint">click the canvas, then WASD / mouse / [E] · each proposal is checked against only the gate families its own operation type uses</span>
       </div>
       <div class="frame-wrap">
         <iframe id="game" src="../public/index.html" title="The Sealed Lighthouse" allow="autoplay; fullscreen"></iframe>
@@ -33,9 +33,19 @@
 
     <section class="nebula card">
       <div class="card-head">
-        <h2>Commit gate — live transaction graph</h2>
-        <span class="hint">node weight = events through it · green pulse = commit · coral pulse = hold (state unchanged)</span>
+        <h2>Commit gate — paper pipeline diagram (not a per-node evaluation trace)</h2>
+        <span class="hint">node weight = events routed through it · green pulse = commit · coral pulse = hold (state unchanged)</span>
       </div>
+      <p class="diagram-boundary">
+        This graph animates the paper's full six-family predicate schema (Fig. 2 / Table II) as one
+        pipeline. On <strong>commit</strong> it pulses all six families because every operation type is
+        drawn from this shared schema — it does <strong>not</strong> mean all six were individually
+        evaluated for that proposal. Each engine operation (<code>acquire_object</code>,
+        <code>install_lens</code>, <code>reveal_hint</code>) only ever runs the 1–2 families relevant to
+        it and returns on the first failing check; the other families are architecturally out of scope
+        for that call, not silently passed. On <strong>hold</strong>, only the family named in the
+        engine's returned gate code turns coral — that part does reflect the real failing check.
+      </p>
       <svg id="nebula" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated commit-gate pipeline"></svg>
     </section>
 
