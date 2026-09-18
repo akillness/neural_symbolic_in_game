@@ -1,5 +1,12 @@
 # Gate Measurements — Cycle 3 Stage 1 re-entry
 
+[OBSERVED 2026-09-06] D-072 current deployment is `dpl_2KYaaLu6PWuwaFZ4RxFrFkA6C4RT`:
+16 files / 53,567,287 bytes remotely hash-matched, including EN/KO PDFs; full Pytest 188 tests
+and 83 subtests pass, full CI-equivalent gates pass. The new byte-level and browser receipts
+are in `factcheck-release-2026-09-06.md`; older deployment measurements below are historical.
+One headless pointer-lock diagnostic remains, and the mobile game frame measures only 185 px
+high. No human readability, pointer/audio, performance, soak or G4/G6 status is promoted.
+
 Timestamp baseline: 2026-08-13
 Rule: no evidence path/receipt means `FIX`. Automated presentation conformance is not human efficacy.
 
@@ -87,20 +94,21 @@ measurement.
   30-minute memory; input `≤100 ms`; safe rollback and exact replay.
 - Carried evidence: four v5 policy-mirror runs match terminal/load/replay/oracle hash. Startup-heavy
   frame p95 remains `116.667/100.000/98.760/112.907 ms`, so it does not pass.
-- Cycle 3 engineering receipts (refreshed 2026-09-02): full Pytest `181 passed, 81 subtests`,
-  unittest discovery `138 passed`, and the game-track selection `50 passed, 48 subtests`; Ruff check
+- Cycle 3 engineering receipts (refreshed 2026-09-03): full Pytest `183 passed, 81 subtests`,
+  unittest discovery `140 passed`, and the game-track selection `50 passed, 48 subtests`; Ruff check
   and format are clean. `SL-PLAY-EVAL-001` passed `4/4` authored fixtures (`40/40`) plus `12/12`
   presentation checks (`52/52` combined); four working PNGs passed size/hash registration. The
   curated player validator passed 9,677,324 bytes, 15,463 triangles, and both required clips.
   Engine-local input-feedback wiring exists but browser/user-gesture latency remains unmeasured.
-  The current ignored artifact has 11 manifest files / 50,746,755 bytes, including 10 public
-  runtime files / 50,746,242 bytes; its PCK is 10,893,980 bytes, SHA-256
-  `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
-  Production deployment `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` at
-  `https://sealed-lighthouse-trace-rpg.vercel.app` returned anonymous 200 responses for all 10
-  runtime files, matched local bytes, served WASM as `application/wasm`, exposed the 4,534-byte OFL
-  notice as `text/plain`, and kept the configured security headers; `vercel.json` returned `404`.
-  Desktop smoke completed start gate → three-page tutorial → in-game with zero console/page errors. The separately
+  The current public-safe artifact has 10 runtime files / 50,754,386 bytes; its PCK is
+  10,902,124 bytes, SHA-256 `b92af65d854d…88075`. Production deployment
+  `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` at `https://sealed-lighthouse-trace-rpg.vercel.app`
+  serves the four-file, 32,117-byte dashboard at `/dashboard/`, accepts messages only from its
+  same-origin embedded game frame, redirects the site root there,
+  and serves the byte-identical 10-file game runtime at `/public/`; `/index.html` redirects to
+  `/public/index.html`. Anonymous response, MIME, and security-header checks passed; `vercel.json`
+  returned `404`. Headless desktop and 390×844 dashboard checks had zero console/page errors and no
+  mobile horizontal overflow. The separately
   retained 2026-08-21 production PCK was 5,970,516 bytes, SHA-256
   `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; its 1280×720 and 390×844
   captures remain historical and do not verify the current deployment's mobile layout. Pointer lock
@@ -109,7 +117,7 @@ measurement.
   local current build, `F5` after lens pickup survived a full refresh and `F9` restored
   inventory/objective from IndexedDB `/userfs`; a forced fall below `y=-3.0` returned to spawn, and
   the `8/8` smoke proves that recovery leaves the symbolic hash unchanged.
-- Missing: current-production save/reload and 390×844 rechecks, human-gesture pointer-lock/audio
+- Missing: current-production save/reload, human-gesture pointer-lock/audio
   confirmation, representative warmed frames, long-frame rate, measured input latency, 30-minute
   memory soak, and rollback drill.
 - Evidence: selected v5, `engineering/perf-budget.md`, `_workspace/current/qa/browser-qa.md`, current
@@ -155,7 +163,7 @@ measurement.
 | Presentation evaluation | `12/12`, canonical state unchanged | instrumentation only |
 | Combined `SL-PLAY-EVAL-001` | `52/52` | engineering only |
 | Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 rotations; isolation 10/10; replay 5/5 | scripted engineering only |
-| Aggregate studio/game tests | full Pytest `181 passed, 81 subtests`; unittest `138 passed`; game selection `50 passed, 48 subtests`; Ruff check/format clean | regression only |
+| Aggregate studio/game tests | full Pytest `183 passed, 81 subtests`; unittest `140 passed`; game selection `50 passed, 48 subtests`; Ruff check/format clean | regression only |
 | Candidate asset boundary | pending concept packs excluded; curated UI lane and validated tracked player GLB allowed | static track separation; pending-pack rights review still open |
 | Responsive profiles | wide-column and narrow-stacked declaration check PASS | no visual/human readability result |
 | Contribution legibility (2026-09-02) | `[OBSERVED]` `contribution_delta_is_pure_and_names_facts`, `hold_teaches_rule_for_its_gate`, `case_chain_mirrors_committed_snapshot` PASS; pure delta derivation, fail-closed public label allowlist (sealed/unmapped IDs suppressed), gate-scoped rule teaching, and case-chain mirroring of committed facts | engineering conformance only; not fun, usability, or G4 evidence |
@@ -165,8 +173,8 @@ measurement.
 | Lens approach geometry | enabled `BoxShape3D` matches deck mesh, contains the `GoldenPathLayout` lens anchor, overlaps quay west edge, wraps lamp-store wall; disposable-copy engine test executes stable smoke item 8 and PASS | DEF-021 implementation closed; owner navigation still required for human-impact gates |
 | Procedural audio | external asset check PASS; 18 generated streams, 22,050 Hz, max five cue voices | playback/impact unmeasured |
 | Bundled Korean font | Nanum Gothic Regular, unmodified, SIL OFL 1.1, 2,054,744 bytes, pinned SHA-256; public notice 4,534 bytes, SHA-256 `eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f` | release resource, not research evidence |
-| Web artifact/deployment | current production `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW`: 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes / `654c1f13…a58e7`; all runtime files anonymous 200 and byte-identical; correct WASM/OFL MIME; configured headers present; `vercel.json` 404 | English/rig desktop smoke passed; production save/reload, current mobile, pointer lock, performance, and soak pending |
-| Deployed responsive rendering | current desktop start gate/tutorial/in-game zero console/page errors; retained older 1280×720 and 390×844 captures are historical | bounded browser smoke, not G4; current mobile recheck open |
+| Web artifact/deployment | current production `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`: 10 runtime files / 50,754,386 bytes at `/public/`; PCK 10,902,124 bytes / `b92af65d…88075`; 4 dashboard files / 32,117 bytes at `/dashboard/`; root/legacy redirects, MIME, headers, anonymous byte identity, and same-origin iframe message guard verified | Desktop and 390×844 dashboard checks passed with zero console/page errors and no horizontal overflow; production save/reload, pointer lock, performance, and soak pending |
+| Deployed responsive rendering | current desktop dashboard/game start and 390×844 dashboard checks have zero console/page errors; mobile has no horizontal overflow; retained older game captures are historical | bounded browser smoke, not G4; human readability remains open |
 | Latest working captures | `4/4` 1280×720 PNGs with SHA-256 registration | never G4/efficacy evidence |
 
 ## Cycle 3 fresh working artifacts
@@ -179,7 +187,7 @@ measurement.
 | `game-track/godot/docs/latest/ending.png` | 1280×720, 440,450 B (refreshed 2026-09-03 via `run_playable_evaluation.py --capture`, native `--shot`; state `f488d9c4…` → `4b231017…`) | `b61eb311e1040b57eb4e6c52e6348ada725f43489486272d51cfc9937b38adaf` |
 | `game-track/godot/docs/latest/evaluation-matrix.json` | `4/4`, `52/52` | PASS; engineering-only |
 | `game-track/godot/docs/latest/balance-archetypes.json` | 5/5 rotations, isolation 10/10 | PASS; scripted engineering-only |
-| `game-track/web/public/` | current production 11 manifest files / 50,746,755 bytes; 10 runtime files / 50,746,242 bytes; PCK 10,893,980 bytes | PCK SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`; includes curated player; ignored/non-authoritative builder output |
+| `game-track/web/public/` | current production has 10 runtime files / 50,754,386 bytes at `/public/`; PCK 10,902,124 bytes; dashboard has 4 files / 32,117 bytes at `/dashboard/` | PCK SHA-256 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`; deployment `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`; includes curated player; ignored/non-authoritative builder output |
 | `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | H.264 High, 1280×720, 30 fps, 63.433 s, 1,903 frames, 7,734,997 B | `be86c2a7578a09dce2455274f0d2809547429c647466168d346d4e5addf16e00`; 2026-09-02 Godot Movie Maker capture of the current local build via the dev-only `--autoplay --public-safe` route (3 commits, 1 hold, terminal SHA-256 `4b231017…108892`); engineering demonstration only, not usability or performance evidence |
 | `game-track/godot/docs/latest/golden-path.gif` | 560×315, 8 fps, 338 frames (1.5× speed), 4,675,182 B | `adc6b52883a91cc10c11c671938baf82478725a1f20b83367b54b419cd8ea1d2`; derived from the MP4 above for the README; same boundary |
 | `game-track/godot/docs/latest/dashboard-route.gif` | 960 px, 7 frames at 0.8 fps, 477,557 B | `fd913f704f7f31fff0872e53c1b98f678418f1c391954b8d5b25820a35d0fa22`; Aside-driven route inside the live dashboard (D-065): 3 commits, 1 hold, final hash `4b231017…108892`; engineering demonstration only |

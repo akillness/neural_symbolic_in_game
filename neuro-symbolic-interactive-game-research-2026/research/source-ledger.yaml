@@ -1,12 +1,16 @@
-as_of: 2026-09-02
+as_of: 2026-09-06
 evidence_policy: primary-source-first
+audit_scope: "2026-09-06 citation refresh rechecked only S02, S44, S52, S54, S55, and S56 against arXiv API; it does not re-date the 55-entry audit as a full refresh."
 sources:
   - id: ivie-2026
     title: "IVIE: A Neuro-symbolic Approach to Incremental and Validated Generation of Interactive Fiction Worlds"
-    url: https://arxiv.org/abs/2606.13348
-    type: paper
-    provenance: direct-page-retrieval
+    url: https://computationalcreativity.net/iccc26/papers/ICCC26_paper_47.pdf
+    type: archival-conference-paper
+    provenance: official-iccc-proceedings-plus-arxiv-and-index-triangulation
     status: verified-primary
+    retrieval_date: 2026-09-03
+    bib_key: S01_vaucher2026ivie
+    supporting_preprint: https://arxiv.org/abs/2606.13348
     local_capture: sources/scraped/arxiv-2606.13348-ivie.md
   - id: scaffolded-play-2025
     title: "Symbolically Scaffolded Play: Designing Role-Sensitive Prompts for Generative NPC Dialogue"
@@ -14,6 +18,9 @@ sources:
     type: paper
     provenance: direct-page-retrieval
     status: verified-primary
+    retrieval_date: 2026-09-06
+    bib_key: S02_figueiredo2025scaffolded
+    scope_note: arXiv API confirms the title, Vanessa Figueiredo and David Elumeze author order, and 2025 submission; no archival venue was established in this bounded refresh
     local_capture: sources/scraped/arxiv-2510.25820-symbolically-scaffolded-play.md
   - id: knudge-2022
     title: "Ontologically Faithful Generation of Non-Player Character Dialogues"
@@ -173,18 +180,18 @@ sources:
     type: preprint
     provenance: arxiv-api-plus-openalex-doi-lookup
     status: verified-primary
-    retrieval_date: 2026-09-02
+    retrieval_date: 2026-09-06
     bib_key: S52_wang2025agentspec
-    scope_note: general LLM-agent runtime-enforcement precedent; arXiv comment states ICSE 2026 acceptance but no proceedings DOI resolved, so cited as preprint
+    scope_note: general LLM-agent runtime-enforcement precedent; arXiv v3 still states ICSE 2026 acceptance, while the bounded Crossref title query and OpenAlex arXiv record did not establish a proceedings record, so cited as preprint
   - id: setting-the-dc-2025
     title: "Setting the DC: Tool-Grounded D&D Simulations to Test LLM Agents"
     url: https://openreview.net/forum?id=3Op7kJOvaD
     type: workshop-paper-non-archival
-    provenance: official-neurips-2025-program-record-plus-genprocc-accepted-list
+    provenance: official-openreview-record-and-pdf-plus-venue-list-conflict
     status: verified-primary
-    retrieval_date: 2026-09-02
+    retrieval_date: 2026-09-03
     bib_key: S53_li2025settingdc
-    unresolved_conflicts: OpenReview forum and API returned HTTP 403 browser challenge (not bypassed); not indexed by OpenAlex, Crossref, or arXiv; author order follows the venue record (Li, Zeng, Xi, Zhu, Ammanabrolu), which differs from the feedback report (Zeng first)
+    unresolved_conflicts: OpenReview metadata and PDF list Ziyi Zeng first, with Zeng and Shengqi Li marked as equal contributors; the NeurIPS virtual program and GenProCC accepted-paper list retain a conflicting Li-first venue-list display; not indexed by OpenAlex, Crossref, or arXiv
     scope_note: tool-grounded game-state admission comparator only; no evidence about TRACE-RPG
   - id: story2game-2025
     title: "STORY2GAME: Generating (Almost) Everything in an Interactive Fiction Game"
@@ -192,7 +199,7 @@ sources:
     type: preprint
     provenance: arxiv-api-plus-openalex-title-search
     status: verified-primary
-    retrieval_date: 2026-09-02
+    retrieval_date: 2026-09-06
     bib_key: S54_zhou2025story2game
     scope_note: LLM-generated precondition/effect comparator; contrasts with the fixed external policy, proves nothing about TRACE-RPG
   - id: beyond-state-consistency-2026
@@ -201,15 +208,24 @@ sources:
     type: preprint
     provenance: arxiv-api-plus-openalex-doi-lookup
     status: verified-primary
-    retrieval_date: 2026-09-02
+    retrieval_date: 2026-09-06
     bib_key: S55_huang2026beyond
-    scope_note: limitation citation for threat L1 only; state consistency is not behavioral or narrative coherence
+    scope_note: limitation citation for threat L1 only; arXiv v2 supports that single-step state consistency is insufficient to capture agent behavior, but it does not directly establish narrative coherence
   - id: agentrr-2025
     title: "Get Experience from Practice: LLM Agents with Record & Replay"
     url: https://arxiv.org/abs/2505.17716
     type: preprint
     provenance: arxiv-api-plus-openalex-doi-lookup
     status: verified-primary
-    retrieval_date: 2026-09-02
+    retrieval_date: 2026-09-06
     bib_key: S56_feng2025agentrr
     scope_note: record-and-replay paradigm precedent; TRACE-RPG claims semantic replay of admitted transitions only
+  - id: world-state-transformations-2026
+    title: "World-State Transformations for Neuro-symbolic Interactive Storytelling"
+    url: https://arxiv.org/abs/2605.24719
+    type: preprint
+    provenance: arxiv-api-plus-openalex-arxiv-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-09-06
+    bib_key: S44_gongora2026worldstate
+    scope_note: arXiv describes LLM-predicted state changes triggering pre-programmed transformations and reports exploratory consistency observations; its preprint record says "to be presented" at ICCC 2026, but this bounded refresh found no archival proceedings record, and it does not establish the absence of any unreported transactional, trace, or repair mechanism

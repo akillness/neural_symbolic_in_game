@@ -3,7 +3,7 @@
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 Cycle: 3, Stage 1 re-entry
 Status: `IN_PROGRESS — bounded production deployment complete; G4/G6 evidence remains open`
-Latest observed engineering receipt: public-safe 3D smoke `8/8`; full Pytest `181 passed, 81 subtests`; unittest discovery `138 passed`; game selection `50 passed, 48 subtests`; Ruff clean
+Latest observed engineering receipt: public-safe 3D smoke `8/8`; full Pytest `183 passed, 81 subtests`; unittest discovery `140 passed`; game selection `50 passed, 48 subtests`; Ruff clean
 Next public beat: human-gesture pointer lock/audio, warmed input/frame sampling, 30-minute soak, rollback drill, then approved human evaluation
 
 ## Outcome

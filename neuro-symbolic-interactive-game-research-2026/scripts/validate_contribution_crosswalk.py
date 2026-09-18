@@ -67,6 +67,47 @@ def _bib_entries(text: str) -> dict[str, str]:
     return entries
 
 
+def _validate_citation_audit_totals(audit: dict[str, object]) -> tuple[Counter[str], int]:
+    """Reject drift between Stage-5 entries and its redundant summary block."""
+    entries = audit.get("entries")
+    if not isinstance(entries, list):
+        raise TypeError("Stage-5 citation audit must contain an entries list")
+
+    status_counts = Counter(str(entry["status"]) for entry in entries)
+    rate_limited = sum("semantic_scholar" in entry["rate_limited_indices"] for entry in entries)
+    derived_totals = {
+        "entries": len(entries),
+        "hallucinated": status_counts.get("HALLUCINATED", 0),
+        "preprint": status_counts.get("PREPRINT", 0),
+        "semantic_scholar_rate_limited": rate_limited,
+        "unmatched": status_counts.get("UNMATCHED", 0),
+        "verified": status_counts.get("VERIFIED", 0),
+    }
+    if audit.get("totals") != derived_totals:
+        raise ValueError(
+            "Stage-5 redundant totals drift from entries: "
+            f"recorded={audit.get('totals')!r}, derived={derived_totals!r}"
+        )
+
+    known_indices = set(audit.get("indices", {}))
+    for entry in entries:
+        matched_indices = set(entry["matched_indices"])
+        rate_limited_indices = set(entry["rate_limited_indices"])
+        contradictory_indices = matched_indices & rate_limited_indices
+        if contradictory_indices:
+            raise ValueError(
+                f"Stage-5 citation {entry['key']} marks indices as both matched and rate-limited: "
+                f"{sorted(contradictory_indices)!r}"
+            )
+        unknown_indices = (matched_indices | rate_limited_indices) - known_indices
+        if unknown_indices:
+            raise ValueError(
+                f"Stage-5 citation {entry['key']} names unknown indices: "
+                f"{sorted(unknown_indices)!r}"
+            )
+    return status_counts, rate_limited
+
+
 def _citation_keys(tex: str) -> set[str]:
     keys: set[str] = set()
     for match in re.finditer(r"\\cite\{([^}]+)\}", tex):
@@ -228,8 +269,9 @@ def main() -> None:
     audit_by_key = {entry["key"]: entry for entry in audit["entries"]}
     if set(audit_by_key) != bib_keys:
         raise ValueError("Stage-5 citation keys do not equal bibliography keys")
-    status_counts = Counter(entry["status"] for entry in audit["entries"])
-    rate_limited = sum(bool(entry["rate_limited_indices"]) for entry in audit["entries"])
+    status_counts, rate_limited = _validate_citation_audit_totals(audit)
+    # Entry-derived totals guard redundant-summary consistency; these values separately pin the
+    # current 55-reference release baseline and must change deliberately with the bibliography.
     if status_counts != {"VERIFIED": 48, "PREPRINT": 7} or rate_limited != 22:
         raise ValueError(
             f"Stage-5 citation totals drift: status={status_counts!r}, rate_limited={rate_limited}"

@@ -1,4 +1,4 @@
-# 논문 게임 판독 그림 · 발표 흐름 정리 · 레퍼런스 교차검증 · 이미지 중심 README — 2026-09-03 (D-066)
+# 논문 게임 판독 그림 · 발표 흐름 정리 · 레퍼런스 교차검증 · 이미지 중심 README — 2026-09-03 (D-066–D-069)
 
 Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-001–005 REMAIN UNESTABLISHED; G4/G6 REMAIN FIX**
 
@@ -42,7 +42,7 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
   열어 검토. 불일치 항목은 1차보다 Aside 판정을 우선하되, 메타데이터 변경은 1차 소스 URL을 직접 다시
   열어 확정한 뒤에만 `references.bib`·crosswalk CSV에 반영한다. 결과는 아래 "Receipts"에 기록.
 - 기록: `references.bib` note 날짜 `2026-09-03`, `stage-05-citation-verification.json` `audit_date`
-  및 addendum 갱신. S46이 ICLR 2024 채택작으로 확인되어 상태 합계는 47 VERIFIED / 8 PREPRINT / 22 rate-limited로 갱신(검증기 계약도 함께 갱신).
+  및 addendum 갱신. S01이 ICCC 2026 아카이벌 proceedings로, S46이 ICLR 2024 채택작으로 확인되어 상태 합계는 48 VERIFIED / 7 PREPRINT / 22 rate-limited로 갱신(검증기 계약도 함께 갱신).
 
 ## 4. README (루트 `README.md` EN 기본 + `README.ko.md` 전환)
 
@@ -77,7 +77,7 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
   근거가 아니다" 명시; `\xeCJKsetup{CJKspace=true}`로 한글 공백 복원(8쪽 유지); 두 언어 고지에 curated 생성 UI
   아트 문장 추가; E2 문구를 "hosted proposer"로 도구 중립화; CLAUDE.md의 캡처 갱신 규칙 두 항목을 일치시킴.
 
-## 7. D-068 프로덕션을 대시보드 버전으로 배포
+## 6. D-068 프로덕션을 대시보드 버전으로 배포
 
 - 사용자 지시("vercel 배포는 대시보드버전으로")에 따라 `scripts/deploy_vercel_dashboard.sh`로 배포. 레이아웃은 로컬
   실행 가이드와 동일(`/dashboard/` + `/public/`), 루트 `/` → `/dashboard/` 리다이렉트, 예전 `/index.html` →
@@ -87,6 +87,29 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
   headless 데스크톱에서 게임 시작 후 헤더 `live · receiving game events`, `state f488d9c4…812c`, 4xx·콘솔 오류 0;
   390×844 가로 넘침 없음(KPI 카드 3열 래핑 추가, favicon 링크 추가). 캡처 `docs/latest/vercel-dashboard*.png`.
 - 경계: 대시보드는 presentation-only·단방향 브리지이며 배포는 어떤 연구·G4·G6 상태도 승격하지 않는다.
+
+## 7. D-069 인용 원장 동기화
+
+- 독립 재독에서 Stage-5 엔트리는 이미 48 `VERIFIED` / 7 `PREPRINT`였지만, JSON의 중복
+  `totals`와 사람이 읽는 요약은 이전 46/9 값을 유지한 것을 확인했다. 검증기도 엔트리만
+  세고 중복 요약은 검사하지 않아 PASS가 거짓 일관성을 만들 수 있었다.
+- JSON·Markdown·source ledger·crosswalk를 현재 55/48/7/22 기록으로 동기화했다. S01에는
+  ICCC proceedings 출처를, S53에는 OpenReview/PDF(Zeng 우선, Zeng·Li 공동기여)와
+  NeurIPS/GenProCC 목록(Li 우선)의 충돌을 모두 기록하고 BibTeX note에도 같은 경계를 남겼다.
+  S46은 proceedings 출판으로 부르지 않고 공식 OpenReview의 ICLR 2024 accepted-poster
+  identity로만 `VERIFIED` 처리한다.
+- `validate_contribution_crosswalk.py`는 Stage-5 엔트리에서 중복 총계를 다시 계산하고, 알 수
+  없는 색인과 하나의 색인을 matched/rate-limited 양쪽에 둔 모순도 거부한다. 회귀 테스트는
+  오래된 총계와 이 모순을 음성 fixture로 확인하고 S01·S53의 최신 양성 레코드를 고정한다.
+- 병행 D-068 후속 배포가 정착한 뒤 current-state 문서만 다시 대조해, 이전 배포 ID가 남은
+  task/QA/측정 패킷/game-track README를 최신 `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`와
+  `/dashboard/`·`/public/` 구조로 맞췄다. 결정 로그와 defect register의 과거 영수증은 보존했다.
+  공유 파일 경합으로 D-068 후속 커밋이 테스트 수치 한 줄을 먼저 포함했지만, 실제 수집 결과는
+  새 파일 제외 180 Pytest / 137 unittest, 새 회귀 3개 포함 183 / 140으로 정확히 재현됐다.
+- source-ledger 해시 변경에 묶인 KG 매트릭스·manifest와 시각 source manifest는 생성기로
+  갱신했다. 그래프·전략·지표 수치는 변하지 않았다. EN/KO PDF는 manifest 바이트와 일치하는
+  유효한 8쪽 파일이고 Type 3·overfull·undefined 0이며, 고정 빌드 환경에서 두 번의 강제
+  재빌드가 각각 바이트 동일했다.
 
 ## Boundary
 

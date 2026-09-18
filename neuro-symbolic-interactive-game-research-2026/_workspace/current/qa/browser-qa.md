@@ -1,10 +1,17 @@
 # Browser QA Receipt — local and production Web build
 
-Date: 2026-08-30 KST
+Current production update (2026-09-06, D-072): `dpl_2KYaaLu6PWuwaFZ4RxFrFkA6C4RT` READY;
+actual game start and synthetic observer regression checked at 1440×1000, page layout checked
+at 390×844. All 16 files match local bytes. One headless pointer-lock error and zero other
+console/page errors are retained. Full current receipt: `factcheck-release-2026-09-06.md` and
+`releases/2026-09-06/`. The dated observations below remain historical.
+
+Date: 2026-09-03 KST
 Surfaces: predecessor disposable local Web export at `http://127.0.0.1:18941/`; current production
-`dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` at `https://sealed-lighthouse-trace-rpg.vercel.app`
-Bundle receipt: 11 manifest files / 50,746,755 bytes; 10 public runtime files / 50,746,242 bytes;
-`index.pck` 10,893,980 bytes, SHA-256 `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`
+`dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` at `https://sealed-lighthouse-trace-rpg.vercel.app`
+Bundle receipt: 10 public runtime files / 50,754,386 bytes at `/public/`; `index.pck`
+10,902,124 bytes, SHA-256 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`;
+4 dashboard files / 32,117 bytes at `/dashboard/`
 Claim boundary: engineering QA only. Not G4, G6, usability, immersion, affect, fun, or efficacy evidence.
 
 ## Verified
@@ -13,9 +20,9 @@ Claim boundary: engineering QA only. Not G4, G6, usability, immersion, affect, f
   matched local bytes. `vercel.json` returned `404`; WASM used `application/wasm`, the OFL notice
   used `text/plain`, and `nosniff`, strict referrer, plus camera/microphone/geolocation-denial
   headers were present.
-- Production desktop smoke completed the start gate, all three tutorial pages, and the in-game
-  transition with zero console errors and zero page errors. The current deployment was not verified
-  at 390×844, and pointer lock was not asserted.
+- Production desktop smoke completed the dashboard, start gate, all three tutorial pages, and the
+  in-game transition with zero console/page errors. The 390×844 dashboard had no horizontal overflow;
+  game-canvas human readability and pointer lock were not asserted.
 
 - In the predecessor local Web build, the English start gate and all three tutorial pages completed
   in the browser. The final tutorial page rendered

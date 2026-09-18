@@ -1,6 +1,12 @@
 # Experimental playable/Web release readiness / 실험 플레이어블·웹 릴리스 준비도
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
+
+Current production receipt (2026-09-06, D-072): `dpl_2KYaaLu6PWuwaFZ4RxFrFkA6C4RT` READY;
+16 public files (10 game, 4 dashboard, 2 manuscripts) / 53,567,287 bytes match local SHA-256.
+Latest verification is in `../qa/factcheck-release-2026-09-06.md`. Older deployment rows below
+are retained historical evidence. Human pointer/audio, mobile readability, performance and
+soak remain FIX; one headless pointer-lock error is explicitly recorded.
 Owner: game-programmer + release engineer
 Current verdict input: `FIX`
 
@@ -22,7 +28,7 @@ Current verdict input: `FIX`
 | Staged Web artifact | DONE-PRODUCTION | current 10 runtime files / 50,754,386 bytes; PCK 10,902,124 bytes, SHA-256 `b92af65d…88075`; includes curated player; deployed production (`dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`, 2026-09-03) is byte-identical at `/public/`; the D-065 dashboard (4 files / 32,117 bytes) is served at `/dashboard/` with the site root redirecting there |
 | Retained gameplay recording | DONE-WORKING-CAPTURE-PREDECESSOR | `trace-rpg-gameplay.mp4`: Compresso H.264 High, 1280×720, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256 `aa374c5a…7044`; full authored route from predecessor `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` before the lens-deck change; engineering demonstration only |
 | Production HTTP/MIME | DONE | HTML/JS/WASM/PCK/OFL returned anonymous 200; WASM `application/wasm`; OFL `text/plain`; configured headers present; `vercel.json` 404 |
-| Deployed browser layout/glyph smoke | DONE-BOUNDED | current 2026-08-30 desktop start gate/tutorial/in-game smoke, zero console/page errors; retained 2026-08-17 1280×720 and 390×844 captures are historical; current mobile recheck open |
+| Deployed browser layout/glyph smoke | DONE-BOUNDED | current 2026-09-03 desktop dashboard/game start and 390×844 dashboard smoke, zero console/page errors and no mobile horizontal overflow; retained older game captures are historical; mobile game-canvas human readability remains open |
 | Trusted headless pointer lock | FIX | not reproduced 2026-08-17: headless synthetic click raised `pointerlockerror`, and the real-Chrome Playwriter click issued no pointer-lock request at all; `document.pointerLockElement` stayed null both times; earlier prior-session pass retained as history only; console/page-error counts stayed zero, and the `LOOK ACTIVE` HUD label is not pointer-lock evidence; human-gesture check open |
 | Browser save/reload | DONE-LOCAL-CURRENT | `F5` after lens pickup, full refresh, then `F9` restored lens inventory/objective and passed the corruption check; current production save/reload recheck remains open |
 | Below-world recovery | DONE-LOCAL-CURRENT | local Web fall returned to spawn; public-safe smoke remains `8/8` and asserts unchanged symbolic hash |

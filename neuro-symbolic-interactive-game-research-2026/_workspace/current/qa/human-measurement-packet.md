@@ -5,8 +5,8 @@ artifact_id: SL-HUMAN-MEASURE-001
 status: READY-NOT-EXECUTED
 prepared: 2026-08-28 (user request: "지금 준비해줘")
 participant: 프로젝트 소유자 1인 (자기 측정; G4의 독립 참가자 연구를 대체하지 않음)
-target_url: https://sealed-lighthouse-trace-rpg.vercel.app
-build: dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW (index.pck 10,893,980 B, 654c1f13…a58e7)
+target_url: https://sealed-lighthouse-trace-rpg.vercel.app/public/
+build: dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y (index.pck 10,902,124 B, b92af65d…88075)
 ```
 
 이 패킷은 자동화가 대신할 수 없는 **사람 제스처 항목**을 소유자 1회 플레이로 닫기 위한
