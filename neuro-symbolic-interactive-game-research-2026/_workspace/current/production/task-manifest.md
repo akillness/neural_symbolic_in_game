@@ -1,6 +1,19 @@
 # Task Manifest — Cycle 3 (+ 2026-08-28 밸런스·텔레메트리 확장 패스)
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
+
+Current release update (D-073, 2026-09-18): detective-loop deepening (case file, hint ladder,
+coach cards, slot-assembly deduction, paged end card, four-zone HUD), world stations/VFX/gesture
+motion, the Higgsfield case-v1 asset pack, and the truthful per-node commit-gate trace
+(hash-bound `EvaluationTrace` mirror + dashboard renderer) are deployed as
+`dpl_BkguPJPErtawmhjxU5cvg97PBsiq` (16 byte-identical files, 56,003,696 B). Smoke 8/8, evaluate
+16/16 (52/52 core + 4/4 extension), full CI-equivalent PASS. Owner: release verifier.
+Receipts: `qa/releases/2026-09-18/`. G4/G6 remain FIX.
+Previous release update (D-072, 2026-09-06): bounded primary-source fact-check and bilingual
+claim corrections complete; 188 tests / 83 subtests and the full CI-equivalent sequence pass.
+Combined paper/game deployment `dpl_2KYaaLu6PWuwaFZ4RxFrFkA6C4RT` was READY; all 16 public
+files were byte-identical and production browser checks are recorded in
+`qa/factcheck-release-2026-09-06.md`.
 Current stage: Stage 1 re-entry — playable presentation/Web release engineering; 2026-08-30
 balance/telemetry/motion/live-screening/recovery/English-player/KG/deployment extension recorded as D-037–D-058; 2026-09-02 paper-legibility/top-venue/replication/ledger-gate pass recorded as D-060; independent paper/game hardening recorded as D-061; Aside-feedback fun/contribution-legibility pass (12-invariant `SL-PLAY-EVAL-001`, design packet, 8pp EN/KO page recomposition, S52–S56) recorded as D-062; fail-closed player-visible fact-label boundary recorded as D-063
 Operating mode: curated public-safe UI/player over a procedural world; immutable research evidence remains separate
@@ -20,13 +33,13 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 | Add disposable single-threaded Web export | release engineer | 1.release | `game-track/web/**`, `scripts/build_godot_web.sh` | G6/release | implemented-structure | clean build receipt |
 | Add presentation evaluation and latest working captures | programmer + QA | 1.verify | `docs/latest/evaluation-matrix.*`, four PNGs | engineering | done-4-fixtures-52-of-52-four-browser-stage-shots | keep hashes synchronized |
 | Execute public-safe 3D smoke | QA | 1.verify | same proposal router as play | G7 engineering | observed-8-of-8 | preserve final command receipt |
-| Execute aggregate regression | QA | 1.verify | full Pytest/unittest/game selection + Ruff | regression | observed-pytest-181-pass-81-subtests; unittest-138-pass; game-50-pass-48-subtests; Ruff-clean | rerun after integration |
+| Execute aggregate regression | QA | 1.verify | full Pytest/unittest/game selection + Ruff | regression | observed-pytest-183-pass-81-subtests; unittest-140-pass; game-50-pass-48-subtests; Ruff-clean | rerun after integration |
 | Bundle Korean Web font with license | release engineer | 1.resources | `assets/fonts/NanumGothic-Regular.ttf`, `OFL.txt`, provenance README, public `NanumGothic-OFL.txt` | provenance | done-OFL-pinned-and-public-hash | retain license with releases |
 | Build staged Web artifact | release engineer | 1.release | ignored `game-track/web/public/` | release engineering | done-production-11-manifest-files-50746755-bytes-10-runtime-files-50746242-bytes-pck-10893980 | monitor and retain exact receipts |
 | Verify deployed Web in browser | QA + release | 1.verify | production alias + retained historical captures | G1/G6/release | done-current-desktop-historical-mobile-zero-errors | pointer lock + save/reload + current mobile + performance |
 | Measure Web performance and 30-minute soak | QA | 1.verify | browser performance report | G6 | pending | warmed p95, long frames, input, memory |
 | Conduct approved human presentation study | independent evaluator | later study | participant packet | G4 | not-started | immersion/readability/usability data |
-| Deploy public-safe static artifact | release engineer | 1.release | `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` at `https://sealed-lighthouse-trace-rpg.vercel.app` | release | done-ready-10-runtime-files-anonymous-200-byte-identical-desktop-zero-errors | production save/reload, mobile recheck, monitor/rollback drill |
+| Deploy dashboard-led public-safe static artifact | release engineer | 1.release | `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` at `https://sealed-lighthouse-trace-rpg.vercel.app` (`/dashboard/` + `/public/`) | release | done-ready-10-runtime-plus-4-dashboard-files-anonymous-200-byte-identical-desktop-mobile-zero-errors-message-source-guarded | production save/reload, human-gesture pointer/audio, monitor/rollback drill |
 | Record predecessor full route and compress for README | release engineer | 1.release | `game-track/godot/docs/latest/trace-rpg-gameplay.mp4` | release engineering | done-pre-lens-deck-69.067s-h264-1280x720-5662128b-verified | refresh only if a current-build route video is required; human usability/performance study remains separate |
 | Deepen weather/cinematic 연출 (tension weather arc, lightning, harbor micro-motion, intro FOV, ending beam) | visual lane (subagent WorldFeel) | 1.presentation | `world_builder.gd`, `narrative_director.gd` | G1/G4 | done-2026-08-21-smoke-and-eval-green | human presentation study |
 | Deepen core-loop feel/balance (movement accel, focus affordance, golden-path retune, escalating commits, 7 stingers + ambience) | programmer + audio lane (subagent LoopFeel) | 1.systems | `player_3d.gd`, `interactable_3d.gd`, `game_3d.gd`, `procedural_audio.gd` | G1/G7 | done-2026-08-21-smoke-and-eval-green | human presentation study |
@@ -69,8 +82,15 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 | Independently audit and harden the integrated paper/game packet (D-061/D-063) | independent reviewers + orchestrator | 1.review | decisions D-061/D-063, validators, regenerated visual receipts, bilingual PDFs | evidence truth / reproducibility / legibility / player-visible privacy | done-7-check-6-family-contract-55-reference-accounting-11-svg-22-output-88-receipt-gate-safe-fact-label-allowlist | no human-impact promotion; no commit/push/deploy without approval |
 | Record the golden-path play video through the dev-only `--autoplay` Movie Maker route and publish GIF/MP4 in the README (D-064) | game-programmer + release engineer | 1.release | `player_3d.gd` autopilot, `game_3d.gd` `_run_autoplay`, `docs/latest/golden-path.gif`, `docs/latest/trace-rpg-gameplay.mp4` | release engineering | done-2026-09-02-63s-3-commits-1-hold-terminal-hash-unchanged | re-record after any route or UI change; human readability review |
 | Fact-check every bibliography DOI/URL against Crossref or landing-page titles (D-064) | research engineer | paper.revision | `research/academic-pipeline/stage-05-link-audit-2026-09-02.md` | citation identity | done-55-of-55-resolve-S53-manual-only | rerun before submission |
+| Synchronize the D-066 citation audit after the S01 archival and S46 venue-record promotions, preserve the S53 primary-record/venue-list conflict, and reconcile current operational receipts exposed by the concurrent D-068 follow-up (D-069) | research engineer + independent reviewer | paper.revision + receipt reconciliation | Stage-5 JSON/Markdown, source ledger, reference crosswalk, BibTeX note, validator regression, current deployment/test receipts | citation identity / fail-closed accounting / current-state truth | done-55-total-48-verified-7-preprint-22-rate-limited-and-current-d068-receipts | retain historical deployment rows; no efficacy promotion |
 | Rewrite bilingual READMEs to the current evidence state with the play video first (D-064) | director + writer | current pickup | `README.en.md`, `README.ko.md` | evidence-bounded status | done-2026-09-02 | keep receipts synchronized at each artifact refresh |
 | Build the live commit-gate dashboard around the embedded Web build with a presentation-only postMessage mirror (D-065) | game-programmer + UI lane + QA | 1.presentation | `game_3d.gd` `_emit_dashboard`/`_process` tick, `game-track/web/dashboard/{index.html,dashboard.js,dashboard.css,paper-reference.json,README.md}` | G1/G7 engineering | done-2026-09-02-aside-route-3-commits-1-hold-final-hash-equals-smoke | deploy alongside the Web build with approval; human readability review |
+| File Aside deep research on per-node trace encoding and detective/tutorial/HUD design (D-073 intake) | orchestrator (Claude Code session) | 1.intake | `intake/aside-research-2026-09-18-commit-gate-trace-encoding.md`, `intake/aside-research-2026-09-18-detective-tutorial-hud.md` | design basis ([INFERENCE] only) | done-2026-09-18-two-reports | none; reports are advice, not evidence |
+| Make the commit-gate graph a truthful per-node evaluation trace: hash-bound `EvaluationTrace` mirror, `dashboard_trace()` explicit family states, dashboard renderer/legend/strip, fixture harness (D-073) | game-programmer + dashboard lane (subagent DashboardTrace) + QA | 1.presentation | `game3d/evaluation_trace.gd`, `game_3d.gd` (`dashboard_trace`, `_last_dashboard_trace`), `web/dashboard/{dashboard.js,index.html,dashboard.css}`, `tests/test_evaluation_trace_mirror.py`, `tests/test_godot_web_release.py`, `qa/releases/2026-09-18/dashboard-trace-fixtures.{js,json}` | G1/G7 engineering; evidence honesty | done-2026-09-18-fixtures-8-of-8-plus-2-guards-motion-and-reduced-motion-machine-bytes-unchanged | human readability review; keep the mirror pinned to the machine SHA |
+| Deepen the detective loop: case-file evidence board, `INFERENCE_BY_CODE`, hint ladder, page-1 boot folio + coach cards, slot-assembly deduction, paged end card, four-zone HUD; four extension checks (D-073) | game-programmer + UI lane (subagent DetectiveUX) + QA | 1.presentation | `harbor_ledger_ui.gd`, `game_3d.gd`, `run_playable_evaluation.py` (core/extension split), `tests/test_playable_evaluation.py`, `design/game-ui-contract.json`, refreshed `docs/latest/{evaluation-matrix.*,arrival,refusal,authorized_hint,ending}.png` + shot receipts | G1/G4 wiring; engineering conformance | done-2026-09-18-eval-16-of-16-core-52-of-52-extension-4-of-4-native-capture-refresh | human presentation study; mobile game readability |
+| World stations, diegetic guide trail, focus/inspect/verdict VFX, rig gesture clips (D-073) | visual lane (subagent WorldFeel) | 1.presentation | `world_builder.gd`, `narrative_director.gd`, `interactable_3d.gd`, `player_3d.gd`, hooks in `game_3d.gd` | G1/G4/G6 | done-2026-09-18-smoke-8-of-8-with-and-without-evidence_desk.glb-zero-runtime-errors | frame measurements; human presentation study |
+| Generate and curate the Higgsfield case-v1 pack (board, 4 evidence icons, compass, investigate vignette) and the evidence-desk GLB (D-073) | asset lane (subagent HiggsfieldAssets) | 1.resources | `assets/generated/higgsfield-case-v1/` (prompts/provenance/manifest tracked, PNG bytes ignored), 7 curated PNGs in `godot/assets/ui/` (3,479,586 B) + `curation.json`, `godot/assets/models/evidence_desk.glb` (516,268 B, texture re-embedded at 1024 px) + provenance + `models-manifest.json` `ai_generated_assets` | provenance (D-073) | done-10-jobs-1-retry-validators-pass | rights re-review if repurposed |
+| Deploy the D-073 build and record production receipts | release engineer (orchestrator) | 1.release | `dpl_BkguPJPErtawmhjxU5cvg97PBsiq` at `https://sealed-lighthouse-trace-rpg.vercel.app` (`/dashboard/` + `/public/` + `/paper/{en,ko}.pdf`), `qa/releases/2026-09-18/{production-http,production-browser,local-browser}.json`, `ci-final.log` | release | done-16-files-56003696-bytes-byte-identical-desktop-session-start-390px-no-overflow | pointer lock, mobile readability, performance/soak, rollback drill |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
@@ -78,7 +98,7 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 - `godot --headless --path <disposable-copy> res://scenes/main_3d.tscn -- --smoke --public-safe`
   → `8/8`, real `project.godot` hash unchanged, terminal state SHA-256
   `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`.
-- Current Python 3.12 full Pytest → `181 passed, 81 subtests`; unittest discovery → `138`
+- Current Python 3.12 full Pytest → `183 passed, 81 subtests`; unittest discovery → `140`
   passed; game-track selection → `50 passed, 48 subtests`; studio/concept/motion/player validators
   PASS; Ruff check and format are clean. The complete `scripts/verify_like_ci.sh` sequence passes.
 - `scripts/run_kg_ontology_simulation.py` → `SL-KG-ONTOLOGY-SIM-001`: OKF nodes `43`, reference
@@ -115,17 +135,17 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
   `game-track/godot` project**. Import, smoke, evaluation, Web export, and capture must use disposable
   staged copies; before/after SHA-256 must remain
   `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`.
-- Current `game-track/web/public/` contains 11 manifest files / 50,746,755 bytes and 10 runtime
-  files / 50,746,242 bytes; PCK 10,893,980 bytes, SHA-256
-  `654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`. It includes the tracked
+- Current public-safe runtime contains 10 files / 50,754,386 bytes; PCK 10,902,124 bytes,
+  SHA-256 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. It includes the tracked
   player and remains ignored/non-authoritative. Production deployment
-  `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` is byte-identical across all 10 public runtime files fetched
-  anonymously; `vercel.json` returned 404. WASM/OFL MIME and configured response headers matched the
-  release contract; the public 4,534-byte OFL notice hash still matches the source license.
-- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-08-30 deploy
-  `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` (`index.pck` 10,893,980 bytes, SHA-256 `654c1f13…a58e7`),
-  READY; production desktop start gate → three-page tutorial → in-game smoke logged zero
-  console/page errors. Historical receipts: predecessor `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`,
+  `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` serves those byte-identical files at `/public/` and the
+  4-file / 32,117-byte dashboard at `/dashboard/`; root and legacy redirects, MIME, headers, and
+  the public OFL notice passed anonymous checks. The dashboard accepts envelopes only from its
+  same-origin embedded game frame.
+- Vercel production: `https://sealed-lighthouse-trace-rpg.vercel.app`, 2026-09-03 deploy
+  `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` (`index.pck` 10,902,124 bytes, SHA-256 `b92af65d…88075`),
+  READY; desktop and 390×844 dashboard checks logged zero console/page errors and no horizontal
+  overflow. Historical receipts: predecessor `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`,
   2026-08-21 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual+texture) and
   `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` (curated-art, retained desktop+mobile captures); 2026-08-17
   `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.
@@ -175,7 +195,7 @@ Refresh rule: any lane, generator, authority boundary, entry point, Web export b
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
-Latest rule refresh: 2026-09-03, decisions `D-066`–`D-068` (paper game-readout figure, presentation-flow manuscripts, reference re-verification, image-first root README, production dashboard deployment); prior refresh 2026-09-02, decisions `D-055`–`D-063` (contribution/reference crosswalk,
+Latest rule refresh: 2026-09-18, decision `D-073` (hash-bound evaluation-trace mirror and per-node dashboard contract, detective surfaces, core/extension evaluation split, case-v1 asset lane, evidence-desk prop lane, stale-lock takeover rule); prior refresh 2026-09-03, decisions `D-066`–`D-069` (paper game-readout figure, presentation-flow manuscripts, reference re-verification, image-first root README, production dashboard deployment, fail-closed citation-summary synchronization); prior refresh 2026-09-02, decisions `D-055`–`D-063` (contribution/reference crosswalk,
 disposable Godot verification, collider-backed lens route, production receipt, editable-visual
 contract, contribution-first paper hardening, and presentation-only contribution legibility);
 prior refresh 2026-08-30, decisions `D-037`–`D-053`.

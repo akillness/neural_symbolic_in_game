@@ -13,6 +13,9 @@
 
 ## Sources and reports
 
+- [[wiki/reports/2026-09-18-d073-detective-loop-trace-mirror-and-release]] — **current game track (D-073)**: Aside deep research ×2 filed as intake; hash-bound `EvaluationTrace` mirror + per-node commit-gate dashboard (explicit pass/fail/skipped/out-of-scope, no default state); case-file board, hint ladder, coach cards, slot-assembly deduction, paged end card, four-zone HUD; world stations/VFX/gesture clips; Higgsfield case-v1 pack + evidence-desk GLB; `SL-PLAY-EVAL-001` 52/52 core + 4/4 extension; production `dpl_BkguPJPErtawmhjxU5cvg97PBsiq`
+- [[wiki/reports/2026-09-06-paper-game-factcheck-and-release]] — bounded primary-source fact-check, bilingual claim-scope corrections, dashboard predicate accounting, and combined paper/game release
+
 - [[wiki/sources/original-drive-research-plans]] — synthesis of all five supplied Markdown sources
 - [[wiki/sources/2026-model-and-method-evidence]] — Scrapling and primary-source model/method snapshot
 - [[wiki/reports/2026-08-12-research-synthesis]] — unified research direction and remaining risks
@@ -27,7 +30,9 @@
 - [[wiki/reports/2026-08-28-balance-probe-input-telemetry-and-motion-lane]] — **current game + academic track**: D-037 input→visible telemetry + 9-check contract (49/49), D-038 archetype balance probe `SL-BALANCE-PROBE-001` (5 rotations, G2 replacement measurements, structural guard findings), D-039 Mixamo/Blender motion intake lane with raw-source guard; QA hash-drift corrections; G2–G8 remain FIX
 - [[wiki/reports/2026-09-02-aside-feedback-fun-contribution-legibility-and-page-recomposition]] — **current game + academic track (D-061/D-062/D-063)**: Aside search-grounded feedback filed as intake; presentation-only contribution readout (CASE CHAIN, `CONTRIBUTION #N`, `RULE LEARNED`, two-part receipt) with fail-closed fact-label allowlist, `SL-PLAY-EVAL-001` 12/12 → 52/52, and refreshed captures; threshold-free `SL-HYP-001` study-owner protocol + GDD §11 (B-014–B-017); contribution-first paper recomposition (EN/KO 8pp, deterministic single-column Fig. 1 + ledger band, causal Godot sequence, S52–S56); concurrent-session collisions resolved
 - [[wiki/reports/2026-08-13-trace-rpg-academic-stage-06-to-10]] — academic stage history: bilingual revision, 42-source identity gate, 42/42 claim re-audit, and 2026-08-14 clean tagged recapture
-- [[wiki/reports/2026-09-03-paper-game-readout-figure-readme-and-reference-recheck]] — **current game + academic track (D-066)**: Fig. 3 playable-readout panels in both manuscripts, presentation-flow prose without agent-workflow tokens, 55-entry reference cross-check (primary-source agents + Aside browser research), and the image-first root README (EN default, KO switch)
+- [[wiki/reports/2026-09-03-paper-game-readout-figure-readme-and-reference-recheck]] — **current game + academic track (D-066–D-069)**: Fig. 3 playable-readout panels with frozen shot receipts, corrected KO spacing, presentation-flow prose, 55-entry reference cross-check (48 VERIFIED / 7 PREPRINT / 22 rate-limited) with entry-derived fail-closed totals and the S53 source conflict preserved, the image-first root README, and the production dashboard at the site root
+ insert after
+- [[wiki/reports/2026-09-18-aside-evidence-review-game-paper]] — Aside 기반 근거 리뷰: engineering conformance와 player/model efficacy를 분리하고, trace semantics·human study·confirmatory repair의 두 사이클 개선안 제시
 - [[maintenance-log]] — wiki and Graphify maintenance decisions
 
 ## Prompt/output ingest
@@ -107,3 +112,19 @@
 - [[wiki/sources/2026-08-13-141311-oauth-llm-codex]] - oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가
 
 - [[wiki/queries/2026-08-13-141311-oauth-llm-codex]] - oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가
+
+- [[wiki/sources/2026-09-05-142539-yolo]] - —yolo
+
+- [[wiki/queries/2026-09-05-142539-yolo]] - —yolo
+
+- [[wiki/sources/2026-09-05-144752-prompt]] - 논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지
+
+- [[wiki/queries/2026-09-05-144752-prompt]] - 논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지
+
+- [[wiki/sources/2026-09-05-145340-prompt]] - 진행해
+
+- [[wiki/queries/2026-09-05-145340-prompt]] - 진행해
+
+- [[wiki/sources/2026-09-06-003827-prompt]] - 이어서 진행해
+
+- [[wiki/queries/2026-09-06-003827-prompt]] - 이어서 진행해

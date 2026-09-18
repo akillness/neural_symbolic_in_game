@@ -1,299 +1,885 @@
-# Graph Report - llm-wiki  (2026-08-29)
+# Graph Report - .  (2026-09-18)
 
 ## Corpus Check
 - cluster-only mode — file stats not available
 
 ## Summary
-- 627 nodes · 739 edges · 57 communities (49 shown, 8 thin omitted)
+- 1463 nodes · 1457 edges · 188 communities (163 shown, 25 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `024947ea`
+- Built from commit: `f88262c7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- gpt-5.4.md
-- index.md
-- Neuro-symbolic Game Story Research Plan 2026-06-28
-- Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28
-- Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28
-- Log
-- phi-4-mini-instruct.md
-- gemini-latest-model.md
-- log.md
-- qwen-agentworld.md
-- mistral-small-3.1-24b.md
-- queries/2026-08-12-093240-prompt.md
-- queries/2026-08-12-113016-prompt.md
-- queries/2026-08-12-114820-prompt.md
-- queries/2026-08-13-024518-continue.md
-- queries/2026-08-13-081911-god-tibo-imagen.md
-- queries/2026-08-13-085617-prompt.md
-- queries/2026-08-13-085724-prompt.md
-- queries/2026-08-13-085828-prompt.md
-- queries/2026-08-13-093342-prompt.md
-- queries/2026-08-13-125906-godot.md
-- queries/2026-08-13-130053-prompt.md
-- queries/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa.md
-- queries/2026-08-13-141311-oauth-llm-codex.md
-- jericho.md
-- mistral-3.md
-- TRACE-RPG Academic Pipeline — Stages 6 to 10
-- 밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스
-- deepseek-r1-distill-qwen-14b.md
-- qwen3-vl-8b.md
-- queries/2026-08-12-151131-prompt.md
-- queries/2026-08-13-081610-interview-game-studio-harness.md
-- queries/2026-08-13-113058-prompt.md
-- Wiki Schema
-- TRACE-RPG Academic Pipeline — Stages 4.5 and 5
-- Index
-- ieee-10934747-multipeng-probe.md
-- ieee-transactions-on-games.md
-- TRACE-RPG Academic Pipeline — Stage 6
-- Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass
-- openai-gpt-oss.md
-- drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…
-- 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
-- ㄱㄱ
-- interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…
-- 실험 동작하고 캡쳐이미지 추가
-- TRACE-RPG Academic Pipeline — Stage 4
-- qwen3.md
-- textworld.md
-- entertainment-computing-scope.md
-- gemma-3.md
-- kaggle-multipeng-probe.md
-- knowledge-based-systems-scope.md
-- uist-generative-agents.md
-- www-dynamic-difficulty-adjustment.md
+- [[_COMMUNITY_gpt-5.4|gpt-5.4.md]]
+- [[_COMMUNITY_index|index.md]]
+- [[_COMMUNITY_Neuro-symbolic Game Story Research Plan 2026-06-28|Neuro-symbolic Game Story Research Plan 2026-06-28]]
+- [[_COMMUNITY_Paper Draft Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28|Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28]]
+- [[_COMMUNITY_Paper Draft Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28|Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28]]
+- [[_COMMUNITY_Log|Log]]
+- [[_COMMUNITY_phi-4-mini-instruct|phi-4-mini-instruct.md]]
+- [[_COMMUNITY_gemini-latest-model|gemini-latest-model.md]]
+- [[_COMMUNITY_log|log.md]]
+- [[_COMMUNITY_qwen-agentworld|qwen-agentworld.md]]
+- [[_COMMUNITY_mistral-small-3.1-24b|mistral-small-3.1-24b.md]]
+- [[_COMMUNITY_queries2026-08-12-093240-prompt|queries/2026-08-12-093240-prompt.md]]
+- [[_COMMUNITY_queries2026-08-12-113016-prompt|queries/2026-08-12-113016-prompt.md]]
+- [[_COMMUNITY_queries2026-08-12-114820-prompt|queries/2026-08-12-114820-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-024518-continue|queries/2026-08-13-024518-continue.md]]
+- [[_COMMUNITY_queries2026-08-13-081911-god-tibo-imagen|queries/2026-08-13-081911-god-tibo-imagen.md]]
+- [[_COMMUNITY_queries2026-08-13-085617-prompt|queries/2026-08-13-085617-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-085724-prompt|queries/2026-08-13-085724-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-085828-prompt|queries/2026-08-13-085828-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-093342-prompt|queries/2026-08-13-093342-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-125906-godot|queries/2026-08-13-125906-godot.md]]
+- [[_COMMUNITY_queries2026-08-13-130053-prompt|queries/2026-08-13-130053-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-131159-finally-you-must-try-to-research-for-research-pa|queries/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa.md]]
+- [[_COMMUNITY_queries2026-08-13-141311-oauth-llm-codex|queries/2026-08-13-141311-oauth-llm-codex.md]]
+- [[_COMMUNITY_jericho|jericho.md]]
+- [[_COMMUNITY_mistral-3|mistral-3.md]]
+- [[_COMMUNITY_TRACE-RPG Academic Pipeline — Stages 6 to 10|TRACE-RPG Academic Pipeline — Stages 6 to 10]]
+- [[_COMMUNITY_밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스|밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스]]
+- [[_COMMUNITY_deepseek-r1-distill-qwen-14b|deepseek-r1-distill-qwen-14b.md]]
+- [[_COMMUNITY_qwen3-vl-8b|qwen3-vl-8b.md]]
+- [[_COMMUNITY_queries2026-08-12-151131-prompt|queries/2026-08-12-151131-prompt.md]]
+- [[_COMMUNITY_queries2026-08-13-081610-interview-game-studio-harness|queries/2026-08-13-081610-interview-game-studio-harness.md]]
+- [[_COMMUNITY_queries2026-08-13-113058-prompt|queries/2026-08-13-113058-prompt.md]]
+- [[_COMMUNITY_Wiki Schema|Wiki Schema]]
+- [[_COMMUNITY_TRACE-RPG Academic Pipeline — Stages 4.5 and 5|TRACE-RPG Academic Pipeline — Stages 4.5 and 5]]
+- [[_COMMUNITY_Index|Index]]
+- [[_COMMUNITY_ieee-10934747-multipeng-probe|ieee-10934747-multipeng-probe.md]]
+- [[_COMMUNITY_ieee-transactions-on-games|ieee-transactions-on-games.md]]
+- [[_COMMUNITY_TRACE-RPG Academic Pipeline — Stage 6|TRACE-RPG Academic Pipeline — Stage 6]]
+- [[_COMMUNITY_Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass|Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass]]
+- [[_COMMUNITY_openai-gpt-oss|openai-gpt-oss.md]]
+- [[_COMMUNITY_drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…|drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…]]
+- [[_COMMUNITY_논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지|논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지]]
+- [[_COMMUNITY_ㄱㄱ|ㄱㄱ]]
+- [[_COMMUNITY_interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…|interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…]]
+- [[_COMMUNITY_실험 동작하고 캡쳐이미지 추가|실험 동작하고 캡쳐이미지 추가]]
+- [[_COMMUNITY_TRACE-RPG Academic Pipeline — Stage 4|TRACE-RPG Academic Pipeline — Stage 4]]
+- [[_COMMUNITY_qwen3|qwen3.md]]
+- [[_COMMUNITY_textworld|textworld.md]]
+- [[_COMMUNITY_entertainment-computing-scope|entertainment-computing-scope.md]]
+- [[_COMMUNITY_gemma-3|gemma-3.md]]
+- [[_COMMUNITY_kaggle-multipeng-probe|kaggle-multipeng-probe.md]]
+- [[_COMMUNITY_knowledge-based-systems-scope|knowledge-based-systems-scope.md]]
+- [[_COMMUNITY_uist-generative-agents|uist-generative-agents.md]]
+- [[_COMMUNITY_www-dynamic-difficulty-adjustment|www-dynamic-difficulty-adjustment.md]]
+- [[_COMMUNITY_deepseek-transparency|deepseek-transparency.md]]
+- [[_COMMUNITY_llama-4|llama-4.md]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
+- [[_COMMUNITY_Community 63|Community 63]]
+- [[_COMMUNITY_Community 64|Community 64]]
+- [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 66|Community 66]]
+- [[_COMMUNITY_Community 67|Community 67]]
+- [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
+- [[_COMMUNITY_Community 75|Community 75]]
+- [[_COMMUNITY_Community 76|Community 76]]
+- [[_COMMUNITY_Community 77|Community 77]]
+- [[_COMMUNITY_Community 78|Community 78]]
+- [[_COMMUNITY_Community 79|Community 79]]
+- [[_COMMUNITY_Community 80|Community 80]]
+- [[_COMMUNITY_Community 81|Community 81]]
+- [[_COMMUNITY_Community 82|Community 82]]
+- [[_COMMUNITY_Community 83|Community 83]]
+- [[_COMMUNITY_Community 84|Community 84]]
+- [[_COMMUNITY_Community 85|Community 85]]
+- [[_COMMUNITY_Community 86|Community 86]]
+- [[_COMMUNITY_Community 87|Community 87]]
+- [[_COMMUNITY_Community 88|Community 88]]
+- [[_COMMUNITY_Community 89|Community 89]]
+- [[_COMMUNITY_Community 90|Community 90]]
+- [[_COMMUNITY_Community 91|Community 91]]
+- [[_COMMUNITY_Community 92|Community 92]]
+- [[_COMMUNITY_Community 93|Community 93]]
+- [[_COMMUNITY_Community 94|Community 94]]
+- [[_COMMUNITY_Community 95|Community 95]]
+- [[_COMMUNITY_Community 96|Community 96]]
+- [[_COMMUNITY_Community 97|Community 97]]
+- [[_COMMUNITY_Community 98|Community 98]]
+- [[_COMMUNITY_Community 99|Community 99]]
+- [[_COMMUNITY_Community 100|Community 100]]
+- [[_COMMUNITY_Community 101|Community 101]]
+- [[_COMMUNITY_Community 102|Community 102]]
+- [[_COMMUNITY_Community 103|Community 103]]
+- [[_COMMUNITY_Community 104|Community 104]]
+- [[_COMMUNITY_Community 105|Community 105]]
+- [[_COMMUNITY_Community 106|Community 106]]
+- [[_COMMUNITY_Community 107|Community 107]]
+- [[_COMMUNITY_Community 108|Community 108]]
+- [[_COMMUNITY_Community 109|Community 109]]
+- [[_COMMUNITY_Community 110|Community 110]]
+- [[_COMMUNITY_Community 111|Community 111]]
+- [[_COMMUNITY_Community 112|Community 112]]
+- [[_COMMUNITY_Community 113|Community 113]]
+- [[_COMMUNITY_Community 114|Community 114]]
+- [[_COMMUNITY_Community 115|Community 115]]
+- [[_COMMUNITY_Community 116|Community 116]]
+- [[_COMMUNITY_Community 117|Community 117]]
+- [[_COMMUNITY_Community 118|Community 118]]
+- [[_COMMUNITY_Community 119|Community 119]]
+- [[_COMMUNITY_Community 120|Community 120]]
+- [[_COMMUNITY_Community 121|Community 121]]
+- [[_COMMUNITY_Community 122|Community 122]]
+- [[_COMMUNITY_Community 123|Community 123]]
+- [[_COMMUNITY_Community 124|Community 124]]
+- [[_COMMUNITY_Community 125|Community 125]]
+- [[_COMMUNITY_Community 126|Community 126]]
+- [[_COMMUNITY_Community 127|Community 127]]
+- [[_COMMUNITY_Community 128|Community 128]]
+- [[_COMMUNITY_Community 129|Community 129]]
+- [[_COMMUNITY_Community 130|Community 130]]
+- [[_COMMUNITY_Community 131|Community 131]]
+- [[_COMMUNITY_Community 132|Community 132]]
+- [[_COMMUNITY_Community 133|Community 133]]
+- [[_COMMUNITY_Community 134|Community 134]]
+- [[_COMMUNITY_Community 135|Community 135]]
+- [[_COMMUNITY_Community 136|Community 136]]
+- [[_COMMUNITY_Community 137|Community 137]]
+- [[_COMMUNITY_Community 138|Community 138]]
+- [[_COMMUNITY_Community 139|Community 139]]
+- [[_COMMUNITY_Community 140|Community 140]]
+- [[_COMMUNITY_Community 141|Community 141]]
+- [[_COMMUNITY_Community 142|Community 142]]
+- [[_COMMUNITY_Community 143|Community 143]]
+- [[_COMMUNITY_Community 144|Community 144]]
+- [[_COMMUNITY_Community 145|Community 145]]
+- [[_COMMUNITY_Community 146|Community 146]]
+- [[_COMMUNITY_Community 147|Community 147]]
+- [[_COMMUNITY_Community 148|Community 148]]
+- [[_COMMUNITY_Community 149|Community 149]]
+- [[_COMMUNITY_Community 150|Community 150]]
+- [[_COMMUNITY_Community 151|Community 151]]
+- [[_COMMUNITY_Community 152|Community 152]]
+- [[_COMMUNITY_Community 153|Community 153]]
+- [[_COMMUNITY_Community 154|Community 154]]
+- [[_COMMUNITY_Community 155|Community 155]]
+- [[_COMMUNITY_Community 156|Community 156]]
+- [[_COMMUNITY_Community 157|Community 157]]
+- [[_COMMUNITY_Community 158|Community 158]]
+- [[_COMMUNITY_Community 159|Community 159]]
+- [[_COMMUNITY_Community 160|Community 160]]
+- [[_COMMUNITY_Community 161|Community 161]]
+- [[_COMMUNITY_Community 162|Community 162]]
+- [[_COMMUNITY_Community 163|Community 163]]
+- [[_COMMUNITY_Community 164|Community 164]]
+- [[_COMMUNITY_Community 165|Community 165]]
+- [[_COMMUNITY_Community 166|Community 166]]
+- [[_COMMUNITY_Community 167|Community 167]]
+- [[_COMMUNITY_Community 168|Community 168]]
+- [[_COMMUNITY_Community 169|Community 169]]
+- [[_COMMUNITY_Community 170|Community 170]]
+- [[_COMMUNITY_Community 171|Community 171]]
+- [[_COMMUNITY_Community 172|Community 172]]
+- [[_COMMUNITY_Community 173|Community 173]]
+- [[_COMMUNITY_Community 174|Community 174]]
+- [[_COMMUNITY_Community 175|Community 175]]
+- [[_COMMUNITY_Community 176|Community 176]]
+- [[_COMMUNITY_Community 177|Community 177]]
+- [[_COMMUNITY_Community 178|Community 178]]
+- [[_COMMUNITY_Community 179|Community 179]]
+- [[_COMMUNITY_Community 180|Community 180]]
+- [[_COMMUNITY_Community 181|Community 181]]
+- [[_COMMUNITY_Community 182|Community 182]]
+- [[_COMMUNITY_Community 183|Community 183]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `Log` - 24 edges
-2. `Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28` - 16 edges
-3. `Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28` - 16 edges
-4. `Neuro-symbolic Game Story Research Plan 2026-06-28` - 11 edges
-5. `TRACE-RPG Academic Pipeline — Stages 6 to 10` - 10 edges
-6. `밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스` - 10 edges
-7. `5. Experimental design` - 6 edges
-8. `TRACE-RPG Academic Pipeline — Stages 4.5 and 5` - 6 edges
-9. `5. Experimental design` - 6 edges
-10. `Graphify-style knowledge packet` - 5 edges
+1. `Log` - 29 edges
+2. `Log` - 24 edges
+3. `Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28` - 16 edges
+4. `Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28` - 16 edges
+5. `Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28` - 16 edges
+6. `Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28` - 16 edges
+7. `Neuro-symbolic Game Story Research Plan 2026-06-28` - 11 edges
+8. `Neuro-symbolic Game Story Research Plan 2026-06-28` - 11 edges
+9. `TRACE-RPG Academic Pipeline — Stages 6 to 10` - 10 edges
+10. `밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
-- None detected - all connections are within the same source files.
+- `queries/2026-08-12-081137-sci-sci-e.md` --references--> `sources/2026-08-12-081137-sci-sci-e.md`  [EXTRACTED]
+  wiki/queries/2026-08-12-081137-sci-sci-e.md → wiki/sources/2026-08-12-081137-sci-sci-e.md
+- `queries/2026-08-12-093240-prompt.md` --references--> `sources/2026-08-12-093240-prompt.md`  [EXTRACTED]
+  wiki/queries/2026-08-12-093240-prompt.md → wiki/sources/2026-08-12-093240-prompt.md
+- `queries/2026-08-12-113016-prompt.md` --references--> `sources/2026-08-12-113016-prompt.md`  [EXTRACTED]
+  wiki/queries/2026-08-12-113016-prompt.md → wiki/sources/2026-08-12-113016-prompt.md
+- `queries/2026-08-12-114820-prompt.md` --references--> `sources/2026-08-12-114820-prompt.md`  [EXTRACTED]
+  wiki/queries/2026-08-12-114820-prompt.md → wiki/sources/2026-08-12-114820-prompt.md
+- `queries/2026-08-13-024518-continue.md` --references--> `sources/2026-08-13-024518-continue.md`  [EXTRACTED]
+  wiki/queries/2026-08-13-024518-continue.md → wiki/sources/2026-08-13-024518-continue.md
 
-## Communities (57 total, 8 thin omitted)
+## Communities (188 total, 25 thin omitted)
 
 ### Community 0 - "gpt-5.4.md"
 Cohesion: 0.02
 Nodes (92): Advertiser API, Agent configuration, Agents SDK, API, API Reference, Audio, Available on, Blog (+84 more)
 
 ### Community 1 - "index.md"
-Cohesion: 0.08
-Nodes (24): Maintenance Log, Prompt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, Evidence and Claim Status, Hard Validity and Soft Adaptation, Journal-Grade Experimental Design, TRACE-RPG Controller, TRACE-RPG Paper 2026 (+16 more)
+Cohesion: 0.02
+Nodes (92): Advertiser API, Agent configuration, Agents SDK, API, API Reference, Audio, Available on, Blog (+84 more)
 
 ### Community 2 - "Neuro-symbolic Game Story Research Plan 2026-06-28"
+Cohesion: 0.06
+Nodes (33): 1. Sampling parameter deprecation (`temperature`, `top_p`, `top_k`), 2. Prefilled model turn validation, ⚠️ Avoid, code:block1 (npx skills add google-gemini/gemini-skills --skill gemini-in), code:block10 (curl -X POST "https://generativelanguage.googleapis.com/v1be), code:block11 (# ⚠️ Remove these parameters (deprecated)), code:block12 (/* ❌ DO NOT: End payload contents with a 'model' role turn *), code:block13 (# ✅ RECOMMENDED: Use system_instruction in the Interactions ) (+25 more)
+
+### Community 3 - "Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28"
+Cohesion: 0.14
+Nodes (12): Maintenance Log, Evidence and Claim Status, Hard Validity and Soft Adaptation, Journal-Grade Experimental Design, TRACE-RPG Controller, TRACE-RPG Paper 2026, 2026-08-12 Research Synthesis, TRACE-RPG Academic Pipeline — Stage 2 (+4 more)
+
+### Community 4 - "Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28"
+Cohesion: 0.06
+Nodes (30): Benchmark datasets, Chat format, code:block1 (# Use a pipeline as a high-level helper), code:block10 (from vllm import LLM, SamplingParams), code:block11 (flash_attn==2.7.4.post1), code:block12 (import torch), code:block2 (# Load model directly), code:block3 (# Install vLLM from pip:) (+22 more)
+
+### Community 5 - "Log"
+Cohesion: 0.07
+Nodes (29): [2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, [2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, [2026-08-12 09:32:40] query | 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해, [2026-08-12 11:28:04] query | 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지, [2026-08-12 11:30:16] query | 확정, [2026-08-12 11:48:20] query | 승인, [2026-08-12 15:11:31] query | ㄱㄱ, [2026-08-13 02:45:18] query | continue (+21 more)
+
+### Community 6 - "phi-4-mini-instruct.md"
+Cohesion: 0.07
+Nodes (29): 10. Result placeholders, 1. Introduction, 2. Research questions, 3. Related work outline, 4.1 System overview, 4.2 Knowledge graph schema, 4.3 Symbolic dialogue policy, 4.4 Validation checks (+21 more)
+
+### Community 7 - "gemini-latest-model.md"
+Cohesion: 0.07
+Nodes (28): 10. Result placeholders, 1. Introduction, 2. Research questions, 3. Related work outline, 4.1 System overview, 4.2 Symbolic world representation, 4.3 LLM proposal format, 4.4 Validation and repair (+20 more)
+
+### Community 8 - "log.md"
 Cohesion: 0.08
 Nodes (25): Constraints, Core method, Core method, Decisions, Entities, Executive goal, Google Drive / Docs handoff plan, Graphify-style knowledge packet (+17 more)
 
-### Community 3 - "Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28"
+### Community 9 - "qwen-agentworld.md"
+Cohesion: 0.08
+Nodes (25): Constraints, Core method, Core method, Decisions, Entities, Executive goal, Google Drive / Docs handoff plan, Graphify-style knowledge packet (+17 more)
+
+### Community 10 - "mistral-small-3.1-24b.md"
 Cohesion: 0.08
 Nodes (25): 10. Result placeholders, 1. Introduction, 2. Research questions, 3. Related work outline, 4.1 System overview, 4.2 Symbolic world representation, 4.3 LLM proposal format, 4.4 Validation and repair (+17 more)
 
-### Community 4 - "Paper Draft: Knowledge-Graph-Grounded LLM Dialogue for Consistent RPG NPCs 2026-06-28"
+### Community 11 - "queries/2026-08-12-093240-prompt.md"
 Cohesion: 0.08
 Nodes (25): 10. Result placeholders, 1. Introduction, 2. Research questions, 3. Related work outline, 4.1 System overview, 4.2 Knowledge graph schema, 4.3 Symbolic dialogue policy, 4.4 Validation checks (+17 more)
 
-### Community 5 - "Log"
+### Community 12 - "queries/2026-08-12-113016-prompt.md"
 Cohesion: 0.08
 Nodes (24): [2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, [2026-08-12 08:11:37] query | 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, [2026-08-12 09:32:40] query | 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해, [2026-08-12 11:28:04] query | 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지, [2026-08-12 11:30:16] query | 확정, [2026-08-12 11:48:20] query | 승인, [2026-08-12 15:11:31] query | ㄱㄱ, [2026-08-13 02:45:18] query | continue (+16 more)
 
-### Community 6 - "phi-4-mini-instruct.md"
+### Community 13 - "queries/2026-08-12-114820-prompt.md"
+Cohesion: 0.09
+Nodes (22): code:block1 (python -m sglang.launch_server \), code:block2 (vllm serve Qwen/Qwen-AgentWorld-35B-A3B \), code:block3 (from transformers import AutoModelForCausalLM, AutoTokenizer), code:block4 (# Download the benchmark), code:block5 ({), code:block6 (cd eval), code:block7 (============================================================), code:block8 (@article{zuo2026qwen,) (+14 more)
+
+### Community 14 - "queries/2026-08-13-024518-continue.md"
+Cohesion: 0.13
+Nodes (18): Prompt, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지, interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Prompt, oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Prompt, queries/2026-08-12-112804-academic-research-pdf.md, queries/2026-08-13-081610-interview-game-studio-harness.md (+10 more)
+
+### Community 15 - "queries/2026-08-13-081911-god-tibo-imagen.md"
+Cohesion: 0.10
+Nodes (19): code:block1 (<s>[SYSTEM_PROMPT]<system prompt>[/SYSTEM_PROMPT][INST]<user), code:block2 (system_prompt = """You are Mistral Small 3.1, a Large Langua), code:block3 (pip install vllm --upgrade), code:block4 (python -c "import mistral_common; print(mistral_common.__ver), code:block5 (vllm serve mistralai/Mistral-Small-3.1-24B-Instruct-2503 --t), code:block6 (import requests), code:block7 (import requests), code:block8 (from vllm import LLM) (+11 more)
+
+### Community 16 - "queries/2026-08-13-085617-prompt.md"
+Cohesion: 0.10
+Nodes (19): code:block1 (# Use a pipeline as a high-level helper), code:block10 (export greedy='false'), code:block11 (export greedy='false'), code:block12 (@misc{qwen3technicalreport,), code:block2 (# Load model directly), code:block3 (# Install vLLM from pip:), code:block4 (docker model run hf.co/Qwen/Qwen3-VL-8B-Instruct), code:block5 (# Install SGLang from pip:) (+11 more)
+
+### Community 17 - "queries/2026-08-13-085724-prompt.md"
+Cohesion: 0.11
+Nodes (18): code:block1 (# Use a pipeline as a high-level helper), code:block10 (@misc{deepseekai2025deepseekr1incentivizingreasoningcapabili), code:block2 (# Load model directly), code:block3 (# Install vLLM from pip:), code:block4 (docker model run hf.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-), code:block5 (# Install SGLang from pip:), code:block6 (docker run --gpus all \), code:block7 (docker model run hf.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-) (+10 more)
+
+### Community 18 - "queries/2026-08-13-085828-prompt.md"
 Cohesion: 0.11
 Nodes (18): Benchmark datasets, Chat format, Example, Example, Fine-tuning, Inference with Transformers, Inference with vLLM, Input Formats (+10 more)
 
-### Community 7 - "gemini-latest-model.md"
+### Community 19 - "queries/2026-08-13-093342-prompt.md"
 Cohesion: 0.12
 Nodes (16): 1. Sampling parameter deprecation (`temperature`, `top_p`, `top_k`), 2. Prefilled model turn validation, ⚠️ Avoid, Gemini 3.5 Flash-Lite, Gemini 3.5 Flash-Lite, Gemini 3.6 Flash, Gemini 3.6 Flash, JavaScript (+8 more)
 
-### Community 8 - "log.md"
-Cohesion: 0.19
-Nodes (8): drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt, Prompt, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt Excerpt, Prompt Excerpt, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+### Community 20 - "queries/2026-08-13-125906-godot.md"
+Cohesion: 0.12
+Nodes (15): 1. Executive verdict, 2. 무엇이 잘 뒷받침되는가, 3.1 플레이어 경험은 측정되지 않았다, 3.2 현재 design advice와 empirical claim이 섞일 위험, 3.3 live repair 비교는 confirmatory evidence가 아니다, 3.4 trace 시각화는 `pass`와 `not evaluated`를 혼동해서는 안 된다, 3.5 접근성과 성능은 별도 gate다, 3. 근거가 부족하거나 아직 비어 있는 부분 (+7 more)
 
-### Community 9 - "qwen-agentworld.md"
+### Community 21 - "queries/2026-08-13-130053-prompt.md"
 Cohesion: 0.13
 Nodes (14): Data Format, Deployment, Evaluation Output, Footer navigation, Forks, Inference with Transformers, Resources, Run Evaluation (+6 more)
 
-### Community 10 - "mistral-small-3.1-24b.md"
+### Community 22 - "queries/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa.md"
+Cohesion: 0.15
+Nodes (12): Code of conduct, code:block1 (conda create -n jericho python=3), code:block2 (@article{hausknecht19,), Contributing, Footer navigation, Forks, Resources, Security policy (+4 more)
+
+### Community 23 - "queries/2026-08-13-141311-oauth-llm-codex.md"
 Cohesion: 0.17
 Nodes (11): Function calling, Instruction Evals, Long Context Evals, Multilingual Evals, Offline, Pretrain Evals, Server, Text (+3 more)
 
-### Community 11 - "queries/2026-08-12-093240-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해, Answer, Evidence and Citations, Question, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해, Prompt Excerpt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
-
-### Community 12 - "queries/2026-08-12-113016-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 확정, Answer, Evidence and Citations, Question, 확정, Prompt Excerpt, 확정
-
-### Community 13 - "queries/2026-08-12-114820-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 승인, Answer, Evidence and Citations, Question, 승인, Prompt Excerpt, 승인
-
-### Community 14 - "queries/2026-08-13-024518-continue.md"
-Cohesion: 0.20
-Nodes (8): continue, Prompt, Answer, continue, Evidence and Citations, Question, continue, Prompt Excerpt
-
-### Community 15 - "queries/2026-08-13-081911-god-tibo-imagen.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해, Answer, Evidence and Citations, Question, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해, Prompt Excerpt, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
-
-### Community 16 - "queries/2026-08-13-085617-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 비 플랜, Answer, Evidence and Citations, Question, 비 플랜, Prompt Excerpt, 비 플랜
-
-### Community 17 - "queries/2026-08-13-085724-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 권장대로 진행하자, Answer, Evidence and Citations, Question, 권장대로 진행하자, Prompt Excerpt, 권장대로 진행하자
-
-### Community 18 - "queries/2026-08-13-085828-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 이중 트랙으로 진행, Answer, Evidence and Citations, Question, 이중 트랙으로 진행, Prompt Excerpt, 이중 트랙으로 진행
-
-### Community 19 - "queries/2026-08-13-093342-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 비 권장대로 진행, Answer, Evidence and Citations, Question, 비 권장대로 진행, Prompt Excerpt, 비 권장대로 진행
-
-### Community 20 - "queries/2026-08-13-125906-godot.md"
-Cohesion: 0.20
-Nodes (8): godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Prompt, Answer, Evidence and Citations, godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Question, godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Prompt Excerpt
-
-### Community 21 - "queries/2026-08-13-130053-prompt.md"
-Cohesion: 0.20
-Nodes (8): Prompt, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…, Answer, Evidence and Citations, Question, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…, Prompt Excerpt, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
-
-### Community 22 - "queries/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa.md"
-Cohesion: 0.20
-Nodes (8): finally you must try to research for $research-paper-writing both english and k…, Prompt, Answer, Evidence and Citations, finally you must try to research for $research-paper-writing both english and k…, Question, finally you must try to research for $research-paper-writing both english and k…, Prompt Excerpt
-
-### Community 23 - "queries/2026-08-13-141311-oauth-llm-codex.md"
-Cohesion: 0.20
-Nodes (8): oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Prompt, Answer, Evidence and Citations, oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Question, oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Prompt Excerpt
-
 ### Community 24 - "jericho.md"
-Cohesion: 0.18
-Nodes (10): Code of conduct, Contributing, Footer navigation, Forks, Resources, Security policy, Stars, Topics (+2 more)
+Cohesion: 0.20
+Nodes (10): Prompt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, queries/2026-08-12-081137-sci-sci-e.md, Answer, Evidence and Citations, Question, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야, sources/2026-08-12-081137-sci-sci-e.md (+2 more)
 
 ### Community 25 - "mistral-3.md"
 Cohesion: 0.20
-Nodes (9): Get started with Mistral 3, Legal, Mistral, NVIDIA, vLLM & Red Hat join forces to deliver faster, more accessible Mistral 3, Next Steps, One more thing… customization with Mistral AI, Products, Solutions, Why Mistral (+1 more)
+Nodes (10): Prompt, 권장대로 진행하자, queries/2026-08-13-085724-prompt.md, Answer, Evidence and Citations, Question, 권장대로 진행하자, sources/2026-08-13-085724-prompt.md (+2 more)
 
 ### Community 26 - "TRACE-RPG Academic Pipeline — Stages 6 to 10"
+Cohesion: 0.18
+Nodes (10): Code of conduct, Contributing, Footer navigation, Forks, Resources, Security policy, Stars, Topics (+2 more)
+
+### Community 27 - "밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스"
+Cohesion: 0.18
+Nodes (10): Canonical artifacts, Current release gate, Stage-10 clean tagged recapture, Stage 7, Standing evidence boundary, TRACE-RPG Academic Pipeline — Stages 6 to 10, Verification, What Stage 6 found that Stage 4.5 missed (+2 more)
+
+### Community 28 - "deepseek-r1-distill-qwen-14b.md"
+Cohesion: 0.18
+Nodes (10): Boundary, D-037 — 입력→표시 텔레메트리와 9-검사 프레젠테이션 계약, D-038 — 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`, D-039 — 모션/리깅 반입 레인(Mixamo→Blender→Godot), D-040 2차 실행 — 상태 변형에서 유도수리 우위 라이브 재현, D-040 실행 — RQ2 라이브 파일럿 `SL-RQ2-LIVE-001` (귀무 결과), Receipts, 밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스 (+2 more)
+
+### Community 29 - "qwen3-vl-8b.md"
+Cohesion: 0.20
+Nodes (9): Get started with Mistral 3, Legal, Mistral, NVIDIA, vLLM & Red Hat join forces to deliver faster, more accessible Mistral 3, Next Steps, One more thing… customization with Mistral AI, Products, Solutions, Why Mistral (+1 more)
+
+### Community 30 - "queries/2026-08-12-151131-prompt.md"
+Cohesion: 0.20
+Nodes (9): Get started with Mistral 3, Legal, Mistral, NVIDIA, vLLM & Red Hat join forces to deliver faster, more accessible Mistral 3, Next Steps, One more thing… customization with Mistral AI, Products, Solutions, Why Mistral (+1 more)
+
+### Community 31 - "queries/2026-08-13-081610-interview-game-studio-harness.md"
 Cohesion: 0.20
 Nodes (10): Canonical artifacts, Current release gate, Stage-10 clean tagged recapture, Stage 7, Standing evidence boundary, TRACE-RPG Academic Pipeline — Stages 6 to 10, Verification, What Stage 6 found that Stage 4.5 missed (+2 more)
 
-### Community 27 - "밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스"
+### Community 32 - "queries/2026-08-13-113058-prompt.md"
 Cohesion: 0.20
 Nodes (10): Boundary, D-037 — 입력→표시 텔레메트리와 9-검사 프레젠테이션 계약, D-038 — 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`, D-039 — 모션/리깅 반입 레인(Mixamo→Blender→Godot), D-040 2차 실행 — 상태 변형에서 유도수리 우위 라이브 재현, D-040 실행 — RQ2 라이브 파일럿 `SL-RQ2-LIVE-001` (귀무 결과), Receipts, 밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스 (+2 more)
 
-### Community 28 - "deepseek-r1-distill-qwen-14b.md"
+### Community 33 - "Wiki Schema"
 Cohesion: 0.22
 Nodes (8): DeepSeek-R1-Distill Models, DeepSeek-R1-Distill Models, DeepSeek-R1-Evaluation, DeepSeek-R1 Models, DeepSeek-R1 Models, Distilled Model Evaluation, Instructions to use deepseek-ai/DeepSeek-R1-Distill-Qwen-14B with libraries, inference providers, notebooks, and local apps. Follow these links to get started., Usage Recommendations
 
-### Community 29 - "qwen3-vl-8b.md"
+### Community 34 - "TRACE-RPG Academic Pipeline — Stages 4.5 and 5"
+Cohesion: 0.22
+Nodes (7): Advanced Usages, Agentic Usages, code:block1 (from modelscope import AutoModelForCausalLM, AutoTokenizer), code:block3 (python -m sglang.launch_server --model-path Qwen/Qwen3-30B-A), code:block4 (vllm serve Qwen/Qwen3-30B-A3B --enable-reasoning --reasoning), code:block5 (from transformers import AutoModelForCausalLM, AutoTokenizer), code:block6 (from qwen_agent.agents import Assistant)
+
+### Community 35 - "Index"
 Cohesion: 0.25
 Nodes (7): Generation Hyperparameters, Instructions to use Qwen/Qwen3-VL-8B-Instruct with libraries, inference providers, notebooks, and local apps. Follow these links to get started., Key Enhancements:, Model Architecture Updates:, Text, Using 🤗 Transformers to Chat, VL
 
-### Community 30 - "queries/2026-08-12-151131-prompt.md"
-Cohesion: 0.33
-Nodes (4): Prompt, ㄱㄱ, Prompt Excerpt, ㄱㄱ
+### Community 36 - "ieee-10934747-multipeng-probe.md"
+Cohesion: 0.25
+Nodes (7): 1. Aside 피드백 요지 (외부 검색 기반), 2. 게임 시스템·UI (D-062, presentation-only), 3. 기획·타입 문서 (D-062), 4. 논문 재구성 (D-062), Aside 검색 피드백 기반 재미·기여도 가독성 패스와 논문 페이지 재구성 — 2026-09-02, Boundary, Receipts
 
-### Community 31 - "queries/2026-08-13-081610-interview-game-studio-harness.md"
-Cohesion: 0.33
-Nodes (4): interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Prompt, interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Prompt Excerpt
+### Community 37 - "ieee-transactions-on-games.md"
+Cohesion: 0.25
+Nodes (7): 1. Aside 딥리서치 (intake, [INFERENCE]), 2. 그래프 흐름 근거: 해시 고정 평가-트레이스 미러, 3. 탐정 루프·안내·화면 구성, 4. 월드·VFX·모션·에셋, 5. 검증과 배포, Boundary, D-073 — 탐정 루프 심화, 해시 고정 평가-트레이스 미러, Higgsfield case-v1 팩, 프로덕션 배포 — 2026-09-18
 
-### Community 32 - "queries/2026-08-13-113058-prompt.md"
+### Community 38 - "TRACE-RPG Academic Pipeline — Stage 6"
 Cohesion: 0.33
-Nodes (4): Prompt, 실험 동작하고 캡쳐이미지 추가, Prompt Excerpt, 실험 동작하고 캡쳐이미지 추가
+Nodes (6): Prompt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해, queries/2026-08-12-093240-prompt.md, sources/2026-08-12-093240-prompt.md, Prompt Excerpt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
 
-### Community 33 - "Wiki Schema"
+### Community 39 - "Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass"
+Cohesion: 0.33
+Nodes (6): Prompt, 확정, queries/2026-08-12-113016-prompt.md, sources/2026-08-12-113016-prompt.md, Prompt Excerpt, 확정
+
+### Community 40 - "openai-gpt-oss.md"
+Cohesion: 0.33
+Nodes (6): Prompt, 승인, queries/2026-08-12-114820-prompt.md, sources/2026-08-12-114820-prompt.md, Prompt Excerpt, 승인
+
+### Community 41 - "drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…"
+Cohesion: 0.33
+Nodes (6): Prompt, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해, queries/2026-08-13-081911-god-tibo-imagen.md, sources/2026-08-13-081911-god-tibo-imagen.md, Prompt Excerpt, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+### Community 42 - "논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지"
+Cohesion: 0.33
+Nodes (6): Prompt, 이중 트랙으로 진행, queries/2026-08-13-085828-prompt.md, sources/2026-08-13-085828-prompt.md, Prompt Excerpt, 이중 트랙으로 진행
+
+### Community 43 - "ㄱㄱ"
+Cohesion: 0.33
+Nodes (6): Prompt, 비 권장대로 진행, queries/2026-08-13-093342-prompt.md, sources/2026-08-13-093342-prompt.md, Prompt Excerpt, 비 권장대로 진행
+
+### Community 44 - "interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…"
+Cohesion: 0.33
+Nodes (6): godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Prompt, queries/2026-08-13-125906-godot.md, sources/2026-08-13-125906-godot.md, godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Prompt Excerpt
+
+### Community 45 - "실험 동작하고 캡쳐이미지 추가"
+Cohesion: 0.33
+Nodes (6): finally you must try to research for $research-paper-writing both english and k…, Prompt, queries/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa.md, sources/2026-08-13-131159-finally-you-must-try-to-research-for-research-pa.md, finally you must try to research for $research-paper-writing both english and k…, Prompt Excerpt
+
+### Community 46 - "TRACE-RPG Academic Pipeline — Stage 4"
+Cohesion: 0.33
+Nodes (6): drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt, queries/2026-08-12-075859-drive-download-20260812t074907z-1-001-ai-researc.md, sources/2026-08-12-075859-drive-download-20260812t074907z-1-001-ai-researc.md, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt Excerpt
+
+### Community 47 - "qwen3.md"
+Cohesion: 0.33
+Nodes (6): Prompt, ㄱㄱ, queries/2026-08-12-151131-prompt.md, sources/2026-08-12-151131-prompt.md, Prompt Excerpt, ㄱㄱ
+
+### Community 48 - "textworld.md"
+Cohesion: 0.33
+Nodes (6): continue, Prompt, queries/2026-08-13-024518-continue.md, sources/2026-08-13-024518-continue.md, continue, Prompt Excerpt
+
+### Community 49 - "entertainment-computing-scope.md"
+Cohesion: 0.33
+Nodes (6): Prompt, 비 플랜, queries/2026-08-13-085617-prompt.md, sources/2026-08-13-085617-prompt.md, Prompt Excerpt, 비 플랜
+
+### Community 50 - "gemma-3.md"
+Cohesion: 0.33
+Nodes (6): Prompt, 실험 동작하고 캡쳐이미지 추가, queries/2026-08-13-113058-prompt.md, sources/2026-08-13-113058-prompt.md, Prompt Excerpt, 실험 동작하고 캡쳐이미지 추가
+
+### Community 51 - "kaggle-multipeng-probe.md"
+Cohesion: 0.33
+Nodes (6): Prompt, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…, queries/2026-08-13-130053-prompt.md, sources/2026-08-13-130053-prompt.md, Prompt Excerpt, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
+
+### Community 52 - "knowledge-based-systems-scope.md"
+Cohesion: 0.29
+Nodes (6): Canonical artifacts, Current Stage 4.5 verdict — expanded claim faithfulness, Original Stage 4.5 verdict — claim faithfulness (superseded), Stage 5 — citation verification, TRACE-RPG Academic Pipeline — Stages 4.5 and 5, What these gates did not do
+
+### Community 53 - "uist-generative-agents.md"
 Cohesion: 0.33
 Nodes (5): Graphify layers, Invariants, Style, Validation order, Wiki Schema
 
-### Community 34 - "TRACE-RPG Academic Pipeline — Stages 4.5 and 5"
+### Community 54 - "www-dynamic-difficulty-adjustment.md"
+Cohesion: 0.33
+Nodes (5): Graphify layers, Invariants, Style, Validation order, Wiki Schema
+
+### Community 55 - "deepseek-transparency.md"
+Cohesion: 0.33
+Nodes (5): Concepts, Index, Project, Prompt/output ingest, Sources and reports
+
+### Community 56 - "llama-4.md"
+Cohesion: 0.33
+Nodes (5): Critical revisions, Major revisions, Meta-review, Stable evidence boundary, TRACE-RPG Academic Pipeline — Stage 6
+
+### Community 57 - "Community 57"
+Cohesion: 0.33
+Nodes (5): Boundary, Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass, Method upgrade (paper lane), Receipts, 연출/서사 (game lane)
+
+### Community 58 - "Community 58"
 Cohesion: 0.33
 Nodes (6): Canonical artifacts, Current Stage 4.5 verdict — expanded claim faithfulness, Original Stage 4.5 verdict — claim faithfulness (superseded), Stage 5 — citation verification, TRACE-RPG Academic Pipeline — Stages 4.5 and 5, What these gates did not do
 
-### Community 35 - "Index"
+### Community 59 - "Community 59"
 Cohesion: 0.40
 Nodes (5): Concepts, Index, Project, Prompt/output ingest, Sources and reports
 
-### Community 36 - "ieee-10934747-multipeng-probe.md"
+### Community 60 - "Community 60"
+Cohesion: 0.40
+Nodes (4): Answer, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Evidence and Citations, Question
+
+### Community 61 - "Community 61"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+
+### Community 62 - "Community 62"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
+
+### Community 63 - "Community 63"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+
+### Community 64 - "Community 64"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 확정
+
+### Community 65 - "Community 65"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 승인
+
+### Community 66 - "Community 66"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, ㄱㄱ
+
+### Community 67 - "Community 67"
+Cohesion: 0.40
+Nodes (4): Answer, continue, Evidence and Citations, Question
+
+### Community 68 - "Community 68"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Question
+
+### Community 69 - "Community 69"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+### Community 70 - "Community 70"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 비 플랜
+
+### Community 71 - "Community 71"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 권장대로 진행하자
+
+### Community 72 - "Community 72"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 이중 트랙으로 진행
+
+### Community 73 - "Community 73"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 비 권장대로 진행
+
+### Community 74 - "Community 74"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 실험 동작하고 캡쳐이미지 추가
+
+### Community 75 - "Community 75"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Question
+
+### Community 76 - "Community 76"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
+
+### Community 77 - "Community 77"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, finally you must try to research for $research-paper-writing both english and k…, Question
+
+### Community 78 - "Community 78"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Question
+
+### Community 79 - "Community 79"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, —yolo
+
+### Community 80 - "Community 80"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지
+
+### Community 81 - "Community 81"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 진행해
+
+### Community 82 - "Community 82"
+Cohesion: 0.40
+Nodes (4): Answer, Evidence and Citations, Question, 이어서 진행해
+
+### Community 83 - "Community 83"
 Cohesion: 0.40
 Nodes (4): IEEE Account, Need Help?, Profile Information, Purchase Details
 
-### Community 37 - "ieee-transactions-on-games.md"
+### Community 84 - "Community 84"
+Cohesion: 0.40
+Nodes (4): IEEE Account, Need Help?, Profile Information, Purchase Details
+
+### Community 85 - "Community 85"
 Cohesion: 0.40
 Nodes (4): Aim and Scope, Demystifying the Peeker's Advantage in Multiplayer First-Person Shooter Games, Important Notice, Special Issue on Multi-Modal Content Generation for Games
 
-### Community 38 - "TRACE-RPG Academic Pipeline — Stage 6"
+### Community 86 - "Community 86"
+Cohesion: 0.40
+Nodes (4): Aim and Scope, Demystifying the Peeker's Advantage in Multiplayer First-Person Shooter Games, Important Notice, Special Issue on Multi-Modal Content Generation for Games
+
+### Community 87 - "Community 87"
+Cohesion: 0.40
+Nodes (4): Canonical artifacts, Claim boundary, Exact designed-fixture observations, TRACE-RPG Academic Pipeline — Stage 4
+
+### Community 88 - "Community 88"
+Cohesion: 0.40
+Nodes (4): Boundary, Receipts, Sealed Lighthouse — Feel/연출 Deepening and Higgsfield UI Art Lane, What changed
+
+### Community 89 - "Community 89"
 Cohesion: 0.40
 Nodes (5): Critical revisions, Major revisions, Meta-review, Stable evidence boundary, TRACE-RPG Academic Pipeline — Stage 6
 
-### Community 39 - "Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass"
+### Community 90 - "Community 90"
 Cohesion: 0.40
 Nodes (5): Boundary, Guided Repair Method and the Diegetic Commit Ritual — Two-Iteration Pass, Method upgrade (paper lane), Receipts, 연출/서사 (game lane)
 
-### Community 40 - "openai-gpt-oss.md"
+### Community 91 - "Community 91"
 Cohesion: 0.50
-Nodes (3): Chain-of-thought (CoT), Evaluations, Example rollouts
+Nodes (3): code:text (논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지), Prompt, 논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지
 
-### Community 41 - "drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…"
+### Community 92 - "Community 92"
 Cohesion: 0.50
-Nodes (4): Answer, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Evidence and Citations, Question
+Nodes (3): code:text (이어서 진행해), Prompt, 이어서 진행해
 
-### Community 42 - "논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지"
+### Community 93 - "Community 93"
 Cohesion: 0.50
-Nodes (4): Answer, Evidence and Citations, Question, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+Nodes (3): code:text (drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-re), drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt
 
-### Community 43 - "ㄱㄱ"
+### Community 94 - "Community 94"
 Cohesion: 0.50
-Nodes (4): Answer, Evidence and Citations, Question, ㄱㄱ
+Nodes (3): code:text (깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해), Prompt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
 
-### Community 44 - "interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…"
+### Community 95 - "Community 95"
+Cohesion: 0.50
+Nodes (3): code:text (논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실), Prompt, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+
+### Community 96 - "Community 96"
+Cohesion: 0.50
+Nodes (3): code:text (확정), Prompt, 확정
+
+### Community 97 - "Community 97"
+Cohesion: 0.50
+Nodes (3): code:text (승인), Prompt, 승인
+
+### Community 98 - "Community 98"
+Cohesion: 0.50
+Nodes (3): code:text (ㄱㄱ), Prompt, ㄱㄱ
+
+### Community 99 - "Community 99"
+Cohesion: 0.50
+Nodes (3): code:text (continue), continue, Prompt
+
+### Community 100 - "Community 100"
+Cohesion: 0.50
+Nodes (3): code:text (컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해), Prompt, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+### Community 101 - "Community 101"
+Cohesion: 0.50
+Nodes (3): code:text (권장대로 진행하자), Prompt, 권장대로 진행하자
+
+### Community 102 - "Community 102"
+Cohesion: 0.50
+Nodes (3): code:text (비 권장대로 진행), Prompt, 비 권장대로 진행
+
+### Community 103 - "Community 103"
+Cohesion: 0.50
+Nodes (3): code:text (godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할), godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Prompt
+
+### Community 104 - "Community 104"
+Cohesion: 0.50
+Nodes (3): code:text (게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두), Prompt, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
+
+### Community 105 - "Community 105"
+Cohesion: 0.50
+Nodes (3): code:text (finally you must try to research for $research-paper-writing), finally you must try to research for $research-paper-writing both english and k…, Prompt
+
+### Community 106 - "Community 106"
+Cohesion: 0.50
+Nodes (3): code:text (oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가), oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Prompt
+
+### Community 107 - "Community 107"
+Cohesion: 0.50
+Nodes (3): code:text (중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야), Prompt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+
+### Community 108 - "Community 108"
+Cohesion: 0.50
+Nodes (4): Answer, continue, Evidence and Citations, Question
+
+### Community 109 - "Community 109"
+Cohesion: 0.50
+Nodes (3): code:text (interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일), interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Prompt
+
+### Community 110 - "Community 110"
 Cohesion: 0.50
 Nodes (4): Answer, Evidence and Citations, interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Question
 
-### Community 45 - "실험 동작하고 캡쳐이미지 추가"
+### Community 111 - "Community 111"
+Cohesion: 0.50
+Nodes (3): code:text (비 플랜), Prompt, 비 플랜
+
+### Community 112 - "Community 112"
+Cohesion: 0.50
+Nodes (3): code:text (이중 트랙으로 진행), Prompt, 이중 트랙으로 진행
+
+### Community 113 - "Community 113"
+Cohesion: 0.50
+Nodes (3): code:text (실험 동작하고 캡쳐이미지 추가), Prompt, 실험 동작하고 캡쳐이미지 추가
+
+### Community 114 - "Community 114"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
+
+### Community 115 - "Community 115"
+Cohesion: 0.50
+Nodes (3): code:text (—yolo), Prompt, —yolo
+
+### Community 116 - "Community 116"
+Cohesion: 0.50
+Nodes (3): code:text (진행해), Prompt, 진행해
+
+### Community 117 - "Community 117"
+Cohesion: 0.50
+Nodes (3): Chain-of-thought (CoT), Evaluations, Example rollouts
+
+### Community 118 - "Community 118"
+Cohesion: 0.50
+Nodes (3): code:text (drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-re), drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Prompt Excerpt
+
+### Community 119 - "Community 119"
+Cohesion: 0.50
+Nodes (3): code:text (중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야), Prompt Excerpt, 중요한점은 논문의 타깃은 sci, sci-e 급 저널을 타깃으로할꺼야
+
+### Community 120 - "Community 120"
+Cohesion: 0.50
+Nodes (3): code:text (깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해), Prompt Excerpt, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
+
+### Community 121 - "Community 121"
+Cohesion: 0.50
+Nodes (3): code:text (논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실), Prompt Excerpt, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+
+### Community 122 - "Community 122"
+Cohesion: 0.50
+Nodes (3): code:text (승인), Prompt Excerpt, 승인
+
+### Community 123 - "Community 123"
+Cohesion: 0.50
+Nodes (3): code:text (ㄱㄱ), Prompt Excerpt, ㄱㄱ
+
+### Community 124 - "Community 124"
+Cohesion: 0.50
+Nodes (3): code:text (이중 트랙으로 진행), Prompt Excerpt, 이중 트랙으로 진행
+
+### Community 125 - "Community 125"
+Cohesion: 0.50
+Nodes (3): code:text (비 권장대로 진행), Prompt Excerpt, 비 권장대로 진행
+
+### Community 126 - "Community 126"
+Cohesion: 0.50
+Nodes (3): code:text (실험 동작하고 캡쳐이미지 추가), Prompt Excerpt, 실험 동작하고 캡쳐이미지 추가
+
+### Community 127 - "Community 127"
+Cohesion: 0.50
+Nodes (3): code:text (godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할), godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Prompt Excerpt
+
+### Community 128 - "Community 128"
+Cohesion: 0.50
+Nodes (3): code:text (게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두), Prompt Excerpt, 게임 플레이 씬의 주요 실험내용과 평가매트릭도 수행하고, 리드미에 업데이트후 깃푸시까지. 이미지와 표도 모두 첨부해서 푸시하자. 최신버전으로만…
+
+### Community 129 - "Community 129"
+Cohesion: 0.50
+Nodes (3): code:text (finally you must try to research for $research-paper-writing), finally you must try to research for $research-paper-writing both english and k…, Prompt Excerpt
+
+### Community 130 - "Community 130"
+Cohesion: 0.50
+Nodes (3): code:text (oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가), oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Prompt Excerpt
+
+### Community 131 - "Community 131"
+Cohesion: 0.50
+Nodes (3): code:text (논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지), Prompt Excerpt, 논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지
+
+### Community 132 - "Community 132"
+Cohesion: 0.50
+Nodes (3): code:text (진행해), Prompt Excerpt, 진행해
+
+### Community 133 - "Community 133"
+Cohesion: 0.50
+Nodes (3): code:text (이어서 진행해), Prompt Excerpt, 이어서 진행해
+
+### Community 134 - "Community 134"
+Cohesion: 0.50
+Nodes (3): code:block1 (<bos><start_of_turn>user), code:block2 (<bos><start_of_turn>user), **Multi-turn text example**
+
+### Community 135 - "Community 135"
+Cohesion: 0.50
+Nodes (3): Chain-of-thought (CoT), Evaluations, Example rollouts
+
+### Community 136 - "Community 136"
+Cohesion: 0.50
+Nodes (4): Answer, drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…, Evidence and Citations, Question
+
+### Community 137 - "Community 137"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 깃로그확인하고 오류없도록 푸시. 그리고 개선작업 두번 진행해서 푸시해
+
+### Community 138 - "Community 138"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 논문내용 강화하고 포맷도 개선하자. 연구내용을 $academic-research 작성하고 pdf 생성까지 실험결과 포함해서 작성해 결론까지
+
+### Community 139 - "Community 139"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 확정
+
+### Community 140 - "Community 140"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 승인
+
+### Community 141 - "Community 141"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, ㄱㄱ
+
+### Community 142 - "Community 142"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+### Community 143 - "Community 143"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 비 플랜
+
+### Community 144 - "Community 144"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 이중 트랙으로 진행
+
+### Community 145 - "Community 145"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, Question, 비 권장대로 진행
+
+### Community 146 - "Community 146"
 Cohesion: 0.50
 Nodes (4): Answer, Evidence and Citations, Question, 실험 동작하고 캡쳐이미지 추가
 
-### Community 46 - "TRACE-RPG Academic Pipeline — Stage 4"
+### Community 147 - "Community 147"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, godot 게임과 클로드세션으로 완료한 게임을 리소스와 몰입 연출중심으로 디밸롭하고 리소스를 풍요롭고 집중할수있는 형태로 가공해. 웹으로 빌드…, Question
+
+### Community 148 - "Community 148"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, finally you must try to research for $research-paper-writing both english and k…, Question
+
+### Community 149 - "Community 149"
+Cohesion: 0.50
+Nodes (4): Answer, Evidence and Citations, oauth 로 llm 사용가능하게 codex 디바이스 코드 입력으로 로그인할수있도록 기능도 추가, Question
+
+### Community 150 - "Community 150"
 Cohesion: 0.50
 Nodes (4): Canonical artifacts, Claim boundary, Exact designed-fixture observations, TRACE-RPG Academic Pipeline — Stage 4
 
+### Community 151 - "Community 151"
+Cohesion: 0.50
+Nodes (4): Boundary, Receipts, Sealed Lighthouse — Feel/연출 Deepening and Higgsfield UI Art Lane, What changed
+
+### Community 152 - "Community 152"
+Cohesion: 0.50
+Nodes (3): code:text (확정), Prompt Excerpt, 확정
+
+### Community 153 - "Community 153"
+Cohesion: 0.50
+Nodes (3): code:text (continue), continue, Prompt Excerpt
+
+### Community 154 - "Community 154"
+Cohesion: 0.50
+Nodes (3): code:text (interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일), interview 게임트랙에 실험용 게임을 $game-studio-harness 기반으로 구성하고, 규칙파일에 워스프세이스 최신화하도록 추가하…, Prompt Excerpt
+
+### Community 155 - "Community 155"
+Cohesion: 0.50
+Nodes (3): code:text (컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해), Prompt Excerpt, 컨셉과 리소스도 $god-tibo-imagen 이용해서 컨셉등을 다 설정할수있도록해
+
+### Community 156 - "Community 156"
+Cohesion: 0.50
+Nodes (3): code:text (비 플랜), Prompt Excerpt, 비 플랜
+
+### Community 157 - "Community 157"
+Cohesion: 0.50
+Nodes (3): code:text (권장대로 진행하자), Prompt Excerpt, 권장대로 진행하자
+
+### Community 158 - "Community 158"
+Cohesion: 0.50
+Nodes (3): code:text (—yolo), Prompt Excerpt, —yolo
+
 ## Knowledge Gaps
-- **435 isolated node(s):** `Advertiser API`, `Agent configuration`, `Agents SDK`, `API`, `API Reference` (+430 more)
+- **955 isolated node(s):** `[2026-08-28 25:00:00+KST(session)] report | Balance probe + input telemetry + motion intake lane (D-037–D-039)`, `[2026-08-21 18:55:00] report | Guided repair operator + diegetic commit ritual (two iterations, two pushes, deploy)`, `[2026-08-21 15:58:00] report | Sealed Lighthouse feel/연출 deepening + Higgsfield curated UI lane`, `[2026-08-13 11:49:45] report | Sealed Lighthouse Cycle 2 render evidence`, `[2026-08-12 07:58:59] query | drive-download-20260812T074907Z-1-001 의 파일내용을 모두 파악하고 $ai-research-skills 이용해서…` (+950 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Log` connect `Log` to `log.md`?**
-  _High betweenness centrality (0.036) - this node is a cross-community bridge._
-- **Why does `TRACE-RPG Academic Pipeline — Stages 6 to 10` connect `TRACE-RPG Academic Pipeline — Stages 6 to 10` to `index.md`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스` connect `밸런스 프로브·입력 텔레메트리·모션 레인 — 2026-08-28 확장 패스` to `index.md`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **What connects `Advertiser API`, `Agent configuration`, `Agents SDK` to the rest of the system?**
-  _435 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `Log` connect `queries/2026-08-12-113016-prompt.md` to `queries/2026-08-13-024518-continue.md`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `TRACE-RPG Academic Pipeline — Stages 6 to 10` connect `queries/2026-08-13-081610-interview-game-studio-harness.md` to `Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28`?**
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
+- **Why does `queries/2026-08-12-075859-drive-download-20260812t074907z-1-001-ai-researc.md` connect `TRACE-RPG Academic Pipeline — Stage 4` to `Community 136`, `Paper Draft: Constraint-Audited LLM Generation for Playable Interactive Fiction Worlds 2026-06-28`, `queries/2026-08-13-024518-continue.md`?**
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
+- **What connects `[2026-08-28 25:00:00+KST(session)] report | Balance probe + input telemetry + motion intake lane (D-037–D-039)`, `[2026-08-21 18:55:00] report | Guided repair operator + diegetic commit ritual (two iterations, two pushes, deploy)`, `[2026-08-21 15:58:00] report | Sealed Lighthouse feel/연출 deepening + Higgsfield curated UI lane` to the rest of the system?**
+  _955 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `gpt-5.4.md` be split into smaller, more focused modules?**
   _Cohesion score 0.021505376344086023 - nodes in this community are weakly interconnected._
 - **Should `index.md` be split into smaller, more focused modules?**
-  _Cohesion score 0.08048103607770583 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.021505376344086023 - nodes in this community are weakly interconnected._
 - **Should `Neuro-symbolic Game Story Research Plan 2026-06-28` be split into smaller, more focused modules?**
-  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._

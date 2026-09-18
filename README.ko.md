@@ -11,7 +11,7 @@
 [![Play in browser](https://img.shields.io/badge/Play-game%20only-1f6feb)](https://sealed-lighthouse-trace-rpg.vercel.app/public/)
 [![Godot 4.7.1](https://img.shields.io/badge/Godot-4.7.1-478cbf)](neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776ab)](neuro-symbolic-interactive-game-research-2026/pyproject.toml)
-[![Evidence 52/52 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
+[![Evidence 52/52 + 4/4 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%2B%204%2F4%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
 [![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
@@ -19,7 +19,7 @@
 
 - **Gate.** 생성된 모든 이벤트는 신뢰할 수 없는 transaction proposal로 취급한다. type-strict parser, 외부 action policy, 그리고 여섯 상태 상대 계열에 속한 일곱 개의 결정론적 검사가 commit 여부를 결정한다. 거부된 candidate는 한도 내에서 반례 유도 repair를 받고, 그 밖의 모든 경우는 변경 없는 이전 상태로 되돌아간다.
 - **게임.** *The Sealed Lighthouse*는 Godot 4.7.1로 만든 턴제 수사 micro-RPG다. 게임 안의 ledger가 gate를 서사 속에서 그대로 보여 준다. hold는 자신을 막은 계열을 명시하고 규칙을 가르치며, commit은 기여를 게시하고 다음 단서를 열고 SHA-256 영수증 체인을 잇는다.
-- **근거, 그리고 그 한계.** 네 개의 레인(E1 오프라인 fixture, E2 라이브 스크리닝, E3 KG 시뮬레이션, ENG1 엔진 적합성)은 정확한 count만 보고한다. gate 일치 13/13, guided-repairable class에서 ρ 5/5, 플레이어블 검사 52/52, 하나로 일치하는 종단 state hash. 작성된 세계 하나, hosted proposer 하나, 참가자 없음, 효능 주장 없음.
+- **근거, 그리고 그 한계.** 네 개의 레인(E1 오프라인 fixture, E2 라이브 스크리닝, E3 KG 시뮬레이션, ENG1 엔진 적합성)은 정확한 count만 보고한다. gate 일치 13/13, guided-repairable class에서 ρ 5/5, 플레이어블 core 검사 52/52 + D-073 확장 검사 4/4, 하나로 일치하는 종단 state hash. 작성된 세계 하나, hosted proposer 하나, 참가자 없음, 효능 주장 없음.
 
 ## 논문 한눈에 보기
 
@@ -59,14 +59,14 @@
 | **E1** 오프라인 적합성 | 작성된 frozen fixture, 세계 하나: gate fixture 13개, repair fixture 12개 × 4 arm, fault injection 10개, adapter/회계 assignment 7개, guard 3개 | Fixture | gate 일치 13/13; guided-repairable class에서 ρ 5/5 | 인코딩된 술어에 대한 mechanism 적합성 — 효능 아님 |
 | **E2** 라이브 스크리닝 | hosted proposer 하나(`gpt-5.6-sol`), 5 cell × 5 call, K = 1, 두 arm에 동일 candidate | Call | Signal-v2 cell: ρ 5/5 대 blind retry 0/5 | pilot-only; 모집단·모델 순위 주장 없음 |
 | **E3** KG/온톨로지 시뮬레이션 | closed-world typed-link 시뮬레이션: node 43개, reference edge 106개, 검토된 typed edge 24개, 채점된 proposal 210개; degree baseline 대 고정 전략 6개 | Proposal | 작성된 holdout 6/6 회수 | simulation-only; 런타임 검색이나 의미적 진리 아님 |
-| **ENG1** Godot/Web 엔지니어링 | fixture 4개, 검사 52개, 8항목 3D 스모크, archetype 회전 5회 | Check | 52/52 · 8/8 · 5/5; 종단 hash가 오프라인 runner와 일치 | 성능이 아닌 적합성; 참가자 없음 |
+| **ENG1** Godot/Web 엔지니어링 | fixture 4개, core 검사 52개 + D-073 확장 검사 4개, 8항목 3D 스모크, archetype 회전 5회 | Check | 52/52 (+4/4 확장) · 8/8 · 5/5; 종단 hash가 오프라인 runner와 일치 | 성능이 아닌 적합성; 참가자 없음 |
 
 **결과 전문.**
 
 - **E1.** gate 일치 13/13, 구현된 error code 12개 모두 관찰. 처음에 invalid였던 repair 사례 12건(guided-repairable 5 / oracle-only 1 / irreparable 6)에 대해 rejection-only 0/12, blind retry 0/12, ρ 5/5 + 0/1 + 0/6, 상태를 읽는 oracle callback 5/5 + 1/1 + 0/6. 실패한 모든 arm은 상태를 그대로 두었다. 사전 지정된 fault 10/10이 지정된 검사에서 거부되었다. provenance 경계 fixture 1/1은 설계상 replay를 통과한다 — key 없는 hash는 무결성을 주지 인증을 주지 않는다.
 - **E2.** guided의 우위는 policy-blind Signal-v2 cell에서만 나타났다(ρ 5/5 대 blind 0/5, +5). 나머지 네 cell은 +0이었다. 세 건은 candidate가 이미 valid였고, 한 건은 되돌릴 수 없는 quest-stage 후퇴였다. 비-commit 결과 15/15 모두 이전 상태 hash를 보존했다.
 - **E3.** typed-lexical 전략이 작성된 holdout 6/6을 회수했다(P = R = F1 = 1.000, MRR 0.944, Brier 0.131, Sem@3 1.000). degree baseline은 하나도 회수하지 못했다.
-- **ENG1.** Godot slice가 작성된 trace를 replay하며 종단 state hash가 오프라인 runner와 동일하다: `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. 플레이어블 평가 52/52(fixture 검사 40 + presentation invariant 12), 3D 스모크 8/8, balance probe 5/5.
+- **ENG1.** Godot slice가 작성된 trace를 replay하며 종단 state hash가 오프라인 runner와 동일하다: `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. 플레이어블 평가 core 52/52(fixture 검사 40 + presentation invariant 12)와 별도로 집계한 D-073 수사·안내·trace 확장 4/4(전체 56/56), 3D 스모크 8/8, balance probe 5/5.
 
 ![Balance probe: 스크립트로 작성된 archetype 다섯 가지가 같은 commit 체인을 각각 완주한다](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/balance-archetypes.svg)
 

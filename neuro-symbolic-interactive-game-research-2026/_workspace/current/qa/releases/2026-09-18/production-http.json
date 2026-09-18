@@ -1,0 +1,38 @@
+{
+  "deployment_id": "dpl_BkguPJPErtawmhjxU5cvg97PBsiq",
+  "superseded": "dpl_2a9d2NQqTo5cs3NfuHPbVLRffHnX (same session, before the 390 px table-wrap fix)",
+  "alias": "https://sealed-lighthouse-trace-rpg.vercel.app",
+  "files_checked": 16,
+  "total_bytes": 56003696,
+  "all_byte_identical": true,
+  "mismatches": [],
+  "content_types": {
+    "dist/dashboard/index.html": "text/html; charset=utf-8",
+    "dist/paper/en.pdf": "application/pdf",
+    "dist/paper/ko.pdf": "application/pdf",
+    "dist/public/index.html": "text/html; charset=utf-8",
+    "dist/public/index.pck": "application/octet-stream",
+    "dist/public/index.wasm": "application/wasm"
+  },
+  "heads": {
+    "/": [
+      "HTTP/2 307 ",
+      "/dashboard/"
+    ],
+    "/index.html": [
+      "HTTP/2 307 ",
+      "/public/index.html"
+    ],
+    "/vercel.json": [
+      "HTTP/2 404 ",
+      null
+    ],
+    "/dashboard/": [
+      "HTTP/2 200 ",
+      null
+    ]
+  },
+  "pck_bytes": 13312496,
+  "pck_sha256": "0147fffa3d484af37fa804193cf795435facacb54959d4258769766f2408d12c",
+  "note": "Godot Web export is not byte-deterministic across rebuilds (PCK 13,312,480 -> 13,312,496 bytes between the two same-source builds); the receipts bind the bytes actually served."
+}

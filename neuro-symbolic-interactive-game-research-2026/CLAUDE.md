@@ -47,6 +47,10 @@ _workspace/
   is not a measured game result.
 - Every gate claim cites the measurement, method/command, timestamp, and repository-relative
   evidence path. Missing evidence is `FIX`, never PASS.
+- Treat the Stage-5 citation entry list as the source of truth for its redundant totals; the
+  crosswalk validator must re-derive and reject stale summaries. The fixed 55/48/7/22 release
+  baseline changes only with an intentional bibliography revision. When official records disagree,
+  preserve the conflict and follow the paper-owned record for citation order (D-069).
 - `production/decision-log.md` is append-only. Reread its tail, verify the next ID is unique across
   `_workspace/`, and abort on collision.
 - Re-derive this file whenever a lane, generator, engine entry point, authority boundary, gate,
@@ -59,8 +63,12 @@ _workspace/
   `game-track/assets/concepts/` or `game-track/assets/concepts/pack-3d/`. These candidates remain
   `runtime_eligible: false` until human rights/style review and explicit curation. The only
   generated assets allowed in public builds are the curated, provenance-bound PNGs under
-  `game-track/godot/assets/ui/` (D-034/D-035) and the validated tracked Higgsfield player GLB under
-  `game-track/godot/assets/player/` (D-050).
+  `game-track/godot/assets/ui/` (D-034/D-035; case-file board, evidence-card icons, compass, and
+  investigate vignette added by D-073), the validated tracked Higgsfield player GLB under
+  `game-track/godot/assets/player/` (D-050), and the Higgsfield evidence-desk prop
+  `game-track/godot/assets/models/evidence_desk.glb` recorded in `models-manifest.json`'s
+  `ai_generated_assets` block with adjacent provenance (D-073). The world must still build and pass
+  the smoke when any of them is absent.
 - Never commit `.env`, access tokens, `~/.codex/auth.json`, Godot editor caches under `.godot/`, or
   raw participant/personal telemetry.
 
@@ -121,15 +129,36 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
 - Timeout, invalid proposal, controller failure, exhausted repair, or physical fall recovery must
   leave the complete prior canonical state unchanged.
 - The contribution readout (`CASE CHAIN` HUD line, `CONTRIBUTION #N` + `UNLOCKED` after every
-  commit, `RULE LEARNED`/`RULE RECALLED` after every hold, two-part end-card receipt; D-062/D-063)
-  is presentation-only: it derives from the two snapshots the hard writer returns
-  (`contribution_delta`), the authored `FACT_LABEL`/`RULE_BY_CODE` tables, and presentation
-  counters, never from a second state model. `FACT_LABEL` is a fail-closed display allowlist:
-  unknown/future fact IDs stay internal and render as generic `State recorded` copy. It may not
-  name a hidden oracle label or sealed fact.
-  `--evaluate` must report exactly 12 presentation checks (`SL-PLAY-EVAL-001` 52/52) and the
-  smoke denominator stays 8/8; these counts are engineering conformance, not fun, agency, or G4
-  evidence.
+  commit, `RULE LEARNED`/`RULE RECALLED` + `WHAT THIS TELLS YOU` after every hold, paged end-card
+  receipt; D-062/D-063/D-073) is presentation-only: it derives from the two snapshots the hard
+  writer returns (`contribution_delta`), the authored `FACT_LABEL`/`RULE_BY_CODE`/
+  `INFERENCE_BY_CODE` tables, and presentation counters, never from a second state model.
+  `FACT_LABEL` is a fail-closed display allowlist: unknown/future fact IDs stay internal and
+  render as generic `State recorded` copy. It may not name a hidden oracle label or sealed fact.
+- The D-073 detective surfaces are presentation-only as well: the case-file evidence board
+  (`[C]`, four cards LENS/MOUNT/LEAD/SEALED filled only from committed facts through `FACT_LABEL`;
+  the SEALED card never names its fact),
+  the opt-in three-rung hint ladder (`[H]`, rung 3 = the `GoldenPathLayout.next_affordance` text;
+  the director's diegetic guide trail shows only at rung 3 or for 6 s after a hold),
+  the just-in-time coach cards (page 1 of the field guide at boot, later pages on first commit /
+  first hold / first lens held, dismissed only by player action), and the tide-marks slot-assembly
+  deduction. The deduction is NOT a machine proposal: `deduction_is_supported(state, sequence)`
+  is a pure read of committed facts, a wrong chain is a `DEDUCTION HELD` presentation line (never
+  a hold, never a `hold`/`commit` dashboard event), and only the confirmed chain calls
+  `_finish_episode()`.
+  `--evaluate` must report exactly 16 presentation checks: the 12 frozen core checks the
+  manuscripts cite (`SL-PLAY-EVAL-001` 52/52 combined) plus the separately counted 4-check D-073
+  extension (4/4; all checks 56/56). The core set and its 52/52 headline change only with a
+  manuscript revision (the crosswalk validator pins them); the smoke denominator stays 8/8. These
+  counts are engineering conformance, not fun, agency, or G4 evidence.
+- The hard-policy machine records a per-call evaluation trace (D-073): `apply_operation`/
+  `validate_disclosure` return `trace` (ordered `{code, outcome}` for the checks actually
+  executed) and `plan` (the authored `CHECK_PLAN` order in scope for that call). Recording never
+  adds an evaluation; the engine still stops at the first failing check. `game_3d.gd::
+  dashboard_trace(trace, plan)` maps it onto the six Table II families with one explicit state
+  each (`pass`/`fail`/`skipped`/`out_of_scope`, no default) plus `held_at`/`short_circuit`; a
+  composite gate failure marks every family it names. Trace fields never enter canonical state,
+  saves, hashes, or replays.
 - The manuscripts' Fig. 3 (`fig:playable-readout`, D-066/D-067) crops a frozen, dated copy of
   three working captures under `paper/latex/captures/playable-readout-<date>/` (PNG + `.shot.json`
   + `receipt.json` with the trim boxes), bound in `visuals/source-manifest.json` as an
@@ -143,13 +172,23 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   handlers a player would, so canonical state still changes only through the proposal router.
   Run it only under `--write-movie` on a disposable copy; its MP4/GIF are engineering
   demonstrations, never usability, latency, G4, or G6 evidence.
-- The Web dashboard (`game-track/web/dashboard/`, D-065) is a presentation-only observer: the
-  embedded build mirrors typed events (`session|proposal|commit|hold|dialogue|focus|tick|
+- The Web dashboard (`game-track/web/dashboard/`, D-065/D-073) is a presentation-only observer:
+  the embedded build mirrors typed events (`session|proposal|commit|hold|dialogue|focus|tick|
   episode_complete`) through `JavaScriptBridge` → `window.parent.postMessage` only when embedded,
-  carrying committed-snapshot hashes, codes, and predicate families but never sealed fact IDs,
-  hidden oracle labels, saves, or rig identity. The page has no channel back into the game and
-  its live counts are engineering demonstration only; `paper-reference.json` is derived from the
-  frozen Stage-4 and RQ2 packets and must be regenerated when they change.
+  carrying committed-snapshot hashes, codes, predicate families, and the per-proposal
+  `trace` (`checks`, `evaluated_gates`, `held_at`, `short_circuit`, `skipped`, `out_of_scope`,
+  `family_states`) but never sealed fact IDs, hidden oracle labels, saves, or rig identity. The
+  commit-gate card is a live per-node evaluation trace: it renders node state from
+  `family_states` only (blue pass / coral fail / dashed skipped / hatched out-of-scope, each with
+  a word and glyph; a missing state renders "state missing", never a pass), animates only
+  traversed edges, lists the ordered checks with an explicit short-circuit rule, and keeps its
+  boundary note inside the SVG. Envelopes without `trace` fall back to the schema pulse tagged
+  `legacy: schema-only`. The page has no channel back into the game and its live counts are
+  engineering demonstration only; `paper-reference.json` is derived from the frozen Stage-4 and
+  RQ2 packets and must be regenerated when they change. Dashboard changes must re-run the
+  synthetic fixture harness (`_workspace/current/qa/releases/<date>/dashboard-trace-fixtures.js`,
+  unpatched headless Chromium, zero unexpected console errors) and keep
+  `tests/test_godot_web_release.py` green.
 - Use Godot/GDScript guidance only. Unity editor, prefab, package, or C# assumptions do not apply.
 
 ## 3. Asset generation: one owner per class
@@ -165,6 +204,8 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
 | KG/ontology typed-link simulation (D-051) | `scripts/run_kg_ontology_simulation.py` | `PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py --check`; tracked JSON/Markdown/TSV/SVG/TeX, ignored SQLite |
 | Balance-probe chart/table working artifacts | `scripts/run_balance_archetypes.py` | `uv run python scripts/run_balance_archetypes.py` |
 | Public player mesh + clips (D-050) | Higgsfield image-to-3D → rig → `Idle`/`Casual_Walk` merge | `python3 scripts/validate_player_asset.py`; tracked GLB + provenance + curation |
+| Case-file UI pack (board, evidence-card icons, compass, investigate vignette; D-073) | `higgsfield-cli` `gpt_image_2` | frozen prompt per asset, `--wait --json`, staging pack `game-track/assets/generated/higgsfield-case-v1/` (PNG bytes ignored, provenance/prompts/manifest tracked), `sips` downscale into `assets/ui/` with `derived_from` + `curation.json` rows |
+| Evidence-desk prop GLB (D-073) | Higgsfield `gpt_image_2` reference → `multi_image_to_3d --should_texture true --enable_animation false --enable_rigging false` → struct-level texture re-embed (1024 px JPEG q85, geometry byte-identical) | `assets/models/evidence_desk.glb` + `.provenance.json` (`post_processing`, `import_side_products`) + `models-manifest.json` `ai_generated_assets`; attached via `attach_model_fit_height` with a procedural desk fallback |
 | Local-only motion/rig fallback (D-039/D-046) | manual Mixamo download → optional scratch-copy edit | `uv run python scripts/validate_motion_assets.py`; raw FBX/DAE/BVH and Adobe character/animation bytes never git-tracked |
 
 - Validate every `gti` image prompt with `gti --dry-run` before spending quota. For
@@ -209,7 +250,10 @@ paid/free result.
 
 - Assume concurrent edits. Before staging, acquire `.git/game-studio.lock` atomically with `mkdir`,
   record the session owner, and stop if it already exists. Remove it only after commit/push or an
-  explicitly recorded abort.
+  explicitly recorded abort. A lock whose owner session no longer exists (`aside session list`,
+  process table) and whose patch has sat unstaged across a later release pass may be taken over
+  only after recording the takeover, the consumed decision IDs, and every other live session's
+  footprint in `_workspace/current/conflicts.md`; rename the stale lock, never delete it silently.
 - Run `git status --short` before edits and immediately before committing.
 - Stage explicit pathspecs only. Never use `git add -A`, `git add .`, destructive cleanup, reset,
   or force-push.
@@ -219,6 +263,12 @@ paid/free result.
   `_workspace/current/conflicts.md`.
 
 ## 6. Verification and reporting
+
+- D-072: rebuild the Web export and package checked EN/KO PDFs at `/paper/en.pdf` and
+  `/paper/ko.pdf`; check the papers before deployment. Dashboard family counts must match
+  engine codes, and a reported hold count is not a measured unchanged-state success rate.
+  Retain every browser diagnostic. An unresolved headless pointer-lock error leaves the
+  human-gesture gate `FIX` and cannot be reported as a zero-error interaction pass.
 
 - Full game-track regression command: `./scripts/validate_game_track.sh` (includes the motion-lane
   guard and the balance-archetype tests).

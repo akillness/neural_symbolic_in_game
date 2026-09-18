@@ -43,6 +43,11 @@ var _rig_animation: AnimationPlayer = null
 var _rig_is_tracked: bool = false
 var _rig_source: String = "procedural"
 var _active_rig_animation: StringName = &""
+# D-073 one-shot presentation gestures (Collect / Observe / Speak on the
+# tracked rig). Transient only: which clip last played is instrumentation,
+# never saved, hashed, or read back as game state.
+var _last_gesture: StringName = &""
+var _gesture_playing: bool = false
 # The interactable set is spawned once at scene build and never grows, so the
 # focus sweep reuses one cached group snapshot instead of allocating a fresh
 # Array from get_nodes_in_group every physics frame.
@@ -196,6 +201,39 @@ func _play_rig_animation(active: bool, immediate: bool) -> void:
 		return
 	_rig_animation.play(target, 0.0 if immediate else RIG_BLEND_SECONDS)
 	_active_rig_animation = target
+	# Locomotion always wins: a walk/idle change mid-gesture ends the gesture.
+	_gesture_playing = false
+
+
+func play_gesture(clip: StringName) -> bool:
+	# One-shot gesture on the tracked rig (D-073): plays `clip` once, non-
+	# looping, only when the rig actually carries it (has_animation), then
+	# hands back to Idle/Casual_Walk through _play_rig_animation. Presentation
+	# only — it neither gates input nor touches canonical state — and it is
+	# NOT camera motion, so reduced motion still plays it. Returns whether the
+	# clip was started (false = silent fallback, procedural body or no clip).
+	if _rig_animation == null or not _rig_animation.has_animation(clip):
+		return false
+	var animation := _rig_animation.get_animation(clip)
+	if animation != null:
+		animation.loop_mode = Animation.LOOP_NONE
+	var finished := Callable(self, "_on_gesture_finished")
+	if not _rig_animation.animation_finished.is_connected(finished):
+		_rig_animation.animation_finished.connect(finished)
+	_rig_animation.play(clip, RIG_BLEND_SECONDS)
+	_active_rig_animation = clip
+	_last_gesture = clip
+	_gesture_playing = true
+	return true
+
+
+func _on_gesture_finished(clip: StringName) -> void:
+	if not _gesture_playing or clip != _last_gesture:
+		return
+	_gesture_playing = false
+	# Return through the single locomotion path (movement signal stays the
+	# only source of truth for walk vs idle).
+	_play_rig_animation(_movement_active, false)
 
 
 func _update_rig_facing(delta: float, move_input: Vector2) -> void:
@@ -355,4 +393,7 @@ func get_engineering_snapshot() -> Dictionary:
 		"player_rig_animation_playing": _rig_animation != null and _rig_animation.is_playing(),
 		"player_rig_required_clips": [String(RIG_IDLE_ANIMATION), String(RIG_WALK_ANIMATION)],
 		"player_rig_lane_is_presentation_only": true,
+		# D-073 one-shot gesture instrumentation (transient, never persisted).
+		"last_gesture": String(_last_gesture),
+		"gesture_playing": _gesture_playing,
 	}

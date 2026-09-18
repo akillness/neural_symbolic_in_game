@@ -19,6 +19,8 @@ html, body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4
 .brand { font-weight: 700; letter-spacing: .08em; color: var(--amber); }
 .sub { margin-left: 10px; color: var(--muted); }
 .status { display: flex; gap: 10px; align-items: center; font-size: 12px; }
+.paper-link { color: var(--ink); text-decoration: none; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 3px 9px; }
+.paper-link:hover, .paper-link:focus-visible { color: var(--amber); border-color: #5a4a1e; outline: none; }
 .pill { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
 .pill.waiting { color: var(--muted); }
 .pill.live { color: var(--green); border-color: #2c5a3a; }
@@ -53,12 +55,32 @@ h3 { font-size: 12px; margin: 12px 0 4px; color: var(--ink); text-transform: upp
 .diagram-boundary { font-size: 11px; line-height: 1.5; color: var(--muted); margin: 0 0 8px; padding: 8px 10px; background: var(--card-2); border: 1px solid var(--line); border-left: 3px solid var(--amber); border-radius: 6px; }
 .diagram-boundary code { font-family: var(--mono); font-size: 10px; color: var(--ink); background: rgba(255,255,255,.06); padding: 1px 4px; border-radius: 3px; }
 #nebula { width: 100%; height: auto; display: block; }
+/* D-073: the settled stroke is the evidence; the legend reproduces exact swatches
+   (hatch / dash / ring) so no on-screen state is left to be guessed at. */
+.legend { margin: 6px 0 0; padding: 6px 8px; background: var(--card-2); border: 1px solid var(--line); border-radius: 6px; }
+.legend-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; }
+.legend-rows li { display: flex; align-items: center; gap: 5px; }
+.legend-rows li b { font-weight: 600; color: var(--ink); }
+.legend-rows .glyph { color: var(--ink); font-size: 10px; min-width: 22px; }
+.swatch { width: 16px; height: 16px; flex: 0 0 16px; }
+.legend-counts { margin-top: 5px; font-size: 11px; color: var(--amber); }
+.last-trace { margin: 0; padding: 6px 8px; font-size: 10.5px; line-height: 1.45; color: var(--ink); background: var(--card-2); border: 1px solid var(--line); border-radius: 6px; white-space: pre; overflow-x: auto; max-height: 190px; }
+/* Reduced motion: dashboard.js already stops the pulse dots and substitutes stroke
+   weight for motion (traversed edges one point heavier); this only quiets the
+   remaining CSS animations so the evidence stays, the motion goes. */
+@media (prefers-reduced-motion: reduce) {
+  .edge-pulse { display: none; }
+  .flash-commit, .flash-hold { animation: none; }
+}
 .metrics { grid-area: metrics; }
 .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .kpi { background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
 .kpi .k { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 .kpi .v { font-size: 22px; font-weight: 700; color: var(--amber); }
 .kpi .v.coral { color: var(--coral); }
+/* Narrow viewports (390 px): the widened family table scrolls inside its card
+   instead of widening the page (2026-09-18 production check: page scrollWidth 517). */
+.tbl-wrap { max-width: 100%; overflow-x: auto; }
 .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
 .tbl th, .tbl td { text-align: left; padding: 3px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .tbl th { color: var(--muted); font-weight: 500; }

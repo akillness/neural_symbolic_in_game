@@ -127,3 +127,37 @@ evidence in the same change set. The explanation lives here and in
 - `generate_paper_figures.py`, `generate_readme_visuals.py`, `update_visual_source_manifest.py`, and `validate_visual_assets.py` are settled and Ruff-formatted. The refreshed manifest validates 88 unique receipts, 11 SVG assets, and isolated double-regeneration of 22 sources.
 - The final bilingual PDFs are 8 pages each with zero overfull/undefined/missing-character errors and zero Type 3 fonts. The complete CI-equivalent sequence, full Pytest, and all three game design/UI/feel contract validators pass; canonical `project.godot` and balance-receipt hashes are unchanged.
 - No unresolved shared-worktree collision remains from this entry. Commit, push, and deployment remain outside the D-061 review scope.
+
+### 2026-09-03 resolution — D-068/D-069 shared-worktree collision
+
+- The independent citation review acquired `.git/game-studio.lock` after D-067 and initially reserved D-068. A concurrent deployment writer then created an explicitly D-068-scoped dashboard deployment while the lock was present, so the citation review moved to D-069 before appending a canonical decision.
+- To prevent accidental inclusion, the D-069 writer temporarily removed its additions from shared CLAUDE/wiki/task files. D-068 landed as `d4b70c30392a`; its same-origin iframe-message follow-up landed as `b08610d4f8d4` and superseded the initial deployment with `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`.
+- `git show` confirmed that neither D-068 commit included the D-069 citation JSON, source ledger, crosswalk, validator, BibTeX, KG receipts, visual manifest, or new test file. The follow-up did stage the whole shared `release-readiness.md` after D-069 had refreshed one aggregate-test line, so that one 183/140 receipt reached origin before its new test file.
+- D-069 does not rewrite that history. It makes the receipt true and traceable: excluding `tests/test_citation_metadata.py` collects 180 Pytest tests plus 81 subtests and 137 unittest tests; the three new citation methods produce the observed 183/81 and 140 totals. Current operational docs are reconciled to the superseding D-068 deployment, while historical decision and defect receipts remain unchanged.
+- D-069 was revalidated against `b08610d4f8d4`; its patch remains unstaged, uncommitted, unpushed, and undeployed pending owner approval.
+
+## 2026-09-18 — stale lock takeover and three live sessions in one worktree
+
+- At 09:44Z the Claude Code session for the D-073 studio pass (Higgsfield asset/motion/map/VFX
+  refresh, per-node commit-gate evaluation trace, detective/tutorial/HUD deepening, build, deploy,
+  push) found `.git/game-studio.lock` still owned by Aside session `BOZW50yOGZJCIJso` (scope
+  `d069-citation-audit-source-of-truth-sync`, acquired 2026-09-03). `aside session list` (175
+  sessions) no longer lists that session, and its D-069 patch plus the D-072 release pass had
+  been left unstaged for fifteen days. The lock was treated as stale, recorded here, replaced by
+  this session's lock (`session=claude-code-d073`, `scope=d073-studio-pass`), and D-069–D-071 are
+  noted as consumed IDs (D-069 patch in the worktree; D-070/D-071 landed as `0d2c5af`/`f88262c`
+  without decision rows). The next free decision ID is `D-073`.
+- Observed concurrently at 09:48Z: a second Claude Code process (`claude --resume 7b5d905b…`)
+  regenerating `game-track/godot/assets/player/{higgsfield-player.glb,…_texture_0.png,
+  provenance,curation}` (3,559,148-byte GLB) and creating
+  `game-track/assets/generated/higgsfield-mira-v1/prompts/HF3D-M01-mira-reference.txt` through a
+  live `higgsfield generate create gpt_image_2` job; and a jeo-code session
+  (`.jeo/sessions/b1b3f6d9…`, prompt "$ecc 게임에 적용된 논문의 근거를 리뷰하고… $aside-browser
+  딥리서치") that may edit paper/research/wiki sources.
+- Ownership taken by this session (D-073): `sealed_lighthouse_machine.gd`, `game_3d.gd`,
+  `harbor_ledger_ui.gd`, `world_builder.gd`, `narrative_director.gd`, `interactable_3d.gd`,
+  `player_3d.gd`, `game-track/web/dashboard/**`, new `game-track/assets/generated/higgsfield-case-v1/`,
+  `game-track/godot/assets/ui/` additions, evaluation/tests/docs for those files. This session
+  does not edit `assets/player/**`, `assets/generated/higgsfield-mira-v1/**`, `paper/**`, or
+  `research/**`, and will stage only explicit pathspecs whose last modification it made or whose
+  prior-session state was verified unchanged since the D-072 receipt.

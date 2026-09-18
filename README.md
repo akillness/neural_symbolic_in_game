@@ -11,7 +11,7 @@
 [![Play in browser](https://img.shields.io/badge/Play-game%20only-1f6feb)](https://sealed-lighthouse-trace-rpg.vercel.app/public/)
 [![Godot 4.7.1](https://img.shields.io/badge/Godot-4.7.1-478cbf)](neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776ab)](neuro-symbolic-interactive-game-research-2026/pyproject.toml)
-[![Evidence 52/52 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
+[![Evidence 52/52 + 4/4 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%2B%204%2F4%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
 [![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
@@ -19,7 +19,7 @@
 
 - **The gate.** Every generated event is treated as an untrusted transaction proposal. A type-strict parser, an external action policy, and seven deterministic checks in six state-relative families decide whether it commits; a rejected candidate gets bounded, counterexample-guided repair, and everything else falls back to the unchanged prior state.
 - **The game.** *The Sealed Lighthouse* is a turn-based investigation micro-RPG in Godot 4.7.1 whose in-world ledger shows the gate diegetically: a hold names the family that held it and teaches the rule; a commit posts a contribution, unlocks the next lead, and extends a SHA-256 receipt chain.
-- **The evidence — and its limits.** Four lanes (E1 offline fixtures, E2 live screening, E3 KG simulation, ENG1 engine conformance) report exact counts only: 13/13 gate agreement, ρ 5/5 on the guided-repairable class, 52/52 playable checks, one shared terminal state hash. One authored world, one hosted proposer, no participants, no efficacy claim.
+- **The evidence — and its limits.** Four lanes (E1 offline fixtures, E2 live screening, E3 KG simulation, ENG1 engine conformance) report exact counts only: 13/13 gate agreement, ρ 5/5 on the guided-repairable class, 52/52 core playable checks plus the 4/4 D-073 extension, one shared terminal state hash. One authored world, one hosted proposer, no participants, no efficacy claim.
 
 ## Paper at a glance
 
@@ -59,14 +59,14 @@ Four lanes, four ceilings. Every number is a raw count from a deterministic runn
 | **E1** Offline conformance | Authored frozen fixtures, one world: 13 gate fixtures, 12 repair fixtures × 4 arms, 10 fault injections, 7 adapter/accounting assignments, 3 guards | Fixture | 13/13 gate agreement; ρ 5/5 on the guided-repairable class | Mechanism conformance on encoded predicates — not efficacy |
 | **E2** Live screening | One hosted proposer (`gpt-5.6-sol`), 5 cells × 5 calls, K = 1, matched candidate for both arms | Call | Signal-v2 cell: ρ 5/5 vs. blind retry 0/5 | Pilot-only; no population or model-ranking claim |
 | **E3** KG/ontology simulation | Closed-world typed-link simulation: 43 nodes, 106 reference edges, 24 reviewed typed edges, 210 scored proposals; degree baseline vs. 6 fixed strategies | Proposal | 6/6 authored holdouts recovered | Simulation-only; not runtime retrieval or semantic truth |
-| **ENG1** Godot/Web engineering | 4 fixtures, 52 checks, 8-item 3D smoke, 5 archetype rotations | Check | 52/52 · 8/8 · 5/5; terminal hash equals the offline runner's | Conformance, not performance; no participants |
+| **ENG1** Godot/Web engineering | 4 fixtures, 52 core checks + 4 D-073 extension checks, 8-item 3D smoke, 5 archetype rotations | Check | 52/52 (+4/4 extension) · 8/8 · 5/5; terminal hash equals the offline runner's | Conformance, not performance; no participants |
 
 **Results in full.**
 
 - **E1.** 13/13 gate agreement, all 12 implemented error codes observed. On the 12 initially invalid repair cases (5 guided-repairable / 1 oracle-only / 6 irreparable): rejection-only 0/12, blind retry 0/12, ρ 5/5 + 0/1 + 0/6, state-reading oracle callback 5/5 + 1/1 + 0/6. Every failed arm left state unchanged. 10/10 prespecified faults were rejected by their designated checks. 1/1 provenance-boundary fixture passes replay by design — unkeyed hashes give integrity, not authentication.
 - **E2.** A guided advantage appeared only in the policy-blind Signal-v2 cell (ρ 5/5 vs. blind 0/5, +5). The other four cells were +0: three candidates were already valid, one was an irreparable quest-stage regression. All 15/15 non-commit outcomes preserved the prior-state hash.
 - **E3.** The typed-lexical strategy recovered 6/6 authored holdouts (P = R = F1 = 1.000, MRR 0.944, Brier 0.131, Sem@3 1.000); the degree baseline recovered none.
-- **ENG1.** The Godot slice replays the authored trace and its terminal state hash equals the offline runner's: `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. Playable evaluation 52/52 (40 fixture checks + 12 presentation invariants), 3D smoke 8/8, balance probe 5/5.
+- **ENG1.** The Godot slice replays the authored trace and its terminal state hash equals the offline runner's: `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. Playable evaluation 52/52 core (40 fixture checks + 12 presentation invariants) plus the separately counted 4/4 D-073 detective/guidance/trace extension (56/56 all), 3D smoke 8/8, balance probe 5/5.
 
 ![Balance probe: five scripted archetype rotations through the playable, each completing the same commit chain](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/balance-archetypes.svg)
 

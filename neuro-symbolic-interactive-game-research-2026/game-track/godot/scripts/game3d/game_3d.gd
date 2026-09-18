@@ -14,6 +14,7 @@ extends Node3D
 const SealedLighthouseMachine = preload("res://scripts/sealed_lighthouse_machine.gd")
 const CanonicalState = preload("res://scripts/canonical_state.gd")
 const ProceduralAudioFeedbackScript = preload("res://scripts/game3d/procedural_audio.gd")
+const EvaluationTraceScript = preload("res://scripts/game3d/evaluation_trace.gd")
 
 const SCENARIO_PATH := "res://data/sealed_lighthouse.json"
 const SAVE_PATH := "user://sl3d_save.json"
@@ -53,6 +54,22 @@ var _play_started: bool = false
 var _evaluation_path: String = ""
 var _pending_input_feedback: Dictionary = {}
 var _input_feedback_samples: Array = []
+## D-073 detective-loop presentation state (view-local; never saved, hashed
+## or replayed): hint-ladder rung, case-file pip, coach cards shown, first-focus
+## toasts, held-proposal texts (deduction distractors) and the slot-assembly
+## deduction in progress. None of it is a second game-state model.
+var _hint_rung: int = 0
+var _hint_timer: Timer
+var _presentation_hooks_ready: bool = false
+var _coach_cards_shown: Array = []
+var _coach_cards_pending: Array = []
+var _focus_toasts_shown: Array = []
+var _held_texts: Array = []
+var _inference_by_gate: Dictionary = {}
+var _deduction_open: bool = false
+var _deduction_picks: Array = []
+var _deduction_attempts: int = 0
+var _deduction_confirmed: bool = false
 
 
 func _enter_tree() -> void:
@@ -240,6 +257,13 @@ func _run_autoplay() -> void:
 	await _autoplay_wait(0.8)
 	await _autoplay_walk_to("tide_marks")
 	_on_interact("tide_marks")
+	await _autoplay_wait(1.6)
+	# D-073 slot assembly through the same choice handler a player uses: the
+	# three chain entries in order, then SUBMIT CHAIN (whole-chain check).
+	for link_id in DEDUCTION_CHAIN:
+		_on_choice("pick:" + str(link_id))
+		await _autoplay_wait(1.0)
+	_on_choice("deduction_submit")
 	await _autoplay_wait(11.0)
 	print("AUTOPLAY-DONE " + JSON.stringify({
 		"engineering_only": true,
@@ -331,6 +355,8 @@ func _register_input_actions() -> void:
 		"sl_motion": KEY_M,
 		"sl_tutorial": KEY_T,
 		"sl_audio": KEY_V,
+		"sl_case_file": KEY_C,
+		"sl_hint": KEY_H,
 	}
 	for action in bindings:
 		if not InputMap.has_action(action):
@@ -357,6 +383,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode == KEY_ESCAPE and ui.is_tutorial_open():
 			ui.hide_tutorial()
 			return
+		if event.physical_keycode == KEY_ESCAPE and ui.is_coach_card_open():
+			ui.dismiss_coach_card()
+			return
+		if event.physical_keycode == KEY_ESCAPE and ui.is_evidence_board_open():
+			_toggle_case_file()
+			return
+		if event.physical_keycode == KEY_ESCAPE and _deduction_open:
+			_close_deduction()
+			return
 		if event.physical_keycode == KEY_ESCAPE and _dialogue_open:
 			_close_dialogue()
 			return
@@ -372,6 +407,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		and event.button_index == MOUSE_BUTTON_LEFT
 		and event.pressed
 		and not _dialogue_open
+		and not ui.is_coach_card_open()
+		and not ui.is_evidence_board_open()
 		and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED
 	):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -385,7 +422,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			if ui.is_tutorial_open():
 				ui.hide_tutorial()
 			else:
-				_open_tutorial()
+				_open_tutorial(true)
+	elif event.is_action_pressed("sl_case_file"):
+		_toggle_case_file()
+	elif event.is_action_pressed("sl_hint"):
+		_advance_hint_ladder()
 	elif event.is_action_pressed("sl_motion"):
 		_toggle_reduced_motion()
 	elif event.is_action_pressed("sl_audio"):
@@ -490,6 +531,7 @@ func _on_focus_changed(interactable: Interactable3D) -> void:
 		ui.show_prompt(interactable.prompt_text)
 		if _play_started:
 			audio_feedback.play_cue("focus")
+			_first_focus_toast(str(interactable.interaction_id))
 
 
 func _begin_input_feedback_probe(source: String) -> void:
@@ -569,25 +611,34 @@ func _on_interact(interaction_id: String) -> void:
 			# W-002 observation only: the slice never enters the tower. The tower
 			# stays dark and sealed; the first look nudges the player toward the
 			# forbidden question at Mira — the intended refusal teaching moment.
+			player.play_gesture(&"Observe")
+			director.play_inspect_sparkle(_interactable("lighthouse_view"))
 			ui.ledger_line("narration", "The tower is silent. Rain-dark glass fills the lantern room. The narrow channel cannot be crossed without a signal.")
 			if not _lighthouse_observed:
 				_lighthouse_observed = true
 				ui.ledger_line("hint", "Captain Mira may know what happened to the tower. What she is allowed to reveal is another matter.")
 			_complete_input_feedback_probe("lighthouse-observation-ledger-line")
 		"tide_marks":
+			player.play_gesture(&"Observe")
+			director.play_inspect_sparkle(handles["tide_marks"])
 			if "tide_marks_hint" in machine.state["facts"]:
-				_finish_episode()
-				_complete_input_feedback_probe("episode-completion-feedback")
+				_open_deduction()
+				_complete_input_feedback_probe("deduction-open")
 			else:
 				_pending_input_feedback.clear()
 
 
-func _open_tutorial() -> void:
+func _open_tutorial(full_guide: bool = false) -> void:
+	# Boot shows the folio's page 1 only (D-073: reference card, not "the
+	# tutorial"); [T] / the GUIDE handle open all four pages.
 	ui.hide_prompt()
 	player.input_locked = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui.set_cursor_captured(false)
-	ui.show_tutorial()
+	ui.show_tutorial(full_guide)
+	# The full folio covers what the queued coach cards would say.
+	_coach_cards_pending.clear()
+	ui.dismiss_coach_card()
 
 
 func _on_tutorial_closed() -> void:
@@ -614,7 +665,17 @@ func _propose(
 	ui.ledger_line("proposal", proposal_text)
 	_complete_input_feedback_probe("proposal-ledger-line")
 	_emit_dashboard("proposal", {"operation": operation, "text": proposal_text})
+	# D-073: reconstruct the machine's check order against the committed
+	# PRE-state, then let the hash-bound machine decide. The mirror only becomes
+	# dashboard evidence when its failures equal the codes the machine returned.
+	var mirror: Dictionary = EvaluationTraceScript.reconstruct(
+		scenario, machine.state, operation, arguments
+	)
 	var result: Dictionary = machine.apply_operation(operation, arguments)
+	_last_dashboard_trace = dashboard_trace(
+		mirror["checks"], mirror["plan"],
+		EvaluationTraceScript.consistent(mirror["checks"], result["codes"])
+	)
 	if result["accepted"]:
 		commit_count += 1
 		ui.flash("commit")
@@ -643,12 +704,14 @@ func _propose(
 			"stage_to": delta["stage_to"],
 			"state_sha256_before": CanonicalState.sha256(result["prior_state"]),
 			"mutated": bool(result["mutated"]),
+			"trace": _last_dashboard_trace,
 		}.merged(_dashboard_state_summary()))
 		if not _first_commit_explained:
 			_first_commit_explained = true
 			ui.toast("FIRST COMMIT | Only validated entries change state. Watch the solid amber line.")
 		elif commit_count == 2:
 			ui.toast("ENTRY %d | The ledger remembers the route." % commit_count)
+		_on_commit_presentation(proposal_text)
 	else:
 		refusal_count += 1
 		ui.flash("refusal")
@@ -658,6 +721,7 @@ func _propose(
 		if not _first_refusal_explained:
 			_first_refusal_explained = true
 			ui.toast("FIRST HOLD | State is unchanged. The coral line names the reason and next valid entry.")
+		_remember_held_text(proposal_text)
 	return result
 
 
@@ -719,6 +783,92 @@ func gate_for_code(code: String) -> String:
 	return str(GATE_BY_CODE.get(code, "POLICY"))
 
 
+## The manuscript's six predicate families in Table II order. Every dashboard
+## trace assigns each family exactly one explicit state; there is no default.
+const GATE_FAMILIES := [
+	"POLICY", "PRECONDITION", "REACHABILITY", "KNOWLEDGE", "DISCLOSURE", "QUEST STAGE"
+]
+
+
+static func gate_families_of(gate: String) -> Array:
+	# A composite gate such as "DISCLOSURE/QUEST STAGE" names two families.
+	var families: Array = []
+	for part in gate.split("/"):
+		var family := str(part).strip_edges()
+		if family in GATE_FAMILIES and family not in families:
+			families.append(family)
+	return families
+
+
+## D-073 per-node evaluation evidence for the observer dashboard (Aside deep
+## research 2026-09-18: PROV plan-vs-activity split, JSON Schema "evaluated"
+## semantics, no default state). `trace` is the EvaluationTrace mirror of the
+## machine's ordered checks with each check mapped onto its predicate family;
+## `skipped` lists the in-scope checks the engine never reached because an
+## earlier check held the entry (`held_at`); `family_states` gives every one of
+## the six families exactly one explicit state: "pass", "fail", "skipped", or
+## "out_of_scope" (never consulted for this operation type). `consistent` is
+## the mirror-vs-machine agreement flag: when false, no family state is
+## reported at all (the dashboard renders "state missing", never a pass).
+## Presentation-only; it never adds a check the machine did not run.
+func dashboard_trace(trace: Array, plan: Array = [], consistent: bool = true) -> Dictionary:
+	if not consistent:
+		return {
+			"checks": [],
+			"evaluated_gates": [],
+			"held_at": "",
+			"short_circuit": false,
+			"skipped": [],
+			"out_of_scope": [],
+			"family_states": {},
+			"consistent": false,
+		}
+	var checks: Array = []
+	var evaluated_gates: Array = []
+	var evaluated_codes: Array = []
+	var held_at := ""
+	var family_states := {}
+	for entry in trace:
+		var code := str(entry["code"])
+		var gate := gate_for_code(code)
+		var outcome := str(entry["outcome"])
+		checks.append({"code": code, "gate": gate, "outcome": outcome})
+		evaluated_codes.append(code)
+		if gate not in evaluated_gates:
+			evaluated_gates.append(gate)
+		if outcome == "fail" and held_at == "":
+			held_at = code
+		for family in gate_families_of(gate):
+			# A family that both passed and failed a check in one call (only
+			# the composite disclosure pair can) reports the failure.
+			if outcome == "fail" or not family_states.has(family):
+				family_states[family] = outcome
+	var skipped: Array = []
+	for code in plan:
+		if str(code) in evaluated_codes:
+			continue
+		var gate := gate_for_code(str(code))
+		skipped.append({"code": str(code), "gate": gate})
+		for family in gate_families_of(gate):
+			if not family_states.has(family):
+				family_states[family] = "skipped"
+	var out_of_scope: Array = []
+	for family in GATE_FAMILIES:
+		if not family_states.has(family):
+			family_states[family] = "out_of_scope"
+			out_of_scope.append(family)
+	return {
+		"checks": checks,
+		"evaluated_gates": evaluated_gates,
+		"held_at": held_at,
+		"short_circuit": held_at != "",
+		"skipped": skipped,
+		"out_of_scope": out_of_scope,
+		"family_states": family_states,
+		"consistent": true,
+	}
+
+
 ## Human-readable allowlist for newly established facts (contribution_delta's
 ## facts_added), keyed by canonical fact id. Unknown facts stay internal and
 ## collapse to the UI's generic "State recorded" copy, never a raw identifier.
@@ -753,8 +903,63 @@ const CASE_LINKS := [
 	["LEAD", "tide_marks_hint"],
 ]
 
+## D-073 held-row third line, keyed by validator code: the inference the hold
+## licenses (what the refusal tells the investigator about the world's rules).
+## One ASCII sentence each; never names the hidden oracle or the sealed fact.
+const INFERENCE_BY_CODE := {
+	"FORBIDDEN_DISCLOSURE": "The keeper's secret is not an entry you can earn; the route is.",
+	"STAGE_GATED_DISCLOSURE": "Mira can disclose the lead once the harbor signal is restored.",
+	"MISSING_REQUIRED_OBJECT": "The mount takes a carried lens; recover it first.",
+	"QUEST_STAGE_PRECONDITION": "This entry has a place in the chain; the chain is written in order.",
+	"OBJECT_NOT_PRESENT": "Look for the lens where the harbor keeps its optics.",
+	"OBJECT_NOT_REACHABLE": "Stand where the object can be reached before proposing to take it.",
+	"NPC_DOES_NOT_KNOW_FACT": "Ask the person whose duty covers the fact.",
+	"UNKNOWN_ACTOR": "Only named harbor roles may write to the ledger.",
+	"UNKNOWN_OPERATION": "Only the ledger's known entry kinds can be proposed.",
+}
+
+## Case-file card copy per chain link: what the entry proves and why it
+## matters for the open question (WHAT OPENED THE TIDE ROUTE?). The SEALED
+## card is fixed copy and never names its fact.
+const EVIDENCE_WHY := {
+	"LENS": "Without the optic there is no signal to restore.",
+	"MOUNT": "The restored signal is what lets the harbor authorize a lead.",
+	"LEAD": "The authorized lead names where the tide opens the path.",
+}
+const SEALED_CARD_LABEL := "Sealed record"
+const SEALED_CARD_WHY := "no answer can open it"
+
+## Slot-assembly deduction (D-073): the chain the tide route rests on, in
+## order. Options offered per slot are the committed contribution labels (the
+## FACT_LABEL text) plus one distractor; validation compares the assembled
+## sequence against this order and the committed facts, whole chain at once.
+const DEDUCTION_CHAIN := ["LENS", "MOUNT", "LEAD"]
+const DEDUCTION_RED_HERRING := "The keeper's silence"
+const DEDUCTION_MAX_BUTTONS := 5
+
+## Opt-in hint ladder copy per chain node (rung 1 = the open question, rung 2
+## = place/person + compass, rung 3 = the next valid entry from
+## GoldenPathLayout). View-local; text is static and keyed by node id.
+const HINT_QUESTION_BY_NODE := {
+	"ARRIVAL": "Who in this harbor can say why the channel is closed?",
+	"LENS": "What does the harbor signal need before it can shine again?",
+	"MOUNT": "Where does a signal lens belong so the harbor can see it?",
+	"AUTHORIZE": "Now that the signal is restored, who is allowed to disclose the lead?",
+	"LEAD": "Where does the authorized lead say the tide opens the path?",
+}
+const HINT_PLACE_BY_TARGET := {
+	"mira": "Captain Mira at the end of the dock",
+	"lens_pickup": "the lamp store past the west end of the dock",
+	"lamp_mount": "the harbor signal mount on the northeast rail",
+	"tide_marks": "the tide marks on the west breakwater",
+}
+const HINT_COMPASS := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+
 var _contribution_log: Array[Dictionary] = []
 var _rules_learned_by_gate: Dictionary = {}
+## The EvaluationTrace mirror of the most recent machine call, already mapped by
+## `dashboard_trace` (presentation-only; refreshed at every call site).
+var _last_dashboard_trace: Dictionary = {}
 
 
 ## Fail-closed presentation boundary: only explicitly authored public labels
@@ -852,6 +1057,10 @@ func _refusal_feedback(codes: Array) -> void:
 		"codes": codes.duplicate(),
 		"gates": hold_gates,
 		"next_affordance": next_affordance,
+		# Every call site refreshes `_last_dashboard_trace` right after the
+		# machine call that produced these codes, so it is the evaluation
+		# evidence for this hold (fail-closed when the mirror disagrees).
+		"trace": _last_dashboard_trace,
 	}.merged(_dashboard_state_summary()))
 	for code in codes:
 		var gate := gate_for_code(str(code))
@@ -880,9 +1089,17 @@ func _refusal_feedback(codes: Array) -> void:
 		if first_time:
 			_rules_learned_by_gate[gate] = rule_text
 		ui.ledger_rule(gate, rule_text, first_time, int(_holds_by_gate.get(gate, 0)) - 1)
+		# D-073 third line of the held row: PROPOSAL -> RULE -> WHAT THIS TELLS
+		# YOU. The inference a hold licenses (XAG 115: the error AND the method
+		# to correct it). Authored per code; remembered per gate for the receipt.
+		var inference_text := str(INFERENCE_BY_CODE.get(str(code), "The ledger keeps its order; the next valid entry names the way."))
+		if not _inference_by_gate.has(gate):
+			_inference_by_gate[gate] = inference_text
+		ui.ledger_inference(inference_text)
 	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
 	rules_learned_sorted.sort()
 	ui.set_case_chain(_case_chain_from_state(machine.state), rules_learned_sorted)
+	_on_hold_presentation()
 	# RitualVfx repair-hint blink marks the same next-valid target in-world.
 	_play_repair_hint(_next_affordance_target())
 
@@ -910,6 +1127,7 @@ func _propose_acquire() -> void:
 		# chime rides above the commit rise so "got the object" reads distinctly
 		# from "the ledger accepted it".
 		audio_feedback.play_cue("pickup")
+		player.play_gesture(&"Collect")
 		ui.ledger_commit(commit_count, "Signal lens secured. Retrieval entry validated.")
 		_ledger_last_contribution()
 		ui.ledger_line("narration", "The brass rim gleams cold against your fingers. The harbor signal mount comes to mind.")
@@ -953,6 +1171,8 @@ func _open_mira_dialogue() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui.set_cursor_captured(false)
 	audio_feedback.play_cue("dialogue")
+	player.play_gesture(&"Speak")
+	director.set_guide_trail_suppressed(true)
 	ui.set_portrait_visible(true, "CAPTAIN MIRA | HARBOR WATCH")
 	# W-003: duty-bounded operational knowledge, no keeper authority. Greeting
 	# beats are presentation-only and branch on the committed snapshot; every
@@ -996,6 +1216,10 @@ func _show_mira_choices() -> void:
 func _on_choice(choice_id: String) -> void:
 	if not _dialogue_open:
 		return
+	if _deduction_open:
+		# D-073 slot assembly: not a Mira choice and never a machine proposal.
+		_on_deduction_choice(choice_id)
+		return
 	_begin_input_feedback_probe("dialogue-choice:" + choice_id)
 	_emit_dashboard("dialogue", {"phase": "choice", "npc": "captain_mira", "choice_id": choice_id})
 	match choice_id:
@@ -1006,7 +1230,15 @@ func _on_choice(choice_id: String) -> void:
 			_show_mira_choices()
 		"ask_secret":
 			# B-006: the one intended early secret request (keeper_betrayal stays sealed).
+			_remember_held_text("Request disclosure of what the keeper hides")
+			var mirror_checks: Array = EvaluationTraceScript.disclosure_checks(
+				scenario, machine.state, ["keeper_betrayal"]
+			)
 			var codes: Array = machine.validate_disclosure(["keeper_betrayal"])
+			_last_dashboard_trace = dashboard_trace(
+				mirror_checks, EvaluationTraceScript.plan_for("validate_disclosure"),
+				EvaluationTraceScript.consistent(mirror_checks, codes)
+			)
 			refusal_count += 1
 			ui.flash("refusal")
 			audio_feedback.play_cue("refusal")
@@ -1014,6 +1246,9 @@ func _on_choice(choice_id: String) -> void:
 			_play_verdict_ritual(_interactable("mira"), false)
 			director.set_tension_stage(2)
 			_refusal_feedback(codes)
+			# Keep the compact status line's HOLDS count current after a
+			# dialogue-path hold (the proposal paths already resync).
+			_sync_presentation()
 			_complete_input_feedback_probe("refusal-ledger-line")
 			_show_mira_choices()
 		"ask_tide":
@@ -1055,6 +1290,7 @@ func _propose_tide_hint() -> void:
 func _close_dialogue() -> void:
 	_emit_dashboard("dialogue", {"phase": "close", "npc": "captain_mira"})
 	_dialogue_open = false
+	director.set_guide_trail_suppressed(false)
 	ui.clear_choices()
 	ui.set_portrait_visible(false)
 	if not _smoke_mode and not _evaluate_mode:
@@ -1124,6 +1360,8 @@ func _sync_presentation() -> void:
 	if mount_interact != null:
 		mount_interact.enabled = not installed
 	_update_objective_beacon(lens_in_store, installed, hint_known)
+	director.set_tide_lead_known(hint_known)
+	director.refresh_guide_trail()
 
 	# Objective copy audit: bureaucratic-poetic but concrete — each line names
 	# WHO/WHERE and WHY NOW; the beacon marks the same target in-world.
@@ -1142,8 +1380,11 @@ func _sync_presentation() -> void:
 		phase = "LENS SECURED"
 	var inventory: Array = state["player"]["inventory"]
 	var exploration_progress := 3 if hint_known else int(state["quest"]["stage"])
-	var status := "STAGE %d | INVENTORY: %s\nENTRIES %d | HOLDS %d" % [
+	# One compact status line (D-073: the case chain N/3 is the only progress
+	# number on screen; these are receipts, not a second counter).
+	var status := "STAGE %d | %s | INVENTORY: %s | ENTRIES %d | HOLDS %d" % [
 		int(state["quest"]["stage"]),
+		phase,
 		"SIGNAL LENS" if "signal_lens" in inventory else "EMPTY",
 		commit_count,
 		refusal_count,
@@ -1153,6 +1394,20 @@ func _sync_presentation() -> void:
 	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
 	rules_learned_sorted.sort()
 	ui.set_case_chain(_case_chain_from_state(state), rules_learned_sorted)
+	# D-073 detective-loop surfaces (presentation-only, derived here so they
+	# can never drift from the committed snapshot).
+	_ensure_presentation_hooks()
+	_refresh_hint_ladder()
+	if ui.is_evidence_board_open():
+		_show_case_file()
+	if (
+		"signal_lens" in inventory
+		and not installed
+		and _play_started
+		and not _smoke_mode
+		and not _evaluate_mode
+	):
+		_show_coach_card_once("investigate")
 
 
 func _build_objective_beacon() -> Node3D:
@@ -1251,6 +1506,381 @@ func _update_objective_beacon(lens_in_store: bool, installed: bool, hint_known: 
 	_objective_beacon.position = target
 
 
+## ------------------------------------------------ D-073 detective loop (view)
+
+func _ensure_presentation_hooks() -> void:
+	# Lazily wired on the first _sync_presentation (this controller does not
+	# own _ready): the HUD handle buttons, the hint ladder key/button, the
+	# coach-card dismissal and the 0.5 s compass refresh for rung 2.
+	if _presentation_hooks_ready or ui == null:
+		return
+	_presentation_hooks_ready = true
+	ui.tutorial_requested.connect(func() -> void:
+		if not _dialogue_open and not episode_over and _play_started:
+			if ui.is_tutorial_open():
+				ui.hide_tutorial()
+			else:
+				_open_tutorial(true)
+	)
+	ui.case_file_requested.connect(_toggle_case_file)
+	ui.hint_requested.connect(_advance_hint_ladder)
+	ui.coach_card_dismissed.connect(_on_coach_card_dismissed)
+	_hint_timer = Timer.new()
+	_hint_timer.wait_time = 0.5
+	_hint_timer.one_shot = false
+	_hint_timer.autostart = true
+	_hint_timer.timeout.connect(func() -> void:
+		if _hint_rung >= 2 and not episode_over:
+			_refresh_hint_ladder()
+	)
+	add_child(_hint_timer)
+	ui.set_hint_ladder(0, [])
+
+
+func _on_commit_presentation(_proposal_text: String) -> void:
+	# After every accepted proposal: the case-file handle gets an unread pip
+	# (no timed auto-open), the hint ladder resets to rung 0, and the first
+	# commit surfaces the "how the ledger works" coach card once.
+	ui.mark_case_file_unread()
+	_set_hint_rung(0)
+	if _play_started:
+		_show_coach_card_once("ledger_intro")
+
+
+func _on_hold_presentation() -> void:
+	# After every hold: the first one surfaces the "what a hold means" coach
+	# card once. The held row itself is permanent (never faded or collapsed).
+	if _play_started:
+		_show_coach_card_once("hold_intro")
+
+
+func _remember_held_text(text: String) -> void:
+	# Held proposal texts feed the deduction's distractor pool (presentation
+	# only; they are the ledger's own words, never a fact id).
+	if text != "" and text not in _held_texts:
+		_held_texts.append(text)
+
+
+func _show_coach_card_once(card_id: String) -> void:
+	# One card at a time (never stack hints): a card requested while another
+	# is open waits in a view-local queue and appears when that one is
+	# dismissed by the player. Each card id shows at most once per session.
+	if card_id in _coach_cards_shown or ui.is_tutorial_open() or episode_over:
+		return
+	_coach_cards_shown.append(card_id)
+	if ui.is_coach_card_open():
+		_coach_cards_pending.append(card_id)
+		return
+	_present_coach_card(card_id)
+
+
+func _present_coach_card(card_id: String) -> void:
+	ui.show_coach_card(card_id)
+	_emit_dashboard("coach_card", {"card_id": card_id, "phase": "shown"})
+	if not _dialogue_open:
+		# The [OK] button needs a pointer; Esc also dismisses. Dialogue already
+		# has the pointer free.
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		ui.set_cursor_captured(false)
+
+
+func _on_coach_card_dismissed(card_id: String) -> void:
+	_emit_dashboard("coach_card", {"card_id": card_id, "phase": "dismissed"})
+	if not _coach_cards_pending.is_empty() and not episode_over and not ui.is_tutorial_open():
+		_present_coach_card(str(_coach_cards_pending.pop_front()))
+		return
+	if _play_started and not _dialogue_open and not episode_over and not ui.is_tutorial_open():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		ui.set_cursor_captured(true)
+
+
+func _first_focus_toast(interaction_id: String) -> void:
+	# First-time contextual coach toast per interactable (one interaction per
+	# card; never repeats). Presentation-only set.
+	if interaction_id in _focus_toasts_shown or _dialogue_open or episode_over:
+		return
+	var hints := {
+		"mira": "[E] INSPECT | Speak with Captain Mira. She reports only what harbor watch can verify.",
+		"lens_pickup": "[E] INSPECT | Propose recovering the signal lens. The ledger validates the entry.",
+		"lamp_mount": "[E] INSPECT | Propose installing the lens. The mount takes a carried lens only.",
+		"lighthouse_view": "[E] INSPECT | Observe the sealed tower. It stays dark; nobody enters tonight.",
+		"tide_marks": "[E] INSPECT | Read the tide marks, then assemble the chain that opened the route.",
+	}
+	if not hints.has(interaction_id):
+		return
+	_focus_toasts_shown.append(interaction_id)
+	ui.toast(str(hints[interaction_id]))
+
+
+## Case file (evidence board) — presentation-only view of the committed
+## snapshot through the fail-closed FACT_LABEL allowlist. The SEALED card is
+## fixed copy and never names its fact.
+static func evidence_cards(state: Dictionary) -> Array:
+	var facts: Array = state.get("facts", [])
+	var cards: Array = []
+	for link in CASE_LINKS:
+		var card_id := str(link[0])
+		var fact_id := str(link[1])
+		var filled: bool = fact_id in facts
+		cards.append({
+			"id": card_id,
+			"filled": filled,
+			"sealed": false,
+			"label": str(FACT_LABEL.get(fact_id, "State recorded")) if filled else "Not yet in the ledger",
+			"why": str(EVIDENCE_WHY.get(card_id, "")),
+		})
+	cards.append({
+		"id": "SEALED",
+		"filled": false,
+		"sealed": true,
+		"label": SEALED_CARD_LABEL,
+		"why": SEALED_CARD_WHY,
+	})
+	return cards
+
+
+func _show_case_file() -> void:
+	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
+	rules_learned_sorted.sort()
+	ui.show_evidence_board(
+		evidence_cards(machine.state),
+		_case_chain_from_state(machine.state),
+		rules_learned_sorted,
+		_next_affordance_text(),
+	)
+
+
+func _toggle_case_file() -> void:
+	if not _play_started or episode_over or ui.is_tutorial_open():
+		return
+	if ui.is_evidence_board_open():
+		ui.hide_evidence_board()
+		_emit_dashboard("case_file", {"phase": "close"})
+		if not _dialogue_open:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			ui.set_cursor_captured(true)
+		return
+	_show_case_file()
+	_emit_dashboard("case_file", {"phase": "open", "chain_filled": int(_case_chain_from_state(machine.state)["filled"])})
+	if not _dialogue_open:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		ui.set_cursor_captured(false)
+
+
+## Hint ladder — opt-in, non-spoiling, keyed by the current chain node.
+func _hint_node() -> String:
+	var state: Dictionary = machine.state
+	if "tide_marks_hint" in state["facts"]:
+		return "LEAD"
+	if "signal_lens_installed" in state["facts"]:
+		return "AUTHORIZE"
+	if "signal_lens" in state["player"]["inventory"]:
+		return "MOUNT"
+	if _met_mira:
+		return "LENS"
+	return "ARRIVAL"
+
+
+static func compass_hint(from_position: Vector3, to_position: Vector3) -> String:
+	# 8-wind bearing from the player to the target, +Z = N (the offshore tower
+	# lies north of the dock), +X = E, plus a rounded distance in metres.
+	var dx := to_position.x - from_position.x
+	var dz := to_position.z - from_position.z
+	var distance := Vector2(dx, dz).length()
+	if distance < 2.0:
+		return "HERE"
+	var bearing := fposmod(rad_to_deg(atan2(dx, dz)), 360.0)
+	var sector := int(floor((bearing + 22.5) / 45.0)) % 8
+	return "%s %d m" % [HINT_COMPASS[sector], int(round(distance))]
+
+
+func hint_ladder_lines(rung: int) -> Array:
+	# Pure over (committed snapshot, met-Mira flag, player position): rung 1
+	# restates the open question, rung 2 names the place/person + compass,
+	# rung 3 names the next valid entry (GoldenPathLayout.next_affordance).
+	var lines: Array = []
+	if rung <= 0:
+		return lines
+	var node := _hint_node()
+	var affordance: Dictionary = GoldenPathLayout.next_affordance(machine.state, _met_mira)
+	var target_id := str(affordance["target_id"])
+	lines.append("1 | %s" % str(HINT_QUESTION_BY_NODE.get(node, "What does the ledger need next?")))
+	if rung >= 2:
+		var place := str(HINT_PLACE_BY_TARGET.get(target_id, "the next marked place"))
+		var compass := "HERE"
+		if player != null:
+			compass = compass_hint(player.global_position, GoldenPathLayout.site_position(target_id))
+		lines.append("2 | Look for %s | %s" % [place, compass])
+	if rung >= 3:
+		lines.append("3 | NEXT VALID ENTRY: %s" % str(affordance["text"]))
+	return lines
+
+
+func _set_hint_rung(rung: int) -> void:
+	var next_rung := clampi(rung, 0, 3)
+	var trail_on := next_rung >= 3
+	if director != null and director.has_method("set_guide_trail_enabled") and (trail_on or _hint_rung >= 3):
+		# Lane C's diegetic guide trail (rung 3 only; default off).
+		director.set_guide_trail_enabled(trail_on)
+	_hint_rung = next_rung
+	_refresh_hint_ladder()
+
+
+func _refresh_hint_ladder() -> void:
+	if ui != null:
+		ui.set_hint_ladder(_hint_rung, hint_ladder_lines(_hint_rung))
+
+
+func _advance_hint_ladder() -> void:
+	if not _play_started or episode_over or ui.is_tutorial_open():
+		return
+	var next_rung := _hint_rung + 1 if _hint_rung < 3 else 0
+	_set_hint_rung(next_rung)
+	_emit_dashboard("hint", {"rung": _hint_rung, "node": _hint_node()})
+
+
+## Slot-assembly deduction at the tide marks (D-073). NOT a machine proposal:
+## no apply_operation, no commit/hold envelope, no refusal count. The player
+## assembles the chain from the ledger's own entries; the whole chain is
+## checked at once against the committed facts by the pure static below.
+static func deduction_is_supported(state: Dictionary, sequence: Array) -> bool:
+	if sequence.size() != DEDUCTION_CHAIN.size():
+		return false
+	var facts: Array = state.get("facts", [])
+	for index in DEDUCTION_CHAIN.size():
+		var link_id := str(DEDUCTION_CHAIN[index])
+		if str(sequence[index]) != link_id:
+			return false
+		var fact_id := ""
+		for link in CASE_LINKS:
+			if str(link[0]) == link_id:
+				fact_id = str(link[1])
+		if fact_id == "" or fact_id not in facts:
+			return false
+	return true
+
+
+func _chain_link_label(link_id: String) -> String:
+	for link in CASE_LINKS:
+		if str(link[0]) == link_id:
+			return str(FACT_LABEL.get(str(link[1]), "State recorded"))
+	return "State recorded"
+
+
+func _deduction_option_label(option_id: String) -> String:
+	if option_id.begins_with("distract:"):
+		var index := int(option_id.trim_prefix("distract:"))
+		var pool := _deduction_distractor_pool()
+		return str(pool[index]) if index >= 0 and index < pool.size() else DEDUCTION_RED_HERRING
+	return _chain_link_label(option_id)
+
+
+func _deduction_distractor_pool() -> Array:
+	var pool: Array = [DEDUCTION_RED_HERRING]
+	for text in _held_texts:
+		pool.append(str(text))
+	return pool
+
+
+func deduction_options(slot_index: int) -> Array:
+	# Per slot: the three chain labels + one rotating distractor (the authored
+	# red herring, then the held proposals' texts) + Step away. <= 5 buttons.
+	var options: Array = []
+	for link_id in DEDUCTION_CHAIN:
+		options.append({"id": "pick:" + str(link_id), "text": _chain_link_label(str(link_id))})
+	var pool := _deduction_distractor_pool()
+	if not pool.is_empty() and options.size() < DEDUCTION_MAX_BUTTONS - 1:
+		var pool_index := slot_index % pool.size()
+		options.append({"id": "pick:distract:%d" % pool_index, "text": str(pool[pool_index])})
+	options.append({"id": "deduction_leave", "text": "Step away"})
+	return options
+
+
+func _open_deduction() -> void:
+	_dialogue_open = true
+	_deduction_open = true
+	_deduction_picks = []
+	_emit_dashboard("dialogue", {"phase": "deduction", "beat": "open", "attempts": _deduction_attempts})
+	ui.hide_prompt()
+	ui.dismiss_coach_card()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	ui.set_cursor_captured(false)
+	audio_feedback.play_cue("dialogue")
+	ui.ledger_line("narration", "The tide marks are dry to the third line. The route is open; the ledger asks how it opened.")
+	ui.ledger_line("deduction", "Assemble the chain that opened the tide route.")
+	_show_deduction_slot()
+
+
+func _show_deduction_slot() -> void:
+	var slot_index := _deduction_picks.size()
+	if slot_index >= DEDUCTION_CHAIN.size():
+		var assembled: Array = []
+		for option_id in _deduction_picks:
+			assembled.append(_deduction_option_label(str(option_id)))
+		ui.show_choices([
+			{"id": "deduction_submit", "text": "SUBMIT CHAIN"},
+			{"id": "deduction_clear", "text": "CLEAR SLOTS"},
+			{"id": "deduction_leave", "text": "Step away"},
+		], "[D] CHAIN | %s" % " -> ".join(assembled))
+		return
+	ui.show_choices(
+		deduction_options(slot_index),
+		"[D] SLOT %d/%d | Which ledger entry comes %s?" % [
+			slot_index + 1, DEDUCTION_CHAIN.size(), ["first", "next", "last"][slot_index]
+		]
+	)
+
+
+func _on_deduction_choice(choice_id: String) -> void:
+	_begin_input_feedback_probe("deduction-choice:" + choice_id)
+	if choice_id.begins_with("pick:"):
+		_deduction_picks.append(choice_id.trim_prefix("pick:"))
+		_emit_dashboard("dialogue", {"phase": "deduction", "beat": "slot", "slot": _deduction_picks.size()})
+		_show_deduction_slot()
+		_complete_input_feedback_probe("deduction-slot")
+		return
+	match choice_id:
+		"deduction_clear":
+			_deduction_picks = []
+			_show_deduction_slot()
+			_complete_input_feedback_probe("deduction-clear")
+		"deduction_submit":
+			_deduction_attempts += 1
+			var supported := deduction_is_supported(machine.state, _deduction_picks)
+			if supported:
+				_deduction_confirmed = true
+				ui.ledger_line("deduction_confirmed", "Lens secured -> signal restored -> lead authorized")
+				_emit_dashboard("dialogue", {"phase": "deduction", "beat": "confirmed", "attempts": _deduction_attempts})
+				_complete_input_feedback_probe("deduction-confirmed")
+				_finish_episode()
+				_close_deduction()
+			else:
+				ui.ledger_line("deduction_held", "The chain does not match the ledger. Re-read the case file.")
+				_emit_dashboard("dialogue", {"phase": "deduction", "beat": "held", "attempts": _deduction_attempts})
+				_deduction_picks = []
+				_show_deduction_slot()
+				_complete_input_feedback_probe("deduction-held")
+		"deduction_leave":
+			_close_deduction()
+			_complete_input_feedback_probe("deduction-close")
+		_:
+			_pending_input_feedback.clear()
+
+
+func _close_deduction() -> void:
+	if not _deduction_open:
+		return
+	_emit_dashboard("dialogue", {"phase": "deduction", "beat": "close", "attempts": _deduction_attempts})
+	_deduction_open = false
+	_dialogue_open = false
+	_deduction_picks = []
+	ui.clear_choices()
+	ui.hide_evidence_board()
+	if not _smoke_mode and not _evaluate_mode and not episode_over:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		ui.set_cursor_captured(true)
+
+
 func _finish_episode() -> void:
 	if episode_over:
 		return
@@ -1270,52 +1900,80 @@ func _finish_episode() -> void:
 	ui.toast("ACQUIRED | LOW-TIDE ROUTE")
 	ui.set_progress(3, 3, "ROUTE SECURED")
 	director.play_ending(func() -> void:
-		var summary := "\n[color=#F2B84B]THE SEALED LIGHTHOUSE | CASE COMPLETE[/color]\n\n"
-		summary += "The lighthouse remains sealed tonight, but every entry in the ledger is valid.\n"
-		summary += "The low-tide marks point to the next route.\n"
-		summary += _episode_receipt_text()
-		summary += "\n[color=#D9D3C4]CONTINUE AT THE NEXT TIDE[/color]"
 		# The 'ledger closes' beat: brief dim + case-complete toast, then the end
 		# card slides in (reduced motion: immediate card). UI owns the staging.
-		ui.play_ledger_close(summary)
+		# D-073: the receipt is a three-page document (PAGE n/3) built by one
+		# page builder shared with the ending screenshot stage.
+		ui.set_end_card_hash(machine.state_hash())
+		ui.play_ledger_close(_episode_end_pages())
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		ui.set_cursor_captured(false)
 	)
 
 
 func _episode_receipt_text() -> String:
-	# Two-part receipt (Aside search-feedback 2026-09-02 pattern 8/"End
-	# receipt"): the investigator's contribution and the rules the ledger
-	# taught come first, in player-meaningful language; the technical receipt
-	# (counts, hash, holds-by-gate) stays a separate, clearly labeled block.
-	# One shared rendering for the live end card and the ending screenshot
-	# stage — every count comes straight from committed snapshots or
-	# presentation counters (_contribution_log, _rules_learned_by_gate),
-	# never invented.
-	var receipt := "\n[color=#F2B84B][font_size=24]INVESTIGATOR'S CONTRIBUTION[/font_size][/color]\n"
+	# Kept as the single-string receipt entry point (page 1 of the paged end
+	# card). Every count comes straight from committed snapshots or
+	# presentation counters (_contribution_log, _rules_learned_by_gate,
+	# _deduction_attempts), never invented.
+	return str(_episode_end_pages()[0])
+
+
+func _episode_end_pages() -> Array:
+	# D-073 paged receipt (Obra Dinn's multipage tally; Aside search-feedback
+	# 2026-09-02 pattern 8): page 1 = the investigator's contribution (+ the
+	# deduction line), page 2 = rules learned and what each told you, page 3 =
+	# the validator receipt with the state hash (copyable field in the UI), one
+	# settled statement and the unsettled part phrased as a question. Shared by
+	# the live end card and the ending screenshot stage (page 1 by default).
+	var page_one := "\n[color=#F2B84B]THE SEALED LIGHTHOUSE | CASE COMPLETE[/color]\n\n"
+	page_one += "The lighthouse remains sealed tonight, but every entry in the ledger is valid.\n"
+	page_one += "The low-tide marks point to the next route.\n"
+	page_one += "\n[color=#F2B84B][font_size=24]INVESTIGATOR'S CONTRIBUTION[/font_size][/color]\n"
 	if _contribution_log.is_empty():
-		receipt += "[color=#D9D3C4]No entries were committed this session.[/color]\n"
+		page_one += "[color=#D9D3C4]No entries were committed this session.[/color]\n"
 	else:
 		for entry in _contribution_log:
 			var labels: Array = entry["labels"]
 			var label_text := "; ".join(labels) if not labels.is_empty() else "State recorded"
-			receipt += "[color=#D9D3C4]#%d %s | %s[/color]\n" % [
+			page_one += "[color=#D9D3C4]#%d %s | %s[/color]\n" % [
 				int(entry["entry"]),
 				label_text,
 				HarborLedgerUI.stage_clause(int(entry["stage_from"]), int(entry["stage_to"])),
 			]
+	page_one += "[color=#F2B84B]DEDUCTION | %s[/color]\n" % _deduction_receipt_clause()
+
 	var rules_learned_sorted: Array = _rules_learned_by_gate.keys()
 	rules_learned_sorted.sort()
-	receipt += "[color=#8FA3B2]RULES LEARNED %d | %s[/color]\n" % [
-		rules_learned_sorted.size(),
-		", ".join(rules_learned_sorted) if not rules_learned_sorted.is_empty() else "none",
-	]
-	receipt += "\n[color=#F2B84B]ENTRIES %d[/color] | [color=#D9685F]HOLDS %d[/color] | FINAL STAGE %d\n" % [
+	var page_two := "\n[color=#F2B84B][font_size=24]RULES LEARNED %d[/font_size][/color]\n" % rules_learned_sorted.size()
+	if rules_learned_sorted.is_empty():
+		page_two += "[color=#D9D3C4]No hold taught a rule this session.[/color]\n"
+	else:
+		for gate in rules_learned_sorted:
+			page_two += "[color=#D9D3C4][V] %s | %s[/color]\n" % [str(gate), str(_rules_learned_by_gate[gate])]
+			page_two += "[color=#8FA3B2]    WHAT THIS TOLD YOU | %s[/color]\n" % str(
+				_inference_by_gate.get(gate, "The ledger keeps its order.")
+			)
+	page_two += "\n[color=#D9D3C4]Every held row stays in the ledger. The rules are the case.[/color]\n"
+
+	var page_three := "\n[color=#F2B84B][font_size=24]VALIDATOR RECEIPT[/font_size][/color]\n"
+	page_three += "[color=#F2B84B]ENTRIES %d[/color] | [color=#D9685F]HOLDS %d[/color] | FINAL STAGE %d\n" % [
 		commit_count, refusal_count, int(machine.state["quest"]["stage"])
 	]
-	receipt += "[color=#8FA3B2]VALIDATOR RECEIPT | STATE HASH %s...[/color]\n" % machine.state_hash().substr(0, 16)
-	receipt += "[color=#8FA3B2]HOLDS BY GATE | %s[/color]\n" % _holds_by_gate_text()
-	return receipt
+	page_three += "[color=#8FA3B2]HOLDS BY GATE | %s[/color]\n" % _holds_by_gate_text()
+	page_three += "[color=#8FA3B2]STATE HASH %s...[/color] (full hash below)\n" % machine.state_hash().substr(0, 16)
+	page_three += "\n[color=#D9D3C4]SETTLED | The tide route was earned on this evidence, under these rules.[/color]\n"
+	page_three += "[color=#D9D3C4]OPEN | Why is the lighthouse sealed? Not tonight's entry.[/color]\n"
+	page_three += "\n[color=#D9D3C4]CONTINUE AT THE NEXT TIDE[/color]"
+	return [page_one, page_two, page_three]
+
+
+func _deduction_receipt_clause() -> String:
+	# 'confirmed in N attempt(s)' once the chain was assembled; the ending
+	# screenshot stage never runs the deduction, so it reads 'not recorded'.
+	if not _deduction_confirmed:
+		return "not recorded"
+	return "confirmed in %d attempt%s" % [_deduction_attempts, "" if _deduction_attempts == 1 else "s"]
 
 
 func _run_engineering_evaluation(path: String) -> void:
@@ -1339,6 +1997,10 @@ func _run_engineering_evaluation(path: String) -> void:
 	)
 	if not probe_result["accepted"]:
 		_refusal_feedback(probe_result["codes"])
+	# D-073 dashboard-trace probe. Computed immediately after the synthetic
+	# early-hint proposal: `_last_dashboard_trace` is the mirror of that call,
+	# and no other machine call happens before this line.
+	var trace_probe := _last_dashboard_trace.duplicate(true)
 	await get_tree().process_frame
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
@@ -1370,6 +2032,68 @@ func _run_engineering_evaluation(path: String) -> void:
 	for link in CASE_LINKS:
 		if str(link[1]) in machine.state["facts"]:
 			direct_case_chain_filled += 1
+
+	# D-073 evidence-board probe: cards from the live committed snapshot (all
+	# unfilled here) and from a hand-built snapshot with two chain facts. Fill
+	# flags must equal fact membership; the SEALED card must carry no fact id.
+	var board_cards_now := evidence_cards(machine.state)
+	var board_probe_state: Dictionary = machine.state.duplicate(true)
+	board_probe_state["facts"] = ["signal_lens_acquired", "signal_lens_installed", "lighthouse_hint_authorized"]
+	var board_cards_probe := evidence_cards(board_probe_state)
+	var board_ids_now: Array = []
+	var board_fill_matches_now := true
+	for card in board_cards_now:
+		board_ids_now.append(str(card["id"]))
+		for link in CASE_LINKS:
+			if str(link[0]) == str(card["id"]):
+				board_fill_matches_now = board_fill_matches_now and (
+					bool(card["filled"]) == (str(link[1]) in machine.state["facts"])
+				)
+	var board_fill_matches_probe := true
+	var board_probe_filled: Array = []
+	for card in board_cards_probe:
+		if bool(card["filled"]):
+			board_probe_filled.append(str(card["id"]))
+		for link in CASE_LINKS:
+			if str(link[0]) == str(card["id"]):
+				board_fill_matches_probe = board_fill_matches_probe and (
+					bool(card["filled"]) == (str(link[1]) in board_probe_state["facts"])
+				)
+	var sealed_text := ""
+	for card in board_cards_now:
+		if str(card["id"]) == "SEALED":
+			sealed_text = "%s | %s" % [str(card["label"]), str(card["why"])]
+	var sealed_text_clean := sealed_text != "" and not sealed_text.contains("keeper_betrayal")
+	for fact_id in FACT_LABEL.keys():
+		sealed_text_clean = sealed_text_clean and not sealed_text.contains(str(fact_id))
+	for link in CASE_LINKS:
+		sealed_text_clean = sealed_text_clean and not sealed_text.contains(str(link[1]))
+
+	# D-073 deduction probe: the pure static validator over hand-built
+	# snapshots. True only for the exact [LENS, MOUNT, LEAD] sequence with all
+	# three chain facts committed; never for a distractor, a reordering, a
+	# short chain, or a snapshot missing a chain fact.
+	var two_fact_state: Dictionary = machine.state.duplicate(true)
+	two_fact_state["facts"] = ["signal_lens_acquired", "signal_lens_installed"]
+	var three_fact_state: Dictionary = machine.state.duplicate(true)
+	three_fact_state["facts"] = [
+		"lighthouse_hint_authorized", "signal_lens_acquired", "signal_lens_installed", "tide_marks_hint"
+	]
+	var deduction_probes := {
+		"empty_state_correct_order": deduction_is_supported(machine.state, ["LENS", "MOUNT", "LEAD"]),
+		"two_facts_correct_order": deduction_is_supported(two_fact_state, ["LENS", "MOUNT", "LEAD"]),
+		"three_facts_correct_order": deduction_is_supported(three_fact_state, ["LENS", "MOUNT", "LEAD"]),
+		"three_facts_wrong_order": deduction_is_supported(three_fact_state, ["MOUNT", "LENS", "LEAD"]),
+		"three_facts_distractor": deduction_is_supported(three_fact_state, ["LENS", "MOUNT", "distract:0"]),
+		"three_facts_short_chain": deduction_is_supported(three_fact_state, ["LENS", "MOUNT"]),
+	}
+
+	# D-073 hint-ladder probe: rung 3 must name the current next valid entry
+	# (GoldenPathLayout.next_affordance). View-local rung is restored to 0.
+	var next_affordance_probe := _next_affordance_text()
+	_set_hint_rung(3)
+	var hint_probe_text := ui.hint_ladder_text()
+	_set_hint_rung(0)
 	var checks := [
 		{
 			"check": "evaluation_does_not_mutate_canonical_state",
@@ -1430,13 +2154,63 @@ func _run_engineering_evaluation(path: String) -> void:
 				and case_chain_link_ids == ["LENS", "MOUNT", "LEAD"]
 				and int(ui_snapshot["case_chain"]["filled"]) == direct_case_chain_filled,
 		},
+		{
+			"check": "evidence_board_mirrors_committed_facts",
+			"pass": board_ids_now == ["LENS", "MOUNT", "LEAD", "SEALED"]
+				and board_fill_matches_now
+				and board_fill_matches_probe
+				and board_probe_filled == ["LENS", "MOUNT"]
+				and sealed_text_clean
+				and machine.state_hash() == state_hash_before,
+		},
+		{
+			"check": "deduction_reads_committed_facts_only",
+			"pass": deduction_probes["empty_state_correct_order"] == false
+				and deduction_probes["two_facts_correct_order"] == false
+				and deduction_probes["three_facts_correct_order"] == true
+				and deduction_probes["three_facts_wrong_order"] == false
+				and deduction_probes["three_facts_distractor"] == false
+				and deduction_probes["three_facts_short_chain"] == false
+				and machine.state_hash() == state_hash_before,
+		},
+		{
+			"check": "guided_step_matches_next_affordance",
+			"pass": next_affordance_probe != ""
+				and hint_probe_text.contains(next_affordance_probe)
+				and int(ui_snapshot["hint_ladder"]["rung"]) == 0,
+		},
+		{
+			"check": "evaluation_trace_names_only_evaluated_checks",
+			"pass": trace_probe["checks"] == [
+					{"code": "FORBIDDEN_DISCLOSURE", "gate": "DISCLOSURE", "outcome": "pass"},
+					{"code": "STAGE_GATED_DISCLOSURE", "gate": "DISCLOSURE/QUEST STAGE", "outcome": "fail"},
+				]
+				and trace_probe["evaluated_gates"] == ["DISCLOSURE", "DISCLOSURE/QUEST STAGE"]
+				and str(trace_probe["held_at"]) == "STAGE_GATED_DISCLOSURE"
+				and bool(trace_probe["short_circuit"]) == true
+				and trace_probe["skipped"] == [
+					{"code": "UNKNOWN_ACTOR", "gate": "POLICY"},
+					{"code": "NPC_DOES_NOT_KNOW_FACT", "gate": "KNOWLEDGE"},
+				]
+				and trace_probe["out_of_scope"] == ["PRECONDITION", "REACHABILITY"]
+				and trace_probe["family_states"] == {
+					"POLICY": "skipped",
+					"PRECONDITION": "out_of_scope",
+					"REACHABILITY": "out_of_scope",
+					"KNOWLEDGE": "skipped",
+					"DISCLOSURE": "fail",
+					"QUEST STAGE": "fail",
+				}
+				and bool(trace_probe["consistent"]) == true
+				and machine.state_hash() == state_hash_before,
+		},
 	]
 	var passed := true
 	for check in checks:
 		if not check["pass"]:
 			passed = false
 	var report := {
-		"schema_version": "1.2.0",
+		"schema_version": "1.3.0",
 		"evaluation": "sealed-lighthouse-3d-presentation-engineering",
 		"engineering_only": true,
 		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy", "browser input latency"],
@@ -1454,6 +2228,22 @@ func _run_engineering_evaluation(path: String) -> void:
 			"visible_label_probe": visible_label_probe,
 			"case_chain": ui_snapshot["case_chain"],
 			"rules_learned": ui_snapshot["rules_learned"],
+		},
+		"dashboard_trace": trace_probe,
+		"evidence_board": {
+			"cards_from_committed_state": board_cards_now,
+			"cards_from_hand_built_snapshot": board_cards_probe,
+			"sealed_card_text": sealed_text,
+		},
+		"deduction": {
+			"chain": DEDUCTION_CHAIN.duplicate(),
+			"max_buttons_per_slot": DEDUCTION_MAX_BUTTONS,
+			"probes": deduction_probes,
+			"options_slot_1": deduction_options(0),
+		},
+		"hint_ladder": {
+			"rung_3_text": hint_probe_text,
+			"next_affordance_text": next_affordance_probe,
 		},
 		"checks": checks,
 	}
@@ -1549,7 +2339,14 @@ func _prepare_screenshot_stage(stage: String) -> void:
 			ui.set_portrait_visible(true, "CAPTAIN MIRA | HARBOR WATCH")
 			ui.ledger_line("proposal", "Request disclosure of the sealed fact now")
 			var before := machine.state_hash()
+			var mirror_checks: Array = EvaluationTraceScript.disclosure_checks(
+				scenario, machine.state, ["keeper_betrayal"]
+			)
 			var codes: Array = machine.validate_disclosure(["keeper_betrayal"])
+			_last_dashboard_trace = dashboard_trace(
+				mirror_checks, EvaluationTraceScript.plan_for("validate_disclosure"),
+				EvaluationTraceScript.consistent(mirror_checks, codes)
+			)
 			refusal_count += 1
 			ui.flash("refusal")
 			_refusal_feedback(codes)
@@ -1559,11 +2356,16 @@ func _prepare_screenshot_stage(stage: String) -> void:
 			_propose_install()
 			_propose_tide_hint()
 			if stage == "ending":
-				var summary := "\n[color=#F2B84B]THE SEALED LIGHTHOUSE | CASE COMPLETE[/color]\n\n"
-				summary += "Every ledger entry is valid, and the low-tide marks point to the next route.\n"
-				summary += _episode_receipt_text()
-				ui.show_end_card(summary)
+				# Same page builder as the live end card; opens on page 1.
+				ui.set_end_card_hash(machine.state_hash())
+				ui.show_end_card(_episode_end_pages())
 	_sync_presentation()
+	# Captures stay deterministic: no unread pip, no coach card, no open case
+	# file and the hint ladder at rung 0 regardless of the staged commits.
+	ui.dismiss_coach_card()
+	ui.hide_evidence_board()
+	_set_hint_rung(0)
+	ui.clear_case_file_unread()
 
 
 func _save_png_atomic(image: Image, path: String) -> bool:

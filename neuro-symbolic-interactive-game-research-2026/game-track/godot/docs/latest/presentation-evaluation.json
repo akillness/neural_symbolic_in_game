@@ -60,6 +60,22 @@
     {
       "check": "case_chain_mirrors_committed_snapshot",
       "pass": true
+    },
+    {
+      "check": "evidence_board_mirrors_committed_facts",
+      "pass": true
+    },
+    {
+      "check": "deduction_reads_committed_facts_only",
+      "pass": true
+    },
+    {
+      "check": "guided_step_matches_next_affordance",
+      "pass": true
+    },
+    {
+      "check": "evaluation_trace_names_only_evaluated_checks",
+      "pass": true
     }
   ],
   "claim_boundary": "Automated presentation invariants and engine-local telemetry wiring only; no participant, neural-model, browser-latency, or gameplay-efficacy measurement.",
@@ -101,19 +117,167 @@
       "Signal lens secured"
     ]
   },
+  "dashboard_trace": {
+    "checks": [
+      {
+        "code": "FORBIDDEN_DISCLOSURE",
+        "gate": "DISCLOSURE",
+        "outcome": "pass"
+      },
+      {
+        "code": "STAGE_GATED_DISCLOSURE",
+        "gate": "DISCLOSURE/QUEST STAGE",
+        "outcome": "fail"
+      }
+    ],
+    "consistent": true,
+    "evaluated_gates": [
+      "DISCLOSURE",
+      "DISCLOSURE/QUEST STAGE"
+    ],
+    "family_states": {
+      "DISCLOSURE": "fail",
+      "KNOWLEDGE": "skipped",
+      "POLICY": "skipped",
+      "PRECONDITION": "out_of_scope",
+      "QUEST STAGE": "fail",
+      "REACHABILITY": "out_of_scope"
+    },
+    "held_at": "STAGE_GATED_DISCLOSURE",
+    "out_of_scope": [
+      "PRECONDITION",
+      "REACHABILITY"
+    ],
+    "short_circuit": true,
+    "skipped": [
+      {
+        "code": "UNKNOWN_ACTOR",
+        "gate": "POLICY"
+      },
+      {
+        "code": "NPC_DOES_NOT_KNOW_FACT",
+        "gate": "KNOWLEDGE"
+      }
+    ]
+  },
+  "deduction": {
+    "chain": [
+      "LENS",
+      "MOUNT",
+      "LEAD"
+    ],
+    "max_buttons_per_slot": 5,
+    "options_slot_1": [
+      {
+        "id": "pick:LENS",
+        "text": "Signal lens secured"
+      },
+      {
+        "id": "pick:MOUNT",
+        "text": "Harbor signal restored"
+      },
+      {
+        "id": "pick:LEAD",
+        "text": "Tide-marks lead recorded"
+      },
+      {
+        "id": "pick:distract:0",
+        "text": "The keeper's silence"
+      },
+      {
+        "id": "deduction_leave",
+        "text": "Step away"
+      }
+    ],
+    "probes": {
+      "empty_state_correct_order": false,
+      "three_facts_correct_order": true,
+      "three_facts_distractor": false,
+      "three_facts_short_chain": false,
+      "three_facts_wrong_order": false,
+      "two_facts_correct_order": false
+    }
+  },
   "engineering_only": true,
   "evaluation": "sealed-lighthouse-3d-presentation-engineering",
+  "evidence_board": {
+    "cards_from_committed_state": [
+      {
+        "filled": false,
+        "id": "LENS",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "Without the optic there is no signal to restore."
+      },
+      {
+        "filled": false,
+        "id": "MOUNT",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "The restored signal is what lets the harbor authorize a lead."
+      },
+      {
+        "filled": false,
+        "id": "LEAD",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "The authorized lead names where the tide opens the path."
+      },
+      {
+        "filled": false,
+        "id": "SEALED",
+        "label": "Sealed record",
+        "sealed": true,
+        "why": "no answer can open it"
+      }
+    ],
+    "cards_from_hand_built_snapshot": [
+      {
+        "filled": true,
+        "id": "LENS",
+        "label": "Signal lens secured",
+        "sealed": false,
+        "why": "Without the optic there is no signal to restore."
+      },
+      {
+        "filled": true,
+        "id": "MOUNT",
+        "label": "Harbor signal restored",
+        "sealed": false,
+        "why": "The restored signal is what lets the harbor authorize a lead."
+      },
+      {
+        "filled": false,
+        "id": "LEAD",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "The authorized lead names where the tide opens the path."
+      },
+      {
+        "filled": false,
+        "id": "SEALED",
+        "label": "Sealed record",
+        "sealed": true,
+        "why": "no answer can open it"
+      }
+    ],
+    "sealed_card_text": "Sealed record | no answer can open it"
+  },
+  "hint_ladder": {
+    "next_affordance_text": "Speak with Captain Mira at the end of the dock.",
+    "rung_3_text": "1 | Who in this harbor can say why the channel is closed?\n2 | Look for Captain Mira at the end of the dock | N 9 m\n3 | NEXT VALID ENTRY: Speak with Captain Mira at the end of the dock."
+  },
   "input_feedback": {
     "clock": "Time.get_ticks_usec",
     "input_to_visible_feedback_ms": [
-      3.436
+      3.616
     ],
     "measurement_context": "engine-local; headless samples are wiring evidence, not browser latency",
-    "p95_input_to_visible_feedback_ms": 3.436,
+    "p95_input_to_visible_feedback_ms": 3.616,
     "sample_count": 1,
     "samples": [
       {
-        "elapsed_ms": 3.436,
+        "elapsed_ms": 3.616,
         "source": "synthetic-evaluation:early-hint",
         "visible_feedback": "proposal-ledger-line"
       }
@@ -133,7 +297,9 @@
     "claim_boundary": "Player presentation/input instrumentation; not usability, immersion, or efficacy evidence.",
     "engineering_only": true,
     "focused_interaction_id": "",
+    "gesture_playing": false,
     "input_locked": true,
+    "last_gesture": "",
     "mouse_look_requires_capture": true,
     "movement_feedback": [
       "movement_state_changed",
@@ -142,7 +308,7 @@
     ],
     "player_rig_active": true,
     "player_rig_active_animation": "Idle",
-    "player_rig_animation": "Armature|Idle|baselayer,Casual_Walk,Idle",
+    "player_rig_animation": "Armature|Idle|baselayer,Casual_Walk,Collect,Idle,Observe,Speak",
     "player_rig_animation_playing": true,
     "player_rig_engine_animation": "Idle",
     "player_rig_lane_is_presentation_only": true,
@@ -154,7 +320,7 @@
     "resolution_independent_mouse_delta": "screen_relative",
     "world_change_boundary": "interact_requested signal only; root proposal router owns machine calls"
   },
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
   "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
   "supported_screenshot_stages": [
@@ -182,7 +348,14 @@
       ],
       "total": 3
     },
+    "case_chain_text": "[ ] LENS -> [ ] MOUNT -> [ ] LEAD",
+    "case_file_unread": 0,
     "claim_boundary": "UI instrumentation snapshot; not G4, usability, immersion, affect, or efficacy evidence.",
+    "coach_cards": [
+      "hold_intro",
+      "investigate",
+      "ledger_intro"
+    ],
     "contribution_lines": 0,
     "control_affordances": [
       "WASD",
@@ -192,14 +365,30 @@
       "F5",
       "F9",
       "M",
-      "V"
+      "V",
+      "T",
+      "C",
+      "H"
     ],
     "controls_visible": true,
+    "end_card_pages": 3,
     "engineering_only": true,
+    "evidence_board": {},
+    "hint_ladder": {
+      "rung": 0,
+      "text": ""
+    },
+    "hud_zones": [
+      "objective+hint-ladder:top-left",
+      "case-chain:top-centre",
+      "handles:top-right",
+      "prompt:bottom-centre"
+    ],
+    "last_inference_line": "WHAT THIS TELLS YOU | Mira can disclose the lead once the harbor signal is restored.",
     "last_rule_line": "RULE LEARNED | DISCLOSURE/QUEST STAGE: A lead is disclosed only after its stage is reached.",
     "layout": "narrow-stacked",
     "layout_metrics": {
-      "active_bottom_panel_top_fraction": 0.379999995231628,
+      "active_bottom_panel_top_fraction": 0.5,
       "narrow_playfield_fraction": 0.38,
       "wide_playfield_fraction": 0.66
     },
@@ -217,6 +406,12 @@
     "rules_learned": [
       "DISCLOSURE/QUEST STAGE"
     ],
+    "safe_area_fallback": {
+      "bottom": 20,
+      "left": 12,
+      "right": 12,
+      "top": 24
+    },
     "semantic_feedback_redundancy": [
       "color",
       "icon",
@@ -225,6 +420,29 @@
     ],
     "start_gate_visible": true,
     "start_key_art_orientation": "portrait",
+    "tutorial_pages": 4,
+    "type_scale": {
+      "chain": [
+        18,
+        16
+      ],
+      "dialogue": [
+        22,
+        18
+      ],
+      "hash": [
+        18,
+        16
+      ],
+      "ledger": [
+        20,
+        16
+      ],
+      "objective": [
+        24,
+        18
+      ]
+    },
     "viewport": {
       "height": 64,
       "width": 64

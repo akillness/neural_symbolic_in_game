@@ -77,6 +77,28 @@ const RITUAL_SPEC := {
 	"verdict_s": 0.30,
 	"settle_s": 0.24,
 }
+# D-073 opt-in guide trail (Aside research C-P3): six pooled wet-plank glints
+# laid along the player->objective segment, re-laid at most every 0.5 s, only
+# while the hint ladder enables it (set_guide_trail_enabled) or for 6 s after
+# a hold, hidden within 2.5 m of the target and whenever input is locked
+# (tutorial/intro/end card) or a dialogue is open. Alpha never exceeds 0.35.
+const GUIDE_TRAIL_REFRESH_S := 0.5
+const GUIDE_TRAIL_HOLD_WINDOW_S := 6.0
+const GUIDE_TRAIL_HIDE_DISTANCE_M := 2.5
+const GUIDE_TRAIL_ALPHA_MIN := 0.20
+const GUIDE_TRAIL_ALPHA_MAX := 0.32
+const GUIDE_TRAIL_ALPHA_STEADY := 0.28
+# Inspect sparkle (lighthouse_view / tide_marks): the pooled LensGlints
+# emitter re-anchored at the inspected prop with a temporary <=10 amount.
+const INSPECT_SPARKLE_AMOUNT := 10
+# Commit-verdict camera nudge on the player camera: 62 -> 60 -> 62 over
+# ~0.15 s (skipped under reduced motion; never on the cinematic camera).
+const VERDICT_FOV_REST := 62.0
+const VERDICT_FOV_NUDGE := 60.0
+const VERDICT_FOV_NUDGE_S := 0.15
+# Evidence-desk settle glow (verdict ritual, commit only): brief unshaded
+# brass plate on the desk, ~0.5 s, steady 0.9 s hold under reduced motion.
+const DESK_GLOW_ALPHA := 0.55
 
 # P-B06 geometry: every aim point is harbor-side water. From the mount at
 # (7, 3.6, 13.5) the sweep runs W → NW (tide marks → channel buoy) and never
@@ -153,6 +175,17 @@ var _lens_prop: Node3D
 var _lens_glint_pivot: Node3D
 var _lens_glint_material: StandardMaterial3D
 var _lens_glint_timer: float = 0.0
+var _objective_beacon: Node3D
+var _guide_trail: MultiMeshInstance3D
+var _guide_trail_material: StandardMaterial3D
+var _guide_trail_enabled: bool = false
+var _guide_trail_suppressed: bool = false
+var _guide_trail_hold_until: float = -1.0
+var _guide_trail_refresh: float = 0.0
+var _guide_trail_visible: bool = false
+var _tide_lead_material: StandardMaterial3D
+var _desk_glow: MeshInstance3D
+var _desk_glow_material: StandardMaterial3D
 
 
 func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
@@ -186,6 +219,19 @@ func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
 	var objective_beacon := handles.get("objective_beacon") as Node3D
 	if objective_beacon != null:
 		_beacon_material = objective_beacon.get_meta(&"beacon_material", null) as ShaderMaterial
+	_objective_beacon = objective_beacon
+	# D-073 station/trail handles (all optional: absent handles are no-ops).
+	_guide_trail = handles.get("guide_trail") as MultiMeshInstance3D
+	if _guide_trail != null:
+		_guide_trail_material = _guide_trail.get_meta(&"trail_material", null) as StandardMaterial3D
+		_guide_trail.visible = false
+	var tide_posts := handles.get("tide_mark_posts") as Node3D
+	if tide_posts != null:
+		_tide_lead_material = tide_posts.get_meta(&"lead_band_material", null) as StandardMaterial3D
+	var evidence_desk := handles.get("evidence_desk") as Node3D
+	if evidence_desk != null:
+		_desk_glow = evidence_desk.get_meta(&"desk_glow", null) as MeshInstance3D
+		_desk_glow_material = evidence_desk.get_meta(&"desk_glow_material", null) as StandardMaterial3D
 	_lens_prop = handles.get("lens_prop") as Node3D
 	if _lens_prop != null:
 		_lens_glint_pivot = _lens_prop.get_meta(&"glint_pivot", null) as Node3D
@@ -219,6 +265,7 @@ func setup(handles: Dictionary, player: PlayerInvestigator3D) -> void:
 		var particles := handles.get(key) as CPUParticles3D
 		if particles != null:
 			particles.set_meta("rest_position", particles.position)
+			particles.set_meta(&"rest_amount", particles.amount)
 			_beat_vfx[key] = particles
 	assert(BEAT_SPEC.size() == 6 and _beat_vfx.size() == BEAT_VFX_KEYS.size())
 	for spec in BEAT_SPEC.values():
@@ -294,6 +341,9 @@ func _process(delta: float) -> void:
 	_time += delta
 	_tension = lerpf(_tension, _tension_target, minf(delta * 0.6, 1.0))
 	_blend_weather(delta)
+	# Guide trail: visibility/re-lay policy runs on both motion paths (it is a
+	# steady semantic state under reduced motion; only its breathe is gated).
+	_tick_guide_trail(delta)
 	if _reduce_motion:
 		# Complete steady state: no camera travel, particles, pulsing, wave
 		# motion, flicker, bob, drift, or lightning — semantic values hold.
@@ -515,6 +565,10 @@ func play_refusal_pulse() -> void:
 	# The punch-up is a brief cold dip — buoy color and ambient shift toward
 	# wet_slate (≤0.6 s), then recover fully.
 	beat_played.emit("P-B04")
+	# A hold opens the 6 s post-hold guide-trail window (research C-P3): the
+	# next valid entry becomes discreetly walkable even before the hint ladder.
+	_guide_trail_hold_until = _time + GUIDE_TRAIL_HOLD_WINDOW_S
+	_guide_trail_refresh = 0.0
 	if _player != null:
 		_emit_vfx("refusal_motes", _player.global_position + Vector3(0.0, 1.15, 0.0))
 	if _buoy_light == null:
@@ -564,6 +618,8 @@ func play_verdict_ritual(target: Node3D, committed: bool) -> void:
 		_inspection_ring.scale = Vector3.ONE
 		_inspection_ring.visible = true
 		_finish_verdict(target, committed, anchor)
+		if committed:
+			_play_desk_settle_glow()
 		var hold := _new_tween("verdict_ring")
 		hold.tween_interval(0.9)
 		hold.tween_callback(func() -> void: _inspection_ring.visible = false)
@@ -606,6 +662,10 @@ func play_verdict_ritual(target: Node3D, committed: bool) -> void:
 			_inspection_ring, "global_position:y", anchor.y - 0.05, 0.16
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	# (iii) settle: release the ring; the lasting record is the ledger line.
+	# A commit also settles as a brief brass glow on Mira's evidence desk —
+	# "the entry is written" — the third pooled ritual mesh (no light).
+	if committed:
+		tween.tween_callback(func() -> void: _play_desk_settle_glow())
 	var settle_s: float = RITUAL_SPEC["settle_s"]
 	tween.tween_property(_ring_material, "albedo_color:a", 0.0, settle_s) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
@@ -645,6 +705,7 @@ func _finish_verdict(target: Node3D, committed: bool, anchor: Vector3) -> void:
 			_emit_vfx("mount_sparks", anchor)
 			_bloom_target_light(target)
 			_settle_nearest_interactable(anchor)
+			_play_verdict_fov_nudge()
 	else:
 		_request_cue("verdict_refusal_seal")
 		if not _reduce_motion:
@@ -841,8 +902,196 @@ func _emit_vfx(key: String, position_override: Variant = null) -> void:
 		# The verdict ritual re-anchors pooled emitters to acting props; without
 		# an override the burst returns to its authored rest position.
 		particles.position = particles.get_meta("rest_position", particles.position)
+	# The inspect sparkle borrows an emitter at a smaller amount; every other
+	# beat restores the authored pool size before it restarts.
+	var rest_amount: int = particles.get_meta(&"rest_amount", particles.amount)
+	if particles.amount != rest_amount:
+		particles.amount = rest_amount
 	particles.emitting = false
 	particles.restart()
+
+
+## ------------------------------------------------- D-073 guide trail (opt-in)
+
+func set_guide_trail_enabled(enabled: bool) -> void:
+	# Lane B's hint ladder toggles this (rung 3 on, drop off). Default off; the
+	# post-hold window is independent of it. Presentation only.
+	if _guide_trail_enabled == enabled:
+		return
+	_guide_trail_enabled = enabled
+	_guide_trail_refresh = 0.0
+	if not enabled:
+		_hide_guide_trail()
+
+
+func set_guide_trail_suppressed(suppressed: bool) -> void:
+	# Dialogue open/close hook (game_3d.gd). Tutorial, intro, and end card are
+	# already covered by the player's input lock.
+	_guide_trail_suppressed = suppressed
+	_guide_trail_refresh = 0.0
+	if suppressed:
+		_hide_guide_trail()
+
+
+func refresh_guide_trail() -> void:
+	# Cheap re-lay request (objective changed): the next tick re-lays at once.
+	_guide_trail_refresh = 0.0
+
+
+func guide_trail_snapshot() -> Dictionary:
+	# Engineering instrumentation only (never enters saves or hashes).
+	return {
+		"enabled": _guide_trail_enabled,
+		"suppressed": _guide_trail_suppressed,
+		"hold_window_open": _time < _guide_trail_hold_until,
+		"visible": _guide_trail != null and _guide_trail.visible,
+		"glints": (
+			0 if _guide_trail == null or _guide_trail.multimesh == null
+			else _guide_trail.multimesh.instance_count
+		),
+		"alpha_max": GUIDE_TRAIL_ALPHA_MAX,
+	}
+
+
+func _guide_trail_allowed() -> bool:
+	if _guide_trail == null or _player == null or _objective_beacon == null:
+		return false
+	if _guide_trail_suppressed or _player.input_locked:
+		return false
+	if not _guide_trail_enabled and _time >= _guide_trail_hold_until:
+		return false
+	var from := _player.global_position
+	var to := _objective_beacon.global_position
+	return Vector2(from.x, from.z).distance_to(Vector2(to.x, to.z)) > GUIDE_TRAIL_HIDE_DISTANCE_M
+
+
+func _hide_guide_trail() -> void:
+	if _guide_trail != null:
+		_guide_trail.visible = false
+	_guide_trail_visible = false
+
+
+func _tick_guide_trail(delta: float) -> void:
+	if _guide_trail == null:
+		return
+	_guide_trail_refresh -= delta
+	if _guide_trail_refresh > 0.0 and not _guide_trail_visible:
+		return
+	if _guide_trail_refresh <= 0.0:
+		_guide_trail_refresh = GUIDE_TRAIL_REFRESH_S
+		if not _guide_trail_allowed():
+			_hide_guide_trail()
+			return
+		update_guide_trail(_player.global_position, _objective_beacon.global_position)
+	if not _guide_trail_visible or _guide_trail_material == null:
+		return
+	if _reduce_motion:
+		_guide_trail_material.albedo_color.a = GUIDE_TRAIL_ALPHA_STEADY
+		return
+	# Breathe on the beacon's own 2.5 s sine so trail and target agree.
+	var breath := 0.5 + 0.5 * sin(_time * (TAU / BEACON_PULSE_PERIOD_S))
+	_guide_trail_material.albedo_color.a = lerpf(GUIDE_TRAIL_ALPHA_MIN, GUIDE_TRAIL_ALPHA_MAX, breath)
+
+
+func update_guide_trail(from: Vector3, to: Vector3) -> void:
+	# Lays the six pooled glints on the flat segment from `from` toward `to`:
+	# starts 1.1 m ahead of the feet (clear of the camera boom), stops 1.6 m
+	# short of the target (the beacon's own contact ring takes over), each
+	# sliver aligned with the walk direction and nudged alternately sideways
+	# so it reads as glints on wet planks, not a HUD chain. Pure layout: the
+	# caller decides visibility policy.
+	if _guide_trail == null or _guide_trail.multimesh == null:
+		return
+	var flat_from := Vector3(from.x, 0.0, from.z)
+	var flat_to := Vector3(to.x, 0.0, to.z)
+	var span := flat_to - flat_from
+	var length := span.length()
+	var count := _guide_trail.multimesh.instance_count
+	if length < GUIDE_TRAIL_HIDE_DISTANCE_M or count <= 0:
+		_hide_guide_trail()
+		return
+	var direction := span / length
+	var side := Vector3(-direction.z, 0.0, direction.x)
+	var start := 1.1
+	var stop := maxf(length - 1.6, start + 0.4)
+	var yaw := atan2(-direction.z, direction.x)
+	var basis := Basis(Vector3.UP, yaw)
+	for index in count:
+		var t := float(index) / float(maxi(count - 1, 1))
+		var along := lerpf(start, stop, t)
+		var lateral := 0.18 if index % 2 == 0 else -0.18
+		var origin := flat_from + direction * along + side * lateral + Vector3(0.0, 0.035, 0.0)
+		_guide_trail.multimesh.set_instance_transform(index, Transform3D(basis, origin))
+	_guide_trail.visible = true
+	_guide_trail_visible = true
+
+
+## ---------------------------------------------- D-073 station micro-beats
+
+func set_tide_lead_known(known: bool) -> void:
+	# Tide-post third band: dim painted amber until `tide_marks_hint` is
+	# committed, then a steady unshaded glow ("below the third mark"). Mirrors
+	# the snapshot the caller already read; steady state on both motion paths.
+	if _tide_lead_material == null:
+		return
+	var amber: Color = SealedLighthouseWorldBuilder.PALETTE.signal_amber
+	_tide_lead_material.emission_energy_multiplier = 1.4 if known else 0.0
+	_tide_lead_material.albedo_color = amber.lightened(0.1) if known else amber.darkened(0.25)
+
+
+func play_inspect_sparkle(target: Node3D) -> void:
+	# Observe beat (lighthouse_view / tide_marks inspection): the pooled
+	# LensGlints emitter, re-anchored above the inspected prop at a temporary
+	# amount <= 10 (restored by the next _emit_vfx call). No new emitter, no
+	# light; skipped entirely under reduced motion like every burst.
+	if _reduce_motion:
+		return
+	var particles := _beat_vfx.get("lens_glints") as CPUParticles3D
+	if particles == null:
+		return
+	var anchor := _ritual_anchor(target) + Vector3(0.0, 0.25, 0.0)
+	if not particles.has_meta(&"rest_amount"):
+		particles.set_meta(&"rest_amount", particles.amount)
+	particles.global_position = anchor
+	particles.amount = mini(INSPECT_SPARKLE_AMOUNT, int(particles.get_meta(&"rest_amount", particles.amount)))
+	particles.emitting = false
+	particles.restart()
+
+
+func _play_desk_settle_glow() -> void:
+	# Commit settle: a brief brass glow plate on Mira's evidence desk — the
+	# entry is written. Unshaded pooled mesh (verdict_ritual_meshes 3), never a
+	# light. Reduced motion: steady 0.9 s hold, no fade.
+	if _desk_glow == null or _desk_glow_material == null:
+		return
+	_desk_glow.visible = true
+	var tween := _new_tween("desk_glow")
+	if _reduce_motion:
+		_desk_glow_material.albedo_color.a = DESK_GLOW_ALPHA
+		tween.tween_interval(0.9)
+		tween.tween_callback(func() -> void: _desk_glow.visible = false)
+		return
+	_desk_glow_material.albedo_color.a = 0.0
+	tween.tween_property(_desk_glow_material, "albedo_color:a", DESK_GLOW_ALPHA, 0.12) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_desk_glow_material, "albedo_color:a", 0.0, 0.38) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func() -> void: _desk_glow.visible = false)
+
+
+func _play_verdict_fov_nudge() -> void:
+	# Commit verdict: 62 -> 60 -> 62 on the PLAYER camera over ~0.15 s. Never
+	# under reduced motion (caller-gated too) and never on a cinematic camera.
+	if _reduce_motion or _player == null or _player.camera == null:
+		return
+	if not _player.camera.current:
+		return
+	var camera := _player.camera
+	var tween := _new_tween("verdict_fov")
+	tween.tween_property(camera, "fov", VERDICT_FOV_NUDGE, VERDICT_FOV_NUDGE_S * 0.4) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(camera, "fov", VERDICT_FOV_REST, VERDICT_FOV_NUDGE_S * 0.6) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 func _new_tween(key: String) -> Tween:
@@ -864,7 +1113,7 @@ func _apply_motion_policy() -> void:
 		_stop_all_vfx()
 		for key in [
 			"intro", "ending", "lightning", "refusal", "commit_halo", "beam_fade",
-			"verdict_ring", "verdict_seal", "lens_glint",
+			"verdict_ring", "verdict_seal", "lens_glint", "desk_glow", "verdict_fov",
 		]:
 			var tween := _active_tweens.get(key) as Tween
 			if tween != null and tween.is_valid():
@@ -892,6 +1141,15 @@ func _apply_motion_policy() -> void:
 			_inspection_ring.visible = false
 		if _seal_line != null:
 			_seal_line.visible = false
+		# Desk glow hides, the player camera returns to its rest FOV, and the
+		# guide trail (a semantic state) re-lays steady on the next tick.
+		if _desk_glow != null:
+			_desk_glow.visible = false
+		if _player != null and _player.camera != null:
+			_player.camera.fov = VERDICT_FOV_REST
+		if _guide_trail_material != null:
+			_guide_trail_material.albedo_color.a = GUIDE_TRAIL_ALPHA_STEADY
+		_guide_trail_refresh = 0.0
 		if _buoy_root != null:
 			_buoy_root.position = _buoy_rest
 			_buoy_root.rotation = Vector3.ZERO

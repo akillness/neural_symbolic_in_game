@@ -168,3 +168,35 @@
 - 2026-09-03: D-066 pass — Fig. 3 `fig:playable-readout` (held / committed contribution clause / end-card receipt, LaTeX-trim crops of the tracked working captures bound as a second non-editable evidence exception) added to both manuscripts; EN/KO prose rewritten as a presentation-flow narrative without agent-workflow tokens; bibliography re-verified twice (three primary-source agents, then three Aside browser research sessions per user instruction to weight Aside's research higher); root `README.md` (EN default) + `README.ko.md` with badges, GIFs, page sheets, dashboard stills, and the 16 Korean deck slides. Report: [[wiki/reports/2026-09-03-paper-game-readout-figure-readme-and-reference-recheck]].
 - 2026-09-03: D-067 follow-up — Fig. 3 sources frozen to a dated working-capture set with shot receipts (illustration only, separate from promoted evidence), `--capture` now records stage→state bindings, KO manuscript inter-word spacing restored (`CJKspace=true`), generated-UI-art disclosure added to both manuscripts, README page sheets switched to JPEG.
 - 2026-09-03: D-068 — production now serves the live commit-gate dashboard (`/` → `/dashboard/`, game at `/public/`) via `scripts/deploy_vercel_dashboard.sh`; `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` verified byte-identical with zero-error desktop/mobile browser checks.
+- 2026-09-03: D-069 corrected citation-audit replica drift left by D-066: current Stage-5 summaries now match the 55-entry source of truth (48 VERIFIED / 7 PREPRINT / 22 Semantic Scholar rate-limited); S01 carries its ICCC proceedings source; S46 is bounded to an official accepted-poster identity rather than a proceedings claim; S53 preserves OpenReview/PDF Zeng-first equal-contribution order alongside the conflicting Li-first NeurIPS/GenProCC display, including the BibTeX note. The crosswalk validator derives and rejects stale redundant totals and contradictory matched/rate-limited index states. Source-ledger-bound KG and visual receipts were regenerated with graph/results metrics unchanged; EN/KO PDFs remain deterministic 8-page builds. Current operational receipts were also reconciled to the D-068 follow-up deployment `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`; full collection is 183 Pytest + 81 subtests and 140 unittest (the new citation module accounts for 3 tests). Report updated: [[wiki/reports/2026-09-03-paper-game-readout-figure-readme-and-reference-recheck]].
+
+## [2026-09-05 14:25:39] query | —yolo
+- Raw capture: [[raw/sources/prompts/2026/09/05/142539-01a071f5-dc0-yolo]]
+- Source note: [[wiki/sources/2026-09-05-142539-yolo]]
+- Query note: [[wiki/queries/2026-09-05-142539-yolo]]
+
+## [2026-09-05 14:47:52] query | 논문과 게임의 근서와 페이퍼내용에 대해 팩트체크와 개선사항 개선해서 업데이트 적용후 배포까지
+- Raw capture: [[raw/sources/prompts/2026/09/05/144752-01a07209-51f-prompt]]
+- Source note: [[wiki/sources/2026-09-05-144752-prompt]]
+- Query note: [[wiki/queries/2026-09-05-144752-prompt]]
+
+## [2026-09-05 14:53:40] query | 진행해
+- Raw capture: [[raw/sources/prompts/2026/09/05/145340-01a07209-51f-prompt]]
+- Source note: [[wiki/sources/2026-09-05-145340-prompt]]
+- Query note: [[wiki/queries/2026-09-05-145340-prompt]]
+
+## [2026-09-06 00:38:27] query | 이어서 진행해
+- Raw capture: [[raw/sources/prompts/2026/09/06/003827-01a07209-51f-prompt]]
+- Source note: [[wiki/sources/2026-09-06-003827-prompt]]
+- Query note: [[wiki/queries/2026-09-06-003827-prompt]]
+
+- [2026-09-06] D-072 bounded paper/game fact-check: six primary-source metadata rechecks, S44/S55 claim-scope corrections in EN/KO, complete dashboard gate-code mappings and composite-family counts, truthful hold-event labels, combined PDF/game release procedure. Full suite 188 tests / 83 subtests; full CI-equivalent gates and 8-page bilingual PDF checks pass. No result or human gate promotion. See [[wiki/reports/2026-09-06-paper-game-factcheck-and-release]].
+ append
+
+## [2026-09-18] report | Aside 근거 리뷰 — 게임 적용 논문과 플레이어 증거 경계
+- 기존 Aside 브라우저 조사 intake 2건(탐정/tutorial/HUD, commit-gate trace encoding)과 현재 원고·claim ledger·playtest packet을 대조해, engineering conformance와 player/model efficacy의 증거 경계를 재확인했다.
+- 13/13 authored fixture conformance, constructed regime의 live 5/5 guided 대 0/5 blind, Godot/Web 52/52·8/8은 각각 설계된 범위에서만 유효하며, 참가자 0명 때문에 comprehension/agency/fun/immersion은 미측정으로 유지했다.
+- JSON Schema 2020-12, W3C PROV-DM, OpenTelemetry, CHI PLAY 2024, IUI 2025, Xbox Accessibility Guidelines, WCAG 2.2를 근거로 trace state 분리·contextual tutorial·HOLD correction·접근성 gate·preregistered human/model study를 Cycle A/B로 정리했다.
+- 신규 보고서: [[wiki/reports/2026-09-18-aside-evidence-review-game-paper]]; `C-RESULT-001`–`005`와 G4/G6 status는 변경하지 않았다.
+
+- [2026-09-18] D-073 studio pass: Aside deep research (trace encoding; detective/tutorial/HUD) filed as intake; hash-bound `EvaluationTrace` mirror keeps the immutable machine bytes while the dashboard renders a truthful per-node trace (six explicit family states, short-circuit rule, legend per event); case-file board, `INFERENCE_BY_CODE`, hint ladder, coach cards, slot-assembly deduction, paged end card, four-zone HUD; world stations, guide trail, VFX, rig gesture clips; Higgsfield case-v1 pack (7 PNGs + evidence_desk.glb) with provenance; smoke 8/8, evaluate 16/16 (52/52 core + 4/4 extension), full CI-equivalent PASS; production `dpl_BkguPJPErtawmhjxU5cvg97PBsiq`. No result or human gate promotion. See [[wiki/reports/2026-09-18-d073-detective-loop-trace-mirror-and-release]].

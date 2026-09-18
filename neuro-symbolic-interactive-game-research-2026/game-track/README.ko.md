@@ -1,5 +1,13 @@
 # 게임 개발 트랙 — 봉인된 등대
 
+2026-09-06 업데이트: [게임·대시보드](https://sealed-lighthouse-trace-rpg.vercel.app/),
+[영문 논문](https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf),
+[한국어 논문](https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf).
+인용 범위를 바로잡은 한·영 논문과 규칙 집계 오류를 수정한 대시보드를 함께 배포했다.
+배포 파일 16개가 검증한 로컬 파일과 일치하며, 테스트 188개와 하위 검사 83개가 통과했다.
+공학적 시연이며 인간 사용성·모델 효과를 입증한 결과는 아니다.
+[현재 배포 검증 기록](../_workspace/current/qa/factcheck-release-2026-09-06.md)을 참고한다.
+
 게임 트랙은 연구 코드를 엔진 내부에 직접 결합하지 않는다. 목표 아키텍처는 엔진이 안정 브리지
 관찰을 보내고 연구 런타임이 권한 이벤트를 반환하는 구조다. 현재 Godot fixture는 엔진 로컬 저자
 정책 미러를 실행한다. 지원 이벤트는 `schemas/game-bridge.schema.json`으로 projection되어 스키마
@@ -74,8 +82,9 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 | 중복 이벤트 fixture | `10/10` | PASS |
 | timeout fixture | `10/10` | PASS |
 | 손상 저장 fixture | `10/10` | PASS |
-| 프레젠테이션 불변조건 | `12/12` | PASS |
-| **합계** | **`52/52`** | **PASS** |
+| 프레젠테이션 불변조건 (core) | `12/12` | PASS |
+| **합계 (core, 논문 인용 ENG1)** | **`52/52`** | **PASS** |
+| D-073 확장 불변조건 (증거판·추리·힌트 사다리·trace mirror) | `4/4` (전체 `56/56`) | PASS |
 | 아키타입 밸런스 프로브 | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 저자 fixture `4/4` 모두 정확한 종료 상태 SHA-256
@@ -114,14 +123,14 @@ G6는 프로덕션 save/reload, 현 배포 모바일 검증, 사람 포인터/�
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-현재 영문 UI + 추적 플레이어 산출물은 배포됐다: manifest 파일 11개 / 50,746,755바이트,
-공개 런타임 파일 10개 / 50,746,242바이트, PCK 10,893,980바이트, SHA-256
-`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
-배포 상태: **[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-공개 런타임 파일 10개는 익명 요청에서 모두 `200`이며 로컬 바이트와 일치했다. WASM은
-`application/wasm`, OFL 고지는 `text/plain`이었고 설정된 응답 헤더가 유지됐으며
-`vercel.json`은 `404`를 반환했다. 프로덕션 데스크톱 스모크는 시작 게이트 → 안내 3면 →
-인게임 전환과 콘솔·페이지 오류 0건을 확인했다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는
+현재 영문 UI + 추적 플레이어 산출물은 `/public/`에 배포됐다: 런타임 파일 10개 /
+50,754,386바이트, PCK 10,902,124바이트, SHA-256
+`b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. 4파일 / 32,117바이트
+commit-gate 대시보드는 사이트 루트에서 `/dashboard/`로 서빙된다.
+배포 상태: **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+런타임과 대시보드 파일은 익명 요청에서 성공 응답을 주고 스테이징 바이트와 일치했다.
+리다이렉트·MIME·보안 헤더·동일 출처 임베드 프레임 메시지 가드를 확인했다. 데스크톱과
+390×844 대시보드 검사는 콘솔·페이지 오류 0건, 가로 넘침 0건이었다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는
 의식+텍스처 빌드를 서빙했다:
 파일 11개, `index.pck` 5,970,516바이트, SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; 서빙된 html/pck/wasm을

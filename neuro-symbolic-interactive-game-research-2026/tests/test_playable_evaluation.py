@@ -9,10 +9,12 @@ from pathlib import Path
 import pytest
 
 from scripts.run_playable_evaluation import (
+    CORE_PRESENTATION_CHECKS,
     EXACT_TERMINAL_HASH,
     EXPECTED_FIXTURE_CHECKS,
     EXPECTED_FIXTURE_IDS,
     EXPECTED_PRESENTATION_CHECKS,
+    EXTENSION_PRESENTATION_CHECKS,
     FIXTURE_FILES,
     GODOT_PROJECT,
     LATEST_DOCS,
@@ -155,7 +157,7 @@ def _screenshots() -> list[dict]:
     ]
 
 
-def test_matrix_is_exactly_claim_bounded_and_counts_52_of_52() -> None:
+def test_matrix_keeps_the_core_52_of_52_headline_and_counts_the_extension_separately() -> None:
     matrix = build_matrix(
         godot_version="4.7.1.stable.official.test",
         fixtures=_fixture_rows(),
@@ -178,9 +180,17 @@ def test_matrix_is_exactly_claim_bounded_and_counts_52_of_52() -> None:
         "presentation_checks_total": 12,
         "combined_checks_passed": 52,
         "combined_checks_total": 52,
+        "extension_checks_passed": 4,
+        "extension_checks_total": 4,
+        "all_checks_passed": 56,
+        "all_checks_total": 56,
         "screenshots_valid": 4,
         "screenshots_total": 4,
     }
+    assert len(CORE_PRESENTATION_CHECKS) == 12 and len(EXTENSION_PRESENTATION_CHECKS) == 4
+    assert not (CORE_PRESENTATION_CHECKS & EXTENSION_PRESENTATION_CHECKS)
+    assert matrix["presentation"]["check_ids"] == sorted(CORE_PRESENTATION_CHECKS)
+    assert matrix["presentation"]["extension_check_ids"] == sorted(EXTENSION_PRESENTATION_CHECKS)
     assert [row["counts"]["fallbacks"] for row in matrix["authored_fixtures"]] == [
         1,
         1,
@@ -199,7 +209,7 @@ def test_fixture_summary_fails_closed_on_event_count_drift() -> None:
         summarize_fixture_run(fixture, summary, events)
 
 
-def test_presentation_summary_requires_exact_twelve_check_contract_and_state_isolation() -> None:
+def test_presentation_summary_requires_exact_sixteen_check_contract_and_state_isolation() -> None:
     report = {
         "evaluation": "sealed-lighthouse-3d-presentation-engineering",
         "engineering_only": True,
@@ -261,6 +271,7 @@ def test_atomic_latest_outputs_are_byte_stable() -> None:
         markdown = render_markdown(matrix)
         assert "G4 remains `UNASSESSED`" in markdown
         assert "52/52" in markdown
+        assert "D-073 extension checks: `4/4` (all checks `56/56`)" in markdown
 
 
 def test_atomic_write_replaces_without_leaving_a_temporary_file() -> None:

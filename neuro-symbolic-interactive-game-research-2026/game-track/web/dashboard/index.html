@@ -14,6 +14,8 @@
       <span class="sub">live commit-gate dashboard · <em>The Sealed Lighthouse</em></span>
     </div>
     <div class="status">
+      <a class="paper-link" href="/paper/en.pdf" download>English paper</a>
+      <a class="paper-link" href="/paper/ko.pdf" download>한국어 논문</a>
       <span id="link-state" class="pill waiting">waiting for game events</span>
       <span id="session-hash" class="mono" title="SHA-256 of the committed canonical snapshot">state —</span>
       <span class="pill boundary" title="Events are mirrored from the game's presentation layer; the page has no authority over canonical state.">engineering demonstration · not evidence</span>
@@ -24,7 +26,7 @@
     <section class="game card">
       <div class="card-head">
         <h2>Playable (public-safe Web build, embedded)</h2>
-        <span class="hint">click the canvas, then WASD / mouse / [E] · each proposal is checked against only the gate families its own operation type uses</span>
+        <span class="hint">click the canvas, then WASD / mouse / [E] · each proposal runs only the checks its own operation type uses, in engine order; the trace card lights exactly those checks and marks every other family skipped or not evaluated</span>
       </div>
       <div class="frame-wrap">
         <iframe id="game" src="../public/index.html" title="The Sealed Lighthouse" allow="autoplay; fullscreen"></iframe>
@@ -33,20 +35,25 @@
 
     <section class="nebula card">
       <div class="card-head">
-        <h2>Commit gate — paper pipeline diagram (not a per-node evaluation trace)</h2>
-        <span class="hint">node weight = events routed through it · green pulse = commit · coral pulse = hold (state unchanged)</span>
+        <h2>Commit gate - live per-node evaluation trace</h2>
+        <span class="hint">node state = engine family_states for the last proposal (pass / fail / skipped / not evaluated, no default) · family weight = checks evaluated there, not events routed · green/coral = verdict only</span>
       </div>
       <p class="diagram-boundary">
-        This graph animates the paper's full six-family predicate schema (Fig. 2 / Table II) as one
-        pipeline. On <strong>commit</strong> it pulses all six families because every operation type is
-        drawn from this shared schema — it does <strong>not</strong> mean all six were individually
-        evaluated for that proposal. Each engine operation (<code>acquire_object</code>,
-        <code>install_lens</code>, <code>reveal_hint</code>) only ever runs the 1–2 families relevant to
-        it and returns on the first failing check; the other families are architecturally out of scope
-        for that call, not silently passed. On <strong>hold</strong>, only the family named in the
-        engine's returned gate code turns coral — that part does reflect the real failing check.
+        Pulses show only the checks the engine executed for that proposal, in execution order, read from
+        the returned trace. A hold lights the failing check and nothing after it: in-scope checks the
+        engine never reached are marked <strong>skipped</strong> (the disclosure pair is always evaluated
+        together). Families outside the operation's scope stay hatched, are labelled
+        <strong>not evaluated</strong>, and are listed as such; that is not a pass. Family weight counts
+        checks evaluated there, not events routed. This is engineering demonstration, not efficacy or
+        usability evidence.
       </p>
-      <svg id="nebula" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated commit-gate pipeline"></svg>
+      <svg id="nebula" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Per-proposal commit-gate evaluation trace"></svg>
+      <div class="legend">
+        <ul id="legend-rows" class="legend-rows"></ul>
+        <div id="legend-counts" class="legend-counts mono"></div>
+      </div>
+      <h3>Last proposal trace <span class="hint">(execution order · short-circuit rule from the engine's held_at, not inferred)</span></h3>
+      <pre id="last-trace" class="last-trace mono"></pre>
     </section>
 
     <section class="metrics card">
@@ -60,11 +67,11 @@
         <div class="kpi"><div class="k">episode</div><div class="v" id="kpi-episode">open</div></div>
       </div>
       <h3>Holds by predicate family <span class="hint">(paper Table II · engine codes)</span></h3>
-      <table id="gate-table" class="tbl"></table>
+      <div class="tbl-wrap"><table id="gate-table" class="tbl"></table></div>
       <h3>Trace hash chain <span class="hint">(C3: each commit links a new snapshot hash; holds leave it unchanged)</span></h3>
       <ol id="hash-chain" class="chain mono"></ol>
       <h3>Session vs frozen paper counts</h3>
-      <table id="ref-table" class="tbl"></table>
+      <div class="tbl-wrap"><table id="ref-table" class="tbl"></table></div>
     </section>
 
     <section class="timeline card">

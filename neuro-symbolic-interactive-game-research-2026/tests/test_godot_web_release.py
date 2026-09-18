@@ -83,6 +83,61 @@ def test_vercel_config_does_not_claim_unneeded_cross_origin_isolation() -> None:
     assert "X-Content-Type-Options" in config
 
 
+def test_dashboard_reference_matches_engine_gate_codes_and_links_papers() -> None:
+    game = (GODOT_PROJECT / "scripts" / "game3d" / "game_3d.gd").read_text(encoding="utf-8")
+    mapping_body = game.split("const GATE_BY_CODE := {", 1)[1].split("}\n", 1)[0]
+    gate_by_code = dict(re.findall(r'"([A-Z][A-Z0-9_]+)":\s*"([A-Z/ ]+)"', mapping_body))
+    reference = json.loads(
+        (WEB_ROOT / "dashboard" / "paper-reference.json").read_text(encoding="utf-8")
+    )
+
+    reference_pairs = {
+        (code, predicate["family"])
+        for predicate in reference["paper_predicates"]
+        for code in predicate["engine_codes"]
+    }
+    engine_pairs = {
+        (code, family) for code, gate in gate_by_code.items() for family in gate.split("/")
+    }
+    assert reference_pairs == engine_pairs
+
+    html = (WEB_ROOT / "dashboard" / "index.html").read_text(encoding="utf-8")
+    assert 'href="/paper/en.pdf"' in html
+    assert 'href="/paper/ko.pdf"' in html
+
+
+def test_dashboard_renders_the_engine_trace_contract_not_a_schematic() -> None:
+    # D-073: the commit-gate card is a per-node evaluation trace driven by the
+    # engine's payload.trace (family_states has no default state); the old
+    # "schematic" disclaimer must not survive anywhere in the served dashboard.
+    dashboard = WEB_ROOT / "dashboard"
+    html = (dashboard / "index.html").read_text(encoding="utf-8")
+    script = (dashboard / "dashboard.js").read_text(encoding="utf-8")
+    game = (GODOT_PROJECT / "scripts" / "game3d" / "game_3d.gd").read_text(encoding="utf-8")
+
+    for text in (html, script):
+        assert "not a per-node evaluation trace" not in text
+        assert "paper pipeline diagram" not in text
+    assert "Commit gate - live per-node evaluation trace" in html
+    assert 'id="legend-rows"' in html and 'id="last-trace"' in html
+    assert "This is engineering demonstration, not efficacy or" in html
+
+    for field in (
+        "family_states",
+        "evaluated_gates",
+        "held_at",
+        "short_circuit",
+        "skipped",
+        "out_of_scope",
+    ):
+        assert f'"{field}"' in game
+        assert field in script
+    assert "legacy: schema-only" in script
+    assert 'id: "hatch-oos"' in script
+    assert "== short-circuit here: remaining in-scope checks were not run ==" in script
+    assert "This is a per-proposal evaluation trace, not a schematic." in script
+
+
 def test_public_play_recovers_from_falling_outside_the_dock() -> None:
     player = (GODOT_PROJECT / "scripts/game3d/player_3d.gd").read_text(encoding="utf-8")
     controller = (GODOT_PROJECT / "scripts/game3d/game_3d.gd").read_text(encoding="utf-8")

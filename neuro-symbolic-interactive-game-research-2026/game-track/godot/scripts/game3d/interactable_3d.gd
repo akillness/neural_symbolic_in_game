@@ -10,6 +10,12 @@ const FOCUS_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
 # Per-frame director poll: a cached StringName avoids one String→StringName
 # conversion per interactable per frame.
 const REDUCE_MOTION_PROPERTY := &"reduce_motion"
+# Marker ring rest tilt (deg), the focused sway added on top of it, and the
+# D-073 inverse-contrast rim ring alpha envelope (rest -> focus).
+const RING_REST_TILT_DEG := 12.0
+const RING_FOCUS_SWAY_DEG := 4.0
+const RIM_ALPHA_REST := 0.22
+const RIM_ALPHA_FOCUS := 0.55
 
 @export var interaction_id: String = ""
 @export var display_name: String = ""
@@ -25,6 +31,12 @@ var _marker_anchor: Node3D
 var _marker_ring: MeshInstance3D
 var _marker_label: Label3D
 var _marker_material: StandardMaterial3D
+# D-073 class signifier (Aside research C-P3): every inspectable station
+# shares one inverse-contrast paper-fog rim ring at ground level that
+# brightens on focus. Decorative props never get it, so "has a rim" reads as
+# "can be inspected" — the lens is one member of a learnable class of five.
+var _rim_ring: MeshInstance3D
+var _rim_material: StandardMaterial3D
 var _director: Node
 var _player: PlayerInvestigator3D
 
@@ -51,6 +63,11 @@ func _ready() -> void:
 	_phase = float(abs(interaction_id.hash()) % 628) * 0.01
 	_director = get_tree().get_first_node_in_group("sl_presentation_director")
 	_bind_player.call_deferred()
+	# The trigger sphere floats at its authored anchor height; the rim sits on
+	# the deck under it (HarborWorld is at the origin, so global y == position.y
+	# and every station's deck is y = 0).
+	if _rim_ring != null:
+		_rim_ring.position.y = 0.045 - position.y
 
 
 func _build_focus_marker() -> void:
@@ -75,7 +92,7 @@ func _build_focus_marker() -> void:
 	_marker_ring.mesh = ring_mesh
 	# A slight fixed tilt makes the slow idle Y-spin below readable (a flat
 	# torus is rotationally symmetric — untilted it would spin invisibly).
-	_marker_ring.rotation_degrees.x = 12.0
+	_marker_ring.rotation_degrees.x = RING_REST_TILT_DEG
 	_marker_anchor.add_child(_marker_ring)
 
 	_marker_label = Label3D.new()
@@ -96,6 +113,19 @@ func _build_focus_marker() -> void:
 	_marker_label.position = Vector3(0.0, 0.78, 0.0)
 	_marker_label.visible = false
 	_marker_anchor.add_child(_marker_label)
+
+	_rim_ring = MeshInstance3D.new()
+	_rim_ring.name = "RimRing"
+	var rim_mesh := TorusMesh.new()
+	rim_mesh.inner_radius = 0.80
+	rim_mesh.outer_radius = 0.88
+	rim_mesh.rings = 28
+	rim_mesh.ring_segments = 4
+	_rim_material = SealedLighthouseWorldBuilder.paper_trim_material(0.35, RIM_ALPHA_REST)
+	rim_mesh.material = _rim_material
+	_rim_ring.mesh = rim_mesh
+	_rim_ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(_rim_ring)
 
 
 func _bind_player() -> void:
@@ -142,6 +172,8 @@ func _process(delta: float) -> void:
 	if _marker_anchor == null:
 		return
 	_marker_anchor.visible = enabled
+	if _rim_ring != null:
+		_rim_ring.visible = enabled
 	if not enabled:
 		_marker_label.visible = false
 		return
@@ -169,6 +201,7 @@ func _process(delta: float) -> void:
 		_marker_anchor.position.y = 0.22
 		_marker_anchor.rotation.y = 0.0
 		_marker_ring.rotation.y = 0.0
+		_marker_ring.rotation_degrees.x = RING_REST_TILT_DEG
 		_settle_weight = 0.0
 		emission += _confirm_weight * 0.8
 	else:
@@ -183,6 +216,11 @@ func _process(delta: float) -> void:
 		var breathe := sin(_phase * 1.7)
 		scale_value += breathe * 0.03 * _focus_weight
 		emission += maxf(0.0, breathe) * 0.5 * _focus_weight
+		# Focused sway: the tilt itself rocks ±4° on a slower sine, so the
+		# focused ring visibly "turns over" the item instead of only spinning.
+		_marker_ring.rotation_degrees.x = (
+			RING_REST_TILT_DEG + sin(_phase * 0.9) * RING_FOCUS_SWAY_DEG * _focus_weight
+		)
 		# Confirm flash: bright spike with a small outward pop that decays fast.
 		emission += _confirm_weight * 1.6
 		scale_value += _confirm_weight * 0.09
@@ -195,3 +233,12 @@ func _process(delta: float) -> void:
 		SealedLighthouseWorldBuilder.PALETTE.signal_amber,
 		minf(ring_alpha + _confirm_weight * 0.1, 1.0)
 	)
+	if _rim_material != null:
+		# Inverse-contrast rim: steady paper-fog at rest, brighter on focus
+		# (light-independent — unshaded, so fog and tension grades cannot
+		# swallow it). Same envelope on both motion paths.
+		_rim_material.albedo_color = Color(
+			SealedLighthouseWorldBuilder.PALETTE.paper_fog,
+			lerpf(RIM_ALPHA_REST, RIM_ALPHA_FOCUS, _focus_weight)
+		)
+		_rim_material.emission_energy_multiplier = lerpf(0.35, 1.0, _focus_weight)

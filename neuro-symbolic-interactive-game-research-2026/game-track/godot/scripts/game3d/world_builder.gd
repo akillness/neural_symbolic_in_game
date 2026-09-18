@@ -23,9 +23,13 @@ const PACK_3D_RELATIVE := "../assets/concepts/pack-3d"
 
 # Presentation budget (Web/Compatibility renderer): five preallocated CPU burst
 # emitters, at most 18 live particles per beat, no new VFX-only lights (the
-# ending signal beam, waterline mist, commit halo, and verdict-ritual meshes
-# are unshaded static meshes, not lights), and instanced repetition for dock
-# dressing. These are starting caps, not a measured frame-performance claim.
+# ending signal beam, waterline mist, commit halo, verdict-ritual meshes, the
+# evidence-desk settle glow, and the guide-trail glints are unshaded static
+# meshes, not lights), and instanced repetition for dock dressing. These are
+# structural inventory caps, not a measured frame-performance claim.
+# D-073: verdict_ritual_meshes 2 -> 3 (InspectionRing, SealLine, DeskGlow) and
+# guide_trail_glints 6 (one MultiMesh surface) are inventory counts, not
+# measured cost changes.
 const PUBLIC_SAFE_ARG := "--public-safe"
 const TRACKED_PLAYER_RIG_PATH := "res://assets/player/higgsfield-player.glb"
 const PRESENTATION_VFX_BUDGET := {
@@ -36,11 +40,15 @@ const PRESENTATION_VFX_BUDGET := {
 	"web_continuous_rain_particles": 360,
 	"desktop_continuous_rain_particles": 480,
 	"waterline_mist_quads": 3,
-	"verdict_ritual_meshes": 2,
+	"verdict_ritual_meshes": 3,
+	"guide_trail_glints": 6,
 	"vfx_only_lights": 0,
 	"blur_passes": 0,
 	"raymarch_samples": 0,
 }
+# Evidence-desk prop fit: the GLB (lane D, optional) is scaled so its local
+# AABB height lands at this many metres; the procedural fallback matches it.
+const EVIDENCE_DESK_TARGET_HEIGHT_M := 1.2
 
 
 static func load_pack_texture(file_name: String) -> Texture2D:
@@ -160,6 +168,66 @@ static func attach_model(
 	return model
 
 
+static func model_local_aabb(model: Node3D) -> AABB:
+	# Union of every MeshInstance3D AABB under `model`, expressed in the model
+	# root's own local space (the root's transform is excluded, so the result is
+	# independent of where/how the root is later placed or scaled). Returns an
+	# empty-size AABB when the scene carries no mesh.
+	var boxes: Array[AABB] = []
+	for child in model.get_children():
+		_collect_mesh_aabbs(child, Transform3D.IDENTITY, boxes)
+	if boxes.is_empty():
+		return AABB()
+	var merged: AABB = boxes[0]
+	for index in range(1, boxes.size()):
+		merged = merged.merge(boxes[index])
+	return merged
+
+
+static func _collect_mesh_aabbs(node: Node, parent_transform: Transform3D, boxes: Array[AABB]) -> void:
+	var accumulated := parent_transform
+	var spatial := node as Node3D
+	if spatial != null:
+		accumulated = parent_transform * spatial.transform
+		var mesh_instance := spatial as MeshInstance3D
+		if mesh_instance != null and mesh_instance.mesh != null:
+			boxes.append(accumulated * mesh_instance.mesh.get_aabb())
+	for child in node.get_children():
+		_collect_mesh_aabbs(child, accumulated, boxes)
+
+
+static func attach_model_fit_height(
+	parent: Node3D,
+	file_name: String,
+	position: Vector3,
+	target_height_m: float,
+	y_rotation_deg: float = 0.0
+) -> Node3D:
+	# attach_model with the uniform scale derived from the loaded GLB's own
+	# AABB so the prop lands at `target_height_m` regardless of the authoring
+	# unit, and lifted by -min_y*scale so its base rests at `position.y`
+	# whether the pivot is the base or the AABB center. The measured height,
+	# applied scale, and local AABB are stored as metas (`fit_measured_height_m`,
+	# `fit_scale`, `fit_local_aabb`) for the engineering report. Null when the
+	# kit file is absent — callers keep their procedural fallback.
+	var model := load_model_scene(file_name)
+	if model == null:
+		return null
+	var bounds := model_local_aabb(model)
+	var measured_height := bounds.size.y
+	var scale := 1.0
+	if measured_height > 0.001:
+		scale = target_height_m / measured_height
+	model.position = position + Vector3(0.0, -bounds.position.y * scale, 0.0)
+	model.scale = Vector3.ONE * scale
+	model.rotation_degrees.y = y_rotation_deg
+	model.set_meta(&"fit_measured_height_m", measured_height)
+	model.set_meta(&"fit_scale", scale)
+	model.set_meta(&"fit_local_aabb", bounds)
+	parent.add_child(model)
+	return model
+
+
 static func add_box_collider(parent: Node3D, size: Vector3, position: Vector3) -> void:
 	var body := StaticBody3D.new()
 	var shape := CollisionShape3D.new()
@@ -225,6 +293,14 @@ static func brass_fitting_material() -> StandardMaterial3D:
 	if material.albedo_texture == null:
 		material = textured_material("SL3D-T02-oxidized-brass.png", PALETTE.brass)
 	return material
+
+
+static func paper_trim_material(energy: float = 0.28, alpha: float = 1.0) -> StandardMaterial3D:
+	# D-073 station readability (Aside research D-P2): light-independent
+	# paper-fog edge trims. Unshaded, low-energy — they read through the storm
+	# fog and tension grades without adding a single light. Never amber, never
+	# a ring: the amber focus ring stays the one "this is inspectable" class.
+	return emissive_material(PALETTE.paper_fog, energy, alpha)
 
 
 static func add_box(parent: Node3D, size: Vector3, position: Vector3, material: Material, with_collision: bool = true) -> MeshInstance3D:
@@ -312,6 +388,14 @@ static func build(root: Node3D) -> Dictionary:
 	handles["lamp_mount"] = _build_lamp_mount(world)
 	handles["tide_marks"] = _build_tide_marks(world)
 	handles["buoy_light"] = _build_buoy(world)
+	# D-073 station dressing: each evidence site reads from afar as a distinct
+	# station. All of it is decorative (no amber rings, nothing pickable-
+	# looking) and stays outside the golden-path walking corridors.
+	handles["lamp_store_station"] = _build_lamp_store_station(world)
+	handles["mount_platform"] = _build_mount_platform(world)
+	handles["tide_mark_posts"] = _build_tide_mark_posts(world)
+	handles["evidence_desk"] = _build_evidence_desk(world)
+	handles["guide_trail"] = _build_guide_trail(world)
 	_build_waterline_mist(world)
 	_build_commit_halo(world)
 	_build_verdict_ritual_pool(world)
@@ -842,6 +926,291 @@ static func _build_tide_marks(world: Node3D) -> Node3D:
 	return marks
 
 
+static func _build_lamp_store_station(world: Node3D) -> Node3D:
+	# D-073 station (a): the lamp store reads from the quay as a signed shop.
+	# A brass bracket off the hut's west wall hangs two planks ("LAMP STORE" /
+	# "LENS RECOVERY") above the recovery bench, plus two stacked crates on the
+	# south strip of the LensApproachDeck. World coordinates; nothing here
+	# touches the LampStore node, the deck, the lens anchor, or its collider.
+	# Corridor check: the quay->lens route runs along the deck's north strip
+	# (z in [2.4, 4.5]); the crates sit on the south strip (z <= -1.2) and the
+	# sign hangs at y >= 1.72 (above the 1.7 m capsule), so neither blocks it.
+	var station := Node3D.new()
+	station.name = "LampStoreStation"
+	world.add_child(station)
+	var brass := brass_fitting_material()
+	var plank := flat_material(PALETTE.storm_ink.lightened(0.14))
+	var trim := paper_trim_material()
+	# Bracket: wall plate + arm out along -x + hanger bar along z.
+	add_box(station, Vector3(0.06, 0.34, 0.16), Vector3(-9.16, 2.72, 0.0), brass, false)
+	add_box(station, Vector3(1.10, 0.06, 0.06), Vector3(-9.66, 2.85, 0.0), brass, false)
+	add_box(station, Vector3(0.06, 0.06, 1.30), Vector3(-10.2, 2.85, 0.0), brass, false)
+	for z in [-0.55, 0.55]:
+		add_box(station, Vector3(0.03, 0.30, 0.03), Vector3(-10.2, 2.67, z), brass, false)
+	var top_plank := add_box(station, Vector3(0.05, 0.28, 1.35), Vector3(-10.2, 2.38, 0.0), plank, false)
+	top_plank.name = "SignTop"
+	add_box(station, Vector3(0.06, 0.02, 1.37), Vector3(-10.2, 2.53, 0.0), trim, false)
+	for z in [-0.55, 0.55]:
+		add_box(station, Vector3(0.03, 0.14, 0.03), Vector3(-10.2, 2.17, z), brass, false)
+	var low_plank := add_box(station, Vector3(0.05, 0.22, 1.10), Vector3(-10.2, 1.99, 0.0), plank, false)
+	low_plank.name = "SignLow"
+	add_box(station, Vector3(0.06, 0.02, 1.12), Vector3(-10.2, 2.11, 0.0), trim, false)
+	# Both faces carry the text: the west face for the recovery deck, the east
+	# face for the quay approach. ASCII only; the bracket idiom is UI-side.
+	for face in [-1.0, 1.0]:
+		var yaw := -90.0 if face < 0.0 else 90.0
+		var top_label := _station_label("LAMP STORE", 24, Vector3(-10.2 + face * 0.03, 2.38, 0.0), yaw)
+		top_label.name = "SignTopLabel%s" % ("W" if face < 0.0 else "E")
+		station.add_child(top_label)
+		var low_label := _station_label("LENS RECOVERY", 16, Vector3(-10.2 + face * 0.03, 1.99, 0.0), yaw)
+		low_label.name = "SignLowLabel%s" % ("W" if face < 0.0 else "E")
+		station.add_child(low_label)
+	# Stacked crates (kit GLB when present, procedural boxes otherwise). Same
+	# collider convention as the dock crates so the deck edge stays solid.
+	var crates := Node3D.new()
+	crates.name = "LampStoreCrates"
+	station.add_child(crates)
+	var crate_material := flat_material(PALETTE.wet_slate.lightened(0.08))
+	var crate_specs: Array = [
+		{"base": Vector3(-12.2, 0.0, -1.7), "scale": 0.95, "rot": 8.0},
+		{"base": Vector3(-12.2, 0.95 * 1.1, -1.7), "scale": 0.72, "rot": -21.0},
+	]
+	for spec in crate_specs:
+		var crate_size: float = spec["scale"]
+		var center: Vector3 = spec["base"] + Vector3(0.0, crate_size * 0.55, 0.0)
+		if attach_model(crates, "dock_crate.glb", spec["base"], crate_size, spec["rot"]) != null:
+			add_box_collider(crates, Vector3.ONE * crate_size * 1.1, center)
+		else:
+			add_box(crates, Vector3.ONE * crate_size * 1.1, center, crate_material)
+	return station
+
+
+static func _station_label(text: String, font_size: int, position: Vector3, yaw_deg: float) -> Label3D:
+	var label := Label3D.new()
+	label.text = text
+	label.font_size = font_size
+	label.pixel_size = 0.008
+	label.modulate = PALETTE.paper_fog
+	label.outline_modulate = PALETTE.storm_ink
+	label.outline_size = 8
+	# One face per label (the opposite face has its own label), so neither
+	# mirrored back can bleed through a thin plank edge.
+	label.double_sided = false
+	label.position = position
+	label.rotation_degrees.y = yaw_deg
+	return label
+
+
+static func _build_mount_platform(world: Node3D) -> Node3D:
+	# D-073 station (b): the harbor signal mount stands on a railed 1.5 m
+	# platform ring with three brass bollards. The rim is a flat torus (no
+	# collision — the player walks over it), the rail arc covers only the
+	# seaward east side (angles -50..+50 deg from +x) so the SW approach from
+	# Mira and the W approach from lighthouse_view stay open. Bollards are
+	# decorative (no collision), like the dock pilings. Nothing here moves the
+	# lamp_mount anchor, its light, or the SignalBeamPivot.
+	var platform := Node3D.new()
+	platform.name = "MountPlatform"
+	platform.position = Vector3(7.0, 0.0, 13.5)
+	world.add_child(platform)
+	var rim := MeshInstance3D.new()
+	rim.name = "PlatformRim"
+	var rim_mesh := TorusMesh.new()
+	rim_mesh.inner_radius = 1.40
+	rim_mesh.outer_radius = 1.48
+	rim_mesh.rings = 36
+	rim_mesh.ring_segments = 4
+	rim.mesh = rim_mesh
+	# Physical deck edge, not a signifier: shaded slate, so the paper-fog rim
+	# ring inside it stays the one "inspectable" class marker (research C-P3).
+	rim.material_override = flat_material(PALETTE.storm_ink.lightened(0.24), 0.6)
+	rim.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	rim.position = Vector3(0.0, 0.02, 0.0)
+	platform.add_child(rim)
+	var post_material := flat_material(PALETTE.storm_ink.lightened(0.12))
+	var post_transforms: Array[Transform3D] = []
+	var rail_transforms: Array[Transform3D] = []
+	var rail_radius := 1.42
+	var angles: Array[float] = []
+	for index in range(6):
+		angles.append(deg_to_rad(-50.0 + index * 20.0))
+	for angle in angles:
+		post_transforms.append(
+			Transform3D(Basis(), Vector3(cos(angle) * rail_radius, 0.48, sin(angle) * rail_radius))
+		)
+	for index in range(angles.size() - 1):
+		var a: float = angles[index]
+		var b: float = angles[index + 1]
+		var start := Vector3(cos(a) * rail_radius, 0.0, sin(a) * rail_radius)
+		var end := Vector3(cos(b) * rail_radius, 0.0, sin(b) * rail_radius)
+		var mid := (start + end) * 0.5
+		var yaw := atan2(-(end.z - start.z), end.x - start.x)
+		var basis := Basis(Vector3.UP, yaw)
+		rail_transforms.append(Transform3D(basis, mid + Vector3(0.0, 0.92, 0.0)))
+		rail_transforms.append(Transform3D(basis, mid + Vector3(0.0, 0.52, 0.0)))
+	add_multimesh_boxes(platform, "PlatformRailPosts", Vector3(0.08, 0.96, 0.08), post_transforms, post_material)
+	var chord := 2.0 * rail_radius * sin(deg_to_rad(10.0))
+	add_multimesh_boxes(platform, "PlatformRails", Vector3(chord + 0.06, 0.05, 0.05), rail_transforms, paper_trim_material(0.18))
+	var brass := brass_fitting_material()
+	var cap := paper_trim_material(0.2)
+	for angle_deg in [95.0, 175.0, 290.0]:
+		var angle := deg_to_rad(angle_deg)
+		var base := Vector3(cos(angle) * 1.3, 0.0, sin(angle) * 1.3)
+		var bollard := add_cylinder(platform, 0.11, 0.5, base + Vector3(0.0, 0.25, 0.0), brass, false)
+		bollard.name = "Bollard%d" % int(angle_deg)
+		add_cylinder(platform, 0.13, 0.03, base + Vector3(0.0, 0.515, 0.0), cap, false)
+	return platform
+
+
+static func _build_tide_mark_posts(world: Node3D) -> Node3D:
+	# D-073 station (c): three graduated tide posts standing off the west
+	# breakwater rail beside the tide-marks anchor (-8.5, 0.6, 15.5). Each post
+	# carries three painted amber bands; the THIRD band on every post uses one
+	# shared emissive material the director brightens once `tide_marks_hint`
+	# is committed ("below the third mark, low tide opens the path"). The
+	# station itself is always visible (it is scenery, not the affordance —
+	# the TideMarks stripes and interactable keep following _sync_presentation);
+	# it stands past the dock edge (z >= 15.9) so no corridor is touched.
+	var posts := Node3D.new()
+	posts.name = "TideMarkPosts"
+	posts.position = Vector3(-8.5, 0.0, 15.5)
+	world.add_child(posts)
+	var post_material := flat_material(PALETTE.storm_ink.lightened(0.10))
+	var band_material := flat_material(PALETTE.signal_amber.darkened(0.25), 0.55)
+	var lead_material := emissive_material(PALETTE.signal_amber, 0.0, 1.0)
+	lead_material.albedo_color = PALETTE.signal_amber.darkened(0.25)
+	var cap := paper_trim_material(0.22)
+	var specs: Array = [
+		{"pos": Vector3(-1.0, 0.0, 0.85), "height": 1.25},
+		{"pos": Vector3(0.0, 0.0, 1.05), "height": 1.35},
+		{"pos": Vector3(1.0, 0.0, 0.9), "height": 1.3},
+	]
+	var lead_bands: Array = []
+	for index in specs.size():
+		var spec: Dictionary = specs[index]
+		var base: Vector3 = spec["pos"]
+		var height: float = spec["height"]
+		var post := add_cylinder(posts, 0.07, height + 0.4, base + Vector3(0.0, height * 0.5 - 0.2, 0.0), post_material, false)
+		post.name = "TidePost%d" % index
+		add_cylinder(posts, 0.09, 0.03, base + Vector3(0.0, height + 0.215, 0.0), cap, false)
+		for band_index in range(3):
+			var band_y := 0.30 + band_index * 0.28
+			var is_lead := band_index == 2
+			var band := add_cylinder(
+				posts,
+				0.08,
+				0.045,
+				base + Vector3(0.0, band_y, 0.0),
+				lead_material if is_lead else band_material,
+				false
+			)
+			band.name = "TidePost%dBand%d" % [index, band_index]
+			if is_lead:
+				lead_bands.append(band)
+	posts.set_meta(&"lead_band_material", lead_material)
+	posts.set_meta(&"lead_bands", lead_bands)
+	return posts
+
+
+static func _build_evidence_desk(world: Node3D) -> Node3D:
+	# D-073 station (d): Captain Mira's ledger desk at her watch post. The
+	# optional lane-D prop `evidence_desk.glb` is fitted to ~1.2 m via its own
+	# AABB (attach_model_fit_height); absent, a procedural desk (box + slanted
+	# top + two brass fittings + ledger) stands in at the same height. Either
+	# way the node exposes the same DeskGlow mesh the verdict ritual settles
+	# on (unshaded, hidden at rest — verdict_ritual_meshes 3). The desk sits
+	# ~1.6 m east of the spawn->Mira line and ~2.1 m from Mira's capsule, off
+	# every walking corridor, inside her 2.6 m trigger zone like the crates.
+	var desk := Node3D.new()
+	desk.name = "EvidenceDesk"
+	desk.position = Vector3(4.6, 0.0, 9.6)
+	desk.rotation_degrees.y = 200.0
+	world.add_child(desk)
+	var brass := brass_fitting_material()
+	var top_y := 0.78
+	var model := attach_model_fit_height(
+		desk, "evidence_desk.glb", Vector3.ZERO, EVIDENCE_DESK_TARGET_HEIGHT_M, 0.0
+	)
+	if model != null:
+		model.name = "EvidenceDeskModel"
+		var bounds: AABB = model.get_meta(&"fit_local_aabb", AABB())
+		var scale: float = model.get_meta(&"fit_scale", 1.0)
+		var size := bounds.size * scale
+		# Collider in the desk's frame: the model's (base-lifted) position plus
+		# its scaled AABB center; the model carries no yaw of its own.
+		var center := model.position + (bounds.position + bounds.size * 0.5) * scale
+		if size.x > 0.05 and size.z > 0.05:
+			add_box_collider(desk, Vector3(size.x, maxf(size.y, 0.4), size.z), center)
+		top_y = clampf(center.y + size.y * 0.5 - 0.05, 0.6, EVIDENCE_DESK_TARGET_HEIGHT_M)
+		desk.set_meta(&"desk_model", model)
+		desk.set_meta(&"desk_fit_scale", scale)
+		desk.set_meta(&"desk_measured_height_m", model.get_meta(&"fit_measured_height_m", 0.0))
+	else:
+		var wood := flat_material(PALETTE.storm_ink.lightened(0.16))
+		var body := add_box(desk, Vector3(1.1, 0.78, 0.62), Vector3(0.0, 0.39, 0.0), wood)
+		body.name = "DeskBody"
+		var top := add_box(desk, Vector3(1.16, 0.06, 0.70), Vector3(0.0, 0.85, 0.0), wood, false)
+		top.name = "DeskTop"
+		# +12 deg about x lifts the back (-z) edge: the writing face slopes
+		# toward whoever stands at the desk front (+z, the spawn approach).
+		top.rotation_degrees.x = 12.0
+		# Back board lifts the slanted top to the ~1.2 m station height.
+		add_box(desk, Vector3(1.16, 0.34, 0.05), Vector3(0.0, 1.03, -0.33), wood, false)
+		add_box(desk, Vector3(1.18, 0.02, 0.06), Vector3(0.0, 1.205, -0.33), paper_trim_material(), false)
+		for x in [-0.5, 0.5]:
+			add_box(desk, Vector3(0.08, 0.08, 0.08), Vector3(x, 0.97, -0.30), brass, false)
+		var ledger := add_box(desk, Vector3(0.42, 0.03, 0.30), Vector3(0.05, 0.91, 0.02), flat_material(PALETTE.paper_fog.darkened(0.3)), false)
+		ledger.rotation_degrees.x = 12.0
+		desk.set_meta(&"desk_fit_scale", 1.0)
+		desk.set_meta(&"desk_measured_height_m", 1.2)
+		top_y = 0.86
+	# Settle glow: a thin unshaded brass plate just above the desktop. Hidden
+	# at rest, tweened by the director's verdict ritual (commit settle only).
+	var glow := MeshInstance3D.new()
+	glow.name = "DeskGlow"
+	var glow_mesh := BoxMesh.new()
+	glow_mesh.size = Vector3(1.0, 0.02, 0.56)
+	glow.mesh = glow_mesh
+	var glow_material := emissive_material(PALETTE.brass.lightened(0.15), 1.2, 0.0)
+	glow_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	glow.material_override = glow_material
+	glow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	glow.position = Vector3(0.0, top_y + 0.06, 0.0)
+	glow.visible = false
+	desk.add_child(glow)
+	desk.set_meta(&"desk_glow", glow)
+	desk.set_meta(&"desk_glow_material", glow_material)
+	world.set_meta(&"evidence_desk", desk)
+	return desk
+
+
+static func _build_guide_trail(world: Node3D) -> MultiMeshInstance3D:
+	# D-073 opt-in guide trail (Aside research C-P3): six pooled wet-plank
+	# glints — thin elongated unshaded slivers, alpha <= 0.35 — laid by the
+	# director along the player->objective segment. One instanced surface, no
+	# physics, no light, hidden at rest and OFF until the hint ladder or a
+	# post-hold window enables it (director.set_guide_trail_enabled).
+	var sliver := BoxMesh.new()
+	sliver.size = Vector3(0.62, 0.012, 0.09)
+	var material := emissive_material(PALETTE.paper_fog.lerp(PALETTE.signal_amber, 0.35), 0.55, 0.28)
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	sliver.material = material
+	var instances := MultiMesh.new()
+	instances.transform_format = MultiMesh.TRANSFORM_3D
+	instances.mesh = sliver
+	instances.instance_count = PRESENTATION_VFX_BUDGET.guide_trail_glints
+	for index in instances.instance_count:
+		instances.set_instance_transform(index, Transform3D(Basis(), Vector3(0.0, -10.0, 0.0)))
+	var trail := MultiMeshInstance3D.new()
+	trail.name = "GuideTrail"
+	trail.multimesh = instances
+	trail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	trail.visible = false
+	world.add_child(trail)
+	trail.set_meta(&"trail_material", material)
+	return trail
+
+
 static func _build_presentation_vfx(world: Node3D) -> Dictionary:
 	# HARD BOUNDARY: these nodes communicate authored presentation beats only.
 	# They are pooled at scene construction, have fixed seeds/timings, and never
@@ -1042,8 +1411,9 @@ static func _build_verdict_ritual_pool(world: Node3D) -> void:
 	# unshaded meshes the director re-anchors to the acting interactable —
 	#   InspectionRing  flat torus, amber "weighing" sweep before the verdict;
 	#   SealLine        thin horizontal bar, the refusal "seal" shutter stroke.
-	# Both hidden at rest — zero standing cost, no new lights (budget:
-	# verdict_ritual_meshes = 2).
+	# Both hidden at rest — zero standing cost, no new lights. The third pooled
+	# ritual mesh, DeskGlow (commit settle), lives on the EvidenceDesk station
+	# (budget: verdict_ritual_meshes = 3).
 	var ring := MeshInstance3D.new()
 	ring.name = "InspectionRing"
 	var ring_mesh := TorusMesh.new()

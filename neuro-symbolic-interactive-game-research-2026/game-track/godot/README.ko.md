@@ -1,6 +1,6 @@
 # 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
-상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, 합계 `52/52`
+상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, core 합계 `52/52`(별도 집계 D-073 확장 `4/4`)
 검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
 배포 `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`는 사이트 루트에서 라이브 commit-gate 대시보드를 서빙하고 영문 추적 플레이어 산출물을 `/public/`에 임베드한다.**
 
@@ -154,8 +154,9 @@ lane과 추적 대상 `assets/player/higgsfield-player.glb`의 `Idle`/`Casual_Wa
 | 중복 이벤트 fixture | `10/10` | PASS |
 | timeout fixture | `10/10` | PASS |
 | 손상 저장 fixture | `10/10` | PASS |
-| 프레젠테이션 불변조건 | `12/12` | PASS |
-| **합계** | **`52/52`** | **PASS** |
+| 프레젠테이션 불변조건 (core) | `12/12` | PASS |
+| **합계 (core, 논문 인용 ENG1)** | **`52/52`** | **PASS** |
+| D-073 확장 불변조건 (증거판·추리·힌트 사다리·trace mirror) | `4/4` (전체 `56/56`) | PASS |
 | 아키타입 밸런스 프로브 | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 fixture `4/4` 모두 정확한 종료 SHA-256

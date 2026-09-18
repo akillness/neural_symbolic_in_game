@@ -57,7 +57,9 @@ EXPECTED_FIXTURE_CHECKS = {
     "corrupt_save_state_isolation",
     "fixture_expectations_match",
 }
-EXPECTED_PRESENTATION_CHECKS = {
+# The twelve core presentation checks are the frozen ENG1 headline the manuscripts cite
+# (40 fixture checks + 12 = 52/52). They may not change without a manuscript revision.
+CORE_PRESENTATION_CHECKS = {
     "evaluation_does_not_mutate_canonical_state",
     "web_start_gate_is_visible_before_play",
     "audio_remains_locked_before_user_gesture",
@@ -71,6 +73,17 @@ EXPECTED_PRESENTATION_CHECKS = {
     "hold_teaches_rule_for_its_gate",
     "case_chain_mirrors_committed_snapshot",
 }
+# D-073 detective/guidance/trace conformance (presentation-only invariants). Counted
+# separately so the paper-cited 52/52 core headline stays literally true.
+EXTENSION_PRESENTATION_CHECKS = {
+    "evidence_board_mirrors_committed_facts",
+    "deduction_reads_committed_facts_only",
+    "guided_step_matches_next_affordance",
+    "evaluation_trace_names_only_evaluated_checks",
+}
+EXPECTED_PRESENTATION_CHECKS = CORE_PRESENTATION_CHECKS | EXTENSION_PRESENTATION_CHECKS
+CORE_PRESENTATION_COUNT = len(CORE_PRESENTATION_CHECKS)
+EXTENSION_PRESENTATION_COUNT = len(EXTENSION_PRESENTATION_CHECKS)
 SCREENSHOT_STAGES = ("arrival", "refusal", "authorized_hint", "ending")
 NOT_EVIDENCE_FOR = (
     "G4",
@@ -327,7 +340,7 @@ def summarize_fixture_run(
 
 
 def summarize_presentation(report: Mapping[str, Any]) -> dict[str, Any]:
-    """Validate and summarize the engine-local twelve-check presentation report."""
+    """Validate and summarize the engine-local presentation report (12 core + 4 extension)."""
     checks = report.get("checks")
     if not isinstance(checks, list):
         raise TypeError("presentation checks must be a list")
@@ -355,8 +368,18 @@ def summarize_presentation(report: Mapping[str, Any]) -> dict[str, Any]:
         "engineering_only": True,
         "public_safe": True,
         "passed": True,
-        "counts": {"checks_passed": len(checks), "checks_total": len(checks)},
-        "check_ids": sorted(check_by_name),
+        # `counts` is the frozen ENG1 core; the D-073 extension is reported beside it.
+        "counts": {
+            "checks_passed": CORE_PRESENTATION_COUNT,
+            "checks_total": CORE_PRESENTATION_COUNT,
+        },
+        "extension_counts": {
+            "checks_passed": EXTENSION_PRESENTATION_COUNT,
+            "checks_total": EXTENSION_PRESENTATION_COUNT,
+        },
+        "all_counts": {"checks_passed": len(checks), "checks_total": len(checks)},
+        "check_ids": sorted(CORE_PRESENTATION_CHECKS),
+        "extension_check_ids": sorted(EXTENSION_PRESENTATION_CHECKS),
         "state_isolation": {
             "state_sha256_before": before,
             "state_sha256_after": after,
@@ -430,20 +453,39 @@ def build_matrix(
             or screenshot.get("engineering_working_capture_only") is not True
         ):
             raise ValueError(f"invalid latest screenshot receipt: {screenshot.get('stage')}")
-    if presentation.get("counts") != {"checks_passed": 12, "checks_total": 12}:
-        raise ValueError("presentation result must remain exactly 12/12 for this matrix version")
+    core_counts = {
+        "checks_passed": CORE_PRESENTATION_COUNT,
+        "checks_total": CORE_PRESENTATION_COUNT,
+    }
+    extension_counts = {
+        "checks_passed": EXTENSION_PRESENTATION_COUNT,
+        "checks_total": EXTENSION_PRESENTATION_COUNT,
+    }
+    if presentation.get("counts") != core_counts:
+        raise ValueError(
+            f"core presentation result must remain exactly {CORE_PRESENTATION_COUNT}/"
+            f"{CORE_PRESENTATION_COUNT} for this matrix version"
+        )
+    if presentation.get("extension_counts") != extension_counts:
+        raise ValueError(
+            f"D-073 extension result must remain exactly {EXTENSION_PRESENTATION_COUNT}/"
+            f"{EXTENSION_PRESENTATION_COUNT} for this matrix version"
+        )
 
     fixture_checks_passed = sum(int(row["counts"]["checks_passed"]) for row in fixtures)
     fixture_checks_total = sum(int(row["counts"]["checks_total"]) for row in fixtures)
     presentation_checks_passed = int(presentation["counts"]["checks_passed"])
     presentation_checks_total = int(presentation["counts"]["checks_total"])
+    extension_checks_passed = int(presentation["extension_counts"]["checks_passed"])
+    extension_checks_total = int(presentation["extension_counts"]["checks_total"])
     all_pass = (
         len(fixtures) == 4
         and all(row.get("passed") is True for row in fixtures)
         and presentation.get("passed") is True
         and len(screenshots) == 4
         and fixture_checks_passed == fixture_checks_total == 40
-        and presentation_checks_passed == presentation_checks_total == 12
+        and presentation_checks_passed == presentation_checks_total == CORE_PRESENTATION_COUNT
+        and extension_checks_passed == extension_checks_total == EXTENSION_PRESENTATION_COUNT
     )
     return {
         "schema_version": "1.0.0",
@@ -488,6 +530,14 @@ def build_matrix(
             "presentation_checks_total": presentation_checks_total,
             "combined_checks_passed": fixture_checks_passed + presentation_checks_passed,
             "combined_checks_total": fixture_checks_total + presentation_checks_total,
+            "extension_checks_passed": extension_checks_passed,
+            "extension_checks_total": extension_checks_total,
+            "all_checks_passed": (
+                fixture_checks_passed + presentation_checks_passed + extension_checks_passed
+            ),
+            "all_checks_total": (
+                fixture_checks_total + presentation_checks_total + extension_checks_total
+            ),
             "screenshots_valid": len(screenshots),
             "screenshots_total": len(SCREENSHOT_STAGES),
         },
@@ -519,12 +569,17 @@ def render_markdown(matrix: Mapping[str, Any]) -> str:
             f"{totals['fixture_checks_total']}`"
         ),
         (
-            f"- Presentation checks: `{totals['presentation_checks_passed']}/"
+            f"- Presentation checks (core): `{totals['presentation_checks_passed']}/"
             f"{totals['presentation_checks_total']}`"
         ),
         (
-            f"- Combined checks: `{totals['combined_checks_passed']}/"
+            f"- Combined checks (core, paper-cited ENG1): `{totals['combined_checks_passed']}/"
             f"{totals['combined_checks_total']}`"
+        ),
+        (
+            f"- D-073 extension checks: `{totals['extension_checks_passed']}/"
+            f"{totals['extension_checks_total']}` (all checks `{totals['all_checks_passed']}/"
+            f"{totals['all_checks_total']}`)"
         ),
         "- Immutable research evidence: not modified",
         "",
@@ -555,20 +610,32 @@ def render_markdown(matrix: Mapping[str, Any]) -> str:
             "| Surface | Mode | Checks | Canonical state | Result |",
             "| --- | --- | ---: | --- | --- |",
             (
-                f"| `{presentation['evaluation']}` | {PRESENTATION_MODE} | "
+                f"| `{presentation['evaluation']}` (core) | {PRESENTATION_MODE} | "
                 f"{presentation['counts']['checks_passed']}/"
                 f"{presentation['counts']['checks_total']} | unchanged | "
                 f"{'PASS' if presentation['passed'] else 'FAIL'} |"
             ),
+            (
+                f"| `{presentation['evaluation']}` (D-073 extension) | {PRESENTATION_MODE} | "
+                f"{presentation['extension_counts']['checks_passed']}/"
+                f"{presentation['extension_counts']['checks_total']} | unchanged | "
+                f"{'PASS' if presentation['passed'] else 'FAIL'} |"
+            ),
             "",
             (
-                "These twelve checks cover start-gate visibility, gesture-gated procedural "
-                "audio, non-color semantic redundancy, responsive profile declaration, "
-                "wide-layout playfield preservation, proposal routing, engine-local "
-                "input-feedback telemetry wiring, evaluation-state isolation, and three "
-                "contribution-legibility checks (pure contribution-delta derivation, "
-                "rule-teaching on gated holds, and case-chain mirroring of committed "
-                "facts). They do not measure player experience, fun, or usability."
+                "The twelve core checks are the manuscripts' frozen ENG1 headline: start-gate "
+                "visibility, gesture-gated procedural audio, non-color semantic redundancy, "
+                "responsive profile declaration, wide-layout playfield preservation, proposal "
+                "routing, engine-local input-feedback telemetry wiring, evaluation-state "
+                "isolation, and three contribution-legibility checks (pure contribution-delta "
+                "derivation, rule-teaching on gated holds, and case-chain mirroring of "
+                "committed facts). The four D-073 extension checks are counted separately: "
+                "evidence-board cards mirror committed facts without naming sealed entries, "
+                "the deduction verdict derives from committed facts only, the hint ladder's "
+                "final rung names the next valid entry, and the dashboard trace names only the "
+                "checks the engine evaluated, with explicit skipped and out-of-scope families "
+                "and a mirror-consistency flag. None of them measure player experience, fun, "
+                "or usability."
             ),
             "",
             "## Latest public-safe working captures",

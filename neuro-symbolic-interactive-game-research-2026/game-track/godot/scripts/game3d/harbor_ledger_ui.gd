@@ -5,11 +5,23 @@ extends CanvasLayer
 ## responsive ledger/action dock). Every semantic color carries a text/icon
 ## redundancy; refusals show a neutral reason plus the next valid affordance
 ## and never expose hidden oracle labels.
+##
+## D-073 composition (Aside deep research 2026-09-18, detective tutorial HUD):
+## four anchor-pinned zones inside one safe-area margin — top-left objective +
+## opt-in hint ladder, top-centre case chain, top-right handle buttons with an
+## unread case-file pip, bottom-centre prompt above the ledger dock. The case
+## chain N/3 is the only progress number on screen. Held rows are permanent
+## and carry PROPOSAL -> RULE -> WHAT THIS TELLS YOU. Every tween is gated by
+## `reduce_motion` (steady state).
 
 signal choice_selected(choice_id: String)
 signal start_requested
 signal audio_toggle_requested
 signal tutorial_closed
+signal tutorial_requested
+signal case_file_requested
+signal hint_requested
+signal coach_card_dismissed(card_id: String)
 
 const PALETTE := SealedLighthouseWorldBuilder.PALETTE
 const NARROW_WIDTH := 900.0
@@ -22,7 +34,9 @@ const WIDE_LEDGER_TOP := 0.66
 # pushing dialogue choice buttons below the visible canvas edge instead of
 # reflowing or scrolling. This is the minimum panel height (px) the wide
 # layout guarantees regardless of viewport height.
-const MIN_BOTTOM_PANEL_HEIGHT := 260.0
+# (D-073: measured against the safe-area inner height; 244 px is the portrait
+# column's minimum — 160 px frame + two-line speaker label + panel margins.)
+const MIN_BOTTOM_PANEL_HEIGHT := 244.0
 const UI_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
 # Start-gate key-art drift: one shared 12 s sine drives a ±0.5% scale breathe
 # and a ±4 px lateral drift (mouse-independent). The 1.5% base overscan keeps
@@ -32,14 +46,34 @@ const GATE_DRIFT_PERIOD_S := 12.0
 const GATE_DRIFT_PIXELS := 4.0
 const GATE_SCALE_BREATHE := 0.005
 const GATE_ART_BASE_SCALE := 1.015
+# Safe-area fallback (design px) when the display reports no inset (desktop
+# and the 390x844 browser build both do); DisplayServer insets only ever grow it.
+const SAFE_AREA_FALLBACK := {"top": 24, "bottom": 20, "left": 12, "right": 12}
+# Type floors (design px at 1280x720; 28 px at 1080p is the GAG minimum, so
+# body text is >= 20 and time-pressure text >= 24). Narrow uses the second
+# value of each pair.
+const TYPE_SCALE := {
+	"objective": [24, 18],
+	"ledger": [20, 16],
+	"dialogue": [22, 18],
+	"chain": [18, 16],
+	"hash": [18, 16],
+}
+const TOUCH_TARGET := 44.0
+const END_CARD_PAGES := 3
 
 var reduce_motion: bool = false
+var _screen_under: Control
+var _safe_area: MarginContainer
 var _root: Control
+var _screen_over: Control
+var _ui_theme: Theme
 var _ledger_log: RichTextLabel
 var _ledger_title: Label
 var _ledger_box: VBoxContainer
 var _choice_box: VBoxContainer
 var _choice_scroll: ScrollContainer
+var _choice_caption: Label
 var _action_box: VBoxContainer
 var _columns: BoxContainer
 var _prompt_panel: PanelContainer
@@ -59,17 +93,41 @@ var _toast: Label
 var _end_card: PanelContainer
 var _end_text: RichTextLabel
 var _end_icon: TextureRect
+var _end_hash_row: HBoxContainer
+var _end_hash_field: LineEdit
+var _end_copy_button: Button
+var _end_page_label: Label
+var _end_prev: Button
+var _end_next: Button
+var _end_pages: Array = []
+var _end_page_index: int = 0
+var _end_hash: String = ""
 var _ledger_stamp: TextureRect
 var _stamp_commit_texture: Texture2D
 var _stamp_refusal_texture: Texture2D
 var _stamp_tween: Tween
 var _bottom_panel: PanelContainer
-var _controls_panel: PanelContainer
+var _top_bar: BoxContainer
+var _dock_top_base: float = WIDE_LEDGER_TOP
+var _zone_objective: VBoxContainer
+var _zone_chain: PanelContainer
+var _zone_handles: VBoxContainer
+var _handles_row: HBoxContainer
+var _eyebrow_label: Label
 var _controls_label: Label
 var _cursor_label: Label
 var _audio_button: Button
-var _progress_label: Label
-var _progress_bar: ProgressBar
+var _guide_button: Button
+var _case_file_button: Button
+var _hint_button: Button
+var _hint_panel: PanelContainer
+var _hint_label: Label
+var _hint_rung: int = 0
+var _hint_lines: Array = []
+var _case_file_unread: int = 0
+var _progress_stage: int = 0
+var _progress_total: int = 3
+var _progress_phase: String = "ARRIVAL"
 var _start_gate: ColorRect
 var _start_card: PanelContainer
 var _start_button: Button
@@ -83,18 +141,31 @@ var _tutorial_prev: Button
 var _tutorial_next: Button
 var _tutorial_pages: Array = []
 var _tutorial_index: int = 0
+var _tutorial_page_count: int = 1
+var _coach_cards: Dictionary = {}
+var _coach_panel: PanelContainer
+var _coach_title: Label
+var _coach_body: Label
+var _coach_ok: Button
+var _coach_card_id: String = ""
+var _evidence_panel: PanelContainer
+var _evidence_title: Label
+var _evidence_cards_box: GridContainer
+var _evidence_chain_label: Label
+var _evidence_next_label: Label
+var _evidence_hint_label: Label
+var _evidence_icons: Dictionary = {}
+var _evidence_snapshot: Dictionary = {}
 var _inventory_row: HBoxContainer
 var _inventory_icon: TextureRect
 var _layout_narrow: bool = false
 var _play_started: bool = false
 var _portrait_requested: bool = false
 var _speaker_name: String = ""
-var _progress_stage: int = 0
-var _progress_total: int = 3
-var _progress_phase: String = "ARRIVAL"
 var _case_chain_snapshot: Dictionary = {}
 var _rules_learned_snapshot: Array = []
 var _last_rule_line: String = ""
+var _last_inference_line: String = ""
 var _contribution_lines: int = 0
 var _toast_tween: Tween
 var _flash_tween: Tween
@@ -135,31 +206,49 @@ func _update_gate_motion_state() -> void:
 
 
 func _build() -> void:
-	_root = Control.new()
-	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var ui_theme := Theme.new()
+	_ui_theme = Theme.new()
 	var ui_font := FontVariation.new()
 	ui_font.base_font = UI_FONT
 	var ui_fallbacks: Array[Font] = [ThemeDB.fallback_font]
 	ui_font.fallbacks = ui_fallbacks
-	ui_theme.default_font = ui_font
-	_root.theme = ui_theme
-	add_child(_root)
+	_ui_theme.default_font = ui_font
 
-	_letterbox_top = _make_bar(_root, true)
-	_letterbox_bottom = _make_bar(_root, false)
-
+	# Three full-rect layers: `_screen_under` (letterbox bars + verdict flash,
+	# below every panel so text is never tinted), the safe-area margin holding
+	# `_root` (every HUD zone, dock, overlay and card), and `_screen_over`
+	# (the start gate, which must cover the whole display including insets).
+	_screen_under = Control.new()
+	_screen_under.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_screen_under.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_screen_under.theme = _ui_theme
+	add_child(_screen_under)
+	_letterbox_top = _make_bar(_screen_under, true)
+	_letterbox_bottom = _make_bar(_screen_under, false)
 	_flash = ColorRect.new()
 	_flash.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_flash.color = Color(0, 0, 0, 0)
 	_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(_flash)
+	_screen_under.add_child(_flash)
 
-	_build_controls_panel()
+	_safe_area = MarginContainer.new()
+	_safe_area.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_safe_area.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_safe_area.theme = _ui_theme
+	add_child(_safe_area)
+	_root = Control.new()
+	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_safe_area.add_child(_root)
+
+	_screen_over = Control.new()
+	_screen_over.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_screen_over.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_screen_over.theme = _ui_theme
+	add_child(_screen_over)
+
+	_build_top_bar()
 
 	_feedback_label = Label.new()
-	_feedback_label.add_theme_font_size_override("font_size", 18)
+	_feedback_label.add_theme_font_size_override("font_size", 20)
 	_feedback_label.add_theme_color_override("font_color", PALETTE.paper_fog)
 	_feedback_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
 	_feedback_label.add_theme_constant_override("shadow_offset_x", 2)
@@ -177,7 +266,7 @@ func _build() -> void:
 	_prompt_panel.visible = false
 	_root.add_child(_prompt_panel)
 	_prompt_label = Label.new()
-	_prompt_label.add_theme_font_size_override("font_size", 18)
+	_prompt_label.add_theme_font_size_override("font_size", 20)
 	_prompt_label.add_theme_color_override("font_color", PALETTE.paper_fog)
 	_prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_prompt_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -185,68 +274,169 @@ func _build() -> void:
 
 	_build_bottom_panel()
 	_build_toast()
+	_build_evidence_board()
+	_build_coach_card()
 	_build_end_card()
-	_build_start_gate()
 	_build_tutorial()
+	_build_start_gate()
 
 
-func _build_controls_panel() -> void:
-	_controls_panel = PanelContainer.new()
-	_controls_panel.add_theme_stylebox_override(
-		"panel", _panel_style(Color(PALETTE.storm_ink, 0.92), Color(PALETTE.brass, 0.78), 1, 8)
+func _build_top_bar() -> void:
+	# D-073 zones: one anchor-pinned bar across the top of the safe area.
+	# Wide: [objective + hint ladder | case chain | handles] side by side.
+	# Narrow: the three zones stack (objective, chain, handles). No offsets are
+	# hand-placed; every zone is a container child.
+	_top_bar = BoxContainer.new()
+	_top_bar.vertical = false
+	_top_bar.add_theme_constant_override("separation", 10)
+	_top_bar.anchor_left = 0.0
+	_top_bar.anchor_right = 1.0
+	_top_bar.anchor_top = 0.0
+	_top_bar.anchor_bottom = 0.0
+	_top_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_top_bar)
+	_top_bar.resized.connect(_place_transients)
+	_root.resized.connect(_place_transients)
+
+	# Zone 1 — objective + opt-in hint ladder (top-left).
+	_zone_objective = VBoxContainer.new()
+	_zone_objective.add_theme_constant_override("separation", 6)
+	_zone_objective.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_zone_objective.size_flags_stretch_ratio = 1.45
+	_zone_objective.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_top_bar.add_child(_zone_objective)
+	var objective_panel := PanelContainer.new()
+	objective_panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.92), Color(PALETTE.brass, 0.78), 1, 10)
 	)
-	_root.add_child(_controls_panel)
-	var stack := VBoxContainer.new()
-	stack.add_theme_constant_override("separation", 4)
-	_controls_panel.add_child(stack)
+	objective_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_zone_objective.add_child(objective_panel)
+	var objective_stack := VBoxContainer.new()
+	objective_stack.add_theme_constant_override("separation", 6)
+	objective_panel.add_child(objective_stack)
+	_objective_label = Label.new()
+	_objective_label.add_theme_font_size_override("font_size", 24)
+	_objective_label.add_theme_color_override("font_color", PALETTE.signal_amber)
+	_objective_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_objective_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	objective_stack.add_child(_objective_label)
+	var hint_row := HBoxContainer.new()
+	hint_row.add_theme_constant_override("separation", 8)
+	objective_stack.add_child(hint_row)
+	_hint_button = Button.new()
+	_hint_button.custom_minimum_size = Vector2(124.0, 30.0)
+	_hint_button.add_theme_font_size_override("font_size", 13)
+	_hint_button.focus_mode = Control.FOCUS_NONE
+	_style_button(_hint_button)
+	_hint_button.pressed.connect(func() -> void: hint_requested.emit())
+	hint_row.add_child(_hint_button)
+	_hint_panel = PanelContainer.new()
+	_hint_panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.35), Color(PALETTE.brass, 0.55), 1, 6)
+	)
+	_hint_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hint_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hint_panel.visible = false
+	hint_row.add_child(_hint_panel)
+	_hint_label = Label.new()
+	_hint_label.add_theme_font_size_override("font_size", 14)
+	_hint_label.add_theme_color_override("font_color", PALETTE.paper_fog)
+	_hint_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hint_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hint_panel.add_child(_hint_label)
+	_update_hint_button()
 
-	var case_label := Label.new()
-	case_label.text = "TRACE-RPG | CASE 01"
-	case_label.add_theme_font_size_override("font_size", 11)
-	case_label.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.68))
-	stack.add_child(case_label)
+	# Zone 2 — case chain (top-centre). Filled/hollow ASCII markers carry the
+	# state; the brass connectors are drawn at >= 3:1 against storm ink.
+	_zone_chain = PanelContainer.new()
+	_zone_chain.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.92), Color(PALETTE.brass, 0.78), 1, 10)
+	)
+	_zone_chain.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_zone_chain.size_flags_stretch_ratio = 1.0
+	_zone_chain.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_zone_chain.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_top_bar.add_child(_zone_chain)
+	var chain_stack := VBoxContainer.new()
+	chain_stack.add_theme_constant_override("separation", 2)
+	_zone_chain.add_child(chain_stack)
+	var chain_eyebrow := Label.new()
+	chain_eyebrow.text = "CASE CHAIN"
+	chain_eyebrow.add_theme_font_size_override("font_size", 11)
+	chain_eyebrow.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.72))
+	chain_eyebrow.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	chain_stack.add_child(chain_eyebrow)
+	_case_chain_label = Label.new()
+	_case_chain_label.add_theme_font_size_override("font_size", 18)
+	_case_chain_label.add_theme_color_override("font_color", PALETTE.paper_fog)
+	_case_chain_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_case_chain_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_case_chain_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chain_stack.add_child(_case_chain_label)
+	_render_case_chain()
 
-	var header := HBoxContainer.new()
-	header.add_theme_constant_override("separation", 8)
-	stack.add_child(header)
-	_cursor_label = Label.new()
-	_cursor_label.text = "[READY] CASE READY"
-	_cursor_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_cursor_label.add_theme_font_size_override("font_size", 14)
-	_cursor_label.add_theme_color_override("font_color", PALETTE.signal_amber)
-	header.add_child(_cursor_label)
+	# Zone 3 — handles (top-right): field guide, case file with unread pip,
+	# audio; then a one-line pointer/controls eyebrow.
+	_zone_handles = VBoxContainer.new()
+	_zone_handles.add_theme_constant_override("separation", 4)
+	_zone_handles.size_flags_horizontal = Control.SIZE_SHRINK_END
+	_zone_handles.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_top_bar.add_child(_zone_handles)
+	_handles_row = HBoxContainer.new()
+	_handles_row.add_theme_constant_override("separation", 6)
+	_handles_row.alignment = BoxContainer.ALIGNMENT_END
+	_zone_handles.add_child(_handles_row)
+	_guide_button = Button.new()
+	_guide_button.text = "[T] GUIDE"
+	_guide_button.custom_minimum_size = Vector2(96.0, 32.0)
+	_guide_button.add_theme_font_size_override("font_size", 13)
+	_guide_button.focus_mode = Control.FOCUS_NONE
+	_style_button(_guide_button)
+	_guide_button.pressed.connect(func() -> void: tutorial_requested.emit())
+	_handles_row.add_child(_guide_button)
+	_case_file_button = Button.new()
+	_case_file_button.custom_minimum_size = Vector2(150.0, 32.0)
+	_case_file_button.add_theme_font_size_override("font_size", 13)
+	_case_file_button.focus_mode = Control.FOCUS_NONE
+	_style_button(_case_file_button)
+	_case_file_button.pressed.connect(func() -> void: case_file_requested.emit())
+	_handles_row.add_child(_case_file_button)
+	_update_case_file_button()
 	_audio_button = Button.new()
-	_audio_button.text = "AUDIO LOCKED | V"
-	_audio_button.custom_minimum_size = Vector2(132.0, 28.0)
-	_audio_button.add_theme_font_size_override("font_size", 12)
+	_audio_button.text = "[V] AUDIO LOCKED"
+	_audio_button.custom_minimum_size = Vector2(150.0, 32.0)
+	_audio_button.add_theme_font_size_override("font_size", 13)
+	_audio_button.focus_mode = Control.FOCUS_NONE
 	_style_button(_audio_button)
 	_audio_button.pressed.connect(func() -> void: audio_toggle_requested.emit())
-	header.add_child(_audio_button)
-
+	_handles_row.add_child(_audio_button)
+	_eyebrow_label = Label.new()
+	_eyebrow_label.add_theme_font_size_override("font_size", 12)
+	_eyebrow_label.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.78))
+	_eyebrow_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+	_eyebrow_label.add_theme_constant_override("shadow_offset_x", 1)
+	_eyebrow_label.add_theme_constant_override("shadow_offset_y", 1)
+	_eyebrow_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_eyebrow_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_eyebrow_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_zone_handles.add_child(_eyebrow_label)
+	# `_cursor_label` / `_controls_label` keep their historic roles (pointer
+	# state text; controls reference) and are folded into the one eyebrow line.
+	_cursor_label = Label.new()
+	_cursor_label.text = "[READY] CASE READY"
+	_cursor_label.visible = false
+	_zone_handles.add_child(_cursor_label)
 	_controls_label = Label.new()
-	_controls_label.text = "WASD MOVE | MOUSE LOOK | [E] INSPECT | [Esc] CURSOR\n[F5] SAVE | [F9] LOAD | [M] REDUCE MOTION | [V] AUDIO | [T] GUIDE"
-	_controls_label.add_theme_font_size_override("font_size", 12)
-	_controls_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.08))
-	_controls_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	stack.add_child(_controls_label)
+	_controls_label.text = "WASD MOVE | MOUSE LOOK | [E] INSPECT | [Esc] CURSOR | [F5]/[F9] SAVE/LOAD | [M] MOTION | [H] HINT"
+	_controls_label.visible = false
+	_zone_handles.add_child(_controls_label)
+	_update_eyebrow()
 
-	var progress_row := HBoxContainer.new()
-	progress_row.add_theme_constant_override("separation", 8)
-	stack.add_child(progress_row)
-	_progress_label = Label.new()
-	_progress_label.custom_minimum_size = Vector2(180.0, 0.0)
-	_progress_label.add_theme_font_size_override("font_size", 13)
-	_progress_label.add_theme_color_override("font_color", PALETTE.signal_amber)
-	progress_row.add_child(_progress_label)
-	_progress_bar = ProgressBar.new()
-	_progress_bar.min_value = 0.0
-	_progress_bar.max_value = float(_progress_total)
-	_progress_bar.value = 0.0
-	_progress_bar.show_percentage = false
-	_progress_bar.custom_minimum_size = Vector2(120.0, 8.0)
-	_progress_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	progress_row.add_child(_progress_bar)
-	_update_progress_text()
+
+func _update_eyebrow() -> void:
+	if _eyebrow_label == null:
+		return
+	_eyebrow_label.text = "TRACE-RPG | CASE 01 | %s\n%s" % [_cursor_label.text, _controls_label.text]
 
 
 func _build_bottom_panel() -> void:
@@ -266,7 +456,7 @@ func _build_bottom_panel() -> void:
 	_bottom_panel.add_child(_columns)
 
 	_portrait_box = VBoxContainer.new()
-	_portrait_box.custom_minimum_size = Vector2(180.0, 0.0)
+	_portrait_box.custom_minimum_size = Vector2(160.0, 0.0)
 	_columns.add_child(_portrait_box)
 	# D-034/D-035: curated Higgsfield portrait first (Web-eligible), candidate
 	# pack art as desktop fallback; both absent leaves the slot hidden.
@@ -279,7 +469,7 @@ func _build_bottom_panel() -> void:
 	_portrait = TextureRect.new()
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_portrait.custom_minimum_size = Vector2(180.0, 180.0)
+	_portrait.custom_minimum_size = Vector2(160.0, 160.0)
 	var portrait_texture := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-mira-portrait.png")
 	if portrait_texture == null:
 		portrait_texture = SealedLighthouseWorldBuilder.load_pack_texture(
@@ -289,7 +479,7 @@ func _build_bottom_panel() -> void:
 	_portrait.visible = false
 	_portrait_frame.add_child(_portrait)
 	_speaker_label = Label.new()
-	_speaker_label.add_theme_font_size_override("font_size", 18)
+	_speaker_label.add_theme_font_size_override("font_size", 16)
 	_speaker_label.add_theme_color_override("font_color", PALETTE.brass)
 	_speaker_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_speaker_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -311,7 +501,7 @@ func _build_bottom_panel() -> void:
 	_ledger_log.scroll_following = true
 	_ledger_log.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_ledger_log.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_ledger_log.add_theme_font_size_override("normal_font_size", 18)
+	_ledger_log.add_theme_font_size_override("normal_font_size", 20)
 	_ledger_log.add_theme_color_override("default_color", PALETTE.paper_fog)
 	_ledger_box.add_child(_ledger_log)
 	# Curated ledger stamps (D-034/D-035): a brief diegetic ink stamp lands next
@@ -345,21 +535,13 @@ func _build_bottom_panel() -> void:
 	_action_box.size_flags_stretch_ratio = 1.0
 	_action_box.add_theme_constant_override("separation", 6)
 	_columns.add_child(_action_box)
-	_objective_label = Label.new()
-	_objective_label.add_theme_font_size_override("font_size", 18)
-	_objective_label.add_theme_color_override("font_color", PALETTE.signal_amber)
-	_objective_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_action_box.add_child(_objective_label)
+	# One compact status line (stage / phase / inventory / entries / holds).
+	# The case chain N/3 stays the only progress number; these are receipts.
 	_status_label = Label.new()
-	_status_label.add_theme_font_size_override("font_size", 17)
+	_status_label.add_theme_font_size_override("font_size", 16)
 	_status_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.1))
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_action_box.add_child(_status_label)
-	_case_chain_label = Label.new()
-	_case_chain_label.add_theme_font_size_override("font_size", 14)
-	_case_chain_label.add_theme_color_override("font_color", PALETTE.paper_fog)
-	_case_chain_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_action_box.add_child(_case_chain_label)
 	_inventory_row = HBoxContainer.new()
 	_inventory_row.add_theme_constant_override("separation", 8)
 	_inventory_row.visible = false
@@ -381,6 +563,14 @@ func _build_bottom_panel() -> void:
 	inventory_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	inventory_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_inventory_row.add_child(inventory_label)
+	# Choice-list caption: names what the list is asking for (e.g. the
+	# deduction slot being filled). Empty and hidden outside such prompts.
+	_choice_caption = Label.new()
+	_choice_caption.add_theme_font_size_override("font_size", 16)
+	_choice_caption.add_theme_color_override("font_color", PALETTE.brass)
+	_choice_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_choice_caption.visible = false
+	_action_box.add_child(_choice_caption)
 
 	_choice_scroll = ScrollContainer.new()
 	_choice_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -394,20 +584,315 @@ func _build_bottom_panel() -> void:
 	_choice_scroll.add_child(_choice_box)
 
 
+func _build_evidence_board() -> void:
+	# D-073 case file: a modal board ([C] / CASE FILE handle) whose title is
+	# the open question the case answers. Its three chain slots are present and
+	# unfilled from the first frame; a fourth card records the sealed entry
+	# without ever naming it. Fill states and labels are handed in by the
+	# controller from the committed snapshot through the fail-closed FACT_LABEL
+	# allowlist. Curated parchment board + card icons are optional: absent bytes
+	# leave the flat storm-ink panel and the ASCII [x]/[ ]/[S] markers, which
+	# carry the same meaning on their own.
+	_evidence_panel = PanelContainer.new()
+	_evidence_panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.97), PALETTE.brass, 2, 16)
+	)
+	_evidence_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_evidence_panel.visible = false
+	_root.add_child(_evidence_panel)
+	var board_texture := SealedLighthouseWorldBuilder.load_curated_ui_texture("ui-evidence-board.png")
+	if board_texture != null:
+		var board := TextureRect.new()
+		board.texture = board_texture
+		board.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		board.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		# Darken-modulated toward storm ink so amber/paper-fog text keeps its
+		# contrast on the parchment (same discipline as the ledger grain).
+		board.modulate = Color(0.40, 0.40, 0.42, 0.9)
+		board.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_evidence_panel.add_child(board)
+	var stack := VBoxContainer.new()
+	stack.add_theme_constant_override("separation", 10)
+	_evidence_panel.add_child(stack)
+	_evidence_title = Label.new()
+	_evidence_title.text = "WHAT OPENED THE TIDE ROUTE?"
+	_evidence_title.add_theme_font_size_override("font_size", 22)
+	_evidence_title.add_theme_color_override("font_color", PALETTE.signal_amber)
+	_evidence_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_evidence_title)
+	var subtitle := Label.new()
+	subtitle.text = "CASE FILE | Three entries answer it. The ledger fills a card only when it commits the entry."
+	subtitle.add_theme_font_size_override("font_size", 14)
+	subtitle.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.8))
+	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(subtitle)
+	# Four cards in one row on wide layouts; a 2x2 grid on narrow portrait
+	# viewports (a single row forced 390 px-class screens to overflow).
+	_evidence_cards_box = GridContainer.new()
+	_evidence_cards_box.columns = 4
+	_evidence_cards_box.add_theme_constant_override("h_separation", 10)
+	_evidence_cards_box.add_theme_constant_override("v_separation", 10)
+	_evidence_cards_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack.add_child(_evidence_cards_box)
+	for card_id in ["LENS", "MOUNT", "LEAD", "SEALED"]:
+		var icon_name := "ui-evidence-%s.png" % str(card_id).to_lower()
+		_evidence_icons[card_id] = SealedLighthouseWorldBuilder.load_curated_ui_texture(icon_name)
+	_evidence_chain_label = Label.new()
+	_evidence_chain_label.add_theme_font_size_override("font_size", 16)
+	_evidence_chain_label.add_theme_color_override("font_color", PALETTE.paper_fog)
+	_evidence_chain_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_evidence_chain_label)
+	_evidence_next_label = Label.new()
+	_evidence_next_label.add_theme_font_size_override("font_size", 16)
+	_evidence_next_label.add_theme_color_override("font_color", PALETTE.signal_amber)
+	_evidence_next_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_evidence_next_label)
+	_evidence_hint_label = Label.new()
+	_evidence_hint_label.text = "[C] or [Esc] CLOSE CASE FILE"
+	_evidence_hint_label.add_theme_font_size_override("font_size", 13)
+	_evidence_hint_label.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.74))
+	_evidence_hint_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_evidence_hint_label)
+
+
+func _make_evidence_card(card: Dictionary) -> PanelContainer:
+	var filled := bool(card.get("filled", false))
+	var sealed := bool(card.get("sealed", false))
+	var accent: Color = PALETTE.signal_amber if filled else Color(PALETTE.brass, 0.85)
+	if sealed:
+		accent = Color(0.62, 0.70, 0.76, 1.0)  # slate: neutral, never a verdict color
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.74), accent, 2 if filled else 1, 8)
+	)
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var stack := VBoxContainer.new()
+	stack.add_theme_constant_override("separation", 4)
+	panel.add_child(stack)
+	var icon_texture: Texture2D = _evidence_icons.get(str(card["id"]), null)
+	if icon_texture != null:
+		var icon := TextureRect.new()
+		icon.texture = icon_texture
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.custom_minimum_size = Vector2(0.0, 48.0 if _layout_narrow else 72.0)
+		# Unfilled cards keep the icon dim so fill state never depends on the
+		# border color alone (the [x]/[ ] marker carries it too).
+		icon.modulate = Color(1, 1, 1, 1.0 if (filled or sealed) else 0.42)
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		stack.add_child(icon)
+	var head := Label.new()
+	var marker := "[S]" if sealed else ("[x]" if filled else "[ ]")
+	head.text = "%s %s" % [marker, str(card["id"])]
+	head.add_theme_font_size_override("font_size", 18)
+	head.add_theme_color_override("font_color", accent)
+	stack.add_child(head)
+	var body := Label.new()
+	body.text = str(card.get("label", ""))
+	body.add_theme_font_size_override("font_size", 15)
+	body.add_theme_color_override("font_color", PALETTE.paper_fog)
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(body)
+	var why := Label.new()
+	why.text = str(card.get("why", ""))
+	why.add_theme_font_size_override("font_size", 13)
+	why.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.78))
+	why.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(why)
+	return panel
+
+
+func show_evidence_board(
+	cards: Array, chain: Dictionary, rules_learned: Array, next_entry: String = ""
+) -> void:
+	# Renders exactly the cards it is given; never derives a fill state or a
+	# label itself. `next_entry` is GoldenPathLayout.next_affordance text.
+	# Opening clears the unread pip on the handle button.
+	_evidence_snapshot = {
+		"cards": cards.duplicate(true),
+		"chain": chain.duplicate(true),
+		"rules_learned": rules_learned.duplicate(),
+		"next_entry": next_entry,
+	}
+	if _evidence_panel == null:
+		return
+	for child in _evidence_cards_box.get_children():
+		_evidence_cards_box.remove_child(child)
+		child.queue_free()
+	for card in cards:
+		_evidence_cards_box.add_child(_make_evidence_card(card))
+	var rules_text := ", ".join(rules_learned) if not rules_learned.is_empty() else "none"
+	_evidence_chain_label.text = "CHAIN %d/%d PROVEN | RULES LEARNED | %s" % [
+		int(chain.get("filled", 0)), int(chain.get("total", 0)), rules_text
+	]
+	_evidence_next_label.text = "[N] NEXT VALID ENTRY | %s" % next_entry
+	_evidence_next_label.visible = next_entry != ""
+	_evidence_panel.visible = true
+	_case_file_unread = 0
+	_update_case_file_button()
+
+
+func hide_evidence_board() -> void:
+	if _evidence_panel != null:
+		_evidence_panel.visible = false
+
+
+func is_evidence_board_open() -> bool:
+	return _evidence_panel != null and _evidence_panel.visible
+
+
+func mark_case_file_unread() -> void:
+	# One pip per commit until the board is opened (D-073: no timed auto-open).
+	_case_file_unread += 1
+	_update_case_file_button()
+
+
+func clear_case_file_unread() -> void:
+	_case_file_unread = 0
+	_update_case_file_button()
+
+
+func _update_case_file_button() -> void:
+	if _case_file_button == null:
+		return
+	_case_file_button.text = (
+		"[C] CASE FILE (%d new)" % _case_file_unread if _case_file_unread > 0 else "[C] CASE FILE"
+	)
+
+
+func set_hint_ladder(rung: int, lines: Array) -> void:
+	# Opt-in, non-spoiling hint ladder: rung 0 shows nothing; rungs 1..3 stack
+	# the lines the controller authored for the current chain node. View-local
+	# state only (the controller resets it on scene enter and after commits).
+	_hint_rung = clampi(rung, 0, 3)
+	_hint_lines = lines.duplicate()
+	if _hint_panel == null:
+		return
+	_hint_panel.visible = _hint_rung > 0 and not _hint_lines.is_empty()
+	var rendered: Array = []
+	for line in _hint_lines:
+		rendered.append(str(line))
+	_hint_label.text = "\n".join(rendered)
+	_update_hint_button()
+
+
+func hint_ladder_text() -> String:
+	return _hint_label.text if _hint_label != null else ""
+
+
+func _update_hint_button() -> void:
+	if _hint_button != null:
+		_hint_button.text = "[H] HINT %d/3" % _hint_rung
+
+
+func _build_coach_card() -> void:
+	# Just-in-time coach cards (D-073): one interaction, <= 3 ideas, dismissed
+	# on player action only ([OK] or Esc, never a timer), styled so they cannot
+	# be mistaken for the HUD: lighter parchment stock, italic title.
+	_coach_cards = {
+		"ledger_intro": {
+			"title": "How the ledger works",
+			"body": "That amber [C] COMMITTED line means validation passed and the state advanced.\nEvery entry is checked before it is written.\nOnly committed entries change the case.",
+		},
+		"hold_intro": {
+			"title": "What a hold means",
+			"body": "A coral [H] HELD line means the ledger kept the sequence; nothing changed.\nEach hold names the gate, the rule, and what that tells you.\nA hold is guidance, not a penalty.",
+		},
+		"investigate": {
+			"title": "How to investigate",
+			"body": "Every committed entry becomes a card in the case file [C].\nThe chain LENS -> MOUNT -> LEAD is the spine of the case.\nAt the tide marks you will assemble that chain yourself.",
+		},
+	}
+	_coach_panel = PanelContainer.new()
+	_coach_panel.add_theme_stylebox_override(
+		"panel", _panel_style(Color(0.86, 0.80, 0.66, 0.97), Color(PALETTE.brass, 0.95), 2, 14)
+	)
+	_coach_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_coach_panel.visible = false
+	_coach_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# The card is a child of the top-right handles zone: the bar grows while
+	# the card is open, so every transient (toast, verdict text) is placed
+	# below it by measurement — no overlap by construction.
+	_zone_handles.add_child(_coach_panel)
+	var stack := VBoxContainer.new()
+	stack.add_theme_constant_override("separation", 8)
+	_coach_panel.add_child(stack)
+	var italic := FontVariation.new()
+	italic.base_font = UI_FONT
+	italic.variation_transform = Transform2D(Vector2(1.0, 0.0), Vector2(0.22, 1.0), Vector2.ZERO)
+	_coach_title = Label.new()
+	_coach_title.add_theme_font_override("font", italic)
+	_coach_title.add_theme_font_size_override("font_size", 20)
+	_coach_title.add_theme_color_override("font_color", Color(0.18, 0.15, 0.10))
+	_coach_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_coach_title)
+	_coach_body = Label.new()
+	_coach_body.add_theme_font_size_override("font_size", 16)
+	_coach_body.add_theme_color_override("font_color", Color(0.14, 0.12, 0.09))
+	_coach_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_coach_body)
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_END
+	stack.add_child(row)
+	_coach_ok = Button.new()
+	_coach_ok.text = "[OK] GOT IT"
+	_coach_ok.custom_minimum_size = Vector2(120.0, 36.0)
+	_coach_ok.add_theme_font_size_override("font_size", 14)
+	_style_button(_coach_ok, true)
+	_coach_ok.pressed.connect(dismiss_coach_card)
+	row.add_child(_coach_ok)
+
+
+func show_coach_card(card_id: String) -> void:
+	if _coach_panel == null or not _coach_cards.has(card_id):
+		return
+	var card: Dictionary = _coach_cards[card_id]
+	_coach_card_id = card_id
+	_coach_title.text = str(card["title"])
+	_coach_body.text = str(card["body"])
+	_coach_panel.visible = true
+	_coach_ok.grab_focus()
+
+
+func dismiss_coach_card() -> void:
+	if _coach_panel == null or not _coach_panel.visible:
+		return
+	_coach_panel.visible = false
+	var dismissed := _coach_card_id
+	_coach_card_id = ""
+	coach_card_dismissed.emit(dismissed)
+
+
+func is_coach_card_open() -> bool:
+	return _coach_panel != null and _coach_panel.visible
+
+
+func coach_card_ids() -> Array:
+	var ids: Array = _coach_cards.keys()
+	ids.sort()
+	return ids
+
+
 func _build_toast() -> void:
 	_toast = Label.new()
-	_toast.add_theme_font_size_override("font_size", 18)
+	_toast.add_theme_font_size_override("font_size", 20)
 	_toast.add_theme_color_override("font_color", PALETTE.paper_fog)
 	_toast.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.92))
 	_toast.add_theme_constant_override("shadow_offset_x", 2)
 	_toast.add_theme_constant_override("shadow_offset_y", 2)
 	_toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_toast.visible = false
 	_root.add_child(_toast)
 
 
 func _build_end_card() -> void:
+	# D-073 paged receipt (Obra Dinn's multipage tally): PAGE n/3 with NEXT /
+	# BACK, one section per page. Page 3 carries the state hash in a read-only
+	# selectable field plus [COPY HASH].
 	_end_card = PanelContainer.new()
 	_end_card.add_theme_stylebox_override(
 		"panel", _panel_style(Color(PALETTE.storm_ink, 0.97), PALETTE.signal_amber, 2, 28)
@@ -420,10 +905,46 @@ func _build_end_card() -> void:
 	_end_card.add_child(stack)
 	_end_text = RichTextLabel.new()
 	_end_text.bbcode_enabled = true
-	_end_text.add_theme_font_size_override("normal_font_size", 19)
+	_end_text.add_theme_font_size_override("normal_font_size", 20)
 	_end_text.add_theme_color_override("default_color", PALETTE.paper_fog)
 	_end_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stack.add_child(_end_text)
+	_end_hash_row = HBoxContainer.new()
+	_end_hash_row.add_theme_constant_override("separation", 8)
+	_end_hash_row.visible = false
+	stack.add_child(_end_hash_row)
+	var hash_caption := Label.new()
+	hash_caption.text = "STATE HASH"
+	hash_caption.add_theme_font_size_override("font_size", 14)
+	hash_caption.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.78))
+	hash_caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_end_hash_row.add_child(hash_caption)
+	_end_hash_field = LineEdit.new()
+	_end_hash_field.editable = false
+	_end_hash_field.selecting_enabled = true
+	_end_hash_field.context_menu_enabled = true
+	_end_hash_field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_end_hash_field.custom_minimum_size = Vector2(0.0, 36.0)
+	_end_hash_field.add_theme_font_size_override("font_size", 18)
+	_end_hash_field.add_theme_color_override("font_color", PALETTE.paper_fog)
+	_end_hash_field.add_theme_color_override("font_uneditable_color", PALETTE.paper_fog)
+	_end_hash_field.add_theme_stylebox_override(
+		"normal", _panel_style(Color(PALETTE.storm_ink, 0.9), Color(PALETTE.brass, 0.78), 1, 6)
+	)
+	_end_hash_field.add_theme_stylebox_override(
+		"read_only", _panel_style(Color(PALETTE.storm_ink, 0.9), Color(PALETTE.brass, 0.78), 1, 6)
+	)
+	_end_hash_row.add_child(_end_hash_field)
+	_end_copy_button = Button.new()
+	_end_copy_button.text = "[COPY HASH]"
+	_end_copy_button.custom_minimum_size = Vector2(128.0, 36.0)
+	_end_copy_button.add_theme_font_size_override("font_size", 14)
+	_style_button(_end_copy_button)
+	_end_copy_button.pressed.connect(func() -> void:
+		DisplayServer.clipboard_set(_end_hash)
+		_end_copy_button.text = "[COPIED]"
+	)
+	_end_hash_row.add_child(_end_copy_button)
 	# D-034/D-035: decorative tide-route emblem on the episode end card. The
 	# ledger text stays the payoff; absent bytes simply hide the emblem.
 	_end_icon = TextureRect.new()
@@ -435,9 +956,66 @@ func _build_end_card() -> void:
 	_end_icon.texture = seal_texture
 	_end_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_end_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_end_icon.custom_minimum_size = Vector2(96.0, 96.0)
+	_end_icon.custom_minimum_size = Vector2(72.0, 72.0)
 	_end_icon.visible = _end_icon.texture != null
 	stack.add_child(_end_icon)
+	var nav := HBoxContainer.new()
+	nav.add_theme_constant_override("separation", 10)
+	stack.add_child(nav)
+	_end_prev = Button.new()
+	_end_prev.text = "< BACK"
+	_end_prev.custom_minimum_size = Vector2(96.0, TOUCH_TARGET)
+	_end_prev.add_theme_font_size_override("font_size", 16)
+	_style_button(_end_prev)
+	_end_prev.pressed.connect(func() -> void: _end_go(-1))
+	nav.add_child(_end_prev)
+	_end_page_label = Label.new()
+	_end_page_label.add_theme_font_size_override("font_size", 16)
+	_end_page_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.15))
+	_end_page_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_end_page_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	nav.add_child(_end_page_label)
+	_end_next = Button.new()
+	_end_next.text = "NEXT >"
+	_end_next.custom_minimum_size = Vector2(120.0, TOUCH_TARGET)
+	_end_next.add_theme_font_size_override("font_size", 16)
+	_style_button(_end_next, true)
+	_end_next.pressed.connect(func() -> void: _end_go(1))
+	nav.add_child(_end_next)
+
+
+func set_end_card_hash(state_hash: String) -> void:
+	_end_hash = state_hash
+	if _end_hash_field != null:
+		_end_hash_field.text = state_hash
+	if _end_copy_button != null:
+		_end_copy_button.text = "[COPY HASH]"
+
+
+func _end_go(step: int) -> void:
+	if _end_pages.is_empty():
+		return
+	_end_page_index = clampi(_end_page_index + step, 0, _end_pages.size() - 1)
+	_apply_end_page()
+
+
+func _apply_end_page() -> void:
+	if _end_pages.is_empty():
+		return
+	_end_text.text = str(_end_pages[_end_page_index])
+	var last := _end_page_index == _end_pages.size() - 1
+	_end_hash_row.visible = last and _end_hash != ""
+	_end_page_label.text = "PAGE %d/%d" % [_end_page_index + 1, _end_pages.size()]
+	_end_prev.disabled = _end_page_index == 0
+	_end_next.disabled = last
+	if last:
+		_end_prev.grab_focus()
+	else:
+		_end_next.grab_focus()
+
+
+func end_card_page_count() -> int:
+	return _end_pages.size()
 
 
 func _build_start_gate() -> void:
@@ -446,7 +1024,7 @@ func _build_start_gate() -> void:
 	_start_gate.color = Color(PALETTE.storm_ink, 0.91)
 	_start_gate.mouse_filter = Control.MOUSE_FILTER_STOP
 	_start_gate.visible = false
-	_root.add_child(_start_gate)
+	_screen_over.add_child(_start_gate)
 	# D-034/D-035: curated Higgsfield key art first (ships in the Web PCK), the
 	# reviewed concept sheet as desktop fallback. When both are absent the gate
 	# keeps today's flat storm-ink look exactly.
@@ -536,7 +1114,7 @@ func _build_start_gate() -> void:
 	_start_button.pressed.connect(func() -> void: start_requested.emit())
 	stack.add_child(_start_button)
 	var note := Label.new()
-	note.text = "WASD Move | [E] Inspect | [T] Field Guide | [M] Reduce Motion"
+	note.text = "WASD Move | [E] Inspect | [T] Field Guide | [C] Case File | [M] Reduce Motion"
 	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.add_theme_font_size_override("font_size", 14)
@@ -559,27 +1137,37 @@ func _build_start_gate() -> void:
 
 
 func _build_tutorial() -> void:
-	# Evidence-folio onboarding: controls, then the ledger grammar, then how a
-	# session maps onto the experiment loop. Illustrations are optional reviewed
-	# concept candidates, so the pages stay readable when those bytes are absent.
+	# Field guide (D-073: a reference card, not "the tutorial"). At boot only
+	# page 1 is shown — why Mira needs the signal, what the ledger is for, the
+	# controls in one line. [T] / the GUIDE handle reopen all four pages any
+	# time. Pages 2 and 3 also exist as just-in-time coach cards; page 4 is the
+	# investigation method. Illustrations are optional (curated first, reviewed
+	# concept candidates as desktop fallback) so every page reads without them.
 	_tutorial_pages = [
 		{
-			"title": "OPEN THE FIELD GUIDE | CONTROLS",
-			"body": "Move with WASD | Look with the mouse | Inspect with [E]\nRelease or close with [Esc] | Save [F5] | Load [F9]\nReduce motion [M] | Audio [V] | Reopen this guide [T]\n\nThe amber beacon marks your current lead.\nWhen a focus ring glows, press [E] to inspect.",
+			"title": "WHY THE HARBOR NEEDS YOU",
+			"body": "The lighthouse went dark in the storm. Captain Mira cannot open the channel until the harbor signal is restored.\n\nThe Harbor Ledger records only entries that pass validation. That is how this harbor survived.\n\nThe amber beacon marks your current lead.\n\nWASD move | mouse look | [E] inspect | [T] guide | [C] case file | [H] hint | [Esc] cursor",
 			"curated": "ui-tutorial-vignette.png",
 			"image": "SL3D-U01-signal-lens-icon.png",
 			"pack": true,
 		},
 		{
 			"title": "HOW THE HARBOR LEDGER WORKS",
-			"body": "The ledger accepts only entries that pass validation.\nThat is how this harbor survived the storm.\n\n[P] Brass dotted line = PROPOSAL. The world has not changed.\n[V] VALIDATION = the ledger checks every entry.\n[H] Coral line = HELD. State stays unchanged, with a neutral reason\n    and one concrete next valid entry.\n[C] Amber line = COMMITTED. Validation passed and the state advanced.\n\nA hold is guidance, not punishment.\nColor always appears with text and symbols.",
+			"body": "[P] Brass dotted line = PROPOSAL. The world has not changed yet.\n[C] Amber line = COMMITTED. Validation passed and the state advanced.\n[H] Coral line = HELD. State stays unchanged, with a neutral reason and the next valid entry.\n\nColor always appears with text and symbols.",
 			"image": "SL-C03-investigation-ui.png",
 			"pack": false,
 		},
 		{
-			"title": "THIS HARBOR IS AN EXPERIMENT",
-			"body": "This slice is a TRACE-RPG research probe.\nObserve -> inspect -> propose -> validate -> repair -> commit.\n\nOnly committed entries change canonical state.\nHeld or timed-out proposals keep the prior state hash.\nNo answer can unlock a permanently sealed fact.",
+			"title": "WHAT A HOLD MEANS",
+			"body": "A hold is guidance, not punishment.\n\nEvery held row stays in the ledger and reads PROPOSAL -> RULE -> WHAT THIS TELLS YOU.\n\nThe rules you learn from holds are the case: they say which entries can ever be written.",
 			"image": "SL-C02-captain-mira-sheet.png",
+			"pack": false,
+		},
+		{
+			"title": "HOW TO INVESTIGATE",
+			"body": "Every committed entry becomes a card in the case file [C]. The chain LENS -> MOUNT -> LEAD is the spine of the case; the board asks what opened the tide route.\n\nAt the tide marks you assemble that chain yourself, one slot at a time, from the ledger's own entries. The whole chain is checked at once.\n\nStuck? [H] HINT climbs three rungs: the open question, the place or person, then the next valid entry.",
+			"curated": "ui-tutorial-investigate.png",
+			"image": "SL-C03-investigation-ui.png",
 			"pack": false,
 		},
 	]
@@ -614,7 +1202,7 @@ func _build_tutorial() -> void:
 	_tutorial_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tutorial_columns.add_child(_tutorial_image)
 	_tutorial_body = Label.new()
-	_tutorial_body.add_theme_font_size_override("font_size", 18)
+	_tutorial_body.add_theme_font_size_override("font_size", 20)
 	_tutorial_body.add_theme_color_override("font_color", PALETTE.paper_fog)
 	_tutorial_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tutorial_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -625,7 +1213,7 @@ func _build_tutorial() -> void:
 	stack.add_child(nav)
 	_tutorial_prev = Button.new()
 	_tutorial_prev.text = "< BACK"
-	_tutorial_prev.custom_minimum_size = Vector2(96.0, 44.0)
+	_tutorial_prev.custom_minimum_size = Vector2(96.0, TOUCH_TARGET)
 	_tutorial_prev.add_theme_font_size_override("font_size", 16)
 	_style_button(_tutorial_prev)
 	_tutorial_prev.pressed.connect(func() -> void: _tutorial_go(-1))
@@ -637,15 +1225,18 @@ func _build_tutorial() -> void:
 	_tutorial_progress.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	nav.add_child(_tutorial_progress)
 	_tutorial_next = Button.new()
-	_tutorial_next.custom_minimum_size = Vector2(150.0, 44.0)
+	_tutorial_next.custom_minimum_size = Vector2(150.0, TOUCH_TARGET)
 	_tutorial_next.add_theme_font_size_override("font_size", 16)
 	_style_button(_tutorial_next, true)
 	_tutorial_next.pressed.connect(func() -> void: _tutorial_go(1))
 	nav.add_child(_tutorial_next)
 
 
-func show_tutorial() -> void:
+func show_tutorial(full_guide: bool = false) -> void:
+	# Boot shows page 1 only; `full_guide` (the [T] key / GUIDE handle) opens
+	# the whole four-page reference card.
 	_tutorial_index = 0
+	_tutorial_page_count = _tutorial_pages.size() if full_guide else 1
 	_tutorial_panel.visible = true
 	_apply_tutorial_page()
 
@@ -659,11 +1250,15 @@ func is_tutorial_open() -> bool:
 	return _tutorial_panel != null and _tutorial_panel.visible
 
 
+func tutorial_page_count() -> int:
+	return _tutorial_pages.size()
+
+
 func _tutorial_go(step: int) -> void:
-	if _tutorial_index + step >= _tutorial_pages.size():
+	if _tutorial_index + step >= _tutorial_page_count:
 		hide_tutorial()
 		return
-	_tutorial_index = clampi(_tutorial_index + step, 0, _tutorial_pages.size() - 1)
+	_tutorial_index = clampi(_tutorial_index + step, 0, _tutorial_page_count - 1)
 	_apply_tutorial_page()
 
 
@@ -683,10 +1278,10 @@ func _apply_tutorial_page() -> void:
 		)
 	_tutorial_image.texture = texture
 	_tutorial_image.visible = texture != null
-	_tutorial_progress.text = "%d / %d" % [_tutorial_index + 1, _tutorial_pages.size()]
+	_tutorial_progress.text = "%d / %d" % [_tutorial_index + 1, _tutorial_page_count]
 	_tutorial_prev.disabled = _tutorial_index == 0
 	_tutorial_next.text = (
-		"START CASE >" if _tutorial_index == _tutorial_pages.size() - 1 else "NEXT >"
+		"START CASE >" if _tutorial_index == _tutorial_page_count - 1 else "NEXT >"
 	)
 	_tutorial_next.grab_focus()
 
@@ -715,10 +1310,14 @@ func _style_button(button: Button, primary: bool = false) -> void:
 	button.add_theme_stylebox_override(
 		"focus", _panel_style(Color(0, 0, 0, 0), PALETTE.signal_amber, 2, 8)
 	)
+	button.add_theme_stylebox_override(
+		"disabled", _panel_style(Color(PALETTE.storm_ink, 0.6), Color(PALETTE.brass, 0.4), 1, 8)
+	)
 	button.add_theme_color_override("font_color", text_color)
 	button.add_theme_color_override("font_hover_color", PALETTE.storm_ink)
 	button.add_theme_color_override("font_pressed_color", PALETTE.paper_fog)
 	button.add_theme_color_override("font_focus_color", text_color)
+	button.add_theme_color_override("font_disabled_color", Color(PALETTE.paper_fog, 0.55))
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
@@ -765,11 +1364,37 @@ func _make_bar(parent: Control, top: bool) -> ColorRect:
 	return bar
 
 
+func _apply_safe_area(viewport_size: Vector2) -> Dictionary:
+	# Safe-area margin with a fixed fallback: DisplayServer insets (Android
+	# cutouts) only ever grow the fallback; desktop and browser report none.
+	var margins := SAFE_AREA_FALLBACK.duplicate()
+	var safe := DisplayServer.get_display_safe_area()
+	var window_size := Vector2(DisplayServer.window_get_size())
+	if safe.size.x > 0 and safe.size.y > 0 and window_size.x > 0.0 and window_size.y > 0.0:
+		var scale_x := viewport_size.x / window_size.x
+		var scale_y := viewport_size.y / window_size.y
+		margins["left"] = maxi(int(safe.position.x * scale_x), int(margins["left"]))
+		margins["top"] = maxi(int(safe.position.y * scale_y), int(margins["top"]))
+		margins["right"] = maxi(
+			int((window_size.x - safe.end.x) * scale_x), int(margins["right"])
+		)
+		margins["bottom"] = maxi(
+			int((window_size.y - safe.end.y) * scale_y), int(margins["bottom"])
+		)
+	_safe_area.add_theme_constant_override("margin_left", int(margins["left"]))
+	_safe_area.add_theme_constant_override("margin_top", int(margins["top"]))
+	_safe_area.add_theme_constant_override("margin_right", int(margins["right"]))
+	_safe_area.add_theme_constant_override("margin_bottom", int(margins["bottom"]))
+	return margins
+
+
 func _apply_responsive_layout() -> void:
 	if _bottom_panel == null:
 		return
 	var viewport_size := get_viewport().get_visible_rect().size
 	_layout_narrow = viewport_size.x < NARROW_WIDTH or viewport_size.x < viewport_size.y * 1.25
+	var margins := _apply_safe_area(viewport_size)
+	var narrow_index := 1 if _layout_narrow else 0
 	_columns.vertical = _layout_narrow
 	if _tutorial_columns != null:
 		# 390px-class portrait viewports: the vignette + text row cannot share the
@@ -781,7 +1406,7 @@ func _apply_responsive_layout() -> void:
 		_tutorial_image.size_flags_vertical = (
 			Control.SIZE_SHRINK_CENTER if _layout_narrow else Control.SIZE_SHRINK_BEGIN
 		)
-		_tutorial_body.add_theme_font_size_override("font_size", 15 if _layout_narrow else 18)
+		_tutorial_body.add_theme_font_size_override("font_size", 16 if _layout_narrow else 20)
 		_tutorial_panel.anchor_left = 0.04 if _layout_narrow else 0.14
 		_tutorial_panel.anchor_right = 0.96 if _layout_narrow else 0.86
 		_tutorial_panel.anchor_top = 0.10 if _layout_narrow else 0.12
@@ -793,64 +1418,119 @@ func _apply_responsive_layout() -> void:
 	# than MIN_BOTTOM_PANEL_HEIGHT px, even when a host page (e.g. the
 	# dashboard iframe) hands this scene a canvas shorter than 1280x720.
 	var wide_ledger_top := WIDE_LEDGER_TOP
-	if viewport_size.y > 0.0:
-		var min_top_for_floor: float = 1.0 - (MIN_BOTTOM_PANEL_HEIGHT / viewport_size.y)
+	var inner_height := viewport_size.y - float(margins["top"]) - float(margins["bottom"])
+	if inner_height > 0.0:
+		var min_top_for_floor: float = 1.0 - (MIN_BOTTOM_PANEL_HEIGHT / inner_height)
 		wide_ledger_top = clampf(min(WIDE_LEDGER_TOP, min_top_for_floor), 0.0, WIDE_LEDGER_TOP)
-	_bottom_panel.anchor_top = NARROW_LEDGER_TOP if _layout_narrow else wide_ledger_top
-	_bottom_panel.offset_left = 6.0
-	_bottom_panel.offset_right = -6.0
+	_dock_top_base = NARROW_LEDGER_TOP if _layout_narrow else wide_ledger_top
+	_bottom_panel.anchor_top = _dock_top_base
+	_bottom_panel.offset_left = 0.0
+	_bottom_panel.offset_right = 0.0
 	_bottom_panel.offset_top = 0.0
-	_bottom_panel.offset_bottom = -6.0
-	_portrait_box.custom_minimum_size = Vector2(0.0, 0.0) if _layout_narrow else Vector2(180.0, 0.0)
+	_bottom_panel.offset_bottom = 0.0
+	_portrait_box.custom_minimum_size = Vector2(0.0, 0.0) if _layout_narrow else Vector2(160.0, 0.0)
 	_ledger_log.custom_minimum_size = Vector2(0.0, 92.0) if _layout_narrow else Vector2.ZERO
-	_ledger_box.size_flags_stretch_ratio = 1.05 if _layout_narrow else 2.2
-	_action_box.size_flags_stretch_ratio = 1.35 if _layout_narrow else 1.0
-	_controls_panel.anchor_left = 0.02
-	_controls_panel.anchor_right = 0.98 if _layout_narrow else 0.42
-	_controls_panel.anchor_top = 0.02
-	_controls_panel.anchor_bottom = 0.02
-	_controls_panel.offset_left = 0.0
-	_controls_panel.offset_right = 0.0
-	_controls_panel.offset_top = 0.0
-	_controls_panel.offset_bottom = 128.0 if _layout_narrow else 124.0
-	_prompt_panel.anchor_left = 0.08 if _layout_narrow else 0.24
-	_prompt_panel.anchor_right = 0.92 if _layout_narrow else 0.76
+	_apply_dock_ratios()
+
+	# Top bar zones: side by side on wide, stacked on narrow. Touch targets
+	# grow to 44 px on narrow (SC 2.5.8 / GAG touch guidance).
+	_top_bar.vertical = _layout_narrow
+	_top_bar.offset_left = 0.0
+	_top_bar.offset_right = 0.0
+	_top_bar.offset_top = 0.0
+	_top_bar.offset_bottom = 0.0
+	_zone_handles.size_flags_horizontal = (
+		Control.SIZE_EXPAND_FILL if _layout_narrow else Control.SIZE_SHRINK_END
+	)
+	_handles_row.alignment = BoxContainer.ALIGNMENT_CENTER if _layout_narrow else BoxContainer.ALIGNMENT_END
+	var handle_height := TOUCH_TARGET if _layout_narrow else 32.0
+	_guide_button.custom_minimum_size = Vector2(88.0 if _layout_narrow else 96.0, handle_height)
+	_case_file_button.custom_minimum_size = Vector2(120.0 if _layout_narrow else 150.0, handle_height)
+	_audio_button.custom_minimum_size = Vector2(128.0 if _layout_narrow else 150.0, handle_height)
+	_hint_button.custom_minimum_size = Vector2(124.0, TOUCH_TARGET if _layout_narrow else 30.0)
+	_eyebrow_label.visible = not _layout_narrow
+	_objective_label.add_theme_font_size_override("font_size", TYPE_SCALE["objective"][narrow_index])
+	_case_chain_label.add_theme_font_size_override("font_size", TYPE_SCALE["chain"][narrow_index])
+	_ledger_log.add_theme_font_size_override("normal_font_size", TYPE_SCALE["ledger"][narrow_index])
+	_prompt_label.add_theme_font_size_override("font_size", TYPE_SCALE["dialogue"][narrow_index])
+	_end_text.add_theme_font_size_override("normal_font_size", TYPE_SCALE["ledger"][narrow_index])
+	_end_hash_field.add_theme_font_size_override("font_size", TYPE_SCALE["hash"][narrow_index])
+	_status_label.add_theme_font_size_override("font_size", 14 if _layout_narrow else 16)
+	_hint_label.add_theme_font_size_override("font_size", 13 if _layout_narrow else 14)
+	for child in _choice_box.get_children():
+		if child is Button:
+			(child as Button).add_theme_font_size_override(
+				"font_size", TYPE_SCALE["dialogue"][narrow_index]
+			)
+
+	_prompt_panel.anchor_left = 0.06 if _layout_narrow else 0.24
+	_prompt_panel.anchor_right = 0.94 if _layout_narrow else 0.76
 	_prompt_panel.anchor_top = _bottom_panel.anchor_top
 	_prompt_panel.anchor_bottom = _bottom_panel.anchor_top
 	_prompt_panel.offset_left = 0.0
 	_prompt_panel.offset_right = 0.0
-	_prompt_panel.offset_top = -56.0
+	_prompt_panel.offset_top = -60.0
 	_prompt_panel.offset_bottom = -8.0
+	_end_card.anchor_left = 0.02 if _layout_narrow else 0.18
+	_end_card.anchor_right = 0.98 if _layout_narrow else 0.82
+	_end_card.anchor_top = 0.08 if _layout_narrow else 0.12
+	_end_card.anchor_bottom = 0.94 if _layout_narrow else 0.90
+	# Case file board: modal over the middle of the screen (wide) / most of the
+	# height on narrow where the four cards fall into a 2x2 grid.
+	_evidence_panel.anchor_left = 0.02 if _layout_narrow else 0.16
+	_evidence_panel.anchor_right = 0.98 if _layout_narrow else 0.84
+	_evidence_panel.anchor_top = 0.16 if _layout_narrow else 0.14
+	_evidence_panel.anchor_bottom = 0.90 if _layout_narrow else 0.86
+	_evidence_cards_box.columns = 2 if _layout_narrow else 4
+	if _evidence_panel.visible and not _evidence_snapshot.is_empty():
+		show_evidence_board(
+			_evidence_snapshot["cards"], _evidence_snapshot["chain"],
+			_evidence_snapshot["rules_learned"], str(_evidence_snapshot["next_entry"])
+		)
+	_apply_start_key_art()
+	_start_card.anchor_left = 0.05 if _layout_narrow else 0.21
+	_start_card.anchor_right = 0.95 if _layout_narrow else 0.79
+	_start_card.anchor_top = 0.19 if _layout_narrow else 0.22
+	_start_card.anchor_bottom = 0.82 if _layout_narrow else 0.78
+	_place_transients()
+	_update_portrait_visibility()
+
+
+func _place_transients() -> void:
+	# Toast / verdict feedback / coach card sit directly under the measured
+	# top bar (never over a zone) and above the prompt + dock. On narrow the
+	# stacked bar can grow past the fixed 38% dock anchor, so the dock is
+	# nudged down just enough to keep one 72 px transient band clear.
+	if _top_bar == null or _bottom_panel == null or _root == null:
+		return
+	var bar_bottom := _top_bar.size.y + 8.0
+	var root_height := _root.size.y
+	var dock_top := _dock_top_base
+	if _layout_narrow and root_height > 0.0:
+		# While a coach card is open the bar is transiently taller; let the
+		# dock drop to 68% so the card is never covered (2026-09-18 embedded
+		# 713x720 check showed the 50% cap clipping "What a hold means").
+		var dock_cap := 0.68 if is_coach_card_open() else 0.5
+		dock_top = clampf(maxf(_dock_top_base, (bar_bottom + 72.0) / root_height), 0.0, dock_cap)
+	_bottom_panel.anchor_top = dock_top
+	_prompt_panel.anchor_top = dock_top
+	_prompt_panel.anchor_bottom = dock_top
 	_feedback_label.anchor_left = 0.20
 	_feedback_label.anchor_right = 0.80
 	_feedback_label.anchor_top = 0.0
 	_feedback_label.anchor_bottom = 0.0
 	_feedback_label.offset_left = 0.0
 	_feedback_label.offset_right = 0.0
-	_feedback_label.offset_top = 136.0
-	_feedback_label.offset_bottom = 168.0
-	_toast.anchor_left = 0.12
-	_toast.anchor_right = 0.88
+	_feedback_label.offset_top = bar_bottom
+	_feedback_label.offset_bottom = bar_bottom + 32.0
+	_toast.anchor_left = 0.10
+	_toast.anchor_right = 0.90
 	_toast.anchor_top = 0.0
 	_toast.anchor_bottom = 0.0
 	_toast.offset_left = 0.0
 	_toast.offset_right = 0.0
-	_toast.offset_top = 174.0
-	_toast.offset_bottom = 206.0
-	_end_card.anchor_left = 0.04 if _layout_narrow else 0.18
-	_end_card.anchor_right = 0.96 if _layout_narrow else 0.82
-	_end_card.anchor_top = 0.13 if _layout_narrow else 0.16
-	_end_card.anchor_bottom = 0.88 if _layout_narrow else 0.84
-	_apply_start_key_art()
-	_start_card.anchor_left = 0.05 if _layout_narrow else 0.21
-	_start_card.anchor_right = 0.95 if _layout_narrow else 0.79
-	_start_card.anchor_top = 0.19 if _layout_narrow else 0.22
-	_start_card.anchor_bottom = 0.82 if _layout_narrow else 0.78
-	_controls_label.add_theme_font_size_override("font_size", 12 if _layout_narrow else 13)
-	_ledger_log.add_theme_font_size_override("normal_font_size", 16 if _layout_narrow else 18)
-	_objective_label.add_theme_font_size_override("font_size", 16 if _layout_narrow else 18)
-	_status_label.add_theme_font_size_override("font_size", 15 if _layout_narrow else 17)
-	_update_portrait_visibility()
+	_toast.offset_top = bar_bottom + 36.0
+	_toast.offset_bottom = bar_bottom + 68.0
 
 
 func _apply_start_key_art() -> void:
@@ -892,6 +1572,9 @@ func set_letterbox(active: bool) -> void:
 	_letterbox_top.offset_bottom = height
 	_letterbox_bottom.offset_top = -height
 	_bottom_panel.visible = not active
+	_top_bar.visible = not active
+	if active:
+		hide_evidence_board()
 
 
 func show_start_gate(visible_now: bool) -> void:
@@ -899,6 +1582,7 @@ func show_start_gate(visible_now: bool) -> void:
 	if visible_now:
 		_play_started = false
 		_cursor_label.text = "[READY] CASE READY"
+		_update_eyebrow()
 		_start_button.grab_focus()
 	_update_gate_motion_state()
 
@@ -917,50 +1601,56 @@ func set_cursor_captured(captured: bool) -> void:
 		_cursor_label.text = "[LOOK] LOOK ACTIVE"
 	else:
 		_cursor_label.text = "[CURSOR] CURSOR FREE | CLICK TO RETURN"
+	_update_eyebrow()
 
 
 func set_audio_state(unlocked: bool, muted: bool) -> void:
 	if not unlocked:
-		_audio_button.text = "AUDIO LOCKED | V"
+		_audio_button.text = "[V] AUDIO LOCKED"
 	elif muted:
-		_audio_button.text = "AUDIO OFF | V"
+		_audio_button.text = "[V] AUDIO OFF"
 	else:
-		_audio_button.text = "AUDIO ON | V"
+		_audio_button.text = "[V] AUDIO ON"
 
 
 func set_progress(stage: int, total: int, phase: String) -> void:
+	# Kept as the controller-facing progress API; the HUD no longer renders a
+	# second progress number for it (the case chain N/3 is the one), so the
+	# phase word is surfaced through the compact status line instead.
 	_progress_total = maxi(1, total)
 	_progress_stage = clampi(stage, 0, _progress_total)
 	_progress_phase = phase
-	_progress_bar.max_value = float(_progress_total)
-	_progress_bar.value = float(_progress_stage)
-	_update_progress_text()
 
 
-func _update_progress_text() -> void:
-	if _progress_label != null:
-		_progress_label.text = "CASE %d/%d | %s" % [_progress_stage, _progress_total, _progress_phase]
+func progress_phase() -> String:
+	return _progress_phase
 
 
 func set_case_chain(chain: Dictionary, rules_learned: Array) -> void:
-	# Case-chain HUD line (Aside search-feedback 2026-09-02 pattern 1): named
+	# Case-chain HUD zone (Aside search-feedback 2026-09-02 pattern 1): named
 	# relationship links, not a bare fraction, so a filled link explains what
-	# the last commit contributed. Rules learned ride the same line so the
-	# player can recall which policy families the ledger has already taught.
-	# Text-only; presentation reads the committed snapshot and never invents
-	# a link state or a rule that was not actually taught by a hold.
+	# the last commit contributed. Text-only; presentation reads the committed
+	# snapshot and never invents a link state. Rules learned are kept for the
+	# case file and the end card (D-073: one progress number on the HUD).
 	_case_chain_snapshot = chain.duplicate(true)
 	_rules_learned_snapshot = rules_learned.duplicate()
+	_render_case_chain()
+
+
+func _render_case_chain() -> void:
 	if _case_chain_label == null:
 		return
 	var parts: Array = []
-	for link in chain.get("links", []):
+	for link in _case_chain_snapshot.get("links", []):
 		var mark := "[x]" if bool(link["filled"]) else "[ ]"
-		parts.append("%s %s" % [str(link["id"]), mark])
-	var rules_text := ", ".join(rules_learned) if not rules_learned.is_empty() else "none"
-	_case_chain_label.text = "CASE CHAIN | %s  |  RULES LEARNED %d | %s" % [
-		" > ".join(parts), rules_learned.size(), rules_text
-	]
+		parts.append("%s %s" % [mark, str(link["id"])])
+	if parts.is_empty():
+		parts = ["[ ] LENS", "[ ] MOUNT", "[ ] LEAD"]
+	_case_chain_label.text = " -> ".join(parts)
+
+
+func case_chain_text() -> String:
+	return _case_chain_label.text if _case_chain_label != null else ""
 
 
 func show_prompt(text: String) -> void:
@@ -993,7 +1683,9 @@ func _update_portrait_visibility() -> void:
 func ledger_line(kind: String, text: String) -> void:
 	# Bureaucratic-poetic ledger voice (W-005): the ledger is a diegetic record
 	# of accepted evidence. Commits stamp "COMMITTED", refusals stamp "HELD" — the
-	# words of a harbor that survives on valid entries only.
+	# words of a harbor that survives on valid entries only. Deduction lines
+	# (D-073 slot assembly) are the player's own reasoning being checked
+	# against the ledger; they are never machine proposals.
 	var line := ""
 	match kind:
 		"narration":
@@ -1009,6 +1701,13 @@ func ledger_line(kind: String, text: String) -> void:
 			line = "[color=#D9685F][H] HELD -| %s[/color]" % text
 		"hint":
 			line = "[color=#F2B84B][L] LEAD - %s[/color]" % text
+		"deduction":
+			line = "[color=#F2B84B][D] DEDUCTION | %s[/color]" % text
+		"deduction_held":
+			line = "[color=#8FA3B2][H] DEDUCTION HELD | %s[/color]" % text
+		"deduction_confirmed":
+			line = "[color=#F2B84B][C] DEDUCTION CONFIRMED | %s[/color]" % text
+			_show_ledger_stamp(true)
 		_:
 			line = text
 	_ledger_log.append_text(line + "\n")
@@ -1026,7 +1725,8 @@ func ledger_commit(entry_number: int, text: String) -> void:
 func ledger_refusal(reason: String, next_affordance: String, gate: String = "") -> void:
 	# 'HELD — <neutral reason>' then 'NEXT VALID ENTRY: <affordance>'. The reason
 	# stays neutral/non-alarming (P-02) and never exposes hidden oracle labels;
-	# the next valid entry is always concrete and always present.
+	# the next valid entry is always concrete and always present. Held rows are
+	# permanent: nothing here fades or collapses them later.
 	_ledger_log.append_text("[color=#D9685F][H] HELD - %s[/color]\n" % reason)
 	if gate != "":
 		# Diegetic mirror of the paper's state-relative predicate that held the
@@ -1087,6 +1787,15 @@ func ledger_rule(gate: String, rule_text: String, first_time: bool, recall_count
 	_last_rule_line = plain_line
 
 
+func ledger_inference(text: String) -> void:
+	# D-073 third line of every held row (PROPOSAL -> RULE -> WHAT THIS TELLS
+	# YOU): the inference the hold licenses, authored per refusal code by the
+	# controller (INFERENCE_BY_CODE). Same paper-fog voice as the rule line.
+	var plain_line := "WHAT THIS TELLS YOU | %s" % text
+	_ledger_log.append_text("[color=#D9D3C4][V] %s[/color]\n" % plain_line)
+	_last_inference_line = plain_line
+
+
 func _show_ledger_stamp(committed: bool) -> void:
 	# Tiny diegetic ink stamp beside the newest verdict line. Curated bytes are
 	# optional: a missing texture keeps today's text-only ledger exactly.
@@ -1118,25 +1827,57 @@ func _show_ledger_stamp(committed: bool) -> void:
 	_stamp_tween.tween_callback(func() -> void: _ledger_stamp.visible = false)
 
 
-func show_choices(choices: Array) -> void:
+func show_choices(choices: Array, caption: String = "") -> void:
+	# `caption` names what the list is asking for (deduction slot prompts);
+	# empty hides it so Mira's dialogue keeps its bare choice list.
 	clear_choices()
+	_choice_caption.text = caption
+	_choice_caption.visible = caption != ""
+	var font_size: int = TYPE_SCALE["dialogue"][1 if _layout_narrow else 0]
 	for choice in choices:
 		var button := Button.new()
 		button.text = choice["text"]
-		button.custom_minimum_size = Vector2(0.0, 44.0)
+		button.custom_minimum_size = Vector2(0.0, TOUCH_TARGET)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.add_theme_font_size_override("font_size", 16 if _layout_narrow else 18)
+		button.add_theme_font_size_override("font_size", font_size)
 		_style_button(button)
 		var choice_id: String = choice["id"]
 		button.pressed.connect(func() -> void: choice_selected.emit(choice_id))
 		_choice_box.add_child(button)
 	if _choice_box.get_child_count() > 0:
 		(_choice_box.get_child(0) as Button).grab_focus()
+	_apply_dock_ratios()
+
+
+func _apply_dock_ratios() -> void:
+	# Narrow: the objective moved to the top bar, so the ledger normally takes
+	# the larger share of the dock. While a choice list is open the action box
+	# takes it instead, so all four dialogue choices (or the five deduction
+	# options) fit without scrolling in the 713x720 dashboard embed; the list
+	# keeps its own scroll as a fallback. Wide keeps the 2.2 : 1 split.
+	if _ledger_box == null or _action_box == null:
+		return
+	var choices_open := _choice_box != null and _choice_box.get_child_count() > 0
+	if _layout_narrow and choices_open:
+		_ledger_box.size_flags_stretch_ratio = 0.9
+		_action_box.size_flags_stretch_ratio = 1.9
+	else:
+		_ledger_box.size_flags_stretch_ratio = 1.6 if _layout_narrow else 2.2
+		_action_box.size_flags_stretch_ratio = 1.0
 
 
 func clear_choices() -> void:
 	for child in _choice_box.get_children():
+		_choice_box.remove_child(child)
 		child.queue_free()
+	if _choice_caption != null:
+		_choice_caption.text = ""
+		_choice_caption.visible = false
+	_apply_dock_ratios()
+
+
+func choice_count() -> int:
+	return _choice_box.get_child_count() if _choice_box != null else 0
 
 
 func set_status(objective: String, status: String) -> void:
@@ -1177,19 +1918,25 @@ func toast(text: String) -> void:
 	_toast_tween.tween_callback(func() -> void: _toast.visible = false)
 
 
-func show_end_card(text: String) -> void:
-	_end_text.text = text
+func show_end_card(pages: Variant) -> void:
+	# Accepts the paged receipt (Array of bbcode strings) or a single string
+	# (rendered as one page). Opens on page 1; the hash row shows on the last.
+	_end_pages = pages.duplicate() if pages is Array else [str(pages)]
+	_end_page_index = 0
+	_apply_end_page()
 	_end_card.visible = true
 	_bottom_panel.visible = false
+	_top_bar.visible = false
+	hide_evidence_board()
 
 
-func play_ledger_close(text: String) -> void:
+func play_ledger_close(pages: Variant) -> void:
 	# Ending 'ledger closes' beat: the ledger panel returns dimmed for one last
 	# look, a final case-complete toast lands, and after ~0.6 s the end card slides
 	# in. Reduced motion: the card appears immediately (steady semantic state).
 	# Purely additive presentation — the canonical receipt lives in the card.
 	if reduce_motion:
-		show_end_card(text)
+		show_end_card(pages)
 		return
 	_bottom_panel.visible = true
 	_bottom_panel.modulate = Color(1, 1, 1, 1)
@@ -1199,10 +1946,8 @@ func play_ledger_close(text: String) -> void:
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	beat.tween_interval(0.30)
 	beat.tween_callback(func() -> void:
-		_bottom_panel.visible = false
 		_bottom_panel.modulate = Color(1, 1, 1, 1)
-		_end_text.text = text
-		_end_card.visible = true
+		show_end_card(pages)
 		_end_card.modulate = Color(1, 1, 1, 0)
 		var base_position := _end_card.position
 		_end_card.position = base_position + Vector2(0.0, 26.0)
@@ -1230,15 +1975,26 @@ func get_engineering_snapshot() -> Dictionary:
 			"wide_playfield_fraction": WIDE_LEDGER_TOP,
 			"narrow_playfield_fraction": NARROW_LEDGER_TOP,
 		},
-		"controls_visible": _controls_panel.visible,
-		"control_affordances": ["WASD", "mouse-look", "E", "Escape", "F5", "F9", "M", "V"],
+		"hud_zones": ["objective+hint-ladder:top-left", "case-chain:top-centre", "handles:top-right", "prompt:bottom-centre"],
+		"safe_area_fallback": SAFE_AREA_FALLBACK.duplicate(),
+		"type_scale": TYPE_SCALE.duplicate(true),
+		"controls_visible": _top_bar.visible,
+		"control_affordances": ["WASD", "mouse-look", "E", "Escape", "F5", "F9", "M", "V", "T", "C", "H"],
 		"start_gate_visible": _start_gate.visible,
 		"play_started": _play_started,
 		"progress": {"stage": _progress_stage, "total": _progress_total, "phase": _progress_phase},
 		"reduced_motion": reduce_motion,
 		"semantic_feedback_redundancy": ["color", "icon", "text", "ledger-line"],
 		"case_chain": _case_chain_snapshot,
+		"case_chain_text": case_chain_text(),
 		"rules_learned": _rules_learned_snapshot,
 		"contribution_lines": _contribution_lines,
 		"last_rule_line": _last_rule_line,
+		"last_inference_line": _last_inference_line,
+		"hint_ladder": {"rung": _hint_rung, "text": hint_ladder_text()},
+		"evidence_board": _evidence_snapshot.duplicate(true),
+		"case_file_unread": _case_file_unread,
+		"coach_cards": coach_card_ids(),
+		"tutorial_pages": tutorial_page_count(),
+		"end_card_pages": END_CARD_PAGES,
 	}

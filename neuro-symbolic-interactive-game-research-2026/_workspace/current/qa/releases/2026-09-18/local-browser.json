@@ -1,0 +1,181 @@
+{
+  "engineering_only": true,
+  "claim_boundary": "Local pre-deploy browser check of the D-073 Web export + dashboard through the real postMessage mirror; automation-driven, not usability, latency, G4, or G6 evidence.",
+  "method": "chrome-headless-shell 148.0.7778.97 (unpatched, CDP 9333, --use-angle=swiftshader --enable-unsafe-swiftshader; WebGL2 available) attached via the jeopi browser tool; python3 -m http.server 8769 serving game-track/web; game driven by canvas click + keyboard (WASD/E/Tab/Enter/Escape).",
+  "url": "http://127.0.0.1:8769/dashboard/",
+  "session_started": {
+    "initial_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+    "sites": 5,
+    "header": "Commit gate - live per-node evaluation trace",
+    "pill": "live · receiving game events"
+  },
+  "observed_traces": [
+    {
+      "operation": "ask_secret (top-level validate_disclosure)",
+      "verdict": "hold",
+      "checks": [
+        [
+          "FORBIDDEN_DISCLOSURE",
+          "DISCLOSURE",
+          "fail"
+        ],
+        [
+          "STAGE_GATED_DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE",
+          "pass"
+        ]
+      ],
+      "held_at": "FORBIDDEN_DISCLOSURE",
+      "skipped": [],
+      "out_of_scope": [
+        "POLICY",
+        "PRECONDITION",
+        "REACHABILITY",
+        "KNOWLEDGE"
+      ],
+      "family_states": {
+        "POLICY": "out_of_scope",
+        "PRECONDITION": "out_of_scope",
+        "REACHABILITY": "out_of_scope",
+        "KNOWLEDGE": "out_of_scope",
+        "DISCLOSURE": "fail",
+        "QUEST STAGE": "pass"
+      },
+      "legend": "1 passed, 1 failed, 0 skipped (checks), 4 not evaluated (families)",
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    },
+    {
+      "operation": "reveal_hint (ask_tide at stage 0)",
+      "verdict": "hold",
+      "checks": [
+        [
+          "FORBIDDEN_DISCLOSURE",
+          "DISCLOSURE",
+          "pass"
+        ],
+        [
+          "STAGE_GATED_DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE",
+          "fail"
+        ]
+      ],
+      "held_at": "STAGE_GATED_DISCLOSURE",
+      "skipped": [
+        [
+          "UNKNOWN_ACTOR",
+          "POLICY"
+        ],
+        [
+          "NPC_DOES_NOT_KNOW_FACT",
+          "KNOWLEDGE"
+        ]
+      ],
+      "out_of_scope": [
+        "PRECONDITION",
+        "REACHABILITY"
+      ],
+      "family_states": {
+        "POLICY": "skipped",
+        "PRECONDITION": "out_of_scope",
+        "REACHABILITY": "out_of_scope",
+        "KNOWLEDGE": "skipped",
+        "DISCLOSURE": "fail",
+        "QUEST STAGE": "fail"
+      },
+      "legend": "1 passed, 1 failed, 2 skipped (checks), 2 not evaluated (families)",
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    },
+    {
+      "operation": "acquire_object (lens pickup)",
+      "verdict": "commit",
+      "checks": [
+        [
+          "OBJECT_NOT_PRESENT",
+          "REACHABILITY",
+          "pass"
+        ],
+        [
+          "OBJECT_NOT_REACHABLE",
+          "REACHABILITY",
+          "pass"
+        ]
+      ],
+      "held_at": "",
+      "skipped": [],
+      "out_of_scope": [
+        "POLICY",
+        "PRECONDITION",
+        "KNOWLEDGE",
+        "DISCLOSURE",
+        "QUEST STAGE"
+      ],
+      "family_states": {
+        "POLICY": "out_of_scope",
+        "PRECONDITION": "out_of_scope",
+        "REACHABILITY": "pass",
+        "KNOWLEDGE": "out_of_scope",
+        "DISCLOSURE": "out_of_scope",
+        "QUEST STAGE": "out_of_scope"
+      },
+      "legend": "2 passed, 0 failed, 0 skipped (checks), 5 not evaluated (families)",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+      "stage": 1,
+      "hash_chain": [
+        "session f488d9c4",
+        "commit #1 19b474dc"
+      ]
+    }
+  ],
+  "dashboard_counters_at_end": {
+    "commits": 1,
+    "holds": 4,
+    "proposals": 2,
+    "dialogues": 7,
+    "traceErrors": 0,
+    "legacyEvents": 0,
+    "familyEval": {
+      "REACHABILITY": {
+        "evaluated": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "DISCLOSURE": {
+        "evaluated": 8,
+        "passed": 4,
+        "failed": 4
+      },
+      "QUEST STAGE": {
+        "evaluated": 4,
+        "passed": 3,
+        "failed": 1
+      },
+      "POLICY": {
+        "evaluated": 0
+      },
+      "PRECONDITION": {
+        "evaluated": 0
+      },
+      "KNOWLEDGE": {
+        "evaluated": 0
+      }
+    }
+  },
+  "console_errors": [
+    "pageerror: WrongDocumentError: The root document of this element is not valid for pointer lock. (x2, the known automation-only pointer-lock diagnostic; pointer lock remains FIX pending a human gesture check)"
+  ],
+  "unexpected_errors": [],
+  "layout_findings_fixed_before_deploy": [
+    "narrow 713x720 embed: an open coach card was covered by the ledger dock (50% cap) -> dock cap raised to 68% while a card is open (harbor_ledger_ui.gd _place_transients)",
+    "narrow 713x720 embed: only 2 of 4 dialogue choices visible without scrolling -> action box takes the larger dock share while a choice list is open (harbor_ledger_ui.gd _apply_dock_ratios)",
+    "HOLDS count on the status line stayed stale after a dialogue-path hold -> ask_secret branch resyncs presentation (game_3d.gd)"
+  ],
+  "world_note": "Driving the investigator with axis-only keystrokes hit the hut wall at x~-8.9/z~4 and a prop near x~-3/z~2; a routed path (z~5.3 then west, then to (-9.7,3.2)) reached the lens trigger. Not a player-facing regression claim; mouse-look was unavailable to automation (no pointer lock).",
+  "artifacts": [
+    "local-dashboard-start.png",
+    "local-dashboard-holds.png",
+    "local-dashboard-commit.png",
+    "local-trace-card-stage-gated-hold.png",
+    "local-trace-card-commit.png"
+  ]
+}

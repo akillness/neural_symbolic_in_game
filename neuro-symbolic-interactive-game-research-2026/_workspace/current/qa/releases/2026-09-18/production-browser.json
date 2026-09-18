@@ -1,0 +1,51 @@
+{
+  "engineering_only": true,
+  "claim_boundary": "Production browser check of dpl_BkguPJPErtawmhjxU5cvg97PBsiq (and the superseded dpl_2a9d2NQqTo5cs3NfuHPbVLRffHnX for the gameplay walk); automation-driven, not usability, latency, mobile-readability, G4, or G6 evidence.",
+  "method": "chrome-headless-shell 148.0.7778.97 (unpatched, CDP, SwiftShader WebGL2) via the jeopi browser tool.",
+  "desktop_1280x900": {
+    "url": "https://sealed-lighthouse-trace-rpg.vercel.app/ -> /dashboard/",
+    "header": "Commit gate - live per-node evaluation trace",
+    "paper_links": [
+      "/paper/en.pdf",
+      "/paper/ko.pdf"
+    ],
+    "session_started_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+    "pill": "live · receiving game events"
+  },
+  "gameplay_walk_on_dpl_2a9d2NQqTo5cs3NfuHPbVLRffHnX": {
+    "early_secret_hold": {
+      "family_states": {
+        "POLICY": "out_of_scope",
+        "PRECONDITION": "out_of_scope",
+        "REACHABILITY": "out_of_scope",
+        "KNOWLEDGE": "out_of_scope",
+        "DISCLOSURE": "fail",
+        "QUEST STAGE": "pass"
+      },
+      "legend": "1 passed, 1 failed, 0 skipped (checks), 4 not evaluated (families)",
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "status_line_holds": 1
+    },
+    "coach_card_hold_intro": "fully visible with [OK] GOT IT above the dock in the 713x720 embed (dock cap 68% while open)",
+    "choices_after_dismiss": "three of four Mira choices visible without scrolling; Step away reachable by scroll"
+  },
+  "mobile_390x844": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "frameHeight": 184.5,
+    "table_wrap_present": true,
+    "note": "page overflow fixed by .tbl-wrap (was 517 px on dpl_2a9d2); the 185 px game frame establishes page layout only, not mobile game readability"
+  },
+  "console_errors": [
+    "pageerror: WrongDocumentError: The root document of this element is not valid for pointer lock. (known automation-only pointer-lock diagnostic; human-gesture pointer lock remains FIX)"
+  ],
+  "unexpected_errors": [],
+  "artifacts": [
+    "production-started.png",
+    "production-hold-embed.png",
+    "production-choices-embed.png",
+    "production-mobile.png",
+    "production-desktop.png",
+    "production-http.json"
+  ]
+}

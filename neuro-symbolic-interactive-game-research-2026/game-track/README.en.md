@@ -1,5 +1,13 @@
 # Game-development track — The Sealed Lighthouse
 
+Updated 2026-09-06: [play and inspect the dashboard](https://sealed-lighthouse-trace-rpg.vercel.app/),
+[English paper](https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf),
+[Korean paper](https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf).
+The current release includes the fact-checked bilingual manuscripts and corrected dashboard
+rule accounting. All 16 deployed files match the local artifacts; 188 tests and 83 subtests
+pass. This is an engineering demonstration; human usability and model efficacy remain unproven.
+See [the current release receipt](../_workspace/current/qa/factcheck-release-2026-09-06.md).
+
 The game track does not embed research code directly inside the engine. The target architecture has
 the engine emit stable bridge observations and the research runtime return authorization events.
 The current Godot fixture instead runs an engine-local authored policy mirror; its supported event
@@ -80,8 +88,9 @@ performance evidence.*
 | Duplicate-event fixture | `10/10` | PASS |
 | Timeout fixture | `10/10` | PASS |
 | Corrupt-save fixture | `10/10` | PASS |
-| Presentation invariants | `12/12` | PASS |
-| **Combined** | **`52/52`** | **PASS** |
+| Presentation invariants (core) | `12/12` | PASS |
+| **Combined (core, paper-cited ENG1)** | **`52/52`** | **PASS** |
+| D-073 extension invariants (evidence board, deduction, hint ladder, trace mirror) | `4/4` (all `56/56`) | PASS |
 | Archetype balance probe | `SL-BALANCE-PROBE-001` 5/5 | PASS |
 
 All `4/4` authored fixtures reached the exact terminal state SHA-256
@@ -120,14 +129,15 @@ From the project root:
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-The current English UI + tracked-player artifact is deployed: 11 manifest files / 50,746,755 bytes;
-10 public runtime files / 50,746,242 bytes; PCK 10,893,980 bytes, SHA-256
-`654c1f136de9e15b37be4d697daf863dccf20d1a59287ae86f635d0d7e1a58e7`.
-Deployment status: **[Vercel `dpl_Auzz4gjVUcgDcL45EjcRG2HVyoCW` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
-All 10 public runtime files returned anonymous `200` responses and matched the local bytes; WASM
-used `application/wasm`, the OFL notice used `text/plain`, configured response headers were present,
-and `vercel.json` returned `404`. The production desktop smoke completed start gate → three-page
-tutorial → in-game with zero console/page errors. The prior 2026-08-21 deployment
+The current English UI + tracked-player artifact is deployed at `/public/`: 10 runtime files /
+50,754,386 bytes; PCK 10,902,124 bytes, SHA-256
+`b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. The 4-file / 32,117-byte
+commit-gate dashboard is served at the site root via `/dashboard/`.
+Deployment status: **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+All runtime and dashboard files returned anonymous success responses and matched the staged bytes;
+redirects, MIME types, security headers, and the same-origin embedded-frame message guard passed.
+Desktop and 390×844 dashboard checks had zero console/page errors and no horizontal overflow. The
+prior 2026-08-21 deployment
 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` served the ritual+texture build:
 11 files, `index.pck` 5,970,516 bytes, SHA-256
 `b9706912530248c271979d1146537ab20ea4fff124e812c6195c7caf8d1c56eb`; served html/pck/wasm fetched
