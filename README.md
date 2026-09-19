@@ -15,7 +15,7 @@
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
 [![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
-![The Sealed Lighthouse golden path, 63 seconds: arrival at the harbor, a HELD request that names the gate, lens recovery, signal restoration, the authorized tide lead, and the case-complete receipt](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif)
+![The Sealed Lighthouse golden path, 76 seconds: arrival at the harbor, a HELD request that names the gate, lens recovery, signal restoration, the authorized tide lead, and the case-complete receipt](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif)
 
 - **The gate.** Every generated event is treated as an untrusted transaction proposal. A type-strict parser, an external action policy, and seven deterministic checks in six state-relative families decide whether it commits; a rejected candidate gets bounded, counterexample-guided repair, and everything else falls back to the unchanged prior state.
 - **The game.** *The Sealed Lighthouse* is a turn-based investigation micro-RPG in Godot 4.7.1 whose in-world ledger shows the gate diegetically: a hold names the family that held it and teaches the rule; a commit posts a contribution, unlocks the next lead, and extends a SHA-256 receipt chain.

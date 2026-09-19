@@ -161,3 +161,15 @@ evidence in the same change set. The explanation lives here and in
   does not edit `assets/player/**`, `assets/generated/higgsfield-mira-v1/**`, `paper/**`, or
   `research/**`, and will stage only explicit pathspecs whose last modification it made or whose
   prior-session state was verified unchanged since the D-072 receipt.
+
+### 2026-09-19 follow-up — concurrent player-GLB refresh folded in (D-074)
+
+- The second Claude Code process (`claude --resume 7b5d905b…`) stayed idle after 18:51 on
+  2026-09-18 with its regenerated `game-track/godot/assets/player/{higgsfield-player.glb,
+  higgsfield-player_texture_0.png,provenance,curation}` unstaged (curation approved
+  2026-09-18T09:52Z; six clips; 1024 px texture; 3,559,148 B). Those bytes were already what
+  every D-073 build, the CI validator (`validate_player_asset.py` PASS), and production served,
+  and the D-073 gesture clips depend on them, so the D-074 session committed them in a separate
+  attributed commit rather than leave the tracked GLB (9,677,324 B) different from the deployed one.
+- Still not committed: `game-track/assets/generated/higgsfield-mira-v1/` (a frozen Mira reference
+  prompt and an ignored PNG; no provenance or manifest yet — an incomplete lane owned by that session).

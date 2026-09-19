@@ -174,10 +174,11 @@ fixture `4/4` 모두 정확한 종료 SHA-256
 생성한 최신 엔지니어링 작업 캡처다. 캡처 전용 query hook은 추적 source에 들어가지 않았다.
 불변 v5 패킷을 대체하거나 수정하지 않는다.
 
-보존 선행 버전 전체 경로 플레이 영상: **[Compresso 압축 H.264 MP4](docs/latest/trace-rpg-gameplay.mp4)**
-(`1280×720`, 30 fps, 69.067초, 5,662,128바이트, SHA-256
-`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). 렌즈 접근 데크 변경 전
-바이트 동일 선행 배포 `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`에서 캡처한 엔지니어링 시연이다.
+현재 전체 경로 플레이 영상(dev 전용 `main_3d.tscn -- --autoplay --public-safe`, `--write-movie`, 2026-09-19): **[H.264 MP4, 76.3초](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
+(MP4 `1280×720`, 30 fps, 2,289 프레임, 10,990,889바이트, SHA-256
+`c20c197e2b2568bda24d0c80f646fee2c80e15b5a4867b02f60e44dae56e551c`; GIF 560×315, 6 fps, 305 프레임 1.5배속, 6,469,565바이트, SHA-256
+`e353f35370cd75822a4cd86889c2a8dcdd72941b3ec936f390c1da60a88bf5cf`). D-073 슬롯 조립 추리와 페이지형 영수증으로 끝나는
+엔지니어링 시연이다.
 
 ## Public-safe Web 산출물 빌드
 

@@ -173,11 +173,11 @@ The four 1280×720 PNGs are latest engineering working captures generated from a
 Web build because this sandbox cannot render Godot `--shot`. The capture-only query hook never enters
 tracked source. The PNGs do not replace or amend the immutable v5 packet.
 
-Current full-route gameplay (dev-only `main_3d.tscn -- --autoplay --public-safe` under `--write-movie`, 2026-09-02): **[H.264 MP4, 63.433 s](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
-(`1280×720`, 30 fps, 69.067 s, 5,662,128 bytes, SHA-256
-`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). The recording comes from
-the byte-identical predecessor deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y` before the
-lens-approach-deck change and is an engineering demonstration only.
+Current full-route gameplay (dev-only `main_3d.tscn -- --autoplay --public-safe` under `--write-movie`, 2026-09-19): **[H.264 MP4, 76.3 s](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
+(MP4 `1280×720`, 30 fps, 2,289 frames, 10,990,889 bytes, SHA-256
+`c20c197e2b2568bda24d0c80f646fee2c80e15b5a4867b02f60e44dae56e551c`; GIF 560×315, 6 fps, 305 frames at 1.5× speed, 6,469,565 bytes, SHA-256
+`e353f35370cd75822a4cd86889c2a8dcdd72941b3ec936f390c1da60a88bf5cf`). The route ends in the D-073 slot-assembly deduction
+and the paged receipt; it is an engineering demonstration only.
 
 ## Build the public-safe Web artifact
 

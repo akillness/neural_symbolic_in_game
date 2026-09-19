@@ -15,7 +15,7 @@
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
 [![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
-![The Sealed Lighthouse 골든 패스 63초: 항구 도착, gate를 명시하며 보류된 요청, 렌즈 회수, 신호 복구, 승인된 조석 단서, 사건 종결 영수증](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif)
+![The Sealed Lighthouse 골든 패스 76초: 항구 도착, gate를 명시하며 보류된 요청, 렌즈 회수, 신호 복구, 승인된 조석 단서, 사건 종결 영수증](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif)
 
 - **Gate.** 생성된 모든 이벤트는 신뢰할 수 없는 transaction proposal로 취급한다. type-strict parser, 외부 action policy, 그리고 여섯 상태 상대 계열에 속한 일곱 개의 결정론적 검사가 commit 여부를 결정한다. 거부된 candidate는 한도 내에서 반례 유도 repair를 받고, 그 밖의 모든 경우는 변경 없는 이전 상태로 되돌아간다.
 - **게임.** *The Sealed Lighthouse*는 Godot 4.7.1로 만든 턴제 수사 micro-RPG다. 게임 안의 ledger가 gate를 서사 속에서 그대로 보여 준다. hold는 자신을 막은 계열을 명시하고 규칙을 가르치며, commit은 기여를 게시하고 다음 단서를 열고 SHA-256 영수증 체인을 잇는다.

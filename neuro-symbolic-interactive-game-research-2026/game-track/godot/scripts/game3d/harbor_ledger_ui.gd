@@ -1859,11 +1859,16 @@ func _apply_dock_ratios() -> void:
 		return
 	var choices_open := _choice_box != null and _choice_box.get_child_count() > 0
 	if _layout_narrow and choices_open:
-		_ledger_box.size_flags_stretch_ratio = 0.9
-		_action_box.size_flags_stretch_ratio = 1.9
+		# Production embed check (713x720, 2026-09-18): 0.9:1.9 still hid the
+		# fourth Mira choice; the log keeps a 4-line minimum and the list takes
+		# the rest.
+		_ledger_box.size_flags_stretch_ratio = 0.55
+		_action_box.size_flags_stretch_ratio = 2.45
+		_ledger_log.custom_minimum_size = Vector2(0.0, 64.0)
 	else:
 		_ledger_box.size_flags_stretch_ratio = 1.6 if _layout_narrow else 2.2
 		_action_box.size_flags_stretch_ratio = 1.0
+		_ledger_log.custom_minimum_size = Vector2(0.0, 92.0) if _layout_narrow else Vector2.ZERO
 
 
 func clear_choices() -> void:

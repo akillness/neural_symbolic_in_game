@@ -67,15 +67,15 @@ carries an episode receipt (entries, deferrals, state hash) under the tide-route
 world textures (wet planks, oxidized brass, sail canvas) and stamp/seal icons ship with full
 provenance and a proven procedural fallback.
 
-![Scripted golden-path route (63 s, 1.5x): intro, held request naming the gate, lens recovery, signal restoration, tide lead, case-complete receipt](godot/docs/latest/golden-path.gif)
+![Scripted golden-path route (76 s, 1.5x): intro, held request naming the gate, lens recovery, signal restoration, tide lead, case-complete receipt](godot/docs/latest/golden-path.gif)
 
-**[Current full-route gameplay recording (Godot Movie Maker `--autoplay` route, H.264 MP4, 63.433 s)](godot/docs/latest/trace-rpg-gameplay.mp4)**
-shows the start gate, refusal hold, signal lens, lamp mount, authorized hint, tide marks, and ending
-receipt from the exact local build bytes deployed as predecessor
-`dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`, before the lens-approach-deck change (`1280×720`, 30 fps,
-69.067 s, 5,662,128 bytes; SHA-256
-`aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`). It is an engineering
-demonstration, not usability, immersion, or performance evidence.
+**[Current full-route gameplay recording (Godot Movie Maker `--autoplay --public-safe` route, H.264 MP4, 76.3 s)](godot/docs/latest/trace-rpg-gameplay.mp4)**
+shows the start gate and page-1 field guide, the held request naming its gate (with the rule and
+what it tells you), lens recovery, signal restoration, the authorized tide lead, the slot-assembly
+deduction at the tide marks, and the paged case-complete receipt from the D-073 local build
+(`1280×720`, 30 fps, 2,289 frames, 10,990,889 bytes; SHA-256 `c20c197e2b2568bda24d0c80f646fee2c80e15b5a4867b02f60e44dae56e551c`;
+3 commits, 1 hold, terminal SHA-256 `4b231017…108892`). It is an engineering demonstration, not
+usability, immersion, or performance evidence.
 
 *Historical 32-second engineering capture from prior deployment
 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (start gate → intro → tutorial → dock). It predates the tracked

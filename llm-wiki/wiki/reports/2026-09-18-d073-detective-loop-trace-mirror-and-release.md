@@ -78,3 +78,19 @@ Status: **ENGINEERING PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-001–005 RE
 Related: [[wiki/reports/2026-09-06-paper-game-factcheck-and-release]],
 [[wiki/reports/2026-09-18-aside-evidence-review-game-paper]], [[wiki/concepts/trace-rpg-controller]],
 [[wiki/concepts/evidence-and-claim-status]], [[maintenance-log]].
+
+## 6. D-074 후속 (2026-09-19) — 게임성·논문 내용 검증과 디벨롭
+
+- 게임성 검증: `SL-BALANCE-PROBE-001` 5/5(보류 격리 10/10); headless `--autoplay` 골든 패스가 슬롯 조립
+  추리를 거쳐 `episode_over`(commit 3 / hold 1, 종단 `4b2310…8892`); Movie Maker 재녹화(76.3 s MP4,
+  1.5× GIF, 일회용 사본); 713×720 임베드 브라우저 walk. 드러난 결함 4건 수정 — 추리 선택지가 HUD 순서를
+  베끼는 수준이던 것을 보류 제안·레드 헤링 distractor + 상태 해시 시드 순서로 바꿔 "검증된 항목을
+  기억하는" 추리로; 좁은 독에서 미라 선택지 4개가 다 보이도록 선택 목록 열림 시 독 배분 0.55:2.45;
+  엔딩 캡처의 영수증이 같은 순수 검사로 추리 확정을 기록; 오토파일럿이 코치 카드를 읽고 닫음.
+- 논문 검증: Aside 근거 리뷰 §6의 문장 단위 경계를 EN/KO에 반영 — ENG1이 D-073 표면과 fail-closed
+  per-node dashboard mirror, core 52/52 + 확장 4검사 집계를 명시; L5가 comprehension/agency/enjoyment/
+  immersion/player benefit 주장 불가를 명시; AI 사용 고지가 case-file 팩과 evidence-desk 메시를 명명.
+  두 원고 8쪽 유지, 검증기 마커·인용 게이트(5/55/9, citation 4/4) PASS. 결과 승격 없음.
+- 동시 세션의 검증된 플레이어 GLB 갱신(Observe/Collect/Speak, 1024 px)을 별도 귀속 커밋으로 반영해
+  추적 바이트 = 배포 바이트. 프로덕션 `dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg` 16파일 56,005,886 B 일치,
+  PDF 두 개는 저장소 바이트와 동일.

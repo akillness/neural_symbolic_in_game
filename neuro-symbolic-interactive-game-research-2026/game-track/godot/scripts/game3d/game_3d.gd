@@ -240,14 +240,17 @@ func _run_autoplay() -> void:
 	await _autoplay_wait(2.6)
 	_on_choice("ask_secret")
 	await _autoplay_wait(3.4)
+	await _autoplay_read_coach_cards()
 	_on_choice("leave")
 	await _autoplay_wait(0.8)
 	await _autoplay_walk_to("lens_pickup")
 	_on_interact("lens_pickup")
 	await _autoplay_wait(2.6)
+	await _autoplay_read_coach_cards()
 	await _autoplay_walk_to("lamp_mount")
 	_on_interact("lamp_mount")
 	await _autoplay_wait(3.0)
+	await _autoplay_read_coach_cards()
 	await _autoplay_walk_to("mira")
 	_on_interact("mira")
 	await _autoplay_wait(1.6)
@@ -273,6 +276,18 @@ func _run_autoplay() -> void:
 		"state_sha256": machine.state_hash(),
 	}))
 	get_tree().quit(0 if episode_over else 1)
+
+
+func _autoplay_read_coach_cards() -> void:
+	# The autopilot "reads" each just-in-time coach card for a beat and then
+	# dismisses it through the same [OK] path a player uses (a pending card
+	# surfaces after the dismissal, so loop until none is open).
+	var guard := 4
+	while ui.is_coach_card_open() and guard > 0:
+		guard -= 1
+		await _autoplay_wait(2.4)
+		ui.dismiss_coach_card()
+		await _autoplay_wait(0.5)
 
 
 func _autoplay_wait(seconds: float) -> void:
@@ -1783,17 +1798,39 @@ func _deduction_distractor_pool() -> Array:
 
 
 func deduction_options(slot_index: int) -> Array:
-	# Per slot: the three chain labels + one rotating distractor (the authored
-	# red herring, then the held proposals' texts) + Step away. <= 5 buttons.
+	# Per slot: the three chain labels plus distractors drawn from the ledger's
+	# own held proposals and one authored red herring, in a deterministic order
+	# seeded by the committed state hash and the slot index (never the HUD's
+	# LENS -> MOUNT -> LEAD order), so assembling the chain means recalling
+	# which entries the ledger actually validated. Slot 1 keeps Step away;
+	# later slots offer CLEAR SLOTS instead. <= DEDUCTION_MAX_BUTTONS buttons.
 	var options: Array = []
 	for link_id in DEDUCTION_CHAIN:
 		options.append({"id": "pick:" + str(link_id), "text": _chain_link_label(str(link_id))})
 	var pool := _deduction_distractor_pool()
-	if not pool.is_empty() and options.size() < DEDUCTION_MAX_BUTTONS - 1:
-		var pool_index := slot_index % pool.size()
+	var distractor_budget := DEDUCTION_MAX_BUTTONS - 1 - options.size()
+	for offset in mini(distractor_budget, pool.size()):
+		var pool_index := (slot_index + offset) % pool.size()
 		options.append({"id": "pick:distract:%d" % pool_index, "text": str(pool[pool_index])})
-	options.append({"id": "deduction_leave", "text": "Step away"})
+	_deterministic_shuffle(options, machine.state_hash() + ":" + str(slot_index))
+	if slot_index == 0:
+		options.append({"id": "deduction_leave", "text": "Step away"})
+	else:
+		options.append({"id": "deduction_clear", "text": "CLEAR SLOTS"})
 	return options
+
+
+static func _deterministic_shuffle(items: Array, seed_text: String) -> void:
+	# Fisher-Yates over a seeded RNG so the order is stable for a given
+	# committed state (captures, autoplay, and evaluation stay reproducible)
+	# but not the authored chain order.
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(seed_text)
+	for index in range(items.size() - 1, 0, -1):
+		var swap_index := rng.randi_range(0, index)
+		var held: Variant = items[index]
+		items[index] = items[swap_index]
+		items[swap_index] = held
 
 
 func _open_deduction() -> void:
@@ -2356,6 +2393,12 @@ func _prepare_screenshot_stage(stage: String) -> void:
 			_propose_install()
 			_propose_tide_hint()
 			if stage == "ending":
+				# The route's closing deduction is presentation-only; record the
+				# same outcome the autoplay route produces through the pure check
+				# so the end card reads the full loop. No canonical mutation.
+				if not _deduction_confirmed and deduction_is_supported(machine.state, DEDUCTION_CHAIN):
+					_deduction_attempts = 1
+					_deduction_confirmed = true
 				# Same page builder as the live end card; opens on page 1.
 				ui.set_end_card_hash(machine.state_hash())
 				ui.show_end_card(_episode_end_pages())

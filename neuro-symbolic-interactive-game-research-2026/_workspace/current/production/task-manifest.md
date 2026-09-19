@@ -2,13 +2,21 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 
-Current release update (D-073, 2026-09-18): detective-loop deepening (case file, hint ladder,
+Current release update (D-074, 2026-09-19): game-ness and manuscript verification pass over the
+D-073 build — balance probe 5/5, headless autoplay through the slot-assembly deduction, route
+re-recording, embed browser walks; four presentation defects fixed (deduction distractors +
+seeded order, narrow choice-list dock share, ending receipt records the deduction, autopilot
+reads coach cards); EN/KO manuscripts carry the Aside evidence-review boundaries (ENG1 scope,
+L5 participant boundary, asset disclosure) at 8 pages each; the concurrent session's validated
+player-GLB refresh (Observe/Collect/Speak) is folded in so tracked bytes equal deployed bytes.
+Deployed as `dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg` (16 byte-identical files, 56,005,886 B; both
+PDFs equal the repository). Smoke 8/8, evaluate 16/16 (52/52 core + 4/4 extension), full
+CI-equivalent PASS. Owner: release verifier. Receipts: `qa/releases/2026-09-18/`. G4/G6 remain FIX.
+Previous release update (D-073, 2026-09-18): detective-loop deepening (case file, hint ladder,
 coach cards, slot-assembly deduction, paged end card, four-zone HUD), world stations/VFX/gesture
 motion, the Higgsfield case-v1 asset pack, and the truthful per-node commit-gate trace
-(hash-bound `EvaluationTrace` mirror + dashboard renderer) are deployed as
-`dpl_BkguPJPErtawmhjxU5cvg97PBsiq` (16 byte-identical files, 56,003,696 B). Smoke 8/8, evaluate
-16/16 (52/52 core + 4/4 extension), full CI-equivalent PASS. Owner: release verifier.
-Receipts: `qa/releases/2026-09-18/`. G4/G6 remain FIX.
+(hash-bound `EvaluationTrace` mirror + dashboard renderer) were deployed as
+`dpl_BkguPJPErtawmhjxU5cvg97PBsiq` (16 byte-identical files, 56,003,696 B).
 Previous release update (D-072, 2026-09-06): bounded primary-source fact-check and bilingual
 claim corrections complete; 188 tests / 83 subtests and the full CI-equivalent sequence pass.
 Combined paper/game deployment `dpl_2KYaaLu6PWuwaFZ4RxFrFkA6C4RT` was READY; all 16 public
@@ -80,7 +88,7 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 | Write and independently harden the fun/contribution design packet: `game-design-hypothesis.json` (SL-HYP-001), `game-ui-contract.json` v2 surfaces, GDD §11 + Table SL-GDD-T4 (B-014–B-017), core-loop grammar, presentation beats P-B07/P-B08, crosswalk row (D-061/D-062) | game-designer (subagent DesignDocs) + independent reviewer | 1.design | `game-track/design/*`, `_workspace/current/design/{core-loop,presentation-spec}.md` | validators (design-hypothesis, game-ui, game-feel, studio) | done-2026-09-02-validators-pass-targets-labelled-no-invented-sample-or-percentage-thresholds | owner-run human packet with sufficiency rule frozen before recruitment; no measured result |
 | Revise the manuscript's page composition: ≤200-word abstract, bold thesis sentence, one-line C1–C5 with section/lane pointers, single-column `fig_architecture` (Fig. 1) pipeline + ledger-grammar band on page 2, the Godot capture figure (now Fig. 3) as a numbered causal sequence with bound state fields, legacy `fig_repair_state_machine` and `fig_evidence_boundary` diagrams removed, five verified 2025–2026 references (S52–S56) with crosswalk closure (D-062) | paper lane (subagents PaperRefs, PaperLayout) + orchestrator | paper.revision | `paper/latex/{en,ko}/main.tex`, `references.bib`, `generate_paper_figures.py`, crosswalk CSVs, Stage-5 gate (55 refs), `visuals/source-manifest.json` | page band + citation identity + parity | done-2026-09-02-EN-8pp-KO-8pp-zero-overfull-no-type3-crosswalk-55-refs-pass | settled after concurrent edit; final generator, manifest, and isolated double-regeneration gate required before handoff |
 | Independently audit and harden the integrated paper/game packet (D-061/D-063) | independent reviewers + orchestrator | 1.review | decisions D-061/D-063, validators, regenerated visual receipts, bilingual PDFs | evidence truth / reproducibility / legibility / player-visible privacy | done-7-check-6-family-contract-55-reference-accounting-11-svg-22-output-88-receipt-gate-safe-fact-label-allowlist | no human-impact promotion; no commit/push/deploy without approval |
-| Record the golden-path play video through the dev-only `--autoplay` Movie Maker route and publish GIF/MP4 in the README (D-064) | game-programmer + release engineer | 1.release | `player_3d.gd` autopilot, `game_3d.gd` `_run_autoplay`, `docs/latest/golden-path.gif`, `docs/latest/trace-rpg-gameplay.mp4` | release engineering | done-2026-09-02-63s-3-commits-1-hold-terminal-hash-unchanged | re-record after any route or UI change; human readability review |
+| Record the golden-path play video through the dev-only `--autoplay` Movie Maker route and publish GIF/MP4 in the README (D-064; re-recorded for the D-073 route on 2026-09-19) | game-programmer + release engineer | 1.release | `player_3d.gd` autopilot, `game_3d.gd` `_run_autoplay` (now ends in the slot-assembly deduction), `docs/latest/golden-path.gif`, `docs/latest/trace-rpg-gameplay.mp4` | release engineering | done-2026-09-19-76.3s-3-commits-1-hold-deduction-confirmed-terminal-hash-unchanged | re-record after any route or UI change; human readability review |
 | Fact-check every bibliography DOI/URL against Crossref or landing-page titles (D-064) | research engineer | paper.revision | `research/academic-pipeline/stage-05-link-audit-2026-09-02.md` | citation identity | done-55-of-55-resolve-S53-manual-only | rerun before submission |
 | Synchronize the D-066 citation audit after the S01 archival and S46 venue-record promotions, preserve the S53 primary-record/venue-list conflict, and reconcile current operational receipts exposed by the concurrent D-068 follow-up (D-069) | research engineer + independent reviewer | paper.revision + receipt reconciliation | Stage-5 JSON/Markdown, source ledger, reference crosswalk, BibTeX note, validator regression, current deployment/test receipts | citation identity / fail-closed accounting / current-state truth | done-55-total-48-verified-7-preprint-22-rate-limited-and-current-d068-receipts | retain historical deployment rows; no efficacy promotion |
 | Rewrite bilingual READMEs to the current evidence state with the play video first (D-064) | director + writer | current pickup | `README.en.md`, `README.ko.md` | evidence-bounded status | done-2026-09-02 | keep receipts synchronized at each artifact refresh |
@@ -91,6 +99,10 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 | World stations, diegetic guide trail, focus/inspect/verdict VFX, rig gesture clips (D-073) | visual lane (subagent WorldFeel) | 1.presentation | `world_builder.gd`, `narrative_director.gd`, `interactable_3d.gd`, `player_3d.gd`, hooks in `game_3d.gd` | G1/G4/G6 | done-2026-09-18-smoke-8-of-8-with-and-without-evidence_desk.glb-zero-runtime-errors | frame measurements; human presentation study |
 | Generate and curate the Higgsfield case-v1 pack (board, 4 evidence icons, compass, investigate vignette) and the evidence-desk GLB (D-073) | asset lane (subagent HiggsfieldAssets) | 1.resources | `assets/generated/higgsfield-case-v1/` (prompts/provenance/manifest tracked, PNG bytes ignored), 7 curated PNGs in `godot/assets/ui/` (3,479,586 B) + `curation.json`, `godot/assets/models/evidence_desk.glb` (516,268 B, texture re-embedded at 1024 px) + provenance + `models-manifest.json` `ai_generated_assets` | provenance (D-073) | done-10-jobs-1-retry-validators-pass | rights re-review if repurposed |
 | Deploy the D-073 build and record production receipts | release engineer (orchestrator) | 1.release | `dpl_BkguPJPErtawmhjxU5cvg97PBsiq` at `https://sealed-lighthouse-trace-rpg.vercel.app` (`/dashboard/` + `/public/` + `/paper/{en,ko}.pdf`), `qa/releases/2026-09-18/{production-http,production-browser,local-browser}.json`, `ci-final.log` | release | done-16-files-56003696-bytes-byte-identical-desktop-session-start-390px-no-overflow | pointer lock, mobile readability, performance/soak, rollback drill |
+| Verify game-ness after D-073: balance probe, headless autoplay through the deduction, Movie Maker re-recording, embed browser walks; fix exposed defects (D-074) | QA + game-programmer (orchestrator) | 1.verify | `docs/latest/balance-archetypes.*` (5/5, 10/10), `AUTOPLAY-DONE` receipt (3 commits / 1 hold / episode_over), `docs/latest/{trace-rpg-gameplay.mp4,golden-path.gif}` (76.3 s), `qa/releases/2026-09-18/route-frame-*.png`, `game_3d.gd` (`deduction_options` distractor pool + `_deterministic_shuffle`, ending-stage deduction receipt, `_autoplay_read_coach_cards`), `harbor_ledger_ui.gd` (`_apply_dock_ratios` 0.55:2.45 with 64 px log floor) | G1/G7 engineering | done-2026-09-19-smoke-8-of-8-eval-16-of-16-autoplay-episode-over-terminal-hash-unchanged | human playtest for fun/agency/comprehension; mobile game readability |
+| Verify manuscript content after D-073 and apply the Aside evidence-review boundaries (D-074) | paper lane (orchestrator) + reproducibility verifier | paper.revision | `paper/latex/{en,ko}/main.tex` (ENG1 D-073 scope + 52/52 core / 4-check extension accounting, L5 participant boundary, AI-usage disclosure naming the case-file pack and evidence-desk mesh), rebuilt 8-page PDFs, `visuals/source-manifest.json` | page band + validator markers + citation identity + bilingual parity | done-2026-09-19-EN-8pp-KO-8pp-crosswalk-5-55-9-citation-4-of-4-visual-PASS | journal submission remains; no result promotion |
+| Fold the concurrent session's validated player-GLB refresh into the tracked tree (D-074) | release engineer (orchestrator) | 1.resources | `godot/assets/player/{higgsfield-player.glb,higgsfield-player_texture_0.png,provenance,curation}` (3,559,148 B; Idle/Casual_Walk/Observe/Collect/Speak; 1024 px texture) | provenance / reproducibility | done-validator-PASS-bytes-equal-deployed | none; recorded in `conflicts.md` |
+| Deploy the D-074 build and record production receipts | release engineer (orchestrator) | 1.release | `dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg` at `https://sealed-lighthouse-trace-rpg.vercel.app`, `qa/releases/2026-09-18/production-http-d074.json` | release | done-16-files-56005886-bytes-byte-identical-pdfs-equal-repo | pointer lock, mobile readability, performance/soak, rollback drill |
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 ## Latest observed engineering receipts
@@ -149,14 +161,15 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
   2026-08-21 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW` (ritual+texture) and
   `dpl_J9STdbrWdiXyZakGuUWR7aD8jip9` (curated-art, retained desktop+mobile captures); 2026-08-17
   `dpl_7DN4fLqmGa8DfKeiQamVrkXgpEoe`.
-- Retained full-route recording from predecessor deployment `dpl_GpRiuFSFGPrbbVMmFsPdPq731f9Y`
-  before the lens-deck change: `docs/latest/trace-rpg-gameplay.mp4` (H.264 High, 1280×720, 30 fps,
-  69.067 s, 5,662,128 bytes, SHA-256
-  `aa374c5aa9d03e0ab2822b83638e4c6645c7c9fda6c07e858051254c244b7044`, fast-start enabled) —
-  engineering demonstration only.
-- 2026-08-21 golden-path screencast from the deployed alias retained as
-  `docs/latest/golden-path.gif` (640×360, 10 fps, 32 s, 3,245,101 bytes) — engineering working
-  artifact only; not usability, immersion, or performance evidence.
+- Current full-route recording (2026-09-19, D-073 build, Godot Movie Maker on a disposable copy
+  via `main_3d.tscn --write-movie -- --autoplay --public-safe`): `docs/latest/trace-rpg-gameplay.mp4`
+  (H.264 High, 1280×720, 30 fps, 76.3 s, 2,289 frames, 10,990,889 bytes, SHA-256
+  `c20c197e2b2568bda24d0c80f646fee2c80e15b5a4867b02f60e44dae56e551c`, fast-start enabled;
+  `AUTOPLAY-DONE` 3 commits, 1 hold, slot-assembly deduction confirmed, terminal SHA-256
+  `4b231017…108892`) and the derived `docs/latest/golden-path.gif` (560×315, 6 fps, 305 frames
+  at 1.5× speed, 6,469,565 bytes, SHA-256
+  `e353f35370cd75822a4cd86889c2a8dcdd72941b3ec936f390c1da60a88bf5cf`) — engineering
+  demonstration only; not usability, immersion, or performance evidence.
 - 2026-08-21 headless browser smoke (local + alias): key-art start gate with AI disclosure footer,
   intro cinematic, tutorial folio (narrow 390×844 stacked layout fixed this session after the first
   deploy showed a squeezed text column), ledger/objective updates, brass-framed Mira portrait;
