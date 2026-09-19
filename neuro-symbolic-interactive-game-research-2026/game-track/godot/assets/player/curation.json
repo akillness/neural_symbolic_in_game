@@ -2,20 +2,23 @@
   "schema_version": "1.0.0",
   "asset_id": "HF3D-P01-PLAYER",
   "status": "accepted-runtime",
-  "approved_at_utc": "2026-08-29T14:47:00Z",
+  "approved_at_utc": "2026-09-18T09:52:00Z",
   "scope": "game-track-public-runtime-only",
   "technical_review": true,
   "visual_review": true,
   "rights_basis": "accepted-public-runtime-higgsfield-workspace-commercial-use",
   "review_notes": [
-    "GLB v2 structure passes with one mesh, one skin, 24 joints, 15463 triangles, and exact Idle/Casual_Walk clips.",
-    "Root animation scale was normalized; the validator also binds the 8,311,199-byte Godot-extracted texture to the identical GLB-embedded PNG bytes.",
-    "Browser QA confirmed readable scale, grounded feet, back-facing third-person orientation, and visibly distinct idle/walk poses.",
+    "GLB v2 structure passes with one mesh, one skin, 24 joints, 15463 triangles and six clips (Idle, Casual_Walk, Observe, Collect, Speak plus the Armature baselayer alias).",
+    "Three clips were added on 2026-09-18 via 3d_rigging and merged by node name; root-bone animation scale stays unit across all clips.",
+    "The embedded base-color texture was downscaled 2048 -> 1024 PNG for the Web budget: the GLB dropped 9,677,324 -> 3,559,148 bytes while geometry, skin, joints and clip channel counts stayed identical.",
+    "The Godot-extracted texture copy is byte-identical to the GLB-embedded image (1,865,519 bytes).",
+    "Visual review: each clip was rendered in a three.js AnimationMixer viewer and captured. Feet stay grounded, scale is stable, and Observe/Collect/Speak read as distinct, concept-appropriate poses for the GDD s5 action set.",
     "The procedural capsule remains a play-safe fallback if the curated asset is missing or malformed."
   ],
   "evidence": [
     "_workspace/current/qa/browser-qa.md",
     "game-track/godot/docs/latest/presentation-evaluation.json",
+    "three.js clip capture sheet (Idle, Casual_Walk, Observe, Collect, Speak), 2026-09-18",
     "https://higgsfield.ai/terms-of-use-agreement (section 4.4, verified 2026-08-29T22:47:13Z)",
     "https://higgsfield.ai/creator-hub/help-center/account/who-owns-my-generations-and-can-i-use-them-commercially"
   ],

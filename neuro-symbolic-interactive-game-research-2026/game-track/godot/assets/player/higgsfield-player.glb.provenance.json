@@ -18,9 +18,9 @@
   "runtime_dependencies": [
     {
       "file": "higgsfield-player_texture_0.png",
-      "role": "Godot-extracted copy of the GLB-embedded base-color texture",
-      "bytes": 8311199,
-      "sha256": "37c939772e57d381c77e419b836632bf107b5301bde63f041b40e3094669f739"
+      "role": "Godot-extracted copy of the GLB-embedded base-color texture (1024x1024 PNG after the web-budget downscale)",
+      "bytes": 1865519,
+      "sha256": "aa81108a78f65d0c7b8ea9cf948150738127550137b47a49e546c4a73f1fbf38"
     }
   ],
   "tool": "higgsfield-cli",
@@ -34,7 +34,10 @@
   "job_ids": {
     "reference_image": "8fe5f2c8-31ac-41b8-ac61-f7bd31bb0b12",
     "base_idle_rig": "fff1a477-3c33-4245-902f-5d09b3efdf54",
-    "casual_walk": "19ad751d-8333-4ef7-830b-2546cd0496f2"
+    "casual_walk": "19ad751d-8333-4ef7-830b-2546cd0496f2",
+    "observe_clip": "393d9e73-da66-43d9-9eff-8033f4035d26",
+    "collect_clip": "2d701a34-6a73-42b2-b397-b4331ad3cec2",
+    "speak_clip": "be7f8fb7-0a0c-4c84-93cf-8d398813141a"
   },
   "generated_at_utc": "2026-08-29T14:39:52Z",
   "requested": {
@@ -48,11 +51,19 @@
     "seed": 20260829,
     "animation_actions": {
       "Idle": 0,
-      "Casual_Walk": 30
+      "Casual_Walk": 30,
+      "Observe": 2,
+      "Collect": 276,
+      "Speak": 56
+    },
+    "action_intent": {
+      "Observe": "GDD s5 OBSERVE / INSPECT - Alert (LookingAround)",
+      "Collect": "GDD s5 COLLECT - Male_Bend_Over_Pick_Up",
+      "Speak": "GDD s5 ASK / PRESENT - Stand_and_Chat"
     }
   },
   "observed": {
-    "bytes": 9677324,
+    "bytes": 3559148,
     "nodes": 26,
     "meshes": 1,
     "primitives": 1,
@@ -76,11 +87,32 @@
         "name": "Casual_Walk",
         "duration_s": 4.233333,
         "channels": 72
+      },
+      {
+        "name": "Observe",
+        "duration_s": 4.033333,
+        "channels": 72
+      },
+      {
+        "name": "Collect",
+        "duration_s": 7.233333,
+        "channels": 72
+      },
+      {
+        "name": "Speak",
+        "duration_s": 5.2,
+        "channels": 72
       }
-    ]
+    ],
+    "texture": {
+      "width": 1024,
+      "height": 1024,
+      "mime": "image/png",
+      "bytes": 1865519
+    }
   },
-  "bytes": 9677324,
-  "sha256": "d575f8c580fbf0ee7207fbe6c09150c34a93cffc4e69b53b7210c971482ff1dd",
+  "bytes": 3559148,
+  "sha256": "d6e3a2da4bdbea08fc9cdd5dd803b87efe920e6903b589e9ee236eaed21a7cae",
   "curation_state": "curated-runtime",
   "intended_track": "game-track-runtime",
   "runtime_eligible": true,
@@ -109,7 +141,10 @@
       "renamed duplicate Idle clip to exact runtime name",
       "merged Casual_Walk onto the shared skeleton by node name",
       "rewrote non-unit root scale to 1.0 and divided matching translation",
-      "forced material alphaMode OPAQUE and doubleSided true"
+      "forced material alphaMode OPAQUE and doubleSided true",
+      "merged Observe/Collect/Speak clips from three 3d_rigging jobs onto the shared skeleton by node name (2026-09-18)",
+      "downscaled the embedded base-color texture 2048x2048 -> 1024x1024 PNG for the Web budget; geometry, skin, joints and all clips preserved byte-for-byte",
+      "rewrote the Godot-extracted texture copy so it stays byte-identical to the GLB-embedded image"
     ],
     "raw_outputs": [
       {
@@ -121,14 +156,35 @@
         "role": "casual_walk",
         "bytes": 9590144,
         "sha256": "c6d285f63397685500173db32d246cc22b4e4d0c7b3a6172c2cd4e43eb740182"
+      },
+      {
+        "role": "observe_clip",
+        "bytes": 9586412,
+        "sha256": "pending-not-retained",
+        "job_id": "393d9e73-da66-43d9-9eff-8033f4035d26"
+      },
+      {
+        "role": "collect_clip",
+        "bytes": 9629756,
+        "sha256": "pending-not-retained",
+        "job_id": "2d701a34-6a73-42b2-b397-b4331ad3cec2"
+      },
+      {
+        "role": "speak_clip",
+        "bytes": 9597572,
+        "sha256": "pending-not-retained",
+        "job_id": "be7f8fb7-0a0c-4c84-93cf-8d398813141a"
       }
-    ]
+    ],
+    "clip_extension_at_utc": "2026-09-18T09:52:00Z"
   },
   "limitations": [
     "Presentation-only asset; never enters canonical state, save data, symbolic evaluation, or primary research evidence.",
     "PBR generation was disabled for the Web budget; one opaque double-sided material carries the embedded texture.",
     "The requested 15000-triangle target produced 15463 measured triangles.",
-    "Idle and Casual_Walk are the only runtime locomotion states; interaction-specific animation remains out of scope."
+    "Runtime clips now cover Idle, Casual_Walk, Observe, Collect and Speak. They present GDD s5 player actions; they do not authorize, gate, or advance any quest stage.",
+    "Observe doubles for INSPECT and Speak doubles for both ASK and PRESENT; no per-action distinct clip exists yet.",
+    "The 1024x1024 texture is a Web-budget downscale of the original 2048x2048 generation; the higher-resolution source is not retained in the tree."
   ],
   "derived_from": "HF3D-P01-REF"
 }
