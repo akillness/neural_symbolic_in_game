@@ -45,8 +45,8 @@ EVIDENCE_ROOT = (
     "_workspace/current/engineering/tech-verification/evidence/"
     "godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5"
 )
-# Frozen engineering working captures the manuscripts crop for Fig. 3 (illustration only).
-PLAYABLE_READOUT_SET = "paper/latex/captures/playable-readout-20260903"
+# Frozen working captures for fig:playable-readout (illustration only; numbering is LaTeX-owned).
+PLAYABLE_READOUT_SET = "paper/latex/captures/playable-readout-20261014-r2"
 
 
 def receipt(relative_path: str) -> dict[str, Any]:
@@ -111,15 +111,28 @@ def build_manifest() -> dict[str, Any]:
     direction_note = ("research/directions/consensus-vs-symbolic-gate.md",)
 
     paper_assets = []
-    for stem, asset_id in (("fig_architecture", "paper-architecture"),):
+    for stem, asset_id, kind, data in (
+        ("fig_architecture", "paper-architecture", "diagram", ()),
+        (
+            "fig_evidence_regimes",
+            "paper-evidence-regimes",
+            "chart",
+            (
+                "research/academic-pipeline/stage-04-pilot/pilot-results.json",
+                "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json",
+                "research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/goal_directed_blind/summary.json",
+            ),
+        ),
+    ):
         base = f"paper/latex/figures/{stem}"
         paper_assets.append(
             visual_asset(
                 asset_id,
-                "diagram",
+                kind,
                 rendered=(f"{base}.pdf", f"{base}.png"),
                 editable=(f"{base}.svg",),
                 generator=PAPER_FIGURE_GENERATOR,
+                data=data,
                 used_by=paper_usage,
             )
         )

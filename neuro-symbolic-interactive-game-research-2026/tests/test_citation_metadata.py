@@ -4,6 +4,7 @@ import copy
 import csv
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -29,14 +30,14 @@ class CitationMetadataTests(unittest.TestCase):
         status_counts, rate_limited = crosswalk_validator._validate_citation_audit_totals(
             self.audit
         )
-        self.assertEqual(status_counts, {"VERIFIED": 48, "PREPRINT": 7})
+        self.assertEqual(status_counts, {"VERIFIED": 48, "PREPRINT": 10})
         self.assertEqual(rate_limited, 22)
         self.assertEqual(
             self.audit["totals"],
             {
-                "entries": 55,
+                "entries": 58,
                 "hallucinated": 0,
-                "preprint": 7,
+                "preprint": 10,
                 "semantic_scholar_rate_limited": 22,
                 "unmatched": 0,
                 "verified": 48,
@@ -96,13 +97,13 @@ class CitationMetadataTests(unittest.TestCase):
             "## Publisher-assignment record", maxsplit=1
         )[0]
         self.assertIn("| `VERIFIED` | 48 |", current)
-        self.assertIn("| `PREPRINT` | 7 |", current)
+        self.assertIn("| `PREPRINT` | 10 |", current)
         self.assertNotIn("| S01 |", preprints)
         self.assertNotIn("| S46 |", preprints)
-        self.assertIn("7 preprints remain advisory", current)
+        self.assertIn("Preprint citations are flagged advisory", current)
 
         source_ledger = (ROOT / "research/source-ledger.yaml").read_text(encoding="utf-8")
-        self.assertTrue(source_ledger.startswith("as_of: 2026-09-06\n"))
+        self.assertTrue(source_ledger.startswith("as_of: 2026-10-14\n"))
         self.assertIn("official-iccc-proceedings-plus-arxiv-and-index-triangulation", source_ledger)
         self.assertIn("official-openreview-record-and-pdf-plus-venue-list-conflict", source_ledger)
         self.assertIn("marked as equal contributors", source_ledger)
@@ -125,9 +126,26 @@ class CitationMetadataTests(unittest.TestCase):
         self.assertIn("not an inference", refresh["claim_scope"])
 
         source_ledger = (ROOT / "research/source-ledger.yaml").read_text(encoding="utf-8")
-        self.assertTrue(source_ledger.startswith("as_of: 2026-09-06\n"))
+        self.assertTrue(source_ledger.startswith("as_of: 2026-10-14\n"))
         self.assertIn("world-state-transformations-2026", source_ledger)
         self.assertIn("does not establish the absence", source_ledger)
+
+    def test_csv_loader_rejects_malformed_row_widths(self) -> None:
+        cases = (
+            ("extra columns", "bib_key,identity_indices\nkey-a,source-a,unexpected\n"),
+            ("missing columns", "bib_key,identity_indices\nkey-b\n"),
+        )
+        for reason, content in cases:
+            with (
+                self.subTest(reason=reason),
+                tempfile.NamedTemporaryFile(
+                    mode="w", encoding="utf-8", newline="", suffix=".csv"
+                ) as handle,
+            ):
+                handle.write(content)
+                handle.flush()
+                with self.assertRaisesRegex(ValueError, rf"row 2 .*{reason}"):
+                    crosswalk_validator._read_csv(Path(handle.name))
 
 
 if __name__ == "__main__":

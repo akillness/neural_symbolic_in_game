@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "date": "2026-10-14",
+  "lane": "engineering-reproducibility-only",
+  "command": "uv run python scripts/run_conformance_pilot.py --output-dir /var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/trace-rpg-replication-20261014-17usnzua/runs --release-dir /var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/trace-rpg-replication-20261014-17usnzua/release",
+  "exit_code": 0,
+  "frozen_bundle_untouched": true,
+  "frozen_assignment_manifest_sha256": "64308191b933d0ceaad1d15689c48d2a6ea22c0f6b03ee19b9c571defa414d48",
+  "frozen_sha256_manifest_sha256": "04bcc29950e6befc44e1aaeba6a2f7b6c847d503f093beefa24669065ce5fb2f",
+  "pilot_results_semantically_identical": true,
+  "assignment_manifest_semantically_identical": true,
+  "counts": {
+    "assignment_count": 121,
+    "executed_row_count": 85,
+    "aggregate_row_count": 36
+  },
+  "csv_comparisons": [
+    {
+      "file": "accounting-guards.csv",
+      "byte_identical": true,
+      "frozen_sha256": "17918e03e8971bd28de6f74b41fd7d486396829466099bde060ac31897e2ea80",
+      "reproduced_sha256": "17918e03e8971bd28de6f74b41fd7d486396829466099bde060ac31897e2ea80"
+    },
+    {
+      "file": "adapter-accounting.csv",
+      "byte_identical": true,
+      "frozen_sha256": "720abffe93b605ad15e0cb8759458352643cf56b153965f2f769b6fd9ef269ea",
+      "reproduced_sha256": "720abffe93b605ad15e0cb8759458352643cf56b153965f2f769b6fd9ef269ea"
+    },
+    {
+      "file": "boundary-sentinels.csv",
+      "byte_identical": true,
+      "frozen_sha256": "2142c6ea6a9c3437e0e99b69a3561f6f38fc610d70331077c7e51e94fa3f6a0a",
+      "reproduced_sha256": "2142c6ea6a9c3437e0e99b69a3561f6f38fc610d70331077c7e51e94fa3f6a0a"
+    },
+    {
+      "file": "closed-boundary-regressions.csv",
+      "byte_identical": true,
+      "frozen_sha256": "54bc10d5a6b0025947d705c8b3b27e71742222d7729943eb88c702df01cd48eb",
+      "reproduced_sha256": "54bc10d5a6b0025947d705c8b3b27e71742222d7729943eb88c702df01cd48eb"
+    },
+    {
+      "file": "gate-conformance.csv",
+      "byte_identical": true,
+      "frozen_sha256": "552cd2939b8fa6ad381e35184adc6b51d977428901d25251c5b65912ea5792b3",
+      "reproduced_sha256": "552cd2939b8fa6ad381e35184adc6b51d977428901d25251c5b65912ea5792b3"
+    },
+    {
+      "file": "integrity-boundaries.csv",
+      "byte_identical": true,
+      "frozen_sha256": "b9e16ea9d6777c8932e0f51d76ae416ac64f3b6dec335499a8f9bad4004fe06a",
+      "reproduced_sha256": "b9e16ea9d6777c8932e0f51d76ae416ac64f3b6dec335499a8f9bad4004fe06a"
+    },
+    {
+      "file": "integrity-faults.csv",
+      "byte_identical": true,
+      "frozen_sha256": "9cd903ad799cf413d4159f00606e08597e74640ef52fe9a5ea2046217483f287",
+      "reproduced_sha256": "9cd903ad799cf413d4159f00606e08597e74640ef52fe9a5ea2046217483f287"
+    },
+    {
+      "file": "pilot-summary.csv",
+      "byte_identical": true,
+      "frozen_sha256": "e983674f5a09e3fb3d9cef3db33b50040628f5aa06c45ce0c247d2565536d4fb",
+      "reproduced_sha256": "e983674f5a09e3fb3d9cef3db33b50040628f5aa06c45ce0c247d2565536d4fb"
+    },
+    {
+      "file": "repair-arm-summary.csv",
+      "byte_identical": true,
+      "frozen_sha256": "464ba51d694d31e3d1b86c67ea250323650cabbe13ea1ebaddd81b674849d098",
+      "reproduced_sha256": "464ba51d694d31e3d1b86c67ea250323650cabbe13ea1ebaddd81b674849d098"
+    },
+    {
+      "file": "repair-arms.csv",
+      "byte_identical": true,
+      "frozen_sha256": "66a791fcd441127ad7bdacd2352659c79f47262dd60e0430a120149d4aa8a64c",
+      "reproduced_sha256": "66a791fcd441127ad7bdacd2352659c79f47262dd60e0430a120149d4aa8a64c"
+    },
+    {
+      "file": "repair-class-summary.csv",
+      "byte_identical": true,
+      "frozen_sha256": "44fd6d612ae4be78c47618cf4f381644dc8b326c909fda37a77dc559ca1fa600",
+      "reproduced_sha256": "44fd6d612ae4be78c47618cf4f381644dc8b326c909fda37a77dc559ca1fa600"
+    }
+  ],
+  "claim_promotion": false,
+  "human_participants": 0
+}

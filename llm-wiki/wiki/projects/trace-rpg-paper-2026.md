@@ -1,6 +1,6 @@
 # TRACE-RPG Paper 2026
 
-Current citation baseline (2026-09-06): 55 references, 48 VERIFIED identities and 7 PREPRINT records; 22 prior Semantic Scholar lookups remain rate-limited. Six recent preprints were rechecked against primary metadata on 2026-09-06; this was a bounded refresh, not a new audit of every reference. See [[wiki/reports/2026-09-06-paper-game-factcheck-and-release]].
+Current citation baseline (2026-10-14): 58 references, 48 VERIFIED identities and 10 PREPRINT records; 22 prior Semantic Scholar lookups remain rate-limited. This bounded refresh added three primary-record-verified 2025–2026 sources without archival-status promotion. See [[wiki/reports/2026-10-14-paper-experiment-optimization]]; the 2026-09-06 snapshot remains historical.
 
 Project root: `../neuro-symbolic-interactive-game-research-2026/`  
 Current status: the academic stage history through Stage 10 stands unchanged (Stage 4 approved 2026-08-13; the simulated Stage-6 revise-and-resubmit direction accepted, not a journal decision; the 2026-08-14 clean recapture closed F6 at tag `trace-rpg-stage10-inputs-20260814-v1` with `dirty=false`, 21/21 input paths, 35/35 artifact hashes, 56/56 total). Since then the method and the evidence base moved twice.
@@ -13,7 +13,9 @@ Current status: the academic stage history through Stage 10 stands unchanged (St
 
 The evidence-generating game track implements *The Sealed Lighthouse*, a Godot 4.x headless-first, turn-based narrative investigation micro-RPG with four engine-local fixtures, three trace-bound non-headless render captures, a 12-check playable presentation evaluation (`SL-PLAY-EVAL-001`, `40/40` fixture checks plus `12/12` presentation checks = `52/52`), and a deterministic five-archetype balance probe (`SL-BALANCE-PROBE-001`). It does not promote any model, participant, affect, memory, visual-efficacy, cross-runtime, or population-efficacy result; G4/G6 remain separate game gates, and G2/G3 hold measured engineering numbers while staying `FIX`. Live Python authorization transport, real ten-model inference, independently labelled semantic holdouts, human study, retrieval/memory and affect efficacy, and energy telemetry remain planned.
 
-Primary candidate title: *TRACE-RPG: Event-Sourced Neuro-Symbolic Commit Gates for Auditable Interactive Game Worlds*.
+**Current revision (2026-10-14).** Both papers use standard IEEE typography and a Full Paper methods/instrumentation contract under the detailed <=10-page ceiling. The frozen E1 packet reproduced with identical result/assignment JSON and 11/11 byte-identical CSVs (121 rows = 85 executed + 36 aggregate). Fresh r2 game captures and an opt-in, 4096-row-bounded local receipt lane improve experimental observability without promoting efficacy; ordinary gameplay records no new receipts. Rho has no direct WorldState access, but typed validator errors are its sole state-derived channel. See [[wiki/reports/2026-10-14-paper-experiment-optimization]] for technical evidence, the local-only Codex concept, venue wording conflicts and unfinished author submission checks.
+
+Primary candidate title: *TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds*.
 
 Primary venue candidate: IEEE Transactions on Games. Conditional alternatives are Knowledge-Based Systems, IEEE Transactions on Affective Computing, and Entertainment Computing. Selection depends on the observed contribution rather than post hoc metric chasing.
 

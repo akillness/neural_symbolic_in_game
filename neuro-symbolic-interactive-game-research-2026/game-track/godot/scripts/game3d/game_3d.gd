@@ -19,6 +19,23 @@ const EvaluationTraceScript = preload("res://scripts/game3d/evaluation_trace.gd"
 const SCENARIO_PATH := "res://data/sealed_lighthouse.json"
 const SAVE_PATH := "user://sl3d_save.json"
 const TUTORIAL_SEEN_PATH := "user://sl3d_tutorial_seen.flag"
+const RECEIPT_SCHEMA_VERSION := "1.0.0"
+const RECEIPT_BUILD_ID := "sealed-lighthouse-presentation-telemetry-v1"
+const RECEIPT_SCENE_ID := "main_3d"
+const RECEIPT_SOURCE_PATHS := [
+	"res://project.godot",
+	"res://scenes/main_3d.tscn",
+	"res://data/sealed_lighthouse.json",
+	"res://scripts/canonical_state.gd",
+	"res://scripts/sealed_lighthouse_machine.gd",
+	"res://scripts/game3d/game_3d.gd",
+	"res://scripts/game3d/golden_path_layout.gd",
+	"res://scripts/game3d/evaluation_trace.gd",
+	"res://scripts/game3d/harbor_ledger_ui.gd",
+]
+const RECEIPT_FORBIDDEN_PAYLOAD_TOKENS := [
+	"fact_id", "fact_ids", "hidden_fact", "oracle", "save_path", "user_text",
+]
 
 var machine: SealedLighthouseMachine
 var scenario: Dictionary
@@ -47,12 +64,25 @@ var _autoplay_mode: bool = false
 const DASHBOARD_CHANNEL := "trace-rpg-dashboard"
 const DASHBOARD_TICK_SECONDS := 0.25
 var _dashboard_enabled: bool = false
+var _receipt_export_failed: bool = false
+const RECEIPT_MAX_ROWS := 4096
+var _receipt_recording_enabled: bool = false
+var _receipt_overflowed: bool = false
 var _dashboard_seq: int = 0
 var _dashboard_tick_elapsed: float = 0.0
 var _dashboard_focus: String = ""
 var _play_started: bool = false
 var _evaluation_path: String = ""
+var _receipt_output_path: String = ""
+var _telemetry_initial_state_hash: String = ""
 var _pending_input_feedback: Dictionary = {}
+var _telemetry_started_us: int = 0
+var _telemetry_session_id: String = ""
+var _build_fingerprint: Dictionary = {}
+var _receipt_sequence: int = 0
+var _observation_receipts: Array[Dictionary] = []
+var _case_revisit_sequence: int = 0
+var _last_objective_receipt_code: String = ""
 var _input_feedback_samples: Array = []
 ## D-073 detective-loop presentation state (view-local; never saved, hashed
 ## or replayed): hint-ladder rung, case-file pip, coach cards shown, first-focus
@@ -77,6 +107,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	_telemetry_started_us = Time.get_ticks_usec()
 	var user_args := OS.get_cmdline_user_args()
 	_smoke_mode = "--smoke" in user_args
 	_autoplay_mode = "--autoplay" in user_args
@@ -88,8 +119,23 @@ func _ready() -> void:
 			if evaluate_index + 1 < user_args.size()
 			else "user://sealed-lighthouse-3d-engineering-evaluation.json"
 		)
+	var receipt_output_index := user_args.find("--receipt-output")
+	if receipt_output_index != -1:
+		if receipt_output_index + 1 >= user_args.size() or str(user_args[receipt_output_index + 1]).begins_with("--"):
+			_receipt_export_failed = true
+			push_error("--receipt-output requires a file path")
+		else:
+			_receipt_output_path = user_args[receipt_output_index + 1]
+	_receipt_recording_enabled = _evaluate_mode or not _receipt_output_path.is_empty()
 	scenario = _load_scenario()
 	machine = SealedLighthouseMachine.new(scenario)
+	if _receipt_recording_enabled:
+		_build_fingerprint = _compute_build_fingerprint()
+		_telemetry_session_id = "local-" + CanonicalState.sha256({
+			"started_us": _telemetry_started_us,
+			"initial_state_sha256": machine.state_hash(),
+		}).substr(0, 16)
+	_telemetry_initial_state_hash = machine.state_hash()
 
 	handles = SealedLighthouseWorldBuilder.build(self)
 	_objective_beacon = _build_objective_beacon()
@@ -234,6 +280,10 @@ func _run_autoplay() -> void:
 		_on_tutorial_closed()
 		await _autoplay_wait(0.6)
 	await _autoplay_walk_to("mira")
+	_toggle_case_file()
+	await _autoplay_wait(0.4)
+	_toggle_case_file()
+	await _autoplay_wait(0.4)
 	_on_interact("mira")
 	await _autoplay_wait(1.8)
 	_on_choice("ask_lighthouse")
@@ -275,7 +325,7 @@ func _run_autoplay() -> void:
 		"episode_over": episode_over,
 		"state_sha256": machine.state_hash(),
 	}))
-	get_tree().quit(0 if episode_over else 1)
+	get_tree().quit(0 if episode_over and not _receipt_export_failed else 1)
 
 
 func _autoplay_read_coach_cards() -> void:
@@ -721,6 +771,23 @@ func _propose(
 			"mutated": bool(result["mutated"]),
 			"trace": _last_dashboard_trace,
 		}.merged(_dashboard_state_summary()))
+		var committed_chain := _case_chain_from_state(machine.state)
+		var next_after_commit := str(GoldenPathLayout.next_affordance(machine.state, _met_mira).get("target_id", ""))
+		_record_observation_receipt(
+			"commit_emitted",
+			"COMMIT",
+			CanonicalState.sha256(result["prior_state"]),
+			machine.state_hash(),
+			{
+				"operation_code": operation,
+				"commit_index": commit_count,
+				"stage_from": int(delta["stage_from"]),
+				"stage_to": int(delta["stage_to"]),
+				"chain_filled": int(committed_chain["filled"]),
+				"chain_total": int(committed_chain["total"]),
+				"next_affordance_target": next_after_commit,
+			},
+		)
 		if not _first_commit_explained:
 			_first_commit_explained = true
 			ui.toast("FIRST COMMIT | Only validated entries change state. Watch the solid amber line.")
@@ -1059,12 +1126,28 @@ func _record_hold(gate: String) -> void:
 	_holds_by_gate[gate] = int(_holds_by_gate.get(gate, 0)) + 1
 
 
+func _correction_code_for_hold(codes: Array) -> String:
+	for code in codes:
+		match str(code):
+			"FORBIDDEN_DISCLOSURE", "STAGE_GATED_DISCLOSURE":
+				return "ASK_AUTHORIZED_LEAD"
+			"MISSING_REQUIRED_OBJECT":
+				return "RECOVER_SIGNAL_LENS"
+			"QUEST_STAGE_PRECONDITION":
+				return "FOLLOW_COMMITTED_SEQUENCE"
+			"OBJECT_NOT_PRESENT", "OBJECT_NOT_REACHABLE":
+				return "MOVE_TO_REACHABLE_AFFORDANCE"
+	return "FOLLOW_NEXT_AFFORDANCE"
+
+
 func _refusal_feedback(codes: Array) -> void:
 	# Neutral reason + one world-flavor clause + the concrete next valid entry.
 	# Hidden oracle labels never surface; the flavor stays non-alarming (P-02) —
 	# the ledger defers, it never punishes. Each hold also names the predicate
 	# family that held it so the in-game ledger mirrors the paper's commit gate.
 	var next_affordance := _next_affordance_text()
+	var held_hash := machine.state_hash()
+	var next_affordance_target := str(GoldenPathLayout.next_affordance(machine.state, _met_mira).get("target_id", ""))
 	var hold_gates: Array = []
 	for code in codes:
 		hold_gates.append(gate_for_code(str(code)))
@@ -1077,6 +1160,18 @@ func _refusal_feedback(codes: Array) -> void:
 		# evidence for this hold (fail-closed when the mirror disagrees).
 		"trace": _last_dashboard_trace,
 	}.merged(_dashboard_state_summary()))
+	_record_observation_receipt(
+		"hold_emitted",
+		"HOLD",
+		held_hash,
+		held_hash,
+		{
+			"reason_codes": CanonicalState.sorted_unique(codes),
+			"gate_codes": CanonicalState.sorted_unique(hold_gates),
+			"correction_code": _correction_code_for_hold(codes),
+			"next_affordance_target": next_affordance_target,
+		},
+	)
 	for code in codes:
 		var gate := gate_for_code(str(code))
 		_record_hold(gate)
@@ -1381,18 +1476,42 @@ func _sync_presentation() -> void:
 	# Objective copy audit: bureaucratic-poetic but concrete — each line names
 	# WHO/WHERE and WHY NOW; the beacon marks the same target in-world.
 	var objective := "Speak with Captain Mira at the end of the dock | She knows why the channel is closed"
+	var objective_code := "MIRA_AUTHORIZATION"
+	var next_affordance_target := "mira"
 	var phase := "ARRIVAL"
 	if _met_mira:
 		objective = "Recover the signal lens from the lamp store | The channel cannot open without a signal"
+		objective_code = "LENS_RECOVERY"
+		next_affordance_target = "lens_pickup"
+		phase = "LENS_RECOVERY"
 	if hint_known:
 		objective = "Inspect the tide marks on the west breakwater | Read when low tide opens the path"
-		phase = "TRACE LOGGED"
+		objective_code = "TIDE_MARKS"
+		next_affordance_target = "tide_marks"
+		phase = "TRACE_LOGGED"
 	elif installed:
 		objective = "Return to Captain Mira for the authorized lead | The harbor signal is restored"
-		phase = "SIGNAL RESTORED"
+		objective_code = "RETURN_TO_MIRA"
+		next_affordance_target = "mira"
+		phase = "SIGNAL_RESTORED"
 	elif not lens_in_store:
 		objective = "Install the lens at the northeast harbor mount | Restore the harbor signal"
-		phase = "LENS SECURED"
+		objective_code = "LENS_MOUNT"
+		next_affordance_target = "lamp_mount"
+		phase = "LENS_SECURED"
+	var objective_hash := machine.state_hash()
+	if objective_code != _last_objective_receipt_code:
+		_record_observation_receipt(
+			"objective_rendered",
+			phase,
+			objective_hash,
+			objective_hash,
+			{
+				"objective_code": objective_code,
+				"next_affordance_target": next_affordance_target,
+			},
+		)
+		_last_objective_receipt_code = objective_code
 	var inventory: Array = state["player"]["inventory"]
 	var exploration_progress := 3 if hint_known else int(state["quest"]["stage"])
 	# One compact status line (D-073: the case chain N/3 is the only progress
@@ -1670,12 +1789,40 @@ func _toggle_case_file() -> void:
 		return
 	if ui.is_evidence_board_open():
 		ui.hide_evidence_board()
+		var closed_chain := _case_chain_from_state(machine.state)
+		_case_revisit_sequence += 1
+		_record_observation_receipt(
+			"case_chain_closed",
+			"CASE_FILE_CLOSE",
+			machine.state_hash(),
+			machine.state_hash(),
+			{
+				"action_code": "CLOSE_CASE_FILE",
+				"revisit_index": _case_revisit_sequence,
+				"chain_filled": int(closed_chain["filled"]),
+				"chain_total": int(closed_chain["total"]),
+			},
+		)
 		_emit_dashboard("case_file", {"phase": "close"})
 		if not _dialogue_open:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			ui.set_cursor_captured(true)
 		return
 	_show_case_file()
+	var opened_chain := _case_chain_from_state(machine.state)
+	_case_revisit_sequence += 1
+	_record_observation_receipt(
+		"case_chain_opened",
+		"CASE_FILE_OPEN",
+		machine.state_hash(),
+		machine.state_hash(),
+		{
+			"action_code": "OPEN_CASE_FILE",
+			"revisit_index": _case_revisit_sequence,
+			"chain_filled": int(opened_chain["filled"]),
+			"chain_total": int(opened_chain["total"]),
+		},
+	)
 	_emit_dashboard("case_file", {"phase": "open", "chain_filled": int(_case_chain_from_state(machine.state)["filled"])})
 	if not _dialogue_open:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -1930,6 +2077,20 @@ func _finish_episode() -> void:
 	# flash + golden ledger celebration land immediately, then the P-B06 camera
 	# (or the reduced-motion static card) carries the close. The tower stays
 	# dark and sealed throughout (W-002/D-030) — the payoff is the earned route.
+	var ending_chain := _case_chain_from_state(machine.state)
+	_record_observation_receipt(
+		"session_end_emitted",
+		"SESSION_END",
+		machine.state_hash(),
+		machine.state_hash(),
+		{
+			"commit_count": commit_count,
+			"refusal_count": refusal_count,
+			"chain_filled": int(ending_chain["filled"]),
+			"chain_total": int(ending_chain["total"]),
+		},
+	)
+	_receipt_export_failed = not _export_receipts_if_requested()
 	audio_feedback.play_cue("ending")
 	ui.flash("commit")
 	ui.ledger_line("commit", "Case complete. Tide route secured; below the third mark, low tide opens the path.")
@@ -2011,6 +2172,286 @@ func _deduction_receipt_clause() -> String:
 	if not _deduction_confirmed:
 		return "not recorded"
 	return "confirmed in %d attempt%s" % [_deduction_attempts, "" if _deduction_attempts == 1 else "s"]
+
+
+func _sha256_bytes(bytes: PackedByteArray) -> String:
+	var context := HashingContext.new()
+	if context.start(HashingContext.HASH_SHA256) != OK:
+		return ""
+	if context.update(bytes) != OK:
+		return ""
+	return context.finish().hex_encode()
+
+
+func _compute_build_fingerprint() -> Dictionary:
+	var source_hashes := {}
+	var missing_paths: Array = []
+	for source_path in RECEIPT_SOURCE_PATHS:
+		var file := FileAccess.open(str(source_path), FileAccess.READ)
+		if file == null:
+			missing_paths.append(str(source_path))
+			continue
+		var digest := _sha256_bytes(file.get_buffer(file.get_length()))
+		if digest.is_empty():
+			missing_paths.append(str(source_path))
+		else:
+			source_hashes[str(source_path)] = digest
+	var complete := missing_paths.is_empty() and source_hashes.size() == RECEIPT_SOURCE_PATHS.size()
+	return {
+		"algorithm": "sha256-bytes-v1",
+		"source_paths": RECEIPT_SOURCE_PATHS.duplicate(),
+		"source_hashes": source_hashes,
+		"combined_sha256": CanonicalState.sha256(source_hashes) if complete else "",
+		"complete": complete,
+		"missing_paths": missing_paths,
+	}
+
+
+func _record_observation_receipt(
+	receipt_kind: String,
+	phase_code: String,
+	prior_hash: String,
+	next_hash: String,
+	payload: Dictionary,
+) -> void:
+	if not _receipt_recording_enabled or _receipt_overflowed:
+		return
+	if _observation_receipts.size() >= RECEIPT_MAX_ROWS:
+		_receipt_overflowed = true
+		_receipt_export_failed = true
+		push_error("Observation receipt capacity exceeded; export refused")
+		return
+	_receipt_sequence += 1
+	var now_us := Time.get_ticks_usec()
+	var monotonic_us := maxi(now_us - _telemetry_started_us, 0)
+	var receipt := {
+		"receipt_schema_version": RECEIPT_SCHEMA_VERSION,
+		"receipt_seq": _receipt_sequence,
+		"monotonic_us": monotonic_us,
+		"telemetry_session_id": _telemetry_session_id,
+		"scenario_id": str(scenario.get("scenario_id", "sealed-lighthouse-v1")),
+		"build_id": RECEIPT_BUILD_ID,
+		"build_fingerprint": _build_fingerprint.duplicate(true),
+		"engine_version": str(Engine.get_version_info().get("string", "unknown")),
+		"scene_id": RECEIPT_SCENE_ID,
+		"receipt_kind": receipt_kind,
+		"phase_code": phase_code,
+		"prior_state_sha256": prior_hash,
+		"next_state_sha256": next_hash,
+		"canonical_state_unchanged": prior_hash == next_hash,
+		"payload": payload.duplicate(true),
+	}
+	_observation_receipts.append(receipt)
+
+
+func _receipt_payload_safe(receipt: Dictionary) -> bool:
+	var allowed_keys := {
+		"objective_rendered": ["objective_code", "next_affordance_target"],
+		"commit_emitted": ["operation_code", "commit_index", "stage_from", "stage_to", "chain_filled", "chain_total", "next_affordance_target"],
+		"hold_emitted": ["reason_codes", "gate_codes", "correction_code", "next_affordance_target"],
+		"case_chain_opened": ["action_code", "revisit_index", "chain_filled", "chain_total"],
+		"case_chain_closed": ["action_code", "revisit_index", "chain_filled", "chain_total"],
+		"session_end_emitted": ["commit_count", "refusal_count", "chain_filled", "chain_total"],
+	}
+	var kind := str(receipt.get("receipt_kind", ""))
+	if not allowed_keys.has(kind):
+		return false
+	var payload: Variant = receipt.get("payload", {})
+	if not payload is Dictionary:
+		return false
+	if payload.size() != allowed_keys[kind].size():
+		return false
+	for key in payload.keys():
+		if str(key) not in allowed_keys[kind]:
+			return false
+	var serialized := JSON.stringify(payload).to_lower()
+	for token in RECEIPT_FORBIDDEN_PAYLOAD_TOKENS:
+		if serialized.contains(str(token)):
+			return false
+	return true
+
+
+func _is_sha256(value: Variant) -> bool:
+	if not value is String or value.length() != 64:
+		return false
+	for character in value:
+		if str(character) not in "0123456789abcdef":
+			return false
+	return true
+
+
+func _telemetry_report(state_hash_before: String, state_hash_after: String) -> Dictionary:
+	var ordered := true
+	var shape_valid := true
+	var hashes_valid := true
+	var state_flags_valid := true
+	var payloads_safe := true
+	var holds_unchanged := true
+	var sequence_previous := 0
+	var monotonic_previous := -1
+	var required_fields := [
+		"receipt_schema_version", "receipt_seq", "monotonic_us", "telemetry_session_id",
+		"scenario_id", "build_id", "build_fingerprint", "engine_version", "scene_id",
+		"receipt_kind", "phase_code", "prior_state_sha256", "next_state_sha256",
+		"canonical_state_unchanged", "payload",
+	]
+	for receipt in _observation_receipts:
+		for field in required_fields:
+			shape_valid = shape_valid and receipt.has(field)
+		shape_valid = shape_valid and receipt.get("receipt_schema_version", "") == RECEIPT_SCHEMA_VERSION
+		shape_valid = shape_valid and str(receipt.get("receipt_kind", "")) != "" and str(receipt.get("phase_code", "")) != ""
+		shape_valid = shape_valid and receipt.get("payload", {}) is Dictionary
+		var sequence := int(receipt.get("receipt_seq", 0))
+		var monotonic_us := int(receipt.get("monotonic_us", -1))
+		ordered = ordered and sequence == sequence_previous + 1 and monotonic_us >= monotonic_previous
+		sequence_previous = sequence
+		monotonic_previous = monotonic_us
+		var prior_hash := str(receipt.get("prior_state_sha256", ""))
+		var next_hash := str(receipt.get("next_state_sha256", ""))
+		hashes_valid = hashes_valid and _is_sha256(prior_hash) and _is_sha256(next_hash)
+		state_flags_valid = state_flags_valid and bool(receipt.get("canonical_state_unchanged", false)) == (prior_hash == next_hash)
+		payloads_safe = payloads_safe and _receipt_payload_safe(receipt)
+		if str(receipt.get("receipt_kind", "")) == "hold_emitted":
+			holds_unchanged = holds_unchanged and bool(receipt.get("canonical_state_unchanged", false)) and prior_hash == next_hash
+	var fingerprint_complete := bool(_build_fingerprint.get("complete", false))
+	var fingerprint_sources: Variant = _build_fingerprint.get("source_hashes", {})
+	var fingerprint_valid := fingerprint_complete and fingerprint_sources is Dictionary
+	if fingerprint_valid:
+		fingerprint_valid = _is_sha256(_build_fingerprint.get("combined_sha256", "")) and CanonicalState.sha256(fingerprint_sources) == str(_build_fingerprint.get("combined_sha256", ""))
+		for source_path in RECEIPT_SOURCE_PATHS:
+			fingerprint_valid = fingerprint_valid and _is_sha256(fingerprint_sources.get(str(source_path), ""))
+	var canonical_untouched := machine.state_hash() == state_hash_after
+	var checks := [
+		{"check": "receipts_present", "pass": not _observation_receipts.is_empty()},
+		{"check": "receipt_shape_complete", "pass": shape_valid},
+		{"check": "receipt_sequence_and_clock_ordered", "pass": ordered},
+		{"check": "receipt_state_hashes_valid", "pass": hashes_valid},
+		{"check": "receipt_payloads_code_only", "pass": payloads_safe},
+		{"check": "receipt_state_flags_consistent", "pass": state_flags_valid},
+		{"check": "hold_receipts_preserve_state", "pass": holds_unchanged},
+		{"check": "build_fingerprint_is_grounded", "pass": fingerprint_valid},
+		{"check": "build_fingerprint_recomputed", "pass": fingerprint_valid},
+		{"check": "telemetry_does_not_change_canonical_state", "pass": canonical_untouched and state_hash_before == state_hash_after},
+		{"check": "receipt_capacity_not_exceeded", "pass": not _receipt_overflowed},
+	]
+	var passed := true
+	for check in checks:
+		passed = passed and bool(check["pass"])
+	return {
+		"schema_version": RECEIPT_SCHEMA_VERSION,
+		"engineering_only": true,
+		"claim_boundary": "Local presentation receipts only; no participant, model, efficacy, or browser-latency evidence.",
+		"passed": passed,
+		"build_fingerprint": _build_fingerprint.duplicate(true),
+		"receipts": _observation_receipts.duplicate(true),
+		"checks": checks,
+	}
+
+func _receipt_export_integrity() -> Dictionary:
+	var shape_valid := true
+	var ordered := true
+	var hashes_valid := true
+	var state_flags_valid := true
+	var payloads_safe := true
+	var holds_unchanged := true
+	var chain_linked := true
+	var sequence_previous := 0
+	var monotonic_previous := -1
+	var expected_previous_hash := _telemetry_initial_state_hash
+	var required_fields := [
+		"receipt_schema_version", "receipt_seq", "monotonic_us", "telemetry_session_id",
+		"scenario_id", "build_id", "build_fingerprint", "engine_version", "scene_id",
+		"receipt_kind", "phase_code", "prior_state_sha256", "next_state_sha256",
+		"canonical_state_unchanged", "payload",
+	]
+	for receipt in _observation_receipts:
+		for field in required_fields:
+			shape_valid = shape_valid and receipt.has(field)
+		shape_valid = shape_valid and receipt.get("receipt_schema_version", "") == RECEIPT_SCHEMA_VERSION
+		shape_valid = shape_valid and str(receipt.get("receipt_kind", "")) != "" and str(receipt.get("phase_code", "")) != ""
+		shape_valid = shape_valid and receipt.get("payload", {}) is Dictionary
+		var sequence := int(receipt.get("receipt_seq", 0))
+		var monotonic_us := int(receipt.get("monotonic_us", -1))
+		ordered = ordered and sequence == sequence_previous + 1 and monotonic_us >= monotonic_previous
+		sequence_previous = sequence
+		monotonic_previous = monotonic_us
+		var prior_hash := str(receipt.get("prior_state_sha256", ""))
+		var next_hash := str(receipt.get("next_state_sha256", ""))
+		hashes_valid = hashes_valid and _is_sha256(prior_hash) and _is_sha256(next_hash)
+		state_flags_valid = state_flags_valid and bool(receipt.get("canonical_state_unchanged", false)) == (prior_hash == next_hash)
+		chain_linked = chain_linked and prior_hash == expected_previous_hash
+		expected_previous_hash = next_hash
+		payloads_safe = payloads_safe and _receipt_payload_safe(receipt)
+		if str(receipt.get("receipt_kind", "")) == "hold_emitted":
+			holds_unchanged = holds_unchanged and bool(receipt.get("canonical_state_unchanged", false)) and prior_hash == next_hash
+	var fingerprint_complete := bool(_build_fingerprint.get("complete", false))
+	var source_hashes: Variant = _build_fingerprint.get("source_hashes", {})
+	var fingerprint_valid := fingerprint_complete and source_hashes is Dictionary and _is_sha256(_build_fingerprint.get("combined_sha256", ""))
+	if fingerprint_valid:
+		fingerprint_valid = CanonicalState.sha256(source_hashes) == str(_build_fingerprint.get("combined_sha256", ""))
+		for source_path in RECEIPT_SOURCE_PATHS:
+			fingerprint_valid = fingerprint_valid and _is_sha256(source_hashes.get(str(source_path), ""))
+	else:
+		fingerprint_valid = false
+	chain_linked = chain_linked and not _observation_receipts.is_empty() and expected_previous_hash == machine.state_hash()
+	var checks := [
+		{"check": "receipts_present", "pass": not _observation_receipts.is_empty()},
+		{"check": "receipt_shape_complete", "pass": shape_valid},
+		{"check": "receipt_sequence_and_clock_ordered", "pass": ordered},
+		{"check": "receipt_state_hashes_valid", "pass": hashes_valid},
+		{"check": "receipt_payloads_code_only", "pass": payloads_safe},
+		{"check": "receipt_state_flags_consistent", "pass": state_flags_valid},
+		{"check": "receipt_state_chain_linked", "pass": chain_linked},
+		{"check": "hold_receipts_preserve_state", "pass": holds_unchanged},
+		{"check": "build_fingerprint_is_grounded", "pass": fingerprint_valid},
+		{"check": "build_fingerprint_recomputed", "pass": fingerprint_valid},
+		{"check": "receipt_capacity_not_exceeded", "pass": not _receipt_overflowed},
+	]
+	var passed := true
+	for check in checks:
+		passed = passed and bool(check["pass"])
+	return {"passed": passed, "checks": checks}
+
+
+func _export_receipts_if_requested() -> bool:
+	if _receipt_export_failed:
+		print("RECEIPT-EXPORT " + JSON.stringify({
+			"engineering_only": true,
+			"written": false,
+			"reason": "capacity_exceeded" if _receipt_overflowed else "recording_failed",
+		}))
+		return false
+	if _receipt_output_path.is_empty():
+		return true
+	var integrity := _receipt_export_integrity()
+	if not bool(integrity["passed"]):
+		print("RECEIPT-EXPORT " + JSON.stringify({"engineering_only": true, "written": false, "reason": "integrity_failed", "checks": integrity["checks"]}))
+		return false
+	var export_payload := {
+		"schema_version": RECEIPT_SCHEMA_VERSION,
+		"engineering_only": true,
+		"claim_boundary": "Explicit local presentation receipt export; event availability only, never attention, input latency, participant, model, or efficacy evidence.",
+		"scenario_id": str(scenario.get("scenario_id", "sealed-lighthouse-v1")),
+		"build_id": RECEIPT_BUILD_ID,
+		"build_fingerprint": _build_fingerprint.duplicate(true),
+		"telemetry_session_id": _telemetry_session_id,
+		"initial_state_sha256": _telemetry_initial_state_hash,
+		"final_state_sha256": machine.state_hash(),
+		"receipt_count": _observation_receipts.size(),
+		"receipts": _observation_receipts.duplicate(true),
+		"integrity": integrity,
+	}
+	var absolute_path := ProjectSettings.globalize_path(_receipt_output_path)
+	var written := _write_json_atomic(absolute_path, export_payload)
+	print("RECEIPT-EXPORT " + JSON.stringify({
+		"engineering_only": true,
+		"written": written,
+		"path": absolute_path,
+		"receipt_count": _observation_receipts.size(),
+	}))
+	return written
+
+
 
 
 func _run_engineering_evaluation(path: String) -> void:
@@ -2242,19 +2683,23 @@ func _run_engineering_evaluation(path: String) -> void:
 				and machine.state_hash() == state_hash_before,
 		},
 	]
+	var state_hash_after := machine.state_hash()
+	var telemetry := _telemetry_report(state_hash_before, state_hash_after)
 	var passed := true
 	for check in checks:
 		if not check["pass"]:
 			passed = false
+	passed = passed and bool(telemetry["passed"])
 	var report := {
 		"schema_version": "1.3.0",
 		"evaluation": "sealed-lighthouse-3d-presentation-engineering",
 		"engineering_only": true,
 		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy", "browser input latency"],
 		"claim_boundary": "Automated presentation invariants and engine-local telemetry wiring only; no participant, neural-model, browser-latency, or gameplay-efficacy measurement.",
+		"telemetry": telemetry,
 		"passed": passed,
 		"state_sha256_before": state_hash_before,
-		"state_sha256_after": machine.state_hash(),
+		"state_sha256_after": state_hash_after,
 		"supported_screenshot_stages": ["arrival", "refusal", "authorized_hint", "ending"],
 		"ui": ui_snapshot,
 		"audio": audio_snapshot,
@@ -2292,7 +2737,7 @@ func _run_engineering_evaluation(path: String) -> void:
 		"written": written,
 		"path": absolute_path,
 	}))
-	get_tree().quit(0 if passed and written else 1)
+	get_tree().quit(0 if passed and written and not _receipt_export_failed else 1)
 
 
 func _write_json_atomic(path: String, payload: Dictionary) -> bool:

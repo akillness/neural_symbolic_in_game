@@ -33,6 +33,7 @@ SVG_INVENTORY_ROOTS = (
 
 LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
+    "paper/latex/figures/fig_evidence_regimes.svg",
     "research/directions/figures/fig_consensus_gate_lanes.svg",
     "research/directions/figures/fig_cost_validity_pareto_concept.svg",
     "paper/latex/generated/pilot_results_en.tex",

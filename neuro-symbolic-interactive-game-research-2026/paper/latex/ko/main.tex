@@ -55,7 +55,7 @@
 
 \newcommand{\system}{TRACE-RPG}
 
-\title{TRACE-RPG: 인터랙티브 게임 세계의 생성 이벤트를 위한 trace 연결 기호 커밋 게이트}
+\title{TRACE-RPG: 대화형 게임 세계를 위한 감사 가능한 신경-기호 커밋 게이트}
 
 \author{익명 저자%
 \thanks{익명 심사를 위해 제출된 원고입니다.}}
@@ -65,11 +65,11 @@
 \maketitle
 
 \begin{abstract}
-대규모 언어 모델은 표현력 있는 퀘스트와 대화를 생성할 수 있지만, 유창하거나 스키마에 맞는 텍스트만으로 제안 이벤트의 실행 가능성, 권한 적합성, 정식 게임 상태와의 일관성이 성립하지는 않는다. 본 논문은 생성된 모든 이벤트를 신뢰하지 않는 트랜잭션 제안으로 취급하는 기호 커밋 게이트 \system{}을 제안한다. 타입 엄격 parser, 외부 공급 행동 정책, 여섯 상태 상대 계열로 묶인 일곱 개의 결정론적 검사가 각 허용 전이를 결정하며, 실패 후보는 최대 $K+1$개의 기록된 시도 안에서 제한 수리로 보낼 수 있고 통과 후보는 변경 직전에 다시 검증한다. 반례 유도 연산자 $\rho$는 직전 후보와 그 typed validation error만 읽고 권위 있는 상태는 결코 읽지 않는다. 키 없는 SHA-256 콘텐츠 연결, 상태 의미 replay, 할당 완전 계수가 모든 terminal outcome을 감사 가능하게 만든다. 근거는 세 레인으로 분리한다. 단일 작성 world의 결정론적 오프라인 적합성 파일럿, 단일 모델 라이브 스크리닝 확장, 런타임 권한이 없는 closed-world 지식 그래프 링크 제안 시뮬레이션이다. 오프라인 레인은 mechanism 적합성만 확립한다. 라이브 레인은 $K{=}1$에서 의도적으로 수리 가능하게 만든 policy-blind regime에 한해 guided 5/5 대 blind 0/5 commit을 관찰했으므로 pilot-only로 남는다. 어느 레인도 모집단 효능, 모델 우월성, 플레이어 경험, 상용 엔진 성능을 확립하지 않는다.
+대규모 언어 모델은 표현력 있는 퀘스트와 대화를 생성할 수 있지만, 유창하거나 스키마에 맞는 텍스트만으로 제안 이벤트의 실행 가능성, 권한 적합성, 정식 게임 상태와의 일관성이 성립하지는 않는다. 본 논문은 생성된 이벤트를 신뢰하지 않는 트랜잭션 제안으로 취급하는 기호 커밋 게이트 \system{}을 제안한다. 타입 엄격 parser, 외부 행동 정책, 여섯 상태 상대 계열로 묶인 일곱 개의 결정론적 검사가 각 전이를 결정하며, 실패 후보는 최대 $K+1$개의 기록된 시도 안에서 제한 수리로 보낼 수 있고 통과 후보는 변경 직전에 다시 검증한다. Validator-error-guided 연산자 $\rho$는 직전 후보와 typed validation error만 읽으며, 이 오류가 유일한 상태 유래 입력이고 권위 있는 \texttt{WorldState}에 직접 접근하지 않는다. 키 없는 SHA-256 콘텐츠 연결, 상태 의미 replay, 할당 완전 계수가 terminal outcome을 감사 가능하게 만든다. 근거는 네 레인으로 분리한다: 단일 작성 world의 오프라인 적합성, 단일 모델 라이브 스크리닝, runtime 권한 없는 closed-world 지식 그래프 링크 시뮬레이션, 참여자가 없는 Godot engineering slice. 오프라인 레인은 mechanism 적합성만 확립한다. 라이브 레인은 $K{=}1$에서 의도적으로 수리 가능하게 만든 policy-blind regime에 한해 guided 5/5 대 blind 0/5 commit을 관찰했으므로 pilot-only로 남는다. 어느 레인도 모집단 효능, 모델 우월성, 플레이어 경험, 상용 엔진 성능을 확립하지 않는다.
 \end{abstract}
 
 \begin{IEEEkeywords}
-게임 인공지능, 인터랙티브 내러티브, 기호 검증, 제약 생성, 런타임 강제, 재현성
+게임 인공지능, 인터랙티브 내러티브, 기호 검증, 제약 생성, 재현성
 \end{IEEEkeywords}
 
 \section{서론}
@@ -83,7 +83,7 @@
   \item \textbf{C2---controller:} 여섯 상태 상대 계열에 걸친 검사 7개, bounded repair, unchanged fallback, pre-commit revalidation을 갖춘 validate--repair--commit controller (\ref{sec:repair}절; E1, ENG1);
   \item \textbf{C3---감사:} SHA-256 연결 record, state-semantic replay, episode-continuity check (\ref{sec:audit}절; E1, ENG1);
   \item \textbf{C4---harness:} proposal trace가 존재할 수 없는 경우에도 분류된 terminal row를 유지하는 assignment-complete 오프라인 적합성 harness (\ref{sec:lanes}절; E1);
-  \item \textbf{C5---수리:} 동결 repairability class에서 blind retry 및 state-reading oracle과 비교한 counterexample-guided operator $\rho(a,E)$ (\ref{sec:repair}절; E1, E2).
+  \item \textbf{C5---수리:} 동결 repairability class에서 blind retry 및 state-reading oracle과 비교한 typed validator-error-guided operator $\rho(a,E)$ (구현: \texttt{counterexample\_guided\_repair}) (\ref{sec:repair}절; E1, E2).
 \end{enumerate}
 기계 검증되는 기여 매트릭스에서 생성한 표~\ref{tab:contribution-map}은 C1--C5를 선행 주제, 근거 레인, 추론 상한에 결합하고, 표~\ref{tab:evidence-lanes}는 레인을 정의한다.
 
@@ -105,15 +105,18 @@ KNUDGE는 퀘스트와 엔터티 명세에 근거한 분기형 NPC 대화를 평
 경험 주도 콘텐츠 생성 \cite{S24_yannakakis2011experiencedriven}과 관찰자 표식 참여도 \cite{S25_melhart2020engagement}는 미래 적응 트랙의 동기가 된다. 최근 프리프린트는 vision-language model의 참여도 추론 한계를 보고한다 \cite{S26_wang2026engagement}. 따라서 감정은 비권위적 맥락으로 유지되며 현재 구현 근거에는 포함되지 않는다.
 
 \subsection{환경과 벤치마크}
-TextWorld와 ScienceWorld는 명시적인 인터랙티브 상태를 제공하며 \cite{S11_cote2019textworld,S12_wang2022scienceworld}, MineDojo는 개방형 지식 집약 embodied 과제를 추가한다 \cite{S13_fan2022minedojo}. General Video Game AI는 에이전트, 게임, 콘텐츠 트랙을 분리한다 \cite{S14_perezliebana2019gvgai}. AgentBench는 이질적인 환경의 에이전트를 연구하고 \cite{S15_liu2024agentbench}, AgentBoard는 과정 수준 진단을 추가하며 \cite{S16_ma2024agentboard}, SOTOPIA는 사회적 상호작용을 평가하고 \cite{S17_zhou2024sotopia}, BALROG는 장기 언어 및 시각 게임 추론을 평가한다 \cite{S18_paglieri2025balrog}. 자동화된 플레이 스타일 에이전트는 상호보완적인 시험 선례이지만 인간 평가를 대체하지 않는다 \cite{S19_lepelletier2022playtesting}. 이 벤치마크는 미래 평가 설계에 정보를 주지만 트랜잭션 승인 경계를 규정하지는 않는다.
+TextWorld와 ScienceWorld는 명시적인 인터랙티브 상태를 제공하며 \cite{S11_cote2019textworld,S12_wang2022scienceworld}, MineDojo는 개방형 지식 집약 embodied 과제를 추가한다 \cite{S13_fan2022minedojo}. General Video Game AI는 에이전트, 게임, 콘텐츠 트랙을 분리한다 \cite{S14_perezliebana2019gvgai}. AgentBench는 이질적인 환경의 에이전트를 연구하고 \cite{S15_liu2024agentbench}, AgentBoard는 과정 수준 진단을 추가하며 \cite{S16_ma2024agentboard}, SOTOPIA는 사회적 상호작용을 평가하고 \cite{S17_zhou2024sotopia}, BALROG는 장기 언어 및 시각 게임 추론을 평가한다 \cite{S18_paglieri2025balrog}. 자동화된 플레이 스타일 에이전트는 상호보완적인 시험 선례이지만 인간 평가를 대체하지 않는다 \cite{S19_lepelletier2022playtesting}. 검토한 환경과 benchmark 안에서 transactional authorization, typed repair, semantic replay, assignment-complete accounting을 하나의 protocol로 결합한 사례를 식별하지 못했다. 이는 범위가 제한된 문헌 검토 소견이며 최초성 주장이 아니다.
+NCP-Bench는 장기 인터랙티브 내러티브의 commitment와 fact consistency를 위한 benchmark를 추가하지만, \system{}이나 플레이어 결과를 평가하지 않는다 \cite{S58_ma2026ncpbench}.
 
 \subsection{제약, 신경-기호 검증, 검색}
 제약 디코더는 출력 구조를 개선한다 \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}. 반면 \system{}은 구조를 독립적인 상태 상대 승인의 입력 조건으로 취급한다. 같은 generate-and-verify 분업은 게임 밖에서 확립되어 있다. LLM-Modulo 프레임워크는 모델이 제안한 계획을 외부의 sound critic이 수락 또는 거부하게 하고 \cite{S50_kambhampati2024llmmodulo}, SayCan은 언어로 제안된 skill을 상태 의존 affordance 검사 뒤에만 허용한다 \cite{S51_ichter2023saycan}. AgentSpec은 LLM 에이전트의 런타임 규칙을 trigger--predicate--enforcement 삼중항으로 표현하고 \cite{S52_wang2025agentspec}, \system{}은 술어를 게임 상태에 고정하며 수리 계약과 리플레이 가능한 레코드를 추가한다. Setting the DC는 D\&D 에이전트를 precondition 검사가 있는 tool call에 근거시키는 반면 \cite{S53_li2025settingdc}, \system{}은 자유 텍스트 제안을 parsing과 외부 policy 평가 뒤에만 허용한다. STORY2GAME은 플레이에 쓰이는 action precondition과 effect를 LLM 스스로 생성하게 하지만 \cite{S54_zhou2025story2game}, 여기서는 policy가 제안자와 독립적으로 저작된다. \system{}은 이 critic을 typed 반례를 반환하는 결정론적 상태 상대 commit gate로 구체화한다. 게임 특화 비교 대상은 서로 다른 경계를 보여준다. PANGeA는 LLM이 설계자 규칙에 따라 콘텐츠를 판정하고 수정하도록 해 검증하고 \cite{S42_buongiorno2024pangea}, IVIE는 기호 검증으로 인터랙티브 픽션 세계를 점진적으로 생성하며 \cite{S01_vaucher2026ivie}, 같은 계보의 2026년 후속 시스템은 LLM을 저작된 world-state transformation 선택으로 제한해 \cite{S44_gongora2026worldstate} 구성상 일관성을 얻는다. 이 논문의 트랜잭션, 감사 레코드, 수리 연산자 질문은 별도의 근거 대상이다. 어느 비교도 우월성을 뜻하지 않으며, 유효성은 각 시스템이 인코딩한 술어에 한정된다.
+JSONSchemaBench는 구조적 constrained-output compliance, coverage, quality를 측정하지만, 이는 상태 상대 semantic authorization을 확립하지 않는다 \cite{S57_geng2025jsonschemabench}.
 
 G-Retriever, HippoRAG, Mem0는 관련 하위 그래프 검색과 장기 메모리를 다루고 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}, Generative Agents와 Character-LLM은 행동 메모리와 persona를 다룬다 \cite{S07_park2023generative,S08_shao2023character}. \system{}은 향후 이러한 맥락을 사용할 수 있지만 직접적인 커밋 권한은 부여하지 않는다. 검색과 시간적 메모리 효익은 여기에서 측정하지 않는다.
 
 \subsection{감사 가능성과 재현성}
 과정 지표는 중간 실패를 보존할 동기를 제공하고 \cite{S16_ma2024agentboard}, 강건한 평가는 소수 확률적 실행의 과도한 해석을 경고한다 \cite{S31_agarwal2021precipice}. 재현성과 환경 보고 지침은 동결된 산출물과 명시적 측정 경계를 뒷받침한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}. 인간 및 LLM 평가는 구성개념, 평가자, 편향 통제를 요구하며 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}, 향후 비열등성과 참여자 분석에는 정당화된 margin과 random-effects 구조가 필요하다 \cite{S32_lakens2018equivalence,S35_barr2013random}. Record-and-replay는 경험 재사용을 위한 에이전트 패러다임으로 제안되었지만 \cite{S56_feng2025agentrr}, \system{}은 승인된 상태 전이의 의미적 리플레이만 주장한다.
+벤치마크 오염 완화 연구는 question-level leakage check의 필요성을 뒷받침하지만, 동결된 denominator를 변경하거나 game-agent efficacy 결과를 만들지는 않는다 \cite{S59_sun2025bdc}.
 
 제한된 novelty는 개별 구성요소의 발명이 아니라 구현된 결합이다. 선행 연구는 범용 에이전트의 런타임 강제 \cite{S52_wang2025agentspec}, 생성된 게임 세계의 기호적 상태 관리 \cite{S53_li2025settingdc,S54_zhou2025story2game}, 피드백 기반 수리 \cite{S45_madaan2023selfrefine}, 에이전트 record-and-replay \cite{S56_feng2025agentrr}를 각각 따로 보여준다. \system{}은 이들의 교집합을 게임 상태 commit 경계에서 연구한다. 즉 parsing된 제안을 독립적인 policy와 결정론적 술어로 검사하고, bounded validator feedback으로 선택적으로 수리하며, 의미적 리플레이를 위해 기록한다. 행동 개입(interposition) 자체는 오래된 기법이다. 내러티브 mediation은 행동을 실행 전에 가로채고 \cite{S37_riedl2003managing}, 고전 계획법은 precondition과 effect로 적용 가능성을 정의하며 \cite{S39_fikes1971strips}, 런타임 강제는 허용된 전이만 통과시키고 \cite{S40_schneider2000enforceable}, 트랜잭션 처리는 abort 시 이전 상태를 그대로 남기며 \cite{S49_haerder1983transaction}, 작성형 논리 기반 인터랙티브 드라마는 캐릭터의 발화를 가능하게 하는 사회적 관행을 작성했고 \cite{S38_evans2013versu}, 신념 인지 내러티브 계획법은 캐릭터가 아는 바를 추론한다 \cite{S41_ware2021sabre}. 후자는 본 논문의 knowledge/disclosure 술어가 훨씬 거칠게 인코딩하는 관심사다. C1--C2는 strict contract와 validate--repair--commit controller를 이 계보 위에 배치하고, C3--C4는 checksum-linked record, state-semantic replay, episode continuity, proposal trace가 없는 사례까지 보존하는 assignment-complete accounting을 더하며, C5는 실행 전 typed validator error만 소비하는 수리 연산자를 분리한다. 보고서에 기능이 없다고 해서 모든 구현에 그 기능이 없다고 추론하지 않는다.
 
@@ -122,19 +125,20 @@ G-Retriever, HippoRAG, Mem0는 관련 하위 그래프 검색과 장기 메모�
 \begin{equation}
 c_t=(G_t,q_t),
 \end{equation}
-여기서 $G_t$는 typed snapshot field를, $q_t$는 해당 snapshot과 함께 저장되는 외부 작성 action-policy, disclosure, quest-stage 제약을 나타낸다. 종단 record history $h_{<t}$는 \texttt{WorldState} snapshot과 별도로 유지된다. Validation predicate는 이를 읽지 않으며 구현은 log에서 상태를 재구성하지 않는다. 검색, 내러티브 점수, 모델 rationale, 메모리 요약, 미래의 감정 추정은 비권위적 proposal context이다.
+여기서 $G_t$는 typed snapshot field를, $q_t$는 해당 snapshot과 함께 저장되는 외부 작성 action-policy, disclosure, quest-stage 제약을 나타낸다. 종단 record history $h_{<t}$는 \texttt{WorldState} snapshot과 별도로 유지된다. Validation predicate는 이를 읽지 않으며 구현은 log에서 상태를 재구성하지 않는다. 이 one-step model에서 수락된 전이는 $q_t$ 아래 $G_t$를 갱신하고 $q_t$를 그대로 다음 단계로 전달한다. 정책 버전 교체는 이 전이의 범위 밖이다. 검색, 내러티브 점수, 모델 rationale, 메모리 요약, 미래의 감정 추정은 비권위적 proposal context이다.
 
 신뢰하지 않는 proposer가 후보 $a_t$를 출력한다. 타입 엄격 parsing은 알 수 없는 top-level field의 거부를 포함한 공유 candidate-key contract를 먼저 강제하고 선언 스키마를 확립한다. validator는 다음을 반환한다.
 \begin{equation}
 V(c_t,a_t)=(v_{\mathrm{policy}},v_{\mathrm{pre}},v_{\mathrm{reach}},
-v_{\mathrm{know}},v_{\mathrm{disc}},v_{\mathrm{quest}},E_t),
+v_{\mathrm{know}},v_{\mathrm{disc}},v_{\mathrm{elig}},v_{\mathrm{stage}},E_t),
 \end{equation}
 여기서 $E_t$는 구조화 오류 집합이다. 상태 변경은 다음과 같다.
 \begin{equation}
 c_{t+1}=\begin{cases}
-T(c_t,a_t), & \bigwedge_i v_i=1,\\
+T(c_t,a_t), & \bigwedge_{i=1}^{7} v_i=1,\\
 c_t, & \text{그 외.}
 \end{cases}
+\label{eq:transition}
 \end{equation}
 
 Controller는 인코딩된 계약 아래 다음 구현 불변량을 주장한다. 파일럿은 이를 일반 정리로 제시하지 않고 deterministic valid, invalid, repair, fallback, replay, fault-injection fixture로 해당 mechanism을 시험한다. \textbf{I1 (소진 실패 불변성):} 예산 $K$까지 반환된 어떤 후보도 검증을 통과하지 못하거나 proposal/controller 실행이 commit 전에 실패하면 반환 상태는 공급된 prior state와 같다. \textbf{I2 (제한된 기록 시도):} 모든 proposal과 repair callback이 반환한다는 조건에서 repair budget $K\geq0$은 최대 $K+1$개의 candidate attempt를 기록한다. 성공적인 commit은 변경 직전 수락 후보에 대한 방어적 validation을 한 번 추가한다. Runtime은 callback deadline을 강제하지 않으므로 I2는 wall-clock 종료 보장이 아니다. \textbf{I3 (효과 권한):} 수락 후보는 \texttt{ActionPolicy.allowed\_effects} 밖의 선언된 fact effect를 \texttt{CandidateAction.effects}에 포함하지 않으며, quest-stage target도 해당 policy에 의해 명시적으로 승인된다. \textbf{I4 (상태 의미적 리플레이):} 동결된 스키마와 결정론적 전이 아래 수락된 trace는 명시된 terminal state를 재구성한다.
@@ -143,7 +147,7 @@ Controller는 인코딩된 계약 아래 다음 구현 불변량을 주장한다
 
 \section{TRACE-RPG 아키텍처와 알고리즘}\label{sec:arch}
 \subsection{신뢰 경계와 계약}
-그림~\ref{fig:architecture}는 모델 또는 recorded adapter를 canonical owner 밖에 둔다. Parser는 알려진 필드의 모호한 숫자 또는 collection type을 거부하고 공유 key contract에 따라 알 수 없는 top-level candidate field도 거부한다. action policy는 candidate와 별도로 공급되며 required precondition과 allowed effect를 정의한다. Game bridge는 observation, proposal, validation, rejection, fallback, commit을 전달할 수 있는 versioned event interface이며, 정식 상태 변경은 유효한 commit만 승인한다. 이는 interface를 분리하지만 상용 엔진으로의 portability를 아직 입증하지 않는다.
+그림~\ref{fig:architecture}는 모델 또는 recorded adapter를 canonical owner 밖에 둔다. Parser는 알려진 필드의 모호한 숫자 또는 collection type을 거부하고 공유 key contract에 따라 알 수 없는 top-level candidate field도 거부한다. action policy는 candidate와 별도로 공급되며 required precondition과 allowed effect를 정의한다. Game bridge는 observation, proposal, validation, rejection, fallback, commit을 전달할 수 있는 versioned event interface이며, 정식 상태 변경은 유효한 commit만 승인한다. 이는 interface를 분리하지만 상용 엔진으로의 portability를 아직 입증하지 않는다. 근거는 unknown-key rejection parity에 한정되며 proposal default와 replay parsing의 동등성을 확립하지 않는다.
 표~\ref{tab:validators}는 구현 검사 7개를 여섯 의미 계열로 묶는다. Quest eligibility와 quest-stage monotonicity는 별도 검사로 유지된다. 이 인코딩 경계는 의미적 완결성 주장이 아니다.
 
 \begin{table}[t]
@@ -162,7 +166,8 @@ Precondition & 누락/거짓 requirement & 변경 없음 \\
 Reachability & 접근 불가 object & 변경 없음 \\
 NPC knowledge & 선언되지 않은 known fact & 변경 없음 \\
 Disclosure & forbidden fact & 변경 없음 \\
-Quest & 부적격/후퇴 stage & 변경 없음 \\
+Quest eligibility & 부적격 quest action & 변경 없음 \\
+Quest stage & 후퇴 또는 비인가 stage & 변경 없음 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -187,12 +192,12 @@ Quest & 부적격/후퇴 stage & 변경 없음 \\
 \label{alg:commit}
 \end{figure}
 
-검증 오류는 구조화된 error code로 repair callback에 노출된다. repair는 상태를 직접 변경하지 않으며, 예산 소진 시 변경 없는 결정론적 fallback을 반환한다. 그림~\ref{fig:architecture}이 종단 경로를 나타낸다. 파일럿은 구현된 두 callback을 비교한다. \emph{반례 유도 연산자}는 직전 후보 $a$와 validator의 구조화 오류 집합 $E$만을 소비하며 권위 있는 상태는 결코 읽지 않는다.
+검증 오류는 구조화된 error code로 repair callback에 노출된다. repair는 상태를 직접 변경하지 않으며, 예산 소진 시 변경 없는 결정론적 fallback을 반환한다. 그림~\ref{fig:architecture}이 종단 경로를 나타낸다. 파일럿은 구현된 두 callback을 비교한다. \emph{typed validator-error-guided 연산자} (구현: \texttt{counterexample\_guided\_repair})는 직전 후보 $a$와 typed validator 오류 $E$만을 소비하며, 이 오류가 유일한 상태 유래 입력이고 권위 있는 \texttt{WorldState}에는 직접 접근하지 않는다.
 \begin{equation}
 \rho(a,E)=a \oplus \textstyle\bigcup_{e\in E}\delta(e),
 \label{eq:rho}
 \end{equation}
-여기서 각 $\delta(e)$는 표~\ref{tab:rho-rules}의 오류 class별 결정론적 edit이고 $\oplus$는 그 field edit들을 적용한다. 각 edit은 오류 entity당 최대 하나의 candidate field만 수정하므로 시도당 변경 field 수는 $|E|$로 유계이고, 같은 오류 집합으로 $\rho$를 두 번 적용하면 고정점이며, 같은 field에서 동시에 요구되고 거부되는 entity는 수리 불가로 선언되어 수정되지 않는다. \emph{상태를 읽는 참조 callback}은 반대로 오류 집합을 폐기하고 정책이 규율하는 field(precondition, effect, 두 quest-stage field)를 권위 있는 상태에서 직접 재구성한다. 이 callback은 선언 무결성 field(required object, used fact, disclosed fact)를 의도적으로 수정하지 않는다. 의존성이나 disclosure의 선언을 지우는 것은 후보를 수리하는 것이 아니라 위반을 게이트 뒤로 세탁하는 것이기 때문이다. 이는 상태 판독 가능 수리에 대한 oracle 상한이며, 그 결과를 배포 가능한 수리 방법의 근거로 읽어서는 안 된다.
+여기서 각 $\delta(e)$는 표~\ref{tab:rho-rules}의 오류 class별 결정론적 edit이고 $\oplus$는 그 field edit들을 적용한다. 각 edit은 오류 entity당 최대 하나의 candidate field만 수정하므로 시도당 변경 field 수는 $|E|$로 유계이고, 동일한 오류 집합 $E$를 두 번 적용할 때에만 고정점이 되며 오류 집합이나 시도가 바뀌는 과정의 수렴을 뜻하지 않는다. 같은 field에서 동시에 요구되고 거부되는 entity는 수리 불가로 선언되어 수정되지 않는다. \emph{상태를 읽는 참조 callback}은 반대로 오류 집합을 폐기하고 정책이 규율하는 field(precondition, effect, 두 quest-stage field)를 권위 있는 상태에서 직접 재구성한다. 이 callback은 선언 무결성 field(required object, used fact, disclosed fact)를 의도적으로 수정하지 않는다. 의존성이나 disclosure의 선언을 지우는 것은 후보를 수리하는 것이 아니라 위반을 게이트 뒤로 세탁하는 것이기 때문이다. 이는 상태 판독 가능 수리에 대한 oracle 상한이며, 그 결과를 배포 가능한 수리 방법의 근거로 읽어서는 안 된다.
 
 \begin{table}[t]
 \caption{유도 연산자 $\rho$의 오류 class별 edit}
@@ -226,9 +231,9 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \input{../generated/evidence_lanes_ko.tex}
 표~\ref{tab:evidence-lanes}는 어떤 count를 읽기 전에 각 레인의 설계, 단위, 비교, 상한을 고정한다.
 \subsection{\textbf{E1} 오프라인 적합성 설계}
-파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 동결된 모든 repairability class의 작성 사례에서 rejection-only, 블라인드 동일 후보 retry, 반례 유도 연산자 $\rho$, 상태를 읽는 참조 callback이 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가? (PQ5) proposal 및 replay parser가 그 외에는 완전하고 유효한 candidate에 unknown top-level key 하나를 추가한 사례를 모두 거부하는가?
+파일럿은 다음을 묻는다. (PQ1) 유효 후보는 commit되고 명명된 invalid-policy 사례는 변경 없이 유지되는가? (PQ2) 동결된 모든 repairability class의 작성 사례에서 rejection-only, 블라인드 동일 후보 retry, typed validator-error-guided 연산자 $\rho$, 상태를 읽는 참조 callback이 예상 결과를 만드는가? (PQ3) 동결된 checksum, state-semantic, linkage, continuity mutation이 지정된 검사 연산에서 거부되고, 두 번째 파일 append의 주입된 실패가 예상 pair-write rollback 검사를 작동시키는가? (PQ4) 엄격한 adapter와 assignment manifest가 할당 사례마다 정확히 하나의 분류된 terminal row를 유지하거나 fail closed하는가? (PQ5) proposal 및 replay parser가 그 외에는 완전하고 유효한 candidate에 unknown top-level key 하나를 추가한 사례를 모두 거부하는가?
 
-사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair-arm 비교, record/trace fault injection, adapter/accounting contract이다. 모든 repair fixture는 실행 전에 동결된 repairability class를 선언한다. \emph{guided-repairable}(구조화 오류 payload만으로 $\rho$에 충분한 정보가 담김), \emph{oracle-only}(수리에 권위 있는 상태 판독이 추가로 필요함), \emph{irreparable}(구현된 어떤 arm도 commit할 수 없음)이며, class별 arm당 기대 결과는 설계 픽스처 계약의 일부다. 반복된 결정론적 seed가 아니라 고유 사례가 기술적 denominator를 구성한다. 모든 기대값은 실행 전에 명시한다.
+사례는 의도적으로 설계된 적합성 픽스처이며 모델 또는 게임 모집단의 표본이 아니다. 네 도메인은 validator/state isolation, repair-arm 비교, record/trace fault injection, adapter/accounting contract이다. 모든 repair fixture는 실행 전에 동결된 repairability class를 선언한다. \emph{guided-repairable}(구조화 오류 payload만으로 $\rho$에 충분한 정보가 담김), \emph{oracle-only}(수리에 권위 있는 상태 판독이 추가로 필요함), \emph{irreparable}(구현된 어떤 arm도 commit할 수 없음)이며, 13개 gate fixture는 유효 control 하나와 고립된 음성 12개로 구성되고 12개 repair case는 별도 arm denominator를 이룬다. 각 class별 arm 기대 결과는 fixture 계약의 일부이며, 모든 기대값은 실행 전에 명시한다.
 
 측정치는 정확한 count이다. expected/observed validator-class agreement, rejected 또는 controller-failure 사례의 state mutation, repair arm과 repairability별 commit 및 attempt 결과, 지정된 연산에서 거부된/사전 명세된 detectable fault, replayed/committed trace, rejected/injected manifest violation, 사전 명세한 unknown-key 음성 회귀에 대한 proposal/replay 거부 일치를 센다. 마지막 측정은 결정론적 parser-contract parity이며 실증적 safety outcome이 아니다. Exception class만으로 안정적인 detector layer를 식별할 수 없으므로 detector 귀속 결과는 보고하지 않는다. 의도적으로 설계된 픽스처에 $p$-value나 모집단 confidence interval을 부여하지 않는다. Adapter 사례가 지닌 latency 및 token 상수는 입력 스키마가 JSON-Schema \texttt{const}로 고정한 합성값이다. 이 값들은 계수 필드 전파만 확인하며 provider, runtime, device에 대한 측정값이 아니다. 동결된 오프라인 packet은 fixture, assignment, schema, trace를 포함한 result, 코드 revision, checksum을 결합하며, 보고는 재현성과 측정 경계 지침을 따른다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
@@ -238,13 +243,20 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \subsection{\textbf{E3} KG/온톨로지 링크 제안 시뮬레이션}
 세 번째 레인은 권한을 가진 \texttt{WorldState}와 분리된 engineering-only closed-world 시뮬레이션이다. graph node 43개와 reference edge 106개, 검토된 typed edge 24개가 type/domain/range 검사와 competency question 6개를 통과하며, 작성형 질의 6개를 고정 전략 7개로 채점했다. Retained typed-lexical 전략(S2)은 작성된 holdout 6/6을 복원했고($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$), degree baseline은 하나도 복원하지 못했다. 이는 구성 결과이며 OWL/SHACL 적합성, 의미 완전성, runtime retrieval, 어떤 효능 주장의 근거도 아니다.
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{../figures/fig_evidence_regimes.pdf}
+  \caption{E1 동결 오프라인 count와 E2 screening-pilot-only matched count를 사용한 evidence-regime 대비. E1은 처음 invalid로 설계된 12개 사례에서 네 arm의 commit/case를 보여 준다 (0/12, 0/12, 5/12, 6/12). E2는 Signal-v2/policy-blind 대비($\rho$ 5/5 대 blind 0/5)를 goal-directed/goal-blind null regime (0/5 대 0/5)와 분리한다. Raw count는 기술적이며 denominator는 통합되지 않으므로 효능, 모집단, 모델 순위 또는 플레이어 경험에 대한 추론을 지지하지 않는다.}
+  \label{fig:evidence-regimes}
+\end{figure}
+
 \section{파일럿 결과}\label{sec:results}
 
 \input{../generated/pilot_results_ko.tex}
 
 \input{../generated/pilot_tables_ko.tex}
 
-표~\ref{tab:pilot-repair}와~\ref{tab:pilot-accounting}은 정확한 설계 픽스처 count를 보고한다. 수리 표는 동결된 repairability class별로 네 arm을 분리하며, 어느 표도 모집단 또는 live-model 추정을 지지하지 않는다.
+표~\ref{tab:pilot-repair}와 표~\ref{tab:pilot-accounting}은 정확한 설계 픽스처 count를 보고한다. 13/13 gate 일치는 loader 구성 불변량이고, 각 repair arm은 고유 case 12개($5+1+6$)를 가지며, 라이브 5개 셀의 25개 제안 호출은 오프라인 denominator 밖에 있다. 수리 표는 동결된 repairability class별로 네 arm을 분리하며, 어느 표도 모집단 또는 live-model 추정을 지지하지 않는다.
 
 \input{../generated/live_pilot_results_ko.tex}
 
@@ -255,11 +267,11 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \begin{figure}[!t]
   \centering
   {\footnotesize\bfseries (a) 보류된 제안: 게이트 계열, 변경 없는 상태, 다음 유효 항목, 학습된 규칙\par}\vspace{1pt}
-  \includegraphics[width=\columnwidth,trim=212 54 360 533,clip]{../captures/playable-readout-20260903/refusal.png}\\[3pt]
+  \includegraphics[width=\columnwidth,trim=200 30 360 545,clip]{../captures/playable-readout-20261014-r2/refusal.png}\\[3pt]
   {\footnotesize\bfseries (b) 커밋된 제안: 항목, 기여 절, 해제된 행동\par}\vspace{1pt}
-  \includegraphics[width=\columnwidth,trim=12 147 520 513,clip]{../captures/playable-readout-20260903/authorized_hint.png}\\[3pt]
+  \includegraphics[width=\columnwidth,trim=12 30 468 606,clip]{../captures/playable-readout-20261014-r2/authorized_hint.png}\\[3pt]
   {\footnotesize\bfseries (c) 세 번의 커밋 뒤 엔드카드 영수증\par}\vspace{1pt}
-  \includegraphics[width=0.96\columnwidth,trim=250 284 490 240,clip]{../captures/playable-readout-20260903/ending.png}
+  \includegraphics[width=0.96\columnwidth,trim=250 294 250 190,clip]{../captures/playable-readout-20261014-r2/ending.png}
   \caption{플레이어가 Godot slice에서 읽는 commit gate. 작성된 fixture 하나의 scripted presentation stage 세 개에서 잘라낸 ledger(엔지니어링 작업 캡처, 1280$\times$720; 예시일 뿐 근거가 아니다). (a) 금지된 disclosure가 \emph{보류}된다. ledger는 게이트 계열을 이름 짓고, canonical state가 변경되지 않았음을 밝히며, 다음 유효 항목을 가리키고, 보류를 플레이어가 재사용할 수 있는 규칙으로 바꾼다. (b) 유효한 제안이 \emph{커밋}된다. 항목, committed snapshot의 차분만으로 파생된 기여 절(추가된 fact, 퀘스트 단계 $1{>}2$, case chain $2/3$), 그리고 그것이 해제하는 행동이 이어진다. (c) 엔드카드는 기여 절 세 개, 보류 횟수, 그리고 리플레이가 보고하는 종단 state hash(\texttt{4b2310\ldots})를 담은 validator 영수증을 나열한다. 모든 줄은 committed snapshot의 presentation-only 판독이며(그림~\ref{fig:architecture} 아래 strip), oracle label, 숨겨진 fact, live model, participant는 개입하지 않는다. 패널은 usability, immersion, efficacy 어느 주장도 뒷받침하지 않는다.}
   \label{fig:playable-readout}
 \end{figure}
@@ -270,7 +282,7 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \subsection{확립 가능한 범위}
 설계 파일럿은 동결된 사례에 대해서만 mechanism behavior를 확립할 수 있다. 인코딩된 검사가 상태를 격리하는지, bounded repair와 fallback이 선언 경로를 따르는지, 명명된 corruption이 지정된 검사 연산에서 거부되는지, assigned row가 집계를 위해 분류된 상태로 남는지를 평가한다. 거부를 안정적인 typed detector code에 귀속하지는 않는다.
 
-오프라인 수리 비교의 정직한 해석은 guided-대-oracle 경계다. 상태를 읽는 callback이 상한으로 남는 이유는 권위 있는 상태를 참조할 수 있어서 $\rho$가 구성상 전환할 수 없는 oracle-only 사례를 전환하기 때문이다. 반례 유도 연산자는 validator의 구조화 반례만 소비하면서 guided-repairable class에서 oracle과 정확히 일치한다. 이어 라이브 스크리닝 확장은 이 mechanism이 hosted proposal로 전이되는지를 탐색했다. 구성 상태가 모든 제안을 guided-repairable class로 유도했을 때만 $\rho$와 blind retry가 분리됐고, 최초 유효 및 guided-irreparable regime은 귀무였다. 이 regime 의존성, 고정되지 않은 hosted revision, 준반복 호출 때문에 일반 표본 효율이나 모델 능력을 주장할 수 없다. Feedback을 소비하는 수리 루프에는 선례가 있다. Self-Refine은 같은 신뢰하지 않는 모델이 생성한 언어를 feedback으로 되먹이고 \cite{S45_madaan2023selfrefine}, Reflexion은 시도 간 verbal self-reflection을 저장하며 \cite{S48_shinn2023reflexion}, Self-Debugging은 신뢰되는 전체 프로그램 runtime의 실행 결과를 소비한다 \cite{S46_chen2023selfdebug}. $\rho$는 channel과 권위에서 다르다. Feedback은 실행 전에 결정론적 validator가 계산한 typed 오류 집합이고, 실패한 모든 live arm은 상태를 격리한다. 이름은 명세의 전체 상태가 아니라 verifier의 반례가 다음 후보를 이끄는 counterexample-guided inductive synthesis를 따르며 \cite{S47_solarlezama2006sketching}, 여기서 verifier는 commit gate 자체다.
+오프라인 수리 비교의 정직한 해석은 guided-대-oracle 경계다. 상태를 읽는 callback이 상한으로 남는 이유는 권위 있는 상태를 참조할 수 있어서 $\rho$가 구성상 전환할 수 없는 oracle-only 사례를 전환하기 때문이다. Typed validator-error-guided 연산자는 validator가 실행 전에 계산한 구조화 typed 오류 집합만 소비하며 guided-repairable class에서 oracle과 정확히 일치한다. 이어 라이브 스크리닝 확장은 이 mechanism이 hosted proposal로 전이되는지를 탐색했다. 구성 상태가 모든 제안을 guided-repairable class로 유도했을 때만 $\rho$와 blind retry가 분리됐고, 최초 유효 및 guided-irreparable regime은 귀무였다. 이 regime 의존성, 고정되지 않은 hosted revision, 준반복 호출 때문에 일반 표본 효율이나 모델 능력을 주장할 수 없다. Feedback을 소비하는 수리 루프에는 선례가 있다. Self-Refine은 같은 신뢰하지 않는 모델이 생성한 언어를 feedback으로 되먹이고 \cite{S45_madaan2023selfrefine}, Reflexion은 시도 간 verbal self-reflection을 저장하며 \cite{S48_shinn2023reflexion}, Self-Debugging은 신뢰되는 전체 프로그램 runtime의 실행 결과를 소비한다 \cite{S46_chen2023selfdebug}. $\rho$는 channel과 권위에서 다르다. Feedback은 실행 전에 결정론적 validator가 계산한 typed 오류 집합이고, 실패한 모든 live arm은 상태를 격리한다. 이 연산자는 validator-error-guided이며 counterexample-guided inductive synthesis와 유사하게 verifier의 반례가 다음 후보를 이끌지만 \cite{S47_solarlezama2006sketching}, 의미적 수리를 뜻하지 않고 여기서 verifier는 commit gate 자체다.
 
 \subsection{선행연구와의 관계}
 \system{}은 constrained decoder \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}, 검색 및 메모리 구성요소 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}, 실행 가능한 환경과 benchmark \cite{S11_cote2019textworld,S12_wang2022scienceworld,S15_liu2024agentbench,S18_paglieri2025balrog}를 대체하지 않고 보완한다. Process-linked trace는 AgentBoard의 측정 관심사를 구현하지만 \cite{S16_ma2024agentboard} 우월성의 근거는 아니다. 확증 연구, 즉 독립 semantic oracle과 실제 blind-retry comparator를 갖춘 사전등록 다중 모델 비교, 인코딩된 validity를 맞춘 retrieval 및 memory ablation, 정당화된 검정력과 mixed-effects 분석을 갖춘 blinded matched-validity 인간 연구는 여전히 본 논문의 범위 밖이며, 스크리닝 파일럿은 어느 연구도 대체하지 않는다 \cite{S27_vanderlee2019best,S31_agarwal2021precipice,S35_barr2013random}.
@@ -281,10 +293,9 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 파일럿은 participant 또는 personal telemetry를 처리하지 않는다. 향후 human 및 affect 연구에는 해당 review, informed consent, compensation disclosure, minimization, retention/deletion rule, opt-out이 필요하다. LLM judge를 사용하더라도 automated 및 crowd judgement 모두 calibration과 bias control이 필요하므로 보조 수단으로 유지한다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 \section{결론}
-\system{}은 작성된 candidate-event payload를 encoded 기호 commit gate를 통해 canonical mutation으로부터 격리하고, linked record와 state-semantic replay로 terminal outcome을 감사 가능하게 만든다. 결정론적 오프라인 파일럿은 동결된 작성 fixture에서 mechanism 적합성을 확립한다. 별도 라이브 스크리닝 파일럿은 구성한 수리 가능 regime에서만 guided 5/5 대 blind 0/5 분리를 관찰하고 다른 regime에서는 귀무였으므로 pilot-only로 남는다. Cross-model superiority, player-experience benefit, retrieval 또는 memory effectiveness, affect efficacy, commercial-engine performance는 명시적인 확증 확장으로 남는다. 이미 플레이어에게 닿는 것은 게이트 자체다. Godot slice에서 보류는 규칙으로, commit은 기여로 읽히며, 모든 줄은 committed snapshot에서만 파생된다.
+\system{}은 canonical mutation 전에 encoded 기호 검사로 candidate payload의 통과 여부를 결정하며, linked record와 state-semantic replay로 outcome을 감사 가능하게 만든다. 동결된 offline fixture는 mechanism 적합성을 확립한다. Live screening은 구성한 수리 가능 regime에서만 $\rho$ 5/5 대 blind retry 0/5 분리를 관찰하므로 pilot-only로 남는다. Cross-model superiority, player-experience benefit, retrieval/memory effectiveness, affect efficacy, commercial-engine performance에는 확증 연구가 필요하다. Godot slice에서 보류는 규칙을, commit은 기여를 드러내며 모두 committed snapshot에서 파생된다.
 
 \begingroup
-\renewcommand{\footnotesize}{\fontsize{7}{7.4}\selectfont}
 \section*{AI 사용 고지}
 Large language model은 prose, code와 test drafting, citation-identity check를 보조했고, hosted model은 별도 표기된 live-screening candidate를 생성했다. 모든 보고 count는 deterministic runner 또는 hash-bound receipt에서 온다. playable slice의 UI 아트(초상, 인장, 패널 텍스처, case-file board, evidence icon, guide vignette)와 prop mesh 하나(evidence desk)는 파일별 provenance를 갖춘 curated AI 생성 asset이며, 그림~\ref{fig:playable-readout}의 모든 상태 값, hash, ledger 줄은 committed snapshot에서 엔진이 렌더링한 것이다. 저자는 claim을 source artifact에 대조했고 내용에 대한 책임을 진다.
 
@@ -292,6 +303,8 @@ Large language model은 prose, code와 test drafting, citation-identity check를
 Repository에는 implementation, build source, 동결된 offline 및 live packet, 결정론적 평가를 갖춘 playable Godot slice, 그리고 표~\ref{tab:contribution-map}과~\ref{tab:evidence-lanes}를 생성하는 기계 검증 기여·참조 주제·실험 매트릭스가 들어 있다. Reviewer archive나 DOI deposit은 주장하지 않는다.
 
 \bibliographystyle{IEEEtran}
+% Calibrated for the current 58-reference snapshot; native IEEEtran trigger balances KO bibliography columns.
+\IEEEtriggeratref{44}
 \bibliography{../references}
 \endgroup
 

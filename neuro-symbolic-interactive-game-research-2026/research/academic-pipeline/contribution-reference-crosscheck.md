@@ -37,7 +37,7 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 | C2 | validate–repair–commit controller | planning precondition/effect, narrative interposition, runtime enforcement | 6개 술어, 불변 fallback, 방어적 재검증, 엔진 policy mirror | 동결 정책·사례에서의 메커니즘 동작 |
 | C3 | 감사 연결 근거 계층 | process metrics, reproducibility, integrity reporting | checksum, state-semantic replay, continuity, render/state receipt | 지정 변이에 대한 무결성·재생 적합성; 작성자 인증 아님 |
 | C4 | 할당 완전 conformance harness | explicit-state environments, agent benchmarks, 평가·통계 지침 | 동결 assignment, terminal failure 분류, manifest guard | 설계 사례의 정확 집계; 모집단 추정 아님 |
-| C5 | typed 반례 유도 연산자 $\rho$ | symbolic validation, self-feedback, runtime feedback | E1의 repairability class 비교와 E2의 단일모델 regime screen | 작성 fixture + 특정 repairable regime의 pilot-only 전이 |
+| C5 | typed 반례 유도 연산자 $\rho$ | symbolic validation, self-feedback, runtime feedback | E1의 repairability class 비교와 E2의 단일모델 regime screen | 작성 fixture + 특정 repairable regime의 pilot-only 전이; $\rho$ reads only prior candidate and typed validator errors, with errors as its sole state-derived input |
 
 핵심 novelty는 개별 아이디어의 발명이 아니라 **C1–C5가 하나의 권위 경계와 추적 계약으로
 결합되고, 그 결합의 성공·실패·미생성 trace까지 같은 분모에서 감사되는 구현**이다.
@@ -46,7 +46,7 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 
 ## 3. 레퍼런스 ↔ 주제 교차검증
 
-`reference-topic-crosswalk.csv`는 BibTeX의 55개 논문 레코드를 다음 9개 주제로 전수 매핑한다.
+`reference-topic-crosswalk.csv`는 BibTeX의 58개 논문 레코드를 다음 9개 주제로 전수 매핑한다.
 `S43`은 의도적 결번이며 가짜 레코드를 만들지 않는다.
 
 | 주제 | 범위 | 원고에서의 역할 | 대표 기여 연결 |
@@ -61,12 +61,8 @@ K-Dense-AI `scientific-agent-skills`의 고정 커밋
 | T8 | planning / runtime / interposition | novelty의 역사적 계보와 비발명 경계 | C2, C3 |
 | T9 | feedback repair | $\rho$의 feedback channel·authority 차이 | C5 |
 
-Stage-5 기계 기록 기준 집계는 **55개 = VERIFIED 48 + PREPRINT 7** (2026-09-03 교차검증에서 S01 IVIE가 ICCC'26 아카이벌 proceedings로, S46 Self-Debug가 ICLR 2024 채택작으로 승격; S53 저자 순서·S06 volume/pages·S12·S19 제목·S25 proceedings 제목 수정), unmatched 0,
-hallucinated 0이다. Semantic Scholar가 429를 반환한 22개 레코드는 `rate_limited`로 명시했고,
-각 정체성은 Crossref, OpenAlex, PMLR, arXiv 또는 공식 학회 프로그램에서 별도로 확인했다.
-2026-08-30 spot-check에서 S02, S44, S45, S46의 제목 레코드를 관찰했지만 이는 재현 가능한
-전수 재감사를 대체하지 않는다. 따라서 이 수치는 **미일치 22건**이 아니라 **세 번째 색인
-coverage gap 22건**이다.
+Stage-5 기계 기록 기준 집계는 **58개 = VERIFIED 48 + PREPRINT 10** (2026-10-14 bounded primary refresh에서 S57 JSONSchemaBench, S58 NCP-Bench, S59 benchmark-contamination study를 arXiv API와 OpenAlex DOI identity records로 독립 확인; 세 항목 모두 archival proceedings record를 확인하지 못해 PREPRINT 유지), unmatched 0, hallucinated 0이다. Semantic Scholar가 429를 반환한 기존 22개 레코드는 `rate_limited`로 명시했고, 새 항목은 arXiv·OpenAlex identity만으로 범위를 제한했다.
+각 정체성은 Crossref, OpenAlex, PMLR, arXiv 또는 공식 학회 프로그램에서 별도로 확인했으며, 새 항목의 fetched arXiv/OpenAlex metadata에는 명시적 paper license가 노출되지 않았다. 이 수치는 **미일치 22건**이 아니라 **세 번째 색인 coverage gap 22건**이다.
 
 ## 4. 실험을 네 레인으로 정리
 
@@ -90,14 +86,20 @@ ENG1의 남은 사람 측정은 `_workspace/current/qa/human-measurement-packet.
 - **PASS:** E1, E2, E3, ENG1의 단위와 분모가 서로 섞이지 않는다.
 - **PASS:** E2는 `C-PILOT-007/008`만 지원하고 `C-RESULT-003`은 승격하지 않는다.
 - **PASS:** E3는 모든 `C-RESULT-*`에 비지원으로 표시된다.
-- **PASS:** 영문·국문 원고가 같은 55개 BibTeX key를 인용하고 같은 기여 ID와 레인 ID를 쓴다.
+- **PASS:** 영문·국문 원고가 같은 58개 BibTeX key를 인용하고 같은 기여 ID와 레인 ID를 쓴다.
+
+## 2026-10-14 bounded refresh: literature and pilot-packet precedence
+
+- S57 (2025 JSONSchemaBench), S58 (2026 NCP-Bench), and S59 (2025 benchmark-contamination study) were added only after direct arXiv API identity records were matched independently to OpenAlex DOI records. They remain `PREPRINT`; S58's arXiv acceptance comment for ICML 2026 is preserved, but no proceedings record was established. The fetched records expose no explicit paper license, so no reuse permission is inferred.
+- The authoritative current C-PILOT-005 packet remains `stage-04-pilot/pilot-assignment-manifest.json` plus `sha256-manifest.json`: **121 = 85 executed + 36 aggregate**, with the frozen bytes and hashes unchanged. The later **64 = 43 + 21** prose/material-passport count is retained as a historical recapture claim only and must not replace the Stage-04 denominator. A parent-controlled replication receipt on 2026-10-14 reported byte-identical pilot results, manifest, and 11 CSVs in a separate release lane.
+- The repair operator $[?25l\rho$ is implemented and remains state-blind in the precise sense of no direct `WorldState` access: it reads the prior candidate and typed validator errors, and those errors are its sole state-derived input. `policy_restore` is the separate state-reading oracle; frozen arm IDs are unchanged.
 - **OPEN:** 확증 다중모델·독립 semantic oracle·인간 참가자·affect·runtime retrieval/memory·live transport 실험.
 - **OPEN:** G4와 사람 제스처·latency·soak·rollback이 필요한 G6.
 
 ## English summary
 
 The three CSVs bind all five manuscript contributions to prior-work topics, repository evidence,
-experiment lanes, claim IDs, and explicit inference ceilings; map all 55 bibliography records to nine
+experiment lanes, claim IDs, and explicit inference ceilings; map all 58 bibliography records to nine
 topics; and keep offline conformance, live screening, KG simulation, and engine engineering as
 non-interchangeable units. The contribution is the audited integration, not invention of planning,
 interposition, constrained decoding, retrieval, or feedback repair. No `C-RESULT-*` claim is promoted.

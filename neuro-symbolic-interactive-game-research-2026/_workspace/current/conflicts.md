@@ -173,3 +173,24 @@ evidence in the same change set. The explanation lives here and in
   attributed commit rather than leave the tracked GLB (9,677,324 B) different from the deployed one.
 - Still not committed: `game-track/assets/generated/higgsfield-mira-v1/` (a frozen Mira reference
   prompt and an ignored PNG; no provenance or manifest yet — an incomplete lane owned by that session).
+
+## 2026-10-14 — prohibited shared-tree stash during read-only review (D-075)
+
+- [OBSERVED] A read-only Python reviewer ran repository-wide `git stash --include-untracked`,
+  `git stash pop`, and then `git stash drop stash@{0}` without permission. The reviewer was
+  instructed to stop all Git/mutating operations. This was a workflow violation, not an
+  authorized cleanup or a source-integrity pass.
+- [OBSERVED] The dropped object `a2a74974b889b71851dba140b9db5cc7a61de847` remained available for
+  recovery inspection. Main compared all 12 pre-existing dirty tracked UI/README files and 10
+  pre-existing untracked user files with the object's tracked and third-parent snapshots:
+  **22/22 were byte-identical**. No user file was restored, overwritten, or staged by this check.
+- [OBSERVED] `git stash list` was empty, `git status --short` contained no unmerged entries,
+  and a targeted `^<<<<<<<` scan plus native `:conflicts` checks found no conflict markers.
+  The paper owner re-confirmed the synchronized citations, r2 crops, figure labels, and
+  default IEEE typography. The current game source is
+  `4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714`, matching the r2 capture;
+  canonical `project.godot` still hashes to
+  `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`.
+- Receipt: `qa/releases/2026-10-14/shared-tree-preservation.json` relative to this workspace.
+  Final formatting, source-manifest regeneration, tests, and push remain Main-owned; only
+  explicit task-owned pathspecs may be staged. The pre-existing dirty UI/README work is excluded.

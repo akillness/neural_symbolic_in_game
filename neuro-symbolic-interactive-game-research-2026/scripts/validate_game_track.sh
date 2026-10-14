@@ -13,6 +13,8 @@ uv run python -m pytest -q \
   tests/test_godot_web_release.py \
   tests/test_playable_evaluation.py \
   tests/test_balance_archetypes.py \
+  tests/test_godot_protocol_observation.py \
+  tests/test_latex_makefile.py \
   tests/test_codex_oauth_llm.py
 uv run ruff check \
   scripts/codex_oauth_llm.py \

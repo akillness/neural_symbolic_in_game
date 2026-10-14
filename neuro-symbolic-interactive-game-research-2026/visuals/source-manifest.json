@@ -6,26 +6,26 @@
       "id": "paper-en",
       "artifact": {
         "path": "paper/latex/en/main.pdf",
-        "bytes": 1344272,
-        "sha256": "639580e6785be965b6dd086da314c2192db7de5da9852c51f504d598c00efe37"
+        "bytes": 1419900,
+        "sha256": "42b0d81c98f31682844b46eebd4f991442904f87747ab8475249e05e19064b8e"
       },
       "editable_source": {
         "path": "paper/latex/en/main.tex",
-        "bytes": 36978,
-        "sha256": "7af633bddf501bc43d5c83a4d57b8754eeb41786b49b58e872bbe603d0c6f4dd"
+        "bytes": 38816,
+        "sha256": "3f3038d3ff4748995b3cdcbeac1e314595c2ab1cbd39e3ce9d5a0cf66e98450b"
       }
     },
     {
       "id": "paper-ko",
       "artifact": {
         "path": "paper/latex/ko/main.pdf",
-        "bytes": 1434844,
-        "sha256": "3415c183b12363ab1092c9cf13b3548a720daf4517ca9cd2cfe5dd5ea8a359bd"
+        "bytes": 1494815,
+        "sha256": "5761db44bc4bd86dd526f92bab6cb6307be5ef901edcb8f5629d3d746bdf0a0d"
       },
       "editable_source": {
         "path": "paper/latex/ko/main.tex",
-        "bytes": 43053,
-        "sha256": "d85a0801b1c56c5774c31124788715731598c4b83a58cc4b8159fbb1d53df819"
+        "bytes": 45486,
+        "sha256": "c9bdb3ed699d4379f734e86ac9974532b9c5f3b42c2117e3584dbca6aa95b58f"
       }
     }
   ],
@@ -36,28 +36,77 @@
       "rendered": [
         {
           "path": "paper/latex/figures/fig_architecture.pdf",
-          "bytes": 105335,
-          "sha256": "3e6427d51e9dc949e2d20cb674aeb57765c67dc15816b5bc2521d1db552a20e7"
+          "bytes": 106029,
+          "sha256": "862b9325bd4952103743bf2892bdec9fd880be50153aef54d1b697b8a4596add"
         },
         {
           "path": "paper/latex/figures/fig_architecture.png",
-          "bytes": 169941,
-          "sha256": "e038f06672537d68c27a31ca9f6d33db8c6e0b4a8089162e93722cd7c8ee74ba"
+          "bytes": 172215,
+          "sha256": "2aa953a7b21349480520c6734b76db86c05329a9d971505a3ef0689be4f4c3fa"
         }
       ],
       "editable_sources": [
         {
           "path": "paper/latex/figures/fig_architecture.svg",
-          "bytes": 13650,
-          "sha256": "96cd052591f76539b108c026efc708502d1f0b5d82d075055340dca8cd107991"
+          "bytes": 13790,
+          "sha256": "4e03d668546f281ea99b3baea39f7b76c5751e4920f6cf201e56cb8a627ad54d"
         }
       ],
       "generator": {
         "path": "scripts/generate_paper_figures.py",
-        "bytes": 21608,
-        "sha256": "79adabbdd6e715bb7f22a0edfe312e16aee6425f0080240ce561aba5ccb5ca7c"
+        "bytes": 29636,
+        "sha256": "e3f221902247eb949d42569382f14e2e64b6138a580e82a3c7e41360d4322890"
       },
       "data_sources": [],
+      "used_by": [
+        "paper/latex/en/main.tex",
+        "paper/latex/ko/main.tex"
+      ]
+    },
+    {
+      "id": "paper-evidence-regimes",
+      "kind": "chart",
+      "rendered": [
+        {
+          "path": "paper/latex/figures/fig_evidence_regimes.pdf",
+          "bytes": 67714,
+          "sha256": "5eb9bcafb1fe01bed512ffea35582e52fe67476284a7db6430d78ce571a7e40f"
+        },
+        {
+          "path": "paper/latex/figures/fig_evidence_regimes.png",
+          "bytes": 106592,
+          "sha256": "16987564fca398ee854d9cddcb4d7d53bdf650af74288f79b25175a9a5e03d0c"
+        }
+      ],
+      "editable_sources": [
+        {
+          "path": "paper/latex/figures/fig_evidence_regimes.svg",
+          "bytes": 6326,
+          "sha256": "9cbec184363fbd43690de0a3ff2e68c4911701221c979c26fc2b19b0f610b214"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_paper_figures.py",
+        "bytes": 29636,
+        "sha256": "e3f221902247eb949d42569382f14e2e64b6138a580e82a3c7e41360d4322890"
+      },
+      "data_sources": [
+        {
+          "path": "research/academic-pipeline/stage-04-pilot/pilot-results.json",
+          "bytes": 612650,
+          "sha256": "e02359968e2a53bb0387ffe800c9dfc5809dc13a3329e808b74160cdc6887e64"
+        },
+        {
+          "path": "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json",
+          "bytes": 1716,
+          "sha256": "b2e4216be45f653dcf06772c570498c4a232c17b2593613015427c6cb053d8e2"
+        },
+        {
+          "path": "research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/goal_directed_blind/summary.json",
+          "bytes": 1570,
+          "sha256": "ed0825aff27c7f4d8022e9d717ce47abbba233af6c9546b69191cc0843e1b703"
+        }
+      ],
       "used_by": [
         "paper/latex/en/main.tex",
         "paper/latex/ko/main.tex"
@@ -143,7 +192,7 @@
         {
           "path": "research/simulation/kg-ontology/latest/evaluation-matrix.json",
           "bytes": 100847,
-          "sha256": "adb9c770bd8f6bf05b420f50ea4ac6687d18717a0a76716c378f6f2e4108743a"
+          "sha256": "dfc26865774000a0ccd02ca69dcfdd7d994fc70ff3a4cb2ede4dd5cdaa5cc4aa"
         },
         {
           "path": "research/simulation/kg-ontology/latest/strategy-trials.tsv",
@@ -194,13 +243,13 @@
       "layout_sources": [
         {
           "path": "paper/latex/en/main.tex",
-          "bytes": 36978,
-          "sha256": "7af633bddf501bc43d5c83a4d57b8754eeb41786b49b58e872bbe603d0c6f4dd"
+          "bytes": 38816,
+          "sha256": "3f3038d3ff4748995b3cdcbeac1e314595c2ab1cbd39e3ce9d5a0cf66e98450b"
         },
         {
           "path": "paper/latex/ko/main.tex",
-          "bytes": 43053,
-          "sha256": "d85a0801b1c56c5774c31124788715731598c4b83a58cc4b8159fbb1d53df819"
+          "bytes": 45486,
+          "sha256": "c9bdb3ed699d4379f734e86ac9974532b9c5f3b42c2117e3584dbca6aa95b58f"
         }
       ],
       "generator": null,
@@ -222,19 +271,19 @@
       "layout_sources": [
         {
           "path": "paper/latex/generated/pilot_tables_en.tex",
-          "bytes": 2367,
-          "sha256": "e72ae2f392c53faa81aeecbf84cfcff15990a3ec8322ea598d66a351b160dcd6"
+          "bytes": 2622,
+          "sha256": "43d10e896fe36dc1c1e7a4db7736b43fcd1d4d7e070c3fb3ba5d789732922ba0"
         },
         {
           "path": "paper/latex/generated/pilot_tables_ko.tex",
-          "bytes": 2367,
-          "sha256": "d14b8a793d51e1df4bf32908e55c37a35d2835cd9605bc0080e18c3e4c2a84bf"
+          "bytes": 2666,
+          "sha256": "a149c4d5c1e23f8554ef49c5e59320ef4ae90f0b00194d7e614884a40985cd99"
         }
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 46622,
-        "sha256": "ea68cf962dd374d1404a64863bd15fbe955f3cfe25677e3474853bbc2fa3ecac"
+        "bytes": 51740,
+        "sha256": "9ccaac8016a7ce21c91dbc9074d6d9342fb6873848630833bd0293e2d90ff27a"
       },
       "data_sources": [
         {
@@ -259,19 +308,19 @@
       "layout_sources": [
         {
           "path": "paper/latex/generated/live_pilot_tables_en.tex",
-          "bytes": 1140,
-          "sha256": "fe2418a134eac44bd7f069dae5aa5ac286fef018931025da0426811c48ee6ac7"
+          "bytes": 1373,
+          "sha256": "406e712fe9bdf42668b84bf56cb580b4a71a9c02ded117d7f2d7f8558d54fab0"
         },
         {
           "path": "paper/latex/generated/live_pilot_tables_ko.tex",
-          "bytes": 1170,
-          "sha256": "f5f291e8e8fa51e50d002179d7df715cf4a512f325f0d0ff0ee48d0794594c7c"
+          "bytes": 1405,
+          "sha256": "704c489300d16820c008117c9d7d02b8538781cba560720211417759196604f9"
         }
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 46622,
-        "sha256": "ea68cf962dd374d1404a64863bd15fbe955f3cfe25677e3474853bbc2fa3ecac"
+        "bytes": 51740,
+        "sha256": "9ccaac8016a7ce21c91dbc9074d6d9342fb6873848630833bd0293e2d90ff27a"
       },
       "data_sources": [
         {
@@ -320,35 +369,35 @@
       "layout_sources": [
         {
           "path": "paper/latex/generated/contribution_map_en.tex",
-          "bytes": 1597,
-          "sha256": "33b6ae6b9608069dcfae6ea0c50438781422c46dc7bd30dbb174756c05f4d664"
+          "bytes": 1601,
+          "sha256": "f05051baee12a9ad198061ffb9055940c3dadbd5914cf3c27ae72e67c9493689"
         },
         {
           "path": "paper/latex/generated/contribution_map_ko.tex",
-          "bytes": 1587,
-          "sha256": "e28661719f4e21f4ad160fd5d1e6c46418693499051b4ab5c21be9a0e5fea32a"
+          "bytes": 1591,
+          "sha256": "e3eb8841ac6a3869b90479be07eb6d1d34ff2f91ff60d7fd1e513bb3167cc3a7"
         },
         {
           "path": "paper/latex/generated/evidence_lanes_en.tex",
-          "bytes": 1618,
-          "sha256": "8b1f828b3feaa8ce89464616dd0de742a9e927c5f72115abd1b4b18f7772b5c5"
+          "bytes": 1700,
+          "sha256": "4184c012016b4edac2b7521c15e2e4b195995dcfe800eab4e36a2d6a7ed6b933"
         },
         {
           "path": "paper/latex/generated/evidence_lanes_ko.tex",
-          "bytes": 1641,
-          "sha256": "24013931144ec4628dad30e5eb2f369ea2ece3bd6c8c9e849fbb02a59d3aba90"
+          "bytes": 1729,
+          "sha256": "4dec40fd56daab6214f196774c451f606f98bb85f6321f5f85fdae107aa4584d"
         }
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 46622,
-        "sha256": "ea68cf962dd374d1404a64863bd15fbe955f3cfe25677e3474853bbc2fa3ecac"
+        "bytes": 51740,
+        "sha256": "9ccaac8016a7ce21c91dbc9074d6d9342fb6873848630833bd0293e2d90ff27a"
       },
       "data_sources": [
         {
           "path": "research/academic-pipeline/contribution-evidence-matrix.csv",
-          "bytes": 4877,
-          "sha256": "7acd6be3f41a102fc5b3beb1ae572d393ae4af65d7bc22fa80f8c1f4c459a93a"
+          "bytes": 5014,
+          "sha256": "4a714e80fca2902fbe58b009bd9c3f137254b89912d97bf2bccc598f1a973700"
         },
         {
           "path": "research/academic-pipeline/experiment-evidence-matrix.csv",
@@ -390,7 +439,7 @@
         {
           "path": "research/simulation/kg-ontology/latest/evaluation-matrix.json",
           "bytes": 100847,
-          "sha256": "adb9c770bd8f6bf05b420f50ea4ac6687d18717a0a76716c378f6f2e4108743a"
+          "sha256": "dfc26865774000a0ccd02ca69dcfdd7d994fc70ff3a4cb2ede4dd5cdaa5cc4aa"
         }
       ],
       "readable_sources": [],
@@ -635,41 +684,41 @@
       "illustration_only": true,
       "rendered": [
         {
-          "path": "paper/latex/captures/playable-readout-20260903/refusal.png",
-          "bytes": 452783,
-          "sha256": "41c69c36e1e8913885d48b5aa730909b4eedcb278ce5e0a3d0a3fb31c8dc4105"
+          "path": "paper/latex/captures/playable-readout-20261014-r2/refusal.png",
+          "bytes": 466980,
+          "sha256": "fe1a6f0090bdc795970094fba84225a3380c867f402f513280eb9e8925a4e516"
         },
         {
-          "path": "paper/latex/captures/playable-readout-20260903/authorized_hint.png",
-          "bytes": 400089,
-          "sha256": "f068f274c608d8cf4ab9f4f8c226702b02bf01240c0179e23c4fbe7d76402122"
+          "path": "paper/latex/captures/playable-readout-20261014-r2/authorized_hint.png",
+          "bytes": 402953,
+          "sha256": "115ffbdbb770ae61086a762fe261059482120746f5bcc8f7caf61e8e4ca2cc6d"
         },
         {
-          "path": "paper/latex/captures/playable-readout-20260903/ending.png",
-          "bytes": 440450,
-          "sha256": "b61eb311e1040b57eb4e6c52e6348ada725f43489486272d51cfc9937b38adaf"
+          "path": "paper/latex/captures/playable-readout-20261014-r2/ending.png",
+          "bytes": 404719,
+          "sha256": "4860670c24b5d2469a9c2170a5a45c32517c74fbc900b1cb87fe7c7c306d9eb4"
         }
       ],
       "reproducible_sources": [
         {
-          "path": "paper/latex/captures/playable-readout-20260903/receipt.json",
-          "bytes": 3985,
-          "sha256": "d0e925d3a3051c3cd007eadaaea4b42bbcf3fdebc8096de69ad1dd94944f1013"
+          "path": "paper/latex/captures/playable-readout-20261014-r2/receipt.json",
+          "bytes": 6303,
+          "sha256": "905a2e7617e7d132301b25adcc36545acedb28214c537e9ecf26f5cdf152cdb6"
         },
         {
-          "path": "paper/latex/captures/playable-readout-20260903/refusal.shot.json",
+          "path": "paper/latex/captures/playable-readout-20261014-r2/refusal.shot.json",
           "bytes": 845,
-          "sha256": "792cceadd53348fcd64e2b99b2d35b6a2d0b3c6e7dba178b2a94faa1dd887415"
+          "sha256": "a6adb373c71f945a8f347230c45107ba0806bace1da455416beaa677b0ca47cf"
         },
         {
-          "path": "paper/latex/captures/playable-readout-20260903/authorized_hint.shot.json",
+          "path": "paper/latex/captures/playable-readout-20261014-r2/authorized_hint.shot.json",
           "bytes": 853,
-          "sha256": "588b2e69cf23e7f7a3061c6eab1cfd42e6a08aabd28d177119dac4ce1f1b3a90"
+          "sha256": "df52f4b768bbe54de0ede45108aa77e628388caa09bf464ce512738917ecbf83"
         },
         {
-          "path": "paper/latex/captures/playable-readout-20260903/ending.shot.json",
+          "path": "paper/latex/captures/playable-readout-20261014-r2/ending.shot.json",
           "bytes": 844,
-          "sha256": "51a236b3369153846fcddd1e93dc4fd40c662a6c237801a67166de56960da07d"
+          "sha256": "37eb5b513fba7232578b6e305fac8eefa71973c7036300ddb146e4b316bcb217"
         },
         {
           "path": "scripts/run_playable_evaluation.py",
@@ -678,8 +727,8 @@
         },
         {
           "path": "game-track/godot/scripts/game3d/game_3d.gd",
-          "bytes": 103605,
-          "sha256": "9691a27063cfa9ee9f1c915bb9077f4e0862b1e95c3a7e1e09be82d506eedffb"
+          "bytes": 122325,
+          "sha256": "4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714"
         },
         {
           "path": "game-track/godot/scripts/game3d/harbor_ledger_ui.gd",

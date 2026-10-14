@@ -82,3 +82,25 @@ F13, F14, F17, F18은 현재 원고에서 해결됐다. 필수 그림 또는 생
 대체되지 않고 LaTeX build가 실패한다. 확장된 Stage-4.5 최종 재감사는 통과했고 clean
 committed/tagged recapture가 F6도 종결했다. 심사 archive/DOI deposit은 주장하지 않으며
 `C-RESULT-001`--`005`는 계속 `TODO-RESULT`이고 별도 G4/G6 게임 gate의 상태는 바뀌지 않는다.
+
+## Current revision override (2026-10-14) / 현재 개정판 적용
+
+The historical Stage 9 snapshot above remains unchanged for audit provenance. For the current
+revision, the approved `stage_1.article_type` is a full research article and the submission track
+is **Full Paper**. Rebuilt standard-IEEE PDFs measure 9 pages in English and 9 pages in Korean;
+the current gate is the detailed official Full Papers limit of 10 pages including references.
+The official page also presents a summary/header target of 10--14 pages, so the summary-versus-
+detailed-limit conflict is recorded rather than silently resolved; the detailed 10-page limit is
+the conservative current gate. The earlier Short Paper/6--8-page snapshot is historical and is
+not a current cover-note or page target. No padding, font shrinking, or layout trick is used, and
+the manuscripts are not expanded merely to fill the 10-page ceiling. Evidence scope and all
+instrumentation/methods limitations remain unchanged.
+
+위 Stage 9 역사 스냅샷은 감사 provenance를 위해 변경하지 않는다. 현재 개정판에서 승인된
+`stage_1.article_type`은 full research article이며 제출 트랙은 **Full Paper**이다. 표준 IEEE
+PDF를 다시 빌드한 결과 영문과 국문은 각각 9쪽이며, 현재 게이트는 참고문헌을 포함한 공식
+Full Papers 상세 제한 10쪽이다. 공식 페이지의 요약/헤더에는 10--14쪽 목표가 함께 표시되어
+있으므로 요약과 상세 제한의 충돌을 기록하되 임의로 숨기지 않는다. 보수적인 현재 게이트는
+상세 제한 10쪽을 따른다. 이전 Short Paper/6--8쪽 스냅샷은 역사 기록이며 현재 cover note나
+page target이 아니다. 패딩, 글꼴 축소, 레이아웃 꼼수를 사용하지 않으며 10쪽을 채우기 위해
+원고를 늘리지 않는다. 증거 범위와 instrumentation/methods 한계는 그대로 유지된다.

@@ -270,14 +270,14 @@
   "input_feedback": {
     "clock": "Time.get_ticks_usec",
     "input_to_visible_feedback_ms": [
-      3.331
+      4.759
     ],
     "measurement_context": "engine-local; headless samples are wiring evidence, not browser latency",
-    "p95_input_to_visible_feedback_ms": 3.331,
+    "p95_input_to_visible_feedback_ms": 4.759,
     "sample_count": 1,
     "samples": [
       {
-        "elapsed_ms": 3.331,
+        "elapsed_ms": 4.759,
         "source": "synthetic-evaluation:early-hint",
         "visible_feedback": "proposal-ledger-line"
       }
@@ -329,6 +329,188 @@
     "authorized_hint",
     "ending"
   ],
+  "telemetry": {
+    "build_fingerprint": {
+      "algorithm": "sha256-bytes-v1",
+      "combined_sha256": "00217828039600b297cc3c3c6c60aee522113e4504daae08965447ef20a1876a",
+      "complete": true,
+      "missing_paths": [],
+      "source_hashes": {
+        "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+        "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+        "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+        "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+        "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+        "res://scripts/game3d/game_3d.gd": "4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714",
+        "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+        "res://scripts/game3d/harbor_ledger_ui.gd": "1a1ad38245dc9a5e344ae5a02434f0deece53129b1c88c4b01c2b3f33c22c3cc",
+        "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+      },
+      "source_paths": [
+        "res://project.godot",
+        "res://scenes/main_3d.tscn",
+        "res://data/sealed_lighthouse.json",
+        "res://scripts/canonical_state.gd",
+        "res://scripts/sealed_lighthouse_machine.gd",
+        "res://scripts/game3d/game_3d.gd",
+        "res://scripts/game3d/golden_path_layout.gd",
+        "res://scripts/game3d/evaluation_trace.gd",
+        "res://scripts/game3d/harbor_ledger_ui.gd"
+      ]
+    },
+    "checks": [
+      {
+        "check": "receipts_present",
+        "pass": true
+      },
+      {
+        "check": "receipt_shape_complete",
+        "pass": true
+      },
+      {
+        "check": "receipt_sequence_and_clock_ordered",
+        "pass": true
+      },
+      {
+        "check": "receipt_state_hashes_valid",
+        "pass": true
+      },
+      {
+        "check": "receipt_payloads_code_only",
+        "pass": true
+      },
+      {
+        "check": "receipt_state_flags_consistent",
+        "pass": true
+      },
+      {
+        "check": "hold_receipts_preserve_state",
+        "pass": true
+      },
+      {
+        "check": "build_fingerprint_is_grounded",
+        "pass": true
+      },
+      {
+        "check": "build_fingerprint_recomputed",
+        "pass": true
+      },
+      {
+        "check": "telemetry_does_not_change_canonical_state",
+        "pass": true
+      },
+      {
+        "check": "receipt_capacity_not_exceeded",
+        "pass": true
+      }
+    ],
+    "claim_boundary": "Local presentation receipts only; no participant, model, efficacy, or browser-latency evidence.",
+    "engineering_only": true,
+    "passed": true,
+    "receipts": [
+      {
+        "build_fingerprint": {
+          "algorithm": "sha256-bytes-v1",
+          "combined_sha256": "00217828039600b297cc3c3c6c60aee522113e4504daae08965447ef20a1876a",
+          "complete": true,
+          "missing_paths": [],
+          "source_hashes": {
+            "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+            "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+            "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+            "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+            "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+            "res://scripts/game3d/game_3d.gd": "4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714",
+            "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+            "res://scripts/game3d/harbor_ledger_ui.gd": "1a1ad38245dc9a5e344ae5a02434f0deece53129b1c88c4b01c2b3f33c22c3cc",
+            "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+          },
+          "source_paths": [
+            "res://project.godot",
+            "res://scenes/main_3d.tscn",
+            "res://data/sealed_lighthouse.json",
+            "res://scripts/canonical_state.gd",
+            "res://scripts/sealed_lighthouse_machine.gd",
+            "res://scripts/game3d/game_3d.gd",
+            "res://scripts/game3d/golden_path_layout.gd",
+            "res://scripts/game3d/evaluation_trace.gd",
+            "res://scripts/game3d/harbor_ledger_ui.gd"
+          ]
+        },
+        "build_id": "sealed-lighthouse-presentation-telemetry-v1",
+        "canonical_state_unchanged": true,
+        "engine_version": "4.7.1-stable (official)",
+        "monotonic_us": 511714,
+        "next_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "payload": {
+          "next_affordance_target": "mira",
+          "objective_code": "MIRA_AUTHORIZATION"
+        },
+        "phase_code": "ARRIVAL",
+        "prior_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "receipt_kind": "objective_rendered",
+        "receipt_schema_version": "1.0.0",
+        "receipt_seq": 1,
+        "scenario_id": "sealed-lighthouse-v1",
+        "scene_id": "main_3d",
+        "telemetry_session_id": "local-23cb65fa6cdc062a"
+      },
+      {
+        "build_fingerprint": {
+          "algorithm": "sha256-bytes-v1",
+          "combined_sha256": "00217828039600b297cc3c3c6c60aee522113e4504daae08965447ef20a1876a",
+          "complete": true,
+          "missing_paths": [],
+          "source_hashes": {
+            "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+            "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+            "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+            "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+            "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+            "res://scripts/game3d/game_3d.gd": "4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714",
+            "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+            "res://scripts/game3d/harbor_ledger_ui.gd": "1a1ad38245dc9a5e344ae5a02434f0deece53129b1c88c4b01c2b3f33c22c3cc",
+            "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+          },
+          "source_paths": [
+            "res://project.godot",
+            "res://scenes/main_3d.tscn",
+            "res://data/sealed_lighthouse.json",
+            "res://scripts/canonical_state.gd",
+            "res://scripts/sealed_lighthouse_machine.gd",
+            "res://scripts/game3d/game_3d.gd",
+            "res://scripts/game3d/golden_path_layout.gd",
+            "res://scripts/game3d/evaluation_trace.gd",
+            "res://scripts/game3d/harbor_ledger_ui.gd"
+          ]
+        },
+        "build_id": "sealed-lighthouse-presentation-telemetry-v1",
+        "canonical_state_unchanged": true,
+        "engine_version": "4.7.1-stable (official)",
+        "monotonic_us": 522215,
+        "next_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "payload": {
+          "correction_code": "ASK_AUTHORIZED_LEAD",
+          "gate_codes": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "next_affordance_target": "mira",
+          "reason_codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "phase_code": "HOLD",
+        "prior_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "receipt_kind": "hold_emitted",
+        "receipt_schema_version": "1.0.0",
+        "receipt_seq": 2,
+        "scenario_id": "sealed-lighthouse-v1",
+        "scene_id": "main_3d",
+        "telemetry_session_id": "local-23cb65fa6cdc062a"
+      }
+    ],
+    "schema_version": "1.0.0"
+  },
   "ui": {
     "case_chain": {
       "filled": 0,

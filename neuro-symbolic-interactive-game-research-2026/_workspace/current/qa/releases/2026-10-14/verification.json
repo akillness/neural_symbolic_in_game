@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0.0",
+  "date": "2026-10-14",
+  "status": "verified-push-pending",
+  "evidence_scope": "engineering conformance and screening pilot; no efficacy or participant promotion",
+  "paper_format": {
+    "command": "make -C paper/latex check",
+    "exit_code": 0,
+    "en_pages": 9,
+    "ko_pages": 9,
+    "ceiling": 10,
+    "type3_fonts": 0,
+    "layout_reference_glyph_errors": 0
+  },
+  "conformance_replication": {
+    "artifact": "conformance-replication.json",
+    "csv_byte_identical": "11/11",
+    "assignments": 121,
+    "executed": 85,
+    "aggregate": 36
+  },
+  "focused_tests": {
+    "protocol_observation": {
+      "command": "uv run pytest -q tests/test_godot_protocol_observation.py",
+      "reported_passed": 4
+    },
+    "citation_metadata": {
+      "command": "PYTHONPATH=. uv run python -m unittest tests.test_citation_metadata",
+      "reported_passed": 5
+    },
+    "latex_makefile": {
+      "command": "uv run pytest -q tests/test_latex_makefile.py",
+      "reported_passed": 6
+    }
+  },
+  "reviews": {
+    "FinalCodeReview": "no P0/P1 blockers; read-only",
+    "PythonReview": "figure/parser/metadata issues resolved, user-files preservation separately verified",
+    "FinalCodeReview_final_ci_fixes": "no blocker; unused-local removal preserves claim/denominator semantics and both new pytest files are now in fail-fast game-track validation"
+  },
+  "canonical_project_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+  "current_game_source_sha256": "4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714",
+  "capture_set": "paper/latex/captures/playable-readout-20261014-r2",
+  "human_participants": 0,
+  "claim_promotion": false,
+  "codex_concept_publication": "excluded until human rights/style approval",
+  "ci": {
+    "command": "./scripts/verify_like_ci.sh",
+    "status": "PASS",
+    "exit_code": 0,
+    "unit_tests_passed": 145,
+    "game_pytest_passed": 62,
+    "game_subtests_passed": 48,
+    "ruff_formatted_files": 63,
+    "source_receipts_checked": 92,
+    "svg_assets_checked": 6,
+    "isolated_double_regenerated_sources": 17,
+    "deep_research_records_valid": "14/14",
+    "survey_artifacts_valid": 3,
+    "wiki_pages_checked": 73,
+    "gates": [
+      "locked environment",
+      "unit tests",
+      "Ruff lint and format",
+      "project integrity",
+      "contribution/reference crosswalk",
+      "editable visual/table sources",
+      "offline smoke",
+      "harness structure",
+      "game-track contracts",
+      "deep-research contracts",
+      "survey contract",
+      "wiki lint"
+    ]
+  },
+  "git_push": {
+    "status": "pending"
+  },
+  "ci_attempts": [
+    {
+      "command": "./scripts/verify_like_ci.sh",
+      "exit_code": 1,
+      "failed_gate": "Ruff lint and format",
+      "findings": [
+        "F841 unused signal_guided_commits and signal_blind_commits in generate_paper_results.py",
+        "I001 import ordering in test_latex_makefile.py"
+      ],
+      "all_other_gates": "PASS"
+    },
+    {
+      "command": "./scripts/verify_like_ci.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "unit_tests": 145,
+      "game_tests": 62,
+      "game_subtests": 48
+    },
+    {
+      "command": "./scripts/verify_like_ci.sh",
+      "exit_code": 1,
+      "failed_gate": "Contribution and reference crosswalk",
+      "findings": [
+        "en data-availability text omits the machine-checked matrices: prose compression replaced the required named-matrix marker with slash-separated words"
+      ],
+      "all_other_gates": "PASS",
+      "unit_tests": 145,
+      "game_tests": 62,
+      "game_subtests": 48,
+      "repair": "restored the explicit manuscript matrix names; validator unchanged; standalone crosswalk now PASS"
+    },
+    {
+      "command": "./scripts/verify_like_ci.sh",
+      "exit_code": 0,
+      "status": "PASS after matrix-marker FIX on final sources",
+      "unit_tests": 145,
+      "game_tests": 62,
+      "game_subtests": 48
+    }
+  ],
+  "browser": {
+    "build_command": "./scripts/build_godot_web.sh",
+    "local_url": "http://127.0.0.1:8766/",
+    "observed": [
+      "title/start screen rendered",
+      "Begin Investigation opened real 3D intro",
+      "tutorial and current-lead/ledger HUD rendered at 1280x720",
+      "fresh recovery session: Begin Investigation -> tutorial -> Start Case",
+      "keyboard C opens evidence board (0/3 proven) and closes it to the world",
+      "no pageerror was observed during Start Case and C-open actions",
+      "1280x720 document/scroll dimensions match"
+    ],
+    "unresolved": [
+      "prior extended browser run timed out; recovery smoke succeeded, but full browser playthrough, mobile, soak and latency were not exercised"
+    ],
+    "human_or_latency_evidence": false,
+    "recovery_status": "PASS for startup/tutorial/casefile-open-close smoke only",
+    "screenshots": [
+      {
+        "path": "_workspace/current/qa/releases/2026-10-14/browser-tutorial.png",
+        "sha256": "94c31c8fdae59f3dcedf7ac16af7af1aa74f84ac3e1fce64dee452badfb05ccb",
+        "bytes": 588784,
+        "dimensions": [
+          1280,
+          720
+        ],
+        "engineering_only": true
+      },
+      {
+        "path": "_workspace/current/qa/releases/2026-10-14/browser-casefile.png",
+        "sha256": "f662f71f3e64e2a98e05b5baa3c98174d39eaf8d8a1fa1ce86ac94d067f41641",
+        "bytes": 598946,
+        "dimensions": [
+          1280,
+          720
+        ],
+        "engineering_only": true
+      },
+      {
+        "path": "_workspace/current/qa/releases/2026-10-14/browser-world.png",
+        "sha256": "f81d74ac1651b5375cdd85041adff8d3371282418adf3d77981bd55498a640f2",
+        "bytes": 376668,
+        "dimensions": [
+          1280,
+          720
+        ],
+        "engineering_only": true
+      }
+    ]
+  },
+  "paper_visual_qa": {
+    "ko_final_reference_columns": "native IEEE trigger balances references 33\u201358 on page 9; rendered and visually inspected",
+    "pdfs": [
+      {
+        "language": "en",
+        "path": "paper/latex/en/main.pdf",
+        "sha256": "42b0d81c98f31682844b46eebd4f991442904f87747ab8475249e05e19064b8e",
+        "pages": 9
+      },
+      {
+        "language": "ko",
+        "path": "paper/latex/ko/main.pdf",
+        "sha256": "5761db44bc4bd86dd526f92bab6cb6307be5ef901edcb8f5629d3d746bdf0a0d",
+        "pages": 9
+      }
+    ]
+  },
+  "ci_final_sources": {
+    "command": "./scripts/verify_like_ci.sh",
+    "status": "PASS",
+    "exit_code": 0,
+    "unit_tests_passed": 145,
+    "game_pytest_passed": 62,
+    "game_subtests_passed": 48,
+    "source_receipts_checked": 92,
+    "isolated_double_regenerated_sources": 17,
+    "all_12_stages": "PASS"
+  },
+  "independent_evaluation": {
+    "agent": "DeliveryEvaluation",
+    "scores": {
+      "accuracy": 5,
+      "completeness": 4,
+      "clarity": 4,
+      "actionability": 5,
+      "conciseness": 3
+    },
+    "overall": 4.2,
+    "material_unsupported_claims": "none identified in evaluated packet",
+    "parity_followup": "L7\u2013L9 and ethics matched; conclusions mirrored and prose compressed without dropping disclosure items; parent-verified and rebuilt, not independently re-reviewed",
+    "incomplete_claim_classes": [
+      "journal acceptance",
+      "population/model/player efficacy",
+      "full browser playthrough",
+      "mobile/soak/latency"
+    ]
+  },
+  "shipping_scope": {
+    "task_files": 86,
+    "excluded_preexisting_dirty_tracked_files": 12,
+    "excluded_candidate_image": true,
+    "excluded_unconfirmed_capture_set": true,
+    "staging_policy": "explicit task-owned paths only; no stash and no broad add"
+  }
+}

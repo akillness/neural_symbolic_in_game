@@ -1,5 +1,17 @@
 {
   "addendum": "The Stage-8 additions and direct game comparator S37-S42 were each verified in Crossref, OpenAlex, and Semantic Scholar. On 2026-08-28 the three repair-precedent references added with the guided-repair method (S44-S46) were verified live against arXiv and OpenAlex (title and year matched on both); Semantic Scholar returned HTTP 429 for all three and is recorded as rate-limited, not as a match failure. On 2026-09-02 a top-venue refresh added S47-S51 (ASPLOS 2006, NeurIPS 2023, ACM Computing Surveys 1983, ICML 2024, CoRL 2022) and resolved S45 to its NeurIPS 2023 proceedings DOI; Crossref/OpenAlex answered, PMLR HTML metadata confirmed the two PMLR volumes, Semantic Scholar returned HTTP 429 for every lookup and is recorded as rate-limited, and OpenReview could not be queried for S46, which therefore stays PREPRINT. On 2026-09-02 a related-work refresh added S52-S56 (AgentSpec, Setting the DC, STORY2GAME, Beyond State Consistency, AgentRR) from the paper-framing feedback: the four arXiv preprints matched title, authors, and year on the arXiv API and OpenAlex (three of them only through arXiv-DOI lookup because OpenAlex title search returned unrelated records); Setting the DC is a non-archival NeurIPS 2025 GenProCC workshop paper whose OpenReview forum and API returned a browser challenge (HTTP 403) during that pass, so its identity initially rested on the official NeurIPS 2025 virtual program record and the GenProCC accepted-paper list; those lists retain a Li-first display later found to conflict with the current paper record. Semantic Scholar returned HTTP 429 for all five and is recorded as rate-limited. On 2026-09-03 a first primary-record pass marked all 55 entries KEEP under the sources it could reach; a second independent browser pass then reached newer primary records and supersedes that pass for the affected metadata. The ACM DOI 10.1145/3742413.3789221 answers 403 to non-browser clients but is confirmed by Crossref. The current preprints are S02, S26, S44, S52, and S54-S56. A second, independent pass by three Aside browser-research sessions on 2026-09-03 confirmed 55/55 resolvable and surfaced four corrections applied here: S46 is an ICLR 2024 accepted poster (OpenReview provides the official accepted-poster record; status PREPRINT -> VERIFIED), S53 lists Ziyi Zeng as first author, S25 carries the full FDG 2020 proceedings title and article number, and the S23 issue note is current (Volume 58, September 2026). The same pass also promoted S01 (IVIE) from preprint to the archival ICCC 2026 proceedings, added the ECAI 2025 volume and pages for S06, and aligned the S12 and S19 titles with their Anthology/OJS records; totals are now 48 VERIFIED and 7 PREPRINT with the 22 rate-limited lookups unchanged.",
+  "bounded_primary_refresh_2026_10_14": {
+    "date": "2026-10-14",
+    "scope": ["S57_geng2025jsonschemabench", "S58_ma2026ncpbench", "S59_sun2025bdc"],
+    "sources": [
+      "https://export.arxiv.org/api/query?id_list=2501.10868,2608.08160,2503.16402",
+      "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2501.10868",
+      "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2608.08160",
+      "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2503.16402"
+    ],
+    "result": "All three title/author/year identities matched between official arXiv API records and OpenAlex DOI lookups. S57 is arXiv v3, S58 is arXiv v1 with an acceptance comment for ICML 2026 but no proceedings record established here, and S59 is arXiv v1. All remain PREPRINT; no archival status was promoted. The existing 22 Semantic Scholar rate-limited records are unchanged.",
+    "claim_scope": "S57 supports structured-output benchmark limitations, S58 supports long-horizon narrative-consistency evaluation motivation, and S59 supports contamination/leakage caveats; none supports TRACE-RPG efficacy or player benefit. Fetched arXiv/OpenAlex metadata expose no explicit paper license."
+  },
   "audit_date": "2026-09-03",
   "bounded_primary_refresh": {
     "date": "2026-09-06",
@@ -1150,6 +1162,70 @@
       },
       "status": "PREPRINT",
       "year_note": "OpenAlex matched only by arXiv DOI lookup (title search returned unrelated records)."
+    },
+    {
+      "added_at": "bounded-primary-refresh-2026-10-14",
+      "arxiv": "2501.10868",
+      "bib_year": "2025",
+      "doi": null,
+      "index_years": {"arxiv": "2025", "openalex": "2025"},
+      "key": "S57_geng2025jsonschemabench",
+      "matched_indices": ["arxiv", "openalex"],
+      "rate_limited_indices": [],
+      "retrieval": {
+        "arxiv_authors": ["Saibo Geng", "Hudson Cooper", "Michał Moskal", "Samuel Jenkins", "Julian Berman", "Nathan Ranchin", "Robert West", "Eric Horvitz", "Harsha Nori"],
+        "arxiv_title": "JSONSchemaBench: A Rigorous Benchmark of Structured Outputs for Language Models",
+        "arxiv_url": "https://export.arxiv.org/api/query?id_list=2501.10868",
+        "date": "2026-10-14",
+        "matched_fields": ["title", "authors", "year"],
+        "openalex_url": "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2501.10868",
+        "revision": "arXiv:2501.10868v3, updated 2025-02-27"
+      },
+      "status": "PREPRINT",
+      "year_note": "OpenAlex matched by arXiv DOI lookup; no archival venue or publisher DOI established in this bounded refresh."
+    },
+    {
+      "added_at": "bounded-primary-refresh-2026-10-14",
+      "arxiv": "2608.08160",
+      "bib_year": "2026",
+      "doi": null,
+      "index_years": {"arxiv": "2026", "openalex": "2026"},
+      "key": "S58_ma2026ncpbench",
+      "matched_indices": ["arxiv", "openalex"],
+      "rate_limited_indices": [],
+      "retrieval": {
+        "arxiv_authors": ["Yingpeng Ma", "Jianhao Yan", "Bei Shi", "Ka Hou Kam", "Runnan Wang", "Xuebo Liu", "Yulong Chen", "Yue Zhang", "Derek F. Wong"],
+        "arxiv_title": "Can LLM Agents Stick to the Script? A Benchmark for Long-Horizon Consistency in Interactive Narratives",
+        "arxiv_url": "https://export.arxiv.org/api/query?id_list=2608.08160",
+        "date": "2026-10-14",
+        "matched_fields": ["title", "authors", "year"],
+        "openalex_url": "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2608.08160",
+        "revision": "arXiv:2608.08160v1, updated 2026-08-08",
+        "venue_note": "arXiv comment states accepted by ICML 2026; proceedings record not established in this bounded refresh"
+      },
+      "status": "PREPRINT",
+      "year_note": "OpenAlex matched by arXiv DOI lookup; acceptance comment is preserved but no archival status is promoted."
+    },
+    {
+      "added_at": "bounded-primary-refresh-2026-10-14",
+      "arxiv": "2503.16402",
+      "bib_year": "2025",
+      "doi": null,
+      "index_years": {"arxiv": "2025", "openalex": "2025"},
+      "key": "S59_sun2025bdc",
+      "matched_indices": ["arxiv", "openalex"],
+      "rate_limited_indices": [],
+      "retrieval": {
+        "arxiv_authors": ["Yifan Sun", "Han Wang", "Dongbai Li", "Gang Wang", "Huan Zhang"],
+        "arxiv_title": "The Emperor's New Clothes in Benchmarking? A Rigorous Examination of Mitigation Strategies for LLM Benchmark Data Contamination",
+        "arxiv_url": "https://export.arxiv.org/api/query?id_list=2503.16402",
+        "date": "2026-10-14",
+        "matched_fields": ["title", "authors", "year"],
+        "openalex_url": "https://api.openalex.org/works/https://doi.org/10.48550/arxiv.2503.16402",
+        "revision": "arXiv:2503.16402v1, updated 2025-03-20"
+      },
+      "status": "PREPRINT",
+      "year_note": "OpenAlex matched by arXiv DOI lookup; no archival venue or publisher DOI established in this bounded refresh."
     }
   ],
   "indices": {
@@ -1168,9 +1244,9 @@
   "stage": "5",
   "title_match_threshold": 0.85,
   "totals": {
-    "entries": 55,
+    "entries": 58,
     "hallucinated": 0,
-    "preprint": 7,
+    "preprint": 10,
     "semantic_scholar_rate_limited": 22,
     "unmatched": 0,
     "verified": 48

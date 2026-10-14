@@ -31,7 +31,20 @@ TOPIC_IDS = {f"T{index}" for index in range(1, 10)}
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
+        reader = csv.DictReader(handle)
+        fieldnames = reader.fieldnames
+        if not fieldnames:
+            raise ValueError(f"{path} has no CSV header")
+        expected = len(fieldnames)
+        rows: list[dict[str, str]] = []
+        for line_number, row in enumerate(reader, start=2):
+            if None in row:
+                raise ValueError(f"{path} row {line_number} has extra columns; expected {expected}")
+            missing = [name for name, value in row.items() if value is None]
+            if missing:
+                raise ValueError(f"{path} row {line_number} is missing columns: {missing}")
+            rows.append(row)
+        return rows
 
 
 def _pipe(value: str) -> list[str]:
@@ -262,8 +275,8 @@ def _validate_headline_sources(experiment_rows: dict[str, dict[str, str]]) -> No
 def main() -> None:
     bibliography = _bib_entries(BIBLIOGRAPHY.read_text(encoding="utf-8"))
     bib_keys = set(bibliography)
-    if len(bib_keys) != 55:
-        raise ValueError(f"expected 55 paper references, found {len(bib_keys)}")
+    if len(bib_keys) != 58:
+        raise ValueError(f"expected 58 paper references, found {len(bib_keys)}")
 
     audit = json.loads(CITATION_AUDIT.read_text(encoding="utf-8"))
     audit_by_key = {entry["key"]: entry for entry in audit["entries"]}
@@ -271,15 +284,15 @@ def main() -> None:
         raise ValueError("Stage-5 citation keys do not equal bibliography keys")
     status_counts, rate_limited = _validate_citation_audit_totals(audit)
     # Entry-derived totals guard redundant-summary consistency; these values separately pin the
-    # current 55-reference release baseline and must change deliberately with the bibliography.
-    if status_counts != {"VERIFIED": 48, "PREPRINT": 7} or rate_limited != 22:
+    # current 58-reference release baseline and must change deliberately with the bibliography.
+    if status_counts != {"VERIFIED": 48, "PREPRINT": 10} or rate_limited != 22:
         raise ValueError(
             f"Stage-5 citation totals drift: status={status_counts!r}, rate_limited={rate_limited}"
         )
 
     reference_rows = _read_csv(REFERENCES)
     reference_by_key = {row["bib_key"]: row for row in reference_rows}
-    if len(reference_rows) != 55 or set(reference_by_key) != bib_keys:
+    if len(reference_rows) != 58 or set(reference_by_key) != bib_keys:
         raise ValueError("reference-topic crosswalk must cover each bibliography key exactly once")
     if {row["primary_topic_id"] for row in reference_rows} != TOPIC_IDS:
         raise ValueError("reference-topic crosswalk must exercise T1 through T9")
@@ -402,7 +415,8 @@ def main() -> None:
 
     print(
         "contribution/reference crosswalk passed: "
-        "5 contributions, 55 references, 9 topics, 3 experiment lanes + 1 engineering lane"
+        f"{len(contribution_by_id)} contributions, {len(bibliography)} references, "
+        f"{len(TOPIC_IDS)} topics, 3 experiment lanes + 1 engineering lane"
     )
 
 

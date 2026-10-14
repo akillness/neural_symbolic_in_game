@@ -13,7 +13,27 @@
       "doi_deposit"
     ]
   },
-  "stage_1": {
+ "current_revision_readiness": {
+  "submission_track": "full_paper",
+  "venue": "IEEE Transactions on Games",
+  "contribution_contract": "instrumentation_and_methods",
+  "page_target": "<=10 pages including references for both PDFs under the current Full Papers track; measured PDFs are 9 pages each",
+  "measured_page_count": {
+    "english_pdf": 9,
+    "korean_pdf": 9
+  },
+  "official_guidance_note": "The official IEEE Transactions on Games submission guidance retrieved 2026-10-14 distinguishes Full Papers (<=10 pages including references) from Short Papers (<=6 pages including references with over-length charges). This revision supersedes the provisional short-paper <=6 target after PDF measurement; no short-paper requirement was specified by the user.",
+  "supersedes_provisional": {
+    "submission_track": "short_paper",
+    "page_target": "<=6 pages including references for both PDFs",
+    "reason": "Actual standard-IEEE PDFs measure 9 pages each, while the approved stage_1 article_type is full research article."
+  },
+  "abstract_contract": "150-200 words, one self-contained paragraph, without references, equations, or tables",
+  "keyword_contract": "2-5 keywords",
+  "evidence_scope": "encoded commit-gate, replay, and accounting conformance only; no population efficacy, player study, model superiority, or commercial-engine performance",
+  "historical_fields_preserved": ["stage_1.article_type", "stage_1.target_journal", "previous.current_revision_readiness.submission_track", "previous.current_revision_readiness.page_target"]
+ },
+ "stage_1": {
     "status": "approved",
     "approved_at": "2026-08-12",
     "target_journal": "IEEE Transactions on Games",
@@ -389,7 +409,21 @@
     "build_freshness": "fresh_after_2026_08_14_clean_tagged_recapture_availability_rebuild",
     "open_items": [],
     "ai_disclosure": "matched EN/KO disclosure covers prose/code/test drafting, command orchestration, evidence audit and interpretation, reviewer simulation, and citation checks; deterministic runners/artifacts remain the source of values",
-    "anonymization": "author, affiliation, funding, biography all absent"
+    "anonymization": "author, affiliation, funding, biography all absent",
+    "current_revision_override": {
+      "as_of": "2026-10-14",
+      "submission_track": "full_paper",
+      "article_type": "full research article",
+      "page_ceiling_including_references": 10,
+      "measured_page_count": {
+        "english": 9,
+        "korean": 9
+      },
+      "official_guidance_conflict": "The official summary/header presents a 10-14-page target, while the detailed Full Papers section limits the paper to 10 pages including references; the detailed 10-page limit is the current conservative gate.",
+      "historical_snapshot_note": "Historical Stage-9 short_paper article_type, 6-8 page band, and EN 7 / KO 6 counts remain unchanged and are not current release gates or cover-note targets.",
+      "layout_policy": "Do not add padding, shrink fonts, or expand the manuscripts merely to fill the 10-page ceiling.",
+      "scope_policy": "Instrumentation/methods evidence boundaries and limitations remain unchanged."
+    }
   },
   "stage_10": {
     "status": "passport_compiled_final_reaudit_and_clean_tagged_repro_lock_passed",

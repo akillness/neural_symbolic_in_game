@@ -1,5 +1,5 @@
 \begin{table}[t]
-\caption{수리 arm별 repairability class 정확 집계 (설계 픽스처)}
+\caption{E1 오프라인 적합성: 수리 가능성 class별 정확 count (설계 fixture)}
 \label{tab:pilot-repair}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.6pt}
@@ -14,15 +14,15 @@ Arm & 정보원 & \multicolumn{3}{c}{Commit / 사례} & 평균 수정$^{e}$ \\
 Rejection-only ($K{=}0$) & 없음 & 0/5 & 0/1 & 0/6 & --- \\
 블라인드 retry & 없음 & 0/5 & 0/1 & 0/6 & --- \\
 \addlinespace[2pt]
-반례 유도 $\rho$ & 오류 집합 $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
+Validator-error-guided $\rho$ & 오류 집합 $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
 상태 판독 oracle & 권위 상태+정책 & 5/5 & 1/1 & 0/6 & 1.0 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{e}$Commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); 실패한 arm 실행은 상태를 변경하지 않았다. $^{f}$Commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable(동결 repairability class).}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{e}$Commit된 수리의 변경 candidate field 평균 개수(최소성 proxy); 실패한 arm 실행은 상태를 변경하지 않았다. E1은 처음부터 invalid한 12개 설계 case를 사용하며 rejection-only/blind는 0/12, 0/12, validator-error-guided $\rho$는 5/12, state-reading oracle은 6/12 commit이다. $^{f}$Commit/사례 수. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable(동결 repairability class); 모집단 효능이나 live-model 품질을 뜻하지 않는다.}
 \end{table}
 
 \begin{table}[t]
-\caption{동결 파일럿 검사와 종단 결과 (행 간 직접 비교 불가)}
+\caption{E1 오프라인 적합성: 동결 파일럿 검사와 종단 결과 (행 간 직접 비교 불가)}
 \label{tab:pilot-accounting}
 \centering\scriptsize
 \setlength{\tabcolsep}{3pt}

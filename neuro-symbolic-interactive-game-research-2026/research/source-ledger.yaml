@@ -1,6 +1,6 @@
-as_of: 2026-09-06
+as_of: 2026-10-14
 evidence_policy: primary-source-first
-audit_scope: "2026-09-06 citation refresh rechecked only S02, S44, S52, S54, S55, and S56 against arXiv API; it does not re-date the 55-entry audit as a full refresh."
+audit_scope: "2026-10-14 bounded primary refresh adds S57, S58, and S59 from official arXiv API records with independent OpenAlex DOI identity checks; existing entries are not silently re-dated and no archival venue is promoted without a primary proceedings record."
 sources:
   - id: ivie-2026
     title: "IVIE: A Neuro-symbolic Approach to Incremental and Validated Generation of Interactive Fiction Worlds"
@@ -229,3 +229,42 @@ sources:
     retrieval_date: 2026-09-06
     bib_key: S44_gongora2026worldstate
     scope_note: arXiv describes LLM-predicted state changes triggering pre-programmed transformations and reports exploratory consistency observations; its preprint record says "to be presented" at ICCC 2026, but this bounded refresh found no archival proceedings record, and it does not establish the absence of any unreported transactional, trace, or repair mechanism
+  - id: jsonschemabench-2025
+    title: "JSONSchemaBench: A Rigorous Benchmark of Structured Outputs for Language Models"
+    url: https://arxiv.org/abs/2501.10868
+    type: preprint
+    provenance: arxiv-api-plus-openalex-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-10-14
+    bib_key: S57_geng2025jsonschemabench
+    revision: "arXiv:2501.10868v3, updated 2025-02-27; initial submission 2025-01-18"
+    license: "not stated in fetched arXiv API; OpenAlex primary-location license=null"
+    unresolved_conflicts: "none for title/author/year identity; no archival venue or publisher DOI established in this bounded refresh"
+    local_capture: sources/scraped/arxiv-2501.10868-jsonschemabench.md
+    scope_note: constrained-decoding benchmark evidence for structural-output compliance, coverage, and quality; it does not establish state-relative semantic authorization or TRACE-RPG efficacy
+  - id: ncp-bench-2026
+    title: "Can LLM Agents Stick to the Script? A Benchmark for Long-Horizon Consistency in Interactive Narratives"
+    url: https://arxiv.org/abs/2608.08160
+    type: preprint
+    provenance: arxiv-api-plus-openalex-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-10-14
+    bib_key: S58_ma2026ncpbench
+    revision: "arXiv:2608.08160v1, updated 2026-08-08"
+    license: "not stated in fetched arXiv API; OpenAlex primary-location license=null"
+    unresolved_conflicts: "arXiv comment states accepted by ICML 2026, but no ICML proceedings record was established in this bounded refresh; identity fields agree"
+    local_capture: sources/scraped/arxiv-2608.08160-ncp-bench.md
+    scope_note: long-horizon interactive-narrative commitment/fact-consistency benchmark motivation and limitation evidence; it does not measure TRACE-RPG or player outcomes
+  - id: bdc-mitigation-2025
+    title: "The Emperor's New Clothes in Benchmarking? A Rigorous Examination of Mitigation Strategies for LLM Benchmark Data Contamination"
+    url: https://arxiv.org/abs/2503.16402
+    type: preprint
+    provenance: arxiv-api-plus-openalex-doi-lookup
+    status: verified-primary
+    retrieval_date: 2026-10-14
+    bib_key: S59_sun2025bdc
+    revision: "arXiv:2503.16402v1, updated 2025-03-20"
+    license: "not stated in fetched arXiv API; OpenAlex primary-location license=null"
+    unresolved_conflicts: "none for title/author/year identity; no archival venue or publisher DOI established in this bounded refresh"
+    local_capture: sources/scraped/arxiv-2503.16402-bdc-mitigation.md
+    scope_note: benchmark leakage and contamination-resistance caveat for evaluation design; it does not establish game-agent or player efficacy

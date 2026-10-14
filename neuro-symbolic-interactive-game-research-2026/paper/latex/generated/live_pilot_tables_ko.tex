@@ -1,5 +1,5 @@
 \begin{table}[t]
-\caption{라이브 스크리닝 파일럿 정확 집계 (셀당 제안 5회, $K{=}1$)}
+\caption{E2 screening-pilot-only: 라이브 스크리닝 정확 집계 (5개 cell, 셀당 제안 5회, $K{=}1$)}
 \label{tab:live-screening}
 \centering\scriptsize
 \setlength{\tabcolsep}{2.7pt}
@@ -16,5 +16,5 @@ Signal-v2 / 공개 & 5/5 & 5/5 vs 5/5 & +0 & --- \\
 Signal-v2 / 비공개 & 0/5 & \textbf{5/5 vs 0/5} & \textbf{+5} & PEO+\allowbreak PEV+\allowbreak PPO \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. $\Delta$는 동일 후보에서 $\rho$ commit 수 minus blind commit 수다. 모든 수치는 pilot-only이며 추론 통계가 아니다. 폐기된 v1 진단은 표에서 제외한다.}
+\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. $\Delta$는 동일 후보(matched candidate)에서 $\rho$ commit 수 minus blind commit 수다. 5개 cell × cell당 5회 호출이며, 3개 cell은 최초 5/5 유효, goal-blind cell은 QSR 5/5로 양 arm 0/5, 0/5 commit인 null regime이다. Signal-v2 blind는 $\rho$ 5/5 대 blind 0/5로 분리되었다. 모든 수치는 screening-pilot-only이며 추론 통계·모델 순위가 아니다.}
 \end{table}

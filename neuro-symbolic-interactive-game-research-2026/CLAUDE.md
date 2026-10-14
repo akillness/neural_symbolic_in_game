@@ -48,7 +48,7 @@ _workspace/
 - Every gate claim cites the measurement, method/command, timestamp, and repository-relative
   evidence path. Missing evidence is `FIX`, never PASS.
 - Treat the Stage-5 citation entry list as the source of truth for its redundant totals; the
-  crosswalk validator must re-derive and reject stale summaries. The fixed 55/48/7/22 release
+  crosswalk validator must re-derive and reject stale summaries. The fixed 58/48/10/22 release
   baseline changes only with an intentional bibliography revision. When official records disagree,
   preserve the conflict and follow the paper-owned record for citation order (D-069).
 - `production/decision-log.md` is append-only. Reread its tail, verify the next ID is unique across
@@ -159,7 +159,17 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   each (`pass`/`fail`/`skipped`/`out_of_scope`, no default) plus `held_at`/`short_circuit`; a
   composite gate failure marks every family it names. Trace fields never enter canonical state,
   saves, hashes, or replays.
-- The manuscripts' Fig. 3 (`fig:playable-readout`, D-066/D-067) crops a frozen, dated copy of
+- D-075 local observation receipts are disabled in ordinary gameplay. Enable them only with
+  `--evaluate` or explicit `--receipt-output <path>` on a disposable staged project. The versioned
+  packet records code-only objective/hold/commit/case-chain/session events, monotonic engine-event
+  timestamps, pseudonymous local session IDs, source-byte fingerprints, and prior/next state hashes.
+  Receipt payloads require the exact per-kind key set; no text, hidden facts, personal data, or
+  rig identity may enter. The 4096-row cap fails the packet and refuses export on overflow rather
+  than silently dropping observations. Receipts never enter canonical state, saves, or replay.
+  Telemetry integrity checks are a separate engineering-only lane, not additions to the frozen
+  16 presentation checks or 8 smoke checks. Event availability is not attention, comprehension,
+  input latency, player benefit, or model efficacy; `C-RESULT-*` remains `TODO-RESULT`.
+- The manuscripts' playable-readout figure (`fig:playable-readout`, D-066/D-067/D-075) crops a frozen, dated copy of
   three working captures under `paper/latex/captures/playable-readout-<date>/` (PNG + `.shot.json`
   + `receipt.json` with the trim boxes), bound in `visuals/source-manifest.json` as an
   `engine-working-capture` exception that is illustration only, never promoted evidence. Never
@@ -170,8 +180,9 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
 - The dev-only `main_3d.tscn -- --autoplay --public-safe` route (D-064) is a movie-capture
   autopilot: it substitutes for keyboard/mouse input and drives the same interaction and choice
   handlers a player would, so canonical state still changes only through the proposal router.
-  Run it only under `--write-movie` on a disposable copy; its MP4/GIF are engineering
-  demonstrations, never usability, latency, G4, or G6 evidence.
+  Run it only under `--write-movie` or explicit `--receipt-output <path>` on a disposable copy.
+  Its MP4/GIF and automated receipt exports are engineering demonstrations, never usability,
+  latency, G4, or G6 evidence.
 - The Web dashboard (`game-track/web/dashboard/`, D-065/D-073) is a presentation-only observer:
   the embedded build mirrors typed events (`session|proposal|commit|hold|dialogue|focus|tick|
   episode_complete`) through `JavaScriptBridge` → `window.parent.postMessage` only when embedded,

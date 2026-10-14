@@ -208,6 +208,16 @@ Refresh rule: any lane, generator, authority boundary, entry point, Web export b
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
+Latest rule refresh: 2026-10-14, decision `D-075`: verified bounded 2025–2026 reference additions
+(58 identities/status records), synchronized methods/instrumentation manuscripts with standard
+IEEE typography and the detailed Full Paper <=10-page ceiling, derived non-pooled regime
+SVG/table sources, native r2 capture receipts, opt-in local observation export with exact payload
+keys and a 4096-row fail-closed cap, and fail-closed PDF/conversion gates. Existing core/extension/
+smoke denominators and every `TODO-RESULT` boundary are unchanged. Final command evidence lives in
+`_workspace/current/qa/releases/2026-10-14/verification.json`; pending gates are not PASS. The local-only Codex concept
+requires human rights/style approval before promotion. The pre-existing dirty UI/README work is
+excluded, with byte-preservation evidence in the conflict register. No production deploy is claimed.
+
 Latest rule refresh: 2026-09-18, decision `D-073` (hash-bound evaluation-trace mirror and per-node dashboard contract, detective surfaces, core/extension evaluation split, case-v1 asset lane, evidence-desk prop lane, stale-lock takeover rule); prior refresh 2026-09-03, decisions `D-066`–`D-069` (paper game-readout figure, presentation-flow manuscripts, reference re-verification, image-first root README, production dashboard deployment, fail-closed citation-summary synchronization); prior refresh 2026-09-02, decisions `D-055`–`D-063` (contribution/reference crosswalk,
 disposable Godot verification, collider-backed lens route, production receipt, editable-visual
 contract, contribution-first paper hardening, and presentation-only contribution legibility);

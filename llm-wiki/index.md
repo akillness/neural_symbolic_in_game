@@ -13,6 +13,7 @@
 
 ## Sources and reports
 
+- [[wiki/reports/2026-10-14-paper-experiment-optimization]] — **current paper/game revision (D-075)**: bounded 2025–2026 primary-source refresh (58 records), EN/KO evidence-scoped methods paper, frozen E1 reproduction (121 = 85 + 36; 11/11 CSVs), non-pooled regime SVG, fresh r2 game crops, opt-in bounded local receipts, and explicit remaining author/submission boundaries
 - [[wiki/reports/2026-09-18-d073-detective-loop-trace-mirror-and-release]] — **current game track (D-073)**: Aside deep research ×2 filed as intake; hash-bound `EvaluationTrace` mirror + per-node commit-gate dashboard (explicit pass/fail/skipped/out-of-scope, no default state); case-file board, hint ladder, coach cards, slot-assembly deduction, paged end card, four-zone HUD; world stations/VFX/gesture clips; Higgsfield case-v1 pack + evidence-desk GLB; `SL-PLAY-EVAL-001` 52/52 core + 4/4 extension; production `dpl_BkguPJPErtawmhjxU5cvg97PBsiq`
 - [[wiki/reports/2026-09-06-paper-game-factcheck-and-release]] — bounded primary-source fact-check, bilingual claim-scope corrections, dashboard predicate accounting, and combined paper/game release
 

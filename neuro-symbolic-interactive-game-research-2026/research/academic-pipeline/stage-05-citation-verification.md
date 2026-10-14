@@ -1,8 +1,9 @@
 # Stage 5 Citation Verification / 5단계 인용 검증
 
 Status: **PASS_NO_HALLUCINATED_CITATIONS**
+Audit date: 2026-10-14 (current bounded primary refresh; original audit 2026-08-13; top-venue and related-work refresh on 2026-09-02; independent primary-record and browser cross-check on 2026-09-03)
 
-Audit date: 2026-09-03 (current machine record; original audit 2026-08-13; top-venue and related-work refresh on 2026-09-02; independent primary-record and browser cross-check on 2026-09-03)
+The 2026-10-14 refresh adds exactly three primary preprint records (S57–S59); dated 2026-09-03 and 2026-09-06 snapshots remain historical records, not silently re-dated.
 
 Machine-readable record: `stage-05-citation-verification.json`
 
@@ -44,18 +45,18 @@ return an unrelated record's year.
 | Status | Count |
 | --- | --- |
 | `VERIFIED` | 48 |
-| `PREPRINT` | 7 |
+| `PREPRINT` | 10 |
 | `UNMATCHED` | 0 |
 | `HALLUCINATED` | 0 |
-| Total | 55 |
+| Total | 58 |
 
-Every one of the 55 entries was matched by at least one answering independent index. The bibliography
-is closed against the manuscripts: S52–S56 are present in both sources, there are 55 unique cite keys
-and 55 bibliography entries, no cited-but-absent key and no present-but-uncited entry, and the English
+Every one of the 58 entries was matched by at least one answering independent index. The bibliography
+is closed against the manuscripts: S52–S59 are present in both sources, there are 58 unique cite keys
+and 58 bibliography entries, no cited-but-absent key and no present-but-uncited entry, and the English
 and Korean sources have identical key sets.
 
-55개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. S52–S56은 두 원고에 이미 반영됐고,
-인용 키 55개와 참고문헌 55건이 정확히 일치하며, 인용했지만 빠진 항목과 인용되지 않은 항목이 없다.
+58개 항목 모두 응답한 독립 색인 중 최소 하나에서 확인됐다. S52–S59는 두 원고에 반영되었고,
+인용 키 58개와 참고문헌 58건이 정확히 일치하며, 인용했지만 빠진 항목과 인용되지 않은 항목이 없다.
 영문·국문 원고의 키 집합도 동일하다. `S43`은 의도적 결번이다.
 
 ## Preprints (advisory) / 프리프린트
@@ -69,13 +70,17 @@ and Korean sources have identical key sets.
 | S54 | STORY2GAME: generating (almost) everything in an IF game | 2505.03547 | arXiv, OpenAlex; Semantic Scholar rate-limited |
 | S55 | Beyond State Consistency: behavior consistency in text-based world models | 2604.13824 | arXiv, OpenAlex (arXiv-DOI lookup); Semantic Scholar rate-limited |
 | S56 | Get Experience from Practice: LLM agents with record & replay (AgentRR) | 2505.17716 | arXiv, OpenAlex (arXiv-DOI lookup); Semantic Scholar rate-limited |
+| S57 | JSONSchemaBench: A Rigorous Benchmark of Structured Outputs for Language Models | 2501.10868 | arXiv v3, OpenAlex DOI lookup; no archival venue established |
+| S58 | Can LLM Agents Stick to the Script? NCP-Bench | 2608.08160 | arXiv v1, OpenAlex DOI lookup; ICML 2026 acceptance comment preserved, no proceedings record established |
+| S59 | The Emperor's New Clothes in Benchmarking? LLM benchmark data contamination | 2503.16402 | arXiv v1, OpenAlex DOI lookup; no archival venue established |
 
-These seven works have no resolved archival proceedings record in the current audit. S01 (IVIE) left
+These ten works have no resolved archival proceedings record in the current audit. S01 (IVIE) left
 this list when the ICCC 2026 proceedings were published. S46 (Self-Debug) is not claimed as a proceedings
 publication; it left the preprint status when the official OpenReview record established its accepted
 ICLR 2024 poster identity. S45 (Self-Refine) had already left the list
-when its NeurIPS 36 proceedings DOI `10.52202/075280-2019` resolved. The manuscripts describe the
-remaining preprints' status or use them only as bounded motivation/comparators. Claim `C-AFFECT-001` remains
+when its NeurIPS 36 proceedings DOI `10.52202/075280-2019` resolved. S58's arXiv acceptance comment is
+preserved without promoting it to archival status. The manuscripts describe the remaining preprints'
+status or use them only as bounded motivation/comparators. Claim `C-AFFECT-001` remains
 `verified-scope-limited-preprint`, and no conclusion depends on treating a preprint as an archival
 record.
 
@@ -271,3 +276,13 @@ supports pre-programmed world-state transformations and exploratory consistency 
 does not establish the absence of every transactional, trace, or repair mechanism. S55 supports the
 behavioral-consistency limitation; it is not direct evidence about narrative coherence. The machine
 record contains the exact API URLs, retrieval date, and bounded scope.
+
+## 2026-10-14 bounded primary refresh / 2026-10-14 제한된 1차 출처 재확인
+
+This refresh adds three records, not a silent rewrite of earlier audits:
+
+- **S57 / JSONSchemaBench (2025):** arXiv v3 title and nine-author order were confirmed from the official arXiv API and independently matched to OpenAlex `W4406733450` via the arXiv DOI identifier. It remains a preprint; the fetched records expose no explicit paper license. Its benchmark concerns structural constrained-decoding compliance, coverage, and quality, not state-relative semantic authorization.
+- **S58 / NCP-Bench (2026):** arXiv v1 title and nine-author order were confirmed from the official arXiv API and independently matched to OpenAlex `W7202171566`. The arXiv comment says “Accepted by ICML 2026,” but no proceedings record was established in this bounded refresh, so it remains a preprint. Its long-horizon commitment/fact-consistency benchmark motivates explicit narrative checks but does not measure TRACE-RPG or players.
+- **S59 / benchmark data contamination (2025):** arXiv v1 title and five-author order were confirmed from the official arXiv API and independently matched to OpenAlex `W4415289333`. It remains a preprint; the fetched records expose no explicit paper license. Its question-level contamination-resistance findings bound evaluation interpretation and do not establish game-agent or player efficacy.
+
+The machine totals are now **58 entries = 48 VERIFIED + 10 PREPRINT**, unmatched 0, hallucinated 0, with the existing 22 Semantic Scholar rate-limited records unchanged. Exact query URLs and evidence captures are recorded in `stage-05-citation-verification.json`, `research/source-ledger.yaml`, and `research/sources/scraped/arxiv-2501.10868-jsonschemabench.md`, `arxiv-2608.08160-ncp-bench.md`, and `arxiv-2503.16402-bdc-mitigation.md`.
