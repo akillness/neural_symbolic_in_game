@@ -23,3 +23,11 @@ Canonical report: `neuro-symbolic-interactive-game-research-2026/research/academ
 - Local browser recovery verified the real start screen, tutorial, Start Case, `[C]` evidence-board open/close and world return at 1280×720. It does not establish a full browser playthrough, mobile behavior, soak performance or latency. The earlier tool timeout is retained, not relabelled as PASS.
 - An independent evidence-strict evaluator found no material unsupported claim or release blocker in the reviewed artifact packet (5/4/4/5/3 scorecard; 4.2/5 overall). The identified EN/KO L7–L9/ethics asymmetry was corrected and rebuilt; that correction is parent-verified, not a second independent re-review.
 - The unconfirmed-owner `playable-readout-20261014/` set is left untouched/untracked/unstaged with seven file hashes in the preservation receipt. The manuscript uses only the hash-bound `-r2` set.
+
+## Published implementation
+
+`git push origin main` exited 0 and updated `4382f69..4e8d1a9` on 2026-10-14. Commit
+`4e8d1a9` contains 86 explicit task-owned paths; the existing user changes, unconfirmed capture
+set and unapproved concept PNG are excluded. The pre-push hook independently reran all 12 CI
+stages (145 unit tests, 62 pytest tests, 48 subtests) successfully. This is repository publication,
+not a production deployment, journal submission or efficacy promotion.

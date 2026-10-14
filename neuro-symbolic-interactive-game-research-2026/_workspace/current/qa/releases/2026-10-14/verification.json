@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "date": "2026-10-14",
-  "status": "verified-push-pending",
+  "status": "verified-and-implementation-pushed",
   "evidence_scope": "engineering conformance and screening pilot; no efficacy or participant promotion",
   "paper_format": {
     "command": "make -C paper/latex check",
@@ -74,7 +74,15 @@
     ]
   },
   "git_push": {
-    "status": "pending"
+    "status": "PASS",
+    "command": "git push origin main",
+    "exit_code": 0,
+    "implementation_commit": "4e8d1a9",
+    "remote": "https://github.com/akillness/neural_symbolic_in_game.git",
+    "branch": "main",
+    "observed_ref_update": "4382f69..4e8d1a9 main -> main",
+    "task_files": 86,
+    "preexisting_user_changes_included": false
   },
   "ci_attempts": [
     {
@@ -220,5 +228,15 @@
     "excluded_candidate_image": true,
     "excluded_unconfirmed_capture_set": true,
     "staging_policy": "explicit task-owned paths only; no stash and no broad add"
+  },
+  "pre_push_verification": {
+    "source": "repository pre-push hook, observed in git push output",
+    "command": "./scripts/verify_like_ci.sh",
+    "status": "PASS",
+    "exit_code": 0,
+    "unit_tests_passed": 145,
+    "game_pytest_passed": 62,
+    "game_subtests_passed": 48,
+    "all_12_stages": "PASS"
   }
 }
