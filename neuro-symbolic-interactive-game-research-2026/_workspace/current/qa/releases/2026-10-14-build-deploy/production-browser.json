@@ -1,0 +1,39 @@
+{
+  "verdict": "PASS",
+  "verifier": "ProductionDesktopQA",
+  "target_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "actions_completed": [
+    "initial load",
+    "BEGIN INVESTIGATION",
+    "T tutorial; NEXT x3",
+    "START CASE",
+    "C case-file open",
+    "C case-file close"
+  ],
+  "error_counts": {
+    "console_errors": 0,
+    "console_warnings": 0,
+    "console_info_logs": 3,
+    "page_errors": 0,
+    "request_failed": 0,
+    "http_errors": 0,
+    "network_requests": 11,
+    "http_200": 11
+  },
+  "state_mirror": "Hash changed from no session to populated engine mirror on start, then remained stable through tutorial and case-file UI; no production proposal/COMMIT tested",
+  "not_exercised": [
+    "E lens pickup/proposal-COMMIT in production",
+    "mobile production",
+    "full playthrough",
+    "protected generated URL",
+    "performance/soak"
+  ],
+  "screenshot": "production-desktop.png",
+  "own_browser_closed": true,
+  "evidence_scope": "Browser desktop startup/case-file smoke only; engineering evidence, not paper figure or human outcome",
+  "screenshot_sha256": "7c6c3fa0db6026eed9ffea5fc8c0c798d7cf1b1130bc64d060cb46cd921b5880"
+}

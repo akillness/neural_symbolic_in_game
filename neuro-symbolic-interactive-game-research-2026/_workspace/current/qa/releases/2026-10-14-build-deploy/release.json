@@ -1,0 +1,1136 @@
+{
+  "date": "2026-10-14",
+  "mode": "production-deploy-from-isolated-commit",
+  "project": "sealed-lighthouse-trace-rpg",
+  "scope": "akillness-projects",
+  "status": "production-verified",
+  "source_commit_short": "403058a",
+  "source_baseline_commit": "ecc4f49c2cd5b1192db5d8f56a13dffd174f3732",
+  "source_strategy": "Only 3 reviewed design/wiki paths committed; clean detached checkout excludes all dirty/untracked user work; existing pre-push hook runs on that checkout",
+  "rollback": {
+    "deployment_id": "dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg",
+    "deployment_url": "https://sealed-lighthouse-trace-dorl28o4v-akillness-projects.vercel.app",
+    "production_alias": "https://sealed-lighthouse-trace-rpg.vercel.app"
+  },
+  "game_project_sha256_before": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+  "isolated_game_project_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+  "preserved_user_paths": {
+    "README.ko.md": "1c436fc26811cd6c23bf83b91671a81e55602381e197b5005d9eff6a1c877998",
+    "README.md": "295980ff34a255104b33726e489b26c9ad0aba236763989a54f5f419f9be3684",
+    "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png": "b7f7da613a706d9a7df86c523692fe6fe4818f101b19300e4be5e9bc6205df77",
+    "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png": "3264fec02872f1ce9440467c99a1089c45a1b7fe2d07e5cc04319daa48a10731",
+    "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png": "e7ad7594f28cd51f3cce7d457c048f47dde823cc70158d915adeb55754e87ab3",
+    "neuro-symbolic-interactive-game-research-2026/game-track/design/game-ui-contract.json": "a44bc9b449c14de6f6726f15a53d4a1abf48f9d0648023a8acc31fa6e99de548",
+    "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md": "00a70df8f83d0ec2c931c1f8a7f3876816dea718dc7a4f12a6f206675131a851",
+    "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md": "2cb1426067e5aa5252471cc6a57dfc92bed972f2d6367f8765eb8fdf4c239f8e",
+    "neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png": "b7f7da613a706d9a7df86c523692fe6fe4818f101b19300e4be5e9bc6205df77",
+    "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.css": "92bf885741b1e65bb4ee4bb02e464a309e6036c5af6d06bcd3679fe3b814c307",
+    "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.js": "62be4fb626e9c628a70a080523e82ff4e85de481a586f0da70490518b61b98cf",
+    "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/index.html": "a01fd17394063071db2d2879bb74920ef9e60df7e2ce5b3bf7770cad2e263959"
+  },
+  "excluded_claims": [
+    "new NPC implementation or efficacy",
+    "G4/G6 promotion",
+    "human-gesture verification",
+    "full performance or soak certification",
+    "journal submission"
+  ],
+  "artifact_audit": "GO for isolated strategy, conditional on clean/SHA/PDF/receipt and browser gates",
+  "verification": {
+    "source_push": {
+      "command": "git push origin HEAD:main",
+      "exit_code": 0,
+      "remote_update": "ecc4f49..403058a HEAD -> main",
+      "output_artifact": "artifact://544",
+      "pre_push": {
+        "unit_tests_passed": 145,
+        "pytest_tests_passed": 62,
+        "subtests_passed": 48,
+        "ci_stages_passed": 12,
+        "visual_receipts_checked": 92,
+        "double_regenerated_outputs": 17,
+        "wiki_pages": 74
+      }
+    },
+    "public_safe_smoke": {
+      "command": "godot4 --headless --path <disposable-project> res://scenes/main_3d.tscn -- --smoke --public-safe",
+      "exit_code": 0,
+      "passed_checks": 8,
+      "total_checks": 8,
+      "final_state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "log": "public-safe-smoke.log",
+      "parser_attempt": "Initial wrapper expected literal 8/8 text and failed; actual output is JSON. Recovered by checking the same exact 8 named booleans, passed flag, and terminal SHA; no game behavior or criterion changed."
+    },
+    "pdf_build": {
+      "command": "make -C paper/latex check",
+      "exit_code": 0,
+      "output_artifact": "artifact://549",
+      "pdfs": [
+        {
+          "locale": "en",
+          "pages": 9,
+          "bytes": 1419900,
+          "sha256": "4503b3a256892b67dcaa8b50e0d610d95d4feaf7ba06773c11ebc81468273f66"
+        },
+        {
+          "locale": "ko",
+          "pages": 9,
+          "bytes": 1494816,
+          "sha256": "c06a22390201ec055217baab69635b0e2056f0af45b37a09f3e6e35dacb6f124"
+        }
+      ]
+    },
+    "web_build": {
+      "command": "./scripts/build_godot_web.sh",
+      "exit_code": 0,
+      "output_artifact": "artifact://548",
+      "godot_version": "4.7.1.stable.official.a13da4feb"
+    },
+    "preservation_after_build": {
+      "user_files_checked": 12,
+      "all_unchanged": true,
+      "canonical_project_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd"
+    },
+    "local_browser": {
+      "url": "http://127.0.0.1:8877/dashboard/",
+      "verifier": "DeploymentBrowserQA",
+      "status": "PASS",
+      "actions": [
+        "start",
+        "tutorial",
+        "START CASE",
+        "case_file open and close via C",
+        "lens_pickup proposal via E",
+        "COMMIT acquire_object stage 0 to 1",
+        "dashboard committed hash chain and metrics"
+      ],
+      "console_info_logs": 3,
+      "console_errors": 0,
+      "page_errors": 0,
+      "request_failed": 0,
+      "http_error_responses": 0,
+      "scope": "Local startup/core interaction smoke only; committed dashboard, not dirty user UI"
+    },
+    "deploy_command": {
+      "command": "./scripts/deploy_vercel_dashboard.sh",
+      "exit_code": 0,
+      "log": "deploy.log"
+    },
+    "local_narrow_visual": {
+      "viewport": [
+        390,
+        844
+      ],
+      "page_scroll_width": 390,
+      "iframe_size": [
+        328,
+        184.5
+      ],
+      "status": "FIX",
+      "finding": "Responsive page stacks without horizontal overflow, but embedded canvas text/UI clips at narrow width; not fixed or claimed mobile PASS"
+    },
+    "remote_bytes": {
+      "base_url": "https://sealed-lighthouse-trace-rpg.vercel.app",
+      "files_checked": 16,
+      "matched_files": 16,
+      "files": [
+        {
+          "path": "./dist/dashboard/dashboard.css",
+          "matched": true,
+          "expected": {
+            "path": "./dist/dashboard/dashboard.css",
+            "bytes": 7289,
+            "sha256": "3737fc12b9c79a7aa03d76fd5fe46c2112e32eac9b0188dbb06084bd5f675813"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/dashboard.css",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/dashboard.css",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "400",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"dashboard.css\"",
+              "content-type": "text/css; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"55b3241de6edd26b866e50ed0cdcebb5\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:05 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::hspd8-1791989446205-73c3bce6a0e9",
+              "content-length": "7289"
+            },
+            "bytes": 7289,
+            "sha256": "3737fc12b9c79a7aa03d76fd5fe46c2112e32eac9b0188dbb06084bd5f675813",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/dashboard/dashboard.js",
+          "matched": true,
+          "expected": {
+            "path": "./dist/dashboard/dashboard.js",
+            "bytes": 44406,
+            "sha256": "482473930d30a97055c4d1f65b79049ff9d79b81c45a7b1197d05c5dcf87655b"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/dashboard.js",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/dashboard.js",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "400",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"dashboard.js\"",
+              "content-type": "application/javascript; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"47e13e4097888e2c509bd6b7bff3ca97\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:05 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::tl858-1791989446207-210af398f759",
+              "content-length": "44406"
+            },
+            "bytes": 44406,
+            "sha256": "482473930d30a97055c4d1f65b79049ff9d79b81c45a7b1197d05c5dcf87655b",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/dashboard/index.html",
+          "matched": true,
+          "expected": {
+            "path": "./dist/dashboard/index.html",
+            "bytes": 5880,
+            "sha256": "007ca8ac9595404cb4bb481dfe352683f838f2de4406251cef10106467c79362"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/index.html",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/index.html",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "0",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.html\"",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"9dacff67196bc306487c146339bd23ff\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "MISS",
+              "x-vercel-id": "icn1::nmcck-1791989446209-96974e5802ba",
+              "content-length": "5880"
+            },
+            "bytes": 5880,
+            "sha256": "007ca8ac9595404cb4bb481dfe352683f838f2de4406251cef10106467c79362",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/dashboard/paper-reference.json",
+          "matched": true,
+          "expected": {
+            "path": "./dist/dashboard/paper-reference.json",
+            "bytes": 3621,
+            "sha256": "5a924f0e252de5d83d677b89abdf8b444dff1e0ca7b0c9856175b1fbed8a19a6"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/paper-reference.json",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/paper-reference.json",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "399",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"paper-reference.json\"",
+              "content-type": "application/json; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"3a0346ac04423f8e8c5efa313f2f5731\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:06 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::xsbqm-1791989446209-a48006dd7a0c",
+              "content-length": "3621"
+            },
+            "bytes": 3621,
+            "sha256": "5a924f0e252de5d83d677b89abdf8b444dff1e0ca7b0c9856175b1fbed8a19a6",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/paper/en.pdf",
+          "matched": true,
+          "expected": {
+            "path": "./dist/paper/en.pdf",
+            "bytes": 1419900,
+            "sha256": "4503b3a256892b67dcaa8b50e0d610d95d4feaf7ba06773c11ebc81468273f66"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "0",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"en.pdf\"",
+              "content-type": "application/pdf",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"31c59dff0d6526e0d95b6e8d32ed7b76\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "MISS",
+              "x-vercel-id": "icn1::whsbn-1791989446210-902b82f721f9",
+              "content-length": "1419900"
+            },
+            "bytes": 1419900,
+            "sha256": "4503b3a256892b67dcaa8b50e0d610d95d4feaf7ba06773c11ebc81468273f66",
+            "pdf_signature": true
+          }
+        },
+        {
+          "path": "./dist/paper/ko.pdf",
+          "matched": true,
+          "expected": {
+            "path": "./dist/paper/ko.pdf",
+            "bytes": 1494816,
+            "sha256": "c06a22390201ec055217baab69635b0e2056f0af45b37a09f3e6e35dacb6f124"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "0",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"ko.pdf\"",
+              "content-type": "application/pdf",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"3bdef2d3cd7c96f375939cac309c5b41\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "MISS",
+              "x-vercel-id": "icn1::hspd8-1791989446205-60fdc45b1f52",
+              "content-length": "1494816"
+            },
+            "bytes": 1494816,
+            "sha256": "c06a22390201ec055217baab69635b0e2056f0af45b37a09f3e6e35dacb6f124",
+            "pdf_signature": true
+          }
+        },
+        {
+          "path": "./dist/public/index.apple-touch-icon.png",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.apple-touch-icon.png",
+            "bytes": 11944,
+            "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.apple-touch-icon.png",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.apple-touch-icon.png",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "0",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.apple-touch-icon.png\"",
+              "content-type": "image/png",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"0171051c9d00b2e80c7b555e249d8ba5\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "MISS",
+              "x-vercel-id": "icn1::tl858-1791989446206-bdf0dc8bd857",
+              "content-length": "11944"
+            },
+            "bytes": 11944,
+            "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.audio.position.worklet.js",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.audio.position.worklet.js",
+            "bytes": 2973,
+            "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.audio.position.worklet.js",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.audio.position.worklet.js",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "394",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.audio.position.worklet.js\"",
+              "content-type": "application/javascript; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"8a7370a54ea5758d957875cbeb24416c\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:11 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::9dbrr-1791989446208-f1d6b01b2a2c",
+              "content-length": "2973"
+            },
+            "bytes": 2973,
+            "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.audio.worklet.js",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.audio.worklet.js",
+            "bytes": 7298,
+            "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.audio.worklet.js",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.audio.worklet.js",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "394",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.audio.worklet.js\"",
+              "content-type": "application/javascript; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"c55ea38b7dbd5eb296a8353e7e360ae9\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:11 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::xsbqm-1791989446210-2d7d9e8c2b15",
+              "content-length": "7298"
+            },
+            "bytes": 7298,
+            "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.html",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.html",
+            "bytes": 5464,
+            "sha256": "2afe1f28953c17505fe08ee57dab98def28d642c012be06428353bb69dc4261f"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "400",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.html\"",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"fd765c6ca4bf43a5300f9d6de59d7bcc\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:05 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::tl858-1791989446207-8bf85b92aced",
+              "content-length": "5464"
+            },
+            "bytes": 5464,
+            "sha256": "2afe1f28953c17505fe08ee57dab98def28d642c012be06428353bb69dc4261f",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.icon.png",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.icon.png",
+            "bytes": 5700,
+            "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.icon.png",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.icon.png",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "399",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.icon.png\"",
+              "content-type": "image/png",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"4153df83b13e804d38fc0e0040712f69\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:06 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::tl858-1791989446209-f46a1cf21b08",
+              "content-length": "5700"
+            },
+            "bytes": 5700,
+            "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.js",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.js",
+            "bytes": 279815,
+            "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.js",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.js",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "399",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.js\"",
+              "content-type": "application/javascript; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"b446038961637ab9195fec557690806e\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:06 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::9ztvb-1791989446209-945ad16db8f7",
+              "content-length": "279815"
+            },
+            "bytes": 279815,
+            "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.pck",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.pck",
+            "bytes": 13323664,
+            "sha256": "6d5fe444ecffe38612d316347cf72b5779233cf5fed31570fc7de0d24e6e7bfa"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.pck",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.pck",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "398",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.pck\"",
+              "content-type": "application/octet-stream",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"c01e56656c0c7dfdb4bf8f14b2037bd6\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:07 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::sgngr-1791989446208-2b906d12c88c",
+              "content-length": "13323664"
+            },
+            "bytes": 13323664,
+            "sha256": "6d5fe444ecffe38612d316347cf72b5779233cf5fed31570fc7de0d24e6e7bfa",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.png",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.png",
+            "bytes": 21443,
+            "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.png",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.png",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "400",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.png\"",
+              "content-type": "image/png",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"7e41bf3051b18e392a4bb6c0cc45cd7c\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:06 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::58dr5-1791989446214-e02a0cdc2f96",
+              "content-length": "21443"
+            },
+            "bytes": 21443,
+            "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/index.wasm",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/index.wasm",
+            "bytes": 39513091,
+            "sha256": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.wasm",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.wasm",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "397",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"index.wasm\"",
+              "content-type": "application/wasm",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"2edab68e52ecd31af689ddf6d7cc9817\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:09 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::bkqbn-1791989446214-79ec6b34cc10",
+              "content-length": "39513091"
+            },
+            "bytes": 39513091,
+            "sha256": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277",
+            "pdf_signature": false
+          }
+        },
+        {
+          "path": "./dist/public/NanumGothic-OFL.txt",
+          "matched": true,
+          "expected": {
+            "path": "./dist/public/NanumGothic-OFL.txt",
+            "bytes": 4534,
+            "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+          },
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/NanumGothic-OFL.txt",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/NanumGothic-OFL.txt",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "0",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"NanumGothic-OFL.txt\"",
+              "content-type": "text/plain; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "etag": "\"8e538d70b04969fb88bdd90f450142ab\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "MISS",
+              "x-vercel-id": "icn1::6l7tq-1791989446214-1f312a37ad77",
+              "content-length": "4534"
+            },
+            "bytes": 4534,
+            "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+            "pdf_signature": false
+          }
+        }
+      ],
+      "tls_note": "Python urllib failed local issuer-chain verification; switched to native curl with verification enabled, without disabling TLS checks"
+    },
+    "provider": {
+      "command": "vercel inspect https://sealed-lighthouse-trace-had7v4ivl-akillness-projects.vercel.app --scope akillness-projects",
+      "status": "READY",
+      "deployment_id": "dpl_GPUtKqKtkTcjC7D1gLSMWZCjbVo5",
+      "aliases": [
+        "https://sealed-lighthouse-trace-rpg.vercel.app",
+        "https://sealed-lighthouse-trace-rpg-akillness-projects.vercel.app"
+      ]
+    },
+    "generated_url_access": {
+      "status": "PROTECTED",
+      "finding": "Fresh browser redirected to Vercel login; stable public alias is verified instead; no auth bypass or protection change"
+    },
+    "browser_worker_delivery": {
+      "initial_worker": "CANCELLED without a final production report; local observations retained separately",
+      "recovery_worker": "ProductionDesktopQA completed with PASS on public alias and zero errors; source/viewport/action scope recorded in production-browser.json"
+    },
+    "http_routes_headers": {
+      "checks": [
+        {
+          "route": "/",
+          "passed": true,
+          "headers_match": true,
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:51:56 GMT",
+              "location": "/dashboard/",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-vercel-id": "icn1::whsbn-1791989516891-3b83e06e85a4",
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "471",
+              "content-disposition": "inline; filename=\"dashboard\"",
+              "etag": "\"9dacff67196bc306487c146339bd23ff\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:05 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "content-length": "5880"
+            },
+            "bytes": 5880,
+            "sha256": "007ca8ac9595404cb4bb481dfe352683f838f2de4406251cef10106467c79362",
+            "pdf_signature": false
+          }
+        },
+        {
+          "route": "/index.html",
+          "passed": true,
+          "headers_match": true,
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/index.html",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:51:56 GMT",
+              "location": "/public/index.html",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-vercel-id": "icn1::h2hbz-1791989516892-efc14213103d",
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "471",
+              "content-disposition": "inline; filename=\"index.html\"",
+              "etag": "\"fd765c6ca4bf43a5300f9d6de59d7bcc\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:05 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "content-length": "5464"
+            },
+            "bytes": 5464,
+            "sha256": "2afe1f28953c17505fe08ee57dab98def28d642c012be06428353bb69dc4261f",
+            "pdf_signature": false
+          }
+        },
+        {
+          "route": "/dashboard/",
+          "passed": true,
+          "headers_match": true,
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "471",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"dashboard\"",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:51:56 GMT",
+              "etag": "\"9dacff67196bc306487c146339bd23ff\"",
+              "last-modified": "Wed, 14 Oct 2026 14:44:05 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::tl858-1791989516876-5a14a645c0ed",
+              "content-length": "5880"
+            },
+            "bytes": 5880,
+            "sha256": "007ca8ac9595404cb4bb481dfe352683f838f2de4406251cef10106467c79362",
+            "pdf_signature": false
+          }
+        },
+        {
+          "route": "/public/",
+          "passed": true,
+          "headers_match": true,
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "0",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"public\"",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Wed, 14 Oct 2026 14:51:57 GMT",
+              "etag": "\"fd765c6ca4bf43a5300f9d6de59d7bcc\"",
+              "last-modified": "Wed, 14 Oct 2026 14:51:57 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "MISS",
+              "x-vercel-id": "icn1::9ztvb-1791989516871-b9162416f6ed",
+              "content-length": "5464"
+            },
+            "bytes": 5464,
+            "sha256": "2afe1f28953c17505fe08ee57dab98def28d642c012be06428353bb69dc4261f",
+            "pdf_signature": false
+          }
+        },
+        {
+          "route": "/paper/en.pdf",
+          "passed": true,
+          "headers_match": true,
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "70",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"en.pdf\"",
+              "content-type": "application/pdf",
+              "date": "Wed, 14 Oct 2026 14:51:56 GMT",
+              "etag": "\"31c59dff0d6526e0d95b6e8d32ed7b76\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::nwfpn-1791989516874-952bc24a7dcd",
+              "content-length": "1419900"
+            },
+            "bytes": 1419900,
+            "sha256": "4503b3a256892b67dcaa8b50e0d610d95d4feaf7ba06773c11ebc81468273f66",
+            "pdf_signature": true
+          }
+        },
+        {
+          "route": "/paper/ko.pdf",
+          "passed": true,
+          "headers_match": true,
+          "observed": {
+            "requested_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf",
+            "status": 200,
+            "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf",
+            "curl_exit_code": 0,
+            "error": "",
+            "headers": {
+              "accept-ranges": "bytes",
+              "access-control-allow-origin": "*",
+              "age": "70",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "content-disposition": "inline; filename=\"ko.pdf\"",
+              "content-type": "application/pdf",
+              "date": "Wed, 14 Oct 2026 14:51:56 GMT",
+              "etag": "\"3bdef2d3cd7c96f375939cac309c5b41\"",
+              "last-modified": "Wed, 14 Oct 2026 14:50:46 GMT",
+              "permissions-policy": "camera=(), microphone=(), geolocation=()",
+              "referrer-policy": "strict-origin-when-cross-origin",
+              "server": "Vercel",
+              "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+              "x-content-type-options": "nosniff",
+              "x-vercel-cache": "HIT",
+              "x-vercel-id": "icn1::xsrsj-1791989516873-ca11aa6c0926",
+              "content-length": "1494816"
+            },
+            "bytes": 1494816,
+            "sha256": "c06a22390201ec055217baab69635b0e2056f0af45b37a09f3e6e35dacb6f124",
+            "pdf_signature": true
+          }
+        }
+      ],
+      "passed": 6,
+      "total": 6
+    },
+    "preservation_after_deploy": {
+      "checked_user_files": 12,
+      "unchanged_user_files": 12,
+      "canonical_project_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd"
+    },
+    "production_browser": {
+      "verdict": "PASS",
+      "verifier": "ProductionDesktopQA",
+      "target_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "actions_completed": [
+        "initial load",
+        "BEGIN INVESTIGATION",
+        "T tutorial; NEXT x3",
+        "START CASE",
+        "C case-file open",
+        "C case-file close"
+      ],
+      "error_counts": {
+        "console_errors": 0,
+        "console_warnings": 0,
+        "console_info_logs": 3,
+        "page_errors": 0,
+        "request_failed": 0,
+        "http_errors": 0,
+        "network_requests": 11,
+        "http_200": 11
+      },
+      "state_mirror": "Hash changed from no session to populated engine mirror on start, then remained stable through tutorial and case-file UI; no production proposal/COMMIT tested",
+      "not_exercised": [
+        "E lens pickup/proposal-COMMIT in production",
+        "mobile production",
+        "full playthrough",
+        "protected generated URL",
+        "performance/soak"
+      ],
+      "screenshot": "production-desktop.png",
+      "own_browser_closed": true,
+      "evidence_scope": "Browser desktop startup/case-file smoke only; engineering evidence, not paper figure or human outcome",
+      "screenshot_sha256": "7c6c3fa0db6026eed9ffea5fc8c0c798d7cf1b1130bc64d060cb46cd921b5880"
+    },
+    "parent_browser_load": {
+      "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "console_info_logs": 3,
+      "console_errors": 0,
+      "page_errors": 0,
+      "request_failed": 0,
+      "http_errors": 0,
+      "scope": "Parent load/route only; interactive proof is the independent recovery worker"
+    }
+  },
+  "source_commit": "403058a55b8148e2847401046bf4b0763fb55087",
+  "production_url": "https://sealed-lighthouse-trace-had7v4ivl-akillness-projects.vercel.app",
+  "production_alias": "https://sealed-lighthouse-trace-rpg.vercel.app",
+  "staged_receipts": [
+    {
+      "path": "./dist/dashboard/dashboard.css",
+      "bytes": 7289,
+      "sha256": "3737fc12b9c79a7aa03d76fd5fe46c2112e32eac9b0188dbb06084bd5f675813"
+    },
+    {
+      "path": "./dist/dashboard/dashboard.js",
+      "bytes": 44406,
+      "sha256": "482473930d30a97055c4d1f65b79049ff9d79b81c45a7b1197d05c5dcf87655b"
+    },
+    {
+      "path": "./dist/dashboard/index.html",
+      "bytes": 5880,
+      "sha256": "007ca8ac9595404cb4bb481dfe352683f838f2de4406251cef10106467c79362"
+    },
+    {
+      "path": "./dist/dashboard/paper-reference.json",
+      "bytes": 3621,
+      "sha256": "5a924f0e252de5d83d677b89abdf8b444dff1e0ca7b0c9856175b1fbed8a19a6"
+    },
+    {
+      "path": "./dist/paper/en.pdf",
+      "bytes": 1419900,
+      "sha256": "4503b3a256892b67dcaa8b50e0d610d95d4feaf7ba06773c11ebc81468273f66"
+    },
+    {
+      "path": "./dist/paper/ko.pdf",
+      "bytes": 1494816,
+      "sha256": "c06a22390201ec055217baab69635b0e2056f0af45b37a09f3e6e35dacb6f124"
+    },
+    {
+      "path": "./dist/public/index.apple-touch-icon.png",
+      "bytes": 11944,
+      "sha256": "01d4f63e525941e06ce74f5187dad030d20a8d52a07ce365ae4e94af97a3b1f5"
+    },
+    {
+      "path": "./dist/public/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "./dist/public/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "./dist/public/index.html",
+      "bytes": 5464,
+      "sha256": "2afe1f28953c17505fe08ee57dab98def28d642c012be06428353bb69dc4261f"
+    },
+    {
+      "path": "./dist/public/index.icon.png",
+      "bytes": 5700,
+      "sha256": "ad3c35ad0facf487c618204bd98db543034fc95224eadc7f08c7a9ff38d5b3b5"
+    },
+    {
+      "path": "./dist/public/index.js",
+      "bytes": 279815,
+      "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c"
+    },
+    {
+      "path": "./dist/public/index.pck",
+      "bytes": 13323664,
+      "sha256": "6d5fe444ecffe38612d316347cf72b5779233cf5fed31570fc7de0d24e6e7bfa"
+    },
+    {
+      "path": "./dist/public/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "./dist/public/index.wasm",
+      "bytes": 39513091,
+      "sha256": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277"
+    },
+    {
+      "path": "./dist/public/NanumGothic-OFL.txt",
+      "bytes": 4534,
+      "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+    },
+    {
+      "path": "./vercel.json",
+      "bytes": 769,
+      "sha256": "e0e818901d2253c1acf984d9e5b1f32c10cee19cbd72819670a68fc5669d384d"
+    }
+  ],
+  "deployment_id": "dpl_GPUtKqKtkTcjC7D1gLSMWZCjbVo5",
+  "owner": "Main",
+  "next_beat": "Resolve retained narrow embedded-canvas text clipping in an authorized UI task; no unmeasured NPC/G4/G6/performance claims",
+  "deployed_source_commit": "403058a55b8148e2847401046bf4b0763fb55087",
+  "cleanup": {
+    "release_http_server": "stopped",
+    "isolated_build_checkout": "removed",
+    "independent_browser": "closed by verifier",
+    "parent_browser": "closed by Main"
+  },
+  "publication_note": "The deployment was built from the already-pushed source commit above. This receipt and handoff documentation are published in a separate metadata-only follow-up commit; that commit must not be mistaken for the deployed source."
+}

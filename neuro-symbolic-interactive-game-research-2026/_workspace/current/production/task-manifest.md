@@ -204,6 +204,31 @@ production defect. G4 is unassessed and G6 remains `FIX`. Production desktop re-
 production save/reload, current mobile verification, warmed performance/input, the 30-minute soak,
 rollback, audio focus, and the open human-gesture pointer-lock check remain.
 
+### Latest operator release — 2026-10-14
+
+Owner: Main. Existing implementation rebuilt and deployed from pushed source
+`403058a55b8148e2847401046bf4b0763fb55087` on an isolated checkout; only the reviewed NPC
+design/wiki documents were added to that source commit. No new NPC controller is implemented.
+Production: `https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/`, deployment
+`dpl_GPUtKqKtkTcjC7D1gLSMWZCjbVo5` (READY). The generated deployment URL remains protected;
+the public alias was checked without credentials or a protection bypass.
+
+Latest verified commands: clean-checkout pre-push `git push origin HEAD:main` (12 CI stages,
+145 unit tests, 62 pytest tests, 48 subtests); `make -C paper/latex check` (EN/KO 9/9 pages);
+`./scripts/build_godot_web.sh`; `./scripts/deploy_vercel_dashboard.sh`. Public-safe native
+JSON smoke passed the exact 8 checks and terminal SHA, 16 deployed files matched staged
+SHA-256/size receipts, and 6 public routes/security-header checks passed. Independent desktop
+browser smoke at 1440x1000 completed start/tutorial/Start Case/case-file open-close with zero
+console/page/request/HTTP errors (11/11 requests 200). Production E/proposal-COMMIT and full
+playthrough were not exercised. Main preserved all 12 unrelated dirty user files byte-for-byte.
+
+Evidence: `_workspace/current/qa/releases/2026-10-14-build-deploy/release.json`,
+`deploy.log`, `public-safe-smoke.log`, `production-browser.json`, and `production-desktop.png`.
+Rollback target: `dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg`. No rollback execution is claimed.
+Next beat/blocker: retain narrow 390x844 embedded-canvas text clipping as FIX; resolve it only
+in an authorized UI change. No G4/G6, human-gesture, performance, journal, or efficacy promotion.
+
+
 Refresh rule: any lane, generator, authority boundary, entry point, Web export behavior, gate,
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
