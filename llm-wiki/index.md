@@ -13,6 +13,7 @@
 
 ## Sources and reports
 
+- [[wiki/reports/2026-10-14-npc-goal-recovery-design]] — **독립 검토 완료된 NPC 운영 시스템 설계**: PASS_FOR_USER_REVIEW; 게임 고정 목표, 자연어 의도 해석 + 기호 재계획, 실제 Godot 이벤트 폐루프, 권한·상태 신선도·claim/fact 분리, 대조군/지표/발언 출처 동결 기준; 프로토콜·구현·새 효능 결과는 미완료
 - [[wiki/reports/2026-10-14-paper-experiment-optimization]] — **current paper/game revision (D-075)**: bounded 2025–2026 primary-source refresh (58 records), EN/KO evidence-scoped methods paper, frozen E1 reproduction (121 = 85 + 36; 11/11 CSVs), non-pooled regime SVG, fresh r2 game crops, opt-in bounded local receipts, and explicit remaining author/submission boundaries
 - [[wiki/reports/2026-09-18-d073-detective-loop-trace-mirror-and-release]] — **current game track (D-073)**: Aside deep research ×2 filed as intake; hash-bound `EvaluationTrace` mirror + per-node commit-gate dashboard (explicit pass/fail/skipped/out-of-scope, no default state); case-file board, hint ladder, coach cards, slot-assembly deduction, paged end card, four-zone HUD; world stations/VFX/gesture clips; Higgsfield case-v1 pack + evidence-desk GLB; `SL-PLAY-EVAL-001` 52/52 core + 4/4 extension; production `dpl_BkguPJPErtawmhjxU5cvg97PBsiq`
 - [[wiki/reports/2026-09-06-paper-game-factcheck-and-release]] — bounded primary-source fact-check, bilingual claim-scope corrections, dashboard predicate accounting, and combined paper/game release

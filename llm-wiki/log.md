@@ -211,3 +211,10 @@
 - Report: [[wiki/reports/2026-10-14-paper-experiment-optimization]].
 - Final-source verification: `make -C paper/latex check` PASS, EN/KO 9/9 pages; `./scripts/verify_like_ci.sh` exit 0, 145 unit tests + 62 pytest tests + 48 subtests and all 12 CI stages PASS. Final limitation/ethics/conclusion semantics and generated-asset disclosures are aligned. Browser startup/tutorial/case-file open-close smoke is retained separately from unrun gameplay/mobile/soak/latency. Commit/push result is recorded only after execution in the canonical QA receipt.
 - Implementation published: `git push origin main` exit 0, `4382f69..4e8d1a9 main -> main`; 86 task-owned paths only. Pre-push reran all 12 CI stages with 145/62/48 passing tests/subtests. User changes, unconfirmed captures and the unapproved Codex PNG remain excluded. No production deploy, journal submission or result promotion is claimed.
+
+## [2026-10-14] design interview | 변화에 견디는 하이브리드 NPC 운영 시스템
+- 사용자와 시스템/논문 두 축, NPC, 고정 목표·자율 계획, 자연어 해석은 LLM·계획은 기호 계획기, 실제 Godot 턴/이벤트 기반 방향을 결정했다. 사용자는 설계·실험 명세 작성 후 검토만 승인했다.
+- 정본: [[wiki/reports/2026-10-14-npc-goal-recovery-design]]. `.omc/specs/deep-interview-npc-goal-recovery.md`는 로컬 인터뷰 포인터이며 문서의 정본은 아니다.
+- 독립 critic의 최초 REVISE를 반영해 안전 commit은 비교 성과가 아닌 invariant, 국소 수리와 재계획의 분리, revision/hash envelope, claim/intent의 인과 경로, 의도 정확도와 회복 성과의 분리, 예산·timeout·발언 출처 동결을 명세화했다. 후속 `NpcSpecCritic`의 PASS_FOR_USER_REVIEW를 직접 IRC로 수신했고, 수정 조항 5건(Plan 인과 입력, O label 정보 경계, player 정책 소유권, adapter 근거, D-06+D-08 수집 게이트)을 직접 읽어 CLOSED로 확인했다. 사용자의 명세 검토 가능성만 인증하며 D-01..D-08·구현·새 효능 결과는 미완료 상태를 유지한다.
+- Obsidian CLI가 실행 중인 앱을 찾지 못해 저장소의 직접 파일 fallback을 사용했다. 코드·원고·동결 실험·claim status·graph를 변경하거나 새 실험·커밋·푸시를 실행하지 않았다.
+- 문서 품질 독립 평가 4.4/5(선택적 보완 전 초안); 최종 문서 구조 검증 `uv run python scripts/lint_wiki.py ../llm-wiki --format json` exit 0, 74 pages, missing/broken/orphan 모두 없음. 최초 후속 critic task의 null-yield 전달 실패와 lifecycle 조회 실패는 정본 §13에 보존했고 최종 직접 IRC 판정과 구분했다.
