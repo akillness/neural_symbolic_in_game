@@ -1,0 +1,17 @@
+Native verification commands recorded 2026-10-15
+
+WORKDIR
+/Users/jangyoung/orca/neural_symbolic_in_game
+
+STAGED_PROJECT
+/tmp/neuro-symbolic-godot-panel
+
+SMOKE
+/opt/homebrew/bin/godot --headless --path /tmp/neuro-symbolic-godot-panel res://scenes/main_3d.tscn -- --smoke --public-safe
+
+PRESENTATION EVALUATION
+/opt/homebrew/bin/godot --headless --path /tmp/neuro-symbolic-godot-panel res://scenes/main_3d.tscn -- --evaluate /tmp/neuro-symbolic-panel-evaluation.json --public-safe
+
+ARTIFACTS
+native-smoke.log
+native-presentation.json

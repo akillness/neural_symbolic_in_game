@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0.0",
+  "set_id": "playable-readout-20261014",
+  "classification": "engineering working captures; illustration only; not evidence for any claim, usability, immersion, affect, efficacy, G4, or G6",
+  "used_by": [
+    "paper/latex/en/main.tex",
+    "paper/latex/ko/main.tex"
+  ],
+  "figure_label": "fig:playable-readout",
+  "frozen_from": {
+    "directory": "game-track/godot/docs/latest",
+    "evaluation": "SL-PLAY-EVAL-001",
+    "evaluation_matrix_sha256": "f8db699b8686a90cac980b25340a959eab009a2c46ca1d68f30bf9434a28a5f2",
+    "godot_version": "4.7.1.stable.official.a13da4feb",
+    "project_godot_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "terminal_state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+    "totals": {
+      "combined_checks_passed": 52,
+      "combined_checks_total": 52,
+      "fixture_checks_passed": 40,
+      "fixture_checks_total": 40,
+      "fixtures_passed": 4,
+      "fixtures_total": 4,
+      "presentation_checks_passed": 12,
+      "presentation_checks_total": 12,
+      "screenshots_total": 4,
+      "screenshots_valid": 4
+    },
+    "frozen_on": "2026-10-14"
+  },
+  "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+  "runner": "python3 scripts/run_playable_evaluation.py --godot $HOME/Applications/Godot.app/Contents/MacOS/Godot --capture (fresh disposable staged copy of game-track/godot; canonical project.godot untouched)",
+  "refresh_rule": "Never edit these bytes. To refresh, rerun the runner, copy the new PNG + .shot.json pair into a NEW dated set directory, remeasure trim boxes against the new image layout, update both manuscripts and the source manifest in the same change, and keep generated concept/UI art (portrait, seals, panel textures, world props) outside empirical ledger crops.",
+  "source_binding": {
+    "algorithm": "sha256-bytes-v1",
+    "source_paths": [
+      "res://project.godot",
+      "res://scenes/main_3d.tscn",
+      "res://data/sealed_lighthouse.json",
+      "res://scripts/canonical_state.gd",
+      "res://scripts/sealed_lighthouse_machine.gd",
+      "res://scripts/game3d/game_3d.gd",
+      "res://scripts/game3d/golden_path_layout.gd",
+      "res://scripts/game3d/evaluation_trace.gd",
+      "res://scripts/game3d/harbor_ledger_ui.gd"
+    ],
+    "source_hashes": {
+      "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+      "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+      "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+      "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+      "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962",
+      "res://scripts/game3d/game_3d.gd": "10ad02da9356f4863855851b750b29bb76426b9f2191ec7ff3fbd88b461a3133",
+      "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+      "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+      "res://scripts/game3d/harbor_ledger_ui.gd": "1a1ad38245dc9a5e344ae5a02434f0deece53129b1c88c4b01c2b3f33c22c3cc"
+    },
+    "combined_sha256": "84285db7cb25a6bb51d49ac67a94d33bef64b1d99600d37f4c9c520cb8c3bb49",
+    "complete": true
+  },
+  "files": [
+    {
+      "file": "refusal.png",
+      "stage": "refusal",
+      "sha256": "b354c78f2c68df779a6986c8f79e38faf2a1c7489409987f2da7ae66e5101ce5",
+      "bytes": 466528,
+      "width": 1280,
+      "height": 720,
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "shot_receipt": "refusal.shot.json",
+      "panel": "a",
+      "trim_bp": [200, 30, 360, 545],
+      "trim_coordinate_system": "left bottom right top in source image pixels",
+      "trim_scope": "ledger hold, gate/state-unchanged, next valid entry, learned rule, and what-this-tells-you lines only; excludes portrait, generated panel art, world, and right-side status"
+    },
+    {
+      "file": "authorized_hint.png",
+      "stage": "authorized_hint",
+      "sha256": "46b4d934fb1c7c7ab5e6eca25ba2740d6bb74e03370232b461f31a32f427e267",
+      "bytes": 403034,
+      "width": 1280,
+      "height": 720,
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "shot_receipt": "authorized_hint.shot.json",
+      "panel": "b",
+      "trim_bp": [12, 30, 468, 606],
+      "trim_coordinate_system": "left bottom right top in source image pixels",
+      "trim_scope": "committed entry, contribution clause, and unlocked affordance ledger lines only; right edge stops before generated seal icon and world/prompt areas"
+    },
+    {
+      "file": "ending.png",
+      "stage": "ending",
+      "sha256": "8cedf52c18fdf29855acb9bd74fb35765eb32cb494d9713c173504ba3b1efc26",
+      "bytes": 404233,
+      "width": 1280,
+      "height": 720,
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "shot_receipt": "ending.shot.json",
+      "panel": "c",
+      "trim_bp": [250, 294, 250, 190],
+      "trim_coordinate_system": "left bottom right top in source image pixels",
+      "trim_scope": "visible end-card title, settled statement, investigator contribution, and deduction receipt text; stops above generated seal and lower world/control art"
+    }
+  ]
+}

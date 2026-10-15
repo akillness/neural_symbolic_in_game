@@ -1,0 +1,97 @@
+{
+  "packet_id": "npc-web-current-20261015-r3",
+  "generated_at": "2026-10-15T07:41:32+00:00",
+  "generated_at_method": "datetime.now(timezone.utc).isoformat() read directly from the host clock at write time, not fabricated/estimated",
+  "agent": "NpcWebQA",
+  "scope": "Round-3 current-source retest. Covers (a) Main's confirmed-stable harbor_ledger_ui.gd Case File ScrollContainer fix (unchanged from r2, re-verified here), and (b) a concurrent UI change to the SAME file (NARROW_LEDGER_TOP 0.38->0.58, WIDE_LEDGER_TOP 0.66->0.78, MIN_BOTTOM_PANEL_HEIGHT 244->180, reduced log-line minimums) that Main inspected and identified as an attributed commit (f3b1eed) by its known UI owner - NOT an anonymous/unowned edit (correcting this agent's earlier working assumption) - which Main asked to be preserved, not reverted. New Web build completed ~2026-10-15T07:25Z (local 16:25 KST); reconfirmed unchanged as of this report's generated_at timestamp above (same on-disk mtime/SHA-256, server still serving it). r2 is now explicitly historical, not current. No source/runtime edits, no model/NPC-capability calls, no git operations by this agent.",
+  "r2_superseded_note": "Per Main: the r2 packet (npc-web-current-20261015-r2/) reflects an earlier build and is historical. This r3 packet is the current authoritative evidence. r1 and r2 artifacts were left untouched.",
+  "operational_finding": {
+    "finding": "The static file server (python3 -m http.server 8877) died a SECOND time during this round, independent of and after the restart documented in the r1 packet. It stopped responding to a live page's own same-origin fetch() call (TypeError: Failed to fetch) mid-session, with no exception written to its own log (the log simply stops) and no process left behind (lsof showed no listener at all, unlike round 1's variant which left the process alive but stuck). This happened while 9 tabs across this QA session were open concurrently, 7 of them running full independent Godot/WebGL instances - likely a resource-pressure / reaper-driven death rather than an application bug, consistent with this repo's own qa/npc-panel-html-2026-10-15/cleanup.json describing this exact server as harness-managed and expected to be started per QA session.",
+    "mitigation_this_round": "Closed 6 of this agent's own superseded tabs from rounds 1-2 (dashboard x2, /public/?qa=desktop, ?qa=mobile, ?qa=r2-desktop, ?qa=r2-mobile) to relieve the resource pressure, then restarted the identical unmodified http.server command a second time. Main's own 2 pre-existing tabs and the original about:blank were never touched.",
+    "disclosure": "Flagging this as a recurring environmental fragility worth Main's awareness: anything doing sustained multi-tab real-browser QA against this server should expect it to need restarting, and should keep tab count low."
+  },
+  "asset_sha256_served_vs_disk": {
+    "index.html": {"disk": "feb291065434a3e22cee37e045815ccb6bc3e036e5150d9567087c7070edf294", "served_desktop": "feb291065434a3e22cee37e045815ccb6bc3e036e5150d9567087c7070edf294", "served_mobile": "feb291065434a3e22cee37e045815ccb6bc3e036e5150d9567087c7070edf294", "match": true},
+    "index.pck": {"disk": "14d961a92fd4cf9117fdd7e08c51b85a64a70dc1a0c36ef94c0d21156707be5a", "disk_bytes": 13401968, "served_desktop": "14d961a92fd4cf9117fdd7e08c51b85a64a70dc1a0c36ef94c0d21156707be5a", "served_mobile": "14d961a92fd4cf9117fdd7e08c51b85a64a70dc1a0c36ef94c0d21156707be5a", "match": true},
+    "index.js": {"disk": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c", "note": "unchanged across r1/r2/r3 builds"},
+    "index.wasm": {"disk": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277", "note": "unchanged across r1/r2/r3 builds"},
+    "method": "SHA-256 re-fetched live from inside the real browser (fetch + crypto.subtle.digest) on BOTH the desktop and mobile r3 passes, independently, after the server was confirmed back up; both match the disk-computed hash exactly.",
+    "main_stated_hash_52e4f8c9": "Not literally reproduced by this agent's SHA-256 of any individual served file (index.html/js/pck/wasm); likely a different identifier (e.g. a build-pipeline/commit-ish artifact hash such as bg5 artifact 2715) rather than a per-file content hash. Reporting this discrepancy transparently rather than silently asserting a match - the per-file binding to the current on-disk build is independently proven regardless of hash-naming scheme.",
+    "reconfirmation_at_generated_at_timestamp": "Re-checked disk mtime (unchanged, Oct 15 16:25 local) and disk SHA-256 for index.html/index.pck (identical to the values above) at the report's final generated_at timestamp, plus a live curl 200 against http://127.0.0.1:8877/public/ - no new build landed between the mobile pass above and this report being finalized; the served-vs-disk binding already proven on both viewports remains current. Per Main: the UI hash Main tracks as '52e4f8c9...' and terminal state '4b231...' correspond to this same current, now-PASSing build; this agent's own SHA-256 is computed per-file (html/js/pck/wasm) rather than as a single combined build hash, which is why the literal strings differ while both describe the same build."
+  },
+  "desktop_1440x900": {
+    "boot_and_start": {
+      "status": "PASS",
+      "boot_wait_s": 0.228,
+      "observation": "Clean boot, start card identical layout/content to r1/r2 (title, premise, BEGIN button, keyboard-guide note), no clipping.",
+      "screenshots": ["r3-desktop-01-loading.png", "r3-desktop-02-start-screen.png"]
+    },
+    "current_lead": {
+      "status": "PASS",
+      "observation": "'CURRENT LEAD | Speak with Captain Mira at the end of the dock.' toast and the persistent top-bar ledger box with the same hint both render correctly after BEGIN+intro.",
+      "screenshots": ["r3-desktop-03-current-lead.png"]
+    },
+    "field_guide_T": {
+      "status": "PASS",
+      "observation": "4-page folio opens/closes cleanly, identical content to r1/r2, no clipping.",
+      "screenshots": ["r3-desktop-04-field-guide-open.png (interrupted mid-session, re-confirmed via r3-desktop-00-state-check.png)", "r3-desktop-05-field-guide-closed.png"]
+    },
+    "dialogue_mira_and_choice": {
+      "status": "NOT REACHED - reported as an explicit unverified boundary, not a failure.",
+      "attempted": "11 distinct movement attempts from spawn (0.0, 0.2, 2.0) toward Captain Mira's interactable at (3.0, 1.0, 11.0), using held 'w', strafe combinations ('a'+'w', 'd'+'w'), and large relative mouse movements for camera yaw (confirmed working - a yaw change was visually verified via before/after screenshots). 5 of 11 attempts triggered the game's own 'FALL RECOVERY | Returned to the dock entrance.' toast (confirms that safety system itself still works correctly), the remainder left the player at a water's-edge without falling but also without reaching the 2.6-radius Mira interaction zone or ever seeing the '[E] | Speak with Captain Mira' focus prompt.",
+      "why_stopped": "Blind keyboard/mouse navigation in a 3D scene from screenshots alone, with no exposed ground-truth position telemetry during free movement (the game's window.postMessage dashboard telemetry only fires on specific session/focus/commit events, not continuously - confirmed by an explicit empty-listener test), proved too unreliable to responsibly keep iterating against a time budget that also needed to cover the mobile viewport and the Case File re-check. This matches the task's own stated boundary: 'If specific control requires physical pointer not available report exact unverified boundary; don't claim all flows.'",
+      "what_this_does_and_does_not_mean": "Does NOT mean Mira's dialogue/choice UI is broken - it was never reached, so nothing about it (working or broken) can be claimed either way this round. Does NOT mean movement/camera/fall-recovery are broken - those were all observed functioning as designed during the attempts.",
+      "evidence": ["r3-desktop-walk-a1.png", "r3-desktop-walk-a2.png", "r3-desktop-walk-b1.png", "r3-desktop-walk-c1.png", "r3-desktop-walk-d1.png", "r3-desktop-walk-turn-test.png (proves camera yaw control works)", "r3-desktop-walk-e1.png", "r3-desktop-walk-f0-after-turn.png", "r3-desktop-walk-g1.png", "r3-desktop-walk-g2.png"]
+    },
+    "case_file_all_4_and_footer": {
+      "status": "PASS - no regression from r2",
+      "observation": "All 4 cards (LENS, MOUNT, LEAD, SEALED) fit side-by-side with no scrolling needed at this width; CHAIN 0/3 PROVEN readout and the '[C] or [Esc] CLOSE CASE FILE' footer both fully legible, identical to the confirmed-fixed r2 render.",
+      "screenshots": ["r3-desktop-walk-h1.png", "r3-desktop-walk-h2-closed.png"]
+    }
+  },
+  "mobile_390x844": {
+    "boot_and_start": {
+      "status": "PASS",
+      "boot_wait_s": 0.087,
+      "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0,
+      "observation": "Clean boot, start card reflows identically to r1/r2, no clipping.",
+      "screenshots": ["r3-mobile-01-loading.png", "r3-mobile-02-start-screen.png"]
+    },
+    "current_lead": {
+      "status": "PASS (timing note)",
+      "observation": "The screenshot taken at the scripted 3.5s mark still showed the non-interactive intro cinematic in progress (no HUD yet) - same benign cadence variance observed in r1/round-1 desktop. The HUD/current-lead ledger box IS confirmed visible in the immediately-following field-guide and case-file screenshots, so the HUD itself renders correctly; only this specific screenshot's timing landed slightly early.",
+      "screenshots": ["r3-mobile-03-current-lead.png"]
+    },
+    "field_guide_T": {
+      "status": "PASS",
+      "observation": "4-page folio reflows cleanly to 390px width, identical to r1, no clipping.",
+      "screenshots": ["r3-mobile-04-field-guide-open.png", "r3-mobile-05-field-guide-closed.png"]
+    },
+    "dialogue_mira_and_choice": {
+      "status": "NOT ATTEMPTED this round (time-boxed) - same unverified-boundary reasoning as the desktop pass, which already demonstrated the navigation reliability problem; repeating the same unreliable approach at a second viewport was judged not to produce new information worth the additional risk/time."
+    },
+    "case_file_all_4_scroll_and_footer": {
+      "status": "PASS - FIX CONFIRMED STILL HOLDING, no regression from r2 under the concurrent ledger-anchor change",
+      "observation": "Case File opens with LENS/MOUNT visible and the footer ('CHAIN 0/3 PROVEN', next-valid-entry hint, '[C] or [Esc] CLOSE CASE FILE') fully visible and fixed in place immediately on open. A wheel-scroll gesture correctly reveals LEAD/SEALED beneath, with the footer staying fixed throughout, then scrolls back cleanly. Identical behavior to the r2 confirmed-fixed packet.",
+      "residual_minor_cosmetic_note_unchanged_from_r1_r2": "The top ledger 'CURRENT LEAD' box still visually peeks a few px above the Case File panel's top border at this width - unrelated to either the r2 ScrollContainer fix or the concurrent ledger-anchor change (that change's own source comments indicate it specifically targets the embedded-dashboard-iframe case with a shrunk canvas, not this standalone full-viewport case). Nothing is hidden or unreadable; flagged for awareness only.",
+      "screenshots": ["r3-mobile-06-case-file-open.png", "r3-mobile-07-case-file-scrolled.png", "r3-mobile-08-case-file-scrolled-back.png", "r3-mobile-09-case-file-closed.png"]
+    }
+  },
+  "console_page_error_summary_across_instrumented_passes": {
+    "note": "Listeners were attached before navigation on every page.goto() in this round. Some short, uninstrumented single-action helper scripts (the walk-step and case-file-toggle screenshots) did not carry their own listeners since they operated on an already-open, already-instrumented-at-creation page without re-attaching new ones each call; no error overlays, crash screens, or broken rendering were visible in ANY of the 23 screenshots taken in this round, including during the 5 fall-recovery events.",
+    "stage_A_desktop_boot_through_current_lead": "Interrupted by a tool-level 60s timeout under heavy multi-tab resource contention (NOT a page crash or error - the browser itself was simply slow under 9 concurrent WASM instances). Its own error counters were never persisted as a result. A follow-up screenshot taken immediately after confirmed the page was healthy, responsive, and mid-interaction (Field Guide open, HUD correctly rendered).",
+    "stage_B_sha_refetch_attempt": "1 request failure (TypeError: Failed to fetch) - this was the genuine, confirmed static-file-server outage described in operational_finding above, not a page-level script error. 0 console errors, 0 page errors from the page's own JS.",
+    "stage_C_after_server_restart": "0 console, 0 page_errors, 0 failed_requests - clean.",
+    "mobile_full_pass": "3 console (expected Godot engine startup log lines, matching every prior round), 0 page_errors, 0 failed_requests, 0 bad_http_responses - clean."
+  },
+  "explicit_excluded_claims": [
+    "No NPC utterance or free-text capability request was ever typed or submitted; the Mira dialogue/choice list itself was never reached, so NOTHING about it - working or broken - is claimed this round.",
+    "No model calls occurred from this QA pass.",
+    "No source, GDScript, runtime, or data file was edited by this agent; the concurrent harbor_ledger_ui.gd ledger-anchor change is Main-inspected commit f3b1eed by its known UI owner (not an anonymous edit) and was preserved untouched, only observed.",
+    "No claim of human comprehension, usability, or performance/production-readiness.",
+    "Mobile checks used viewport emulation + mouse/wheel events, not touch-event emulation or a physical touchscreen.",
+    "G4/G6 efficacy/performance left untouched.",
+    "Main's stated build hash '52e4f8c9...' was not independently reproduced by this agent's own per-file SHA-256 computations; see asset_sha256_served_vs_disk.main_stated_hash_52e4f8c9 for the honest reconciliation note."
+  ],
+  "overall_verdict": "PASS for every item that was reachable: clean zero-error boot at both viewports, start screen, current-lead ledger/toast, [T] Field Guide (both viewports), and the Case File 4-card scroll + fixed footer fix confirmed STILL HOLDING at mobile under the new concurrent ledger-anchor change, with no regression at desktop. Served SHA-256 (re-verified live from the browser on both viewports) is bound to the current on-disk build. The Mira dialogue/choice check was NOT REACHED after 11 good-faith navigation attempts and is reported as an explicit unverified boundary rather than a pass or a fail, per the task's own stated allowance for exactly this situation. One operational recurrence (the static server dying a second time under multi-tab load) was mitigated transparently by closing this agent's own superseded tabs and restarting the identical unmodified serving command."
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "sealed-lighthouse-v1",
+  "title_en": "The Sealed Lighthouse",
+  "title_ko": "봉인된 등대",
+  "initial_state": {
+    "state_schema_version": "1.0.0",
+    "scenario_id": "sealed-lighthouse-v1",
+    "revision": 0,
+    "player": {
+      "location": "harbor_dock",
+      "inventory": []
+    },
+    "world": {
+      "reachable_locations": [
+        "harbor_dock",
+        "lamp_store"
+      ],
+      "object_locations": {
+        "signal_lens": "lamp_store"
+      }
+    },
+    "quest": {
+      "stage": 0,
+      "flags": [
+        "dock_saved"
+      ]
+    },
+    "facts": [
+      "dock_saved",
+      "lighthouse_dark"
+    ],
+    "npcs": {
+      "captain_mira": {
+        "knowledge": [
+          "dock_saved",
+          "keeper_betrayal",
+          "lighthouse_dark",
+          "tide_marks_hint"
+        ],
+        "disclosed": [
+          "dock_saved",
+          "lighthouse_dark"
+        ],
+        "relationship_memory": []
+      }
+    }
+  },
+  "disclosure_policy": {
+    "policy_id": "sealed-lighthouse-disclosure-v1",
+    "permanently_forbidden": [
+      "keeper_betrayal"
+    ],
+    "stage_gates": [
+      {
+        "fact_id": "tide_marks_hint",
+        "minimum_stage": 2
+      }
+    ]
+  },
+  "safe_fallback": {
+    "fallback_id": "mira-safe-deflection-v1",
+    "text_en": "Mira studies the dark tower and asks you to recover the signal lens first.",
+    "text_ko": "미라는 어두운 탑을 바라보며 먼저 신호 렌즈를 회수해 달라고 말한다."
+  }
+}
+

@@ -1,0 +1,226 @@
+{
+  "status": "PASS_LOCAL_SCOPE",
+  "completed_at": "2026-10-15T01:59:34.852Z",
+  "scope": "Existing Godot contextual-panel fix; standalone Korean current-vs-proposed NPC explainer; Codex-only illustration; advisory Jev skill/model routing",
+  "deployment_performed": false,
+  "commit_or_push_performed": false,
+  "new_npc_system_implemented": false,
+  "engineering_only": true,
+  "commands": [
+    {
+      "command": "./scripts/build_godot_web.sh",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "result": "PASS: Web build ready",
+      "source": "artifact://695"
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py -q",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "result": "3 passed in 37.52s",
+      "after_ruff_format": true,
+      "source": "artifact://825"
+    },
+    {
+      "command": "uv run ruff check tests/test_godot_panel_lifecycle.py",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "result": "PASS",
+      "source": "artifact://828"
+    },
+    {
+      "command": "uv run ruff format --check tests/test_godot_panel_lifecycle.py",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "result": "1 file already formatted"
+    },
+    {
+      "command": "uv run python scripts/lint_wiki.py ../llm-wiki --format json",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "result": {
+        "pages": 74,
+        "missing_paths": [],
+        "broken_links": [],
+        "orphan_pages": []
+      }
+    }
+  ],
+  "native": {
+    "exact_argv": "native-commands.txt",
+    "smoke": {
+      "passed": true,
+      "checks": 8,
+      "terminal_state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "evidence": "native-smoke.log"
+    },
+    "presentation": {
+      "passed": true,
+      "engineering_only": true,
+      "checks": 16,
+      "evidence": "native-presentation.json"
+    }
+  },
+  "game_browser": {
+    "verifier": "Main",
+    "url": "http://127.0.0.1:8877/public/",
+    "viewport": [
+      1440,
+      1000
+    ],
+    "sequence": [
+      "BEGIN INVESTIGATION",
+      "START CASE: contextual dock hidden",
+      "Move to Captain Mira",
+      "E: dock and four choices visible",
+      "Escape: dock hidden",
+      "E: dialogue reopens",
+      "Step away: dock hidden",
+      "C: Case File opens",
+      "C: Case File closes without resurrecting dock"
+    ],
+    "diagnostics": {
+      "console_errors": 0,
+      "page_errors": 0,
+      "request_failures": 0,
+      "http_errors": 0
+    },
+    "proof_kind": "Real keyboard/mouse actions and rendered screenshots; not injected game state",
+    "baseline_url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/",
+    "baseline_limit": "Read-only production before capture, not a deployed fix; reconstructed native negative fixture is not an original-byte historical checkout"
+  },
+  "html_browser": {
+    "verifier": "Main",
+    "scheme": "file://",
+    "viewports": [
+      [
+        1440,
+        1000
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "embedded_images": 2,
+    "natural_image_size": [
+      2048,
+      1152
+    ],
+    "horizontal_overflow_at_390": false,
+    "external_http_requests": 0,
+    "console_errors": 0,
+    "page_errors": 0,
+    "keyboard_enter_then_arrowdown": {
+      "enter_focus": "tab-0",
+      "next_focus": "tab-1",
+      "selected_tab": "tab-1",
+      "panel_label": "tab-1"
+    },
+    "javascript_disabled": {
+      "buttons": 6,
+      "disabled_buttons": 6
+    },
+    "offline_limit": "Successful standalone file load and zero external dependencies. Main browser navigator.onLine stayed true despite requested offline emulation; not used as an offline-state assertion. Independent review also exercised an unpatched offline browser."
+  },
+  "images": [
+    {
+      "name": "npc-system-architecture",
+      "bytes": 3456615,
+      "width": 2048,
+      "height": 1152,
+      "sha256": "3109cbfa5c5fb90aa64b4c576e0fea43537ed14cf754777f04cb9ff55d766a58"
+    },
+    {
+      "name": "npc-harbor-concept",
+      "bytes": 3548279,
+      "width": 2048,
+      "height": 1152,
+      "sha256": "cedbcadeca403f90247751bab8cbb5c9e699ebee8fb58e2c09045e34eb736b45"
+    }
+  ],
+  "image_boundary": {
+    "provider": "private-codex",
+    "generation_model": "gpt-5.6-sol",
+    "image_model": "gpt-image-2.5-sunburst",
+    "source_dimensions": [
+      1672,
+      941
+    ],
+    "postprocess": "Disclosed native sips resampling to 2048x1152; no non-Codex generated imagery",
+    "runtime_eligible": false,
+    "empirical_evidence": false,
+    "human_rights_style_review": "pending",
+    "license": "unreported"
+  },
+  "reviews": {
+    "godot": "PanelCodeReviewer PASS; no blockers",
+    "python_initial": "BLOCK retained in python-review-initial.json; Main actual parse failure retained by regression-main-original-failure.log",
+    "python_final": "PASS; both original P1 CLOSED in python-review-final.json",
+    "html_initial": "PASS with two nonblocking findings retained in html-review-initial.json",
+    "html_closure": "Main verified selected-tab focus and all-six-disabled no-JS fixes",
+    "provider_recovery": "Two specialist provider HTTP429 failures were rerouted explicitly to available openai-codex/gpt-6.1-sol",
+    "wrong_root_review": "A closure attempt read unrelated root/tests instead of the nested project; retained for transparency, not treated as findings about authoritative final files"
+  },
+  "regression_negative_controls": {
+    "source": "regression-results.json",
+    "zero_exit_passing_marker_engine_errors_rejected": 2,
+    "reconstructed_lifecycle_fixture_expected_failures": 6,
+    "baseline_provenance": "Manually restored pre-edit source read snapshots by PanelLifecycleFix; not pristine historical bytes"
+  },
+  "preservation": {
+    "canonical_project_before": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "canonical_project_after": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "user_files_count": 12,
+    "user_file_changes": [],
+    "user_hashes_before": {
+      "README.md": "295980ff34a255104b33726e489b26c9ad0aba236763989a54f5f419f9be3684",
+      "README.ko.md": "1c436fc26811cd6c23bf83b91671a81e55602381e197b5005d9eff6a1c877998",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png": "b7f7da613a706d9a7df86c523692fe6fe4818f101b19300e4be5e9bc6205df77",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png": "3264fec02872f1ce9440467c99a1089c45a1b7fe2d07e5cc04319daa48a10731",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png": "e7ad7594f28cd51f3cce7d457c048f47dde823cc70158d915adeb55754e87ab3",
+      "neuro-symbolic-interactive-game-research-2026/game-track/design/game-ui-contract.json": "a44bc9b449c14de6f6726f15a53d4a1abf48f9d0648023a8acc31fa6e99de548",
+      "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md": "00a70df8f83d0ec2c931c1f8a7f3876816dea718dc7a4f12a6f206675131a851",
+      "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md": "2cb1426067e5aa5252471cc6a57dfc92bed972f2d6367f8765eb8fdf4c239f8e",
+      "neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png": "b7f7da613a706d9a7df86c523692fe6fe4818f101b19300e4be5e9bc6205df77",
+      "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.css": "92bf885741b1e65bb4ee4bb02e464a309e6036c5af6d06bcd3679fe3b814c307",
+      "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.js": "62be4fb626e9c628a70a080523e82ff4e85de481a586f0da70490518b61b98cf",
+      "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/index.html": "a01fd17394063071db2d2879bb74920ef9e60df7e2ce5b3bf7770cad2e263959"
+    },
+    "user_hashes_after": {
+      "README.md": "295980ff34a255104b33726e489b26c9ad0aba236763989a54f5f419f9be3684",
+      "README.ko.md": "1c436fc26811cd6c23bf83b91671a81e55602381e197b5005d9eff6a1c877998",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png": "b7f7da613a706d9a7df86c523692fe6fe4818f101b19300e4be5e9bc6205df77",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png": "3264fec02872f1ce9440467c99a1089c45a1b7fe2d07e5cc04319daa48a10731",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png": "e7ad7594f28cd51f3cce7d457c048f47dde823cc70158d915adeb55754e87ab3",
+      "neuro-symbolic-interactive-game-research-2026/game-track/design/game-ui-contract.json": "a44bc9b449c14de6f6726f15a53d4a1abf48f9d0648023a8acc31fa6e99de548",
+      "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md": "00a70df8f83d0ec2c931c1f8a7f3876816dea718dc7a4f12a6f206675131a851",
+      "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md": "2cb1426067e5aa5252471cc6a57dfc92bed972f2d6367f8765eb8fdf4c239f8e",
+      "neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png": "b7f7da613a706d9a7df86c523692fe6fe4818f101b19300e4be5e9bc6205df77",
+      "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.css": "92bf885741b1e65bb4ee4bb02e464a309e6036c5af6d06bcd3679fe3b814c307",
+      "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.js": "62be4fb626e9c628a70a080523e82ff4e85de481a586f0da70490518b61b98cf",
+      "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/index.html": "a01fd17394063071db2d2879bb74920ef9e60df7e2ce5b3bf7770cad2e263959"
+    }
+  },
+  "final_source_sha256": {
+    "game-track/godot/scripts/game3d/harbor_ledger_ui.gd": "3f9e3c4995e6047078491244d091e4c3babe7b85b25fa3f676794b6f2de8d9bd",
+    "game-track/godot/scripts/game3d/game_3d.gd": "77b17812a92995177f8b6c36c267d2a82d7ab057907f591350ba01a91d3abd7c",
+    "tests/test_godot_panel_lifecycle.py": "1508b6687e485c883d0a874ac54a77a13b71bc5dfc5e5b57cc7175d66558b514",
+    "tests/godot_panel_lifecycle_harness.gd": "7265b2e48dc4528d2396387fcc61872cb0a60ae1b598891412b27a290fb9f37e",
+    "_workspace/current/ui/npc-operating-system-brief/index.html": "94aa60bb2b31dad8e59a48736789e769063decd674e011e0baaeebc0b2ca39b0",
+    "_workspace/current/ui/npc-operating-system-brief/assets/npc-system-architecture.png": "3109cbfa5c5fb90aa64b4c576e0fea43537ed14cf754777f04cb9ff55d766a58",
+    "_workspace/current/ui/npc-operating-system-brief/assets/npc-harbor-concept.png": "cedbcadeca403f90247751bab8cbb5c9e699ebee8fb58e2c09045e34eb736b45"
+  },
+  "regression_hash_note": "regression-results.json records its pre-Main-formatter Python hash; final_source_sha256 here binds the final formatted/tested bytes",
+  "screenshots": [
+    "game-before-production.webp",
+    "game-after-start-case.webp",
+    "game-dialogue-open.webp",
+    "game-after-step-away.webp",
+    "game-case-file-open.webp",
+    "npc-html-mobile.webp",
+    "npc-html-desktop.png"
+  ],
+  "unchanged_boundaries": [
+    "No new GoalController, interpreter, planner or live Python roundtrip",
+    "No frozen paper/capture or C-RESULT promotion",
+    "G4/G6, mobile game readability, full-playthrough and performance are not certified",
+    "User-owned dirty dashboard/UI contract/README files preserved"
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "url": "http://127.0.0.1:8877/public/?qa=desktop",
+  "title": "TRACE-RPG: The Sealed Lighthouse",
+  "nav_dom_load_s": 0.145,
+  "boot_wait_ok": true,
+  "boot_wait_error": null,
+  "boot_wait_s": 2.758,
+  "served_sha256": {
+    "index.html": {
+      "status": 200,
+      "bytes": 5464,
+      "sha256": "808198099331baac5e2d5c5e1dd00e420699eeaab9f105f4786896a564f4b5c2"
+    },
+    "index.js": {
+      "status": 200,
+      "bytes": 279815,
+      "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c"
+    },
+    "index.pck": {
+      "status": 200,
+      "bytes": 13401824,
+      "sha256": "568e80d6928d298df595d5c90af22204cc6197987ba676cfd7ebb505f51098e2"
+    },
+    "index.wasm": {
+      "status": 200,
+      "bytes": 39513091,
+      "sha256": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277"
+    },
+    "index.png": {
+      "status": 200,
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    }
+  },
+  "steps": [
+    {
+      "step": "desktop-01-loading",
+      "t": 1792046989.560488
+    },
+    {
+      "step": "desktop-02-boot-start-screen",
+      "t": 1792046993.2869692
+    },
+    {
+      "step": "desktop-03-after-begin-tutorial",
+      "t": 1792046994.644486
+    },
+    {
+      "step": "desktop-04-after-esc-close-tutorial",
+      "t": 1792046995.164329
+    },
+    {
+      "step": "desktop-05-field-guide-open",
+      "t": 1792046995.899549
+    },
+    {
+      "step": "desktop-06-field-guide-closed",
+      "t": 1792046996.4103749
+    },
+    {
+      "step": "desktop-07-case-file-open",
+      "t": 1792046997.093076
+    },
+    {
+      "step": "desktop-08-case-file-closed",
+      "t": 1792046997.8844612
+    },
+    {
+      "step": "desktop-09-esc-pointer-toggle-1",
+      "t": 1792046998.637407
+    },
+    {
+      "step": "desktop-10-esc-pointer-toggle-2",
+      "t": 1792046999.319992
+    },
+    {
+      "step": "desktop-11-click-canvas-recapture",
+      "t": 1792047000.052632
+    }
+  ],
+  "pointer_lock_checks": {
+    "after_begin_click": true,
+    "after_esc_toggle_1": false,
+    "after_esc_toggle_2": true,
+    "after_canvas_click": true,
+    "note": "document.pointerLockElement reflects real browser Pointer Lock API grant; Godot's internal Input.mouse_mode / HUD cursor label can change independently of whether the browser actually grants pointer lock (see repo defect-register.md DEF-010: headless automation historically did not obtain real pointer lock even when the HUD label changed)."
+  },
+  "events": {
+    "console": [
+      {
+        "type": "log",
+        "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org",
+        "t": 1792046989.968682
+      },
+      {
+        "type": "log",
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "t": 1792046990.212954
+      },
+      {
+        "type": "log",
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "t": 1792046990.4111009
+      }
+    ],
+    "page_errors": [],
+    "request_failed": [],
+    "responses": []
+  }
+}

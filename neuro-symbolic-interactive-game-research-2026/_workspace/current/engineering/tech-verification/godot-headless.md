@@ -37,10 +37,10 @@ godot --headless --path game-track/godot --quit-after 120 -- \
   --output="<absolute evidence/fixture-id path>"
 ```
 
-Authoritative retained root, selected and manifest-hash-bound by `tech-verification/current.json`:
-`_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`.
-`evidence-manifest.json` records the OS/platform, command template, complete summaries, byte counts,
-and SHA-256 for every JSONL trace, save, and summary.
+Authoritative current root, selected and manifest-hash-bound by `tech-verification/current.json`:
+`_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/`.
+`evidence-manifest.json` records the current host platform, command template, complete summaries, byte
+counts, and SHA-256 for every JSONL trace, save, summary, and non-headless PNG capture.
 
 The retained directory is immutable. Future captures must use a new ID, for example:
 
@@ -49,9 +49,9 @@ uv run python scripts/capture_godot_evidence.py \
   --evidence-set-id godot-4.7.1-yyyymmddthhmmssz-sealed-lighthouse-v1
 ```
 
-The command stages outputs outside the evidence lane, reserves the target without replacement,
-moves the completion manifest last, and fails closed when either the staging ID or retained
-evidence-set ID already exists.
+The command stages a disposable Godot project copy and outputs outside the evidence lane, reserves the
+target without replacement, moves the completion manifest last, and fails closed when either the
+staging ID or retained evidence-set ID already exists.
 
 | Fixture | Events | Commits | Fault count | Fallbacks | Terminal/load/replay/oracle hash | Hard checks |
 |---|---:|---:|---:|---:|---|---|

@@ -1,5 +1,19 @@
 # TRACE-RPG Paper 2026
 
+## Current implementation and evidence — 2026-10-15
+
+The fixed-goal NPC prototype is implemented; see [[wiki/reports/2026-10-15-npc-goal-operation-implementation]] for the complete proof genealogy and exact commands. The canonical `verified-run-002` packet has 16 valid engineering rows plus all 72 descriptive screening rows and 24 authenticated P CLI attempts explicitly configured as `gpt-5.6-sol`. Each screening arm retains 20 completed executions and 4 pre-authored stale-control failures; goal counts 4/24 are not efficacy estimates. The decision-model identifier propagates a configured selector; provider revision, provider seed, tokens, and cost remain unavailable. No independent labels or oracle/gold status are inferred.
+
+Current native proof **012** passes in **24.99s**, with 17 matching before/after source hashes, nine trace rows, one reused intent, three valid epoch replays, and zero replay-added model calls. Runtime model calls are not described as zero. Its UI source is `7dc4cf7…`; Game3D `2a273cf…` is a file SHA, not a commit name. Final canonical state is revision 3 / `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. Earlier 007–011 proofs and cohort 001 remain immutable history, not rebound current evidence.
+
+Current render set is `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`: four headless fixtures and three 1280×720 native captures pass; core/extension presentation accounting remains 52/52 + 4/4, smoke 8/8. The 344×720 embedded Mira-choice clipping defect is fixed using actual wrapped-button height. Final-build browser proof exercises all four choices and a real scripted choice click on desktop/mobile, with unchanged canonical hash, reachable Case File/footer, and zero observed browser/network errors. Browser QA makes no model calls.
+
+Both papers are 10 pages. The current citation baseline is 58 references (48 VERIFIED / 10 PREPRINT; 22 prior Semantic Scholar lookups remain rate-limited). Final visual validation covers 110 receipts, 7 SVG assets, and 22 double-regenerated sources; full local CI passes 293 unittest cases plus 78 game tests/48 subtests and the remaining declared gates. Independent Python and Godot reviews pass. This is engineering and descriptive evidence only: human G4/G6, efficacy, generalization, actual provider revision/cost, and journal acceptance remain unestablished. No new production deployment is claimed.
+
+The dated material below preserves the prior method/research context; its earlier future-work wording is historical and does not override this current source-bound NPC status.
+
+## Prior method and evidence context — through 2026-10-14
+
 Current citation baseline (2026-10-14): 58 references, 48 VERIFIED identities and 10 PREPRINT records; 22 prior Semantic Scholar lookups remain rate-limited. This bounded refresh added three primary-record-verified 2025–2026 sources without archival-status promotion. See [[wiki/reports/2026-10-14-paper-experiment-optimization]]; the 2026-09-06 snapshot remains historical.
 
 Project root: `../neuro-symbolic-interactive-game-research-2026/`  

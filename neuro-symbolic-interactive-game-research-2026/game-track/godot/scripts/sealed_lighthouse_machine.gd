@@ -88,6 +88,62 @@ func apply_operation(operation: String, arguments: Dictionary) -> Dictionary:
 		"state": next.duplicate(true),
 		"mutated": CanonicalState.sha256(prior) != CanonicalState.sha256(next),
 	}
+func apply_world_event(event_code: String, arguments: Dictionary = {}) -> Dictionary:
+	var prior := state.duplicate(true)
+	var next := state.duplicate(true)
+	var codes: Array = []
+	var preconditions := {
+		"event_code": event_code,
+		"arguments_empty": arguments.is_empty(),
+		"lens_present": next["world"]["object_locations"].has("signal_lens"),
+		"lens_not_carried": "signal_lens" not in next["player"]["inventory"],
+		"lamp_store_reachable": "lamp_store" in next["world"]["reachable_locations"],
+		"quest_stage": int(next["quest"]["stage"]),
+	}
+	match event_code:
+		"LENS_UNREACHABLE":
+			if not arguments.is_empty():
+				codes.append("WORLD_EVENT_ARGUMENTS_INVALID")
+			if not bool(preconditions["lens_present"]):
+				codes.append("WORLD_EVENT_LENS_MISSING")
+			if not bool(preconditions["lens_not_carried"]):
+				codes.append("WORLD_EVENT_LENS_ALREADY_CARRIED")
+			if not bool(preconditions["lamp_store_reachable"]):
+				codes.append("WORLD_EVENT_ALREADY_APPLIED")
+			if int(preconditions["quest_stage"]) != 0:
+				codes.append("WORLD_EVENT_STAGE_PRECONDITION")
+			if codes.is_empty():
+				next["world"]["reachable_locations"].erase("lamp_store")
+				next["world"]["reachable_locations"] = CanonicalState.sorted_unique(next["world"]["reachable_locations"])
+		_:
+			codes.append("UNSUPPORTED_WORLD_EVENT")
+	if not codes.is_empty():
+		return {
+			"accepted": false,
+			"codes": CanonicalState.sorted_unique(codes),
+			"event_code": event_code,
+			"preconditions": preconditions,
+			"prior_state": prior,
+			"state": prior.duplicate(true),
+			"mutated": false,
+		}
+	next["revision"] = int(prior["revision"]) + 1
+	state = next
+	return {
+		"accepted": true,
+		"codes": [],
+		"event_code": event_code,
+		"preconditions": preconditions,
+		"prior_state": prior,
+		"state": next.duplicate(true),
+		"mutated": CanonicalState.sha256(prior) != CanonicalState.sha256(next),
+		"trace": {
+			"event_code": event_code,
+			"revision_before": int(prior["revision"]),
+			"revision_after": int(next["revision"]),
+			"preconditions": preconditions,
+		},
+	}
 
 
 func _acquire_object(next: Dictionary, arguments: Dictionary) -> Array:

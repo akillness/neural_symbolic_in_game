@@ -1,0 +1,191 @@
+{
+  "actions": [],
+  "actual_state_ref": {
+    "revision": 3,
+    "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "assignment_id": "NPC-SCR1:SCR-D02:P:rep1",
+  "claim_boundary": "Engineering-only canonical bootstrap, identity binding, and deterministic world-event evidence; no participant, efficacy, or usability claim.",
+  "context": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "episode_id": "episode-ccd7414354bd69ccbb7c",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "observation": {
+      "goal_reached": true,
+      "in_dialogue": true,
+      "lens_carried": true,
+      "lens_reachable": false,
+      "signal_restored": true,
+      "tide_lead_authorized": true
+    },
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "request_id": "request-ccd7414354bd69ccbb7c",
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-ccd7414354bd69ccbb7c",
+    "state_ref": {
+      "revision": 3,
+      "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+    }
+  },
+  "engineering_only": true,
+  "errors": [],
+  "events": [
+    {
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "acquire_object",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    },
+    {
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "operation": "install_lens",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      },
+      "state_ref_before": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      }
+    },
+    {
+      "arguments": {},
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "operation": "open_dialogue",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      },
+      "state_ref_before": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      }
+    },
+    {
+      "arguments": {
+        "actor_id": "captain_mira",
+        "fact_id": "tide_marks_hint"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": true,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "operation": "reveal_hint",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 3,
+        "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      },
+      "state_ref_before": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      }
+    }
+  ],
+  "final_state_ref": {
+    "revision": 3,
+    "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "fixture_ref": "data/fixtures/npc-goal-recovery/validated-v5/screening.json#SCR-D02",
+  "initial_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "initial_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+  "input_bytes_preserved": true,
+  "input_sha256_after": "955db27c39be338440e9d89eec70d5ceb43e24cf61a9e1926ec38c1f2162b928",
+  "input_sha256_before": "955db27c39be338440e9d89eec70d5ceb43e24cf61a9e1926ec38c1f2162b928",
+  "mode": "bootstrap",
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "model superiority"
+  ],
+  "observation": {
+    "goal_reached": true,
+    "in_dialogue": true,
+    "lens_carried": true,
+    "lens_reachable": false,
+    "signal_restored": true,
+    "tide_lead_authorized": true
+  },
+  "passed": true,
+  "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+  "schema_version": "npc-engineering/input-1",
+  "source_hashes": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "npc_protocol_config_sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "source_project_config_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "source_schema_sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+  },
+  "state_ref": {
+    "revision": 3,
+    "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "terminal_status": "BOOTSTRAP_APPLIED"
+}

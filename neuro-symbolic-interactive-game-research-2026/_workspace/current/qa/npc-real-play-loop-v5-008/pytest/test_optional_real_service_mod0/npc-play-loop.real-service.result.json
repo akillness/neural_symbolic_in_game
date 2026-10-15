@@ -1,0 +1,58 @@
+{
+  "command_contract": "godot --headless --path <staged_project> --script res://tests/npc_play_loop_harness.gd --quit-after 12000 -- --real-service --report-path <path>",
+  "decision_provenance": [],
+  "errors": [
+    "utterance_must_issue_acquire_directive",
+    "HARNESS_ABORTED_acquire_directive",
+    "HTTP_0_409:codex_interpretation_failed:codex_exec_failed"
+  ],
+  "events": {
+    "decision_count": 0,
+    "directive_codes": [],
+    "event_kinds": [
+      "utterance"
+    ],
+    "request_count": 1,
+    "result_ack_count": 0,
+    "session_epochs": [
+      2
+    ]
+  },
+  "fatal_phase": "acquire_directive",
+  "final_observation": {
+    "goal_reached": false,
+    "in_dialogue": true,
+    "lens_carried": false,
+    "lens_reachable": true,
+    "signal_restored": false,
+    "tide_lead_authorized": false
+  },
+  "final_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "frames": 4648,
+  "initial_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "mode": "real_service",
+  "passed": false,
+  "phases": [
+    "initial_open"
+  ],
+  "real_wait_timeout_ms": 35000,
+  "report_path": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-real-play-loop-v5-008/pytest/test_optional_real_service_mod0/npc-play-loop.real-service.result.json",
+  "report_path_arg": "--report-path <path>",
+  "request_events": [
+    {
+      "event_kind": "utterance",
+      "path": "/npc/step",
+      "raw_utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+      "request_id": "request-948ff56e1b6cb9f82a23d65f",
+      "session_epoch": 2
+    }
+  ],
+  "session_id": "npc-7736391c49bd0a2f00a744e9",
+  "transport_mode": "production_super_send"
+}

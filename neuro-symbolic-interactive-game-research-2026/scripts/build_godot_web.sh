@@ -6,6 +6,8 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 GODOT_PROJECT="$PROJECT_ROOT/game-track/godot"
 WEB_CONFIG="$PROJECT_ROOT/game-track/web"
 OUTPUT_DIR="$WEB_CONFIG/public"
+CANONICAL_NPC_CONFIG="$PROJECT_ROOT/configs/npc-goal-recovery.json"
+NPC_CONFIG_MIRROR="$GODOT_PROJECT/data/npc-goal-recovery.json"
 
 if command -v godot4 >/dev/null 2>&1; then
   GODOT_BIN="${GODOT_BIN:-$(command -v godot4)}"
@@ -23,6 +25,15 @@ if [[ "$VERSION" != 4.* ]]; then
 fi
 
 PYTHONDONTWRITEBYTECODE=1 python3 "$PROJECT_ROOT/scripts/validate_player_asset.py"
+if [[ ! -f "$CANONICAL_NPC_CONFIG" ]]; then
+  echo "Canonical NPC config is missing: $CANONICAL_NPC_CONFIG" >&2
+  exit 1
+fi
+if [[ ! -f "$NPC_CONFIG_MIRROR" ]] || ! cmp -s "$CANONICAL_NPC_CONFIG" "$NPC_CONFIG_MIRROR"; then
+  echo "Generated Godot NPC config mirror drifted or is missing: $NPC_CONFIG_MIRROR" >&2
+  echo "Regenerate the tracked mirror from the canonical config before building." >&2
+  exit 1
+fi
 
 STAGE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/sealed-lighthouse-web.XXXXXX")"
 cleanup() {
@@ -77,9 +88,16 @@ rsync -a \
   --exclude '.godot/' \
   --exclude '.omc/' \
   --exclude 'addons/' \
+  --exclude 'tests/' \
+  --exclude '_workspace/' \
+  --exclude 'research/' \
   --exclude 'scripts/game3d/llm/' \
   --exclude 'assets/rig/' \
   "$GODOT_PROJECT/" "$STAGED_PROJECT/"
+if ! cmp -s "$CANONICAL_NPC_CONFIG" "$STAGED_PROJECT/data/npc-goal-recovery.json"; then
+  echo "Staged Web project does not contain the canonical NPC config bytes." >&2
+  exit 1
+fi
 cp "$WEB_CONFIG/export_presets.cfg" "$STAGED_PROJECT/export_presets.cfg"
 sed 's@run/main_scene="res://scenes/headless\.tscn"@run/main_scene="res://scenes/main_3d.tscn"@' \
   "$STAGED_PROJECT/project.godot" > "$STAGED_PROJECT/project.godot.tmp"

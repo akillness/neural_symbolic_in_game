@@ -1,0 +1,46 @@
+{
+  "url": "https://chatgpt.com/backend-api/codex/responses",
+  "headers": {
+    "Authorization": "Bearer [REDACTED]",
+    "ChatGPT-Account-ID": "[REDACTED_ACCOUNT_ID]",
+    "Content-Type": "application/json",
+    "Accept": "text/event-stream",
+    "originator": "codex_cli_rs",
+    "session_id": "[REDACTED_SESSION_ID]"
+  },
+  "body": {
+    "model": "gpt-5.6-sol",
+    "instructions": "",
+    "input": [
+      {
+        "type": "message",
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Create an original high-quality editorial game-concept illustration for a research explainer, wide 16:9 canvas, 1536x1024. Depict a Sealed Lighthouse-inspired harbor-watch NPC at dusk in a quiet nautical harbor: a watchful NPC in practical slate/navy coat stands on the harbor-side quay beside a small signal station, lantern, weathered logbook, and simple observation instruments; the NPC is engaged in dialogue with a nearby traveler while also studying the water and harbor markers. In the far offshore distance, show a closed, inaccessible lighthouse on a rocky islet with dark windows and a sealed entrance, clearly not being entered, reopened, repaired, or reclaimed. On the harbor side, show a modest restored signal lantern or beacon operating safely, sending a controlled teal-and-copper signal across the water toward the quay, suggesting observation and grounded action rather than magical transformation. Include visual cues for dialogue, observation, a fixed mission token or goal marker, and a route being adjusted around the closed lighthouse, but do not show an interface, code, charts, numerical metrics, or claims of successful autonomous gameplay. Palette: nautical slate, deep navy, fog gray, ivory highlights, copper hardware, teal signal light; atmospheric mist, crisp silhouettes, detailed material textures, cinematic but restrained editorial composition. Keep the lighthouse closed offshore and the restored signal on the harbor side as separate facts. No text, no logos, no watermark, no screenshot, no photorealistic celebrity likeness. This is a generated design illustration, not runtime evidence."
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "image_generation",
+        "output_format": "png",
+        "size": "1536x1024",
+        "model": "gpt-image-2.5-sunburst"
+      }
+    ],
+    "tool_choice": "auto",
+    "parallel_tool_calls": false,
+    "reasoning": null,
+    "store": false,
+    "stream": true,
+    "include": [
+      "reasoning.encrypted_content"
+    ],
+    "client_metadata": {
+      "x-codex-installation-id": "[REDACTED_INSTALLATION_ID]"
+    }
+  }
+}

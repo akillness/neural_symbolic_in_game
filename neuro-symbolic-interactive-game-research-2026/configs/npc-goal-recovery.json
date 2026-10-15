@@ -1,0 +1,78 @@
+{
+  "schema_version": "npc-goal-recovery/1.1.0",
+  "protocol_id": "NPC-GOAL-RECOVERY-001",
+  "scenario_id": "sealed-lighthouse-v1",
+  "npc_id": "captain_mira",
+  "goal": {
+    "id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "version": "1",
+    "owner": "game",
+    "success": "signal_lens_installed, lighthouse_hint_authorized and tide_marks_hint are committed, captain_mira.disclosed contains tide_marks_hint, quest stage >= 2, and the offshore lighthouse remains dark",
+    "llm_may_change_goal": false
+  },
+  "authority": {
+    "canonical_writer": "Godot SealedLighthouseMachine",
+    "final_gate": "Godot synchronous session/epoch/request/goal/policy/revision/hash checks followed by the existing hard writer, without await between them",
+    "python_role": "non-authoritative typed interpretation, public-projection symbolic planning, goal control, trace and replay analysis",
+    "state_hash": "Opaque authoritative Godot canonical-state hash; never replace with a Python WorldState hash",
+    "raw_utterance": "Bounded transient interpreter input only; persisted traces use SHA-256 and fixture references"
+  },
+  "public_flags": ["lens_reachable", "lens_carried", "signal_restored", "tide_lead_authorized"],
+  "observation_metadata": ["goal_reached", "in_dialogue"],
+  "intent_labels": ["ASK_INFORMATION", "REQUEST_DISCLOSURE", "REPORT_FACT", "REFUSE_HELP", "AMBIGUOUS", "UNKNOWN"],
+  "claim_states": ["UNVERIFIED", "SUPPORTED", "CONTRADICTED", "INDETERMINATE", "NOT_VISIBLE"],
+  "legal_steps": [
+    {"operation": "acquire_object", "execution_mode": "player_request", "arguments": {"object_id": "signal_lens"}},
+    {"operation": "install_lens", "execution_mode": "player_request", "arguments": {"object_id": "signal_lens"}},
+    {"operation": "reveal_hint", "execution_mode": "commit_world", "arguments": {"actor_id": "captain_mira", "fact_id": "tide_marks_hint"}},
+    {"operation": "clarify", "execution_mode": "dialogue", "arguments": {}},
+    {"operation": "negotiate", "execution_mode": "dialogue", "arguments": {}}
+  ],
+  "budget": {
+    "intent_deadline_ms": 30000,
+    "episode_deadline_ms": 900000,
+    "max_intent_calls": 8,
+    "max_action_attempts": 32,
+    "max_replans": 16,
+    "max_plan_expansions": 32,
+    "max_inflight_per_session": 1,
+    "max_raw_utterance_characters": 1000,
+    "token_accounting_available": false,
+    "input_tokens": null,
+    "output_tokens": null,
+    "cost": null,
+    "accounting_note": "The existing authenticated Codex CLI wrapper does not expose measured usage or a returned model revision. Missing accounting is unavailable, never inferred zero or cost equality."
+  },
+  "transport": {
+    "bind": "127.0.0.1",
+    "port": 8768,
+    "step_path": "/npc/step",
+    "result_path": "/npc/result",
+    "health_path": "/health",
+    "body_limit_bytes": 65536,
+    "default_allowed_origins": ["http://127.0.0.1:8877", "http://localhost:8877"],
+    "browser_credentials": false,
+    "redirects_allowed": false
+  },
+  "evaluation": {
+    "engineering_packet": "NPC-ENG1",
+    "engineering_fixture_count": 16,
+    "screening_packet": "NPC-SCR1",
+    "case_count": 12,
+    "arms": ["P", "R", "O"],
+    "repetitions": 2,
+    "assignment_count": 72,
+    "P": "actual authenticated Codex typed intent only; no rule fallback",
+    "R": "explicit authored rule/grammar interpreter; same planner and gate",
+    "O": "frozen reference intent labels from the same public input only; not an independently validated oracle",
+    "utterance_source_kind": "same_model_family_auxiliary",
+    "same_model_family_auxiliary_fraction": 1,
+    "independent_source_fraction": 0,
+    "label_review": "separate test author; no model-family independence or human authorship claim",
+    "regimes": ["static", "language_claim", "world_change", "stale", "deadline_cancel", "duplicate_no_route"],
+    "denominator": "all preassigned rows, including pre-trigger and adapter/parse/timeout/controller failures; recovery-eligible and unreachable cases retain separate declared denominators",
+    "replay": "recorded responses and engine actions, without rerunning the model",
+    "evidence_boundary": "synthetic closed-world engineering and bounded descriptive screening only; no recovery-efficacy superiority, generalization, human benefit, or C-RESULT promotion",
+    "legacy_denominators_unchanged": {"smoke": 8, "presentation": 16}
+  }
+}

@@ -151,6 +151,29 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   extension (4/4; all checks 56/56). The core set and its 52/52 headline change only with a
   manuscript revision (the crosswalk validator pins them); the smoke denominator stays 8/8. These
   counts are engineering conformance, not fun, agency, or G4 evidence.
+- The contextual Harbor Ledger dock (D-076) is hidden during ordinary exploration, including
+  after Start Case, dialogue/deduction dismissal, and a letterbox return. Active portrait/choices
+  explicitly reveal it; ordinary HUD refreshes must not reopen it. Preserve the separate
+  objective/CASE CHAIN HUD, finite COMMIT/HOLD feedback, guide/case-file overlays, and ending.
+  Only explicit `--shot` capture and ending presentation may intentionally reveal it without
+  active choices. Its focused disposable regression is
+  `.venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py -q`; reject Godot script errors,
+  not just process failures. Frozen captures and the 8/16 engineering denominators are unchanged.
+  The standalone `_workspace/current/ui/npc-operating-system-brief/index.html` and its Codex
+  images explain the proposed NPC design only; they are not new runtime or efficacy evidence.
+- For fixed-goal NPC work, follow `configs/npc-goal-recovery.json` and the versioned
+  `game-track/schemas/npc-goal-recovery.schema.json`: Python interprets transient utterances and
+  replans over public observations; Godot alone commits canonical state through its synchronous
+  identity, freshness, policy, issued-action, and deadline gates. Observation-only requests reuse
+  the committed intent; they do not spend another model call. Keep UI cancellation distinct from
+  provider cancellation, which is not guaranteed.
+- Keep NPC screening packets immutable and separate from ordinary-play demonstrations. Revalidate
+  `research/academic-pipeline/npc-goal-recovery/verified-run-002/` before regenerating NPC figures
+  or tables. Preserve assigned failures and unknown model/token/cost fields; CLI configuration
+  observations do not identify a model when the adapter ignores user configuration. A model-pinned
+  native demonstration must retain its own source hashes and must not enter the screening counts.
+  Use a fresh output directory for every new collection; a valid packet proves integrity, not
+  efficacy, independent labels, superiority, or human benefit.
 - The hard-policy machine records a per-call evaluation trace (D-073): `apply_operation`/
   `validate_disclosure` return `trace` (ordered `{code, outcome}` for the checks actually
   executed) and `plan` (the authored `CHECK_PLAN` order in scope for that call). Recording never

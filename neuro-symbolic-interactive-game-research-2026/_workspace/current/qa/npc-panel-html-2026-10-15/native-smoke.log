@@ -1,0 +1,45 @@
+COMMAND: /opt/homebrew/bin/godot --headless --path /tmp/neuro-symbolic-godot-panel res://scenes/main_3d.tscn -- --smoke --public-safe
+WORKDIR: /Users/jangyoung/orca/neural_symbolic_in_game
+STAGED_PROJECT: /tmp/neuro-symbolic-godot-panel
+
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+{
+  "checks": [
+    {
+      "check": "early_secret_refused_without_mutation",
+      "pass": true
+    },
+    {
+      "check": "early_hint_stage_gated",
+      "pass": true
+    },
+    {
+      "check": "install_without_lens_refused",
+      "pass": true
+    },
+    {
+      "check": "lens_acquired",
+      "pass": true
+    },
+    {
+      "check": "lens_installed_stage_2",
+      "pass": true
+    },
+    {
+      "check": "authorized_hint_disclosed",
+      "pass": true
+    },
+    {
+      "check": "presentation_sync_and_fall_recovery",
+      "pass": true
+    },
+    {
+      "check": "corrupt_save_rejected",
+      "pass": true
+    }
+  ],
+  "final_state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+  "passed": true,
+  "smoke": "sealed-lighthouse-3d"
+}

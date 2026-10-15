@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0.0",
+  "asset_id": "HFCS-M01-EVIDENCE-DESK",
+  "asset_class": "static-prop-glb",
+  "file": "evidence_desk.glb",
+  "prompt_file": "../../../assets/generated/higgsfield-case-v1/prompts/HFCS-M01-evidence-desk-reference.txt",
+  "prompt_sha256": "facdbc8293bf955e5affdaf60b0649ac268b40166d3d556cc9c04208fccbc5df",
+  "reference_inputs": [
+    {
+      "asset_id": "HFCS-M01-evidence-desk-reference",
+      "file": "../../../assets/generated/higgsfield-case-v1/HFCS-M01-evidence-desk-reference.png",
+      "provenance": "../../../assets/generated/higgsfield-case-v1/HFCS-M01-evidence-desk-reference.provenance.json",
+      "bytes": 3622938,
+      "sha256": "092c8c2b1261d49519cfed8a49e34d1cf623f4839d16e26be06205fd3ccd598e",
+      "tracked_in_git": false,
+      "purpose": "single three-quarter prop reference for image-to-3D reconstruction"
+    }
+  ],
+  "tool": "higgsfield-cli",
+  "tool_version": "1.1.25",
+  "provider": "higgsfield",
+  "models": {
+    "reference_image": "gpt_image_2",
+    "prop_mesh": "multi_image_to_3d"
+  },
+  "job_ids": {
+    "reference_image": "9545d635-38b4-4898-96c7-d487a6086510",
+    "prop_mesh": "657055a8-63e7-4145-95f3-e0331c4460af"
+  },
+  "generated_at_utc": "2026-09-18T10:09:27.481573Z",
+  "requested": {
+    "should_texture": true,
+    "enable_pbr": false,
+    "enable_rigging": false,
+    "enable_animation": false,
+    "should_remesh": true,
+    "topology": "triangle",
+    "target_polycount": 6000,
+    "symmetry_mode": "auto",
+    "seed": 20260918
+  },
+  "observed": {
+    "bytes": 516268,
+    "glb_version": 2,
+    "generator": "pygltflib@v1.16.5",
+    "nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 4794,
+    "vertices": 7980,
+    "materials": 1,
+    "textures": 1,
+    "images": 1,
+    "skins": 0,
+    "animations": 0,
+    "attributes": [
+      "POSITION",
+      "NORMAL",
+      "TEXCOORD_0"
+    ],
+    "texture": {
+      "width": 1024,
+      "height": 1024,
+      "mime": "image/jpeg",
+      "bytes": 201579,
+      "embedded": true
+    },
+    "material": {
+      "alphaMode": "OPAQUE",
+      "doubleSided": true,
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.8
+    },
+    "aabb_min": [
+      -0.6486430168151855,
+      -0.9501090049743652,
+      -0.4301038980484009
+    ],
+    "aabb_max": [
+      0.646606981754303,
+      0.9483569860458374,
+      0.4254779815673828
+    ],
+    "size": [
+      1.2952499985694885,
+      1.8984659910202026,
+      0.8555818796157837
+    ],
+    "pivot": "AABB center (single root node, identity matrix); base plane at y = aabb_min.y",
+    "front_axis": "+Z (slanted lid low edge and drawer pull) at rotation 0",
+    "fit_scale_for_1_2_m_height": 0.632089
+  },
+  "bytes": 516268,
+  "sha256": "264a683b50e1f0ce677d9bb0910496bf627fc576d7b01ccad44b041aaaa251c9",
+  "curation_state": "curated-runtime",
+  "intended_track": "3d-presentation",
+  "runtime_eligible": true,
+  "primary_experiment_eligible": false,
+  "rights_review": "user-directed-2026-09-18-session (D-073: 힉스필드이용해서 리소스와 모션, 프리팹, 맵구성, vfx 를 업데이트하고 적용)",
+  "rights_sources": [
+    {
+      "url": "https://higgsfield.ai/terms-of-use-agreement",
+      "section": "4.4",
+      "last_updated": "2026-07-26",
+      "verified_at_utc": "2026-08-29T22:47:13Z",
+      "carried_from": "assets/player/higgsfield-player.glb.provenance.json (D-050)",
+      "finding": "Higgsfield does not claim ownership of outputs and does not restrict their commercial use."
+    }
+  ],
+  "ai_generated_content": true,
+  "post_processing": {
+    "step": "re-embed base-color texture at 1024x1024 for the Web budget (orchestrator follow-up, 2026-09-18)",
+    "tools": [
+      "ImageMagick 7 (magick)",
+      "python3 struct/json GLB rewrite (project-local, no pygltflib)"
+    ],
+    "commands": [
+      "python3: extract images[0] bufferView bytes (JPEG 2048x2048, 3179442 B, sha256 b75094c5f8ec28971ab9890e4d63b8cda7d860a3ba6c00b43545c90a351e19de) -> evidence_desk_texture_2048.jpg",
+      "magick evidence_desk_texture_2048.jpg -resize 1024x1024 -strip -quality 85 evidence_desk_texture_1024_q85.jpg",
+      "python3: rewrite GLB = header + JSON chunk (same accessors/meshes/nodes/materials/textures; bufferViews[4].byteLength=201579; buffers[0].byteLength=514468; images[0].mimeType image/jpeg) + BIN chunk (original geometry bytes 0..312888 unchanged, then the new JPEG, 1 zero pad byte)"
+    ],
+    "alternative_rejected": "PNG re-encode at 1024x1024 measured 1476141 B, larger than JPEG q85; JPEG kept",
+    "before": {
+      "bytes": 3494136,
+      "sha256": "d5e10fd4ff1cb230a6d36a98977dfed903dc00bf6b10336a5330eb5124b132c4",
+      "texture": {
+        "width": 2048,
+        "height": 2048,
+        "mime": "image/jpeg",
+        "bytes": 3179442
+      }
+    },
+    "after": {
+      "bytes": 516268,
+      "sha256": "264a683b50e1f0ce677d9bb0910496bf627fc576d7b01ccad44b041aaaa251c9",
+      "texture": {
+        "width": 1024,
+        "height": 1024,
+        "mime": "image/jpeg",
+        "quality": 85,
+        "bytes": 201579,
+        "sha256": "12d0b4737450c66646d2cb13b0769655339d23922097fa923b81f926fdf0273e"
+      }
+    },
+    "geometry_check": "BIN bytes 0..312888 (index/position/uv/normal bufferViews) byte-identical; accessor min/max identical; 4794 triangles / 7980 vertices; single node identity matrix unchanged",
+    "engine_check": "godot --headless --script on disposable copy: DESK-LOAD err=0 meshes=1 images=1 tex=(1024,1024) aabb=[P:(-0.648643,-0.950109,-0.430104) S:(1.29525,1.898466,0.855582)] tris=4794; smoke 8/8 hash 4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "limitations": [
+    "Presentation-only prop; never enters canonical state, save data, symbolic evaluation, or primary research evidence.",
+    "Optional at runtime: SealedLighthouseWorldBuilder.attach_model returns null when the file is absent and the procedural desk remains the complete build.",
+    "The requested 6000-triangle target produced 4794 measured triangles.",
+    "Parsed with a project-local struct/JSON check only (magic, chunk lengths, accessor min/max); engine load is verified by lane C on a disposable copy.",
+    "The GLB-embedded texture is not extracted as a separate runtime PNG; the GLB is loaded through GLTFDocument at runtime.",
+    "PBR generation disabled for the Web budget; one opaque double-sided material carries the embedded base color, re-encoded to a 1024x1024 JPEG (quality 85, 201579 B) from the 2048x2048 original (3179442 B); the higher-resolution source is not retained in the tree.",
+    "Editor import extracts the embedded JPEG as evidence_desk_0.jpg (201579 bytes) beside the GLB; see import_side_products."
+  ],
+  "derived_from": "HFCS-M01-evidence-desk-reference",
+  "import_side_products": [
+    {
+      "file": "evidence_desk_0.jpg",
+      "produced_by": "godot --headless --import (Godot 4.7.1 scene importer default gltf/embedded_image_handling=1 extracts the embedded image beside the source GLB; same behavior as the D-050 player lane's higgsfield-player_texture_0.png)",
+      "bytes": 201579,
+      "sha256": "12d0b4737450c66646d2cb13b0769655339d23922097fa923b81f926fdf0273e",
+      "byte_identical_to_embedded_image": true,
+      "observed_on": "disposable copy /tmp/laneD-clean (HEAD tree + this lane's assets), not on the real project tree",
+      "note": "Not needed by SealedLighthouseWorldBuilder.load_model_scene, which reads the GLB through GLTFDocument at runtime; whether to track the extracted JPEG and its .import is an orchestrator decision at import time."
+    }
+  ],
+  "raw_download": {
+    "bytes": 3494136,
+    "sha256": "d5e10fd4ff1cb230a6d36a98977dfed903dc00bf6b10336a5330eb5124b132c4",
+    "retained": false,
+    "note": "unmodified Higgsfield download; superseded by the post-processed runtime bytes"
+  }
+}

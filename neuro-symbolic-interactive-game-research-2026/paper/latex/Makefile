@@ -12,6 +12,7 @@ all: check
 
 generated:
 	cd ../.. && uv run python scripts/generate_paper_results.py
+	cd ../.. && uv run python scripts/generate_npc_paper_results.py
 	cd ../.. && uv run python scripts/run_kg_ontology_simulation.py --check --no-database
 
 figures: generated

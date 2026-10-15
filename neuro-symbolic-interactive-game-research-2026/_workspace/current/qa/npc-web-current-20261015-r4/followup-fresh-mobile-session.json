@@ -1,0 +1,35 @@
+{
+  "packet_id": "npc-web-current-20261015-r4-followup",
+  "generated_at": "2026-10-15T08:11:25+00:00",
+  "generated_at_method": "datetime.now(timezone.utc).isoformat() read directly from the host clock, not fabricated",
+  "agent": "NpcWebQA",
+  "purpose": "Main requested a competing-hypothesis check before any UI fix: was the r4 mobile-dialogue missing-choice observation actually just the one-time scripted lore question having already been consumed by the earlier desktop session (shared browser storage), rather than a genuine narrow-viewport rendering gap? This packet tests that directly with a brand-new, storage-isolated session.",
+  "method": "Used browser.new_context() (a genuinely separate, incognito-style BrowserContext with its own storage partition - confirmed empty localStorage and no prior save before navigating) rather than the shared default context used for the original r4 desktop/mobile tabs. Navigated directly to /public/'s FIRST-EVER session for this isolated profile (first-session auto-tutorial observed and handled, confirming this really was a fresh save), telemetry-guided walk to Captain Mira at mobile 390x844, opened her dialogue, and INSPECTED ONLY across a full scroll sweep - no click on any choice, free-text, or capability control, to preserve the fresh state for the UI owner's own diagnosis.",
+  "fresh_session_proof": {
+    "storage_before_navigation": {"localStorage_keys": [], "has_indexeddb": true},
+    "first_session_marker_observed": "tutorial_open:true appeared transiently during the walk loop (first-ever-session auto-opened tutorial folio, which locks player input until closed) - direct confirmation this was genuinely this profile's first play session, not a continuation of any prior state.",
+    "served_pck_sha256": "8194b549378bb9e0fe4206debc2ee9cdb6780d67ea2c52877f61edf54aa91da3 (same current build as the main r4 packet, re-verified live from this isolated session's own fetch call)."
+  },
+  "result": {
+    "reached_mira": true,
+    "walk_summary": "6 telemetry-guided bursts, (0,2) -> (2.24,9.14), dist 9.49 -> 2.01, focus:'mira' confirmed (one transient tutorial_open:true blip handled via Escape mid-walk, consistent with the engine's documented first-session folio behavior, not an error).",
+    "dialogue_open_confirmed_via_telemetry": true,
+    "choice_button_found": false,
+    "finding": "In this GENUINELY FRESH, storage-isolated, first-ever-session mobile dialogue with Captain Mira, the same gap observed in the original r4 mobile pass reproduces identically: the HARBOR LEDGER panel, Mira's opening line ('Harbor watch reports only what it can verify. That is how this harbor survived.'), and the free-text NPC-capability / Ask-Captain-Mira rows are all visible and legible, but no scripted choice button is visible anywhere across a full scroll sweep of the dashboard page (0 through 450px, past the iframe's own bottom edge into the dashboard's Recent Actions section).",
+    "competing_hypothesis_outcome": "This result is INCONSISTENT with the 'already consumed by desktop session' hypothesis, since this session shares zero storage with the earlier desktop/mobile tabs and still shows no choice. It is CONSISTENT with (though does not conclusively prove) a narrow-viewport rendering/layout gap specific to the dialogue choice box at this mobile dashboard-embedded size.",
+    "not_clicked": "No choice, free-text, or capability control was clicked in this pass - purely an inspection run as Main requested, to leave the state untouched for the UI owner."
+  },
+  "console_page_error_summary": {"console": 3, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0},
+  "explicit_excluded_claims": [
+    "This does not identify the root cause in harbor_ledger_ui.gd or any other source file - no source was read or edited as part of this diagnostic pass.",
+    "This does not rule out every alternative explanation (e.g. a narrower possibility is that the choice box genuinely requires a specific dialogue turn/state this session's opening line didn't trigger), but it does rule out the specific shared-storage/already-asked hypothesis Main asked to check.",
+    "No NPC free-text/capability interaction, no model calls.",
+    "This followup packet does not overwrite or modify any file in the original r4 packet (report.json, r4-desktop-*.png, r4-mobile-*.png, r4-*-result.json) - it adds new r4-followup-*.png / r4-followup-v2-*.png / *.json files alongside them."
+  ],
+  "screenshots": {
+    "fresh_session_begin_and_walk": ["r4-followup-v2-01-after-begin.png", "r4-followup-v2-02-tutorial-closed.png", "r4-followup-v2-03-near-mira.png"],
+    "dialogue_inspection_scroll_sweep": ["r4-followup-v2-04-fresh-mira-dialogue-INSPECT.png", "r4-followup-v2-05-scroll-0.png", "r4-followup-v2-05-scroll-150.png", "r4-followup-v2-05-scroll-250.png", "r4-followup-v2-05-scroll-350.png", "r4-followup-v2-05-scroll-450.png"],
+    "dialogue_closed": ["r4-followup-v2-06-dialogue-closed.png"],
+    "discarded_first_attempt": "r4-followup-01 through r4-followup-04 (*.png without -v2-) are an earlier attempt in a separately-isolated context that got stuck because the first-session tutorial-lock wasn't being detected/closed yet; kept for transparency but superseded by the -v2- run, which correctly handles it and is the one with valid results."
+  }
+}

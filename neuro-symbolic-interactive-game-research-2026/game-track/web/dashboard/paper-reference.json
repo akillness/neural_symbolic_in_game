@@ -98,7 +98,8 @@
       "paper": "action policy: required preconditions / allowed effects",
       "engine_codes": [
         "UNKNOWN_ACTOR",
-        "UNKNOWN_OPERATION"
+        "UNKNOWN_OPERATION",
+        "UNSUPPORTED_WORLD_EVENT"
       ]
     },
     {
@@ -106,7 +107,11 @@
       "symbol": "v_pre",
       "paper": "required predicates hold in state",
       "engine_codes": [
-        "MISSING_REQUIRED_OBJECT"
+        "MISSING_REQUIRED_OBJECT",
+        "WORLD_EVENT_ARGUMENTS_INVALID",
+        "WORLD_EVENT_LENS_MISSING",
+        "WORLD_EVENT_LENS_ALREADY_CARRIED",
+        "WORLD_EVENT_ALREADY_APPLIED"
       ]
     },
     {
@@ -115,7 +120,8 @@
       "paper": "required objects present and reachable",
       "engine_codes": [
         "OBJECT_NOT_PRESENT",
-        "OBJECT_NOT_REACHABLE"
+        "OBJECT_NOT_REACHABLE",
+        "LENS_UNREACHABLE"
       ]
     },
     {
@@ -141,7 +147,8 @@
       "paper": "stage precondition and monotone stage effect",
       "engine_codes": [
         "QUEST_STAGE_PRECONDITION",
-        "STAGE_GATED_DISCLOSURE"
+        "STAGE_GATED_DISCLOSURE",
+        "WORLD_EVENT_STAGE_PRECONDITION"
       ]
     }
   ],

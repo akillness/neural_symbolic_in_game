@@ -15,8 +15,10 @@ const SealedLighthouseMachine = preload("res://scripts/sealed_lighthouse_machine
 const CanonicalState = preload("res://scripts/canonical_state.gd")
 const ProceduralAudioFeedbackScript = preload("res://scripts/game3d/procedural_audio.gd")
 const EvaluationTraceScript = preload("res://scripts/game3d/evaluation_trace.gd")
+const NpcAgentClientScript = preload("res://scripts/game3d/npc_agent_client.gd")
 
 const SCENARIO_PATH := "res://data/sealed_lighthouse.json"
+const NPC_CONFIG_PATH := "res://data/npc-goal-recovery.json"
 const SAVE_PATH := "user://sl3d_save.json"
 const TUTORIAL_SEEN_PATH := "user://sl3d_tutorial_seen.flag"
 const RECEIPT_SCHEMA_VERSION := "1.0.0"
@@ -54,6 +56,18 @@ var _dialogue_open: bool = false
 var _met_mira: bool = false
 var _lighthouse_observed: bool = false
 var _smoke_mode: bool = false
+var npc_client: NpcAgentClient
+var _npc_waiting_action: Dictionary = {}
+var _npc_action_results: Dictionary = {}
+var _npc_evaluate_mode: bool = false
+var _npc_replay_mode: bool = false
+var _npc_bootstrap_mode: bool = false
+var _npc_experiment_mode: bool = false
+var _npc_engineering_path: String = ""
+var _npc_bootstrap_path: String = ""
+var _npc_experiment_path: String = ""
+var _npc_engineering_events: Array = []
+var _npc_engineering_errors: Array = []
 var _evaluate_mode: bool = false
 var _autoplay_mode: bool = false
 ## Presentation-only dashboard bridge (D-065): when the Web build is embedded
@@ -119,6 +133,31 @@ func _ready() -> void:
 			if evaluate_index + 1 < user_args.size()
 			else "user://sealed-lighthouse-3d-engineering-evaluation.json"
 		)
+	var npc_evaluate_index := user_args.find("--npc-evaluate")
+	_npc_evaluate_mode = npc_evaluate_index != -1
+	if _npc_evaluate_mode:
+		_npc_engineering_path = (
+			user_args[npc_evaluate_index + 1]
+			if npc_evaluate_index + 1 < user_args.size()
+			else "user://npc-engineering-evaluate.json"
+		)
+	var npc_replay_index := user_args.find("--npc-replay")
+	_npc_replay_mode = npc_replay_index != -1
+	if _npc_replay_mode:
+		_npc_engineering_path = (
+			user_args[npc_replay_index + 1]
+			if npc_replay_index + 1 < user_args.size()
+			else "user://npc-engineering-replay.json"
+		)
+	var npc_bootstrap_index := user_args.find("--npc-bootstrap")
+	_npc_bootstrap_mode = npc_bootstrap_index != -1
+	if _npc_bootstrap_mode:
+		_npc_bootstrap_path = user_args[npc_bootstrap_index + 1] if npc_bootstrap_index + 1 < user_args.size() else "user://npc-bootstrap.json"
+	var npc_experiment_index := user_args.find("--npc-experiment")
+	_npc_experiment_mode = npc_experiment_index != -1
+	if _npc_experiment_mode:
+		_npc_experiment_path = user_args[npc_experiment_index + 1] if npc_experiment_index + 1 < user_args.size() else "user://npc-experiment.json"
+
 	var receipt_output_index := user_args.find("--receipt-output")
 	if receipt_output_index != -1:
 		if receipt_output_index + 1 >= user_args.size() or str(user_args[receipt_output_index + 1]).begins_with("--"):
@@ -146,6 +185,10 @@ func _ready() -> void:
 
 	ui = HarborLedgerUI.new()
 	add_child(ui)
+	npc_client = NpcAgentClientScript.new()
+	add_child(npc_client)
+	npc_client.setup(self, ui)
+
 	audio_feedback = ProceduralAudioFeedbackScript.new()
 	add_child(audio_feedback)
 	director = NarrativeDirector.new()
@@ -159,6 +202,14 @@ func _ready() -> void:
 	player.footstep_requested.connect(_on_footstep_requested)
 	player.fall_recovered.connect(_on_player_fall_recovered)
 	ui.choice_selected.connect(_on_choice)
+	ui.npc_text_submitted.connect(_on_npc_text_submitted)
+	ui.npc_capability_submitted.connect(_on_npc_capability_submitted)
+	npc_client.result_recorded.connect(_on_npc_result_recorded)
+	ui.npc_cancel_requested.connect(_on_npc_cancel_requested)
+	npc_client.decision_received.connect(_on_npc_decision)
+	npc_client.directive_received.connect(_on_npc_directive)
+	npc_client.protocol_error.connect(_on_npc_protocol_error)
+
 	ui.start_requested.connect(_on_start_requested)
 	ui.audio_toggle_requested.connect(_on_audio_toggle_requested)
 	ui.tutorial_closed.connect(_on_tutorial_closed)
@@ -177,6 +228,18 @@ func _ready() -> void:
 		return
 	if _evaluate_mode:
 		_run_engineering_evaluation.call_deferred(_evaluation_path)
+		return
+	if _npc_evaluate_mode:
+		_run_npc_engineering_evaluation.call_deferred(_npc_engineering_path)
+		return
+	if _npc_bootstrap_mode:
+		_run_npc_bootstrap.call_deferred(_npc_bootstrap_path)
+		return
+	if _npc_experiment_mode:
+		_run_npc_experiment.call_deferred(_npc_experiment_path)
+		return
+	if _npc_replay_mode:
+		_run_npc_replay.call_deferred(_npc_engineering_path)
 		return
 	var shot_index := user_args.find("--shot")
 	if shot_index != -1 and shot_index + 1 < user_args.size():
@@ -406,6 +469,62 @@ func _load_scenario() -> Dictionary:
 	var parsed: Variant = JSON.parse_string(text)
 	assert(parsed is Dictionary, "scenario document must parse")
 	return parsed
+
+func npc_state_ref() -> Dictionary:
+	return {"revision": int(machine.state.get("revision", 0)), "sha256": machine.state_hash()}
+
+
+func _npc_policy_hash_projection() -> Variant:
+	var policy: Variant = scenario.get("disclosure_policy", {})
+	if not policy is Dictionary:
+		return policy
+	var normalized: Dictionary = policy.duplicate(true)
+	var stage_gates: Variant = normalized.get("stage_gates", null)
+	if not stage_gates is Array:
+		return normalized
+	var normalized_gates: Array = []
+	for gate in stage_gates:
+		if gate is Dictionary:
+			var normalized_gate: Dictionary = gate.duplicate(true)
+			var minimum_stage: Variant = normalized_gate.get("minimum_stage", null)
+			if minimum_stage is float and is_equal_approx(minimum_stage, round(minimum_stage)):
+				normalized_gate["minimum_stage"] = int(minimum_stage)
+			normalized_gates.append(normalized_gate)
+		else:
+			normalized_gates.append(gate)
+	normalized["stage_gates"] = normalized_gates
+	return normalized
+
+
+func npc_policy_hash() -> String:
+	return CanonicalState.sha256(_npc_policy_hash_projection())
+
+
+func npc_config_hash() -> String:
+	return _npc_input_hash(NPC_CONFIG_PATH)
+
+
+func npc_public_observation() -> Dictionary:
+	var state: Dictionary = machine.state
+	var locations: Dictionary = state["world"]["object_locations"]
+	var reachable: Array = state["world"]["reachable_locations"]
+	var inventory: Array = state["player"]["inventory"]
+	var mira: Dictionary = state["npcs"]["captain_mira"]
+	var installed: bool = "signal_lens_installed" in state["facts"]
+	var stage: int = int(state["quest"]["stage"])
+	var authorized: bool = "lighthouse_hint_authorized" in state["facts"]
+	var mira_knows: bool = "tide_marks_hint" in mira.get("knowledge", [])
+	var disclosed: bool = "tide_marks_hint" in mira.get("disclosed", [])
+	var lighthouse_dark: bool = "lighthouse_dark" in state["facts"]
+	return {
+		"lens_reachable": locations.has("signal_lens") and str(locations["signal_lens"]) in reachable,
+		"lens_carried": "signal_lens" in inventory,
+		"signal_restored": installed,
+		"tide_lead_authorized": stage >= 2 and mira_knows and authorized,
+		"goal_reached": installed and authorized and "tide_marks_hint" in state["facts"] \
+			and disclosed and stage >= 2 and lighthouse_dark,
+		"in_dialogue": _dialogue_open,
+	}
 
 
 func _register_input_actions() -> void:
@@ -661,8 +780,14 @@ func _input_feedback_snapshot() -> Dictionary:
 
 
 func _on_interact(interaction_id: String) -> void:
-	if _dialogue_open or episode_over:
+	if episode_over:
 		return
+	if _dialogue_open:
+		var waiting_operation := str(_npc_waiting_action.get("operation", ""))
+		if not waiting_operation.is_empty():
+			var expected_interaction := "lens_pickup" if waiting_operation == "acquire_object" else "lamp_mount"
+			if interaction_id != expected_interaction:
+				return
 	_begin_input_feedback_probe("interact:" + interaction_id)
 	match interaction_id:
 		"mira":
@@ -857,6 +982,13 @@ const GATE_BY_CODE := {
 	"NPC_DOES_NOT_KNOW_FACT": "KNOWLEDGE",
 	"UNKNOWN_ACTOR": "POLICY",
 	"UNKNOWN_OPERATION": "POLICY",
+	"LENS_UNREACHABLE": "REACHABILITY",
+	"WORLD_EVENT_ARGUMENTS_INVALID": "PRECONDITION",
+	"WORLD_EVENT_LENS_MISSING": "PRECONDITION",
+	"WORLD_EVENT_LENS_ALREADY_CARRIED": "PRECONDITION",
+	"WORLD_EVENT_ALREADY_APPLIED": "PRECONDITION",
+	"WORLD_EVENT_STAGE_PRECONDITION": "QUEST STAGE",
+	"UNSUPPORTED_WORLD_EVENT": "POLICY",
 }
 var _holds_by_gate: Dictionary = {}
 
@@ -1224,7 +1356,32 @@ func _holds_by_gate_text() -> String:
 	return " | ".join(parts) if not parts.is_empty() else "none"
 
 
+func _npc_gate_player_action(operation: String) -> bool:
+	if npc_client == null:
+		return true
+	if _npc_waiting_action.is_empty() or str(_npc_waiting_action.get("operation", "")) != operation:
+		return true
+	var waiting := _npc_waiting_action.duplicate(true)
+	var action_id := str(waiting.get("action_id", ""))
+	var context: Dictionary = waiting.get("context", {}) if waiting.get("context", {}) is Dictionary else {}
+	var binding_errors: Array = npc_client.validate_action_context(context, action_id, operation, npc_state_ref())
+	if binding_errors.is_empty():
+		return true
+	# This is the last check before _propose's synchronous canonical writer. A
+	# stale directive is tombstoned; it must never be re-correlated to a later
+	# ordinary player interaction.
+	var feedback := "Player action held: %s" % ",".join(binding_errors)
+	if npc_client != null:
+		npc_client.submit_action_result(context, action_id, operation, "STALE", feedback)
+	_npc_waiting_action.clear()
+	ui.set_npc_status("NPC DIRECTIVE EXPIRED | No state changed.")
+	ui.toast("NPC DIRECTIVE EXPIRED | No state changed.")
+	return false
+
+
 func _propose_acquire() -> void:
+	if not _npc_gate_player_action("acquire_object"):
+		return
 	# SL-GDD-T1 Q1: collect the reachable signal lens.
 	var result := _propose(
 		"acquire_object",
@@ -1245,9 +1402,12 @@ func _propose_acquire() -> void:
 	else:
 		_refusal_feedback(result["codes"])
 	_sync_presentation()
+	_npc_record_player_action("acquire_object", result)
 
 
 func _propose_install() -> void:
+	if not _npc_gate_player_action("install_lens"):
+		return
 	# SL-GDD-T1 Q2: install requires the lens and quest stage >= 1.
 	var result := _propose(
 		"install_lens",
@@ -1264,12 +1424,19 @@ func _propose_install() -> void:
 	else:
 		_refusal_feedback(result["codes"])
 	_sync_presentation()
+	_npc_record_player_action("install_lens", result)
 
 
 ## ----------------------------------------------------------------- dialogue
 
 func _open_mira_dialogue() -> void:
 	_dialogue_open = true
+	_npc_waiting_action.clear()
+	var resume_interpretation := npc_client.has_accepted_interpretation()
+	npc_client.begin_dialogue()
+	if resume_interpretation:
+		npc_client.request_observation(npc_public_observation())
+	ui.show_npc_input(true)
 	_emit_dashboard("dialogue", {"phase": "open", "npc": "captain_mira"})
 	var first_meeting := not _met_mira
 	if not _met_mira:
@@ -1374,7 +1541,7 @@ func _on_choice(choice_id: String) -> void:
 			_pending_input_feedback.clear()
 
 
-func _propose_tide_hint() -> void:
+func _propose_tide_hint() -> Dictionary:
 	# SL-GDD-T1 Q2-HINT: stage >= 2 and Mira knows the fact.
 	var result := _propose(
 		"reveal_hint",
@@ -1395,17 +1562,150 @@ func _propose_tide_hint() -> void:
 		_refusal_feedback(result["codes"])
 	_sync_presentation()
 	_show_mira_choices()
+	return result
 
 
 func _close_dialogue() -> void:
 	_emit_dashboard("dialogue", {"phase": "close", "npc": "captain_mira"})
 	_dialogue_open = false
+	_npc_waiting_action.clear()
+	if npc_client != null:
+		npc_client.invalidate_pending("dialogue_closed")
+	ui.show_npc_input(false)
 	director.set_guide_trail_suppressed(false)
 	ui.clear_choices()
 	ui.set_portrait_visible(false)
+	ui.set_contextual_panel_visible(false)
 	if not _smoke_mode and not _evaluate_mode:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		ui.set_cursor_captured(true)
+func _on_npc_capability_submitted(value: String) -> void:
+	var capability := value.strip_edges()
+	if capability.is_empty() or capability.length() > 512 or capability.find("\r") != -1 or capability.find("\n") != -1:
+		ui.set_npc_status("NPC BACKEND | CAPABILITY INVALID")
+		return
+	npc_client.set_capability(capability)
+	ui.set_npc_status("NPC BACKEND | CAPABILITY READY | MEMORY ONLY")
+
+
+func _on_npc_text_submitted(text: String) -> void:
+	if not _dialogue_open or npc_client == null:
+		return
+	_npc_waiting_action.clear()
+	ui.set_npc_busy(true)
+	if not npc_client.request_utterance(text, npc_public_observation()):
+		ui.set_npc_busy(false)
+
+
+func _on_npc_cancel_requested() -> void:
+	_npc_waiting_action.clear()
+	if npc_client != null:
+		npc_client.invalidate_pending("cancelled")
+	ui.set_npc_busy(false)
+	ui.toast("NPC REQUEST CANCELLED | No state changed.")
+
+
+func _on_npc_decision(envelope: Dictionary, context: Dictionary) -> void:
+	_npc_engineering_events.append({
+		"kind": "decision",
+		"request_id": str(envelope.get("request_id", "")),
+		"event_id": str(envelope.get("event_id", "")),
+		"sequence": int(envelope.get("sequence", 0)),
+		"state_ref": envelope.get("state_ref", {}),
+		"status": str(envelope.get("body", {}).get("status", "")),
+	})
+
+	ui.set_npc_busy(false)
+	var accepted := npc_client.accept_decision(envelope, context, npc_state_ref())
+	if not bool(accepted.get("accepted", false)):
+		_npc_waiting_action.clear()
+		ui.set_npc_status("BACKEND CODEX | MODE LIVE | PLAN HELD")
+		ui.toast("NPC PLAN HELD | Freshness or binding check failed.")
+		return
+
+
+func _on_npc_directive(code: String, payload: Dictionary) -> void:
+	match code:
+		"NPC_PLAYER_ACTION":
+			_npc_waiting_action = payload.duplicate(true)
+			ui.set_npc_status("NPC DIRECTIVE | PLAYER ACTION REQUIRED | %s" % str(payload.get("operation", "")).to_upper())
+			ui.toast("PLAYER ACTION REQUIRED | Use the world interaction.")
+		"NPC_REVEAL_HINT":
+			_npc_commit_reveal(str(payload.get("action_id", "")), payload.get("context", {}))
+		"NPC_DIALOGUE":
+			_npc_waiting_action.clear()
+			ui.set_npc_status("NPC DIRECTIVE | DIALOGUE | %s" % str(payload.get("operation", "")).to_upper())
+		"NPC_NO_ROUTE":
+			_npc_waiting_action.clear()
+			ui.set_npc_status("BACKEND CODEX | MODE LIVE | NO ROUTE")
+		"NPC_GOAL_REACHED":
+			_npc_waiting_action.clear()
+			ui.set_npc_status("NPC FIXED GOAL REACHED | TIDE LEAD")
+		"NPC_ERROR":
+			_npc_waiting_action.clear()
+			ui.set_npc_status("BACKEND CODEX | MODE LIVE | ERROR")
+
+
+func _on_npc_protocol_error(reason: String) -> void:
+	_npc_waiting_action.clear()
+	_npc_engineering_errors.append(reason)
+
+	ui.set_npc_busy(false)
+	ui.set_npc_status("BACKEND CODEX | MODE LIVE | UNAVAILABLE")
+	if not _evaluate_mode and not _npc_evaluate_mode and not _npc_replay_mode:
+		ui.toast("NPC SERVICE UNAVAILABLE | %s" % reason)
+
+
+func _npc_record_player_action(operation: String, result: Dictionary) -> void:
+	if _npc_waiting_action.is_empty() or str(_npc_waiting_action.get("operation", "")) != operation:
+		return
+	var action_id := str(_npc_waiting_action.get("action_id", ""))
+	var context: Dictionary = _npc_waiting_action.get("context", {})
+	_npc_waiting_action.clear()
+	var status := "APPLIED" if bool(result.get("accepted", false)) else "REJECTED"
+	var feedback := "Player action committed." if status == "APPLIED" else "Player action held: %s" % ",".join(result.get("codes", []))
+	npc_client.submit_action_result(context, action_id, operation, status, feedback)
+
+
+func _npc_commit_reveal(action_id: String, context: Dictionary) -> void:
+	if action_id.is_empty() or context.is_empty():
+		return
+	if _npc_action_results.has(action_id):
+		npc_client.submit_action_result(context, action_id, "reveal_hint", "DUPLICATE", "Duplicate action ignored.")
+		return
+	_npc_action_results[action_id] = {"accepted": false, "codes": ["IN_FLIGHT"]}
+	var expected_revision := int(context.get("expected_revision", -1))
+	var expected_hash := str(context.get("expected_sha256", ""))
+	var current_ref := npc_state_ref()
+	var gate_ok: bool = _dialogue_open \
+		and int(current_ref["revision"]) == expected_revision \
+		and str(current_ref["sha256"]) == expected_hash \
+		and str(context.get("policy_hash", "")) == npc_policy_hash() \
+		and str(context.get("config_hash", "")) == npc_config_hash()
+	if not gate_ok:
+		npc_client.submit_action_result(context, action_id, "reveal_hint", "STALE", "Freshness gate rejected the reveal proposal.")
+		return
+	# No await is permitted between this gate and the existing hard writer.
+	var result := _propose_tide_hint()
+	_npc_action_results[action_id] = {"accepted": bool(result.get("accepted", false)), "codes": result.get("codes", []), "mutated": bool(result.get("mutated", false))}
+	var status := "APPLIED" if bool(result.get("accepted", false)) else "REJECTED"
+	var feedback := "Tide lead committed." if status == "APPLIED" else "Tide lead held: %s" % ",".join(result.get("codes", []))
+	npc_client.submit_action_result(context, action_id, "reveal_hint", status, feedback)
+
+func _on_npc_result_recorded(envelope: Dictionary, context: Dictionary) -> void:
+	_npc_engineering_events.append({
+		"kind": "ack",
+		"request_id": str(envelope.get("request_id", "")),
+		"event_id": str(envelope.get("event_id", "")),
+		"sequence": int(envelope.get("sequence", 0)),
+		"status": str(envelope.get("body", {}).get("status", "")),
+		"action_id": str(context.get("action_id", "")),
+	})
+	# The result acknowledgement ends the action request. Ask for the next
+	# directive through the observation-only path; the service reuses the prior
+	# typed intent and must not invoke the model again.
+	if _dialogue_open and npc_client != null:
+		npc_client.request_observation(npc_public_observation())
 
 ## -------------------------------------------------------------- persistence
 
@@ -1420,7 +1720,15 @@ func _save_game() -> void:
 	ui.toast("SAVED | State hash " + machine.state_hash().substr(0, 12) + "...")
 
 
+func _exit_tree() -> void:
+	if npc_client != null and is_instance_valid(npc_client):
+		npc_client.invalidate_pending("exit")
+
+
 func _load_game() -> void:
+	if npc_client != null:
+		npc_client.invalidate_pending("load")
+	_npc_waiting_action.clear()
 	if not FileAccess.file_exists(SAVE_PATH):
 		ui.toast("NO SAVE FILE FOUND")
 		return
@@ -2059,6 +2367,7 @@ func _close_deduction() -> void:
 	_dialogue_open = false
 	_deduction_picks = []
 	ui.clear_choices()
+	ui.set_contextual_panel_visible(false)
 	ui.hide_evidence_board()
 	if not _smoke_mode and not _evaluate_mode and not episode_over:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -2740,6 +3049,677 @@ func _run_engineering_evaluation(path: String) -> void:
 	get_tree().quit(0 if passed and written and not _receipt_export_failed else 1)
 
 
+func _npc_sha256_bytes(data: PackedByteArray) -> String:
+	var hashing := HashingContext.new()
+	hashing.start(HashingContext.HASH_SHA256)
+	hashing.update(data)
+	return hashing.finish().hex_encode()
+
+
+func _npc_input(path: String) -> Dictionary:
+	var absolute := ProjectSettings.globalize_path(path)
+	if not FileAccess.file_exists(absolute):
+		return {}
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(absolute))
+	return parsed if parsed is Dictionary else {}
+
+
+func _npc_input_hash(path: String) -> String:
+	var absolute := ProjectSettings.globalize_path(path)
+	if not FileAccess.file_exists(absolute):
+		return ""
+	return _npc_sha256_bytes(FileAccess.get_file_as_bytes(absolute))
+
+
+func _npc_source_hashes(input: Dictionary) -> Dictionary:
+	var hashes: Dictionary = input.get("source_hashes", {}).duplicate(true) if input.get("source_hashes", {}) is Dictionary else {}
+	if not hashes.has("source_project_config_sha256"):
+		hashes["source_project_config_sha256"] = _npc_input_hash("res://project.godot")
+	if not hashes.has("npc_protocol_config_sha256"):
+		hashes["npc_protocol_config_sha256"] = npc_config_hash()
+	if not hashes.has("source_schema_sha256"):
+		hashes["source_schema_sha256"] = _npc_input_hash("res://../schemas/npc-goal-recovery.schema.json")
+	hashes["policy_hash"] = npc_policy_hash()
+	return hashes
+
+
+func _npc_apply_mutation(mutation: Variant) -> Dictionary:
+	var operation := ""
+	var arguments: Dictionary = {}
+	if mutation is String:
+		operation = str(mutation)
+	elif mutation is Dictionary:
+		operation = str(mutation.get("operation", mutation.get("kind", "")))
+		arguments = mutation.get("arguments", {}) if mutation.get("arguments", {}) is Dictionary else {}
+	else:
+		return {"accepted": false, "codes": ["MUTATION_SCHEMA_INVALID"], "mutated": false}
+	match operation:
+		"open_dialogue":
+			if not arguments.is_empty():
+				return {"accepted": false, "codes": ["DIALOGUE_ARGUMENTS_INVALID"], "mutated": false}
+			if not _dialogue_open:
+				_open_mira_dialogue()
+			return {"accepted": true, "codes": [], "mutated": false}
+		"close_dialogue":
+			if not arguments.is_empty():
+				return {"accepted": false, "codes": ["DIALOGUE_ARGUMENTS_INVALID"], "mutated": false}
+			if _dialogue_open:
+				_close_dialogue()
+			return {"accepted": true, "codes": [], "mutated": false}
+		"acquire_object":
+			if arguments != {"object_id": "signal_lens"}:
+				return {"accepted": false, "codes": ["PLAYER_ACTION_BINDING_MISMATCH"], "mutated": false}
+			return _propose("acquire_object", arguments, "Bootstrap acquire signal lens", handles.get("lens_prop") as Node3D)
+		"install_lens":
+			if arguments != {"object_id": "signal_lens"}:
+				return {"accepted": false, "codes": ["PLAYER_ACTION_BINDING_MISMATCH"], "mutated": false}
+			return _propose("install_lens", arguments, "Bootstrap install signal lens", handles.get("lamp_mount") as Node3D)
+		"reveal_hint":
+			if arguments != {"actor_id": "captain_mira", "fact_id": "tide_marks_hint"}:
+				return {"accepted": false, "codes": ["REVEAL_BINDING_MISMATCH"], "mutated": false}
+			if not _dialogue_open:
+				return {"accepted": false, "codes": ["DIALOGUE_REQUIRED"], "mutated": false}
+			return _propose_tide_hint()
+		_:
+			return {"accepted": false, "codes": ["MUTATION_UNSUPPORTED"], "mutated": false}
+
+
+func _npc_snapshot() -> Dictionary:
+	return {"observation": npc_public_observation(), "state_ref": npc_state_ref()}
+
+
+func _npc_write_result(path: String, report: Dictionary, marker: String, suffix: String = ".result.json") -> void:
+	var output_path := ProjectSettings.globalize_path(path) + suffix
+	var written := _write_json_atomic(output_path, report)
+	print(marker + " " + JSON.stringify({"passed": report.get("passed", false), "written": written, "path": output_path, "input_path": ProjectSettings.globalize_path(path)}))
+	get_tree().quit(0 if bool(report.get("passed", false)) and written else 1)
+
+
+func _npc_apply_setup(input: Dictionary, events: Array, errors: Array) -> void:
+	var operations: Variant = input.get("setup_operations", [])
+	if not operations is Array:
+		errors.append("SETUP_OPERATIONS_SCHEMA_INVALID")
+	else:
+		for setup in operations:
+			if not setup is Dictionary or not setup.has("operation") or not setup.has("arguments"):
+				errors.append("SETUP_OPERATION_SCHEMA_INVALID")
+				continue
+			var operation := str(setup.get("operation", ""))
+			var arguments: Variant = setup.get("arguments", {})
+			var expected_arguments: Dictionary = {}
+			match operation:
+				"open_dialogue", "close_dialogue":
+					expected_arguments = {}
+				"acquire_object", "install_lens":
+					expected_arguments = {"object_id": "signal_lens"}
+				"reveal_hint":
+					expected_arguments = {"actor_id": "captain_mira", "fact_id": "tide_marks_hint"}
+				_:
+					errors.append("SETUP_OPERATION_UNSUPPORTED")
+					continue
+			if not arguments is Dictionary or arguments != expected_arguments:
+				errors.append("SETUP_OPERATION_ARGUMENTS_INVALID")
+				continue
+			var before := npc_state_ref()
+			var result := _npc_apply_mutation(setup)
+			var after := npc_state_ref()
+			events.append({
+				"kind": "setup_operation",
+				"operation": operation,
+				"arguments": expected_arguments,
+				"result": {"accepted": bool(result.get("accepted", false)), "codes": result.get("codes", []), "mutated": bool(result.get("mutated", false))},
+				"state_ref_before": before,
+				"state_ref_after": after,
+				"observation": npc_public_observation(),
+			})
+			if not bool(result.get("accepted", false)):
+				errors.append("SETUP_OPERATION_REJECTED")
+	var seed_events: Variant = input.get("seed_world_events", [])
+	if not seed_events is Array:
+		errors.append("SEED_WORLD_EVENTS_SCHEMA_INVALID")
+	else:
+		for raw_event in seed_events:
+			var event_code := ""
+			var arguments: Dictionary = {}
+			if raw_event is String:
+				event_code = str(raw_event)
+			elif raw_event is Dictionary:
+				event_code = str(raw_event.get("code", raw_event.get("event_code", "")))
+				arguments = raw_event.get("arguments", {}) if raw_event.get("arguments", {}) is Dictionary else {}
+			else:
+				errors.append("SEED_WORLD_EVENT_SCHEMA_INVALID")
+				continue
+			if event_code != "LENS_UNREACHABLE":
+				errors.append("SEED_WORLD_EVENT_UNSUPPORTED")
+				continue
+			var before := npc_state_ref()
+			var result := machine.apply_world_event(event_code, arguments)
+			var after := npc_state_ref()
+			events.append({
+				"kind": "seed_world_event",
+				"code": event_code,
+				"arguments": arguments,
+				"result": {"accepted": bool(result.get("accepted", false)), "codes": result.get("codes", []), "mutated": bool(result.get("mutated", false)), "preconditions": result.get("preconditions", {}), "trace": result.get("trace", {})},
+				"state_ref_before": before,
+				"state_ref_after": after,
+				"observation": npc_public_observation(),
+			})
+			if not bool(result.get("accepted", false)):
+				errors.append("SEED_WORLD_EVENT_REJECTED")
+	var desired_dialogue := bool(input.get("in_dialogue", false))
+	if desired_dialogue and not _dialogue_open:
+		_open_mira_dialogue()
+	elif not desired_dialogue and _dialogue_open:
+		_close_dialogue()
+	_dialogue_open = desired_dialogue
+
+func _run_npc_bootstrap(path: String) -> void:
+	var input_hash_before := _npc_input_hash(path)
+	var input := _npc_input(path)
+	var initial_ref := npc_state_ref()
+	var events: Array = []
+	var errors: Array = []
+	if input.is_empty():
+		errors.append("INPUT_MISSING")
+	if str(input.get("schema_version", "")) != "npc-engineering/input-1":
+		errors.append("SCHEMA_VERSION_INVALID")
+	if str(input.get("assignment_id", "")).is_empty():
+		errors.append("ASSIGNMENT_ID_MISSING")
+	if input.get("decision", null) != null:
+		errors.append("BOOTSTRAP_DECISION_MUST_BE_NULL")
+	var request_context: Dictionary = input.get("request_context", {}) if input.get("request_context", {}) is Dictionary else {}
+	for key in ["session_id", "episode_id", "session_epoch", "request_id", "goal_id", "goal_version"]:
+		if not request_context.has(key):
+			errors.append("REQUEST_CONTEXT_MISSING_" + key.to_upper())
+	var declared_hashes: Dictionary = input.get("source_hashes", {}) if input.get("source_hashes", {}) is Dictionary else {}
+	if declared_hashes.has("policy_hash") and not str(declared_hashes.get("policy_hash", "")).is_empty() \
+		and str(declared_hashes.get("policy_hash", "")) != npc_policy_hash():
+		errors.append("POLICY_HASH_MISMATCH")
+	_npc_apply_setup(input, events, errors)
+	var snapshot := _npc_snapshot()
+	var context := request_context.duplicate(true)
+	context["state_ref"] = snapshot["state_ref"]
+	context["observation"] = snapshot["observation"]
+	context["policy_hash"] = npc_policy_hash()
+	context["config_hash"] = npc_config_hash()
+	var final_ref := npc_state_ref()
+	var input_hash_after := _npc_input_hash(path)
+	var preserved := input_hash_before != "" and input_hash_before == input_hash_after
+	var source_hashes := _npc_source_hashes(input)
+	var report := {
+		"engineering_only": true,
+		"claim_boundary": "Engineering-only canonical bootstrap, identity binding, and deterministic world-event evidence; no participant, efficacy, or usability claim.",
+		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy", "model superiority"],
+		"mode": "bootstrap",
+		"schema_version": "npc-engineering/input-1",
+		"assignment_id": str(input.get("assignment_id", "")),
+		"fixture_ref": str(input.get("fixture_ref", "")),
+		"source_hashes": source_hashes,
+		"actual_state_ref": snapshot["state_ref"],
+		"state_ref": snapshot["state_ref"],
+		"policy_hash": npc_policy_hash(),
+		"observation": snapshot["observation"],
+		"context": context,
+		"initial_state_sha256": initial_ref["sha256"],
+		"initial_state_ref": initial_ref,
+		"final_state_ref": final_ref,
+		"input_sha256_before": input_hash_before,
+		"input_sha256_after": input_hash_after,
+		"input_bytes_preserved": preserved,
+		"events": events,
+		"actions": [],
+		"terminal_status": "BOOTSTRAP_APPLIED" if errors.is_empty() else "BOOTSTRAP_REJECTED",
+		"passed": not input.is_empty() and errors.is_empty() and preserved,
+		"errors": errors,
+	}
+	_npc_write_result(path, report, "NPC-BOOTSTRAP", ".bootstrap.json")
+func _npc_fixture_player_action(mutations: Array, operation: String) -> bool:
+	for mutation in mutations:
+		if mutation is String:
+			var text := str(mutation).to_lower()
+			if text.find("fixture-playeraction") != -1 and text.find(operation.to_lower()) != -1:
+				return true
+		elif mutation is Dictionary:
+			var code := str(mutation.get("code", mutation.get("type", ""))).to_lower()
+			if code in ["fixture-playeraction", "fixture_player_action"] and str(mutation.get("operation", "")) == operation:
+				return true
+	return false
+
+
+func _npc_state_refs_equal(left: Dictionary, right: Dictionary) -> bool:
+	return int(left.get("revision", -1)) == int(right.get("revision", -2)) \
+		and str(left.get("sha256", "")) == str(right.get("sha256", ""))
+
+
+func _npc_context_key_equal(left: Dictionary, right: Dictionary, key: String) -> bool:
+	if not left.has(key) or not right.has(key):
+		return false
+	var left_value: Variant = left[key]
+	var right_value: Variant = right[key]
+	if key == "session_epoch":
+		if not (left_value is int or left_value is float) or not (right_value is int or right_value is float):
+			return false
+		var left_epoch := float(left_value)
+		var right_epoch := float(right_value)
+		return is_finite(left_epoch) and is_finite(right_epoch) and left_epoch >= 0.0 and right_epoch >= 0.0 \
+			and left_epoch == floor(left_epoch) and right_epoch == floor(right_epoch) and left_epoch == right_epoch
+	return left_value is String and right_value is String and left_value == right_value
+
+
+func _npc_context_matches(input: Dictionary, decision: Dictionary, actual: Dictionary) -> bool:
+	var context: Dictionary = input.get("request_context", {}) if input.get("request_context", {}) is Dictionary else {}
+	for key in ["session_id", "episode_id", "session_epoch", "request_id", "goal_id", "goal_version"]:
+		if not _npc_context_key_equal(decision, context, key):
+			return false
+	if str(decision.get("policy_hash", "")) != npc_policy_hash():
+		return false
+	var declared_hashes: Dictionary = input.get("source_hashes", {}) if input.get("source_hashes", {}) is Dictionary else {}
+	if declared_hashes.has("policy_hash") and not str(declared_hashes.get("policy_hash", "")).is_empty() \
+		and str(declared_hashes.get("policy_hash", "")) != npc_policy_hash():
+		return false
+	var decision_ref: Dictionary = decision.get("state_ref", {}) if decision.get("state_ref", {}) is Dictionary else {}
+	var actual_ref: Dictionary = actual.get("state_ref", {}) if actual.get("state_ref", {}) is Dictionary else {}
+	return _npc_state_refs_equal(decision_ref, actual_ref)
+
+func _npc_mutation_codes(input: Dictionary) -> Array:
+	var values: Variant = input.get("mutations", [])
+	if not values is Array:
+		return []
+	var codes: Array = []
+	for mutation in values:
+		if mutation is String:
+			codes.append(str(mutation).to_lower())
+		elif mutation is Dictionary:
+			codes.append(str(mutation.get("code", mutation.get("type", ""))).to_lower())
+	return codes
+
+
+func _npc_normalized_result(result: Dictionary) -> Dictionary:
+	var codes: Array = result.get("codes", []) if result.get("codes", []) is Array else []
+	return {
+		"accepted": bool(result.get("accepted", false)),
+		"codes": CanonicalState.sorted_unique(codes),
+		"mutated": bool(result.get("mutated", false)),
+	}
+
+
+func _npc_redacted_request(input: Dictionary) -> Dictionary:
+	var request: Variant = input.get("request", null)
+	if not request is Dictionary:
+		return {}
+	var envelope: Dictionary = request
+	var body: Dictionary = envelope.get("body", {}) if envelope.get("body", {}) is Dictionary else {}
+	return {
+		"sha256": CanonicalState.sha256(envelope),
+		"session_id": str(envelope.get("session_id", "")),
+		"episode_id": str(envelope.get("episode_id", "")),
+		"session_epoch": int(envelope.get("session_epoch", -1)),
+		"request_id": str(envelope.get("request_id", "")),
+		"goal_id": str(envelope.get("goal_id", "")),
+		"goal_version": str(envelope.get("goal_version", "")),
+		"state_ref": envelope.get("state_ref", {}),
+		"event_kind": str(body.get("event_kind", "")),
+		"observation": body.get("observation", {}),
+	}
+
+
+func _npc_execute_engine_decision(input: Dictionary, decision: Dictionary, bound_context: Dictionary, actual_initial: Dictionary, rows: Array, events: Array) -> Dictionary:
+	var body: Dictionary = decision.get("body", {}) if decision.get("body", {}) is Dictionary else {}
+	var steps: Variant = body.get("steps", [])
+	if not steps is Array:
+		return {"accepted": false, "status": "ERROR", "codes": ["STEPS_SCHEMA_INVALID"]}
+	if steps.is_empty():
+		var terminal := npc_client.accept_decision(decision, bound_context, npc_state_ref())
+		var terminal_codes: Array = terminal.get("codes", []) if terminal.get("codes", []) is Array else []
+		var terminal_status := str(terminal.get("status", "ERROR"))
+		events.append({"kind": "terminal", "status": terminal_status, "result": _npc_normalized_result(terminal), "observation": npc_public_observation(), "state_ref": npc_state_ref()})
+		return {"accepted": bool(terminal.get("accepted", false)), "status": terminal_status, "codes": terminal_codes}
+	var step: Variant = steps[0]
+	var before := npc_state_ref()
+	var row := {
+		"index": 0,
+		"step": step,
+		"state_ref_before": before,
+		"status": "REJECTED",
+		"codes": [],
+		"observation_before": actual_initial["observation"],
+	}
+	if not step is Dictionary:
+		row["codes"] = ["PLAN_STEP_SCHEMA_INVALID"]
+		row["state_ref_after"] = before
+		row["observation_after"] = npc_public_observation()
+		rows.append(row)
+		return {"accepted": false, "status": "ERROR", "codes": row["codes"]}
+	var action: Dictionary = step
+	var action_id := str(action.get("action_id", ""))
+	var operation := str(action.get("operation", ""))
+	var execution_mode := str(action.get("execution_mode", ""))
+	var arguments: Dictionary = action.get("arguments", {}) if action.get("arguments", {}) is Dictionary else {}
+	row["action_id"] = action_id
+	row["operation"] = operation
+	row["execution_mode"] = execution_mode
+	row["arguments"] = arguments
+	var accepted := npc_client.accept_decision(decision, bound_context, before)
+	var result: Dictionary = accepted.duplicate(true)
+	if bool(accepted.get("accepted", false)) and str(accepted.get("kind", "")) == "player_request":
+		var waiting := _npc_waiting_action.duplicate(true)
+		var waiting_context: Dictionary = waiting.get("context", {}) if waiting.get("context", {}) is Dictionary else {}
+		if not _npc_fixture_player_action(input.get("mutations", []), operation):
+			result = {"accepted": false, "codes": ["PLAYER_ACTION_REQUIRED"], "mutated": false}
+		else:
+			var binding_errors := npc_client.validate_action_context(waiting_context, action_id, operation, before)
+			if not binding_errors.is_empty():
+				result = {"accepted": false, "codes": binding_errors, "mutated": false}
+			else:
+				result = _npc_apply_mutation({"operation": operation, "arguments": arguments})
+				_npc_record_player_action(operation, result)
+	elif bool(accepted.get("accepted", false)) and str(accepted.get("kind", "")) == "reveal_hint":
+		result = _npc_action_results.get(action_id, {"accepted": false, "codes": ["REVEAL_RESULT_MISSING"], "mutated": false})
+	elif bool(accepted.get("accepted", false)) and str(accepted.get("kind", "")) == "dialogue":
+		result = {"accepted": true, "codes": ["DIALOGUE_ONLY"], "mutated": false}
+	var after := npc_state_ref()
+	var normalized := _npc_normalized_result(result)
+	var control_codes := _npc_mutation_codes(input)
+	var cancellation_control := "cancelled" in control_codes or "cancellation" in control_codes
+	var deadline_control := "deadline" in control_codes or "deadline_expired" in control_codes
+	var stale_control := "stale_epoch" in control_codes or "epoch_stale" in control_codes or "stale_policy" in control_codes or "policy_stale" in control_codes or "stale_revision" in control_codes or "stale_revision_hash" in control_codes or "revision_stale" in control_codes or "conflict" in control_codes
+	row["status"] = "APPLIED" if normalized["accepted"] else ("CANCELLED" if cancellation_control else ("ERROR" if deadline_control else ("STALE" if stale_control or "EPOCH_OR_GENERATION_MISMATCH" in normalized["codes"] or "CURRENT_STATE_CHANGED" in normalized["codes"] else "REJECTED")))
+	row["codes"] = normalized["codes"]
+	row["result"] = normalized
+	row["state_ref_after"] = after
+	row["observation_after"] = npc_public_observation()
+	rows.append(row)
+	events.append({"kind": "action", "action_id": action_id, "operation": operation, "execution_mode": execution_mode, "arguments": arguments, "status": row["status"], "result": normalized, "state_ref_before": before, "state_ref_after": after, "observation": row["observation_after"]})
+	return {"accepted": normalized["accepted"], "status": row["status"], "codes": normalized["codes"], "action_id": action_id}
+func _run_npc_experiment(path: String) -> void:
+	var input_hash_before := _npc_input_hash(path)
+	var input := _npc_input(path)
+	var errors: Array = []
+	var events: Array = []
+	var rows: Array = []
+	var expected_negative_gates: Array = []
+	var initial_ref := npc_state_ref()
+	if input.is_empty():
+		errors.append("INPUT_MISSING")
+	if str(input.get("schema_version", "")) != "npc-engineering/input-1":
+		errors.append("SCHEMA_VERSION_INVALID")
+	if str(input.get("assignment_id", "")).is_empty():
+		errors.append("ASSIGNMENT_ID_MISSING")
+	var declared_hashes: Dictionary = input.get("source_hashes", {}) if input.get("source_hashes", {}) is Dictionary else {}
+	if declared_hashes.has("policy_hash") and not str(declared_hashes.get("policy_hash", "")).is_empty() \
+		and str(declared_hashes.get("policy_hash", "")) != npc_policy_hash():
+		errors.append("POLICY_HASH_MISMATCH")
+	_npc_apply_setup(input, events, errors)
+	var actual_initial := _npc_snapshot()
+	var supplied_initial: Variant = input.get("initial_public_snapshot", null)
+	if supplied_initial is Dictionary and not supplied_initial.is_empty():
+		if supplied_initial.get("observation", {}) != actual_initial["observation"]:
+			errors.append("INITIAL_OBSERVATION_MISMATCH")
+		var supplied_ref: Dictionary = supplied_initial.get("state_ref", {}) if supplied_initial.get("state_ref", {}) is Dictionary else {}
+		if not supplied_ref.is_empty() and not _npc_state_refs_equal(supplied_ref, actual_initial["state_ref"]):
+			errors.append("INITIAL_STATE_REF_MISMATCH")
+	var mutations: Variant = input.get("mutations", [])
+	if not mutations is Array:
+		errors.append("MUTATIONS_SCHEMA_INVALID")
+		mutations = []
+	var controls := _npc_mutation_codes(input)
+	var known_controls := ["stale_epoch", "epoch_stale", "stale_policy", "policy_stale", "stale_revision", "stale_revision_hash", "revision_stale", "conflict", "cancelled", "cancellation", "deadline", "deadline_expired", "duplicate", "no_route", "no-route", "fixture-playeraction", "fixture_player_action", "lens_unreachable"]
+	for control in controls:
+		if control not in known_controls:
+			errors.append("MUTATION_CONTROL_UNSUPPORTED_" + control.to_upper())
+	var decision_value: Variant = input.get("decision", null)
+	var decision: Dictionary = decision_value if decision_value is Dictionary else {}
+	if decision.is_empty():
+		errors.append("DECISION_SCHEMA_INVALID")
+	var decision_body: Dictionary = decision.get("body", {}) if decision.get("body", {}) is Dictionary else {}
+	var steps: Array = decision_body.get("steps", []) if decision_body.get("steps", []) is Array else []
+	if not decision_body.has("steps") or not decision_body.get("steps", []) is Array:
+		errors.append("STEPS_SCHEMA_INVALID")
+	var request_context: Dictionary = input.get("request_context", {}) if input.get("request_context", {}) is Dictionary else {}
+	var redacted_request := _npc_redacted_request(input)
+	if not redacted_request.is_empty():
+		for key in ["session_id", "episode_id", "session_epoch", "request_id", "goal_id", "goal_version"]:
+			if not _npc_context_key_equal(redacted_request, request_context, key):
+				errors.append("REQUEST_CONTEXT_MISMATCH_" + key.to_upper())
+		var request_ref: Dictionary = redacted_request.get("state_ref", {}) if redacted_request.get("state_ref", {}) is Dictionary else {}
+		if not request_ref.is_empty() and not _npc_state_refs_equal(request_ref, actual_initial["state_ref"]):
+			errors.append("REQUEST_STATE_REF_MISMATCH")
+	var bound_context: Dictionary = {}
+	var bind_result := npc_client.bind_engineering_context(request_context, actual_initial["state_ref"])
+	if bool(bind_result.get("accepted", false)):
+		bound_context = bind_result.get("context", {})
+	else:
+		errors.append_array(bind_result.get("codes", []))
+	var context_matches := not decision.is_empty() and _npc_context_matches(input, decision, actual_initial)
+	var blocking_control := ""
+	for control in controls:
+		if control in ["stale_epoch", "epoch_stale", "stale_policy", "policy_stale", "stale_revision", "stale_revision_hash", "revision_stale", "conflict", "cancelled", "cancellation", "deadline", "deadline_expired"]:
+			blocking_control = control
+			break
+	if not context_matches and blocking_control.is_empty():
+		errors.append("DECISION_CONTEXT_MISMATCH")
+	var action_outcome := {"status": "ERROR", "accepted": false, "codes": ["NOT_EXECUTED"]}
+	if not decision.is_empty() and not bound_context.is_empty() and blocking_control in ["stale_epoch", "epoch_stale", "stale_policy", "policy_stale", "stale_revision", "stale_revision_hash", "revision_stale", "conflict"]:
+		var gate_before := npc_state_ref()
+		var controlled := decision.duplicate(true)
+		if blocking_control in ["stale_epoch", "epoch_stale"]:
+			controlled["session_epoch"] = int(controlled.get("session_epoch", 0)) + 1
+		elif blocking_control in ["stale_policy", "policy_stale"]:
+			controlled["policy_hash"] = String("0").repeat(64)
+		else:
+			var stale_ref: Dictionary = controlled.get("state_ref", {}).duplicate(true) if controlled.get("state_ref", {}) is Dictionary else {}
+			stale_ref["sha256"] = String("0").repeat(64)
+			controlled["state_ref"] = stale_ref
+		action_outcome = _npc_execute_engine_decision(input, controlled, bound_context, actual_initial, rows, events)
+		var gate_after := npc_state_ref()
+		var expected_code := "EPOCH_MISMATCH" if blocking_control in ["stale_epoch", "epoch_stale"] else ("POLICY_HASH_MISMATCH" if blocking_control in ["stale_policy", "policy_stale"] else "STATE_HASH_MISMATCH")
+		var gate_pass: bool = not bool(action_outcome.get("accepted", false)) and str(action_outcome.get("status", "")) in ["STALE", "REJECTED"] and str(gate_before["sha256"]) == str(gate_after["sha256"])
+		expected_negative_gates.append({"control": blocking_control, "expected_status": "STALE", "observed_status": action_outcome.get("status", ""), "codes": action_outcome.get("codes", []), "expected_code": expected_code, "state_ref_before": gate_before, "state_ref_after": gate_after, "passed": gate_pass})
+	elif not decision.is_empty() and not bound_context.is_empty() and blocking_control in ["cancelled", "cancellation"]:
+		npc_client.invalidate_pending("cancelled")
+		action_outcome = _npc_execute_engine_decision(input, decision, bound_context, actual_initial, rows, events)
+		var gate_ref := npc_state_ref()
+		var gate_pass: bool = not bool(action_outcome.get("accepted", false)) and str(gate_ref["sha256"]) == str(actual_initial["state_ref"]["sha256"])
+		expected_negative_gates.append({"control": blocking_control, "expected_status": "CANCELLED", "observed_status": action_outcome.get("status", ""), "codes": action_outcome.get("codes", []), "state_ref_before": actual_initial["state_ref"], "state_ref_after": gate_ref, "passed": gate_pass})
+		var rebound := npc_client.bind_engineering_context(request_context, npc_state_ref())
+		if not bool(rebound.get("accepted", false)):
+			errors.append_array(rebound.get("codes", []))
+		else:
+			bound_context = rebound.get("context", {})
+	elif not decision.is_empty() and not bound_context.is_empty() and blocking_control in ["deadline", "deadline_expired"]:
+		var expired := npc_client.bind_engineering_context(request_context, actual_initial["state_ref"], -1)
+		var expired_context: Dictionary = expired.get("context", {}) if expired.get("context", {}) is Dictionary else {}
+		action_outcome = _npc_execute_engine_decision(input, decision, expired_context, actual_initial, rows, events)
+		var gate_ref := npc_state_ref()
+		var gate_pass: bool = not bool(action_outcome.get("accepted", false)) and "DEADLINE_EXPIRED" in action_outcome.get("codes", []) and str(gate_ref["sha256"]) == str(actual_initial["state_ref"]["sha256"])
+		expected_negative_gates.append({"control": blocking_control, "expected_status": "ERROR", "observed_status": action_outcome.get("status", ""), "codes": action_outcome.get("codes", []), "expected_code": "DEADLINE_EXPIRED", "state_ref_before": actual_initial["state_ref"], "state_ref_after": gate_ref, "passed": gate_pass})
+		var rebound := npc_client.bind_engineering_context(request_context, npc_state_ref())
+		if bool(rebound.get("accepted", false)):
+			bound_context = rebound.get("context", {})
+		else:
+			errors.append_array(rebound.get("codes", []))
+	elif not decision.is_empty() and not bound_context.is_empty() and context_matches:
+		action_outcome = _npc_execute_engine_decision(input, decision, bound_context, actual_initial, rows, events)
+	var duplicate_control := ""
+	for control in controls:
+		if control == "duplicate":
+			duplicate_control = control
+			break
+	if duplicate_control != "" and not decision.is_empty() and not bound_context.is_empty() and bool(action_outcome.get("accepted", false)):
+		var duplicate_before := npc_state_ref()
+		var duplicate_result := npc_client.accept_decision(decision, bound_context, npc_state_ref())
+		var duplicate_after := npc_state_ref()
+		var duplicate_codes: Array = duplicate_result.get("codes", []) if duplicate_result.get("codes", []) is Array else []
+		expected_negative_gates.append({"control": "duplicate", "expected_status": "DUPLICATE", "observed_status": "DUPLICATE" if not duplicate_result.get("accepted", false) else "APPLIED", "codes": duplicate_codes, "expected_code": "DUPLICATE_ACTION", "state_ref_before": duplicate_before, "state_ref_after": duplicate_after, "passed": not duplicate_result.get("accepted", false) and "DUPLICATE_ACTION" in duplicate_codes and duplicate_before["sha256"] == duplicate_after["sha256"]})
+	var no_route_control := "no_route" in controls or "no-route" in controls
+	if no_route_control:
+		var route_observation: Dictionary = actual_initial["observation"]
+		var unreachable_route := not bool(route_observation.get("lens_reachable", false)) and not bool(route_observation.get("lens_carried", false)) and not bool(route_observation.get("signal_restored", false))
+		var no_world_step := steps.is_empty() or (steps.size() == 1 and steps[0] is Dictionary and str(steps[0].get("execution_mode", "")) == "dialogue")
+		var route_state_unchanged := _npc_state_refs_equal(actual_initial["state_ref"], npc_state_ref())
+		var route_held: bool = unreachable_route and no_world_step and route_state_unchanged and action_outcome.get("status", "") in ["NO_ROUTE", "APPLIED"] and bool(action_outcome.get("accepted", false))
+		expected_negative_gates.append({"control": "no_route", "expected_status": "NO_CANONICAL_ROUTE", "observed_status": action_outcome.get("status", ""), "codes": action_outcome.get("codes", []), "physical_route_unreachable": unreachable_route, "no_world_step": no_world_step, "state_ref_before": actual_initial["state_ref"], "state_ref_after": npc_state_ref(), "passed": route_held})
+	for gate in expected_negative_gates:
+		if not bool(gate.get("passed", false)):
+			errors.append("EXPECTED_NEGATIVE_GATE_FAILED")
+	if not blocking_control.is_empty() and action_outcome.get("status", "") not in ["STALE", "CANCELLED", "ERROR", "REJECTED"]:
+		errors.append("NEGATIVE_CONTROL_NOT_ENFORCED")
+	if blocking_control.is_empty() and not steps.is_empty() and action_outcome.get("status", "") != "APPLIED":
+		errors.append("ACTION_NOT_APPLIED")
+	var final_ref := npc_state_ref()
+	var input_hash_after := _npc_input_hash(path)
+	var preserved := input_hash_before != "" and input_hash_before == input_hash_after
+	var expected: Dictionary = input.get("expected", {}) if input.get("expected", {}) is Dictionary else {}
+	var goal_reached := bool(npc_public_observation().get("goal_reached", false))
+	if expected.has("goal_reached") and bool(expected["goal_reached"]) != goal_reached:
+		errors.append("EXPECTED_GOAL_MISMATCH")
+	var passed := not input.is_empty() and errors.is_empty() and preserved
+	var report := {
+		"engineering_only": true,
+		"claim_boundary": "Engineering-only canonical NPC decision binding, first-step transition, negative-gate, and deterministic replay evidence; no participant, efficacy, or usability claim.",
+		"not_evidence_for": ["G4", "usability", "immersion", "affect", "efficacy", "model superiority"],
+		"mode": "experiment",
+		"schema_version": "npc-engineering/input-1",
+		"assignment_id": str(input.get("assignment_id", "")),
+		"fixture_ref": str(input.get("fixture_ref", "")),
+		"source_hashes": _npc_source_hashes(input),
+		"policy_hash": npc_policy_hash(),
+		"request": redacted_request,
+		"request_context": request_context,
+		"decision_sha256": CanonicalState.sha256(decision) if not decision.is_empty() else "",
+		"decision": decision,
+		"initial_public_snapshot": actual_initial,
+		"initial_state_ref": actual_initial["state_ref"],
+		"final_state_ref": final_ref,
+		"rows": rows,
+		"actions": rows,
+		"events": events,
+		"expected_negative_gates": expected_negative_gates,
+		"observations": [actual_initial["observation"], npc_public_observation()],
+		"status": action_outcome.get("status", "ERROR"),
+		"terminal_status": "PASSED" if passed else "FAILED",
+		"goal_reached": goal_reached,
+		"recovery_eligible": passed,
+		"recovery_unreachable": not passed,
+		"input_sha256_before": input_hash_before,
+		"input_sha256_after": input_hash_after,
+		"input_bytes_preserved": preserved,
+		"passed": passed,
+		"errors": errors,
+	}
+	_npc_write_result(path, report, "NPC-EXPERIMENT")
+
+func _run_npc_engineering_evaluation(path: String) -> void:
+	# This lane is explicitly engineering-only. It sends a real loopback request
+	# through HTTPRequest and records only redacted envelope metadata and hashes.
+	_npc_engineering_events.clear()
+	_npc_engineering_errors.clear()
+	var initial_ref := npc_state_ref()
+	_open_mira_dialogue()
+	var sent := npc_client.request_utterance("Help me restore the harbor signal.", npc_public_observation())
+	var started := Time.get_ticks_msec()
+	var frames_while_waiting := 0
+	while sent and _npc_engineering_events.is_empty() and _npc_engineering_errors.is_empty() \
+		and Time.get_ticks_msec() - started < 35000:
+		await get_tree().process_frame
+		frames_while_waiting += 1
+	var final_ref := npc_state_ref()
+	var report := {
+		"schema_version": "npc-engineering/1",
+		"mode": "evaluate",
+		"command": "godot --headless --path game-track/godot --scene scenes/main_3d.tscn -- --npc-evaluate <path>",
+		"path": ProjectSettings.globalize_path(path),
+		"initial_state_sha256": initial_ref["sha256"],
+		"final_state_sha256": final_ref["sha256"],
+		"frames_while_waiting": frames_while_waiting,
+		"request_wait_ms": Time.get_ticks_msec() - started,
+		"events": _npc_engineering_events.duplicate(true),
+		"errors": _npc_engineering_errors.duplicate(),
+		"passed": sent and frames_while_waiting > 0 and not _npc_engineering_events.is_empty() and _npc_engineering_errors.is_empty(),
+		"claim_boundary": "Engineering transport and Godot freshness-gate evidence only; not efficacy evidence.",
+	}
+	var written := _write_json_atomic(ProjectSettings.globalize_path(path), report)
+	print("NPC-ENGINEERING-EVALUATION " + JSON.stringify({"passed": report["passed"], "written": written, "path": ProjectSettings.globalize_path(path)}))
+	get_tree().quit(0 if bool(report["passed"]) and written else 1)
+
+
+func _run_npc_replay(path: String) -> void:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(ProjectSettings.globalize_path(path))) \
+		if FileAccess.file_exists(ProjectSettings.globalize_path(path)) else null
+	var actions: Array = parsed.get("actions", []) if parsed is Dictionary else []
+	var initial_ref := npc_state_ref()
+	var rows: Array = []
+	var seen_action_ids: Dictionary = {}
+	var passed := parsed is Dictionary and actions.size() > 0
+	for action in actions:
+		if not action is Dictionary:
+			passed = false
+			continue
+		var action_id := str(action.get("action_id", ""))
+		var operation := str(action.get("operation", ""))
+		var before := npc_state_ref()
+		var expected_ref: Dictionary = action.get("state_ref", {})
+		var stale := str(expected_ref.get("sha256", "")) != "" and str(expected_ref.get("sha256", "")) != str(before["sha256"])
+		var duplicate := action_id != "" and seen_action_ids.has(action_id)
+		if action_id != "":
+			seen_action_ids[action_id] = true
+		var result: Dictionary = {"accepted": false, "codes": ["UNKNOWN_OPERATION"]}
+		if stale:
+			result = {"accepted": false, "codes": ["STALE_SESSION_OR_STATE"]}
+		elif duplicate:
+			result = {"accepted": false, "codes": ["DUPLICATE_ACTION_ID"]}
+		else:
+			match operation:
+				"acquire_object":
+					result = _propose("acquire_object", {"object_id": "signal_lens"}, "Replay acquire", handles.get("lens_prop") as Node3D)
+				"install_lens":
+					result = _propose("install_lens", {"object_id": "signal_lens"}, "Replay install", handles.get("lamp_mount") as Node3D)
+				"reveal_hint":
+					var args: Dictionary = action.get("arguments", {})
+					if args == {"actor_id": "captain_mira", "fact_id": "tide_marks_hint"}:
+						result = _propose_tide_hint()
+					else:
+						result = {"accepted": false, "codes": ["REVEAL_BINDING_MISMATCH"]}
+				_:
+					result = {"accepted": false, "codes": ["UNKNOWN_OPERATION"]}
+		var after := npc_state_ref()
+		var status := "APPLIED" if bool(result.get("accepted", false)) else "REJECTED"
+		if stale:
+			status = "STALE"
+		elif duplicate:
+			status = "DUPLICATE"
+		rows.append({
+			"action_id": action_id,
+			"operation": operation,
+			"status": status,
+			"state_ref_before": before,
+			"state_ref_after": after,
+			"codes": result.get("codes", []),
+		})
+		if stale and str(action.get("expect_status", "")) != "STALE":
+			passed = false
+		if duplicate and str(action.get("expect_status", "")) != "DUPLICATE":
+			passed = false
+		if not stale and not duplicate and str(action.get("state_ref", {}).get("sha256", "")) != "" \
+			and str(action["state_ref"]["sha256"]) != str(before["sha256"]):
+			passed = false
+	var final_ref := npc_state_ref()
+	var report := {
+		"schema_version": "npc-engineering/1",
+		"mode": "replay",
+		"command": "godot --headless --path game-track/godot --scene scenes/main_3d.tscn -- --npc-replay <path>",
+		"path": ProjectSettings.globalize_path(path),
+		"initial_state_sha256": initial_ref["sha256"],
+		"final_state_sha256": final_ref["sha256"],
+		"actions": rows,
+		"passed": passed,
+		"claim_boundary": "Deterministic recorded-action replay and state-hash evidence only; model is not rerun.",
+	}
+	var output_path := ProjectSettings.globalize_path(path) + ".result.json"
+	var written := _write_json_atomic(output_path, report)
+	print("NPC-ENGINEERING-REPLAY " + JSON.stringify({"passed": passed, "written": written, "path": output_path, "input_path": ProjectSettings.globalize_path(path)}))
+	get_tree().quit(0 if passed and written else 1)
+
 func _write_json_atomic(path: String, payload: Dictionary) -> bool:
 	var parent := path.get_base_dir()
 	if parent != "" and DirAccess.make_dir_recursive_absolute(parent) != OK:
@@ -2777,6 +3757,9 @@ func _run_screenshot(path: String, stage: String = "arrival") -> void:
 	player.input_locked = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui.set_play_started(true)
+	# Screenshot stages explicitly opt into the contextual dock; normal play
+	# starts hidden and reveals it only for active dialogue/choices.
+	ui.set_contextual_panel_visible(true)
 	ui.set_cursor_captured(false)
 	var state_hash_before := machine.state_hash()
 	_prepare_screenshot_stage(stage)

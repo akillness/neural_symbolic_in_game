@@ -225,3 +225,38 @@
 - 프로덕션 `dpl_GPUtKqKtkTcjC7D1gLSMWZCjbVo5` READY, 공개 주소 `https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/`. 배포 스크립트의 17개 staged 영수증 중 공개되는 16개 파일이 SHA/크기 일치했고 6개 route/security-header 검증을 통과했다. 생성 배포 URL은 Vercel 로그인으로 보호되어 있어 공개 별칭을 검증했으며 보호 설정·credentials는 변경하지 않았다.
 - 독립 `ProductionDesktopQA`가 1440x1000에서 시작·tutorial·Start Case·case-file open/close를 완료했고 console/page/request/HTTP 오류 모두 0, 11/11 요청 200이었다. Production E/proposal-COMMIT·전체 playthrough·모바일·performance는 이 PASS의 범위 밖이다. Local 390x844 embedded-canvas 글자 잘림은 FIX로 남긴다. 새 NPC 구현/효능, G4/G6, 인간 연구, 논문 제출로 승격하지 않는다.
 - 영수증·전체 deploy log·browser JSON·화면 근거는 `neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-14-build-deploy/`에 보존했다. Python TLS issuer 오류는 인증서 검증을 끄지 않고 native curl로 대조했고, 최초 browser worker 취소와 smoke text/JSON parser 불일치도 영수증에 보존했다. 기존 배포 `dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg`를 rollback 대상으로 기록했으며 실행했다고 주장하지 않는다.
+
+## [2026-10-15] UI fix and explainer | Contextual Harbor Ledger and NPC design HTML
+- 실제 공개 게임에서 Start Case 뒤 하단 Harbor Ledger가 계속 시야를 가리는 현상을 재현했고, 기존 UI의 기본 visible·letterbox 복원·종료 경로를 고쳤다. 공식 Web 빌드 뒤 로컬 1440×1000에서 NPC 이동→E 대화 열기→Esc 닫기→재진입→Step away→Case File 왕복을 확인했다. 관찰한 console/page/request/HTTP 오류는 0이다. 운영 배포는 하지 않았다.
+- 기존 구조와 제안 NPC 운영 구조를 비교하는 한국어 단일 HTML을 `_workspace/current/ui/npc-operating-system-brief/index.html`에 만들었다(프로젝트 디렉터리 기준). 두 Codex 생성 PNG를 내장했고, 1440/390px 표시·키보드·JavaScript-off 6개 disabled 버튼을 확인했다. 그림은 설명용, 사람의 권리·스타일 검토는 pending이며 게임 자산·실험 증거로 승격하지 않았다.
+- 실제 Jev API `jev-1.13.0`의 advisory skill/model 라우팅을 사용하고 `jev-routing.json`에 근거·적용 판단을 남겼다. 게임 NPC에 Jev가 연결된 것이 아니며 Deep Agents 프레임워크도 추가하지 않았다. 검토 provider의 429는 가용 Codex 모델로 재라우팅했다.
+- 독립 검토에서 회귀 테스트 손상/오류 전파와 HTML 탭 focus/JavaScript-off fallback 지적을 발견했다. 최초 BLOCK·수정·최종 재검증은 `neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/`에 구분해 보존한다. 기존 연구 결과·새 NPC 미구현/Pending 명세·8/16 engineering 분모·한영 원고·동결 캡처는 유지한다. Obsidian이 실행 중이지 않아 직접 파일 fallback을 사용했다.
+
+## [2026-10-15] NPC Goal System | Final Proof Collection, 009 Validator PASS, Durable Findings Filed
+
+- **009 STRICT VALIDATOR**: CLI verified, 88 records PASS ✓, preflight complete. 10 source hashes (Service excluded) verified against canonical replay. Validator representation hardening in progress (not blocking collection).
+
+- **Proof 007 (Historical)**: Locked immutable. Canonical replay + lineage checks + hash integrity VALIDATED. Service test 1 PASS (21.34s, 3 epochs, 9 rows, 1 utterance + 3 observations). Measured against 16 runtime files. Service I/O reservation leak documented (fixed per Main). Core + Godot unchanged. Evidence path: `neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-real-play-loop-v5-007/`.
+
+- **Proof 008 (Current-Source)**: PENDING. Will rerun after service-focused tests. Validator 009 uses 10 paths (Service excluded), so offline experiment remains valid for runtime.
+
+- **Collection Status: ACTIVE**. 10 runtime paths LOCKED. Before/after hashes PRESERVED. Validator/tests/docs/generator updates ALLOWED. Base commit b2f48d...DIRTY=true (16 stable files archived with exact SHA).
+
+- **P24 Efficacy**: PENDING. Final observations collecting — do NOT report as measured yet.
+
+- **Durable Findings**: Filed to repo wiki + global vault. `llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md` (repo). Task manifest + index updated with 009 PASS. Obsidian unavailable; direct-write fallback used. Original design history retained.
+
+## [2026-10-15 final repository correction] NPC implementation and publication evidence
+
+- Supersedes earlier pending collection and proof-status notes above; those entries remain progress history, not current assertions. Actual repository files were corrected after an agent wrote updates only to a separate global vault.
+- Canonical `verified-run-002` is complete and strict-valid: 16 engineering rows plus 72 descriptive screening rows, 24 authenticated P CLI attempts configured as `gpt-5.6-sol`. Each screening arm preserves 20 completed executions and 4 authored stale-control failures; observed goal counts 4/24 are not efficacy estimates. The recorded decision-model identifier is a configured selector, not provider revision; provider revision/seed/tokens/cost remain unavailable.
+- Current native012 passes in 24.99s at 17 matching before/after source hashes (UI `7dc4cf7…`); nine rows, one reused intent, and three valid epoch replays. Zero calls applies to replay, not the live runtime. Terminal canonical state is revision 3 / `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`; `d63f5679…` is the protocol configuration hash, not that state hash.
+- Render-v3 (`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`) preserves 52/52 core + 4/4 extension and 8/8 smoke accounting. Earlier captures/cohorts/proofs are immutable history. The 344×720 embedded Mira clipping defect has a preserved RED control, four passing lifecycle tests, and actual final-binary desktop/mobile four-choice pointer/scroll proof with zero canonical mutation or observed browser/network errors.
+- Final EN/KO PDFs are 10 pages. Crosswalk: 5 contributions / 58 references / 9 topics / 3+1 evidence lanes. Visual gate: 110 receipts / 7 SVGs / 22 isolated double-regenerated sources. Full `verify_like_ci.sh` exits 0 (293 unittest cases; 78 game tests and 48 subtests; remaining declared gates), 292.95s. Earlier concurrent-build stale-receipt failure remains FIX→repaired history.
+- See [[wiki/reports/2026-10-15-npc-goal-operation-implementation]] and [[wiki/projects/trace-rpg-paper-2026]]. Human G4/G6, efficacy, generalization, exact provider revision/cost, actual journal acceptance, and byte-identical Web-export reproducibility are not claimed. No new production deployment is claimed. Commit/push status is recorded only after actual Git completion.
+
+## [2026-10-15] report | Public NPC evidence and private-rig release boundary (D-081)
+- Caught local-only rig source/import/cache copies before commit or push; removed only the task's 96 rig/sidecar and 1,020 generated-cache index entries. Local files remain untouched. Generalized project-scoped ignore rules pass 1,129 private/cache probes and 15 public-source controls; available fetched Git history, HEAD/index payload checks, and LFS checks show no private tracked payload.
+- Preserved three immutable historical whole-tree receipts with an explicit non-byte-complete-public boundary. Canonical002's 1,333 receipts exclude disposable `godot-project/` copies; actual selected-public-tree validation passes all 16 engineering and 72 descriptive assignments. Its source files match native012 17/17; public focused Godot loop passes 1 with 1 opt-in deselected.
+- Public-snapshot full CI passes 293 unittest cases and 78 game tests/48 subtests in 232.26s. The first unborn temporary HEAD run remains a failed/FIX record; actual base-HEAD initialization repaired only the QA environment, not source/test assertions. Durable outputs are under `_workspace/current/qa/npc-public-release-20261015/`.
+- See [[wiki/reports/2026-10-15-npc-goal-operation-implementation]]. Efficacy, independent labels, human G4/G6 and production deployment remain unpromoted; Git completion is reported only after the actual push.

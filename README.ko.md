@@ -237,6 +237,42 @@ make -C paper/latex check                            # EN (pdflatex) + KO (xelat
 
 패킷: 오프라인 파일럿(frozen, hash로 묶임)은 [`research/academic-pipeline/stage-04-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-04-pilot/), 라이브 스크리닝은 [`research/academic-pipeline/rq2-live-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/rq2-live-pilot/), KG 시뮬레이션은 [`research/simulation/kg-ontology/`](neuro-symbolic-interactive-game-research-2026/research/simulation/kg-ontology/), 플레이어블 평가는 [`game-track/godot/docs/latest/`](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/).
 
+## 고정 목표 NPC 운영 레인 (프로토콜 1.1)
+
+현재 NPC 통합은 `sealed-lighthouse-v1`을 향하는 고정 목표 controller다. 정식 상태의 유일한 writer는 Godot이며, Python은 typed intent를 해석하고 여섯 필드 public observation만 대상으로 bounded BFS를 수행한다. hidden world state를 읽거나 새롭고 전지적인 planning을 하지 않는다. `acquire_object`와 `install_lens`는 player의 명시적 요청이고, signal 복구·tide lead 승인·dialogue open 뒤 `reveal_hint`를 낼 수 있는 주체는 Captain Mira뿐이다.
+
+wire contract는 `npc-goal-recovery/1.1.0`이다. P는 공식 인증 Codex OAuth CLI adapter를 호출하며 rule fallback은 없다. R은 작성된 rule/grammar control이고, O는 같은 model family의 public-input-only auxiliary arm이며 independent gold가 아니다. loopback service는 `127.0.0.1:8768`에 bind하고 `http://127.0.0.1:8877`, `http://localhost:8877`만 정확히 허용한다. `TRACE_RPG_NPC_CAPABILITY`는 일시적 환경값이며 capability는 `X-NPC-Capability`에만 보낸다. episode budget은 utterance epoch을 넘어 누적된다: intent 30,000 ms, episode 900,000 ms, intent call 8회, action attempt 32회, replan 16회, plan expansion 32회, in-flight 1개. 배정은 engineering R 16개 observation과 screening 72개(P/R/O × 2, 각 24개)로 총 88개이며, arm별 합계는 R=40, P=24, O=24다. input/output token, cost, 반환된 model revision은 사용할 수 없어 `null`로 유지한다.
+
+**validated-v5 근거.** corpus는 28개 case(engineering 16개 + screening 12개)다. 불변 canonical packet `research/academic-pipeline/npc-goal-recovery/verified-run-002/`에는 배정된 88행과 `gpt-5.6-sol`을 명시적으로 요청한 인증 CLI 실행 24회가 기록됐으며 strict validation을 통과했다. 반환된 model revision, provider seed, token 회계와 cost는 사용할 수 없다. screening 각 arm의 실행 완료 20개와 stale-control ACK 거부에 따른 assigned failure 4개를 모두 유지한다. 관측된 goal 4/24는 recovery rate나 efficacy 추정치가 아니다. O의 same-family 표기는 protocol source label이며 P와의 실제 일치를 검증한 것이 아니다. 모델 미식별 `verified-run-001/`, 실패한 diagnostic, source-bound native demonstration은 별도의 불변 근거이며 이 cohort와 합산하지 않는다. efficacy·superiority·generalization·human benefit·independent label을 주장하지 않는다.
+
+프로젝트 루트에서 OAuth를 확인하고 rule fallback 없는 Codex service arm을 명시해 실행한다:
+
+```bash
+codex login status
+uv run python scripts/run_npc_service.py \
+  --backend codex --model gpt-5.6-sol --host 127.0.0.1 --port 8768 \
+  --allow-origin http://127.0.0.1:8877 \
+  --allow-origin http://localhost:8877
+```
+
+canonical packet은 immutable하다. 새 model-pinned cohort를 실행하려면 아래 `NEW-ID`를 사용하지 않은 식별자로 바꾸며, 과거 두 cohort를 덮어쓰거나 합산하지 않는다. preflight/dry-run도 새 noncanonical directory를 사용한다. 저장된 canonical packet을 다시 검증할 때는 `research/academic-pipeline/npc-goal-recovery/verified-run-002`를 validator에만 전달한다.
+
+```bash
+uv run python scripts/run_npc_goal_experiment.py \
+  --packet all --model gpt-5.6-sol \
+  --engineering-fixtures data/fixtures/npc-goal-recovery/validated-v5/engineering.json \
+  --screening-fixtures data/fixtures/npc-goal-recovery/validated-v5/screening.json \
+  --output-dir _workspace/current/qa/npc-rerun-NEW-ID \
+  --godot-project game-track/godot
+
+uv run python scripts/validate_npc_goal_evidence.py \
+  --packet all \
+  --root "$PWD" \
+  --packet-dir _workspace/current/qa/npc-rerun-NEW-ID
+```
+
+validator가 통과한 뒤에만 final packet 결과와 bilingual paper fragment를 갱신하며, preflight와 과거 packet은 diagnostic으로 남긴다.
+
 ## 경계와 공개
 
 논문이 명시하는 경계이며, 이 README도 같은 경계를 지킨다:

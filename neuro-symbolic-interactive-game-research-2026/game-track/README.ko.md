@@ -155,17 +155,17 @@ Cycle 2는 정식 저자 fixture를 별도 non-headless Godot pass로 렌더링�
 
 `SL-CAPTURE-001`은 엔진 manifest 필드가 아닌 논문 연결표 bundle label이며 manifest는 위
 `sl-rc-*` capture ID 3개를 사용한다. 선택 불변 근거 세트 ID는
-`godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`이다. v1--v4 패킷은 불변 보존하며
-visual QA, toolchain provenance 결속, CI portability 수정을 거쳐 superseded 처리했다. v5
+`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`이다. 이전 불변 패킷은 보존하며
+visual QA, toolchain provenance 결속, CI portability 수정을 거쳐 superseded 처리했다. 현재
 manifest는 capture pipeline, PNG decoder, schema, retained validator, dependency lock, capture
 host tool version을 결속한다. 이 패널은 생성 콘셉트
 아트가 아니라 구조화 상태/텍스트와 프로그램 방식 엔진 그래픽만 사용한다. 라이브 Python 권한,
 모델·시각 효능, 사용성, 몰입, 인간연구 결과, G4 또는 G6를 입증하지 않는다.
 
-![SL-CAPTURE-001 도착 관찰](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png)
+![SL-CAPTURE-001 도착 관찰](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![SL-CAPTURE-001 공개 거절](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![SL-CAPTURE-001 공개 거절](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![SL-CAPTURE-001 승인 힌트](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![SL-CAPTURE-001 승인 힌트](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 오프라인 재현 안내: [`recorded-experiment.ko.md`](recorded-experiment.ko.md)

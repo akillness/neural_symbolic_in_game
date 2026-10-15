@@ -162,18 +162,18 @@ non-headless Godot pass over the canonical authored fixture:
 
 `SL-CAPTURE-001` is the paper-crosswalk bundle label, not an engine-manifest field; the manifest
 uses the three `sl-rc-*` capture IDs above. The selected immutable evidence set is
-`godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`. The v1--v4 packets remain immutable and
-superseded through visual QA, toolchain-provenance binding, and CI-portability repair. The v5
+`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`. Earlier immutable packets remain retained and
+superseded through visual QA, toolchain-provenance binding, and CI-portability repair. The current
 manifest binds the capture pipeline, PNG decoder, schema, retained validator, dependency lock, and
 capture-host tool versions.
 These panels use structured state/text and programmatic engine graphics, not generated concept art.
 They do not demonstrate live Python authorization, model or visual efficacy, usability, immersion,
 human-study outcomes, G4, or G6.
 
-![SL-CAPTURE-001 arrival observation](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png)
+![SL-CAPTURE-001 arrival observation](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![SL-CAPTURE-001 rejected disclosure](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![SL-CAPTURE-001 rejected disclosure](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![SL-CAPTURE-001 authorized hint](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![SL-CAPTURE-001 authorized hint](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 Offline reproduction guide: [`recorded-experiment.en.md`](recorded-experiment.en.md)

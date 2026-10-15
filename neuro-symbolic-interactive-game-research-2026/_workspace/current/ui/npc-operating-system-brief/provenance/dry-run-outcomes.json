@@ -1,0 +1,40 @@
+{
+  "tool": "gti",
+  "version": "0.4.1",
+  "provider": "private-codex",
+  "dry_run_validated": true,
+  "cli_warning": "WARNING: This project calls an unsupported private Codex backend path. The contract may break without notice.",
+  "records": [
+    {
+      "asset": "assets/npc-system-architecture.png",
+      "prompt_file": "prompts/npc-system-architecture.prompt.txt",
+      "prompt_sha256": "01fdaad656c441b3e4ebeba16164da484cf22edc906a2329c9f7d63470e401f2",
+      "command": "gti --provider private-codex --model gpt-5.6-sol --image-model gpt-image-2.5-sunburst --size 2048x1152 --prompt <exact contents of prompts/npc-system-architecture.prompt.txt> --dry-run",
+      "returncode": 0,
+      "result_mode": "dry-run",
+      "result_warnings": [],
+      "request_url": "https://chatgpt.com/backend-api/codex/responses",
+      "request_model": "gpt-5.6-sol",
+      "request_image_model": "gpt-image-2.5-sunburst",
+      "request_size": "2048x1152"
+    },
+    {
+      "asset": "assets/npc-harbor-concept.png",
+      "prompt_file": "prompts/npc-harbor-concept.prompt.txt",
+      "prompt_sha256": "ebd8dd33bc2d6f0978438998e33e221b35d13e80a94cb0b3be218a1e14629d15",
+      "command": "gti --provider private-codex --model gpt-5.6-sol --image-model gpt-image-2.5-sunburst --size 1536x1024 --prompt <exact contents of prompts/npc-harbor-concept.prompt.txt> --dry-run",
+      "returncode": 0,
+      "result_mode": "dry-run",
+      "result_warnings": [],
+      "request_url": "https://chatgpt.com/backend-api/codex/responses",
+      "request_model": "gpt-5.6-sol",
+      "request_image_model": "gpt-image-2.5-sunburst",
+      "request_size": "1536x1024"
+    }
+  ],
+  "auth_check": {
+    "path": "~/.codex/auth.json",
+    "exists": true,
+    "secrets_read": false
+  }
+}

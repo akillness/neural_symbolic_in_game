@@ -73,10 +73,11 @@ Stage 6 C1은 전체 논문 효과와 외적 타당성이 없다고 판정한다
 
 관찰 행은 엔진 로컬 정책 미러 근거다. 런타임 간 M6 통합 주장에는 라이브 Python 권한 transport가
 필요하다. 어떤 행도 `C-RESULT-*` 상태를 바꾸지 않는다.
-선택 render 패킷은 `godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`다. 불변 v1--v4는
-보존하며 visual QA, validation-toolchain provenance 결속, CI portability 수정을 거쳐
-superseded 처리했다. v5 evidence chain은 capture/decoder/schema/validator/lock hash와 tool
-version을 기록하되 verifier host가 capture host를 가장하도록 요구하지 않는다.
+선택된 현재 machine-bound render 패킷은
+`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`다. 이전 불변 패킷은 보존하며
+visual QA, validation-toolchain provenance 결속, CI portability 수정을 거쳐 superseded 처리했다.
+현재 evidence chain은 capture/decoder/schema/validator/lock hash와 tool version을 기록하되
+verifier host가 capture host를 가장하도록 요구하지 않는다.
 
 ## 6. 게임 artifact → 논문 사용
 

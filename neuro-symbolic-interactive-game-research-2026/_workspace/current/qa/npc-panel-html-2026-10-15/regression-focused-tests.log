@@ -1,0 +1,48 @@
+PANEL_REGRESSION_COMMAND ["/opt/homebrew/bin/godot", "--headless", "--path", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_contextual_ledger_dock_li0/project", "--import", "--log-file", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_contextual_ledger_dock_li0/regression-import.log"]
+PANEL_REGRESSION_COMMAND ["/opt/homebrew/bin/godot", "--headless", "--path", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_contextual_ledger_dock_li0/project", "--script", "res://tests/godot_panel_lifecycle_harness.gd", "--quit-after", "120", "--log-file", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_contextual_ledger_dock_li0/regression-execution.log"]
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+PANEL_LIFECYCLE_RESULT {"failures":[],"passed":true}
+
+.PANEL_REGRESSION_COMMAND ["/opt/homebrew/bin/godot", "--headless", "--path", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer0/project", "--import", "--log-file", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer0/regression-import.log"]
+PANEL_REGRESSION_COMMAND ["/opt/homebrew/bin/godot", "--headless", "--path", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer0/project", "--script", "res://tests/godot_panel_lifecycle_harness.gd", "--quit-after", "120", "--log-file", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer0/regression-execution.log"]
+PANEL_REGRESSION_EXPECTED_REJECTION panel lifecycle harness failed (exit=0). Godot output:
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+PANEL_LIFECYCLE_RESULT {"passed":true,"failures":[]}
+ERROR: panel regression injected push_error
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _inject_error (res://tests/godot_panel_lifecycle_harness.gd:9)
+       [1] _init (res://tests/godot_panel_lifecycle_harness.gd:4)
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+ERROR: panel regression injected push_error
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _inject_error (res://tests/godot_panel_lifecycle_harness.gd:9)
+       [1] _init (res://tests/godot_panel_lifecycle_harness.gd:4)
+PANEL_LIFECYCLE_RESULT {"passed":true,"failures":[]}
+
+.PANEL_REGRESSION_COMMAND ["/opt/homebrew/bin/godot", "--headless", "--path", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer1/project", "--import", "--log-file", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer1/regression-import.log"]
+PANEL_REGRESSION_COMMAND ["/opt/homebrew/bin/godot", "--headless", "--path", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer1/project", "--script", "res://tests/godot_panel_lifecycle_harness.gd", "--quit-after", "120", "--log-file", "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run/test_panel_wrapper_rejects_zer1/regression-execution.log"]
+PANEL_REGRESSION_EXPECTED_REJECTION panel lifecycle harness failed (exit=0). Godot output:
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+PANEL_LIFECYCLE_RESULT {"passed":true,"failures":[]}
+SCRIPT ERROR: Assertion failed: panel regression injected script error
+          at: _inject_error (res://tests/godot_panel_lifecycle_harness.gd:9)
+          GDScript backtrace (most recent call first):
+              [0] _inject_error (res://tests/godot_panel_lifecycle_harness.gd:9)
+              [1] _init (res://tests/godot_panel_lifecycle_harness.gd:4)
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+SCRIPT ERROR: Assertion failed: panel regression injected script error
+   at: _inject_error (res://tests/godot_panel_lifecycle_harness.gd:9)
+   GDScript backtrace (most recent call first):
+       [0] _inject_error (res://tests/godot_panel_lifecycle_harness.gd:9)
+       [1] _init (res://tests/godot_panel_lifecycle_harness.gd:4)
+PANEL_LIFECYCLE_RESULT {"passed":true,"failures":[]}
+
+.
+3 passed in 34.68s

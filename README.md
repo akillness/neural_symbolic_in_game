@@ -237,6 +237,42 @@ make -C paper/latex check                            # EN (pdflatex) + KO (xelat
 
 Packets: offline pilot (frozen, hash-bound) in [`research/academic-pipeline/stage-04-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-04-pilot/); live screening in [`research/academic-pipeline/rq2-live-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/rq2-live-pilot/); KG simulation in [`research/simulation/kg-ontology/`](neuro-symbolic-interactive-game-research-2026/research/simulation/kg-ontology/); playable evaluation in [`game-track/godot/docs/latest/`](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/).
 
+## Fixed-goal NPC operator lane (protocol 1.1)
+
+The current NPC integration is a fixed-goal `sealed-lighthouse-v1` controller. Godot is the sole canonical-state writer; Python interprets typed intent and runs bounded BFS over the six-field public observation only. It never reads hidden world state or performs novel planning. `acquire_object` and `install_lens` are explicit player requests; only Captain Mira may issue `reveal_hint` after signal restoration, tide-lead authorization, and open dialogue.
+
+The wire contract is `npc-goal-recovery/1.1.0`. P invokes the official authenticated Codex OAuth CLI adapter with no rule fallback. R is the authored rule/grammar control; O is a same-model-family, public-input-only auxiliary arm, not independent gold. The loopback service binds to `127.0.0.1:8768` and accepts exactly `http://127.0.0.1:8877` and `http://localhost:8877`; `TRACE_RPG_NPC_CAPABILITY` is transient and the capability is sent only in `X-NPC-Capability`. Episode budgets are cumulative across utterance epochs: 30,000 ms intent, 900,000 ms episode, 8 intent calls, 32 action attempts, 16 replans, 32 plan expansions, and one in-flight request. The allocation is 16 engineering R observations plus 72 screening observations (P/R/O × 2, 24 each), 88 total; arm totals are R=40, P=24, O=24. Input/output tokens, cost, and returned model revision are unavailable and remain `null`.
+
+**Validated-v5 evidence.** The corpus has 28 cases (16 engineering + 12 screening). The immutable canonical packet at `research/academic-pipeline/npc-goal-recovery/verified-run-002/` contains all 88 assigned rows and passes strict validation, including 24 observed authenticated CLI executions explicitly requesting `gpt-5.6-sol`. The returned model revision, provider seed, token accounting, and cost are unavailable. Each screening arm retains 20 completed executions and 4 assigned stale-control ACK rejections; 4/24 observed goal counts are not recovery-rate or efficacy estimates. O's same-family designation is a protocol source label, not a verified match to P. The unknown-model `verified-run-001/`, failed diagnostics, and source-bound native demonstrations remain separate, immutable evidence; none are pooled with this cohort. No efficacy, superiority, generalization, human benefit, or independent labels are claimed.
+
+From the project root, confirm OAuth and run the explicit Codex service arm (no hidden rule fallback):
+
+```bash
+codex login status
+uv run python scripts/run_npc_service.py \
+  --backend codex --model gpt-5.6-sol --host 127.0.0.1 --port 8768 \
+  --allow-origin http://127.0.0.1:8877 \
+  --allow-origin http://localhost:8877
+```
+
+Canonical packets are immutable. For a new model-pinned cohort, replace `NEW-ID` below with an unused identifier; do not overwrite or pool either historical cohort. Preflight/dry-run output must also use a fresh noncanonical directory. Revalidate the saved canonical packet by passing `research/academic-pipeline/npc-goal-recovery/verified-run-002` to the validator only.
+
+```bash
+uv run python scripts/run_npc_goal_experiment.py \
+  --packet all --model gpt-5.6-sol \
+  --engineering-fixtures data/fixtures/npc-goal-recovery/validated-v5/engineering.json \
+  --screening-fixtures data/fixtures/npc-goal-recovery/validated-v5/screening.json \
+  --output-dir _workspace/current/qa/npc-rerun-NEW-ID \
+  --godot-project game-track/godot
+
+uv run python scripts/validate_npc_goal_evidence.py \
+  --packet all \
+  --root "$PWD" \
+  --packet-dir _workspace/current/qa/npc-rerun-NEW-ID
+```
+
+Only a passing validator permits final packet outcomes and bilingual paper-fragment regeneration; preflights and historical packets remain diagnostic.
+
 ## Boundaries and disclosure
 
 The paper states these boundaries, and so does this README:

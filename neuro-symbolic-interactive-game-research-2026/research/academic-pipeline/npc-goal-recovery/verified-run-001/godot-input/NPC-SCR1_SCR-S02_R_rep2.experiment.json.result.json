@@ -1,0 +1,328 @@
+{
+  "actions": [
+    {
+      "action_id": "action-7b93bfd0a42340a19791",
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "codes": [],
+      "execution_mode": "player_request",
+      "index": 0,
+      "observation_after": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "observation_before": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "acquire_object",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "APPLIED",
+      "step": {
+        "action_id": "action-7b93bfd0a42340a19791",
+        "arguments": {
+          "object_id": "signal_lens"
+        },
+        "execution_mode": "player_request",
+        "operation": "acquire_object"
+      }
+    }
+  ],
+  "assignment_id": "NPC-SCR1:SCR-S02:R:rep2",
+  "claim_boundary": "Engineering-only canonical NPC decision binding, first-step transition, negative-gate, and deterministic replay evidence; no participant, efficacy, or usability claim.",
+  "decision": {
+    "body": {
+      "error": null,
+      "intent_id": "request-354ac2eac2388918417a.intent",
+      "plan_id": "plan-e8dbb7492318e754942d",
+      "planning_context_digest": "e8dbb7492318e754942d9213b9653d29fc711133ab36d0fd6b2328a6d63d1098",
+      "status": "WAITING_PLAYER",
+      "steps": [
+        {
+          "action_id": "action-7b93bfd0a42340a19791",
+          "arguments": {
+            "object_id": "signal_lens"
+          },
+          "execution_mode": "player_request",
+          "operation": "acquire_object"
+        }
+      ],
+      "typed_intent": {
+        "claims": [
+          {
+            "code": "NONE",
+            "state": "INDETERMINATE"
+          }
+        ],
+        "label": "REQUEST_DISCLOSURE",
+        "target": null
+      }
+    },
+    "budget": {
+      "cost": null,
+      "episode_deadline_ms": 900000.0,
+      "input_tokens": null,
+      "intent_deadline_ms": 30000.0,
+      "max_action_attempts": 32.0,
+      "max_inflight_per_session": 1.0,
+      "max_intent_calls": 8.0,
+      "max_plan_expansions": 32.0,
+      "max_replans": 16.0,
+      "output_tokens": null
+    },
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "content_sha256": "c595c12546125f2e85fdc716e67f593d8387149c3ef56b0325538193d4c3edbb",
+    "delivery_index": 2.0,
+    "episode_id": "episode-354ac2eac2388918417a",
+    "event_id": "evt-f05a1bd7a7f54649b6c1",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "message_type": "decision",
+    "npc_id": "captain_mira",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "provenance": {
+      "arm": "R",
+      "backend": "rule",
+      "model": null,
+      "raw_utterance_sha256": "665fd8745cc44c355c5123e73740e9c001a62a4befe5f3333d4d84f5afc35f0c",
+      "recorded_response_ref": null,
+      "trace_ref": null
+    },
+    "request_id": "request-354ac2eac2388918417a",
+    "scenario_id": "sealed-lighthouse-v1",
+    "schema_version": "npc-goal-recovery/1.1.0",
+    "sequence": 2.0,
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-354ac2eac2388918417a",
+    "state_ref": {
+      "revision": 0.0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "decision_sha256": "a34509915069edc4f860d2c423aaed8e4e3cdbc5fee15e2dce2566bbdbdbc92b",
+  "engineering_only": true,
+  "errors": [],
+  "events": [
+    {
+      "arguments": {},
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "open_dialogue",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    },
+    {
+      "action_id": "action-7b93bfd0a42340a19791",
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "execution_mode": "player_request",
+      "kind": "action",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "acquire_object",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "APPLIED"
+    }
+  ],
+  "expected_negative_gates": [],
+  "final_state_ref": {
+    "revision": 1,
+    "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+  },
+  "fixture_ref": "data/fixtures/npc-goal-recovery/validated-v5/screening.json#SCR-S02",
+  "goal_reached": false,
+  "initial_public_snapshot": {
+    "observation": {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    "state_ref": {
+      "revision": 0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "initial_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "input_bytes_preserved": true,
+  "input_sha256_after": "0bc29a641dff76e4e1b9399e27b03b26fc0f079827609f19d8973fea874039dd",
+  "input_sha256_before": "0bc29a641dff76e4e1b9399e27b03b26fc0f079827609f19d8973fea874039dd",
+  "mode": "experiment",
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "model superiority"
+  ],
+  "observations": [
+    {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": true,
+      "lens_reachable": false,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    }
+  ],
+  "passed": true,
+  "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+  "recovery_eligible": true,
+  "recovery_unreachable": false,
+  "request": {
+    "episode_id": "episode-354ac2eac2388918417a",
+    "event_kind": "",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "observation": {},
+    "request_id": "request-354ac2eac2388918417a",
+    "session_epoch": 0,
+    "session_id": "npc-exp-354ac2eac2388918417a",
+    "sha256": "5d27c9541ab32bc5615f7921f3026df7260c733efb07781ebbd5c67874101769",
+    "state_ref": {
+      "revision": 0.0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "request_context": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "episode_id": "episode-354ac2eac2388918417a",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "request_id": "request-354ac2eac2388918417a",
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-354ac2eac2388918417a"
+  },
+  "rows": [
+    {
+      "action_id": "action-7b93bfd0a42340a19791",
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "codes": [],
+      "execution_mode": "player_request",
+      "index": 0,
+      "observation_after": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "observation_before": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "acquire_object",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "APPLIED",
+      "step": {
+        "action_id": "action-7b93bfd0a42340a19791",
+        "arguments": {
+          "object_id": "signal_lens"
+        },
+        "execution_mode": "player_request",
+        "operation": "acquire_object"
+      }
+    }
+  ],
+  "schema_version": "npc-engineering/input-1",
+  "source_hashes": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "npc_protocol_config_sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "source_project_config_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "source_schema_sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+  },
+  "status": "APPLIED",
+  "terminal_status": "PASSED"
+}

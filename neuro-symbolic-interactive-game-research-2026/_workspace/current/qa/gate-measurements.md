@@ -205,9 +205,9 @@ affect, player efficacy, and confirmatory model efficacy remain **UNASSESSED**. 
 because production save/reload, current mobile verification, pointer-lock/audio confirmation,
 warmed performance/input, the 30-minute soak, and rollback evidence are absent.
 
-## Selected Cycle 2 immutable capture evidence (carried unchanged)
+## Current immutable capture evidence
 
-`engineering/tech-verification/current.json` continues to select
-`godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`. Its three 1280×720 panels and toolchain
-provenance support authored fixture render/state correspondence only. Cycle 3 does not overwrite,
-amend, or broaden that claim.
+`engineering/tech-verification/current.json` selects
+`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`. Its three 1280×720 panels and toolchain
+provenance support authored fixture render/state correspondence only. Earlier immutable packets remain
+retained unchanged; this refresh does not overwrite, amend, or broaden that claim.

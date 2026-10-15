@@ -1,0 +1,94 @@
+{
+  "schema_version": "public-release-boundary/1",
+  "date": "2026-10-15",
+  "scope": "Selected public Git index; local private originals and diagnostic copies were not deleted or rewritten",
+  "excluded_from_initial_index": {
+    "qa_copy_count": 12,
+    "rig_raw_and_import_sidecars": 96,
+    "generated_godot_cache_files": 1020
+  },
+  "ignore_checks": {
+    "command": "git check-ignore --no-index --stdin -z",
+    "private_cache_inputs_ignored": 1129,
+    "qa_fbx_copies_covered": 22,
+    "canonical_local_project_fbx_copies_covered": 2,
+    "original_fbx_covered": true,
+    "public_readme_glb_packet_controls_unignored": 15
+  },
+  "git_boundary_checks": {
+    "available_ref_raw_rig_history_command": "git log --all --oneline -- ':(glob)**/assets/rig/player-rig*'",
+    "available_ref_raw_rig_history_entries": 0,
+    "available_ref_compiled_rig_history_command": "git log --all --oneline -- ':(glob)**/.godot/imported/player-rig*'",
+    "available_ref_compiled_rig_history_entries": 0,
+    "lfs_command": "git lfs ls-files --name-only",
+    "lfs_entries": 0,
+    "index_private_rig_cache_payloads": 0,
+    "head_private_rig_cache_payloads": 0,
+    "scope_limit": "Available fetched repository refs; not a claim about unreachable or renamed historical blobs"
+  },
+  "canonical_packet": {
+    "path": "research/academic-pipeline/npc-goal-recovery/verified-run-002",
+    "receipt_members": 1333,
+    "receipt_rig_cache_or_godot_project_members": 0,
+    "public_export_validation": "canonical-validation.json",
+    "valid": true,
+    "engineering_assignments": 16,
+    "screening_assignments": 72,
+    "errors": 0
+  },
+  "native012_public_source_identity": {
+    "matching_files": 17,
+    "mismatches": 0,
+    "sha256": {
+      "src/nesy_game/npc_goal.py": "d5afc27d5118d2d64b6abebbeb1e482340f7ea4bfa8c4bb8ad25e9524c56993e",
+      "scripts/run_npc_service.py": "421b475a2fd1591f74fe70f982d86cda9f0846dbcd0b71dad4312cb254907441",
+      "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+      "game-track/godot/scripts/game3d/game_3d.gd": "2a273cf3c433be838c9f8bf35bb796c591e78e4f11612a5810cbb2a550c6c299",
+      "game-track/godot/scripts/game3d/npc_agent_client.gd": "e56911b029a372017c7046a5b1bb0017156275634c7e86b704169f5fed124989",
+      "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+      "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+      "game-track/godot/data/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+      "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+      "game-track/godot/scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+      "game-track/godot/project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+      "configs/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+      "game-track/schemas/npc-goal-recovery.schema.json": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc",
+      "tests/test_npc_play_loop.py": "f52004f497ee82e5c4de53e9b5c787d847fd1da4434c2e8565bf73f961fe62de",
+      "game-track/godot/tests/npc_play_loop_harness.gd": "dec6cb7953c48550b08ba94050d499166549bdce203a64c2d66c9a75e800a7d6",
+      "game-track/godot/tests/npc_play_loop_transport.gd": "49f869579fc45bc6df282b0eba91b384ed0ca4d20038e24f0255489989a41423",
+      "game-track/godot/scripts/game3d/harbor_ledger_ui.gd": "7dc4cf70084f1a2c7380f35b8bd262f55a088d91862d8fd866ebed2e53e3b487"
+    }
+  },
+  "historical_whole_tree_manifest_boundary": {
+    "publicly_byte_complete": false,
+    "reason": "Immutable diagnostic receipts retain names and hashes of omitted local-only rig/cache members; they are not relabelled clean-clone proof",
+    "manifests": [
+      "_workspace/current/qa/npc-preflight-v4-cli-evidence-001/sha256-manifest.json",
+      "_workspace/current/qa/npc-runner-v4-staged-eng/sha256-manifest.json",
+      "_workspace/current/qa/npc-runner-v4-staged-screen/sha256-manifest.json"
+    ]
+  },
+  "focused_public_behavior": {
+    "command": "uv run --extra research --extra dev pytest tests/test_npc_play_loop.py -q -k \"not optional\" --basetemp <isolated-public-behavior-temp>",
+    "result": "1 passed, 1 deselected in 6.04s",
+    "wall_seconds": 6.89,
+    "selection_boundary": "Paid real-service opt-in test not rerun; existing native012 authenticated proof remains separate"
+  },
+  "public_snapshot_ci": {
+    "command": "./scripts/verify_like_ci.sh",
+    "result": "All CI steps passed locally; this tree should push clean.",
+    "wall_seconds": 232.26,
+    "unittest_cases": 293,
+    "game_tests": 78,
+    "game_subtests": 48,
+    "passing_output_excerpt": "ci-public-snapshot.txt",
+    "initial_attempt_gate": "FIX: three conformance-pilot errors from unborn temporary HEAD",
+    "initial_attempt_output": "ci-unborn-head.txt",
+    "resolution": "Fetched actual existing f3b1eed HEAD into the temporary verification repo and initialized its base index, leaving the selected public source bytes and all tests unchanged; reran the entire CI gate"
+  },
+  "reviewers": [
+    "RigEvidenceAudit",
+    "RigLicenseAudit"
+  ],
+  "git_commit_push": "Not asserted by this pre-commit receipt"
+}

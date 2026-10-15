@@ -1,0 +1,68 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ GodotPanelLifecycleRegressionTests.test_contextual_ledger_dock_lifecycle_preserves_active_choices_and_overlays _
+
+self = <test_godot_panel_lifecycle.GodotPanelLifecycleRegressionTests testMethod=test_contextual_ledger_dock_lifecycle_preserves_active_choices_and_overlays>
+
+    def test_contextual_ledger_dock_lifecycle_preserves_active_choices_and_overlays(self) -> None:
+        """Exercise the real HarborLedgerUI lifecycle in a disposable Godot copy."""
+        try:
+            godot, _version = find_godot_4()
+        except RuntimeError as error:
+            self.skipTest(str(error))
+    
+        with tempfile.TemporaryDirectory() as directory:
+            staged_project = Path(directory) / "project"
+            stage_project(GODOT_PROJECT, staged_project)
+            harness_target = staged_project / "tests" / HARNESS.name
+            harness_target.parent.mkdir(parents=True)
+            shutil.copy2(HARNESS, harness_target)
+            self._ensure_project_imported(godot, staged_project)
+            result = subprocess.run(
+                [
+                    godot,
+                    "--headless",
+                    "--path",
+                    str(staged_project),
+                    "--script",
+                    f"res://tests/{HARNESS.name}",
+                    "--quit-after",
+                    "120",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            output = result.stdout + result.stderr
+>           harness_result = self._result_from_output(output)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_godot_panel_lifecycle.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+output = 'Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nSCRIPT ERROR: Parse Error: Closing "}" doe...anel_lifecycle_harness.gd" with error "Parse error".\n   at: load (modules/gdscript/gdscript_resource_format.cpp:46)\n'
+
+    @staticmethod
+    def _result_from_output(output: str) -> dict:
+        lines = [line for line in output.splitlines() if line.startswith(RESULT_PREFIX)]
+        if not lines:
+>           raise AssertionError(f"panel harness emitted no result marker:\n{output}")
+E           AssertionError: panel harness emitted no result marker:
+E           Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+E           
+E           SCRIPT ERROR: Parse Error: Closing "}" doesn't have an opening counterpart.
+E                     at: GDScript::reload (res://tests/godot_panel_lifecycle_harness.gd:90)
+E           ERROR: Failed to load script "res://tests/godot_panel_lifecycle_harness.gd" with error "Parse error".
+E              at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+
+tests/test_godot_panel_lifecycle.py:38: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_godot_panel_lifecycle.py::GodotPanelLifecycleRegressionTests::test_contextual_ledger_dock_lifecycle_preserves_active_choices_and_overlays - AssertionError: panel harness emitted no result marker:
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Closing "}" doesn't have an opening counterpart.
+          at: GDScript::reload (res://tests/godot_panel_lifecycle_harness.gd:90)
+ERROR: Failed to load script "res://tests/godot_panel_lifecycle_harness.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+1 failed in 7.89s

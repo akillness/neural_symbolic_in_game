@@ -1,0 +1,57 @@
+{
+  "packet_id": "npc-web-current-20261015-r2",
+  "generated_at": "2026-10-15T16:12:00Z",
+  "agent": "NpcWebQA",
+  "scope": "Round-2 retest after Main's harbor_ledger_ui.gd fix: Case File cards moved inside a ScrollContainer, footer moved outside it. New Web build completed 2026-10-15 16:08. Read-only browser QA, same reused browser session, no source/runtime edits by this agent.",
+  "fix_under_test": {
+    "reported_by": "Main (IRC)",
+    "description": "harbor_ledger_ui.gd ONLY - Case File cards placed inside a ScrollContainer (footer kept outside it), 4-wide layout at desktop / 2x2 at mobile.",
+    "new_build_timestamp_on_disk": "game-track/web/public/* dated 2026-10-15 16:08"
+  },
+  "asset_sha256_before_vs_after": {
+    "index.html": {"before": "808198099331baac5e2d5c5e1dd00e420699eeaab9f105f4786896a564f4b5c2", "after": "3a96ac17a2dfd33832bbdd08b051e30828ba047b8433ccabdfeb8b95a35c4025", "changed": true},
+    "index.js": {"before": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c", "after": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c", "changed": false},
+    "index.pck": {"before": "568e80d6928d298df595d5c90af22204cc6197987ba676cfd7ebb505f51098e2", "after": "23ae57f467d946a3ae011dc19a7ceb835ee3bc89a0b1efaf4fa3ccdf54ea5253", "before_bytes": 13401824, "after_bytes": 13402064, "changed": true},
+    "index.wasm": {"before": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277", "after": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277", "changed": false},
+    "index.png": {"before": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e", "after": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e", "changed": false},
+    "verification_method": "SHA-256 re-fetched live from inside the real browser (fetch + crypto.subtle.digest) against the running server on the r2-desktop pass; matches disk-computed SHA-256 exactly.",
+    "interpretation": "Only index.html (boot-shell boilerplate, presumably a build-tool timestamp/asset-manifest line) and index.pck (+240 bytes - the GDScript scene data for the fix) changed; index.js/index.wasm/index.png are byte-identical to the pre-fix build, consistent with a GDScript-only (.gd) change as Main stated. This is corroborating evidence, not a substitute for the visual verification below."
+  },
+  "desktop_1440x900": {
+    "boot": {"console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0, "boot_wait_s": 0.228, "status": "PASS - clean boot, identical to round 1, no regression."},
+    "case_file": {
+      "action": "BEGIN -> waited for intro to finish (3s) -> pressed 'c'.",
+      "observation": "Case File renders identically to round 1 at this width: all 4 cards (LENS, MOUNT, LEAD, SEALED) fully visible side-by-side with no scrolling needed, 'CHAIN 0/3 PROVEN' and the '[C] or [Esc] CLOSE CASE FILE' footer both fully legible. No regression from adding the ScrollContainer - at this width the content already fits, so the container simply does not need to scroll.",
+      "status": "PASS - no regression",
+      "screenshots": ["r2-desktop-04-case-file-open.png", "r2-desktop-05-case-file-closed.png"]
+    }
+  },
+  "mobile_390x844": {
+    "boot": {"console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0, "boot_wait_s": 0.162, "status": "PASS - clean boot, identical to round 1, no regression."},
+    "case_file_footer_fix_CONFIRMED": {
+      "action": "BEGIN -> waited for intro to finish (3.5s) -> pressed 'c'.",
+      "before_round1": "The '[C] or [Esc] CLOSE CASE FILE' instructional footer, 'CHAIN 0/3 PROVEN' readout, and next-valid-entry hint were pushed entirely below the 844px viewport with no visible scroll affordance (confirmed defect NEW-2026-10-15-01 in the round-1 packet).",
+      "after_round2": "FIXED. The footer block ('CHAIN 0/3 PROVEN | RULES LEARNED | none', '[N] NEXT VALID ENTRY | Speak with Captain Mira at the end of the dock.', '[C] or [Esc] CLOSE CASE FILE') is now rendered as a fixed overlay at the bottom of the panel and is fully visible and legible immediately on opening the Case File, with no scrolling required to read it.",
+      "status": "FIXED - confirmed by direct screenshot comparison.",
+      "screenshots": ["r2-mobile-04-case-file-open.png"]
+    },
+    "case_file_scroll_all_4_cards_CONFIRMED": {
+      "action": "With Case File open, sent a wheel-scroll gesture (deltaY +300) over the card area, screenshotted, then scrolled back (-300).",
+      "observation": "A visible scrollbar thumb appears on the right edge of the card area. Scrolling down moves LENS/MOUNT out of view at the top and brings LEAD and SEALED fully into view underneath, both fully legible with their own icon/title/body text intact. The footer block stayed fixed/visible throughout the scroll (confirms it now lives outside the ScrollContainer, as Main described). Scrolling back up correctly returns LENS/MOUNT to view.",
+      "status": "PASS - all 4 cards are reachable and fully legible via scroll; footer unaffected by scroll position.",
+      "screenshots": ["r2-mobile-04-case-file-open.png", "r2-mobile-05-case-file-scrolled-down.png", "r2-mobile-06-case-file-scrolled-back.png"]
+    },
+    "residual_minor_cosmetic_observation": {
+      "description": "Not part of the reported fix scope and NOT a content-clipping defect (nothing is hidden/unreadable): the persistent top-bar 'CURRENT LEAD' ledger box still visually peeks out a few pixels above the Case File panel's top border at this width, an overlap/layering artifact rather than a clipping one. Present in both round 1 and round 2 screenshots identically (no regression, no improvement - simply unchanged and out of this fix's scope).",
+      "evidence": ["r2-mobile-04-case-file-open.png"],
+      "severity": "cosmetic, non-blocking, not reported as a new defect - flagged only for completeness since the panel was already being inspected closely."
+    }
+  },
+  "explicit_excluded_claims": [
+    "No NPC utterance/capability text was ever typed or submitted; no model calls occurred.",
+    "No source, GDScript, or runtime files were edited by this agent in this round.",
+    "No claim of human comprehension, usability, or performance/production-readiness.",
+    "Touch-specific input (as opposed to narrow-viewport layout + mouse wheel scroll) was not exercised; the scroll check used a synthetic wheel event, not a touch drag gesture."
+  ],
+  "overall_verdict": "PASS. The reported Case File ScrollContainer fix is confirmed working: the previously-clipped mobile footer (NEW-2026-10-15-01 from the round-1 packet) is now fully visible, and all 4 evidence cards are reachable via scroll with the footer staying fixed throughout. Desktop 1440x900 shows no regression. Both viewports booted with zero console errors, zero page errors, zero failed requests, zero bad HTTP responses. Served asset bytes (re-verified live from the browser) match the new on-disk build exactly; index.js/index.wasm/index.png are byte-identical to the pre-fix build, consistent with a GDScript-only change as reported."
+}

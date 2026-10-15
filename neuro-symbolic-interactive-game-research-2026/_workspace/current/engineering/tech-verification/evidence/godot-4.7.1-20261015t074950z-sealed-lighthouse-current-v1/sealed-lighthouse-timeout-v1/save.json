@@ -1,0 +1,61 @@
+{
+  "episode_id": "sealed-lighthouse-episode-timeout-001",
+  "run_id": "godot-headless-timeout-v1",
+  "saved_at_event_id": "evt-006-save",
+  "scenario_id": "sealed-lighthouse-v1",
+  "schema_version": "1.0.0",
+  "state": {
+    "facts": [
+      "dock_saved",
+      "lighthouse_dark",
+      "lighthouse_hint_authorized",
+      "signal_lens_acquired",
+      "signal_lens_installed",
+      "tide_marks_hint"
+    ],
+    "npcs": {
+      "captain_mira": {
+        "disclosed": [
+          "dock_saved",
+          "lighthouse_dark",
+          "tide_marks_hint"
+        ],
+        "knowledge": [
+          "dock_saved",
+          "keeper_betrayal",
+          "lighthouse_dark",
+          "tide_marks_hint"
+        ],
+        "relationship_memory": [
+          "turn-05:mira-shared-tide-marks-hint"
+        ]
+      }
+    },
+    "player": {
+      "inventory": [
+        "signal_lens"
+      ],
+      "location": "harbor_dock"
+    },
+    "quest": {
+      "flags": [
+        "dock_saved",
+        "lighthouse_hint_authorized",
+        "signal_lens_acquired",
+        "signal_lens_installed"
+      ],
+      "stage": 2
+    },
+    "revision": 3,
+    "scenario_id": "sealed-lighthouse-v1",
+    "state_schema_version": "1.0.0",
+    "world": {
+      "object_locations": {},
+      "reachable_locations": [
+        "harbor_dock",
+        "lamp_store"
+      ]
+    }
+  },
+  "state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+}

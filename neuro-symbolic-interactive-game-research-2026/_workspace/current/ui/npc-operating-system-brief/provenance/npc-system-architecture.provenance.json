@@ -1,0 +1,38 @@
+{
+  "asset": "assets/npc-system-architecture.png",
+  "role": "generated design illustration contrasting the current short guarded-proposal path with the proposed fixed-goal event/observation/intent/planner/gate/feedback loop",
+  "status": "illustrative_only",
+  "runtime_eligible": false,
+  "evidence_status": "not a screenshot and not empirical evidence",
+  "human_rights_style_review": "pending",
+  "generation": {
+    "provider": "private-codex",
+    "model": "gpt-5.6-sol",
+    "image_model": "gpt-image-2.5-sunburst",
+    "gti_version": "0.4.1",
+    "command": "gti --provider private-codex --model gpt-5.6-sol --image-model gpt-image-2.5-sunburst --size 2048x1152 --prompt <exact contents of prompts/npc-system-architecture.prompt.txt> --output project/_workspace/current/ui/npc-operating-system-brief/assets/npc-system-architecture.png --debug --debug-dir project/_workspace/current/ui/npc-operating-system-brief/provenance/debug-npc-system-architecture",
+    "response_id": "resp_053b9534c0899a4c016ad02abf80cc87d09ec9c3f1fe6cf3b5",
+    "session_id": "88668ed0-b5c3-44e6-a017-cb0fe087499e",
+    "http_status": 200,
+    "source_saved_path_reported_by_gti": "/Users/jangyoung/orca/neural_symbolic_in_game/project/_workspace/current/ui/npc-operating-system-brief/assets/npc-system-architecture.png",
+    "source_dimensions": "1672x941",
+    "generation_timestamp_observed": "2026-10-15T10:28:04+09:00",
+    "timestamp_basis": "mtime of sanitized successful gti response artifact",
+    "license": null,
+    "license_note": "not reported by gti"
+  },
+  "postprocess": {
+    "operation": "native macOS sips deterministic resample of the Codex-generated PNG",
+    "command": "sips --resampleHeightWidth 1152 2048 <source PNG> --out <temporary PNG>; replace final asset",
+    "reason": "Codex backend returned 1672x941 despite the requested 2048x1152; final delivery requires the accepted 2048x1152 dimensions",
+    "final_dimensions": "2048x1152",
+    "final_sha256": "3109cbfa5c5fb90aa64b4c576e0fea43537ed14cf754777f04cb9ff55d766a58",
+    "final_byte_count": 3456615
+  },
+  "visual_check": {
+    "decoded_and_viewed": true,
+    "notes": "Two lanes are visibly separated; the same copper shield gate appears in both; the right lane shows fixed goal, observation, intent, plan, result and feedback loop; no metrics or runtime UI are depicted."
+  },
+  "prompt_file": "prompts/npc-system-architecture.prompt.txt",
+  "debug_artifacts": "provenance/debug-npc-system-architecture/{request,response}.json"
+}

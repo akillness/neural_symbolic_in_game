@@ -11,14 +11,18 @@ import platform
 import re
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
 try:
     from scripts.png_contract import validate_render_png
+    from scripts.run_playable_evaluation import stage_project
 except ModuleNotFoundError:  # Direct `python scripts/...` execution.
     from png_contract import validate_render_png
+    from run_playable_evaluation import stage_project
+
 
 ROOT = Path(__file__).resolve().parents[1]
 GODOT_PROJECT = ROOT / "game-track/godot"
@@ -318,102 +322,117 @@ def main(argv: list[str] | None = None) -> int:
     ).stdout.strip()
     staging_root, evidence_root = prepare_capture_paths(args.evidence_set_id)
     try:
-        runs = []
-        seen_fixture_ids: set[str] = set()
-        fixture_validator = load_validator("experimental-game-fixture.schema.json")
-        for fixture_path in FIXTURES:
-            fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
-            fixture_validator.validate(fixture)
-            output = fixture_output_path(staging_root, fixture["fixture_id"], seen_fixture_ids)
+        with tempfile.TemporaryDirectory(
+            prefix=f"godot-capture-{args.evidence_set_id}-"
+        ) as temporary_directory:
+            staged_project = Path(temporary_directory) / "project"
+            stage_project(GODOT_PROJECT, staged_project)
             subprocess.run(
-                [
-                    godot,
-                    "--headless",
-                    "--path",
-                    str(GODOT_PROJECT),
-                    "--quit-after",
-                    "120",
-                    "--",
-                    f"--fixture={fixture_path}",
-                    f"--output={output}",
-                ],
+                [godot, "--headless", "--path", str(staged_project), "--import"],
                 check=True,
-                timeout=30,
+                timeout=300,
             )
-            files = {
-                name: digest(output / name)
-                for name in ("events.jsonl", "save.json", "summary.json")
-            }
-            runs.append(
-                {
-                    "fixture_id": fixture["fixture_id"],
-                    "summary": json.loads((output / "summary.json").read_text(encoding="utf-8")),
-                    "files": files,
+            runs = []
+            seen_fixture_ids: set[str] = set()
+            fixture_validator = load_validator("experimental-game-fixture.schema.json")
+            for fixture_path in FIXTURES:
+                fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+                fixture_validator.validate(fixture)
+                output = fixture_output_path(staging_root, fixture["fixture_id"], seen_fixture_ids)
+                subprocess.run(
+                    [
+                        godot,
+                        "--headless",
+                        "--path",
+                        str(staged_project),
+                        "--quit-after",
+                        "120",
+                        "--",
+                        f"--fixture={fixture_path}",
+                        f"--output={output}",
+                    ],
+                    check=True,
+                    timeout=30,
+                )
+                files = {
+                    name: digest(output / name)
+                    for name in ("events.jsonl", "save.json", "summary.json")
                 }
+                runs.append(
+                    {
+                        "fixture_id": fixture["fixture_id"],
+                        "summary": json.loads(
+                            (output / "summary.json").read_text(encoding="utf-8")
+                        ),
+                        "files": files,
+                    }
+                )
+            render_capture = None
+            render_command_template = None
+            if args.with_render_captures:
+                canonical_root = staging_root / CANONICAL_FIXTURE_ID
+                render_root = fixture_output_path(staging_root, RENDER_ROOT_NAME, seen_fixture_ids)
+                render_command = [
+                    godot,
+                    "--path",
+                    str(staged_project),
+                    "--scene",
+                    "res://scenes/evidence_capture.tscn",
+                    "--windowed",
+                    "--resolution",
+                    "1280x720",
+                    "--single-window",
+                    "--audio-driver",
+                    "Dummy",
+                    "--rendering-method",
+                    "gl_compatibility",
+                    "--rendering-driver",
+                    "opengl3",
+                    "--fixed-fps",
+                    "30",
+                    "--disable-vsync",
+                    "--quit-after",
+                    "300",
+                    "--",
+                    f"--events={canonical_root / 'events.jsonl'}",
+                    f"--summary={canonical_root / 'summary.json'}",
+                    f"--output={render_root}",
+                    f"--evidence-set-id={args.evidence_set_id}",
+                ]
+                subprocess.run(render_command, check=True, timeout=45)
+                render_capture = enrich_and_validate_render_capture(
+                    staging_root, args.evidence_set_id
+                )
+                render_command_template = (
+                    "godot --path <disposable-godot-project> "
+                    "--scene res://scenes/evidence_capture.tscn "
+                    "--windowed --resolution 1280x720 --single-window --audio-driver Dummy "
+                    "--rendering-method gl_compatibility --rendering-driver opengl3 "
+                    "--fixed-fps 30 --disable-vsync --quit-after 300 -- "
+                    "--events=<canonical-events.jsonl> --summary=<canonical-summary.json> "
+                    "--output=<render-capture-path> --evidence-set-id=<evidence-set-id>"
+                )
+            manifest = {
+                "schema_version": "1.0.0",
+                "status": "OBSERVED_ENGINE_RUNS",
+                "evidence_set_id": args.evidence_set_id,
+                "engine_version": version,
+                "platform": platform.platform(),
+                "command_template": (
+                    "godot --headless --path <disposable-godot-project> --quit-after 120 -- "
+                    "--fixture=<absolute fixture path> --output=<evidence path>"
+                ),
+                "runs": runs,
+                "render_capture": render_capture,
+                "render_command_template": render_command_template,
+            }
+            (staging_root / "evidence-manifest.json").write_text(
+                json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
             )
-        render_capture = None
-        render_command_template = None
-        if args.with_render_captures:
-            canonical_root = staging_root / CANONICAL_FIXTURE_ID
-            render_root = fixture_output_path(staging_root, RENDER_ROOT_NAME, seen_fixture_ids)
-            render_command = [
-                godot,
-                "--path",
-                str(GODOT_PROJECT),
-                "--scene",
-                "res://scenes/evidence_capture.tscn",
-                "--windowed",
-                "--resolution",
-                "1280x720",
-                "--single-window",
-                "--audio-driver",
-                "Dummy",
-                "--rendering-method",
-                "gl_compatibility",
-                "--rendering-driver",
-                "opengl3",
-                "--fixed-fps",
-                "30",
-                "--disable-vsync",
-                "--quit-after",
-                "300",
-                "--",
-                f"--events={canonical_root / 'events.jsonl'}",
-                f"--summary={canonical_root / 'summary.json'}",
-                f"--output={render_root}",
-                f"--evidence-set-id={args.evidence_set_id}",
-            ]
-            subprocess.run(render_command, check=True, timeout=45)
-            render_capture = enrich_and_validate_render_capture(staging_root, args.evidence_set_id)
-            render_command_template = (
-                "godot --path game-track/godot --scene res://scenes/evidence_capture.tscn "
-                "--windowed --resolution 1280x720 --single-window --audio-driver Dummy "
-                "--rendering-method gl_compatibility --rendering-driver opengl3 "
-                "--fixed-fps 30 --disable-vsync --quit-after 300 -- "
-                "--events=<canonical-events.jsonl> --summary=<canonical-summary.json> "
-                "--output=<render-capture-path> --evidence-set-id=<evidence-set-id>"
-            )
-        manifest = {
-            "schema_version": "1.0.0",
-            "status": "OBSERVED_ENGINE_RUNS",
-            "evidence_set_id": args.evidence_set_id,
-            "engine_version": version,
-            "platform": platform.platform(),
-            "command_template": (
-                "godot --headless --path game-track/godot --quit-after 120 -- "
-                "--fixture=<absolute fixture path> --output=<evidence path>"
-            ),
-            "runs": runs,
-            "render_capture": render_capture,
-            "render_command_template": render_command_template,
-        }
-        (staging_root / "evidence-manifest.json").write_text(
-            json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-            encoding="utf-8",
-        )
-        validate_staging_capture(staging_root, runs, render_capture)
-        promote_capture(staging_root, evidence_root)
-        write_current_pointer(args.evidence_set_id, evidence_root / "evidence-manifest.json")
+            validate_staging_capture(staging_root, runs, render_capture)
+            promote_capture(staging_root, evidence_root)
+            write_current_pointer(args.evidence_set_id, evidence_root / "evidence-manifest.json")
     except Exception:
         if staging_root.exists():
             shutil.rmtree(staging_root)

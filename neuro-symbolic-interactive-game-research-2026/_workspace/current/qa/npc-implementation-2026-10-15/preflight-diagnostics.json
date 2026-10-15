@@ -1,0 +1,19 @@
+{
+  "schema_version": "npc-preflight-diagnostics/1",
+  "claim_boundary": "Diagnostic preservation only; these runs are not the final publish-mode NPC evidence packet.",
+  "runs": [
+    {
+      "path": "_workspace/current/qa/npc-preflight-v5-cli-evidence-005",
+      "status": "completed_diagnostic",
+      "records": 88,
+      "model_calls": 0,
+      "reason": "The collector incorrectly rejected genuine native tamper controls because it required process returncode 0. Observed native controls returned 1 with REJECTED, ACTION_NOT_APPLIED, explicit canonical rejection codes in action/result rows, mutated=false, and unchanged canonical state. Original records and failures are retained; no outcomes were reclassified."
+    },
+    {
+      "path": "_workspace/current/qa/npc-preflight-v5-cli-evidence-006",
+      "status": "cancelled_diagnostic",
+      "model_calls": 0,
+      "reason": "Collection was stopped after a further source correction required explicit canonical rejection codes for a returncode-1 tamper result. This run cannot establish a single unchanged runtime-source freeze and is not admissible final evidence."
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "actions": [],
+  "actual_state_ref": {
+    "revision": 1,
+    "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+  },
+  "assignment_id": "NPC-SCR1:SCR-T01:R:rep2",
+  "claim_boundary": "Engineering-only canonical bootstrap, identity binding, and deterministic world-event evidence; no participant, efficacy, or usability claim.",
+  "context": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "episode_id": "episode-6527109d79dab6b16f62",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "observation": {
+      "goal_reached": false,
+      "in_dialogue": false,
+      "lens_carried": true,
+      "lens_reachable": false,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "request_id": "request-6527109d79dab6b16f62",
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-6527109d79dab6b16f62",
+    "state_ref": {
+      "revision": 1,
+      "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+    }
+  },
+  "engineering_only": true,
+  "errors": [],
+  "events": [
+    {
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "acquire_object",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    }
+  ],
+  "final_state_ref": {
+    "revision": 1,
+    "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+  },
+  "fixture_ref": "data/fixtures/npc-goal-recovery/validated-v4/screening.json#SCR-T01",
+  "initial_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "initial_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+  "input_bytes_preserved": true,
+  "input_sha256_after": "d57def8a17dd266255ec764e05fe67c0ae0684ccd51f256bfd25f37e3ce3bd45",
+  "input_sha256_before": "d57def8a17dd266255ec764e05fe67c0ae0684ccd51f256bfd25f37e3ce3bd45",
+  "mode": "bootstrap",
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "model superiority"
+  ],
+  "observation": {
+    "goal_reached": false,
+    "in_dialogue": false,
+    "lens_carried": true,
+    "lens_reachable": false,
+    "signal_restored": false,
+    "tide_lead_authorized": false
+  },
+  "passed": true,
+  "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+  "schema_version": "npc-engineering/input-1",
+  "source_hashes": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "npc_protocol_config_sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "source_project_config_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "source_schema_sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+  },
+  "state_ref": {
+    "revision": 1,
+    "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+  },
+  "terminal_status": "BOOTSTRAP_APPLIED"
+}

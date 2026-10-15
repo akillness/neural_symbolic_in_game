@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "asset_id": "HFCS-I02-evidence-mount",
+  "asset_class": "ui-evidence-card-icon",
+  "file": "ui-evidence-mount.png",
+  "prompt_file": "prompts/HFCS-I02-evidence-mount.txt",
+  "prompt_sha256": "ca58060fbb6e109e86513b1b53af7fa00b9ca619b02a5f6b4a761b29d45cbcbd",
+  "reference_inputs": [],
+  "tool": "higgsfield-cli",
+  "tool_version": "1.1.25",
+  "provider": "higgsfield",
+  "model": "gpt_image_2",
+  "job_id": "818abba9-b051-4a1a-911b-f3b4c3cdca58",
+  "generated_at_utc": "2026-09-18T10:02:54.227347Z",
+  "requested_size": "1:1 @ 2k (2048x2048 returned)",
+  "observed_width": 512,
+  "observed_height": 512,
+  "bytes": 249097,
+  "sha256": "d8f5002be6ed3ce123b917169358943bfa92dbd155a4f4706fe28affed21df94",
+  "curation_state": "curated-runtime",
+  "intended_track": [
+    "ui-runtime-candidate"
+  ],
+  "runtime_eligible": true,
+  "primary_experiment_eligible": false,
+  "rights_review": "user-directed-2026-09-18-session (D-073: 힉스필드이용해서 리소스와 모션, 프리팹, 맵구성, vfx 를 업데이트하고 적용)",
+  "ai_generated_content": true,
+  "limitations": [
+    "Generated via Higgsfield gpt_image_2; runtime eligibility granted only at curation.",
+    "Not research evidence; presentation-only.",
+    "Optional at runtime: loaders fall back to the procedural look when this file is absent (D-035 contract)."
+  ],
+  "derived_from": {
+    "file": "HFCS-I02-evidence-mount.png",
+    "sha256": "71408726863697393153ff1123271ade1cd66b5acaec9c553e98ceeeeaa07908",
+    "transform": "sips -Z 512 resample 2048x2048 to 512x512; magick lossless PNG recompress (zlib level 9, adaptive filter 5, metadata stripped; pixel-identical to the sips output, magick compare AE=0)",
+    "pack": "game-track/assets/generated/higgsfield-case-v1"
+  }
+}

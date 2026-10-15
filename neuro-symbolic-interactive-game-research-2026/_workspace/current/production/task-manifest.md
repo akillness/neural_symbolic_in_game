@@ -228,11 +228,58 @@ Rollback target: `dpl_37aBTEYLhDHtDD3Z2mWUXAxUvRkg`. No rollback execution is cl
 Next beat/blocker: retain narrow 390x844 embedded-canvas text clipping as FIX; resolve it only
 in an authorized UI change. No G4/G6, human-gesture, performance, journal, or efficacy promotion.
 
+### Latest local UI and design-explainer change — 2026-10-15 (D-076)
+
+Owner: Main. Local scope complete; no commit, push, or production deployment performed.
+Harbor Ledger visibility now follows contextual dialogue/choice lifetime rather than ordinary
+exploration. Main's rebuilt Web game at 1440x1000 completed Start Case, movement to Mira,
+E dialogue, Esc, re-entry, Step away, and Case File open/close with zero observed
+console/page/request/HTTP errors. The public production URL was used only for the before capture.
+
+Latest verified commands: `./scripts/build_godot_web.sh`;
+`.venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py -q` (3 passed, 37.52 s after
+formatting); focused `ruff check` and `ruff format --check`; wiki lint (74 pages, no structural
+issues). Disposable native smoke remains 8/8 with the required terminal hash; presentation
+evaluation is 16/16. Both real zero-exit diagnostic-negative cases are rejected. The reconstructed
+pre-edit snapshot fixture fails six lifecycle checks; it is not a pristine historical byte copy.
+The initial corrupt-harness failure and independent-review findings remain in the receipt history.
+
+Deliverable: `_workspace/current/ui/npc-operating-system-brief/index.html`, a portable Korean
+comparison with two embedded Codex illustrations. Main verified 1440/390px reflow, Enter/arrow
+tab focus and six disabled controls when JavaScript is off. The new NPC operating loop remains
+unimplemented and its protocol/efficacy pending. Human rights/style review of art remains pending.
+Evidence and final source hashes: `_workspace/current/qa/npc-panel-html-2026-10-15/verification.json`.
+All 12 unrelated dirty user files and the canonical project configuration are byte-preserved.
+Existing mobile-game readability, G4/G6, full-playthrough and performance boundaries are unchanged.
+
 
 Refresh rule: any lane, generator, authority boundary, entry point, Web export behavior, gate,
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
+### Latest source-bound NPC implementation — 2026-10-15 (D-080)
+
+**Status:** Native012 is current and passes its real Godot–HTTP–authenticated-Codex closed loop: 1 test in 24.99s (`artifact://3299`), 17 matching before/after source hashes, UI SHA `7dc4cf7…`, Game3D file SHA `2a273cf…`, nine trace rows, four decisions, one reused intent, and three valid epoch replays. Zero calls applies to replay only. Final canonical state is revision 3 / `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. The config hash `d63f5679…` is not a state hash or Git commit. No contemporaneous base-commit/dirty field is asserted for 012.
+
+**Completed packet:** `verified-run-002` contains all 88 assignments (16 engineering + 72 screening) and passes strict original/relocated validation. P has 24 CLI attempts explicitly configured as `gpt-5.6-sol`; each screening arm retains 20 completed executions and 4 pre-authored stale-control failures, with observed goal count 4/24. The decision-model identifier propagates the configured selector, not provider revision; provider revision/seed/tokens/cost remain unavailable. No efficacy, superiority, generalization, independent-label, or human-benefit claim follows.
+
+Evidence: `_workspace/current/qa/npc-real-play-loop-v5-012/provenance.json` and `replay-evidence.json`; canonical `research/academic-pipeline/npc-goal-recovery/verified-run-002/`; render set `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`; final Web proof `_workspace/current/qa/npc-web-current-20261015-r5/final-build-full-flow.json`; repository-root report `llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md`. Earlier 007–011 proofs, cohort001, and capture sets remain immutable history rather than rewritten current evidence.
+
+The 344×720 embedded Mira choice defect is repaired by deriving the scroll floor from actual wrapped-button height; the user's compact-panel anchors/floor/alpha remain unchanged. RED control, four lifecycle tests, final-binary desktop/mobile four-choice scroll/pointer flow, Case File/footer reachability, and zero observed browser/network errors are verified. Source-bound render-v3, unchanged terminal hash, 52/52 + 4/4 presentation checks and 8/8 smoke are preserved. The 16-byte PCK delta from the earlier R5 package has no established entry/cause because old raw bytes were not retained; byte-identical Web-export reproducibility is not claimed.
+
+D-081 publication boundary: copied private rig payloads and generated `.godot/` caches are excluded from the selected public tree and protected across all project copies by `.gitignore`; local originals and immutable historical receipts remain untouched. The three historical whole-tree diagnostic manifests are explicitly not byte-complete public reconstructions. Canonical002 strict validation passes in an exported public snapshot, native012 source identity matches 17/17, and the public focused Godot loop passes 1 test with 1 opt-in test deselected. Full public-snapshot CI passes 293 unittest cases plus 78 game tests/48 subtests in 232.26s; the initial unborn-HEAD failure remains recorded as FIX, and no source or test was weakened. Durable receipt and output excerpts: `_workspace/current/qa/npc-public-release-20261015/`.
+
+### Repository knowledge correction and final gates — 2026-10-15 (D-080)
+
+**Status:** Main corrected the actual repository report, project overview, index, log, task manifest, and append-only decision erratum. Prior global-vault-only updates did not update these project files and are not accepted as their completion evidence.
+
+**Verification:** `make check` passes EN/KO 10-page PDFs with standard IEEE typography and no overfull/undefined-reference/missing-character errors. Crosswalk: 5 contributions, 58 references, 9 topics, 3 experiment lanes plus 1 engineering lane. Final visual gate passes 110 receipts, 7 SVGs, and 22 isolated double-regenerated sources. The complete `verify_like_ci.sh` exits 0: 293 unittest cases, 78 game tests/48 subtests, lint/format, project/citation/visual integrity, offline smoke, harness, 14/14 research records, survey, and wiki gates. Independent Python and Godot reviews pass.
+
+**Repository evidence:** `llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md`, `llm-wiki/wiki/projects/trace-rpg-paper-2026.md`, `llm-wiki/index.md`, `llm-wiki/log.md`, and this project's `_workspace/current/production/decision-log.md` entry D-080. The earlier external-vault paths are not project-local evidence.
+
+**Remaining release action:** Select only task-owned changes and push after the exact selected snapshot passes its hook. This document does not pre-claim a commit hash, remote update, production deployment, human efficacy, G4/G6, or journal acceptance. Earlier stale-receipt failures remain recorded as FIX→repaired.
+
+**Decision:** D-080 supersedes incorrect current-status statements in D-077–D-079 without deleting their history. Current proof is native012, not 011; cohort002 is complete, not collecting; recorded selector is not provider revision; Game3D source SHA is not a Git commit; 17 native source hashes do not inherit old 007 base-commit/16-file metadata. Hash receipts establish integrity/identity, not authentication, and replay validity does not turn assigned failures into successes.
 Latest rule refresh: 2026-10-14, decision `D-075`: verified bounded 2025–2026 reference additions
 (58 identities/status records), synchronized methods/instrumentation manuscripts with standard
 IEEE typography and the detailed Full Paper <=10-page ceiling, derived non-pooled regime

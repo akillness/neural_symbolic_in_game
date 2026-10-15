@@ -16,6 +16,9 @@ ROOT = Path(__file__).parents[1]
 PIPELINE = ROOT / "research/academic-pipeline"
 CONTRIBUTIONS = PIPELINE / "contribution-evidence-matrix.csv"
 REFERENCES = PIPELINE / "reference-topic-crosswalk.csv"
+NPC_CONTRIBUTIONS = PIPELINE / "npc-goal-recovery/npc-contribution-evidence-matrix.csv"
+NPC_LANE_IDS = {"NPC-ENG1", "NPC-SCR1"}
+NPC_CONTRIBUTION_IDS = {"NPC1", "NPC2"}
 EXPERIMENTS = PIPELINE / "experiment-evidence-matrix.csv"
 REPORT = PIPELINE / "contribution-reference-crosscheck.md"
 BIBLIOGRAPHY = ROOT / "paper/latex/references.bib"
@@ -272,6 +275,46 @@ def _validate_headline_sources(experiment_rows: dict[str, dict[str, str]]) -> No
         raise ValueError(f"ENG1 headline drift: {game_signature!r}")
 
 
+def _validate_npc_crosswalk() -> None:
+    rows = _read_csv(NPC_CONTRIBUTIONS)
+    ids = {row.get("contribution_id", "") for row in rows}
+    if len(rows) != 2 or ids != NPC_CONTRIBUTION_IDS:
+        raise ValueError("NPC contribution matrix must contain NPC1 and NPC2 exactly once")
+    required_columns = {
+        "contribution_id",
+        "short_name",
+        "manuscript_claim",
+        "novelty_type",
+        "evidence_lane_ids",
+        "evidence_paths",
+        "evidence_status",
+        "inference_ceiling",
+        "known_limit",
+    }
+    if not required_columns <= set(rows[0]):
+        raise ValueError("NPC contribution matrix is missing required boundary columns")
+    for row in rows:
+        if set(_pipe(row["evidence_lane_ids"])) != NPC_LANE_IDS:
+            raise ValueError(f"{row['contribution_id']} must bind NPC-ENG1 and NPC-SCR1")
+        _assert_paths([row], "evidence_paths")
+    npc2 = next(row for row in rows if row["contribution_id"] == "NPC2")
+    claim = npc2["manuscript_claim"].lower()
+    if "same-model-family auxiliary" not in claim or "zero independent" not in claim:
+        raise ValueError(
+            "NPC2 must identify O as same-model-family auxiliary with zero independent assignments"
+        )
+    boundaries = npc2["inference_ceiling"].lower()
+    for forbidden in (
+        "efficacy",
+        "superiority",
+        "generalization",
+        "human-benefit",
+        "cost-equality",
+    ):
+        if forbidden not in boundaries:
+            raise ValueError(f"NPC2 inference ceiling omits {forbidden}")
+
+
 def main() -> None:
     bibliography = _bib_entries(BIBLIOGRAPHY.read_text(encoding="utf-8"))
     bib_keys = set(bibliography)
@@ -336,6 +379,9 @@ def main() -> None:
                 raise ValueError(f"{language} manuscript lacks evidence-lane marker {lane_id}")
         if r"\textbf{ENG1.}" not in tex:
             raise ValueError(f"{language} manuscript lacks evidence-lane marker ENG1")
+        for npc_marker in ("NPC-ENG1", "NPC-SCR1"):
+            if npc_marker not in tex:
+                raise ValueError(f"{language} manuscript lacks additive NPC marker {npc_marker}")
         availability_marker = {
             "en": "machine-checked contribution, reference-topic, and experiment matrices",
             "ko": "기계 검증 기여·참조 주제·실험 매트릭스",
@@ -407,6 +453,8 @@ def main() -> None:
         if prohibited != RESULT_CLAIMS:
             raise ValueError(f"{lane_id} must explicitly prohibit every C-RESULT claim")
     _validate_headline_sources(experiment_by_id)
+
+    _validate_npc_crosswalk()
 
     report = REPORT.read_text(encoding="utf-8")
     for identifier in sorted(CONTRIBUTION_IDS | LANE_IDS | TOPIC_IDS):

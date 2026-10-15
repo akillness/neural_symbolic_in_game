@@ -1,0 +1,57 @@
+{
+  "packet_id": "npc-web-current-20261015-r5-final-asset-recertification",
+  "generated_at": "2026-10-15T08:55:44+00:00",
+  "generated_at_method": "datetime.now(timezone.utc).isoformat() read directly from the host clock, not fabricated",
+  "agent": "NpcWebQA",
+  "supplement_note": "This is a SUPPLEMENT to the existing r5 packet, not a replacement. report.json (43 PNGs, full desktop+mobile 4-choice-scroll verification, the misclick-methodology correction note) is UNCHANGED and remains the full-PASS record of this round. This file adds final-artifact asset recertification after Main's final rebuild (artifact 3385, v3 render-doc PNGs added) on top of that already-PASSing baseline.",
+  "r5_full_pass_facts_retained_unmodified": {
+    "reference": "report.json in this same directory",
+    "png_count": 43,
+    "methodology_note_retained": "The r5 report's documented self-correction (first desktop attempt mis-clicked using a stale coordinate ratio copied from the BEGIN button's different UI layout; caught and corrected before the final verified pass) remains in report.json exactly as originally written - not edited, revised, or removed by this supplement."
+  },
+  "trigger_for_this_supplement": "Main reported a final rebuild, artifact 3385, adding v3 render-doc PNGs to the package, with UI commit 7dc4cf7 / Game3D commit 2a273cf / the 10 protected runtime paths / P002 all explicitly UNCHANGED from the r5-verified build (artifact 3284).",
+  "pck_change_check": {
+    "r5_verified_build_pck": {"sha256": "37bfe94b2eebddd07e971b540b23a94bef478424abfa77d6329eb5bfa3a58237", "bytes": 13402336},
+    "final_build_pck": {"sha256": "d9b280b52819e5c185c5ae3ca6b32c6172cb0abbd7d5041be299372f717f0ce0", "bytes": 13402352},
+    "delta": "+16 bytes, different SHA-256 - the PCK DID change (consistent with the v3 render-doc PNGs or an adjacent metadata change being packaged, despite UI/Game3D/P002/runtime-10 being unchanged as Main stated).",
+    "action_taken_per_main_instruction": "Since the PCK changed, performed the requested quick confirmatory real-pointer-click on Mira's ordinary first choice on BOTH viewports (not the full 4-choice scroll sweep - just binding the same already-verified UI behavior to the final package), rather than only an exact-SHA recert with no interaction."
+  },
+  "asset_sha256_final_artifact_served_vs_disk": {
+    "index.html": {"disk": "226633f720daab08ba5fd52c4c8856ebdd2e698c6e0d0890b1cb9ac6157faec6", "served_desktop": "226633f720daab08ba5fd52c4c8856ebdd2e698c6e0d0890b1cb9ac6157faec6", "served_mobile": "226633f720daab08ba5fd52c4c8856ebdd2e698c6e0d0890b1cb9ac6157faec6", "match": true},
+    "index.js": {"disk": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c", "served_desktop": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c", "served_mobile": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c", "match": true, "note": "unchanged across r1 through this final recert"},
+    "index.pck": {"disk": "d9b280b52819e5c185c5ae3ca6b32c6172cb0abbd7d5041be299372f717f0ce0", "disk_bytes": 13402352, "served_desktop": "d9b280b52819e5c185c5ae3ca6b32c6172cb0abbd7d5041be299372f717f0ce0", "served_mobile": "d9b280b52819e5c185c5ae3ca6b32c6172cb0abbd7d5041be299372f717f0ce0", "match": true},
+    "index.wasm": {"disk": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277", "served_desktop": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277", "served_mobile": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277", "match": true, "note": "unchanged across every round of this entire session (r1 through final)"},
+    "method": "Fetched live from inside TWO SEPARATE fresh isolated browser sessions (one per viewport), from the dashboard origin, independently; all four files match the disk-computed SHA-256 exactly on both sessions. Server confirmed 200 on /public/ and /dashboard/ at recertification time; on-disk mtime 2026-10-15 17:52 local."
+  },
+  "zero_error_boot_both_viewports": {
+    "desktop_1440x1000": {"console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0},
+    "mobile_390x844": {"console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0}
+  },
+  "mira_ordinary_choice_quick_bind_check": {
+    "desktop": {
+      "reached_mira": true,
+      "navigation_method": "Same proven telemetry-guided walk as r5",
+      "real_pointer_click_on_first_choice": "PASS - ledger log visibly appended Mira's exact scripted response ('The light died three days ago. The door may be barred from inside. There has been no answer. That is all we know.')",
+      "canonical_state_mutated": false,
+      "state_sha256_before_and_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c (identical before and after the click)",
+      "screenshots": ["recert-desktop-01-near-mira.png", "recert-desktop-02-dialogue-open.png", "recert-desktop-03-after-choice-click.png", "recert-desktop-04-closed.png"]
+    },
+    "mobile": {
+      "reached_mira": true,
+      "canvas_geometry_reconfirmed": "iframe/canvas box {x:23, y:271.14, width:344, height:720} - identical to the previously-sent geometry measurement; the real constrained canvas is unchanged by this rebuild.",
+      "real_pointer_click_on_first_choice": "PASS - same scripted ledger line appended, same page-scroll-to-reveal-choice-area method as r5",
+      "canonical_state_mutated": false,
+      "state_sha256_before_and_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c (identical before and after the click)",
+      "screenshots": ["recert-mobile-01-near-mira.png", "recert-mobile-02-dialogue-open.png", "recert-mobile-03-after-choice-click.png", "recert-mobile-04-closed.png"]
+    },
+    "forbidden_interaction_check": "NPC capability (memory only)/CONNECT and Ask Captain Mira/SEND/CANCEL remained visible but untouched on both viewports throughout this recertification, same as every prior round."
+  },
+  "explicit_excluded_claims": [
+    "This recertification used a QUICK single-choice click only (per Main's instruction for the PCK-changed case), not the full 4-choice scroll sweep already proven in report.json - all 4 choices were NOT re-scrolled-through this round since that mechanism was already fully verified against this exact UI commit (7dc4cf7) in the main r5 pass, and Main confirmed the UI/Game3D/runtime-10/P002 are unchanged in this final rebuild.",
+    "No NPC free-text or capability-memory request was submitted on either viewport.",
+    "No model calls occurred.",
+    "No source, GDScript, runtime, or data file was edited by this agent.",
+    "No claim of human comprehension, usability, or performance/production-readiness."
+  ],
+  "overall_verdict": "Final-artifact recertification PASS. The PCK did change (+16 bytes, new SHA-256) between the r5-verified build and this final rebuild, so per Main's instruction the quick confirmatory Mira-choice bind-check was performed (not skipped) on both viewports: real pointer click on the ordinary first choice correctly appended its scripted ledger line with zero canonical-state mutation on both desktop and the real 344x720 mobile canvas, exactly matching r5's behavior. All four served asset files (index.html/js/pck/wasm) are re-verified live from two independent fresh browser sessions and match the current on-disk final build exactly. Zero console/page/request/HTTP errors on both viewports. r5's full-PASS record (43 PNGs, 4-choice-scroll verification, misclick-methodology note) stands unmodified in report.json alongside this supplement."
+}

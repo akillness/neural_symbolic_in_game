@@ -1,0 +1,644 @@
+{
+  "schema_version": "npc-play-loop-replay/1",
+  "model_calls": 0,
+  "epochs": [
+    {
+      "epoch": 2,
+      "snapshot_identity_valid": true,
+      "snapshot": {
+        "session_id": "npc-133d8262de96b7818990fbe2",
+        "session_epoch": 2,
+        "rows": [
+          {
+            "body": {
+              "event_kind": "utterance",
+              "observation": {
+                "goal_reached": false,
+                "in_dialogue": true,
+                "lens_carried": false,
+                "lens_reachable": true,
+                "signal_restored": false,
+                "tide_lead_authorized": false
+              },
+              "utterance": "[REDACTED]"
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "80afcd408bfc1bcd5de1459b187a85f27138c04ba3b505975b2fd8d95df53f2e",
+            "delivery_index": 0,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "event-874edabd6a1170700dce4922",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "79016056ddb47921f89529f4b5f251868b63f3eb488d8ecdd23019f24e4e1db8",
+            "message_type": "request",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": null,
+              "raw_utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-c4539016a95c259459a944d5",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 0,
+            "session_epoch": 2,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 0,
+              "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+            }
+          },
+          {
+            "body": {
+              "error": null,
+              "intent_id": "request-c4539016a95c259459a944d5.intent",
+              "plan_id": "plan-239a168eeadb6807c325",
+              "planning_context_digest": "239a168eeadb6807c325afc1654c83c091b8bf937d8341d56f55c7a2bce6b45d",
+              "status": "WAITING_PLAYER",
+              "steps": [
+                {
+                  "action_id": "action-2caccac02020408f941a",
+                  "arguments": {
+                    "object_id": "signal_lens"
+                  },
+                  "execution_mode": "player_request",
+                  "operation": "acquire_object"
+                }
+              ],
+              "typed_intent": {
+                "claims": [
+                  {
+                    "code": "SIGNAL_RESTORED",
+                    "state": "CONTRADICTED"
+                  }
+                ],
+                "label": "REQUEST_DISCLOSURE",
+                "target": "tide_marks"
+              }
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "78b8d4ab7c8aee6f990c4d71d1b8fdb67214b1470db343e470503923e24b386c",
+            "delivery_index": 1,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "evt-8418147c186142a8a371",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "1bd744200297414a5e97682e09ccec141f612fb22fea836633a64646115545e7",
+            "message_type": "decision",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "79016056ddb47921f89529f4b5f251868b63f3eb488d8ecdd23019f24e4e1db8",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": "gpt-5.6-sol",
+              "raw_utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-c4539016a95c259459a944d5",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 1,
+            "session_epoch": 2,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 0,
+              "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+            }
+          }
+        ],
+        "snapshot_id": "a1a5792f68efcc1ae71a1ebaaf2e173695a1f2852c45ce89edbdb9850dea1520",
+        "cursor": {
+          "row_count": 2,
+          "head_hash": "1bd744200297414a5e97682e09ccec141f612fb22fea836633a64646115545e7"
+        }
+      },
+      "http_status": 200,
+      "replay": {
+        "content_hashes": [
+          "80afcd408bfc1bcd5de1459b187a85f27138c04ba3b505975b2fd8d95df53f2e",
+          "78b8d4ab7c8aee6f990c4d71d1b8fdb67214b1470db343e470503923e24b386c"
+        ],
+        "rows": 2,
+        "valid": true
+      }
+    },
+    {
+      "epoch": 4,
+      "snapshot_identity_valid": true,
+      "snapshot": {
+        "session_id": "npc-133d8262de96b7818990fbe2",
+        "session_epoch": 4,
+        "rows": [
+          {
+            "body": {
+              "event_kind": "observation",
+              "observation": {
+                "goal_reached": false,
+                "in_dialogue": true,
+                "lens_carried": true,
+                "lens_reachable": false,
+                "signal_restored": false,
+                "tide_lead_authorized": false
+              },
+              "utterance": null
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "6ce3934b1e3fb57e590d7611e1f3906444e3a7c886b232333738dffd6619383a",
+            "delivery_index": 0,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "event-ac273b113295b2b2c21a4d40",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "c744697dfa38d494e772540c1004209d883c577a73e394b1897aced9a40d2480",
+            "message_type": "request",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": null,
+              "raw_utterance_sha256": null,
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-f4dc42d65eb118447dfc5834",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 0,
+            "session_epoch": 4,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 1,
+              "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+            }
+          },
+          {
+            "body": {
+              "error": null,
+              "intent_id": "request-c4539016a95c259459a944d5.intent",
+              "plan_id": "plan-7a0fbd9f98f5c693699e",
+              "planning_context_digest": "7a0fbd9f98f5c693699e9ec6dca9163b407c7cc3bc935523f633c1999b1556b8",
+              "status": "WAITING_PLAYER",
+              "steps": [
+                {
+                  "action_id": "action-f31881fa98b44dd5864a",
+                  "arguments": {
+                    "object_id": "signal_lens"
+                  },
+                  "execution_mode": "player_request",
+                  "operation": "install_lens"
+                }
+              ],
+              "typed_intent": {
+                "claims": [
+                  {
+                    "code": "SIGNAL_RESTORED",
+                    "state": "CONTRADICTED"
+                  }
+                ],
+                "label": "REQUEST_DISCLOSURE",
+                "target": "tide_marks"
+              }
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "c7432136eecde54a5a688529ea608a459367511e5a9c654ede2ad6a3fefa9da2",
+            "delivery_index": 1,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "evt-25f852fe7a8b4cefb37f",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "41c522035115285acce1185fad7c229451cc109d3838c84cb4282bff6d82ddcb",
+            "message_type": "decision",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "c744697dfa38d494e772540c1004209d883c577a73e394b1897aced9a40d2480",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": "gpt-5.6-sol",
+              "raw_utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-f4dc42d65eb118447dfc5834",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 1,
+            "session_epoch": 4,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 1,
+              "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+            }
+          }
+        ],
+        "snapshot_id": "f83dfdc909d69b87b9298af07cbf6dfc3eeba9f89c88e1dd933097905a2085ce",
+        "cursor": {
+          "row_count": 2,
+          "head_hash": "41c522035115285acce1185fad7c229451cc109d3838c84cb4282bff6d82ddcb"
+        }
+      },
+      "http_status": 200,
+      "replay": {
+        "content_hashes": [
+          "6ce3934b1e3fb57e590d7611e1f3906444e3a7c886b232333738dffd6619383a",
+          "c7432136eecde54a5a688529ea608a459367511e5a9c654ede2ad6a3fefa9da2"
+        ],
+        "rows": 2,
+        "valid": true
+      }
+    },
+    {
+      "epoch": 6,
+      "snapshot_identity_valid": true,
+      "snapshot": {
+        "session_id": "npc-133d8262de96b7818990fbe2",
+        "session_epoch": 6,
+        "rows": [
+          {
+            "body": {
+              "event_kind": "observation",
+              "observation": {
+                "goal_reached": false,
+                "in_dialogue": true,
+                "lens_carried": true,
+                "lens_reachable": false,
+                "signal_restored": true,
+                "tide_lead_authorized": true
+              },
+              "utterance": null
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "6b1c242a553be6ebefb141f3cb65f637ab85d9e1e4108252476375a7a65d9228",
+            "delivery_index": 0,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "event-44e3c0a15aaa59282f6a70b8",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "ce58ef9974177036772aa3db045af5ab7c970c28ec0cdaf712fdc520341654ca",
+            "message_type": "request",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": null,
+              "raw_utterance_sha256": null,
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-53f946f216243237c76f79b8",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 0,
+            "session_epoch": 6,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 2,
+              "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+            }
+          },
+          {
+            "body": {
+              "error": null,
+              "intent_id": "request-c4539016a95c259459a944d5.intent",
+              "plan_id": "plan-5add1bbfe0476ead36d2",
+              "planning_context_digest": "5add1bbfe0476ead36d2a6ba165fe7ff5e18e5582a6b303c991fa578470b3c6f",
+              "status": "READY",
+              "steps": [
+                {
+                  "action_id": "action-0293ce583fae43f89fd7",
+                  "arguments": {
+                    "actor_id": "captain_mira",
+                    "fact_id": "[REDACTED]"
+                  },
+                  "execution_mode": "commit_world",
+                  "operation": "reveal_hint"
+                }
+              ],
+              "typed_intent": {
+                "claims": [
+                  {
+                    "code": "SIGNAL_RESTORED",
+                    "state": "SUPPORTED"
+                  }
+                ],
+                "label": "REQUEST_DISCLOSURE",
+                "target": "tide_marks"
+              }
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "baa0cc932b04e238cc61d9edb0eaaf396b7b7d330d346aa605c98716247bfb0e",
+            "delivery_index": 1,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "evt-68e77b857b0c4ecb8058",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "b074ed61cda4c56c36b1e96bba0a9ca5c15554587678d8171f5b95fda7b1f8a2",
+            "message_type": "decision",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "ce58ef9974177036772aa3db045af5ab7c970c28ec0cdaf712fdc520341654ca",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": "gpt-5.6-sol",
+              "raw_utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-53f946f216243237c76f79b8",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 1,
+            "session_epoch": 6,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 2,
+              "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+            }
+          },
+          {
+            "body": {
+              "action_id": "action-0293ce583fae43f89fd7",
+              "engine_revision": 3,
+              "feedback": "Tide lead committed.",
+              "observation": {
+                "goal_reached": true,
+                "in_dialogue": true,
+                "lens_carried": true,
+                "lens_reachable": false,
+                "signal_restored": true,
+                "tide_lead_authorized": true
+              },
+              "operation": "reveal_hint",
+              "state_ref": {
+                "revision": 3,
+                "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+              },
+              "status": "APPLIED"
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "840bcdd6cdf21838622f429eb6f5239c0e287abd9296d201df5a7807f2c60797",
+            "delivery_index": 2,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "event-dae3c7d56222b8120ac2d55f",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "4b818631cd1ed0445c20d2d81bac441428e69b66b31812acc32b7b1d5a99c640",
+            "message_type": "result",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "b074ed61cda4c56c36b1e96bba0a9ca5c15554587678d8171f5b95fda7b1f8a2",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": null,
+              "raw_utterance_sha256": null,
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-53f946f216243237c76f79b8",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 2,
+            "session_epoch": 6,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 3,
+              "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+            }
+          },
+          {
+            "body": {
+              "event_kind": "observation",
+              "observation": {
+                "goal_reached": true,
+                "in_dialogue": true,
+                "lens_carried": true,
+                "lens_reachable": false,
+                "signal_restored": true,
+                "tide_lead_authorized": true
+              },
+              "utterance": null
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "02eac8031ac1de68e19ab01f44312cb6829d368fa7022ab69871627cb44d19dc",
+            "delivery_index": 3,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "event-22aac380d4752b197d3a569d",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "516131b5c5a2b21bbdff179f84ae39a0cb821bf84d8cda34673a2d3f17dfe3c9",
+            "message_type": "request",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "4b818631cd1ed0445c20d2d81bac441428e69b66b31812acc32b7b1d5a99c640",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": null,
+              "raw_utterance_sha256": null,
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-234f18e85c21ccbcb6e3c617",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 3,
+            "session_epoch": 6,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 3,
+              "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+            }
+          },
+          {
+            "body": {
+              "error": null,
+              "intent_id": "request-c4539016a95c259459a944d5.intent",
+              "plan_id": "plan-b9aac72f532b78a1f53b",
+              "planning_context_digest": "b9aac72f532b78a1f53b21252a1e70a4320f95de886eb553eb4ef1af33a9cfc2",
+              "status": "GOAL_REACHED",
+              "steps": [],
+              "typed_intent": {
+                "claims": [
+                  {
+                    "code": "SIGNAL_RESTORED",
+                    "state": "SUPPORTED"
+                  }
+                ],
+                "label": "REQUEST_DISCLOSURE",
+                "target": "tide_marks"
+              }
+            },
+            "budget": {
+              "cost": null,
+              "episode_deadline_ms": 900000,
+              "input_tokens": null,
+              "intent_deadline_ms": 30000,
+              "max_action_attempts": 32,
+              "max_inflight_per_session": 1,
+              "max_intent_calls": 8,
+              "max_plan_expansions": 32,
+              "max_replans": 16,
+              "output_tokens": null
+            },
+            "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+            "content_sha256": "778e5e5cd1489e02709a28063b7d20e23c645c9e08503cd7d17383fc52004034",
+            "delivery_index": 4,
+            "episode_id": "episode-76b1076b4c03694ebae0bf71",
+            "event_id": "evt-4be746cc6c4d438e95ee",
+            "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+            "goal_version": "1",
+            "hash": "628646e903ffe3d6941ab6bdcf993ac96d53c6d6bc13081f6e7bf314e668bcf8",
+            "message_type": "decision",
+            "npc_id": "captain_mira",
+            "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+            "previous_hash": "516131b5c5a2b21bbdff179f84ae39a0cb821bf84d8cda34673a2d3f17dfe3c9",
+            "provenance": {
+              "arm": "P",
+              "backend": "codex",
+              "model": "gpt-5.6-sol",
+              "raw_utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+              "recorded_response_ref": null,
+              "trace_ref": null
+            },
+            "request_id": "request-234f18e85c21ccbcb6e3c617",
+            "scenario_id": "sealed-lighthouse-v1",
+            "schema_version": "npc-goal-recovery/1.1.0",
+            "sequence": 4,
+            "session_epoch": 6,
+            "session_id": "npc-133d8262de96b7818990fbe2",
+            "state_ref": {
+              "revision": 3,
+              "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+            }
+          }
+        ],
+        "snapshot_id": "35804a56e33f299b3e5fad6b55016d5e09502a5396f9c9f339da672fdc2b3339",
+        "cursor": {
+          "row_count": 5,
+          "head_hash": "628646e903ffe3d6941ab6bdcf993ac96d53c6d6bc13081f6e7bf314e668bcf8"
+        }
+      },
+      "http_status": 200,
+      "replay": {
+        "content_hashes": [
+          "6b1c242a553be6ebefb141f3cb65f637ab85d9e1e4108252476375a7a65d9228",
+          "c40ca6b8b76f8e2c174c074d9096ed5db4c8708093a3544a92f55768af47e943",
+          "840bcdd6cdf21838622f429eb6f5239c0e287abd9296d201df5a7807f2c60797",
+          "02eac8031ac1de68e19ab01f44312cb6829d368fa7022ab69871627cb44d19dc",
+          "778e5e5cd1489e02709a28063b7d20e23c645c9e08503cd7d17383fc52004034"
+        ],
+        "rows": 5,
+        "valid": true
+      }
+    }
+  ]
+}

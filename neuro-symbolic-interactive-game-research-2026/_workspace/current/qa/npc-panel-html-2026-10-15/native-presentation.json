@@ -1,0 +1,633 @@
+{
+  "audio": {
+    "ambient_playing": false,
+    "background_resume_policy": "ambient stops on focus-out and resumes only if gesture-unlocked and unmuted",
+    "claim_boundary": "Presentation audio instrumentation; not G4, immersion, usability, affect, or efficacy evidence.",
+    "engineering_only": true,
+    "external_audio_assets": [],
+    "generated_stream_count": 18,
+    "gesture_gated": true,
+    "max_cue_voices": 5,
+    "mix_rate_hz": 22050,
+    "muted": false,
+    "unlocked": false
+  },
+  "checks": [
+    {
+      "check": "evaluation_does_not_mutate_canonical_state",
+      "pass": true
+    },
+    {
+      "check": "web_start_gate_is_visible_before_play",
+      "pass": true
+    },
+    {
+      "check": "audio_remains_locked_before_user_gesture",
+      "pass": true
+    },
+    {
+      "check": "procedural_audio_uses_no_external_assets",
+      "pass": true
+    },
+    {
+      "check": "semantic_feedback_has_non_color_redundancy",
+      "pass": true
+    },
+    {
+      "check": "responsive_layout_profiles_declared",
+      "pass": true
+    },
+    {
+      "check": "wide_layout_preserves_playfield",
+      "pass": true
+    },
+    {
+      "check": "player_world_changes_route_through_proposals",
+      "pass": true
+    },
+    {
+      "check": "input_feedback_latency_probe_emits_sample",
+      "pass": true
+    },
+    {
+      "check": "contribution_delta_is_pure_and_names_facts",
+      "pass": true
+    },
+    {
+      "check": "hold_teaches_rule_for_its_gate",
+      "pass": true
+    },
+    {
+      "check": "case_chain_mirrors_committed_snapshot",
+      "pass": true
+    },
+    {
+      "check": "evidence_board_mirrors_committed_facts",
+      "pass": true
+    },
+    {
+      "check": "deduction_reads_committed_facts_only",
+      "pass": true
+    },
+    {
+      "check": "guided_step_matches_next_affordance",
+      "pass": true
+    },
+    {
+      "check": "evaluation_trace_names_only_evaluated_checks",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "Automated presentation invariants and engine-local telemetry wiring only; no participant, neural-model, browser-latency, or gameplay-efficacy measurement.",
+  "contribution": {
+    "case_chain": {
+      "filled": 0,
+      "links": [
+        {
+          "filled": false,
+          "id": "LENS"
+        },
+        {
+          "filled": false,
+          "id": "MOUNT"
+        },
+        {
+          "filled": false,
+          "id": "LEAD"
+        }
+      ],
+      "total": 3
+    },
+    "probe": {
+      "disclosed_added": [],
+      "facts_added": [
+        "signal_lens_acquired"
+      ],
+      "inventory_added": [
+        "signal_lens"
+      ],
+      "inventory_removed": [],
+      "stage_from": 0,
+      "stage_to": 1
+    },
+    "rules_learned": [
+      "DISCLOSURE/QUEST STAGE"
+    ],
+    "visible_label_probe": [
+      "Signal lens secured"
+    ]
+  },
+  "dashboard_trace": {
+    "checks": [
+      {
+        "code": "FORBIDDEN_DISCLOSURE",
+        "gate": "DISCLOSURE",
+        "outcome": "pass"
+      },
+      {
+        "code": "STAGE_GATED_DISCLOSURE",
+        "gate": "DISCLOSURE/QUEST STAGE",
+        "outcome": "fail"
+      }
+    ],
+    "consistent": true,
+    "evaluated_gates": [
+      "DISCLOSURE",
+      "DISCLOSURE/QUEST STAGE"
+    ],
+    "family_states": {
+      "DISCLOSURE": "fail",
+      "KNOWLEDGE": "skipped",
+      "POLICY": "skipped",
+      "PRECONDITION": "out_of_scope",
+      "QUEST STAGE": "fail",
+      "REACHABILITY": "out_of_scope"
+    },
+    "held_at": "STAGE_GATED_DISCLOSURE",
+    "out_of_scope": [
+      "PRECONDITION",
+      "REACHABILITY"
+    ],
+    "short_circuit": true,
+    "skipped": [
+      {
+        "code": "UNKNOWN_ACTOR",
+        "gate": "POLICY"
+      },
+      {
+        "code": "NPC_DOES_NOT_KNOW_FACT",
+        "gate": "KNOWLEDGE"
+      }
+    ]
+  },
+  "deduction": {
+    "chain": [
+      "LENS",
+      "MOUNT",
+      "LEAD"
+    ],
+    "max_buttons_per_slot": 5,
+    "options_slot_1": [
+      {
+        "id": "pick:LEAD",
+        "text": "Tide-marks lead recorded"
+      },
+      {
+        "id": "pick:distract:0",
+        "text": "The keeper's silence"
+      },
+      {
+        "id": "pick:LENS",
+        "text": "Signal lens secured"
+      },
+      {
+        "id": "pick:MOUNT",
+        "text": "Harbor signal restored"
+      },
+      {
+        "id": "deduction_leave",
+        "text": "Step away"
+      }
+    ],
+    "probes": {
+      "empty_state_correct_order": false,
+      "three_facts_correct_order": true,
+      "three_facts_distractor": false,
+      "three_facts_short_chain": false,
+      "three_facts_wrong_order": false,
+      "two_facts_correct_order": false
+    }
+  },
+  "engineering_only": true,
+  "evaluation": "sealed-lighthouse-3d-presentation-engineering",
+  "evidence_board": {
+    "cards_from_committed_state": [
+      {
+        "filled": false,
+        "id": "LENS",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "Without the optic there is no signal to restore."
+      },
+      {
+        "filled": false,
+        "id": "MOUNT",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "The restored signal is what lets the harbor authorize a lead."
+      },
+      {
+        "filled": false,
+        "id": "LEAD",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "The authorized lead names where the tide opens the path."
+      },
+      {
+        "filled": false,
+        "id": "SEALED",
+        "label": "Sealed record",
+        "sealed": true,
+        "why": "no answer can open it"
+      }
+    ],
+    "cards_from_hand_built_snapshot": [
+      {
+        "filled": true,
+        "id": "LENS",
+        "label": "Signal lens secured",
+        "sealed": false,
+        "why": "Without the optic there is no signal to restore."
+      },
+      {
+        "filled": true,
+        "id": "MOUNT",
+        "label": "Harbor signal restored",
+        "sealed": false,
+        "why": "The restored signal is what lets the harbor authorize a lead."
+      },
+      {
+        "filled": false,
+        "id": "LEAD",
+        "label": "Not yet in the ledger",
+        "sealed": false,
+        "why": "The authorized lead names where the tide opens the path."
+      },
+      {
+        "filled": false,
+        "id": "SEALED",
+        "label": "Sealed record",
+        "sealed": true,
+        "why": "no answer can open it"
+      }
+    ],
+    "sealed_card_text": "Sealed record | no answer can open it"
+  },
+  "hint_ladder": {
+    "next_affordance_text": "Speak with Captain Mira at the end of the dock.",
+    "rung_3_text": "1 | Who in this harbor can say why the channel is closed?\n2 | Look for Captain Mira at the end of the dock | N 9 m\n3 | NEXT VALID ENTRY: Speak with Captain Mira at the end of the dock."
+  },
+  "input_feedback": {
+    "clock": "Time.get_ticks_usec",
+    "input_to_visible_feedback_ms": [
+      20.231
+    ],
+    "measurement_context": "engine-local; headless samples are wiring evidence, not browser latency",
+    "p95_input_to_visible_feedback_ms": 20.231,
+    "sample_count": 1,
+    "samples": [
+      {
+        "elapsed_ms": 20.231,
+        "source": "synthetic-evaluation:early-hint",
+        "visible_feedback": "proposal-ledger-line"
+      }
+    ],
+    "visibility_boundary": "RenderingServer.frame_post_draw"
+  },
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "browser input latency"
+  ],
+  "passed": true,
+  "player": {
+    "claim_boundary": "Player presentation/input instrumentation; not usability, immersion, or efficacy evidence.",
+    "engineering_only": true,
+    "focused_interaction_id": "",
+    "gesture_playing": false,
+    "input_locked": true,
+    "last_gesture": "",
+    "mouse_look_requires_capture": true,
+    "movement_feedback": [
+      "movement_state_changed",
+      "distance-paced-footstep-request",
+      "stride-locked-view-bob"
+    ],
+    "player_rig_active": true,
+    "player_rig_active_animation": "Idle",
+    "player_rig_animation": "Armature|Idle|baselayer,Casual_Walk,Collect,Idle,Observe,Speak",
+    "player_rig_animation_playing": true,
+    "player_rig_engine_animation": "Idle",
+    "player_rig_lane_is_presentation_only": true,
+    "player_rig_required_clips": [
+      "Idle",
+      "Casual_Walk"
+    ],
+    "player_rig_source": "higgsfield-tracked",
+    "resolution_independent_mouse_delta": "screen_relative",
+    "world_change_boundary": "interact_requested signal only; root proposal router owns machine calls"
+  },
+  "schema_version": "1.3.0",
+  "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+  "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+  "supported_screenshot_stages": [
+    "arrival",
+    "refusal",
+    "authorized_hint",
+    "ending"
+  ],
+  "telemetry": {
+    "build_fingerprint": {
+      "algorithm": "sha256-bytes-v1",
+      "combined_sha256": "e99a55c942c0858205def212b07cc6bbf58a1a7d368ce78fe9a4593218006514",
+      "complete": true,
+      "missing_paths": [],
+      "source_hashes": {
+        "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+        "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+        "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+        "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+        "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+        "res://scripts/game3d/game_3d.gd": "77b17812a92995177f8b6c36c267d2a82d7ab057907f591350ba01a91d3abd7c",
+        "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+        "res://scripts/game3d/harbor_ledger_ui.gd": "3f9e3c4995e6047078491244d091e4c3babe7b85b25fa3f676794b6f2de8d9bd",
+        "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+      },
+      "source_paths": [
+        "res://project.godot",
+        "res://scenes/main_3d.tscn",
+        "res://data/sealed_lighthouse.json",
+        "res://scripts/canonical_state.gd",
+        "res://scripts/sealed_lighthouse_machine.gd",
+        "res://scripts/game3d/game_3d.gd",
+        "res://scripts/game3d/golden_path_layout.gd",
+        "res://scripts/game3d/evaluation_trace.gd",
+        "res://scripts/game3d/harbor_ledger_ui.gd"
+      ]
+    },
+    "checks": [
+      {
+        "check": "receipts_present",
+        "pass": true
+      },
+      {
+        "check": "receipt_shape_complete",
+        "pass": true
+      },
+      {
+        "check": "receipt_sequence_and_clock_ordered",
+        "pass": true
+      },
+      {
+        "check": "receipt_state_hashes_valid",
+        "pass": true
+      },
+      {
+        "check": "receipt_payloads_code_only",
+        "pass": true
+      },
+      {
+        "check": "receipt_state_flags_consistent",
+        "pass": true
+      },
+      {
+        "check": "hold_receipts_preserve_state",
+        "pass": true
+      },
+      {
+        "check": "build_fingerprint_is_grounded",
+        "pass": true
+      },
+      {
+        "check": "build_fingerprint_recomputed",
+        "pass": true
+      },
+      {
+        "check": "telemetry_does_not_change_canonical_state",
+        "pass": true
+      },
+      {
+        "check": "receipt_capacity_not_exceeded",
+        "pass": true
+      }
+    ],
+    "claim_boundary": "Local presentation receipts only; no participant, model, efficacy, or browser-latency evidence.",
+    "engineering_only": true,
+    "passed": true,
+    "receipts": [
+      {
+        "build_fingerprint": {
+          "algorithm": "sha256-bytes-v1",
+          "combined_sha256": "e99a55c942c0858205def212b07cc6bbf58a1a7d368ce78fe9a4593218006514",
+          "complete": true,
+          "missing_paths": [],
+          "source_hashes": {
+            "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+            "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+            "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+            "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+            "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+            "res://scripts/game3d/game_3d.gd": "77b17812a92995177f8b6c36c267d2a82d7ab057907f591350ba01a91d3abd7c",
+            "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+            "res://scripts/game3d/harbor_ledger_ui.gd": "3f9e3c4995e6047078491244d091e4c3babe7b85b25fa3f676794b6f2de8d9bd",
+            "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+          },
+          "source_paths": [
+            "res://project.godot",
+            "res://scenes/main_3d.tscn",
+            "res://data/sealed_lighthouse.json",
+            "res://scripts/canonical_state.gd",
+            "res://scripts/sealed_lighthouse_machine.gd",
+            "res://scripts/game3d/game_3d.gd",
+            "res://scripts/game3d/golden_path_layout.gd",
+            "res://scripts/game3d/evaluation_trace.gd",
+            "res://scripts/game3d/harbor_ledger_ui.gd"
+          ]
+        },
+        "build_id": "sealed-lighthouse-presentation-telemetry-v1",
+        "canonical_state_unchanged": true,
+        "engine_version": "4.7.1-stable (official)",
+        "monotonic_us": 910087,
+        "next_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "payload": {
+          "next_affordance_target": "mira",
+          "objective_code": "MIRA_AUTHORIZATION"
+        },
+        "phase_code": "ARRIVAL",
+        "prior_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "receipt_kind": "objective_rendered",
+        "receipt_schema_version": "1.0.0",
+        "receipt_seq": 1,
+        "scenario_id": "sealed-lighthouse-v1",
+        "scene_id": "main_3d",
+        "telemetry_session_id": "local-334771ad00e5e892"
+      },
+      {
+        "build_fingerprint": {
+          "algorithm": "sha256-bytes-v1",
+          "combined_sha256": "e99a55c942c0858205def212b07cc6bbf58a1a7d368ce78fe9a4593218006514",
+          "complete": true,
+          "missing_paths": [],
+          "source_hashes": {
+            "res://data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+            "res://project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+            "res://scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+            "res://scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+            "res://scripts/game3d/evaluation_trace.gd": "0ed904fb0d5291fcdc9534127318dd52337e1631ab797419a820e94774c58562",
+            "res://scripts/game3d/game_3d.gd": "77b17812a92995177f8b6c36c267d2a82d7ab057907f591350ba01a91d3abd7c",
+            "res://scripts/game3d/golden_path_layout.gd": "64ed52c71e59bd3b8f927c337b0a679059af2762a22430b7ea53e6fe1289e882",
+            "res://scripts/game3d/harbor_ledger_ui.gd": "3f9e3c4995e6047078491244d091e4c3babe7b85b25fa3f676794b6f2de8d9bd",
+            "res://scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+          },
+          "source_paths": [
+            "res://project.godot",
+            "res://scenes/main_3d.tscn",
+            "res://data/sealed_lighthouse.json",
+            "res://scripts/canonical_state.gd",
+            "res://scripts/sealed_lighthouse_machine.gd",
+            "res://scripts/game3d/game_3d.gd",
+            "res://scripts/game3d/golden_path_layout.gd",
+            "res://scripts/game3d/evaluation_trace.gd",
+            "res://scripts/game3d/harbor_ledger_ui.gd"
+          ]
+        },
+        "build_id": "sealed-lighthouse-presentation-telemetry-v1",
+        "canonical_state_unchanged": true,
+        "engine_version": "4.7.1-stable (official)",
+        "monotonic_us": 981372,
+        "next_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "payload": {
+          "correction_code": "ASK_AUTHORIZED_LEAD",
+          "gate_codes": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "next_affordance_target": "mira",
+          "reason_codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "phase_code": "HOLD",
+        "prior_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "receipt_kind": "hold_emitted",
+        "receipt_schema_version": "1.0.0",
+        "receipt_seq": 2,
+        "scenario_id": "sealed-lighthouse-v1",
+        "scene_id": "main_3d",
+        "telemetry_session_id": "local-334771ad00e5e892"
+      }
+    ],
+    "schema_version": "1.0.0"
+  },
+  "ui": {
+    "case_chain": {
+      "filled": 0,
+      "links": [
+        {
+          "filled": false,
+          "id": "LENS"
+        },
+        {
+          "filled": false,
+          "id": "MOUNT"
+        },
+        {
+          "filled": false,
+          "id": "LEAD"
+        }
+      ],
+      "total": 3
+    },
+    "case_chain_text": "[ ] LENS -> [ ] MOUNT -> [ ] LEAD",
+    "case_file_unread": 0,
+    "claim_boundary": "UI instrumentation snapshot; not G4, usability, immersion, affect, or efficacy evidence.",
+    "coach_cards": [
+      "hold_intro",
+      "investigate",
+      "ledger_intro"
+    ],
+    "contribution_lines": 0,
+    "control_affordances": [
+      "WASD",
+      "mouse-look",
+      "E",
+      "Escape",
+      "F5",
+      "F9",
+      "M",
+      "V",
+      "T",
+      "C",
+      "H"
+    ],
+    "controls_visible": true,
+    "end_card_pages": 3,
+    "engineering_only": true,
+    "evidence_board": {},
+    "hint_ladder": {
+      "rung": 0,
+      "text": ""
+    },
+    "hud_zones": [
+      "objective+hint-ladder:top-left",
+      "case-chain:top-centre",
+      "handles:top-right",
+      "prompt:bottom-centre"
+    ],
+    "last_inference_line": "WHAT THIS TELLS YOU | Mira can disclose the lead once the harbor signal is restored.",
+    "last_rule_line": "RULE LEARNED | DISCLOSURE/QUEST STAGE: A lead is disclosed only after its stage is reached.",
+    "layout": "narrow-stacked",
+    "layout_metrics": {
+      "active_bottom_panel_top_fraction": 0.5,
+      "narrow_playfield_fraction": 0.38,
+      "wide_playfield_fraction": 0.66
+    },
+    "play_started": false,
+    "progress": {
+      "phase": "ARRIVAL",
+      "stage": 0,
+      "total": 3
+    },
+    "reduced_motion": false,
+    "responsive_profiles": {
+      "narrow": "narrow-stacked",
+      "wide": "wide-columns"
+    },
+    "rules_learned": [
+      "DISCLOSURE/QUEST STAGE"
+    ],
+    "safe_area_fallback": {
+      "bottom": 20,
+      "left": 12,
+      "right": 12,
+      "top": 24
+    },
+    "semantic_feedback_redundancy": [
+      "color",
+      "icon",
+      "text",
+      "ledger-line"
+    ],
+    "start_gate_visible": true,
+    "start_key_art_orientation": "portrait",
+    "tutorial_pages": 4,
+    "type_scale": {
+      "chain": [
+        18,
+        16
+      ],
+      "dialogue": [
+        22,
+        18
+      ],
+      "hash": [
+        18,
+        16
+      ],
+      "ledger": [
+        20,
+        16
+      ],
+      "objective": [
+        24,
+        18
+      ]
+    },
+    "viewport": {
+      "height": 64,
+      "width": 64
+    }
+  }
+}

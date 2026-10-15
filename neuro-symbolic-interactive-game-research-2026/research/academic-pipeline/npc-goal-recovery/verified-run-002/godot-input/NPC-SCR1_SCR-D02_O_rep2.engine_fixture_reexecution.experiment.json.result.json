@@ -1,0 +1,318 @@
+{
+  "actions": [],
+  "assignment_id": "NPC-SCR1:SCR-D02:O:rep2",
+  "claim_boundary": "Engineering-only canonical NPC decision binding, first-step transition, negative-gate, and deterministic replay evidence; no participant, efficacy, or usability claim.",
+  "decision": {
+    "body": {
+      "error": null,
+      "intent_id": "request-dd66fb35b8fac5d8dfbb.intent",
+      "plan_id": "plan-52993e148b5d30687e05",
+      "planning_context_digest": "52993e148b5d30687e052f66d93ed5007e6071cb6c581ee5ce656b90944cf582",
+      "status": "GOAL_REACHED",
+      "steps": [],
+      "typed_intent": {
+        "claims": [
+          {
+            "code": "NONE",
+            "state": "INDETERMINATE"
+          }
+        ],
+        "label": "REFUSE_HELP",
+        "target": null
+      }
+    },
+    "budget": {
+      "cost": null,
+      "episode_deadline_ms": 900000.0,
+      "input_tokens": null,
+      "intent_deadline_ms": 30000.0,
+      "max_action_attempts": 32.0,
+      "max_inflight_per_session": 1.0,
+      "max_intent_calls": 8.0,
+      "max_plan_expansions": 32.0,
+      "max_replans": 16.0,
+      "output_tokens": null
+    },
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "content_sha256": "db2f75f7a034a5734093dc063c7ecc1532d137d72d1fbc14032bcb3a6f8c12c7",
+    "delivery_index": 2.0,
+    "episode_id": "episode-dd66fb35b8fac5d8dfbb",
+    "event_id": "evt-7c9c19b5cacc4063b79e",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "message_type": "decision",
+    "npc_id": "captain_mira",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "provenance": {
+      "arm": "O",
+      "backend": "reference",
+      "model": "gpt-5.6-sol",
+      "raw_utterance_sha256": "a887d7a179da3078e95a49ac0d67a308764d20ebc88f7a2ef9342724da563c21",
+      "recorded_response_ref": "a887d7a179da3078e95a49ac0d67a308764d20ebc88f7a2ef9342724da563c21",
+      "trace_ref": null
+    },
+    "request_id": "request-dd66fb35b8fac5d8dfbb",
+    "scenario_id": "sealed-lighthouse-v1",
+    "schema_version": "npc-goal-recovery/1.1.0",
+    "sequence": 2.0,
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-dd66fb35b8fac5d8dfbb",
+    "state_ref": {
+      "revision": 3.0,
+      "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+    }
+  },
+  "decision_sha256": "09a139e8b6bf3700cc564c7335709798f898aba080d0474a4c965912be664ffc",
+  "engineering_only": true,
+  "errors": [],
+  "events": [
+    {
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "acquire_object",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    },
+    {
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "operation": "install_lens",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      },
+      "state_ref_before": {
+        "revision": 1,
+        "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      }
+    },
+    {
+      "arguments": {},
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "operation": "open_dialogue",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      },
+      "state_ref_before": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      }
+    },
+    {
+      "arguments": {
+        "actor_id": "captain_mira",
+        "fact_id": "tide_marks_hint"
+      },
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": true,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "operation": "reveal_hint",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": true
+      },
+      "state_ref_after": {
+        "revision": 3,
+        "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      },
+      "state_ref_before": {
+        "revision": 2,
+        "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      }
+    },
+    {
+      "kind": "terminal",
+      "observation": {
+        "goal_reached": true,
+        "in_dialogue": true,
+        "lens_carried": true,
+        "lens_reachable": false,
+        "signal_restored": true,
+        "tide_lead_authorized": true
+      },
+      "result": {
+        "accepted": false,
+        "codes": [
+          "EPOCH_MISMATCH",
+          "GENERATION_MISMATCH"
+        ],
+        "mutated": false
+      },
+      "state_ref": {
+        "revision": 3,
+        "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      },
+      "status": "ERROR"
+    }
+  ],
+  "expected_negative_gates": [
+    {
+      "codes": [
+        "EPOCH_MISMATCH",
+        "GENERATION_MISMATCH"
+      ],
+      "control": "cancelled",
+      "expected_status": "CANCELLED",
+      "observed_status": "ERROR",
+      "passed": true,
+      "state_ref_after": {
+        "revision": 3,
+        "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      },
+      "state_ref_before": {
+        "revision": 3,
+        "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+      }
+    }
+  ],
+  "final_state_ref": {
+    "revision": 3,
+    "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "fixture_ref": "data/fixtures/npc-goal-recovery/validated-v5/screening.json#SCR-D02",
+  "goal_reached": true,
+  "initial_public_snapshot": {
+    "observation": {
+      "goal_reached": true,
+      "in_dialogue": true,
+      "lens_carried": true,
+      "lens_reachable": false,
+      "signal_restored": true,
+      "tide_lead_authorized": true
+    },
+    "state_ref": {
+      "revision": 3,
+      "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+    }
+  },
+  "initial_state_ref": {
+    "revision": 3,
+    "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "input_bytes_preserved": true,
+  "input_sha256_after": "c127ec0625dd66048dea7fe714d6c1b1a22d362c875aff4142debe69bf21981e",
+  "input_sha256_before": "c127ec0625dd66048dea7fe714d6c1b1a22d362c875aff4142debe69bf21981e",
+  "mode": "experiment",
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "model superiority"
+  ],
+  "observations": [
+    {
+      "goal_reached": true,
+      "in_dialogue": true,
+      "lens_carried": true,
+      "lens_reachable": false,
+      "signal_restored": true,
+      "tide_lead_authorized": true
+    },
+    {
+      "goal_reached": true,
+      "in_dialogue": true,
+      "lens_carried": true,
+      "lens_reachable": false,
+      "signal_restored": true,
+      "tide_lead_authorized": true
+    }
+  ],
+  "passed": true,
+  "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+  "recovery_eligible": true,
+  "recovery_unreachable": false,
+  "request": {
+    "episode_id": "episode-dd66fb35b8fac5d8dfbb",
+    "event_kind": "",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "observation": {},
+    "request_id": "request-dd66fb35b8fac5d8dfbb",
+    "session_epoch": 0,
+    "session_id": "npc-exp-dd66fb35b8fac5d8dfbb",
+    "sha256": "bde6437a97e28a35c6ad37fefc789c17063f3edd3a81aef88ba9ee6a03922f0e",
+    "state_ref": {
+      "revision": 3.0,
+      "sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+    }
+  },
+  "request_context": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "episode_id": "episode-dd66fb35b8fac5d8dfbb",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "request_id": "request-dd66fb35b8fac5d8dfbb",
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-dd66fb35b8fac5d8dfbb"
+  },
+  "rows": [],
+  "schema_version": "npc-engineering/input-1",
+  "source_hashes": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "npc_protocol_config_sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "source_project_config_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "source_schema_sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+  },
+  "status": "ERROR",
+  "terminal_status": "PASSED"
+}

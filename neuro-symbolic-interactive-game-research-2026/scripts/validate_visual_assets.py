@@ -34,6 +34,7 @@ SVG_INVENTORY_ROOTS = (
 LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
     "paper/latex/figures/fig_evidence_regimes.svg",
+    "paper/latex/figures/fig_npc_screening.svg",
     "research/directions/figures/fig_consensus_gate_lanes.svg",
     "research/directions/figures/fig_cost_validity_pareto_concept.svg",
     "paper/latex/generated/pilot_results_en.tex",
@@ -48,7 +49,26 @@ LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/generated/contribution_map_ko.tex",
     "paper/latex/generated/evidence_lanes_en.tex",
     "paper/latex/generated/evidence_lanes_ko.tex",
+    "paper/latex/generated/npc_tables_en.tex",
+    "paper/latex/generated/npc_results_en.tex",
+    "paper/latex/generated/npc_results_ko.tex",
+    "paper/latex/generated/npc_tables_ko.tex",
     "game-track/godot/docs/latest/balance-archetypes.svg",
+)
+NPC_REGENERATION_SUPPORT = (
+    "src/nesy_game/npc_goal.py",
+    "scripts/codex_oauth_llm.py",
+    "scripts/run_npc_goal_experiment.py",
+    "game-track/schemas/npc-goal-recovery.schema.json",
+    "game-track/godot/project.godot",
+    "game-track/godot/data/npc-goal-recovery.json",
+    "game-track/godot/data/sealed_lighthouse.json",
+    "game-track/godot/scenes/main_3d.tscn",
+    "game-track/godot/scripts/game3d/game_3d.gd",
+    "game-track/godot/scripts/game3d/npc_agent_client.gd",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd",
+    "game-track/godot/scripts/canonical_state.gd",
+    "data/fixtures/npc-goal-recovery/validated-v5",
 )
 
 
@@ -79,7 +99,7 @@ class Validator:
         self._validate_paper_links(manifest)
         self._validate_engine_evidence(manifest)
         if self.check_regeneration:
-            self._validate_lightweight_regeneration()
+            self._validate_lightweight_regeneration(manifest)
         self._finish()
 
     def _finish(self) -> None:
@@ -808,17 +828,50 @@ class Validator:
             shutil.copy2(source, target)
 
     @staticmethod
-    def _digest_paths(root: Path, paths: Iterable[str]) -> dict[str, str]:
-        return {
-            relative: hashlib.sha256((root / relative).read_bytes()).hexdigest()
-            for relative in paths
-        }
+    def _manifest_generator_paths(manifest: dict[str, Any], generator_path: str) -> tuple[str, ...]:
+        paths = {generator_path}
+        for collection_name in ("visual_assets", "table_sources"):
+            collection = manifest.get(collection_name, [])
+            if not isinstance(collection, list):
+                continue
+            for record in collection:
+                if not isinstance(record, dict):
+                    continue
+                generator = record.get("generator")
+                if not isinstance(generator, dict) or generator.get("path") != generator_path:
+                    continue
+                for source in record.get("data_sources", []):
+                    if isinstance(source, dict) and isinstance(source.get("path"), str):
+                        paths.add(source["path"])
+
+        packet_roots = set()
+        for relative in paths:
+            parts = Path(relative).parts
+            try:
+                packet_index = parts.index("npc-goal-recovery")
+            except ValueError:
+                continue
+            if packet_index + 1 < len(parts) and parts[packet_index + 1].startswith(
+                "verified-run-"
+            ):
+                packet_roots.add(Path(*parts[: packet_index + 2]).as_posix())
+        return tuple(sorted(paths | packet_roots))
+
+    def _digest_paths(self, root: Path, paths: Iterable[str], *, label: str) -> dict[str, str]:
+        digests: dict[str, str] = {}
+        for relative in paths:
+            try:
+                digests[relative] = hashlib.sha256((root / relative).read_bytes()).hexdigest()
+            except OSError as exc:
+                self.errors.append(f"{label} output is missing or unreadable: {relative}: {exc}")
+        return digests
 
     def _run_lightweight_generators(self, staged_root: Path) -> None:
         commands = (
             [sys.executable, "scripts/generate_paper_figures.py"],
             [sys.executable, "scripts/generate_direction_figures.py"],
             [sys.executable, "scripts/generate_paper_results.py"],
+            [sys.executable, "scripts/generate_npc_paper_results.py"],
             [
                 sys.executable,
                 "-c",
@@ -832,20 +885,34 @@ class Validator:
             ],
         )
         for command in commands:
-            subprocess.run(
-                command,
-                cwd=staged_root,
-                check=True,
-                capture_output=True,
-                text=True,
-                env={**dict(__import__("os").environ), "PYTHONDONTWRITEBYTECODE": "1"},
-            )
+            try:
+                subprocess.run(
+                    command,
+                    cwd=staged_root,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    env={**dict(__import__("os").environ), "PYTHONDONTWRITEBYTECODE": "1"},
+                )
+            except subprocess.CalledProcessError as exc:
+                detail = (exc.stderr or exc.stdout or str(exc)).strip()
+                self.errors.append(
+                    f"lightweight generator failed ({' '.join(command[:2])}): {detail}"
+                )
+            except OSError as exc:
+                self.errors.append(
+                    f"lightweight generator could not start ({' '.join(command[:2])}): {exc}"
+                )
 
-    def _validate_lightweight_regeneration(self) -> None:
+    def _validate_lightweight_regeneration(self, manifest: dict[str, Any] | None = None) -> None:
+        if manifest is None:
+            manifest = self._load_manifest()
+        if manifest is None:
+            return
         with tempfile.TemporaryDirectory(prefix="trace-rpg-visual-check-") as tmp:
             staged = Path(tmp) / "project"
             staged.mkdir()
-            for relative in (
+            relative_paths = (
                 "scripts",
                 "research/academic-pipeline/stage-04-pilot",
                 "research/academic-pipeline/rq2-live-pilot",
@@ -853,17 +920,27 @@ class Validator:
                 "research/academic-pipeline/experiment-evidence-matrix.csv",
                 "research/claim-ledger.yaml",
                 "game-track/godot/docs/latest/balance-archetypes.json",
-            ):
-                self._copy_path(ROOT, staged, relative)
+                *NPC_REGENERATION_SUPPORT,
+                *self._manifest_generator_paths(manifest, "scripts/generate_npc_paper_results.py"),
+            )
+            for relative in dict.fromkeys(relative_paths):
+                try:
+                    self._copy_path(ROOT, staged, relative)
+                except (OSError, shutil.Error) as exc:
+                    self.errors.append(
+                        f"lightweight regeneration staging failed for {relative}: {exc}"
+                    )
             self._run_lightweight_generators(staged)
-            first = self._digest_paths(staged, LIGHTWEIGHT_OUTPUTS)
+            first = self._digest_paths(staged, LIGHTWEIGHT_OUTPUTS, label="first regeneration")
             self._run_lightweight_generators(staged)
-            second = self._digest_paths(staged, LIGHTWEIGHT_OUTPUTS)
+            second = self._digest_paths(staged, LIGHTWEIGHT_OUTPUTS, label="second regeneration")
             self.check(
                 first == second, "lightweight figure/table generators are not byte deterministic"
             )
-            current = self._digest_paths(ROOT, LIGHTWEIGHT_OUTPUTS)
-            drift = sorted(path for path in LIGHTWEIGHT_OUTPUTS if first[path] != current[path])
+            current = self._digest_paths(ROOT, LIGHTWEIGHT_OUTPUTS, label="current source")
+            drift = sorted(
+                path for path in LIGHTWEIGHT_OUTPUTS if first.get(path) != current.get(path)
+            )
             self.check(not drift, f"generated figure/table sources are stale: {drift}")
             self.note(f"double-regenerated {len(LIGHTWEIGHT_OUTPUTS)} sources in an isolated copy")
 

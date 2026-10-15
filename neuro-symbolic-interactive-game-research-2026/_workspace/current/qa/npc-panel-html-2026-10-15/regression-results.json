@@ -1,0 +1,81 @@
+{
+  "status": "PASS_CURRENT_BYTES_WITH_CONFIRMED_NEGATIVE_CONTROLS",
+  "scope": "Only tests/test_godot_panel_lifecycle.py and tests/godot_panel_lifecycle_harness.gd were changed; runtime scripts, HTML, policy and canonical state were not edited.",
+  "godot": "/opt/homebrew/bin/godot",
+  "godot_version_observed": "4.7.1.stable.official.a13da4feb",
+  "working_directory": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+  "runs": [
+    {
+      "command": ".venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py -q -s --basetemp=_workspace/current/qa/npc-panel-html-2026-10-15/regression-pytest-run | tee _workspace/current/qa/npc-panel-html-2026-10-15/regression-focused-tests.log",
+      "result": "3 passed in 34.68s",
+      "evidence": "regression-focused-tests.log",
+      "notes": "Exact engine argv and expected fail-closed diagnostics are retained. Disposable staged project copies were removed after copying their six import/execution logs into this directory."
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py -q | tee _workspace/current/qa/npc-panel-html-2026-10-15/regression-focused-tests-final.log",
+      "result": "3 passed in 22.69s",
+      "evidence": "regression-focused-tests-final.log"
+    },
+    {
+      "command": "/opt/homebrew/bin/godot --headless --path /tmp/neuro-symbolic-godot-panel-before --script /Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/godot_panel_lifecycle_harness.gd --quit-after 120 --log-file /Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/regression-prepatch-lifecycle.log",
+      "result": "EXPECTED_FAILURE",
+      "exit_code": 1,
+      "evidence": "regression-prepatch-lifecycle.log",
+      "baseline_kind": "Manually reconstructed/restored by PanelLifecycleFix from pre-edit source read snapshots in a disposable copy of the then-current project; not an original-byte or user-supplied historical baseline",
+      "failures": [
+        "start case leaves contextual ledger dock open",
+        "dialogue dismissal left contextual ledger dock open",
+        "HUD refresh reopened dismissed contextual ledger dock",
+        "letterbox return reopened dismissed contextual ledger dock",
+        "tutorial overlay reopened contextual ledger dock",
+        "case-file overlay reopened contextual ledger dock"
+      ]
+    }
+  ],
+  "contracts": [
+    "Starting play hides the contextual dock while preserving objective and CASE CHAIN.",
+    "Dialogue choices reopen the dock, remain actionable, and emit the chosen identifier.",
+    "The real controller dismissal clears choices and portrait and keeps the dock closed.",
+    "HUD refresh and true-to-false letterbox return do not resurrect the dismissed dock.",
+    "Tutorial, evidence-board, feedback and ending overlays retain their independent behavior.",
+    "Both import and execution use the existing fail-closed _run_godot helper with bounded 300s/60s timeouts and only the existing macOS host-error allowance.",
+    "A real push_error script and a real GDScript assertion-error script each print a passing result marker and exit zero; the wrapper rejects both as RuntimeError exit=0."
+  ],
+  "negative_controls": [
+    {
+      "case": "push-error-with-zero-exit",
+      "observed_engine_exit_code": 0,
+      "passing_marker_observed": true,
+      "diagnostic": "ERROR: panel regression injected push_error",
+      "wrapper_result": "REJECTED",
+      "evidence": "regression-push-error-execution.log"
+    },
+    {
+      "case": "script-error-with-zero-exit",
+      "observed_engine_exit_code": 0,
+      "passing_marker_observed": true,
+      "diagnostic": "SCRIPT ERROR: Assertion failed: panel regression injected script error",
+      "wrapper_result": "REJECTED",
+      "evidence": "regression-script-error-execution.log"
+    }
+  ],
+  "preserved_main_failure": {
+    "status": "FAIL_NOT_RELABELLED",
+    "source": "artifact://795",
+    "evidence": "regression-main-original-failure.log",
+    "result": "1 failed in 7.89s",
+    "cause": "GDScript parse error at line 90: closing brace without opening counterpart"
+  },
+  "sha256": {
+    "game-track/godot/project.godot_before_and_after": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "tests/test_godot_panel_lifecycle.py": "4a101ab2386411d9442e3f7478a50c547827a4bee3dac260f4fd85ad745de496",
+    "tests/godot_panel_lifecycle_harness.gd": "7265b2e48dc4528d2396387fcc61872cb0a60ae1b598891412b27a290fb9f37e",
+    "/tmp/neuro-symbolic-godot-panel-before/scripts/game3d/harbor_ledger_ui.gd": "1b68eac428e21bbf2f3b079618f9d57e590b4872ed966e568329a517a1eceea6",
+    "/tmp/neuro-symbolic-godot-panel-before/scripts/game3d/game_3d.gd": "4aef7cd8ad93983c6def42ed122c2c8179a0cb2d7ade06c0142b804ea38df714"
+  },
+  "remaining_gaps": [],
+  "scope_limits": [
+    "No production/browser re-verification or canonical-policy behavior suite was run; this assignment is a test-only presentation regression.",
+    "No Git, deployment, formatter, linter or project-wide suite was run."
+  ]
+}

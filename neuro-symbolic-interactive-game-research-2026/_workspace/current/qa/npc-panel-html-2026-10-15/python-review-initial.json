@@ -1,0 +1,50 @@
+{
+  "verdict": "BLOCK",
+  "scope": "Read-only review of neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py, tests/godot_panel_lifecycle_harness.gd, and the narrowly relevant executable-discovery/staging helper contract. No files changed.",
+  "findings": [
+    {
+      "priority": "P1",
+      "severity": "HIGH",
+      "title": "Current harness contains invalid source and cannot provide the reported passing regression",
+      "file": "tests/godot_panel_lifecycle_harness.gd:90",
+      "issue": "Line 90 contains a literal, unindented malformed token sequence with JSON-like closing delimiters and non-GDScript Unicode fragments. Both read and independent exact-pattern grep returned the same source line. It interrupts _run before the duplicated HUD-refresh block at lines 91–104. This is invalid GDScript, so the current harness cannot parse and reach its result marker.",
+      "fix": "Remove the corrupt source fragment and reconcile the duplicated refresh block, then rerun the focused regression and disposable visibility-defect check against the repaired bytes. This review made no changes."
+    },
+    {
+      "priority": "P1",
+      "severity": "HIGH",
+      "title": "A successful exit and result marker do not reject logged Godot script errors",
+      "file": "tests/test_godot_panel_lifecycle.py:71-75",
+      "related_lines": [
+        "tests/test_godot_panel_lifecycle.py:20-32",
+        "tests/godot_panel_lifecycle_harness.gd:71",
+        "tests/godot_panel_lifecycle_harness.gd:135-137"
+      ],
+      "issue": "The harness execution accepts output containing script-error diagnostics whenever the process exits zero and prints a passing result. The import helper likewise checks only the exit code. Neither path checks captured stdout/stderr for Godot script/parser errors. [INFERENCE] A runtime error in a called method or callback that does not prevent the later assertions/result marker can therefore be silently accepted by this regression. This false-pass scenario was not executed during review.",
+      "fix": "Reject Godot script/parser error diagnostics for both subprocess phases, while retaining exit-code, marker, and behavioral assertions. Verify that a disposable script error cannot produce a passing test."
+    }
+  ],
+  "assessment": {
+    "behavioral_assertions": "The harness exercises actual UI methods and inspects resulting state rather than source strings: start hides the contextual dock while preserving objective/case-chain text (lines 42–47); valid choices reopen it, retain two choices, and emit the selected ID (lines 51–63); the controller dismissal method clears choices, closes the dock, and clears portrait intent (lines 67–75); a subsequent status/case-chain refresh must leave it closed (lines 76–89). These are useful behavioral assertions once the parse blocker is repaired.",
+    "error_and_timeout_propagation": "Both subprocess.run calls have explicit timeouts, 300 seconds for import and 60 seconds for harness execution. TimeoutExpired and launch errors are not caught, so they fail the test. Nonzero import exits explicitly fail; nonzero harness exits cannot pass. Missing result markers and invalid JSON fail as well. Parsing the marker before checking the harness exit can obscure the primary process error in the failure headline, but does not turn it into a pass.",
+    "staging_and_source_immutability": "The test stages into a new TemporaryDirectory/project, copies the harness only into that staged tree, and directs both Godot invocations to the staged path (Python lines 48–69). stage_project rejects an existing destination, checks project.godot, and uses copytree with cache/docs/log exclusions (helper lines 163–176). No source-writing operation is present in the reviewed staging path. Source immutability is established by inspection, not by an independently executed before/after snapshot.",
+    "cleanup": "TemporaryDirectory cleanup applies when execution succeeds or raises. The controller created by Game3D.new is not attached to the scene tree and is not explicitly freed before quit (GDScript lines 67–71, 135–137); this isolated process exits immediately, but the harness does not establish leak-free Godot object teardown.",
+    "platform_behavior": "Executable discovery tries godot4/godot on PATH and two macOS application locations, probes --version with a 30-second timeout, and accepts version strings beginning with 4. Discovery failures become a unittest skip at Python lines 43–46. Consequently a platform without a discoverable editor does not exercise this regression; a green suite containing this skip is not evidence of panel behavior. There is no shell invocation or platform-specific path concatenation in the new Python subprocess calls."
+  },
+  "limitations": [
+    "No pytest, Godot import/run, mutation experiment, formatter, linter, project-wide suite, or Git command was executed during this review. The reported 1 PASS and disposable-defect exit 1 are supplied evidence, not results reproduced here; they do not establish that the currently inspected corrupt harness passes.",
+    "The review remained within the two test files and relevant helper contract. Runtime implementation methods were not independently audited.",
+    "The harness checks one choice-opening/dismissal sequence and frame-delayed state, not a second conversation reopening after dismissal or sustained world-driven HUD refreshes.",
+    "Tutorial and evidence-board checks occur only after choices have been cleared (GDScript lines 73, 108–126). They do not prove that active choices survive opening/closing overlays, despite the comment about not consuming dialogue state.",
+    "Headless node visibility and signal emission do not establish rendered readability, hit testing, keyboard/controller navigation, or real-world scene integration."
+  ],
+  "self_evaluation": {
+    "accuracy": "4/5 — Findings have exact source anchors and the malformed line was confirmed by two read mechanisms; runtime-error false-pass behavior is explicitly marked as unexecuted inference.",
+    "completeness": "4/5 — All requested review dimensions are covered; execution evidence is intentionally limited to the supplied prior results.",
+    "clarity": "4/5 — Blocking defects are separated from supported properties and coverage limitations.",
+    "actionability": "4/5 — Both blockers specify the required repair and focused proof without changing runtime code.",
+    "conciseness": "4/5 — Detailed enough to distinguish source defects, test limitations, and unexecuted claims.",
+    "overall": 4,
+    "improvement": "After the owner repairs the harness, independently rerun only the focused test and disposable visibility/script-error mutations to replace the remaining execution uncertainty."
+  }
+}

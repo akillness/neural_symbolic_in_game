@@ -73,11 +73,11 @@ oracle, holdout, or analysis requirements.
 
 These observed rows are engine-local policy-mirror evidence. Live Python authorization transport
 remains required for a cross-runtime M6 integration claim. No row changes a `C-RESULT-*` state.
-The selected render packet is
-`godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`; immutable v1--v4 are retained but
-superseded through visual QA, validation-toolchain provenance binding, and CI-portability repair.
-The v5 evidence chain records capture/decoder/schema/validator/lock hashes and tool versions without
-requiring a verifier host to impersonate the capture host.
+The selected current machine-bound render packet is
+`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`; earlier immutable packets remain
+retained and superseded through visual QA, validation-toolchain provenance binding, and CI-portability
+repair. The current evidence chain records capture/decoder/schema/validator/lock hashes and tool
+versions without requiring a verifier host to impersonate the capture host.
 
 ## 6. Game artifact → paper use
 

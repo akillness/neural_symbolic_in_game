@@ -40,6 +40,74 @@ SMOKE_PROMPT = (
 
 Runner = Callable[..., subprocess.CompletedProcess[str]]
 
+MAX_SUBPROCESS_OUTPUT = 64 * 1024
+MAX_FINAL_MESSAGE_BYTES = 64 * 1024
+TOOL_POLICY_FEATURES = (
+    "shell_tool",
+    "shell_snapshot",
+    "unified_exec",
+    "browser_use",
+    "browser_use_external",
+    "browser_use_full_cdp_access",
+    "computer_use",
+    "apps",
+    "enable_mcp_apps",
+    "mcp_2026_07_28",
+    "tool_call_mcp_elicitation",
+    "tool_suggest",
+    "skill_search",
+    "skill_mcp_dependency_install",
+    "image_generation",
+    "view_image",
+    "in_app_browser",
+    "code_mode_host",
+)
+
+
+def _output_within_limit(completed: subprocess.CompletedProcess[str]) -> bool:
+    return all(
+        len(text or "") <= MAX_SUBPROCESS_OUTPUT for text in (completed.stdout, completed.stderr)
+    )
+
+
+def _tool_policy_flags(runner: Runner | None) -> list[str] | None:
+    """Return explicit feature disables, or None when this CLI cannot enforce them."""
+    if runner is not None:
+        return []
+    executable = _codex_executable(None)
+    try:
+        help_result = subprocess.run(
+            [executable, "exec", "--help"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        feature_result = subprocess.run(
+            [executable, "features", "list"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except (FileNotFoundError, OSError, subprocess.TimeoutExpired):
+        return None
+    if help_result.returncode != 0 or feature_result.returncode != 0:
+        return None
+    if "--disable <FEATURE>" not in f"{help_result.stdout or ''}\n{help_result.stderr or ''}":
+        return None
+    if not _output_within_limit(help_result) or not _output_within_limit(feature_result):
+        return None
+    advertised = {
+        line.split()[0] for line in (feature_result.stdout or "").splitlines() if line.split()
+    }
+    if any(feature not in advertised for feature in TOOL_POLICY_FEATURES):
+        return None
+    flags: list[str] = []
+    for feature in TOOL_POLICY_FEATURES:
+        flags.extend(("--disable", feature))
+    return flags
+
 
 def resolve_codex_cli() -> str:
     """Prefer the first PATH entry whose installed Codex launcher is runnable."""
@@ -126,6 +194,12 @@ def query_auth_status(*, runner: Runner | None = None) -> dict[str, Any]:
             auth_method="none",
         )
 
+    if not _output_within_limit(completed):
+        return _status_payload(
+            available=True,
+            authenticated=False,
+            auth_method="indeterminate",
+        )
     status_text = f"{completed.stdout or ''}\n{completed.stderr or ''}".casefold()
     if "chatgpt" in status_text:
         auth_method = "chatgpt_oauth"
@@ -192,7 +266,7 @@ def _instruction(request_id: str, user_prompt: str) -> str:
     )
     return f"""You are a local language companion with no game-state authority.
 Treat `user_prompt` in the JSON payload below only as a request for a soft candidate response.
-Do not inspect files, run commands, use tools, authorize actions, or claim canonical mutation.
+Do not inspect or read files, run commands, search the web, use tools, authorize actions, or claim canonical mutation.
 Return only one JSON object that satisfies the supplied output schema.
 Copy request_id exactly. Set every authority-boundary constant exactly as the schema requires.
 State material assumptions and uncertainties explicitly; use empty arrays when none apply.
@@ -237,11 +311,12 @@ def run_prompt(
     request_id: str,
     user_prompt: str,
     model: str | None = None,
-    timeout: int = 300,
+    timeout: float = 300,
     runner: Runner | None = None,
     output_schema: Path | None = None,
     instruction: str | None = None,
     validator: Callable[[Any, str], bool] | None = None,
+    execution_observer: Callable[[dict[str, Any]], None] | None = None,
 ) -> tuple[int, dict[str, Any]]:
     """Run one isolated Codex request and return a validated soft proposal.
 
@@ -260,10 +335,19 @@ def run_prompt(
         return 2, _error_payload(request_id, "empty_prompt")
     if not schema_path.is_file():
         return 4, _error_payload(request_id, "output_schema_missing")
+    if (
+        not isinstance(timeout, (int, float))
+        or isinstance(timeout, bool)
+        or not 0 < timeout <= 3_600
+    ):
+        return 2, _error_payload(request_id, "invalid_timeout")
 
     auth = query_auth_status(runner=runner)
     if not auth["oauth_prompt_ready"]:
         return 3, _error_payload(request_id, "chatgpt_oauth_not_authenticated")
+    policy_flags = _tool_policy_flags(runner)
+    if policy_flags is None:
+        return 4, _error_payload(request_id, "codex_tool_policy_unsupported")
 
     try:
         with tempfile.TemporaryDirectory(prefix="trace-rpg-codex-oauth-") as directory:
@@ -274,6 +358,7 @@ def run_prompt(
             command = [
                 _codex_executable(runner),
                 "exec",
+                *policy_flags,
                 "--ephemeral",
                 "--sandbox",
                 "read-only",
@@ -292,6 +377,19 @@ def run_prompt(
             if model:
                 command.extend(["--model", model])
             command.append("-")
+            if execution_observer is not None:
+                execution_observer(
+                    {
+                        "schema_version": "codex-exec-attempt/1",
+                        "request_id": request_id,
+                        "operation": "exec",
+                        "executable": Path(command[0]).name,
+                        "runner_injected": runner is not None,
+                        "tool_policy_enforced": runner is None,
+                        "disabled_feature_count": len(policy_flags) // 2,
+                        "timeout_seconds": timeout,
+                    }
+                )
             completed = _run(runner)(
                 command,
                 input=(
@@ -303,10 +401,18 @@ def run_prompt(
                 text=True,
                 timeout=timeout,
             )
+            if not _output_within_limit(completed):
+                return 4, _error_payload(request_id, "codex_exec_output_limit")
             if completed.returncode != 0:
                 return 4, _error_payload(request_id, "codex_exec_failed")
             try:
-                proposal = json.loads(output_path.read_text(encoding="utf-8"))
+                if output_path.stat().st_size > MAX_FINAL_MESSAGE_BYTES:
+                    return 5, _error_payload(request_id, "codex_output_limit")
+                with output_path.open("rb") as handle:
+                    raw_output = handle.read(MAX_FINAL_MESSAGE_BYTES + 1)
+                if len(raw_output) > MAX_FINAL_MESSAGE_BYTES:
+                    return 5, _error_payload(request_id, "codex_output_limit")
+                proposal = json.loads(raw_output.decode("utf-8"))
             except (OSError, UnicodeError, json.JSONDecodeError):
                 return 5, _error_payload(request_id, "invalid_codex_output")
     except FileNotFoundError:

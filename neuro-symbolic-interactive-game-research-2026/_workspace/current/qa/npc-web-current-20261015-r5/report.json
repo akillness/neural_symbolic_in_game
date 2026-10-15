@@ -1,0 +1,74 @@
+{
+  "packet_id": "npc-web-current-20261015-r5",
+  "generated_at": "2026-10-15T08:50:08+00:00",
+  "generated_at_method": "datetime.now(timezone.utc).isoformat() read directly from the host clock, not fabricated",
+  "agent": "NpcWebQA",
+  "scope": "Round-5: verify the choiceScroll-floor fix (artifact 3284, UI commit 7dc4cf7) against the ACTUAL dashboard-embedded 344x720 canvas (not an invented viewport) on both desktop and mobile, fresh isolated sessions. Confirm all 4 authored Mira dialogue choices are each scroll-reachable, click the first with a real pointer click, confirm ledger append with zero canonical-state mutation, confirm free-text/capability rows stay untouched, then Case File 4-cards/footer + served-vs-disk PCK SHA binding + zero errors. r4 and its followup kept fully immutable.",
+  "fix_under_test": "Per Main: fixed the choice list's height computation to use a floor derived from the tallest post-autowrap button height (54px), rather than anchors or font-shrink. Intent: previously only 1 of 4 authored choices was reachable in the real dashboard-embedded canvas; after the fix all 4 should be reachable via scroll.",
+  "methodology_correction_this_round": "An earlier same-round attempt (r5-desktop v1, kept for transparency) mis-clicked using a coordinate ratio copied from the BEGIN-button click on the start-screen layout, which does not apply to the in-dialogue choice-button layout. Corrected by deriving the real choice-button position from a direct screenshot of the open dialogue (desktop: ~78% of the game-card height; mobile: required scrolling the DASHBOARD PAGE itself, not just the game canvas, to bring the choice area within the 844px viewport, then using the resulting fixed screen coordinates). This is a correction to this agent's own test methodology, not a finding about the game.",
+  "asset_sha256_served_vs_disk": {
+    "index.html": {"disk": "e9389c235791d9f9c2e716e7314ea54620feb4a20ab8d585749b77f4ce42595a", "served_desktop": "e9389c235791d9f9c2e716e7314ea54620feb4a20ab8d585749b77f4ce42595a", "match": true},
+    "index.pck": {"disk": "37bfe94b2eebddd07e971b540b23a94bef478424abfa77d6329eb5bfa3a58237", "disk_bytes": 13402336, "served_desktop": "37bfe94b2eebddd07e971b540b23a94bef478424abfa77d6329eb5bfa3a58237", "served_mobile": "37bfe94b2eebddd07e971b540b23a94bef478424abfa77d6329eb5bfa3a58237", "match": true},
+    "method": "Fetched live from inside each fresh isolated browser session (from the dashboard origin), independently on both viewports; both match the disk-computed SHA-256 exactly. Re-confirmed at report-finalization time: no new build landed (same on-disk mtime 2026-10-15 17:39 local, server still 200).",
+    "build_identity_note": "Per Main, '3284'/'7dc4cf7' are build-pipeline/commit identifiers, a different ID scheme from this agent's per-file SHA-256; both describe the same build, not a mismatch."
+  },
+  "desktop_1440x1000_dashboard_embed_344x720_equivalent_at_this_viewport_892x720": {
+    "boot_and_telemetry": {"status": "PASS", "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0},
+    "navigation_to_mira": {"status": "PASS", "method": "Telemetry-guided (x/z/yaw/focus), fresh isolated session, handled a transient first-session tutorial lock mid-walk, reached focus:'mira' in ~5 bursts."},
+    "all_4_choices_scroll_reachable": {
+      "status": "PASS - all 4 CONFIRMED by direct screenshot",
+      "choices_observed_in_order": [
+        "What happened to the lighthouse? (choice 1, 'ask_lighthouse')",
+        "The keeper is hiding something. Tell me. (choice 2, 'ask_secret')",
+        "What do the tide marks mean? (choice 3, 'ask_tide')",
+        "Step away (choice 4, 'leave')"
+      ],
+      "method": "Hovered the mouse over the choice area (corrected y-coordinate, ~78% of the game-card height) then sent incremental wheel-scroll events, screenshotting after each; all 4 choices from game_3d.gd's _show_mira_choices() rendered cleanly, one at a time, with smooth scroll transitions and no visual corruption.",
+      "screenshots": ["r5v2-desktop-03-scroll-pass-0.png (choice 1 fading, choice 2 appearing)", "r5v2-desktop-03-scroll-pass-2.png (choice 2 clean, choice 3 appearing)", "r5v2-desktop-03-scroll-pass-3.png (choice 3 clean)", "r5-desktop-choice4-leave.png (choice 4 clean, dedicated follow-up capture)"]
+    },
+    "first_choice_real_pointer_click": {
+      "status": "PASS",
+      "observation": "After scrolling through all 4 and back to the top, a REAL mouse.click() (not a synthetic DOM event) on the first choice ('What happened to the lighthouse?') correctly triggered 'ask_lighthouse': the ledger log visibly appended Mira's exact scripted line ('The light died three days ago. The door may be barred from inside. There has been no answer. That is all we know.'), and the choice list correctly repopulated with the same 4 choices (matching _show_mira_choices() being called again after a non-terminal choice per source).",
+      "canonical_state_mutated": false,
+      "state_sha256_before_and_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c (identical)",
+      "screenshots": ["r5v2-desktop-04-scrolled-to-top.png", "r5v2-desktop-05-after-click.png"]
+    },
+    "free_text_capability_untouched": "The 'NPC capability (memory only)' / CONNECT field and the 'Ask Captain Mira' / SEND/CANCEL field were visible in every screenshot but never clicked, focused, or typed into at any point in this round.",
+    "case_file_4_cards_and_footer": {"status": "PASS - no regression", "screenshots": ["r5v2-desktop-07-case-file-open.png", "r5v2-desktop-08-case-file-closed.png"]}
+  },
+  "mobile_390x844_dashboard_embed_ACTUAL_344x720_canvas": {
+    "boot_and_telemetry": {"status": "PASS", "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0},
+    "canvas_geometry_confirmed": "iframe/canvas box re-measured this round: {x:23, y:271.14, width:344, height:720} - matches the previously-sent geometry-measurement.json exactly; this is the REAL constrained canvas the fix had to work within, not an invented viewport.",
+    "navigation_to_mira": {"status": "PASS", "method": "Telemetry-guided, fresh isolated session, reached focus:'mira' in ~6 bursts, no fall-recovery needed."},
+    "all_4_choices_scroll_reachable": {
+      "status": "PASS - all 4 CONFIRMED by direct screenshot, within the real 344x720 canvas",
+      "choices_observed_in_order": [
+        "What happened to the lighthouse? (choice 1)",
+        "The keeper is hiding something. Tell me (choice 2)",
+        "What do the tide marks mean? (choice 3)",
+        "Step away (choice 4)"
+      ],
+      "method": "Scrolled the DASHBOARD PAGE itself (window.scrollTo) to bring the dialogue's choice/footer region within the 844px top-level viewport (the dashboard's own header/KPI/card-head chrome otherwise pushes it below the fold - this parent-page scroll is separate from, and in addition to, the game's own internal choice-list scrolling), then hovered and wheel-scrolled within the now-visible choice area exactly as on desktop. All 4 choices rendered cleanly, one at a time.",
+      "screenshots": ["r5-mobile-04-dialogue-open-scrolled-into-view.png (choice 1)", "r5-mobile-05-choice-scroll-pass-1.png (choice 2)", "r5-mobile-05-choice-scroll-pass-3.png (choice 3)", "r5-mobile-05-choice-scroll-pass-5.png (choice 4)"]
+    },
+    "first_choice_real_pointer_click": {
+      "status": "PASS",
+      "observation": "Same as desktop: after scrolling through all 4 and back, a real pointer click on the first choice correctly appended Mira's scripted lighthouse-lore line to the ledger, and the choice list repopulated correctly.",
+      "canonical_state_mutated": false,
+      "state_sha256_before_and_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c (identical)",
+      "screenshots": ["r5-mobile-06-scrolled-back-to-first-choice.png", "r5-mobile-07-after-first-choice-click.png"]
+    },
+    "free_text_capability_untouched": "Same guarantee as desktop - visible, never interacted with.",
+    "case_file_4_cards_scroll_and_footer": {"status": "PASS - no regression, consistent with r2/r3/r4", "screenshots": ["r5-mobile-09-case-file-open.png", "r5-mobile-10-case-file-scrolled.png", "r5-mobile-11-case-file-closed.png"]}
+  },
+  "explicit_excluded_claims": [
+    "No NPC free-text or capability-memory request was typed, focused, or submitted on either viewport; only the single pre-authored FIRST scripted choice was clicked, by design, on both.",
+    "No model calls occurred from this QA pass.",
+    "No source, GDScript, runtime, or data file was edited by this agent.",
+    "The other 3 choices (ask_secret, ask_tide, leave) were visually confirmed reachable and legible via scroll but were not themselves clicked this round (only the first was exercised, per the explicit ask to click 'the scripted first choice').",
+    "No claim of human comprehension, usability, or performance/production-readiness.",
+    "G4/G6 efficacy/performance left untouched.",
+    "r4 and its followup-fresh-mobile-session packet were not modified; this is a new, separate r5 packet."
+  ],
+  "overall_verdict": "PASS on every requested point. The choiceScroll-floor fix is confirmed working in the REAL dashboard-embedded canvas on both viewports (desktop's effective game-card canvas and mobile's measured 344x720): all 4 authored Mira dialogue choices are each individually visible and scroll-reachable, where the prior round found only 1. A real pointer click on the first choice correctly triggers its scripted response with the ledger visibly updated and zero canonical-state mutation (state_sha256 unchanged before/after on both viewports), while the free-text and capability rows remained completely untouched throughout - zero NPC/model calls. Case File's 4-cards-plus-fixed-footer behavior continues to hold with no regression. Served PCK/HTML SHA-256 (re-verified live from each fresh isolated browser session) is bound exactly to the current on-disk build."
+}

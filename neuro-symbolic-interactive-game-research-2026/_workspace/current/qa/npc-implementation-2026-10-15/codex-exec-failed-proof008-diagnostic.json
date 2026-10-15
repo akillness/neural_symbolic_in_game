@@ -1,0 +1,151 @@
+{
+  "schema_version": "codex-exec-failed-diagnostic/1",
+  "claim_boundary": "diagnostic_only",
+  "target": {
+    "wrapper": "scripts/codex_oauth_llm.py:run_prompt",
+    "caller": "src/nesy_game/npc_goal.py:IntentInterpreter.interpret (arm=P)",
+    "reproduced_failure": "_workspace/current/qa/npc-real-play-loop-v5-008 error HTTP_0_409:codex_interpretation_failed:codex_exec_failed"
+  },
+  "diagnostic_invocation": {
+    "request_id": "diag-codexfailureprobe-008",
+    "requested_model": "gpt-6.1-sol",
+    "timeout_s": 30.0,
+    "start_iso": "2026-10-15T07:23:43.492624+00:00",
+    "end_iso": "2026-10-15T07:23:51.120684+00:00",
+    "utterance_source": "verbatim native harness literal (game-track/godot/tests/npc_play_loop_harness.gd line 46), sha256-verified against proof008 request_events[0].raw_utterance_sha256",
+    "utterance_sha256": "988c64cf881424668bcc3b42f0ed04d4c89e63f1762805e3d095412a5232b19c",
+    "instruction_sha256": "f8d7db89407d867310d6bb63c275f248507983bbf78c2edc5f141e6bb3d88d4c",
+    "output_schema_sha256": "525d2cae69c1ae1071834c61bf1bb39bced7871f22f61adfaed03ae98fac97a4",
+    "output_schema_source": "materialized via the unmodified nesy_game.npc_goal._codex_output_schema_file(), same $defs.typed_intent/$defs.claim projection of game-track/schemas/npc-goal-recovery.schema.json used in production",
+    "no_prompt_body_or_tokens_stored": true
+  },
+  "adapter_contract_reproduced": {
+    "executable_resolved_by": "scripts/codex_oauth_llm.py:resolve_codex_cli() (unmodified)",
+    "executable_path": "/Users/jangyoung/.nvm/versions/node/v22.19.0/bin/codex",
+    "sandbox": "read-only",
+    "ephemeral": true,
+    "ignore_user_config": true,
+    "ignore_rules": true,
+    "skip_git_repo_check": true,
+    "disabled_feature_count": 18,
+    "cwd_isolated_outside_project_root": true,
+    "command_argv_safe": [
+      "/Users/jangyoung/.nvm/versions/node/v22.19.0/bin/codex",
+      "exec",
+      "--disable",
+      "shell_tool",
+      "--disable",
+      "shell_snapshot",
+      "--disable",
+      "unified_exec",
+      "--disable",
+      "browser_use",
+      "--disable",
+      "browser_use_external",
+      "--disable",
+      "browser_use_full_cdp_access",
+      "--disable",
+      "computer_use",
+      "--disable",
+      "apps",
+      "--disable",
+      "enable_mcp_apps",
+      "--disable",
+      "mcp_2026_07_28",
+      "--disable",
+      "tool_call_mcp_elicitation",
+      "--disable",
+      "tool_suggest",
+      "--disable",
+      "skill_search",
+      "--disable",
+      "skill_mcp_dependency_install",
+      "--disable",
+      "image_generation",
+      "--disable",
+      "view_image",
+      "--disable",
+      "in_app_browser",
+      "--disable",
+      "code_mode_host",
+      "--ephemeral",
+      "--sandbox",
+      "read-only",
+      "--skip-git-repo-check",
+      "--ignore-user-config",
+      "--ignore-rules",
+      "--output-schema",
+      "/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmpk8_46uqv.json",
+      "--output-last-message",
+      "/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/trace-rpg-codex-oauth-9jhzhl2m/last-message.json",
+      "--color",
+      "never",
+      "-C",
+      "/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/trace-rpg-codex-oauth-9jhzhl2m",
+      "--model",
+      "gpt-6.1-sol",
+      "-"
+    ]
+  },
+  "preflight_calls": [
+    {
+      "step": "codex login status",
+      "returncode": 0,
+      "stderr_tail_redacted": "Logged in using ChatGPT\n"
+    },
+    {
+      "step": "codex exec --help (tool-policy capability probe)",
+      "returncode": 0
+    },
+    {
+      "step": "codex features list (tool-policy capability probe)",
+      "returncode": 0
+    }
+  ],
+  "exec_attempt": {
+    "returncode": 1,
+    "elapsed_s": 6.532,
+    "stdout_len": 0,
+    "stderr_len": 2182,
+    "stderr_tail_prompt_body_redacted": true,
+    "stderr_tail_redacted_bounded": "lls` at line 137 column 5\n2026-10-15T07:23:48.138981Z ERROR codex_core::session::session: failed to load skill /Users/jangyoung/.codex/skills/amrouter/SKILL.md: missing YAML frontmatter delimited by ---\n2026-10-15T07:23:48.139189Z ERROR codex_core::session::session: failed to load skill /Users/jangyoung/.codex/skills/ax/SKILL.md: missing YAML frontmatter delimited by ---\nOpenAI Codex v0.147.0\n--------\nworkdir: /private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/trace-rpg-codex-oauth-9jhzhl2m\nmodel: gpt-6.1-sol\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: none\nreasoning summaries: none\nsession id: 01a13e72-1213-7671-92cb-901c7fee6909\n--------\nuser\n[PROMPT_BODY_REDACTED: instruction+utterance omitted by policy]\nwarning: Model metadata for `gpt-6.1-sol` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.\nwarning: Exceeded skills context budget. All skill descriptions were removed and 540 additional skills were not included in the model-visible skills list.\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.\"}}",
+    "resolved_cli_banner": [
+      "OpenAI Codex v0.147.0"
+    ],
+    "cli_warnings": [
+      "warning: Model metadata for `gpt-6.1-sol` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.",
+      "warning: Exceeded skills context budget. All skill descriptions were removed and 540 additional skills were not included in the model-visible skills list."
+    ],
+    "cli_stated_errors": [
+      "ERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.\"}}",
+      "ERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.\"}}"
+    ]
+  },
+  "run_prompt_result": {
+    "returncode": 4,
+    "error_code": "codex_exec_failed"
+  },
+  "classification": {
+    "category": "unsupported_model_for_auth_method",
+    "basis": "literal CLI/API stderr line, quoted verbatim, no inference beyond it",
+    "quoted_evidence": "ERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-6.1-sol' model is not supported when using Codex with a ChatGPT account.\"}}",
+    "ruled_out_by_this_evidence": {
+      "quota_or_rate_limit": "stderr contains no quota/rate-limit/429 signal",
+      "network_or_dns_or_timeout": "exec call completed in 6.5s with a server-returned HTTP 400 JSON body, not a timeout/connection error",
+      "schema_contract_violation": "failure occurs before any model output is produced; --output-schema was never evaluated against a response",
+      "cli_crash_or_flag_syntax_error": "all adapter flags were accepted by codex exec (returncode would be a CLI usage error, not a 400 JSON API error, on a syntax problem)"
+    },
+    "not_independently_verified_in_this_run": "local model-cache / config listing of 'gpt-5.6-sol' was not re-queried here; cited only as pre-existing context, not as proof of a working replacement model"
+  },
+  "secondary_observation_not_asserted_as_cause": {
+    "note": "resolve_codex_cli() selected an nvm-installed codex binary, not the newer one on PATH; recorded for completeness, not used in the classification above because the failure is a server-side 400 on the requested model, independent of CLI build.",
+    "resolved_binary_version_from_stderr_banner": "OpenAI Codex v0.147.0",
+    "path_codex_version_checked_separately": "codex-cli 0.162.1 (which codex -> /Users/jangyoung/.local/bin/codex)"
+  },
+  "constraints_honored": {
+    "runtime_or_test_or_manuscript_or_git_or_global_config_edited": false,
+    "second_model_invocation": false,
+    "prompt_body_or_auth_tokens_persisted": false,
+    "auth_json_read": false
+  }
+}

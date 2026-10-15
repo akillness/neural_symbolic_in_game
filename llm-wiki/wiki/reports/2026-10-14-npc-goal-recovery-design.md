@@ -266,3 +266,11 @@ Ontology: NPC·Player·GameWorld·AgentMemory·ValidationGate·Proposal은 Round
 - critic은 수정한 조항을 직접 읽고 경미 지적 5건의 CLOSED를 확인했다: ① 계획 입력/`Plan` 표의 intent ID·PlanningContext digest 정합성(§§3–4), ② O label 작성자의 NPC 정보 권한·우회 누출 차단(§9), ③ 환경/player-response 정책의 D-06 소유권(§§4·9), ④ `codex_adapter.py` 읽은 근거 복원(§12), ⑤ D-06+D-08 모두 동결 후 corpus 수집(§9). 실제 schema·label packet·데이터/분석 동결은 여전히 D-02/D-03/D-06/D-08의 후속 프로토콜 작업이며 완료로 승격하지 않는다.
 - 검토 전달 이력: 최초 후속 task는 판정 텍스트를 남겼지만 null yield로 전달 실패했고, 재개 결과의 lifecycle 조회도 실패했다. 이를 PASS인 task 실행으로 재명명하지 않는다. 위 최종 조항 검증 판정은 별도로 수신한 직접 IRC 응답에 근거한다. critic의 코드 점검은 metrics/experiment 및 새 runtime 앵커에 한정되며, 다른 게임 경로와 외부 인용의 새 전수 감사는 아니다.
 - AC-NPC-01..08은 후속 구현/실험의 수용 기준이지 실행된 테스트 결과가 아니다. D-01..D-08은 미동결이다. 문서 검증으로 새 NPC의 성능·게임 동작·논문 효과를 입증했다고 하지 않는다.
+
+## 14. 설명용 HTML과 별도 UI 수정 — 2026-10-15
+
+기존 대비 제안 구조는 `neuro-symbolic-interactive-game-research-2026/_workspace/current/ui/npc-operating-system-brief/index.html`에 한국어로 시각화했다. 두 Codex 이미지를 내장한 단일 HTML이며, 출처 있는 주장→검토된 계획 입력→기호 재계획→승인/새 관측을 단계별 설명 예시로 보여 준다. 실제 게임 시뮬레이션이나 새 NPC 구현·효능 결과가 아니다. 본 명세의 미동결 D-01..D-08과 Pending AC-NPC-01..08은 그대로다.
+
+같은 작업에서 수정한 게임 동작은 기존 Harbor Ledger 하단 패널의 표시 수명뿐이다. 탐색 시 숨기고 대화·선택지에서 다시 표시하며, Esc/Step away 이후 다시 떠오르지 않도록 했다. 이는 새 GoalController·LLM 연결·재계획 구현과 무관하다. 별도 `jev-routing.json`은 이번 코딩 작업의 실제 advisory 라우팅 근거이며 게임 NPC의 추론 호출이 아니다.
+
+로컬 Web 시작·NPC 대화 열기/닫기·Case File 왕복과 HTML 1440/390px·키보드·JavaScript-off 확인의 영수증은 `neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/verification.json`에 둔다. 그림은 설명용이며 사람의 권리·스타일 검토는 pending이다. 운영 배포·새 연구 결과의 승격은 수행하지 않았다.

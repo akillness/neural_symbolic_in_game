@@ -1,0 +1,195 @@
+{
+  "packet_id": "npc-web-current-20261015",
+  "generated_at": "2026-10-15T15:49:00Z",
+  "agent": "NpcWebQA",
+  "scope": "Read-only browser QA of the just-rebuilt real Godot Web export. No GDScript/runtime/code edits. No NPC utterance/capability submission, no model calls.",
+  "targets": {
+    "public": "http://127.0.0.1:8877/public/",
+    "dashboard": "http://127.0.0.1:8877/dashboard/"
+  },
+  "viewports_tested": [
+    {"name": "desktop", "width": 1440, "height": 900, "used_for": "public"},
+    {"name": "desktop", "width": 1440, "height": 1000, "used_for": "dashboard"},
+    {"name": "phone/mobile", "width": 390, "height": 844, "used_for": "public and dashboard"}
+  ],
+  "method": {
+    "skill_followed": "browser-harness",
+    "browser": "pre-provisioned headless Chrome 155.0.8059.79 at ws://127.0.0.1:64714 (Puppeteer-launched, user-data-dir puppeteer_dev_chrome_profile-i2BiZW, window-size 1440x900, --disable-blink-features=AutomationControlled)",
+    "automation_lib": "Playwright 1.59.0 (Python), connect_over_cdp against the existing browser",
+    "tab_policy": "Used NEW tabs inside the browser's existing default browsing context (sharing storage/cache, not a new incognito-style BrowserContext). Reason: browser.new_context() pages were torn down by Chrome when the creating Playwright process disconnected, which would have discarded in-progress state between tool calls; plain new_page() in the default context survives disconnects. The 2 pre-existing 'TRACE-RPG: The Sealed Lighthouse' tabs and the original about:blank tab were never closed or navigated.",
+    "console_page_error_capture": "page.on('console'/'pageerror'/'requestfailed'/'response') listeners were attached immediately after each new page was created, before any navigation, on every one of the 4 page/viewport passes.",
+    "tabs_created_by_this_session": [
+      "http://127.0.0.1:8877/public/?qa=desktop",
+      "http://127.0.0.1:8877/public/?qa=mobile",
+      "http://127.0.0.1:8877/dashboard/?qa=dashboard-desktop",
+      "http://127.0.0.1:8877/dashboard/?qa=dashboard-mobile"
+    ],
+    "pre_existing_tabs_left_untouched": [
+      "http://127.0.0.1:8877/public/ (tab 1)",
+      "http://127.0.0.1:8877/public/ (tab 2)",
+      "about:blank"
+    ]
+  },
+  "operational_finding_blocking_issue_and_fix": {
+    "finding": "At task start, the project's static file server (python3 -m http.server 8877 --bind 127.0.0.1 --directory game-track/web, PID 30420) was unresponsive to ALL clients: curl, Python http.client, and the pre-provisioned real headless Chrome browser itself (page.goto -> net::ERR_EMPTY_RESPONSE) on every path including '/'. Confirmed via lsof that only the browser's own 2 already-open tabs held established keep-alive connections to it; no other client could get a response (immediate empty reply, not a hang).",
+    "action_taken": "Restarted the identical, unmodified command (python3 -m http.server 8877 --bind 127.0.0.1 --directory game-track/web) after stopping the unresponsive PID. This is the plain stdlib static file server (no app code, no GDScript, no test hooks) and matches the prior session's own convention recorded in this repo at qa/npc-panel-html-2026-10-15/cleanup.json, where the same server was explicitly described as harness-managed and expected to be started/stopped per QA session. No game source, build output, or test hook was touched.",
+    "verification_after_restart": "curl 200 on /, /public/, /dashboard/, and /public/index.pck (exact 13,401,824-byte size match); the real browser's page.goto then succeeded cleanly on every subsequent pass.",
+    "disclosure": "Reporting this prominently and transparently as requested ('If real UI blocker, report exact steps'); this was an infrastructure/serving-process issue, not a defect in the rebuilt game assets themselves, which were verified byte-identical (see asset_sha256 below) before and after the restart."
+  },
+  "asset_sha256_verification": {
+    "method": "Computed SHA-256 twice: (a) directly from disk via shasum, and (b) live, from inside the real browser via fetch()+crypto.subtle.digest() against the running server, on 3 separate passes (desktop /public/, phone /public/, desktop /dashboard/). All three matched (a) exactly.",
+    "public": {
+      "index.html": {"bytes": 5464, "sha256": "808198099331baac5e2d5c5e1dd00e420699eeaab9f105f4786896a564f4b5c2"},
+      "index.js": {"bytes": 279815, "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c"},
+      "index.pck": {"bytes": 13401824, "sha256": "568e80d6928d298df595d5c90af22204cc6197987ba676cfd7ebb505f51098e2"},
+      "index.wasm": {"bytes": 39513091, "sha256": "35116f68540ac41acf7d71ea457added91b5e960a9cca3e2acc72918eaf01277"},
+      "index.png": {"bytes": 21443, "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"}
+    },
+    "dashboard": {
+      "index.html": {"bytes": 7184, "sha256": "a01fd17394063071db2d2879bb74920ef9e60df7e2ce5b3bf7770cad2e263959"},
+      "dashboard.js": {"bytes": 58765, "sha256": "62be4fb626e9c628a70a080523e82ff4e85de481a586f0da70490518b61b98cf"},
+      "dashboard.css": {"bytes": 17646, "sha256": "92bf885741b1e65bb4ee4bb02e464a309e6036c5af6d06bcd3679fe3b814c307"}
+    },
+    "file_mtimes_on_disk": "public/* dated 2026-10-15 15:27 (just rebuilt); dashboard/* dated 2026-10-14 15:31 (older, not part of this rebuild, confirmed read-only per instructions)",
+    "godot_engine_identity_from_console": "Godot Engine v4.7.1.stable.official.a13da4feb; OpenGL ES 3.0 (WebGL 2.0, Compatibility renderer); Emscripten 4.0.20, single-threaded, no GDExtension support."
+  },
+  "public_desktop_1440x900": {
+    "boot": {
+      "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0,
+      "console_messages": ["Godot Engine v4.7.1.stable.official.a13da4feb", "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility", "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support."],
+      "status": "PASS - #status overlay cleanly detached (engine.startGame() resolved), start card rendered with no clipping: title, premise, BEGIN INVESTIGATION button, and the full keyboard-guide note line ('WASD Move | [E] Inspect | [T] Field Guide | [C] Case File | [M] Reduce Motion') all fully legible.",
+      "screenshots": ["desktop-01-loading.png", "desktop-02-boot-start-screen.png"]
+    },
+    "begin_and_intro": {
+      "action": "Clicked BEGIN INVESTIGATION (719,507). pointer lock engaged immediately (document.pointerLockElement non-null).",
+      "observation": "A non-interactive intro camera pan plays for a few seconds before the top-bar HUD/ledger appears; screenshots taken too soon after the click (900ms-ish) show only the 3D lighthouse with no HUD chrome yet. By ~2-3s in, the HUD, toast ('CURRENT LEAD | Follow the amber beacon to Captain Mira.'), and first-person dock scene with rain VFX are all visible and clean.",
+      "status": "PASS (functional) - this is a timing note about this test's screenshot cadence, not a defect.",
+      "screenshots": ["desktop-03-after-begin-tutorial.png", "desktop-04-after-esc-close-tutorial.png"]
+    },
+    "first_session_auto_tutorial": {
+      "excluded_claim": "This browser profile's storage already had TUTORIAL_SEEN_PATH set from the pre-existing tabs/sessions sharing the same origin storage, so the automatic single-page folio that opens ONLY on a true first-ever session was not independently observed this pass. The returning-user path ('CURRENT LEAD' toast) was observed instead, and the full manual guide (below) was exercised and confirmed fully functional."
+    },
+    "keyboard_guide_field_guide_T": {
+      "action": "Pressed 't'.",
+      "observation": "Full 4-page Field Guide folio opened (page 1/4, 'WHY THE HARBOR NEEDS YOU'), with illustration, narrative text, and the complete keyboard reference line: 'WASD move | mouse look | [E] inspect | [T] guide | [C] case file | [H] hint | [Esc] cursor'. BACK/NEXT buttons and page counter rendered cleanly, no clipping.",
+      "status": "PASS",
+      "screenshots": ["desktop-05-field-guide-open.png"]
+    },
+    "guide_close_Esc": {
+      "action": "Pressed Escape while guide open.",
+      "observation": "Guide closed per the Escape-priority cascade in source (tutorial > coach card > evidence board > deduction > dialogue > pointer toggle); confirmed by returning to the 3D/HUD view.",
+      "status": "PASS",
+      "screenshots": ["desktop-06-field-guide-closed.png"]
+    },
+    "case_file_C": {
+      "action": "Pressed 'c'.",
+      "observation": "Case File / evidence board opened: four cards (LENS, MOUNT, LEAD, SEALED), 'CHAIN 0/3 PROVEN', next-valid-entry hint, and the '[C] or [Esc] CLOSE CASE FILE' footer all fully legible, no clipping at this width.",
+      "status": "PASS",
+      "screenshots": ["desktop-07-case-file-open.png"]
+    },
+    "case_file_close_C": {
+      "action": "Pressed 'c' again.",
+      "observation": "Case File closed; full top-bar HUD visible afterward (ledger box, CASE CHAIN readout, [T] GUIDE / [C] CASE FILE / [V] AUDIO ON buttons, status line 'TRACE-RPG | CASE 01 | [CURSOR] ... | WASD MOVE | MOUSE LOOK | [E] INSPECT | [Esc] CURSOR | [F5]/[F9] SAVE/LOAD | [M] MOTION | [H] HINT').",
+      "status": "PASS",
+      "screenshots": ["desktop-08-case-file-closed.png"]
+    },
+    "pointer_release_Esc": {
+      "action_sequence": "Esc (nothing open) -> Esc again -> click canvas (719,450).",
+      "real_browser_pointer_lock_state": {
+        "after_begin_click": true,
+        "after_1st_standalone_esc": false,
+        "after_2nd_standalone_esc": true,
+        "after_canvas_click": true
+      },
+      "hud_label_observed": {
+        "after_1st_standalone_esc": "[CURSOR] CURSOR FREE | CLICK TO RETURN (matches real API state: released)",
+        "after_2nd_standalone_esc": "[CURSOR] CURSOR FREE | CLICK TO RETURN (does NOT match real API state, which read locked=true at that check)"
+      },
+      "status": "PASS for the core mechanic (Esc does toggle real document.pointerLockElement state, confirmed twice) with ONE precise unverified boundary flagged below.",
+      "unverified_boundary": "On the second Escape toggle, fired only ~400ms after the first, document.pointerLockElement read non-null while the in-game HUD label still showed the released-state text. Chromium is documented to throttle/cooldown rapid requestPointerLock() re-entry (~1.25s) after an exit; this mismatch may be a benign artifact of re-toggling faster than that cooldown, or a genuine HUD-label lag. It was not re-verified with a longer interval in this pass, so it is reported as an open, unverified observation rather than a confirmed defect. This is additional, narrower evidence alongside this repo's existing DEF-010 (defect-register.md), which separately found headless automation historically did not reliably obtain real pointer lock at all; this session's browser (launched with --disable-blink-features=AutomationControlled) DID obtain real pointer-lock grants on 3 of 4 checks, which is new information worth recording without re-closing or contradicting DEF-010's own test conditions.",
+      "screenshots": ["desktop-09-esc-pointer-toggle-1.png", "desktop-10-esc-pointer-toggle-2.png", "desktop-11-click-canvas-recapture.png"]
+    }
+  },
+  "public_phone_390x844": {
+    "boot": {
+      "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0,
+      "status": "PASS - start card reflows correctly: two-line title, wrapped premise text, full-width BEGIN button, and the keyboard-guide note wraps to two lines fully legible, no clipping, no horizontal overflow.",
+      "screenshots": ["mobile-01-loading.png", "mobile-02-boot-start-screen.png"]
+    },
+    "begin": {
+      "action": "Clicked BEGIN INVESTIGATION (195,517) after re-applying the 390x844 viewport override (see methodology_note below).",
+      "methodology_note": "CDP device-metrics viewport overrides are scoped to the debugger session that set them; when the setting script's Playwright connection disconnected and a later script reconnected to continue the SAME tab, Chrome had reverted it to the physical window size (1440x900). This was caught before acting (a verification screenshot confirmed the correct 390-wide render before any click), and is a note on this test's own methodology, not a finding about the game.",
+      "status": "PASS",
+      "screenshots": ["mobile-03a-viewport-reapplied-check.png", "mobile-03-after-begin.png"]
+    },
+    "field_guide_T": {
+      "action": "Pressed 't'.",
+      "observation": "Field Guide page 1/4 reflows cleanly to the narrow width: two-line heading, scaled illustration, readable body paragraphs, and the keyboard-reference line wraps onto 3 lines without truncation; BACK / 1-4 / NEXT control row intact at the bottom.",
+      "status": "PASS - no obvious clipping.",
+      "screenshots": ["mobile-04-field-guide-open.png", "mobile-05-field-guide-closed.png"]
+    },
+    "case_file_C": {
+      "action": "Pressed 'c'.",
+      "observation": "DEFECT: at 390x844 the Case File panel does not fit the viewport. (1) At the top, the still-visible 'CURRENT LEAD' ledger box overlaps/peeks out above the Case File panel's top edge instead of being fully replaced or hidden by it. (2) At the bottom, the panel's final two lines ('[N] NEXT VALID ENTRY | Speak with Captain Mira at the end of the dock.') are pushed to the very bottom pixels of the viewport, and the '[C] or [Esc] CLOSE CASE FILE' instructional footer that is clearly visible at 1440x900 is NOT visible at all at 390x844 - it is pushed below the visible viewport with no scroll affordance shown on screen.",
+      "status": "FAIL - obvious clipping of panel content at the mobile viewport, the one concrete defect this pass found.",
+      "screenshots": ["mobile-06-case-file-open.png", "mobile-07-case-file-closed.png"]
+    },
+    "pointer_release": {
+      "excluded_claim": "Not separately exercised at the phone viewport in this pass (time-boxed to the boot/begin/guide/case-file checks explicitly requested); the desktop pass already produced concrete real-API evidence for the Esc pointer-toggle mechanic itself, which is viewport-independent game logic."
+    },
+    "touch_input_excluded_claim": "All phone-viewport interaction in this pass used mouse click/keyboard events in a desktop Chrome instance with a narrow CSS viewport (device metrics override), NOT Chrome's touch-input emulation (hasTouch/isMobile) and NOT a physical touch screen. This verifies responsive LAYOUT at the phone viewport width, but does NOT verify touch-specific input handling (tap-vs-click event paths, multi-touch, drag gestures, virtual joystick if any). That is an explicitly unverified boundary, not a tested-and-passing claim."
+  },
+  "dashboard_desktop_1440x1000": {
+    "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0,
+    "dom_verified": {
+      "iframe_present": true,
+      "iframe_src": "http://127.0.0.1:8877/public/index.html",
+      "iframe_doc_title_readable_cross_frame": "TRACE-RPG: The Sealed Lighthouse (same-origin iframe, confirms the SAME verified Godot export is embedded, not a mock/placeholder)",
+      "link_state_text": "waiting for game session",
+      "has_horizontal_overflow": false,
+      "body_scroll_height_vs_viewport": "1490 vs 1000 (expected vertical scroll for the Engineering-detail/timeline sections further down the page; this is the page's own intentional collapsed-by-default layout, not a defect)"
+    },
+    "observation": "Header KPI strip (commits/holds/stage/revision/facts/episode), game card with the embedded real Godot canvas showing the same verified start screen, Quest/Harbor-Plan-minimap/Recent-Actions rail, and Last-Action/Freeze-readout section all render cleanly with no clipping. All correctly show 'waiting for game session' placeholder state since BEGIN was never clicked inside this particular iframe instance (left untouched to avoid an unnecessary second live session; the embedded export itself was already proven working in the direct /public/ pass above with byte-identical assets).",
+    "status": "PASS",
+    "screenshots": ["dashboard-desktop-01-initial.png", "dashboard-desktop-02-after-iframe-wait.png"]
+  },
+  "dashboard_mobile_390x844": {
+    "console_errors": 0, "page_errors": 0, "failed_requests": 0, "bad_http_responses": 0,
+    "dom_verified": {
+      "iframe_present": true,
+      "iframe_src": "http://127.0.0.1:8877/public/index.html",
+      "has_horizontal_overflow": false,
+      "body_scroll_height_vs_viewport": "2451 vs 844 (expected - the rail/quest/minimap/actions/timeline sections stack vertically below the game card at this width)"
+    },
+    "observation": "Header reflows to a compact stacked layout (title line, KPI row, status pill below), and the embedded game card shows the same verified responsive start screen. No clipping or horizontal overflow observed.",
+    "status": "PASS",
+    "screenshots": ["dashboard-mobile-01-initial.png", "dashboard-mobile-02-after-iframe-wait.png"]
+  },
+  "explicit_excluded_claims": [
+    "No NPC utterance or free-text capability request was ever typed or submitted; the Mira interactable/dialogue input row was never engaged; no model call occurred from this QA pass.",
+    "No claim is made about human comprehension, usability, or player experience - this is browser/engineering-level UI verification only.",
+    "No claim is made about production performance (frame timing, warmed p95, memory, soak) - this repo's own defect-register.md DEF-004/DEF-014 already track that as open, and this pass did not measure it.",
+    "No claim is made about mobile production readiness beyond the specific responsive-layout checks performed; touch-specific input (as opposed to narrow-viewport layout) was not exercised.",
+    "G4/G6 efficacy/performance status is left exactly as-is; this packet does not touch or imply progress on those gates.",
+    "The first-session single-page auto-tutorial (as opposed to the manually-triggered full 4-page guide) was not independently observed this pass because this browser profile's storage already had the 'seen' flag set from pre-existing sessions sharing the same origin."
+  ],
+  "defect_summary": [
+    {
+      "id": "NEW-2026-10-15-01",
+      "severity": "S2",
+      "surface": "responsive UI - Case File panel, phone viewport",
+      "evidence": "mobile-06-case-file-open.png",
+      "description": "At 390x844 the Case File panel overlaps the still-visible ledger box at the top and clips its own closing-instructions footer ('[C] or [Esc] CLOSE CASE FILE') off the bottom of the viewport with no visible scroll affordance. The equivalent desktop 1440x900 render (desktop-07-case-file-open.png) shows this footer clearly, so this is a narrow-viewport-specific layout regression, not missing content.",
+      "status": "open - newly found this pass"
+    },
+    {
+      "id": "NOTE-2026-10-15-02",
+      "severity": "informational",
+      "surface": "automation / pointer lock, desktop",
+      "evidence": "desktop-09/10/11 screenshots + pointer_lock_checks in desktop-result.json",
+      "description": "One HUD-label vs real-API pointer-lock state mismatch observed on a rapid (~400ms) double Escape toggle; see unverified_boundary above. Narrower, newer evidence alongside this repo's existing DEF-010, not a resolution of it.",
+      "status": "unverified boundary, reported for the record"
+    }
+  ],
+  "overall_verdict": "PASS with one reportable mobile-layout defect (Case File panel clipping at 390x844) and one informational pointer-lock timing observation. Startup, asset integrity (served bytes match disk bytes on every checked file), the begin->intro->HUD flow, the keyboard Field Guide ([T]), the desktop Case File ([C]), the Esc pointer-release/re-capture mechanic, and both dashboard viewports all passed cleanly with zero console errors, zero page errors, zero failed requests, and zero bad HTTP responses across all 4 page/viewport passes. The static file server required a transparent restart before any of this could be exercised (documented above); no game source, build, or test hook was modified."
+}

@@ -1,0 +1,43 @@
+{
+  "verdict": "BLOCK",
+  "summary": "The exact requested checkout does not contain the repaired bytes or regression evidence described in the assignment. Neither original P1 can be marked CLOSED against the claimed repair.",
+  "original_p1_status": [
+    {
+      "finding": "Corrupt GDScript line 90 / duplicated HUD block",
+      "status": "NOT CLOSED",
+      "evidence": [
+        "tests/godot_panel_lifecycle_harness.gd:74-85 contains one HUD-refresh setup/assertion block; lines 89-92 contain show_tutorial(true), await process_frame, and tutorial assertions. The currently visible line 90 is not corrupt.",
+        "The visible harness ends at line 118 and contains no reported letterbox-return case.",
+        "The required regression-results.json is missing, so parser success, preserved assertions, and the reported repaired-harness/prepatch rejection cannot be corroborated."
+      ],
+      "limit": "The visible source no longer exhibits the named corruption/duplication, but it is not the described repaired harness and was not executed in this read-only review."
+    },
+    {
+      "finding": "Subprocess logs are not fail-closed",
+      "status": "OPEN",
+      "severity": "P1",
+      "file": "tests/test_godot_panel_lifecycle.py:20-32,55-75",
+      "issue": "Import still calls subprocess.run directly and rejects only nonzero return codes. Runtime also calls subprocess.run directly and checks only the final result marker, return code, passed flag, and failures list. Zero-exit ERROR or SCRIPT ERROR diagnostics alongside a passing marker are not rejected. There is no shared _run_godot checker and only one test method, with neither reported negative case.",
+      "fix": "Make the actual repaired test file available at the review target; its shared diagnostic checker and real zero-exit negative cases must be inspected before closure."
+    }
+  ],
+  "copy_safety": {
+    "observed": "tests/test_godot_panel_lifecycle.py:48-54 uses TemporaryDirectory, stages into its project child, and copies the harness into that disposable destination; context-manager cleanup covers normal and exceptional exits.",
+    "unverified": "The imported scripts/run_playable_evaluation.py does not exist at the specified checkout, so stage_project copy semantics and source isolation could not be inspected."
+  },
+  "target_mismatch_evidence": {
+    "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+    "command": "stat -f '%N %z bytes %Sm' tests/test_godot_panel_lifecycle.py tests/godot_panel_lifecycle_harness.gd _workspace/current/qa/npc-panel-html-2026-10-15/regression-results.json",
+    "observed_result": "Python test: 2912 bytes, Oct 15 10:25:51 2026. Harness: 4874 bytes, Oct 15 10:25:46 2026. regression-results.json: No such file or directory (exit 1).",
+    "additional_missing_paths": [
+      "_workspace/current/qa",
+      "scripts/run_playable_evaluation.py"
+    ]
+  },
+  "limits": [
+    "No code changes, Git, formatters, linters, project-wide suites, shared Python kernel, or real-project Godot import were used.",
+    "No tests were run; the described repaired test cases and their supporting artifact are unavailable at the requested path.",
+    "Main was notified twice of the exact-path mismatch; no response was received during a 60-second wait."
+  ],
+  "required_for_closure": "Provide the authoritative repaired checkout path or save both repaired files and regression-results.json into the specified checkout."
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "npc-diagnostic-relocation/1",
+  "status": "preserved_non_admissible_preflight",
+  "reason": "Native preflight sidecars were observed inside the Godot source tree and in the Web export file list. They are not final experiment evidence and must not ship in the game bundle.",
+  "relocations": [
+    {
+      "from": "game-track/godot/_workspace/current/qa/npc-runner-native",
+      "to": "_workspace/current/qa/npc-implementation-2026-10-15/misdirected-native-preflight/npc-runner-native"
+    },
+    {
+      "from": "game-track/godot/research/academic-pipeline/npc-goal-recovery/qa-v2-run",
+      "to": "_workspace/current/qa/npc-implementation-2026-10-15/misdirected-native-preflight/qa-v2-run"
+    }
+  ],
+  "claim_boundary": "Diagnostic preservation only. No result, efficacy, or validation promotion. Original sidecar bytes are retained."
+}

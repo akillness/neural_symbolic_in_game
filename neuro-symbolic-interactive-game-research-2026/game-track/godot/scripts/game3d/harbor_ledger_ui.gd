@@ -597,6 +597,20 @@ func _build_bottom_panel() -> void:
 	_choice_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_choice_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_choice_scroll.add_child(_choice_box)
+	# D-074: the scroll container reports almost no minimum size of its own
+	# (that is the point of a scroll view), so on a short, narrow canvas the
+	# narrow dock ratio in _apply_dock_ratios() can hand it less height than
+	# a single authored choice button needs once its label wraps (R4 mobile
+	# dashboard embed measured 344x720 -- half the tuned 713x720 reference --
+	# squeezed the scripted Mira choice list to a sliver no scroll offset
+	# could bring a button fully into). Reacting to the container's own
+	# sort_children signal (fired by Godot after autowrap settles each
+	# button's real height) and mirroring that as the scroll's floor lets
+	# Control's normal combined-minimum-size growth lift _bottom_panel just
+	# enough, with zero touch to the dock anchors/ratios above. Clearing the
+	# list drops the floor back to 0 so the compact no-choice dock is
+	# unaffected.
+	_choice_box.sort_children.connect(_on_choice_box_sorted)
 	_npc_status_label = Label.new()
 	_npc_status_label.text = "NPC BACKEND | CODEX | NOT CONNECTED"
 	_npc_status_label.add_theme_font_size_override("font_size", 14)
@@ -1975,6 +1989,23 @@ func clear_choices() -> void:
 		_choice_caption.text = ""
 		_choice_caption.visible = false
 	_apply_dock_ratios()
+
+
+func _on_choice_box_sorted() -> void:
+	# D-074: mirror the tallest visible choice button's real (post-autowrap)
+	# height as the scroll view's floor, so _action_box's combined minimum
+	# size can never settle below "at least one authored choice fully
+	# readable" regardless of how narrow/short the host canvas is. Governed
+	# entirely by the container's own layout pass -- no viewport-size or
+	# font-metric guesswork, and it collapses back to 0 the moment the list
+	# is cleared (clear_choices() above removes every child, which still
+	# fires this same sort_children signal).
+	var tallest := 0.0
+	for child in _choice_box.get_children():
+		if child is Control and (child as Control).visible:
+			tallest = maxf(tallest, (child as Control).size.y)
+	if _choice_scroll.custom_minimum_size.y != tallest:
+		_choice_scroll.custom_minimum_size = Vector2(0.0, tallest)
 
 
 func choice_count() -> int:

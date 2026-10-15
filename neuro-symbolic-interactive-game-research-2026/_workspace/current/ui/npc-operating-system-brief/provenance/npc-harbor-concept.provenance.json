@@ -1,0 +1,38 @@
+{
+  "asset": "assets/npc-harbor-concept.png",
+  "role": "original Sealed Lighthouse-inspired harbor-watch NPC concept showing dialogue/observation, a closed offshore lighthouse, and a restored harbor-side signal",
+  "status": "illustrative_only",
+  "runtime_eligible": false,
+  "evidence_status": "not a screenshot and not empirical evidence",
+  "human_rights_style_review": "pending",
+  "generation": {
+    "provider": "private-codex",
+    "model": "gpt-5.6-sol",
+    "image_model": "gpt-image-2.5-sunburst",
+    "gti_version": "0.4.1",
+    "command": "gti --provider private-codex --model gpt-5.6-sol --image-model gpt-image-2.5-sunburst --size 1536x1024 --prompt <exact contents of prompts/npc-harbor-concept.prompt.txt> --output neuro-symbolic-interactive-game-research-2026/_workspace/current/ui/npc-operating-system-brief/assets/npc-harbor-concept.png --debug --debug-dir neuro-symbolic-interactive-game-research-2026/_workspace/current/ui/npc-operating-system-brief/provenance/debug-npc-harbor-concept-final",
+    "response_id": "resp_03ba23f1ebd24c83016ad02cbdc72487d0a9fa2cfd337be00b",
+    "session_id": "14aa883e-5079-4317-99e8-96a128013a63",
+    "http_status": 200,
+    "source_saved_path_reported_by_gti": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/ui/npc-operating-system-brief/assets/npc-harbor-concept.png",
+    "source_dimensions": "1672x941",
+    "generation_timestamp_observed": "2026-10-15T10:31:35+09:00",
+    "timestamp_basis": "mtime of sanitized successful gti response artifact",
+    "license": null,
+    "license_note": "not reported by gti"
+  },
+  "postprocess": {
+    "operation": "native macOS sips deterministic resample of the Codex-generated PNG",
+    "command": "sips --resampleHeightWidth 1152 2048 <source PNG> --out <temporary PNG>; replace final asset",
+    "reason": "Codex backend returned 1672x941 despite the requested 1536x1024; final delivery requires the accepted 2048x1152 dimensions",
+    "final_dimensions": "2048x1152",
+    "final_sha256": "cedbcadeca403f90247751bab8cbb5c9e699ebee8fb58e2c09045e34eb736b45",
+    "final_byte_count": 3548279
+  },
+  "visual_check": {
+    "decoded_and_viewed": true,
+    "notes": "Harbor-watch NPC is visibly in dialogue and observing the water; the offshore lighthouse remains closed and separate; teal/copper harbor-side signals are restored; no interface, code, metrics, or claim text is depicted."
+  },
+  "prompt_file": "prompts/npc-harbor-concept.prompt.txt",
+  "debug_artifacts": "provenance/debug-npc-harbor-concept-final/{request,response}.json"
+}

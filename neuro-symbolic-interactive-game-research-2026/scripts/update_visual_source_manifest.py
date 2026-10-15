@@ -15,6 +15,7 @@ MANIFEST = ROOT / "visuals" / "source-manifest.json"
 PAPER_FIGURE_GENERATOR = "scripts/generate_paper_figures.py"
 DIRECTION_GENERATOR = "scripts/generate_direction_figures.py"
 PAPER_TABLE_GENERATOR = "scripts/generate_paper_results.py"
+NPC_TABLE_GENERATOR = "scripts/generate_npc_paper_results.py"
 KG_GENERATOR = "src/nesy_game/kg_ontology_simulation.py"
 BALANCE_GENERATOR = "scripts/run_balance_archetypes.py"
 CONFORMANCE_GENERATOR = "scripts/run_conformance_pilot.py"
@@ -136,6 +137,26 @@ def build_manifest() -> dict[str, Any]:
                 used_by=paper_usage,
             )
         )
+    paper_assets.append(
+        visual_asset(
+            "paper-npc-screening",
+            "chart",
+            rendered=(
+                "paper/latex/figures/fig_npc_screening.pdf",
+                "paper/latex/figures/fig_npc_screening.png",
+            ),
+            editable=("paper/latex/figures/fig_npc_screening.svg",),
+            generator=NPC_TABLE_GENERATOR,
+            data=(
+                "game-track/godot/project.godot",
+                "configs/npc-goal-recovery.json",
+                "game-track/schemas/npc-goal-recovery.schema.json",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/aggregate.json",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/screening-assignment-manifest.json",
+            ),
+            used_by=paper_usage,
+        )
+    )
 
     adjacent_assets = [
         visual_asset(
@@ -214,6 +235,30 @@ def build_manifest() -> dict[str, Any]:
             ),
             rendered_in=("paper-en", "paper-ko"),
             anchors=("tab:live-screening",),
+        ),
+        table_source(
+            "npc-goal-recovery-paper-tables",
+            layouts=(
+                "paper/latex/generated/npc_tables_en.tex",
+                "paper/latex/generated/npc_tables_ko.tex",
+                "paper/latex/generated/npc_results_en.tex",
+                "paper/latex/generated/npc_results_ko.tex",
+            ),
+            generator=NPC_TABLE_GENERATOR,
+            data=(
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/aggregate.json",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/screening-assignment-manifest.json",
+                "game-track/godot/project.godot",
+                "configs/npc-goal-recovery.json",
+                "game-track/schemas/npc-goal-recovery.schema.json",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/engineering-results.jsonl",
+                "research/academic-pipeline/npc-goal-recovery/npc-contribution-evidence-matrix.csv",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/screening-results.jsonl",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/replay-results.json",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-002/sha256-manifest.json",
+            ),
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:npc-screening",),
         ),
         table_source(
             "contribution-and-lane-paper-tables",

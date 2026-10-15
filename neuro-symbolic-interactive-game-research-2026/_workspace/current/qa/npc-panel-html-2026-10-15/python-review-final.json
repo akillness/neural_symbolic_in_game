@@ -1,0 +1,41 @@
+{
+  "verdict": "PASS",
+  "original_p1s": [
+    {
+      "issue": "Corrupt harness near line 90 and duplicated HUD block",
+      "status": "CLOSED",
+      "anchors": [
+        "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/godot_panel_lifecycle_harness.gd:79-103"
+      ],
+      "evidence": "HUD refresh has one balanced set_status/set_case_chain block. Explicit letterbox true-to-false assertions preserve dismissed-dock state, objective text and case-chain HUD."
+    },
+    {
+      "issue": "Zero-exit Godot diagnostics accepted despite passing marker",
+      "status": "CLOSED",
+      "anchors": [
+        "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py:41-68",
+        "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py:99-135",
+        "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/scripts/run_playable_evaluation.py:97-101",
+        "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/scripts/run_playable_evaluation.py:179-205"
+      ],
+      "evidence": "Real injected push_error and GDScript assertion cases print passing JSON and explicitly quit(0). Each test requires RuntimeError with exit=0, its specific engine diagnostic, and the passing marker. The wrapper invokes _run_godot before marker acceptance; that helper rejects ERROR:/SCRIPT ERROR: in stdout, stderr or engine log independently of exit status."
+    }
+  ],
+  "source_isolated_staging": {
+    "status": "VERIFIED_BY_SOURCE",
+    "anchors": [
+      "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py:22-30",
+      "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py:41-52",
+      "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py:80-88",
+      "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/scripts/run_playable_evaluation.py:162-176"
+    ],
+    "evidence": "A fresh tmp_path project receives a cache-free project copy and copied harness. Import and execution both target that staged project; negative cases overwrite only its harness."
+  },
+  "remaining_blockers": [],
+  "review_limits": [
+    "Read-only review of the three authoritative absolute targets and relevant helper sections only; no edits, Git, tests, linters, formatters, shared Python eval or root/tests reads performed.",
+    "The regression-results.json records two successful three-test runs and real diagnostic-negative observations. Main separately reports artifact://821 as 3 passed in 29.10s; that run was not independently executed or its artifact inspected here.",
+    "Current formatted Python source was inspected. Execution after Main's subsequent formatter change and current-byte correspondence to recorded hashes were not independently verified.",
+    "PASS closes the two specified regression P1s; it does not establish production/browser behavior or project-wide correctness."
+  ]
+}

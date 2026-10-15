@@ -68,9 +68,9 @@ Godot 4.x가 없으면 정적 계약 테스트가 통과하고 엔진 테스트�
 skip된다. Godot이 있으면 동일 테스트가 네 fixture를 모두 실행하고 이벤트·저장·요약을
 JSON Schema로 검증한다.
 
-2026-08-13 권위 보존 근거 세트는
+현재 machine-bound 권위 근거 세트는
 `../../_workspace/current/engineering/tech-verification/current.json`이 지정하며 현재
-`evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/`로 해석된다. 정식,
+`evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/`로 해석된다. 정식,
 중복 ID, timeout, 손상 저장 실행은 각각 commit 3회를 수행하고 동결 종료/oracle 해시에
 도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 선택된 보존 Cycle 2
 packet은 `40 tests, 44 subtests`를 기록하고, 현재 game-track gate는 `50 passed, 48 subtests`를
@@ -80,11 +80,10 @@ packet은 `40 tests, 44 subtests`를 기록하고, 현재 game-track gate는 `50
 
 ## Non-headless capture 패킷
 
-Cycle 2는 선택 불변 근거 세트
-`godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5`의 논문 label을
-`SL-CAPTURE-001`로 기록한다. 불변 v1--v4 패킷은 보존하며 clipping, top margin, status
-contrast, toolchain provenance, CI portability 검토를 거쳐 superseded 처리했다. v5 primary
-구조화 상태 패널은 다음과 같다.
+현재 capture 패킷은 선택된 불변 근거 세트
+`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`을 `SL-CAPTURE-001` 논문 label로
+기록한다. 이전 패킷은 보존하며 clipping, top margin, status contrast, toolchain provenance,
+CI portability 검토를 거쳐 superseded 처리했다. 현재 primary 구조화 상태 패널은 다음과 같다.
 
 | 패널 | source 시점 | 파일 |
 |---|---|---|
@@ -95,16 +94,16 @@ contrast, toolchain provenance, CI portability 검토를 거쳐 superseded 처�
 승격에는 non-headless display driver, 렌더 프레임 동기화, 정확한 1280×720 크기,
 non-blank/opacity 검사, 파일 byte/SHA-256, source fixture·run·event/state 시점·source hash 결속이
 필요하다. primary 패킷에는 생성 콘셉트 asset이 없다.
-v5 manifest는 capture pipeline, PNG decoder, capture schema, retained validator, `uv.lock`의
-hash와 Python `3.13.9`, jsonschema `4.26.0`, JSON Schema Draft 2020-12를 추가로 기록한다.
-verifier는 지원되는 다른 Python 버전에서도 실행할 수 있으며, 기록된 capture 환경을 검증하되
-동일 host라고 가장하지 않는다.
+현재 manifest는 capture pipeline, PNG decoder, capture schema, retained validator, `uv.lock`의
+hash와 capture host Python/jsonschema tool version을 추가로 기록한다. verifier는 지원되는 다른
+Python 버전에서도 실행할 수 있으며 기록된 capture 환경과 현재 source hash를 검증하되 동일
+host라고 가장하지 않는다.
 
-![도착 관찰](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-001-arrival.png)
+![도착 관찰](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![공개 거절](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![공개 거절](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![승인 힌트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20260813t115916z-sealed-lighthouse-render-v5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![승인 힌트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 ## 3D 연출 슬라이스 (`scenes/main_3d.tscn`)
 
@@ -222,6 +221,46 @@ rollback 근거가 없어 `FIX`다.
 - LLM은 엔진 밖에만 있다. `scripts/soft_proposal_policy.py`가 프롬프트용 모델 가시 투영을
   만들고 회신에 봉인·단계 미달 식별자가 표면화됐는지 렉시컬 스크린으로 표시한다
   (`--projection`, `--proposal`). 스크린은 사전 필터이며 의미 오라클이 아니다.
+
+## 고정 목표 NPC 운영 레인 (프로토콜 1.1)
+
+이 절은 NPC 레인의 운영 경계다. 위의 Cycle 2/Cycle 3 내용은 별도의 역사적 Godot 프레젠테이션 근거로 유지한다. NPC 런타임은 열린 에이전트가 아니라 `sealed-lighthouse-v1`을 향하는 고정 목표 controller다.
+
+- **권위와 loop.** 정식 상태의 유일한 writer는 Godot이다. Python은 typed intent를 해석하고, 여섯 필드 public observation에 대해 claim을 검증하며, 그 public projection만 대상으로 bounded BFS를 수행해 typed intent와 첫 번째 legal step만 낸다. hidden state를 읽거나 새롭고 전지적인 planning을 하지 않는다. 거절·모호성·world change 입력에서도 목표는 동일하며, 도달 불가능한 경로는 `NO_ROUTE`를 내고 physical step을 만들지 않는다.
+- **하드 역할 gate.** `acquire_object`와 `install_lens`는 player의 명시적 요청이다. Captain Mira만 signal이 복구되고 tide lead가 승인되었으며 dialogue가 열린 뒤 알려진 승인 사실인 `reveal_hint` (`actor_id=captain_mira`, `fact_id=tide_marks_hint`)를 낼 수 있다. `clarify`와 `negotiate`는 정식 상태를 바꾸지 않는 dialogue operation이다. 기존 writer가 실행되기 전에 Godot은 issued action과 session, epoch, request, goal, policy, revision, state hash, deadline 결속을 검사하며, 검사와 write 사이에 `await`가 없다. `APPLIED` acquire/install/reveal은 revision을 올리고 state hash를 바꿔야 하며, `APPLIED` dialogue는 상태를 그대로 둔다. non-applied 결과는 상태를 바꾸지 않고, `STALE`은 채택하지 않는다.
+- **프로토콜 identity.** 모든 envelope는 `npc-goal-recovery/1.1.0`을 사용하고 `configs/npc-goal-recovery.json`의 full-byte SHA-256 `d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098`을 요구한다. disclosure 전용 `policy_hash`는 정수값 정규화 후의 policy digest `af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36`이며 project hash가 아니다. 소스 `game-track/godot/project.godot` hash는 `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`로 별도 기록한다.
+- **전송과 cancellation.** loopback service는 `127.0.0.1:8768`에서 실행하고, canonical browser origin은 정확히 `http://127.0.0.1:8877`과 `http://localhost:8877`이다(`8767`은 canonical이 아니다). capability는 일시적인 `TRACE_RPG_NPC_CAPABILITY` 환경값과 `X-NPC-Capability` request header로만 공급하며 URL·storage·trace/log payload에는 넣지 않는다. live UI cancellation은 local HTTP/directive invalidation이다. epoch을 올리고 늦은 callback을 tombstone하지만 provider를 취소하지는 않는다. provider는 deadline까지 끝날 수 있고 bounded server trace/cache가 남을 수 있다. Core cancellation의 no-publication 보장은 unit/controller 테스트 경계이지 live route의 provider-cancel 보장이 아니다.
+- **인증과 accounting.** P는 실제 공식 인증 Codex OAuth CLI adapter이며 rule fallback이 없다. R은 작성된 rule/grammar control이고, O는 같은 model family의 public-input-only auxiliary reference arm이며 independent oracle이나 semantic gold가 아니다. validated-v5 corpus는 총 28개 case(engineering 16개 + screening 12개)다. validated-v4와 비교해 바뀐 것은 `ENG-X01`과 `SCR-X01`뿐이다. 두 case 모두 `acquire_object`, `install_lens`, `open_dialogue` 뒤 `reveal_hint`를 명시적으로 요청하도록 고쳤고, 나머지 26개 case는 v4 semantics를 유지한다. validated v1-v4 packet은 보존된 diagnostic artifact이며 current-source proof가 아니다. Screening 배정은 P/R/O × 2(`arm당 24` observation, 총 `72`)로 유지하며, 모든 사전 배정 실패를 분모에 남긴다. episode accounting은 utterance epoch을 넘어 누적된다: intent deadline 30,000 ms, episode deadline 900,000 ms, intent call 8회, action attempt 32회, replan 16회, plan expansion 32회, in-flight 1개다. 배정은 engineering R 16개 observation과 screening 72개(P/R/O × 2, 각 24개)로 총 88개이며, arm별 합계는 R=40, P=24, O=24다. process quota는 실제 inference만 청구하고 cache hit나 invalid request는 청구하지 않는다. input/output token, cost, 반환된 model revision은 사용할 수 없으므로 `null`로 유지하며 `0`으로 쓰지 않는다.
+- **snapshot과 replay.** Godot은 추적된 generated runtime mirror를 기계적으로 동일하게 로드한다. validated-v5 native snapshot은 위의 source provenance와 policy/config/project identity를 보존한다. Core snapshot replay는 epoch별 redacted recorded-intent replay이며 model call은 0회다. Native replay는 `--npc-experiment`로 정확한 immutable experiment input을 재실행하고 `engine_fixture_reexecution`으로 기록한다. 이를 `--npc-replay`라고 부르지 않는다.
+live operator service는 일시적인 `TRACE_RPG_NPC_CAPABILITY` 환경값을 설정한 뒤 공식 OAuth와 rule fallback 없는 Codex arm을 명시해 실행한다:
+
+```bash
+codex login status
+uv run python scripts/run_npc_service.py \
+  --backend codex --model gpt-5.6-sol --host 127.0.0.1 --port 8768 \
+  --allow-origin http://127.0.0.1:8877 \
+  --allow-origin http://localhost:8877
+```
+
+### 검증된 packet과 별도 rerun
+
+불변 canonical packet `research/academic-pipeline/npc-goal-recovery/verified-run-002/`에는 배정된 88행과 `gpt-5.6-sol`을 명시적으로 요청한 인증 CLI 실행 24회가 기록됐으며 strict validation을 통과했다. 반환된 model revision, provider seed, token 회계와 cost는 사용할 수 없다. screening 각 arm의 실행 완료 20개와 stale-control ACK 거부에 따른 assigned failure 4개를 모두 유지하며, 관측된 goal 4/24를 recovery rate로 해석하지 않는다. O의 same-family 표기는 protocol source label이며 실제 모델 일치를 검증한 것이 아니다. 모델 미식별 `verified-run-001/`, 실패한 diagnostic과 source-bound native demonstration은 별도의 불변 근거다. 이들을 덮어쓰거나 합산하지 않는다. efficacy·superiority·generalization·human-benefit·independent-label을 주장하지 않는다.
+
+```bash
+uv run python scripts/run_npc_goal_experiment.py \
+  --packet all --model gpt-5.6-sol \
+  --engineering-fixtures data/fixtures/npc-goal-recovery/validated-v5/engineering.json \
+  --screening-fixtures data/fixtures/npc-goal-recovery/validated-v5/screening.json \
+  --output-dir _workspace/current/qa/npc-rerun-NEW-ID \
+  --godot-project game-track/godot
+
+uv run python scripts/validate_npc_goal_evidence.py \
+  --packet all \
+  --root "$PWD" \
+  --packet-dir _workspace/current/qa/npc-rerun-NEW-ID
+```
+
+validator가 통과한 뒤에만 final packet 결과를 삽입하고 기존 bilingual paper fragment를 재생성한다. 논문의 기존 [NPC table/figure](../../paper/latex/figures/fig_npc_screening.svg)와 [기여·근거 matrix](../../research/academic-pipeline/npc-goal-recovery/npc-contribution-evidence-matrix.csv)가 evidence SSOT이며, 이 README는 결과를 복제하거나 recovery efficacy, superiority, generalization, player benefit, gold/accuracy ceiling, independent label을 주장하지 않는다.
 
 ## 증거 경계
 

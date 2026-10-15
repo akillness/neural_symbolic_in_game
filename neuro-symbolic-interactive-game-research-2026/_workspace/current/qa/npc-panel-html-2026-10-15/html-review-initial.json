@@ -1,0 +1,71 @@
+{
+  "verdict": "PASS — no CRITICAL/HIGH blockers; two nonblocking accessibility/fallback findings",
+  "artifact": "neuro-symbolic-interactive-game-research-2026/_workspace/current/ui/npc-operating-system-brief/index.html",
+  "scope": "Read-only review of inline JavaScript, native tabs/buttons, architecture copy, offline loading, and embedded image dimensions. The requested relative path resolves inside the nested project directory, not the repository root.",
+  "findings": [
+    {
+      "priority": "P2",
+      "title": "Enter activation unexpectedly moves focus out of the tablist",
+      "source_anchors": [
+        "index.html:589 — tab click handler invokes render(Number(tab.dataset.step), true)",
+        "index.html:585 — moveFocus causes panel.focus()"
+      ],
+      "reproduction": "Focus STEP 01, press ArrowDown, then Enter, then ArrowDown. Observed: ArrowDown initially selects and focuses tab-1 (2 / 4). Enter moves focus to scenario-panel. The following ArrowDown leaves selection at tab-1 / 2 / 4 instead of navigating tabs.",
+      "impact": "Tab selection, roving tabindex, and focus are consistent for arrow navigation, but native Enter/Space activation takes a different focus path. This interrupts conventional tablist keyboard navigation; Shift+Tab returns to the selected tab, so it is not a keyboard trap.",
+      "recommendation": "Keep focus on the selected tab when activating a tab. Reserve explicit panel focus transfer for Previous/Next controls."
+    },
+    {
+      "priority": "P3",
+      "title": "No-JavaScript disclosure incorrectly says controls are disabled",
+      "source_anchors": [
+        "index.html:387 — noscript states that stage-navigation buttons are disabled",
+        "index.html:368-371 — authored tab buttons have no disabled attribute",
+        "index.html:390 — authored Previous/Next buttons have no disabled attribute"
+      ],
+      "reproduction": "Disable JavaScript before opening/reloading the standalone HTML. The visible noscript message promises disabled stage navigation, but the authored controls remain enabled and have no working handlers.",
+      "impact": "The static first-step explanation remains readable, but the fallback presents enabled, inert controls. Static HTML parsing confirmed that none of the six buttons has a disabled attribute; a full JavaScript-disabled browser run was not performed.",
+      "recommendation": "Make the authored no-script control state match the disclosure, enabling controls during JavaScript initialization, or provide an honest noninteractive fallback."
+    }
+  ],
+  "verified": [
+    {
+      "area": "DOM injection and networking",
+      "result": "The sole innerHTML assignment at index.html:568-574 interpolates only the closed, hardcoded steps array and derived numeric labels. No URL, form, message, storage, or external-input source feeds it. The complete inline script contains no network or dynamic-code-execution API. Parsed HTML resources contain two embedded PNGs, no external script/link/frame/form/embed, and only fragment navigation links; CSS contains no external resource references."
+    },
+    {
+      "area": "Tabs and ARIA",
+      "result": "All four tabs are native type=button elements with role=tab and aria-controls=scenario-panel. Each selected state has exactly one aria-selected=true and one tabIndex=0; panel aria-labelledby tracks it. Home, End, all four arrows, wraparound, and Shift+Tab return were exercised. Native ArrowDown/End/ArrowRight and Enter were exercised through browser key events; the complete six-key matrix was additionally checked with dispatched keydown events. The Enter focus issue is reported above."
+    },
+    {
+      "area": "Previous/Next boundaries",
+      "result": "Exercised 1→2→3→4→4 and 4→3→2→1→1. Previous is disabled only at 1/4; Next only at 4/4. Clicking a disabled boundary control leaves the step unchanged. Panel focus after these navigation buttons is retained intentionally. Full observed matrices: artifact://754 and artifact://771."
+    },
+    {
+      "area": "Offline portability",
+      "result": "Loaded the actual standalone file in an isolated agent-browser session, enabled offline mode, reloaded, and observed navigator.onLine=false, initialized step 1/4, both decoded images complete, and an empty resource-timing list. Next-button interaction continued to work. Browser errors command returned no errors. Session was closed."
+    },
+    {
+      "area": "Architecture truthfulness",
+      "result": "Copy preserves one-proposal/same-prior-state bounded repair; current Godot local machine; stdout JSONL projection explicitly not live bidirectional Python roundtrip; proposed GoalContract/allowed observation→TypedIntent/claim→reviewed PlanningContext→symbolic planning→atomic freshness/hard gate→ActionResult/new observation. Claim≠fact, fixed game-owned goals/state/policy, pending D-01..08 and AC-NPC criteria, and unmeasured NPC efficacy are explicit. The walkthrough is labeled SCRIPTED EXPLANATORY EXAMPLE · NOT LIVE."
+    },
+    {
+      "area": "Final embedded images",
+      "result": "Exactly two data-URI PNGs, at index.html:269 and index.html:351. Both PNG IHDR headers report 2048×1152; the browser independently reports naturalWidth=2048 and naturalHeight=1152 for both. Captions and disclosure identify them as Codex explanatory art, not engine/empirical evidence, with human rights/style review pending."
+    }
+  ],
+  "limitations": [
+    "No edits, Git commands, formatters, linters, or project-wide suites were run. This is an artifact-scoped review, not a PR/CI merge-readiness review.",
+    "The tab findings concern browser DOM/focus behavior, not a complete WCAG audit or VoiceOver/NVDA announcement verification.",
+    "No live Godot/LLM integration, NPC efficacy, generated-art provenance, or human rights/style approval was certified; canonical-spec consistency and visible disclosure were reviewed.",
+    "Image payloads were decoded only for header/dimension validation; semantic or visual fidelity of the artwork was not evaluated.",
+    "The file-read tool included adjacent base64 lines when initially requesting ranges directly after images. Subsequent reads skipped those lines; image payloads are not reproduced in this report."
+  ],
+  "self_evaluation": {
+    "accuracy": "4/5 — browser evidence and exact source anchors support findings; no screen-reader announcement validation.",
+    "completeness": "4/5 — all requested surfaces covered; JavaScript-disabled fallback finding rests on authored markup rather than a full browser run.",
+    "clarity": "4/5 — reproducible findings separated from passed checks; evidence detail makes the report longer.",
+    "actionability": "5/5 — both findings identify the responsible handlers/markup and a focused correction.",
+    "conciseness": "4/5 — detailed verification retained to avoid claiming blanket accessibility approval.",
+    "overall": 4.2
+  }
+}

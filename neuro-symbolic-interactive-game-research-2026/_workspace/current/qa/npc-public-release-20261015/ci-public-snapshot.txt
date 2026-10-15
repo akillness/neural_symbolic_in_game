@@ -1,0 +1,31 @@
+Command: ./scripts/verify_like_ci.sh
+Context: isolated export of the selected public Git index; actual existing base HEAD fetched locally (f3b1eed). No source or tests changed to repair the initial unborn-HEAD failure.
+Observed output excerpts (progress dots and offline fixture JSON body omitted):
+
+PASS Install locked environment
+Ran 293 tests in 118.008s
+OK
+PASS Unit tests
+All checks passed!
+79 files already formatted
+PASS Ruff lint and format
+PASS Project integrity
+contribution/reference crosswalk passed: 5 contributions, 58 references, 9 topics, 3 experiment lanes + 1 engineering lane
+PASS Contribution and reference crosswalk
+NOTE: checked 110 unique source/artifact receipts
+NOTE: manifest covers 7 SVG assets
+NOTE: double-regenerated 22 sources in an isolated copy
+visual-asset validation: PASS
+PASS Editable visual and table sources
+PASS Offline experiment smoke
+PASS Harness structure
+78 passed, 48 subtests passed in 106.28s (0:01:46)
+PASS Experimental game-track contracts
+Deep-research contract: 14/14 records valid
+PASS Deep-research result contracts
+PASS Survey artifact contract
+No structural issues found.
+PASS Wiki lint
+
+All CI steps passed locally; this tree should push clean.
+Wall time: 232.26 seconds

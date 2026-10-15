@@ -1,0 +1,340 @@
+{
+  "actions": [
+    {
+      "action_id": "action-56f0382cadfa46028e3c",
+      "arguments": {},
+      "codes": [
+        "CONTENT_HASH_MISMATCH",
+        "STEP_BINDING_INVALID"
+      ],
+      "execution_mode": "dialogue",
+      "index": 0,
+      "observation_after": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "observation_before": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "tampered_operation",
+      "result": {
+        "accepted": false,
+        "codes": [
+          "CONTENT_HASH_MISMATCH",
+          "STEP_BINDING_INVALID"
+        ],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "REJECTED",
+      "step": {
+        "action_id": "action-56f0382cadfa46028e3c",
+        "arguments": {},
+        "execution_mode": "dialogue",
+        "operation": "tampered_operation"
+      }
+    }
+  ],
+  "assignment_id": "NPC-SCR1:SCR-L02:O:rep1",
+  "claim_boundary": "Engineering-only canonical NPC decision binding, first-step transition, negative-gate, and deterministic replay evidence; no participant, efficacy, or usability claim.",
+  "decision": {
+    "body": {
+      "error": null,
+      "intent_id": "request-7324adca951e34b17a43.intent",
+      "plan_id": "plan-bb266576d93eb99f6166",
+      "planning_context_digest": "bb266576d93eb99f6166e70c82836303fb3b3bc68859aa9009e9b6e9f4d17050",
+      "status": "WAITING_DIALOGUE",
+      "steps": [
+        {
+          "action_id": "action-56f0382cadfa46028e3c",
+          "arguments": {},
+          "execution_mode": "dialogue",
+          "operation": "tampered_operation"
+        }
+      ],
+      "typed_intent": {
+        "claims": [
+          {
+            "code": "NONE",
+            "state": "INDETERMINATE"
+          }
+        ],
+        "label": "REFUSE_HELP",
+        "target": null
+      }
+    },
+    "budget": {
+      "cost": null,
+      "episode_deadline_ms": 900000.0,
+      "input_tokens": null,
+      "intent_deadline_ms": 30000.0,
+      "max_action_attempts": 32.0,
+      "max_inflight_per_session": 1.0,
+      "max_intent_calls": 8.0,
+      "max_plan_expansions": 32.0,
+      "max_replans": 16.0,
+      "output_tokens": null
+    },
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "content_sha256": "929cc1b410b7e8c61e5c90ac7bf3e7cb2c9568ff7e9d282d1f5701be0a54cf3c",
+    "delivery_index": 2.0,
+    "episode_id": "episode-7324adca951e34b17a43",
+    "event_id": "evt-706ea5f76fa44ce8913c",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "message_type": "decision",
+    "npc_id": "captain_mira",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "provenance": {
+      "arm": "O",
+      "backend": "reference",
+      "model": null,
+      "raw_utterance_sha256": "c55af563db8f425f51484802efb2c38cb5129e461730aeebb907bb0a99b9df5a",
+      "recorded_response_ref": "c55af563db8f425f51484802efb2c38cb5129e461730aeebb907bb0a99b9df5a",
+      "trace_ref": null
+    },
+    "request_id": "request-7324adca951e34b17a43",
+    "scenario_id": "sealed-lighthouse-v1",
+    "schema_version": "npc-goal-recovery/1.1.0",
+    "sequence": 2.0,
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-7324adca951e34b17a43",
+    "state_ref": {
+      "revision": 0.0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "decision_sha256": "468b2b3e4d7adb9f2d16e3b9a588a3e7890ca074c32b3dbbc5dcf9dc91e0b8ab",
+  "engineering_only": true,
+  "errors": [
+    "ACTION_NOT_APPLIED"
+  ],
+  "events": [
+    {
+      "arguments": {},
+      "kind": "setup_operation",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "open_dialogue",
+      "result": {
+        "accepted": true,
+        "codes": [],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    },
+    {
+      "action_id": "action-56f0382cadfa46028e3c",
+      "arguments": {},
+      "execution_mode": "dialogue",
+      "kind": "action",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "tampered_operation",
+      "result": {
+        "accepted": false,
+        "codes": [
+          "CONTENT_HASH_MISMATCH",
+          "STEP_BINDING_INVALID"
+        ],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "REJECTED"
+    }
+  ],
+  "expected_negative_gates": [],
+  "final_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "fixture_ref": "data/fixtures/npc-goal-recovery/validated-v4/screening.json#SCR-L02",
+  "goal_reached": false,
+  "initial_public_snapshot": {
+    "observation": {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    "state_ref": {
+      "revision": 0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "initial_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "input_bytes_preserved": true,
+  "input_sha256_after": "5a4cb7adc2ddeee361f65bb2baaba4e219bd9bb35d50e8d71cd0b3706596b842",
+  "input_sha256_before": "5a4cb7adc2ddeee361f65bb2baaba4e219bd9bb35d50e8d71cd0b3706596b842",
+  "mode": "experiment",
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "model superiority"
+  ],
+  "observations": [
+    {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    }
+  ],
+  "passed": false,
+  "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+  "recovery_eligible": false,
+  "recovery_unreachable": true,
+  "request": {
+    "episode_id": "episode-7324adca951e34b17a43",
+    "event_kind": "utterance",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "observation": {
+      "goal_reached": false,
+      "in_dialogue": true,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    "request_id": "request-7324adca951e34b17a43",
+    "session_epoch": 0,
+    "session_id": "npc-exp-7324adca951e34b17a43",
+    "sha256": "dad101ce759328c06ccf9f3a71fcdaa3eaa41e2e531f3f24ecb9c948f50dcf98",
+    "state_ref": {
+      "revision": 0.0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "request_context": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "episode_id": "episode-7324adca951e34b17a43",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "request_id": "request-7324adca951e34b17a43",
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-7324adca951e34b17a43"
+  },
+  "rows": [
+    {
+      "action_id": "action-56f0382cadfa46028e3c",
+      "arguments": {},
+      "codes": [
+        "CONTENT_HASH_MISMATCH",
+        "STEP_BINDING_INVALID"
+      ],
+      "execution_mode": "dialogue",
+      "index": 0,
+      "observation_after": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "observation_before": {
+        "goal_reached": false,
+        "in_dialogue": true,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "tampered_operation",
+      "result": {
+        "accepted": false,
+        "codes": [
+          "CONTENT_HASH_MISMATCH",
+          "STEP_BINDING_INVALID"
+        ],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "REJECTED",
+      "step": {
+        "action_id": "action-56f0382cadfa46028e3c",
+        "arguments": {},
+        "execution_mode": "dialogue",
+        "operation": "tampered_operation"
+      }
+    }
+  ],
+  "schema_version": "npc-engineering/input-1",
+  "source_hashes": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "npc_protocol_config_sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "source_project_config_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "source_schema_sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+  },
+  "status": "REJECTED",
+  "terminal_status": "FAILED"
+}

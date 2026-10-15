@@ -1,0 +1,38 @@
+{
+  "purpose": "Coding-agent skill/model routing for the gameplay panel fix and NPC explanatory HTML; not a game NPC inference call",
+  "command": "node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills --top-k 4 <task>",
+  "task": "Fix a persistent bottom gameplay text panel in a Godot game using subagents and regression tests; create a Korean standalone HTML explaining current one-action guarded proposal versus a proposed fixed-goal NPC operating loop. Generate conceptual architecture visualizations and concept images only with Codex. Do not change symbolic state or claim proposed NPC behavior is implemented.",
+  "source_tool_artifact": "artifact://630",
+  "observed_backend": {
+    "kind": "api",
+    "driver": "typesafe",
+    "model": "jev-1.13.0",
+    "configured_model": "jev-latest",
+    "tier": "unvalidated",
+    "attestation": null
+  },
+  "observed_top_k": [
+    {"name": "deep-agents-orchestration", "fits": 0.39, "probability": 0.42},
+    {"name": "god-tibo-imagen", "fits": 0.39, "probability": 0.28},
+    {"name": "debugging", "fits": 0.37, "probability": 0.26}
+  ],
+  "observed_model_recommendations": [
+    {"skill": "deep-agents-orchestration", "chosen": "openai/gpt-6.1-sol", "confidence": 0.72},
+    {"skill": "god-tibo-imagen", "chosen": "openai/gpt-6.1-sol", "confidence": 0.87},
+    {"skill": "debugging", "chosen": "openai/gpt-6.1-sol", "confidence": 0.77}
+  ],
+  "adopted_skills": ["debugging", "god-tibo-imagen"],
+  "not_adopted": {
+    "deep-agents-orchestration": "This repository uses Godot and native host task delegation, not the Deep Agents framework. The suggestion does not justify adding a framework."
+  },
+  "execution": {
+    "orchestrator_model_from_host": "openai-codex/gpt-6.1-sol",
+    "delegation": "native task subagents; no new agent framework",
+    "worker_model_selection": "No per-worker model override was supplied or independently attested",
+    "image_provider": "Codex only, with separate generation provenance",
+    "routing_is_advisory": true,
+    "native_hook_enforcement_claimed": false,
+    "runtime_permission_from_routing_claimed": false,
+    "new_game_npc_system_implemented": false
+  }
+}

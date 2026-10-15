@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "asset_id": "HFCS-G01-guide-compass",
+  "asset_class": "ui-guide-marker",
+  "file": "ui-guide-compass.png",
+  "prompt_file": "prompts/HFCS-G01-guide-compass.txt",
+  "prompt_sha256": "347e240b8358896ddd69acb9c5303a854b8e0c74fa6cb44e4c9a016731a7e1e5",
+  "reference_inputs": [],
+  "tool": "higgsfield-cli",
+  "tool_version": "1.1.25",
+  "provider": "higgsfield",
+  "model": "gpt_image_2",
+  "job_id": "01fa6c6a-f31e-4bbf-9568-d72feed27e47",
+  "generated_at_utc": "2026-09-18T10:02:54.591751Z",
+  "requested_size": "1:1 @ 2k (2048x2048 returned)",
+  "observed_width": 512,
+  "observed_height": 512,
+  "bytes": 308749,
+  "sha256": "ac46ff89b75b5b9f33c3f641a576c80183a5b2d3791c0898186abefff45bab35",
+  "curation_state": "curated-runtime",
+  "intended_track": [
+    "ui-runtime-candidate"
+  ],
+  "runtime_eligible": true,
+  "primary_experiment_eligible": false,
+  "rights_review": "user-directed-2026-09-18-session (D-073: 힉스필드이용해서 리소스와 모션, 프리팹, 맵구성, vfx 를 업데이트하고 적용)",
+  "ai_generated_content": true,
+  "limitations": [
+    "Generated via Higgsfield gpt_image_2; runtime eligibility granted only at curation.",
+    "Not research evidence; presentation-only.",
+    "Optional at runtime: loaders fall back to the procedural look when this file is absent (D-035 contract)."
+  ],
+  "derived_from": {
+    "file": "HFCS-G01-guide-compass.png",
+    "sha256": "62262fd5a4bc9f6cf182ba49b29e5d7107c2c143dbe26d19f9c40671e079f1c0",
+    "transform": "sips -Z 512 resample 2048x2048 to 512x512; magick lossless PNG recompress (zlib level 9, adaptive filter 5, metadata stripped; pixel-identical to the sips output, magick compare AE=0)",
+    "pack": "game-track/assets/generated/higgsfield-case-v1"
+  }
+}

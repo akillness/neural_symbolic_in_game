@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trace-rpg.local/schemas/npc-goal-recovery/1.1.0",
+  "title": "Fixed-goal NPC recovery protocol",
+  "description": "Strict loopback envelope shared by Python interpretation/planning and Godot canonical writing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "config_hash", "message_type", "session_id", "session_epoch", "episode_id", "request_id", "event_id", "sequence", "delivery_index", "scenario_id", "npc_id", "goal_id", "goal_version", "policy_hash", "state_ref", "body", "budget", "provenance", "content_sha256"],
+  "properties": {
+    "schema_version": {"const": "npc-goal-recovery/1.1.0"},
+    "config_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "message_type": {"enum": ["request", "decision", "result", "ack"]},
+    "session_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "session_epoch": {"type": "integer", "minimum": 0},
+    "episode_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "request_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "event_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "sequence": {"type": "integer", "minimum": 0},
+    "delivery_index": {"type": "integer", "minimum": 0},
+    "scenario_id": {"const": "sealed-lighthouse-v1"},
+    "npc_id": {"const": "captain_mira"},
+    "goal_id": {"const": "harbor-signal-restored-authorized-tide-lead-v1"},
+    "goal_version": {"const": "1"},
+    "policy_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "state_ref": {"$ref": "#/$defs/state_ref"},
+    "body": {
+      "oneOf": [
+        {"$ref": "#/$defs/request_body"},
+        {"$ref": "#/$defs/decision_body"},
+        {"$ref": "#/$defs/result_body"},
+        {"$ref": "#/$defs/ack_body"}
+      ]
+    },
+    "budget": {"$ref": "#/$defs/budget"},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "allOf": [
+    {"if": {"properties": {"message_type": {"const": "request"}}}, "then": {"properties": {"body": {"$ref": "#/$defs/request_body"}}}},
+    {"if": {"properties": {"message_type": {"const": "decision"}}}, "then": {"properties": {"body": {"$ref": "#/$defs/decision_body"}}}},
+    {"if": {"properties": {"message_type": {"const": "result"}}}, "then": {"properties": {"body": {"$ref": "#/$defs/result_body"}}}},
+    {"if": {"properties": {"message_type": {"const": "ack"}}}, "then": {"properties": {"body": {"$ref": "#/$defs/ack_body"}}}}
+  ],
+  "$defs": {
+    "state_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "sha256"],
+      "properties": {
+        "revision": {"type": "integer", "minimum": 0},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lens_reachable", "lens_carried", "signal_restored", "tide_lead_authorized", "goal_reached", "in_dialogue"],
+      "properties": {
+        "lens_reachable": {"type": "boolean"},
+        "lens_carried": {"type": "boolean"},
+        "signal_restored": {"type": "boolean"},
+        "tide_lead_authorized": {"type": "boolean"},
+        "goal_reached": {"type": "boolean"},
+        "in_dialogue": {"type": "boolean"}
+      }
+    },
+    "typed_intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "claims", "target"],
+      "properties": {
+        "label": {"enum": ["ASK_INFORMATION", "REQUEST_DISCLOSURE", "REPORT_FACT", "REFUSE_HELP", "AMBIGUOUS", "UNKNOWN"]},
+        "claims": {"type": "array", "maxItems": 8, "items": {"$ref": "#/$defs/claim"}},
+        "target": {"type": ["string", "null"], "enum": [null, "lens", "signal", "tide_marks"]}
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "state"],
+      "properties": {
+        "code": {"enum": ["LENS_REACHABLE", "LENS_CARRIED", "SIGNAL_RESTORED", "TIDE_LEAD_AUTHORIZED", "GOAL_REACHED", "IN_DIALOGUE", "NONE"]},
+        "state": {"enum": ["UNVERIFIED", "SUPPORTED", "CONTRADICTED", "INDETERMINATE", "NOT_VISIBLE"]}
+      }
+    },
+    "plan_step": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["action_id", "operation", "execution_mode", "arguments"], "properties": {"action_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}, "operation": {"const": "acquire_object"}, "execution_mode": {"const": "player_request"}, "arguments": {"type": "object", "additionalProperties": false, "required": ["object_id"], "properties": {"object_id": {"const": "signal_lens"}}}}},
+        {"type": "object", "additionalProperties": false, "required": ["action_id", "operation", "execution_mode", "arguments"], "properties": {"action_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}, "operation": {"const": "install_lens"}, "execution_mode": {"const": "player_request"}, "arguments": {"type": "object", "additionalProperties": false, "required": ["object_id"], "properties": {"object_id": {"const": "signal_lens"}}}}},
+        {"type": "object", "additionalProperties": false, "required": ["action_id", "operation", "execution_mode", "arguments"], "properties": {"action_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}, "operation": {"const": "reveal_hint"}, "execution_mode": {"const": "commit_world"}, "arguments": {"type": "object", "additionalProperties": false, "required": ["actor_id", "fact_id"], "properties": {"actor_id": {"const": "captain_mira"}, "fact_id": {"const": "tide_marks_hint"}}}}},
+        {"type": "object", "additionalProperties": false, "required": ["action_id", "operation", "execution_mode", "arguments"], "properties": {"action_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}, "operation": {"const": "clarify"}, "execution_mode": {"const": "dialogue"}, "arguments": {"type": "object", "additionalProperties": false, "properties": {}}}},
+        {"type": "object", "additionalProperties": false, "required": ["action_id", "operation", "execution_mode", "arguments"], "properties": {"action_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}, "operation": {"const": "negotiate"}, "execution_mode": {"const": "dialogue"}, "arguments": {"type": "object", "additionalProperties": false, "properties": {}}}}
+      ]
+    },
+    "request_body": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["event_kind", "utterance", "observation"], "properties": {"event_kind": {"const": "utterance"}, "utterance": {"type": "string", "minLength": 1, "maxLength": 1000}, "observation": {"$ref": "#/$defs/observation"}}},
+        {"type": "object", "additionalProperties": false, "required": ["event_kind", "utterance", "observation"], "properties": {"event_kind": {"const": "observation"}, "utterance": {"const": null}, "observation": {"$ref": "#/$defs/observation"}}}
+      ]
+    },
+    "decision_body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent_id", "typed_intent", "plan_id", "steps", "planning_context_digest", "status", "error"],
+      "properties": {
+        "intent_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "typed_intent": {"$ref": "#/$defs/typed_intent"},
+        "plan_id": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "steps": {"type": "array", "maxItems": 32, "items": {"$ref": "#/$defs/plan_step"}},
+        "planning_context_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "status": {"enum": ["READY", "WAITING_PLAYER", "WAITING_DIALOGUE", "GOAL_REACHED", "NO_ROUTE", "FAILED", "CANCELLED"]},
+        "error": {"type": ["string", "null"], "maxLength": 256}
+      }
+    },
+    "result_body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "operation", "status", "engine_revision", "state_ref", "feedback", "observation"],
+      "properties": {
+        "action_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "operation": {"enum": ["acquire_object", "install_lens", "reveal_hint", "clarify", "negotiate"]},
+        "status": {"enum": ["APPLIED", "REJECTED", "STALE", "DUPLICATE", "CANCELLED", "ERROR"]},
+        "engine_revision": {"type": "integer", "minimum": 0},
+        "state_ref": {"$ref": "#/$defs/state_ref"},
+        "feedback": {"type": "string", "maxLength": 512},
+        "observation": {"$ref": "#/$defs/observation"}
+      }
+    },
+    "ack_body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ack_for", "status", "error"],
+      "properties": {
+        "ack_for": {"enum": ["request", "decision", "result"]},
+        "status": {"enum": ["ACCEPTED", "REJECTED", "DUPLICATE", "STALE", "ERROR"]},
+        "error": {"type": ["string", "null"], "maxLength": 256}
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent_deadline_ms", "episode_deadline_ms", "max_intent_calls", "max_action_attempts", "max_replans", "max_plan_expansions", "max_inflight_per_session", "input_tokens", "output_tokens", "cost"],
+      "properties": {
+        "intent_deadline_ms": {"type": "integer", "minimum": 1},
+        "episode_deadline_ms": {"type": "integer", "minimum": 1},
+        "max_intent_calls": {"type": "integer", "minimum": 1},
+        "max_action_attempts": {"type": "integer", "minimum": 1},
+        "max_replans": {"type": "integer", "minimum": 1},
+        "max_plan_expansions": {"type": "integer", "minimum": 1},
+        "max_inflight_per_session": {"const": 1},
+        "input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "output_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "cost": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["arm", "backend", "model", "trace_ref", "recorded_response_ref", "raw_utterance_sha256"],
+      "properties": {
+        "arm": {"enum": ["P", "R", "O"]},
+        "backend": {"enum": ["codex", "rule", "reference"]},
+        "model": {"type": ["string", "null"], "maxLength": 128},
+        "trace_ref": {"type": ["string", "null"], "maxLength": 256},
+        "recorded_response_ref": {"type": ["string", "null"], "maxLength": 256},
+        "raw_utterance_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}
