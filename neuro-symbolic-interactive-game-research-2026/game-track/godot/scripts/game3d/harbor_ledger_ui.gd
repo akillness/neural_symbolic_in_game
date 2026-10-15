@@ -22,11 +22,14 @@ signal tutorial_requested
 signal case_file_requested
 signal hint_requested
 signal coach_card_dismissed(card_id: String)
+signal npc_capability_submitted(text: String)
+signal npc_text_submitted(text: String)
+signal npc_cancel_requested
 
 const PALETTE := SealedLighthouseWorldBuilder.PALETTE
 const NARROW_WIDTH := 900.0
-const NARROW_LEDGER_TOP := 0.38
-const WIDE_LEDGER_TOP := 0.66
+const NARROW_LEDGER_TOP := 0.58
+const WIDE_LEDGER_TOP := 0.78
 # D-070: WIDE_LEDGER_TOP is a percentage anchor with no absolute pixel floor.
 # On a shrunk canvas (e.g. embedded in the commit-gate dashboard iframe,
 # which can render well below the project's authored 1280x720), 34% of a
@@ -34,9 +37,12 @@ const WIDE_LEDGER_TOP := 0.66
 # pushing dialogue choice buttons below the visible canvas edge instead of
 # reflowing or scrolling. This is the minimum panel height (px) the wide
 # layout guarantees regardless of viewport height.
-# (D-073: measured against the safe-area inner height; 244 px is the portrait
-# column's minimum — 160 px frame + two-line speaker label + panel margins.)
-const MIN_BOTTOM_PANEL_HEIGHT := 244.0
+# (D-073: measured against the safe-area inner height; 180 px keeps the
+# portrait column's minimum — compact log + status line + panel margins —
+# while leaving most of the viewport for direct play. Raised anchors
+# (narrow 0.58 / wide 0.78) plus a translucent dock keep the ledger from
+# covering the playfield in the embedded web build.)
+const MIN_BOTTOM_PANEL_HEIGHT := 180.0
 const UI_FONT := preload("res://assets/fonts/NanumGothic-Regular.ttf")
 # Start-gate key-art drift: one shared 12 s sine drives a ±0.5% scale breathe
 # and a ±4 px lateral drift (mouse-independent). The 1.5% base overscan keeps
@@ -79,6 +85,14 @@ var _columns: BoxContainer
 var _prompt_panel: PanelContainer
 var _prompt_label: Label
 var _status_label: Label
+var _npc_status_label: Label
+var _npc_capability_row: HBoxContainer
+var _npc_capability_edit: LineEdit
+var _npc_capability_button: Button
+var _npc_input_row: HBoxContainer
+var _npc_line_edit: LineEdit
+var _npc_send_button: Button
+var _npc_cancel_button: Button
 var _objective_label: Label
 var _case_chain_label: Label
 var _portrait_box: VBoxContainer
@@ -442,12 +456,13 @@ func _update_eyebrow() -> void:
 func _build_bottom_panel() -> void:
 	_bottom_panel = PanelContainer.new()
 	_bottom_panel.add_theme_stylebox_override(
-		"panel", _panel_style(Color(PALETTE.storm_ink, 0.94), PALETTE.brass, 2, 10)
+		"panel", _panel_style(Color(PALETTE.storm_ink, 0.70), PALETTE.brass, 2, 10)
 	)
 	_bottom_panel.anchor_left = 0.0
 	_bottom_panel.anchor_right = 1.0
 	_bottom_panel.anchor_bottom = 1.0
 	_root.add_child(_bottom_panel)
+	_bottom_panel.visible = false
 	_add_parchment_grain(_bottom_panel)
 
 	_columns = BoxContainer.new()
@@ -582,6 +597,62 @@ func _build_bottom_panel() -> void:
 	_choice_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_choice_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_choice_scroll.add_child(_choice_box)
+	_npc_status_label = Label.new()
+	_npc_status_label.text = "NPC BACKEND | CODEX | NOT CONNECTED"
+	_npc_status_label.add_theme_font_size_override("font_size", 14)
+	_npc_status_label.add_theme_color_override("font_color", PALETTE.paper_fog.darkened(0.1))
+	_npc_capability_row = HBoxContainer.new()
+	_npc_capability_row.add_theme_constant_override("separation", 6)
+	_npc_capability_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_npc_capability_row.visible = false
+	_action_box.add_child(_npc_capability_row)
+	_npc_capability_edit = LineEdit.new()
+	_npc_capability_edit.placeholder_text = "NPC capability (memory only)"
+	_npc_capability_edit.secret = true
+	_npc_capability_edit.max_length = 512
+	_npc_capability_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_npc_capability_edit.custom_minimum_size = Vector2(0.0, TOUCH_TARGET)
+	_npc_capability_edit.add_theme_font_size_override("font_size", 14)
+	_npc_capability_edit.add_theme_stylebox_override("normal", _panel_style(Color(PALETTE.storm_ink, 0.96), Color(PALETTE.wet_slate, 0.95), 1, 8))
+	_npc_capability_edit.add_theme_stylebox_override("focus", _panel_style(Color(PALETTE.storm_ink, 0.98), PALETTE.signal_amber, 2, 8))
+	_npc_capability_edit.text_submitted.connect(func(text: String) -> void: npc_capability_submitted.emit(text))
+	_npc_capability_row.add_child(_npc_capability_edit)
+	_npc_capability_button = Button.new()
+	_npc_capability_button.text = "CONNECT"
+	_npc_capability_button.custom_minimum_size = Vector2(96.0, TOUCH_TARGET)
+	_style_button(_npc_capability_button, true)
+	_npc_capability_button.pressed.connect(func() -> void: npc_capability_submitted.emit(_npc_capability_edit.text))
+	_npc_capability_row.add_child(_npc_capability_button)
+	_npc_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_npc_status_label.visible = false
+	_action_box.add_child(_npc_status_label)
+	_npc_input_row = HBoxContainer.new()
+	_npc_input_row.add_theme_constant_override("separation", 6)
+	_npc_input_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_npc_input_row.visible = false
+	_action_box.add_child(_npc_input_row)
+	_npc_line_edit = LineEdit.new()
+	_npc_line_edit.placeholder_text = "Ask Captain Mira"
+	_npc_line_edit.max_length = 1000
+	_npc_line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_npc_line_edit.custom_minimum_size = Vector2(0.0, TOUCH_TARGET)
+	_npc_line_edit.add_theme_font_size_override("font_size", 16)
+	_npc_line_edit.add_theme_stylebox_override("normal", _panel_style(Color(PALETTE.storm_ink, 0.96), Color(PALETTE.wet_slate, 0.95), 1, 8))
+	_npc_line_edit.add_theme_stylebox_override("focus", _panel_style(Color(PALETTE.storm_ink, 0.98), PALETTE.signal_amber, 2, 8))
+	_npc_line_edit.text_submitted.connect(func(text: String) -> void: npc_text_submitted.emit(text))
+	_npc_input_row.add_child(_npc_line_edit)
+	_npc_send_button = Button.new()
+	_npc_send_button.text = "SEND"
+	_npc_send_button.custom_minimum_size = Vector2(72.0, TOUCH_TARGET)
+	_style_button(_npc_send_button, true)
+	_npc_send_button.pressed.connect(func() -> void: npc_text_submitted.emit(_npc_line_edit.text))
+	_npc_input_row.add_child(_npc_send_button)
+	_npc_cancel_button = Button.new()
+	_npc_cancel_button.text = "CANCEL"
+	_npc_cancel_button.custom_minimum_size = Vector2(84.0, TOUCH_TARGET)
+	_style_button(_npc_cancel_button)
+	_npc_cancel_button.pressed.connect(func() -> void: npc_cancel_requested.emit())
+	_npc_input_row.add_child(_npc_cancel_button)
 
 
 func _build_evidence_board() -> void:
@@ -626,14 +697,22 @@ func _build_evidence_board() -> void:
 	subtitle.add_theme_color_override("font_color", Color(PALETTE.paper_fog, 0.8))
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	stack.add_child(subtitle)
-	# Four cards in one row on wide layouts; a 2x2 grid on narrow portrait
-	# viewports (a single row forced 390 px-class screens to overflow).
+# Four cards in one row on wide layouts; a 2x2 grid on narrow portrait
+# viewports. The card grid gets its own vertical scroll surface so the modal
+# footer remains inside the viewport when narrow cards wrap to multiple lines.
+	var cards_scroll := ScrollContainer.new()
+	cards_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	cards_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	cards_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cards_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack.add_child(cards_scroll)
 	_evidence_cards_box = GridContainer.new()
 	_evidence_cards_box.columns = 4
 	_evidence_cards_box.add_theme_constant_override("h_separation", 10)
 	_evidence_cards_box.add_theme_constant_override("v_separation", 10)
+	_evidence_cards_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_evidence_cards_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	stack.add_child(_evidence_cards_box)
+	cards_scroll.add_child(_evidence_cards_box)
 	for card_id in ["LENS", "MOUNT", "LEAD", "SEALED"]:
 		var icon_name := "ui-evidence-%s.png" % str(card_id).to_lower()
 		_evidence_icons[card_id] = SealedLighthouseWorldBuilder.load_curated_ui_texture(icon_name)
@@ -1411,8 +1490,8 @@ func _apply_responsive_layout() -> void:
 		_tutorial_panel.anchor_right = 0.96 if _layout_narrow else 0.86
 		_tutorial_panel.anchor_top = 0.10 if _layout_narrow else 0.12
 		_tutorial_panel.anchor_bottom = 0.90 if _layout_narrow else 0.88
-	# Focus-first desktop layout: keep at least 66% of the viewport for direct
-	# play while retaining the full ledger as a scrollable diegetic record.
+	# Focus-first desktop layout: keep at least 78% of the viewport for direct
+	# play while retaining the ledger as a compact translucent scrollable record.
 	# Narrow portrait screens keep the existing stacked reading surface.
 	# D-070: clamp the wide-layout anchor so the bottom panel never gets less
 	# than MIN_BOTTOM_PANEL_HEIGHT px, even when a host page (e.g. the
@@ -1429,7 +1508,7 @@ func _apply_responsive_layout() -> void:
 	_bottom_panel.offset_top = 0.0
 	_bottom_panel.offset_bottom = 0.0
 	_portrait_box.custom_minimum_size = Vector2(0.0, 0.0) if _layout_narrow else Vector2(160.0, 0.0)
-	_ledger_log.custom_minimum_size = Vector2(0.0, 92.0) if _layout_narrow else Vector2.ZERO
+	_ledger_log.custom_minimum_size = Vector2(0.0, 56.0) if _layout_narrow else Vector2.ZERO
 	_apply_dock_ratios()
 
 	# Top bar zones: side by side on wide, stacked on narrow. Touch targets
@@ -1456,6 +1535,10 @@ func _apply_responsive_layout() -> void:
 	_end_text.add_theme_font_size_override("normal_font_size", TYPE_SCALE["ledger"][narrow_index])
 	_end_hash_field.add_theme_font_size_override("font_size", TYPE_SCALE["hash"][narrow_index])
 	_status_label.add_theme_font_size_override("font_size", 14 if _layout_narrow else 16)
+	if _npc_status_label != null:
+		_npc_status_label.add_theme_font_size_override("font_size", 13 if _layout_narrow else 14)
+	if _npc_line_edit != null:
+		_npc_line_edit.add_theme_font_size_override("font_size", 15 if _layout_narrow else 16)
 	_hint_label.add_theme_font_size_override("font_size", 13 if _layout_narrow else 14)
 	for child in _choice_box.get_children():
 		if child is Button:
@@ -1508,9 +1591,10 @@ func _place_transients() -> void:
 	var dock_top := _dock_top_base
 	if _layout_narrow and root_height > 0.0:
 		# While a coach card is open the bar is transiently taller; let the
-		# dock drop to 68% so the card is never covered (2026-09-18 embedded
+		# dock drop to 72% so the card is never covered (2026-09-18 embedded
 		# 713x720 check showed the 50% cap clipping "What a hold means").
-		var dock_cap := 0.68 if is_coach_card_open() else 0.5
+		# The resting cap (0.62) stays below the compact narrow anchor (0.58).
+		var dock_cap := 0.72 if is_coach_card_open() else 0.62
 		dock_top = clampf(maxf(_dock_top_base, (bar_bottom + 72.0) / root_height), 0.0, dock_cap)
 	_bottom_panel.anchor_top = dock_top
 	_prompt_panel.anchor_top = dock_top
@@ -1571,7 +1655,8 @@ func set_letterbox(active: bool) -> void:
 	var height := 56.0 if active else 0.0
 	_letterbox_top.offset_bottom = height
 	_letterbox_bottom.offset_top = -height
-	_bottom_panel.visible = not active
+	if active:
+		set_contextual_panel_visible(false)
 	_top_bar.visible = not active
 	if active:
 		hide_evidence_board()
@@ -1590,8 +1675,17 @@ func show_start_gate(visible_now: bool) -> void:
 func set_play_started(started: bool) -> void:
 	_play_started = started
 	_start_gate.visible = not started
+	if started:
+		set_contextual_panel_visible(false)
 	set_cursor_captured(started)
 	_update_gate_motion_state()
+
+func set_contextual_panel_visible(visible_now: bool) -> void:
+	# The ledger/action dock is contextual: exploration keeps the authored
+	# ledger text in memory, while dialogue/choices and explicit capture beats
+	# opt into the large panel. This never mutates canonical state.
+	if _bottom_panel != null:
+		_bottom_panel.visible = visible_now
 
 
 func set_cursor_captured(captured: bool) -> void:
@@ -1666,6 +1760,7 @@ func set_portrait_visible(visible_now: bool, speaker: String = "") -> void:
 	_portrait_requested = visible_now
 	_speaker_name = speaker
 	_speaker_label.text = speaker
+	set_contextual_panel_visible(visible_now)
 	_update_portrait_visibility()
 
 
@@ -1830,6 +1925,7 @@ func _show_ledger_stamp(committed: bool) -> void:
 func show_choices(choices: Array, caption: String = "") -> void:
 	# `caption` names what the list is asking for (deduction slot prompts);
 	# empty hides it so Mira's dialogue keeps its bare choice list.
+	set_contextual_panel_visible(true)
 	clear_choices()
 	_choice_caption.text = caption
 	_choice_caption.visible = caption != ""
@@ -1864,11 +1960,11 @@ func _apply_dock_ratios() -> void:
 		# the rest.
 		_ledger_box.size_flags_stretch_ratio = 0.55
 		_action_box.size_flags_stretch_ratio = 2.45
-		_ledger_log.custom_minimum_size = Vector2(0.0, 64.0)
+		_ledger_log.custom_minimum_size = Vector2(0.0, 48.0)
 	else:
 		_ledger_box.size_flags_stretch_ratio = 1.6 if _layout_narrow else 2.2
 		_action_box.size_flags_stretch_ratio = 1.0
-		_ledger_log.custom_minimum_size = Vector2(0.0, 92.0) if _layout_narrow else Vector2.ZERO
+		_ledger_log.custom_minimum_size = Vector2(0.0, 56.0) if _layout_narrow else Vector2.ZERO
 
 
 func clear_choices() -> void:
@@ -1883,6 +1979,43 @@ func clear_choices() -> void:
 
 func choice_count() -> int:
 	return _choice_box.get_child_count() if _choice_box != null else 0
+
+func show_npc_input(visible_now: bool) -> void:
+	if _npc_input_row == null:
+		return
+	_npc_input_row.visible = visible_now
+	_npc_capability_row.visible = visible_now and OS.has_feature("web")
+	_npc_status_label.visible = visible_now
+	if visible_now:
+		set_contextual_panel_visible(true)
+		if _npc_capability_row.visible and _npc_capability_edit.text.is_empty():
+			_npc_capability_edit.grab_focus()
+		else:
+			_npc_line_edit.grab_focus()
+	else:
+		_npc_line_edit.clear()
+		_npc_capability_edit.clear()
+
+
+func set_npc_status(text: String) -> void:
+	if _npc_status_label != null:
+		_npc_status_label.text = text
+
+
+func set_npc_busy(busy: bool) -> void:
+	if _npc_line_edit == null:
+		return
+	_npc_line_edit.editable = not busy
+	_npc_send_button.disabled = busy
+	_npc_cancel_button.disabled = false
+	_npc_capability_button.disabled = busy
+	if not busy:
+		_npc_line_edit.grab_focus()
+
+
+func clear_npc_input() -> void:
+	if _npc_line_edit != null:
+		_npc_line_edit.clear()
 
 
 func set_status(objective: String, status: String) -> void:
@@ -1943,7 +2076,7 @@ func play_ledger_close(pages: Variant) -> void:
 	if reduce_motion:
 		show_end_card(pages)
 		return
-	_bottom_panel.visible = true
+	set_contextual_panel_visible(true)
 	_bottom_panel.modulate = Color(1, 1, 1, 1)
 	toast("CASE COMPLETE | The ledger is closing.")
 	var beat := create_tween()
