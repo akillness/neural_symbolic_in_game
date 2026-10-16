@@ -19,9 +19,9 @@
  *                    exactly one explicit state, no default
  * Rules (Aside deep research 2026-09-18, P/_workspace/current/intake/
  * aside-research-2026-09-18-commit-gate-trace-encoding.md):
- *   - node state is rendered from `family_states` only; a family missing from the
- *     payload renders a loud "state missing" node and logs console.error, never a
- *     neutral or a pass;
+ *   - node state follows explicit `family_states`, unless a check outcome is
+ *     unreported. Missing/unknown evidence renders "state missing" and logs
+ *     console.error, never a neutral or a pass;
  *   - only edges the engine actually traversed animate; the settled stroke, not the
  *     motion, carries the evidence; prefers-reduced-motion substitutes weight for
  *     motion instead of deleting the evidence;
@@ -95,6 +95,13 @@
     episodeOver: false,
     reducedMotion: REDUCED_MOTION,
     startedAt: performance.now(),
+    verdicts: [],
+    selectedVerdictId: null,
+    verdictSerial: 0,
+    readoutFrozen: false,
+    pinnedVerdict: null,
+    metMira: false,
+    lastTickAt: null,
   };
   window.__traceDashboard = state;
 
@@ -323,7 +330,7 @@
   function normalizeTrace(raw) {
     if (!raw || typeof raw !== "object") return null;
     const checks = (Array.isArray(raw.checks) ? raw.checks : []).map((c) => ({
-      code: String(c.code || ""), gate: String(c.gate || ""), outcome: c.outcome === "fail" ? "fail" : "pass", families: gateFamilies(c.gate),
+      code: String(c.code || ""), gate: String(c.gate || ""), outcome: c.outcome === "fail" ? "fail" : c.outcome === "pass" ? "pass" : "missing", families: gateFamilies(c.gate),
     }));
     const familyStates = raw.family_states && typeof raw.family_states === "object" ? raw.family_states : {};
     const states = {};
@@ -332,6 +339,15 @@
       const s = familyStates[f];
       if (s === "pass" || s === "fail" || s === "skipped" || s === "out_of_scope") states[f] = s;
       else { states[f] = "missing"; missing.push(f); }
+    }
+    // An unreported check is not evidence of a family pass, even if the
+    // supplied aggregate claims one. Keep the graph and readout fail-closed.
+    for (const check of checks) {
+      if (check.outcome !== "missing") continue;
+      for (const f of check.families) {
+        states[f] = "missing";
+        if (!missing.includes(f)) missing.push(f);
+      }
     }
     return {
       checks,
@@ -364,19 +380,21 @@
 
     if (trace.missing.length) {
       state.traceErrors += 1;
-      console.error(`dashboard trace: family_states missing ${trace.missing.join(", ")} for ${operation} (seq ${envelope.seq}); rendering "state missing", not a pass`);
+      console.error(`dashboard trace: family/check states missing ${trace.missing.join(", ")} for ${operation} (seq ${envelope.seq}); rendering "state missing", not a pass`);
     }
     const codesByFamily = Object.fromEntries(FAMILIES.map((f) => [f, []]));
     const touched = new Set();
     const STEP = 260;
     let step = 0;
     for (const check of trace.checks) {
-      const color = check.outcome === "pass" ? COLORS.blue : COLORS.coral;
+      const color = check.outcome === "pass" ? COLORS.blue : check.outcome === "fail" ? COLORS.coral : COLORS.amber;
       for (const f of check.families) {
         touched.add(f);
-        state.familyEval[f].evaluated += 1;
-        state.familyEval[f][check.outcome === "pass" ? "passed" : "failed"] += 1;
-        weigh(f, 1, "evaluated");
+        if (check.outcome === "pass" || check.outcome === "fail") {
+          state.familyEval[f].evaluated += 1;
+          state.familyEval[f][check.outcome === "pass" ? "passed" : "failed"] += 1;
+          weigh(f, 1, "evaluated");
+        }
         if (check.outcome === "fail") codesByFamily[f].push(check.code);
         pulse("parser", f, color, 450 + step * STEP);
         setTimeout(() => bump(f), 900 + step * STEP);
@@ -495,7 +513,7 @@
     const tr = t.trace;
     lines.push(`#  FAMILY          CODE                      OUTCOME`);
     tr.checks.forEach((c, i) => {
-      lines.push(`${String(i + 1).padEnd(2)} ${familyLabel(c.families).padEnd(15)} ${c.code.padEnd(25)} ${c.outcome === "pass" ? "v passed" : "x failed"}`);
+      lines.push(`${String(i + 1).padEnd(2)} ${familyLabel(c.families).padEnd(15)} ${c.code.padEnd(25)} ${c.outcome === "pass" ? "v passed" : c.outcome === "fail" ? "x failed" : "? state missing"}`);
     });
     // The rule is driven by the engine's explicit short_circuit / held_at, never
     // inferred from list position. It sits after the last executed check: the
@@ -560,11 +578,12 @@
     if (!summary) return;
     $("kpi-commits").textContent = summary.commit_count ?? state.counts.commits;
     $("kpi-holds").textContent = summary.refusal_count ?? state.counts.holds;
-    $("kpi-stage").textContent = summary.stage ?? "0";
+    $("kpi-stage").textContent = summary.stage ?? "—";
     $("kpi-revision").textContent = summary.revision ?? "0";
     $("kpi-facts").textContent = summary.fact_count ?? "0";
     $("kpi-episode").textContent = state.episodeOver ? "complete" : "open";
     $("session-hash").textContent = `state ${short(summary.state_sha256)}`;
+    renderQuest(summary);
   }
 
   // ------------------------------------------------------------------ timeline
@@ -606,6 +625,8 @@
   const mz = (z) => 250 - ((z - MAP.zmin) / (MAP.zmax - MAP.zmin)) * 240;
   function renderMinimap() {
     while (minimap.firstChild) minimap.removeChild(minimap.firstChild);
+    $("map-caption").textContent = state.session ? `${state.session.sites.length} sites · live player trail` : "waiting for game session";
+    $("map-focus").textContent = state.focus ? `Focused site: ${state.focus}` : state.player ? `Player position · ${Number(state.player.x).toFixed(1)}, ${Number(state.player.z).toFixed(1)}` : "Player position appears when the game sends a tick.";
     el("rect", { x: 0, y: 0, width: 320, height: 260, fill: "#0e161f", rx: 8 }, minimap);
     for (let gx = MAP.xmin; gx <= MAP.xmax; gx += 4) el("line", { x1: mx(gx), y1: mz(MAP.zmin), x2: mx(gx), y2: mz(MAP.zmax), stroke: COLORS.line, "stroke-width": 0.5 }, minimap);
     for (let gz = MAP.zmin; gz <= MAP.zmax; gz += 4) el("line", { x1: mx(MAP.xmin), y1: mz(gz), x2: mx(MAP.xmax), y2: mz(gz), stroke: COLORS.line, "stroke-width": 0.5 }, minimap);
@@ -634,7 +655,6 @@
     line.textContent = `${((performance.now() - state.startedAt) / 1000).toFixed(1).padStart(6)}s  ${kind.padEnd(16)} ${text}`;
     log.appendChild(line);
     while (log.childNodes.length > 120) log.removeChild(log.firstChild);
-    log.scrollTop = log.scrollHeight;
     $("log-count").textContent = `${state.events.length} events`;
   }
   function flash(cls) {
@@ -651,23 +671,110 @@
     return ` · trace ${checks || "(no checks)"}${t.trace.shortCircuit ? ` > short-circuit at ${t.trace.heldAt}` : ""} · ${traceSummaryText(t)}`;
   }
 
+  // Player-facing panels render only values returned by the game.
+  const QUEST_STEPS = ["Collect the signal lens", "Install the lens at the harbor beacon", "Ask Mira for the tide route"];
+  const clearChildren = (node) => { while (node.firstChild) node.removeChild(node.firstChild); };
+  function renderQuest(summary = state.lastSummary) {
+    const objective = $("quest-objective"), steps = $("quest-steps"), label = $("quest-stage-label"), note = $("quest-note");
+    clearChildren(steps);
+    const stage = summary?.stage ?? state.lastSummary?.stage;
+    if (!Number.isInteger(stage) || stage < 0 || stage > 3) { label.textContent = "waiting for session"; objective.textContent = "Waiting for a valid game session summary."; note.textContent = "No valid quest stage has been reported yet."; return; }
+    const current = stage, complete = state.episodeOver;
+    label.textContent = complete ? "complete · 3 / 3" : `stage ${current} / 3`;
+    objective.textContent = complete ? "Episode complete." : current === 0 && !state.metMira ? "Speak with Captain Mira, then recover the signal lens." : current < 3 ? QUEST_STEPS[current] : "Continue with the presentation-only tide-mark deduction and ending.";
+    QUEST_STEPS.forEach((textValue, index) => {
+      const item = document.createElement("li"), mark = document.createElement("span"), text = document.createElement("span"), status = document.createElement("span");
+      const done = complete || current > index, active = !complete && current === index;
+      item.className = `quest-step${done ? " done" : active ? " current" : ""}`; mark.className = "step-mark"; mark.textContent = done ? "✓" : active ? "•" : String(index + 1);
+      status.className = "step-state"; status.textContent = done ? "Complete" : active ? "Current stage goal" : "Not started"; text.textContent = textValue; text.appendChild(status); item.append(mark, text); steps.appendChild(item);
+    });
+    note.textContent = complete || current === 3 ? "The remaining deduction and ending are presentation-only." : "Stage progress follows committed session summaries.";
+  }
+  function addCheckRow(list, status, label, code = "", family = "") {
+    const item = document.createElement("li"), heading = document.createElement("div"), glyph = document.createElement("span"), word = document.createElement("span");
+    item.className = "check-item"; item.dataset.state = status; heading.className = "check-heading"; glyph.className = "check-glyph";
+    glyph.textContent = ({pass:"✓",fail:"×",skipped:"↷","not-evaluated":"—",missing:"?"})[status] || "?"; word.textContent = label; heading.append(glyph, word); item.appendChild(heading);
+    if (code) { const detail = document.createElement("span"); detail.className = "check-code"; detail.textContent = code; item.appendChild(detail); }
+    if (family) { const detail = document.createElement("span"); detail.className = "check-family"; detail.textContent = family; item.appendChild(detail); }
+    list.appendChild(item);
+  }
+  function renderSelectedVerdict() {
+    const action = state.verdicts.find((item) => item.id === state.selectedVerdictId) || state.pinnedVerdict, outcome = $("action-outcome"), meta = $("action-meta"), next = $("action-next"), traceState = $("action-trace-state"), legacy = $("action-legacy"), checks = $("action-checks");
+    clearChildren(checks); next.hidden = true; legacy.hidden = true; $("freeze-readout").setAttribute("aria-pressed", String(state.readoutFrozen)); $("freeze-readout").textContent = state.readoutFrozen ? "Unfreeze readout" : "Freeze readout"; $("follow-latest").hidden = !state.readoutFrozen;
+    if (!action) { outcome.textContent = "No action verdict yet."; meta.textContent = "Waiting for the first verdict · the game is still live."; traceState.dataset.state = "waiting"; traceState.textContent = "Trace: waiting for verdict"; return; }
+    const age = Math.max(0, Math.floor((performance.now() - action.at) / 1000));
+    meta.textContent = `verdict #${action.serial} · ${action.operation || "operation not reported"} · ${action.kind} · ${age}s ago${state.readoutFrozen ? " · readout frozen; game continues" : " · latest action"}`;
+    outcome.textContent = action.outcomeText;
+    if (action.nextAffordance) { next.textContent = `Next affordance: ${action.nextAffordance}`; next.hidden = false; }
+    if (action.legacy) { traceState.dataset.state = "legacy"; traceState.textContent = "EvaluationTrace unavailable · legacy schema-only event"; legacy.textContent = "Legacy event: no per-check trace was supplied. No check result is inferred."; legacy.hidden = false; }
+    else if (!action.trace) { traceState.dataset.state = "missing"; traceState.textContent = "EvaluationTrace missing · no check results shown"; legacy.textContent = "This verdict did not include an EvaluationTrace. Missing evidence is not a pass."; legacy.hidden = false; }
+    else {
+      const trace = action.trace; traceState.dataset.state = "available"; traceState.textContent = `EvaluationTrace received · ${trace.checks.length} executed check${trace.checks.length === 1 ? "" : "s"}`;
+      for (const check of trace.checks) { const family = check.families.join(" / "); const status = check.outcome === "pass" ? "pass" : check.outcome === "fail" ? "fail" : "missing"; addCheckRow(checks, status, status === "pass" ? "Passed" : status === "fail" ? "Failed" : "State missing", check.code || "check code not reported", family); }
+      for (const skipped of trace.skipped) addCheckRow(checks, "skipped", "Skipped", skipped.code || "check code not reported", skipped.families.join(" / "));
+      for (const family of FAMILIES.filter((f) => trace.states[f] === "out_of_scope")) addCheckRow(checks, "not-evaluated", "Not evaluated", "", family);
+      for (const family of trace.missing) addCheckRow(checks, "missing", "State missing", "family state not supplied", family);
+      if (!trace.checks.length && !trace.skipped.length && !trace.missing.length && !FAMILIES.some((f) => trace.states[f] === "out_of_scope")) { const item=document.createElement("li"); item.className="hint"; item.textContent="Trace supplied no check entries."; checks.appendChild(item); }
+    }
+  }
+  function renderVerdictHistory() {
+    const list = $("action-history"), recent = $("recent-actions"); clearChildren(list); clearChildren(recent);
+    const selected = state.verdicts.find((item) => item.id === state.selectedVerdictId) || state.pinnedVerdict, selectedSerial = selected ? selected.serial : state.verdictSerial;
+    const newer = Math.max(0, state.verdictSerial - selectedSerial);
+    $("newer-actions").textContent = state.readoutFrozen ? `${newer} newer action${newer === 1 ? "" : "s"} · game continues` : "Following latest action";
+    $("recent-count").textContent = `${state.verdicts.length} verdict${state.verdicts.length === 1 ? "" : "s"}`; $("recent-empty").hidden = state.verdicts.length > 0;
+    for (const action of state.verdicts) { const li=document.createElement("li"), button=document.createElement("button"), result=document.createElement("span"), op=document.createElement("span"); button.type="button"; button.className="history-select"; button.dataset.verdictId=String(action.id); button.setAttribute("aria-current",String(action.id===state.selectedVerdictId)); result.className="history-result"; result.textContent=action.kind==="commit"?"Commit":"Hold"; op.className="history-operation"; op.textContent=action.operation||"operation not reported"; button.append(result,op); li.appendChild(button); list.appendChild(li); }
+    for (const action of state.verdicts.slice(-3).reverse()) { const li=document.createElement("li"),tag=document.createElement("span"),summary=document.createElement("span"); tag.className=`action-tag ${action.kind}`; tag.textContent=action.kind==="commit"?"Commit":"Hold"; summary.className="action-summary"; summary.textContent=`${action.operation||"operation not reported"} · ${action.summaryText}`; li.append(tag,summary); recent.appendChild(li); }
+    const latest=state.verdicts[state.verdicts.length-1]; if (latest&&!state.readoutFrozen) state.selectedVerdictId=latest.id;
+    renderSelectedVerdict(); $("follow-latest").textContent=`Follow latest${newer?` (${newer} new)`:""}`;
+  }
+  function addVerdict(kind, payload, envelope) {
+    const operation=String(payload.operation||(state.lastTrace&&state.lastTrace.kind===kind?state.lastTrace.operation:"")||state.pendingOperation||""), from=payload.stage_from, to=payload.stage_to;
+    const labels=Array.isArray(payload.labels)?payload.labels.map((value)=>String(value)):[];
+    const nextAffordance=kind==="hold"&&typeof payload.next_affordance==="string"?payload.next_affordance.trim():"";
+    const outcomeText=kind==="hold"?"Held · game state unchanged.":Number.isFinite(from)&&Number.isFinite(to)?`Committed · stage ${from} → ${to}.`:"Committed · game state updated.";
+    const summaryText=kind==="hold"?(nextAffordance||"state unchanged"):(labels.length?labels.join(" · "):"state recorded");
+    const trace=state.lastTrace&&state.lastTrace.kind===kind?state.lastTrace:null;
+    const item={id:++state.verdictSerial,serial:state.verdictSerial,kind,operation,at:performance.now(),seq:envelope.seq,outcomeText,summaryText,nextAffordance,legacy:!!(trace&&trace.legacy),trace:trace&&trace.trace};
+    state.verdicts.push(item); if(state.verdicts.length>12) state.verdicts.shift();
+    if(!state.readoutFrozen||state.selectedVerdictId===null) state.selectedVerdictId=item.id; renderVerdictHistory();
+  }
+  function updateLinkState() {
+    const pill=$("link-state"); if(!state.session){pill.textContent="waiting for game session";pill.className="pill waiting";return;}
+    if(state.lastTickAt===null){pill.textContent="session received · waiting for game tick";pill.className="pill waiting";return;}
+    const age=Math.floor((performance.now()-state.lastTickAt)/1000),fresh=age<=5; pill.textContent=`${fresh?"live":"stale"} · last game tick ${age}s ago`;pill.className=`pill ${fresh?"live":"waiting"}`;
+  }
+  function resetSessionPresentation() {
+    state.counts={commits:0,holds:0,proposals:0,dialogues:0}; state.holdsByGate=Object.fromEntries(FAMILIES.map((f)=>[f,0])); state.codeCounts={}; state.nodeWeight={};
+    state.familyEval=Object.fromEntries(FAMILIES.map((f)=>[f,{evaluated:0,passed:0,failed:0}])); state.familyState=Object.fromEntries(FAMILIES.map((f)=>[f,"idle"]));
+    state.lastTrace=null;state.legendRows=[];state.legacyEvents=0;state.traceErrors=0;state.pendingOperation="";state.hashChain=[];state.lastSummary=null;state.lastTick=null;state.lastTickAt=null;state.events=[];state.trail=[];state.player=null;state.focus="";state.lastHoldGates=[];state.episodeOver=false;
+    state.verdicts=[];state.selectedVerdictId=null;state.verdictSerial=0;state.readoutFrozen=false;state.pinnedVerdict=null;state.metMira=false;state.startedAt=performance.now(); clearChildren($("log"));$("log-count").textContent="0 events";
+    $("kpi-commits").textContent="0";$("kpi-holds").textContent="0";$("kpi-stage").textContent="—";$("kpi-revision").textContent="0";$("kpi-facts").textContent="0";$("kpi-episode").textContent="waiting";
+    resetEdges();FAMILIES.forEach((f)=>setFamilyState(f,"idle"));setTerminalState("commit","terminal_idle");setTerminalState("hold","terminal_idle");renderLegend();renderLastTrace();renderGateTable();renderReference();renderChain();renderQuest(null);renderVerdictHistory();renderMinimap();renderTimeline();updateLinkState();
+  }
+  $("freeze-readout").addEventListener("click",()=>{if(state.readoutFrozen){state.readoutFrozen=false;state.pinnedVerdict=null;const latest=state.verdicts[state.verdicts.length-1];state.selectedVerdictId=latest?latest.id:null;}else{state.readoutFrozen=true;state.pinnedVerdict=state.verdicts.find((item)=>item.id===state.selectedVerdictId)||null;}renderVerdictHistory();});
+  $("follow-latest").addEventListener("click",()=>{state.readoutFrozen=false;state.pinnedVerdict=null;const latest=state.verdicts[state.verdicts.length-1];state.selectedVerdictId=latest?latest.id:null;renderVerdictHistory();});
+  $("action-history").addEventListener("click",(event)=>{const button=event.target.closest("button[data-verdict-id]");if(!button)return;const id=Number(button.dataset.verdictId),action=state.verdicts.find((item)=>item.id===id);if(!action)return;state.selectedVerdictId=id;state.pinnedVerdict=action;state.readoutFrozen=true;renderVerdictHistory();});
+  setInterval(()=>{updateLinkState();if(state.selectedVerdictId!==null)renderSelectedVerdict();},1000);
+
   // ------------------------------------------------------------------ handler
   function handle(msg) {
     const { kind, payload } = msg;
-    if (!state.connected) {
-      state.connected = true;
-      const pill = $("link-state");
-      pill.textContent = "live · receiving game events";
-      pill.className = "pill live";
-    }
     const record = { kind, at: performance.now(), seq: msg.seq, payload };
+    if (kind === "session") resetSessionPresentation();
+    state.connected = true;
+    if (kind === "tick") state.lastTickAt = performance.now();
+    updateLinkState();
     if (kind === "tick") {
       state.player = { x: payload.x, z: payload.z, yaw: payload.yaw };
       state.trail.push({ x: payload.x, z: payload.z });
       if (state.trail.length > 400) state.trail.shift();
       state.focus = payload.focus || "";
-      state.episodeOver = !!payload.episode_over;
+      if (payload.episode_over === true) state.episodeOver = true;
       state.lastTick = payload;
+      if (state.episodeOver && state.lastSummary) renderKpis(state.lastSummary);
+      $("map-caption").textContent = state.session ? `${state.session.sites.length} sites · live player trail` : "waiting for game session";
+      $("map-focus").textContent = state.focus ? `Focused site: ${state.focus}` : state.player ? `Player position · ${Number(payload.x).toFixed(1)}, ${Number(payload.z).toFixed(1)}` : "Player position appears when the game sends a tick.";
       renderMinimap();
       return;
     }
@@ -692,7 +799,7 @@
         state.lastSummary = payload;
         state.hashChain.push({ tag: `commit #${payload.commit_count}`, hash: payload.state_sha256, revision: payload.revision, stage: payload.stage });
         record.label = `commit ${payload.stage_from}>${payload.stage_to}`;
-        showTraceFlow("commit", payload, msg); flash("flash-commit");
+        showTraceFlow("commit", payload, msg); addVerdict("commit", payload, msg); flash("flash-commit");
         renderKpis(payload); renderChain(); renderGateTable(); renderReference();
         logLine("commit", `${payload.operation} · ${payload.labels.join(" | ") || "state recorded"} · stage ${payload.stage_from}>${payload.stage_to} · ${short(payload.state_sha256_before)} > ${short(payload.state_sha256)}${traceLogTag()}`);
         break;
@@ -703,12 +810,13 @@
         for (const f of new Set(payload.gates.flatMap(gateFamilies))) state.holdsByGate[f] += 1;
         for (const c of payload.codes) state.codeCounts[c] = (state.codeCounts[c] || 0) + 1;
         record.label = `hold ${[...new Set(payload.gates.flatMap(gateFamilies))].join("+")}`;
-        showTraceFlow("hold", payload, msg); flash("flash-hold");
+        showTraceFlow("hold", payload, msg); addVerdict("hold", payload, msg); flash("flash-hold");
         renderKpis(payload); renderGateTable(); renderReference();
         logLine("hold", `${payload.codes.join(", ")} · gate ${payload.gates.join(", ")} · state unchanged ${short(payload.state_sha256)} · next: ${payload.next_affordance}${traceLogTag()}`);
         break;
       case "dialogue":
         state.counts.dialogues += 1;
+        if (payload.npc === "captain_mira" && payload.phase === "open") { state.metMira = true; renderQuest(); }
         // A dialogue choice may run a top-level validate_disclosure (the early-
         // secret hold) with no proposal envelope; remember it so the strip can
         // name what the hold was evaluated for.
@@ -724,8 +832,8 @@
         break;
       case "episode_complete":
         state.episodeOver = true;
-        state.lastSummary = payload;
-        renderKpis(payload);
+        state.lastSummary = { ...(state.lastSummary || {}), ...payload };
+        renderKpis(state.lastSummary);
         logLine("episode_complete", `entries ${payload.commit_count} · holds ${payload.refusal_count} · holds by gate ${JSON.stringify(payload.holds_by_gate)} · final ${short(payload.state_sha256)}`);
         break;
       default:

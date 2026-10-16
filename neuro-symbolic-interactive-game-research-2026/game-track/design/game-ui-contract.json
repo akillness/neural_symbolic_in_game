@@ -2,7 +2,7 @@
   "contract_version": 1,
   "project": {
     "name": "The Sealed Lighthouse",
-    "build": "sealed-lighthouse-d-062-contribution-legibility",
+    "build": "sealed-lighthouse-4382f69-gameplay-dashboard-20261002",
     "target_devices": [
       "desktop web",
       "responsive narrow display"
@@ -52,6 +52,26 @@
     }
   ],
   "screens": [
+    {
+      "id": "dashboard-gameplay-glance",
+      "type": "one-way observer page around the real playable iframe",
+      "decision": "See the current lead, three committed case stages and latest complete proposal result while continuing to play.",
+      "states": ["waiting for real engine events", "following latest action", "pinned earlier action with newer-results indicator", "committed stage 0 to 3", "episode complete"],
+      "entry": "Open /dashboard/; the actual Web game remains at /public/.",
+      "exit": "Close the browser page; dashboard controls never send gameplay actions.",
+      "back_behavior": "Native disclosure summaries collapse reviewer detail; reviewing or pinning a result never pauses, resets or authors game state.",
+      "initial_focus": "Game iframe owns gameplay input; visible page controls retain native keyboard focus."
+    },
+    {
+      "id": "dashboard-action-review",
+      "type": "stable last-action readout and bounded action history",
+      "decision": "Read why a proposal committed or held at the player's own pace, or follow the most recent result again.",
+      "states": ["no proposal evaluated", "pending proposal", "completed commit", "completed hold", "legacy schema-only", "explicit state missing", "pinned historical result"],
+      "entry": "Accepted engine proposal/verdict event or an explicit history-selection click.",
+      "exit": "Follow latest returns to the latest result; a new session clears history.",
+      "back_behavior": "No world mutation and no timer-driven dismissal; movement, focus and tick events do not replace a completed verdict.",
+      "initial_focus": "Selected history action or the Pin/Follow latest control; focus does not jump on live ticks."
+    },
     {
       "id": "start-gate",
       "type": "full-screen entry gate",
@@ -225,7 +245,7 @@
       "entry": "Driven by committed state transitions the first time each occurs; page 1 of the field guide is the only boot card.",
       "exit": "[OK] button or [Esc] only; never a timer.",
       "back_behavior": "[Esc] dismisses the card first.",
-      "initial_focus": "[OK]",
+      "initial_focus": "Coach card [OK] dismissal button.",
       "reads": "view-local shown-card set (presentation memory, not game state)"
     },
     {
@@ -258,7 +278,7 @@
       "entry": "Episode completion.",
       "exit": "Static; the receipt stays on screen.",
       "back_behavior": "BACK/NEXT page buttons.",
-      "initial_focus": "NEXT",
+      "initial_focus": "End-card NEXT page button.",
       "reads": "presentation counters and the committed terminal snapshot hash (D-073)"
     }
   ],
@@ -340,6 +360,24 @@
   },
   "data_bindings": [
     {
+      "element": "dashboard quest, counters, harbor plan and session status",
+      "source": "Typed Godot postMessage envelopes from the embedded game window at the page origin; stage/revision/fact and commit/hold counts come from emitted engine summaries.",
+      "initial_state": "Waiting for real game events; no fabricated progress or parser pass.",
+      "update": "The live three-stage case rail follows committed stage; the plan uses emitted site and player coordinates and the allowlisted current target.",
+      "stale": "When reviewing an older result, live counters keep updating and the selected action remains visibly marked as historical.",
+      "error": "Malformed or untrusted source/origin/channel envelopes are rejected; missing trace states are named explicitly rather than treated as passes.",
+      "permission": "One-way observer only; no return proposal, repair or commit channel, no sealed fact or hidden oracle label."
+    },
+    {
+      "element": "dashboard stable result, ordered checks, safe advice and bounded action history",
+      "source": "Accepted real proposal/commit/hold payloads and their explicit trace checks, skipped checks and family_states.",
+      "initial_state": "No proposal evaluated; a schema without trace is labelled legacy instead of implied execution.",
+      "update": "Complete verdicts remain visible across high-rate movement/focus/tick events. A pinned record preserves its before/after hash while a newer-results count offers Follow latest.",
+      "stale": "Historical records remain labelled by event sequence; display and aggregate counts are not confused. A new engine session resets the review cursor and history.",
+      "error": "No inferred parser success, synthetic repairs or hidden secrets; advice is limited to public game affordances for known emitted gate codes.",
+      "permission": "Read-only presentation memory; pinning is not game pause, save, replay or evidence of a player outcome."
+    },
+    {
       "element": "current lead and case progress",
       "source": "committed canonical state plus the presentation-only first-meeting flag",
       "initial_state": "Direct the player to Captain Mira.",
@@ -396,6 +434,22 @@
   ],
   "verification": {
     "matrix": [
+      {
+        "state": "dashboard boot, real gameplay movement, hold and commit",
+        "device": "1440px desktop and 768px/390px responsive page viewports",
+        "input": "keyboard and mouse on desktop; layout inspection only on narrow displays",
+        "locale": "English",
+        "setting": "default and reduced-motion browser preference",
+        "expected": "Real iframe stays at the proven 720px height; no page-level horizontal overflow. Current objective and full verdict remain readable; engineering disclosures are available but collapsed by default."
+      },
+      {
+        "state": "rapid action burst, pin historical result, continued live ticks, resume follow and new session",
+        "device": "1440px desktop; 200 percent browser text scaling",
+        "input": "mouse plus Tab/Enter/Space for native controls",
+        "locale": "English",
+        "setting": "default and reduced motion",
+        "expected": "Complete result persists across movement/ticks; pin freezes only the selected readout, not the game or counters. Newer-result count is explicit. Follow latest resumes; session resets stale history. Missing/skipped/not-evaluated states and source/origin guards remain correct."
+      },
       {
         "state": "start gate and field guide",
         "device": "1280x720 desktop web",
@@ -467,6 +521,11 @@
   },
   "decisions": [
     {
+      "decision": "Use the supplied gameplay-dashboard image as a hierarchy reference, not a replacement game or an extra five-stage quest.",
+      "basis": "User request dated 2026-10-02. Enlarge the real playable surface, preserve the three-stage committed case and ordered fail-closed trace, keep last-action feedback stable, and let the player explicitly pin and resume reading. Reviewer graph, hash chain, timeline, raw feed and paper counts remain available in native disclosures.",
+      "owner": "Aside dashboard presentation lane"
+    },
+    {
       "decision": "Use an English-only polish pass rather than adding a new localization subsystem.",
       "basis": "The user requested English output and the smallest safe diff preserves the established research and UI owners.",
       "owner": "game UI/UX"
@@ -484,6 +543,9 @@
     {
       "id": "D-073",
       "date": "2026-09-18",
+      "decision": "Add a case-file board, opt-in hint ladder, coach cards, slot deduction, paged end card and four-zone HUD without changing the canonical game machine.",
+      "basis": "The 2026-09-18 Aside design research and D-073 decision record; all these surfaces are presentation-only.",
+      "owner": "Godot presentation lane (D-073)",
       "summary": "Case-file evidence board, opt-in hint ladder, just-in-time coach cards, slot-assembly deduction, paged end card, and the four-zone HUD (objective+hint top-left, case chain top-centre, GUIDE/CASE FILE/AUDIO top-right, prompt bottom-centre) per the 2026-09-18 Aside deep research; all presentation-only."
     }
   ],

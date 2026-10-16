@@ -1,0 +1,57 @@
+{
+  "scope": "Presentation-only gameplay dashboard code. No game-source behavior or research-status changes; the dashboard cannot write canonical state. Actual gameplay QA commits came from the engine. No staging, git commit, or push.",
+  "baseline_commit": "4382f69909b21ea25dfe92b0859c1fbd1acc5144",
+  "engineering_evidence_only": true,
+  "renderer_regression": {
+    "environment": "Aside instrumented browser; not independent headless Chromium",
+    "report": "aside-renderer-fixtures-r2.json",
+    "trace_fixtures": 8,
+    "gameplay_fixtures": 34,
+    "passed": true
+  },
+  "static_release_checks": {
+    "report": "release-copy-static-contracts-r2.json",
+    "checks": 8,
+    "passed": true,
+    "runner": "Direct standard-library calls to zero-argument test functions, not pytest"
+  },
+  "temporary_release_build": {
+    "log": "release-copy-r2.log",
+    "command": "scripts/deploy_vercel_dashboard.sh --dry-run in the session temporary release copy",
+    "exit_code": 0,
+    "deployed": false,
+    "dashboard_sha256": {
+      "index.html": "a01fd17394063071db2d2879bb74920ef9e60df7e2ce5b3bf7770cad2e263959",
+      "dashboard.css": "92bf885741b1e65bb4ee4bb02e464a309e6036c5af6d06bcd3679fe3b814c307",
+      "dashboard.js": "62be4fb626e9c628a70a080523e82ff4e85de481a586f0da70490518b61b98cf"
+    }
+  },
+  "canonical_source_sha256": {
+    "project.godot": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "scripts/sealed_lighthouse_machine.gd": "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+  },
+  "real_gameplay": {
+    "report": "real-gameplay.json",
+    "stage": 1,
+    "commits": 1,
+    "holds": 2,
+    "hold_state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+    "committed_state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+    "human_usability_fun_efficacy_G4_G6_claimed": false
+  },
+  "readme_images": {
+    "synchronized_files": ["README.md", "README.ko.md", "game-track/godot/README.en.md", "game-track/godot/README.ko.md"],
+    "new_images": "Real local viewport captures and pixel crops. Historical episode-complete screenshot and GIF retain their separate earlier run.",
+    "hold_capture": "Historical verdict #1 selected after real commit; current session remains stage1, commits1, holds2. Readout is pinned only."
+  },
+  "independent_unpatched_headless_chromium": {
+    "status": "blocked",
+    "reason": "No accepted passing report exists. Downloaded headless shell exited137; installed Chrome aborted during macOS application registration. Two reported manual execution-complete responses did not create the specified report directory/JSON.",
+    "next_step": "Obtain the actual terminal output or a fresh report from scripts/verify_dashboard_browser.cjs in a normal macOS terminal, then verify passed=true and source hashes before deployment."
+  },
+  "production_deployment_and_live_verification": {
+    "status": "blocked",
+    "dependency": "Independent unpatched headless Chromium report",
+    "attempted": false
+  }
+}

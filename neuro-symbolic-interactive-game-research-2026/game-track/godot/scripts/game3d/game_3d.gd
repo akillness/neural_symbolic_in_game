@@ -597,6 +597,31 @@ func _unhandled_input(event: InputEvent) -> void:
 	):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		ui.set_cursor_captured(true)
+	if event is InputEventKey and event.pressed and not event.echo:
+		# Number-key choice shortcut (1..9 in visible order): the same
+		# _on_choice path as a button press, so a clipped/scrolled list on a
+		# narrow embed stays completable by keyboard. Presentation-only input;
+		# canonical state still changes only through the proposal router.
+		if _dialogue_open and not _smoke_mode and not _evaluate_mode and not episode_over:
+			var focus_owner := get_viewport().gui_get_focus_owner()
+			var typing_in_field := focus_owner is LineEdit
+			if not typing_in_field and not ui.is_tutorial_open() and not ui.is_coach_card_open() and not ui.is_evidence_board_open():
+				var digit := -1
+				match event.physical_keycode:
+					KEY_1: digit = 1
+					KEY_2: digit = 2
+					KEY_3: digit = 3
+					KEY_4: digit = 4
+					KEY_5: digit = 5
+					KEY_6: digit = 6
+					KEY_7: digit = 7
+					KEY_8: digit = 8
+					KEY_9: digit = 9
+				if digit > 0:
+					var ids: Array = ui.choice_ids()
+					if digit <= ids.size():
+						_on_choice(str(ids[digit - 1]))
+						return
 	if event.is_action_pressed("sl_save"):
 		_save_game()
 	elif event.is_action_pressed("sl_load"):
@@ -815,7 +840,12 @@ func _on_interact(interaction_id: String) -> void:
 				_open_deduction()
 				_complete_input_feedback_probe("deduction-open")
 			else:
-				_pending_input_feedback.clear()
+				# Completion guidance: silent no-op left players unsure why the
+				# marks do nothing before Mira authorizes the lead. Point at the
+				# next valid entry without revealing the sealed lead itself.
+				ui.ledger_line("hint", "The marks mean nothing yet. Ask Captain Mira for the authorized lead first.")
+				ui.toast("NEXT | Ask Captain Mira for the authorized lead.")
+				_complete_input_feedback_probe("tide-marks-locked-hint")
 
 
 func _open_tutorial(full_guide: bool = false) -> void:

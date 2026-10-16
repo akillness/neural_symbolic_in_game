@@ -1,0 +1,147 @@
+{
+  "verdict": "WARNING — the official path is usable only from an exact committed disposable tree, with external receipt capture and a separate real-browser pass. No build, deploy, test, or file edit was performed.",
+  "release_target": {
+    "project": "sealed-lighthouse-trace-rpg",
+    "scope": "akillness-projects",
+    "project_id": "prj_SdrVIyOsJoWSglKSg5azi1kf3gJg",
+    "authenticated_cli_user_observed": "akillness",
+    "production_alias": "https://sealed-lighthouse-trace-rpg.vercel.app",
+    "live_alias_observation": "Vercel CLI 59.4.0 resolved the alias to Ready production deployment dpl_fQUPEj7ou14yVxJzKccjZ7wvnsbm at inspection time. This is current provider state, not proof for the future revision.",
+    "linkage_model": "No repository-local .vercel/project.json was found. scripts/deploy_vercel_dashboard.sh dynamically links its temporary staged site to the named project/scope immediately before deployment (lines 65-67), so the linkage is ephemeral and the project/scope arguments are the source of truth."
+  },
+  "findings": [
+    {
+      "severity": "HIGH",
+      "title": "Running the deploy script from the shared checkout would publish the dirty dashboard drafts",
+      "anchors": [
+        "neuro-symbolic-interactive-game-research-2026/scripts/deploy_vercel_dashboard.sh:43-52",
+        "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.css",
+        "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.js",
+        "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/index.html"
+      ],
+      "failure_mode": "The current worktree has all three served dashboard files modified. The script copies $WEB/dashboard/ directly with rsync and has no Git cleanliness or revision gate. Invoking it here would stage those unstaged bytes alongside the newly built game and publish them to production.",
+      "existing_guards": "The Godot project itself is copied to a temporary directory, but that does not protect the dashboard source tree. --dry-run also rebuilds game-track/web/public in the invoking checkout.",
+      "minimal_correction": "Run both dry-run and production only inside a git archive (or equivalent clean detached checkout) of the exact future commit. Never invoke either deploy mode in the current shared checkout."
+    },
+    {
+      "severity": "HIGH",
+      "title": "Staged hashes and deployment identity are emitted but not retained by the script",
+      "anchors": [
+        "neuro-symbolic-interactive-game-research-2026/scripts/deploy_vercel_dashboard.sh:43-67"
+      ],
+      "failure_mode": "The temporary site is deleted by the EXIT trap. Hash/size receipts are printed to stdout, vercel link output is suppressed, and the script does not persist a deployment ID or inspect result. If terminal output is lost, there is no durable binding from the staged bytes to the Vercel deployment.",
+      "existing_guards": "Prior release records manually retained deployment IDs and HTTP/hash receipts, but the script itself does not do so.",
+      "minimal_correction": "Pipe combined output through tee to an approved durable receipt directory, record the exact source commit, and immediately save `vercel inspect <production-alias> --scope akillness-projects --wait --timeout 180s` output. The deploy log is the authoritative staged-hash list; the inspect receipt supplies the dpl_* ID, status, generated URL, and aliases."
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "No tracked executable helper proves the requested behavior in the deployed Godot binary",
+      "anchors": [
+        "neuro-symbolic-interactive-game-research-2026/scripts/verify_dashboard_browser.cjs:12-15",
+        "neuro-symbolic-interactive-game-research-2026/scripts/verify_dashboard_browser.cjs:46-50",
+        "neuro-symbolic-interactive-game-research-2026/tests/godot_panel_lifecycle_harness.gd:40-107",
+        "neuro-symbolic-interactive-game-research-2026/tests/test_godot_panel_lifecycle.py:99-120",
+        "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/npc-panel-html-2026-10-15/verification.json:54-88"
+      ],
+      "failure_mode": "The only `verify_dashboard_browser.cjs` file is untracked user work and deliberately intercepts `/public/index.html` with a fake HTML body. It validates synthetic dashboard rendering, not the downloaded Godot binary, Mira choices, Case File, or footer. The tracked native harness does validate four authored choices, scroll-to-view geometry, four Case File cards, and the close/footer instruction at 1400×900, 344×720, and 390×844, but it is native headless rather than post-deployment Web proof. The latest exact real-browser sequence exists only as a receipt, not a reusable script.",
+      "minimal_correction": "Use the focused tracked native test as the predeploy gate, then use a fresh browser session against the production `/public/` binary and repeat the recorded keyboard/gameplay sequence. Do not cite `verify_dashboard_browser.cjs` as deployed-binary evidence."
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "The deploy path bundles existing PDFs; it does not build or freshness-check them",
+      "anchors": [
+        "neuro-symbolic-interactive-game-research-2026/scripts/deploy_vercel_dashboard.sh:26-31",
+        "neuro-symbolic-interactive-game-research-2026/scripts/deploy_vercel_dashboard.sh:47-53",
+        "neuro-symbolic-interactive-game-research-2026/tests/test_dashboard_deploy.py:40-53"
+      ],
+      "failure_mode": "A nonempty but stale `paper/latex/{en,ko}/main.pdf` passes preflight and is copied verbatim to `dist/paper/{en,ko}.pdf`. A manuscript source change without a rebuilt PDF would therefore publish stale papers.",
+      "existing_guards": "Both PDFs are regular tracked Git blobs, not Git LFS objects; their current index blob IDs are EN `04fdadaf01308e0c412d1011502f16e226b19b5e` and KO `6addfd50c0d7c7614d6cfc128b5a3ff48f4fc6d8`. The staging test proves both copied PDF digests appear in receipts, but does not establish source freshness.",
+      "minimal_correction": "The future release commit must already contain the reviewed rebuilt PDFs. Preserve their staged SHA-256 entries from the actual deploy log and verify `/paper/en.pdf` and `/paper/ko.pdf` byte-for-byte after deployment."
+    }
+  ],
+  "confirmed_safeguards": [
+    {
+      "claim": "Private rig and import-cache bytes are excluded.",
+      "evidence": "`.gitignore:20-25` ignores every `assets/rig/*` byte except README and every nested `.godot/`; line 62 ignores generated Web output. `git ls-files` found only `game-track/godot/assets/rig/README.md` under those private/cache/output paths. `build_godot_web.sh:87-96` independently excludes `.godot/`, addons, tests, `_workspace`, research, local LLM scripts, and the entire `assets/rig/` directory from the staged Godot project."
+    },
+    {
+      "claim": "The canonical Godot project is not imported or rewritten.",
+      "evidence": "`build_godot_web.sh:77-106` copies the project to `$STAGED_PROJECT`, changes `run/main_scene` only in that copy, and checks the copied config. Lines 111-115 pass `--path \"$STAGED_PROJECT\"` to both import and export. The canonical project is read/validated only."
+    },
+    {
+      "claim": "The production site shape is explicit.",
+      "evidence": "`game-track/web/vercel.dashboard.json:2-16` sets outputDirectory `dist`, redirects `/` to `/dashboard/`, and redirects old `/index.html` to `/public/index.html`. The deploy script stages game under `dist/public`, dashboard under `dist/dashboard`, and papers under `dist/paper`."
+    },
+    {
+      "claim": "The Godot export is rebuilt for every deploy, including dry-run.",
+      "evidence": "`deploy_vercel_dashboard.sh:34-41` always invokes `scripts/build_godot_web.sh`; stale ignored `game-track/web/public` bytes are not trusted."
+    }
+  ],
+  "minimal_command_packet": {
+    "notes": [
+      "This packet is for the future approved committed revision. It is not to be run in the current shared checkout.",
+      "`deploy_vercel_dashboard.sh` itself invokes `build_godot_web.sh`; a separate production build command would duplicate work. The optional dry-run also performs a full build, but only inside the disposable archive below.",
+      "Set `RECEIPT_ROOT` to an approved durable location. Do not write into immutable raw sources, frozen experiment packets, or old receipts."
+    ],
+    "prepare_disposable_tree": [
+      "set -euo pipefail",
+      "REPO=/Users/jangyoung/orca/neural_symbolic_in_game",
+      "REV=$(git -C \"$REPO\" rev-parse --verify '<future-full-commit-sha>^{commit}')",
+      ": \"${RECEIPT_ROOT:?set an approved durable receipt directory}\"",
+      "STAMP=$(date -u +%Y%m%dT%H%M%SZ)",
+      "RUN=$(mktemp -d \"${TMPDIR:-/tmp}/trace-rpg-release.XXXXXX\")",
+      "RECEIPTS=\"$RECEIPT_ROOT/${STAMP}-${REV}\"",
+      "mkdir -p \"$RUN\" \"$RECEIPTS\"",
+      "git -C \"$REPO\" archive --format=tar \"$REV\" | tar -xf - -C \"$RUN\"",
+      "PROJECT=\"$RUN/neuro-symbolic-interactive-game-research-2026\"",
+      "printf 'source_commit=%s\\ncreated_utc=%s\\n' \"$REV\" \"$STAMP\" | tee \"$RECEIPTS/source-revision.txt\"",
+      "cd \"$PROJECT\""
+    ],
+    "focused_predeploy_gate": [
+      "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/.venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py::test_contextual_ledger_dock_lifecycle_preserves_active_choices_and_overlays -q 2>&1 | tee \"$RECEIPTS/panel-lifecycle.txt\""
+    ],
+    "optional_no_deploy_preflight": [
+      "VERCEL_PROJECT=sealed-lighthouse-trace-rpg VERCEL_SCOPE=akillness-projects ./scripts/deploy_vercel_dashboard.sh --dry-run 2>&1 | tee \"$RECEIPTS/deploy-dry-run.txt\""
+    ],
+    "production_after_approval": [
+      "VERCEL_PROJECT=sealed-lighthouse-trace-rpg VERCEL_SCOPE=akillness-projects ./scripts/deploy_vercel_dashboard.sh 2>&1 | tee \"$RECEIPTS/deploy-production.txt\"",
+      "vercel inspect https://sealed-lighthouse-trace-rpg.vercel.app --scope akillness-projects --wait --timeout 180s 2>&1 | tee \"$RECEIPTS/production-inspect.txt\""
+    ],
+    "required_receipt_checks": [
+      "`source-revision.txt` contains the exact future commit.",
+      "`deploy-production.txt` contains one SHA-256/byte-count/path row for every staged file, including `./dist/paper/en.pdf` and `./dist/paper/ko.pdf`. These actual-production rows supersede optional dry-run hashes because production rebuilds.",
+      "`production-inspect.txt` contains the new `dpl_*` ID, `Ready`, generated deployment URL, and `https://sealed-lighthouse-trace-rpg.vercel.app` alias.",
+      "Postdeployment HTTP verification compares all staged paths to the deploy-log hashes, checks PDF MIME as `application/pdf`, WASM as `application/wasm`, and confirms `/vercel.json` is not public. There is no tracked reusable HTTP verifier; prior receipts such as `_workspace/current/qa/releases/2026-09-18/production-http-d074.json` show the expected result shape."
+    ]
+  },
+  "fresh_browser_verification": {
+    "target": "First inspect the alias to bind it to the new dpl_* ID, then open `https://sealed-lighthouse-trace-rpg.vercel.app/public/` in a fresh browser session. The production alias is public; prior records note the generated deployment URL may be protected.",
+    "predeploy_native_helper": "`tests/test_godot_panel_lifecycle.py::test_contextual_ledger_dock_lifecycle_preserves_active_choices_and_overlays` runs `tests/godot_panel_lifecycle_harness.gd` on a disposable imported project. It checks four real authored Mira choices, each scrollable into the choice viewport, Case File four-card count, visible close/footer instruction, and panel containment at desktop and narrow sizes.",
+    "real_browser_sequence": [
+      "Use 1440×1000 first; record console errors, page errors, failed requests, HTTP >=400 responses, and a screenshot at each material state.",
+      "BEGIN INVESTIGATION, complete/dismiss the tutorial, then START CASE.",
+      "Move the player to Captain Mira and press E.",
+      "Confirm the contextual dock opens with exactly four authored choices; scroll through all four and confirm the last choice is fully reachable, not clipped. Capture the open-choice state.",
+      "Press Escape; confirm the dock closes. Press E again; confirm dialogue reopens. Choose Step away; confirm the dock closes again.",
+      "Press C; confirm Case File opens, all four evidence cards exist, and the close/footer instruction is visible/reachable. Press C again; confirm it closes without resurrecting the dock.",
+      "Repeat the choice-scroll and Case File/footer visibility check at 390×844. Treat this as rendered engineering evidence only, not usability, immersion, affect, human benefit, generalization, or model efficacy.",
+      "Save a JSON receipt naming the bound dpl_* ID, URL, viewport(s), exact actions, error counts, screenshot hashes, and the engineering-only claim boundary."
+    ],
+    "do_not_use_for_this_claim": "`scripts/verify_dashboard_browser.cjs` intercepts the game URL and runs synthetic renderer fixtures. It can supplement dashboard regression coverage only; it cannot replace fresh deployed-binary browser proof."
+  },
+  "review_summary": {
+    "counts": {
+      "CRITICAL": 0,
+      "HIGH": 2,
+      "MEDIUM": 2,
+      "LOW": 0
+    },
+    "status": {
+      "CRITICAL": "pass",
+      "HIGH": "warn",
+      "MEDIUM": "info",
+      "LOW": "pass"
+    },
+    "verdict": "WARNING — mitigate the two HIGH operational gaps with the disposable committed archive and durable receipt capture before any production release."
+  }
+}

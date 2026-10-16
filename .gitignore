@@ -72,3 +72,9 @@ neuro-symbolic-interactive-game-research-2026/research/simulation/kg-ontology/la
 # Local macOS and LaTeX editor byproducts.
 .DS_Store
 *.synctex.gz
+# jeo/rtk agent-runtime caches: not project evidence, and a live indexer can
+# rewrite/compact these files mid-test, which previously made
+# test_conformance_pilot's whole-repo untracked-file reproducibility snapshot
+# flaky (FileNotFoundError on a rotated RocksDB .sst segment).
+.jeo/
+.zvec-grep/

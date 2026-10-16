@@ -137,13 +137,13 @@ class NpcEvidenceFixtureTests(unittest.TestCase):
                 self.assertNotIn("private", json.dumps(case, ensure_ascii=False).lower())
 
     def _verified_dir(self) -> Path:
-        return P / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        return P / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
 
     def _copy_verified(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
         source = self._verified_dir()
         self.assertTrue(source.is_dir(), f"missing canonical final evidence directory: {source}")
         holder = tempfile.TemporaryDirectory()
-        destination = Path(holder.name) / "verified-run-002"
+        destination = Path(holder.name) / "verified-run-003"
         shutil.copytree(source, destination)
         return holder, destination
 
@@ -151,7 +151,7 @@ class NpcEvidenceFixtureTests(unittest.TestCase):
         holder = tempfile.TemporaryDirectory()
         root = Path(holder.name) / "relocated-project"
         root.mkdir()
-        packet = root / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        packet = root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
         shutil.copytree(self._verified_dir(), packet)
         required = (
             "configs/npc-goal-recovery.json",

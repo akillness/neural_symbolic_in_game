@@ -1,0 +1,735 @@
+cd ../.. && uv run python scripts/generate_paper_results.py
+generated bilingual offline and live-screening inputs from research/academic-pipeline/stage-04-pilot/pilot-results.json and research/academic-pipeline/rq2-live-pilot/promotion-manifest.json
+cd ../.. && uv run python scripts/generate_npc_paper_results.py
+generated NPC paper fragments and paper/latex/figures/fig_npc_screening.svg from research/academic-pipeline/npc-goal-recovery/verified-run-002
+cd ../.. && uv run python scripts/run_kg_ontology_simulation.py --check --no-database
+PASS SL-KG-ONTOLOGY-SIM-001: 43 nodes, 24 typed edges, winner=S2-typed-lexical-loose, precision=1.000, recall=1.000, Sem@3=1.000
+cd ../.. && uv run python scripts/generate_paper_figures.py
+fig_architecture.svg: 900 x 860 (XML valid)
+fig_evidence_regimes.svg: 900 x 468 (XML valid)
+set -e; for svg in figures/*.svg; do \
+		base="${svg%.svg}"; \
+		hash=$(python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest())' "$svg"); \
+		rsvg-convert -f png -o "$base.png.tmp" "$svg"; \
+		rsvg-convert -f eps -o "$base.eps.tmp" "$svg"; \
+		printf '\n[ /Title (source-sha256:%s) /DOCINFO pdfmark\n' "$hash" >> "$base.eps.tmp"; \
+		ps2pdf -dEPSCrop -dOmitInfoDate=true -dOmitID=true -dOmitXMP=true "$base.eps.tmp" "$base.pdf.tmp"; \
+		mv "$base.png.tmp" "$base.png"; \
+		mv "$base.pdf.tmp" "$base.pdf"; \
+		rm -f "$base.eps.tmp"; \
+	done
+cd en && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.tex
+Category 'changed_user':
+  main.tex
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/ieeetran/IE
+EEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+tm.fd)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+math.sty
+For additional information on amsmath, use the `?' option.
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+text.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+gen.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+bsy.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+opn.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+ssymb.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+sfonts.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/booktabs/bo
+oktabs.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphicx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ke
+yval.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphics.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/tr
+ig.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/graphics.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-de
+f/pdftex.def)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/tools/tabul
+arx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/tools/array
+.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/url/url.sty
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hy
+perref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ift
+ex.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvsetkeys/k
+vsetkeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/kvdefinek
+eys/kvdefinekeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdfescape
+/pdfescape.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/ltxcmds/l
+txcmds.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdftexcmd
+s/pdftexcmds.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/infwarerr
+/infwarerr.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hycolor/hyc
+olor.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/na
+meref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/refcount/re
+fcount.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/gettitles
+tring/gettitlestring.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvoptions/k
+voptions.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/etoolbox/et
+oolbox.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/stringenc
+/stringenc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pd
+1enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/intcalc/i
+ntcalc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pu
+enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bitset/bi
+tset.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bigintcal
+c/bigintcalc.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atbegs
+hi-ltx.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hp
+dftex.def
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atvery
+end-ltx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/rerunfilech
+eck/rerunfilecheck.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/uniquecou
+nter/uniquecounter.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3backend/l
+3backend-pdftex.def) (./main.aux)
+-- Lines per column: 58 (exact).
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/context/base/mkii
+/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/epstopdf-pk
+g/epstopdf-base.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/latexconfig
+/epstopdf-sys.cfg)) (./main.out) (./main.out)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/um
+sa.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/um
+sb.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+cr.fd)
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+[]\OT1/ptm/b/n/10 C1---Contracts: \OT1/ptm/m/n/10 ver-sioned trust-boundary
+
+
+Underfull \hbox (badness 5091) in paragraph at lines 39--40
+[]\OT1/ptm/b/n/10 C4---Harness: \OT1/ptm/m/n/10 assignment-complete of-fline co
+n-for-
+(../generated/contribution_map_en.tex)
+Underfull \vbox (badness 10000) has occurred while \output is active
+[1{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/map/pdftex/up
+dmap/pdftex.map}{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts
+/enc/dvips/base/8r.enc}]
+Underfull \hbox (badness 2221) in paragraph at lines 60--61
+[]\OT1/ptm/m/n/10 Experience-driven gen-er-a-tion, observer-labelled en-gage-
+
+
+[2 <../figures/fig_architecture.pdf>]
+
+Underfull \hbox (badness 4353) in paragraph at lines 125--130
+[]\OT1/ptm/m/n/10 The NPC lane uses \OT1/pcr/m/n/10 npc-goal-recovery/1.1.0
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 and a me-chan-i-cally ex-act gen-er-ated run-time mir-ror.
+
+Underfull \hbox (badness 2970) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 Con-fig, disclosure-policy, and \OT1/pcr/m/n/10 project.godot \
+OT1/ptm/m/n/10 hashes
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 are recorded by SHA-256 pre-fixes \OT1/pcr/m/n/10 d63f5679f360\
+OT1/ptm/m/n/10 ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/pcr/m/n/10 af0a1075294b\OT1/ptm/m/n/10 , and \OT1/pcr/m/n/10 2e7966bf2ac6\
+OT1/ptm/m/n/10 ; full
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 di-gests are in $\OT1/pcr/m/n/10 research / academic-[]pipeline
+ /
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/pcr/m/n/10 npc-[]goal-[]recovery / verified-[]run-[]002/$\OT1/ptm/m/n/10 .
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 Be-fore writ-ing, Godot syn-chronously checks ses-
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 sion/epoch/request/scenario/NPC/goal/version, pol-icy/config
+
+Underfull \hbox (badness 2689) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 hashes, re-vi-sion/state hash, dead-line/budget, and issued-
+
+Underfull \hbox (badness 3271) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 typed claims and com-putes the public-projection plan;
+
+Underfull \hbox (badness 1377) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 re-place it. Ut-ter-ance re-quests com-mit raw UTF-8 bytes
+
+Underfull \hbox (badness 2735) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 reads hid-den state. \OT1/pcr/m/n/10 acquire_object\OT1/ptm/m/n
+/10 /\OT1/pcr/m/n/10 install_lens
+
+Underfull \hbox (badness 7925) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 are \OT1/pcr/m/n/10 player_request\OT1/ptm/m/n/10 ; \OT1/pcr/m/
+n/10 reveal_hint \OT1/ptm/m/n/10 is Mira-only
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/pcr/m/n/10 clarify\OT1/ptm/m/n/10 /\OT1/pcr/m/n/10 negotiate \OT1/ptm/m/n/
+10 are dialogue-only. No pub-lic
+
+Underfull \hbox (badness 2990) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 at-tempts, re-plans, and BFS ex-pan-sions are cu-mu-la-tive,
+
+Underfull \hbox (badness 6268) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 while only ac-tual in-fer-ence con-sumes pro-cess quota.
+
+Underfull \hbox (badness 6825) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 re-ex-e-cutes im-mutable in-put via \OT1/pcr/m/n/10 --npc-exper
+iment
+
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
+\OT1/ptm/m/n/10 as \OT1/pcr/m/n/10 engine_fixture_reexecution\OT1/ptm/m/n/10 , 
+never
+
+[3]
+(../generated/evidence_lanes_en.tex)
+[4]
+
+Underfull \hbox (badness 6332) in paragraph at lines 201--202
+[]\OT1/ptm/m/n/10 NPC-ENG1 is a de-ter-min-is-tic na-tive 16-case rule-
+
+Underfull \hbox (badness 6625) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 control lane cov-er-ing boot-strap, iden-tity/hash bind-ing,
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 in-tent/plan/role/result tran-si-tions, neg-a-tive gates,
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 stale/duplicate/deadline paths, and re-play. Sta-ble v5
+
+Underfull \hbox (badness 5288) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 de-fines 16 en-gi-neer-ing as-sign-ments and 12 screen-ing
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 recipes; ear-lier pack-ets are im-mutable prove-nance.
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 His-tor-i-cal pre-flight di-ag-nos-tics re-main out-side NPC-
+
+Underfull \hbox (badness 6691) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 SCR1 out-comes; fi-nal sta-tuses, counts, and la-ten-cies
+
+Underfull \hbox (badness 5954) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 come only from the val-i-dated packet. This lane is
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 pro-to-col/engine ev-i-dence only; re-pro-duc-tion uses the
+
+Underfull \hbox (badness 2894) in paragraph at lines 204--206
+\OT1/ptm/m/n/10 Only player-request \OT1/pcr/m/n/10 acquire_object\OT1/ptm/m/n/
+10 /\OT1/pcr/m/n/10 install_lens
+
+[5] (../generated/pilot_tables_en.tex) (../generated/pilot_results_en.tex
+Underfull \hbox (badness 2050) in paragraph at lines 5--6
+\OT1/ptm/m/n/10 and 6 ir-repara-ble. Rejection-only and blind unchanged-
+
+Underfull \hbox (badness 2150) in paragraph at lines 5--6
+\OT1/ptm/m/n/10 counts sep-a-rate the three mech-a-nisms on the de-signed
+
+Underfull \hbox (badness 7613) in paragraph at lines 5--6
+\OT1/pcr/m/n/10 OMISSION\OT1/ptm/m/n/10 +\OT1/pcr/m/n/10 UNSATISFIED_PRECONDITI
+ON\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 POLICY_
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+\OT1/pcr/m/n/10 EFFECT_OMISSION\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 POLICY_EFFECT_
+VIOLATION\OT1/ptm/m/n/10 ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+\OT1/pcr/m/n/10 UNSATISFIED_PRECONDITION\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 POLIC
+Y_QUEST_
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+\OT1/pcr/m/n/10 STAGE_EFFECT_VIOLATION\OT1/ptm/m/n/10 , re-spec-tively, and eac
+h
+
+
+[6 <../figures/fig_evidence_regimes.pdf>])
+(../generated/live_pilot_results_en.tex) (../generated/live_pilot_tables_en.tex
+
+) (../generated/npc_results_en.tex) (../generated/npc_tables_en.tex)
+Underfull \hbox (badness 2269) in paragraph at lines 4--228
+\OT1/ptm/m/n/10 ing cases ini-tial-ized from ac-tual en-gine snap-shots (as-
+
+Underfull \hbox (badness 4454) in paragraph at lines 4--228
+\OT1/ptm/m/n/10 signed[]failure=2, com-pleted=14). NPC-SCR1 re-tains all
+
+Underfull \hbox (badness 3690) in paragraph at lines 4--228
+\OT1/ptm/m/n/10 72 as-sign-ments and fail-ures, 24 per P/R/O arm (as-
+
+[7]
+
+Underfull \hbox (badness 2875) in paragraph at lines 261--262
+[]\OT1/ptm/m/n/10 Prior work cited above cov-ers con-strained de-coders,
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
+\OT1/ptm/m/n/10 re-trieval/memory, ex-e-cutable bench-marks, and process-
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
+\OT1/ptm/m/n/10 linked mea-sure-ment; TRACE-RPG claims no
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
+\OT1/ptm/m/n/10 out-per-for-mance. Planned (not ex-e-cuted): pre-reg-is-tered
+
+[8 <../figures/fig_npc_screening.pdf> <../captures/playable-readout-20261014-r2
+/refusal.png> <../captures/playable-readout-20261014-r2/authorized_hint.png> <.
+./captures/playable-readout-20261014-r2/ending.png>]
+Underfull \hbox (badness 1917) in paragraph at lines 267--268
+[]\OT1/ptm/m/n/10 No par-tic-i-pants or per-sonal teleme-try were col-lected.
+
+Underfull \hbox (badness 1360) in paragraph at lines 270--272
+[]\OT1/ptm/m/n/10 TRACE-RPG gates pay-loads be-fore mu-ta-tion and au-
+
+Underfull \hbox (badness 1960) in paragraph at lines 270--272
+\OT1/ptm/m/n/10 dits out-comes via linked records/replay. Frozen fix-tures
+
+Underfull \hbox (badness 2644) in paragraph at lines 270--272
+\OT1/ptm/m/n/10 es-tab-lish con-for-mance; live screen-ing sep-a-rates $\OML/cm
+m/m/it/10 ^^Z$ \OT1/ptm/m/n/10 from
+
+Underfull \hbox (badness 3108) in paragraph at lines 270--272
+\OT1/ptm/m/n/10 blind retry (5/5 vs. 0/5) only in the con-structed re-
+
+Underfull \hbox (badness 7649) in paragraph at lines 270--272
+\OT1/ptm/m/n/10 pairable regime and re-mains pilot-only. Godot read-
+
+Underfull \hbox (badness 1874) in paragraph at lines 275--277
+\OT1/ptm/m/n/10 identity checks; a hosted model sup-plied la-belled live-
+
+Underfull \hbox (badness 3271) in paragraph at lines 279--280
+[]\OT1/ptm/m/n/10 The repos-i-tory pro-vides im-ple-men-ta-tion/build sources,
+(./main.bbl
+
+[9]
+Underfull \hbox (badness 2158) in paragraph at lines 217--220
+[]\OT1/ptm/m/n/8 E. Zhou, S. Basa-va-tia, M. Siam, Z. Chen, and M. O. Riedl,
+
+)
+[10] (./main.aux) )
+(see the transcript file for additional information)</opt/homebrew/Cellar/texli
+ve/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/
+homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20250308_2/sha
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cellar/te
+xlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></op
+t/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi9.pfb></opt/homebrew/Cellar/texlive/20250308_2/sh
+are/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></op
+t/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr9.pfb></opt/homebrew/Cellar/texlive/20250308_2/shar
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/te
+xlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></op
+t/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts
+/type1/urw/courier/ucrb8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/te
+xmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20250
+308_2/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/home
+brew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmr8a.pf
+b></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/tim
+es/utmri8a.pfb>
+Output written on main.pdf (10 pages, 1498664 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Found bibliography file(s):
+  ../references.bib
+Latexmk: All targets (main.pdf) are up-to-date
+
+cd ko && latexmk -xelatex -interaction=nonstopmode -halt-on-error main.tex
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+Latexmk: applying rule 'xelatex'...
+Rule 'xelatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.tex
+Category 'changed_user':
+  main.tex
+
+------------
+Run number 1 of rule 'xelatex'
+------------
+------------
+Running 'xelatex -no-pdf -interaction=nonstopmode -halt-on-error -recorder  "main.tex"'
+------------
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Homebrew) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/ieeetran/IE
+EEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+
+LaTeX Font Warning: Font shape `TU/ptm/m/n' undefined
+(Font)              using `TU/lmr/m/n' instead on input line 503.
+
+-- Using 8.5in x 11in (letter) paper.
+-- Using DVI output.
+-- This is a 10 point document.
+
+LaTeX Font Warning: Font shape `TU/ptm/bx/n' undefined
+(Font)              using `TU/ptm/m/n' instead on input line 1090.
+
+
+LaTeX Font Warning: Font shape `TU/ptm/m/it' undefined
+(Font)              using `TU/ptm/m/n' instead on input line 1090.
+
+
+LaTeX Font Warning: Font shape `TU/ptm/bx/it' undefined
+(Font)              using `TU/ptm/bx/n' instead on input line 1090.
+
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ift
+ex.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/fontspec/fo
+ntspec.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3packages/
+xparse/xparse.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3kernel/ex
+pl3.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3backend/l
+3backend-xetex.def)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/fontspec/fo
+ntspec-xetex.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/fonten
+c.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/fontspec/fo
+ntspec.cfg)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/xelatex/xecjk/xeC
+JK.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/ctex/ctexho
+ok.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3packages/
+xtemplate/xtemplate.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/xelatex/xecjk/xeC
+JK.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+math.sty
+For additional information on amsmath, use the `?' option.
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+text.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+gen.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+bsy.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+opn.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+ssymb.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+sfonts.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/booktabs/bo
+oktabs.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphicx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ke
+yval.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphics.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/tr
+ig.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/graphics.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-de
+f/xetex.def)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/tools/tabul
+arx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/tools/array
+.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/url/url.sty
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hy
+perref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvsetkeys/k
+vsetkeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/kvdefinek
+eys/kvdefinekeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdfescape
+/pdfescape.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/ltxcmds/l
+txcmds.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdftexcmd
+s/pdftexcmds.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/infwarerr
+/infwarerr.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hycolor/hyc
+olor.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/na
+meref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/refcount/re
+fcount.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/gettitles
+tring/gettitlestring.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvoptions/k
+voptions.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/etoolbox/et
+oolbox.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/stringenc
+/stringenc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pd
+1enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/intcalc/i
+ntcalc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pu
+enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bitset/bi
+tset.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bigintcal
+c/bigintcalc.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atbegs
+hi-ltx.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hx
+etex.def
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/rerunfilech
+eck/rerunfilecheck.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atvery
+end-ltx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/uniquecou
+nter/uniquecounter.sty))) (./main.aux)
+-- Lines per column: 58 (exact).
+(./main.out) (./main.out)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/um
+sa.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/um
+sb.fd)
+
+LaTeX Font Warning: Font shape `TU/TimesNewRoman(0)/m/sc' undefined
+(Font)              using `TU/TimesNewRoman(0)/m/n' instead on input line 75.
+
+
+
+Underfull \hbox (badness 6725) in paragraph at lines 86--87
+[]\TU/TimesNewRoman(0)/b/n/10 C5—\TU/NanumBarunGothicOTF(0)/b/n/10 수 리\TU/Times
+NewRoman(0)/b/n/10 : \TU/NanumBarunGothicOTF(0)/m/n/10 동 결 \TU/TimesNewRoman(0)
+/m/n/10 repairability class \TU/NanumBarunGothicOTF(0)/m/n/10 에 서 \TU/TimesNewR
+oman(0)/m/n/10 blind
+
+Underfull \hbox (badness 6944) in paragraph at lines 86--87
+\TU/TimesNewRoman(0)/m/n/10 retry \TU/NanumBarunGothicOTF(0)/m/n/10 및 \TU/Times
+NewRoman(0)/m/n/10 state-reading oracle \TU/NanumBarunGothicOTF(0)/m/n/10 과 비 교
+ 한 \TU/TimesNewRoman(0)/m/n/10 typed
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
+\TU/TimesNewRoman(0)/m/n/10 validator-error-guided operator $\OML/cmm/m/it/10 ^
+^Z\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 a; E\OT1/cmr/m/n/10 )$ \TU/TimesNewRoman(0)
+/m/n/10 (\TU/NanumBarunGothicOTF(0)/m/n/10 구 현\TU/TimesNewRoman(0)/m/n/10 :
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
+\TU/lmtt/m/n/10 counterexample_guided_repair\TU/TimesNewRoman(0)/m/n/10 ) ([][]
+[]\TU/NanumBarunGothicOTF(0)/m/n/10 절\TU/TimesNewRoman(0)/m/n/10 ; E1,
+(../generated/contribution_map_ko.tex)
+Underfull \vbox (badness 3954) has occurred while \output is active
+[1]
+
+[2]
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
+\TU/TimesNewRoman(0)/m/sc/10 raw bytes \TU/NanumBarunGothicOTF(0)/m/it/10 의 \TU
+/TimesNewRoman(0)/m/sc/10 SHA-256 \TU/NanumBarunGothicOTF(0)/m/it/10 이 며 논 문 에 
+는 \TU/TimesNewRoman(0)/m/sc/10 prefix
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
+\TU/lmtt/m/n/10 d63f5679f360d3fd \TU/NanumBarunGothicOTF(0)/m/it/10 만 싣 고 전 체 \
+TU/TimesNewRoman(0)/m/sc/10 digest \TU/NanumBarunGothicOTF(0)/m/it/10 는
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
+[][][][][][][][] [] [][][][][][][][][][][][][][][][][][] [] [][][][][][][][][][
+][][][][][][][][][] []
+
+Underfull \hbox (badness 1838) in paragraph at lines 156--159
+[][][][][][][][][][][][][][][][][][][]$ \TU/NanumBarunGothicOTF(0)/m/it/10 의 \T
+U/TimesNewRoman(0)/m/sc/10 validated packet hash manifest
+
+Underfull \hbox (badness 4168) in paragraph at lines 156--159
+[][][][][][][] [] [][][][][]$ \TU/TimesNewRoman(0)/m/sc/10 source hash \TU/Nanu
+mBarunGothicOTF(0)/m/it/10 는 \TU/TimesNewRoman(0)/m/sc/10 prefix \TU/lmtt/m/n/1
+0 2e7966bf2ac6
+
+Underfull \hbox (badness 4752) in paragraph at lines 156--159
+\TU/NanumBarunGothicOTF(0)/m/it/10 로 같 은 \TU/TimesNewRoman(0)/m/sc/10 manifest 
+\TU/NanumBarunGothicOTF(0)/m/it/10 에 기 록 된 다\TU/TimesNewRoman(0)/m/sc/10 . utte
+rance event \TU/NanumBarunGothicOTF(0)/m/it/10 의
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][]$
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
+\TU/TimesNewRoman(0)/m/sc/10 (goal version 1, NPC \TU/lmtt/m/n/10 captain_mira\
+TU/TimesNewRoman(0)/m/sc/10 ) \TU/NanumBarunGothicOTF(0)/m/it/10 이 며
+
+Underfull \hbox (badness 2662) in paragraph at lines 156--159
+\TU/TimesNewRoman(0)/m/sc/10 utterance/claim/model output \TU/NanumBarunGothicO
+TF(0)/m/it/10 은 이 를 바 꾸 지 못 한 다\TU/TimesNewRoman(0)/m/sc/10 .
+
+Underfull \hbox (badness 1424) in paragraph at lines 156--159
+\TU/TimesNewRoman(0)/m/sc/10 dialogue \TU/NanumBarunGothicOTF(0)/m/it/10 와 미 적 
+용 결 과 는 \TU/TimesNewRoman(0)/m/sc/10 state reference \TU/NanumBarunGothicOTF(0)
+/m/it/10 를 유 지 하
+
+Underfull \hbox (badness 1789) in paragraph at lines 156--159
+\TU/TimesNewRoman(0)/m/sc/10 replay \TU/NanumBarunGothicOTF(0)/m/it/10 는 모 델 호 
+출 \TU/TimesNewRoman(0)/m/sc/10 0 \TU/NanumBarunGothicOTF(0)/m/it/10 회 이 고 \TU/T
+imesNewRoman(0)/m/sc/10 native replay \TU/NanumBarunGothicOTF(0)/m/it/10 경 로 는
+
+Underfull \hbox (badness 2698) in paragraph at lines 156--159
+\TU/lmtt/m/n/10 --npc-experiment\TU/TimesNewRoman(0)/m/sc/10 /\TU/lmtt/m/n/10 e
+ngine_fixture_reexecution \TU/NanumBarunGothicOTF(0)/m/it/10 이 며
+
+[3]
+(../generated/evidence_lanes_ko.tex)
+[4]
+Underfull \hbox (badness 7540) in paragraph at lines 252--253
+[]\TU/TimesNewRoman(0)/m/sc/10 NPC-ENG1 \TU/NanumBarunGothicOTF(0)/m/it/10 은 \T
+U/TimesNewRoman(0)/m/sc/10 bootstrap, identity/hash binding, in-
+
+
+Underfull \hbox (badness 1946) in paragraph at lines 255--256
+\TU/TimesNewRoman(0)/m/sc/10 signed row \TU/NanumBarunGothicOTF(0)/m/it/10 와 \T
+U/TimesNewRoman(0)/m/sc/10 failure \TU/NanumBarunGothicOTF(0)/m/it/10 를 분 모 에 보
+ 존 하 며 \TU/TimesNewRoman(0)/m/sc/10 recovery-
+
+Underfull \hbox (badness 4416) in paragraph at lines 257--258
+\TU/NanumBarunGothicOTF(0)/m/it/10 및 \TU/TimesNewRoman(0)/m/sc/10 v1–v4 provena
+nce pointer \TU/NanumBarunGothicOTF(0)/m/it/10 는 원 본 에 보 존 한 다\TU/TimesNewRoman
+(0)/m/sc/10 .
+
+[5] (../generated/pilot_results_ko.tex
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+\TU/lmtt/m/n/10 PRECONDITION_OMISSION\TU/TimesNewRoman(0)/m/sc/10 +\TU/lmtt/m/n
+/10 UNSATISFIED_PRECONDITION\TU/TimesNewRoman(0)/m/sc/10 ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+\TU/lmtt/m/n/10 POLICY_EFFECT_OMISSION\TU/TimesNewRoman(0)/m/sc/10 , \TU/lmtt/m
+/n/10 POLICY_EFFECT_VIOLATION\TU/TimesNewRoman(0)/m/sc/10 ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+\TU/lmtt/m/n/10 UNSATISFIED_PRECONDITION\TU/TimesNewRoman(0)/m/sc/10 , \TU/lmtt
+/m/n/10 POLICY_QUEST_STAGE_
+)
+(../generated/pilot_tables_ko.tex) (../generated/live_pilot_results_ko.tex
+[6]) (../generated/live_pilot_tables_ko.tex) (../generated/npc_results_ko.tex)
+(../generated/npc_tables_ko.tex)
+
+[7]
+
+Underfull \hbox (badness 1917) in paragraph at lines 324--326
+\TU/TimesNewRoman(0)/m/sc/10 model/player/retrieval/memory/affect/commercial be
+nefit \TU/NanumBarunGothicOTF(0)/m/it/10 은
+
+[8] (./main.bbl
+
+[9]
+Underfull \hbox (badness 2103) in paragraph at lines 217--220
+[]\TU/TimesNewRoman(0)/m/sc/8 E. Zhou, S. Basavatia, M. Siam, Z. Chen, and M. O
+. Riedl,
+
+)
+[10] (./main.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+(see the transcript file for additional information)
+Output written on main.xdv (10 pages, 577356 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.xdv'
+Latexmk: Found bibliography file(s):
+  ../references.bib
+Latexmk: applying rule 'xdvipdfmx'...
+Rule 'xdvipdfmx':  Reasons for rerun
+Changed files or newly in use/created:
+  main.xdv
+Category 'changed_source_rules':
+  xelatex
+
+------------
+Run number 1 of rule 'xdvipdfmx'
+------------
+------------
+Running 'xdvipdfmx -E -o "main.pdf"  "main.xdv"'
+------------
+main.xdv -> main.pdf
+[1][2][3][4][5][6][7][8][9][10]
+1578765 bytes written
+Latexmk: All targets (main.xdv main.pdf) are up-to-date
+

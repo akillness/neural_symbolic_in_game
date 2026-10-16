@@ -83,7 +83,7 @@ func _run_mira_responsive_regression() -> void:
 		await process_frame
 		_expect(_ui.choice_count() == 4, "actual Mira authored choice list was not opened")
 		var first := _ui._choice_box.get_child(0) as Button
-		_expect(first.text == "What happened to the lighthouse?", "first authored Mira choice drifted")
+		_expect(first.text == "[1] What happened to the lighthouse?", "first authored Mira choice drifted")
 		_expect(first.visible and not first.disabled, "first authored Mira choice is not actionable")
 		var viewport_rect := Rect2(Vector2.ZERO, viewport_size)
 		_expect_rect_inside(first.get_global_rect(), viewport_rect, "first authored Mira choice")

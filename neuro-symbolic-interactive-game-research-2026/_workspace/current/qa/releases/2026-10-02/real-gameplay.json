@@ -1,0 +1,602 @@
+{
+  "boundary": "Real local game input observation; not human usability, fun, efficacy or G4/G6 evidence.",
+  "captured_at": "2026-10-02T10:53:04.948Z",
+  "url": "http://localhost:8788/dashboard/",
+  "summary": {
+    "commit_count": 1,
+    "fact_count": 3,
+    "labels": [
+      "Signal lens secured"
+    ],
+    "mutated": true,
+    "operation": "acquire_object",
+    "refusal_count": 2,
+    "revision": 1,
+    "stage": 1,
+    "stage_from": 0,
+    "stage_to": 1,
+    "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+    "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+    "trace": {
+      "checks": [
+        {
+          "code": "OBJECT_NOT_PRESENT",
+          "gate": "REACHABILITY",
+          "outcome": "pass"
+        },
+        {
+          "code": "OBJECT_NOT_REACHABLE",
+          "gate": "REACHABILITY",
+          "outcome": "pass"
+        }
+      ],
+      "consistent": true,
+      "evaluated_gates": [
+        "REACHABILITY"
+      ],
+      "family_states": {
+        "DISCLOSURE": "out_of_scope",
+        "KNOWLEDGE": "out_of_scope",
+        "POLICY": "out_of_scope",
+        "PRECONDITION": "out_of_scope",
+        "QUEST STAGE": "out_of_scope",
+        "REACHABILITY": "pass"
+      },
+      "held_at": "",
+      "out_of_scope": [
+        "POLICY",
+        "PRECONDITION",
+        "KNOWLEDGE",
+        "DISCLOSURE",
+        "QUEST STAGE"
+      ],
+      "short_circuit": false,
+      "skipped": []
+    }
+  },
+  "tick": {
+    "dialogue_open": false,
+    "episode_over": false,
+    "focus": "",
+    "play_started": true,
+    "stage": 1,
+    "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+    "tutorial_open": false,
+    "x": -10.49,
+    "yaw": 0,
+    "z": 2.41
+  },
+  "verdicts": [
+    {
+      "id": 1,
+      "serial": 1,
+      "kind": "hold",
+      "operation": "ask_secret",
+      "at": 7083985.400000095,
+      "seq": 27368,
+      "outcomeText": "Held · game state unchanged.",
+      "summaryText": "Recover the signal lens from the lamp store.",
+      "nextAffordance": "Recover the signal lens from the lamp store.",
+      "legacy": false,
+      "trace": {
+        "checks": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "gate": "DISCLOSURE",
+            "outcome": "fail",
+            "families": [
+              "DISCLOSURE"
+            ]
+          },
+          {
+            "code": "STAGE_GATED_DISCLOSURE",
+            "gate": "DISCLOSURE/QUEST STAGE",
+            "outcome": "pass",
+            "families": [
+              "DISCLOSURE",
+              "QUEST STAGE"
+            ]
+          }
+        ],
+        "evaluatedGates": [
+          "DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE"
+        ],
+        "heldAt": "FORBIDDEN_DISCLOSURE",
+        "shortCircuit": true,
+        "skipped": [],
+        "outOfScope": [
+          "POLICY",
+          "PRECONDITION",
+          "REACHABILITY",
+          "KNOWLEDGE"
+        ],
+        "states": {
+          "POLICY": "out_of_scope",
+          "PRECONDITION": "out_of_scope",
+          "REACHABILITY": "out_of_scope",
+          "KNOWLEDGE": "out_of_scope",
+          "DISCLOSURE": "fail",
+          "QUEST STAGE": "pass"
+        },
+        "missing": []
+      }
+    },
+    {
+      "id": 2,
+      "serial": 2,
+      "kind": "hold",
+      "operation": "ask_secret",
+      "at": 7256317.800000191,
+      "seq": 28041,
+      "outcomeText": "Held · game state unchanged.",
+      "summaryText": "Recover the signal lens from the lamp store.",
+      "nextAffordance": "Recover the signal lens from the lamp store.",
+      "legacy": false,
+      "trace": {
+        "checks": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "gate": "DISCLOSURE",
+            "outcome": "fail",
+            "families": [
+              "DISCLOSURE"
+            ]
+          },
+          {
+            "code": "STAGE_GATED_DISCLOSURE",
+            "gate": "DISCLOSURE/QUEST STAGE",
+            "outcome": "pass",
+            "families": [
+              "DISCLOSURE",
+              "QUEST STAGE"
+            ]
+          }
+        ],
+        "evaluatedGates": [
+          "DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE"
+        ],
+        "heldAt": "FORBIDDEN_DISCLOSURE",
+        "shortCircuit": true,
+        "skipped": [],
+        "outOfScope": [
+          "POLICY",
+          "PRECONDITION",
+          "REACHABILITY",
+          "KNOWLEDGE"
+        ],
+        "states": {
+          "POLICY": "out_of_scope",
+          "PRECONDITION": "out_of_scope",
+          "REACHABILITY": "out_of_scope",
+          "KNOWLEDGE": "out_of_scope",
+          "DISCLOSURE": "fail",
+          "QUEST STAGE": "pass"
+        },
+        "missing": []
+      }
+    },
+    {
+      "id": 3,
+      "serial": 3,
+      "kind": "commit",
+      "operation": "acquire_object",
+      "at": 7599477.200000048,
+      "seq": 29374,
+      "outcomeText": "Committed · stage 0 → 1.",
+      "summaryText": "Signal lens secured",
+      "nextAffordance": "",
+      "legacy": false,
+      "trace": {
+        "checks": [
+          {
+            "code": "OBJECT_NOT_PRESENT",
+            "gate": "REACHABILITY",
+            "outcome": "pass",
+            "families": [
+              "REACHABILITY"
+            ]
+          },
+          {
+            "code": "OBJECT_NOT_REACHABLE",
+            "gate": "REACHABILITY",
+            "outcome": "pass",
+            "families": [
+              "REACHABILITY"
+            ]
+          }
+        ],
+        "evaluatedGates": [
+          "REACHABILITY"
+        ],
+        "heldAt": "",
+        "shortCircuit": false,
+        "skipped": [],
+        "outOfScope": [
+          "POLICY",
+          "PRECONDITION",
+          "KNOWLEDGE",
+          "DISCLOSURE",
+          "QUEST STAGE"
+        ],
+        "states": {
+          "POLICY": "out_of_scope",
+          "PRECONDITION": "out_of_scope",
+          "REACHABILITY": "pass",
+          "KNOWLEDGE": "out_of_scope",
+          "DISCLOSURE": "out_of_scope",
+          "QUEST STAGE": "out_of_scope"
+        },
+        "missing": []
+      }
+    }
+  ],
+  "events": [
+    {
+      "kind": "session",
+      "at": 6906760.5,
+      "seq": 26679,
+      "payload": {
+        "commit_count": 0,
+        "fact_count": 2,
+        "refusal_count": 0,
+        "revision": 0,
+        "scenario_id": "sealed-lighthouse-v1",
+        "sites": [
+          {
+            "id": "mira",
+            "x": 3,
+            "z": 11
+          },
+          {
+            "id": "lens_pickup",
+            "x": -11,
+            "z": 1
+          },
+          {
+            "id": "lamp_mount",
+            "x": 7,
+            "z": 13.5
+          },
+          {
+            "id": "lighthouse_view",
+            "x": 5.40000009536743,
+            "z": 14.8000001907349
+          },
+          {
+            "id": "tide_marks",
+            "x": -8.5,
+            "z": 15.5
+          }
+        ],
+        "spawn": {
+          "x": 0,
+          "z": 2
+        },
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    },
+    {
+      "kind": "focus",
+      "at": 7034153.600000143,
+      "seq": 27172,
+      "payload": {
+        "interaction_id": "mira"
+      },
+      "label": "mira"
+    },
+    {
+      "kind": "dialogue",
+      "at": 7049346.800000191,
+      "seq": 27232,
+      "payload": {
+        "npc": "captain_mira",
+        "phase": "open"
+      },
+      "label": "open"
+    },
+    {
+      "kind": "dialogue",
+      "at": 7083981.400000095,
+      "seq": 27367,
+      "payload": {
+        "choice_id": "ask_secret",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "label": "ask_secret"
+    },
+    {
+      "kind": "hold",
+      "at": 7083981.800000191,
+      "seq": 27368,
+      "payload": {
+        "codes": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "commit_count": 0,
+        "fact_count": 2,
+        "gates": [
+          "DISCLOSURE"
+        ],
+        "next_affordance": "Recover the signal lens from the lamp store.",
+        "refusal_count": 1,
+        "revision": 0,
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "trace": {
+          "checks": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "fail"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "DISCLOSURE",
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "family_states": {
+            "DISCLOSURE": "fail",
+            "KNOWLEDGE": "out_of_scope",
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "pass",
+            "REACHABILITY": "out_of_scope"
+          },
+          "held_at": "FORBIDDEN_DISCLOSURE",
+          "out_of_scope": [
+            "POLICY",
+            "PRECONDITION",
+            "REACHABILITY",
+            "KNOWLEDGE"
+          ],
+          "short_circuit": true,
+          "skipped": []
+        }
+      },
+      "label": "hold DISCLOSURE"
+    },
+    {
+      "kind": "coach_card",
+      "at": 7084003.5,
+      "seq": 27369,
+      "payload": {
+        "card_id": "hold_intro",
+        "phase": "shown"
+      }
+    },
+    {
+      "kind": "coach_card",
+      "at": 7226269.900000095,
+      "seq": 27922,
+      "payload": {
+        "card_id": "hold_intro",
+        "phase": "dismissed"
+      }
+    },
+    {
+      "kind": "focus",
+      "at": 7226526.5,
+      "seq": 27924,
+      "payload": {
+        "interaction_id": ""
+      },
+      "label": ""
+    },
+    {
+      "kind": "dialogue",
+      "at": 7256314.5,
+      "seq": 28040,
+      "payload": {
+        "choice_id": "ask_secret",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "label": "ask_secret"
+    },
+    {
+      "kind": "hold",
+      "at": 7256314.600000143,
+      "seq": 28041,
+      "payload": {
+        "codes": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "commit_count": 0,
+        "fact_count": 2,
+        "gates": [
+          "DISCLOSURE"
+        ],
+        "next_affordance": "Recover the signal lens from the lamp store.",
+        "refusal_count": 2,
+        "revision": 0,
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "trace": {
+          "checks": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "fail"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "DISCLOSURE",
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "family_states": {
+            "DISCLOSURE": "fail",
+            "KNOWLEDGE": "out_of_scope",
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "pass",
+            "REACHABILITY": "out_of_scope"
+          },
+          "held_at": "FORBIDDEN_DISCLOSURE",
+          "out_of_scope": [
+            "POLICY",
+            "PRECONDITION",
+            "REACHABILITY",
+            "KNOWLEDGE"
+          ],
+          "short_circuit": true,
+          "skipped": []
+        }
+      },
+      "label": "hold DISCLOSURE"
+    },
+    {
+      "kind": "dialogue",
+      "at": 7326290.800000191,
+      "seq": 28313,
+      "payload": {
+        "choice_id": "leave",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "label": "leave"
+    },
+    {
+      "kind": "dialogue",
+      "at": 7326290.900000095,
+      "seq": 28314,
+      "payload": {
+        "npc": "captain_mira",
+        "phase": "close"
+      },
+      "label": "close"
+    },
+    {
+      "kind": "focus",
+      "at": 7581231,
+      "seq": 29302,
+      "payload": {
+        "interaction_id": "lens_pickup"
+      },
+      "label": "lens_pickup"
+    },
+    {
+      "kind": "proposal",
+      "at": 7599474.700000048,
+      "seq": 29373,
+      "payload": {
+        "operation": "acquire_object",
+        "text": "Recover the signal lens"
+      },
+      "label": "acquire_object"
+    },
+    {
+      "kind": "commit",
+      "at": 7599475,
+      "seq": 29374,
+      "payload": {
+        "commit_count": 1,
+        "fact_count": 3,
+        "labels": [
+          "Signal lens secured"
+        ],
+        "mutated": true,
+        "operation": "acquire_object",
+        "refusal_count": 2,
+        "revision": 1,
+        "stage": 1,
+        "stage_from": 0,
+        "stage_to": 1,
+        "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+        "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "trace": {
+          "checks": [
+            {
+              "code": "OBJECT_NOT_PRESENT",
+              "gate": "REACHABILITY",
+              "outcome": "pass"
+            },
+            {
+              "code": "OBJECT_NOT_REACHABLE",
+              "gate": "REACHABILITY",
+              "outcome": "pass"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "REACHABILITY"
+          ],
+          "family_states": {
+            "DISCLOSURE": "out_of_scope",
+            "KNOWLEDGE": "out_of_scope",
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "out_of_scope",
+            "REACHABILITY": "pass"
+          },
+          "held_at": "",
+          "out_of_scope": [
+            "POLICY",
+            "PRECONDITION",
+            "KNOWLEDGE",
+            "DISCLOSURE",
+            "QUEST STAGE"
+          ],
+          "short_circuit": false,
+          "skipped": []
+        }
+      },
+      "label": "commit 0>1"
+    },
+    {
+      "kind": "coach_card",
+      "at": 7599486.200000048,
+      "seq": 29375,
+      "payload": {
+        "card_id": "ledger_intro",
+        "phase": "shown"
+      }
+    },
+    {
+      "kind": "focus",
+      "at": 7599493.600000143,
+      "seq": 29377,
+      "payload": {
+        "interaction_id": ""
+      },
+      "label": ""
+    },
+    {
+      "kind": "coach_card",
+      "at": 12146424.700000048,
+      "seq": 46985,
+      "payload": {
+        "card_id": "ledger_intro",
+        "phase": "dismissed"
+      }
+    },
+    {
+      "kind": "coach_card",
+      "at": 12146424.80000019,
+      "seq": 46986,
+      "payload": {
+        "card_id": "investigate",
+        "phase": "shown"
+      }
+    }
+  ],
+  "readout": {
+    "frozen": true,
+    "selected": 1
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "verdict": "FIX",
+  "scope": "scripts/generate_npc_paper_results.py + tests/test_generate_npc_paper_results_model_cohort.py (working-tree diff vs f3ece01)",
+  "summary": "Shipped implementation is correct and truthful; one concrete pre-publication test-coverage gap on the exact branch the Change asked me to check (negative/different-packet path of _portable_validation_report). No implementation defect found.",
+  "findings": [
+    {
+      "severity": "PASS",
+      "topic": "Path identity + portability (_portable_validation_report)",
+      "anchor": "scripts/generate_npc_paper_results.py:53-65",
+      "detail": "Uses recorded_path.resolve() == PACKET.resolve() for strict resolved-path identity (handles '..', symlinks, relative-vs-absolute) — NOT basename/name matching. Only rewrites packet_dir to PACKET.relative_to(ROOT).as_posix() when identity matches exactly; a non-matching recorded_dir (different packet, relocated dir, non-string, missing key) falls through unchanged. This is the correct, conservative behavior and matches the Contract ('exact PACKET' only)."
+    },
+    {
+      "severity": "PASS",
+      "topic": "Input immutability / shallow copy",
+      "anchor": "scripts/generate_npc_paper_results.py:54",
+      "detail": "portable = dict(report) creates a new top-level dict; only portable['packet_dir'] is ever reassigned, never report[...]. Caller's original `report` (and its nested errors/counts objects) is never mutated. Verified by direct read of the function body — no aliasing writes anywhere."
+    },
+    {
+      "severity": "PASS",
+      "topic": "valid/publishable/errors preserved",
+      "anchor": "scripts/generate_npc_paper_results.py:54,74-75",
+      "detail": "Shallow copy retains every key except packet_dir untouched. The strict validity gate (_require(not errors and report.get('valid') is True, ...)) runs on the pre-transform `report` BEFORE _portable_validation_report is applied (line 74 vs 75), so path normalization cannot mask or weaken a validator failure. Confirmed end-to-end by test_generated_validation_reports_use_project_relative_packet_dir_and_preserve_outcomes, which asserts valid/publishable/errors exactly equal {valid:true/true, publishable:false/true, errors:[]} for NPC-ENG1/NPC-SCR1 after the real main() run."
+    },
+    {
+      "severity": "PASS",
+      "topic": "Deterministic metadata across roots",
+      "anchor": "scripts/generate_npc_paper_results.py:62-63",
+      "detail": "Output is PACKET.relative_to(ROOT).as_posix() — a POSIX-forward-slash, ROOT-relative string with no absolute-mount-point component, so it is identical regardless of the checkout's absolute path (CI vs local vs any contributor's home dir)."
+    },
+    {
+      "severity": "PASS",
+      "topic": "Truthful O label (text + chart)",
+      "anchor": "scripts/generate_npc_paper_results.py:378,389,461,465",
+      "detail": "SVG note changed 'O: same-family auxiliary reference' (implied verified match) -> 'O: protocol auxiliary (family unverified)'; <desc> gained an appended (not substitutive) sentence 'O is a protocol-declared auxiliary; actual model-family matching is unverified.' Bilingual _results prose (KO/EN) consistently states O is a protocol-declared auxiliary under same_model_family_auxiliary, actual family-matching unverified, non-independent, and 'neither an oracle nor semantic gold.' All four surfaces (KO prose, EN prose, SVG note, SVG desc) now agree — no residual claim of verified family match anywhere."
+    },
+    {
+      "severity": "PASS",
+      "topic": "SVG 28px note fits 1100 width / caveat text retained",
+      "anchor": "scripts/generate_npc_paper_results.py:457-461,465",
+      "detail": "width/height unchanged (1100x468); AFM-metric estimate for the new 79-char note at 28px Helvetica/Arial starting x=40 renders to ~928px, ending ~x=968 — 132px of margin inside the 1100 viewBox (no overflow). The pre-existing <desc> sentence about synthetic descriptive counts / not recovery-efficacy estimates is preserved verbatim; the new O-disclosure sentence is appended after it, not a replacement — full original caveat text remains."
+    },
+    {
+      "severity": "FIX",
+      "topic": "Missing negative-path regression test for packet_dir identity",
+      "anchor": "tests/test_generate_npc_paper_results_model_cohort.py:247-284 (only relevant test)",
+      "detail": "The single new test only exercises the positive case: recorded_dir resolves to the exact PACKET (via the real main() run), confirming packet_dir becomes relative. There is no test that calls _portable_validation_report (or drives _load_packet/main through a mocked validate_packet) with a report whose packet_dir does NOT resolve to PACKET — i.e. a different/relocated packet directory, a non-string packet_dir, or a relative packet_dir that happens to share PACKET's basename but not its real parent. The Change explicitly calls out 'negative/different packet behavior' and 'no basename matching ... weakening' as required review points; today's suite would not fail if someone later regressed the comparison to `recorded_path.name == PACKET.name` (a basename match) instead of `recorded_path.resolve() == PACKET.resolve()`, because no test exercises a case where those two diverge. This is the concrete, testable gap tied directly to the stated acceptance criteria."
+    },
+    {
+      "severity": "FIX",
+      "topic": "No direct immutability assertion on _portable_validation_report's input",
+      "anchor": "tests/test_generate_npc_paper_results_model_cohort.py (absent)",
+      "detail": "Immutability of the original `report` dict passed into _portable_validation_report is correct by inspection (dict(report) copy, no writes to the original) but is not pinned by any test — e.g. no test asserts the pre-call report object's packet_dir key is unchanged after the call. Not a defect today, but unguarded against a future one-line regression (e.g. accidentally doing `report['packet_dir'] = ...` instead of `portable[...]`)."
+    }
+  ],
+  "minimal_fixes": [
+    "Add one small unit test that calls generator._portable_validation_report directly (no main()/filesystem needed) with a synthetic report dict whose packet_dir is a different absolute path (e.g. a sibling tempdir sharing PACKET's basename 'verified-run-002' but a different parent) and assert packet_dir is returned unchanged/still-absolute — pins the 'no basename matching' requirement.",
+    "In the same or a second small test, assert the original report dict object passed in is unmutated after the call (e.g. capture report['packet_dir'] before the call, call the function, assert the original dict's value is still the pre-call value) — pins immutability independent of the main() round-trip.",
+    "Optional: one case with packet_dir missing/non-string on a synthetic report, asserting the function returns the dict unchanged (currently only reachable in theory, never exercised)."
+  ],
+  "no_implementation_defects_found": true,
+  "no_basename_matching_or_validator_weakening_found": true,
+  "caveat_text_integrity": "confirmed intact, not truncated or replaced",
+  "blocking": "Test-coverage gap only; the shipped scripts/generate_npc_paper_results.py logic itself is correct, deterministic, non-mutating, and truthful as written. Verdict is FIX because the acceptance criteria explicitly require checking for untested negative/basename-matching regressions and that check surfaced a real, concrete, fixable gap before publication."
+}

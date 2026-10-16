@@ -1,0 +1,112 @@
+{
+  "scope": "Paper/project consistency corrections; not efficacy promotion",
+  "publication_status": "BLOCKED: actual source-artifact OpenCode review did not execute; explicit waiver not granted",
+  "strict_npc002": {
+    "command": "uv run python scripts/validate_npc_goal_evidence.py --packet all --packet-dir research/academic-pipeline/npc-goal-recovery/verified-run-002",
+    "result": "PASS:16 engineering+72 screening assignments,0errors",
+    "artifact": "artifact://3805"
+  },
+  "generator_tests": {
+    "command": "uv run python -m unittest tests.test_generate_npc_paper_results_model_cohort",
+    "result": "PASS",
+    "tests": 12,
+    "test_seconds": 20.798,
+    "wall_seconds": 21.18
+  },
+  "ruff": {
+    "lint": "PASS (final scoped ruff check)",
+    "format": "PASS:2 files already formatted",
+    "initial_import_failures_retained": true
+  },
+  "paper_build": {
+    "command": "make -C paper/latex check",
+    "result": "PASS",
+    "english_pages": 10,
+    "korean_pages": 10,
+    "wall_seconds": 11.82,
+    "artifact": "artifact://3923",
+    "typography_and_figure_sizes_unchanged": true
+  },
+  "kg": {
+    "initial_result": "FIX:claim-ledger wording made latest input receipts stale",
+    "correction_command": "uv run python scripts/run_kg_ontology_simulation.py --no-database --json",
+    "result": "CurrentKGcheckPASS; graphandallwinneroutcomemetricsunchanged; regeneratedmetadatareceiptonly",
+    "artifact": "artifact://3831"
+  },
+  "jev": {
+    "result": "proposal_only",
+    "model": "jev-1.13.0",
+    "threshold": 0.8,
+    "advisory_only": true,
+    "receipt_file": "jev-initial-review.json"
+  },
+  "opencode": {
+    "actual_review_performed": false,
+    "attempts": 6,
+    "first_failure": "opencode/big-pickle403 free-tier eligibility,notanOAuthdiagnosis",
+    "other_failures": "Anthropic401;Google400;OpenAI401;defaultserviceOpenAI401;localOllamaJEV9Btransportclosed140.54s",
+    "automatic_attempts_stopped": true,
+    "manual_recovery_example": "opencode auth login openai",
+    "root_cause": "Not conclusively established; no credentials read or changed",
+    "local_attempt_classification": "Failed self-summary consistency probe, not source-artifact cross-review; cannot satisfy required OpenCode gate even if it had returned PASS."
+  },
+  "git_push_performed": false,
+  "godot_new_release_build_performed": false,
+  "vercel_deploy_performed": false,
+  "user_changes": {
+    "initial_files": 12,
+    "sha256_mismatches": 0
+  },
+  "visual": {
+    "manifest_update": "uv run python scripts/update_visual_source_manifest.py, after final marker/PDF rebuild",
+    "command": "uv run python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration",
+    "result": "PASS",
+    "unique_receipts": 110,
+    "svg_assets": 7,
+    "double_regenerated_sources": 22,
+    "wall_seconds": 8.3
+  },
+  "crosswalk": {
+    "result": "PASS",
+    "contributions": 5,
+    "references": 58,
+    "topics": 9,
+    "experiment_lanes": 3,
+    "engineering_lanes": 1
+  },
+  "project_integrity": {
+    "result": "PASS",
+    "observed": "structure,LaTeX,bridge,SVG,captures,raw hashes,KG simulation,Graphify layers"
+  },
+  "independent_reviews": {
+    "python_generator_and_tests": "APPROVE",
+    "scientific_claim_scope_and_bilingual_parity": "APPROVE",
+    "opencode": "DID NOT EXECUTE"
+  },
+  "full_ci_rerun": false,
+  "final_layout": {
+    "observed": "EN/KO pages8and10 rendered and visually inspected:tables/figures/captions/references contained; no removedfiguresorfontshrinking",
+    "images": [
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/paper-project-review-20261015/en-08.png",
+        "sha256": "75249bf87074d963d88a69f82dc0d15469bdc2be0ee8425a7a4c5ac7a15d0fbd"
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/paper-project-review-20261015/en-10.png",
+        "sha256": "bcafd8c2dd1f87a2a6e6d22ac81953f0f25afe9cec21de219b436153e00f7535"
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/paper-project-review-20261015/ko-08.png",
+        "sha256": "4ad470ddc52d75bc0310da739e040821f933137168e32f50d04367a29e24fcdb"
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/paper-project-review-20261015/ko-10.png",
+        "sha256": "2a25cb01be6794dcd42497028880b577d2c684fcdeada30b31546fffa74c8300"
+      }
+    ]
+  },
+  "wiki": {
+    "command": "uv run python scripts/lint_wiki.py ../llm-wiki",
+    "result": "PASS:75pages,no structuralissues"
+  }
+}

@@ -1,0 +1,1306 @@
+{
+  "boundary": "Aside instrumented browser renderer regression only. Not independent unpatched headless verification; not real gameplay/usability/efficacy evidence.",
+  "captured_at": "2026-10-02T10:55:09.163Z",
+  "trace": {
+    "fixtures": [
+      {
+        "fixture": "a_acquire_commit",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "out_of_scope",
+          "pass",
+          "committed"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "out_of_scope",
+            "REACHABILITY": "pass",
+            "KNOWLEDGE": "out_of_scope",
+            "DISCLOSURE": "out_of_scope",
+            "QUEST STAGE": "out_of_scope"
+          },
+          "words": {
+            "POLICY": "not evaluated",
+            "PRECONDITION": "not evaluated",
+            "REACHABILITY": "passed",
+            "KNOWLEDGE": "not evaluated",
+            "DISCLOSURE": "not evaluated",
+            "QUEST STAGE": "not evaluated"
+          },
+          "weights": {
+            "proposer": "routed x1",
+            "parser": "routed x1",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x1",
+            "trace": "routed x1"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "QUEST STAGE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            }
+          },
+          "terminals": {
+            "commit": "committed",
+            "hold": ""
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "out_of_scope",
+            "parser>PRECONDITION": "out_of_scope",
+            "parser>REACHABILITY": "traversed",
+            "parser>KNOWLEDGE": "out_of_scope",
+            "parser>DISCLOSURE": "out_of_scope",
+            "parser>QUEST STAGE": "out_of_scope",
+            "POLICY>commit": "schema",
+            "PRECONDITION>commit": "schema",
+            "REACHABILITY>commit": "commit",
+            "KNOWLEDGE>commit": "schema",
+            "DISCLOSURE>commit": "schema",
+            "QUEST STAGE>commit": "schema",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "schema",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "schema",
+            "QUEST STAGE>hold": "schema",
+            "commit>trace": "commit",
+            "hold>trace": "schema"
+          },
+          "legendRows": [
+            "pass",
+            "out_of_scope",
+            "committed"
+          ],
+          "legendCounts": "2 passed, 0 failed, 0 skipped (checks), 5 not evaluated (families)",
+          "strip": "last proposal: acquire_object  seq 103  t_ms 1721  -> COMMIT\n#  FAMILY          CODE                      OUTCOME\n1  v_reach         OBJECT_NOT_PRESENT        v passed\n2  v_reach         OBJECT_NOT_REACHABLE      v passed\n\nNot evaluated for acquire_object (out of scope): POLICY, PRECONDITION, KNOWLEDGE, DISCLOSURE, QUEST STAGE",
+          "stamp": "engineering demonstration | seq 103 | t_ms 1721 | acquire_object -> committed",
+          "log": "   0.1s  commit           acquire_object · Signal lens secured · stage 0>1 · 00000000…0000 > 01010101…0101 · trace OBJECT_NOT_PRESENT:pass > OBJECT_NOT_REACHABLE:pass · 2 passed, 0 failed, 0 skipped (checks), 5 not evaluated (families)",
+          "pulses": 5,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "b_install_hold",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "out_of_scope",
+          "fail",
+          "skipped",
+          "held"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "fail",
+            "REACHABILITY": "out_of_scope",
+            "KNOWLEDGE": "out_of_scope",
+            "DISCLOSURE": "out_of_scope",
+            "QUEST STAGE": "skipped"
+          },
+          "words": {
+            "POLICY": "not evaluated",
+            "PRECONDITION": "failed MISSING_REQUIRED_OBJECT",
+            "REACHABILITY": "not evaluated",
+            "KNOWLEDGE": "not evaluated",
+            "DISCLOSURE": "not evaluated",
+            "QUEST STAGE": "skipped"
+          },
+          "weights": {
+            "proposer": "routed x2",
+            "parser": "routed x2",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x1",
+            "trace": "routed x2",
+            "PRECONDITION": "evaluated x1",
+            "hold": "routed x1"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 1,
+              "passed": 0,
+              "failed": 1
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "QUEST STAGE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            }
+          },
+          "terminals": {
+            "commit": "",
+            "hold": "held"
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "out_of_scope",
+            "parser>PRECONDITION": "fail",
+            "parser>REACHABILITY": "out_of_scope",
+            "parser>KNOWLEDGE": "out_of_scope",
+            "parser>DISCLOSURE": "out_of_scope",
+            "parser>QUEST STAGE": "skipped",
+            "POLICY>commit": "schema",
+            "PRECONDITION>commit": "schema",
+            "REACHABILITY>commit": "schema",
+            "KNOWLEDGE>commit": "schema",
+            "DISCLOSURE>commit": "schema",
+            "QUEST STAGE>commit": "schema",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "hold",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "schema",
+            "QUEST STAGE>hold": "schema",
+            "commit>trace": "schema",
+            "hold>trace": "hold"
+          },
+          "legendRows": [
+            "fail",
+            "skipped",
+            "out_of_scope",
+            "held"
+          ],
+          "legendCounts": "0 passed, 1 failed, 1 skipped (checks), 4 not evaluated (families)",
+          "strip": "last proposal: install_lens  seq 105  t_ms 1735  -> HELD at MISSING_REQUIRED_OBJECT\n#  FAMILY          CODE                      OUTCOME\n1  v_pre           MISSING_REQUIRED_OBJECT   x failed\n   == short-circuit here: remaining in-scope checks were not run ==\n2  v_quest         QUEST_STAGE_PRECONDITION  ->| skipped\n\nNot evaluated for install_lens (out of scope): POLICY, REACHABILITY, KNOWLEDGE, DISCLOSURE",
+          "stamp": "engineering demonstration | seq 105 | t_ms 1735 | install_lens -> held",
+          "log": "   0.1s  hold             MISSING_REQUIRED_OBJECT · gate PRECONDITION · state unchanged 01010101…0101 · next: Find the signal lens. · trace MISSING_REQUIRED_OBJECT:fail > short-circuit at MISSING_REQUIRED_OBJECT · 0 passed, 1 failed, 1 skipped (checks), 4 not evaluated (families)",
+          "pulses": 9,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "1",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "c_reveal_hint_hold",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "skipped",
+          "out_of_scope",
+          "fail",
+          "held"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "skipped",
+            "PRECONDITION": "out_of_scope",
+            "REACHABILITY": "out_of_scope",
+            "KNOWLEDGE": "skipped",
+            "DISCLOSURE": "fail",
+            "QUEST STAGE": "fail"
+          },
+          "words": {
+            "POLICY": "skipped",
+            "PRECONDITION": "not evaluated",
+            "REACHABILITY": "not evaluated",
+            "KNOWLEDGE": "skipped",
+            "DISCLOSURE": "failed STAGE_GATED_DISCLOSURE",
+            "QUEST STAGE": "failed STAGE_GATED_DISCLOSURE"
+          },
+          "weights": {
+            "proposer": "routed x3",
+            "parser": "routed x3",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x1",
+            "trace": "routed x3",
+            "PRECONDITION": "evaluated x1",
+            "hold": "routed x2",
+            "DISCLOSURE": "evaluated x2",
+            "QUEST STAGE": "evaluated x1"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 1,
+              "passed": 0,
+              "failed": 1
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 2,
+              "passed": 1,
+              "failed": 1
+            },
+            "QUEST STAGE": {
+              "evaluated": 1,
+              "passed": 0,
+              "failed": 1
+            }
+          },
+          "terminals": {
+            "commit": "",
+            "hold": "held"
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "skipped",
+            "parser>PRECONDITION": "out_of_scope",
+            "parser>REACHABILITY": "out_of_scope",
+            "parser>KNOWLEDGE": "skipped",
+            "parser>DISCLOSURE": "fail",
+            "parser>QUEST STAGE": "fail",
+            "POLICY>commit": "schema",
+            "PRECONDITION>commit": "schema",
+            "REACHABILITY>commit": "schema",
+            "KNOWLEDGE>commit": "schema",
+            "DISCLOSURE>commit": "schema",
+            "QUEST STAGE>commit": "schema",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "schema",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "hold",
+            "QUEST STAGE>hold": "hold",
+            "commit>trace": "schema",
+            "hold>trace": "hold"
+          },
+          "legendRows": [
+            "fail",
+            "skipped",
+            "out_of_scope",
+            "held"
+          ],
+          "legendCounts": "1 passed, 1 failed, 2 skipped (checks), 2 not evaluated (families)",
+          "strip": "last proposal: reveal_hint  seq 107  t_ms 1749  -> HELD at STAGE_GATED_DISCLOSURE\n#  FAMILY          CODE                      OUTCOME\n1  v_disc          FORBIDDEN_DISCLOSURE      v passed\n2  v_disc/v_quest  STAGE_GATED_DISCLOSURE    x failed\n   == short-circuit here: remaining in-scope checks were not run ==\n3  v_policy        UNKNOWN_ACTOR             ->| skipped\n4  v_know          NPC_DOES_NOT_KNOW_FACT    ->| skipped\n\nNot evaluated for reveal_hint (out of scope): PRECONDITION, REACHABILITY",
+          "stamp": "engineering demonstration | seq 107 | t_ms 1749 | reveal_hint -> held",
+          "log": "   0.2s  hold             STAGE_GATED_DISCLOSURE · gate DISCLOSURE/QUEST STAGE · state unchanged 01010101…0101 · next: Mount the lens first. · trace FORBIDDEN_DISCLOSURE:pass > STAGE_GATED_DISCLOSURE:fail > short-circuit at STAGE_GATED_DISCLOSURE · 1 passed, 1 failed, 2 skipped (checks), 2 not evaluated (families)",
+          "pulses": 16,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "1",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "1",
+              "2",
+              "1",
+              "1"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "1",
+              "1",
+              "0",
+              "1"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "d_early_secret_hold",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "out_of_scope",
+          "fail",
+          "pass",
+          "held"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "out_of_scope",
+            "REACHABILITY": "out_of_scope",
+            "KNOWLEDGE": "out_of_scope",
+            "DISCLOSURE": "fail",
+            "QUEST STAGE": "pass"
+          },
+          "words": {
+            "POLICY": "not evaluated",
+            "PRECONDITION": "not evaluated",
+            "REACHABILITY": "not evaluated",
+            "KNOWLEDGE": "not evaluated",
+            "DISCLOSURE": "failed FORBIDDEN_DISCLOSURE",
+            "QUEST STAGE": "passed"
+          },
+          "weights": {
+            "proposer": "routed x4",
+            "parser": "routed x4",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x1",
+            "trace": "routed x4",
+            "PRECONDITION": "evaluated x1",
+            "hold": "routed x3",
+            "DISCLOSURE": "evaluated x4",
+            "QUEST STAGE": "evaluated x2"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 1,
+              "passed": 0,
+              "failed": 1
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 4,
+              "passed": 2,
+              "failed": 2
+            },
+            "QUEST STAGE": {
+              "evaluated": 2,
+              "passed": 1,
+              "failed": 1
+            }
+          },
+          "terminals": {
+            "commit": "",
+            "hold": "held"
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "out_of_scope",
+            "parser>PRECONDITION": "out_of_scope",
+            "parser>REACHABILITY": "out_of_scope",
+            "parser>KNOWLEDGE": "out_of_scope",
+            "parser>DISCLOSURE": "fail",
+            "parser>QUEST STAGE": "traversed",
+            "POLICY>commit": "schema",
+            "PRECONDITION>commit": "schema",
+            "REACHABILITY>commit": "schema",
+            "KNOWLEDGE>commit": "schema",
+            "DISCLOSURE>commit": "schema",
+            "QUEST STAGE>commit": "schema",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "schema",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "hold",
+            "QUEST STAGE>hold": "schema",
+            "commit>trace": "schema",
+            "hold>trace": "hold"
+          },
+          "legendRows": [
+            "pass",
+            "fail",
+            "out_of_scope",
+            "held"
+          ],
+          "legendCounts": "1 passed, 1 failed, 0 skipped (checks), 4 not evaluated (families)",
+          "strip": "last proposal: ask_secret  seq 109  t_ms 1763  -> HELD at FORBIDDEN_DISCLOSURE\n#  FAMILY          CODE                      OUTCOME\n1  v_disc          FORBIDDEN_DISCLOSURE      x failed\n2  v_disc/v_quest  STAGE_GATED_DISCLOSURE    v passed\n   == short-circuit here: remaining in-scope checks were not run ==\n   (held at #1 FORBIDDEN_DISCLOSURE; the disclosure pair is always evaluated together)\n\nNot evaluated for ask_secret (out of scope): POLICY, PRECONDITION, REACHABILITY, KNOWLEDGE",
+          "stamp": "engineering demonstration | seq 109 | t_ms 1763 | ask_secret -> held",
+          "log": "   0.2s  hold             FORBIDDEN_DISCLOSURE · gate DISCLOSURE · state unchanged 01010101…0101 · next: Find the signal lens. · trace FORBIDDEN_DISCLOSURE:fail > STAGE_GATED_DISCLOSURE:pass > short-circuit at FORBIDDEN_DISCLOSURE · 1 passed, 1 failed, 0 skipped (checks), 4 not evaluated (families)",
+          "pulses": 22,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "1",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "2",
+              "4",
+              "2",
+              "2"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "1",
+              "2",
+              "1",
+              "1"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "e_reveal_hint_commit",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "pass",
+          "out_of_scope",
+          "committed"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "pass",
+            "PRECONDITION": "out_of_scope",
+            "REACHABILITY": "out_of_scope",
+            "KNOWLEDGE": "pass",
+            "DISCLOSURE": "pass",
+            "QUEST STAGE": "pass"
+          },
+          "words": {
+            "POLICY": "passed",
+            "PRECONDITION": "not evaluated",
+            "REACHABILITY": "not evaluated",
+            "KNOWLEDGE": "passed",
+            "DISCLOSURE": "passed",
+            "QUEST STAGE": "passed"
+          },
+          "weights": {
+            "proposer": "routed x5",
+            "parser": "routed x5",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x2",
+            "trace": "routed x5",
+            "PRECONDITION": "evaluated x1",
+            "hold": "routed x3",
+            "DISCLOSURE": "evaluated x6",
+            "QUEST STAGE": "evaluated x3",
+            "POLICY": "evaluated x1",
+            "KNOWLEDGE": "evaluated x1"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 1,
+              "passed": 1,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 1,
+              "passed": 0,
+              "failed": 1
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 1,
+              "passed": 1,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 6,
+              "passed": 4,
+              "failed": 2
+            },
+            "QUEST STAGE": {
+              "evaluated": 3,
+              "passed": 2,
+              "failed": 1
+            }
+          },
+          "terminals": {
+            "commit": "committed",
+            "hold": ""
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "traversed",
+            "parser>PRECONDITION": "out_of_scope",
+            "parser>REACHABILITY": "out_of_scope",
+            "parser>KNOWLEDGE": "traversed",
+            "parser>DISCLOSURE": "traversed",
+            "parser>QUEST STAGE": "traversed",
+            "POLICY>commit": "commit",
+            "PRECONDITION>commit": "schema",
+            "REACHABILITY>commit": "schema",
+            "KNOWLEDGE>commit": "commit",
+            "DISCLOSURE>commit": "commit",
+            "QUEST STAGE>commit": "commit",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "schema",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "schema",
+            "QUEST STAGE>hold": "schema",
+            "commit>trace": "commit",
+            "hold>trace": "schema"
+          },
+          "legendRows": [
+            "pass",
+            "out_of_scope",
+            "committed"
+          ],
+          "legendCounts": "4 passed, 0 failed, 0 skipped (checks), 2 not evaluated (families)",
+          "strip": "last proposal: reveal_hint  seq 111  t_ms 1777  -> COMMIT\n#  FAMILY          CODE                      OUTCOME\n1  v_disc          FORBIDDEN_DISCLOSURE      v passed\n2  v_disc/v_quest  STAGE_GATED_DISCLOSURE    v passed\n3  v_policy        UNKNOWN_ACTOR             v passed\n4  v_know          NPC_DOES_NOT_KNOW_FACT    v passed\n\nNot evaluated for reveal_hint (out of scope): PRECONDITION, REACHABILITY",
+          "stamp": "engineering demonstration | seq 111 | t_ms 1777 | reveal_hint -> committed",
+          "log": "   0.2s  commit           reveal_hint · Tide-marks lead recorded · stage 2>3 · 01010101…0101 > 02020202…0202 · trace FORBIDDEN_DISCLOSURE:pass > STAGE_GATED_DISCLOSURE:pass > UNKNOWN_ACTOR:pass > NPC_DOES_NOT_KNOW_FACT:pass · 4 passed, 0 failed, 0 skipped (checks), 2 not evaluated (families)",
+          "pulses": 33,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "1",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "2",
+              "6",
+              "4",
+              "2"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "1",
+              "3",
+              "2",
+              "1"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "f_legacy_commit_no_trace",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "legacy",
+          "committed"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "legacy",
+            "PRECONDITION": "legacy",
+            "REACHABILITY": "legacy",
+            "KNOWLEDGE": "legacy",
+            "DISCLOSURE": "legacy",
+            "QUEST STAGE": "legacy"
+          },
+          "words": {
+            "POLICY": "no trace (legacy)",
+            "PRECONDITION": "no trace (legacy)",
+            "REACHABILITY": "no trace (legacy)",
+            "KNOWLEDGE": "no trace (legacy)",
+            "DISCLOSURE": "no trace (legacy)",
+            "QUEST STAGE": "no trace (legacy)"
+          },
+          "weights": {
+            "proposer": "routed x6",
+            "parser": "routed x6",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x3",
+            "trace": "routed x6",
+            "PRECONDITION": "evaluated x1",
+            "hold": "routed x3",
+            "DISCLOSURE": "evaluated x6",
+            "QUEST STAGE": "evaluated x3",
+            "POLICY": "evaluated x1",
+            "KNOWLEDGE": "evaluated x1"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 1,
+              "passed": 1,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 1,
+              "passed": 0,
+              "failed": 1
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 1,
+              "passed": 1,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 6,
+              "passed": 4,
+              "failed": 2
+            },
+            "QUEST STAGE": {
+              "evaluated": 3,
+              "passed": 2,
+              "failed": 1
+            }
+          },
+          "terminals": {
+            "commit": "committed",
+            "hold": ""
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "legacy",
+            "parser>PRECONDITION": "legacy",
+            "parser>REACHABILITY": "legacy",
+            "parser>KNOWLEDGE": "legacy",
+            "parser>DISCLOSURE": "legacy",
+            "parser>QUEST STAGE": "legacy",
+            "POLICY>commit": "legacy",
+            "PRECONDITION>commit": "legacy",
+            "REACHABILITY>commit": "legacy",
+            "KNOWLEDGE>commit": "legacy",
+            "DISCLOSURE>commit": "legacy",
+            "QUEST STAGE>commit": "legacy",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "schema",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "schema",
+            "QUEST STAGE>hold": "schema",
+            "commit>trace": "commit",
+            "hold>trace": "schema"
+          },
+          "legendRows": [
+            "legacy",
+            "committed"
+          ],
+          "legendCounts": "legacy: schema-only envelope, no per-check counts (no family evidence)",
+          "strip": "last proposal: acquire_object  seq 113  t_ms 1791  -> COMMIT\nlegacy: schema-only envelope (no trace); no per-check evidence\nnot evaluated for acquire_object: unknown (no trace)",
+          "stamp": "engineering demonstration | seq 113 | t_ms 1791 | acquire_object -> committed | legacy: schema-only",
+          "log": "   0.2s  commit           acquire_object · state recorded · stage 3>3 · 02020202…0202 > 03030303…0303 · legacy: schema-only",
+          "pulses": 47,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "1",
+              "1",
+              "0",
+              "1"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "2",
+              "6",
+              "4",
+              "2"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "1",
+              "3",
+              "2",
+              "1"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "g_hold_missing_family_state",
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "out_of_scope",
+          "fail",
+          "missing",
+          "skipped",
+          "held"
+        ],
+        "snapshot": {
+          "states": {
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "fail",
+            "REACHABILITY": "out_of_scope",
+            "KNOWLEDGE": "missing",
+            "DISCLOSURE": "out_of_scope",
+            "QUEST STAGE": "skipped"
+          },
+          "words": {
+            "POLICY": "not evaluated",
+            "PRECONDITION": "failed MISSING_REQUIRED_OBJECT",
+            "REACHABILITY": "not evaluated",
+            "KNOWLEDGE": "state missing",
+            "DISCLOSURE": "not evaluated",
+            "QUEST STAGE": "skipped"
+          },
+          "weights": {
+            "proposer": "routed x7",
+            "parser": "routed x7",
+            "REACHABILITY": "evaluated x2",
+            "commit": "routed x3",
+            "trace": "routed x7",
+            "PRECONDITION": "evaluated x2",
+            "hold": "routed x4",
+            "DISCLOSURE": "evaluated x6",
+            "QUEST STAGE": "evaluated x3",
+            "POLICY": "evaluated x1",
+            "KNOWLEDGE": "evaluated x1"
+          },
+          "familyEval": {
+            "POLICY": {
+              "evaluated": 1,
+              "passed": 1,
+              "failed": 0
+            },
+            "PRECONDITION": {
+              "evaluated": 2,
+              "passed": 0,
+              "failed": 2
+            },
+            "REACHABILITY": {
+              "evaluated": 2,
+              "passed": 2,
+              "failed": 0
+            },
+            "KNOWLEDGE": {
+              "evaluated": 1,
+              "passed": 1,
+              "failed": 0
+            },
+            "DISCLOSURE": {
+              "evaluated": 6,
+              "passed": 4,
+              "failed": 2
+            },
+            "QUEST STAGE": {
+              "evaluated": 3,
+              "passed": 2,
+              "failed": 1
+            }
+          },
+          "terminals": {
+            "commit": "",
+            "hold": "held"
+          },
+          "edges": {
+            "proposer>parser": "traversed",
+            "parser>POLICY": "out_of_scope",
+            "parser>PRECONDITION": "fail",
+            "parser>REACHABILITY": "out_of_scope",
+            "parser>KNOWLEDGE": "schema",
+            "parser>DISCLOSURE": "out_of_scope",
+            "parser>QUEST STAGE": "skipped",
+            "POLICY>commit": "schema",
+            "PRECONDITION>commit": "schema",
+            "REACHABILITY>commit": "schema",
+            "KNOWLEDGE>commit": "schema",
+            "DISCLOSURE>commit": "schema",
+            "QUEST STAGE>commit": "schema",
+            "POLICY>hold": "schema",
+            "PRECONDITION>hold": "hold",
+            "REACHABILITY>hold": "schema",
+            "KNOWLEDGE>hold": "schema",
+            "DISCLOSURE>hold": "schema",
+            "QUEST STAGE>hold": "schema",
+            "commit>trace": "schema",
+            "hold>trace": "hold"
+          },
+          "legendRows": [
+            "fail",
+            "skipped",
+            "out_of_scope",
+            "missing",
+            "held"
+          ],
+          "legendCounts": "0 passed, 1 failed, 1 skipped (checks), 3 not evaluated (families), 1 state missing",
+          "strip": "last proposal: install_lens  seq 115  t_ms 1805  -> HELD at MISSING_REQUIRED_OBJECT\n#  FAMILY          CODE                      OUTCOME\n1  v_pre           MISSING_REQUIRED_OBJECT   x failed\n   == short-circuit here: remaining in-scope checks were not run ==\n2  v_quest         QUEST_STAGE_PRECONDITION  ->| skipped\n\nNot evaluated for install_lens (out of scope): POLICY, REACHABILITY, DISCLOSURE\n! state missing from payload: KNOWLEDGE (rendered \"state missing\", not a pass)",
+          "stamp": "engineering demonstration | seq 115 | t_ms 1805 | install_lens -> held",
+          "log": "   0.3s  hold             MISSING_REQUIRED_OBJECT · gate PRECONDITION · state unchanged 03030303…0303 · next: Find the signal lens. · trace MISSING_REQUIRED_OBJECT:fail > short-circuit at MISSING_REQUIRED_OBJECT · 0 passed, 1 failed, 1 skipped (checks), 3 not evaluated (families)",
+          "pulses": 51,
+          "gateTable": [
+            [
+              "v_policy POLICY",
+              "0",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "v_pre PRECONDITION",
+              "2",
+              "2",
+              "0",
+              "2"
+            ],
+            [
+              "v_reach REACHABILITY",
+              "0",
+              "2",
+              "2",
+              "0"
+            ],
+            [
+              "v_know KNOWLEDGE",
+              "0",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "v_disc DISCLOSURE",
+              "2",
+              "6",
+              "4",
+              "2"
+            ],
+            [
+              "v_quest QUEST STAGE",
+              "1",
+              "3",
+              "2",
+              "1"
+            ]
+          ]
+        }
+      },
+      {
+        "fixture": "h_reduced_motion_substitutes_weight",
+        "applicable": false,
+        "passed": true,
+        "failures": [],
+        "rendered_states": [
+          "out_of_scope",
+          "fail",
+          "missing",
+          "skipped",
+          "held"
+        ],
+        "snapshot": {
+          "reducedMotion": false,
+          "pulses": 51,
+          "failEdgeWidth": "3"
+        }
+      }
+    ],
+    "guards": [
+      {
+        "guard": "parent-window source rejected",
+        "passed": true
+      },
+      {
+        "guard": "foreign channel from the game frame rejected",
+        "passed": true
+      }
+    ],
+    "settled": {
+      "pulses_remaining": 0,
+      "events_total": 15,
+      "events_before": 0,
+      "counts": {
+        "commits": 3,
+        "holds": 4,
+        "proposals": 6,
+        "dialogues": 1
+      },
+      "holdsByGate": {
+        "POLICY": 0,
+        "PRECONDITION": 2,
+        "REACHABILITY": 0,
+        "KNOWLEDGE": 0,
+        "DISCLOSURE": 2,
+        "QUEST STAGE": 1
+      },
+      "reducedMotion": false
+    },
+    "passed": true
+  },
+  "gameplay": {
+    "fixtures": [
+      {
+        "fixture": "engineering details collapsed by default",
+        "passed": true
+      },
+      {
+        "fixture": "page boot has no invented verdict",
+        "passed": true
+      },
+      {
+        "fixture": "quest is actual three-stage case, not pictured five-stage fiction",
+        "passed": true,
+        "detail": "•Collect the signal lensCurrent stage goal2Install the lens at the harbor beaconNot started3Ask Mira for the tide routeNot started"
+      },
+      {
+        "fixture": "first objective matches the actual Mira-first presentation",
+        "passed": true
+      },
+      {
+        "fixture": "Mira dialogue changes only the displayed objective",
+        "passed": true
+      },
+      {
+        "fixture": "committed result names real operation and verdict",
+        "passed": true,
+        "detail": "Committed · stage 0 → 1.\n\n✓PassedOBJECT_NOT_PRESENTREACHABILITY—Not evaluatedPOLICY—Not evaluatedPRECONDITION—Not evaluatedKNOWLEDGE—Not evaluatedDISCLOSURE—Not evaluatedQUEST STAGE\nEvaluationTrace received · 1 executed check"
+      },
+      {
+        "fixture": "movement focus and ticks do not replace completed verdict",
+        "passed": true
+      },
+      {
+        "fixture": "freeze readout keeps selected action stable",
+        "passed": true
+      },
+      {
+        "fixture": "game counters keep updating while readout is pinned",
+        "passed": true
+      },
+      {
+        "fixture": "newer actions are explicit while pinned",
+        "passed": true,
+        "detail": "1 newer action · game continues"
+      },
+      {
+        "fixture": "follow latest returns to real hold and clears pin",
+        "passed": true,
+        "detail": "Held · game state unchanged.\nNext affordance: Recover the signal lens from the lamp store.\n×FailedMISSING_REQUIRED_OBJECTPRECONDITION↷SkippedOBJECT_NOT_PRESENTREACHABILITY↷SkippedOBJECT_NOT_REACHABLEREACHABILITY—Not evaluatedPOLICY—Not evaluatedKNOWLEDGE—Not evaluatedDISCLOSURE—Not evaluatedQUEST STAGE\nEvaluationTrace received · 1 executed check"
+      },
+      {
+        "fixture": "ordered checks keep failed and skipped states separate",
+        "passed": true,
+        "detail": "×FailedMISSING_REQUIRED_OBJECTPRECONDITION↷SkippedOBJECT_NOT_PRESENTREACHABILITY↷SkippedOBJECT_NOT_REACHABLEREACHABILITY—Not evaluatedPOLICY—Not evaluatedKNOWLEDGE—Not evaluatedDISCLOSURE—Not evaluatedQUEST STAGE"
+      },
+      {
+        "fixture": "hold advice uses actual lens affordance, no fictional stairs",
+        "passed": true,
+        "detail": "Next affordance: Recover the signal lens from the lamp store."
+      },
+      {
+        "fixture": "verdict history remains explicitly selectable",
+        "passed": true
+      },
+      {
+        "fixture": "historical selection pauses the readout only",
+        "passed": true
+      },
+      {
+        "fixture": "stage two agrees with its committed transition",
+        "passed": true
+      },
+      {
+        "fixture": "committed stage three does not invent a fourth commit",
+        "passed": true,
+        "detail": "stage 3 / 3"
+      },
+      {
+        "fixture": "stage three agrees with its committed transition",
+        "passed": true
+      },
+      {
+        "fixture": "episode result is explicit without changing action history",
+        "passed": true
+      },
+      {
+        "fixture": "legacy envelope does not fabricate evaluated checks",
+        "passed": true,
+        "detail": "Held · game state unchanged.\nNext affordance: Use public evidence only.\n\nEvaluationTrace unavailable · legacy schema-only event"
+      },
+      {
+        "fixture": "unknown check outcome is missing, never a fabricated pass",
+        "passed": true
+      },
+      {
+        "fixture": "unknown check does not inflate evaluated-pass counters",
+        "passed": true
+      },
+      {
+        "fixture": "unknown check cannot mark its family graph or commit edge as passed",
+        "passed": true
+      },
+      {
+        "fixture": "missing quest stage is not silently converted to zero",
+        "passed": true
+      },
+      {
+        "fixture": "new session clears prior readout and history",
+        "passed": true,
+        "detail": "No action verdict yet.\nNext affordance: Use public evidence only.\n\nTrace: waiting for verdict"
+      },
+      {
+        "fixture": "new session clears stale counts and episode",
+        "passed": true
+      },
+      {
+        "fixture": "high-rate action history is bounded and keeps latest",
+        "passed": true,
+        "detail": {
+          "history_count": 12,
+          "latest": "verdict #130 · acquire_object · commit · 0s ago · latest action"
+        }
+      },
+      {
+        "fixture": "recent-action rail remains compact",
+        "passed": true,
+        "detail": 3
+      },
+      {
+        "fixture": "pinned result survives bounded-history eviction",
+        "passed": true
+      },
+      {
+        "fixture": "newer counter includes every result after the pin",
+        "passed": true
+      },
+      {
+        "fixture": "follow latest recovers after history eviction",
+        "passed": true
+      },
+      {
+        "fixture": "real-game iframe keeps established 720px height",
+        "passed": true,
+        "detail": 720
+      },
+      {
+        "fixture": "desktop has no page horizontal overflow",
+        "passed": true,
+        "detail": {
+          "width": 1440,
+          "scroll_width": 1440
+        }
+      },
+      {
+        "fixture": "page review buttons have text and native keyboard semantics",
+        "passed": true
+      }
+    ],
+    "guards": [
+      {
+        "guard": "right frame but wrong origin rejected",
+        "passed": true
+      },
+      {
+        "guard": "wrong window with matching channel rejected",
+        "passed": true
+      },
+      {
+        "guard": "game frame foreign channel rejected",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "engineering_only": true,
+    "reduced_motion": false,
+    "boundary": "Synthetic renderer fixtures only. No gameplay, human readability or efficacy result."
+  }
+}

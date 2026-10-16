@@ -143,12 +143,16 @@ End card INVESTIGATOR'S CONTRIBUTION #1–#3 · RULES LEARNED · ENTRIES/HOLDS/F
 
 ## 라이브 commit-gate 대시보드
 
-![녹화된 대시보드 경로: 내장된 게임 옆에 commit 세 번과 hold 한 번이 나타나며 각각 hash 체인을 잇는다](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/dashboard-route.gif)
+**2026-10-02 로컬 gameplay UI:** 내장 게임을 주 화면으로 두고, 게임이 보고한 3단계 quest·플레이어/지점 지도·최근 행동·안정적인 마지막 판정 readout을 배치했다. Freeze와 과거 판정 선택은 readout만 고정하며 게임 입력과 정식 상태는 게임이 소유한다. 새 캡처는 실제 로컬 입력을 기록했다. `ask_secret` hold 두 번은 `f488d9c4…812c`를 보존했고, 렌즈 회수는 stage 0 → 1로 commit됐다(`19b474dc…c498`, commit 1 / hold 2). 엔지니어링 캡처이며 사용성·재미·효능·G4/G6 근거가 아니다. 독립 브라우저 gate가 아직 대기 중이므로 이 리비전은 미배포 상태다.
+
+아래 GIF와 에피소드 완료 이미지는 이전 renderer의 별도 commit 3 / hold 1 실행 기록을 유지한다.
+
+![이전 대시보드 경로: 내장 게임 옆의 commit 세 번과 hold 한 번; commit 영수증은 체인을 잇고 hold는 상태를 보존한다](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/dashboard-route.gif)
 
 <table>
   <tr>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png" alt="hold 중의 대시보드: FORBIDDEN_DISCLOSURE가 DISCLOSURE 계열로 매핑된다"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png" alt="commit 뒤의 대시보드: 새 영수증이 hash 체인에 합류한다"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png" alt="실제 로컬 ask_secret hold의 과거 선택: 상태 보존, disclosure 검사 실패, stage 검사 통과, 나머지 계열 미평가"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png" alt="렌즈 회수 뒤 로컬 gameplay 화면: stage 1/3, commit 1과 hold 2, 렌즈 설치 목표"></td>
   </tr>
   <tr>
     <td align="center"><sub>Hold</sub></td>
@@ -156,17 +160,17 @@ End card INVESTIGATOR'S CONTRIBUTION #1–#3 · RULES LEARNED · ENTRIES/HOLDS/F
   </tr>
   <tr>
     <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-complete.png" alt="에피소드 완료 시점의 대시보드: commit 세 번, hold 한 번, 완성된 체인"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png" alt="대시보드 패널: 이벤트 피드, gate 계열, 체인, 논문 참조"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png" alt="실제 acquire_object 판정: stage 0에서 1, reachability 검사 두 개, 나머지 계열 미평가, 선택 가능한 이력"></td>
   </tr>
   <tr>
-    <td align="center"><sub>에피소드 완료</sub></td>
-    <td align="center"><sub>패널</sub></td>
+    <td align="center"><sub>이전 renderer · 에피소드 완료</sub></td>
+    <td align="center"><sub>현재 마지막 판정 readout</sub></td>
   </tr>
 </table>
 
 **라이브:** [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app) — 프로덕션 사이트 루트는 `/dashboard/`로 리다이렉트되고, 임베드된 게임은 `/public/`에서 서빙된다(2026-09-03 `scripts/deploy_vercel_dashboard.sh`로 배포; 데스크톱과 390×844 뷰포트에서 콘솔·페이지 오류 0).
 
-<p align="center"><img width="70%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="임베드된 프레임 안에서 게임이 실행 중인 프로덕션 대시보드: 헤더 필 live · receiving game events, state hash f488d9c4…812c, 세션 패널은 entries 0"></p>
+<p align="center"><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="2026-10-02 실제 렌즈 회수 commit 뒤 로컬 gameplay 대시보드: stage 1/3, 실시간 플레이어 위치와 다음 목표"></p>
 
 로컬에서 실행하려면, 대시보드가 로컬 Web 빌드를 내장하므로 로컬에서 서빙한다:
 
@@ -298,3 +302,4 @@ License: to be announced.
   url   = {https://github.com/akillness/neural_symbolic_in_game}
 }
 ```
+

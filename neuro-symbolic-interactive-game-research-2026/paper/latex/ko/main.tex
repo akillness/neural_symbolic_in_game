@@ -79,13 +79,13 @@
 
 본 논문은 이러한 관심사를 감사 가능한 트랜잭션 프로토콜로 결합한 구현인 \system{}을 제시한다. 현재 기여는 다음과 같다.
 \begin{enumerate}
-  \item \textbf{C1---계약:} 버전형 신뢰경계 contract와, proposal/replay 경계에서 unknown key와 모호한 타입을 거부하는 type-strict parser (\ref{sec:arch}절; E1);
+  \item \textbf{C1---계약:} 버전형 신뢰경계 contract와, proposal/replay 경계에서 unknown key와 모호한 타입을 거부하는 type-strict parser (\ref{sec:arch}절; E1, ENG1);
   \item \textbf{C2---controller:} 여섯 상태 상대 계열에 걸친 검사 7개, bounded repair, unchanged fallback, pre-commit revalidation을 갖춘 validate--repair--commit controller (\ref{sec:repair}절; E1, ENG1);
   \item \textbf{C3---감사:} SHA-256 연결 record, state-semantic replay, episode-continuity check (\ref{sec:audit}절; E1, ENG1);
   \item \textbf{C4---harness:} proposal trace가 존재할 수 없는 경우에도 분류된 terminal row를 유지하는 assignment-complete 오프라인 적합성 harness (\ref{sec:lanes}절; E1);
   \item \textbf{C5---수리:} 동결 repairability class에서 blind retry 및 state-reading oracle과 비교한 typed validator-error-guided operator $\rho(a,E)$ (구현: \texttt{counterexample\_guided\_repair}) (\ref{sec:repair}절; E1, E2).
 \end{enumerate}
-고정 목표 NPC 운영은 C6이나 C-RESULT가 아닌 additive implementation 및 descriptive screening lane으로 NPC-ENG1/NPC-SCR1 아래 보고한다. 하나의 game-owned Mira goal을 유지하며, 신경 모델은 typed intent와 claim을 제안하고 Python은 bounded public projection에서만 계획하며 Godot이 유일한 canonical writer다. \texttt{player\_request}인 \texttt{acquire\_object}/\texttt{install\_lens}만 물리적 행동을 일으키고, Mira의 유일한 NPC world change는 권한 있는 \texttt{tide\_marks\_hint}의 \texttt{reveal\_hint}이며 \texttt{clarify}/\texttt{negotiate}는 dialogue-only다. 사전 배정은 NPC-ENG1 16개 case와 NPC-SCR1 $12\times3\times2=72$개 row(arm당 24개), 합계 88개(R=40, P=24, O=24)다. P는 authenticated Codex typed intent, R은 작성된 rule interpreter, O는 independent row 0인 same-model-family auxiliary reference다. P/R/O config는 NPC-SCR1에만 적용되며 hard ENG1 conformance와 독립이다. 이는 one-step protocol screening이며 normal-play full-loop episode와 분리된 engineering/provenance evidence이고 efficacy, semantic gold, accuracy ceiling, generalization, human benefit을 주장하지 않는다.
+고정 목표 NPC 운영은 C6이나 C-RESULT가 아닌 additive implementation 및 descriptive screening lane으로 NPC-ENG1/NPC-SCR1 아래 보고한다. 세부 ownership, count, role gate, provenance와 nonclaim boundary는 \ref{sec:lanes}절에 고정되며, core Python--hard-policy 경로 및 normal-play episode와 분리된다.
 기계 검증되는 기여 매트릭스에서 생성한 표~\ref{tab:contribution-map}은 C1--C5를 선행 주제, 근거 레인, 추론 상한에 결합하고, 표~\ref{tab:evidence-lanes}는 레인을 정의한다.
 
 \input{../generated/contribution_map_ko.tex}
@@ -93,11 +93,11 @@
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{../figures/fig_architecture.pdf}
-  \caption{생성 이벤트 하나의 트랜잭션 경로다. typed candidate만 신뢰 경계를 넘고, 외부 policy와 $c_t$를 여섯 상태 상대 계열의 검사 7개가 확인한다. typed 오류 $E$는 bounded $\rho$(점선) 또는 변경 없는 fallback으로 이어지고, 통과 후보는 재검사·commit·record·replay된다. 태그는 claim이 아닌 측정 범위를 표시하며, 아래 strip은 committed snapshot에서 파생한 ledger 문법이다.}
+  \caption{생성 이벤트 하나의 트랜잭션 경로다. typed candidate만 신뢰 경계를 넘고, 외부 policy와 $c_t$를 여섯 상태 상대 계열의 검사 7개가 확인한다. typed 오류 $E$는 bounded $\rho$(점선) 또는 변경 없는 fallback으로 이어지고, 통과 후보는 재검사·commit·record·replay된다. 태그는 claim이 아닌 측정 범위를 표시한다. Core path는 E1/E2이고 legacy ENG1만 별도로 표시한다. Additive NPC \texttt{npc-goal-recovery/1.1.0}은 별개의 Godot-authoritative intent/planning path이며, 입증된 core Python--hard-policy round trip이 아니다. 아래 strip은 committed snapshot에서 파생한 ledger 문법이다.}
   \label{fig:architecture}
 \end{figure}
 
-레인은 서로 대체할 수 없다(표~\ref{tab:evidence-lanes}). E1은 단일 작성 world의 결정론적 적합성, E2는 고정되지 않은 revision·제어되지 않은 seed·구성 state를 쓰는 셀당 5회 pilot screening, E3는 runtime retrieval 없는 closed-world typed-link scoring, ENG1은 Godot slice다. NPC-ENG1/NPC-SCR1은 별도 fixed-goal denominator와 provenance를 쓴다. 어느 레인도 population efficacy, model ranking, player benefit, retrieval benefit 또는 C6를 지지하지 않는다.
+레인은 서로 대체할 수 없다(표~\ref{tab:evidence-lanes}). E1은 단일 작성 world의 결정론적 적합성, E2는 고정되지 않은 revision·제어되지 않은 seed·구성 state를 쓰는 셀당 5회 pilot screening, E3는 runtime retrieval 없는 closed-world typed-link scoring, ENG1은 legacy Godot slice다. NPC-ENG1/NPC-SCR1은 별도 fixed-goal denominator와 provenance를 쓴다. 어느 레인도 population efficacy, model ranking, player benefit, retrieval benefit 또는 C6를 지지하지 않는다.
 
 \section{관련 연구와 연구 공백}
 \subsection{인터랙티브 내러티브와 게임 에이전트}
@@ -151,10 +151,10 @@ Controller는 인코딩된 계약 아래 다음 구현 불변량을 주장한다
 그림~\ref{fig:architecture}는 모델 또는 recorded adapter를 canonical owner 밖에 둔다. Parser는 알려진 필드의 모호한 숫자 또는 collection type을 거부하고 공유 key contract에 따라 알 수 없는 top-level candidate field도 거부한다. action policy는 candidate와 별도로 공급되며 required precondition과 allowed effect를 정의한다. Game bridge는 observation, proposal, validation, rejection, fallback, commit을 전달할 수 있는 versioned event interface이며, 정식 상태 변경은 유효한 commit만 승인한다. 이는 interface를 분리하지만 상용 엔진으로의 portability를 아직 입증하지 않는다. 근거는 unknown-key rejection parity에 한정되며 proposal default와 replay parsing의 동등성을 확립하지 않는다.
 표~\ref{tab:validators}는 구현 검사 7개를 여섯 의미 계열로 묶는다. Quest eligibility와 quest-stage monotonicity는 별도 검사로 유지된다. 이 인코딩 경계는 의미적 완결성 주장이 아니다.
 \subsection{고정 목표 NPC 통합}
-Mira의 고정 목표는 항구 신호 복구 뒤 허가된 조석 단서를 제공하는 것이다. 각 turn은 typed intent/claim proposal에서 시작해 proposal $\rightarrow$ verification $\rightarrow$ public symbolic plan $\rightarrow$ player/Mira role gate $\rightarrow$ actual result $\rightarrow$ fresh observation-only replan으로 진행된다. Verification은 공개 flag에서 claim 상태를 판정하고, Python은 omniscient state가 아닌 공개 Boolean projection에서 bounded BFS를 수행해 첫 유효 step만 내보낸다. \texttt{acquire\_object}/\texttt{install\_lens}는 player request로만 수행되고 Mira는 알려진 \texttt{tide\_marks\_hint}와 disclosure authorization이 있을 때만 \texttt{reveal\_hint}를 commit한다. \texttt{clarify}/\texttt{negotiate}는 canonical effect가 없는 dialogue이며 경로가 없으면 \texttt{NO\_ROUTE}와 물리적 step 없음으로 끝난다. 결과 뒤에는 fresh observation/state reference와 직전 typed intent만 재사용하고 utterance/claim은 재해석하지 않는다.
+Mira의 고정 목표는 항구 신호 복구 뒤 허가된 조석 단서를 제공하는 것이다. 각 turn은 Codex가 typed intent/claim proposal을 제안하는 것으로 시작해 proposal $\rightarrow$ verification $\rightarrow$ public symbolic plan $\rightarrow$ player/Mira role gate $\rightarrow$ actual result $\rightarrow$ fresh observation-only replan으로 진행된다. Verification은 Python이 공개 flag에서 claim 상태를 검증/확인하고, omniscient state가 아닌 공개 Boolean projection에서 bounded BFS를 수행해 첫 유효 step만 내보낸다. \texttt{acquire\_object}/\texttt{install\_lens}는 player request로만 수행되고 Mira는 알려진 \texttt{tide\_marks\_hint}와 disclosure authorization이 있을 때만 \texttt{reveal\_hint}를 commit한다. \texttt{clarify}/\texttt{negotiate}는 canonical effect가 없는 dialogue이며 경로가 없으면 \texttt{NO\_ROUTE}와 물리적 step 없음으로 끝난다. 결과 뒤에는 fresh observation/state reference와 직전 typed intent만 재사용하고 utterance/claim은 재해석하지 않는다.
 
 각 요청은 wire의 \texttt{npc-goal-recovery/1.1.0} 계약을 따른다. \texttt{config\_hash}는 \path{configs/npc-goal-recovery.json} raw bytes의 SHA-256이며 논문에는 prefix \texttt{d63f5679f360d3fd}만 싣고 전체 digest는 \path{research/academic-pipeline/npc-goal-recovery/verified-run-002/}의 validated packet hash manifest가 보존한다. \texttt{policy\_hash}는 prefix \texttt{af0a1075294b1163}, \path{project.godot} source hash는 prefix \texttt{2e7966bf2ac6}로 같은 manifest에 기록된다.
-utterance event의 \texttt{raw\_utterance\_sha256}는 UTF-8 바이트열의 SHA-256 commitment이고 observation event에서는 \texttt{utterance}와 digest를 모두 \texttt{null}로 둔다. loopback은 \texttt{127.0.0.1:8768}, browser origin은 \texttt{localhost} 및 \texttt{127.0.0.1:8877}이며, Codex는 비권위적 OAuth CLI interpreter이고 P는 rule fallback으로 대체하지 않는다. 고정 identifier는 \path{harbor-signal-restored-authorized-tide-lead-v1} (goal version 1, NPC \texttt{captain\_mira})이며 utterance/claim/model output은 이를 바꾸지 못한다.
+utterance event의 \texttt{raw\_utterance\_sha256}는 UTF-8 바이트열의 SHA-256 commitment이고 observation event에서는 \texttt{utterance}와 digest를 모두 \texttt{null}로 둔다. loopback은 \texttt{127.0.0.1:8768}, browser origin은 \texttt{localhost} 및 \texttt{127.0.0.1:8877}이며, Codex는 비권위적 OAuth CLI interpreter로 typed intent를 제안하고 Python은 typed claim을 검증/확인하며 P는 rule fallback으로 대체하지 않는다. 고정 identifier는 \path{harbor-signal-restored-authorized-tide-lead-v1} (goal version 1, NPC \texttt{captain\_mira})이며 utterance/claim/model output은 이를 바꾸지 못한다.
 episode total/deadline과 intent call/action attempt/replan/BFS expansion 예산은 누적된다. 적용된 acquire/install/reveal은 revision을 정확히 1 증가시키고 hash를 바꾸며 dialogue와 미적용 결과는 state reference를 유지하고 \texttt{STALE}은 채택하지 않는다. Redacted recorded-intent replay는 모델 호출 0회이고 native replay 경로는 \texttt{--npc-experiment}/\texttt{engine\_fixture\_reexecution}이며 \texttt{--npc-replay}는 사용하지 않는다. Live cancellation은 local invalidation일 뿐이며 \texttt{Core.cancel} no-publication은 unit/controller 속성이지 provider 완료 취소 보장이 아니다.
  
 
@@ -248,8 +248,16 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \subsection{\textbf{E2} 라이브 RQ2 스크리닝}
 라이브 확장은 블라인드 동일 후보 retry와 $\rho$를 동일한 $K{=}1$에서 비교한다. 각 셀에서 seed로 구분한 hosted proposer \texttt{gpt-5.6-sol} 호출 5회가 후보 하나씩을 만들고, 두 arm은 같은 최초 후보를 받아 호출 내 제안 차이를 제거한다. 조건은 policy 공개 여부와 자명한 효과 0 경로의 존재를 바꾼다. 동결된 packet은 현재 셀과 폐기된 v1 진단을 함께 보존하고 모든 영수증을 SHA-256으로 결합하며 pilot-only로 표시된다. Seed label은 hosted sampler를 제어하지 않고, hosted revision은 고정되지 않았으며, token 회계는 없고, 구성 상태는 모집단 표본이 아니다. 따라서 $p$-value, confidence interval, 모델 순위 없이 정확한 기술 count와 실패 class만 보고한다.
 
+\subsection{\textbf{NPC-ENG1} 고정 목표 engineering 레인}
+NPC-ENG1은 bootstrap, identity/hash binding, intent/plan/role/result 전이, 음성 gate, stale/duplicate/deadline 경로와 replay를 다루는 결정론적 native R rule-control 사례 16개다. Stable v5는 engineering assignment 16개와 screening recipe 12개를 정의하며 이전 packet은 immutable provenance다. Historical preflight는 NPC-SCR1 outcome 밖에 두고, 최종 status/count/latency와 재현은 검증된 \path{research/academic-pipeline/npc-goal-recovery/verified-run-002/} packet 및 repository runner/validator에만 근거한다. 이는 protocol/engine 근거이지 효능 근거가 아니다.
+
+\subsection{\textbf{NPC-SCR1} 기술적 스크리닝}
+12개 unique case $\times$ 2회 $\times$ 3 arm(P/R/O)은 arm당 24개, 총 72개 screening assigned row다. Legacy ENG1/E1과 별개인 NPC-ENG1 16개를 더하면 28개 unique case definition에 88개 assignment($R=40$, $P=24$, $O=24$)다. 하나의 game-owned Mira goal에서 pre-trigger/parse/deadline-cancel/duplicate-stale/controller/no-route를 포함한 모든 assigned row와 failure를 분모에 보존하며 recovery-eligible/unreachable strata를 분리한다. P는 fallback 없는 authenticated Codex OAuth adapter, R은 authored rule/grammar control, O는 같은 public input을 받는 protocol-declared same-family auxiliary다. 실제 family match는 미검증이며 independent gold는 없다. Auxiliary-source fraction은 100\%, independent fraction은 0이다. Ownership과 role/action 경계는 앞선 NPC protocol 정의를 따른다. Screening은 descriptive/provenance 근거이지 recovery efficacy, semantic gold, accuracy ceiling, model ranking 또는 C6가 아니다. Native012는 current-source Godot$\rightarrow$HTTP$\rightarrow$authenticated Codex NPC v1.1 engineering demonstration(intent 1회, observation 3회)과 별도 zero-model-call replay이며 legacy ENG1과 16+72 pool 밖이다. Legacy ENG1은 별도 Godot authored-trace replay다.
+
+관측 계수만 생성 결과로 보고하며 normal-play full-loop demo는 one-step pool 밖의 별도 artifact다. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16 및 v1--v4 provenance pointer는 원본에 보존한다. \texttt{aggregate.validation}은 생성 시점 placeholder이며 admissibility는 \texttt{validation-report.json}과 fresh strict validator가 판정한다. Generator가 이 검사를 강제하며 효능을 추정하지 않는다.
+
 \subsection{\textbf{E3} KG/온톨로지 링크 제안 시뮬레이션}
-세 번째 레인은 권한을 가진 \texttt{WorldState}와 분리된 engineering-only closed-world 시뮬레이션이다. graph node 43개와 reference edge 106개, 검토된 typed edge 24개가 type/domain/range 검사와 competency question 6개를 통과하며, 작성형 질의 6개를 고정 전략 7개로 채점했다. Retained typed-lexical 전략(S2)은 작성된 holdout 6/6을 복원했고($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$), degree baseline은 하나도 복원하지 못했다. 이는 구성 결과이며 OWL/SHACL 적합성, 의미 완전성, runtime retrieval, 어떤 효능 주장의 근거도 아니다.
+세 번째 레인은 권한을 가진 \texttt{WorldState}와 분리된 engineering-only closed-world 시뮬레이션이다. graph node 43개와 reference edge 106개, 검토된 typed edge 24개가 type/domain/range 검사와 competency question 6개를 통과하며, 여섯 개의 graph-edge-withheld authored target은 retained strategy를 선택하고 요약하는 데 모두 사용되므로 untouched 또는 external test set이 아니며, 고정 전략 7개로 채점했다. Retained typed-lexical 전략(S2)은 authored target 6/6을 복원했고($P=R=F_1=1.000$, realistic-tie $\mathrm{MRR}=0.944$, Brier $=0.131$, $\mathrm{Sem}@3=1.000$), degree baseline은 하나도 복원하지 못했다. 이는 구성 결과이며 OWL/SHACL 적합성, 의미 완전성, runtime retrieval, 어떤 효능 주장의 근거도 아니다.
 
 \begin{figure}[t]
   \centering
@@ -269,19 +277,18 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
 \input{../generated/live_pilot_results_ko.tex}
 \input{../generated/live_pilot_tables_ko.tex}
 
-\paragraph{NPC 결과 생성 경계.} NPC-ENG1은 16개 deterministic native R rule-control hard conformance, NPC-SCR1은 validated-v5의 12개 case\,$\times$\,2회\,$\times$\,3 arm(P/R/O) screening이다. 모든 assigned row와 pre-trigger/parse/deadline-cancel/duplicate-stale/controller/no-route failure를 분모에 보존한다. P는 authenticated Codex typed-intent interpreter, R은 작성된 rule interpreter, O는 same-model-family auxiliary reference다. P 24개는 사전 배정 분모일 뿐이며 관측 count와 efficacy는 validated packet 뒤 generator가 실제 값으로만 반영한다. Native Codex full-loop demo는 case pool 밖 engineering artifact다. ENG-X01, SCR-X01, D02, QA-001, C-RESULT, Frozen8, Frozen16 및 v1--v4 provenance pointer는 source artifact에 보존한다. 검증된 \texttt{verified-run-002} packet에서만 generator가 \texttt{npc\_results\_ko.tex}/\texttt{npc\_tables\_ko.tex}를 갱신한다.
 \input{../generated/npc_results_ko.tex}
 \input{../generated/npc_tables_ko.tex}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{../figures/fig_npc_screening.pdf}
-  \caption{NPC-SCR1 validated-v5 사전 배정 분모. 12개 case, 2회 반복, 3개 arm으로 72개 row(arm당 24개), NPC-ENG1 16개와 합쳐 88개(R 40개, P 24개, O 24개)다. P는 실제 Codex typed intent, R은 작성된 rule interpreter, O는 same-model-family auxiliary reference이며 independent-source row는 0이다. ENG-X01/SCR-X01과 v1--v4 provenance를 보존하고, case pool 밖 full-loop demo는 포함하지 않는다. 이는 고정 사례 계수이지 recovery efficacy, oracle 비교, normal-play 또는 player benefit이 아니다.}
+  \caption{NPC-SCR1: $12\times2\times3=72$개 assigned row(arm당 24개); NPC-ENG1 16개를 더해 28개 definition에 총 88개 assignment($R/P/O=40/24/24$)이며 legacy ENG1/E1 및 full-loop demo와 별개다. P: authenticated Codex intent; R: authored rule; O: protocol-declared auxiliary(family 미검증; independent gold/row 없음). ENG-X01/SCR-X01과 v1--v4는 provenance로 보존한다. Descriptive count이지 recovery efficacy, oracle 비교, normal-play 또는 player benefit이 아니다.}
   \label{fig:npc-screening}
 \end{figure}
 \noindent 표와 그림의 수치는 고정 사례 계수일 뿐이다. packet 검증 전에는 목표 도달, 회복 평가 가능/불가능, completion/failure를 성공률이나 효능으로 읽지 않으며, hash-bound receipt가 없는 행을 결과표에 채우지 않는다.
 
-보고 경계는 명시적이다. 동결 fixture와 지정 검사 연산이 허용한 row만 오프라인 표에 들어가고, 라이브 표는 자체 hash-bound packet을 통해 도착하며 동결 오프라인 denominator에는 들어가지 않는다. 각 lane이 측정하지 않은 항목은 표~\ref{tab:evidence-lanes}가 나열한다.
+지정 fixture check만 offline row를 허용하며, 별도로 hash-bound된 live packet은 그 분모에 들어가지 않는다(표~\ref{tab:evidence-lanes}).
 
 \begin{figure}[!t]
   \centering
@@ -291,20 +298,20 @@ Terminal record class는 commit, symbolic fallback, adapter failure, controller 
   \includegraphics[width=\columnwidth,trim=12 30 468 606,clip]{../captures/playable-readout-20261014-r2/authorized_hint.png}\\[3pt]
   {\footnotesize\bfseries (c) 세 번의 커밋 뒤 엔드카드 영수증\par}\vspace{1pt}
   \includegraphics[width=0.96\columnwidth,trim=250 294 250 190,clip]{../captures/playable-readout-20261014-r2/ending.png}
-  \caption{플레이어가 Godot slice에서 읽는 commit gate. 작성된 fixture 하나의 scripted presentation stage 세 개에서 잘라낸 ledger(엔지니어링 작업 캡처, 1280$\times$720; 예시일 뿐 근거가 아니다). (a) 금지된 disclosure가 \emph{보류}된다. ledger는 게이트 계열을 이름 짓고, canonical state가 변경되지 않았음을 밝히며, 다음 유효 항목을 가리키고, 보류를 플레이어가 재사용할 수 있는 규칙으로 바꾼다. (b) 유효한 제안이 \emph{커밋}된다. 항목, committed snapshot의 차분만으로 파생된 기여 절(추가된 fact, 퀘스트 단계 $1{>}2$, case chain $2/3$), 그리고 그것이 해제하는 행동이 이어진다. (c) 엔드카드는 기여 절 세 개, 보류 횟수, 그리고 리플레이가 보고하는 종단 state hash(\texttt{4b2310\ldots})를 담은 validator 영수증을 나열한다. 모든 줄은 committed snapshot의 presentation-only 판독이며(그림~\ref{fig:architecture} 아래 strip), oracle label, 숨겨진 fact, live model, participant는 개입하지 않는다. 패널은 usability, immersion, efficacy 어느 주장도 뒷받침하지 않는다.}
+  \caption{Presentation-only Godot ledger: 작성된 fixture 하나의 scripted stage 세 개(1280$\times$720 엔지니어링 캡처; 예시이지 근거가 아니다). (a) 보류된 disclosure: 게이트 계열, 변경 없는 state, 다음 유효 항목, 재사용 규칙. (b) Commit: 항목, committed-snapshot 차분만의 기여(추가 fact, quest $1{>}2$, chain $2/3$), 해제된 행동. (c) End card: 기여 세 개, 보류 횟수, validator 영수증과 replay 종단 hash(\texttt{4b2310\ldots}). 이 committed-snapshot 판독(그림~\ref{fig:architecture} 아래 strip)은 oracle label, 숨겨진 fact, live model 또는 participant를 사용하지 않으며 usability, immersion, affect, efficacy, G4, G6 어느 주장도 뒷받침하지 않는다.}
   \label{fig:playable-readout}
 \end{figure}
 
-\noindent\textbf{ENG1.} Godot 4.7.1의 두 번째 구현이 authored trace를 replay했다. 금지 disclosure는 이전 hash에서 보류되고 authorized commit은 offline terminal hash로 전진했다. 그림~\ref{fig:playable-readout}의 readout과 근거는 pixel이 아닌 trace와 deterministic evaluation이다. case-file board, hint ladder, coach card, chain prompt는 committed fact를 읽고, fail-closed dashboard는 checks, holds, unreached in-scope checks와 out-of-scope families를 보여 준다. Fixture는 core 52/52와 extension 4개이며 live model/Python transport/participant input/narrative result가 없고 NPC-SCR1, normal-play/player study, usability/efficacy 근거가 아니다.
+\noindent\textbf{ENG1.} (Legacy; no live transport.) Godot 4.7.1이 authored trace를 replay한다. 금지 disclosure는 이전 hash에서 보류되고 authorized commit은 offline terminal hash에 도달한다(그림~\ref{fig:playable-readout}). 근거는 pixel이 아닌 trace/deterministic evaluation이다. Committed fact는 case-file board, hint, coach, chain prompt를 채우며, fail-closed dashboard는 checks, holds, unreached in-scope checks, out-of-scope families를 구분한다. Core 52/52와 extension 4개는 engine-local conformance만 확립한다. Live model/Python transport, participant, narrative result, usability 또는 efficacy 근거가 아니다.
 
 \section{논의}
 \subsection{확립 가능한 범위}
 동결 pilot은 mechanism behavior만 확립한다. encoded check의 state isolation, 선언된 repair/fallback 경로, 명명된 corruption 거부와 row classification을 확인하며 안정적인 detector 귀속은 하지 않는다.
-NPC-ENG1은 synthetic closed-world evidence, NPC-SCR1은 one-step screening이며 normal-play episode는 별도 illustrative artifact다. 발화/model output은 fixed goal을 바꿀 수 없다. Python은 typed intent와 bounded public BFS를 내고 role gate는 player/Mira reveal을 전달하며 replan은 observation을 사용한다. P/R/O는 adapter/control/auxiliary이고 independent row는 0이므로 count는 efficacy, superiority, generalization, human benefit, cost equality, semantic gold 또는 accuracy ceiling을 추정하지 않는다.
+NPC 경계와 ownership은 \ref{sec:lanes}절에 고정된다. Count는 descriptive이며 efficacy, superiority, generalization, human benefit, cost equality, semantic gold 또는 accuracy ceiling을 추정하지 않는다.
 
 Offline state-reading은 $\rho$가 전환할 수 없는 oracle-only 사례를 처리하고, typed error만 쓰는 $\rho$는 guided-repairable class에서 oracle과 일치한다. Live에서 blind retry와의 분리는 그 regime에서만 나타났으며 already-valid/irreparable null, unpinned revision과 quasi-replicated calls는 sample-efficiency/model-capability 주장을 막는다. Self-Refine, Reflexion, Self-Debugging이 선례지만 \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug}, $\rho$는 deterministic pre-execution error만 소비하고 실패 arm을 격리하며 semantic repair가 아니라 counterexample-guided synthesis와 유사할 뿐이다 \cite{S47_solarlezama2006sketching}.
-
 \subsection{선행연구와의 관계}
+
 \system{}은 constrained decoder \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard}, 검색 및 메모리 구성요소 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}, 실행 가능한 환경과 benchmark \cite{S11_cote2019textworld,S12_wang2022scienceworld,S15_liu2024agentbench,S18_paglieri2025balrog}를 대체하지 않고 보완한다. Process-linked trace는 AgentBoard의 측정 관심사를 구현하지만 \cite{S16_ma2024agentboard} 우월성의 근거는 아니다. 확증 protocol은 아직 실행하지 않았다. 독립 semantic oracle과 실제 blind-retry comparator를 갖춘 사전등록 다중 모델 비교, validity를 맞춘 retrieval/memory ablation, 정당화된 검정력과 mixed-effects 분석을 갖춘 blinded matched-validity 인간 연구가 필요하며, 현재 screening pilot을 대체하지 않는다 \cite{S27_vanderlee2019best,S31_agarwal2021precipice,S35_barr2013random}.
 
 \section{타당성 위협, 윤리, 산출물 범위}
@@ -315,7 +322,7 @@ NPC 경로의 asynchronous deadline, duplicate/late-drop, session/epoch/goal/pol
 
 \section{결론}
 \system{}은 mutation 전에 payload를 gate하고 linked record/replay로 outcome을 감사한다. Frozen fixture는 conformance를, live screening은 constructed repairable regime에서만 $\rho$와 blind retry를 5/5 대 0/5로 분리하는 pilot count를 제공한다. Godot readout은 committed-snapshot rule/contribution을 드러내지만 cross-model/player/retrieval/memory/affect/commercial benefit은 미검증이다.
-NPC는 implemented fixed-goal prototype이다. Python은 typed intent/public-projection BFS를 내고 Godot만 canonical change를 허가한다. State movement, cumulative budgets, observation-only replanning과 zero-call replay는 contract behavior이지 efficacy나 player-benefit 주장이 아니다.
+Additive NPC integration, native012 engineering demonstration 및 legacy ENG1 replay의 경계는 \ref{sec:lanes}절에 고정되어 있으며, 이는 contract/provenance 관찰이지 production-readiness, generalization, efficacy 또는 player-benefit 주장이 아니다.
 
 \begingroup
 \section*{AI 사용 고지}

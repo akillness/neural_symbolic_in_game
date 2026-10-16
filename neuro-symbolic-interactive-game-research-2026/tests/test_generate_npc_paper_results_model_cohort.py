@@ -1,6 +1,10 @@
+import json
+import os
 import sys
 import unittest
+from copy import deepcopy
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 ROOT = Path(__file__).parents[1]
@@ -240,6 +244,82 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
                 )
                 self.assertIn("other assigned failures (1) remain unclassified", english)
                 self.assertNotIn("expected_negative_gates", english)
+
+    def test_generated_validation_reports_use_project_relative_packet_dir_and_preserve_outcomes(
+        self,
+    ):
+        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        expected_outcomes = {
+            "NPC-ENG1": {"valid": True, "publishable": False, "errors": []},
+            "NPC-SCR1": {"valid": True, "publishable": True, "errors": []},
+        }
+
+        with TemporaryDirectory(dir=ROOT) as temporary_directory:
+            output_root = Path(temporary_directory)
+            output_dir = output_root / "generated"
+            figures_dir = output_root / "figures"
+            original_cwd = Path.cwd()
+            os.chdir(output_root)
+            try:
+                with (
+                    patch.object(generator, "OUT", output_dir),
+                    patch.object(generator, "FIGURES", figures_dir),
+                ):
+                    generator.main()
+            finally:
+                os.chdir(original_cwd)
+
+            reports = json.loads(
+                (output_dir / "npc_validation_reports.json").read_text(encoding="utf-8")
+            )
+
+        self.assertEqual(set(reports), set(expected_outcomes))
+        for packet_id, outcome in expected_outcomes.items():
+            with self.subTest(packet_id=packet_id):
+                report = reports[packet_id]
+                self.assertEqual(report["packet_dir"], expected_packet_dir)
+                self.assertFalse(Path(report["packet_dir"]).is_absolute())
+                self.assertEqual(
+                    {key: report[key] for key in ("valid", "publishable", "errors")},
+                    outcome,
+                )
+
+    def test_portable_report_only_normalizes_exact_packet_and_preserves_payload(self):
+        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        source_report = generator._load_packet()["validation_reports"]["NPC-SCR1"]
+        same_basename_elsewhere = ROOT / "tests" / "not-the-npc-packet" / generator.PACKET.name
+        cases = {
+            "canonical packet": (str(generator.PACKET), expected_packet_dir),
+            "same basename elsewhere": (str(same_basename_elsewhere), str(same_basename_elsewhere)),
+            "missing packet_dir": (None, None),
+            "non-string packet_dir": (7, 7),
+        }
+
+        for name, (packet_dir, expected) in cases.items():
+            with self.subTest(name=name):
+                report = deepcopy(source_report)
+                if name == "missing packet_dir":
+                    report.pop("packet_dir")
+                else:
+                    report["packet_dir"] = packet_dir
+                before = deepcopy(report)
+
+                portable = generator._portable_validation_report(report)
+
+                self.assertEqual(report, before)
+                self.assertEqual(portable["valid"], True)
+                self.assertEqual(portable["publishable"], True)
+                self.assertEqual(portable["errors"], [])
+                if name == "missing packet_dir":
+                    self.assertNotIn("packet_dir", portable)
+                else:
+                    self.assertEqual(portable["packet_dir"], expected)
+                if name == "canonical packet":
+                    self.assertFalse(Path(portable["packet_dir"]).is_absolute())
+                elif name == "same basename elsewhere":
+                    self.assertTrue(Path(portable["packet_dir"]).is_absolute())
+                self.assertEqual(portable["source"], before["source"])
+                self.assertEqual(portable["counts"], before["counts"])
 
 
 if __name__ == "__main__":

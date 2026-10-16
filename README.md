@@ -143,12 +143,16 @@ All captures above are tracked 1280×720 engineering captures, not usability evi
 
 ## Live commit-gate dashboard
 
-![Recorded dashboard route: three commits and one hold appear beside the embedded game, each extending the hash chain](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/dashboard-route.gif)
+**2026-10-02 local gameplay UI:** the embedded game stays primary, with its reported three-stage quest, live player/site map, recent actions, and a stable last-action readout. Freeze and historical selection affect this readout only; game input and canonical state stay in the game. The new screenshots show real local input: two `ask_secret` holds preserved `f488d9c4…812c`, then lens acquisition committed stage 0 → 1 (`19b474dc…c498`, 1 commit / 2 holds). They are engineering captures, not usability, fun, efficacy, or G4/G6 evidence. The independent browser gate is still pending, so this revision is not yet deployed.
+
+The GIF and episode-complete image below retain the earlier renderer and its separate 3-commit / 1-hold run.
+
+![Earlier dashboard route: three commits and one hold beside the embedded game; commit receipts extend the chain and the hold preserves state](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/dashboard-route.gif)
 
 <table>
   <tr>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png" alt="Dashboard during a hold: FORBIDDEN_DISCLOSURE mapped to the DISCLOSURE family"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png" alt="Dashboard after a commit: a new receipt joins the hash chain"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png" alt="Real local ask_secret hold selected in history: state unchanged, failed disclosure check, passed stage check, other families not evaluated"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png" alt="Local gameplay view after lens acquisition: stage 1 of 3, one commit and two holds, install-lens objective"></td>
   </tr>
   <tr>
     <td align="center"><sub>Hold</sub></td>
@@ -156,17 +160,17 @@ All captures above are tracked 1280×720 engineering captures, not usability evi
   </tr>
   <tr>
     <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-complete.png" alt="Dashboard at episode completion: three commits, one hold, full chain"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png" alt="Dashboard panels: event feed, gate families, chain, and paper reference"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png" alt="Real acquire_object verdict: stage 0 to 1, two reported reachability checks, other families not evaluated, selectable history"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Episode complete</sub></td>
-    <td align="center"><sub>Panels</sub></td>
+    <td align="center"><sub>Earlier renderer · episode complete</sub></td>
+    <td align="center"><sub>Current last-action readout</sub></td>
   </tr>
 </table>
 
 **Live:** [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app) — the production site root redirects to `/dashboard/`, and the embedded game is served from `/public/` (deployed 2026-09-03 through `scripts/deploy_vercel_dashboard.sh`; zero console/page errors on desktop and a 390×844 viewport).
 
-<p align="center"><img width="70%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="The production dashboard with the game running in the embedded frame: header pill live · receiving game events, state hash f488d9c4…812c, session panel at zero entries"></p>
+<p align="center"><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="2026-10-02 local gameplay dashboard after a real lens-acquisition commit: stage 1 of 3, live player position and the next objective"></p>
 
 To run it locally, the dashboard embeds the local Web build:
 

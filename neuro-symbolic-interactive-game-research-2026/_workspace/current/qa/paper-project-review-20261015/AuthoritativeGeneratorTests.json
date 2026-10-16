@@ -1,0 +1,10 @@
+{
+  "status": "complete",
+  "scope": "Only tests/test_generate_npc_paper_results_model_cohort.py was edited; generator/data/validators/manuscripts untouched by me.",
+  "test_anchor": "GenerateNpcPaperResultsModelCohortTests.test_generated_validation_reports_use_project_relative_packet_dir_and_preserve_outcomes (lines 248-282)",
+  "coverage": "End-to-end generator.main() writes an isolated npc_validation_reports.json; invocation runs from a relocated temporary cwd; both NPC-ENG1 and NPC-SCR1 packet_dir values must be the exact project-relative POSIX path research/academic-pipeline/npc-goal-recovery/verified-run-002, while valid/publishable/errors remain ENG1={True,False,[]} and SCR1={True,True,[]}.",
+  "red": "Before GeneratorScopeFix source edit: python -m unittest tests.test_generate_npc_paper_results_model_cohort.GenerateNpcPaperResultsModelCohortTests.test_generated_validation_reports_use_project_relative_packet_dir_and_preserve_outcomes -> Ran 1 test in 3.000s, FAILED 2 subtests (NPC-ENG1 and NPC-SCR1); each emitted the absolute /Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/research/.../verified-run-002 path.",
+  "green_focused": "After source fix: same focused unittest command -> Ran 1 test in 2.090s, OK.",
+  "green_touched_module": "python -m unittest tests.test_generate_npc_paper_results_model_cohort -> Ran 11 tests in 27.916s, OK.",
+  "constraints": "No pytest was installed (python -m pytest failed with No module named pytest). No formatter, linter, project-wide suite, Git, build, deploy, or provider calls were run."
+}

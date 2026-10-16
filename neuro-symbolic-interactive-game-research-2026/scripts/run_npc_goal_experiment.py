@@ -1836,7 +1836,7 @@ def main() -> int:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-002",
+        default=ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-003",
     )
     parser.add_argument("--model", default=None)
     parser.add_argument("--service-url", default=None)
@@ -1858,7 +1858,7 @@ def main() -> int:
     args.godot_project = args.godot_project.resolve()
     run_mode = "dry_run" if args.dry_run else "preflight" if args.skip_model else "publish"
     canonical_output = (
-        ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
     ).resolve()
     if run_mode != "publish" and args.output_dir == canonical_output:
         parser.error(

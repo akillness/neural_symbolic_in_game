@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKET = ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+PACKET = ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
 CONFIG = ROOT / "configs/npc-goal-recovery.json"
 GAME_CONFIG = ROOT / "game-track/godot/project.godot"
 SCHEMA = ROOT / "game-track/schemas/npc-goal-recovery.schema.json"
@@ -50,6 +50,20 @@ def _require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def _portable_validation_report(report: dict[str, Any]) -> dict[str, Any]:
+    """Copy a validation report and make an exact packet path portable."""
+    portable = dict(report)
+    recorded_dir = portable.get("packet_dir")
+    if not isinstance(recorded_dir, str):
+        return portable
+    recorded_path = Path(recorded_dir)
+    if not recorded_path.is_absolute():
+        recorded_path = ROOT / recorded_path
+    if recorded_path.resolve() == PACKET.resolve():
+        portable["packet_dir"] = PACKET.relative_to(ROOT).as_posix()
+    return portable
+
+
 def _load_packet() -> dict[str, Any]:
     _require(PACKET.is_dir(), f"missing NPC packet: {PACKET}")
     from validate_npc_goal_evidence import validate_packet
@@ -58,7 +72,7 @@ def _load_packet() -> dict[str, Any]:
     for packet_id in ("NPC-ENG1", "NPC-SCR1"):
         report, errors = validate_packet(packet_id, ROOT, packet_dir=PACKET)
         _require(not errors and report.get("valid") is True, f"{packet_id}: " + "; ".join(errors))
-        validation_reports[packet_id] = report
+        validation_reports[packet_id] = _portable_validation_report(report)
     config = _read_json(CONFIG)
     _require(_sha(GAME_CONFIG) == PROJECT_CONFIG_SHA256, "NPC game config SHA file drift")
     _require(_sha(CONFIG) == NPC_CONFIG_SHA256, "NPC protocol config SHA file drift")
@@ -361,7 +375,7 @@ def _results(packet: dict[str, Any], korean: bool) -> str:
 \subsection{{고정 목표 NPC 운영 (NPC-ENG1/NPC-SCR1)}}
 Mira의 고정 목표는 항구 신호 복구 후 허가된 조석 단서를 제공하는 것이다. Python은 typed intent와 공개 관측으로 bounded BFS 계획을 계산한다. 획득·설치는 플레이어가, 허가된 \texttt{{reveal\_hint}}는 NPC가 수행한다. Godot은 session/epoch/request/goal/policy/revision/hash를 동기 검사한 뒤 기존 writer를 await 없이 호출한다. 결과와 새 관측이 다음 계획을 결정하므로 단일 후보의 validator-error repair와 구별된다.
 
-NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 engineering 사례 {eng_n}개({eng_status})다. NPC-SCR1은 P/R/O 각 24개, 전체 {aggregate["assignment_count"]}개 배정과 실패를 모두 보존한다({scr_status}). P는 인증된 Codex CLI 실행 시도 {p_attempts}회, 반환 decision {p_decisions}개, 배정 실패 {p_failures}개를 기록했다. 이는 원격 과금 호출 횟수가 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이며 provider revision이 아니다. provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. 실제 모델 계열 일치는 unverified(검증되지 않음)이다. R은 작성된 규칙을 사용한다. O의 \texttt{{same\_model\_family\_auxiliary}}는 protocol source classification일 뿐이고 non-independent이며 실제 동일 모델을 입증하지 않는다. 독립 원본은 0개이고 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}과 그림~\ref{{fig:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다. efficacy는 pending이며 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론이나 적대적 기밀성은 검증하지 않았다.
+NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 engineering 사례 {eng_n}개({eng_status})다. NPC-SCR1은 P/R/O 각 24개, 전체 {aggregate["assignment_count"]}개 배정과 실패를 모두 보존한다({scr_status}). P는 인증된 Codex CLI 실행 시도 {p_attempts}회, 반환 decision {p_decisions}개, 배정 실패 {p_failures}개를 기록했다. 이는 원격 과금 호출 횟수가 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이며 provider revision이 아니다. provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. R은 작성된 규칙을 사용한다. O는 \texttt{{same\_model\_family\_auxiliary}}로 선언된 protocol auxiliary일 뿐이며 실제 모델 계열 일치는 unverified(검증되지 않음)이다. 독립 원본은 0개이고 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}과 그림~\ref{{fig:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다. efficacy는 pending이며 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론이나 적대적 기밀성은 검증하지 않았다.
 {stale_failure_disclosure}
 
 """.strip()
@@ -372,7 +386,7 @@ NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 enginee
 \subsection{{Fixed-Goal NPC Operation (NPC-ENG1/NPC-SCR1)}}
 Mira's fixed goal is to deliver the authorized tide lead after harbor-signal restoration. Python computes bounded BFS plans from typed intent and public observations. Acquire/install remain player actions; the NPC may only commit the authorized \texttt{{reveal\_hint}}. Godot synchronously checks session/epoch/request/goal/policy/revision/hash before calling the existing writer without an await. Results and new observations determine the next plan, unlike single-candidate validator-error repair.
 
-NPC-ENG1 comprises {eng_n} deterministic R-arm engineering cases initialized from actual engine snapshots ({eng_status}). NPC-SCR1 retains all {aggregate["assignment_count"]} assignments and failures, 24 per P/R/O arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures; these are not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter propagates the configured selector, not a provider revision; the provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. Actual model-family matching is unverified. R uses authored rules. O's \texttt{{same\_model\_family\_auxiliary}} is a protocol source classification only and is non-independent; it does not establish that the actual models match. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} and Fig.~\ref{{fig:npc-screening}} report bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates. Efficacy remains pending; tokens and cost are unmeasured. A read-only CLI and isolated working directory were used, but tool-free inference and adversarial confidentiality were not established.
+NPC-ENG1 comprises {eng_n} deterministic R-arm engineering cases initialized from actual engine snapshots ({eng_status}). NPC-SCR1 retains all {aggregate["assignment_count"]} assignments and failures, 24 per P/R/O arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures; these are not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter propagates the configured selector, not a provider revision; the provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. R uses authored rules. O is a protocol-declared auxiliary under \texttt{{same\_model\_family\_auxiliary}}. Actual model-family matching is unverified. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} and Fig.~\ref{{fig:npc-screening}} report bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates. Efficacy remains pending; tokens and cost are unmeasured. A read-only CLI and isolated working directory were used, but tool-free inference and adversarial confidentiality were not established.
 {stale_failure_disclosure}
 """.strip()
         + "\n"
@@ -444,11 +458,11 @@ def _svg(packet: dict[str, Any]) -> str:
         '<?xml version="1.0" encoding="UTF-8"?>',
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="svg-title svg-desc">',
         '<title id="svg-title">NPC-SCR1 fixed-case trace outcomes</title>',
-        '<desc id="svg-desc">Observed completed traces and retained assigned failures for 24 rows per arm. These are synthetic descriptive counts, not estimates of recovery efficacy.</desc>',
+        '<desc id="svg-desc">Observed completed traces and retained assigned failures for 24 rows per arm in authored fixed cases, including Codex-backed P. These descriptive counts are not estimates of recovery efficacy. O is a protocol-declared auxiliary; actual model-family matching is unverified.</desc>',
         "<style>text{font-family:Helvetica,Arial,sans-serif;fill:#202124}.title{font-size:32px;font-weight:700}.label{font-size:30px;font-weight:700}.body{font-size:28px}.note{font-size:28px;fill:#5F6368}.connector{fill:none}</style>",
         f'<rect width="{width}" height="{height}" fill="white"/>',
         '<text x="40" y="48" class="title">NPC-SCR1 | FIXED-CASE TRACE OUTCOMES</text>',
-        '<text x="40" y="90" class="note">P: Codex intent | R: authored rules | O: same-family auxiliary reference</text>',
+        '<text x="40" y="90" class="note">P: Codex intent | R: authored rules | O: protocol auxiliary (family unverified)</text>',
         '<rect x="145" y="115" width="25" height="22" fill="#0072B2"/>',
         '<text x="183" y="135" class="note">Completed trace</text>',
         '<rect x="470" y="115" width="25" height="22" fill="#D55E00"/>',

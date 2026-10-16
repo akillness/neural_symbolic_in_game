@@ -1,0 +1,178 @@
+{
+  "verdict": "WARNING — existing data are honestly usable only as mechanism/engineering demonstration or bounded descriptive screening. No lane supports confirmatory efficacy, human/player benefit, population generalization, model ranking, or independent semantic-accuracy claims.",
+  "findings": [
+    {
+      "severity": "HIGH",
+      "title": "English manuscript points current NPC-ENG1 reproduction at the obsolete packet",
+      "path": "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex:201",
+      "evidence": "The paragraph describes stable-v5/current NPC-ENG1 but says reproduction uses verified-run-001. The active generator validates and reads verified-run-002 (scripts/generate_npc_paper_results.py:56-61), and the fresh strict validator passed verified-run-002 with 16/16 ENG records and 72/72 SCR records.",
+      "failure_mode": "A reviewer following the paper reproduces an older immutable provenance packet rather than the packet underlying the generated tables, so manuscript method and reported counts are not tied to the same artifact.",
+      "minimal_fix": "Replace verified-run-001 with verified-run-002. If run-001 must remain cited, label it historical provenance, not the reproduction source."
+    },
+    {
+      "severity": "HIGH",
+      "title": "The English paper misclassifies and ambiguously pools the 88 NPC rows",
+      "path": "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex:42,204",
+      "evidence": "Line 42 calls all 88 rows “one-step protocol screening”; line 204 says “with ENG1, 88 rows total.” The packet actually contains 16 NPC-ENG1 deterministic native engineering assignments plus 72 NPC-SCR1 screening assignments. Legacy E1 is a separate frozen offline lane and must not enter this total. Korean main.tex:88 and :272 is substantially clearer about the 16+72 split.",
+      "failure_mode": "Readers can treat engineering checks as screening observations or interpret “ENG1” as legacy E1, changing the unit and denominator of the reported evidence.",
+      "minimal_fix": "Use: “The additive NPC packet contains 88 assigned rows: 16 NPC-ENG1 engineering checks plus 72 NPC-SCR1 screening rows; this total excludes legacy E1.” At line 204 write “with the separate 16-row NPC-ENG1 packet,” not “with ENG1.”"
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "Frozen aggregate validation flags are generation-time false placeholders, not the packet validity result",
+      "path": "neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/npc-goal-recovery/verified-run-002/aggregate.json:1; neuro-symbolic-interactive-game-research-2026/scripts/run_npc_goal_experiment.py:1722-1728",
+      "evidence": "aggregate.json stores assignment_complete, hashes_valid, replay_valid, provenance_valid, and claim_boundaries_valid as false by construction. The authoritative frozen validation-report.json:1 reports both packets valid, and scripts/generate_npc_paper_results.py:56-61 revalidates both packets before producing manuscript fragments. Fresh read-only validation also returned valid=true with no errors.",
+      "failure_mode": "A downstream reader or script treating aggregate.validation as authoritative will conclude the exact counts are invalid, while a script ignoring all validation could consume them without the actual gate.",
+      "minimal_fix": "Do not edit the immutable packet. In manuscript/data-availability or adjacent documentation state: “aggregate.validation is a generation-time placeholder; admissibility is established by validation-report.json and current validate_packet output.” Never cite aggregate.json alone as proof of validity."
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "KG “holdout” metrics are also the strategy-selection data",
+      "path": "neuro-symbolic-interactive-game-research-2026/src/nesy_game/kg_ontology_simulation.py:665-689; neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex:208; neuro-symbolic-interactive-game-research-2026/paper/latex/generated/kg_ontology_simulation_en.tex:1",
+      "evidence": "Seven fixed strategies are compared and the winner is selected lexicographically from metrics computed on the same six authored queries/30 candidates. The current paper correctly calls the lane closed-world construction, but “holdout” can imply an untouched evaluation set.",
+      "failure_mode": "P=R=F1=1.000 may be read as out-of-sample retrieval performance although it is an authored graph-edge-withheld construction set used for selection and evaluation.",
+      "minimal_fix": "Add: “The six edge-withheld authored targets are used both to select and summarize the retained strategy; they are not an external or untouched test set.” Prefer “graph-edge-withheld targets” over unqualified “holdouts.”"
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "Model labels need to remain request/record labels, not verified backend identities",
+      "path": "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex:198; neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/results.jsonl:1; neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md:264",
+      "evidence": "E2 receipts store model_id=gpt-5.6-sol and an explicitly unpinned revision label; seeds do not control the hosted sampler and token accounting is absent. NPC P has 24 authenticated CLI attempts configured as gpt-5.6-sol, while provider revision, provider seed, tokens, and cost are unavailable. The generated NPC prose already says actual model-family matching is unverified.",
+      "failure_mode": "“Hosted proposer gpt-5.6-sol” or “actual model” can be interpreted as provider-verified model/revision identity, which the receipts do not establish.",
+      "minimal_fix": "Use “requested/recorded selector gpt-5.6-sol through the authenticated Codex CLI; provider-returned revision and backend identity were unavailable.” Preserve the stronger existing caveat in generated NPC prose."
+    },
+    {
+      "severity": "LOW",
+      "title": "Technical assigned-failure status can obscure successful negative-control behavior",
+      "path": "neuro-symbolic-interactive-game-research-2026/paper/latex/generated/npc_tables_en.tex:1; neuro-symbolic-interactive-game-research-2026/paper/latex/generated/npc_tables_ko.tex:1",
+      "evidence": "NPC-ENG1 has 14 completed plus 2 assigned_failure rows; both failures are expected STALE rejections with passed stale_revision/stale_policy gates. NPC-SCR1 has 20 completed plus 4 assigned_failure per arm; all 12 are pre-authored stale-control ACK rejections, not unexpected execution failures. Generated prose explains this, but the table heading “Complete/fail” is easy to detach from the note.",
+      "failure_mode": "A table-only reader may treat 2 and 12 expected negative controls as uncontrolled failures or as failed evidence.",
+      "minimal_fix": "Rename the column/caption to “completed / assigned-failure status” and append “assigned failures are expected stale-control ACK rejections (ENG 2; SCR 12), not efficacy failures.”"
+    }
+  ],
+  "admissibility_matrix": [
+    {
+      "lane": "E1 frozen deterministic offline conformance",
+      "allowed_role": "mechanism/conformance demonstration; exact descriptive audit counts",
+      "unit_and_denominator": "13 authored gate fixtures (1 valid control + 12 isolated invalid fixtures); a separate set of 12 authored repair cases reused across four arms; 10 prespecified detectable integrity faults; 7 adapter assignments; 3 accounting guards. These denominators are non-interchangeable and must not be summed as an experimental N.",
+      "exact_results": "Gate expectations 13/13. Repair commits: rejection-only 0/12, blind unchanged retry 0/12, guided rho 5/12, state-reading reference 6/12. Detectable faults rejected 10/10; accounting guards rejected 3/3; declared provenance-boundary control replay-accepted 1/1.",
+      "pairing_and_budget": "All four repair arms receive the same 12 case inputs. Rejection-only has K=0; blind, rho, and state-reading reference have K=1. Therefore only the three repair-capable arms have matched repair budgets; rejection-only is an intentional no-repair baseline. Offline callbacks are deterministic, not sampled models.",
+      "authorship_and_dependence": "Purposively authored fixtures and expected outcomes over one world state; no stochastic sample, participant, independent labeler, or model population.",
+      "inference_ceiling": "Implemented parser/validator/controller behavior on the authored cases; mechanism comparison by repairability class only.",
+      "prohibited_inference": "No efficacy, safety rate, population accuracy, detector attribution, model capability, sample efficiency, human benefit, or generalization. Adapter latency/token constants are synthetic schema fixtures, not measured provider/runtime values.",
+      "source_anchors": "research/academic-pipeline/stage-04-pilot/pilot-results.json; research/academic-pipeline/stage-04-pilot/accounting-guards.md; paper/latex/generated/pilot_tables_en.tex:1-24; paper/latex/generated/pilot_results_en.tex:1"
+    },
+    {
+      "lane": "E2 rq2-live-pilot current promoted cells",
+      "allowed_role": "screening-pilot mechanism transfer and exact descriptive failure-class counts",
+      "unit_and_denominator": "Five current cells × five hosted proposal calls = 25 calls. Each call's single candidate is paired into rho and blind arms, producing 50 arm outcomes, not 50 independent proposals. The superseded signal-repair diagnostic cell is retained for provenance but excluded from current-cell conclusions.",
+      "exact_results": "Signal-v2/policy-blind: rho 5/5 commits versus blind 0/5. The other four current cells show no guided advantage: three already-valid cells are 5/5 versus 5/5, and frozen goal-blind is 0/5 versus 0/5. Across current cells, all 15/15 noncommit arm outcomes preserve prior state.",
+      "pairing_and_budget": "Within each call, same initial candidate and K=1 for both arms; candidate-level pairing is legitimate. Seed labels are 11,23,47,83,131 but do not control the hosted sampler, so the calls are quasi-replicates rather than randomized independent samples.",
+      "authorship_and_dependence": "States/regimes are constructed. Promotion manifest admits only C-PILOT-007/008 and explicitly excludes C-RESULT-003. Model selector/revision are unpinned and token accounting is unavailable.",
+      "inference_ceiling": "Observed separation from blind retry only in the constructed Signal-v2/policy-blind guided-repairable regime; exact counts and observed error classes.",
+      "prohibited_inference": "No p-values/CIs, population effect, model ranking, promoted-model result, sample efficiency, general mechanism superiority, player outcome, or efficacy. Do not fold the excluded diagnostic or any E2 call into E1 denominators.",
+      "source_anchors": "research/academic-pipeline/rq2-live-pilot/promotion-manifest.json:1; paper/latex/generated/live_pilot_tables_en.tex:1; paper/latex/generated/live_pilot_results_en.tex:1; paper/latex/en/main.tex:198"
+    },
+    {
+      "lane": "SL-KG-ONTOLOGY-SIM-001",
+      "allowed_role": "mechanism/simulation demonstration and construction diagnostics",
+      "unit_and_denominator": "43 authored graph nodes; 106 reference edges; 24 curated typed edges; 6 authored queries × 5 candidates = 30 labelled candidates per strategy; 7 strategies = 210 candidate-score evaluations; exactly one authored relevant target per query. Six authored competency questions are a separate coverage construction check.",
+      "exact_results": "Fresh check PASS; 0 ontology violations. Selected S2 recovered 6/6 authored targets with precision=recall=F1=1.000, realistic-tie MRR=0.944444, Brier=0.130984, Sem@3=1.000. Degree baseline recovered 0/6. SQLite counts: 43 nodes, 130 total edges, 6 queries, 30 candidates, 7 strategy runs.",
+      "pairing_and_budget": "Every strategy is scored on the same fixed 30 candidates, but the same labels are used to choose and summarize the winner; there is no independent selection/test split.",
+      "authorship_and_dependence": "Closed-world authored relation labels and ontology checks; no independent semantic annotation, open-world negatives, runtime retrieval, or player evaluation.",
+      "inference_ceiling": "The encoded strategy recovers authored graph-edge-withheld links under this construction and passes declared type/domain/range invariants.",
+      "prohibited_inference": "No semantic truth/completeness, calibrated probability claim from Brier, OWL/SHACL conformance, runtime retrieval benefit, contradiction reduction, player usefulness, or C-RESULT support.",
+      "source_anchors": "research/simulation/kg-ontology/latest/evaluation-matrix.json:1; research/simulation/kg-ontology/latest/strategy-trials.tsv:1-8; src/nesy_game/kg_ontology_simulation.py:665-689; paper/latex/generated/kg_ontology_simulation_en.tex:1"
+    },
+    {
+      "lane": "NPC-ENG1 canonical002",
+      "allowed_role": "native engineering mechanism/conformance evidence",
+      "unit_and_denominator": "16 preassigned R-only engineering cases initialized from actual engine snapshots; separate from legacy E1 and separate from NPC-SCR1.",
+      "exact_results": "14 completed and 2 assigned-failure statuses. Both assigned failures are expected stale negative-control rejections (stale_revision and stale_policy), each with observed STALE, unchanged state reference, and passed gate.",
+      "authorship_and_dependence": "Deterministic authored engine cases; no model comparison and no independent semantic labels.",
+      "inference_ceiling": "Protocol lifecycle, hash/identity binding, role/action boundary, negative gate, deadline/stale/duplicate handling, native execution and zero-call replay on these cases.",
+      "prohibited_inference": "No recovery efficacy, semantic accuracy, model quality, human/player benefit, latency quality, or generalization.",
+      "source_anchors": "research/academic-pipeline/npc-goal-recovery/verified-run-002/engineering-results.jsonl; engineering-aggregate.json:1; validation-report.json:1; paper/latex/generated/npc_results_en.tex:1"
+    },
+    {
+      "lane": "NPC-SCR1 canonical002",
+      "allowed_role": "bounded descriptive/provenance screening only",
+      "unit_and_denominator": "12 authored cases × 2 nominal repetitions × 3 arms = 72 preassigned rows; 24 per arm. The repetitions retain the same case seed, fixture-input hash, utterance hash, and observed proposal content per case, so 72 rows are not 72 independent samples.",
+      "exact_results": "Each P/R/O arm: n=24, completed=20, assigned_failure=4, goal-reached observation=4, recovery-eligible=24, recovery-unreachable=0, independent-source rows=0. Across all arms, all 12 assigned failures are verified pre-authored stale-control ACK rejections. P has 24 observed authenticated CLI exec attempts/decisions.",
+      "pairing_and_budget": "For every case×repetition group, all P/R/O rows share the same fixture input, seed, and configured protocol budget. Computational budgets are not cost-equal: P invokes the CLI; R and O do not, and token/cost accounting is unavailable.",
+      "authorship_and_dependence": "Utterance source is protocol-declared same-model-family auxiliary for 100% of rows; independent-source fraction=0. O is a frozen auxiliary reference from the same public input, reference_is_semantic_gold=false. Model-family match is protocol-declared, not independently verified. P records requested/returned selector gpt-5.6-sol, but provider revision/seed/token/cost are unavailable.",
+      "inference_ceiling": "Exact terminal/status/goal-observation counts and provenance/accounting behavior on the assigned authored cohort.",
+      "prohibited_inference": "Do not turn 4/24 into a success/recovery rate; do not treat 20/4 as efficacy; no P-vs-R-vs-O accuracy/superiority, oracle ceiling, cost equality, independent gold, population estimate, C-RESULT promotion, human benefit, or generalization.",
+      "source_anchors": "research/academic-pipeline/npc-goal-recovery/verified-run-002/screening-results.jsonl; aggregate.json:1; configs/npc-goal-recovery.json; paper/latex/generated/npc_results_en.tex:1; paper/latex/generated/npc_tables_en.tex:1"
+    },
+    {
+      "lane": "native012 real Godot–HTTP–Codex proof",
+      "allowed_role": "separate engineering demonstration only; never pooled into canonical002 or legacy E1",
+      "unit_and_denominator": "One source-bound normal-play/full-loop proof, 1 test in 24.99s, 17/17 matching runtime/config/UI/harness source hashes, 9 trace rows, 4 decisions, 1 reused intent, 3 valid epoch replays.",
+      "exact_results": "Current-source authenticated closed loop passes; final canonical revision 3. Zero model calls applies to replay only, not the live runtime episode.",
+      "authorship_and_dependence": "Single engineered demonstration, not a screening cohort or independent sample.",
+      "inference_ceiling": "Existence/operation of the source-bound end-to-end path and semantic replay for this demonstration.",
+      "prohibited_inference": "No efficacy, human benefit, generalization, model comparison, latency distribution, or addition to the 16+72 denominators.",
+      "source_anchors": "_workspace/current/production/task-manifest.md:262-264; _workspace/current/qa/npc-real-play-loop-v5-012/provenance.json:4-5"
+    }
+  ],
+  "usable_wording": {
+    "global": "“We report exact authored-fixture, screening-pilot, simulation, and engineering-demonstration counts in non-interchangeable lanes. They establish scoped mechanism/conformance behavior, not confirmatory efficacy.”",
+    "E1": "“Across 12 authored invalid cases sharing inputs across arms, commits were 0/12 for rejection-only (K=0), 0/12 for blind retry (K=1), 5/12 for typed-error-guided repair (K=1), and 6/12 for the state-reading reference (K=1). These are construction/conformance counts, not rates over a sampled population.”",
+    "E2": "“In the constructed Signal-v2/policy-blind cell, five paired candidate calls yielded rho 5/5 and blind 0/5 at K=1; four other current cells showed no guided advantage. Seed labels did not control the hosted sampler, so results are exact pilot counts, not independent randomized estimates.”",
+    "KG": "“On six authored graph-edge-withheld targets used for both strategy selection and summary, S2 recovered 6/6 under the closed-world construction. This is simulation-only and does not evaluate semantic truth or runtime retrieval.”",
+    "NPC": "“The additive NPC packet contains 16 NPC-ENG1 engineering checks and 72 NPC-SCR1 descriptive rows. All 12 SCR assigned-failure statuses are verified stale-control rejections. P uses an authenticated Codex CLI path with recorded selector gpt-5.6-sol; provider revision and cost/token accounting are unavailable; O is a non-independent auxiliary, not semantic gold.”"
+  },
+  "prohibited_phrasing": [
+    "“statistically significant” or any confidence interval/p-value for these lanes",
+    "“88-case screening” without separating 16 engineering from 72 screening",
+    "“ENG1” for NPC-ENG1 where it could be confused with legacy E1",
+    "“oracle” for O, “gold labels,” “independent reference,” or “accuracy ceiling”",
+    "“actual gpt-5.6-sol backend/revision” rather than requested/recorded selector",
+    "“matched cost” or “equal compute” for P/R/O; only protocol limits are structurally matched",
+    "“recovery/success rate 4/24” or “failure rate 4/24” for NPC negative-control/status counts",
+    "“held-out test performance” for KG without disclosing same-label strategy selection",
+    "“zero model calls” for native012 runtime; zero applies only to replay",
+    "any pooling across legacy E1, E2, KG, NPC-ENG1, NPC-SCR1, or native012"
+  ],
+  "verification": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 uv run python scripts/validate_npc_goal_evidence.py --packet all --packet-dir research/academic-pipeline/npc-goal-recovery/verified-run-002",
+      "result": "PASS: valid=true, no errors; NPC-ENG1 16/16; NPC-SCR1 72/72; replay_model_calls=0."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 uv run python scripts/run_kg_ontology_simulation.py --check --json",
+      "result": "PASS: tracked artifacts byte-current; 43 nodes, 106 reference edges, 24 curated typed edges, 0 ontology violations; S2 metrics match the manuscript."
+    }
+  ],
+  "review_summary": {
+    "CRITICAL": 0,
+    "HIGH": 2,
+    "MEDIUM": 3,
+    "LOW": 1,
+    "verdict": "WARNING — fix the two HIGH manuscript source/denominator defects before publication. The underlying data remain admissible under the stated non-confirmatory ceilings."
+  },
+  "self_evaluation": {
+    "accuracy": {
+      "score": 5,
+      "evidence": "Counts were recomputed from raw JSON/JSONL, arm pairing and repetition dependence were queried directly, and both narrow validators passed."
+    },
+    "completeness": {
+      "score": 5,
+      "evidence": "Covers all requested lanes, units/denominators, authored-vs-sampled status, negative controls, label dependence, budget pairing, model identity, paper/generator discrepancies, allowed roles, and prohibited inference."
+    },
+    "clarity": {
+      "score": 4,
+      "evidence": "The matrix is necessarily dense; a publication editor may prefer splitting it into paper defects and data-lane appendix tables."
+    },
+    "actionability": {
+      "score": 5,
+      "evidence": "Every defect has exact path/anchor, concrete failure mode, and minimal replacement wording."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "Exact accounting and evidence ceilings make the result long, though repetition was minimized by separating findings from the lane matrix."
+    },
+    "overall": 4.6
+  }
+}

@@ -160,7 +160,7 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
 
     def test_cli_preflight_and_dry_run_reject_canonical_publish_directory(self) -> None:
         script = P / "scripts/run_npc_goal_experiment.py"
-        canonical = P / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        canonical = P / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
         for flag in ("--dry-run", "--skip-model"):
             with self.subTest(flag=flag):
                 completed = subprocess.run(

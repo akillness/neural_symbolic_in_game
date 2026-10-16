@@ -1,0 +1,45 @@
+{
+  "verdict": "FIX",
+  "confidence": "high",
+  "findings": [
+    {
+      "severity": "HIGH",
+      "title": "The conclusion conflates native012 with legacy ENG1",
+      "locations": [
+        "paper/latex/en/main.tex:272",
+        "paper/latex/ko/main.tex:318"
+      ],
+      "issue": "Both conclusions call the separate source-bound native Godot engineering demonstration “tied to the legacy ENG1 artifact” and characterize it as replaying an authored trace. That merges two explicitly separated provenance surfaces.",
+      "failure_scenario": "A reader following the conclusion will classify native012 as legacy ENG1 evidence rather than as a current-source Godot–HTTP–authenticated-Codex demonstration of the additive NPC v1.1 path. This contradicts the project authority boundary and obscures what was actually executed.",
+      "proof": [
+        "_workspace/current/qa/npc-real-play-loop-v5-012/provenance.json identifies native012 as a “Current-source native Godot HTTP authenticated Codex engineering demonstration; separate from 88-case screening” and records backend=codex, 4 requests, 4 decisions, one utterance request, three observation requests, and one committed intent reused.",
+        "_workspace/current/qa/npc-real-play-loop-v5-012/replay-evidence.json separately records the replay receipt with model_calls=0. The native demonstration itself is therefore not merely the legacy authored-trace replay.",
+        "research/claim-ledger.yaml:69-70 places NPC v1.1/native012 outside C-GAME-DESIGN-002, the legacy ENG1 claim.",
+        "research/academic-pipeline/experiment-evidence-matrix.csv:5 states that additive NPC v1.1/native012 is separate from legacy ENG1; the NPC contribution matrix points native012 to the additive NPC protocol and labels it a separate source-bound engineering demonstration."
+      ],
+      "fix": "Keep the legacy ENG1 authored-trace statement in its existing ENG1 paragraph. In both conclusions, describe native012 instead as one source-bound current-source Godot–HTTP–Codex engineering demonstration of the additive NPC v1.1 path, outside the 16 NPC-ENG1 plus 72 NPC-SCR1 assignments; mention its separate zero-model-call replay receipt only if needed."
+    }
+  ],
+  "verified_clean": [
+    "The seven-check/six-family controller is scoped to the core C1–C5 path and legacy ENG1; the distinct NPC path is repeatedly described as Codex intent proposal → Python schema/public-claim verification plus bounded public-projection BFS → Godot authorization/commit. No target matrix assigns the seven core checks to NPC-ENG1/NPC-SCR1.",
+    "Counts agree with the packet: engineering-assignment-manifest.json has 16 assignments; screening-assignment-manifest.json has 72; therefore 88 assignments across 16+12=28 unique case definitions, with R=40, P=24, O=24. English and Korean carry the same denominators and lane separation.",
+    "verified-run-002/validation-report.json is the validity authority and reports both packets valid with 16/16 and 72/72 records. aggregate.json retains false generation-time validation placeholders, and the manuscripts/matrix correctly say not to treat those fields as admissibility authority.",
+    "O is consistently framed as protocol-declared same-family auxiliary evidence; actual family matching is unverified, independent gold is absent, and independent rows are zero.",
+    "The NPC matrix’s native012 paths do not pool it into 16+72: evidence_status and known_limit explicitly call it a separate source-bound demonstration and prohibit efficacy/planner-superiority inference.",
+    "E3 is correctly disclosed as using the same six authored queries/targets for strategy selection and reporting, not an untouched/external test set; its 43 nodes, 106 edges, 24 curated typed edges, 7×6×5=210 scores, and 6/6 construction result match the retained evaluation artifact.",
+    "The applied diff changes no citation commands or bibliography keys. C-GAME-DESIGN-002 and the cited provenance IDs/counts remain intact; EN/KO claim boundaries are substantively parallel.",
+    "Remaining planned human/affect/C-RESULT items are explicitly nonclaims and were not treated as hidden completed results."
+  ],
+  "allowed_evidence_framing": "Allowed: core E1/E2 plus legacy ENG1 establish authored contract/controller/audit conformance only; additive NPC evidence establishes the implemented Codex→Python→Godot authority and provenance boundary, 16 engineering assignments plus 72 one-step screening rows over 28 case definitions, with native012 as a separate source-bound engineering demonstration and a separate zero-model-call replay receipt. E3 is a closed-world construction result selected and summarized on the same six authored targets. None supports efficacy, superiority, model-family equivalence, population/player benefit, semantic gold, or core Python hard-policy round-trip integration.",
+  "review_summary": {
+    "CRITICAL": 0,
+    "HIGH": 1,
+    "MEDIUM": 0,
+    "LOW": 0,
+    "status": "FIX — correct the bilingual conclusion provenance conflation before approval."
+  },
+  "constraints_observed": [
+    "Read-only review; no edits.",
+    "No formatter, linter, test suite, provider call, or project-wide command was run."
+  ]
+}

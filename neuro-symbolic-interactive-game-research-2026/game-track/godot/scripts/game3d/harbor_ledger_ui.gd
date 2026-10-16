@@ -80,6 +80,7 @@ var _ledger_box: VBoxContainer
 var _choice_box: VBoxContainer
 var _choice_scroll: ScrollContainer
 var _choice_caption: Label
+var _choice_ids: Array = []
 var _action_box: VBoxContainer
 var _columns: BoxContainer
 var _prompt_panel: PanelContainer
@@ -1946,15 +1947,26 @@ func show_choices(choices: Array, caption: String = "") -> void:
 	var font_size: int = TYPE_SCALE["dialogue"][1 if _layout_narrow else 0]
 	for choice in choices:
 		var button := Button.new()
-		button.text = choice["text"]
+		# Number-key shortcut prefix: visible order maps to keys 1..9, so a
+		# clipped/scrolled list on a narrow embed stays completable by keyboard.
+		# While a coach card is open the list still renders underneath, but
+		# focus stays on the card's [OK] so Enter/Space dismisses it first;
+		# digits stay inert until then (game_3d.gd skips them while the card
+		# is open) instead of firing behind the helper.
+		var shortcut_index := _choice_ids.size() + 1
+		if shortcut_index <= 9:
+			button.text = "[%d] %s" % [shortcut_index, choice["text"]]
+		else:
+			button.text = choice["text"]
 		button.custom_minimum_size = Vector2(0.0, TOUCH_TARGET)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.add_theme_font_size_override("font_size", font_size)
 		_style_button(button)
 		var choice_id: String = choice["id"]
+		_choice_ids.append(choice_id)
 		button.pressed.connect(func() -> void: choice_selected.emit(choice_id))
 		_choice_box.add_child(button)
-	if _choice_box.get_child_count() > 0:
+	if _choice_box.get_child_count() > 0 and not is_coach_card_open():
 		(_choice_box.get_child(0) as Button).grab_focus()
 	_apply_dock_ratios()
 
@@ -1982,6 +1994,7 @@ func _apply_dock_ratios() -> void:
 
 
 func clear_choices() -> void:
+	_choice_ids = []
 	for child in _choice_box.get_children():
 		_choice_box.remove_child(child)
 		child.queue_free()
@@ -2010,6 +2023,11 @@ func _on_choice_box_sorted() -> void:
 
 func choice_count() -> int:
 	return _choice_box.get_child_count() if _choice_box != null else 0
+
+
+func choice_ids() -> Array:
+	# Display-order choice ids for the number-key shortcut path in game_3d.gd.
+	return _choice_ids.duplicate()
 
 func show_npc_input(visible_now: bool) -> void:
 	if _npc_input_row == null:

@@ -84,12 +84,13 @@ and versioned contracts under `game-track/schemas/`. The public Web builder is
 single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable slice and the probe.
 
 - Lifecycle order is prototype → systems → content → assets → feel → performance → QA → release.
-- Godot owns observation rendering, player input, local save/load, and engine telemetry. In the
-  current headless fixture it also mirrors an authored hard policy solely for engine-local
-  conformance; this mirror is not the target authority boundary.
-- The Python research runtime is the target hard-policy authority. A live authorization round-trip
-  has not executed. Until it does, only supported Godot events are projected into the stable bridge
-  envelope and schema-tested; no cross-runtime integration claim is permitted.
+- Godot owns observation rendering, player input, local save/load, and engine telemetry. Legacy
+  ENG1 mirrors authored hard policy for engine-local conformance; it does not execute the core
+  E1/E2 Python hard-policy authorization round trip, which remains unimplemented in the game.
+- The additive NPC v1.1.0 path is separate: Codex proposes untrusted typed intent in P; Python
+  validates schema/public claims and computes public-projection plans; Godot alone authorizes and
+  commits canonical change. Native012 proves one source-bound Godot–HTTP–Codex engineering
+  demonstration, not integration of the core Python hard-policy authority or efficacy.
 - The non-headless capture runner may render only frozen, deterministic beats derived from the
   authored fixture/run packet. It does not authorize actions, revise canonical state, call a model,
   or replace the headless conformance run.
@@ -160,18 +161,18 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   `.venv/bin/python -m pytest tests/test_godot_panel_lifecycle.py -q`; reject Godot script errors,
   not just process failures. Frozen captures and the 8/16 engineering denominators are unchanged.
   The standalone `_workspace/current/ui/npc-operating-system-brief/index.html` and its Codex
-  images explain the proposed NPC design only; they are not new runtime or efficacy evidence.
+  images illustrate the earlier NPC design; they are not runtime or efficacy evidence.
 - For fixed-goal NPC work, follow `configs/npc-goal-recovery.json` and the versioned
-  `game-track/schemas/npc-goal-recovery.schema.json`: Python interprets transient utterances and
-  replans over public observations; Godot alone commits canonical state through its synchronous
+  `game-track/schemas/npc-goal-recovery.schema.json`: Python verifies model-proposed typed intent
+  and claims and replans over public observations; Godot alone commits through its synchronous
   identity, freshness, policy, issued-action, and deadline gates. Observation-only requests reuse
   the committed intent; they do not spend another model call. Keep UI cancellation distinct from
   provider cancellation, which is not guaranteed.
 - Keep NPC screening packets immutable and separate from ordinary-play demonstrations. Revalidate
-  `research/academic-pipeline/npc-goal-recovery/verified-run-002/` before regenerating NPC figures
+  `research/academic-pipeline/npc-goal-recovery/verified-run-003/` before regenerating NPC figures
   or tables. Preserve assigned failures and unknown model/token/cost fields; CLI configuration
-  observations do not identify a model when the adapter ignores user configuration. A model-pinned
-  native demonstration must retain its own source hashes and must not enter the screening counts.
+  observations do not establish provider-returned model revision or actual model-family matching.
+  A native demonstration must retain its source hashes and must not enter the screening counts.
   Use a fresh output directory for every new collection; a valid packet proves integrity, not
   efficacy, independent labels, superiority, or human benefit.
 - The hard-policy machine records a per-call evaluation trace (D-073): `apply_operation`/

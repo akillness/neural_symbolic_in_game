@@ -220,7 +220,7 @@ def _project_relative(root: Path, value: Any) -> str | None:
 
 def _path(root: Path, packet_dir: Path | None, name: str) -> Path:
     return (
-        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
     ) / name
 
 
@@ -1460,7 +1460,7 @@ def validate_packet(
 ) -> tuple[dict[str, Any], list[str]]:
     errors: list[str] = []
     packet_dir = (
-        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
     )
     artifact_root: Path | None = None
     config_path = root / "configs/npc-goal-recovery.json"
@@ -1851,7 +1851,7 @@ def validate_packet(
             where,
             expected_policy,
             root,
-            packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-002",
+            packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-003",
             artifact_root,
         )
     _validate_publish_records(records, packet, run_mode, errors)
@@ -2067,7 +2067,7 @@ def main() -> int:
     )
     packet_dir = (
         args.packet_dir
-        or args.root / "research/academic-pipeline/npc-goal-recovery/verified-run-002"
+        or args.root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
     )
     reports: list[dict[str, Any]] = []
     for packet in packets:

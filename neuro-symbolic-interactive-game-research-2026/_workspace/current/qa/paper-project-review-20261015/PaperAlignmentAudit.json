@@ -1,0 +1,215 @@
+{
+  "verdict": "FIX",
+  "scope_conclusion": "The core C1–C5 mechanism claims are implementable and appropriately bounded, and EN/KO are mostly parallel on efficacy, generalization, human-benefit, and model-ranking exclusions. Publication still needs the eight corrections below because the English manuscript contains a stale packet path and a denominator error, while several authority/provenance statements blur the legacy ENG1 architecture, the additive NPC v1.1.0 lane, and the separate current-source native demonstration.",
+  "findings": [
+    {
+      "severity": "HIGH",
+      "title": "English reproduction path points to the superseded NPC packet",
+      "anchors": [
+        "paper/latex/en/main.tex:201",
+        "paper/latex/en/main.tex:125",
+        "paper/latex/ko/main.tex:156",
+        "research/academic-pipeline/npc-goal-recovery/verified-run-002/validation-report.json:1"
+      ],
+      "failure_mode": "A reader following the English NPC-ENG1 reproduction instruction is sent to verified-run-001, while the methods, generator, matrices, strict validator, and reported 16+72 counts use verified-run-002. This makes the English reproduction instruction inconsistent with its own results and with Korean.",
+      "minimal_correction": "At EN line 201 replace only `verified-run-001/` with `verified-run-002/`. Do not modify either frozen packet.",
+      "strongest_allowed_framing": "NPC-ENG1 and NPC-SCR1 results are reproduced from the strict-validated `verified-run-002` packet; earlier packets remain immutable provenance.",
+      "supporting_data": [
+        "verified-run-002/validation-report.json: `valid:true`, 16 NPC-ENG1 records and 72 NPC-SCR1 records",
+        "scripts/generate_npc_paper_results.py:54-61 revalidates both packet IDs before generation"
+      ]
+    },
+    {
+      "severity": "HIGH",
+      "title": "“88-case screening” confuses unique cases with assigned rows",
+      "anchors": [
+        "paper/latex/en/main.tex:42",
+        "paper/latex/en/main.tex:201-205",
+        "paper/latex/ko/main.tex:88",
+        "paper/latex/ko/main.tex:272-279"
+      ],
+      "failure_mode": "EN calls the combined evidence an “88-case one-step protocol screening.” The actual design has 12 unique screening recipes repeated across 3 arms and 2 repetitions (72 assigned rows) plus 16 engineering cases. Thus there are 28 unique case definitions and 88 assigned rows total; only 72 rows belong to screening. A reviewer could incorrectly infer 88 independent screening cases.",
+      "minimal_correction": "Replace EN line 42 with: `The 72-row one-step screening and 16-case engineering lane (88 assigned rows total; 28 unique case definitions) are separate from a normal-play full-loop episode demonstration.` KO line 88 already gives the correct 16+72 decomposition; optionally add `고유 case 정의 28개` for exact parity.",
+      "strongest_allowed_framing": "Report exact designed denominators, not an effective sample size: NPC-ENG1 = 16 engineering assignments; NPC-SCR1 = 12 recipes × 3 arms × 2 repetitions = 72 assigned rows; combined = 88 assigned rows.",
+      "supporting_data": [
+        "verified-run-002/validation-report.json: counts 16 and 72",
+        "verified-run-002/aggregate.json: 24 assigned rows per P/R/O arm"
+      ]
+    },
+    {
+      "severity": "HIGH",
+      "title": "Typed-intent authority is attributed inconsistently to Python",
+      "anchors": [
+        "paper/latex/en/main.tex:42",
+        "paper/latex/en/main.tex:273",
+        "paper/latex/ko/main.tex:88",
+        "paper/latex/ko/main.tex:320",
+        "src/nesy_game/npc_goal.py:547-606",
+        "src/nesy_game/npc_goal.py:685-708",
+        "scripts/codex_oauth_llm.py:320-331"
+      ],
+      "failure_mode": "EN and both conclusions say Python “emits” typed intent, whereas KO line 88 correctly says the neural model proposes typed intent/claims and Python plans from the public projection. In the P arm, `run_prompt` returns `payload[\"typed_intent\"]`; Python validates it, replaces claim states from public flags, and computes the plan. The current wording can make the deterministic controller appear to author model-derived intent.",
+      "minimal_correction": "Use the same sentence in both languages: `The non-authoritative Codex interpreter proposes typed intent; Python validates the schema and public claims and computes bounded public-projection BFS plans; Godot alone authorizes and writes canonical change.` In Korean: `비권위적 Codex interpreter가 typed intent를 제안하고, Python은 schema와 공개 claim을 검증해 bounded public-projection BFS plan을 계산하며, Godot만 canonical change를 허가하고 기록한다.`",
+      "strongest_allowed_framing": "Model/Codex = untrusted intent proposer; Python = schema/claim verifier and public-state planner; Godot = sole canonical writer and final action authority.",
+      "supporting_data": [
+        "npc_goal.py:547-606 receives and validates Codex `typed_intent`",
+        "npc_goal.py:685-708 deterministically verifies claim states",
+        "run_npc_service.py:8-10 explicitly states Godot owns canonical writes"
+      ]
+    },
+    {
+      "severity": "HIGH",
+      "title": "The architecture figure and contribution matrix need version/lane scope",
+      "anchors": [
+        "paper/latex/en/main.tex:36-50",
+        "paper/latex/ko/main.tex:82-96",
+        "paper/latex/figures/fig_architecture.svg:24-97",
+        "research/academic-pipeline/contribution-evidence-matrix.csv:2-3",
+        "CLAUDE.md:88-92"
+      ],
+      "failure_mode": "The figure combines the core E1/E2 validate–repair–commit pipeline with legacy ENG1 policy/commit/ledger tags, but it does not state that additive NPC1/NPC2 v1.1.0 is a different integration architecture and is not drawn. The C2 matrix also says checks interpose “every admitted state transition,” which is broader than transitions admitted through the core controller. Separately, C1 headlines cite E1 only while the generated contribution map/matrix cite E1|ENG1. Unscoped global legacy Python-authority prose at CLAUDE.md:88-92 can reinforce the same conflation.",
+      "minimal_correction": "Prefix both figure captions with `Core/legacy transaction architecture (E1/E2/ENG1); additive NPC1/NPC2 v1.1.0 is not shown.` In contribution matrix C2 change `every admitted state transition` to `every state transition admitted through the core controller`. Add ENG1 to the bilingual C1 headline lane tags, or deliberately narrow C1’s matrix row to E1; given the bridge-contract claim, adding ENG1 is the stronger supported choice. Scope CLAUDE.md:88-92 to core E1/legacy ENG1 and add the NPC authority sentence from finding 3.",
+      "strongest_allowed_framing": "Architecture differs legitimately by version/lane: the figure describes the core/legacy controller and ledger; NPC v1.1.0 is an additive service–Godot protocol with separate evidence and authority.",
+      "supporting_data": [
+        "fig_architecture.svg tags repair only E1/E2 and policy/validate/commit/record/replay with ENG1",
+        "contribution matrix C1 currently lists E1|ENG1; C2 implementation paths are core runtime/validator/repair plus legacy engine fixture"
+      ]
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "Legacy “no live Python authorization transport” is true only within ENG1",
+      "anchors": [
+        "research/claim-ledger.yaml:69-76",
+        "research/academic-pipeline/experiment-evidence-matrix.csv:5",
+        "_workspace/current/qa/npc-real-play-loop-v5-012/provenance.json:3-5",
+        "_workspace/current/qa/npc-real-play-loop-v5-012/provenance.json:44-58"
+      ],
+      "failure_mode": "The claim ledger and ENG1 row use present-tense unqualified “no live Python authorization transport.” That remains correct for the four-fixture legacy ENG1 lane, but a separate tracked current-source packet now records a native Godot HTTP authenticated-Codex engineering demonstration. Read globally, the old sentence is false; replacing it globally would also be wrong because the two lanes must not be pooled.",
+      "minimal_correction": "Change both legacy statements to `within this legacy ENG1 four-fixture lane, live Python authorization transport was not executed.` Add a separate sentence: `A later current-source native Godot HTTP/Codex engineering demonstration is reported separately and is not part of ENG1 or the 88-row NPC packet.`",
+      "strongest_allowed_framing": "Legacy ENG1 has no live transport; native012 demonstrates one separate live route. Neither establishes latency, efficacy, human benefit, or generalization.",
+      "supporting_data": [
+        "native012 provenance status `passed` and exact hashes for 17 runtime/config/UI/harness files",
+        "native012 observed one targeted test pass in 24.99 s; that duration is explicitly not provider/player latency"
+      ]
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "“Implemented prototype” understates the current integration, while its proof is not bound into NPC1 evidence",
+      "anchors": [
+        "research/academic-pipeline/npc-goal-recovery/npc-contribution-evidence-matrix.csv:2",
+        "paper/latex/en/main.tex:273",
+        "paper/latex/ko/main.tex:320",
+        "_workspace/current/qa/npc-real-play-loop-v5-012/provenance.json:3-5",
+        "_workspace/current/qa/npc-real-play-loop-v5-012/replay-evidence.json:430-494"
+      ],
+      "failure_mode": "The matrix and conclusions retain “implemented prototype,” but the repository now contains a source-hash-bound native service/Godot round trip. Conversely, the NPC1 evidence-path list does not bind that proof, so simply promoting the wording without adding its scoped receipt would be unsupported.",
+      "minimal_correction": "Use `implemented fixed-goal integration with one current-source native engineering demonstration` in NPC1 and both conclusions. Add native012 `provenance.json`, `replay-evidence.json`, and `service-trace.jsonl` to NPC1 evidence paths with a scope note that they are a separate demonstration, not additional NPC-ENG1/NPC-SCR1 rows.",
+      "strongest_allowed_framing": "An implemented fixed-goal integration has one source-bound native demonstration; it remains engineering evidence, not a deployed system, efficacy result, or independent replication.",
+      "supporting_data": [
+        "native012 proves runtime sources unchanged before/after",
+        "replay-evidence records READY `reveal_hint`, APPLIED engine result, revision/hash transition, and zero-model-call replay",
+        "The native012 files exist at committed baseline f3ece0193cd00cdad899cd85a6624eba32dde6b2"
+      ]
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "Same-model-family status of O is asserted more strongly than provenance permits",
+      "anchors": [
+        "paper/latex/en/main.tex:42",
+        "paper/latex/en/main.tex:204",
+        "paper/latex/ko/main.tex:88",
+        "paper/latex/ko/main.tex:272-279",
+        "paper/latex/figures/fig_npc_screening.svg:8",
+        "research/academic-pipeline/npc-goal-recovery/npc-contribution-evidence-matrix.csv:3"
+      ],
+      "failure_mode": "Several manuscript/figure labels call O a “same-family auxiliary reference” as fact. The NPC2 matrix correctly says this is protocol-declared and not a verified family match; all O rows are auxiliary and none is source-independent. Without that qualifier, readers may treat O as an independently verified model-family comparator or oracle.",
+      "minimal_correction": "Every short label should read `protocol-declared same-family auxiliary reference (family match unverified; independent rows = 0)`. Keep O outside efficacy, superiority, and model-comparison language.",
+      "strongest_allowed_framing": "O is a protocol-declared auxiliary reference derived from the same public input; its family identity is unverified and it supplies zero independent-source rows.",
+      "supporting_data": [
+        "NPC2 matrix already states D08=100% auxiliary, zero independent, family match unverified",
+        "fig_npc_screening.svg correctly states independent-source rows = 0 but needs the family-match qualifier"
+      ]
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "Frozen aggregate embeds false validation placeholders despite a passing authoritative report",
+      "anchors": [
+        "research/academic-pipeline/npc-goal-recovery/verified-run-002/aggregate.json:1",
+        "research/academic-pipeline/npc-goal-recovery/verified-run-002/validation-report.json:1",
+        "scripts/run_npc_goal_experiment.py:1721-1727",
+        "scripts/run_npc_goal_experiment.py:2145-2161",
+        "scripts/generate_npc_paper_results.py:54-61"
+      ],
+      "failure_mode": "`aggregate.json` contains `assignment_complete:false`, `hashes_valid:false`, `replay_valid:false`, `provenance_valid:false`, and `claim_boundaries_valid:false` because the runner writes generation-time defaults before the separate validator. The authoritative validation report is valid. A reviewer reading the aggregate alone can reasonably conclude that the paper uses invalid data.",
+      "minimal_correction": "Do not edit the immutable packet. In the manuscript/artifact documentation state: `aggregate.json.validation is a generation-time placeholder and is not the admission verdict; validation-report.json and live validate_packet revalidation are authoritative.` For future packets, omit the placeholder block or emit a clearly named `validation_pending` field in a new version.",
+      "strongest_allowed_framing": "The 16+72 packet is paper-admissible because the separate strict validator passes and the paper generator reruns it; the aggregate’s embedded false flags are not evidence of failure and must not be presented as the verdict.",
+      "supporting_data": [
+        "validation-report.json reports both packets valid with no missing records/errors",
+        "generate_npc_paper_results.py refuses generation unless both live `validate_packet` calls return valid"
+      ]
+    }
+  ],
+  "data_admissibility": [
+    {
+      "lane": "E1",
+      "usable_for": "C1–C5 implementation/mechanism conformance on authored frozen fixtures, exact counts, replay/integrity boundaries",
+      "not_usable_for": "Population safety/efficacy, semantic completeness, model ranking, cross-world generalization"
+    },
+    {
+      "lane": "E2",
+      "usable_for": "C5 directional separation of rho versus blind retry only in the constructed policy-blind repairable regime (5/5 vs 0/5)",
+      "not_usable_for": "General repair efficacy, sample efficiency, model capability/ranking, Python–Godot integration"
+    },
+    {
+      "lane": "ENG1",
+      "usable_for": "Legacy engine-local contract/policy mirror, authored fixture replay, presentation/readout correspondence for C1–C3",
+      "not_usable_for": "Live Python transport, current NPC architecture, participants, real-time performance, G4/G6"
+    },
+    {
+      "lane": "NPC-ENG1",
+      "usable_for": "16 deterministic hard-conformance engineering assignments for the fixed-goal protocol",
+      "not_usable_for": "A scientific success rate or a pooled comparison with NPC-SCR1; `publishable:false` is expected because it is engineering-only"
+    },
+    {
+      "lane": "NPC-SCR1",
+      "usable_for": "72 assignment-complete descriptive rows with failures retained; exact P/R/O counts and provenance boundaries",
+      "not_usable_for": "Recovery efficacy, superiority, independent oracle/gold labels, family/model comparison, generalization"
+    },
+    {
+      "lane": "native012",
+      "usable_for": "One current-source, exact-hash-bound native Godot HTTP/authenticated-Codex engineering demonstration plus zero-call replay",
+      "not_usable_for": "Any addition to the 16+72 denominators, replication count, latency/provider benchmark, efficacy, player or human claim"
+    },
+    {
+      "lane": "E3",
+      "usable_for": "Closed-world KG construction result only",
+      "not_usable_for": "Runtime retrieval benefit, authoritative world-state behavior, or C1–C5 performance"
+    }
+  ],
+  "bilingual_parity": "After correcting EN’s run-001 path and 88-case wording, and standardizing the typed-intent/O-provenance sentences, EN and KO can communicate the same allowed scope. The current limitation sections already align well: both reject efficacy, generalization, model ranking, player benefit, semantic gold, and retrieval benefit. KO line 88 is currently the more accurate authority/decomposition statement; EN should follow it.",
+  "review_summary": {
+    "CRITICAL": {
+      "count": 0,
+      "status": "pass"
+    },
+    "HIGH": {
+      "count": 4,
+      "status": "warn"
+    },
+    "MEDIUM": {
+      "count": 4,
+      "status": "info"
+    },
+    "LOW": {
+      "count": 0,
+      "status": "pass"
+    },
+    "verdict": "FIX — resolve the four HIGH alignment/reproducibility issues before publication; the evidence itself remains usable only under the lane-specific ceilings above."
+  },
+  "verification": [
+    "Read both manuscripts around contributions, architecture, NPC methods/results, limitations, and conclusions.",
+    "Read all three evidence matrices, claim ledger, strict validation report, aggregate, generator admission gate, Python interpreter/claim-verification implementation, architecture/NPC figures, and native012 provenance/replay/service trace.",
+    "Confirmed native012 provenance and manuscripts exist at baseline f3ece0193cd00cdad899cd85a6624eba32dde6b2 with read-only `git cat-file -e`.",
+    "No files, index, immutable packets, or user worktree changes were modified; no formatter, linter, project-wide suite, paid call, or model call was run."
+  ]
+}

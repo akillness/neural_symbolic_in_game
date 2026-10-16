@@ -200,7 +200,7 @@ python3 -m http.server 4173 --directory game-track/web/public
 스테이징 바이트와 일치했다. WASM은 `application/wasm`, 설정된 응답 헤더가 유지됐으며 `vercel.json`은
 `404`를 반환했다. headless 프로덕션 검사는 대시보드를 열고 임베드된 게임을 시작해 헤더에서 초기 snapshot
 hash `f488d9c4…812c`를 받았고, 1440×900 데스크톱에서 콘솔·페이지 오류 0건, 390×844에서 가로 넘침 없음을
-확인했다(`docs/latest/vercel-dashboard.png`, `vercel-dashboard-mobile.png`). 포인터 잠금 진입은 자동화로는
+확인했다(이전 배포 기록이며 `vercel-dashboard-mobile.png`는 과거 캡처를 유지한다). 포인터 잠금 진입은 자동화로는
 여전히 **미검증**이다. 2026-08-17 headless 합성 클릭은 `pointerlockerror`를 냈고 Playwriter 클릭은 포인터
 잠금 요청을 만들지 않았으며, HUD `시점 잠김`은 게임 자체 상태 표시라 사람 제스처 확인이 미해결 항목이다.
 배포 절차: `scripts/deploy_vercel_dashboard.sh`(`--dry-run`은 스테이징 영수증만 출력).
@@ -209,6 +209,12 @@ hash `f488d9c4…812c`를 받았고, 1440×900 데스크톱에서 콘솔·페이
 G4, 사용성, 몰입, 정서, 플레이어 효능, 모델 효능은 **UNASSESSED**다. G6는 프로덕션
 save/reload, 현 배포 모바일 검증, 사람 포인터/음향 확인, warmed frame/input, 30분 soak,
 rollback 근거가 없어 `FIX`다.
+
+## Gameplay 대시보드 미리보기 (2026-10-02)
+
+로컬 대시보드 `http://localhost:8788/dashboard/`는 게임을 주 화면으로 두고 엔진이 보고한 3단계 quest·플레이어/지점 지도·최근 행동·선택/고정 가능한 판정을 표시한다. 페이지는 게임 명령을 보내거나 정식 상태를 쓰지 못한다. `docs/latest/vercel-dashboard.png`는 이제 렌즈 회수 뒤의 **로컬** 실제 gameplay 캡처다(stage 1/3, commit 1, hold 2). 위 이전 배포와 headless/모바일 결과는 과거 근거이며 이번 리비전의 검증이 아니다. 새 독립 브라우저 gate가 대기 중이므로 프로덕션 배포는 차단 상태다. Layout과 합성 fixture는 사용성·재미·효능·G4/G6를 입증하지 않는다.
+
+![렌즈 회수 뒤의 로컬 실제 gameplay 대시보드: stage 1/3과 렌즈 설치 목표](docs/latest/vercel-dashboard.png)
 
 ## 온보딩 증거철과 엔진 밖 소프트 제안 채널 (2026-08-18)
 

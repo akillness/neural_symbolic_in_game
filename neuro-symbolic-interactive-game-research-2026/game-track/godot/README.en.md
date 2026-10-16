@@ -200,8 +200,7 @@ the 4 dashboard files returned anonymous `200` responses and matched the staged 
 `application/wasm`, configured response headers were present, and `vercel.json` returned `404`.
 A headless production check loaded the dashboard, started the embedded game, and received the initial
 snapshot hash `f488d9c4…812c` in the header with zero console/page errors on a 1440×900 desktop viewport
-and no horizontal overflow at 390×844 (`docs/latest/vercel-dashboard.png`,
-`vercel-dashboard-mobile.png`). Pointer-lock entry remains **not verified** by automation: a headless
+and no horizontal overflow at 390×844 (prior release record; `vercel-dashboard-mobile.png` retains its historical capture). Pointer-lock entry remains **not verified** by automation: a headless
 synthetic click raised `pointerlockerror` on 2026-08-17 and a Playwriter-driven click produced no
 pointer-lock request; the HUD `LOOK ACTIVE` label is the game's own state, and a human-gesture check is
 the open item.
@@ -211,6 +210,12 @@ Deployment recipe: `scripts/deploy_vercel_dashboard.sh` (`--dry-run` prints the 
 only. G4, usability, immersion, affect, player efficacy, and model efficacy are **UNASSESSED**.
 G6 remains `FIX` pending production save/reload, current mobile verification, human pointer/audio
 confirmation, warmed-frame/input, a 30-minute soak, and rollback evidence.
+
+## Gameplay dashboard preview (2026-10-02)
+
+The local dashboard at `http://localhost:8788/dashboard/` keeps the game primary and shows the engine-reported three-stage quest, live player/site map, recent actions, and selectable/freezeable verdicts. The page cannot send game commands or write canonical state. `docs/latest/vercel-dashboard.png` is now the **local** real-gameplay capture after lens acquisition: stage 1/3, 1 commit, 2 holds; the prior release and headless/mobile results above remain historical evidence, not verification of this revision. The new independent browser gate is pending and production deployment is blocked. Layout and synthetic fixtures do not establish usability, fun, efficacy, or G4/G6.
+
+![Local real-gameplay dashboard after lens acquisition: stage 1/3 and the install-lens objective](docs/latest/vercel-dashboard.png)
 
 ## Onboarding folio and the out-of-engine soft-proposal channel (2026-08-18)
 

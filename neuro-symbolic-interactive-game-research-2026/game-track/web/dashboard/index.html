@@ -4,95 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TRACE-RPG live commit-gate dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="dashboard.css?v=20261002-gameplay">
   <link rel="icon" type="image/png" href="../public/index.icon.png">
 </head>
 <body>
-  <header class="bar">
-    <div class="title">
-      <span class="brand">TRACE-RPG</span>
-      <span class="sub">live commit-gate dashboard · <em>The Sealed Lighthouse</em></span>
+  <header class="topbar">
+    <div class="title"><span class="brand">TRACE-RPG</span><span class="sub"><em>The Sealed Lighthouse</em> · gameplay view</span></div>
+    <div class="top-metrics" aria-label="Live session counters">
+      <span><b id="kpi-commits">—</b><small>commits</small></span><span><b id="kpi-holds" class="coral">—</b><small>holds</small></span><span><b id="kpi-stage">—</b><small>stage</small></span><span><b id="kpi-revision">—</b><small>revision</small></span><span><b id="kpi-facts">—</b><small>facts</small></span><span><b id="kpi-episode">waiting</b><small>episode</small></span>
     </div>
-    <div class="status">
-      <a class="paper-link" href="/paper/en.pdf" download>English paper</a>
-      <a class="paper-link" href="/paper/ko.pdf" download>한국어 논문</a>
-      <span id="link-state" class="pill waiting">waiting for game events</span>
-      <span id="session-hash" class="mono" title="SHA-256 of the committed canonical snapshot">state —</span>
-      <span class="pill boundary" title="Events are mirrored from the game's presentation layer; the page has no authority over canonical state.">engineering demonstration · not evidence</span>
-    </div>
+    <span id="link-state" class="pill waiting" role="status" aria-live="polite">waiting for game events</span>
   </header>
-
-  <main class="grid">
-    <section class="game card">
-      <div class="card-head">
-        <h2>Playable (public-safe Web build, embedded)</h2>
-        <span class="hint">click the canvas, then WASD / mouse / [E] · each proposal runs only the checks its own operation type uses, in engine order; the trace card lights exactly those checks and marks every other family skipped or not evaluated</span>
-      </div>
-      <div class="frame-wrap">
-        <iframe id="game" src="../public/index.html" title="The Sealed Lighthouse" allow="autoplay; fullscreen"></iframe>
-      </div>
+  <main class="dashboard">
+    <section class="game card" aria-labelledby="game-title"><div class="card-head"><h1 id="game-title">The Sealed Lighthouse</h1><span class="hint">Click the game to play · WASD move · mouse look · E interact · 1-4 choose · T guide · C case file · H help · <a class="paper-link" href="../public/index.html" target="_blank" rel="noopener">full-screen game</a> (best for the full route on narrow screens)</span></div><div class="frame-wrap"><iframe id="game" src="../public/index.html" title="The Sealed Lighthouse" allow="autoplay; fullscreen"></iframe></div></section>
+    <aside class="rail" aria-label="Quest and recent activity">
+      <section class="card quest-card" aria-labelledby="quest-title"><div class="card-head"><h2 id="quest-title">Quest</h2><span id="quest-stage-label" class="hint">waiting for session</span></div><p id="quest-objective" class="quest-objective">Waiting for the game session summary.</p><ol id="quest-steps" class="quest-steps" aria-label="Quest progress"></ol><p id="quest-note" class="quest-note">Progress appears from committed session summaries.</p></section>
+      <section class="card minimap" aria-labelledby="map-title"><div class="card-head"><h2 id="map-title">Harbor plan</h2><span id="map-caption" class="hint">waiting for game session</span></div><svg id="minimap" viewBox="0 0 320 260" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Harbor mini-map"></svg><p id="map-focus" class="map-focus">Player position appears when the game sends a tick.</p></section>
+      <section class="card recent-card" aria-labelledby="recent-title"><div class="card-head"><h2 id="recent-title">Recent actions</h2><span id="recent-count" class="hint">0 verdicts</span></div><ol id="recent-actions" class="recent-actions"></ol><p id="recent-empty" class="empty-note">Actions will appear here after the first commit or hold.</p></section>
+    </aside>
+    <section class="card action-card" aria-labelledby="action-title">
+      <div class="card-head action-head"><div><h2 id="action-title">Last action</h2><p id="action-meta" class="hint">Waiting for the first verdict · the game is still live.</p></div><div class="readout-controls"><button id="freeze-readout" class="control-button" type="button" aria-pressed="false">Freeze readout</button><button id="follow-latest" class="control-button secondary" type="button" hidden>Follow latest</button></div></div>
+      <p id="action-outcome" class="action-outcome">No action verdict yet.</p><p id="action-next" class="action-next" hidden></p><div id="action-trace-state" class="trace-state" aria-label="Trace availability">Trace: waiting for verdict</div><ol id="action-checks" class="action-checks" aria-label="Checks reported by the selected action"></ol><p id="action-legacy" class="legacy-note" hidden></p>
+      <div class="action-history-head"><h3>Verdict history</h3><span id="newer-actions" class="hint" aria-live="polite">No newer actions</span></div><ol id="action-history" class="action-history" aria-label="Select a verdict to read"></ol>
     </section>
-
-    <section class="nebula card">
-      <div class="card-head">
-        <h2>Commit gate - live per-node evaluation trace</h2>
-        <span class="hint">node state = engine family_states for the last proposal (pass / fail / skipped / not evaluated, no default) · family weight = checks evaluated there, not events routed · green/coral = verdict only</span>
-      </div>
-      <p class="diagram-boundary">
-        Pulses show only the checks the engine executed for that proposal, in execution order, read from
-        the returned trace. A hold lights the failing check and nothing after it: in-scope checks the
-        engine never reached are marked <strong>skipped</strong> (the disclosure pair is always evaluated
-        together). Families outside the operation's scope stay hatched, are labelled
-        <strong>not evaluated</strong>, and are listed as such; that is not a pass. Family weight counts
-        checks evaluated there, not events routed. This is engineering demonstration, not efficacy or
-        usability evidence.
-      </p>
-      <svg id="nebula" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Per-proposal commit-gate evaluation trace"></svg>
-      <div class="legend">
-        <ul id="legend-rows" class="legend-rows"></ul>
-        <div id="legend-counts" class="legend-counts mono"></div>
-      </div>
-      <h3>Last proposal trace <span class="hint">(execution order · short-circuit rule from the engine's held_at, not inferred)</span></h3>
-      <pre id="last-trace" class="last-trace mono"></pre>
-    </section>
-
-    <section class="metrics card">
-      <div class="card-head"><h2>Session top</h2><span class="hint">reads only committed snapshots and presentation counters</span></div>
-      <div class="kpis">
-        <div class="kpi"><div class="k">entries (commits)</div><div class="v" id="kpi-commits">0</div></div>
-        <div class="kpi"><div class="k">holds</div><div class="v coral" id="kpi-holds">0</div></div>
-        <div class="kpi"><div class="k">quest stage</div><div class="v" id="kpi-stage">0</div></div>
-        <div class="kpi"><div class="k">revision</div><div class="v" id="kpi-revision">0</div></div>
-        <div class="kpi"><div class="k">facts</div><div class="v" id="kpi-facts">0</div></div>
-        <div class="kpi"><div class="k">episode</div><div class="v" id="kpi-episode">open</div></div>
-      </div>
-      <h3>Holds by predicate family <span class="hint">(paper Table II · engine codes)</span></h3>
-      <div class="tbl-wrap"><table id="gate-table" class="tbl"></table></div>
-      <h3>Trace hash chain <span class="hint">(C3: each commit links a new snapshot hash; holds leave it unchanged)</span></h3>
-      <ol id="hash-chain" class="chain mono"></ol>
-      <h3>Session vs frozen paper counts</h3>
-      <div class="tbl-wrap"><table id="ref-table" class="tbl"></table></div>
-    </section>
-
-    <section class="timeline card">
-      <div class="card-head"><h2>Event timeline</h2><span class="hint" id="timeline-hint">last 90 s · lanes: proposal · verdict · dialogue · focus</span></div>
-      <svg id="timeline" viewBox="0 0 1000 150" preserveAspectRatio="none" role="img" aria-label="Event timeline"></svg>
-    </section>
-
-    <section class="minimap card">
-      <div class="card-head"><h2>Harbor plan</h2><span class="hint">player trail · sites · current lead</span></div>
-      <svg id="minimap" viewBox="0 0 320 260" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Harbor mini-map"></svg>
-    </section>
-
-    <section class="log card">
-      <div class="card-head"><h2>Raw event feed</h2><span class="hint mono" id="log-count">0 events</span></div>
-      <pre id="log" class="mono"></pre>
-    </section>
+    <section class="timeline card" aria-labelledby="timeline-title"><div class="card-head"><h2 id="timeline-title">Event timeline</h2><span class="hint" id="timeline-hint">last 90 s · proposal · verdict · dialogue · focus</span></div><svg id="timeline" viewBox="0 0 1000 150" preserveAspectRatio="none" role="img" aria-label="Event timeline"></svg></section>
+    <details class="engineering card"><summary>Engineering detail <span class="hint">reviewer view · not needed to play</span><span class="pill boundary">engineering demonstration · not evidence</span></summary><div class="engineering-content">
+      <div class="engineering-status"><span id="session-hash" class="mono" title="SHA-256 of the committed canonical snapshot">state —</span><a class="paper-link" href="/paper/en.pdf" download>English paper</a><a class="paper-link" href="/paper/ko.pdf" download>한국어 논문</a></div>
+      <section class="nebula card" aria-labelledby="trace-title"><div class="card-head"><h2 id="trace-title">Commit gate - live per-node evaluation trace</h2><span class="hint">pass / fail / skipped / not evaluated are distinct; missing stays missing</span></div><p class="diagram-boundary">Pulses show only checks the engine executed for that proposal, in execution order, from the returned trace. A hold marks in-scope checks not reached as skipped; out-of-scope families are not evaluated, not passed. Family weight counts checks evaluated there. This is engineering demonstration, not efficacy or usability evidence.</p><svg id="nebula" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Per-proposal commit-gate evaluation trace"></svg><div class="legend"><ul id="legend-rows" class="legend-rows"></ul><div id="legend-counts" class="legend-counts mono"></div></div><h3>Last proposal trace <span class="hint">execution order · engine short-circuit rule</span></h3><pre id="last-trace" class="last-trace mono"></pre></section>
+      <section class="metrics card" aria-labelledby="metrics-title"><div class="card-head"><h2 id="metrics-title">Session and paper counts</h2><span class="hint">engine-reported summary and frozen reference values</span></div><h3>Holds by predicate family <span class="hint">paper Table II · engine codes</span></h3><div class="tbl-wrap"><table id="gate-table" class="tbl"></table></div><h3>Trace hash chain <span class="hint">holds leave the committed snapshot unchanged</span></h3><ol id="hash-chain" class="chain mono"></ol><h3>Session vs frozen paper counts</h3><div class="tbl-wrap"><table id="ref-table" class="tbl"></table></div></section>
+      <section class="log card" aria-labelledby="raw-log-title"><div class="card-head"><h2 id="raw-log-title">Raw event feed</h2><span class="hint mono" id="log-count">0 events</span></div><pre id="log" class="mono"></pre></section>
+    </div></details>
   </main>
-
-  <footer class="bar foot">
-    <span>Data path: Godot presentation layer → <code>window.parent.postMessage</code> → this page. No page code can propose, repair, or commit; it renders what the hard writer already returned. Frozen reference counts come from <code>paper-reference.json</code> (generated from the Stage-4 packet and the RQ2 screening summary).</span>
-  </footer>
-  <script src="dashboard.js"></script>
+  <footer class="bar foot"><span>Data path: Godot presentation layer → <code>window.parent.postMessage</code> → this page. The dashboard renders returned game events; it cannot propose, repair, or commit.</span></footer>
+  <script src="dashboard.js?v=20261002-gameplay"></script>
 </body>
 </html>
