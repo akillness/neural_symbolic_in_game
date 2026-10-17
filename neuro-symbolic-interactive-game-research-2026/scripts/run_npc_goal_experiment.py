@@ -669,8 +669,6 @@ def envelope_result_from_engine(
 def _engine_action_signature(action: Mapping[str, Any]) -> dict[str, Any]:
     after = action.get("state_ref_after")
     if not isinstance(after, Mapping):
-        after = action.get("state_ref")
-    if not isinstance(after, Mapping):
         raise ProtocolError("engine action missing state_ref_after")
     state_ref_after = normalize_state_ref(after)
     before = action.get("state_ref_before")
@@ -697,7 +695,9 @@ def _engine_reexecution_comparison(
 ) -> dict[str, Any]:
     def actions(report: Mapping[str, Any]) -> list[dict[str, Any]]:
         rows = report.get("actions", report.get("rows", []))
-        return [_engine_action_signature(row) for row in rows] if isinstance(rows, list) else []
+        if not isinstance(rows, list):
+            raise TypeError("engine_reexecution_actions_must_be_list")
+        return [_engine_action_signature(row) for row in rows]
 
     original_actions = actions(original)
     replay_actions = actions(replayed)
@@ -918,7 +918,7 @@ def execute_assignment(
                         data=canonical(request),
                         headers={
                             "Content-Type": "application/json",
-                            "X-NPC-Capability": capability,
+                            "X-NPC-Capability": f"Bearer {capability}",
                         },
                         method="POST",
                     )
@@ -1251,24 +1251,69 @@ def execute_assignment(
                         if isinstance(engine_reexecution, Mapping)
                         else None
                     )
-                    comparison = (
-                        _engine_reexecution_comparison(trace, replay_trace)
-                        if isinstance(replay_trace, Mapping)
-                        else {"passed": False, "error": "missing_reexecution_sidecar"}
-                    )
+                    if isinstance(replay_trace, Mapping):
+                        try:
+                            comparison = _engine_reexecution_comparison(trace, replay_trace)
+                        except (
+                            AttributeError,
+                            KeyError,
+                            ProtocolError,
+                            TypeError,
+                            ValueError,
+                        ) as exc:
+                            comparison = {
+                                "passed": False,
+                                "error": f"invalid_reexecution_comparison:{type(exc).__name__}:{exc}",
+                            }
+                    else:
+                        comparison = {"passed": False, "error": "missing_reexecution_sidecar"}
                     engine["replay_comparison"] = comparison
+                    replay_status = engine_reexecution.get("status")
+                    replay_returncode = engine_reexecution.get("returncode")
+                    replay_trace_passed = (
+                        isinstance(replay_trace, Mapping) and replay_trace.get("passed") is True
+                    )
+                    replay_input_preserved = engine_reexecution.get("input_bytes_preserved") is True
+                    replay_completed = (
+                        replay_status == "completed"
+                        and replay_returncode == 0
+                        and replay_trace_passed
+                        and replay_input_preserved
+                    )
+                    replay_comparison_passed = comparison.get("passed") is True
                     replay["engine_fixture_reexecution"] = {
-                        "valid": comparison.get("passed") is True,
-                        "status": engine_reexecution.get("status"),
+                        "valid": replay_completed and replay_comparison_passed,
+                        "status": replay_status,
+                        "returncode": replay_returncode,
+                        "trace_passed": replay_trace_passed,
+                        "input_bytes_preserved": replay_input_preserved,
                         "command": engine_reexecution.get("command"),
                         "comparison": comparison,
                     }
-                    if comparison.get("passed") is not True:
+                    if not replay_comparison_passed:
                         errors.append(
                             {
                                 "category": "replay_failure",
                                 "code": "engine_fixture_reexecution_mismatch",
                                 "error": "re-executed immutable experiment did not match terminal/state/action evidence",
+                            }
+                        )
+                    if not replay_completed:
+                        incomplete_signals = []
+                        if replay_status != "completed":
+                            incomplete_signals.append(f"status={replay_status!r}")
+                        if replay_returncode != 0:
+                            incomplete_signals.append(f"returncode={replay_returncode!r}")
+                        if not replay_trace_passed:
+                            incomplete_signals.append("trace.passed is not true")
+                        if not replay_input_preserved:
+                            incomplete_signals.append("input_bytes_preserved is not true")
+                        errors.append(
+                            {
+                                "category": "replay_failure",
+                                "code": "engine_fixture_reexecution_incomplete",
+                                "error": "re-executed immutable experiment did not complete successfully: "
+                                + ", ".join(incomplete_signals),
                             }
                         )
                     if decision_steps:
@@ -1787,10 +1832,11 @@ def replay_report(records: list[Mapping[str, Any]], packet_id: str) -> dict[str,
             else {}
         )
         comparison = engine.get("replay_comparison") if isinstance(engine, Mapping) else None
+        fixture_reexecution = (
+            replay.get("engine_fixture_reexecution", {}) if isinstance(replay, Mapping) else {}
+        )
         godot_eligible = (
-            godot.get("status") == "completed"
-            and isinstance(comparison, Mapping)
-            and comparison.get("passed") is True
+            isinstance(fixture_reexecution, Mapping) and fixture_reexecution.get("valid") is True
         )
         godot_evidence = bool(godot) or isinstance(comparison, Mapping)
         if godot_eligible:
@@ -1836,7 +1882,7 @@ def main() -> int:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-003",
+        default=ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-006",
     )
     parser.add_argument("--model", default=None)
     parser.add_argument("--service-url", default=None)
@@ -1858,7 +1904,7 @@ def main() -> int:
     args.godot_project = args.godot_project.resolve()
     run_mode = "dry_run" if args.dry_run else "preflight" if args.skip_model else "publish"
     canonical_output = (
-        ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
     ).resolve()
     if run_mode != "publish" and args.output_dir == canonical_output:
         parser.error(

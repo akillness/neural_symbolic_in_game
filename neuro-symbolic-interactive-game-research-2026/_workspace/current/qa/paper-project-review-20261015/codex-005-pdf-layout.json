@@ -1,0 +1,62 @@
+{
+  "schema_version": "npc005-paper-layout/1",
+  "checked_at": "2026-10-17T01:44:27.738Z",
+  "build": {
+    "command": "make -C paper/latex check",
+    "exit_code": 0,
+    "wall_seconds": 14.85,
+    "artifact": "artifact://4522",
+    "english_pages": 10,
+    "korean_pages": 10
+  },
+  "observed_layout": "Freshly rendered EN/KO pages8and10 visually inspected: result tables/plots/captions and reference columns remain contained; standard IEEE typography/figure scales retained",
+  "render_command": "pdftoppm -f <8|10> -l <8|10> -r 110 -singlefile -png paper/latex/<en|ko>/main.pdf <QA-output-prefix>",
+  "visual_manifest": {
+    "update_command": "uv run python scripts/update_visual_source_manifest.py",
+    "result": "Regenerated after final005PDFs; validation belongs to clean-tree CI gate"
+  },
+  "artifacts": [
+    {
+      "path": "paper/latex/en/main.pdf",
+      "bytes": 1499006,
+      "sha256": "cb87346c9c7108f2b743cf7afc78d6aac84a5cad33a02fe120de3d147ac09f10"
+    },
+    {
+      "path": "paper/latex/ko/main.pdf",
+      "bytes": 1579572,
+      "sha256": "4fcc7c7a7ff59d13347f1ce9fb593cef224d5706b50a27bd8c3b1dfe887bb4bd"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-005-en-08.png",
+      "bytes": 453601,
+      "sha256": "fe9dd6a7a5025acea014313a423c1fc863f6d0bf65d585a8ecc95c64719c60c1"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-005-ko-08.png",
+      "bytes": 584224,
+      "sha256": "919a8a2d6f03efe2302c73a85927b766aca5f18d8d79a9e06841c682a7418a7e"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-005-en-10.png",
+      "bytes": 599625,
+      "sha256": "b4011200a851be5ca3470ba90a7ea55a1d33778e49471dcd63e1b65fb196e5d7"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-005-ko-10.png",
+      "bytes": 480199,
+      "sha256": "b427a6141d7e7af4cc6dd224c50101602822adf965d67a3be98356c93f1b73f2"
+    }
+  ],
+  "historical_source_archives": [
+    {
+      "path": "codex-initial-reviewed-source-artifacts.txt",
+      "bytes": 429483,
+      "sha256": "dacdaf67dc74ae18ade4e5bfb876c40da09fa0dd37707d19b0cccb8a909f8b75"
+    },
+    {
+      "path": "codex-004-reviewed-source-artifacts.txt",
+      "bytes": 949812,
+      "sha256": "0c8da99ba60917dfc2c6b4d5d87f22a209753312c9a37f55f28947eb28d2b06a"
+    }
+  ]
+}

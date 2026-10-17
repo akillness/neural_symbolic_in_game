@@ -1,0 +1,92 @@
+{
+  "verdict": "FIX",
+  "scope": {
+    "root": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+    "head": "25394a451c702e5691f67b75dab91be932751011",
+    "reviewed": [
+      "src/nesy_game/npc_goal.py",
+      "tests/test_npc_goal_contract.py",
+      "tests/test_npc_evidence_contract.py",
+      "scripts/generate_npc_paper_results.py",
+      "scripts/validate_npc_goal_evidence.py",
+      "scripts/run_npc_goal_experiment.py",
+      "scripts/update_visual_source_manifest.py"
+    ],
+    "mode": "Read-only static review of current working-tree bytes. Staged diff was empty; scoped changes are unstaged. No tests, formatters, linters, builds, data collection, deployment, or model calls were run, per assignment constraints."
+  },
+  "findings": [
+    {
+      "severity": "HIGH",
+      "title": "Replay result binding does not preserve the live session-wide first action binding",
+      "file": "src/nesy_game/npc_goal.py",
+      "anchors": [
+        "1151-1159",
+        "1311-1333",
+        "1897-1925"
+      ],
+      "issue": "Live handling stores action bindings session-wide with `session.issued_actions.setdefault(action_id, ActionBinding(...request_id...))`, then rejects a result whose request_id differs from that retained binding. Replay instead selects `decisions[payload[\"request_id\"]]`, checks the action only inside that decision, and uses `consumed_action_ids` solely after accepting a result. It never reconstructs the session-wide first binding.",
+      "failure_scenario": "Create valid request/decision pairs A and B, rehash decision B so its step reuses A's action_id, and include only a result for B using that shared action_id. The decision step still passes identifier/plan-shape validation, the result matches decision B, and the action has not yet been consumed, so ReplayValidator accepts it. Live `_commit_result` retains A's first binding and returns `result_binding_mismatch` for B.",
+      "why_existing_guards_do_not_catch_it": "Action IDs are not derived by replay semantics; `_validate_replay_step` validates their shape but not their session-wide binding. Recomputed `content_sha256` values satisfy the unkeyed content checks, as the new rehash tests intentionally demonstrate. `consumed_action_ids` catches only a second result, not a single result attached to the wrong duplicate issuance.",
+      "fix": "Reconstruct an `issued_actions` map in envelope order with the same first-binding semantics as live `setdefault`, including request_id, operation, source state_ref, and session epoch. Validate every result against that binding before consumption. Add a rehashed regression with two decisions sharing one action_id and a lone result targeting the later request; require the explicit binding error."
+    }
+  ],
+  "confirmed": {
+    "replay_causality_and_state_binding": "The added checks at npc_goal.py:1848-1851 and 1905-1915 enforce request-before-decision, exact request/decision state_ref equality, decision-before-result, and single result consumption with explicit semantic error codes. They modify ReplayValidator only and do not change live world/state authority.",
+    "replay_tests": "test_npc_goal_contract.py:291-408 includes a matching positive, independently rehashed revision/hash mismatch negatives, and rehashed duplicate/result-before-decision/decision-before-request negatives. The helpers regenerate event IDs, contiguous sequence/delivery indices, and content hashes, so the negative cases reach semantic checks rather than failing envelope integrity first.",
+    "evidence_fixtures": "test_npc_evidence_contract.py:223-242 selects each of all generated assignments by case_id rather than truncating through zip. Lines 386-389 validate and assert the synthetic baseline before invoking the mutation callback. Lines 414-419 execute all three mutation variants and assert invalid replay evidence, so the callbacks are not dormant. The 72-assignment screening count remains asserted at lines 377-378.",
+    "canonical_005_cutover": "In all four requested scripts, the scoped diff is literal-only `verified-run-003` to `verified-run-005` replacement. Current anchors are generate_npc_paper_results.py:18; validate_npc_goal_evidence.py:223,1463,1854,2070; run_npc_goal_experiment.py:1839,1861; update_visual_source_manifest.py:154-155,249-250,254,256-258. No `verified-run-003` or `verified-run-004` literal remains in those four files.",
+    "no_test_weakening": "No skip/xfail/expected-failure decorator was added. Packet-backed tests use an unconditional `source.is_dir()` assertion at test_npc_evidence_contract.py:143-144, so an unmaterialized 005 fails rather than skips; synthetic mutation tests do not depend on the canonical 005 directory."
+  },
+  "source_sha256": {
+    "src/nesy_game/npc_goal.py": "644b14d68d62d85e4e7d3f14033ad148ef8fe32986ed0a0f8ef1fee4a4fc5c4a",
+    "tests/test_npc_goal_contract.py": "2a671854e52583adbb6ed39181d0557f00f82ea54855a20e98154db7101871b5",
+    "tests/test_npc_evidence_contract.py": "324ae49b4e914126591c29fcb1e84ac55fe1ba5f288df965e09f611ed6fe4a86",
+    "scripts/generate_npc_paper_results.py": "3e4b597a96b64c593a29db808efb7cc107eb065076512cd35b087bce8211059e",
+    "scripts/validate_npc_goal_evidence.py": "4816f026e6b6ca22230bf57eef8ff95a3a9d240678d8ba2288b7c8ced816f531",
+    "scripts/run_npc_goal_experiment.py": "9b114957043f7758563170ec10bc01e69773b1f260b4300f6111668b54fe5b18",
+    "scripts/update_visual_source_manifest.py": "753c110842a1c2d159c7d3b35abe4c7bdc8eca0f3510022f593f028f92c54794"
+  },
+  "review_summary": {
+    "CRITICAL": {
+      "count": 0,
+      "status": "pass"
+    },
+    "HIGH": {
+      "count": 1,
+      "status": "warn"
+    },
+    "MEDIUM": {
+      "count": 0,
+      "status": "pass"
+    },
+    "LOW": {
+      "count": 0,
+      "status": "pass"
+    },
+    "verdict": "FIX — correct the session-wide action-binding gap before source freeze."
+  },
+  "residual_risk": "This is static source approval only. Focused tests, canonical 005 data, journals, publication artifacts, deployment, and model behavior were deliberately not exercised and are not claimed. After the binding fix, the remaining verification obligation is a focused regression proving a rehashed duplicate-action issuance cannot bind a result to the later request, followed by Main's planned clean-source checks.",
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "The finding is grounded in exact replay/live binding anchors and a concrete accepted-vs-rejected scenario; runtime execution was intentionally unavailable under the no-tests constraint."
+    },
+    "completeness": {
+      "score": 5,
+      "evidence": "Reviewed every requested file and acceptance dimension: causality, state authority, consumption scope, explicit errors, meaningful regressions, valid-baseline mutation execution, 005 literals, skip behavior, hashes, and residual risk."
+    },
+    "clarity": {
+      "score": 5,
+      "evidence": "The single material finding separates trigger, bad outcome, missing guard, and bounded fix."
+    },
+    "actionability": {
+      "score": 5,
+      "evidence": "The fix identifies the exact live structure to mirror and the exact regression history to add."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "Hashes and positive confirmations add length, but they are required evidence for the requested freeze review."
+    },
+    "overall": 4.6
+  }
+}

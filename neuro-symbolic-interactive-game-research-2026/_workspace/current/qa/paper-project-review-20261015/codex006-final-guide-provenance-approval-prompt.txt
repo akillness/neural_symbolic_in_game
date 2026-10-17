@@ -1,0 +1,31 @@
+You are the final Actual Codex guide-provenance closure reviewer. Perform exactly one bounded, read-only semantic and visual review.
+
+ROOT: /tmp/trace-rpg-publication-projection-25394a4
+INPUT MANIFEST: /tmp/trace-rpg-codex006-final-lanes-jiNp1m/GuideProvenanceFinal/inputs.json
+ATTACHED IMAGE 1: neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg
+ATTACHED IMAGE 2: neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg
+
+MANDATORY SCOPE AND METHOD
+1. Read inputs.json first. Then read the COMPLETE contents of exactly the two assigned text sources, README.md and README.ko.md. This must be a 2/2 full semantic read, not snippets, grep-only, hash-only, or partial.
+2. Independently compute exact byte counts and SHA-256 digests for all four assigned sources (the two complete guides and two attached JPEGs) and compare them against inputs.json. Report a four-row exact identity table.
+3. Use the attached image inputs for direct visual review of both assigned JPEG preview assets. Identify Image 1 as EN and Image 2 as KO. Determine whether each visibly presents a complete ten-page contact sheet rather than the previously stale eight-page preview and whether it is legible enough to serve as a ten-page overview. Do not claim you inspected unassigned PNGs or PDFs.
+4. Assess ONLY closure of FinalPortability findings F1/F2 and current root-guide consistency:
+   - Both guide image alt labels and surrounding prose must say ten pages, not eight.
+   - Both guides must consistently identify the current paper title `TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds`, exactly 58 references, ten-page EN and ten-page KO drafts prepared for anonymous review, with no submission or acceptance claimed, and current `verified-run-006`.
+   - The prior D1 BibTeX title/status repair must remain closed.
+   - Both guides must explicitly and consistently disclose exactly three historical QA public-copy rig/cache omissions and exactly two unrecovered original unit RED receipts, and link the dated report `2026-10-15-npc-goal-operation-implementation.md`.
+   - Do NOT infer or state loss, damage, or corruption of canonical experiment packets. The required meaning is narrowly that three historical QA publication copies intentionally omit private rig/cache artifacts and two original historical unit RED test receipts are unrecovered.
+5. The manifest supplies parent-observed derivation evidence: each JPEG was produced by Pillow RGB JPEG quality 92 optimize from a parent-inspected 1700x936 final ten-page PNG contact sheet, with exact final ten-page PDF and contact-sheet identities recorded. Treat this as parent-provided evidence and keep it separate from your direct attached-JPEG visual review. The PDFs and source PNGs are not assigned and must not be opened. Assess whether the two guides truthfully bind their current previews to the exact final PDF identities stated in the manifest, but do not relabel supplied provenance as your own direct PDF verification.
+6. The private test fixture is unchanged and already source-approved. Do not inspect it, any runtime code, validators, manifests beyond inputs.json, or any other project source. Do not run tests, formatters, linters, suites, builds, Git commands, deploys, project-wide commands, model experiments, credentials, or source edits.
+7. If and only if wording of the historical disclosure is ambiguous after the complete guide reads, you may read only the relevant `Historical unit-test receipt losses` and `Historical public asset boundary` sections from `/Users/jangyoung/vaults/llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md`; disclose that as supplemental context and do not count it as an assigned source. Otherwise do not read it.
+8. Apply a >80% confidence threshold. Findings must cite exact assigned guide and line, concrete trigger/outcome, and relevant context. HIGH/CRITICAL require exact snippet, scenario, and why existing guards do not catch it. Zero findings is acceptable.
+
+VERDICT CONTRACT
+Return exactly one bounded verdict: APPROVE, FIX, or INSUFFICIENT.
+- APPROVE only if both guides were completely read, all four identities match, both attached JPEGs were directly visually reviewed as ten-page contact sheets, F1/F2 and current guide metadata consistency are closed, provenance is honestly separated, and no canonical packet loss is invented.
+- FIX for a concrete material defect in an assigned source.
+- INSUFFICIENT if a required full read, exact identity, or direct attached-image review cannot be completed.
+Publication remains HOLD until the separate full-CI gate passes; this source/image review must not imply CI passed.
+
+OUTPUT REQUIREMENTS
+Write a complete Markdown review suitable to capture verbatim as Report.md. Start with `# Guide Provenance Final — Actual Codex Semantic and Visual Closure Review`, followed by bold `Actual Codex verdict: APPROVE|FIX|INSUFFICIENT`. Include: four-row exact identity table with complete semantic/visual coverage; direct attached-image review for EN and KO; F1/F2 and current metadata checklist with exact guide line evidence; explicit separation of direct review versus parent-provided PDF/PNG derivation evidence; material findings or explicitly none; invocation/scope limitations saying no tests/CI and publication remains HOLD; severity summary; final bounded verdict. Do not output JSON. Do not create or modify files; your last message is captured externally.

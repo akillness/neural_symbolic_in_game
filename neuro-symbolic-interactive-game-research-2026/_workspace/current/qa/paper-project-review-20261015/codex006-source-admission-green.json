@@ -1,0 +1,55 @@
+{
+  "schema_version": "npc006-source-admission-green/1",
+  "status": "PASS",
+  "actual_source_lanes": {
+    "Replay": "codex006-final-replay-report.txt",
+    "Godot": "codex006-final-godot-report.txt",
+    "Runner": "codex006-final-runner-report.txt",
+    "Validator": "codex006-final-validator-closure-report.txt"
+  },
+  "validator_current_sources": [
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/scripts/validate_npc_goal_evidence.py",
+      "bytes": 98640,
+      "sha256": "c9c9ef221c96db41d77a9a1a02fbe5a0ad35c3d8b1c0fd28fb15de61464ac996"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_contract.py",
+      "bytes": 58568,
+      "sha256": "946eb0b340398a92cf86171ff0479f51f8d721965248ab1ee1df34ddbdfb74c4"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_v5.py",
+      "bytes": 38656,
+      "sha256": "c61c8cbc7d85b9b233dfb90f6607513526892d85a12593f5d437e2b8b452fe38"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/scripts/generate_npc_paper_results.py",
+      "bytes": 28794,
+      "sha256": "a0acbd7bf9c6a9785f178b6dfcb0c2888e0c2d5ac98fe0f9c700ac48b1c7ca77"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_publication_boundary.py",
+      "bytes": 6565,
+      "sha256": "300d18e3ebf992a90f620447543d9466f49ac5caeb49451fd275acb0beddd0a8"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/src/nesy_game/npc_goal.py",
+      "bytes": 90858,
+      "sha256": "e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983"
+    }
+  ],
+  "modified_test_modules": 11,
+  "modified_tests": 178,
+  "test_receipt": "codex006-all-modified-tests-green.json",
+  "strict_packet": "codex-npc006-final-validation.json",
+  "records": 88,
+  "missing": 0,
+  "errors": 0,
+  "cli_execution_attempts": 24,
+  "replay_model_calls": 0,
+  "raw_runtime_before_after_equal": true,
+  "paper_gate": "codex006-paper-10page-green.json; EN10/KO10, no overflow/undefined/Type3",
+  "publication_status": "HOLD remaining publication source/visual review, selected-tree fullCI and release",
+  "qa_history": "two explicitly documented original unitRED losses; no reconstruction promoted; raw experiment hashes separately pass"
+}

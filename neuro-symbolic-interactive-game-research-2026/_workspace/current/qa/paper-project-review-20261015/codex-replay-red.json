@@ -1,0 +1,33 @@
+{
+  "schema_version": "codex-replay-red/1",
+  "claim_boundary": "focused_regression_red_only",
+  "finding": "request_decision_state_ref_binding",
+  "target": {
+    "test_file": "tests/test_npc_goal_contract.py",
+    "positive_test": "NpcGoalContractTests.test_replay_accepts_matching_request_and_decision_state_ref",
+    "negative_test": "NpcGoalContractTests.test_replay_rejects_resigned_decision_state_ref_mismatch",
+    "expected_protocol_error": "replay_state_ref_mismatch"
+  },
+  "production_state": "unmodified during focused run",
+  "fixture_contract": {
+    "request_revision": 7,
+    "mismatch_cases": [
+      "decision revision 8 with valid state-8 sha256",
+      "decision revision 7 with a different valid 64-character sha256"
+    ],
+    "decision_body_and_provenance_preserved": true,
+    "decision_content_sha256_resigned": true
+  },
+  "command": "python -m unittest -v tests.test_npc_goal_contract.NpcGoalContractTests.test_replay_accepts_matching_request_and_decision_state_ref tests.test_npc_goal_contract.NpcGoalContractTests.test_replay_rejects_resigned_decision_state_ref_mismatch",
+  "exit_code": 1,
+  "observed_output": {
+    "positive": "test_replay_accepts_matching_request_and_decision_state_ref (tests.test_npc_goal_contract.NpcGoalContractTests) ... ok",
+    "negative": [
+      "FAIL case=revision-differs: AssertionError: ProtocolError not raised",
+      "FAIL case=hash-differs: AssertionError: ProtocolError not raised"
+    ],
+    "summary": "Ran 2 tests in 0.016s; FAILED (failures=2)"
+  },
+  "interpretation": "RED proves a validly checksummed decision whose state_ref differs from its corresponding request is currently accepted; matching request+decision replay remains accepted.",
+  "next_gate": "Implementation must reject both mismatch cases with ProtocolError('replay_state_ref_mismatch'); rerun these two focused tests GREEN."
+}

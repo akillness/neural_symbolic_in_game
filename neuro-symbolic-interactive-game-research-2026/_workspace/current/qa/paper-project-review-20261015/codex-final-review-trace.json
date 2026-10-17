@@ -1,0 +1,41 @@
+{
+  "schema_version": "codex-source-review-trace/2",
+  "reviewer": "Actual Codex CLI0.163.0",
+  "verdict": "FIX",
+  "command": "codex exec --ignore-user-config --sandbox read-only -C <repo> --ephemeral --color never --json --output-last-message <review> - < <prompt>",
+  "exit_code": 0,
+  "wall_seconds": 210.55,
+  "thread_id": "01a14761-6d98-7b91-a3aa-660748a6737b",
+  "event_count": 59,
+  "usage": {
+    "input_tokens": 2402381,
+    "cached_input_tokens": 2290048,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 8104,
+    "reasoning_output_tokens": 564
+  },
+  "input_manifest": "codex-final-input-manifest.json",
+  "review": "codex-final-review.md",
+  "review_sha256": "27670ee365f4cf361ae2d91aa325a48b49b914d0c6c53e35c2f93ce2db68be4a",
+  "sources_reviewed": 47,
+  "bundle_sha256": "0c8da99ba60917dfc2c6b4d5d87f22a209753312c9a37f55f28947eb28d2b06a",
+  "all_source_hashes_verified_by_reviewer": true,
+  "original_findings_closed": 3,
+  "new_findings": [
+    {
+      "severity": "medium",
+      "kind": "semantic_replay_duplicate_and_causal_results",
+      "executed_reproduction": false
+    },
+    {
+      "severity": "medium",
+      "kind": "unexecuted_negative_callbacks_and_invalid_screening_baseline",
+      "executed_reproduction": false
+    }
+  ],
+  "publication_approved": false,
+  "model_revision": null,
+  "provider_seed": null,
+  "cost": null,
+  "latency_ms": 210550
+}

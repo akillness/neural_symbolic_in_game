@@ -169,7 +169,7 @@ single owner, `scripts/game3d/golden_path_layout.gd`, shared by the playable sli
   the committed intent; they do not spend another model call. Keep UI cancellation distinct from
   provider cancellation, which is not guaranteed.
 - Keep NPC screening packets immutable and separate from ordinary-play demonstrations. Revalidate
-  `research/academic-pipeline/npc-goal-recovery/verified-run-003/` before regenerating NPC figures
+  `research/academic-pipeline/npc-goal-recovery/verified-run-006/` before regenerating NPC figures
   or tables. Preserve assigned failures and unknown model/token/cost fields; CLI configuration
   observations do not establish provider-returned model revision or actual model-family matching.
   A native demonstration must retain its source hashes and must not enter the screening counts.

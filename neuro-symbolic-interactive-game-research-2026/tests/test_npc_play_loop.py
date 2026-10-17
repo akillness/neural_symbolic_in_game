@@ -102,7 +102,12 @@ def _ensure_project_imported(godot: str, staged: Path) -> None:
 
 
 def _run_harness(
-    godot: str, staged: Path, report_path: Path, *, real_service: bool = False
+    godot: str,
+    staged: Path,
+    report_path: Path,
+    *,
+    real_service: bool = False,
+    contract_regression: bool = False,
 ) -> dict[str, Any]:
     command = [
         godot,
@@ -121,6 +126,8 @@ def _run_harness(
         command.extend(["--real-service", "--report-path", str(report_path)])
     else:
         command.extend(["--report-path", str(report_path)])
+    if contract_regression:
+        command.append("--contract-regression")
     print("NPC_PLAY_LOOP_COMMAND " + json.dumps(command))
     result = _run_godot(
         command,
@@ -222,6 +229,46 @@ def test_real_scene_ordinary_play_loop_uses_one_interpretation_and_observation_r
         hashlib.sha256((GODOT_PROJECT / "project.godot").read_bytes()).hexdigest()
         == source_project_hash
     )
+
+
+def test_godot_decision_contract_rejects_invalid_status_and_target(
+    godot: str,
+    staged_project: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Canonical decision validation rejects invalid status, target, and terminal shape."""
+    report_path = tmp_path / "npc-contract.result.json"
+    monkeypatch.setenv("TRACE_RPG_NPC_CAPABILITY", CAPABILITY)
+    with running_fake_p_service() as (endpoint, _service_state, _interpreter):
+        monkeypatch.setenv("NPC_PLAY_LOOP_ENDPOINT", endpoint)
+        report = _run_harness(
+            godot,
+            staged_project,
+            report_path,
+            contract_regression=True,
+        )
+
+    controls = {str(control["name"]): control for control in report["contract_controls"]}
+    expected_negative = {
+        "status_cancelled_rejected",
+        "status_failed_rejected",
+        "status_unknown_rejected",
+        "arbitrary_target_rejected",
+        "empty_error_rejected",
+    }
+    assert expected_negative <= controls.keys()
+    assert all(controls[name]["passed"] is True for name in expected_negative), controls
+    assert all(controls[name]["accepted"] is False for name in expected_negative), controls
+    assert all(controls[name]["directive_delta"] == 0 for name in expected_negative), controls
+    assert all(controls[name]["state_unchanged"] is True for name in expected_negative), controls
+    assert all(
+        "state_ref_before" in controls[name] and "state_ref_after" in controls[name]
+        for name in expected_negative
+    ), controls
+    assert controls["valid_player_action"]["passed"] is True, controls
+    assert controls["valid_dialogue_action"]["passed"] is True, controls
+    assert "goal" in report["phases"], report
 
 
 @pytest.mark.skipif(

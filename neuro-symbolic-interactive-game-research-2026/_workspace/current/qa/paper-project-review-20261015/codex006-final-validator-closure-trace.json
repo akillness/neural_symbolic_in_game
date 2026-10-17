@@ -1,0 +1,115 @@
+{
+  "schema_version": "actual-codex-review-trace/1",
+  "verdict": "APPROVE",
+  "root": "/tmp/trace-rpg-publication-projection-25394a4",
+  "inputs": "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/ValidatorClosure/inputs.json",
+  "prior_report": "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/Validator/report.md",
+  "invocation": {
+    "argv": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--sandbox",
+      "read-only",
+      "--ephemeral",
+      "--color",
+      "never",
+      "--json",
+      "-C",
+      "/tmp/trace-rpg-publication-projection-25394a4",
+      "--output-last-message",
+      "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/ValidatorClosure/codex-output.txt",
+      "-"
+    ],
+    "stdin": "prompt.txt",
+    "stdout": "raw-events.jsonl",
+    "stderr": "stderr.txt",
+    "timing_wrapper": "/usr/bin/time -p -o elapsed.txt",
+    "exit_code": 0,
+    "thread_id": "01a147fd-b425-7710-9acd-2bc324592056",
+    "elapsed_seconds": {
+      "real": 105.72,
+      "user": 4.26,
+      "sys": 5.51,
+      "host_observed_wall": 106.17
+    },
+    "usage": {
+      "input_tokens": 1762996,
+      "cached_input_tokens": 1607680,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4212,
+      "reasoning_output_tokens": 282
+    }
+  },
+  "coverage": {
+    "assigned_files": 6,
+    "identity_matches": 6,
+    "complete_semantic_reads": 6,
+    "files": [
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/scripts/validate_npc_goal_evidence.py",
+        "bytes": 98640,
+        "sha256": "c9c9ef221c96db41d77a9a1a02fbe5a0ad35c3d8b1c0fd28fb15de61464ac996",
+        "line_ranges": ["1-400", "401-850", "851-1300", "1301-1750", "1751-2204"]
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_contract.py",
+        "bytes": 58568,
+        "sha256": "946eb0b340398a92cf86171ff0479f51f8d721965248ab1ee1df34ddbdfb74c4",
+        "line_ranges": ["1-410", "411-820", "821-1224"]
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_v5.py",
+        "bytes": 38656,
+        "sha256": "c61c8cbc7d85b9b233dfb90f6607513526892d85a12593f5d437e2b8b452fe38",
+        "line_ranges": ["1-450", "451-896"]
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/scripts/generate_npc_paper_results.py",
+        "bytes": 28794,
+        "sha256": "a0acbd7bf9c6a9785f178b6dfcb0c2888e0c2d5ac98fe0f9c700ac48b1c7ca77",
+        "line_ranges": ["1-280", "281-548"]
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_publication_boundary.py",
+        "bytes": 6565,
+        "sha256": "300d18e3ebf992a90f620447543d9466f49ac5caeb49451fd275acb0beddd0a8",
+        "line_ranges": ["1-175"]
+      },
+      {
+        "path": "neuro-symbolic-interactive-game-research-2026/src/nesy_game/npc_goal.py",
+        "bytes": 90858,
+        "sha256": "e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983",
+        "line_ranges": ["1-420", "421-840", "841-1260", "1261-1680", "1681-2100"]
+      }
+    ]
+  },
+  "artifacts": {
+    "inputs.json": "082775b53925297a7c45b7b91a33a8abd50a22116c140b34aa918ea3a28749ef",
+    "prompt.txt": "ec09daaa4202a97e238d6866446d8ade749696393af8360ccc45c5919801687f",
+    "raw-events.jsonl": "25ded3197c2c6269bc8db746fb4177641e4e6e45f240406079682d6a79f272ad",
+    "stderr.txt": "0eb075683ef0698ff484bd1fdbfb1a156e49c19bba2dcb1f3a853c2b790b9bba",
+    "elapsed.txt": "a5966630034202740e968a6a08443331104891db2262ac18aacdda8290958835",
+    "codex-output.txt": "e225a06580aad81988d1b0865b1497e58910e4f4f1a3e696225bfb5f4747f351"
+  },
+  "stderr_diagnostics": [
+    "failed to load skill /Users/jangyoung/.codex/skills/amrouter/SKILL.md: missing YAML frontmatter delimited by ---",
+    "failed to load skill /Users/jangyoung/.codex/skills/ax/SKILL.md: missing YAML frontmatter delimited by ---"
+  ],
+  "raw_event_notices": [
+    "Exceeded skills context budget; skill descriptions were removed, but the bounded prompt, assigned files, command evidence, and final review remained available."
+  ],
+  "scope": {
+    "source_review_only": true,
+    "execution_proof": false,
+    "tests_run": false,
+    "formatters_run": false,
+    "linters_run": false,
+    "builds_run": false,
+    "browser_run": false,
+    "collection_run": false,
+    "git_run": false,
+    "source_writes": false,
+    "additional_model_calls": false
+  }
+}

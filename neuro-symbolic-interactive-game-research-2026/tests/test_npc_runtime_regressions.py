@@ -11,9 +11,7 @@ from unittest.mock import patch
 
 from jsonschema import Draft202012Validator
 
-P = Path(
-    "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026"
-)
+P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P / "src"))
 
 from nesy_game.npc_goal import (
@@ -133,15 +131,15 @@ def rehash(payload: dict) -> dict:
 
 
 def assert_rejected(
-    test: unittest.TestCase, controller: GoalController, payload: dict, *, error: str | None = None
+    test: unittest.TestCase, controller: GoalController, payload: dict, *, error: str
 ) -> None:
     try:
         response = controller.handle_result(payload)
-    except (ProtocolError, ControllerFailure):
+    except (ProtocolError, ControllerFailure) as exc:
+        test.assertEqual(str(exc), error)
         return
     test.assertEqual(response["body"]["status"], "REJECTED")
-    if error is not None:
-        test.assertEqual(response["body"]["error"], error)
+    test.assertEqual(response["body"]["error"], error)
 
 
 def gate_first_commit(
@@ -406,7 +404,7 @@ class NpcRuntimeRegressionTests(unittest.TestCase):
             (
                 "wrong-episode",
                 lambda result: result.update(episode_id="other-episode"),
-                "result_binding_mismatch",
+                "episode_id_changed",
             ),
             (
                 "wrong-operation",
@@ -417,9 +415,11 @@ class NpcRuntimeRegressionTests(unittest.TestCase):
                 "wrong-state",
                 lambda result: (
                     result.update(state_ref={"revision": 7, "sha256": "7" * 64}),
-                    result["body"].update(state_ref={"revision": 7, "sha256": "7" * 64}),
+                    result["body"].update(
+                        state_ref={"revision": 7, "sha256": "7" * 64}, engine_revision=7
+                    ),
                 ),
-                None,
+                "applied_revision_mismatch",
             ),
         )
         for name, mutate, error in mutations:
@@ -434,7 +434,9 @@ class NpcRuntimeRegressionTests(unittest.TestCase):
     def test_unsolicited_result_is_rejected_without_state_adoption(self) -> None:
         source = request(request_id="unissued")
         result = result_for(source, {"action_id": "invented-action", "operation": "acquire_object"})
+
         controller = GoalController(interpreter=IntentInterpreter(arm="R"))
+        controller.handle_request(source)
         assert_rejected(self, controller, result, error="unknown_action")
 
     def test_stale_and_regressing_results_are_rejected_without_state_adoption(self) -> None:
@@ -1008,10 +1010,7 @@ class NpcRuntimeRegressionTests(unittest.TestCase):
         }
         controller = GoalController(interpreter=IntentInterpreter(arm="R"))
         first = request(request_id="budget-one", budget=budget)
-        try:
-            response = controller.handle_request(first)
-        except (ProtocolError, ControllerFailure, BudgetExceeded):
-            return
+        response = controller.handle_request(first)
         self.assertEqual(response["budget"]["max_intent_calls"], 1)
         self.assertIsNone(response["budget"]["input_tokens"])
         self.assertIsNone(response["budget"]["output_tokens"])

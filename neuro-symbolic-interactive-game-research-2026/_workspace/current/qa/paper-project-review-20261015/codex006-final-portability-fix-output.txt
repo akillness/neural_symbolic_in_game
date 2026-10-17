@@ -1,0 +1,77 @@
+# Final Portability — Actual Codex Semantic Closure Review
+
+**Actual Codex verdict: FIX**
+
+## Exact identities and semantic coverage
+
+Paths are relative to `/tmp/trace-rpg-publication-projection-25394a4`.
+
+| Assigned source | Exact bytes | Computed SHA-256 | Manifest match / read |
+|---|---:|---|---|
+| `neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_contract.py` | 58,731 | `d2207ed0df6cf64a291bcedb221aeea4fdfd748a68a219165c613fcb27cf3fbf` | Match; complete semantic read, lines 1–1227 |
+| `README.md` | 27,804 | `9c22af032aa2681dd08ac8eb4b381cd563c0c81b3b2f8420db4cc335f269f968` | Match; complete semantic read, lines 1–304 |
+| `README.ko.md` | 29,555 | `83a25583654869c28dd372b34210f2e5655a5cb829852ac67ad9fcd5b177d6ba` | Match; complete semantic read, lines 1–305 |
+
+**Semantic coverage: 3/3 complete assigned files.** The input manifest was read first. All byte counts and hashes were independently calculated from source bytes.
+
+## Fixture-repair assessment
+
+The repair is correctly source-manifest-derived and narrowly test-only.
+
+In `neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_contract.py`:
+
+- Lines 181–186 identify immutable005, read its `source-manifest.json`, and capture `old_root = str(source_manifest["artifact_root"])`. The captured root does not depend on the checkout’s current location.
+- Lines 187–208 copy the packet into a private temporary fixture, recursively replace captured-root references with the copied packet path, and recompute record hashes.
+- Lines 209–220 rebind replay metadata, set the copied manifest’s `artifact_root`, mark `test_only = True`, bind current runtime hashes, and regenerate the copied receipt.
+- Lines 221–224 retain ordinary `validate_packet` calls and require both packets to be valid without errors.
+- Lines 471–483 explicitly require test-only fixtures to remain nonpublishable.
+- Lines 1033–1106 retain rejection assertions for input tampering, actual-input substitution, outside-packet substitution, and same-basename substitution. Lines 1175–1197 retain the packet-containment rejection assertion.
+
+No validator replacement, path-check bypass, or weakening of the asserted production contract is present in the assigned module. These are source observations, not executed test results.
+
+## Bilingual metadata and D1 assessment
+
+Both guides identify the exact current title, 58 references, and ten-page EN and KO drafts at line 28. Both disclaim journal submission or acceptance there.
+
+D1’s specified BibTeX defects are closed in both guides: line 299 contains `TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds`; line 301 states `Draft prepared for anonymous review; no submission or acceptance claimed`. Neither retains `Manuscript under anonymous review`.
+
+Both guides select `verified-run-006` at lines 250 and 262. The title, reference count, prepared status, and current selection agree in English and Korean. Two remaining defects prevent closure.
+
+## Material findings
+
+### F1 — MEDIUM: Required historical loss disclosures are absent from both guides
+
+**Evidence:** `README.md:250` describes historical packets as “separate, immutable evidence”; `README.ko.md:250` similarly calls them “별도의 불변 근거”. Their disclosure sections at lines 280–291 contain general research limitations and AI disclosures, but neither complete guide discloses historical packet loss or test-receipt loss.
+
+**Trigger and outcome:** A reader following either root guide’s evidence and disclosure narrative receives historical-evidence preservation language without the required loss qualifications. Failed diagnostics and stale-control ACK rejections at line 250 do not disclose missing packets or missing test receipts.
+
+**Assessment:** The required disclosures are concretely absent in both assigned guides. This does not establish recovery, execution, or the underlying extent of loss.
+
+**Confidence:** 99%.
+
+### F2 — MEDIUM: Both guides retain conflicting eight-page manuscript metadata
+
+**Evidence:**
+
+- `README.md:28` says the EN and KO manuscripts are “10 pages each”, but `README.md:51` labels the linked PDF preview “Contact sheet of the eight English manuscript pages”.
+- `README.ko.md:28` says “EN·KO 원고는 각 10쪽”, but `README.ko.md:51` labels the linked PDF preview “한국어 원고 여덟 쪽의 contact sheet”.
+
+**Trigger and outcome:** A reader encountering the linked manuscript preview receives eight-page metadata alongside the current ten-page declaration. Neither preview label identifies itself as historical or partial. The guides therefore do not consistently describe the full ten-page drafts.
+
+**Confidence:** 98%.
+
+## Invocation and scope limitations
+
+This was one bounded, read-only semantic review. Only the manifest and three assigned sources were read; optional historical D1 context was not needed. Production validators and path checks were not inspected. Their unchanged status is a supplied scope declaration, not independently verified here.
+
+No tests, formatters, linters, builds, Git commands, deployments, browser checks, experiments, or credential/config operations were run. No files were created or modified.
+
+**Source review is not execution proof. Publication remains HOLD pending this review’s closure and the separate full-CI gate. No CI pass is implied.**
+
+## Severity summary
+
+| Critical | High | Medium | Low |
+|---:|---:|---:|---:|
+| 0 | 0 | 2 | 0 |
+
+**Final bounded verdict: FIX.**

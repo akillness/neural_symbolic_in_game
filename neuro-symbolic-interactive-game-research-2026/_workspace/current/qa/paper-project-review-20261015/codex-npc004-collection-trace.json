@@ -1,0 +1,197 @@
+{
+  "schema_version": "npc004-collection-trace/1",
+  "started_at": "2026-10-17T00:40:56.334Z",
+  "base_commit_at_review_start": "25394a451c702e5691f67b75dab91be932751011",
+  "source_revision_kind": "frozen-runtime-sha256-vector",
+  "runtime_source_hashes_before": {
+    "src/nesy_game/npc_goal.py": "53e501fbed6fa08a1316672eed08f87906a02d84eda1c81bb4199b9e0c683800",
+    "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+    "scripts/run_npc_goal_experiment.py": "55ed019c46889fc0f9bde8d75204011341828e2f7251080456f6c0ab0bbd0133",
+    "game-track/godot/scripts/game3d/game_3d.gd": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+    "game-track/godot/scripts/game3d/npc_agent_client.gd": "61d94f02c33d246d3ecc9d84efc314b3d4f0d7aa3ea5ec7f9261889fd3eb917a",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+    "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "game-track/godot/data/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b"
+  },
+  "runtime_source_count": 10,
+  "source_vector_sha256": "dc220d2909cb8aa9af86d3f3f055488e1ca46d52c73ca84e6e9aee26134f9cb3",
+  "command": "uv run python scripts/run_npc_goal_experiment.py --packet all --output-dir research/academic-pipeline/npc-goal-recovery/verified-run-004 --godot-binary /opt/homebrew/bin/godot --godot-project game-track/godot",
+  "requested_model": null,
+  "model_selection": "Existing official authenticated Codex CLI default with ignore-user-config; no invented model identity",
+  "model_revision": null,
+  "provider_seed": null,
+  "cost": null,
+  "latency_ms": 519080,
+  "expected_assignments": {
+    "NPC-ENG1": 16,
+    "NPC-SCR1": 72
+  },
+  "claim_boundary": "engineering and bounded descriptive screening only; no efficacy/independent-gold/generalization/human-benefit claim",
+  "preconditions": {
+    "replay_module": "PASS17",
+    "godot_module": "PASS2; existing opt-in skip1",
+    "godot_no_directive_and_unchanged_state_controls": "PASS",
+    "python_review": "APPROVE",
+    "godot_review": "APPROVE",
+    "format": "PASS9files",
+    "scoped_lint": "PASS",
+    "original_packets": "002/003guarded; never rewrite"
+  },
+  "completed_at": "2026-10-17T00:51:17.071Z",
+  "collection_wall_seconds": 519.08,
+  "timeout_seconds": 3600,
+  "runtime_source_hashes_after": {
+    "src/nesy_game/npc_goal.py": "53e501fbed6fa08a1316672eed08f87906a02d84eda1c81bb4199b9e0c683800",
+    "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+    "scripts/run_npc_goal_experiment.py": "55ed019c46889fc0f9bde8d75204011341828e2f7251080456f6c0ab0bbd0133",
+    "game-track/godot/scripts/game3d/game_3d.gd": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+    "game-track/godot/scripts/game3d/npc_agent_client.gd": "61d94f02c33d246d3ecc9d84efc314b3d4f0d7aa3ea5ec7f9261889fd3eb917a",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+    "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "game-track/godot/data/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b"
+  },
+  "runtime_sources_unchanged": true,
+  "cli_exec_attempt_count": 24,
+  "strict_validation": {
+    "command": "uv run python scripts/validate_npc_goal_evidence.py --packet all --packet-dir research/academic-pipeline/npc-goal-recovery/verified-run-004",
+    "exit_code": 0,
+    "wall_seconds": 1.92,
+    "valid": true,
+    "records": 88,
+    "missing_records": 0,
+    "errors": [],
+    "output": "codex-npc004-validation.stdout.json"
+  },
+  "model_evidence": {
+    "P_assigned": 24,
+    "cli_attempts": 24,
+    "model_calls": 24,
+    "decision_envelopes": 24,
+    "requested_models": [
+      null
+    ],
+    "returned_models": [
+      null
+    ],
+    "provider_revisions": [
+      null
+    ],
+    "provider_seed_scopes": [
+      {
+        "fixture": 201,
+        "model_sampling": null
+      },
+      {
+        "fixture": 201,
+        "model_sampling": null
+      },
+      {
+        "fixture": 202,
+        "model_sampling": null
+      },
+      {
+        "fixture": 202,
+        "model_sampling": null
+      },
+      {
+        "fixture": 203,
+        "model_sampling": null
+      },
+      {
+        "fixture": 203,
+        "model_sampling": null
+      },
+      {
+        "fixture": 204,
+        "model_sampling": null
+      },
+      {
+        "fixture": 204,
+        "model_sampling": null
+      },
+      {
+        "fixture": 205,
+        "model_sampling": null
+      },
+      {
+        "fixture": 205,
+        "model_sampling": null
+      },
+      {
+        "fixture": 206,
+        "model_sampling": null
+      },
+      {
+        "fixture": 206,
+        "model_sampling": null
+      },
+      {
+        "fixture": 207,
+        "model_sampling": null
+      },
+      {
+        "fixture": 207,
+        "model_sampling": null
+      },
+      {
+        "fixture": 208,
+        "model_sampling": null
+      },
+      {
+        "fixture": 208,
+        "model_sampling": null
+      },
+      {
+        "fixture": 209,
+        "model_sampling": null
+      },
+      {
+        "fixture": 209,
+        "model_sampling": null
+      },
+      {
+        "fixture": 210,
+        "model_sampling": null
+      },
+      {
+        "fixture": 210,
+        "model_sampling": null
+      },
+      {
+        "fixture": 211,
+        "model_sampling": null
+      },
+      {
+        "fixture": 211,
+        "model_sampling": null
+      },
+      {
+        "fixture": 212,
+        "model_sampling": null
+      },
+      {
+        "fixture": 212,
+        "model_sampling": null
+      }
+    ],
+    "case_seeds": [
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212
+    ],
+    "all_tool_policy_enforced": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "status": "after-fix-GREEN",
+  "scope": "ReplayValidator cross-decision action binding and deduplication regression",
+  "test_file": "tests/test_npc_goal_contract.py",
+  "test_name": "NpcGoalContractTests.test_replay_mirrors_first_action_binding_across_shared_decisions",
+  "command": "python -m unittest tests.test_npc_goal_contract.NpcGoalContractTests.test_replay_mirrors_first_action_binding_across_shared_decisions",
+  "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+  "exit_code": 0,
+  "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.097s\n\nOK\n",
+  "covered_contracts": {
+    "shared_action_id_decisions_without_result": "valid",
+    "first_bound_result_A": "valid",
+    "later_binding_result_B": "replay_result_binding_mismatch",
+    "second_result_for_same_action_A": "replay_duplicate_result",
+    "distinct_action_id_result": "valid"
+  },
+  "fixture_invariants": {
+    "rehashed_content_sha256": true,
+    "contiguous_sequence_and_delivery_fields": true,
+    "immutable_packets_preserved": true
+  },
+  "pre_fix_red_receipt": "codex-replay-binding-red.json"
+}

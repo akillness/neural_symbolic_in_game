@@ -1,0 +1,324 @@
+{
+  "actions": [
+    {
+      "action_id": "action-003912e6e10a42478199",
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "codes": [
+        "CONTENT_HASH_MISMATCH",
+        "STEP_ARGUMENTS_INVALID",
+        "STEP_BINDING_INVALID"
+      ],
+      "execution_mode": "player_request",
+      "index": 0,
+      "observation_after": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "observation_before": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "tampered_operation",
+      "result": {
+        "accepted": false,
+        "codes": [
+          "CONTENT_HASH_MISMATCH",
+          "STEP_ARGUMENTS_INVALID",
+          "STEP_BINDING_INVALID"
+        ],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "REJECTED",
+      "step": {
+        "action_id": "action-003912e6e10a42478199",
+        "arguments": {
+          "object_id": "signal_lens"
+        },
+        "execution_mode": "player_request",
+        "operation": "tampered_operation"
+      }
+    }
+  ],
+  "assignment_id": "NPC-ENG1:ENG-S01:R:rep1",
+  "claim_boundary": "Engineering-only canonical NPC decision binding, first-step transition, negative-gate, and deterministic replay evidence; no participant, efficacy, or usability claim.",
+  "decision": {
+    "body": {
+      "error": null,
+      "intent_id": "request-41478234763eb4814450.intent",
+      "plan_id": "plan-1c43d62d2df6bc43587c",
+      "planning_context_digest": "1c43d62d2df6bc43587c7761637206348baefa7fe40256333b2f387830997760",
+      "status": "WAITING_PLAYER",
+      "steps": [
+        {
+          "action_id": "action-003912e6e10a42478199",
+          "arguments": {
+            "object_id": "signal_lens"
+          },
+          "execution_mode": "player_request",
+          "operation": "tampered_operation"
+        }
+      ],
+      "typed_intent": {
+        "claims": [
+          {
+            "code": "LENS_REACHABLE",
+            "state": "SUPPORTED"
+          }
+        ],
+        "label": "ASK_INFORMATION",
+        "target": null
+      }
+    },
+    "budget": {
+      "cost": null,
+      "episode_deadline_ms": 900000.0,
+      "input_tokens": null,
+      "intent_deadline_ms": 30000.0,
+      "max_action_attempts": 32.0,
+      "max_inflight_per_session": 1.0,
+      "max_intent_calls": 8.0,
+      "max_plan_expansions": 32.0,
+      "max_replans": 16.0,
+      "output_tokens": null
+    },
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "content_sha256": "0a20d182e4061ea752a4d438eebb4d0dca669915524ff86cc9e3f3b0e6f8d319",
+    "delivery_index": 2.0,
+    "episode_id": "episode-41478234763eb4814450",
+    "event_id": "evt-fb7d4ce472e147dc929d",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "message_type": "decision",
+    "npc_id": "captain_mira",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "provenance": {
+      "arm": "R",
+      "backend": "rule",
+      "model": null,
+      "raw_utterance_sha256": "907d7824717b184ece0dfa1b67905a8ba4dfa3d76f8ce9c0d588bf4eb71e483d",
+      "recorded_response_ref": null,
+      "trace_ref": null
+    },
+    "request_id": "request-41478234763eb4814450",
+    "scenario_id": "sealed-lighthouse-v1",
+    "schema_version": "npc-goal-recovery/1.1.0",
+    "sequence": 2.0,
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-41478234763eb4814450",
+    "state_ref": {
+      "revision": 0.0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "decision_sha256": "fc72bb7c56368206e7575025d0f6983c1759f11785747fa62a26ede99b5cc36e",
+  "engineering_only": true,
+  "errors": [
+    "ACTION_NOT_APPLIED"
+  ],
+  "events": [
+    {
+      "action_id": "action-003912e6e10a42478199",
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "execution_mode": "player_request",
+      "kind": "action",
+      "observation": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "tampered_operation",
+      "result": {
+        "accepted": false,
+        "codes": [
+          "CONTENT_HASH_MISMATCH",
+          "STEP_ARGUMENTS_INVALID",
+          "STEP_BINDING_INVALID"
+        ],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "REJECTED"
+    }
+  ],
+  "expected_negative_gates": [],
+  "final_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "fixture_ref": "data/fixtures/npc-goal-recovery/validated-v5/engineering.json#ENG-S01",
+  "goal_reached": false,
+  "initial_public_snapshot": {
+    "observation": {
+      "goal_reached": false,
+      "in_dialogue": false,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    "state_ref": {
+      "revision": 0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "initial_state_ref": {
+    "revision": 0,
+    "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "input_bytes_preserved": true,
+  "input_sha256_after": "ad2923c8588a29b4aebd179996a2e0bdc576863f240f885123cfaa957c07cf88",
+  "input_sha256_before": "ad2923c8588a29b4aebd179996a2e0bdc576863f240f885123cfaa957c07cf88",
+  "mode": "experiment",
+  "not_evidence_for": [
+    "G4",
+    "usability",
+    "immersion",
+    "affect",
+    "efficacy",
+    "model superiority"
+  ],
+  "observations": [
+    {
+      "goal_reached": false,
+      "in_dialogue": false,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    },
+    {
+      "goal_reached": false,
+      "in_dialogue": false,
+      "lens_carried": false,
+      "lens_reachable": true,
+      "signal_restored": false,
+      "tide_lead_authorized": false
+    }
+  ],
+  "passed": false,
+  "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+  "recovery_eligible": false,
+  "recovery_unreachable": true,
+  "request": {
+    "episode_id": "episode-41478234763eb4814450",
+    "event_kind": "",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "observation": {},
+    "request_id": "request-41478234763eb4814450",
+    "session_epoch": 0,
+    "session_id": "npc-exp-41478234763eb4814450",
+    "sha256": "a6537f6406bec0ac5bee197e0ad059b6dd9b90bca3533e17384d198c182711d7",
+    "state_ref": {
+      "revision": 0.0,
+      "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    }
+  },
+  "request_context": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "episode_id": "episode-41478234763eb4814450",
+    "goal_id": "harbor-signal-restored-authorized-tide-lead-v1",
+    "goal_version": "1",
+    "request_id": "request-41478234763eb4814450",
+    "session_epoch": 0.0,
+    "session_id": "npc-exp-41478234763eb4814450"
+  },
+  "rows": [
+    {
+      "action_id": "action-003912e6e10a42478199",
+      "arguments": {
+        "object_id": "signal_lens"
+      },
+      "codes": [
+        "CONTENT_HASH_MISMATCH",
+        "STEP_ARGUMENTS_INVALID",
+        "STEP_BINDING_INVALID"
+      ],
+      "execution_mode": "player_request",
+      "index": 0,
+      "observation_after": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "observation_before": {
+        "goal_reached": false,
+        "in_dialogue": false,
+        "lens_carried": false,
+        "lens_reachable": true,
+        "signal_restored": false,
+        "tide_lead_authorized": false
+      },
+      "operation": "tampered_operation",
+      "result": {
+        "accepted": false,
+        "codes": [
+          "CONTENT_HASH_MISMATCH",
+          "STEP_ARGUMENTS_INVALID",
+          "STEP_BINDING_INVALID"
+        ],
+        "mutated": false
+      },
+      "state_ref_after": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "state_ref_before": {
+        "revision": 0,
+        "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "status": "REJECTED",
+      "step": {
+        "action_id": "action-003912e6e10a42478199",
+        "arguments": {
+          "object_id": "signal_lens"
+        },
+        "execution_mode": "player_request",
+        "operation": "tampered_operation"
+      }
+    }
+  ],
+  "schema_version": "npc-engineering/input-1",
+  "source_hashes": {
+    "config_hash": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "npc_protocol_config_sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "policy_hash": "af0a1075294b11630d0828960c8eff6dbeccce5e6f2b414c2b5c1b0a1e405c36",
+    "source_project_config_sha256": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "source_schema_sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+  },
+  "status": "REJECTED",
+  "terminal_status": "FAILED"
+}

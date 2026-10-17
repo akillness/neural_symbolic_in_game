@@ -1,0 +1,39 @@
+{
+  "schema_version": "codex-fix-smoke/1",
+  "captured_at": "2026-10-17T00:35:39.477Z",
+  "replay": {
+    "command": "uv run python -m unittest tests.test_npc_goal_contract",
+    "result": "PASS",
+    "tests": 17,
+    "test_seconds": 0.131,
+    "wall_seconds": 0.65
+  },
+  "godot": {
+    "command": "uv run python -m pytest tests/test_npc_play_loop.py -q",
+    "result": "PASS",
+    "passed": 2,
+    "skipped": 1,
+    "skip_reason": "Existing opt-in real-service endpoint test; not claimed executed",
+    "test_seconds": 15.33,
+    "wall_seconds": 15.86,
+    "artifact": "artifact://4121"
+  },
+  "prior_godot_parse_failure": {
+    "artifact": "artifact://4090",
+    "result": "FIX",
+    "cause": "Implementation temporarily clobbered intent_id declaration; restored before final GREEN",
+    "not_counted_as_semantic_red": true
+  },
+  "format": {
+    "command": "uv run ruff format <9 touched Python files>",
+    "result": "2 formatted7unchanged"
+  },
+  "lint": {
+    "command": "uv run ruff check <9 touched Python files>",
+    "result": "PASS",
+    "artifact": "artifact://4109"
+  },
+  "old_packets_not_rewritten": true,
+  "new_packet_required": "verified-run-004",
+  "collection_started": false
+}

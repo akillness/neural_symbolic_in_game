@@ -1,0 +1,38 @@
+{
+  "schema_version": "npc005-source-freeze/1",
+  "frozen_at": "2026-10-17T01:29:45.675Z",
+  "packet_dir": "research/academic-pipeline/npc-goal-recovery/verified-run-005",
+  "runtime_sources_frozen": true,
+  "runtime_source_count": 10,
+  "runtime_source_hashes": {
+    "src/nesy_game/npc_goal.py": "9aa7b5e628229f13bef33f9e959d8e74f379cd0ca6df73bd81fecb74547e03f1",
+    "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+    "scripts/run_npc_goal_experiment.py": "9b114957043f7758563170ec10bc01e69773b1f260b4300f6111668b54fe5b18",
+    "game-track/godot/scripts/game3d/game_3d.gd": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+    "game-track/godot/scripts/game3d/npc_agent_client.gd": "61d94f02c33d246d3ecc9d84efc314b3d4f0d7aa3ea5ec7f9261889fd3eb917a",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+    "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "game-track/godot/data/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b"
+  },
+  "source_vector_sha256": "64a04f26ca4c4cd41c19b99ed68855684e5da9601a943be39e336bdf3f70bfef",
+  "test_source_hashes": {
+    "tests/test_npc_goal_contract.py": "bdc458dd5ecd1fb79c2eb0af7ee8b32ef9e1a151075bbef22cf5c1e0e6017e76",
+    "tests/test_npc_evidence_contract.py": "324ae49b4e914126591c29fcb1e84ac55fe1ba5f288df965e09f611ed6fe4a86"
+  },
+  "source_approvals": {
+    "CodeFreezeReview5": "APPROVE current9aa7/bdc/324 hashes",
+    "ReplayFreezeReview5": "APPROVE current9aa7/bdc hashes",
+    "EvidenceFreezeReview5": "APPROVE synthetic72-assignment/negative-control semantics"
+  },
+  "verification_receipt": "codex-005-precollection-smoke.json",
+  "forbid": "No runtime/source/formatter changes during or after collection; never rewrite002/003/004",
+  "collection_command": "uv run python scripts/run_npc_goal_experiment.py --packet all --output-dir research/academic-pipeline/npc-goal-recovery/verified-run-005 --godot-binary /opt/homebrew/bin/godot --godot-project game-track/godot",
+  "model_selector": null,
+  "model_revision": null,
+  "provider_sampling_seed": null,
+  "cost": null,
+  "latency_ms": null,
+  "collection_status": "READY"
+}

@@ -9,13 +9,21 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from collections import Counter
 from html import escape
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKET = ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+sys.path.insert(0, str(ROOT / "src"))
+
+from nesy_game.npc_goal import (
+    REPLAY_CROSS_EPOCH_INTENT_CONTINUITY_PROVEN,
+    REPLAY_INTENT_LINEAGE_SCOPE,
+)
+
+PACKET = ROOT / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
 CONFIG = ROOT / "configs/npc-goal-recovery.json"
 GAME_CONFIG = ROOT / "game-track/godot/project.godot"
 SCHEMA = ROOT / "game-track/schemas/npc-goal-recovery.schema.json"
@@ -72,6 +80,15 @@ def _load_packet() -> dict[str, Any]:
     for packet_id in ("NPC-ENG1", "NPC-SCR1"):
         report, errors = validate_packet(packet_id, ROOT, packet_dir=PACKET)
         _require(not errors and report.get("valid") is True, f"{packet_id}: " + "; ".join(errors))
+        _require(
+            report.get("source", {}).get("test_only") is not True,
+            f"{packet_id} TESTONLY evidence cannot enter manuscript generation",
+        )
+        if packet_id == "NPC-SCR1":
+            _require(
+                report.get("publishable") is True,
+                f"{packet_id} is not publication-admissible",
+            )
         validation_reports[packet_id] = _portable_validation_report(report)
     config = _read_json(CONFIG)
     _require(_sha(GAME_CONFIG) == PROJECT_CONFIG_SHA256, "NPC game config SHA file drift")
@@ -312,6 +329,8 @@ def _failure_counts(summary: dict[str, Any]) -> Counter[str]:
 
 def _results(packet: dict[str, Any], korean: bool) -> str:
     aggregate = packet["aggregate"]
+    intent_scope_label = _latex(REPLAY_INTENT_LINEAGE_SCOPE)
+    continuity_label = json.dumps(REPLAY_CROSS_EPOCH_INTENT_CONTINUITY_PROVEN)
     eng_n = len(packet["engineering"])
     eng_status = ", ".join(
         f"{_latex(key)}={value}"
@@ -377,6 +396,7 @@ Mira의 고정 목표는 항구 신호 복구 후 허가된 조석 단서를 제
 
 NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 engineering 사례 {eng_n}개({eng_status})다. NPC-SCR1은 P/R/O 각 24개, 전체 {aggregate["assignment_count"]}개 배정과 실패를 모두 보존한다({scr_status}). P는 인증된 Codex CLI 실행 시도 {p_attempts}회, 반환 decision {p_decisions}개, 배정 실패 {p_failures}개를 기록했다. 이는 원격 과금 호출 횟수가 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이며 provider revision이 아니다. provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. R은 작성된 규칙을 사용한다. O는 \texttt{{same\_model\_family\_auxiliary}}로 선언된 protocol auxiliary일 뿐이며 실제 모델 계열 일치는 unverified(검증되지 않음)이다. 독립 원본은 0개이고 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}과 그림~\ref{{fig:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다. efficacy는 pending이며 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론이나 적대적 기밀성은 검증하지 않았다.
 {stale_failure_disclosure}
+재현 검증은 내보낸 epoch 내부에 한정한다(\texttt{{intent\_lineage\_scope={intent_scope_label}}}). epoch 간 의도 연속성은 입증하지 않는다(\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). 불투명한 연속 지점을 허용하는 예외는 양의 epoch snapshot에서 인접한 선두 observation 요청·decision 쌍에만 적용한다. epoch 0의 고아 관측, 그 밖의 의도 확정 전 관측 요청, 후속 의도 불일치는 계속 거절한다.
 
 """.strip()
             + "\n"
@@ -388,6 +408,7 @@ Mira's fixed goal is to deliver the authorized tide lead after harbor-signal res
 
 NPC-ENG1 comprises {eng_n} deterministic R-arm engineering cases initialized from actual engine snapshots ({eng_status}). NPC-SCR1 retains all {aggregate["assignment_count"]} assignments and failures, 24 per P/R/O arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures; these are not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter propagates the configured selector, not a provider revision; the provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. R uses authored rules. O is a protocol-declared auxiliary under \texttt{{same\_model\_family\_auxiliary}}. Actual model-family matching is unverified. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} and Fig.~\ref{{fig:npc-screening}} report bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates. Efficacy remains pending; tokens and cost are unmeasured. A read-only CLI and isolated working directory were used, but tool-free inference and adversarial confidentiality were not established.
 {stale_failure_disclosure}
+Replay validation is limited to the exported epoch (\texttt{{intent\_lineage\_scope={intent_scope_label}}}); it does not prove intent continuity across epochs (\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). The opaque-anchor exception is restricted to an adjacent leading observation request/decision pair in a positive-epoch snapshot. Epoch-zero orphans, other observation requests before intent commitment, and later intent mismatches remain rejected.
 """.strip()
         + "\n"
     )

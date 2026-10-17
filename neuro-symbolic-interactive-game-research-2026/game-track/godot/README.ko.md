@@ -250,7 +250,7 @@ uv run python scripts/run_npc_service.py \
 
 ### 검증된 packet과 별도 rerun
 
-불변 canonical packet `research/academic-pipeline/npc-goal-recovery/verified-run-002/`에는 배정된 88행과 `gpt-5.6-sol`을 명시적으로 요청한 인증 CLI 실행 24회가 기록됐으며 strict validation을 통과했다. 반환된 model revision, provider seed, token 회계와 cost는 사용할 수 없다. screening 각 arm의 실행 완료 20개와 stale-control ACK 거부에 따른 assigned failure 4개를 모두 유지하며, 관측된 goal 4/24를 recovery rate로 해석하지 않는다. O의 same-family 표기는 protocol source label이며 실제 모델 일치를 검증한 것이 아니다. 모델 미식별 `verified-run-001/`, 실패한 diagnostic과 source-bound native demonstration은 별도의 불변 근거다. 이들을 덮어쓰거나 합산하지 않는다. efficacy·superiority·generalization·human-benefit·independent-label을 주장하지 않는다.
+불변 canonical packet `research/academic-pipeline/npc-goal-recovery/verified-run-006/`에는 배정된 88행과 인증 CLI 실행 24회: 요청·반환된 모든 24개 model ID는 null이며, provider revision, provider seed, token 회계, cost도 모두 null이다. strict validation 통과. screening 각 arm의 실행 완료 20개와 stale-control ACK 거부에 따른 assigned failure 4개를 모두 유지하며, 관측된 goal 4/24를 recovery rate로 해석하지 않는다. O의 same-family 표기는 protocol source label이며 실제 모델 일치를 검증한 것이 아니다. 모델 미식별 `verified-run-001/`의 실패한 diagnostic, 역사적 batch `verified-run-002/`, `verified-run-003/`, 그리고 source-bound native 시연은 별도의 불변 근거다. 이들을 덮어쓰거나 합산하지 않는다. efficacy·superiority·generalization·human-benefit·independent-label을 주장하지 않는다.
 
 ```bash
 uv run python scripts/run_npc_goal_experiment.py \

@@ -1,0 +1,38 @@
+{
+  "schema_version": "codex-evidence-contract-repair/1",
+  "claim_boundary": "focused_test_repair_only",
+  "target": {
+    "test_file": "tests/test_npc_evidence_contract.py",
+    "canonical_packet_pointer": "research/academic-pipeline/npc-goal-recovery/verified-run-005",
+    "production_validator_modified": false,
+    "immutable_packet_bytes_modified": false
+  },
+  "changes": [
+    "Screening synthetic records resolve each assignment's case_id through cases_by_id; no zip(cases, assignments) construction remains.",
+    "Synthetic assignments create packet-local bootstrap input and sidecar receipts bound to current runtime/config/policy hashes, then rehash records before baseline validation.",
+    "Replay negative mutations execute under subTest and independently assert validator rejection.",
+    "Canonical packet test helpers point to verified-run-005; packet-copy-dependent tests were not run before NEW005 materialization."
+  ],
+  "screening_baseline": {
+    "case_definitions": 12,
+    "assignments_expected": 72,
+    "assignments_identity_asserted": 72,
+    "mapping": "assignment.case_id -> cases_by_id[assignment.case_id]",
+    "baseline_validated_before_mutation": true
+  },
+  "exercised_mutations": [
+    "arbitrary-count",
+    "omitted-duplicate",
+    "lane-swap"
+  ],
+  "focused_test": {
+    "command": "./.venv/bin/python -m unittest -v tests.test_npc_evidence_contract.NpcEvidenceFixtureTests.test_replay_report_rejects_arbitrary_counts_omitted_duplicates_and_lane_swaps tests.test_npc_evidence_contract.NpcEvidenceFixtureTests.test_publication_requires_publish_mode tests.test_npc_evidence_contract.NpcEvidenceFixtureTests.test_publication_requires_injected_execution_attempt",
+    "exit_code": 0,
+    "observed_output": "test_replay_report_rejects_arbitrary_counts_omitted_duplicates_and_lane_swaps (tests.test_npc_evidence_contract.NpcEvidenceFixtureTests) ... ok\ntest_publication_requires_publish_mode (tests.test_npc_evidence_contract.NpcEvidenceFixtureTests) ... ok\ntest_publication_requires_injected_execution_attempt (tests.test_npc_evidence_contract.NpcEvidenceFixtureTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 2.677s\n\nOK"
+  },
+  "runtime_coordination": {
+    "replay_causality_fix": "stable signal received from ReplayCausalityFix before focused run",
+    "source_fixture": "validated-v5 fixtures with dynamic current runtime hashes",
+    "packet_copy_tests": "not run; waiting for NEW005 freeze/recollection"
+  }
+}

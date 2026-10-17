@@ -1,0 +1,124 @@
+{
+  "schema_version": "actual-codex-final-portability-closure-trace/1",
+  "lane": "FinalPortability",
+  "verdict": "FIX",
+  "root": "/tmp/trace-rpg-publication-projection-25394a4",
+  "input_manifest": "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/FinalPortability/inputs.json",
+  "invocation": {
+    "argv": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--sandbox",
+      "read-only",
+      "--ephemeral",
+      "--color",
+      "never",
+      "--json",
+      "-C",
+      "/tmp/trace-rpg-publication-projection-25394a4",
+      "--output-last-message",
+      "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/FinalPortability/codex-output.txt",
+      "-"
+    ],
+    "stdin_artifact": "prompt.txt",
+    "stdout_artifact": "events.jsonl",
+    "stderr_artifact": "stderr.txt",
+    "last_message_artifact": "codex-output.txt",
+    "model_override": null,
+    "sandbox": "read-only",
+    "ignore_user_config": true,
+    "ephemeral": true,
+    "color": "never",
+    "json_events": true,
+    "exit_code": 0,
+    "thread_id": "01a14813-0308-7f62-bdd2-8317b37317d4",
+    "elapsed_seconds": 59.93,
+    "user_seconds": 2.80,
+    "sys_seconds": 2.98,
+    "first_stderr_timestamp_utc": "2026-10-17T04:16:09.029710Z",
+    "usage": {
+      "input_tokens": 488037,
+      "cached_input_tokens": 403840,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2306,
+      "reasoning_output_tokens": 50
+    }
+  },
+  "coverage": {
+    "assigned_sources": 3,
+    "full_semantic_reads": 3,
+    "identity_matches": 3,
+    "hash_only": 0,
+    "partial": 0,
+    "source_review_is_execution_proof": false
+  },
+  "identities": [
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_contract.py",
+      "bytes": 58731,
+      "sha256": "d2207ed0df6cf64a291bcedb221aeea4fdfd748a68a219165c613fcb27cf3fbf",
+      "manifest_match": true,
+      "semantic_read": "complete",
+      "line_extent": "1-1227"
+    },
+    {
+      "path": "README.md",
+      "bytes": 27804,
+      "sha256": "9c22af032aa2681dd08ac8eb4b381cd563c0c81b3b2f8420db4cc335f269f968",
+      "manifest_match": true,
+      "semantic_read": "complete",
+      "line_extent": "1-304"
+    },
+    {
+      "path": "README.ko.md",
+      "bytes": 29555,
+      "sha256": "83a25583654869c28dd372b34210f2e5655a5cb829852ac67ad9fcd5b177d6ba",
+      "manifest_match": true,
+      "semantic_read": "complete",
+      "line_extent": "1-305"
+    }
+  ],
+  "assessment": {
+    "fixture_source_manifest_derived_and_rebound": true,
+    "assigned_test_contract_weakened": false,
+    "d1_closed_in_both_guides": true,
+    "current_title_present_in_both_guides": true,
+    "reference_count_58_present_in_both_guides": true,
+    "prepared_not_submitted_status_present_in_both_guides": true,
+    "verified_run_006_present_in_both_guides": true,
+    "historical_loss_disclosures_present_in_both_guides": false,
+    "ten_page_metadata_consistent_in_both_guides": false,
+    "publication_status": "HOLD",
+    "full_ci_status": "not_run_not_assumed"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "MEDIUM",
+      "summary": "Required historical packet-loss and test-receipt-loss disclosures are absent from both guides"
+    },
+    {
+      "id": "F2",
+      "severity": "MEDIUM",
+      "summary": "Both guides retain conflicting eight-page preview metadata alongside current ten-page declarations"
+    }
+  ],
+  "source_files_modified": false,
+  "tests_run": false,
+  "prior_docsclosure_report_read_by_codex": false,
+  "event_records": 21,
+  "raw_artifacts": [
+    "inputs.json",
+    "prompt.txt",
+    "events.jsonl",
+    "stderr.txt",
+    "codex-output.txt"
+  ],
+  "report_artifact": "Report.md",
+  "stderr_notes": [
+    "Two nonfatal skill frontmatter load errors were emitted before the review.",
+    "Timing was recorded by /usr/bin/time -p."
+  ],
+  "prohibited_actions_run": []
+}

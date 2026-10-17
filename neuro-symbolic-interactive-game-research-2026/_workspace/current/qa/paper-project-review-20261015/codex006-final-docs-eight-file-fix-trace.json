@@ -1,0 +1,126 @@
+{
+  "schema_version": "actual-codex-docs-closure-trace/1",
+  "verdict": "FIX",
+  "root": "/tmp/trace-rpg-publication-projection-25394a4",
+  "input_manifest": "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/DocsClosure/inputs.json",
+  "invocation": {
+    "argv": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--sandbox",
+      "read-only",
+      "--ephemeral",
+      "--color",
+      "never",
+      "--json",
+      "-C",
+      "/tmp/trace-rpg-publication-projection-25394a4",
+      "--output-last-message",
+      "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/DocsClosure/codex-output.txt",
+      "-"
+    ],
+    "stdin_artifact": "prompt.txt",
+    "stdout_artifact": "events.jsonl",
+    "stderr_artifact": "stderr.txt",
+    "last_message_artifact": "codex-output.txt",
+    "exit_code": 0,
+    "thread_id": "01a1480d-ad69-71b1-bca1-034fcebd33a0",
+    "elapsed_seconds": 103.46,
+    "user_seconds": 3.84,
+    "sys_seconds": 4.94,
+    "first_stderr_timestamp_utc": "2026-10-17T04:10:22.012428Z",
+    "usage": {
+      "input_tokens": 1482906,
+      "cached_input_tokens": 1351680,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 3731,
+      "reasoning_output_tokens": 287
+    }
+  },
+  "coverage": {
+    "assigned_sources": 8,
+    "full_semantic_reads": 8,
+    "identity_matches": 8,
+    "source_review_is_execution_proof": false
+  },
+  "identities": [
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md",
+      "bytes": 22879,
+      "sha256": "5048b1108b401106b449bb7207c0673c16c1ea3757ac93f18c0b1711e6652795",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md",
+      "bytes": 24217,
+      "sha256": "17c40d8c5a2dca57ba86d7ac5308154ac4f74ef84e29b26744cf7ba2112aefd9",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/CLAUDE.md",
+      "bytes": 29746,
+      "sha256": "06e04bcf642ef15fa2b2b66d4a2284b9ea7de0d5c27d2c06d7b036f494f31137",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "README.md",
+      "bytes": 27785,
+      "sha256": "350a929050f0042dfb86ee854567400a8f012b56b16540073ed94d7520b0d57a",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "README.ko.md",
+      "bytes": 29536,
+      "sha256": "be9d846514dce774e4e6896a8aacfbff514ea445774bff71f1e9b442f9cfd665",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex",
+      "bytes": 38340,
+      "sha256": "2820c5237e9b157d52694924f0c3f1ce9c34e835d1681991c658bd0e2408a770",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex",
+      "bytes": 42882,
+      "sha256": "e05c44b392296c1a03eb785dcfbdf049b2f17e398d49e2e7d877b14a87509a15",
+      "match": true,
+      "semantic_read": "full"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/visuals/source-manifest.json",
+      "bytes": 33386,
+      "sha256": "9b02f497f881b535233e93506491b7dbd5563a5da0b8062a329b081d4e1634f2",
+      "match": true,
+      "semantic_read": "full"
+    }
+  ],
+  "finding": {
+    "id": "D1",
+    "severity": "MEDIUM",
+    "confidence": ">99%",
+    "files": ["README.md:299-301", "README.ko.md:299-301"],
+    "summary": "Both exported BibTeX citations retain an obsolete title and claim Manuscript under anonymous review, contradicting the current title and prepared-not-submitted status."
+  },
+  "raw_artifacts": [
+    {"name": "inputs.json", "bytes": 1904},
+    {"name": "prompt.txt", "bytes": 4038},
+    {"name": "events.jsonl", "bytes": 350603, "records": 47},
+    {"name": "stderr.txt", "bytes": 379},
+    {"name": "codex-output.txt", "bytes": 8556}
+  ],
+  "report_artifact": "Report.md",
+  "stderr_notes": [
+    "Nonfatal missing-YAML-frontmatter skill load error for amrouter.",
+    "Nonfatal missing-YAML-frontmatter skill load error for ax.",
+    "/usr/bin/time -p measurements preserved."
+  ],
+  "prohibited_actions_run": []
+}

@@ -1,0 +1,114 @@
+# Docs Closure — Final Actual Codex Semantic Review
+
+**Actual Codex verdict: FIX**
+
+Completed a full semantic read of **8/8 assigned sources**. Independently computed byte counts and SHA-256 digests match `inputs.json` for all eight. One material documentation inconsistency remains: both root README citation blocks retain an obsolete title and claim the manuscript is “under anonymous review,” contradicting the corrected prepared-only status.
+
+## Identity and read verification
+
+Paths are relative to `/tmp/trace-rpg-publication-projection-25394a4`.
+
+| Assigned source | Exact bytes | Independently computed SHA-256 | Manifest match | Semantic read |
+|---|---:|---|---|---|
+| `neuro-symbolic-interactive-game-research-2026/game-track/godot/README.en.md` | 22879 | `5048b1108b401106b449bb7207c0673c16c1ea3757ac93f18c0b1711e6652795` | Yes | Full |
+| `neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md` | 24217 | `17c40d8c5a2dca57ba86d7ac5308154ac4f74ef84e29b26744cf7ba2112aefd9` | Yes | Full |
+| `neuro-symbolic-interactive-game-research-2026/CLAUDE.md` | 29746 | `06e04bcf642ef15fa2b2b66d4a2284b9ea7de0d5c27d2c06d7b036f494f31137` | Yes | Full |
+| `README.md` | 27785 | `350a929050f0042dfb86ee854567400a8f012b56b16540073ed94d7520b0d57a` | Yes | Full |
+| `README.ko.md` | 29536 | `be9d846514dce774e4e6896a8aacfbff514ea445774bff71f1e9b442f9cfd665` | Yes | Full |
+| `neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex` | 38340 | `2820c5237e9b157d52694924f0c3f1ce9c34e835d1681991c658bd0e2408a770` | Yes | Full |
+| `neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex` | 42882 | `e05c44b392296c1a03eb785dcfbdf049b2f17e398d49e2e7d877b14a87509a15` | Yes | Full |
+| `neuro-symbolic-interactive-game-research-2026/visuals/source-manifest.json` | 33386 | `9b02f497f881b535233e93506491b7dbd5563a5da0b8062a329b081d4e1634f2` | Yes | Full |
+
+For evidence below, **P** means `neuro-symbolic-interactive-game-research-2026/`.
+
+## Closure checklist
+
+| Contract | Assessment | Assigned-source evidence |
+|---|---|---|
+| Current regeneration selects 006 | Satisfied | `P/CLAUDE.md:171–177` requires revalidation of `verified-run-006` before regenerating NPC figures/tables and preserves integrity-only boundaries. |
+| Root summaries state ≤10-page ceiling and EN10/KO10 | Satisfied as source statements | `README.md:28` and `README.ko.md:28` state the full-paper ceiling of 10 pages and 10 pages per manuscript. PDF extent was not independently measured. |
+| Root summaries use current paper title | Satisfied in summaries; inconsistent elsewhere | Both root READMEs at line 28 match `P/paper/latex/en/main.tex:12`; Korean title at `P/paper/latex/ko/main.tex:58` conveys the same meaning. Citation blocks remain stale; see finding D1. |
+| Prepared-only anonymous draft status | Not collectively closed | Both README summaries at line 28 expressly disclaim submission/acceptance. EN footnote at `P/paper/latex/en/main.tex:14–15` says “prepared for anonymous review”; KO at `P/paper/latex/ko/main.tex:60–61` is equivalent. Both README citation notes at line 301 contradict that status. |
+| Qualified citation summary | Satisfied | Both root READMEs at line 28 describe citation-identity, context, and preprint-status checks, without claiming universal peer review or complete resolvability. Both manuscripts explicitly identify the cited 2025 preprint: EN line 50; KO line 96. |
+| EN/KO correction parity | Substantively aligned | The summaries, author footnotes, 006 selection, counts, and limitations agree in meaning. Both README citation blocks share D1. |
+| Corresponding visual source identities | Satisfied within assigned scope | `P/visuals/source-manifest.json:12–15,25–28,302–311` records the exact current bytes and hashes of both assigned manuscript sources. |
+
+## Material finding
+
+### D1 — MEDIUM: Both exported citations contradict the corrected title and draft status
+
+**Confidence: >99%.**
+
+**Locations:** `README.md:299–301` and `README.ko.md:299–301`, within their respective Cite/인용 BibTeX blocks.
+
+Both contain:
+
+```bibtex
+title = {TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World},
+year  = {2026},
+note  = {Manuscript under anonymous review},
+```
+
+**Trigger:** A reader copies either README’s supplied citation.
+
+**Outcome:** The exported citation uses a different title from the current manuscript and represents review as underway, although the controlling status is prepared for review without actual submission.
+
+**Surrounding context:** Both corrected README summaries at line 28 name *TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds* and disclaim actual submission or acceptance. The manuscript author footnotes likewise say prepared for anonymous review. Those prose qualifications do not accompany a copied BibTeX entry, so they do not resolve the exported metadata contradiction.
+
+No HIGH or CRITICAL finding is established.
+
+## EN/KO and manifest assessment
+
+The targeted English and Korean corrections are semantically consistent, including their shared citation-block defect. The manifest’s two manuscript identities match independent measurements in both places where those sources carry byte/hash records. Its NPC figure/table data-source records select 006 (`P/visuals/source-manifest.json:159–166,457–504`).
+
+The manifest does not record identities for the assigned README or CLAUDE files; no stale recorded identity for those files is asserted. Referenced PDFs, generated fragments, images, and raw packets were not opened or independently verified.
+
+## Preservation and non-weakening assessment
+
+No concrete scientific weakening attributable to these metadata corrections is established from the assigned sources.
+
+- **Accounting and retained failures:** Both root READMEs at lines 248–250 retain 88 assignments, R/P/O totals of 40/24/24, 24 authenticated CLI executions, and 20 completed plus four assigned ACK rejections per screening arm. They reject interpreting 4/24 as recovery efficacy.
+- **Unknown metadata:** Those same sections retain null model/revision/seed/token/cost disclosures and explicitly qualify actual model-family matching as unverified. The paired Godot guides preserve these disclosures at EN lines 241–255 and KO lines 239–253.
+- **Scientific boundaries:** EN manuscript lines 193–197 and KO lines 244–248 keep engineering, screening, historical demonstrations, and normal-play evidence separate. EN lines 246–255 and KO lines 300–310 retain efficacy and validity limitations.
+- **Equations and figures:** Both manuscripts retain seven-check transition authorization, unchanged fallback, bounded attempts, and typed-error repair: EN lines 73–89,144–149; KO lines 123–139,195–200. Figure captions preserve descriptive-only counts and illustration-only boundaries: EN lines 224,238; KO lines 277,292.
+- **Historical losses and separate integrity pass:** The assigned sources retain historical provenance and require strict validation, but do not independently establish the two explicitly corrected historical unit-RED losses or execution of the separate raw-experiment-integrity pass. Their truth is not disproved here; neither is execution certified.
+- **Typography:** Both sources retain `IEEEtran` journal class at line 1. Korean font selection remains explicit at lines 3–47. No body-font reduction or page-margin override was found. Rendered typography and historical unchangedness were not execution-verified.
+
+## Invocation and scope limitations
+
+This was a bounded, read-only Actual Codex source review. The input manifest was read first; all eight assigned sources were read completely. The prior Guides report was read only as contextual history. No unassigned source was inspected.
+
+Only source-reading and independent byte/SHA-256 calculations were performed. No tests, formatters, linters, project suites, builds, browser checks, deployments, collection, Git commands, or credential/config operations were run. No source was edited. The exact external launcher command and invocation telemetry were not supplied and are not asserted.
+
+**Source review is not execution proof.** Supplied validation, experiment, page-count, and integrity-pass facts were not re-run.
+
+## Severity summary
+
+| Severity | Count | Status |
+|---|---:|---|
+| CRITICAL | 0 | None established |
+| HIGH | 0 | None established |
+| MEDIUM | 1 | Material metadata inconsistency |
+| LOW | 0 | None reported |
+
+Verdict: **FIX**
+
+## Preserved actual invocation trace
+
+The review text above is the unmodified Actual Codex last message preserved separately as `codex-output.txt`. Codex was intentionally not given launcher telemetry in its prompt; the calling harness captured it independently.
+
+```text
+codex exec --ignore-user-config --sandbox read-only --ephemeral --color never --json -C /tmp/trace-rpg-publication-projection-25394a4 --output-last-message /tmp/trace-rpg-codex006-final-lanes-jiNp1m/DocsClosure/codex-output.txt -
+```
+
+- Exit code: `0`
+- Thread: `01a1480d-ad69-71b1-bca1-034fcebd33a0`
+- Elapsed: `103.46 s` (`/usr/bin/time -p`; user `3.84 s`, sys `4.94 s`)
+- Usage: input `1,482,906`; cached input `1,351,680`; cache-write input `0`; output `3,731`; reasoning output `287`
+- Semantic coverage: `8/8` assigned sources fully read
+- Raw artifacts: `inputs.json`, `prompt.txt`, `events.jsonl` (47 records), `stderr.txt`, `codex-output.txt`
+- Structured metadata: `trace.json`
+
+`events.jsonl` preserves the complete JSONL event stream. `stderr.txt` preserves two nonfatal skill-frontmatter load errors plus `/usr/bin/time` measurements. Post-review independent `wc -c` and `shasum -a 256` checks reconfirmed all eight manifest identities; no source was edited.
+
+Final bounded verdict: **FIX**

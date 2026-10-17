@@ -1,0 +1,49 @@
+{
+  "schema_version": "codex-final006-completion-chain-red/1",
+  "claim_boundary": "authoritative_true_red_before_validator_fix",
+  "test_file": "tests/test_npc_evidence_contract.py",
+  "test": "NpcEvidenceFixtureTests.test_completed_action_requires_result_ack_completion_chain",
+  "command": "python -m unittest tests.test_npc_evidence_contract.NpcEvidenceFixtureTests.test_completed_action_requires_result_ack_completion_chain",
+  "exit_code": 1,
+  "observed_failure": "AssertionError: True is not false; report[valid] remained True",
+  "expected_post_fix_error": "completed action result/ACK completion chain missing",
+  "positive_baseline": {
+    "fixture": "private temporary copy of immutable research/academic-pipeline/npc-goal-recovery/verified-run-005 native-positive record",
+    "validated_before_mutation": true,
+    "publication_packet_modified": false
+  },
+  "mutation": {
+    "record_results": [],
+    "record_acks": [],
+    "canonical_replay_rows": "retained only valid request and decision rows",
+    "identity_refresh": "recomputed snapshot_id and cursor with ReplayValidator; refreshed replay python summary, record hash, aggregate, replay report and sha256 manifest",
+    "semantic_binding": "all retained rows and summaries are internally valid; no digest/schema/receipt failure caused the RED"
+  },
+  "portable_import_receipt": {
+    "root_derivation": "Path(__file__).resolve().parents[1]",
+    "contract_module": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_contract.py",
+    "v5_module": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_npc_evidence_v5.py",
+    "command": "python -c 'import tests.test_npc_evidence_contract as c, tests.test_npc_evidence_v5 as v; print(c.__file__); print(v.__file__)'",
+    "exit_code": 0
+  },
+  "source_hashes_at_capture": {
+    "scripts/validate_npc_goal_evidence.py": "01ccca74db2ad0d36b5da1062847b4cf195c30fdc9a3ebdebdc209843d76a362",
+    "tests/test_npc_evidence_contract.py": "daa4277303f204e418efdc93ac0fe1de4157bc8e081cfd4d063b0517c818607e",
+    "tests/test_npc_evidence_v5.py": "bea071e1c4c7429d4680948bbcfb796c81c48727441b783b09f1f6a1a2f3bbf2"
+  },
+  "scope": {
+    "production_validator_modified": false,
+    "canonical_packets_modified": false,
+    "old_receipt_restored": true,
+    "old_receipt_path": "_workspace/current/qa/paper-project-review-20261015/codex-evidence-admission-red.json",
+    "old_receipt_sha256_after_restore": "fbbc128f6c1cfee670a4ca51c88919bc2ac43700ab1d9abb3c09192f4cd6ec88",
+    "new_receipt_only": "_workspace/current/qa/paper-project-review-20261015/codex-final006-completion-chain-red-20261017.json",
+    "canonical_or_project_wide_suites_run": false,
+    "model_calls": false
+  },
+  "coordination": {
+    "source_owner": "EvidenceAdmissionFix",
+    "parent": "Main",
+    "status": "tests frozen; no further test edits"
+  }
+}

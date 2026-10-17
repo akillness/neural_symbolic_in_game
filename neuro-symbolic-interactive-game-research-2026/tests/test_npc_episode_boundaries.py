@@ -7,9 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-P = Path(
-    "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026"
-)
+P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P / "src"))
 
 from nesy_game.npc_goal import (

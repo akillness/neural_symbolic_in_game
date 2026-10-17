@@ -1,0 +1,35 @@
+{
+  "schema_version": "selected-publication-ci/1",
+  "command": [
+    "./scripts/verify_like_ci.sh"
+  ],
+  "cwd": "/tmp/trace-rpg-publication-projection-25394a4/neuro-symbolic-interactive-game-research-2026",
+  "exit_code": 0,
+  "elapsed_seconds": 323.49,
+  "unit_tests": {
+    "count": 333,
+    "result": "OK",
+    "seconds": 183.772
+  },
+  "game_track": {
+    "tests_passed": 78,
+    "subtests_passed": 48,
+    "seconds": 128.83
+  },
+  "observed_terminal_message": "All CI steps passed locally; this tree should push clean.",
+  "artifacts": [
+    {
+      "path": "codex006-final-ci-corrected.stdout.txt",
+      "bytes": 5243,
+      "sha256": "7a12ae046e64c041ab06dd7f4f094cb485f8642fe3f8f4917595345c558c7fad"
+    },
+    {
+      "path": "codex006-final-ci-corrected.stderr.txt",
+      "bytes": 492,
+      "sha256": "fe0e83fd9d2c11f13d8ce901df32c9970b11f930ea3f2f7589399f4b24986e61"
+    }
+  ],
+  "prior_failure_preserved": "codex006-final-ci.stdout.txt and .stderr.txt: 13 private-fixture relocation failures plus unselected private auto-ingest wiki pointers; corrected without weakening validation or publishing private sessions",
+  "current_fixture_sha256": "d2207ed0df6cf64a291bcedb221aeea4fdfd748a68a219165c613fcb27cf3fbf",
+  "limits": "Source/artifact review and PDF gates are separate. Root guide disclosure/caption and derived JPEG preview-only changes are separately reviewed; no runtime or test source changed after the corrected CI snapshot."
+}

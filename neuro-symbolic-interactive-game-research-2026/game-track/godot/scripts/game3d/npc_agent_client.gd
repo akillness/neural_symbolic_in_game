@@ -258,7 +258,7 @@ func accept_decision(envelope: Dictionary, context: Dictionary, current_state_re
 	var steps: Array = body.get("steps", [])
 	if steps.is_empty():
 		var terminal_status := str(body.get("status", "ERROR"))
-		if terminal_status not in ["NO_ROUTE", "GOAL_REACHED", "ERROR"]:
+		if terminal_status not in ["NO_ROUTE", "GOAL_REACHED"]:
 			return {"accepted": false, "codes": ["MISSING_PLAN_STEP"]}
 		if terminal_status == "GOAL_REACHED" and not bool(_game.npc_public_observation().get("goal_reached", false)):
 			return {"accepted": false, "kind": "none", "status": "GOAL_NOT_REACHED", "codes": ["GOAL_NOT_REACHED"]}
@@ -474,6 +474,9 @@ func _validate_decision_body(body: Dictionary) -> Array:
 		if key not in required:
 			errors.append("EXTRA_BODY_" + str(key).to_upper())
 	var intent_id := str(body.get("intent_id", ""))
+	var status := str(body.get("status", ""))
+	if status not in ["READY", "WAITING_PLAYER", "WAITING_DIALOGUE", "GOAL_REACHED", "NO_ROUTE", "FAILED", "CANCELLED"]:
+		errors.append("STATUS_INVALID")
 	if not _valid_identifier(intent_id):
 		errors.append("INTENT_ID_INVALID")
 	var plan_id_value: Variant = body.get("plan_id", null)
@@ -501,7 +504,7 @@ func _validate_decision_body(body: Dictionary) -> Array:
 		if str(typed.get("label", "")) not in ["ASK_INFORMATION", "REQUEST_DISCLOSURE", "REPORT_FACT", "REFUSE_HELP", "AMBIGUOUS", "UNKNOWN"]:
 			errors.append("TYPED_INTENT_LABEL_INVALID")
 		var target_value: Variant = typed.get("target", null)
-		if target_value != null and (not target_value is String or str(target_value).length() > 128):
+		if target_value != null and (not target_value is String or str(target_value) not in ["lens", "signal", "tide_marks"]):
 			errors.append("TYPED_INTENT_TARGET_INVALID")
 		var claims_value: Variant = typed.get("claims", [])
 		if not claims_value is Array:
@@ -561,6 +564,8 @@ func _validate_decision_body(body: Dictionary) -> Array:
 			errors.append("STEP_ARGUMENTS_INVALID")
 		if not _valid_identifier(str(step.get("action_id", ""))):
 			errors.append("STEP_ACTION_ID_INVALID")
+	if not steps.is_empty() and status in ["GOAL_REACHED", "NO_ROUTE", "FAILED", "CANCELLED"]:
+		errors.append("NON_EXECUTABLE_STATUS_WITH_STEPS")
 	return CanonicalState.sorted_unique(errors)
 
 func _valid_identifier(value: String) -> bool:

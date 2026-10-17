@@ -220,7 +220,7 @@ def _project_relative(root: Path, value: Any) -> str | None:
 
 def _path(root: Path, packet_dir: Path | None, name: str) -> Path:
     return (
-        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
     ) / name
 
 
@@ -261,6 +261,8 @@ def fixture_case(assignment: Mapping[str, Any], root: Path | None = None) -> dic
     )
     if not isinstance(source, Mapping):
         raise ProtocolError(f"fixture case missing: {assignment.get('fixture_ref')}")
+    if str(source.get("id")) != str(assignment.get("case_id")):
+        raise ValueError("assignment case_id does not match loaded fixture case id")
     case = copy.deepcopy(dict(source))
     utterance = case.pop("utterance", None)
     if not isinstance(utterance, str) or len(utterance) > 1000:
@@ -349,8 +351,17 @@ def _engine_reexecution_comparison(
     original: Mapping[str, Any], replayed: Mapping[str, Any]
 ) -> dict[str, Any]:
     def actions(report: Mapping[str, Any]) -> list[dict[str, Any]]:
-        rows = report.get("actions", report.get("rows", []))
-        return [_engine_action_signature(row) for row in rows] if isinstance(rows, list) else []
+        if "actions" in report and not isinstance(report["actions"], list):
+            raise TypeError("engine_reexecution_actions_must_be_list")
+        if "rows" in report and not isinstance(report["rows"], list):
+            raise TypeError("engine_reexecution_actions_must_be_list")
+        if "actions" in report:
+            rows = report["actions"]
+        elif "rows" in report:
+            rows = report["rows"]
+        else:
+            rows = []
+        return [_engine_action_signature(row) for row in rows]
 
     comparison = {
         "terminal_status": original.get("status", original.get("terminal_status"))
@@ -413,15 +424,33 @@ def _engine_action_rows(report: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     return [row for row in rows if isinstance(row, Mapping)] if isinstance(rows, list) else []
 
 
+def _native_final_observation(report: Mapping[str, Any]) -> Any:
+    """Return the native terminal observation, never an editable record field."""
+    final_snapshot = report.get("final_public_snapshot")
+    if isinstance(final_snapshot, Mapping) and "observation" in final_snapshot:
+        return final_snapshot.get("observation")
+    rows = _engine_action_rows(report)
+    if rows:
+        terminal = rows[-1]
+        if "observation_after" in terminal:
+            return terminal.get("observation_after")
+        if "observation" in terminal:
+            return terminal.get("observation")
+    observations = report.get("observations")
+    if isinstance(observations, list) and observations:
+        return observations[-1]
+    return None
+
+
 def _validate_action_transition(action: Mapping[str, Any], where: str, errors: list[str]) -> None:
     before = action.get("state_ref_before")
-    after = action.get("state_ref_after", action.get("state_ref"))
+    after = action.get("state_ref_after")
     before_obs = action.get("observation_before")
     after_obs = action.get("observation_after", action.get("observation"))
     operation = str(action.get("operation", ""))
     status = str(action.get("status", ""))
     if not _state_ref(before) or not _state_ref(after):
-        errors.append(f"{where}: action state refs missing or malformed")
+        errors.append(f"{where}: action state_ref_before/state_ref_after missing or malformed")
         return
     if not _observation(before_obs) or not _observation(after_obs):
         errors.append(f"{where}: action observations missing or malformed")
@@ -807,13 +836,9 @@ def _tamper_rejected_from_evidence(
         return False
     if "APPLIED" in observed_statuses or not (observed_statuses & TAMPER_REJECTION_STATUSES):
         return False
-    return not (
-        returncode == 1
-        and (
-            not (observed_codes & CANONICAL_TAMPER_CODES)
-            or not observed_codes <= (CANONICAL_TAMPER_CODES | {"ACTION_NOT_APPLIED"})
-        )
-    )
+    if not (observed_codes & CANONICAL_TAMPER_CODES):
+        return False
+    return observed_codes <= CANONICAL_TAMPER_CODES | {"ACTION_NOT_APPLIED"}
 
 
 def _core_rebased_replay_envelope(
@@ -841,14 +866,30 @@ def _core_rebased_replay_envelope(
     return expected
 
 
+def _record_has_native_action(record: Mapping[str, Any]) -> bool:
+    """Return whether a completed record contains a native executed action."""
+    engine = record.get("engine")
+    if not isinstance(engine, Mapping):
+        return False
+    experiment = engine.get("experiment")
+    if not isinstance(experiment, Mapping):
+        return False
+    trace = experiment.get("trace")
+    if not isinstance(trace, Mapping):
+        return False
+    actions = trace.get("actions")
+    return isinstance(actions, list) and bool(actions)
+
+
 def _validate_result_ack_contract(record: Mapping[str, Any], where: str, errors: list[str]) -> None:
     if record.get("status") != "completed":
         return
+    if not _record_has_native_action(record):
+        return
     results = record.get("results")
     acks = record.get("acks")
-    if not isinstance(results, list) or not isinstance(acks, list):
-        return
-    if not results:
+    if not isinstance(results, list) or not isinstance(acks, list) or not results or not acks:
+        errors.append(f"{where}: completed action result/ACK completion chain missing")
         return
     if len(acks) != len(results):
         errors.append(f"{where}: completed results/ACK count mismatch")
@@ -917,6 +958,7 @@ def _validate_engine(
         if record.get("status") == "completed":
             errors.append(f"{where}: engine report missing")
         return
+    case: Mapping[str, Any] = {}
     try:
         case = fixture_case(assignment, root)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
@@ -951,6 +993,10 @@ def _validate_engine(
     bootstrap_report = bootstrap.get("trace")
     if bootstrap.get("status") != "completed" or bootstrap.get("input_bytes_preserved") is not True:
         errors.append(f"{where}: completed record lacks completed bootstrap gate")
+    if record.get("status") == "completed" and (
+        type(bootstrap.get("returncode")) is not int or bootstrap.get("returncode") != 0
+    ):
+        errors.append(f"{where}: bootstrap returncode must be zero")
     if not isinstance(bootstrap_report, Mapping) or bootstrap_report.get("passed") is not True:
         errors.append(f"{where}: bootstrap sidecar gate failed")
     elif bootstrap_sidecar is not None and bootstrap_sidecar != bootstrap_report:
@@ -986,6 +1032,10 @@ def _validate_engine(
         or experiment.get("input_bytes_preserved") is not True
     ):
         errors.append(f"{where}: completed record lacks completed Godot experiment")
+    if record.get("status") == "completed" and (
+        type(experiment.get("returncode")) is not int or experiment.get("returncode") != 0
+    ):
+        errors.append(f"{where}: experiment returncode must be zero")
     report = experiment.get("trace")
     if not isinstance(report, Mapping) or report.get("passed") is not True:
         errors.append(f"{where}: experiment sidecar stage/hash gate failed")
@@ -1099,14 +1149,39 @@ def _validate_engine(
             and replay_sidecar != replay_report
         ):
             errors.append(f"{where}: native replay sidecar does not match embedded trace")
+    if record.get("status") == "completed" and isinstance(replay, Mapping):
+        if replay.get("status") != "completed":
+            errors.append(
+                f"{where}: native replay completion signals incomplete: status must be completed"
+            )
+        returncode = replay.get("returncode")
+        if type(returncode) is not int or returncode != 0:
+            errors.append(
+                f"{where}: native replay completion signals incomplete: "
+                "native replay completion returncode must be 0"
+            )
+        if not isinstance(replay_report, Mapping) or replay_report.get("passed") is not True:
+            errors.append(
+                f"{where}: native replay completion signals incomplete: "
+                "native replay trace.passed must be true"
+            )
+        if replay.get("input_bytes_preserved") is not True:
+            errors.append(
+                f"{where}: native replay completion signals incomplete: "
+                "input_bytes_preserved must be true"
+            )
     if not isinstance(replay_report, Mapping):
         errors.append(f"{where}: native replay sidecar report missing")
     else:
-        actual_comparison = _engine_reexecution_comparison(report, replay_report)
-        if comparison != actual_comparison:
-            errors.append(f"{where}: embedded replay comparison does not match actual sidecars")
-        if actual_comparison.get("passed") is not True:
-            errors.append(f"{where}: immutable engine fixture reexecution comparison failed")
+        try:
+            actual_comparison = _engine_reexecution_comparison(report, replay_report)
+        except (AttributeError, TypeError, ValueError) as exc:
+            errors.append(f"{where}: invalid reexecution comparison: {exc}")
+        else:
+            if comparison != actual_comparison:
+                errors.append(f"{where}: embedded replay comparison does not match actual sidecars")
+            if actual_comparison.get("passed") is not True:
+                errors.append(f"{where}: immutable engine fixture reexecution comparison failed")
     tamper = engine.get("tamper_reexecution", engine.get("tamper_replay"))
     decision_steps = (
         report.get("decision", {}).get("body", {}).get("steps", [])
@@ -1196,6 +1271,8 @@ def _validate_engine(
                 if isinstance(record.get("replay"), Mapping)
                 else None
             )
+            if record.get("status") == "completed" and actual_tamper_rejected is not True:
+                errors.append(f"{where}: completed tamper replay did not prove canonical rejection")
             if stored_tamper_rejected is not actual_tamper_rejected:
                 errors.append(
                     f"{where}: godot_tamper_rejected does not match actual tamper evidence"
@@ -1230,10 +1307,17 @@ def _replay_classes(record: Mapping[str, Any]) -> tuple[str, str]:
         if isinstance(engine.get("replay_comparison"), Mapping)
         else None
     )
-    godot_eligible = (
+    native_trace = godot.get("trace")
+    godot_completion = (
         godot.get("status") == "completed"
-        and isinstance(comparison, Mapping)
-        and comparison.get("passed") is True
+        and type(godot.get("returncode")) is int
+        and godot.get("returncode") == 0
+        and isinstance(native_trace, Mapping)
+        and native_trace.get("passed") is True
+        and godot.get("input_bytes_preserved") is True
+    )
+    godot_eligible = (
+        godot_completion and isinstance(comparison, Mapping) and comparison.get("passed") is True
     )
     godot_evidence = bool(godot) or isinstance(comparison, Mapping)
     if godot_eligible:
@@ -1460,7 +1544,7 @@ def validate_packet(
 ) -> tuple[dict[str, Any], list[str]]:
     errors: list[str] = []
     packet_dir = (
-        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
     )
     artifact_root: Path | None = None
     config_path = root / "configs/npc-goal-recovery.json"
@@ -1506,9 +1590,16 @@ def validate_packet(
         }, [error]
     manifest = read_json(manifest_path)
     source_manifest = read_json(source_manifest_path) if source_manifest_path.is_file() else {}
+    raw_test_only = (
+        source_manifest.get("test_only", False) if isinstance(source_manifest, Mapping) else False
+    )
+    test_only = raw_test_only if type(raw_test_only) is bool else False
+    if type(raw_test_only) is not bool:
+        errors.append("source manifest test_only must be a boolean")
     run_mode = source_manifest.get("run_mode") if isinstance(source_manifest, Mapping) else None
     if run_mode not in {"dry_run", "preflight", "publish"}:
         errors.append("source manifest run_mode must be dry_run, preflight, or publish")
+
     if not isinstance(manifest, Mapping):
         errors.append("manifest must be an object")
         manifest = {}
@@ -1552,8 +1643,13 @@ def validate_packet(
         fixture_ref_path = str(assignment.get("fixture_ref", "")).split("#", 1)[0]
         if _project_relative(root, fixture_ref_path) is None:
             errors.append(f"{where}: fixture_ref must be project-relative")
-        if not fixture_ref_path.startswith("data/fixtures/npc-goal-recovery/validated-v5/"):
-            errors.append(f"{where}: fixture_ref must bind validated-v5 corpus")
+        canonical_fixture_path = (
+            "data/fixtures/npc-goal-recovery/validated-v5/engineering.json"
+            if packet == "NPC-ENG1"
+            else "data/fixtures/npc-goal-recovery/validated-v5/screening.json"
+        )
+        if fixture_ref_path != canonical_fixture_path:
+            errors.append(f"{where}: fixture_ref does not bind packet canonical fixture")
         case_id = str(assignment.get("case_id", ""))
         arm = str(assignment.get("arm", ""))
         repetition = assignment.get("repetition")
@@ -1694,7 +1790,21 @@ def validate_packet(
             trace = {}
         before_obs = record.get("observation_before", record.get("observation"))
         after_obs = record.get("observation_after")
-        if after_obs is None:
+        native_final_obs = _native_final_observation(trace)
+        if record.get("status") == "completed":
+            if native_final_obs is None:
+                errors.append(f"{where}: completed record requires native final observation")
+            else:
+                if not _observation(native_final_obs):
+                    errors.append(f"{where}: native final observation is malformed")
+                if record.get("observation_after") is not None and not _semantic_equal(
+                    record.get("observation_after"), native_final_obs
+                ):
+                    errors.append(
+                        f"{where}: observation_after does not bind native final observation"
+                    )
+                after_obs = native_final_obs
+        if record.get("status") != "completed" and after_obs is None:
             final_snapshot = (
                 trace.get("final_public_snapshot")
                 if isinstance(trace.get("final_public_snapshot"), Mapping)
@@ -1721,7 +1831,10 @@ def validate_packet(
                 and record.get("goal_reached") is not None
                 and record.get("goal_reached") != after_obs.get("goal_reached")
             ):
-                errors.append(f"{where}: fabricated goal counter")
+                if native_final_obs is not None:
+                    errors.append(f"{where}: goal_reached does not bind native final observation")
+                else:
+                    errors.append(f"{where}: fabricated goal counter")
             for field in (
                 "bootstrap_input_sha256_before",
                 "bootstrap_input_sha256_after",
@@ -1851,7 +1964,7 @@ def validate_packet(
             where,
             expected_policy,
             root,
-            packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-003",
+            packet_dir or root / "research/academic-pipeline/npc-goal-recovery/verified-run-006",
             artifact_root,
         )
     _validate_publish_records(records, packet, run_mode, errors)
@@ -2026,7 +2139,7 @@ def validate_packet(
                 errors.append(f"sha256 receipt missing files: {sorted(missing_receipts)[:8]}")
             if extra_receipts:
                 errors.append(f"sha256 receipt unexpected files: {sorted(extra_receipts)[:8]}")
-    publishable = run_mode == "publish" and packet == "NPC-SCR1" and not errors
+    publishable = run_mode == "publish" and packet == "NPC-SCR1" and not test_only and not errors
     report = {
         "schema_version": PACKET_SCHEMA_VERSION,
         "core_schema_version": CORE_SCHEMA_VERSION,
@@ -2048,6 +2161,7 @@ def validate_packet(
             "source_project_config_sha256": project_digest,
             "source_schema_sha256": schema_digest,
             "policy_hash": expected_policy,
+            "test_only": test_only,
         },
         "packet_dir": str(packet_dir),
     }
@@ -2067,7 +2181,7 @@ def main() -> int:
     )
     packet_dir = (
         args.packet_dir
-        or args.root / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        or args.root / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
     )
     reports: list[dict[str, Any]] = []
     for packet in packets:

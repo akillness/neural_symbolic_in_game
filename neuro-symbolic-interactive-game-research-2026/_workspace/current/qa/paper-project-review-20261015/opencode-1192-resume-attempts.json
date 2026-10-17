@@ -1,0 +1,53 @@
+{
+  "binary": "/Users/jangyoung/.opencode/bin/opencode",
+  "version": "1.19.2",
+  "alternate_binary": "/Users/jangyoung/.nvm/versions/node/v22.19.0/bin/opencode",
+  "alternate_version": "1.1.36",
+  "attempts": [
+    {
+      "kind": "connectivity_probe",
+      "model": "opencode/big-pickle",
+      "pure": true,
+      "outcome": "failed",
+      "http_status": 403,
+      "message": "OpenCode free tier can only be used from within OpenCode",
+      "review_performed": false,
+      "wall_seconds": 3.92
+    },
+    {
+      "kind": "source_review",
+      "model": "google/antigravity-claude-sonnet-4-6",
+      "outcome": "CLI_PARSE_FAILURE",
+      "message": "--file array consumed the trailing review prompt as a filename",
+      "provider_contacted": false,
+      "review_performed": false,
+      "wall_seconds": 3.85
+    },
+    {
+      "kind": "source_review",
+      "model": "google/antigravity-claude-sonnet-4-6",
+      "outcome": "MODEL_RETIRED_AND_QUOTA_PROTECTED",
+      "messages": [
+        "Claude Sonnet 4.6 is no longer available. Please switch to Claude Sonnet 5.5.",
+        "Quota protection: All1account(s)areover90%usageforclaude;reset81h55m"
+      ],
+      "provider_reported_input_tokens": 0,
+      "review_performed": false,
+      "wall_seconds": 13.79,
+      "quota_protection_changed": false,
+      "agent_note": "plan was a subagent; CLI fell back to default primary agent"
+    },
+    {
+      "kind": "source_review",
+      "model": "google/antigravity-gemini-3.1-pro",
+      "outcome": "PRODUCT_LICENSE_FORBIDDEN",
+      "http_status": 403,
+      "code": 3501,
+      "message": "You do not have a valid license of this product. Please contact your administrator to request a license.",
+      "review_performed": false,
+      "wall_seconds": 15.94,
+      "licensing_or_credentials_changed": false
+    }
+  ],
+  "no_waiver": true
+}

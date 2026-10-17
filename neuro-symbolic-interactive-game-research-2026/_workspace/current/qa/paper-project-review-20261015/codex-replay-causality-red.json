@@ -1,0 +1,46 @@
+{
+  "status": "before-fix-RED",
+  "scope": "ReplayValidator causal replay regression tests",
+  "production_source": "src/nesy_game/npc_goal.py",
+  "production_changed": false,
+  "test_file": "tests/test_npc_goal_contract.py",
+  "test_name": "NpcGoalContractTests.test_replay_enforces_result_causality_and_single_application",
+  "command": "python -m unittest tests.test_npc_goal_contract.NpcGoalContractTests.test_replay_enforces_result_causality_and_single_application",
+  "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+  "exit_code": 1,
+  "output": "\n======================================================================\nFAIL: test_replay_enforces_result_causality_and_single_application (tests.test_npc_goal_contract.NpcGoalContractTests) (case='duplicate-applied-result')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_npc_goal_contract.py\", line 401, in test_replay_enforces_result_causality_and_single_application\n    with self.assertRaises(ProtocolError) as raised:\nAssertionError: ProtocolError not raised\n\n======================================================================\nFAIL: test_replay_enforces_result_causality_and_single_application (tests.test_npc_goal_contract.NpcGoalContractTests) (case='result-before-decision')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_npc_goal_contract.py\", line 401, in test_replay_enforces_result_causality_and_single_application\n    with self.assertRaises(ProtocolError) as raised:\nAssertionError: ProtocolError not raised\n\n======================================================================\nFAIL: test_replay_enforces_result_causality_and_single_application (tests.test_npc_goal_contract.NpcGoalContractTests) (case='decision-before-request')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_npc_goal_contract.py\", line 401, in test_replay_enforces_result_causality_and_single_application\n    with self.assertRaises(ProtocolError) as raised:\nAssertionError: ProtocolError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.019s\n\nFAILED (failures=3)\n",
+  "positive_case": {
+    "history": ["request", "decision", "result"],
+    "result_status": "APPLIED",
+    "observed": "valid replay passed before production fix",
+    "sequence": [0, 1, 2],
+    "delivery_index": [0, 1, 2],
+    "content_hashes_recomputed": true
+  },
+  "negative_cases": [
+    {
+      "case": "duplicate-applied-result",
+      "history": ["request", "decision", "APPLIED result", "duplicate APPLIED result"],
+      "expected_protocol_error": "replay_duplicate_result",
+      "observed_before_fix": "ProtocolError not raised"
+    },
+    {
+      "case": "result-before-decision",
+      "history": ["request", "APPLIED result", "decision"],
+      "expected_protocol_error": "replay_result_before_decision",
+      "observed_before_fix": "ProtocolError not raised"
+    },
+    {
+      "case": "decision-before-request",
+      "history": ["decision", "request", "APPLIED result"],
+      "expected_protocol_error": "replay_decision_before_request",
+      "observed_before_fix": "ProtocolError not raised"
+    }
+  ],
+  "fixture_invariants": {
+    "rehashed_content_sha256": true,
+    "contiguous_sequence_and_delivery_fields": true,
+    "immutable_packets_preserved": true
+  },
+  "later_green_not_claimed": true
+}

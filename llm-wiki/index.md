@@ -2,7 +2,7 @@
 
 ## Project
 
-- [[wiki/projects/trace-rpg-paper-2026]] — active SCI/SCIE-oriented paper and experimental scaffold
+- [[wiki/projects/trace-rpg-paper-2026]] — active SCI/SCIE-oriented paper; strict-admitted006 engineering/descriptive evidence, **READY_FOR_SELECTED_COMMIT**, not deployed (2026-10-17)
 
 ## Concepts
 
@@ -13,8 +13,9 @@
 
 ## Sources and reports
 
+- [[wiki/reports/2026-10-15-npc-goal-operation-implementation]] — **strict-admitted006; READY_FOR_SELECTED_COMMIT, 2026-10-17**: composed actual source/artifact reviews close with all 82 final byte identities matching; final actual guide/2-JPEG review APPROVE, 4/4. Selected-tree full CI exits 0: 333 unit tests OK plus 78 game tests and 48 subtests. Final selected006 strict validation admits 16 ENG + 72 SCR with zero missing/errors and zero replay model calls; ENG remains engineering-only, SCR bounded descriptive only. Final EN/KO PDFs are each 10 pages. The earlier 176/178, exit-1 test receipt and two lost-original unit RED receipts remain dated history; experiment packets are not corrupted by those QA losses. Commit/push, clean Godot release build, production deployment/browser verification are not done; G4/G6 remain open and efficacy/model-family verification/independent-gold/human-benefit/superiority/generalization/`C-RESULT` ceilings remain unchanged.
 - [[wiki/reports/2026-10-14-npc-goal-recovery-design]] — **독립 검토 완료된 NPC 운영 시스템 설계**: PASS_FOR_USER_REVIEW; 게임 고정 목표, 자연어 의도 해석 + 기호 재계획, 실제 Godot 이벤트 폐루프, 권한·상태 신선도·claim/fact 분리, 대조군/지표/발언 출처 동결 기준; 프로토콜·구현·새 효능 결과는 미완료
-- [[wiki/reports/2026-10-15-npc-goal-operation-implementation]] — **D-082 unpublished follow-up; publication BLOCKED**: corrected bilingual claim/authority/navigation scope; EN/KO 10-page make gate, strict NPC002 16+72 validation, 12 focused generator tests, crosswalk/project/scoped Python and final visual checks pass. Actual OpenCode source-artifact review did not execute; Jev is advisory `proposal_only`. No new commit/push/Godot release build/Vercel deploy. Prior native012/render-v3/full-CI/Web proofs remain historical evidence in the report, not rerun proof for this follow-up; no efficacy/independent-gold/human-benefit promotion.
+- [[wiki/reports/2026-10-15-npc-goal-operation-implementation]] — **historical D-082 unpublished follow-up**: corrected bilingual claim/authority/navigation scope; its EN/KO 10-page make, strict NPC002, focused tests and visual passes are dated history, not current006 release approval. Actual OpenCode review did not execute; the later user-required actual Codex review replaces that route, with current selected-commit readiness recorded above. Jev remains advisory `proposal_only`; no efficacy/independent-gold/human-benefit promotion.
   - 설명용 단일 HTML: `neuro-symbolic-interactive-game-research-2026/_workspace/current/ui/npc-operating-system-brief/index.html` — 기존/제안 구조, 단계 예시, Codex 그림 2장 내장; 새 NPC 구현·효능 결과 아님
 - [[wiki/reports/2026-10-14-paper-experiment-optimization]] — **current paper/game revision (D-075)**: bounded 2025–2026 primary-source refresh (58 records), EN/KO evidence-scoped methods paper, frozen E1 reproduction (121 = 85 + 36; 11/11 CSVs), non-pooled regime SVG, fresh r2 game crops, opt-in bounded local receipts, and explicit remaining author/submission boundaries
 - [[wiki/reports/2026-09-18-d073-detective-loop-trace-mirror-and-release]] — **current game track (D-073)**: Aside deep research ×2 filed as intake; hash-bound `EvaluationTrace` mirror + per-node commit-gate dashboard (explicit pass/fail/skipped/out-of-scope, no default state); case-file board, hint ladder, coach cards, slot-assembly deduction, paged end card, four-zone HUD; world stations/VFX/gesture clips; Higgsfield case-v1 pack + evidence-desk GLB; `SL-PLAY-EVAL-001` 52/52 core + 4/4 extension; production `dpl_BkguPJPErtawmhjxU5cvg97PBsiq`
@@ -132,3 +133,11 @@
 - [[wiki/sources/2026-09-06-003827-prompt]] - 이어서 진행해
 
 - [[wiki/queries/2026-09-06-003827-prompt]] - 이어서 진행해
+
+
+
+
+
+
+
+

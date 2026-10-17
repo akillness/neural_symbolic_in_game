@@ -13,9 +13,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
-P = Path(
-    "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026"
-)
+P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P))
 sys.path.insert(0, str(P / "src"))
 
@@ -209,6 +207,8 @@ class NpcServiceEpochContractTests(unittest.TestCase):
                         "valid": True,
                         "rows": len(snapshot["rows"]),
                         "content_hashes": [row["content_sha256"] for row in snapshot["rows"]],
+                        "intent_lineage_scope": "epoch_local_only",
+                        "cross_epoch_intent_continuity_proven": False,
                     },
                 )
         self.assertNotEqual(snapshots[0]["snapshot_id"], snapshots[1]["snapshot_id"])

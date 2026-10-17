@@ -2,7 +2,15 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 
-Current release update (D-074, 2026-09-19): game-ness and manuscript verification pass over the
+## Current source verification — 2026-10-17 (D-085)
+
+`verified-run-006` is the current strict-admitted NPC packet: genuine 512.27s collection; all 16 engineering + 72 screening assignments retained; selected-tree strict validation exits 0 with no missing rows/errors and zero replay model calls. Ten runtime source identities stayed unchanged during collection. Screening keeps 20 completed + 4 assigned failures per arm, with observed goals 4/24; engineering keeps 14 completed + 2 failures. There were 24 authenticated CLI executions, with requested/returned model IDs, provider revision/seed/tokens/cost unavailable. These are bounded engineering/descriptive records, not efficacy, independent gold, verified model-family matching, superiority, generalization, or human-benefit evidence.
+
+**READY_FOR_SELECTED_COMMIT:** composed actual Codex source/artifact reviews close with 82 exact final byte identities. The selected-tree CI passes 333 unit tests, 78 game tests and 48 subtests; final prepared-not-submitted EN/KO PDFs are each 10 pages. Current QA: `qa/paper-project-review-20261015/codex006-final-publication-gate.json`, `codex006-final-ci-corrected.json`, and `codex006-final-guide-provenance-approval-trace.json`. Selective commit/push, clean Godot release build, production deployment and real production-browser proof are still pending. Older dated “current” statements below are historical; packets 002–005/native012 do not admit current-source bytes. Two lost-original unit RED receipts remain disclosed separately from canonical experiment payloads. G4/G6 remain open.
+
+## Historical release and verification record
+
+Historical release update (D-074, 2026-09-19): game-ness and manuscript verification pass over the
 D-073 build — balance probe 5/5, headless autoplay through the slot-assembly deduction, route
 re-recording, embed browser walks; four presentation defects fixed (deduction distractors +
 seeded order, narrow choice-list dock share, ending receipt records the deduction, autopilot
@@ -260,7 +268,7 @@ Refresh rule: any lane, generator, authority boundary, entry point, Web export b
 regression command, or evidence-promotion boundary change updates this manifest and `CLAUDE.md` in
 the same change set.
 
-### Latest source-bound NPC implementation — 2026-10-15 (D-080)
+### Historical source-bound NPC implementation — 2026-10-15 (D-080)
 
 **Status:** Native012 is current and passes its real Godot–HTTP–authenticated-Codex closed loop: 1 test in 24.99s (`artifact://3299`), 17 matching before/after source hashes, UI SHA `7dc4cf7…`, Game3D file SHA `2a273cf…`, nine trace rows, four decisions, one reused intent, and three valid epoch replays. Zero calls applies to replay only. Final canonical state is revision 3 / `4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892`. The config hash `d63f5679…` is not a state hash or Git commit. No contemporaneous base-commit/dirty field is asserted for 012.
 

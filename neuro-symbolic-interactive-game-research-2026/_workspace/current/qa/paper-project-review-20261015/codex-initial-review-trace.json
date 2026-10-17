@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "Codex CLI0.163.0",
+  "verdict": "FIX",
+  "event_count": 89,
+  "thread_id": "01a1473e-2f5b-7943-80ef-7d50ee4cb251",
+  "usage": {
+    "input_tokens": 4350191,
+    "cached_input_tokens": 4154880,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 6720,
+    "reasoning_output_tokens": 1185
+  },
+  "model_revision": null,
+  "seed": null,
+  "cost": null,
+  "latency_seconds": 162.19,
+  "coverage_sources": 26,
+  "input_manifest": "codex-review-input-manifest.json",
+  "review_output": "codex-review.md",
+  "events_sha256": "d0a3ee5df7bc30a8b977ed604285a741c7d44c0642c1f6da4ddb9f51c5595439",
+  "stderr_note": "Two unrelated user skill files failed YAML parsing; separate nonfatal skill-list context warning. Review turn completed; no auth/provider failure.",
+  "publication_approved": false,
+  "independent_process_not_independent_model": true,
+  "findings": [
+    "stale NPC002 publication identity versus canonical003",
+    "replay request/decision state-reference semantic binding missing",
+    "Godot decision status/target contract incomplete"
+  ],
+  "fresh_checks": {
+    "canonical003": "PASS16+72,0errors,1.61s",
+    "historical002": "FAIL runtime-source identity; preserved, not promoted",
+    "generator_tests": "PASS12tests19.983s; wall20.35s",
+    "paper_make": "PASS6.50s; source unchanged"
+  },
+  "immutable_packet_mutation_prohibited": true
+}

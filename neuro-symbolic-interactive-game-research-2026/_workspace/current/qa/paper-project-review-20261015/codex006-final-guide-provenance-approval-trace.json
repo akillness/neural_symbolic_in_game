@@ -1,0 +1,139 @@
+{
+  "schema_version": "actual-codex-guide-provenance-final-trace/1",
+  "lane": "GuideProvenanceFinal",
+  "verdict": "APPROVE",
+  "root": "/tmp/trace-rpg-publication-projection-25394a4",
+  "input_manifest": "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/GuideProvenanceFinal/inputs.json",
+  "image_input_support": {
+    "checked_with": "codex exec --help",
+    "supported": true,
+    "advertised_option": "-i, --image <FILE>...",
+    "attached_images": [
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg"
+    ]
+  },
+  "invocation": {
+    "argv": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--sandbox",
+      "read-only",
+      "--ephemeral",
+      "--color",
+      "never",
+      "--json",
+      "-C",
+      "/tmp/trace-rpg-publication-projection-25394a4",
+      "--image",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg",
+      "--image",
+      "neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg",
+      "--output-last-message",
+      "/tmp/trace-rpg-codex006-final-lanes-jiNp1m/GuideProvenanceFinal/codex-output.txt",
+      "-"
+    ],
+    "stdin_artifact": "prompt.txt",
+    "stdout_artifact": "events.jsonl",
+    "stderr_artifact": "stderr.txt",
+    "last_message_artifact": "codex-output.txt",
+    "model_override": null,
+    "sandbox": "read-only",
+    "ignore_user_config": true,
+    "ephemeral": true,
+    "color": "never",
+    "json_events": true,
+    "exit_code": 0,
+    "thread_id": "01a14817-6622-77e0-a493-0acdf24637e7",
+    "elapsed_seconds": 47.18,
+    "user_seconds": 2.61,
+    "sys_seconds": 2.79,
+    "first_stderr_timestamp_utc": "2026-10-17T04:20:56.666903Z",
+    "usage": {
+      "input_tokens": 318070,
+      "cached_input_tokens": 250368,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2143,
+      "reasoning_output_tokens": 27
+    }
+  },
+  "coverage": {
+    "assigned_sources": 4,
+    "complete_text_semantic_reads": 2,
+    "direct_attached_image_visual_reviews": 2,
+    "identity_matches": 4,
+    "hash_only": 0,
+    "partial": 0,
+    "source_review_is_execution_proof": false
+  },
+  "identities": [
+    {
+      "path": "README.md",
+      "kind": "text",
+      "bytes": 28529,
+      "sha256": "dc9a2009878f4d04c6a33ef1aa8aec0cf73353aa976720b1eb0d66bd71cb248f",
+      "manifest_match": true,
+      "semantic_read": "complete",
+      "line_extent": "1-306"
+    },
+    {
+      "path": "README.ko.md",
+      "kind": "text",
+      "bytes": 30352,
+      "sha256": "5a1669a4dd09b5e02d854ed20733be064b3f286bc486c1eded5ca4fbc56815e2",
+      "manifest_match": true,
+      "semantic_read": "complete",
+      "line_extent": "1-307"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg",
+      "kind": "image",
+      "bytes": 540096,
+      "sha256": "34e4fe5772664abf260c91b592e7d383aa5c3d0e3f40cdc761081ce7e9d59d16",
+      "manifest_match": true,
+      "visual_review": "complete_attached_image_1"
+    },
+    {
+      "path": "neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg",
+      "kind": "image",
+      "bytes": 536296,
+      "sha256": "28dbc0a9e1de5913abfbf1e524467bce08994850bacb1e2f2357e71c5c969258",
+      "manifest_match": true,
+      "visual_review": "complete_attached_image_2"
+    }
+  ],
+  "closure": {
+    "f1_historical_provenance_disclosures": "closed",
+    "f2_ten_page_preview_consistency": "closed",
+    "d1_title_and_status": "remains_closed",
+    "current_title_consistent": true,
+    "reference_count_58_consistent": true,
+    "prepared_not_submitted_status_consistent": true,
+    "verified_run_006_consistent": true,
+    "three_public_copy_omissions_disclosed": true,
+    "two_unrecovered_original_unit_red_receipts_disclosed": true,
+    "canonical_experiment_packet_loss_asserted": false,
+    "parent_pdf_png_derivation_separated_from_direct_review": true,
+    "publication_status": "HOLD",
+    "full_ci_status": "not_run_not_assumed"
+  },
+  "findings": [],
+  "source_files_modified": false,
+  "tests_run": false,
+  "optional_wiki_report_read_by_codex": false,
+  "event_records": 20,
+  "raw_artifacts": [
+    "inputs.json",
+    "prompt.txt",
+    "events.jsonl",
+    "stderr.txt",
+    "codex-output.txt"
+  ],
+  "report_artifact": "Report.md",
+  "stderr_notes": [
+    "Two nonfatal skill frontmatter load errors were emitted before the review.",
+    "Timing was recorded by /usr/bin/time -p."
+  ],
+  "prohibited_actions_run": []
+}

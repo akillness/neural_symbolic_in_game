@@ -1,0 +1,175 @@
+{
+  "schema_version": "npc006-real-collection/1",
+  "status": "COLLECTED_INTEGRITY_PASS_VALIDATION_PENDING",
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "scripts/run_npc_goal_experiment.py",
+    "--packet",
+    "all",
+    "--output-dir",
+    "research/academic-pipeline/npc-goal-recovery/verified-run-006",
+    "--godot-binary",
+    "/opt/homebrew/bin/godot",
+    "--godot-project",
+    "game-track/godot"
+  ],
+  "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+  "exit_code": 0,
+  "elapsed_seconds": 512.27,
+  "observed_records": 88,
+  "assigned_counts": {
+    "NPC-ENG1": 16,
+    "NPC-SCR1": 72
+  },
+  "cli_exec_attempt_count": 24,
+  "receipt_payload_files": 1333,
+  "receipt_payload_integrity_errors": [],
+  "runtime_source_hashes_before": {
+    "game-track/godot/data/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+    "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "game-track/godot/scripts/game3d/game_3d.gd": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+    "game-track/godot/scripts/game3d/npc_agent_client.gd": "61d94f02c33d246d3ecc9d84efc314b3d4f0d7aa3ea5ec7f9261889fd3eb917a",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+    "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+    "scripts/run_npc_goal_experiment.py": "194115148395b4d2a27834c042a52187714f29bcd9c7b57aa14037568e5379b4",
+    "src/nesy_game/npc_goal.py": "e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983"
+  },
+  "runtime_source_hashes_after": {
+    "game-track/godot/data/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scenes/main_3d.tscn": "62d176a95fe1f876477fd9cedddb1359b455fa93c966e7ef659d3f0a12f7970b",
+    "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "game-track/godot/scripts/game3d/game_3d.gd": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+    "game-track/godot/scripts/game3d/npc_agent_client.gd": "61d94f02c33d246d3ecc9d84efc314b3d4f0d7aa3ea5ec7f9261889fd3eb917a",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+    "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+    "scripts/run_npc_goal_experiment.py": "194115148395b4d2a27834c042a52187714f29bcd9c7b57aa14037568e5379b4",
+    "src/nesy_game/npc_goal.py": "e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983"
+  },
+  "runtime_sources_unchanged": true,
+  "same_precollection_native_runtime": true,
+  "source_project_unchanged": true,
+  "source_manifest_sha256": "bee17e7a2b07d829c9c44aa0839276e614bfa52582ef7d9139b87725556aa0fc",
+  "payload_manifest_sha256": "7dc62c43783b836c2e47a5caeda9fde901027b32e68713b471f1992ef3988e33",
+  "screening_counts": {
+    "O": {
+      "assigned_failure_n": 4,
+      "completed_n": 20,
+      "failures_by_code": {
+        "result_ack_not_accepted": 4
+      },
+      "goal_reached_available": true,
+      "goal_reached_n": 4,
+      "n": 24,
+      "recovery_eligible_available": true,
+      "recovery_eligible_n": 24,
+      "recovery_unreachable_available": true,
+      "recovery_unreachable_n": 0,
+      "source_independent_n": 0,
+      "success": null,
+      "terminal_status_counts": {
+        "assigned_failure": 4,
+        "completed": 20
+      }
+    },
+    "P": {
+      "assigned_failure_n": 4,
+      "completed_n": 20,
+      "failures_by_code": {
+        "result_ack_not_accepted": 4
+      },
+      "goal_reached_available": true,
+      "goal_reached_n": 4,
+      "n": 24,
+      "recovery_eligible_available": true,
+      "recovery_eligible_n": 24,
+      "recovery_unreachable_available": true,
+      "recovery_unreachable_n": 0,
+      "source_independent_n": 0,
+      "success": null,
+      "terminal_status_counts": {
+        "assigned_failure": 4,
+        "completed": 20
+      }
+    },
+    "R": {
+      "assigned_failure_n": 4,
+      "completed_n": 20,
+      "failures_by_code": {
+        "result_ack_not_accepted": 4
+      },
+      "goal_reached_available": true,
+      "goal_reached_n": 4,
+      "n": 24,
+      "recovery_eligible_available": true,
+      "recovery_eligible_n": 24,
+      "recovery_unreachable_available": true,
+      "recovery_unreachable_n": 0,
+      "source_independent_n": 0,
+      "success": null,
+      "terminal_status_counts": {
+        "assigned_failure": 4,
+        "completed": 20
+      }
+    }
+  },
+  "engineering_counts": {
+    "O": {
+      "assigned_failure_n": 0,
+      "completed_n": 0,
+      "failures_by_code": {},
+      "goal_reached_available": false,
+      "goal_reached_n": null,
+      "n": 0,
+      "recovery_eligible_available": false,
+      "recovery_eligible_n": null,
+      "recovery_unreachable_available": false,
+      "recovery_unreachable_n": null,
+      "source_independent_n": 0,
+      "success": null,
+      "terminal_status_counts": {}
+    },
+    "P": {
+      "assigned_failure_n": 0,
+      "completed_n": 0,
+      "failures_by_code": {},
+      "goal_reached_available": false,
+      "goal_reached_n": null,
+      "n": 0,
+      "recovery_eligible_available": false,
+      "recovery_eligible_n": null,
+      "recovery_unreachable_available": false,
+      "recovery_unreachable_n": null,
+      "source_independent_n": 0,
+      "success": null,
+      "terminal_status_counts": {}
+    },
+    "R": {
+      "assigned_failure_n": 2,
+      "completed_n": 14,
+      "failures_by_code": {
+        "result_ack_not_accepted": 2
+      },
+      "goal_reached_available": true,
+      "goal_reached_n": 1,
+      "n": 16,
+      "recovery_eligible_available": true,
+      "recovery_eligible_n": 16,
+      "recovery_unreachable_available": true,
+      "recovery_unreachable_n": 0,
+      "source_independent_n": 0,
+      "success": null,
+      "terminal_status_counts": {
+        "assigned_failure": 2,
+        "completed": 14
+      }
+    }
+  },
+  "raw_stdout": "codex-npc006-collection.stdout.txt",
+  "raw_stderr": "codex-npc006-collection.stderr.txt",
+  "final_validation_status": "PENDING validator-only admission repair; no model rerun or raw packet rewrite"
+}

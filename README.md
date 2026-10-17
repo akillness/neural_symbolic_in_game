@@ -25,7 +25,7 @@
 
 ![Figure 1: the transaction pipeline — propose, parse, policy, seven checks in six families, bounded repair or unchanged fallback, commit, record, replay — with the ledger grammar band the player reads](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png)
 
-**TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World.** Manuscript submitted for anonymous review (IEEE Transactions on Games short-paper band, 6–8 pages; EN and KO manuscripts are 8 pages each and share one structure). 55 references, all re-verified for resolvability and citation-context fit.
+**TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds.** Anonymous-review draft targeting the IEEE Transactions on Games full-paper ceiling of 10 pages; the EN and KO manuscripts are 10 pages each and share one structure. The project records citation-identity, context and preprint-status checks for its 58 references; no journal submission or acceptance is claimed.
 
 **Thesis.** Fluent or schema-valid generated text does not establish that a proposed game event is executable, authorized, or consistent with canonical state. TRACE-RPG therefore treats every generated event as an untrusted transaction proposal and admits it only through a deterministic symbolic commit gate.
 
@@ -48,7 +48,7 @@ The seven checks, grouped into six state-relative families. Every failure leaves
 | Disclosure | 5 | Forbidden fact |
 | Quest | 6, 7 | Ineligible stage; stage regression |
 
-[![Contact sheet of the eight English manuscript pages](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
+[![Contact sheet of the ten English manuscript pages](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 
 ## Evidence
 
@@ -232,7 +232,7 @@ make -C paper/latex check                            # EN (pdflatex) + KO (xelat
 - `uv sync` — installs the locked Python 3.11+ environment.
 - `pytest` — parser, validator, repair, replay, integrity, and accounting contracts.
 - `validate_project.py` — repository structure, JSON schemas and the game bridge, SVG sources, source manifests, and the evidence/analysis contracts.
-- `validate_contribution_crosswalk.py` — C1–C5, the 55 references, and the four evidence lanes stay mutually consistent in both manuscripts.
+- `validate_contribution_crosswalk.py` — C1–C5, the 58 references, and the four evidence lanes stay mutually consistent in both manuscripts.
 - `validate_visual_assets.py` — every figure and table in the paper resolves to its editable source and data.
 - `validate_game_track.sh` — Godot fixtures, the 3D smoke, and the archetype balance probe.
 - `run_playable_evaluation.py` — SL-PLAY-EVAL-001 (52 checks) on a disposable copy of the project.
@@ -247,7 +247,7 @@ The current NPC integration is a fixed-goal `sealed-lighthouse-v1` controller. G
 
 The wire contract is `npc-goal-recovery/1.1.0`. P invokes the official authenticated Codex OAuth CLI adapter with no rule fallback. R is the authored rule/grammar control; O is a same-model-family, public-input-only auxiliary arm, not independent gold. The loopback service binds to `127.0.0.1:8768` and accepts exactly `http://127.0.0.1:8877` and `http://localhost:8877`; `TRACE_RPG_NPC_CAPABILITY` is transient and the capability is sent only in `X-NPC-Capability`. Episode budgets are cumulative across utterance epochs: 30,000 ms intent, 900,000 ms episode, 8 intent calls, 32 action attempts, 16 replans, 32 plan expansions, and one in-flight request. The allocation is 16 engineering R observations plus 72 screening observations (P/R/O × 2, 24 each), 88 total; arm totals are R=40, P=24, O=24. Input/output tokens, cost, and returned model revision are unavailable and remain `null`.
 
-**Validated-v5 evidence.** The corpus has 28 cases (16 engineering + 12 screening). The immutable canonical packet at `research/academic-pipeline/npc-goal-recovery/verified-run-002/` contains all 88 assigned rows and passes strict validation, including 24 observed authenticated CLI executions explicitly requesting `gpt-5.6-sol`. The returned model revision, provider seed, token accounting, and cost are unavailable. Each screening arm retains 20 completed executions and 4 assigned stale-control ACK rejections; 4/24 observed goal counts are not recovery-rate or efficacy estimates. O's same-family designation is a protocol source label, not a verified match to P. The unknown-model `verified-run-001/`, failed diagnostics, and source-bound native demonstrations remain separate, immutable evidence; none are pooled with this cohort. No efficacy, superiority, generalization, human benefit, or independent labels are claimed.
+**Validated-v5 evidence.** The corpus has 28 cases (16 engineering + 12 screening). The immutable canonical packet at `research/academic-pipeline/npc-goal-recovery/verified-run-006/` contains all 88 assigned rows and passes strict validation. 24 authenticated CLI executions: all 24 requested and returned model IDs are null, alongside provider revision, provider seed, token accounting, and cost all null. Each screening arm retains 20 completed executions and 4 assigned stale-control ACK rejections; 4/24 observed goal counts are not recovery-rate or efficacy estimates. O's same-family designation is a protocol source label, not a verified match to P. Unknown-model `verified-run-001/` with failed diagnostics, historical batch `verified-run-002/` and `verified-run-003/`, and source-bound native demonstrations remain separate, immutable evidence; none are pooled with this cohort. No efficacy, superiority, generalization, human benefit, or independent labels are claimed.
 
 From the project root, confirm OAuth and run the explicit Codex service arm (no hidden rule fallback):
 
@@ -259,7 +259,7 @@ uv run python scripts/run_npc_service.py \
   --allow-origin http://localhost:8877
 ```
 
-Canonical packets are immutable. For a new model-pinned cohort, replace `NEW-ID` below with an unused identifier; do not overwrite or pool either historical cohort. Preflight/dry-run output must also use a fresh noncanonical directory. Revalidate the saved canonical packet by passing `research/academic-pipeline/npc-goal-recovery/verified-run-002` to the validator only.
+Canonical packets are immutable. For a new model-pinned cohort, replace `NEW-ID` below with an unused identifier; do not overwrite or pool either historical cohort. Preflight/dry-run output must also use a fresh noncanonical directory. Revalidate the saved canonical packet by passing `research/academic-pipeline/npc-goal-recovery/verified-run-006` to the validator only.
 
 ```bash
 uv run python scripts/run_npc_goal_experiment.py \
@@ -288,6 +288,8 @@ The paper states these boundaries, and so does this README:
 - Engine evidence is conformance, not performance.
 - The human gates — G4 (presentation) and G6 (production) — remain open.
 
+**Provenance exceptions.** Three historical QA presentation copies intentionally omit private rig/cache payloads, so their old whole-tree manifests are not byte-complete public reconstructions. Two historical unit-test RED receipts were overwritten; their original byte identities were not recovered, and the labelled reconstruction is not original evidence. The [dated provenance disclosure](llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md#historical-unit-test-receipt-losses-and-explicit-corrections) identifies the affected receipts and separately documents the public-copy omissions. These QA exceptions must not be conflated with the retained, separately hash-verified canonical experiment packets.
+
 **AI disclosure.** Large language models assisted prose, code, and test drafting and citation checks; a hosted model produced the labelled live-screening candidates. Every reported count comes from a deterministic runner or a hash-bound receipt. UI art in the playable is curated AI-generated imagery (Higgsfield) with per-file provenance and a procedural fallback; the player rig is a curated Higgsfield GLB; Mixamo raw files are never tracked.
 
 License: to be announced.
@@ -296,9 +298,9 @@ License: to be announced.
 
 ```bibtex
 @misc{tracerpg2026,
-  title = {TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World},
+  title = {TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds},
   year  = {2026},
-  note  = {Manuscript under anonymous review},
+  note  = {Draft prepared for anonymous review; no submission or acceptance claimed},
   url   = {https://github.com/akillness/neural_symbolic_in_game}
 }
 ```

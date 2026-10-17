@@ -1,0 +1,41 @@
+{
+  "status": "before-fix-RED",
+  "scope": "ReplayValidator cross-decision action binding regression",
+  "production_source": "src/nesy_game/npc_goal.py",
+  "production_changed": false,
+  "test_file": "tests/test_npc_goal_contract.py",
+  "test_name": "NpcGoalContractTests.test_replay_mirrors_first_action_binding_across_shared_decisions",
+  "command": "python -m unittest tests.test_npc_goal_contract.NpcGoalContractTests.test_replay_mirrors_first_action_binding_across_shared_decisions",
+  "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+  "exit_code": 1,
+  "output": "F\n======================================================================\nFAIL: test_replay_mirrors_first_action_binding_across_shared_decisions (tests.test_npc_goal_contract.NpcGoalContractTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tests/test_npc_goal_contract.py\", line 481, in test_replay_mirrors_first_action_binding_across_shared_decisions\n    with self.assertRaises(ProtocolError) as raised:\nAssertionError: ProtocolError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.041s\n\nFAILED (failures=1)\n",
+  "live_controller_controls": {
+    "shared_action_id_decisions": "legal",
+    "result_for_first_bound_request_A": "ACCEPTED",
+    "result_for_later_request_B": "REJECTED",
+    "later_result_error": "result_binding_mismatch"
+  },
+  "replay_controls": {
+    "shared_decisions_without_result": "valid",
+    "result_for_first_bound_request_A": "valid",
+    "distinct_action_id_decisions_and_result_B": "valid"
+  },
+  "negative_case": {
+    "history": [
+      "request_A",
+      "decision_A(shared action_id)",
+      "observation_request_B",
+      "decision_B(shared action_id)",
+      "result_B(shared action_id, request_id B)"
+    ],
+    "expected_protocol_error": "replay_result_binding_mismatch",
+    "observed_before_fix": "ProtocolError not raised"
+  },
+  "fixture_invariants": {
+    "rehashed_content_sha256": true,
+    "contiguous_sequence_and_delivery_fields": true,
+    "shared_action_id_preserved": true,
+    "immutable_packets_preserved": true
+  },
+  "later_green_not_claimed": true
+}

@@ -25,7 +25,7 @@
 
 ![그림 1: transaction 파이프라인 — propose, parse, policy, 여섯 계열의 일곱 검사, 한도 내 repair 또는 변경 없는 fallback, commit, record, replay — 그리고 플레이어가 읽는 ledger 문법 띠](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png)
 
-**TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World.** 익명 심사를 위해 제출한 원고(IEEE Transactions on Games short-paper 밴드 6–8쪽; EN·KO 원고는 각 8쪽으로 같은 구조를 공유). 참고문헌 55건은 모두 해석 가능성과 인용 맥락 적합성을 다시 검증했다.
+**TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds.** IEEE Transactions on Games full-paper 상한 10쪽에 맞춘 익명 심사용 초안이며, EN·KO 원고는 각 10쪽으로 같은 구조를 공유한다. 참고문헌 58건의 citation identity·인용 맥락·preprint 상태 검증을 프로젝트에 기록했으며, 실제 학술지 제출이나 게재 승인을 주장하지 않는다.
 
 **논지.** 유창하거나 schema에 맞는 생성 텍스트는 제안된 게임 이벤트가 실행 가능하고, 승인되었으며, 정식 상태와 일관된다는 것을 보장하지 않는다. 그래서 TRACE-RPG는 생성된 모든 이벤트를 신뢰할 수 없는 transaction proposal로 취급하고, 결정론적 symbolic commit gate를 통해서만 받아들인다.
 
@@ -48,7 +48,7 @@
 | Disclosure | 5 | 금지된 fact |
 | Quest | 6, 7 | 자격 없는 stage; stage 후퇴 |
 
-[![한국어 원고 여덟 쪽의 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
+[![한국어 원고 열 쪽의 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
 
 ## 근거
 
@@ -232,7 +232,7 @@ make -C paper/latex check                            # EN (pdflatex) + KO (xelat
 - `uv sync` — lock된 Python 3.11+ 환경을 설치한다.
 - `pytest` — parser, validator, repair, replay, 무결성, 회계 contract.
 - `validate_project.py` — 저장소 구조, JSON 스키마와 game bridge, SVG 원본, 소스 매니페스트, 증거·분석 계약.
-- `validate_contribution_crosswalk.py` — C1–C5, 참고문헌 55건, 근거 레인 네 개가 두 원고에서 서로 일관되는지.
+- `validate_contribution_crosswalk.py` — C1–C5, 참고문헌 58건, 근거 레인 네 개가 두 원고에서 서로 일관되는지.
 - `validate_visual_assets.py` — 논문의 모든 그림과 표가 편집 가능한 원본과 데이터로 이어지는지.
 - `validate_game_track.sh` — Godot fixture, 3D 스모크, archetype balance probe.
 - `run_playable_evaluation.py` — 프로젝트의 일회용 복사본 위에서 SL-PLAY-EVAL-001(검사 52개).
@@ -247,7 +247,7 @@ make -C paper/latex check                            # EN (pdflatex) + KO (xelat
 
 wire contract는 `npc-goal-recovery/1.1.0`이다. P는 공식 인증 Codex OAuth CLI adapter를 호출하며 rule fallback은 없다. R은 작성된 rule/grammar control이고, O는 같은 model family의 public-input-only auxiliary arm이며 independent gold가 아니다. loopback service는 `127.0.0.1:8768`에 bind하고 `http://127.0.0.1:8877`, `http://localhost:8877`만 정확히 허용한다. `TRACE_RPG_NPC_CAPABILITY`는 일시적 환경값이며 capability는 `X-NPC-Capability`에만 보낸다. episode budget은 utterance epoch을 넘어 누적된다: intent 30,000 ms, episode 900,000 ms, intent call 8회, action attempt 32회, replan 16회, plan expansion 32회, in-flight 1개. 배정은 engineering R 16개 observation과 screening 72개(P/R/O × 2, 각 24개)로 총 88개이며, arm별 합계는 R=40, P=24, O=24다. input/output token, cost, 반환된 model revision은 사용할 수 없어 `null`로 유지한다.
 
-**validated-v5 근거.** corpus는 28개 case(engineering 16개 + screening 12개)다. 불변 canonical packet `research/academic-pipeline/npc-goal-recovery/verified-run-002/`에는 배정된 88행과 `gpt-5.6-sol`을 명시적으로 요청한 인증 CLI 실행 24회가 기록됐으며 strict validation을 통과했다. 반환된 model revision, provider seed, token 회계와 cost는 사용할 수 없다. screening 각 arm의 실행 완료 20개와 stale-control ACK 거부에 따른 assigned failure 4개를 모두 유지한다. 관측된 goal 4/24는 recovery rate나 efficacy 추정치가 아니다. O의 same-family 표기는 protocol source label이며 P와의 실제 일치를 검증한 것이 아니다. 모델 미식별 `verified-run-001/`, 실패한 diagnostic, source-bound native demonstration은 별도의 불변 근거이며 이 cohort와 합산하지 않는다. efficacy·superiority·generalization·human benefit·independent label을 주장하지 않는다.
+**validated-v5 근거.** corpus는 28개 case(engineering 16개 + screening 12개)다. 불변 canonical packet `research/academic-pipeline/npc-goal-recovery/verified-run-006/`에는 배정된 88행이 기록됐으며 strict validation을 통과했다. 인증 CLI 실행 24회: 요청·반환된 모든 24개 model ID는 null이며, provider revision, provider seed, token 회계, cost도 모두 null이다. screening 각 arm의 실행 완료 20개와 stale-control ACK 거부에 따른 assigned failure 4개를 모두 유지한다. 관측된 goal 4/24는 recovery rate나 efficacy 추정치가 아니다. O의 same-family 표기는 protocol source label이며 P와의 실제 일치를 검증한 것이 아니다. 모델 미식별 `verified-run-001/`, 실패한 diagnostic, source-bound native `verified-run-002/`, `verified-run-003/`은 별도의 불변 근거이며 이 cohort와 합산하지 않는다. efficacy·superiority·generalization·human benefit·independent label을 주장하지 않는다.
 
 프로젝트 루트에서 OAuth를 확인하고 rule fallback 없는 Codex service arm을 명시해 실행한다:
 
@@ -259,7 +259,7 @@ uv run python scripts/run_npc_service.py \
   --allow-origin http://localhost:8877
 ```
 
-canonical packet은 immutable하다. 새 model-pinned cohort를 실행하려면 아래 `NEW-ID`를 사용하지 않은 식별자로 바꾸며, 과거 두 cohort를 덮어쓰거나 합산하지 않는다. preflight/dry-run도 새 noncanonical directory를 사용한다. 저장된 canonical packet을 다시 검증할 때는 `research/academic-pipeline/npc-goal-recovery/verified-run-002`를 validator에만 전달한다.
+canonical packet은 immutable하다. 새 model-pinned cohort를 실행하려면 아래 `NEW-ID`를 사용하지 않은 식별자로 바꾸며, 과거 두 cohort를 덮어쓰거나 합산하지 않는다. preflight/dry-run도 새 noncanonical directory를 사용한다. 저장된 canonical packet을 다시 검증할 때는 `research/academic-pipeline/npc-goal-recovery/verified-run-006`를 validator에만 전달한다.
 
 ```bash
 uv run python scripts/run_npc_goal_experiment.py \
@@ -284,9 +284,11 @@ validator가 통과한 뒤에만 final packet 결과와 bilingual paper fragment
 - 작성된 세계 하나. 모든 fixture와 플레이어블은 frozen world state 하나를 공유한다.
 - revision이 고정되지 않은 hosted proposer 하나. 라이브 스크리닝은 pilot-only다.
 - 참가자 없음, 정서·usability 데이터 없음, 효능 주장 없음.
-- key 없는 hash는 무결성을 주지 인증을 주지 않는다.
+- 키 없는 hash는 무결성 확인에 쓰이며, 인증을 제공하지 않는다.
 - 엔진 근거는 성능이 아닌 적합성이다.
 - 사람이 판단하는 gate — G4(presentation), G6(production) — 는 아직 열려 있다.
+
+**출처 이력의 예외.** 과거 QA presentation 사본 세 개는 비공개 rig/cache payload를 의도적으로 제외하므로, 그 사본의 과거 whole-tree manifest는 바이트까지 완전한 공개 재현본이 아니다. 과거 단위 테스트 RED 영수증 두 개는 덮어써져 원본 바이트 동일성이 복구되지 않았으며, reconstruction으로 표시한 파일은 원본 근거가 아니다. [날짜가 명시된 출처 이력](llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md#historical-unit-test-receipt-losses-and-explicit-corrections)에 해당 영수증과 공개 사본의 제외 항목을 각각 기록했다. 이 QA 이력의 예외와 별도로 보존·해시 검증된 canonical 실험 packet을 혼동하지 않는다.
 
 **AI 공개.** 대규모 언어 모델이 산문·코드·테스트 초안 작성과 인용 확인을 도왔고, hosted 모델이 라벨이 붙은 라이브 스크리닝 candidate를 생성했다. 보고된 모든 count는 결정론적 runner 또는 hash로 묶인 영수증에서 나온다. 플레이어블의 UI 아트는 파일별 provenance와 절차적 fallback을 갖춘 큐레이션된 AI 생성 이미지(Higgsfield)이고, 플레이어 rig는 큐레이션된 Higgsfield GLB이며, Mixamo 원본 파일은 절대 추적하지 않는다.
 
@@ -296,9 +298,9 @@ License: to be announced.
 
 ```bibtex
 @misc{tracerpg2026,
-  title = {TRACE-RPG: A Trace-Linked Symbolic Commit Gate for Generated Events in an Interactive Game World},
+  title = {TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds},
   year  = {2026},
-  note  = {Manuscript under anonymous review},
+  note  = {Draft prepared for anonymous review; no submission or acceptance claimed},
   url   = {https://github.com/akillness/neural_symbolic_in_game}
 }
 ```

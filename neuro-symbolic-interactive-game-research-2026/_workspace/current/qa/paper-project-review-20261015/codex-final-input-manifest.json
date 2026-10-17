@@ -1,0 +1,276 @@
+{
+  "schema_version": "codex-final-source-review/1",
+  "reviewer": "Codex CLI",
+  "cli_version": "0.163.0",
+  "gate_change": {
+    "authorized_by": "user",
+    "request": "codex로 바꿔서 이어서 진행하자",
+    "replaces": "OpenCode source-artifact review",
+    "waiver": false
+  },
+  "started_at": "2026-10-17T01:01:32.717Z",
+  "scope": "Scientific code, bilingual manuscripts, current004 evidence, regression fixtures and generated provenance; not journal acceptance or deployment approval",
+  "source_bundle": {
+    "path": "/tmp/trace-rpg-codex-final-5FBMdP/source-artifacts.txt",
+    "sha256": "0c8da99ba60917dfc2c6b4d5d87f22a209753312c9a37f55f28947eb28d2b06a",
+    "bytes": 949812
+  },
+  "sources": [
+    {
+      "path": "paper/latex/en/main.tex",
+      "bytes": 41738,
+      "sha256": "81f6a504eb856f39c3316d93ab2cd45365fc5651e23e1c484ca5f875751dafcb"
+    },
+    {
+      "path": "paper/latex/ko/main.tex",
+      "bytes": 49776,
+      "sha256": "400ca5fde4364befe5c74042f46ab2fa1041cad7fba87ed2b02b4475d0eeca64"
+    },
+    {
+      "path": "paper/latex/generated/npc_results_en.tex",
+      "bytes": 2133,
+      "sha256": "c08ac293f7b2b2e98f9c6837fd3de2429d084114ff3ecadae48663dc62cbffa4"
+    },
+    {
+      "path": "paper/latex/generated/npc_results_ko.tex",
+      "bytes": 2338,
+      "sha256": "39cae23833e1a32f4a08ac0af9deb573e97d39e782a69ef2e5eb0bd98f799f12"
+    },
+    {
+      "path": "paper/latex/generated/npc_tables_en.tex",
+      "bytes": 852,
+      "sha256": "a9489eec2840f0992472dc215a3bb6f6bea1f19202146a4e016c19f57e3a49bf"
+    },
+    {
+      "path": "paper/latex/generated/npc_tables_ko.tex",
+      "bytes": 847,
+      "sha256": "cbab9bef43fff26f64dbf2e0882f44276af43d18fae088517059f98a099675f3"
+    },
+    {
+      "path": "research/academic-pipeline/contribution-evidence-matrix.csv",
+      "bytes": 5036,
+      "sha256": "a41776fefe9ff7346a03e90af57856bf6992c7c2c888f084e17b62cb6085e42f"
+    },
+    {
+      "path": "research/academic-pipeline/experiment-evidence-matrix.csv",
+      "bytes": 4580,
+      "sha256": "c79c4d41c1bea32a3e5cbd4471aa0af29310063dbb0ce62575b12362d59f3f37"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/npc-contribution-evidence-matrix.csv",
+      "bytes": 3038,
+      "sha256": "abae7c265e2fe906c522728bfa3ab93bd4dee1e239b0b916589acb9c3303af31"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/verified-run-004/validation-report.json",
+      "bytes": 2379,
+      "sha256": "2a440d2f96b1a55c0a0b3fbbb107b9b63dbf56960aa82131c024f040cef2fa56"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/verified-run-004/aggregate.json",
+      "bytes": 2550,
+      "sha256": "ac711f935c5541455d6d84df66c5afe0594e265d3b657ede265f24128ffd8693"
+    },
+    {
+      "path": "configs/npc-goal-recovery.json",
+      "bytes": 4371,
+      "sha256": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098"
+    },
+    {
+      "path": "game-track/schemas/npc-goal-recovery.schema.json",
+      "bytes": 10756,
+      "sha256": "649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"
+    },
+    {
+      "path": "src/nesy_game/npc_goal.py",
+      "bytes": 84469,
+      "sha256": "53e501fbed6fa08a1316672eed08f87906a02d84eda1c81bb4199b9e0c683800"
+    },
+    {
+      "path": "scripts/generate_npc_paper_results.py",
+      "bytes": 27123,
+      "sha256": "a43c9a20f993b9641fef78933c19a4b4010b2f93e11f7108619491d7c032ac33"
+    },
+    {
+      "path": "game-track/godot/scripts/canonical_state.gd",
+      "bytes": 1322,
+      "sha256": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58"
+    },
+    {
+      "path": "game-track/godot/scripts/game3d/npc_agent_client.gd",
+      "bytes": 33965,
+      "sha256": "61d94f02c33d246d3ecc9d84efc314b3d4f0d7aa3ea5ec7f9261889fd3eb917a"
+    },
+    {
+      "path": "_workspace/current/qa/npc-real-play-loop-v5-012/provenance.json",
+      "bytes": 11341,
+      "sha256": "10fd713a4ba9623189344e7ea1428c23813a5372a8d774b8b02017f45651ef2e"
+    },
+    {
+      "path": "_workspace/current/qa/npc-real-play-loop-v5-012/replay-evidence.json",
+      "bytes": 27035,
+      "sha256": "4991b13ffbc30c7b91387d6bcec7554cfd779ab818d27bb9735a9b658d0b8e23"
+    },
+    {
+      "path": "src/nesy_game/runtime.py",
+      "bytes": 18776,
+      "sha256": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4"
+    },
+    {
+      "path": "src/nesy_game/validator.py",
+      "bytes": 5911,
+      "sha256": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6"
+    },
+    {
+      "path": "src/nesy_game/repair.py",
+      "bytes": 6293,
+      "sha256": "2f711ee9e3f12da05680e6994d01326fc7e381d6a1880da5dbc7026ed5e362f6"
+    },
+    {
+      "path": "src/nesy_game/contracts.py",
+      "bytes": 15413,
+      "sha256": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce"
+    },
+    {
+      "path": "game-track/godot/scripts/sealed_lighthouse_machine.gd",
+      "bytes": 7231,
+      "sha256": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1"
+    },
+    {
+      "path": "scripts/run_npc_service.py",
+      "bytes": 31069,
+      "sha256": "421b475a2fd1591f74fe70f982d86cda9f0846dbcd0b71dad4312cb254907441"
+    },
+    {
+      "path": "scripts/codex_oauth_llm.py",
+      "bytes": 16830,
+      "sha256": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223"
+    },
+    {
+      "path": "scripts/validate_npc_goal_evidence.py",
+      "bytes": 93014,
+      "sha256": "21ec5410e9c77a63f7ff24871cf392443224fa0fe15d212e8a367b96b4e6febc"
+    },
+    {
+      "path": "scripts/run_npc_goal_experiment.py",
+      "bytes": 98011,
+      "sha256": "55ed019c46889fc0f9bde8d75204011341828e2f7251080456f6c0ab0bbd0133"
+    },
+    {
+      "path": "scripts/update_visual_source_manifest.py",
+      "bytes": 15220,
+      "sha256": "92edb75498c16f14fa994b5c912c5bcad487aa0db28e5b473cc6bbc13ab1d39c"
+    },
+    {
+      "path": "tests/test_npc_goal_contract.py",
+      "bytes": 20476,
+      "sha256": "8b0a186183e9b67f96e39f69cfd30939037d899897a0f5670e6c82cf8323abdc"
+    },
+    {
+      "path": "tests/test_npc_play_loop.py",
+      "bytes": 10897,
+      "sha256": "45965a220ffdfefb5b12ee17337a5a335232d14f8392a9b5e22fbeeb74d2a4a5"
+    },
+    {
+      "path": "game-track/godot/tests/npc_play_loop_harness.gd",
+      "bytes": 24272,
+      "sha256": "bf130a8a576037f7ad524a573852a6e8a298c4ae1e8d214003577374f990904b"
+    },
+    {
+      "path": "tests/test_generate_npc_paper_results_model_cohort.py",
+      "bytes": 15637,
+      "sha256": "9385bdc5c0f87aa5dc0f361b7fc63899d02c4caeb6de4ee08a6dd32c9b3498f2"
+    },
+    {
+      "path": "tests/test_npc_evidence_contract.py",
+      "bytes": 28190,
+      "sha256": "8ce074d8a065ad1c7e64f2a30eb93cbbe41ce707c95fd19290f69f860f0c116d"
+    },
+    {
+      "path": "tests/test_npc_evidence_v5.py",
+      "bytes": 37463,
+      "sha256": "392fe3700c2d4fc86fb0b2a5333f906a418e58b03ae832553998ff7194c10fe6"
+    },
+    {
+      "path": "visuals/source-manifest.json",
+      "bytes": 33386,
+      "sha256": "ff3eba627788772d9a2b4993a409e8a3d0622181575b8eb9864659620ea99043"
+    },
+    {
+      "path": "paper/latex/generated/npc_validation_reports.json",
+      "bytes": 2648,
+      "sha256": "a8130e595276de0d50f19730839247e4203622d87ebf6a07eb981cf711722615"
+    },
+    {
+      "path": "paper/latex/figures/fig_npc_screening.svg",
+      "bytes": 2636,
+      "sha256": "3ad9cf77180fba1c3d073a0ba61ff84b6910ef059efac525a9aabb4b9da306cc"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/verified-run-004/source-manifest.json",
+      "bytes": 7833,
+      "sha256": "1c99c5b549e9abbca1277166298646bc9f1b4f2e1745f1187266aaf4c511668e"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/verified-run-004/engineering-aggregate.json",
+      "bytes": 2449,
+      "sha256": "27a5271c3dc568a09f2c77e4b2b0334200cfd4f25e0c560a1e85037a6296d4d6"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/verified-run-004/screening-assignment-manifest.json",
+      "bytes": 86687,
+      "sha256": "bfeaea97629cc9ae280e2a4d2d0417cb9f36469b416017331cef11fea478a600"
+    },
+    {
+      "path": "research/academic-pipeline/npc-goal-recovery/verified-run-004/engineering-assignment-manifest.json",
+      "bytes": 20135,
+      "sha256": "b8f5779713065af9de3cce273a026880eeac8ec33af13d193a561ac2d45f471a"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-npc004-collection-trace.json",
+      "bytes": 6541,
+      "sha256": "f99c5e5f61f36f479928da0958d1f874326a83c87b8f47fa241b7e9ad3771733"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-precollection-smoke.json",
+      "bytes": 1199,
+      "sha256": "fb3495a0eeef38e35fa34cdd7d059ef48a00c5ea67bdd8195141e825212288f5"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-replay-red.json",
+      "bytes": 1869,
+      "sha256": "4ec3d81d6bab3860115e5b315b2634589283e824023da2e081a17ee79c8d77e0"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-godot-contract-red.json",
+      "bytes": 7282,
+      "sha256": "780ade7515588ccdad9145ae9b6959347a36c93f47f20525da5d93fee622a1f2"
+    },
+    {
+      "path": "_workspace/current/qa/paper-project-review-20261015/codex-review.md",
+      "bytes": 6513,
+      "sha256": "59129e35017fd381b0de7d0c3eca4dd38b12178883e535d93352a90ddeb2e41c"
+    }
+  ],
+  "prior_review": {
+    "verdict": "FIX",
+    "file": "codex-review.md",
+    "thread_id": "01a1473e-2f5b-7943-80ef-7d50ee4cb251"
+  },
+  "model_revision": null,
+  "provider_seed": null,
+  "cost": null,
+  "latency_ms": null,
+  "restrictions": {
+    "read_only": true,
+    "ignore_user_config": true,
+    "no_credentials_read": true,
+    "no_source_edits": true,
+    "no_git_build_deploy": true
+  },
+  "full_ci": {
+    "status": "RUNNING",
+    "stdout": "codex-004-full-ci.stdout.txt",
+    "stderr": "codex-004-full-ci.stderr.txt"
+  }
+}

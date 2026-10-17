@@ -1,0 +1,65 @@
+{
+  "verdict": "APPROVE",
+  "scope": "Read-only source-diff review of ReplayValidator.validate (project/src/nesy_game/npc_goal.py) and its new helpers/tests (project/tests/test_npc_goal_contract.py), with GoalController result-issuance/dedup and schema consulted only as needed. No execution performed; static trace only, cross-checked by hand against controller mechanics line-by-line. No edits made.",
+  "bound_to": {
+    "npc_goal.py_sha256": "9aa7b5e628229f13bef33f9e959d8e74f379cd0ca6df73bd81fecb74547e03f1",
+    "test_npc_goal_contract.py_sha256": "bdc458dd5ecd1fb79c2eb0af7ee8b32ef9e1a151075bbef22cf5c1e0e6017e76",
+    "note": "Reviewed through two mid-review source updates (ReplayCausalityFix landing the first-binding map, then adding the shared-duplicate-A negative) and two ruff-format passes; verified each update by diffing against my prior read before re-analyzing. Final hashes match exactly what Main cited as frozen."
+  },
+  "what_changed_in_source": {
+    "file": "src/nesy_game/npc_goal.py",
+    "anchors": [
+      "L1813-1824: request_positions / decision_positions position-maps + action_bindings: dict[str, tuple[request_id, operation, state_ref, session_epoch]] = {} added alongside existing requests/decisions dicts",
+      "L1849-1850: request_positions[id] > decision_positions[id] -> replay_decision_before_request",
+      "L1851-1852: decision['state_ref'] != request['state_ref'] -> replay_state_ref_mismatch",
+      "L1897-1906 (inside the per-step zip loop): action_bindings.setdefault(step['action_id'], (request_id, step['operation'], decision['state_ref'], decision['session_epoch']))",
+      "L1907-1908: consumed_action_ids: set[str] = set(); loop changed from 'for payload in envelopes' to 'for index, payload in enumerate(envelopes)' (index exposed, no semantic change to iteration)",
+      "L1915-1916: decision_positions[payload['request_id']] > index -> replay_result_before_decision",
+      "L1917-1924: binding = action_bindings.get(action_id); binding is None or binding[0]!=request_id or binding[1]!=operation or binding[3]!=session_epoch -> replay_result_binding_mismatch (first-claim-wins ownership check)",
+      "L1925-1931 (pre-existing, untouched): matching-step-in-this-decision check, same error string",
+      "L1932-1933: body['action_id'] in consumed_action_ids -> replay_duplicate_result, evaluated before engine_revision/transition checks",
+      "L1936ish: _result_transition_error(..., binding[2], body['state_ref']) — source_ref now taken from the binding tuple instead of decision['state_ref']",
+      "consumed_action_ids.add(action_id) only after all per-row checks pass"
+    ]
+  },
+  "what_changed_in_tests": {
+    "file": "tests/test_npc_goal_contract.py",
+    "method_count": "15 pre-existing test_* methods, all unchanged (diffed by name, zero removed/renamed) + 4 new: test_replay_accepts_matching_request_and_decision_state_ref (L319), test_replay_rejects_resigned_decision_state_ref_mismatch (L339), test_replay_enforces_result_causality_and_single_application (L386), test_replay_mirrors_first_action_binding_across_shared_decisions (L433)",
+    "new_helpers": "observation_request(), rehashed_records() [recomputes event_id/sequence/delivery_index/content_sha256 per candidate], applied_result() — each defined exactly once, no duplication"
+  },
+  "verification_against_live_controller_semantics": [
+    {
+      "claim": "decision['state_ref'] == request['state_ref'] always holds for genuine controller output, so replay_state_ref_mismatch can only fire on tampered traces, never false-positive.",
+      "evidence": "make_envelope(source,...) sets envelope['state_ref']=deepcopy(source['state_ref']); _response_source(payload,session) only swaps in session.effective_budget and otherwise copies payload (the inbound request) verbatim, so a decision's top-level state_ref is always the deep-copy of its eliciting request's state_ref. Confirmed via positive test at L319 using a real GoalController().handle_request() round-trip, and the negative test at L339 only triggers the error after independently tampering state_ref post-construction."
+    },
+    {
+      "claim": "Position-maps correctly encode request-before-decision-before-result causality matching real append order.",
+      "evidence": "_append_replay_locked(session, request, record) appends [request_row, decision_row] together for decisions (request always gets the lower index), and appends only [result_payload] for results, with issued_actions only populated during decision commit (so a result referencing an action can never be accepted before its decision commits). Since sequence/delivery_index already enforced to increase by exactly 1 per row, list index == trace position, so the >/< comparisons on request_positions/decision_positions/index are the correct causal-order check."
+    },
+    {
+      "claim": "consumed_action_ids correctly mirrors _commit_result's real dedup: at most one *accepted* 'result'-message_type row per action_id can ever exist in a genuine replay trace, regardless of status (APPLIED or any of REJECTED/STALE/DUPLICATE/CANCELLED/ERROR).",
+      "evidence": "_commit_result only calls _append_replay_locked on the terminal ACCEPTED path (L1424ish). Any resubmission for an already-accepted action_id either returns an ack(DUPLICATE) without being appended (byte-identical resubmission) or raises ProtocolError('conflicting_duplicate') with nothing appended (divergent resubmission) — L1352-1359. So two 'result' rows for the same action_id in a replay trace is impossible from the live controller; the new check (status-agnostic, keyed purely on action_id, evaluated before the status-specific transition checks) correctly generalizes beyond the APPLIED-only test fixture to this full non-APPLIED-status space."
+    },
+    {
+      "claim": "action_bindings.setdefault(...) correctly mirrors issued_actions.setdefault(...) first-claim-wins semantics, including the legitimate shared-action_id-across-decisions scenario (plan-cache reuse on repeated/observation requests with an unchanged PlanningContext digest).",
+      "evidence": "_plan() returns the cached session.plan object verbatim when context.digest is unchanged (L1450-1452), so two decisions under different request_ids can legitimately carry the identical uuid4 action_id string. The live controller's issued_actions.setdefault() then binds that action_id to the FIRST request_id only (ActionBinding built from the REQUEST payload's own state_ref/session_epoch, which by the state_ref invariant above equals that decision's own state_ref). The new replay check reproduces this exactly: action_bindings is built by iterating decisions.items() in trace order (dict comprehension over decision_records, which preserves envelope order) with .setdefault(), so the first decision in the trace wins the binding; a result attempted under the second (non-owning) request_id is rejected as replay_result_binding_mismatch, matching _commit_result's own binding.request_id != payload['request_id'] rejection (L1320-1324) for the identical scenario — the live controller never persists that rejected attempt as a 'result' row either, so this is a tamper-only rejection, not a false positive on real output."
+    },
+    {
+      "claim": "Test test_replay_mirrors_first_action_binding_across_shared_decisions genuinely exercises reachable controller behavior, not a fabricated impossible scenario.",
+      "evidence": "Traced the mechanism producing the shared action_id end-to-end: source_b is built via observation_request (event_kind='observation'), which reuses session.last_interpretation verbatim (handle_request L1238-1240) rather than re-interpreting, so its typed_intent/intent_id are byte-identical to decision_a's; combined with identical state_ref and observation, PlanningContext.build's digest (hash of {state_ref, observation, typed_intent, intent_id}) is necessarily identical for both decisions, which is exactly what makes _plan()'s cache-hit condition (session.context_digest == context.digest) true for decision_b — hence identical action_id. This is an existing, legitimate controller code path (observation-driven replan short-circuit), not something invented for the test."
+    }
+  ],
+  "prior_checks_preserved": {
+    "confirmed_by": "git diff showing only two '-' lines in the whole npc_goal.py hunk: (1) 'for payload in envelopes:' -> enumerate() wrapper, purely mechanical, same iteration order/members; (2) decision['state_ref'] -> binding[2] in the _result_transition_error call, proven value-identical to decision['state_ref'] at that call site because by that point binding[0]==payload['request_id'] has already been enforced, making 'decision' (looked up by payload['request_id']) the same object that owns the binding. No content-hash, identity, sequence, state_ref-shape, plan-semantics, or transition-error check was removed, loosened, or reordered relative to any check it previously gated.",
+    "test_side": "15/15 pre-existing test_* methods (hash/revision/plan/transition/claim-verification coverage) present unchanged by name; diff is purely additive on the test file aside from cosmetic ruff line-wrap/whitespace reflow (verified twice across two reformat passes, zero logic delta each time)."
+  },
+  "residual_static_observations_non_blocking": [
+    "'ack' message_type envelopes are accepted by validate()'s top-level enum check but are never inspected by any of the request/decision/result loops (all three explicitly skip non-matching message_type). This is a pre-existing characteristic of ReplayValidator untouched by this diff, and is not reachable from genuine controller output (the live controller never persists ack-only responses into replay_records via _append_replay_locked — only request/decision/accepted-result rows are ever written). Flagged for completeness per the 'seek any remaining straightforward causality/duplicate acceptance' instruction; it is not a counterexample against this diff's correctness and is out of this diff's scope.",
+    "Test method name 'test_replay_rejects_resigned_decision_state_ref_mismatch' (L339) is likely a typo for 'reassigned' — cosmetic only, no effect on behavior or assertions."
+  ],
+  "concrete_counterexamples_found": "None. No scenario was found where the new checks reject genuine GoalController-produced replay output, and no scenario was found where a genuine duplicate-consumed-action-result or causality-inverted trace would slip past the new checks.",
+  "acceptance_criteria_check": {
+    "no_new_authority_state_model_behavior": "Confirmed — all new state (request_positions, decision_positions, action_bindings, consumed_action_ids) is function-local to ReplayValidator.validate; GoalController itself is untouched by this diff; no model is invoked anywhere in ReplayValidator (static replay-of-recorded-trace only).",
+    "no_avoidable_refactor": "Confirmed — both non-additive lines are strictly necessary (enumerate() needed to produce the index consumed by the new position checks; binding[2] needed because _result_transition_error's source_ref must come from the actual binding owner now that ownership is no longer assumed to equal 'the decision matching this result's own request_id')."
+  }
+}

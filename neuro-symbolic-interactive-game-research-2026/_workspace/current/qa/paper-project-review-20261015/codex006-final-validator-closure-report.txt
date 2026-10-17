@@ -1,0 +1,89 @@
+APPROVE
+
+The six assigned files demonstrate source-level closure of both prior HIGH findings while preserving the required admission and publication contracts. Zero findings remain in this bounded review.
+
+Paths below are relative to `/tmp/trace-rpg-publication-projection-25394a4/neuro-symbolic-interactive-game-research-2026/`.
+
+**Source identity**
+
+The inputs manifest and prior Validator report were read completely. Byte counts and SHA-256 values were independently calculated from each current file’s complete bytes.
+
+| File | Observed bytes | Expected bytes | Observed SHA-256 | Expected SHA-256 | Match |
+|---|---:|---:|---|---|---|
+| `scripts/validate_npc_goal_evidence.py` | 98640 | 98640 | `c9c9ef221c96db41d77a9a1a02fbe5a0ad35c3d8b1c0fd28fb15de61464ac996` | `c9c9ef221c96db41d77a9a1a02fbe5a0ad35c3d8b1c0fd28fb15de61464ac996` | Yes |
+| `tests/test_npc_evidence_contract.py` | 58568 | 58568 | `946eb0b340398a92cf86171ff0479f51f8d721965248ab1ee1df34ddbdfb74c4` | `946eb0b340398a92cf86171ff0479f51f8d721965248ab1ee1df34ddbdfb74c4` | Yes |
+| `tests/test_npc_evidence_v5.py` | 38656 | 38656 | `c61c8cbc7d85b9b233dfb90f6607513526892d85a12593f5d437e2b8b452fe38` | `c61c8cbc7d85b9b233dfb90f6607513526892d85a12593f5d437e2b8b452fe38` | Yes |
+| `scripts/generate_npc_paper_results.py` | 28794 | 28794 | `a0acbd7bf9c6a9785f178b6dfcb0c2888e0c2d5ac98fe0f9c700ac48b1c7ca77` | `a0acbd7bf9c6a9785f178b6dfcb0c2888e0c2d5ac98fe0f9c700ac48b1c7ca77` | Yes |
+| `tests/test_npc_publication_boundary.py` | 6565 | 6565 | `300d18e3ebf992a90f620447543d9466f49ac5caeb49451fd275acb0beddd0a8` | `300d18e3ebf992a90f620447543d9466f49ac5caeb49451fd275acb0beddd0a8` | Yes |
+| `src/nesy_game/npc_goal.py` | 90858 | 90858 | `e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983` | `e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983` | Yes |
+
+**Complete semantic coverage**
+
+All ranges include their endpoints. Every file ends with a newline; the ranges cover its complete contents, including imports, helpers, calls, mutations, fixtures, and assertions.
+
+| File | Contiguous line ranges read | Coverage |
+|---|---|---|
+| `scripts/validate_npc_goal_evidence.py` | 1–400; 401–850; 851–1300; 1301–1750; 1751–2204 | Complete |
+| `tests/test_npc_evidence_contract.py` | 1–410; 411–820; 821–1224 | Complete |
+| `tests/test_npc_evidence_v5.py` | 1–450; 451–896 | Complete |
+| `scripts/generate_npc_paper_results.py` | 1–280; 281–548 | Complete |
+| `tests/test_npc_publication_boundary.py` | 1–175 | Complete |
+| `src/nesy_game/npc_goal.py` | 1–420; 421–840; 841–1260; 1261–1680; 1681–2100 | Complete |
+
+**Assessment conclusions**
+
+| Assessment | Source conclusion and evidence |
+|---|---|
+| Prior HIGH: consistently truncated replay with empty results/ACKs | **Closed.** `validate_npc_goal_evidence.py:869–893` identifies native action-bearing records and rejects absent, malformed, or empty completion chains. The check is invoked at line 1885 independently of replay-prefix validity. |
+| Prior HIGH: bootstrap/experiment nonzero return codes | **Closed.** Completed records require an actual integer zero at `validate_npc_goal_evidence.py:996–999` and `1035–1038`. Passing sidecars and refreshed receipts cannot override these checks. |
+| Positive completed-action validity | **Preserved.** Matching results/ACKs retain accepted-first, duplicate, identity, state, and ordering checks at `validate_npc_goal_evidence.py:894–943`. Persisted results remain bound to independently validated replay rows at `1931–1959`. Positive fixture preparation validates both packets before mutation: `test_npc_evidence_contract.py:181–222`. |
+| No-action-history validity | **Preserved.** The completion-chain requirement returns when no native action exists (`validate_npc_goal_evidence.py:884–888`). Core replay does not require every issued proposal to have a result (`npc_goal.py:1968–2036`); a valid request→decision history remains distinguishable from a completed native action. Zero-step goal/no-route plans remain supported at `npc_goal.py:758–759`, `813`, and `1949–1955`. |
+| Assigned failures and denominators | **Preserved.** Failure codes remain mandatory for assigned failures (`validate_npc_goal_evidence.py:1848–1854`). Aggregate counts include all records and independently reconstruct completed/failure counts and denominators (`2005–2074`). Replay classifications retain eligible, failed, and unavailable categories (`1294–1442`). |
+| Genuine regression reachability | **Present in source.** The new truncation regression keeps the first two replay rows, rebuilds snapshot identity and cursor, validates that prefix, updates replay records/counts/summary and record hash, then refreshes aggregate, replay report, and receipts before asserting the new diagnostic (`test_npc_evidence_contract.py:826–882`; refresh helper `224–253`). Retained prefix rows require no chain rehash because their bytes and predecessors remain unchanged. This is distinct from ACK-only removal. |
+| Return-code regressions | **Present in source.** Both bootstrap and experiment begin with completed/zero metadata, mutate only the return code to 7, refresh record and packet artifacts, and assert rejection (`test_npc_evidence_contract.py:884–909`). |
+| Independent authoritative validation | **Preserved.** Admission recomputes fixture/source bindings, replay semantics, sidecar comparisons, aggregates, and receipts (`validate_npc_goal_evidence.py:1542–2142`). Python remains non-authoritative for world writes (`npc_goal.py:1–5`). |
+| Source/publication separation | **Preserved.** Structural validity does not imply publishability (`validate_npc_goal_evidence.py:2142–2149`). The generator calls current validation for both packets, rejects TESTONLY evidence, and requires screening publication admission (`generate_npc_paper_results.py:75–92`). Boundary assertions cover these distinctions and staged-source imports (`test_npc_publication_boundary.py:56–85`, `128–171`). |
+| Completed V5 positive replay denominator fixture | **Present.** The positive `engine_fixture_reexecution` payload explicitly supplies completed status, zero return code, and `trace.passed=True` (`test_npc_evidence_v5.py:851–856`). Separate failed/unavailable cases and the six expected denominator counts remain at `863–891`. Assignment status remains `assigned_failure`, avoiding promotion through replay eligibility. |
+| Precise missing-ACK diagnostic | **Preserved without weakening negatives.** Missing ACKs expect the exact completion-chain diagnostic; a nonaccepted first ACK still expects `first result ACK must be ACCEPTED` (`test_npc_evidence_v5.py:791–806`). Request-identity rejection remains at `808–814`; canonical-code, runtime-error, applied-tamper, and changed-state negatives remain at `816–841`. |
+| Epoch-local boundary | **Preserved.** Shared values remain `epoch_local_only` and `False` (`npc_goal.py:34–35`). The positive-epoch leading adjacent observation pair is narrowly bounded at `1841–1849`; orphan and later-intent mismatches remain rejected at `1920–1935`. |
+| Generator formatting and literal tokens | **Preserved.** Both languages apply local `\small` inside `\texttt` only to the long continuity flag (`generate_npc_paper_results.py:399`, `411`). Shared values are imported and rendered at `21–24`, `332–333`; literal flag tokens remain asserted bilingually at `test_npc_publication_boundary.py:99–126`. |
+
+**Findings by severity**
+
+No Critical, High, Medium, or Low findings were identified in the assigned scope.
+
+**Uncertainty and scope**
+
+This is complete bounded **source review, not execution**. Assertions and call paths were inspected; no test pass, runtime success, rendered-output success, or raw-artifact validity is inferred. Imported runner implementations and historical fixture data were not inspected. No unassigned-source exception was used.
+
+The supplied contract facts remain accepted boundaries: Genuine006 collection used unchanged 10 runtime source-file bytes with strict passes 16+72, without raw rewriting or model reruns. Those facts were not independently revalidated here. Historical002–005 remain immutable; test helpers operate on private copies. The two corrected unitRED original-receipt losses do not make reconstructions originals and are not characterized as raw-data corruption. No efficacy, independent-gold, or cross-epoch proof is claimed.
+
+No source or existing artifact was edited. No tests, formatters, linters, builds, browsers, collection, Git commands, credential access, model calls, or historical rewrites were performed.
+
+**Review Summary**
+
+| Severity | Findings |
+|---|---:|
+| Critical | 0 |
+| High | 0 |
+| Medium | 0 |
+| Low | 0 |
+| Total | 0 |
+
+Verdict: **APPROVE — bounded six-file source-semantic admission closure.**
+
+## Actual Codex Invocation Evidence
+
+- Invocation: `codex exec --ignore-user-config --sandbox read-only --ephemeral --color never --json -C /tmp/trace-rpg-publication-projection-25394a4 --output-last-message /tmp/trace-rpg-codex006-final-lanes-jiNp1m/ValidatorClosure/codex-output.txt -`
+- Exit code: `0`
+- Thread: `01a147fd-b425-7710-9acd-2bc324592056`
+- Elapsed: `105.72s real (4.26s user, 5.51s sys); host-observed wall time 106.17s`
+- Usage: `1,762,996 input tokens; 1,607,680 cached input tokens; 0 cache-write input tokens; 4,212 output tokens; 282 reasoning output tokens`
+- Coverage: six of six assigned files received complete contiguous semantic reads; all independently computed byte counts and SHA-256 identities matched inputs.json
+- Raw events: `raw-events.jsonl` (SHA-256 `25ded3197c2c6269bc8db746fb4177641e4e6e45f240406079682d6a79f272ad`)
+- Stderr: `stderr.txt` (SHA-256 `0eb075683ef0698ff484bd1fdbfb1a156e49c19bba2dcb1f3a853c2b790b9bba`; two local skill-frontmatter diagnostics only)
+- Prompt: `prompt.txt` (SHA-256 `ec09daaa4202a97e238d6866446d8ade749696393af8360ccc45c5919801687f`)
+- Raw final review: `codex-output.txt` (SHA-256 `e225a06580aad81988d1b0865b1497e58910e4f4f1a3e696225bfb5f4747f351`; preserved unmodified)
+- Timing: `elapsed.txt` (SHA-256 `a5966630034202740e968a6a08443331104891db2262ac18aacdda8290958835`)
+
+The verdict above is the actual Codex final message. No tests, formatters, linters, project-wide commands, builds, browser work, collection, Git, credentials, additional model calls, or source edits were performed in this lane.

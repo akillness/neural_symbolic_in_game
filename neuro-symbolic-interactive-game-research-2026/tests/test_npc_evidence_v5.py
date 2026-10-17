@@ -11,15 +11,14 @@ from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 
-P = Path(
-    "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026"
-)
+P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P / "scripts"))
 
 import run_npc_goal_experiment as experiment_runner
 import validate_npc_goal_evidence as evidence_validator
 from run_npc_goal_experiment import (
     DEFAULT_BUDGET,
+    canonical_config_hash,
     execute_assignment,
     load_cases,
     make_assignments,
@@ -160,7 +159,7 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
 
     def test_cli_preflight_and_dry_run_reject_canonical_publish_directory(self) -> None:
         script = P / "scripts/run_npc_goal_experiment.py"
-        canonical = P / "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        canonical = P / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
         for flag in ("--dry-run", "--skip-model"):
             with self.subTest(flag=flag):
                 completed = subprocess.run(
@@ -273,17 +272,18 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
             for case in load_cases(V5 / "engineering.json", "NPC-ENG1", 16)
             if case["id"] == "ENG-S01"
         )
+        config_hash = canonical_config_hash(P / "configs/npc-goal-recovery.json")
         assignment = make_assignments(
             [normalized],
             packet_id="NPC-ENG1",
-            config_hash=normalized["config_hash"],
-            npc_protocol_config_sha256=normalized["config_hash"],
+            config_hash=config_hash,
+            npc_protocol_config_sha256=config_hash,
             source_schema_sha256="c" * 64,
             source_project_config_sha256="d" * 64,
             policy_hash=self._packet("engineering.json")["policy_hash"],
             budget=DEFAULT_BUDGET,
         )[0]
-        return fixture_case(assignment), assignment
+        return fixture_case(assignment, P), assignment
 
     def _tamper_trace(self, payload: dict, variant: str) -> dict | None:
         initial = payload["initial_public_snapshot"]
@@ -355,8 +355,12 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
         self, variant: str, *, returncode: int = 1, ack_variant: str | None = None
     ) -> dict:
         case, assignment = self._s01_assignment()
+        tamper_calls: list[str] = []
+        ack_calls: list[str] = []
 
         def fake_run_godot(*, mode: str, input_path: Path, **_: object) -> dict:
+            if ".tamper." in input_path.name:
+                tamper_calls.append(input_path.name)
             payload = json.loads(input_path.read_text(encoding="utf-8"))
             input_flags = {
                 "input_exists": True,
@@ -432,6 +436,7 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
                 original_handle_result = experiment_runner.GoalController.handle_result
 
                 def fake_handle_result(controller: object, envelope: dict) -> dict | None:
+                    ack_calls.append(ack_variant or "default")
                     if ack_variant == "missing":
                         return None
                     ack = original_handle_result(controller, envelope)
@@ -470,7 +475,7 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
                         fake_handle_result,
                     )
                 )
-            return execute_assignment(
+            record = execute_assignment(
                 case,
                 assignment,
                 budget=DEFAULT_BUDGET,
@@ -482,6 +487,9 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
                 godot_timeout=1,
                 skip_model=False,
             )
+        self._last_s01_tamper_calls = tamper_calls
+        self._last_s01_ack_calls = ack_calls
+        return record
 
     def test_validator_requires_tamper_clone_to_clear_controls_and_preserve_setup(self) -> None:
         state_ref = {"revision": 0, "sha256": "a" * 64}
@@ -658,7 +666,9 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
                     return_value={"passed": True},
                 ),
                 patch.object(
-                    evidence_validator, "_tamper_rejected_from_evidence", return_value=True
+                    evidence_validator,
+                    "_tamper_rejected_from_evidence",
+                    return_value=True,
                 ),
             ):
                 evidence_validator._validate_engine(
@@ -747,6 +757,7 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
     def test_exit_one_canonical_rejection_is_successful_negative_gate(self) -> None:
         record = self._execute_s01_tamper("valid")
         self.assertEqual(record["status"], "completed")
+        self.assertTrue(self._last_s01_tamper_calls)
         self.assertTrue(record["replay"]["godot_tamper_rejected"])
         self.assertNotIn(
             "tamper_replay_evidence_missing", {item["code"] for item in record["failure"]}
@@ -758,16 +769,23 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
             with self.subTest(variant=variant):
                 record = self._execute_s01_tamper(variant)
                 self.assertEqual(record["status"], "assigned_failure")
+                self.assertTrue(self._last_s01_tamper_calls)
                 self.assertFalse(record["replay"].get("godot_tamper_rejected", False))
+                self.assertIn(
+                    "tamper_replay_evidence_missing",
+                    {item["code"] for item in record["failure"]},
+                )
 
     def test_missing_first_result_ack_is_assigned_failure(self) -> None:
         record = self._execute_s01_tamper("valid", ack_variant="missing")
         self.assertEqual(record["status"], "assigned_failure")
+        self.assertEqual(self._last_s01_ack_calls, ["missing"])
         self.assertIn("result_ack_not_accepted", {item["code"] for item in record["failure"]})
 
     def test_nonaccepted_first_result_ack_is_assigned_failure(self) -> None:
         record = self._execute_s01_tamper("valid", ack_variant="nonaccepted")
         self.assertEqual(record["status"], "assigned_failure")
+        self.assertEqual(self._last_s01_ack_calls, ["nonaccepted"])
         self.assertIn("result_ack_not_accepted", {item["code"] for item in record["failure"]})
 
     def test_validator_rejects_missing_or_nonaccepted_first_ack(self) -> None:
@@ -776,16 +794,15 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
                 record = self._execute_s01_tamper("valid")
                 if variant == "missing":
                     record["acks"] = []
+                    expected_error = "completed action result/ACK completion chain missing"
                 else:
                     record["acks"][0]["body"]["status"] = "REJECTED"
+                    expected_error = "first result ACK must be ACCEPTED"
                 errors: list[str] = []
                 _validate_result_ack_contract(record, "record[0]", errors)
                 self.assertTrue(
-                    any(
-                        "ACK" in error
-                        and ("count mismatch" in error or "first result ACK" in error)
-                        for error in errors
-                    )
+                    any(expected_error in error for error in errors),
+                    errors,
                 )
 
     def test_validator_rejects_mismatched_ack_request_id(self) -> None:
@@ -829,7 +846,15 @@ class NpcValidatedV5EvidenceTests(unittest.TestCase):
                 {
                     "assignment_id": "P",
                     "status": "assigned_failure",
-                    "replay": {"python": {"valid": True, "rows": 2}},
+                    "replay": {
+                        "python": {"valid": True, "rows": 2},
+                        "engine_fixture_reexecution": {
+                            "valid": True,
+                            "status": "completed",
+                            "returncode": 0,
+                            "trace": {"passed": True},
+                        },
+                    },
                     "engine": {
                         "replay": {"available": True, "status": "completed"},
                         "replay_comparison": {"passed": True},

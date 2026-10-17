@@ -1,0 +1,85 @@
+# Guide Provenance Final — Actual Codex Semantic and Visual Closure Review
+
+**Actual Codex verdict: APPROVE**
+
+Completed one bounded, read-only review. Read `inputs.json` first, then the complete contents of both assigned guides: **2/2 full semantic coverage**. Independently computed byte counts and SHA-256 digests for all four assigned sources. Directly reviewed both attached JPEG images. Confidence exceeds 80%.
+
+## Exact identity and coverage
+
+All independently computed identities match `inputs.json` exactly. JPEG paths below are relative to `neuro-symbolic-interactive-game-research-2026/docs/readme/`.
+
+| Assigned source | Exact bytes | Independently computed SHA-256 | Manifest comparison and coverage |
+|---|---:|---|---|
+| `README.md` | 28,529 | `dc9a2009878f4d04c6a33ef1aa8aec0cf73353aa976720b1eb0d66bd71cb248f` | MATCH; complete semantic read, lines 1–306 |
+| `README.ko.md` | 30,352 | `5a1669a4dd09b5e02d854ed20733be064b3f286bc486c1eded5ca4fbc56815e2` | MATCH; complete semantic read, lines 1–307 |
+| `paper-en-pages.jpg` | 540,096 | `34e4fe5772664abf260c91b592e7d383aa5c3d0e3f40cdc761081ce7e9d59d16` | MATCH; direct attached Image 1 visual review |
+| `paper-ko-pages.jpg` | 536,296 | `28dbc0a9e1de5913abfbf1e524467bce08994850bacb1e2f2357e71c5c969258` | MATCH; direct attached Image 2 visual review |
+
+## Direct attached-image review
+
+- **Image 1 — EN:** Visibly contains ten complete page thumbnails, labelled EN 1 through EN 10, arranged in two rows of five. Page boundaries, columns, figures, tables, and reference-page progression are discernible. It is a complete ten-page overview; the stale eight-page presentation is absent.
+- **Image 2 — KO:** Visibly contains ten complete page thumbnails, labelled KO 1 through KO 10, arranged in two rows of five. All page boundaries are visible, including the shorter final reference page. It is a complete ten-page overview; the stale eight-page presentation is absent.
+
+Both are legible enough for page-count and layout overview. Dense manuscript body text is too small for comprehensive reading at contact-sheet scale; this does not impair their overview purpose.
+
+## F1/F2 and current metadata closure
+
+| Required check | Exact assigned-guide evidence | Assessment |
+|---|---|---|
+| Ten-page preview alt labels | `README.md:51`: “Contact sheet of the ten English manuscript pages”; `README.ko.md:51`: “한국어 원고 열 쪽의 contact sheet” | PASS |
+| Surrounding prose states ten pages in each language | Both guides, line 28: EN and KO manuscripts are each 10 pages / “각 10쪽” | PASS |
+| Current paper title | Both guides, lines 28 and 301: `TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds` | PASS |
+| Exactly 58 references | Both guides, lines 28 and 235 | PASS |
+| Anonymous-review draft; no submission or acceptance claimed | Both guides, line 28; both BibTeX notes at line 303: “Draft prepared for anonymous review; no submission or acceptance claimed” | PASS; prior D1 title/status repair remains closed |
+| Current `verified-run-006` | Both guides, lines 250 and 262 identify the current canonical packet and its validation-only reuse | PASS |
+| Exactly three historical QA public-copy omissions | `README.md:291`: “Three historical QA presentation copies intentionally omit private rig/cache payloads”; `README.ko.md:291`: “과거 QA presentation 사본 세 개는 비공개 rig/cache payload를 의도적으로 제외” | PASS |
+| Exactly two unrecovered original historical unit RED receipts | Both guides, line 291 disclose two overwritten historical unit-test RED receipts, unrecovered original byte identities, and reconstruction-labelled files that are not original evidence | PASS |
+| Dated provenance-report link | Both guides, line 291 link `llm-wiki/wiki/reports/2026-10-15-npc-goal-operation-implementation.md#historical-unit-test-receipt-losses-and-explicit-corrections` | PASS |
+| Canonical packets kept distinct from historical QA exceptions | Both guides, line 291 explicitly separate these exceptions from retained, separately hash-verified canonical experiment packets | PASS |
+
+**F1/F2 are closed within the assigned scope.** The historical disclosure is unambiguous, so no supplemental report sections were read. No loss, damage, or corruption of canonical experiment packets is inferred or asserted.
+
+## Direct evidence versus parent-provided derivation
+
+Direct evidence consists of the complete guide reads, independently computed identities above, and visual inspection of the two attached JPEGs.
+
+Separately, `inputs.json` supplies parent-observed derivation: Pillow RGB JPEG, quality 92, optimize, from parent-inspected 1700×936 final ten-page PNG contact sheets. It records:
+
+| Language | Parent-provided final PDF identity | Parent-provided contact-sheet SHA-256 |
+|---|---|---|
+| EN | 1,496,693 bytes; `d8bfee1dbe6dd99b64bb3ae093225da74d5701eb6f76481d0d5af4b02a043ccc` | `5a5a6e5484faa31b0811d6fa1d27492cd9d452fab253a20cd36b83fb20dc212f` |
+| KO | 1,574,444 bytes; `5aed4089bf4a02916697b07fb8a5658c7cb5f656d941c2a73bdef5e3d763bd11` | `5b2a5fa59b4f95fadf6d321fdd7db884b1d7c47e3b39799dcaa2556ab0626f90` |
+
+Each guide’s line 51 pairs its current JPEG with the corresponding language’s `paper/latex/{en,ko}/main.pdf`; lines 8–9 also link those PDF destinations. Together with the matching JPEG identities and supplied derivation, these associations truthfully bind the current previews to the manifest’s stated final PDFs. The guides do not themselves print PDF digests.
+
+**Neither PDFs nor source PNGs were opened.** Their identities and derivation remain parent-provided evidence, not independent PDF verification by this reviewer.
+
+## Findings, severity, and limitations
+
+**Material findings: none** above the required confidence threshold.
+
+Severity summary: **Critical 0 · High 0 · Medium 0 · Low 0.**
+
+This invocation inspected only `inputs.json`, the two assigned guides, and the two assigned JPEGs. No private fixture, runtime code, validators, other manifests, other project sources, or previous review report was inspected. No files were created or modified. No tests, CI, formatters, linters, builds, Git commands, deployments, credentials, or experiments were run.
+
+**Final bounded verdict: APPROVE. Publication remains HOLD until the separate full-CI gate passes; this review does not establish CI success.**
+
+## Preserved actual invocation trace
+
+The review above is preserved byte-for-byte as the Actual Codex last message in `codex-output.txt`. Before invocation, `codex exec --help` confirmed native `-i, --image <FILE>...` support. Both assigned JPEGs were attached to the initial prompt; the calling harness captured invocation telemetry independently.
+
+```text
+codex exec --ignore-user-config --sandbox read-only --ephemeral --color never --json -C /tmp/trace-rpg-publication-projection-25394a4 --image neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg --image neuro-symbolic-interactive-game-research-2026/docs/readme/paper-ko-pages.jpg --output-last-message /tmp/trace-rpg-codex006-final-lanes-jiNp1m/GuideProvenanceFinal/codex-output.txt -
+```
+
+- Exit code: `0`
+- Thread: `01a14817-6622-77e0-a493-0acdf24637e7`
+- Elapsed: `47.18 s` (`/usr/bin/time -p`; user `2.61 s`, sys `2.79 s`)
+- Usage: input `318,070`; cached input `250,368`; cache-write input `0`; output `2,143`; reasoning output `27`
+- Coverage: `2/2` complete guide semantic reads; `2/2` direct attached-image visual reviews; `4/4` exact identity matches
+- Raw artifacts: `inputs.json`, `prompt.txt`, `events.jsonl` (20 records), `stderr.txt`, `codex-output.txt`
+- Structured metadata: `trace.json`
+
+`events.jsonl` preserves the complete Actual Codex JSONL stream. `stderr.txt` preserves two nonfatal skill-frontmatter load errors and `/usr/bin/time` measurements. The optional wiki report was not read because the corrected guide language was unambiguous. No test, CI, build, Git, deployment, experiment, credential operation, broad audit, or source edit was performed.
+
+Final bounded verdict: **APPROVE**. Publication remains **HOLD** until the separate full-CI gate passes; this review does not establish CI success.

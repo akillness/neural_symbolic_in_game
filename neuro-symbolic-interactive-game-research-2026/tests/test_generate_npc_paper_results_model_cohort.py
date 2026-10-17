@@ -174,7 +174,11 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
         self.assertIn("decision에 기록된 모델 식별자: 알 수 없음 (null)", korean)
 
     def test_recorded_selector_is_not_provider_revision_and_null_revision_is_disclosed(self):
-        packet = generator._load_packet()
+        packet = self._load_packet_with_model_mutation(
+            lambda rows: self._set_model_cohort(
+                rows, requested="gpt-5.6-sol", returned="gpt-5.6-sol"
+            )
+        )
         english = generator._results(packet, korean=False)
         korean = generator._results(packet, korean=True)
 
@@ -248,7 +252,7 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
     def test_generated_validation_reports_use_project_relative_packet_dir_and_preserve_outcomes(
         self,
     ):
-        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-006"
         expected_outcomes = {
             "NPC-ENG1": {"valid": True, "publishable": False, "errors": []},
             "NPC-SCR1": {"valid": True, "publishable": True, "errors": []},
@@ -285,7 +289,7 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
                 )
 
     def test_portable_report_only_normalizes_exact_packet_and_preserves_payload(self):
-        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-003"
+        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-006"
         source_report = generator._load_packet()["validation_reports"]["NPC-SCR1"]
         same_basename_elsewhere = ROOT / "tests" / "not-the-npc-packet" / generator.PACKET.name
         cases = {

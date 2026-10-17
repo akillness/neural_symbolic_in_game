@@ -31,6 +31,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = PROJECT_ROOT / "game-track" / "schemas" / "npc-goal-recovery.schema.json"
 CONFIG_PATH = PROJECT_ROOT / "configs" / "npc-goal-recovery.json"
 SCHEMA_VERSION = "npc-goal-recovery/1.1.0"
+REPLAY_INTENT_LINEAGE_SCOPE = "epoch_local_only"
+REPLAY_CROSS_EPOCH_INTENT_CONTINUITY_PROVEN = False
 SCENARIO_ID = "sealed-lighthouse-v1"
 NPC_ID = "captain_mira"
 GOAL_ID = "harbor-signal-restored-authorized-tide-lead-v1"
@@ -1696,6 +1698,8 @@ class ReplayValidator:
         *,
         expected_session_id: str | None = None,
     ) -> dict[str, Any]:
+        snapshot_identity: tuple[str, int] | None = None
+        snapshot_epoch: int | None = None
         if isinstance(records, Mapping):
             snapshot = dict(records)
             rows = snapshot.get("rows")
@@ -1710,6 +1714,8 @@ class ReplayValidator:
                 or not isinstance(cursor, Mapping)
             ):
                 raise ProtocolError("replay_snapshot_identity_mismatch")
+            snapshot_identity = (session_id, session_epoch)
+            snapshot_epoch = session_epoch
             if expected_session_id is not None and session_id != expected_session_id:
                 raise ProtocolError("replay_session_mismatch")
             if any(not isinstance(row, Mapping) for row in rows):
@@ -1766,6 +1772,11 @@ class ReplayValidator:
             ReplayValidator._restore_replay_markers(candidate)
             candidate["content_sha256"] = content_hash(candidate)
             payload = validate_envelope(candidate)
+            if snapshot_identity is not None and (
+                payload["session_id"] != snapshot_identity[0]
+                or payload["session_epoch"] != snapshot_identity[1]
+            ):
+                raise ProtocolError("replay_snapshot_row_identity_mismatch")
             if not envelopes and (payload["sequence"] != 0 or payload["delivery_index"] != 0):
                 raise ProtocolError("replay_order_violation")
             if expected_session_id is not None and payload["session_id"] != expected_session_id:
@@ -1785,7 +1796,13 @@ class ReplayValidator:
             envelopes.append(payload)
             hashes.append(payload["content_sha256"])
         if not envelopes:
-            return {"valid": True, "rows": 0, "content_hashes": []}
+            return {
+                "valid": True,
+                "rows": 0,
+                "content_hashes": [],
+                "intent_lineage_scope": "epoch_local_only",
+                "cross_epoch_intent_continuity_proven": False,
+            }
         identity_keys = (
             "session_id",
             "session_epoch",
@@ -1811,6 +1828,40 @@ class ReplayValidator:
             raise ProtocolError("replay_duplicate_decision")
         requests = {payload["request_id"]: payload for payload in request_records}
         decisions = {payload["request_id"]: payload for payload in decision_records}
+        request_positions = {
+            payload["request_id"]: index
+            for index, payload in enumerate(envelopes)
+            if payload["message_type"] == "request"
+        }
+        decision_positions = {
+            payload["request_id"]: index
+            for index, payload in enumerate(envelopes)
+            if payload["message_type"] == "decision"
+        }
+        leading_observation_pair = (
+            snapshot_epoch is not None
+            and snapshot_epoch > 0
+            and len(envelopes) >= 2
+            and envelopes[0]["message_type"] == "request"
+            and envelopes[0]["body"]["event_kind"] == "observation"
+            and envelopes[1]["message_type"] == "decision"
+            and envelopes[1]["request_id"] == envelopes[0]["request_id"]
+        )
+        missing_request_ids = set(requests) - set(decisions)
+        for request_id in missing_request_ids:
+            request = requests[request_id]
+            if request["body"]["event_kind"] != "observation":
+                continue
+            prior_decision_ids = [
+                prior_id
+                for prior_id in decisions
+                if decision_positions[prior_id] < request_positions[request_id]
+            ]
+            if not prior_decision_ids and not (
+                leading_observation_pair and request_positions[request_id] == 0
+            ):
+                raise ProtocolError("replay_observation_without_prior_intent")
+        action_bindings: dict[str, tuple[str, str, Mapping[str, Any], int]] = {}
         for request in request_records:
             request_body = request["body"]
             request_raw_digest = original_request_raw_digests.get(
@@ -1831,10 +1882,15 @@ class ReplayValidator:
                     raise ProtocolError("replay_raw_utterance_hash_mismatch")
             elif request_raw_digest is not None:
                 raise ProtocolError("observation_raw_utterance_hash_forbidden")
+        decision_intents: dict[str, tuple[str, str, tuple[str, ...], str | None]] = {}
         for request_id, decision in decisions.items():
             request = requests.get(request_id)
             if request is None:
                 raise ProtocolError("replay_decision_without_request")
+            if request_positions[request_id] > decision_positions[request_id]:
+                raise ProtocolError("replay_decision_before_request")
+            if decision["state_ref"] != request["state_ref"]:
+                raise ProtocolError("replay_state_ref_mismatch")
             if request["body"]["event_kind"] == "utterance":
                 request_raw_digest = original_request_raw_digests.get(
                     request_id, request["provenance"]["raw_utterance_sha256"]
@@ -1848,8 +1904,11 @@ class ReplayValidator:
                 if decision_raw_digest != expected_raw_digest:
                     raise ProtocolError("replay_raw_utterance_hash_mismatch")
             body = decision["body"]
+            event_kind = request["body"]["event_kind"]
             typed = body["typed_intent"]
             _validate_typed_intent(typed, allow_verified_states=True)
+            claim_codes = tuple(claim["code"] for claim in typed["claims"])
+            current_intent = (body["intent_id"], typed["label"], claim_codes, typed["target"])
             observation = validate_observation(request["body"]["observation"])
             raw_typed = {
                 "label": typed["label"],
@@ -1858,6 +1917,22 @@ class ReplayValidator:
             }
             if verify_claims(raw_typed, observation) != typed:
                 raise ProtocolError("replay_claim_verification_mismatch")
+            if event_kind == "observation":
+                prior_decision_ids = [
+                    prior_id
+                    for prior_id in decisions
+                    if decision_positions[prior_id] < request_positions[request_id]
+                ]
+                if not prior_decision_ids:
+                    if not leading_observation_pair or request_positions[request_id] != 0:
+                        raise ProtocolError("replay_observation_without_prior_intent")
+                else:
+                    prior_id = max(prior_decision_ids, key=decision_positions.__getitem__)
+                    prior_intent = decision_intents.get(prior_id)
+                    if prior_intent is None:
+                        raise ProtocolError("replay_observation_without_prior_intent")
+                    if current_intent != prior_intent:
+                        raise ProtocolError("replay_observation_intent_mismatch")
             interpretation = Interpretation(
                 body["intent_id"],
                 typed,
@@ -1880,13 +1955,48 @@ class ReplayValidator:
                 raise ProtocolError("replay_plan_semantics_mismatch")
             for step, expected in zip(body["steps"], expected_steps):
                 ReplayValidator._validate_replay_step(step, expected)
-        for payload in envelopes:
+                action_bindings.setdefault(
+                    step["action_id"],
+                    (
+                        request_id,
+                        step["operation"],
+                        decision["state_ref"],
+                        decision["session_epoch"],
+                    ),
+                )
+            decision_intents[request_id] = current_intent
+        consumed_action_ids: set[str] = set()
+        latest_state_ref: Mapping[str, Any] | None = None
+        for index, payload in enumerate(envelopes):
+            if payload["message_type"] in {"request", "decision"}:
+                state_ref = payload["state_ref"]
+                if latest_state_ref is not None and (
+                    state_ref["revision"] < latest_state_ref["revision"]
+                    or (
+                        state_ref["revision"] == latest_state_ref["revision"]
+                        and state_ref["sha256"] != latest_state_ref["sha256"]
+                    )
+                ):
+                    raise ProtocolError("replay_state_revision_regression")
+                if payload["message_type"] == "decision":
+                    latest_state_ref = state_ref
+                continue
             if payload["message_type"] != "result":
                 continue
             body = payload["body"]
             decision = decisions.get(payload["request_id"])
             if decision is None:
                 raise ProtocolError("replay_result_without_decision")
+            if decision_positions[payload["request_id"]] > index:
+                raise ProtocolError("replay_result_before_decision")
+            binding = action_bindings.get(body["action_id"])
+            if (
+                binding is None
+                or binding[0] != payload["request_id"]
+                or binding[1] != body["operation"]
+                or binding[3] != payload["session_epoch"]
+            ):
+                raise ProtocolError("replay_result_binding_mismatch")
             matching = [
                 step for step in decision["body"]["steps"] if step["action_id"] == body["action_id"]
             ]
@@ -1894,16 +2004,36 @@ class ReplayValidator:
                 raise ProtocolError("replay_result_contradiction")
             if len(matching) != 1 or matching[0]["operation"] != body["operation"]:
                 raise ProtocolError("replay_result_binding_mismatch")
+            if body["action_id"] in consumed_action_ids:
+                raise ProtocolError("replay_duplicate_result")
             if body["engine_revision"] != body["state_ref"]["revision"]:
                 raise ProtocolError("replay_result_contradiction")
             transition_error = _result_transition_error(
-                body["operation"], body["status"], decision["state_ref"], body["state_ref"]
+                body["operation"], body["status"], binding[2], body["state_ref"]
             )
             if transition_error == "stale_result":
                 raise ProtocolError("replay_stale_result")
             if transition_error is not None:
                 raise ProtocolError("replay_result_transition_mismatch")
-        return {"valid": True, "rows": len(envelopes), "content_hashes": hashes}
+            if latest_state_ref is not None:
+                if body["state_ref"]["revision"] < latest_state_ref["revision"] or (
+                    body["state_ref"]["revision"] == latest_state_ref["revision"]
+                    and body["state_ref"]["sha256"] != latest_state_ref["sha256"]
+                ):
+                    raise ProtocolError("replay_state_revision_regression")
+                if latest_state_ref != binding[2]:
+                    raise ProtocolError("replay_result_binding_mismatch")
+            latest_state_ref = body["state_ref"]
+            consumed_action_ids.add(body["action_id"])
+        if missing_request_ids:
+            raise ProtocolError("replay_request_without_decision")
+        return {
+            "valid": True,
+            "rows": len(envelopes),
+            "content_hashes": hashes,
+            "intent_lineage_scope": REPLAY_INTENT_LINEAGE_SCOPE,
+            "cross_epoch_intent_continuity_proven": REPLAY_CROSS_EPOCH_INTENT_CONTINUITY_PROVEN,
+        }
 
 
 def default_envelope(
