@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "codex",
+    "exec",
+    "--sandbox",
+    "workspace-write",
+    "resume",
+    "--ignore-user-config",
+    "--model",
+    "gpt-6.1-sol",
+    "--json",
+    "--output-last-message",
+    "<MEASURED_CASE>/repair-005-final.txt",
+    "01a1687c-c5a3-7a83-ab6b-262877f61c90",
+    "Continue the SAME frozen ontology-map-20261023-01 case. Final real-game acceptance now passes denial/fresh/redisplay and1440/390no-document-overflow, but actual screenshot reveals severe INTERNAL table text clipping at390. Independent Tester reproduced RED2fail/35pass in tests/test_ontology_evidence_map.py with stronger realgeometry assertions: wrapper width318 atx36..354, ontologytable inherits global .tbl min-width660 atx36..696, cells658px andparagraph646px extend beyond visible wrapper. Root cause .tbl min-width:660px in existing CSS line213 and .ontology-table lacks scoped min-width reset, despite mobile block layout. Fix ONLY permitted dashboard CSS, minimally resetting the ontology table min-width so its existing mobile reflow/wrapping uses availablewidth. Do NOT alter global tables, font sizes, hide/clamp content, change sourceJSON/JS/Godot/hardwriter, tests, frozencontract or packet. Preserve desktopsemantic table, bilingual fields/aliases, no authoritychanges. Updated independent tests are copied into this same selected checkout. No git, installs, tests authored, formatter, linter, projectwide suites or further agents. Existing successful first5CLIinvocations plus allfailures remain within n=1 case. Report exactfilechange andunverifiedchecks."
+  ],
+  "cwd": "<SELECTED_PROJECT>",
+  "started_at": "2026-10-23T12:55:10.655Z",
+  "finished_at": "2026-10-23T12:55:27.426Z",
+  "elapsed_seconds": 16.770218915999866,
+  "exit_code": 0,
+  "timed_out": false,
+  "stdout_file": "native-attempt-006.stdout",
+  "stderr_file": "native-attempt-006.stderr",
+  "stdout_sha256": "93a6070aed0805c956524b853670c53ffe367f3456ffb103ec05e6617b93dbff",
+  "stderr_sha256": "e3ada4c503920edb37968164d80eeecac95693bfb89a549af24a45cb41626d00",
+  "publication_materialization": {
+    "raw_receipt_sha256": "52cf85a6b54c3fa9f445ed6e914558024fbff0182c1b5f6fc2ccf5d5fce31f27",
+    "raw_stdout_sha256": "5cff326cfb4a4055568058a4e047cb3a56792beff2e13ba1324cb1a0a138151e",
+    "raw_stderr_sha256": "75905daa0ac1434272c05656ddee8ba282b50f7dc89fa954e9b163d0c86af006",
+    "not_byte_equivalent": true
+  }
+}

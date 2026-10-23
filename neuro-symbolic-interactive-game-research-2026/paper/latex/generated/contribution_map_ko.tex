@@ -3,11 +3,12 @@
 \caption{기여, 선행 주제, 근거 레인, 추론 상한(구조화 매트릭스에서 생성)}
 \label{tab:contribution-map}
 \centering\scriptsize
-\setlength{\tabcolsep}{2.6pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.2\columnwidth}l>{\raggedright\arraybackslash}p{0.24\columnwidth}@{}}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+
+\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.18\columnwidth}l>{\raggedright\arraybackslash}p{0.24\columnwidth}@{}}
 \toprule
-ID & 기여 & 선행 주제 (참고문헌 수) & 레인 & 추론 상한 \\
+\textbf{ID} & \textbf{기여} & \textbf{선행 주제 (참고문헌 수)} & \textbf{레인} & \textbf{추론 상한} \\
 \midrule
 C1 & 신뢰경계 contract & T1, T2, T3 (17) & E1, ENG1 & 인코딩 필드 계약 적합성 \\
 C2 & validate--repair--commit controller & T1, T8 (14) & E1, ENG1 & 동결 사례의 메커니즘 동작 \\
@@ -16,5 +17,5 @@ C4 & assignment-complete harness & T1, T4, T6, T7 (20) & E1 & 설계 사례 정�
 C5 & 반례 유도 연산자 $\rho$ & T1, T8, T9 (8) & E1, E2 & 동결 class + 단일 regime screen \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize T1 = 근거 게임 세계; T2 = 검색·메모리 에이전트; T3 = 구조 생성; T4 = 환경·벤치마크; T5 = 플레이어 경험; T6 = 인간·LLM 평가; T7 = 통계·재현성; T8 = 계획·런타임 개입; T9 = 피드백 수리. 레인은 표~\ref{tab:evidence-lanes}에 정의한다. 모든 행은 구현·작성 fixture 검증 상태이며 어떤 효능 claim도 지지하지 않는다.}
+\par\vspace{3pt}\noindent\parbox{0.96\columnwidth}{\scriptsize T1 = 근거 게임 세계; T2 = 검색·메모리 에이전트; T3 = 구조 생성; T4 = 환경·벤치마크; T5 = 플레이어 경험; T6 = 인간·LLM 평가; T7 = 통계·재현성; T8 = 계획·런타임 개입; T9 = 피드백 수리. 레인은 표~\ref{tab:evidence-lanes}에 정의한다. 모든 행은 구현·작성 fixture 검증 상태이며 어떤 효능 claim도 지지하지 않는다.}
 \end{table}

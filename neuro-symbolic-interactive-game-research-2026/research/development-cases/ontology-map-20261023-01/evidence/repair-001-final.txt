@@ -1,0 +1,5 @@
+Repair blocked by the active read-only filesystem policy; no files changed.
+
+Confirmed cause: `dashboard.js` renders raw `role.identifiers`, bilingual declaration content and rule meanings into page text. These need neutral aliases and identifier/path redaction at the rendering boundary, preserving `ontology-map.json` unchanged.
+
+Unverified: repair, failing privacy check, browser behavior and build. No tests were run.

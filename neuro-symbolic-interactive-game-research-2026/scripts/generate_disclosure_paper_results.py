@@ -480,8 +480,15 @@ def _contract_table(data: dict[str, Any], korean: bool) -> str:
         if korean
         else r"Frozen reveal\_hint contract structure, content, rule IDs, and result provenance."
     )
-    header = "Field / 항목 & Value / 값" if korean else "Field & Value"
-    body = "\n".join(f"{_latex(key)} & {_latex(value)} " + r"\\" for key, value in rows)
+    header = (
+        r"\textbf{Field / 항목} & \textbf{Value / 값}"
+        if korean
+        else r"\textbf{Field} & \textbf{Value}"
+    )
+    body = "\n".join(
+        _latex(key) + " & " + _latex(value).replace(r"\_", r"\_\allowbreak{}") + r" \\"
+        for key, value in rows
+    )
     note = (
         "기대값은 gate 출력에서 유도하지 않았고, 표의 분모는 동결 선언에서 읽었다."
         if korean
@@ -491,15 +498,16 @@ def _contract_table(data: dict[str, Any], korean: bool) -> str:
 \caption{{{caption}}}
 \label{{tab:disclosure-contract}}
 \centering\scriptsize
-\renewcommand{{\arraystretch}}{{1.12}}
-\begin{{tabularx}}{{\columnwidth}}{{@{{}}l >{{\raggedright\arraybackslash}}X@{{}}}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
+\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}p{{0.32\columnwidth}} >{{\raggedright\arraybackslash}}X@{{}}}}
 \toprule
 {header} \\
 \midrule
 {body}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.97\columnwidth}}{{\scriptsize {_latex(note)}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.97\columnwidth}}{{\scriptsize {_latex(note)}}}
 \end{{table}}
 """
 
@@ -513,7 +521,7 @@ def _arms_table(data: dict[str, Any], korean: bool) -> str:
         else "Raw-trace observations for the three disclosure arms with separate normal, boundary, and malformed denominators."
     )
     header = (
-        "Arm & n (N/B/M) & Allow/Deny & Semantic mismatch & State/Display fail & Replay fail & Unique unsafe "
+        r"\textbf{Arm} & $\boldsymbol{n}$ \textbf{(N/B/M)} & \textbf{Allow/Deny} & \textbf{Semantic mismatch} & \textbf{State/Display fail} & \textbf{Replay fail} & \textbf{Unique unsafe} "
         + r"\\"
     )
     rows = []
@@ -534,8 +542,8 @@ def _arms_table(data: dict[str, Any], korean: bool) -> str:
 \caption{{{caption}}}
 \label{{tab:disclosure-arms}}
 \centering\scriptsize
-\setlength{{\tabcolsep}}{{2.3pt}}
-\renewcommand{{\arraystretch}}{{1.12}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
 \begin{{tabularx}}{{\textwidth}}{{@{{}}l r r >{{\raggedleft\arraybackslash}}X >{{\raggedleft\arraybackslash}}X r r@{{}}}}
 \toprule
 {header}
@@ -543,7 +551,7 @@ def _arms_table(data: dict[str, Any], korean: bool) -> str:
 {chr(10).join(rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.97\textwidth}}{{\scriptsize {_latex(note)}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.97\textwidth}}{{\scriptsize {_latex(note)}}}
 \end{{table*}}
 """
 
@@ -555,13 +563,18 @@ def _fixtures_table(data: dict[str, Any], korean: bool) -> str:
         if korean
         else "Rule-change fixture traceability and edit scope for paired cases; the shipped scenario is not modified."
     )
-    header = "Fixture & Mutation & Paired cases & Changed paths & Missed cases & Match " + r"\\"
+    header = (
+        r"\textbf{Fixture} & \textbf{Mutation} & \textbf{Paired cases} & \textbf{Changed paths} & \textbf{Missed cases} & \textbf{Match} "
+        + r"\\"
+    )
     rows = []
     for fixture in fixtures:
         mutation = fixture["mutation"]
-        mutation_label = _latex(
-            f"{mutation.get('path')} {mutation.get('from')}→{mutation.get('to')}"
-        ).replace(r"\_", r"\_\allowbreak{}")
+        mutation_label = (
+            _latex(f"{mutation.get('path')} {mutation.get('from')}→{mutation.get('to')}")
+            .replace(r"\_", r"\_\allowbreak{}")
+            .replace("→", r"$\to$")
+        )
         changed_paths = (
             _latex(", ".join(fixture.get("observed_changed_paths", [])))
             .replace(r"\_", r"\_\allowbreak{}")
@@ -583,23 +596,23 @@ def _fixtures_table(data: dict[str, Any], korean: bool) -> str:
 \caption{{{caption}}}
 \label{{tab:disclosure-fixtures}}
 \centering\scriptsize
-\setlength{{\tabcolsep}}{{2.1pt}}
-\renewcommand{{\arraystretch}}{{1.12}}
-\begin{{tabularx}}{{\textwidth}}{{@{{}}l >{{\raggedright\arraybackslash}}X >{{\raggedright\arraybackslash}}X >{{\raggedright\arraybackslash}}X >{{\raggedright\arraybackslash}}X r@{{}}}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
+\begin{{tabularx}}{{\textwidth}}{{@{{}}>{{\raggedright\arraybackslash}}p{{0.19\textwidth}} >{{\raggedright\arraybackslash}}X >{{\raggedright\arraybackslash}}p{{0.11\textwidth}} >{{\raggedright\arraybackslash}}X >{{\raggedright\arraybackslash}}p{{0.10\textwidth}} r@{{}}}}
 \toprule
 {header}
 \midrule
 {chr(10).join(rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.97\textwidth}}{{\scriptsize {_latex(note)}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.97\textwidth}}{{\scriptsize {_latex(note)}}}
 \end{{table*}}
 """
 
 
 def _svg(data: dict[str, Any]) -> str:
     cells = _signal_cells(data["rows"])
-    width, height = 480, 1008
+    width, height = 600, 1220
     arm_labels = {"unchecked_isolated": "U", "general_rule": "G", "ontology_gate": "O"}
     strata_labels = {
         "normal": ("N", "normal"),
@@ -613,22 +626,23 @@ def _svg(data: dict[str, Any]) -> str:
         '<desc id="svg-desc">Source: disclosure-trace.jsonl. Arms: U=unchecked_isolated, G=general_rule, O=ontology_gate. E/R count expected-match/replay cases. C counts PASS/FAIL check records; NR counts cases with no reported checks (unreported_cases), not skipped checks. Each cell retains its own case denominator. These are engineering observations, not model latent state or efficacy measures.</desc>',
         "<style>text{font-family:Helvetica,Arial,sans-serif;fill:#202124}.title{font-size:32px;font-weight:700}.arm{font-size:32px;font-weight:700}.head{font-size:28px}.cell{font-size:28px}.small{font-size:28px;fill:#45494E}.border{stroke:#AAB0B6;stroke-width:1;fill:none}</style>",
         '<rect width="100%" height="100%" fill="white"/>',
-        '<text x="10" y="36" class="title">EXTERNAL TRACE COUNTS</text>',
+        '<text x="16" y="44" class="title">EXTERNAL TRACE COUNTS</text>',
     ]
-    x0, y0 = 10, 54
-    arm_w, cell_w, row_h, head_h = 38, 140, 174, 74
+    x0, y0 = 16, 72
+    arm_w, cell_w, row_h, head_h = 64, 168, 216, 108
+    inset, first_baseline, line_step = 16, 44, 36
     for index, (_, stratum_name) in enumerate(STRATA):
         x = x0 + arm_w + index * cell_w
         parts.append(f'<rect x="{x}" y="{y0}" width="{cell_w}" height="{head_h}" fill="#EAF4F8"/>')
         code, label = strata_labels[stratum_name]
         parts.append(
-            f'<text x="{x + cell_w / 2:g}" y="{y0 + 28}" class="head" text-anchor="middle"><tspan>{escape(code)}</tspan><tspan x="{x + cell_w / 2:g}" dy="34">{escape(label)}</tspan></text>'
+            f'<text x="{x + cell_w / 2:g}" y="{y0 + 40}" class="head" text-anchor="middle"><tspan>{escape(code)}</tspan><tspan x="{x + cell_w / 2:g}" dy="{line_step}">{escape(label)}</tspan></text>'
         )
     for row_index, arm in enumerate(ARMS):
         y = y0 + head_h + row_index * row_h
         parts.append(f'<rect x="{x0}" y="{y}" width="{arm_w}" height="{row_h}" fill="#EAF4F8"/>')
         parts.append(
-            f'<text x="{x0 + arm_w / 2:g}" y="{y + 98}" class="arm" text-anchor="middle">{arm_labels[arm]}</text>'
+            f'<text x="{x0 + arm_w / 2:g}" y="{y + row_h / 2 + 12:g}" class="arm" text-anchor="middle">{arm_labels[arm]}</text>'
         )
         for col_index, (_, stratum_name) in enumerate(STRATA):
             x = x0 + arm_w + col_index * cell_w
@@ -638,21 +652,24 @@ def _svg(data: dict[str, Any]) -> str:
                 f'<rect x="{x}" y="{y}" width="{cell_w}" height="{row_h}" fill="#F4F5F6" class="border"/>'
             )
             parts.append(
-                f'<text x="{x + 8}" y="{y + 30}" class="cell"><tspan>E {cell["expected"]["pass"]}/{cell["expected"]["fail"]}</tspan><tspan x="{x + 8}" dy="32">n={cell["n"]}</tspan></text>'
+                f'<text x="{x + inset}" y="{y + first_baseline}" class="cell"><tspan>E {cell["expected"]["pass"]}/{cell["expected"]["fail"]}</tspan><tspan x="{x + inset}" dy="{line_step}">n={cell["n"]}</tspan></text>'
             )
             parts.append(
-                f'<text x="{x + 8}" y="{y + 94}" class="cell">R {cell["replay"]["pass"]}/{cell["replay"]["fail"]}</text>'
+                f'<text x="{x + inset}" y="{y + first_baseline + 2 * line_step}" class="cell">R {cell["replay"]["pass"]}/{cell["replay"]["fail"]}</text>'
             )
             parts.append(
-                f'<text x="{x + 8}" y="{y + 126}" class="cell"><tspan>C {cell["checks"]["pass"]}/{cell["checks"]["fail"]}</tspan><tspan x="{x + 8}" dy="32">NR {cell["checks"]["unreported_cases"]}</tspan></text>'
+                f'<text x="{x + inset}" y="{y + first_baseline + 3 * line_step}" class="cell"><tspan>C {cell["checks"]["pass"]}/{cell["checks"]["fail"]}</tspan><tspan x="{x + inset}" dy="{line_step}">NR {cell["checks"]["unreported_cases"]}</tspan></text>'
             )
             parts.append("</g>")
+    grid_bottom = y0 + head_h + len(ARMS) * row_h
+    footer_y = grid_bottom + first_baseline
+    footer_gap = 12
     parts += [
-        f'<path d="M{x0} {y0} L{x0 + arm_w + 3 * cell_w} {y0} L{x0 + arm_w + 3 * cell_w} {y0 + head_h + 3 * row_h} L{x0} {y0 + head_h + 3 * row_h} L{x0} {y0}" class="border connector"/>',
-        '<text x="10" y="686" class="small"><tspan>U unchecked_isolated ·</tspan><tspan x="10" dy="34">G general_rule ·</tspan><tspan x="10" dy="34">O ontology_gate</tspan></text>',
-        '<text x="10" y="798" class="small"><tspan>E expected P/F (n cases) ·</tspan><tspan x="10" dy="34">R replay P/F</tspan></text>',
-        '<text x="10" y="876" class="small"><tspan>C records P/F ·</tspan><tspan x="10" dy="34">NR cases with no reported checks</tspan></text>',
-        '<text x="10" y="954" class="small"><tspan>P pass · F fail; NR unreported,</tspan><tspan x="10" dy="34">not pass/skipped/out-of-scope.</tspan></text>',
+        f'<path d="M{x0} {y0} L{x0 + arm_w + 3 * cell_w} {y0} L{x0 + arm_w + 3 * cell_w} {grid_bottom} L{x0} {grid_bottom} L{x0} {y0}" class="border connector"/>',
+        f'<text x="{x0}" y="{footer_y}" class="small"><tspan>U unchecked_isolated ·</tspan><tspan x="{x0}" dy="{line_step}">G general_rule ·</tspan><tspan x="{x0}" dy="{line_step}">O ontology_gate</tspan></text>',
+        f'<text x="{x0}" y="{footer_y + 3 * line_step + footer_gap}" class="small"><tspan>E expected P/F (n cases) ·</tspan><tspan x="{x0}" dy="{line_step}">R replay P/F</tspan></text>',
+        f'<text x="{x0}" y="{footer_y + 5 * line_step + 2 * footer_gap}" class="small"><tspan>C records P/F ·</tspan><tspan x="{x0}" dy="{line_step}">NR cases with no reported checks</tspan></text>',
+        f'<text x="{x0}" y="{footer_y + 7 * line_step + 3 * footer_gap}" class="small"><tspan>P pass · F fail; NR unreported,</tspan><tspan x="{x0}" dy="{line_step}">not pass/skipped/out-of-scope.</tspan></text>',
         "</svg>",
     ]
     return "\n".join(parts) + "\n"

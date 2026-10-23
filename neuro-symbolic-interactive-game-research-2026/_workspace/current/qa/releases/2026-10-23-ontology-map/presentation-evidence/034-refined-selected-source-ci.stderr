@@ -1,0 +1,40 @@
+Resolved 16 packages in 21ms
+Audited 14 packages in 6ms
+........................................................................................................................................................................................................................................................................................................................................................F.
+======================================================================
+FAIL: test_rendered_table_surface_and_anchor_drift_fail_closed (test_visual_asset_validator.VisualAssetValidatorTests.test_rendered_table_surface_and_anchor_drift_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<PUBLICATION_PROJECT>/tests/test_visual_asset_validator.py", line 26, in test_rendered_table_surface_and_anchor_drift_fail_closed
+    self.assertEqual(validator.errors, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['paper/latex/generated/disclosure_tables_[833 chars]tch'] != []
+
+First list contains 12 additional elements.
+First extra element 0:
+'paper/latex/generated/disclosure_tables_en.tex: no explicit arraystretch'
+
+Diff is 921 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 346 tests in 148.507s
+
+FAILED (failures=1)
+ERROR: paper/latex/figures/fig_signal_comparison.svg: connector paths are not classed
+ERROR: paper/latex/generated/disclosure_tables_en.tex: no explicit arraystretch
+ERROR: paper/latex/generated/disclosure_tables_ko.tex: no explicit arraystretch
+ERROR: paper/latex/generated/pilot_tables_en.tex: no explicit arraystretch
+ERROR: paper/latex/generated/pilot_tables_ko.tex: no explicit arraystretch
+ERROR: paper/latex/generated/live_pilot_tables_en.tex: no explicit arraystretch
+ERROR: paper/latex/generated/live_pilot_tables_ko.tex: no explicit arraystretch
+ERROR: paper/latex/generated/npc_tables_en.tex: no explicit arraystretch
+ERROR: paper/latex/generated/npc_tables_ko.tex: no explicit arraystretch
+ERROR: paper/latex/generated/contribution_map_en.tex: no explicit arraystretch
+ERROR: paper/latex/generated/contribution_map_ko.tex: no explicit arraystretch
+ERROR: paper/latex/generated/evidence_lanes_en.tex: no explicit arraystretch
+ERROR: paper/latex/generated/evidence_lanes_ko.tex: no explicit arraystretch
+ERROR: paper/latex/en/main.tex: fig_architecture must use the legible single-column contract
+ERROR: paper/latex/en/main.tex: fig_signal_mechanism must use the legible single-column contract
+ERROR: paper/latex/ko/main.tex: fig_architecture must use the legible single-column contract
+ERROR: paper/latex/ko/main.tex: fig_signal_mechanism must use the legible single-column contract
+visual-asset validation failed with 17 error(s)

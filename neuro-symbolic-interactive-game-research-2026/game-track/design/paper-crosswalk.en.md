@@ -15,6 +15,35 @@ This document maps game mechanics to planned paper evidence. It does not promote
 claim. The submission manuscript remains authoritative in `../../paper/latex/en/main.tex` and
 `../../paper/latex/ko/main.tex`; the Markdown files are superseded protocol blueprints. [OBSERVED]
 
+## Verified current production (2026-10-23)
+
+Observed `READY`: `dpl_75HRZ3UGnVtADdvZnFUJaG9espYY`, [production alias](https://sealed-lighthouse-trace-rpg.vercel.app)
+and [generated deployment](https://sealed-lighthouse-trace-fflmsgady-akillness-projects.vercel.app).
+[HTTP receipt](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-http-assets.json):
+18/18 staged game/dashboard/PDF assets HTTP 200 and byte-count/SHA-256 identical; root 307 → `/dashboard/`.
+[Native keyboard/mouse production QA](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json)
+passes stage-zero denial, lens, mount/stage 2, fresh disclosure, authorized redisplay, map 1440,
+map 390 and continuous diagnostics (8/8); console/page/request/HTTP errors are all 0. One headed desktop
+Chromium session at DPR 2 exercised 390 px reflow/keyboard inspection, not physical-mobile gameplay.
+
+The [presentation release receipt](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)
+records 171 tests + 23 subtests passing: 62 frozen-case + 43 publication-source + 44 presentation
+and 22 visual-validator tests ([focused receipt 049](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json),
+[paired-paper receipt 050](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json)). [Source-identity
+negative cases and the approved EN/KO clause oracle](../../tests/test_ontology_publication_sources.py)
+verify frozen publication declarations separately from runtime authorization, independent human gold
+and efficacy. Four SVGs and tables have more breathing room; tables retain 4 pt padding,
+`arraystretch=1.20` and standard IEEE 10 pt type, with properly typeset LaTeX math.
+Current [English](../../paper/latex/en/main.pdf) / [Korean](../../paper/latex/ko/main.pdf) PDFs are each
+10 pages, 675846 / 631282 bytes, with 0 Type3 fonts each. Final selected-source CI status is recorded
+in the presentation receipt; Git delivery requires separate repository commit/remote-history evidence, not deployment.
+The [sealed case](../../research/development-cases/ontology-map-20261023-01/result.json) remains `n=1`,
+6 native CLI calls, 0 repeats, runtime-selected `gpt-6.1-sol`, provider identity/revision/cost `null`.
+Jev remains negative, unvalidated `proposal_only` advice with no approval authority. [Source map](../web/dashboard/ontology-map.json),
+Godot writer authority, canonical R5 capture, fixture60 and NPC88 are unchanged. **G4/full G6 remain
+`FIX`; no efficacy, superiority or human benefit follows.** R3/D-087 history is superseded only for
+current-production status; original private/raw evidence and historical metrics remain preserved.
+
 ## 2. RQ1–RQ5 mapping
 
 | Table SL-XWALK-T1 | Paper claim | Game manipulation | Independent unit | Planned endpoint | Evidence required before promotion | Current state |
@@ -83,7 +112,7 @@ versions; it is authored render/state correspondence, not actual player interact
 `godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3` and earlier immutable packets remain
 retained as dated history, not current-runtime certification.
 
-The existing [R3 production receipt](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
+The historical [R3 production receipt](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
 records `PASS_FOR_APPROVED_BOUNDED_RELEASE` for `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`, with
 7 canonical Godot cases, 8 public-safe checks and 9 deployed-asset byte matches. Its fixed 60-case
 general-rule and ontology-gate arms agree (16 allowed, 44 denied, 0 expectation mismatches each);
@@ -99,8 +128,38 @@ records 3 commits and 1 hold through Mira's authorized hint, with tide-mark dedu
 Scripted replay, publication provenance, and actual gameplay are distinct evidence classes. A later
 disclosure-only observation cannot change render selection without an owner update to `current.json`.
 
-Trace/receipt defects were repaired; Main reports the targeted eight-file run passed 53 tests
-and 48 subtests. Final selected-tree CI, Git, push and deployment remain pending.
+Historical trace/receipt repair checkpoint: Main reported 53 tests and 48 subtests in the targeted
+eight-file run. The current production section records later evidence and separate CI/Git attestation.
+
+### 5.1. Ontology structure-to-evidence development case
+
+Updated 2026-10-23. The read-only bilingual **Ontology structure → evidence** view lives inside
+**Engineering detail** in the [dashboard](../web/dashboard/index.html); `Tab`/`Enter` opens the
+details control and the table wraps at mobile width. Its eight authored roles are **World, Actor,
+Knowledge, Fact, Policy, Quest, Action, Trace**. [Source map JSON](../web/dashboard/ontology-map.json)
+retains canonical identifiers, frozen source references and rule IDs; only public aliases reach
+the UI. Declared structure and the latest observed public event are distinct columns, not access
+to full canonical state. Missing/unreported/skipped evidence never becomes pass. Eight roles,
+seven Python predicates, six Godot display families and seven disclosure rules are not one-to-one.
+
+The sealed [result](../../research/development-cases/ontology-map-20261023-01/result.json) is
+`ACCEPTED`: one actual Codex development case (`n=1`, zero independent repeats), native runtime-selected
+`gpt-6.1-sol`, six CLI invocations (five editing turns and one read-only/no-edit resume).
+Provider-returned model identity, immutable revision and cost remain unknown (`null`); runtime
+selection is not provider-weight attestation. Historical `gpt-5.6-sol` and NPC88 are not relabelled.
+The receipt records 62 checks passed, Godot Web build exit 0, real-input stage-zero denial, fresh
+disclosure and authorized redisplay; read-only inspection preserves state and the frozen comparison.
+Both 1440×900 and 390×900 views show eight roles with keyboard Enter verified; continuous diagnostics
+from before navigation record zero console/page/request/HTTP errors and zero warnings.
+
+- [Public evidence manifest](../../research/development-cases/ontology-map-20261023-01/public-evidence-manifest.json) retains original/public hashes separately; failed attempts and same-case repairs remain preserved, not new samples.
+- Actual browser PNGs: [denial](../../research/development-cases/ontology-map-20261023-01/browser/010-stage_zero_denial.png), [fresh disclosure](../../research/development-cases/ontology-map-20261023-01/browser/036-fresh_disclosure.png), [authorized redisplay](../../research/development-cases/ontology-map-20261023-01/browser/038-authorized_redisplay.png), [1440 px map](../../research/development-cases/ontology-map-20261023-01/browser/map-1440-action.png), [390 px map](../../research/development-cases/ontology-map-20261023-01/browser/map-390-action.png).
+- The [mechanism figure](../../paper/latex/figures/fig_signal_mechanism.pdf), `fig:signal-mechanism`, is an authored diagram, not a browser capture; see the current ten-page [English](../../paper/latex/en/main.pdf) and [Korean](../../paper/latex/ko/main.pdf) manuscripts, `sec:development-case`.
+
+This additional development-engineering case does not enlarge the frozen 60-case disclosure cohort
+or NPC88 and establishes no human benefit, fun, efficacy, productivity or ontology superiority.
+Godot source/writer authority and canonical R5 engine capture remain unchanged. **G4/full G6 remain
+`FIX`.** Current production and separate CI/Git attestation are described above.
 
 ## 6. Game artifact → paper use
 

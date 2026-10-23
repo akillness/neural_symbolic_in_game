@@ -3,11 +3,11 @@
 \caption{실험 레인 요약: 설계, 단위, 비교, 추론 상한(실험 매트릭스에서 생성)}
 \label{tab:evidence-lanes}
 \centering\scriptsize
-\setlength{\tabcolsep}{2.4pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}p{0.19\columnwidth}>{\raggedright\arraybackslash}p{0.16\columnwidth}@{}}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.23\columnwidth}>{\raggedright\arraybackslash}p{0.17\columnwidth}>{\raggedright\arraybackslash}p{0.16\columnwidth}@{}}
 \toprule
-레인 & 설계 & 단위 / 예산 & 비교 & 상한 \\
+\textbf{레인} & \textbf{설계} & \textbf{단위 / 예산} & \textbf{비교} & \textbf{상한} \\
 \midrule
 E1 & 오프라인 적합성: 작성·동결 fixture, 단일 world & gate 13; arm당 repair 12; fault 10; adapter 7; guard 3 & reject / blind / $\rho$ / oracle & 메커니즘 적합성 \\
 E2 & RQ2 screening-pilot-only: hosted proposer 1개, matched candidate & 5 cell $\times$ 5 call; $K{=}1$ & regime별 $\rho$ / blind & screening-pilot-only 전이 screen \\
@@ -15,5 +15,5 @@ E3 & KG/온톨로지 시뮬레이션: closed-world typed-link holdout & node 43;
 ENG1 & Engineering-only Godot/Web: 엔진 로컬 policy mirror, 참여자 없음 & fixture 4; check 52; smoke 8; archetype 5 & 작성 fixture 경로 & 엔진 로컬 engineering-only 적합성 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize E1--E3와 ENG1은 서로 대체할 수 없으며 분모가 다르다. E2는 screening-pilot-only이고 ENG1은 engineering-only다. 어떤 레인도 모집단 효능, 모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다.}
+\par\vspace{3pt}\noindent\parbox{0.96\columnwidth}{\scriptsize E1--E3와 ENG1은 서로 대체할 수 없으며 분모가 다르다. E2는 screening-pilot-only이고 ENG1은 engineering-only다. 어떤 레인도 모집단 효능, 모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다.}
 \end{table}

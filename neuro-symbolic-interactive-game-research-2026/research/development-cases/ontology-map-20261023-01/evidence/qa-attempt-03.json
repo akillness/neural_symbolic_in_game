@@ -1,0 +1,195 @@
+{
+  "schema_version": "operator-acceptance-attempt/v1",
+  "case_id": "ontology-map-20261023-01",
+  "qa_attempt": 3,
+  "status": "NOT_PASS",
+  "started_at": "2026-10-23T12:31:19.702Z",
+  "finished_at": "2026-10-23T12:31:55.650Z",
+  "argv": [
+    "<USER_HOME>/.hermes/node/bin/node",
+    "<CASE_ROOT>/actual-game-driver.cjs",
+    "--playwright",
+    "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "--chromium",
+    "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "--headless",
+    "false",
+    "--dpr",
+    "2",
+    "--begin",
+    "481,565",
+    "--start-case",
+    "835,790",
+    "--out",
+    "<QA_ATTEMPT_03>"
+  ],
+  "config": {
+    "playwright": "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "chromium": "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "url": "http://127.0.0.1:8886/dashboard/",
+    "out": "<QA_ATTEMPT_03>",
+    "deviceScaleFactor": 2,
+    "headless": false,
+    "begin": [
+      481,
+      565
+    ],
+    "startCase": [
+      835,
+      790
+    ],
+    "coach": [
+      884,
+      370
+    ]
+  },
+  "driver_sha256": "0873def58c9e554ddfd86f0160e3c5344ec19e2f42bfd85063db52477f693660",
+  "attempt_note": null,
+  "interaction_boundary": {
+    "genuine_keyboard_mouse_only": true,
+    "public_observer_reads_only": true,
+    "init_scripts": false,
+    "fixtures": false,
+    "private_godot_calls": false,
+    "source_changes": false
+  },
+  "continuous_capture_since_before_navigation": true,
+  "gates": {},
+  "failures": [
+    {
+      "at": "2026-10-23T12:31:54.191Z",
+      "context": "actual-game-route",
+      "name": "TimeoutError",
+      "message": "page.waitForFunction: Timeout 15000ms exceeded.",
+      "stack": "page.waitForFunction: Timeout 15000ms exceeded.\n    at waitFor (<CASE_ROOT>/actual-game-driver.cjs:88:29)\n    at run (<CASE_ROOT>/actual-game-driver.cjs:252:11)"
+    }
+  ],
+  "diagnostics": {
+    "console": [
+      {
+        "at": "2026-10-23T12:31:22.801Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T12:31:23.019Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T12:31:23.487Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      }
+    ],
+    "pageerror": [
+      {
+        "at": "2026-10-23T12:31:26.734Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:31:32.106Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      }
+    ],
+    "requestfailed": [],
+    "httpErrors": [],
+    "driverFailures": [
+      {
+        "at": "2026-10-23T12:31:54.191Z",
+        "context": "actual-game-route",
+        "name": "TimeoutError",
+        "message": "page.waitForFunction: Timeout 15000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 15000ms exceeded.\n    at waitFor (<CASE_ROOT>/actual-game-driver.cjs:88:29)\n    at run (<CASE_ROOT>/actual-game-driver.cjs:252:11)"
+      }
+    ],
+    "warnings": []
+  },
+  "final_observer": {
+    "tick": {
+      "dialogue_open": false,
+      "episode_over": false,
+      "focus": "",
+      "play_started": true,
+      "stage": 0,
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "tutorial_open": false,
+      "x": 3.34,
+      "yaw": 0,
+      "z": 8.58
+    },
+    "summary": {
+      "commit_count": 0,
+      "fact_count": 2,
+      "refusal_count": 0,
+      "revision": 0,
+      "scenario_id": "sealed-lighthouse-v1",
+      "sites": [
+        {
+          "id": "mira",
+          "x": 3,
+          "z": 11
+        },
+        {
+          "id": "lens_pickup",
+          "x": -11,
+          "z": 1
+        },
+        {
+          "id": "lamp_mount",
+          "x": 7,
+          "z": 13.5
+        },
+        {
+          "id": "lighthouse_view",
+          "x": 5.40000009536743,
+          "z": 14.8000001907349
+        },
+        {
+          "id": "tide_marks",
+          "x": -8.5,
+          "z": 15.5
+        }
+      ],
+      "spawn": {
+        "x": 0,
+        "z": 2
+      },
+      "stage": 0,
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    },
+    "counts": {
+      "commits": 0,
+      "holds": 0,
+      "proposals": 0,
+      "dialogues": 0
+    },
+    "trace_errors": 0
+  },
+  "raw_step_count": 8,
+  "publication_boundary": "Explicit bounded derivative. Original complete JSON, per-input snapshots, screenshots and immutable driver copies remain in the private local QA attempt directory. No failed attempt was replaced. QA attempts are not independent development runs."
+}

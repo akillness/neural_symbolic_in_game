@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<PROJECT_ROOT>/scripts/generate_signal_explainer.py", line 867, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "<PROJECT_ROOT>/scripts/generate_signal_explainer.py", line 812, in main
+    expected = outputs(data)
+               ^^^^^^^^^^^^^
+  File "<PROJECT_ROOT>/scripts/generate_signal_explainer.py", line 799, in outputs
+    FIGURES / "fig_signal_comparison.svg": comparison_svg(data),
+                                           ^^^^^^^^^^^^^^^^^^^^
+  File "<PROJECT_ROOT>/scripts/generate_signal_explainer.py", line 746, in comparison_svg
+    svg_box(group_x, bar_y, bar_w, 20, color, color, class_name="data-mark")
+                            ^^^^^
+NameError: name 'bar_w' is not defined. Did you mean: 'bar_y'?

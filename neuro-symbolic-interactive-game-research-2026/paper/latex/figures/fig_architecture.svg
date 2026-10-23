@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="860" viewBox="0 0 900 860" role="img" aria-labelledby="svg-title svg-desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1220" viewBox="0 0 1280 1220" role="img" aria-labelledby="svg-title svg-desc">
   <title id="svg-title">TRACE-RPG transaction pipeline overview</title>
   <desc id="svg-desc">One generated event read left to right: an untrusted proposal crosses the trust boundary as a typed candidate, and seven deterministic checks grouped into six state-relative families decide it from external policy and state. A failing candidate may be repaired from its typed errors at most K times or falls back unchanged; a passing candidate is rechecked and committed. Evidence tags are scope labels only: E1 offline conformance, E2 screening-pilot-only, and ENG1 engineering-only. No figure element supports population efficacy or player-experience claims. The lower strip shows the playable ledger grammar derived from committed snapshots.</desc>
   <defs>
@@ -17,124 +17,92 @@
       .arrow-label { font-size: 28px; font-weight: 700; }
     </style>
   </defs>
-  <style>.tag { font-size: 28px; font-weight: 700; } .ledger { font-size: 28px; font-weight: 700; } .legend { font-size: 28px; font-weight: 700; }</style>
-  <rect x="0" y="0" width="900" height="860" fill="#FFFFFF"/>
-  <rect x="10" y="15" width="880" height="635" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="10" y="15" width="9" height="635" fill="#0072B2"/>
-  <text x="35" y="50" class="section" text-anchor="start">ONE GENERATED EVENT AS A TRANSACTION</text>
-  <text x="25" y="96" class="legend" text-anchor="start" fill="#0072B2">E1 offline</text>
-  <text x="245" y="96" class="legend" text-anchor="start" fill="#A05A00">E2 screening-pilot-only</text>
-  <text x="575" y="96" class="legend" text-anchor="start" fill="#007A59">ENG1 engineering-only</text>
-  <rect x="20" y="130" width="190" height="142" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2" stroke-dasharray="8 6"/>
-  <rect x="20" y="130" width="8" height="142" rx="4" fill="#666A6D"/>
-  <text x="119" y="163" class="box-title" text-anchor="middle">PROPOSAL</text>
-  <text x="119" y="196" class="small" text-anchor="middle"><tspan x="119" dy="0">untrusted</tspan><tspan x="119" dy="29">model output</tspan></text>
-  <rect x="160" y="233" width="44" height="32" rx="4" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
-  <text x="182" y="257" class="tag" text-anchor="middle">E2</text>
-  <rect x="243" y="130" width="190" height="142" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <rect x="243" y="130" width="8" height="142" rx="4" fill="#0072B2"/>
-  <text x="342" y="163" class="box-title" text-anchor="middle">PARSER</text>
-  <text x="342" y="196" class="small" text-anchor="middle"><tspan x="342" dy="0">type-strict</tspan><tspan x="342" dy="29">known keys</tspan></text>
-  <rect x="383" y="233" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="405" y="257" class="tag" text-anchor="middle">E1</text>
-  <rect x="466" y="130" width="190" height="142" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <rect x="466" y="130" width="8" height="142" rx="4" fill="#0072B2"/>
-  <text x="565" y="163" class="box-title" text-anchor="middle">POLICY</text>
-  <text x="565" y="196" class="small" text-anchor="middle"><tspan x="565" dy="0">external q_t</tspan><tspan x="565" dy="29">who may act</tspan></text>
-  <rect x="572" y="233" width="78" height="32" rx="4" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <text x="611" y="257" class="tag" text-anchor="middle">ENG1</text>
-  <rect x="522" y="233" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="544" y="257" class="tag" text-anchor="middle">E1</text>
-  <rect x="689" y="130" width="190" height="142" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <rect x="689" y="130" width="8" height="142" rx="4" fill="#0072B2"/>
-  <text x="788" y="163" class="box-title" text-anchor="middle">VALIDATE</text>
-  <text x="788" y="196" class="small" text-anchor="middle"><tspan x="788" dy="0">7 checks</tspan><tspan x="788" dy="29">6 families -&gt; E</tspan></text>
-  <rect x="795" y="233" width="78" height="32" rx="4" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <text x="834" y="257" class="tag" text-anchor="middle">ENG1</text>
-  <rect x="745" y="233" width="44" height="32" rx="4" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
-  <text x="767" y="257" class="tag" text-anchor="middle">E2</text>
-  <rect x="695" y="233" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="717" y="257" class="tag" text-anchor="middle">E1</text>
-  <rect x="466" y="312" width="190" height="142" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2" stroke-dasharray="8 6"/>
-  <rect x="466" y="312" width="8" height="142" rx="4" fill="#666A6D"/>
-  <text x="565" y="345" class="box-title" text-anchor="middle">FALLBACK</text>
-  <text x="565" y="378" class="small" text-anchor="middle"><tspan x="565" dy="0">j = K:</tspan><tspan x="565" dy="29">no mutation</tspan></text>
-  <rect x="606" y="415" width="44" height="32" rx="4" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
-  <text x="628" y="439" class="tag" text-anchor="middle">E2</text>
-  <rect x="556" y="415" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="578" y="439" class="tag" text-anchor="middle">E1</text>
-  <rect x="689" y="312" width="190" height="142" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
-  <rect x="689" y="312" width="8" height="142" rx="4" fill="#A05A00"/>
-  <text x="788" y="345" class="box-title" text-anchor="middle">REPAIR</text>
-  <text x="788" y="378" class="small" text-anchor="middle"><tspan x="788" dy="0">invalid: rho</tspan><tspan x="788" dy="29">reads a and E</tspan></text>
-  <rect x="829" y="415" width="44" height="32" rx="4" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
-  <text x="851" y="439" class="tag" text-anchor="middle">E2</text>
-  <rect x="779" y="415" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="801" y="439" class="tag" text-anchor="middle">E1</text>
-  <rect x="20" y="494" width="270" height="142" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <rect x="20" y="494" width="8" height="142" rx="4" fill="#007A59"/>
-  <text x="159" y="527" class="box-title" text-anchor="middle">COMMIT</text>
-  <text x="159" y="560" class="small" text-anchor="middle"><tspan x="159" dy="0">all v_i hold:</tspan><tspan x="159" dy="29">recheck, T(c_t, a)</tspan></text>
-  <rect x="206" y="597" width="78" height="32" rx="4" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <text x="245" y="621" class="tag" text-anchor="middle">ENG1</text>
-  <rect x="156" y="597" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="178" y="621" class="tag" text-anchor="middle">E1</text>
-  <rect x="315" y="494" width="270" height="142" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <rect x="315" y="494" width="8" height="142" rx="4" fill="#007A59"/>
-  <text x="454" y="527" class="box-title" text-anchor="middle">RECORD</text>
-  <text x="454" y="560" class="small" text-anchor="middle"><tspan x="454" dy="0">SHA-256 linked</tspan><tspan x="454" dy="29">terminal row</tspan></text>
-  <rect x="501" y="597" width="78" height="32" rx="4" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <text x="540" y="621" class="tag" text-anchor="middle">ENG1</text>
-  <rect x="451" y="597" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="473" y="621" class="tag" text-anchor="middle">E1</text>
-  <rect x="610" y="494" width="270" height="142" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <rect x="610" y="494" width="8" height="142" rx="4" fill="#007A59"/>
-  <text x="749" y="527" class="box-title" text-anchor="middle">REPLAY</text>
-  <text x="749" y="560" class="small" text-anchor="middle"><tspan x="749" dy="0">recompute T,</tspan><tspan x="749" dy="29">compare state</tspan></text>
-  <rect x="796" y="597" width="78" height="32" rx="4" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <text x="835" y="621" class="tag" text-anchor="middle">ENG1</text>
-  <rect x="746" y="597" width="44" height="32" rx="4" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <text x="768" y="621" class="tag" text-anchor="middle">E1</text>
-  <line class="connector" x1="210" y1="201" x2="243" y2="201" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
-  <line class="connector" x1="433" y1="201" x2="466" y2="201" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-  <line class="connector" x1="656" y1="201" x2="689" y2="201" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-  <line class="connector" x1="226" y1="122" x2="226" y2="280" stroke="#A05A00" stroke-width="4" fill="none" stroke-dasharray="11 7"/>
+<style>.tag,.ledger,.legend {font-size:28px;font-weight:700}</style>
+  <rect x="0" y="0" width="1280" height="1220" fill="#FFFFFF"/>
+  <rect x="10" y="15" width="1260" height="880" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <text x="35" y="65" class="section" text-anchor="start">ONE GENERATED EVENT AS A TRANSACTION</text>
+  <text x="35" y="110" class="legend" text-anchor="start" fill="#0072B2">E1 offline</text>
+  <text x="365" y="110" class="legend" text-anchor="start" fill="#A05A00">E2 screening-pilot-only</text>
+  <text x="855" y="110" class="legend" text-anchor="start" fill="#007A59">ENG1 engineering-only</text>
+  <rect x="20" y="140" width="270" height="204" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="155" y="184" class="box-title" text-anchor="middle">PROPOSAL</text>
+  <text x="155" y="234" class="small" text-anchor="middle"><tspan x="155" dy="0">untrusted</tspan><tspan x="155" dy="38">model output</tspan></text>
+  <text x="155" y="318" class="tag" text-anchor="middle" fill="#A05A00">E2</text>
+  <rect x="362" y="140" width="270" height="204" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <text x="497" y="184" class="box-title" text-anchor="middle">PARSER</text>
+  <text x="497" y="234" class="small" text-anchor="middle"><tspan x="497" dy="0">type-strict</tspan><tspan x="497" dy="38">known keys</tspan></text>
+  <text x="497" y="318" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <rect x="674" y="140" width="270" height="204" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <text x="809" y="184" class="box-title" text-anchor="middle">POLICY</text>
+  <text x="809" y="234" class="small" text-anchor="middle"><tspan x="809" dy="0">external <tspan font-style="italic">q<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan></tspan><tspan x="809" dy="38">who may act</tspan></text>
+  <text x="769" y="318" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="849" y="318" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
+  <rect x="986" y="140" width="270" height="204" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <text x="1121" y="184" class="box-title" text-anchor="middle">VALIDATE</text>
+  <text x="1121" y="234" class="small" text-anchor="middle"><tspan x="1121" dy="0">7 checks</tspan><tspan x="1121" dy="38">6 families → <tspan font-style="italic">E</tspan></tspan></text>
+  <text x="1041" y="318" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="1121" y="318" class="tag" text-anchor="middle" fill="#A05A00">E2</text>
+  <text x="1201" y="318" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
+  <rect x="664" y="404" width="270" height="204" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="799" y="448" class="box-title" text-anchor="middle">FALLBACK</text>
+  <text x="799" y="498" class="small" text-anchor="middle"><tspan x="799" dy="0">j = K:</tspan><tspan x="799" dy="38">no mutation</tspan></text>
+  <text x="759" y="582" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="839" y="582" class="tag" text-anchor="middle" fill="#A05A00">E2</text>
+  <rect x="986" y="404" width="270" height="204" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
+  <text x="1121" y="448" class="box-title" text-anchor="middle">REPAIR</text>
+  <text x="1121" y="498" class="small" text-anchor="middle"><tspan x="1121" dy="0">invalid: <tspan font-style="italic">ρ</tspan></tspan><tspan x="1121" dy="38">reads <tspan font-style="italic">a</tspan> and <tspan font-style="italic">E</tspan></tspan></text>
+  <text x="1081" y="582" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="1161" y="582" class="tag" text-anchor="middle" fill="#A05A00">E2</text>
+  <rect x="20" y="668" width="380" height="204" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <text x="210" y="712" class="box-title" text-anchor="middle">COMMIT</text>
+  <text x="210" y="762" class="small" text-anchor="middle"><tspan x="210" dy="0">all <tspan font-style="italic">v<tspan baseline-shift="sub" font-size="70%">i</tspan></tspan> hold:</tspan><tspan x="210" dy="38">recheck, <tspan font-style="italic">T(c<tspan baseline-shift="sub" font-size="70%">t</tspan>, a)</tspan></tspan></text>
+  <text x="170" y="846" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="250" y="846" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
+  <rect x="450" y="668" width="380" height="204" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <text x="640" y="712" class="box-title" text-anchor="middle">RECORD</text>
+  <text x="640" y="762" class="small" text-anchor="middle"><tspan x="640" dy="0">SHA-256 linked</tspan><tspan x="640" dy="38">terminal row</tspan></text>
+  <text x="600" y="846" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="680" y="846" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
+  <rect x="880" y="668" width="380" height="204" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <text x="1070" y="712" class="box-title" text-anchor="middle">REPLAY</text>
+  <text x="1070" y="762" class="small" text-anchor="middle"><tspan x="1070" dy="0">recompute <tspan font-style="italic">T</tspan>,</tspan><tspan x="1070" dy="38">compare state</tspan></text>
+  <text x="1030" y="846" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
+  <text x="1110" y="846" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
+  <line class="connector" x1="638" y1="242" x2="668" y2="242" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <line class="connector" x1="950" y1="242" x2="980" y2="242" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <line class="connector" x1="326" y1="132" x2="326" y2="352" stroke="#A05A00" stroke-width="3" fill="none" stroke-dasharray="11 7"/>
   <g class="connector-label" data-line-clearance="shielded">
-    <rect class="label-shield" x="202" y="150" width="48" height="102" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>
-    <text x="226" y="201" class="section" text-anchor="middle" fill="#A05A00" transform="rotate(-90 226 201)">TRUST</text>
+    <rect class="label-shield" x="292" y="86" width="68" height="156" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>
+    <text x="326" y="164" class="section" text-anchor="middle" dominant-baseline="central" fill="#A05A00" transform="rotate(-90 326 164)">TRUST</text>
   </g>
-  <line class="connector" x1="760" y1="272" x2="760" y2="312" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <line class="connector" x1="296" y1="242" x2="356" y2="242" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <line class="connector" x1="1080" y1="350" x2="1080" y2="398" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
   <g class="connector-label" data-line-clearance="shielded">
-    <rect class="label-shield" x="685" y="271" width="40" height="38" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>
-    <text x="705" y="299" class="arrow-label" text-anchor="middle" fill="#A05A00">E</text>
+    <rect class="label-shield" x="1000" y="336" width="64" height="68" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>
+    <text x="1032" y="380" class="arrow-label" text-anchor="middle" fill="#A05A00">E</text>
   </g>
-  <path class="connector" d="M850 312 V272" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="9 6"/>
-  <line class="connector" x1="689" y1="383" x2="656" y2="383" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
-  <path class="connector" d="M561 454 V474 H450 V494" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
-  <path class="connector" d="M689 230 H672 V292 H155 V494" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <path class="connector" d="M1220 398 V350" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="9 6"/>
+  <line class="connector" x1="980" y1="506" x2="940" y2="506" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <path class="connector" d="M800 614 V638 H640 V662" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <path class="connector" d="M980 264 H960 V374 H210 V662" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <g class="connector-label" data-line-clearance="shielded">
-    <rect class="label-shield" x="110" y="362" width="90" height="38" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>
-    <text x="155" y="390" class="arrow-label" text-anchor="middle" fill="#007A59">valid</text>
+    <rect class="label-shield" x="154" y="462" width="112" height="68" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>
+    <text x="210" y="506" class="arrow-label" text-anchor="middle" fill="#007A59">valid</text>
   </g>
-  <line class="connector" x1="290" y1="565" x2="315" y2="565" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
-  <line class="connector" x1="585" y1="565" x2="610" y2="565" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
-  <rect x="10" y="665" width="880" height="175" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
-  <rect x="10" y="665" width="9" height="175" fill="#007A59"/>
-  <text x="35" y="700" class="section" text-anchor="start">PLAYABLE LEDGER GRAMMAR (ENG1)</text>
-  <rect x="20" y="715" width="205" height="110" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <rect x="20" y="715" width="8" height="110" rx="4" fill="#007A59"/>
-  <text x="126" y="749" class="ledger" text-anchor="middle">ENTRY #N</text>
-  <text x="126" y="780" class="small" text-anchor="middle"><tspan x="126" dy="0">COMMITTED</tspan><tspan x="126" dy="34">7 checks hold</tspan></text>
-  <rect x="235" y="715" width="205" height="110" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
-  <rect x="235" y="715" width="8" height="110" rx="4" fill="#007A59"/>
-  <text x="341" y="749" class="ledger" text-anchor="middle">CONTRIB. #N</text>
-  <text x="341" y="780" class="small" text-anchor="middle"><tspan x="341" dy="0">STAGE a&gt;b</tspan><tspan x="341" dy="34">CHAIN k/3</tspan></text>
-  <rect x="450" y="715" width="205" height="110" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2" stroke-dasharray="8 6"/>
-  <rect x="450" y="715" width="8" height="110" rx="4" fill="#A05A00"/>
-  <text x="556" y="749" class="ledger" text-anchor="middle">HELD</text>
-  <text x="556" y="780" class="small" text-anchor="middle"><tspan x="556" dy="0">reason code</tspan><tspan x="556" dy="34">NEXT VALID</tspan></text>
-  <rect x="665" y="715" width="205" height="110" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
-  <rect x="665" y="715" width="8" height="110" rx="4" fill="#0072B2"/>
-  <text x="771" y="749" class="ledger" text-anchor="middle">RULE</text>
-  <text x="771" y="780" class="small" text-anchor="middle"><tspan x="771" dy="0">GATE family</tspan><tspan x="771" dy="34">recalled later</tspan></text>
+  <line class="connector" x1="406" y1="770" x2="444" y2="770" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <line class="connector" x1="836" y1="770" x2="874" y2="770" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="10" y="915" width="1260" height="285" rx="7" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <text x="35" y="965" class="section" text-anchor="start">PLAYABLE LEDGER GRAMMAR (ENG1)</text>
+  <rect x="24" y="1000" width="292" height="170" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <text x="170" y="1044" class="ledger" text-anchor="middle">ENTRY #N</text>
+  <text x="170" y="1090" class="small" text-anchor="middle"><tspan x="170" dy="0">COMMITTED</tspan><tspan x="170" dy="40">7 checks hold</tspan></text>
+  <rect x="336" y="1000" width="292" height="170" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <text x="482" y="1044" class="ledger" text-anchor="middle">CONTRIB. #N</text>
+  <text x="482" y="1090" class="small" text-anchor="middle"><tspan x="482" dy="0">STAGE a&gt;b</tspan><tspan x="482" dy="40">CHAIN k/3</tspan></text>
+  <rect x="648" y="1000" width="292" height="170" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="794" y="1044" class="ledger" text-anchor="middle">HELD</text>
+  <text x="794" y="1090" class="small" text-anchor="middle"><tspan x="794" dy="0">reason code</tspan><tspan x="794" dy="40">NEXT VALID</tspan></text>
+  <rect x="960" y="1000" width="292" height="170" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <text x="1106" y="1044" class="ledger" text-anchor="middle">RULE</text>
+  <text x="1106" y="1090" class="small" text-anchor="middle"><tspan x="1106" dy="0">GATE family</tspan><tspan x="1106" dy="40">recalled later</tspan></text>
 </svg>

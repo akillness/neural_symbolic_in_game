@@ -1,0 +1,486 @@
+{
+  "session": {
+    "commit_count": 0,
+    "fact_count": 2,
+    "refusal_count": 0,
+    "revision": 0,
+    "scenario_id": "sealed-lighthouse-v1",
+    "sites": [
+      {
+        "id": "mira",
+        "x": 3,
+        "z": 11
+      },
+      {
+        "id": "lens_pickup",
+        "x": -11,
+        "z": 1
+      },
+      {
+        "id": "lamp_mount",
+        "x": 7,
+        "z": 13.5
+      },
+      {
+        "id": "lighthouse_view",
+        "x": 5.40000009536743,
+        "z": 14.8000001907349
+      },
+      {
+        "id": "tide_marks",
+        "x": -8.5,
+        "z": 15.5
+      }
+    ],
+    "spawn": {
+      "x": 0,
+      "z": 2
+    },
+    "stage": 0,
+    "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+  },
+  "connected": true,
+  "tick": {
+    "dialogue_open": true,
+    "episode_over": false,
+    "focus": "mira",
+    "play_started": true,
+    "stage": 0,
+    "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+    "tutorial_open": false,
+    "x": 2.59,
+    "yaw": 0,
+    "z": 9.33
+  },
+  "summary": {
+    "codes": [
+      "STAGE_GATED_DISCLOSURE"
+    ],
+    "commit_count": 0,
+    "fact_count": 2,
+    "gates": [
+      "DISCLOSURE/QUEST STAGE"
+    ],
+    "next_affordance": "Recover the signal lens from the lamp store.",
+    "refusal_count": 1,
+    "revision": 0,
+    "stage": 0,
+    "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+    "trace": {
+      "checks": [
+        {
+          "code": "FORBIDDEN_DISCLOSURE",
+          "gate": "DISCLOSURE",
+          "outcome": "pass"
+        },
+        {
+          "code": "STAGE_GATED_DISCLOSURE",
+          "gate": "DISCLOSURE/QUEST STAGE",
+          "outcome": "fail"
+        }
+      ],
+      "consistent": true,
+      "evaluated_gates": [
+        "DISCLOSURE",
+        "DISCLOSURE/QUEST STAGE"
+      ],
+      "family_states": {
+        "DISCLOSURE": "fail",
+        "KNOWLEDGE": "skipped",
+        "POLICY": "skipped",
+        "PRECONDITION": "out_of_scope",
+        "QUEST STAGE": "fail",
+        "REACHABILITY": "out_of_scope"
+      },
+      "held_at": "STAGE_GATED_DISCLOSURE",
+      "out_of_scope": [
+        "PRECONDITION",
+        "REACHABILITY"
+      ],
+      "short_circuit": true,
+      "skipped": [
+        {
+          "code": "UNKNOWN_ACTOR",
+          "gate": "POLICY"
+        },
+        {
+          "code": "NPC_DOES_NOT_KNOW_FACT",
+          "gate": "KNOWLEDGE"
+        }
+      ],
+      "unreported": [
+        {
+          "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+          "gate": "DISCLOSURE"
+        }
+      ]
+    }
+  },
+  "counts": {
+    "commits": 0,
+    "holds": 1,
+    "proposals": 1,
+    "dialogues": 2
+  },
+  "events": [
+    {
+      "kind": "session",
+      "at": 5474.100000023842,
+      "seq": 9,
+      "payload": {
+        "commit_count": 0,
+        "fact_count": 2,
+        "refusal_count": 0,
+        "revision": 0,
+        "scenario_id": "sealed-lighthouse-v1",
+        "sites": [
+          {
+            "id": "mira",
+            "x": 3,
+            "z": 11
+          },
+          {
+            "id": "lens_pickup",
+            "x": -11,
+            "z": 1
+          },
+          {
+            "id": "lamp_mount",
+            "x": 7,
+            "z": 13.5
+          },
+          {
+            "id": "lighthouse_view",
+            "x": 5.40000009536743,
+            "z": 14.8000001907349
+          },
+          {
+            "id": "tide_marks",
+            "x": -8.5,
+            "z": 15.5
+          }
+        ],
+        "spawn": {
+          "x": 0,
+          "z": 2
+        },
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      }
+    },
+    {
+      "kind": "focus",
+      "at": 15938.400000035763,
+      "seq": 50,
+      "payload": {
+        "interaction_id": "mira"
+      },
+      "label": "mira"
+    },
+    {
+      "kind": "dialogue",
+      "at": 17280.69999998808,
+      "seq": 56,
+      "payload": {
+        "npc": "captain_mira",
+        "phase": "open"
+      },
+      "label": "open"
+    },
+    {
+      "kind": "dialogue",
+      "at": 18320.69999998808,
+      "seq": 61,
+      "payload": {
+        "choice_id": "ask_tide",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "label": "ask_tide"
+    },
+    {
+      "kind": "proposal",
+      "at": 18320.69999998808,
+      "seq": 62,
+      "payload": {
+        "operation": "reveal_hint",
+        "text": "Request the tide-marks lead from Captain Mira"
+      },
+      "label": "reveal_hint"
+    },
+    {
+      "kind": "disclosure_outcome",
+      "at": 18320.80000001192,
+      "seq": 63,
+      "payload": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY"
+        ],
+        "commit_count": 0,
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "explanation": {
+          "checks": {
+            "consistent": true,
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "fail"
+              }
+            ],
+            "family_states": {
+              "DISCLOSURE": "fail",
+              "KNOWLEDGE": "skipped",
+              "POLICY": "skipped",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "fail",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "STAGE_GATED_DISCLOSURE",
+            "out_of_scope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "short_circuit": true,
+            "skipped": [
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE"
+              }
+            ],
+            "unreported": [
+              {
+                "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                "gate": "DISCLOSURE"
+              }
+            ]
+          },
+          "decision": {
+            "accepted": false,
+            "outcome": "denied",
+            "result_codes": [
+              "STAGE_GATED_DISCLOSURE"
+            ]
+          },
+          "input": {
+            "actor_role": "captain",
+            "operation": "reveal_hint",
+            "subject_type": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "rule_ids": [
+              "DISC-002",
+              "DISC-007"
+            ]
+          },
+          "schema_id": "trace-rpg-semantic-explanation",
+          "schema_version": "1.0.0",
+          "state_effect": {
+            "kind": "denied_no_mutation",
+            "mutated": false,
+            "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          }
+        },
+        "fact_count": 2,
+        "mutated": false,
+        "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "operation_code": "reveal_hint",
+        "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "refusal_count": 0,
+        "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+        "result_codes": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "revision": 0,
+        "rule_ids": [
+          "DISC-002",
+          "DISC-007"
+        ],
+        "stage": 0,
+        "state_effect": "denied_no_mutation",
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "label": "disclosure_outcome"
+    },
+    {
+      "kind": "hold",
+      "at": 18321.900000035763,
+      "seq": 64,
+      "payload": {
+        "codes": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "commit_count": 0,
+        "fact_count": 2,
+        "gates": [
+          "DISCLOSURE/QUEST STAGE"
+        ],
+        "next_affordance": "Recover the signal lens from the lamp store.",
+        "refusal_count": 1,
+        "revision": 0,
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "trace": {
+          "checks": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "DISCLOSURE",
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "family_states": {
+            "DISCLOSURE": "fail",
+            "KNOWLEDGE": "skipped",
+            "POLICY": "skipped",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "fail",
+            "REACHABILITY": "out_of_scope"
+          },
+          "held_at": "STAGE_GATED_DISCLOSURE",
+          "out_of_scope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "short_circuit": true,
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE"
+            }
+          ],
+          "unreported": [
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE"
+            }
+          ]
+        }
+      },
+      "label": "hold DISCLOSURE+QUEST STAGE"
+    },
+    {
+      "kind": "coach_card",
+      "at": 18357.19999998808,
+      "seq": 65,
+      "payload": {
+        "card_id": "hold_intro",
+        "phase": "shown"
+      }
+    }
+  ],
+  "disclosureEvents": [
+    {
+      "kind": "disclosure_outcome",
+      "seq": 63,
+      "tMs": 17300,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-002",
+            "DISC-007"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "unknown"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "unknown"
+            }
+          ],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE",
+              "outcome": "unknown"
+            }
+          ],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "denied",
+          "accepted": false,
+          "resultCodes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "effect": {
+          "kind": "denied_no_mutation",
+          "mutated": false,
+          "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 63,
+          "tMs": 17300
+        }
+      },
+      "receivedAt": 18321.100000023842
+    }
+  ],
+  "comparison": null,
+  "readoutFrozen": false,
+  "pinnedVerdict": null,
+  "traceErrors": 0,
+  "legacyEvents": 0,
+  "comparisonText": "FROZEN INDEPENDENT COMPARISON\nN=48 · B=4 · M=8 · frozen independent lane\n\nThis lane loads only the trusted local frozen comparison contract; it is not a live trend or game result.\n\nDeclaration-derived bounded checker evidence: general-rule and ontology-gate outputs agree on 60/60 inputs. This is engineering-only fixture agreement, not ontology superiority, holdout or human-gold, player-benefit, efficacy, or latent-state evidence.\n\nUnchecked isolated\noutcome: 60\nunsafe: 51\nmismatch: 60\nGeneral rule\noutcome: 60\nunsafe: 0\nmismatch: 0\nOntology gate\noutcome: 60\nunsafe: 0\nmismatch: 0\noutcome\nrecorded result\nunsafe\nunsafe classification\nmismatch\nmismatch classification\ncell slice\tarm\tcase class\tn\tcheck coverage\toutcome\tunsafe\tmismatch\n1\tUnchecked isolated\tboundary\t4\tunreported\tallowed 4 · denied 0\t2\t4\n2\tUnchecked isolated\tmalformed\t8\tunreported\tallowed 8 · denied 0\t8\t8\n3\tUnchecked isolated\tnormal\t48\tunreported\tallowed 48 · denied 0\t41\t48\n4\tGeneral rule\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n5\tGeneral rule\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n6\tGeneral rule\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\n7\tOntology gate\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n8\tOntology gate\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n9\tOntology gate\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\nORIGINAL PYTHON: SEVEN BOOLEAN CHECKS\n\npublic labels only; no runtime equivalence inferred · count 7\n\nGODOT: SIX DISPLAY FAMILIES\n\npublic labels only; no runtime equivalence inferred · count 6\n\nDISCLOSURE: SEVEN DECLARATION RULES\n\npublic labels only; no runtime equivalence inferred · count 7"
+}

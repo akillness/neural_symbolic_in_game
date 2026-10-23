@@ -2,11 +2,11 @@
 \caption{E2 screening-pilot-only: 라이브 스크리닝 정확 집계 (5개 cell, 셀당 제안 5회, $K{=}1$)}
 \label{tab:live-screening}
 \centering\scriptsize
-\setlength{\tabcolsep}{2.7pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X r c r >{\raggedright\arraybackslash}X@{}}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{0.11\columnwidth} >{\centering\arraybackslash}p{0.25\columnwidth} r >{\raggedright\arraybackslash}X@{}}
 \toprule
-기저 / 조건 & 최초 유효 & $\rho$ vs blind commit & $\Delta$ & 최초 오류 \\
+\textbf{기저 / 조건} & \textbf{최초 유효} & \textbf{$\rho$ vs blind commit} & $\boldsymbol{\Delta}$ & \textbf{최초 오류} \\
 \midrule
 동결 / 공개 & 5/5 & 5/5 vs 5/5 & +0 & --- \\
 동결 / 비공개 & 5/5 & 5/5 vs 5/5 & +0 & --- \\
@@ -16,5 +16,5 @@ Signal-v2 / 공개 & 5/5 & 5/5 vs 5/5 & +0 & --- \\
 Signal-v2 / 비공개 & 0/5 & \textbf{5/5 vs 0/5} & \textbf{+5} & PEO+\allowbreak PEV+\allowbreak PPO \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. $\Delta$는 동일 후보(matched candidate)에서 $\rho$ commit 수 minus blind commit 수다. 5개 cell × cell당 5회 호출이며, 3개 cell은 최초 5/5 유효, goal-blind cell은 QSR 5/5로 양 arm 0/5, 0/5 commit인 null regime이다. Signal-v2 blind는 $\rho$ 5/5 대 blind 0/5로 분리되었다. 모든 수치는 screening-pilot-only이며 추론 통계·모델 순위가 아니다.}
+\par\vspace{3pt}\noindent\parbox{0.96\columnwidth}{\scriptsize QSR = quest-stage regression, PEO = policy-effect omission, PEV = policy-effect violation, PPO = policy-precondition omission. $\Delta$는 동일 후보(matched candidate)에서 $\rho$ commit 수 minus blind commit 수다. 5개 cell × cell당 5회 호출이며, 3개 cell은 최초 5/5 유효, goal-blind cell은 QSR 5/5로 양 arm 0/5, 0/5 commit인 null regime이다. Signal-v2 blind는 $\rho$ 5/5 대 blind 0/5로 분리되었다. 모든 수치는 screening-pilot-only이며 추론 통계·모델 순위가 아니다.}
 \end{table}

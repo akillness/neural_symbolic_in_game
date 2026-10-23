@@ -1,0 +1,75 @@
+{
+  "verdict": "proposal_only",
+  "reason": "Below threshold or unfavorable in: addresses_task (ans=yes, conf=0.79); evidence_supports (ans=no, conf=0.73); unrelated_changes (ans=no, conf=0.70); needs_clarification (ans=no, conf=0.60)",
+  "failingQuestions": [
+    "addresses_task (ans=yes, conf=0.79)",
+    "evidence_supports (ans=no, conf=0.73)",
+    "unrelated_changes (ans=no, conf=0.70)",
+    "needs_clarification (ans=no, conf=0.60)"
+  ],
+  "threshold": 0.8,
+  "mode": "jev",
+  "backend": {
+    "kind": "api",
+    "driver": "typesafe",
+    "model": "jev-1.14.0",
+    "configuredModel": "jev-latest",
+    "tier": "unvalidated",
+    "attestation": null
+  },
+  "attempted": [
+    "api"
+  ],
+  "receiptVersion": 2,
+  "receipt": "f325c16cba01acac67bf1523b3e1e3530bbeff6c79ae8675163d3c1e1739ad84",
+  "review": {
+    "model": "jev-1.14.0",
+    "answers": {
+      "addresses_task": {
+        "probability": 0.79,
+        "answer": "yes",
+        "confidence": 0.79
+      },
+      "evidence_supports": {
+        "probability": 0.27,
+        "answer": "no",
+        "confidence": 0.73
+      },
+      "unrelated_changes": {
+        "probability": 0.3,
+        "answer": "no",
+        "confidence": 0.7
+      },
+      "needs_clarification": {
+        "probability": 0.4,
+        "answer": "no",
+        "confidence": 0.6
+      }
+    },
+    "usage": {
+      "input_tokens": 611,
+      "output_tokens": 80
+    },
+    "requests": 1,
+    "source": "api",
+    "backend": {
+      "kind": "api",
+      "driver": "typesafe",
+      "model": "jev-1.14.0",
+      "configuredModel": "jev-latest",
+      "tier": "unvalidated",
+      "attestation": null
+    },
+    "attempted": [
+      "api"
+    ],
+    "attemptDetails": [
+      {
+        "kind": "api",
+        "error": null
+      }
+    ],
+    "error": null,
+    "latencyMs": 305
+  }
+}

@@ -290,3 +290,22 @@ body { overflow-x:hidden; }
 .rule-boundary h3 { margin:0 0 4px; color:var(--amber); font-size:12px; }
 .rule-boundary p { margin:0; color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
 @media (max-width:720px) { .rule-boundaries { grid-template-columns:minmax(0,1fr); } }
+
+/* Read-only ontology declarations remain separate from event projections. */
+.ontology-map { overflow-wrap:anywhere; }
+.ontology-table { table-layout:fixed; min-width:0; }
+.ontology-table caption { text-align:left; padding:8px 6px; color:var(--muted); }
+.ontology-table th, .ontology-table td { padding:8px 6px; }
+.ontology-table th:first-child { width:13%; }
+.ontology-table p { margin:0 0 6px; }
+.ontology-table code { font-size:11px; }
+.ontology-rule-sets { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.ontology-rule-sets ul { padding-left:18px; font-size:12px; }
+@media (max-width:720px) {
+  .ontology-table, .ontology-table tbody, .ontology-table tr, .ontology-table td, .ontology-table th { display:block; width:100%; }
+  .ontology-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+  .ontology-table th:first-child { width:100%; color:var(--amber); }
+  .ontology-table tbody tr { margin-bottom:12px; border:1px solid var(--line); }
+  .ontology-table td::before { content:attr(data-label); display:block; color:var(--muted); font-weight:600; margin-bottom:4px; }
+  .ontology-rule-sets { grid-template-columns:minmax(0,1fr); }
+}

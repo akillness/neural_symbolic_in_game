@@ -1,0 +1,112 @@
+{
+  "schema_version": "trace-rpg-presentation-independent-reviews/v1",
+  "observed_at": "2026-10-23T16:46:19.954Z",
+  "reviewed_final_receipt_sha256": "0740fe59c50dbb39ebe20e5db5c4112f9d613c88a28f236e6ed7cb140cf5857c",
+  "reviewed_evidence_manifest_sha256": "86a88150c416c2f6e2a3b432bed63e89180cb670d422fa90553bacd908feef76",
+  "privacy": {
+    "verdict": "APPROVE",
+    "scope": "Read-only FINAL privacy/integrity closure of _workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json, presentation-evidence-manifest.json, and their 115 explicitly allowlisted public evidence files; source fingerprint checks at project root and the four selected publication wiki files under <PUBLICATION_TREE>.",
+    "blockers": [],
+    "verified_counts": {
+      "allowlisted_public_sha256_matches": "115/115",
+      "unique_allowlisted_paths": 115,
+      "out_of_scope_evidence_paths": 0,
+      "command_receipts": "34/34",
+      "public_stdout_stderr_bindings": "68/68",
+      "raw_hash_bindings_to_public_manifest": "102/102",
+      "receipt_binding_checks": "374/374",
+      "project_root_source_fingerprint_matches": "185/185",
+      "selected_publication_wiki_fingerprint_matches": "4/4",
+      "added_public_evidence_text_files_scanned": 66,
+      "control_json_files_scanned": 2,
+      "selected_publication_wiki_text_files_scanned": 4
+    },
+    "failure_and_final_receipts": {
+      "retained_nonzero_exit_codes": {
+        "024": 2,
+        "032": 1,
+        "034": 1,
+        "037": 1,
+        "044": 1,
+        "052": 1
+      },
+      "all_six_failures_listed_in_final_receipt": true,
+      "final_056": {
+        "path": "presentation-evidence/056-final-publication-ci.json",
+        "recorded_exit_code": 0,
+        "recorded_timed_out": false,
+        "recorded_finished_at": "2026-10-23T16:41:09.867Z",
+        "precedes_release_completed_at": "2026-10-23T16:41:57.445Z"
+      },
+      "interpretation": "These are verified existing receipt records, not newly executed commands or suites."
+    },
+    "privacy_findings": {
+      "blocking_leaks": 0,
+      "result": "No local account/home/email or credential/token leaks found in the added public text, control JSONs, or four selected publication wiki texts using focused privacy signatures and sensitive-field context inspection.",
+      "reviewed_nonissues": [
+        "Token fields in command output are numeric experiment usage counts, not authentication credentials.",
+        "The /tmp/npc-paper-fa9fb8a-snapshot path is a nonpersonal historical evidence-root identifier; it does not disclose a user account or home directory.",
+        "Historical wiki push statements are dated prior-release history; they do not attest a push of this final presentation release."
+      ]
+    },
+    "historical_archive": {
+      "sha256": "5733ef7046d9c88e92037b04a74490d717aa1370e23c0c3b179403dbf208813b",
+      "unchanged": true,
+      "method": "Whole-file SHA-256 only; ZIP members were not reopened or re-reviewed. Prior 141-member review retained."
+    },
+    "git_boundary": {
+      "public_receipt_statement": "Consult repository commit/remote history; this pre-push receipt is not evidence of a completed push",
+      "conclusion": "Approval is for the bounded pre-Git publication evidence packet, not commit, push, remote synchronization, or deployment re-verification.",
+      "git_executed": false
+    },
+    "reviewed_control_file_sha256": {
+      "presentation-final-verification.json": "0740fe59c50dbb39ebe20e5db5c4112f9d613c88a28f236e6ed7cb140cf5857c",
+      "presentation-evidence-manifest.json": "86a88150c416c2f6e2a3b432bed63e89180cb670d422fa90553bacd908feef76"
+    },
+    "checks_performed": [
+      "Read-only Python standard-library SHA-256 comparisons for the exact allowlist, source fingerprints, selected wiki fingerprints, and unchanged archive.",
+      "Read-only JSON receipt checks for allowlisted stream paths, matching receipt/stream stems, public stream digests, raw-hash manifest bindings, elapsed-time consistency, retained nonzero failures, and final056 exit status.",
+      "Built-in Grep privacy/signature and sensitive-field context scans over the explicitly scoped added public texts and selected clean wiki files.",
+      "shasum -a 256 on the two reviewed control JSON files."
+    ],
+    "not_performed": [
+      "No source edits, Git commands, builds, formatters, linters, or test suites.",
+      "No private original/raw-content inspection or independent authentication of private-original bytes; raw hashes were cross-checked between public receipts and public manifest only.",
+      "No repeated PDF, screenshot, or ZIP-member review.",
+      "No claim that a push completed."
+    ],
+    "self_evaluation": {
+      "accuracy": {
+        "score": 5,
+        "evidence": "All numerical closure statements correspond to observed hash/binding outputs; private-origin and Git limitations are explicit."
+      },
+      "completeness": {
+        "score": 5,
+        "evidence": "All requested115 public hashes,185 source fingerprints,4 wiki fingerprints, named failures and final056 checked."
+      },
+      "clarity": {
+        "score": 4,
+        "evidence": "Detailed structured evidence separates approval from unperformed execution; a shorter human summary could improve skimmability."
+      },
+      "actionability": {
+        "score": 5,
+        "evidence": "Exact APPROVE, zero blockers, scope boundaries and control-file hashes identify the reviewed release."
+      },
+      "conciseness": {
+        "score": 4,
+        "evidence": "The evidence inventory is longer than a minimal approval, but preserves required counts and execution boundaries."
+      },
+      "overall": 4.6,
+      "improvement": "For the user-facing closure, lead with APPROVE and the counts; retain this detailed evidence as supporting audit data.",
+      "user_agreement_check": "The assessment is limited to the requested read-only privacy/integrity acceptance criteria."
+    }
+  },
+  "quality": {
+    "safe_to_proceed_to_main_authorized_git_delivery": true,
+    "unresolved_deliverables": [
+      "Authorized Git push and remote commit confirmation remain pending; do not report overall delivery complete yet."
+    ],
+    "report": "============================================================\nAGENT SELF-EVALUATION REPORT\n============================================================\nSummary: Overall score 4.8/5 across 5 quality axes.\n\n  Accuracy         █████ 5/5\n    + Receipt 056 records exit 0; recorded output confirms 357 unit tests, 78 game tests/48 subtests, 132 visual receipts and 22 regenerated sources. EN/KO sources use actual LaTeX equations. Claims retain n=1, CLI=6, repeats=0, Jev advisory-only and G4/full G6 FIX.\n\n  Completeness     ████░ 4/5\n    + Roomier figures/tables, paired 10-page PDFs and production acceptance are recorded. Both manuscripts use tabcolsep=4pt and arraystretch=1.20. Final privacy reviewer confirms latest selected publication scope APPROVE.\n    → Git push remains unperformed; complete authorized Git delivery and confirm the remote commit before claiming completion (presentation-final-verification.json explicitly disclaims push evidence).\n\n  Clarity          █████ 5/5\n    + Current task-manifest section distinguishes present production, historical receipts, desktop 390px reflow and unproven research claims; rendered-publication review covers all 20 PDF pages.\n\n  Actionability    █████ 5/5\n    + Current receipt links exact verification commands/artifacts and identifies Main as Git-delivery owner. Final privacy closure confirms 115/115 public hashes and 185/185 source fingerprints; no unresolved content/security defect was reported.\n\n  Conciseness      █████ 5/5\n    + Current status uses a bounded evidence table with links; historical material is explicitly separated rather than presented as current verification.\n\n  OVERALL          4.8/5\n\nCRITICAL ISSUES (axes ≤ 2):\n  None\n\nSelf-check: Would the user agree with this assessment? Yes — requested presentation changes have recorded verification; Git delivery is explicitly unfinished, and no efficacy claim is inferred. This assessment read existing evidence; it did not rerun suites or Git.\n\nTOP IMPROVEMENTS:\n  1. Complete Main’s authorized Git push and confirm the remote commit; this is the only unresolved requested deliverable identified.\n\nVERDICT: Fix 1 issue then deliver. Safe to proceed to Main’s authorized Git delivery; no further artifact revision identified."
+  },
+  "git_boundary": "These are pre-Git reviews; actual commit/push completion is established by repository and remote history, not this file"
+}

@@ -1,0 +1,2591 @@
+{
+  "schema_version": "operator-acceptance-attempt/v1",
+  "case_id": "ontology-map-20261023-01",
+  "qa_attempt": 9,
+  "status": "PASS",
+  "started_at": "2026-10-23T12:46:20.377Z",
+  "finished_at": "2026-10-23T12:47:27.376Z",
+  "argv": [
+    "<USER_HOME>/.hermes/node/bin/node",
+    "<CASE_ROOT>/actual-game-driver.cjs",
+    "--playwright",
+    "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "--chromium",
+    "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "--out",
+    "<QA_ATTEMPT_09>",
+    "--note",
+    "08 zero browser errors, denied and lens acquisition passed, but mount target11.6 stopped at7.41,11.27 outside actual focus. 09 approaches mount at7.4,12.2; does not weaken focus or action assertions. Exact native PID activation, state-aware coaches, 120ms keys, immutable driver copy and all acceptance gates retained."
+  ],
+  "config": {
+    "playwright": "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "chromium": "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "url": "http://127.0.0.1:8886/dashboard/",
+    "out": "<QA_ATTEMPT_09>",
+    "deviceScaleFactor": 2,
+    "headless": false,
+    "begin": [
+      481,
+      565
+    ],
+    "startCase": [
+      835,
+      790
+    ],
+    "coach": [
+      884,
+      370
+    ]
+  },
+  "driver_sha256": "2b81792623a71ba9b7e884d69a38b006fdc302862740330ac83eb443b1b96751",
+  "attempt_note": "08 zero browser errors, denied and lens acquisition passed, but mount target11.6 stopped at7.41,11.27 outside actual focus. 09 approaches mount at7.4,12.2; does not weaken focus or action assertions. Exact native PID activation, state-aware coaches, 120ms keys, immutable driver copy and all acceptance gates retained.",
+  "interaction_boundary": {
+    "genuine_keyboard_mouse_only": true,
+    "public_observer_reads_only": true,
+    "init_scripts": false,
+    "fixtures": false,
+    "private_godot_calls": false,
+    "source_changes": false
+  },
+  "continuous_capture_since_before_navigation": true,
+  "gates": {
+    "stage_zero_denial": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-002",
+            "DISC-007"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "unknown"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "unknown"
+            }
+          ],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE",
+              "outcome": "unknown"
+            }
+          ],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "denied",
+          "accepted": false,
+          "resultCodes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "effect": {
+          "kind": "denied_no_mutation",
+          "mutated": false,
+          "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 62,
+          "tMs": 17032
+        }
+      },
+      "receipt": "010-stage_zero_denial.json"
+    },
+    "lens_pickup": {
+      "passed": true
+    },
+    "mount_stage2": {
+      "passed": true
+    },
+    "fresh_disclosure": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-005"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "authorized_fresh",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "effect": {
+          "kind": "fresh_disclosure",
+          "mutated": true,
+          "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "different"
+        },
+        "engine": {
+          "seq": 233,
+          "tMs": 55739
+        }
+      },
+      "receipt": "036-fresh_disclosure.json"
+    },
+    "authorized_redisplay": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-006"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "authorized_redisplay",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "effect": {
+          "kind": "redisplay_no_mutation",
+          "mutated": false,
+          "priorHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 243,
+          "tMs": 57321
+        }
+      },
+      "receipt": "038-authorized_redisplay.json"
+    },
+    "map_1440": {
+      "passed": true,
+      "keyboard_Enter": true,
+      "no_inspection_mutation": true
+    },
+    "map_390": {
+      "passed": true,
+      "keyboard_Enter": true,
+      "no_inspection_mutation": true
+    },
+    "continuous_diagnostics": {
+      "passed": true
+    }
+  },
+  "failures": [],
+  "diagnostics": {
+    "console": [
+      {
+        "at": "2026-10-23T12:46:23.663Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T12:46:23.877Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T12:46:24.387Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      }
+    ],
+    "pageerror": [],
+    "requestfailed": [],
+    "httpErrors": [],
+    "driverFailures": [],
+    "warnings": [],
+    "focus": [
+      {
+        "label": "loaded-before-focus",
+        "at": "2026-10-23T12:46:26.199Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "loaded-after-focus",
+        "at": "2026-10-23T12:46:26.603Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-before-focus",
+        "at": "2026-10-23T12:46:27.638Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-after-focus",
+        "at": "2026-10-23T12:46:27.812Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-before-click",
+        "at": "2026-10-23T12:46:27.826Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-after-click",
+        "at": "2026-10-23T12:46:27.903Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-before-focus",
+        "at": "2026-10-23T12:46:33.270Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-after-focus",
+        "at": "2026-10-23T12:46:33.454Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-before-click",
+        "at": "2026-10-23T12:46:33.468Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-after-click",
+        "at": "2026-10-23T12:46:33.504Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-north-before-focus",
+        "at": "2026-10-23T12:46:34.276Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-north-after-focus",
+        "at": "2026-10-23T12:46:34.446Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-approach-before-focus",
+        "at": "2026-10-23T12:46:37.936Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-approach-after-focus",
+        "at": "2026-10-23T12:46:38.092Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage0-before-focus",
+        "at": "2026-10-23T12:46:39.444Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage0-after-focus",
+        "at": "2026-10-23T12:46:39.615Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "stage_zero_denial-input-before-focus",
+        "at": "2026-10-23T12:46:40.451Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "stage_zero_denial-input-after-focus",
+        "at": "2026-10-23T12:46:40.614Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-before-focus",
+        "at": "2026-10-23T12:46:42.377Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-after-focus",
+        "at": "2026-10-23T12:46:42.532Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-before-click",
+        "at": "2026-10-23T12:46:42.548Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-after-click",
+        "at": "2026-10-23T12:46:42.563Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "close-mira-before-focus",
+        "at": "2026-10-23T12:46:43.130Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "close-mira-after-focus",
+        "at": "2026-10-23T12:46:43.293Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "leave-mira-before-focus",
+        "at": "2026-10-23T12:46:44.165Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "leave-mira-after-focus",
+        "at": "2026-10-23T12:46:44.333Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-north-strip-before-focus",
+        "at": "2026-10-23T12:46:46.023Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-north-strip-after-focus",
+        "at": "2026-10-23T12:46:46.211Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour1-before-focus",
+        "at": "2026-10-23T12:46:48.595Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour1-after-focus",
+        "at": "2026-10-23T12:46:48.758Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour2-before-focus",
+        "at": "2026-10-23T12:46:51.082Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour2-after-focus",
+        "at": "2026-10-23T12:46:51.243Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-approach-before-focus",
+        "at": "2026-10-23T12:46:53.888Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-approach-after-focus",
+        "at": "2026-10-23T12:46:54.058Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "collect-lens-before-focus",
+        "at": "2026-10-23T12:46:55.646Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "collect-lens-after-focus",
+        "at": "2026-10-23T12:46:55.809Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-before-focus",
+        "at": "2026-10-23T12:46:56.940Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-after-focus",
+        "at": "2026-10-23T12:46:57.104Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-before-click",
+        "at": "2026-10-23T12:46:57.122Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-after-click",
+        "at": "2026-10-23T12:46:57.141Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-before-focus",
+        "at": "2026-10-23T12:46:57.765Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-after-focus",
+        "at": "2026-10-23T12:46:57.943Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-before-click",
+        "at": "2026-10-23T12:46:57.960Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-after-click",
+        "at": "2026-10-23T12:46:57.987Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour2-before-focus",
+        "at": "2026-10-23T12:46:58.548Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour2-after-focus",
+        "at": "2026-10-23T12:46:58.707Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour1-before-focus",
+        "at": "2026-10-23T12:47:00.432Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour1-after-focus",
+        "at": "2026-10-23T12:47:00.603Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-strip-before-focus",
+        "at": "2026-10-23T12:47:03.307Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-strip-after-focus",
+        "at": "2026-10-23T12:47:03.474Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-north-before-focus",
+        "at": "2026-10-23T12:47:05.955Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-north-after-focus",
+        "at": "2026-10-23T12:47:06.154Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-east-before-focus",
+        "at": "2026-10-23T12:47:08.555Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-east-after-focus",
+        "at": "2026-10-23T12:47:08.724Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-approach-before-focus",
+        "at": "2026-10-23T12:47:12.123Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-approach-after-focus",
+        "at": "2026-10-23T12:47:12.309Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "install-lens-before-focus",
+        "at": "2026-10-23T12:47:14.199Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "install-lens-after-focus",
+        "at": "2026-10-23T12:47:14.391Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-mira-before-focus",
+        "at": "2026-10-23T12:47:15.748Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-mira-after-focus",
+        "at": "2026-10-23T12:47:15.930Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage2-before-focus",
+        "at": "2026-10-23T12:47:18.177Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage2-after-focus",
+        "at": "2026-10-23T12:47:18.402Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "fresh_disclosure-input-before-focus",
+        "at": "2026-10-23T12:47:19.134Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "fresh_disclosure-input-after-focus",
+        "at": "2026-10-23T12:47:19.319Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "authorized_redisplay-input-before-focus",
+        "at": "2026-10-23T12:47:20.725Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "authorized_redisplay-input-after-focus",
+        "at": "2026-10-23T12:47:20.899Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=56580",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "final_observer": {
+    "tick": {
+      "dialogue_open": true,
+      "episode_over": false,
+      "focus": "mira",
+      "play_started": true,
+      "stage": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "tutorial_open": false,
+      "x": 3.36,
+      "yaw": 0,
+      "z": 11.66
+    },
+    "summary": {
+      "commit_count": 3,
+      "fact_count": 6,
+      "labels": [
+        "Tide-marks lead recorded"
+      ],
+      "mutated": true,
+      "operation": "reveal_hint",
+      "refusal_count": 1,
+      "revision": 3,
+      "stage": 2,
+      "stage_from": 2,
+      "stage_to": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+      "trace": {
+        "checks": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass"
+          },
+          {
+            "code": "STAGE_GATED_DISCLOSURE",
+            "gate": "DISCLOSURE/QUEST STAGE",
+            "outcome": "pass"
+          },
+          {
+            "code": "UNKNOWN_ACTOR",
+            "gate": "POLICY",
+            "outcome": "pass"
+          },
+          {
+            "code": "NPC_DOES_NOT_KNOW_FACT",
+            "gate": "KNOWLEDGE",
+            "outcome": "pass"
+          },
+          {
+            "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass"
+          }
+        ],
+        "consistent": true,
+        "evaluated_gates": [
+          "DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE",
+          "POLICY",
+          "KNOWLEDGE"
+        ],
+        "family_states": {
+          "DISCLOSURE": "pass",
+          "KNOWLEDGE": "pass",
+          "POLICY": "pass",
+          "PRECONDITION": "out_of_scope",
+          "QUEST STAGE": "pass",
+          "REACHABILITY": "out_of_scope"
+        },
+        "held_at": "",
+        "out_of_scope": [
+          "PRECONDITION",
+          "REACHABILITY"
+        ],
+        "short_circuit": false,
+        "skipped": [],
+        "unreported": []
+      }
+    },
+    "counts": {
+      "commits": 3,
+      "holds": 1,
+      "proposals": 5,
+      "dialogues": 6
+    },
+    "trace_errors": 0
+  },
+  "raw_step_count": 41,
+  "publication_boundary": "Explicit bounded derivative. Original complete JSON, per-input snapshots, screenshots and immutable driver copies remain in the private local QA attempt directory. No failed attempt was replaced. QA attempts are not independent development runs."
+}

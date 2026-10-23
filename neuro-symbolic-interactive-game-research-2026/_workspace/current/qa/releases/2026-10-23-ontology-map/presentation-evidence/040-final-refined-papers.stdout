@@ -1,0 +1,34 @@
+cd ../.. && uv run python scripts/generate_paper_results.py
+generated bilingual offline and live-screening inputs from research/academic-pipeline/stage-04-pilot/pilot-results.json and research/academic-pipeline/rq2-live-pilot/promotion-manifest.json
+cd ../.. && uv run python scripts/generate_npc_paper_results.py --evidence-root "/tmp/npc-paper-fa9fb8a-snapshot/neuro-symbolic-interactive-game-research-2026"
+generated NPC paper fragments and paper/latex/figures/fig_npc_screening.svg from research/academic-pipeline/npc-goal-recovery/verified-run-006; validation_mode=historical-evidence-root packet_scope=dated-historical-only
+cd ../.. && uv run python scripts/run_kg_ontology_simulation.py --check --no-database
+PASS SL-KG-ONTOLOGY-SIM-001: 43 nodes, 24 typed edges, winner=S2-typed-lexical-loose, precision=1.000, recall=1.000, Sem@3=1.000
+cd ../.. && uv run python scripts/generate_paper_figures.py
+fig_architecture.svg: 1280 x 1220 (XML valid)
+fig_evidence_regimes.svg: 900 x 468 (XML valid)
+set -e; for svg in figures/*.svg; do \
+		base="${svg%.svg}"; \
+		hash=$(python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest())' "$svg"); \
+		rsvg-convert -f png -o "$base.png.tmp" "$svg"; \
+		rsvg-convert -f eps -o "$base.eps.tmp" "$svg"; \
+		printf '\n[ /Title (source-sha256:%s) /DOCINFO pdfmark\n' "$hash" >> "$base.eps.tmp"; \
+		ps2pdf -dEPSCrop -dOmitInfoDate=true -dOmitID=true -dOmitXMP=true "$base.eps.tmp" "$base.pdf.tmp"; \
+		mv "$base.png.tmp" "$base.png"; \
+		mv "$base.pdf.tmp" "$base.pdf"; \
+		rm -f "$base.eps.tmp"; \
+	done
+cd en && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+Latexmk: Nothing to do for 'main.tex'.
+Latexmk: All targets (main.pdf) are up-to-date
+
+cd ko && latexmk -xelatex -interaction=nonstopmode -halt-on-error main.tex
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+Latexmk: Nothing to do for 'main.tex'.
+Latexmk: All targets (main.xdv main.pdf) are up-to-date
+

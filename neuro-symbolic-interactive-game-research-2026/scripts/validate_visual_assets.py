@@ -8,6 +8,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -219,7 +220,11 @@ class Validator:
             editable_paths = [record["path"] for record in asset.get("editable_sources", [])]
             for relative in editable_paths:
                 if relative.endswith(".svg"):
-                    self._validate_svg(ROOT / relative, paper=relative.startswith("paper/latex/"))
+                    self._validate_svg(
+                        ROOT / relative,
+                        paper=relative.startswith("paper/latex/"),
+                        kind=asset.get("kind"),
+                    )
             for relative in rendered_paths:
                 path = ROOT / relative
                 if relative.endswith(".pdf"):
@@ -247,7 +252,7 @@ class Validator:
                     referenced = any(Path(item).name in text for item in rendered_paths)
                     self.check(referenced, f"{asset_id}: {used_by} does not reference its artifact")
 
-    def _validate_svg(self, path: Path, *, paper: bool) -> None:
+    def _validate_svg(self, path: Path, *, paper: bool, kind: str | None = None) -> None:
         relative = path.relative_to(ROOT)
         try:
             root = ET.parse(path).getroot()
@@ -307,7 +312,56 @@ class Validator:
                 for element in root.iter()
                 if "connector" in element.attrib.get("class", "").split()
             ]
-            self.check(bool(connectors), f"{relative}: connector paths are not classed")
+
+            def visible_data_mark(element: ET.Element) -> bool:
+                if self._local_name(element.tag) != "rect":
+                    return False
+                try:
+                    width = float(element.attrib.get("width", "0"))
+                    height = float(element.attrib.get("height", "0"))
+                except ValueError:
+                    return False
+                if not math.isfinite(width) or width <= 0:
+                    return False
+                if not math.isfinite(height) or height <= 0:
+                    return False
+                styles: dict[str, str] = {}
+                for declaration in element.attrib.get("style", "").split(";"):
+                    if ":" not in declaration:
+                        continue
+                    name, value = declaration.split(":", 1)
+                    styles[name.strip().lower()] = value.strip().lower()
+                display = styles.get("display", element.attrib.get("display", "")).strip().lower()
+                visibility = (
+                    styles.get("visibility", element.attrib.get("visibility", "")).strip().lower()
+                )
+                if display == "none" or visibility == "hidden":
+                    return False
+                fill = styles.get("fill", element.attrib.get("fill", "")).strip().lower()
+                if not fill or fill in {"none", "transparent"}:
+                    return False
+                for name in ("opacity", "fill-opacity"):
+                    value = styles.get(name, element.attrib.get(name, "1"))
+                    try:
+                        numeric_value = float(value.removesuffix("%"))
+                    except ValueError:
+                        return False
+                    if not math.isfinite(numeric_value) or numeric_value <= 0:
+                        return False
+                return True
+
+            data_marks = [
+                element
+                for element in root.iter()
+                if "data-mark" in element.attrib.get("class", "").split()
+            ]
+            if kind == "chart":
+                self.check(
+                    bool(connectors) or any(visible_data_mark(element) for element in data_marks),
+                    f"{relative}: chart requires visible data marks or connectors",
+                )
+            else:
+                self.check(bool(connectors), f"{relative}: connector paths are not classed")
 
         if path.name == "balance-archetypes.svg":
             grid_lines = [
@@ -794,15 +848,46 @@ class Validator:
                     all("|" not in line for line in tabular_starts),
                     f"{relative}: vertical table rules are forbidden",
                 )
-                spacings = [
-                    float(value) for value in re.findall(r"arraystretch\}\{([0-9.]+)\}", text)
-                ]
-                self.check(bool(spacings), f"{relative}: no explicit arraystretch")
-                if spacings:
+                if relative.startswith("paper/latex/generated/"):
+                    table_pattern = re.compile(r"\\begin\{(table\*?)\}(.*?)\\end\{\1\}", re.DOTALL)
+                    rendered_blocks = [
+                        match.group(2)
+                        for match in table_pattern.finditer(text)
+                        if "\\begin{tabular" in match.group(2)
+                    ]
                     self.check(
-                        min(spacings) >= 1.10,
-                        f"{relative}: row spacing below the 1.10 floor",
+                        bool(rendered_blocks),
+                        f"{relative}: no rendered table block containing tabular",
                     )
+                    self.check(
+                        len(tabular_starts)
+                        == sum(block.count("\\begin{tabular") for block in rendered_blocks),
+                        f"{relative}: tabular content exists outside rendered table blocks",
+                    )
+                    for index, block in enumerate(rendered_blocks, start=1):
+                        block_spacings = [
+                            float(value)
+                            for value in re.findall(r"arraystretch\}\{([0-9.]+)\}", block)
+                        ]
+                        self.check(
+                            bool(block_spacings),
+                            f"{relative}: table {index} has no explicit arraystretch",
+                        )
+                        if block_spacings:
+                            self.check(
+                                min(block_spacings) >= 1.10,
+                                f"{relative}: table {index} row spacing below the 1.10 floor",
+                            )
+                else:
+                    spacings = [
+                        float(value) for value in re.findall(r"arraystretch\}\{([0-9.]+)\}", text)
+                    ]
+                    self.check(bool(spacings), f"{relative}: no explicit arraystretch")
+                    if spacings:
+                        self.check(
+                            min(spacings) >= 1.10,
+                            f"{relative}: row spacing below the 1.10 floor",
+                        )
 
         offline_en = (ROOT / "paper/latex/generated/pilot_tables_en.tex").read_text(
             encoding="utf-8"
@@ -872,16 +957,33 @@ class Validator:
                     f"{asset['id']}: table representation must render in both papers",
                 )
         include_pattern = re.compile(r"\\includegraphics(?:\[([^\]]*)\])?\{([^}]+)\}")
+        figure_pattern = re.compile(r"\\begin\{(figure\*?)\}(?P<body>.*?)\\end\{\1\}", re.DOTALL)
         for main in PAPER_MAIN:
             owner = str(main.relative_to(ROOT))
-            included: dict[str, list[str]] = {}
+            included: dict[str, list[tuple[str, str | None]]] = {}
             # Resolve each input relative to its source, as TeX does for this project.
             for source_path, effective in self._publication_sources(main).items():
                 source = ROOT / source_path
-                for options, target in include_pattern.findall(effective):
+                figure_spans = [
+                    (match.start(), match.end(), match.group(1))
+                    for match in figure_pattern.finditer(effective)
+                ]
+                for match in include_pattern.finditer(effective):
+                    options = match.group(1) or ""
+                    target = match.group(2)
+                    figure_environment = next(
+                        (
+                            environment
+                            for start, end, environment in figure_spans
+                            if start <= match.start() < end
+                        ),
+                        None,
+                    )
                     resolved = (source.parent / target).resolve()
                     try:
-                        included.setdefault(str(resolved.relative_to(ROOT)), []).append(options)
+                        included.setdefault(str(resolved.relative_to(ROOT)), []).append(
+                            (options, figure_environment)
+                        )
                     except ValueError:
                         self.errors.append(f"{owner}: include escapes project: {target}")
             missing = set(included) - covered
@@ -905,9 +1007,21 @@ class Validator:
                         relative.endswith(".pdf"),
                         f"{owner}: raster paper figure inclusion is forbidden",
                     )
-                    for options in included[relative]:
+                    for options, figure_environment in included[relative]:
+                        width_values = re.findall(r"(?:^|,)\s*width\s*=\s*([^,]+)", options)
+                        exact_width = width_values[0].strip() if len(width_values) == 1 else ""
+                        option_keys = {
+                            option.split("=", 1)[0].strip().lower()
+                            for option in options.split(",")
+                            if option.strip()
+                        }
+                        has_size_transform = bool(option_keys & {"height", "totalheight", "scale"})
+                        valid_width = not has_size_transform and (
+                            exact_width == r"\columnwidth"
+                            or (exact_width == r"\textwidth" and figure_environment == "figure*")
+                        )
                         self.check(
-                            "width=\\columnwidth" in options,
+                            valid_width,
                             f"{owner}: {Path(relative).stem} must use the legible single-column contract",
                         )
 

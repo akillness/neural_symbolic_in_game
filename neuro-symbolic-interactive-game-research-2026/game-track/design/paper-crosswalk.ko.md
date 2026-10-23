@@ -15,6 +15,35 @@ status: DESIGN-CROSSWALK-NO-EFFICACY-RESULT
 제출 원고의 권위 소스는 `../../paper/latex/en/main.tex`와 `../../paper/latex/ko/main.tex`이며,
 Markdown 파일은 대체된 프로토콜 청사진이다. [OBSERVED]
 
+## 검증된 현재 프로덕션 (2026-10-23)
+
+[프로덕션 별칭](https://sealed-lighthouse-trace-rpg.vercel.app)과
+[생성 배포 주소](https://sealed-lighthouse-trace-fflmsgady-akillness-projects.vercel.app)의
+`dpl_75HRZ3UGnVtADdvZnFUJaG9espYY`는 관측 상태 `READY`다.
+[HTTP 영수증](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-http-assets.json):
+스테이징 게임·대시보드·PDF 18/18개 HTTP 200, 바이트 수·SHA-256 동일, 루트 307 → `/dashboard/`.
+[native 키보드·마우스 프로덕션 QA](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json)는
+stage-zero 거절, 렌즈, 설치/2단계, 최초 공개, 승인된 재표시, map 1440, map 390, 연속 진단의
+8/8게이트를 통과했고 console/page/request/HTTP 오류는 각각 0건이다. DPR 2 headed 데스크톱 Chromium
+세션 1개의 390 px 줄바꿈·키보드 검사이지 물리 모바일 기기의 gameplay는 아니다.
+
+[표현 개선 릴리스 영수증](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)은
+집중 검사 171개 + subtest 23개 통과를 기록한다: 동결 사례 62개 + 출판 소스 43개 + 표현 회귀 44개
+및 시각 검증기 22개([집중 검사 영수증 049](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json),
+[한·영 논문 영수증 050](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json)). [출처 정체성 음성
+사례와 승인된 한·영 절 오라클](../../tests/test_ontology_publication_sources.py)은 동결 출판 선언을
+검사하며 런타임 권한, 독립 인간 골드 및 효능 검증과 구별한다. SVG 4개와 표의 여백을 넓히고
+LaTeX 수식을 정식 조판했다. 표는 패딩 4 pt·`arraystretch=1.20`·표준 IEEE 10 pt 글꼴을 유지한다.
+현재 [영문](../../paper/latex/en/main.pdf) / [한국어](../../paper/latex/ko/main.pdf) PDF는 각각
+10쪽, 675846 / 631282바이트이며 Type3 글꼴은 각각 0개다. 최종 선택 소스 CI는 표현 개선
+영수증에서 확인한다. Git 전달은 별도의 저장소 커밋·원격 이력으로 확인하며 프로덕션
+PASS로 추론하지 않는다. [봉인 사례](../../research/development-cases/ontology-map-20261023-01/result.json)는
+`n=1`, native CLI 6회, 반복 0회, 런타임 선택 `gpt-6.1-sol`, 제공자 정체성·리비전·비용 `null`
+그대로다. Jev는 승인 권한 없는 부정적·미검증 `proposal_only` 조언이다. [소스 맵](../web/dashboard/ontology-map.json),
+Godot writer 권한, 정식 R5 캡처, fixture60과 NPC88은 변경하지 않는다. **G4/전체 G6는 `FIX`이며
+효능·우월성·인간 편익은 입증하지 않는다.** R3/D-087의 현재 프로덕션 상태만 대체하며 비공개·raw
+원본과 과거 메트릭은 보존한다.
+
 ## 2. RQ1–RQ5 연결
 
 | 표 SL-XWALK-T1 | 논문 주장 | 게임 조작 | 독립 단위 | 계획 종점 | 승격 전 필수 근거 | 현재 상태 |
@@ -83,7 +112,7 @@ source/toolchain hash와 tool version을 기록한 저자 작성 render/state �
 `godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`과 더 오래된 불변 패킷은 당시 근거로
 보존하며 현재 런타임 인증으로 취급하지 않는다.
 
-기존 [R3 프로덕션 영수증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
+과거 [R3 프로덕션 영수증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
 `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`의 `PASS_FOR_APPROVED_BOUNDED_RELEASE`, Godot 정식
 사례 7개, public-safe 검사 8개, 배포 자산 바이트 일치 9개를 기록한다. 고정 60사례에서
 general-rule과 ontology-gate는 각각 허용 16개, 거절 44개, 기대 불일치 0개로 일치한다.
@@ -99,8 +128,36 @@ commit 3회와 hold 1회 뒤 미라의 승인 힌트에서 멈췄고 조수위 �
 스크립트 재생, 출판 provenance, 실제 gameplay는 다른 근거 종류다. 이후 공개 전용 관측도
 소유자의 `current.json` 갱신 없이는 렌더 선택을 바꾸지 않는다.
 
-trace/receipt 결함을 수정했고 Main은 대상 8파일 실행에서 테스트 53개와 subtest 48개 통과를
-보고했다. 최종 선택 트리 CI·Git·push·배포는 아직 대기 중이다.
+과거 trace/receipt 수정 체크포인트에서 Main은 대상 8파일의 테스트 53개와 subtest 48개
+통과를 보고했다. 이후 근거와 별도 CI/Git 증명은 위 현재 프로덕션 절을 따른다.
+
+### 5.1. 온톨로지 구조·근거 개발 사례
+
+2026-10-23 갱신. 읽기 전용 한·영 **Ontology structure → evidence / 온톨로지 구조 → 근거**는
+[대시보드](../web/dashboard/index.html)의 **Engineering detail** 안에 있다. `Tab`/`Enter`로
+details를 열 수 있고 표는 모바일 폭에서 줄바꿈된다. 저자 작성 8역할은 **World, Actor,
+Knowledge, Fact, Policy, Quest, Action, Trace**다. [Source map JSON](../web/dashboard/ontology-map.json)은
+정규 식별자·동결 출처 참조·규칙 ID를 유지하며 UI에만 공개 별칭을 쓴다. 선언 구조와 최신
+관측 공개 이벤트는 별도 열이며 전체 정규 상태에 접근하지 않는다. 누락·미보고·건너뜀을
+통과로 바꾸지 않는다. 8역할, Python predicate 7개, Godot 표시 family 6개, 공개 규칙 7개는
+일대일 대응이 아니다.
+
+봉인된 [결과](../../research/development-cases/ontology-map-20261023-01/result.json)는 `ACCEPTED`다.
+실제 Codex 개발 사례 1개(`n=1`, 독립 반복 0회)에서 native 런타임이 `gpt-6.1-sol`을 선택했고
+CLI 호출은 6회(편집 턴 5회, 읽기 전용/no-edit resume 1회)다. 제공자 반환 모델 정체성·불변
+리비전·비용은 미상(`null`)이며 런타임 선택은 제공자 가중치 인증이 아니다. 과거 `gpt-5.6-sol`과
+NPC88을 재명명하지 않는다. 영수증은 검사 62개 통과, Godot Web 빌드 exit 0, 실제 입력의
+stage-zero 거절·최초 공개·승인된 재표시를 기록한다. 읽기 전용 열람은 상태와 동결 비교를 보존한다.
+1440×900과 390×900 모두 8역할을 표시하고 키보드 Enter를 확인했으며 탐색 전부터 수집한
+연속 진단에서 console/page/request/HTTP 오류와 warning은 각각 0건이다.
+
+- [공개 근거 manifest](../../research/development-cases/ontology-map-20261023-01/public-evidence-manifest.json)는 원본/공개 해시를 구별한다. 실패 시도와 동일 사례 수리는 보존되며 추가 표본이 아니다.
+- 실제 브라우저 PNG: [거절](../../research/development-cases/ontology-map-20261023-01/browser/010-stage_zero_denial.png), [최초 공개](../../research/development-cases/ontology-map-20261023-01/browser/036-fresh_disclosure.png), [승인된 재표시](../../research/development-cases/ontology-map-20261023-01/browser/038-authorized_redisplay.png), [1440 px map](../../research/development-cases/ontology-map-20261023-01/browser/map-1440-action.png), [390 px map](../../research/development-cases/ontology-map-20261023-01/browser/map-390-action.png).
+- [메커니즘 도식](../../paper/latex/figures/fig_signal_mechanism.pdf) `fig:signal-mechanism`은 저자 작성 그림이지 브라우저 캡처가 아니다. 현재 각 10쪽 [영문](../../paper/latex/en/main.pdf)·[한국어](../../paper/latex/ko/main.pdf) 원고의 `sec:development-case`를 함께 본다.
+
+이 추가 개발 공학 사례는 동결 공개 코호트 60사례나 NPC88을 늘리지 않으며 인간 편익·재미·
+효능·생산성·온톨로지 우월성을 입증하지 않는다. Godot 소스·쓰기 권한과 정식 R5 엔진 캡처는
+그대로다. **G4/전체 G6는 `FIX`다.** 현재 프로덕션과 별도 CI/Git 증명은 위 절을 따른다.
 
 ## 6. 게임 artifact → 논문 사용
 

@@ -2,12 +2,48 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 
-## Publication correction in progress — 2026-10-23 (D-087)
+## Verified current production — 2026-10-23 ontology map
 
-**Publication gate: PENDING, not complete.** Owner: Main for final pipeline, Git and release;
-Release Rule and Status Editor for this status refresh. Publication commit/push and the new
-GPT-6.1-SOL development case are **not completed**. The last verified production remains the
-D-086 R3 deployment below; no revised-tree build/deploy/browser PASS is inferred from it.
+**Observed production `READY`: `dpl_75HRZ3UGnVtADdvZnFUJaG9espYY`.**
+[Production alias](https://sealed-lighthouse-trace-rpg.vercel.app) ·
+[generated deployment](https://sealed-lighthouse-trace-fflmsgady-akillness-projects.vercel.app).
+The [presentation release receipt](../qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)
+records final selected-source CI status. Main owns final CI and Git delivery;
+the latter requires separate repository commit/remote-history evidence, not a production PASS.
+The [2026-10-23 pre-refinement receipt](../qa/releases/2026-10-23-ontology-map/final-verification.json)
+and [pre-presentation source snapshot](../qa/releases/2026-10-23-ontology-map/pre-presentation-source-snapshot.zip)
+remain historical; they do not attest the presentation revision's final CI or push.
+
+Historical documentation-only verification (2026-10-23, before presentation refinement): read-only `python3 -c "$CHECK"` resolved all 212
+relative-link occurrences across these seven docs (53 distinct file targets), including heading
+anchors, with 0 failures; local PDF sizes match the HTTP receipt (EN 651222 / KO 627058 bytes).
+Two pre-existing missing `game-track/web/README.md` references were repaired to the paired Godot
+Web-guide sections. No format/lint, test suites, builds, deployment actions or Git commands were run
+for this documentation update; the production/test results above are cited receipts, not reruns.
+
+| Current evidence | Observed result and boundary |
+|---|---|
+| [Production HTTP/assets](../qa/releases/2026-10-23-ontology-map/presentation-http-assets.json) | All 18 staged game/dashboard/PDF assets HTTP 200, byte-count/SHA-256 identical; root 307 → `/dashboard/`. |
+| [Native keyboard/mouse production QA](../qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json) | All 8 gates PASS: stage-zero denial, lens pickup, mount/stage 2, fresh disclosure, authorized redisplay, map 1440, map 390, continuous diagnostics. Console/page/request/HTTP errors each 0; one headed desktop Chromium session, DPR 2. The 390 px view is desktop reflow/keyboard inspection, not physical-mobile gameplay. |
+| Focused checks | 171 tests passing (62 frozen-case + 43 publication-source + 44 presentation + 22 visual-validator), plus 23 passing subtests reported separately ([focused receipt 049](../qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json); [paired-paper receipt 050](../qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json)). [Negative source-identity cases and approved bilingual clause oracle](../../../tests/test_ontology_publication_sources.py) verify publication declarations, not runtime authority, independent human gold or efficacy. |
+| Paired publication | Current [EN](../../../paper/latex/en/main.pdf) / [KO](../../../paper/latex/ko/main.pdf) PDFs each 10 pages, 675846 / 631282 bytes, Type3 fonts 0 each. Four SVGs and tables are roomier; tables retain 4 pt padding, `arraystretch=1.20` and standard IEEE 10 pt type, with properly typeset LaTeX math. |
+| Unchanged native case | [Sealed result](../../../research/development-cases/ontology-map-20261023-01/result.json): `n=1`, 6 native CLI calls, 0 independent repeats, runtime-selected `gpt-6.1-sol`; provider-returned identity/revision/cost `null`. Jev is negative, unvalidated `proposal_only` advisory, without approval authority. |
+| Source and claim boundary | [Ontology source map](../../../game-track/web/dashboard/ontology-map.json), Godot writer authority and [R5 selection](../engineering/tech-verification/current.json) remain unchanged. Fixture60, NPC88, historical `gpt-5.6-sol`, private intake/raw originals and historical metrics are preserved. **G4/full G6 remain `FIX`; no efficacy, productivity, superiority or human benefit is established.** |
+
+현재 프로덕션은 위 근거로 검증됐으며 최종 선택 소스 CI 상태는 표현 개선 영수증에서 확인한다.
+Git 전달은 Main이 별도의 저장소 커밋·원격 이력으로 증명한다. 한·영 원고·선언 검사는 런타임 권한·효능 검증과 다르고,
+390 px 검사는 물리 모바일 gameplay가 아니다. 정식 R5 캡처, 과거 코호트와 미입증 경계는 그대로다.
+아래 D-087/R3는 당시 기록이며 현재 프로덕션 상태만 위 기록으로 대체한다.
+
+Next action: consult the [presentation final receipt](../qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)
+for Main's final selected-source CI outcome and repository commit/remote history separately for Git delivery.
+
+## Historical publication correction checkpoint — 2026-10-23 (D-087)
+
+The following D-087 status is retained as history, not the current production state. At this
+checkpoint the publication gate, commit/push and deployment were **PENDING**. Main owned final
+pipeline, Git and release; OntologyReleaseDocs owned the bounded navigation/status refresh.
+The GPT-6.1-SOL development case was **ACCEPTED**; D-086 R3 was then the last verified production.
 
 | Evidence/work item | Observed status and boundary | Next required evidence |
 |---|---|---|
@@ -17,6 +53,7 @@ D-086 R3 deployment below; no revised-tree build/deploy/browser PASS is inferred
 | Public provenance | `research/npc-disclosure/public/source-substitution-v1.json` SHA-256 `fd08736902f0f542c311b367125a71f47ee20930e9294402b9c70c3481b37d05` binds the public derivative against unchanged frozen packet SHA-256 `9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028`. `public/clean-selected-reproduction-20261023.json` records 23 original files byte-preserved, private report/intake absent from its public snapshot, and reproduction commands exit0. | Preserve originals and explicit substitution provenance; this earlier reproduction receipt is not a fresh R4 Godot, PDF, deployment or final-pipeline receipt. |
 | Historical NPC006 | Original `research/academic-pipeline/npc-goal-recovery/verified-run-006/` validates only against its pinned `fa9fb8a` historical source extraction; generator `--evidence-root` explicitly marks archived-root validation historical and without current-release authority. | Retain original observations/failures/hashes; validate dated material with that extraction rather than relabelling the current source as the original collection source. |
 | Selected render | `engineering/tech-verification/current.json` now selects `godot-4.7.1-20261023-publication-r5`; manifest SHA-256 `745c100fc053e02f78c744cbf599f5e708fda9227942a9c429041539a3bce5d2`. It records four real Godot runs and three non-headless macOS 1280×720 scripted replay panels at `2026-10-23 11:00:42` UTC. All three PNG hashes match the manifest. Game3D separately matches the R5 disclosure receipt (not a direct render-manifest binding). | Final selected-tree publication pipeline remains pending; render/state correspondence is not gameplay, efficacy, G4 or full G6 evidence. |
+| Ontology view development case | [Sealed result](../../../research/development-cases/ontology-map-20261023-01/result.json): `ACCEPTED`, `n=1`, six native CLI invocations (five editing, one read-only), zero independent repeats; native runtime-selected `gpt-6.1-sol`, provider-returned identity/revision/cost `null`. Records 62 passing checks, Web build exit 0, actual-input denial/fresh-disclosure/redisplay, 1440×900 and 390×900 eight-role views/Enter and continuous zero console/page/request/HTTP errors or warnings. | Main's final selected-tree publication/deployment receipt remains required; this case is additional development-engineering evidence, not human/fun/efficacy/productivity/ontology-superiority evidence or an enlarged 60-fixture/NPC88 cohort. |
 
 Documentation verification: read `current.json` and the selected R5 manifest, producer and Godot
 receipt; read-only `shasum -a 256` checks of the manifest, receipt, actual Game3D source and all three
@@ -25,16 +62,36 @@ to these hashed R5 PNGs. No tests, formatters, linters, project-wide suites or G
 for this documentation assignment. G4/full G6 and all efficacy, independent-gold,
 ontology-superiority and human-benefit boundaries remain unchanged.
 
+Ontology navigation: [dashboard](../../../game-track/web/dashboard/index.html) → **Engineering detail**
+(`Tab`/`Enter` or pointer) → **Ontology structure → evidence**. World, Actor, Knowledge, Fact,
+Policy, Quest, Action and Trace separate declared structure from observed events; mobile text wraps,
+missing/unreported is not pass. Canonical references stay in [source JSON](../../../game-track/web/dashboard/ontology-map.json),
+public aliases only in UI. [Public manifest](../../../research/development-cases/ontology-map-20261023-01/public-evidence-manifest.json)
+keeps original/public hashes separate; [EN](../../../game-track/design/paper-crosswalk.en.md#51-ontology-structure-to-evidence-development-case)/[KO](../../../game-track/design/paper-crosswalk.ko.md#51-온톨로지-구조근거-개발-사례)
+crosswalks link the five actual browser PNGs, authored `fig:signal-mechanism`, and current ten-page
+paired manuscripts. Godot source/writer authority, canonical R5 engine capture, frozen 60-case cohort,
+historical `gpt-5.6-sol` and NPC88 remain unchanged. **G4/G6 stay `FIX`; publication/deployment
+stay `PENDING` until Main's final release.**
+한·영 읽기 전용 구조·근거 탐색과 봉인된 개발 사례만 추가하며, 기존 엔진·코호트·과거 출처와
+재미·인간 효능·생산성·온톨로지 우월성의 미입증 경계는 변경하지 않는다.
+
+2026-10-23 ontology documentation checks: read-only `python3 -c "$CHECK"` resolved 46 scoped
+link occurrences (25 distinct targets), including heading anchors, across the seven edited docs;
+zero failures. The same check matched all five browser PNG SHA-256 values to sealed `result.json`.
+`pdfinfo paper/latex/en/main.pdf` and `pdfinfo paper/latex/ko/main.pdf` each reported 10 pages
+(651185 and 626961 bytes). These are documentation/link/hash/PDF checks, not rerun game tests,
+builds, deployment or final-release acceptance.
+
 Dated R4 history remains retained: `godot-4.7.1-20261023-publication-r4` captured three panels at
 `2026-10-23 10:31:19` UTC; manifest SHA-256
 `4950c5df0871595b142ce629b4b775b7965b307faad864e039d0e88b86bcd189`.
 It and the prior `godot-4.7.1-20261023-signal-explainer-r1` are not the current selection.
 
-Next action: Main records final selected-tree pipeline and publication Git results before
-starting/completing the separately measured development case. The selected capture refresh is
-recorded above; no push, deployment or full-CI completion is claimed here.
+Historical next action at D-087: Main was to record final selected-tree pipeline, publication Git
+and deployment results. The sealed development case and capture refresh did not themselves attest
+push, deployment or full-CI completion; use the current production section for subsequent evidence.
 
-## Last verified production: D-086 R3 historical deployment — 2026-10-23
+## Historical production: D-086 R3 deployment — 2026-10-23
 
 **`PASS_FOR_APPROVED_BOUNDED_RELEASE`**, observed `2026-10-23T07:34:34.105503+00:00`: [final receipt](../qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json) closes the [approved Seed](../../../../.ouroboros/seeds/seed-20261023-signal-explainer-b35b22f4227d.yaml). `vercel inspect https://sealed-lighthouse-trace-rpg.vercel.app --scope akillness-projects --json` → READY, `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`; implementation/build/deploy complete, focused66+16 subtests, separate canonical Godot7 and authored public-safe smoke8/8, deployed byte matches9/9, EN/KO each10 pages/Type3 absent, zero observed browser diagnostics. [Detailed real-input/three-commit proof, exact focused command and comparison denominators](../../../../llm-wiki/wiki/queries/2026-10-23-signal-data-types-interview.md#2026-10-23-승인된-한정-release-종료) remain separate from historical receipts below. 390px covers dashboard reflow only, not mobile gameplay certification; G4/full G6 remain FIX, with no human efficacy/gold/holdout, ontology-superiority or latent-state promotion.
 
@@ -160,7 +217,7 @@ lock/audio, representative warmed frame/input measurements, 30-minute soak, and 
 | Close Cycle 3 | director + independent reviewers | 1.review | `retrospectives/cycle-3-retrospective.md` | release | blocked-on-pending-evidence | final verdict |
 
 
-## Latest observed engineering receipts
+## Historical engineering receipts (2026-08 to 2026-09)
 
 - `godot --headless --path <disposable-copy> res://scenes/main_3d.tscn -- --smoke --public-safe`
   → `8/8`, real `project.godot` hash unchanged, terminal state SHA-256
@@ -259,7 +316,7 @@ production defect. G4 is unassessed and G6 remains `FIX`. Production desktop re-
 production save/reload, current mobile verification, warmed performance/input, the 30-minute soak,
 rollback, audio focus, and the open human-gesture pointer-lock check remain.
 
-### Latest operator release — 2026-10-14
+### Historical operator release — 2026-10-14
 
 Owner: Main. Existing implementation rebuilt and deployed from pushed source
 `403058a55b8148e2847401046bf4b0763fb55087` on an isolated checkout; only the reviewed NPC

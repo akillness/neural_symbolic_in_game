@@ -1,11 +1,43 @@
 # The Sealed Lighthouse — Godot conformance, playable, capture, and Web passes
 
+## Verified current production (2026-10-23)
+
+Deployment `dpl_75HRZ3UGnVtADdvZnFUJaG9espYY` is observed `READY` at the
+[production alias](https://sealed-lighthouse-trace-rpg.vercel.app) and
+[generated deployment](https://sealed-lighthouse-trace-fflmsgady-akillness-projects.vercel.app).
+[HTTP evidence](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-http-assets.json):
+18/18 staged game/dashboard/PDF assets HTTP 200, byte-count/SHA-256 identical; root 307 → `/dashboard/`.
+[Production browser evidence](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json):
+all eight gates PASS (stage-zero denial, lens, mount/stage 2, fresh disclosure, authorized redisplay,
+map 1440, map 390, continuous diagnostics), 0 console/page/request/HTTP errors. Native keyboard/mouse
+input used one headed desktop Chromium session at DPR 2; 390 px is reflow/keyboard inspection, not physical mobile.
+
+The [presentation release receipt](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)
+records 171 tests + 23 subtests passing (62 frozen-case + 43 publication-source + 44 presentation
+and 22 visual-validator tests; [focused receipt 049](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json),
+[paired-paper receipt 050](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json))
+and ten-page [EN](../../paper/latex/en/main.pdf) / [KO](../../paper/latex/ko/main.pdf) PDFs
+(675846 / 631282 bytes, 0 Type3 fonts each). Four SVGs and tables are roomier; tables retain
+4 pt padding, `arraystretch=1.20` and standard IEEE 10 pt type, with properly typeset LaTeX math.
+[Publication source tests](../../tests/test_ontology_publication_sources.py)
+cover negative source identities and approved bilingual clauses, not runtime authority or independent
+human-gold/efficacy validation. Final selected-source CI status is recorded in the presentation receipt;
+Git delivery requires separate repository commit/remote-history evidence, not a production PASS.
+The [sealed case](../../research/development-cases/ontology-map-20261023-01/result.json) remains `n=1`,
+6 native CLI calls, 0 repeats, runtime-selected `gpt-6.1-sol`, provider identity/revision/cost `null`;
+Jev is negative, unvalidated `proposal_only` advice, never approval authority. [Source map](../web/dashboard/ontology-map.json),
+Godot writer authority, canonical R5 capture and historical cohorts remain unchanged. **G4/full G6
+remain `FIX`; no efficacy, superiority or human benefit follows.** R3/D-087 status below is historical,
+superseded only for current production.
+
+## Selected engine evidence
+
 Updated 2026-10-23: [`current.json`](../../_workspace/current/engineering/tech-verification/current.json)
 selects `godot-4.7.1-20261023-publication-r5`. Its
 [manifest](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)
 records four real Godot runs and three scripted fixture-trace replay panels, captured non-headless
 on macOS at `2026-10-23 11:00:42` UTC, not participant gameplay or live model inference.
-The existing [R3 verification](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
+The historical [R3 verification](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
 records `PASS_FOR_APPROVED_BOUNDED_RELEASE` for `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`, with
 7 canonical Godot cases, 8 public-safe checks and 9 deployed-asset byte matches. **G4 and full G6
 remain `FIX`; no efficacy claim follows.** This document update performed no new deployment.
@@ -19,8 +51,22 @@ that route observed 3 commits and 1 hold, stopped after Mira's authorized hint, 
 the tide-mark deduction. Later disclosure-only observations do not change the selected render
 unless the owner updates `current.json`.
 
-Trace/receipt defects were repaired; Main reports the targeted eight-file run passed 53 tests
-and 48 subtests. Final selected-tree CI, Git, push and deployment remain pending.
+Historical trace/receipt repair checkpoint: Main reported 53 tests and 48 subtests passing in the
+targeted eight-file run. Current production and separate CI/Git attestation are described above.
+
+## Ontology inspection, not engine authority (2026-10-23)
+
+Open **Engineering detail → Ontology structure → evidence** in the [dashboard](../web/dashboard/index.html)
+using `Tab`/`Enter` or pointer. Its read-only bilingual 8-role view wraps on mobile and separates
+declarations from observed events; missing/unreported is not pass. Canonical references remain in
+[source JSON](../web/dashboard/ontology-map.json), with public aliases in the UI, not full state.
+The [sealed result](../../research/development-cases/ontology-map-20261023-01/result.json) records
+one runtime-selected Codex `gpt-6.1-sol` development case, six CLI turns, zero repeats, 62 passing
+checks, Web build success and real-input denial/fresh-disclosure/redisplay with continuous zero-error
+1440/390 px diagnostics. Provider identity/revision/cost remain `null`. [Evidence and paper links](../design/paper-crosswalk.en.md#51-ontology-structure-to-evidence-development-case)
+preserve this additional engineering case separately from the fixed 60 fixtures, NPC88 and historical
+`gpt-5.6-sol`, without human/fun/efficacy/productivity/ontology-superiority claims. Godot source,
+writer authority and canonical R5 capture are unchanged. **G4/full G6 remain `FIX`.**
 
 Historical Cycle 3 records below report `4/4` fixtures, `52/52` core checks, the separately counted
 `4/4` D-073 extension and a `5/5` archetype probe. The retained Cycle 2 v5 packet and deployment

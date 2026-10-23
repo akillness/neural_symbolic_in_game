@@ -1,0 +1,83 @@
+{
+  "case_id": "ontology-map-20261023-01",
+  "status": "NOT_PASS",
+  "started_at": "2026-10-23T15:58:06.486Z",
+  "scope": "n=1 operator development QA; unchanged game; no human or efficacy claim",
+  "contract_sha256": "2fbe1a8f85614b7e250801991dcf2b0e16e55cb7914621d10f968072d230b7b5",
+  "argv": [
+    "<USER_HOME>/.hermes/node/bin/node",
+    "<PROJECT_ROOT>/research/development-cases/ontology-map-20261023-01/actual-game-driver.cjs",
+    "--playwright",
+    "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "--chromium",
+    "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "--headless",
+    "0",
+    "--dpr",
+    "2",
+    "--base-url",
+    "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+    "--out",
+    "<RELEASE_EVIDENCE>/presentation-production-browser"
+  ],
+  "config": {
+    "playwright": "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "chromium": "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "url": "http://127.0.0.1:8886/dashboard/",
+    "out": "<RELEASE_EVIDENCE>/presentation-production-browser",
+    "deviceScaleFactor": 2,
+    "headless": false,
+    "begin": [
+      481,
+      565
+    ],
+    "startCase": [
+      835,
+      790
+    ],
+    "coach": [
+      884,
+      370
+    ]
+  },
+  "continuous_capture_since_before_navigation": false,
+  "driver_sha256": "2b81792623a71ba9b7e884d69a38b006fdc302862740330ac83eb443b1b96751",
+  "attempt_note": null,
+  "interaction_boundary": {
+    "genuine_keyboard_mouse_only": true,
+    "public_observer_reads_only": true,
+    "init_scripts": false,
+    "fixtures": false,
+    "private_godot_calls": false,
+    "source_changes": false
+  },
+  "steps": [],
+  "gates": {},
+  "failures": [
+    {
+      "at": "2026-10-23T15:58:07.115Z",
+      "context": "actual-game-route",
+      "name": "Error",
+      "message": "browserType.launch: Failed to launch chromium because executable doesn't exist at <USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+      "stack": "browserType.launch: Failed to launch chromium because executable doesn't exist at <USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\n    at run (<PROJECT_ROOT>/research/development-cases/ontology-map-20261023-01/actual-game-driver.cjs:282:30)\n    at Object.<anonymous> (<PROJECT_ROOT>/research/development-cases/ontology-map-20261023-01/actual-game-driver.cjs:361:1)"
+    }
+  ],
+  "diagnostics": {
+    "console": [],
+    "pageerror": [],
+    "requestfailed": [],
+    "httpErrors": [],
+    "driverFailures": [
+      {
+        "at": "2026-10-23T15:58:07.115Z",
+        "context": "actual-game-route",
+        "name": "Error",
+        "message": "browserType.launch: Failed to launch chromium because executable doesn't exist at <USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "stack": "browserType.launch: Failed to launch chromium because executable doesn't exist at <USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\n    at run (<PROJECT_ROOT>/research/development-cases/ontology-map-20261023-01/actual-game-driver.cjs:282:30)\n    at Object.<anonymous> (<PROJECT_ROOT>/research/development-cases/ontology-map-20261023-01/actual-game-driver.cjs:361:1)"
+      }
+    ],
+    "warnings": [],
+    "focus": []
+  },
+  "finished_at": "2026-10-23T15:58:07.116Z"
+}

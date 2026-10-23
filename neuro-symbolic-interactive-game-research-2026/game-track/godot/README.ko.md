@@ -1,11 +1,41 @@
 # 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
+## 검증된 현재 프로덕션 (2026-10-23)
+
+[프로덕션 별칭](https://sealed-lighthouse-trace-rpg.vercel.app)과
+[생성 배포 주소](https://sealed-lighthouse-trace-fflmsgady-akillness-projects.vercel.app)의
+`dpl_75HRZ3UGnVtADdvZnFUJaG9espYY`는 관측 상태 `READY`다.
+[HTTP 근거](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-http-assets.json):
+스테이징 게임·대시보드·PDF 18/18개 HTTP 200, 바이트 수·SHA-256 동일, 루트 307 → `/dashboard/`.
+[프로덕션 브라우저 근거](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json):
+stage-zero 거절, 렌즈, 설치/2단계, 최초 공개, 승인된 재표시, map 1440, map 390, 연속 진단의
+8게이트 모두 PASS이며 console/page/request/HTTP 오류는 각각 0건이다. native 키보드·마우스와
+DPR 2의 headed 데스크톱 Chromium 세션 1개이며 390 px는 줄바꿈·키보드 검사이지 물리 모바일이 아니다.
+
+[표현 개선 릴리스 영수증](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)은
+집중 검사 171개 + subtest 23개 통과(동결 사례 62개 + 출판 소스 43개 + 표현 회귀 44개 + 시각 검증기
+22개; [집중 검사 영수증 049](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json),
+[한·영 논문 영수증 050](../../_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json))와 각 10쪽
+[EN](../../paper/latex/en/main.pdf) / [KO](../../paper/latex/ko/main.pdf) PDF
+(675846 / 631282바이트, Type3 글꼴 각각 0개)를 기록한다. SVG 4개와 표의 여백을 넓히고
+LaTeX 수식을 정식 조판했다. 표는 패딩 4 pt·`arraystretch=1.20`·표준 IEEE 10 pt 글꼴을 유지한다.
+[출판 소스 검사](../../tests/test_ontology_publication_sources.py)의
+출처 정체성 음성 사례와 승인된 한·영 절 오라클은 런타임 권한이나 독립 인간 골드·효능 검증이
+아니다. 최종 선택 소스 CI 상태는 표현 개선 영수증에서 확인한다. Git 전달은 별도의 저장소
+커밋·원격 이력으로 확인하며 프로덕션 PASS로 추론하지 않는다. [봉인 사례](../../research/development-cases/ontology-map-20261023-01/result.json)는
+`n=1`, native CLI 6회, 반복 0회, 런타임 선택 `gpt-6.1-sol`, 제공자 정체성·리비전·비용 `null`
+그대로다. Jev는 승인 권한 없는 부정적·미검증 `proposal_only` 조언이다. [소스 맵](../web/dashboard/ontology-map.json),
+Godot writer 권한, 정식 R5 캡처와 과거 코호트는 변경하지 않는다. **G4/전체 G6는 `FIX`이며
+효능·우월성·인간 편익은 입증하지 않는다.** 아래 R3/D-087은 과거 상태이며 현재 프로덕션만 대체한다.
+
+## 선택된 엔진 근거
+
 2026-10-23 갱신: [`current.json`](../../_workspace/current/engineering/tech-verification/current.json)이
 선택한 ID는 `godot-4.7.1-20261023-publication-r5`이다.
 [매니페스트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)는
 실제 Godot 실행 4종과 `2026-10-23 11:00:42` UTC의 macOS non-headless 스크립트 fixture-trace
 재생 패널 3개를 기록한다. 참가자 gameplay나 라이브 모델 추론이 아니다.
-기존 [R3 검증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
+과거 [R3 검증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
 `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`의 `PASS_FOR_APPROVED_BOUNDED_RELEASE`, Godot 정식
 사례 7개, public-safe 검사 8개, 배포 자산 바이트 일치 9개를 기록한다. **G4와 전체 G6는
 `FIX`이며 효능을 주장하지 않는다.** 이번 문서 갱신은 새 배포를 수행하지 않았다.
@@ -18,8 +48,22 @@
 조수위 표식 추리는 시도하지 않았다. 이후 공개 전용 관측이 추가되어도 소유자가
 `current.json`을 갱신하지 않는 한 선택 렌더는 바뀌지 않는다.
 
-trace/receipt 결함을 수정했고 Main은 대상 8파일 실행에서 테스트 53개와 subtest 48개 통과를
-보고했다. 최종 선택 트리 CI·Git·push·배포는 아직 대기 중이다.
+과거 trace/receipt 수정 체크포인트에서 Main은 대상 8파일의 테스트 53개와 subtest 48개
+통과를 보고했다. 현재 프로덕션과 별도 CI/Git 증명은 위 절을 따른다.
+
+## 온톨로지 열람과 엔진 권한의 분리 (2026-10-23)
+
+[대시보드](../web/dashboard/index.html)에서 `Tab`/`Enter` 또는 포인터로 **Engineering detail →
+Ontology structure → evidence / 온톨로지 구조 → 근거**를 연다. 모바일 줄바꿈을 지원하는
+읽기 전용 한·영 8역할 뷰는 선언과 관측 이벤트를 분리하며 누락·미보고는 통과가 아니다.
+정규 참조는 [source JSON](../web/dashboard/ontology-map.json)에 유지하고 공개 UI에는 별칭을
+쓰며 전체 상태는 노출하지 않는다. [봉인된 결과](../../research/development-cases/ontology-map-20261023-01/result.json)는
+런타임이 `gpt-6.1-sol`을 선택한 Codex 개발 사례 1개, CLI 턴 6회, 독립 반복 0회, 검사 62개
+통과, Web 빌드 성공과 실제 입력 거절·최초 공개·재표시, 1440/390 px 연속 진단 오류 0건을
+기록한다. 제공자 정체성·리비전·비용은 `null`이다. [근거와 논문 링크](../design/paper-crosswalk.ko.md#51-온톨로지-구조근거-개발-사례)는
+이를 고정 60-fixture, NPC88, 과거 `gpt-5.6-sol`과 구별되는 추가 공학 사례로 보존하며
+인간 편익·재미·효능·생산성·온톨로지 우월성을 주장하지 않는다. Godot 소스·쓰기 권한·정식
+R5 캡처는 그대로다. **G4/전체 G6는 `FIX`다.**
 
 아래 과거 Cycle 3 기록은 fixture `4/4`, core `52/52`, 별도 D-073 확장 `4/4`, 아키타입
 프로브 `5/5`를 보고한다. 보존 Cycle 2 v5 패킷과 배포 `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`는

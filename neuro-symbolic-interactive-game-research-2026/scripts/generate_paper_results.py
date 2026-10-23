@@ -390,14 +390,14 @@ def _contribution_map(korean: bool) -> str:
     )
     if korean:
         caption = "기여, 선행 주제, 근거 레인, 추론 상한(구조화 매트릭스에서 생성)"
-        head = r"ID & 기여 & 선행 주제 (참고문헌 수) & 레인 & 추론 상한 \\"
+        head = r"\textbf{ID} & \textbf{기여} & \textbf{선행 주제 (참고문헌 수)} & \textbf{레인} & \textbf{추론 상한} \\"
         note = (
             rf"{legend}. 레인은 표~\ref{{tab:evidence-lanes}}에 정의한다. "
             r"모든 행은 구현·작성 fixture 검증 상태이며 어떤 효능 claim도 지지하지 않는다."
         )
     else:
         caption = "Contributions, Prior Topics, Evidence Lanes, and Inference Ceilings (Generated from the Structured Matrices)"
-        head = r"ID & Contribution & Prior topics (refs) & Lanes & Inference ceiling \\"
+        head = r"\textbf{ID} & \textbf{Contribution} & \textbf{Prior topics (refs)} & \textbf{Lanes} & \textbf{Inference ceiling} \\"
         note = (
             rf"{legend}. Lanes are defined in Table~\ref{{tab:evidence-lanes}}. "
             r"All rows are authored-fixture verified; none supports an efficacy claim."
@@ -412,11 +412,12 @@ def _contribution_map(korean: bool) -> str:
         "\n"
         r"\centering\scriptsize"
         "\n"
-        r"\setlength{\tabcolsep}{2.6pt}"
+        r"\setlength{\tabcolsep}{4pt}"
         "\n"
-        r"\renewcommand{\arraystretch}{1.12}"
+        r"\renewcommand{\arraystretch}{1.20}"
         "\n"
-        r"\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.2\columnwidth}l>{\raggedright\arraybackslash}p{0.24\columnwidth}@{}}"
+        "\n"
+        r"\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.18\columnwidth}l>{\raggedright\arraybackslash}p{0.24\columnwidth}@{}}"
         "\n"
         r"\toprule"
         "\n" + head + "\n"
@@ -426,7 +427,7 @@ def _contribution_map(korean: bool) -> str:
         "\n"
         r"\end{tabularx}"
         "\n"
-        rf"\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {note}}}"
+        rf"\par\vspace{{3pt}}\noindent\parbox{{0.96\columnwidth}}{{\scriptsize {note}}}"
         "\n"
         r"\end{table}"
         "\n"
@@ -450,14 +451,14 @@ def _lane_table(korean: bool) -> str:
         body.append(rf"{lane_id} & {name}: {design} & {unit} & {comparison} & {ceiling} \\")
     if korean:
         caption = "실험 레인 요약: 설계, 단위, 비교, 추론 상한(실험 매트릭스에서 생성)"
-        head = r"레인 & 설계 & 단위 / 예산 & 비교 & 상한 \\"
+        head = r"\textbf{레인} & \textbf{설계} & \textbf{단위 / 예산} & \textbf{비교} & \textbf{상한} \\"
         note = (
             r"E1--E3와 ENG1은 서로 대체할 수 없으며 분모가 다르다. E2는 screening-pilot-only이고 ENG1은 engineering-only다. "
             r"어떤 레인도 모집단 효능, 모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다."
         )
     else:
         caption = "Evidence Lanes at a Glance: Design, Unit, Comparison, and Ceiling (Generated from the Experiment Matrix)"
-        head = r"Lane & Design & Unit / budget & Comparison & Ceiling \\"
+        head = r"\textbf{Lane} & \textbf{Design} & \textbf{Unit / budget} & \textbf{Comparison} & \textbf{Ceiling} \\"
         note = (
             r"Lanes are non-interchangeable with different denominators; E2 is screening-pilot-only and ENG1 is engineering-only. "
             r"None establishes population efficacy, model ranking, player experience, retrieval benefit, or commercial-engine performance."
@@ -472,11 +473,11 @@ def _lane_table(korean: bool) -> str:
         "\n"
         r"\centering\scriptsize"
         "\n"
-        r"\setlength{\tabcolsep}{2.4pt}"
+        r"\setlength{\tabcolsep}{4pt}"
         "\n"
-        r"\renewcommand{\arraystretch}{1.12}"
+        r"\renewcommand{\arraystretch}{1.20}"
         "\n"
-        r"\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}p{0.19\columnwidth}>{\raggedright\arraybackslash}p{0.16\columnwidth}@{}}"
+        r"\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.23\columnwidth}>{\raggedright\arraybackslash}p{0.17\columnwidth}>{\raggedright\arraybackslash}p{0.16\columnwidth}@{}}"
         "\n"
         r"\toprule"
         "\n" + head + "\n"
@@ -486,7 +487,7 @@ def _lane_table(korean: bool) -> str:
         "\n"
         r"\end{tabularx}"
         "\n"
-        rf"\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {note}}}"
+        rf"\par\vspace{{3pt}}\noindent\parbox{{0.96\columnwidth}}{{\scriptsize {note}}}"
         "\n"
         r"\end{table}"
         "\n"
@@ -519,8 +520,8 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
         else "E1 Offline Conformance: Frozen-Pilot Checks and Terminal Outcomes (Rows Are Not Comparable)"
     )
     if korean:
-        arm_header_top = "Arm & 정보원 & \\multicolumn{3}{c}{Commit / 사례} & 평균 수정$^{e}$"
-        arm_header_bottom = " & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & 필드 수"
+        arm_header_top = r"\textbf{Arm} & \textbf{정보원} & \multicolumn{3}{c}{\textbf{Commit / 사례}} & \textbf{평균 수정}$^{e}$"
+        arm_header_bottom = r" & & \textbf{G-rep.}$^{f}$ & \textbf{O-only}$^{f}$ & \textbf{Irrep.}$^{f}$ & \textbf{필드 수}"
         arm_labels = (
             "Rejection-only ($K{=}0$)",
             "블라인드 retry",
@@ -528,7 +529,7 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
             "상태 판독 oracle",
         )
         arm_sources = ("없음", "없음", "오류 집합 $E$", "권위 상태+정책")
-        accounting_header = "검사 또는 종단군 & 정확 결과 & 해석 범위"
+        accounting_header = r"\textbf{검사 또는 종단군} & \textbf{정확 결과} & \textbf{해석 범위}"
         accounting_labels = (
             "게이트 fixture 일치",
             "알려진 경계 허용",
@@ -559,10 +560,8 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
             "Irrep. = irreparable(동결 repairability class); 모집단 효능이나 live-model 품질을 뜻하지 않는다."
         )
     else:
-        arm_header_top = (
-            "Arm & Info source & \\multicolumn{3}{c}{Commits / cases} & Mean edits$^{e}$"
-        )
-        arm_header_bottom = " & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Fields"
+        arm_header_top = r"\textbf{Arm} & \textbf{Info source} & \multicolumn{3}{c}{\textbf{Commits / cases}} & \textbf{Mean edits}$^{e}$"
+        arm_header_bottom = r" & & \textbf{G-rep.}$^{f}$ & \textbf{O-only}$^{f}$ & \textbf{Irrep.}$^{f}$ & \textbf{Fields}"
         arm_labels = (
             "Rejection-only ($K{=}0$)",
             "Blind unchanged retry",
@@ -570,7 +569,9 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
             "State-reading oracle",
         )
         arm_sources = ("none", "none", "error set $E$", "state+policy")
-        accounting_header = "Check or terminal family & Exact outcome & Interpretation"
+        accounting_header = (
+            r"\textbf{Check or terminal family} & \textbf{Exact outcome} & \textbf{Interpretation}"
+        )
         accounting_labels = (
             "Gate fixture agreement",
             "Known-boundary acceptance",
@@ -664,8 +665,8 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
 \caption{{{caption1}}}
 \label{{tab:pilot-repair}}
 \centering\scriptsize
-\setlength{{\tabcolsep}}{{2.6pt}}
-\renewcommand{{\arraystretch}}{{1.12}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
 \begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X
  >{{\raggedright\arraybackslash}}X rrrr@{{}}}}
 \toprule
@@ -676,15 +677,15 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
 {chr(10).join(arm_rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {footnote_e}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.96\columnwidth}}{{\scriptsize {footnote_e}}}
 \end{{table}}
 
 \begin{{table}}[t]
 \caption{{{caption2}}}
 \label{{tab:pilot-accounting}}
 \centering\scriptsize
-\setlength{{\tabcolsep}}{{3pt}}
-\renewcommand{{\arraystretch}}{{1.12}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
 \begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X
  >{{\raggedright\arraybackslash}}p{{0.27\columnwidth}}
  >{{\raggedright\arraybackslash}}p{{0.29\columnwidth}}@{{}}}}
@@ -694,7 +695,7 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
 {chr(10).join(accounting_rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {accounting_footnote}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.96\columnwidth}}{{\scriptsize {accounting_footnote}}}
 \end{{table}}
 """.strip()
         + "\n"
@@ -808,9 +809,9 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
         else f"E2 Screening-Pilot-Only: Live Screening Exact Counts ({cell_count} Cells, {calls_per_cell} Proposals per Cell, $K{{=}}1$)"
     )
     header = (
-        "기저 / 조건 & 최초 유효 & $\\rho$ vs blind commit & $\\Delta$ & 최초 오류"
+        r"\textbf{기저 / 조건} & \textbf{최초 유효} & \textbf{$\rho$ vs blind commit} & $\boldsymbol{\Delta}$ & \textbf{최초 오류}"
         if korean
-        else "Base / condition & Initial valid & $\\rho$ vs blind commits & $\\Delta$ & Initial errors"
+        else r"\textbf{Base / condition} & \textbf{Initial valid} & \textbf{$\rho$ vs blind commits} & $\boldsymbol{\Delta}$ & \textbf{Initial errors}"
     )
     footnote = (
         "QSR = quest-stage regression, PEO = policy-effect omission, "
@@ -833,16 +834,16 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
 \caption{{{caption}}}
 \label{{tab:live-screening}}
 \centering\scriptsize
-\setlength{{\tabcolsep}}{{2.7pt}}
-\renewcommand{{\arraystretch}}{{1.12}}
-\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X r c r >{{\raggedright\arraybackslash}}X@{{}}}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
+\begin{{tabularx}}{{\columnwidth}}{{@{{}}>{{\raggedright\arraybackslash}}X >{{\centering\arraybackslash}}p{{0.11\columnwidth}} >{{\centering\arraybackslash}}p{{0.25\columnwidth}} r >{{\raggedright\arraybackslash}}X@{{}}}}
 \toprule
 {header} \\
 \midrule
 {chr(10).join(rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.96\columnwidth}}{{\scriptsize {footnote}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.96\columnwidth}}{{\scriptsize {footnote}}}
 \end{{table}}
 """.strip()
         + "\n"

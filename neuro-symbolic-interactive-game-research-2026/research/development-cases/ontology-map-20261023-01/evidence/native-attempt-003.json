@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "codex",
+    "exec",
+    "--sandbox",
+    "workspace-write",
+    "resume",
+    "--ignore-user-config",
+    "--model",
+    "gpt-6.1-sol",
+    "--json",
+    "--output-last-message",
+    "<MEASURED_CASE>/repair-002-final.txt",
+    "01a1687c-c5a3-7a83-ab6b-262877f61c90",
+    "Continue the same frozen case and the same repair request in repair-001-prompt.txt. The preceding resume defaulted to read-only and made NO edit; Main now passes --sandbox workspace-write explicitly before resume, as the official SDK command builder does. Inspect active permission, then apply the minimal PUBLIC RENDERING fix only if workspace-write is actually active. Do not touch ontology-map.json, tests, canonical engine/writer, source packets or research results. Preserve source-backed role content while replacing secret actor/fact identifiers/path segments and spoiler-bearing fact wording with neutral public aliases at the view boundary. Keep declared-vs-observed separation. No git, installs, formatter, linter, project suites or agents. Prior failed test and the no-edit read-only attempt remain recorded."
+  ],
+  "cwd": "<SELECTED_PROJECT>",
+  "started_at": "2026-10-23T11:30:44.699Z",
+  "finished_at": "2026-10-23T11:31:17.719Z",
+  "elapsed_seconds": 33.01969179200009,
+  "exit_code": 0,
+  "timed_out": false,
+  "stdout_file": "native-attempt-003.stdout",
+  "stderr_file": "native-attempt-003.stderr",
+  "stdout_sha256": "c5e8531bf1f0931d98916682ed266436af098fea5daee65578c4e6016ea8138b",
+  "stderr_sha256": "ab63ea16fa51e100aec2486c8161bd2e8d5dfebcb949c6ad123762e853451e5b",
+  "publication_materialization": {
+    "raw_receipt_sha256": "24a47b4bb821f3ecb02e741b9bfb7ca931998ca05db97ccea7080feb0fda511b",
+    "raw_stdout_sha256": "f7e9ff600cb4e9c4c16452cb546cef43ccb166906dbe6dc0817b20372685fbaf",
+    "raw_stderr_sha256": "83c253710fa05c11a0fd0cb4dffc2ba3cf24a5489ba6d8ce93b80c010cd987bd",
+    "not_byte_equivalent": true
+  }
+}

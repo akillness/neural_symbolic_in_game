@@ -473,9 +473,9 @@ def _tables(packet: dict[str, Any], korean: bool) -> str:
         else "NPC-SCR1 fixed-case execution counts, separate from the 16 NPC-ENG1 cases; all assigned failures remain in the denominator."
     )
     headers = (
-        r"Arm & 배정 & 완료/실패 & 목표 도달 & 회복 E/U \\"
+        r"\textbf{Arm} & \textbf{배정} & \textbf{완료/실패} & \textbf{목표 도달} & \textbf{회복 E/U} \\"
         if korean
-        else r"Arm & Assigned & Complete/fail & Goal reached & Recovery E/U \\"
+        else r"\textbf{Arm} & \textbf{Assigned} & \textbf{Complete/fail} & \textbf{Goal reached} & \textbf{Recovery E/U} \\"
     )
     rows = []
     for arm in ARMS:
@@ -504,8 +504,8 @@ def _tables(packet: dict[str, Any], korean: bool) -> str:
 \caption{{{caption}}}
 \label{{tab:npc-screening}}
 \centering\scriptsize
-\setlength{{\tabcolsep}}{{2.8pt}}
-\renewcommand{{\arraystretch}}{{1.12}}
+\setlength{{\tabcolsep}}{{4pt}}
+\renewcommand{{\arraystretch}}{{1.20}}
 \begin{{tabularx}}{{\columnwidth}}{{@{{}}l r >{{\centering\arraybackslash}}X >{{\centering\arraybackslash}}X >{{\centering\arraybackslash}}X@{{}}}}
 \toprule
 {headers}
@@ -513,7 +513,7 @@ def _tables(packet: dict[str, Any], korean: bool) -> str:
 {chr(10).join(rows)}
 \bottomrule
 \end{{tabularx}}
-\vspace{{1pt}}\parbox{{0.97\columnwidth}}{{\scriptsize {note}}}
+\par\vspace{{3pt}}\noindent\parbox{{0.97\columnwidth}}{{\scriptsize {note}}}
 \end{{table}}
 """.strip()
         + "\n"

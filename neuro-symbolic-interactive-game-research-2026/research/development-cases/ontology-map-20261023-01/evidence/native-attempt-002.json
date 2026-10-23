@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "codex",
+    "exec",
+    "resume",
+    "--ignore-user-config",
+    "--model",
+    "gpt-6.1-sol",
+    "--json",
+    "--output-last-message",
+    "<MEASURED_CASE>/repair-001-final.txt",
+    "01a1687c-c5a3-7a83-ab6b-262877f61c90",
+    "Repair the SAME frozen ontology-map-20261023-01 case, not a new run. Main executed frozen verification:49 pass/1fail. Existing tests/test_signal_explainer.py::test_dashboard_consumes_real_iframe_events_and_resets_live_clock fails because tests/dashboard_signal_driver.cjs checks document.body.textContent and finds protected actor/fact identifiers captain_mira or dock_saved in your new declared ontology table. The existing event sanitizer correctly hides them; your static declaration rendering reintroduces hidden IDs into page text (even when details is collapsed). Preserve the untouched baseline privacy assertion, all tests, canonical packet, ontology source JSON and grounded research references. Fix ONLY the permitted dashboard production files: keep the exact research JSON source references/identifiers as evidence, but render a public-safe, spoiler-free ontology projection with neutral actor/fact aliases and redacted sensitive identifier/path segments rather than raw canonical IDs. Do not treat declared facts as live observations; retain clear declared-vs-observed/missing semantics and concrete role/constraint relationships. Do not remove the map, weaken assertions, suppress event errors or change hard writer/Godot. Keep safe literal text rendering, accessibility, bilingual labels and mobile reflow. No git, package installs, tests authored, format/lint/global suites or further agents. Prior candidate, actual failed test stdout/stderr and build PASS are already preserved. Return concise changed files and unverified checks."
+  ],
+  "cwd": "<SELECTED_PROJECT>",
+  "started_at": "2026-10-23T11:29:49.473Z",
+  "finished_at": "2026-10-23T11:30:04.972Z",
+  "elapsed_seconds": 15.499160749999806,
+  "exit_code": 0,
+  "timed_out": false,
+  "stdout_file": "native-attempt-002.stdout",
+  "stderr_file": "native-attempt-002.stderr",
+  "stdout_sha256": "7f6dbf62e34804550f474a38ecb8e169b7b3124939bfb139c4ac6a67d87fc84d",
+  "stderr_sha256": "15f96f42d8062d54795d9f474e5b84436e5e4346b66da54e55beec65f682d6e9",
+  "publication_materialization": {
+    "raw_receipt_sha256": "aefe19095936c4bc7e727b0132c2063ba4d9d39ee6ffa28ac163e35b1c125e37",
+    "raw_stdout_sha256": "7f6dbf62e34804550f474a38ecb8e169b7b3124939bfb139c4ac6a67d87fc84d",
+    "raw_stderr_sha256": "cbbdaeaa65881e7e623670599a2d4edbf663a90e750f256eaad11f0a85ed6a94",
+    "not_byte_equivalent": true
+  }
+}

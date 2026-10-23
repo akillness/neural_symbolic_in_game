@@ -30,6 +30,17 @@ PALE_ORANGE = "#FFF2DD"
 PALE_GREEN = "#E8F5EF"
 PALE_GRAY = "#EEF0F2"
 
+# Only these authored mathematical labels use SVG typography; DTO strings stay literal.
+MATH_LABELS = {
+    "external q_t": 'external <tspan font-style="italic">q<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan>',
+    "6 families -> E": '6 families → <tspan font-style="italic">E</tspan>',
+    "invalid: rho": 'invalid: <tspan font-style="italic">ρ</tspan>',
+    "reads a and E": 'reads <tspan font-style="italic">a</tspan> and <tspan font-style="italic">E</tspan>',
+    "all v_i hold:": 'all <tspan font-style="italic">v<tspan baseline-shift="sub" font-size="70%">i</tspan></tspan> hold:',
+    "recheck, T(c_t, a)": 'recheck, <tspan font-style="italic">T(c<tspan baseline-shift="sub" font-size="70%">t</tspan>, a)</tspan>',
+    "recompute T,": 'recompute <tspan font-style="italic">T</tspan>,',
+}
+
 
 def svg_header(width: int, height: int, title: str, description: str) -> list[str]:
     """Return a common Classic Academic SVG header and marker definitions."""
@@ -148,7 +159,7 @@ def text(
     transform = f' transform="rotate({rotate} {x} {y})"' if rotate is not None else ""
     return (
         f'  <text x="{x}" y="{y}" class="{css_class}" text-anchor="{anchor}"'
-        f"{fill_attr}{transform}>{escape(value)}</text>"
+        f"{fill_attr}{transform}>{MATH_LABELS.get(value, escape(value))}</text>"
     )
 
 
@@ -166,7 +177,7 @@ def multiline(
     tspans = []
     for index, value in enumerate(values):
         dy = "0" if index == 0 else str(line_height)
-        tspans.append(f'<tspan x="{x}" dy="{dy}">{escape(value)}</tspan>')
+        tspans.append(f'<tspan x="{x}" dy="{dy}">{MATH_LABELS.get(value, escape(value))}</tspan>')
     return (
         f'  <text x="{x}" y="{y}" class="{css_class}" '
         f'text-anchor="{anchor}"{fill_attr}>' + "".join(tspans) + "</text>"
@@ -245,8 +256,8 @@ def arrow_label(
     return [
         '  <g class="connector-label" data-line-clearance="shielded">',
         (
-            f'    <rect class="label-shield" x="{x - width // 2}" y="{y - 28}" '
-            f'width="{width}" height="38" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>'
+            f'    <rect class="label-shield" x="{x - width // 2}" y="{y - 44}" '
+            f'width="{width}" height="68" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>'
         ),
         (
             f'    <text x="{x}" y="{y}" class="arrow-label" text-anchor="middle" '
@@ -269,11 +280,11 @@ def vertical_label_chip(
     return [
         '  <g class="connector-label" data-line-clearance="shielded">',
         (
-            f'    <rect class="label-shield" x="{x - 24}" y="{y - height // 2}" '
-            f'width="48" height="{height}" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>'
+            f'    <rect class="label-shield" x="{x - 34}" y="{y - height // 2}" '
+            f'width="68" height="{height}" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>'
         ),
         (
-            f'    <text x="{x}" y="{y}" class="section" text-anchor="middle" '
+            f'    <text x="{x}" y="{y}" class="section" text-anchor="middle" dominant-baseline="central" '
             f'fill="{color}" transform="rotate(-90 {x} {y})">{escape(value)}</text>'
         ),
         "  </g>",
@@ -485,36 +496,18 @@ def architecture_svg() -> str:
 
 
 def compact_architecture_svg() -> str:
-    """Render the single-column transaction pipeline overview with lane tags."""
-
-    width, height = 900, 860
+    """Render the full-width transaction pipeline with padded stages and scope tags."""
+    width, height = 1280, 1220
     items = svg_header(
         width,
         height,
         "TRACE-RPG transaction pipeline overview",
-        (
-            "One generated event read left to right: an untrusted proposal crosses the "
-            "trust boundary as a typed candidate, and seven deterministic checks grouped "
-            "into six state-relative families decide it from external policy and state. "
-            "A failing candidate may be repaired from its typed errors at most K times or "
-            "falls back unchanged; a passing candidate is rechecked and committed. Evidence "
-            "tags are scope labels only: E1 offline conformance, E2 screening-pilot-only, "
-            "and ENG1 engineering-only. No figure element supports population efficacy or "
-            "player-experience claims. The lower strip shows the playable ledger grammar "
-            "derived from committed snapshots."
-        ),
+        "One generated event read left to right: an untrusted proposal crosses the trust boundary as a typed candidate, and seven deterministic checks grouped into six state-relative families decide it from external policy and state. A failing candidate may be repaired from its typed errors at most K times or falls back unchanged; a passing candidate is rechecked and committed. Evidence tags are scope labels only: E1 offline conformance, E2 screening-pilot-only, and ENG1 engineering-only. No figure element supports population efficacy or player-experience claims. The lower strip shows the playable ledger grammar derived from committed snapshots.",
     )
     items.insert(
-        len(items) - 1,
-        "  <style>.tag { font-size: 28px; font-weight: 700; }"
-        " .ledger { font-size: 28px; font-weight: 700; }"
-        " .legend { font-size: 28px; font-weight: 700; }</style>",
+        len(items) - 1, "<style>.tag,.ledger,.legend {font-size:28px;font-weight:700}</style>"
     )
-    tag_style = {
-        "E1": (BLUE, PALE_BLUE, 44),
-        "E2": (ORANGE, PALE_ORANGE, 44),
-        "ENG1": (GREEN, PALE_GREEN, 78),
-    }
+    tag_colors = {"E1": BLUE, "E2": ORANGE, "ENG1": GREEN}
 
     def stage(
         x: int,
@@ -528,89 +521,63 @@ def compact_architecture_svg() -> str:
         tags: tuple[str, ...],
         dashed: bool = False,
     ) -> list[str]:
-        box_height = 142
-        parts = component_box(
+        parts = [
+            rect(x, y, box_width, 204, fill=fill, stroke=accent, dash="8 6" if dashed else None),
+            text(x + box_width // 2, y + 44, title_value, css_class="box-title", anchor="middle"),
+            multiline(x + box_width // 2, y + 94, body_lines, css_class="small", line_height=38),
+        ]
+        # Text-only scope tags avoid miniature chips with near-zero internal padding.
+        span = 80 * (len(tags) - 1)
+        for index, tag in enumerate(tags):
+            parts.append(
+                text(
+                    x + box_width // 2 - span // 2 + 80 * index,
+                    y + 178,
+                    tag,
+                    css_class="tag",
+                    anchor="middle",
+                    fill=tag_colors[tag],
+                )
+            )
+        return parts
+
+    items += [
+        rect(10, 15, 1260, 880, fill=LIGHT_GRAY),
+        text(35, 65, "ONE GENERATED EVENT AS A TRANSACTION", css_class="section"),
+        text(35, 110, "E1 offline", css_class="legend", fill=BLUE),
+        text(365, 110, "E2 screening-pilot-only", css_class="legend", fill=ORANGE),
+        text(855, 110, "ENG1 engineering-only", css_class="legend", fill=GREEN),
+    ]
+    row1, row2, row3 = 140, 404, 668
+    for x, accent, title_value, body_lines, fill, tags, dashed in (
+        (20, GRAY, "PROPOSAL", ("untrusted", "model output"), PALE_GRAY, ("E2",), True),
+        (362, BLUE, "PARSER", ("type-strict", "known keys"), PALE_BLUE, ("E1",), False),
+        (674, BLUE, "POLICY", ("external q_t", "who may act"), PALE_BLUE, ("E1", "ENG1"), False),
+        (
+            986,
+            BLUE,
+            "VALIDATE",
+            ("7 checks", "6 families -> E"),
+            PALE_BLUE,
+            ("E1", "E2", "ENG1"),
+            False,
+        ),
+    ):
+        items += stage(
             x,
-            y,
-            box_width,
-            box_height,
+            row1,
+            270,
             accent=accent,
             title_value=title_value,
             body_lines=body_lines,
             fill=fill,
+            tags=tags,
             dashed=dashed,
         )
-        cursor = x + box_width - 6
-        for tag in reversed(tags):
-            color, pale, chip_width = tag_style[tag]
-            cursor -= chip_width
-            parts.append(rect(cursor, y + 103, chip_width, 32, fill=pale, stroke=color, radius=4))
-            parts.append(
-                text(cursor + chip_width // 2, y + 127, tag, css_class="tag", anchor="middle")
-            )
-            cursor -= 6
-        return parts
-
-    # Band A: the transaction pipeline, read left to right and then down.
-    items += band(
-        10,
-        15,
-        880,
-        635,
-        accent=BLUE,
-        title_value="ONE GENERATED EVENT AS A TRANSACTION",
-    )
-    # Evidence tags are scope labels, not efficacy claims.
-    items.append(text(25, 96, "E1 offline", css_class="legend", fill=BLUE))
-    items.append(text(245, 96, "E2 screening-pilot-only", css_class="legend", fill=ORANGE))
-    items.append(text(575, 96, "ENG1 engineering-only", css_class="legend", fill=GREEN))
-    row1, row2, row3 = 130, 312, 494
-    columns = (20, 243, 466, 689)
     items += stage(
-        columns[0],
-        row1,
-        190,
-        accent=GRAY,
-        title_value="PROPOSAL",
-        body_lines=("untrusted", "model output"),
-        fill=PALE_GRAY,
-        tags=("E2",),
-        dashed=True,
-    )
-    items += stage(
-        columns[1],
-        row1,
-        190,
-        accent=BLUE,
-        title_value="PARSER",
-        body_lines=("type-strict", "known keys"),
-        fill=PALE_BLUE,
-        tags=("E1",),
-    )
-    items += stage(
-        columns[2],
-        row1,
-        190,
-        accent=BLUE,
-        title_value="POLICY",
-        body_lines=("external q_t", "who may act"),
-        fill=PALE_BLUE,
-        tags=("E1", "ENG1"),
-    )
-    items += stage(
-        columns[3],
-        row1,
-        190,
-        accent=BLUE,
-        title_value="VALIDATE",
-        body_lines=("7 checks", "6 families -> E"),
-        fill=PALE_BLUE,
-        tags=("E1", "E2", "ENG1"),
-    )
-    items += stage(
-        columns[2],
+        664,
         row2,
-        190,
+        270,
         accent=GRAY,
         title_value="FALLBACK",
         body_lines=("j = K:", "no mutation"),
@@ -619,96 +586,60 @@ def compact_architecture_svg() -> str:
         dashed=True,
     )
     items += stage(
-        columns[3],
+        986,
         row2,
-        190,
+        270,
         accent=ORANGE,
         title_value="REPAIR",
         body_lines=("invalid: rho", "reads a and E"),
         fill=PALE_ORANGE,
         tags=("E1", "E2"),
     )
-    items += stage(
-        20,
-        row3,
-        270,
-        accent=GREEN,
-        title_value="COMMIT",
-        body_lines=("all v_i hold:", "recheck, T(c_t, a)"),
-        fill=PALE_GREEN,
-        tags=("E1", "ENG1"),
-    )
-    items += stage(
-        315,
-        row3,
-        270,
-        accent=GREEN,
-        title_value="RECORD",
-        body_lines=("SHA-256 linked", "terminal row"),
-        fill=PALE_GREEN,
-        tags=("E1", "ENG1"),
-    )
-    items += stage(
-        610,
-        row3,
-        270,
-        accent=GREEN,
-        title_value="REPLAY",
-        body_lines=("recompute T,", "compare state"),
-        fill=PALE_GREEN,
-        tags=("E1", "ENG1"),
-    )
-
-    mid1 = row1 + 71
-    items.append(line(210, mid1, 243, mid1, color=GRAY, marker="gray"))
-    items.append(line(433, mid1, 466, mid1, color=BLUE, marker="blue"))
-    items.append(line(656, mid1, 689, mid1, color=BLUE, marker="blue"))
-    # Trust boundary between the proposal and the parser.
-    items.append(line(226, 122, 226, 280, color=ORANGE, width=4, dash="11 7"))
-    items += vertical_label_chip(226, 201, "TRUST", color=ORANGE, height=102)
-    # Failing candidate: typed errors E go to the repair callback.
-    items.append(line(760, 272, 760, 312, color=ORANGE, marker="orange"))
-    items += arrow_label(705, 299, "E", color=ORANGE, width=40)
-    # Bounded retry returns the repaired candidate to the gate.
-    items.append(path("M850 312 V272", color=ORANGE, marker="orange", dash="9 6"))
-    items.append(line(689, 383, 656, 383, color=GRAY, marker="gray"))
-    items.append(path("M561 454 V474 H450 V494", color=GRAY, marker="gray"))
-    # Passing candidate: down to the commit row.
-    items.append(path("M689 230 H672 V292 H155 V494", color=GREEN, marker="green"))
-    items += arrow_label(155, 390, "valid", color=GREEN, width=90)
-    mid3 = row3 + 71
-    items.append(line(290, mid3, 315, mid3, color=GREEN, marker="green"))
-    items.append(line(585, mid3, 610, mid3, color=GREEN, marker="green"))
-
-    # Band B: one compact row preserves the playable ledger grammar without
-    # shrinking any label below the 28 px paper-label floor.
-    items += band(
-        10,
-        665,
-        880,
-        175,
-        accent=GREEN,
-        title_value="PLAYABLE LEDGER GRAMMAR (ENG1)",
-    )
-    for x, accent, fill, dashed, lines in (
-        (20, GREEN, PALE_GREEN, False, ("ENTRY #N", "COMMITTED", "7 checks hold")),
-        (235, GREEN, PALE_GREEN, False, ("CONTRIB. #N", "STAGE a>b", "CHAIN k/3")),
-        (450, ORANGE, PALE_ORANGE, True, ("HELD", "reason code", "NEXT VALID")),
-        (665, BLUE, PALE_BLUE, False, ("RULE", "GATE family", "recalled later")),
+    for x, title_value, body_lines in (
+        (20, "COMMIT", ("all v_i hold:", "recheck, T(c_t, a)")),
+        (450, "RECORD", ("SHA-256 linked", "terminal row")),
+        (880, "REPLAY", ("recompute T,", "compare state")),
     ):
-        y = 715
-        items.append(rect(x, y, 205, 110, fill=fill, stroke=accent, dash="8 6" if dashed else None))
-        items.append(f'  <rect x="{x}" y="{y}" width="8" height="110" rx="4" fill="{accent}"/>')
-        items.append(text(x + 106, y + 34, lines[0], css_class="ledger", anchor="middle"))
-        items.append(
-            multiline(
-                x + 106,
-                y + 65,
-                lines[1:],
-                css_class="small",
-                line_height=34,
-            )
+        items += stage(
+            x,
+            row3,
+            380,
+            accent=GREEN,
+            title_value=title_value,
+            body_lines=body_lines,
+            fill=PALE_GREEN,
+            tags=("E1", "ENG1"),
         )
+    for x1, x2, color, marker in ((638, 668, BLUE, "blue"), (950, 980, BLUE, "blue")):
+        items.append(line(x1, 242, x2, 242, color=color, marker=marker))
+    items.append(line(326, 132, 326, 352, color=ORANGE, width=3, dash="11 7"))
+    items += vertical_label_chip(326, 164, "TRUST", color=ORANGE, height=156)
+    items.append(line(296, 242, 356, 242, color=GRAY, marker="gray"))
+    items.append(line(1080, 350, 1080, 398, color=ORANGE, marker="orange"))
+    items += arrow_label(1032, 380, "E", color=ORANGE, width=64)
+    items.append(path("M1220 398 V350", color=ORANGE, marker="orange", dash="9 6"))
+    items.append(line(980, 506, 940, 506, color=GRAY, marker="gray"))
+    items.append(path("M800 614 V638 H640 V662", color=GRAY, marker="gray"))
+    items.append(path("M980 264 H960 V374 H210 V662", color=GREEN, marker="green"))
+    items += arrow_label(210, 506, "valid", color=GREEN, width=112)
+    items.append(line(406, 770, 444, 770, color=GREEN, marker="green"))
+    items.append(line(836, 770, 874, 770, color=GREEN, marker="green"))
+
+    items += [
+        rect(10, 915, 1260, 285, fill=LIGHT_GRAY),
+        text(35, 965, "PLAYABLE LEDGER GRAMMAR (ENG1)", css_class="section"),
+    ]
+    for x, accent, fill, dashed, lines in (
+        (24, GREEN, PALE_GREEN, False, ("ENTRY #N", "COMMITTED", "7 checks hold")),
+        (336, GREEN, PALE_GREEN, False, ("CONTRIB. #N", "STAGE a>b", "CHAIN k/3")),
+        (648, ORANGE, PALE_ORANGE, True, ("HELD", "reason code", "NEXT VALID")),
+        (960, BLUE, PALE_BLUE, False, ("RULE", "GATE family", "recalled later")),
+    ):
+        items.append(
+            rect(x, 1000, 292, 170, fill=fill, stroke=accent, dash="8 6" if dashed else None)
+        )
+        items.append(text(x + 146, 1044, lines[0], css_class="ledger", anchor="middle"))
+        items.append(multiline(x + 146, 1090, lines[1:], css_class="small", line_height=40))
     items.append("</svg>")
     return "\n".join(items) + "\n"
 

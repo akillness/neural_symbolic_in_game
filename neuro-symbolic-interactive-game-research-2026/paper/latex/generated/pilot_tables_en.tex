@@ -2,14 +2,14 @@
 \caption{E1 Offline Conformance: Exact Repair-Arm Counts by Repairability Class (Designed Fixtures)}
 \label{tab:pilot-repair}
 \centering\scriptsize
-\setlength{\tabcolsep}{2.6pt}
-\renewcommand{\arraystretch}{1.12}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
  >{\raggedright\arraybackslash}X rrrr@{}}
 \toprule
-Arm & Info source & \multicolumn{3}{c}{Commits / cases} & Mean edits$^{e}$ \\
+\textbf{Arm} & \textbf{Info source} & \multicolumn{3}{c}{\textbf{Commits / cases}} & \textbf{Mean edits}$^{e}$ \\
 \cmidrule(lr){3-5}
- & & G-rep.$^{f}$ & O-only$^{f}$ & Irrep.$^{f}$ & Fields \\
+ & & \textbf{G-rep.}$^{f}$ & \textbf{O-only}$^{f}$ & \textbf{Irrep.}$^{f}$ & \textbf{Fields} \\
 \midrule
 Rejection-only ($K{=}0$) & none & 0/5 & 0/1 & 0/6 & --- \\
 Blind unchanged retry & none & 0/5 & 0/1 & 0/6 & --- \\
@@ -18,20 +18,20 @@ Validator-error-guided $\rho$ & error set $E$ & 5/5 & 0/1 & 0/6 & 1.0 \\
 State-reading oracle & state+policy & 5/5 & 1/1 & 0/6 & 1.0 \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize $^{e}$Mean changed candidate fields over committed repairs (minimality proxy); failed arm executions left the state unchanged. E1 uses 12 initially invalid designed cases: rejection-only/blind 0/12, 0/12; validator-error-guided $\rho$ 5/12; state-reading oracle 6/12 commits. $^{f}$Commits/cases. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable (frozen repairability classes); these are not population efficacy or live-model quality.}
+\par\vspace{3pt}\noindent\parbox{0.96\columnwidth}{\scriptsize $^{e}$Mean changed candidate fields over committed repairs (minimality proxy); failed arm executions left the state unchanged. E1 uses 12 initially invalid designed cases: rejection-only/blind 0/12, 0/12; validator-error-guided $\rho$ 5/12; state-reading oracle 6/12 commits. $^{f}$Commits/cases. G-rep. = guided-repairable, O-only = oracle-only, Irrep. = irreparable (frozen repairability classes); these are not population efficacy or live-model quality.}
 \end{table}
 
 \begin{table}[t]
 \caption{E1 Offline Conformance: Frozen-Pilot Checks and Terminal Outcomes (Rows Are Not Comparable)}
 \label{tab:pilot-accounting}
 \centering\scriptsize
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.12}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
 \begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X
  >{\raggedright\arraybackslash}p{0.27\columnwidth}
  >{\raggedright\arraybackslash}p{0.29\columnwidth}@{}}
 \toprule
-Check or terminal family & Exact outcome & Interpretation \\
+\textbf{Check or terminal family} & \textbf{Exact outcome} & \textbf{Interpretation} \\
 \midrule
 Gate fixture agreement & 13/13 & authored-oracle agreement \\
 Known-boundary acceptance & 2/2 & encoded limit, not a safety pass \\
@@ -43,5 +43,5 @@ Adapter terminal classes & 1 commit; 1 fallback; 5 failures / 7 assigned & compl
 Manifest-guard rejection & 3/3 & injected faults failed closed \\
 \bottomrule
 \end{tabularx}
-\vspace{1pt}\parbox{0.96\columnwidth}{\scriptsize Rows have different denominators and favorable directions; they must not be ranked as rates. Every value is an exact audit fact for designed fixtures.}
+\par\vspace{3pt}\noindent\parbox{0.96\columnwidth}{\scriptsize Rows have different denominators and favorable directions; they must not be ranked as rates. Every value is an exact audit fact for designed fixtures.}
 \end{table}

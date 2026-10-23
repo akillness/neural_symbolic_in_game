@@ -1,0 +1,72 @@
+{
+  "id": "dpl_75HRZ3UGnVtADdvZnFUJaG9espYY",
+  "name": "sealed-lighthouse-trace-rpg",
+  "url": "sealed-lighthouse-trace-fflmsgady-akillness-projects.vercel.app",
+  "target": "production",
+  "readyState": "READY",
+  "createdAt": 1792771052199,
+  "aliases": [
+    "sealed-lighthouse-trace-rpg.vercel.app",
+    "sealed-lighthouse-trace-rpg-akillness-projects.vercel.app"
+  ],
+  "builds": [
+    {
+      "id": "bld_8pu57jmnc",
+      "deploymentId": "dpl_75HRZ3UGnVtADdvZnFUJaG9espYY",
+      "entrypoint": ".",
+      "readyState": "READY",
+      "readyStateAt": 1792771052131,
+      "createdAt": 1792771052131,
+      "createdIn": "sfo1",
+      "use": "@vercel/vc-build",
+      "config": {
+        "outputDirectory": "dist",
+        "nodeVersion": "24.x",
+        "projectCreatedAt": 1786629179144,
+        "vercelConfig": {
+          "$schema": "https://openapi.vercel.sh/vercel.json",
+          "outputDirectory": "dist",
+          "cleanUrls": false,
+          "trailingSlash": true,
+          "redirects": [
+            {
+              "source": "/",
+              "destination": "/dashboard/",
+              "permanent": false
+            },
+            {
+              "source": "/index.html",
+              "destination": "/public/index.html",
+              "permanent": false
+            }
+          ],
+          "headers": [
+            {
+              "source": "/(.*)",
+              "headers": [
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Permissions-Policy",
+                  "value": "camera=(), microphone=(), geolocation=()"
+                }
+              ]
+            }
+          ],
+          "name": "sealed-lighthouse-trace-rpg",
+          "version": 2
+        }
+      },
+      "middleware": [],
+      "output": [],
+      "fingerprint": null
+    }
+  ],
+  "contextName": "akillness-projects"
+}

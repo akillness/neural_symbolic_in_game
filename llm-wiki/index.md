@@ -2,7 +2,7 @@
 
 ## Project
 
-- [[wiki/projects/trace-rpg-paper-2026]] — active SCI/SCIE-oriented paper; strict-admitted006 engineering/descriptive evidence, **READY_FOR_SELECTED_COMMIT**, not deployed (2026-10-17)
+- [[wiki/projects/trace-rpg-paper-2026]] — SCI/SCIE-oriented paper; [[wiki/reports/2026-10-23-ontology-map-development-case]] owns current bounded ontology/coding/production evidence. The 2026-10-17 strict-admitted006 record is historical engineering/descriptive evidence, not current-source efficacy or release approval.
 
 ## Concepts
 
@@ -12,6 +12,10 @@
 - [[wiki/concepts/journal-grade-experimental-design]] — two-stage model panel, statistics, human evaluation, reproducibility
 
 ## Sources and reports
+
+- [[wiki/reports/2026-10-23-ontology-map-development-case]] — **현재 온톨로지·실제 개발 사례·표현 개선 검증 (2026-10-23)**: 8역할과 Python7/Godot6/DISC7은 별개다. Codex `gpt-6.1-sol` 사례는 `n=1`·CLI6·독립 반복0 그대로이며, 검사171개 = 동결 사례62 + 출판 소스43 + 표현 회귀44 + 시각 검증기22, 별도 subtest23개 통과다([049](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json), [한·영 논문050](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json)). 제공자 정체성·리비전·비용은 `null`; Jev는 부정적·미검증 `proposal_only` 조언이다.
+  - 배포 `dpl_75HRZ3UGnVtADdvZnFUJaG9espYY` READY: [HTTP 근거](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-http-assets.json) 자산18/18 HTTP200·바이트/해시 일치·루트307 → `/dashboard/`; [실제 입력 근거](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json) 8게이트 PASS·모든 진단 오류0. Headed Chromium DPR2의 390 px는 데스크톱 줄바꿈·키보드 검사이지 물리 모바일 gameplay가 아니다.
+  - 한영 PDF는 각각10쪽·EN675846/KO631282바이트·Type3 각각0개다. SVG4개·표 여백과 정식 LaTeX 수식을 개선했으며 표 패딩4 pt·`arraystretch=1.20`·표준 IEEE10 pt를 유지한다. 최종 선택 소스 CI 상태는 [표현 개선 영수증](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json)에서 확인한다. Git 전달은 별도 저장소 커밋·원격 이력으로 확인하며 배포에서 추론하지 않는다. **G4/full G6는 `FIX`; 효능·우월성·인간 편익은 미입증**이며 동결 실험과 아래 과거 기록은 보존한다.
 
 - [[wiki/reports/2026-10-15-npc-goal-operation-implementation]] — **strict-admitted006; READY_FOR_SELECTED_COMMIT, 2026-10-17**: composed actual source/artifact reviews close with all 82 final byte identities matching; final actual guide/2-JPEG review APPROVE, 4/4. Selected-tree full CI exits 0: 333 unit tests OK plus 78 game tests and 48 subtests. Final selected006 strict validation admits 16 ENG + 72 SCR with zero missing/errors and zero replay model calls; ENG remains engineering-only, SCR bounded descriptive only. Final EN/KO PDFs are each 10 pages. The earlier 176/178, exit-1 test receipt and two lost-original unit RED receipts remain dated history; experiment packets are not corrupted by those QA losses. Commit/push, clean Godot release build, production deployment/browser verification are not done; G4/G6 remain open and efficacy/model-family verification/independent-gold/human-benefit/superiority/generalization/`C-RESULT` ceilings remain unchanged.
 - [[wiki/reports/2026-10-14-npc-goal-recovery-design]] — **독립 검토 완료된 NPC 운영 시스템 설계**: PASS_FOR_USER_REVIEW; 게임 고정 목표, 자연어 의도 해석 + 기호 재계획, 실제 Godot 이벤트 폐루프, 권한·상태 신선도·claim/fact 분리, 대조군/지표/발언 출처 동결 기준; 프로토콜·구현·새 효능 결과는 미완료

@@ -1,0 +1,58 @@
+.........................................F........                       [100%]
+=================================== FAILURES ===================================
+_______ test_dashboard_consumes_real_iframe_events_and_resets_live_clock _______
+
+    def test_dashboard_consumes_real_iframe_events_and_resets_live_clock():
+        """Exercise the served DOM, iframe postMessage boundary, chronology, and reset."""
+        web_root = ROOT / "game-track/web"
+        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(web_root))
+        server = socketserver.ThreadingTCPServer(("127.0.0.1", 0), handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            playwright_path = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+            if not playwright_path:
+                pytest.skip("Playwright CLI is not installed")
+            node_root = Path(playwright_path).parent.parent
+            env = os.environ.copy()
+            env["SIGNAL_DASHBOARD_BASE_URL"] = f"http://127.0.0.1:{server.server_address[1]}"
+            env["NODE_PATH"] = str(node_root / "lib/node_modules")
+            browser_candidates = sorted(
+                Path.home().glob(
+                    "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+                )
+            )
+            if browser_candidates:
+                env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(browser_candidates[-1])
+            result = subprocess.run(
+                ["node", str(ROOT / "tests/dashboard_signal_driver.cjs")],
+                cwd=ROOT,
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=90,
+            )
+>           assert result.returncode == 0, result.stdout + result.stderr
+E           AssertionError: Error: hidden actor/fact ID leaked into dashboard text
+E                 at main (<SELECTED_PROJECT>/tests/dashboard_signal_driver.cjs:94:89)
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['node', '<SELECTED_CHECKOUT>/neuro-symbolic-interactive-game-research...e-rpg-selected-public-UiERwD/neuro-symbolic-interactive-game-research-2026/tests/dashboard_signal_driver.cjs:94:89)\n').returncode
+
+tests/test_signal_explainer.py:361: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /dashboard/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /dashboard/dashboard.css?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /dashboard/dashboard.js?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /public/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /dashboard/ontology-map.json HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /dashboard/disclosure-reference.json HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /public/index.png HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /public/index.js HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /public/index.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /public/index.pck HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:28:12] "GET /public/index.icon.png HTTP/1.1" 200 -
+=========================== short test summary info ============================
+FAILED tests/test_signal_explainer.py::test_dashboard_consumes_real_iframe_events_and_resets_live_clock
+1 failed, 49 passed in 18.52s

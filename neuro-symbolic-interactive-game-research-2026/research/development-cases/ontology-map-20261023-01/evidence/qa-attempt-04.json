@@ -1,0 +1,3489 @@
+{
+  "schema_version": "operator-acceptance-attempt/v1",
+  "case_id": "ontology-map-20261023-01",
+  "qa_attempt": 4,
+  "status": "NOT_PASS",
+  "started_at": "2026-10-23T12:37:08.618Z",
+  "finished_at": "2026-10-23T12:38:28.719Z",
+  "argv": [
+    "<USER_HOME>/.hermes/node/bin/node",
+    "<CASE_ROOT>/actual-game-driver.cjs",
+    "--playwright",
+    "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "--chromium",
+    "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "--out",
+    "<QA_ATTEMPT_04>"
+  ],
+  "config": {
+    "playwright": "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "chromium": "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "url": "http://127.0.0.1:8886/dashboard/",
+    "out": "<QA_ATTEMPT_04>",
+    "deviceScaleFactor": 2,
+    "headless": false,
+    "begin": [
+      481,
+      565
+    ],
+    "startCase": [
+      835,
+      790
+    ],
+    "coach": [
+      884,
+      370
+    ]
+  },
+  "driver_sha256": "7ce20848fc383147a29c298da80ed52c189eea1b67def1dc89e4a78528ea8ce1",
+  "attempt_note": null,
+  "interaction_boundary": {
+    "genuine_keyboard_mouse_only": true,
+    "public_observer_reads_only": true,
+    "init_scripts": false,
+    "fixtures": false,
+    "private_godot_calls": false,
+    "source_changes": false
+  },
+  "continuous_capture_since_before_navigation": true,
+  "gates": {
+    "stage_zero_denial": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-002",
+            "DISC-007"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "unknown"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "unknown"
+            }
+          ],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE",
+              "outcome": "unknown"
+            }
+          ],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "denied",
+          "accepted": false,
+          "resultCodes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "effect": {
+          "kind": "denied_no_mutation",
+          "mutated": false,
+          "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 60,
+          "tMs": 18036
+        }
+      },
+      "receipt": "010-stage_zero_denial.json"
+    },
+    "lens_pickup": {
+      "passed": true
+    },
+    "mount_stage2": {
+      "passed": true
+    },
+    "fresh_disclosure": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-005"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "authorized_fresh",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "effect": {
+          "kind": "fresh_disclosure",
+          "mutated": true,
+          "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "different"
+        },
+        "engine": {
+          "seq": 261,
+          "tMs": 66806
+        }
+      },
+      "receipt": "050-fresh_disclosure.json"
+    },
+    "authorized_redisplay": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-006"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "authorized_redisplay",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "effect": {
+          "kind": "redisplay_no_mutation",
+          "mutated": false,
+          "priorHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 270,
+          "tMs": 68149
+        }
+      },
+      "receipt": "052-authorized_redisplay.json"
+    },
+    "map_1440": {
+      "passed": true,
+      "keyboard_Enter": true,
+      "no_inspection_mutation": true
+    },
+    "map_390": {
+      "passed": true,
+      "keyboard_Enter": true,
+      "no_inspection_mutation": true
+    }
+  },
+  "failures": [
+    {
+      "at": "2026-10-23T12:38:27.985Z",
+      "context": "actual-game-route",
+      "name": "AssertionError",
+      "message": "Page errors since before navigation\n\n8 !== 0\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Page errors since before navigation\n\n8 !== 0\n\n    at run (<CASE_ROOT>/actual-game-driver.cjs:308:12)"
+    }
+  ],
+  "diagnostics": {
+    "console": [
+      {
+        "at": "2026-10-23T12:37:15.144Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T12:37:15.422Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T12:37:16.121Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "type": "log",
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "location": {
+          "url": "http://127.0.0.1:8886/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      }
+    ],
+    "pageerror": [
+      {
+        "at": "2026-10-23T12:37:19.338Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:37:24.825Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:37:38.903Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:37:54.950Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:37:55.751Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:38:15.403Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:38:16.719Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      },
+      {
+        "at": "2026-10-23T12:38:17.994Z",
+        "url": "http://127.0.0.1:8886/dashboard/",
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "stack": ""
+      }
+    ],
+    "requestfailed": [],
+    "httpErrors": [],
+    "driverFailures": [
+      {
+        "at": "2026-10-23T12:38:27.985Z",
+        "context": "actual-game-route",
+        "name": "AssertionError",
+        "message": "Page errors since before navigation\n\n8 !== 0\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Page errors since before navigation\n\n8 !== 0\n\n    at run (<CASE_ROOT>/actual-game-driver.cjs:308:12)"
+      }
+    ],
+    "warnings": [],
+    "focus": [
+      {
+        "label": "loaded-before-focus",
+        "at": "2026-10-23T12:37:18.031Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "loaded-after-focus",
+        "at": "2026-10-23T12:37:18.185Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-before-focus",
+        "at": "2026-10-23T12:37:19.170Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-after-focus",
+        "at": "2026-10-23T12:37:19.196Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-before-click",
+        "at": "2026-10-23T12:37:19.202Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-after-click",
+        "at": "2026-10-23T12:37:19.340Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-before-focus",
+        "at": "2026-10-23T12:37:24.733Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-after-focus",
+        "at": "2026-10-23T12:37:24.775Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-before-click",
+        "at": "2026-10-23T12:37:24.781Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-after-click",
+        "at": "2026-10-23T12:37:24.794Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-north-before-focus",
+        "at": "2026-10-23T12:37:25.546Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-north-after-focus",
+        "at": "2026-10-23T12:37:25.560Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-approach-before-focus",
+        "at": "2026-10-23T12:37:29.231Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-approach-after-focus",
+        "at": "2026-10-23T12:37:29.267Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage0-before-focus",
+        "at": "2026-10-23T12:37:32.330Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage0-after-focus",
+        "at": "2026-10-23T12:37:32.355Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "stage_zero_denial-input-before-focus",
+        "at": "2026-10-23T12:37:33.096Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "stage_zero_denial-input-after-focus",
+        "at": "2026-10-23T12:37:33.109Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-before-focus",
+        "at": "2026-10-23T12:37:35.432Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-after-focus",
+        "at": "2026-10-23T12:37:35.450Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-before-click",
+        "at": "2026-10-23T12:37:35.457Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-after-click",
+        "at": "2026-10-23T12:37:35.506Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-2-before-focus",
+        "at": "2026-10-23T12:37:36.725Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-2-after-focus",
+        "at": "2026-10-23T12:37:36.750Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-2-before-click",
+        "at": "2026-10-23T12:37:36.760Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-2-after-click",
+        "at": "2026-10-23T12:37:36.769Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-3-before-focus",
+        "at": "2026-10-23T12:37:38.010Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-3-after-focus",
+        "at": "2026-10-23T12:37:38.028Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-3-before-click",
+        "at": "2026-10-23T12:37:38.032Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-3-after-click",
+        "at": "2026-10-23T12:37:38.037Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "close-mira-before-focus",
+        "at": "2026-10-23T12:37:38.805Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "close-mira-after-focus",
+        "at": "2026-10-23T12:37:38.813Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "leave-mira-before-focus",
+        "at": "2026-10-23T12:37:39.521Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "leave-mira-after-focus",
+        "at": "2026-10-23T12:37:39.536Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-north-strip-before-focus",
+        "at": "2026-10-23T12:37:41.638Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-north-strip-after-focus",
+        "at": "2026-10-23T12:37:41.677Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour1-before-focus",
+        "at": "2026-10-23T12:37:44.073Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour1-after-focus",
+        "at": "2026-10-23T12:37:44.084Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour2-before-focus",
+        "at": "2026-10-23T12:37:47.889Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour2-after-focus",
+        "at": "2026-10-23T12:37:47.914Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour3-before-focus",
+        "at": "2026-10-23T12:37:49.893Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour3-after-focus",
+        "at": "2026-10-23T12:37:49.905Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-approach-before-focus",
+        "at": "2026-10-23T12:37:51.927Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-approach-after-focus",
+        "at": "2026-10-23T12:37:51.939Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "collect-lens-before-focus",
+        "at": "2026-10-23T12:37:53.144Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "collect-lens-after-focus",
+        "at": "2026-10-23T12:37:53.154Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-before-focus",
+        "at": "2026-10-23T12:37:54.203Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-after-focus",
+        "at": "2026-10-23T12:37:54.228Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-before-click",
+        "at": "2026-10-23T12:37:54.235Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-after-click",
+        "at": "2026-10-23T12:37:54.246Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-before-focus",
+        "at": "2026-10-23T12:37:54.907Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-after-focus",
+        "at": "2026-10-23T12:37:54.930Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-before-click",
+        "at": "2026-10-23T12:37:54.936Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-after-click",
+        "at": "2026-10-23T12:37:54.953Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-3-before-focus",
+        "at": "2026-10-23T12:37:55.727Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-3-after-focus",
+        "at": "2026-10-23T12:37:55.739Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-3-before-click",
+        "at": "2026-10-23T12:37:55.744Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-3-after-click",
+        "at": "2026-10-23T12:37:55.748Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour3-before-focus",
+        "at": "2026-10-23T12:37:56.209Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour3-after-focus",
+        "at": "2026-10-23T12:37:56.225Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour2-before-focus",
+        "at": "2026-10-23T12:37:57.319Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour2-after-focus",
+        "at": "2026-10-23T12:37:57.335Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour1-before-focus",
+        "at": "2026-10-23T12:38:00.234Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour1-after-focus",
+        "at": "2026-10-23T12:38:00.254Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-strip-before-focus",
+        "at": "2026-10-23T12:38:02.543Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-strip-after-focus",
+        "at": "2026-10-23T12:38:02.554Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-north-before-focus",
+        "at": "2026-10-23T12:38:04.946Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-north-after-focus",
+        "at": "2026-10-23T12:38:04.985Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-east-before-focus",
+        "at": "2026-10-23T12:38:07.295Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-east-after-focus",
+        "at": "2026-10-23T12:38:07.310Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-approach-before-focus",
+        "at": "2026-10-23T12:38:10.899Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-approach-after-focus",
+        "at": "2026-10-23T12:38:10.912Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "install-lens-before-focus",
+        "at": "2026-10-23T12:38:12.758Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "install-lens-after-focus",
+        "at": "2026-10-23T12:38:12.786Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-1-before-focus",
+        "at": "2026-10-23T12:38:15.340Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-1-after-focus",
+        "at": "2026-10-23T12:38:15.373Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-1-before-click",
+        "at": "2026-10-23T12:38:15.375Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-1-after-click",
+        "at": "2026-10-23T12:38:15.405Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-2-before-focus",
+        "at": "2026-10-23T12:38:16.651Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-2-after-focus",
+        "at": "2026-10-23T12:38:16.702Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-2-before-click",
+        "at": "2026-10-23T12:38:16.710Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-2-after-click",
+        "at": "2026-10-23T12:38:16.722Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-3-before-focus",
+        "at": "2026-10-23T12:38:17.951Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-3-after-focus",
+        "at": "2026-10-23T12:38:17.977Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-3-before-click",
+        "at": "2026-10-23T12:38:17.984Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-coach-coach-3-after-click",
+        "at": "2026-10-23T12:38:17.989Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-mira-before-focus",
+        "at": "2026-10-23T12:38:18.724Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-mira-after-focus",
+        "at": "2026-10-23T12:38:18.740Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage2-before-focus",
+        "at": "2026-10-23T12:38:21.122Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage2-after-focus",
+        "at": "2026-10-23T12:38:21.141Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "fresh_disclosure-input-before-focus",
+        "at": "2026-10-23T12:38:21.851Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "fresh_disclosure-input-after-focus",
+        "at": "2026-10-23T12:38:21.880Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "authorized_redisplay-input-before-focus",
+        "at": "2026-10-23T12:38:23.209Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "authorized_redisplay-input-after-focus",
+        "at": "2026-10-23T12:38:23.221Z",
+        "states": [
+          {
+            "url": "http://127.0.0.1:8886/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "http://127.0.0.1:8886/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "final_observer": {
+    "tick": {
+      "dialogue_open": true,
+      "episode_over": false,
+      "focus": "mira",
+      "play_started": true,
+      "stage": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "tutorial_open": false,
+      "x": 3.4,
+      "yaw": 0,
+      "z": 11.63
+    },
+    "summary": {
+      "commit_count": 3,
+      "fact_count": 6,
+      "labels": [
+        "Tide-marks lead recorded"
+      ],
+      "mutated": true,
+      "operation": "reveal_hint",
+      "refusal_count": 1,
+      "revision": 3,
+      "stage": 2,
+      "stage_from": 2,
+      "stage_to": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+      "trace": {
+        "checks": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass"
+          },
+          {
+            "code": "STAGE_GATED_DISCLOSURE",
+            "gate": "DISCLOSURE/QUEST STAGE",
+            "outcome": "pass"
+          },
+          {
+            "code": "UNKNOWN_ACTOR",
+            "gate": "POLICY",
+            "outcome": "pass"
+          },
+          {
+            "code": "NPC_DOES_NOT_KNOW_FACT",
+            "gate": "KNOWLEDGE",
+            "outcome": "pass"
+          },
+          {
+            "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass"
+          }
+        ],
+        "consistent": true,
+        "evaluated_gates": [
+          "DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE",
+          "POLICY",
+          "KNOWLEDGE"
+        ],
+        "family_states": {
+          "DISCLOSURE": "pass",
+          "KNOWLEDGE": "pass",
+          "POLICY": "pass",
+          "PRECONDITION": "out_of_scope",
+          "QUEST STAGE": "pass",
+          "REACHABILITY": "out_of_scope"
+        },
+        "held_at": "",
+        "out_of_scope": [
+          "PRECONDITION",
+          "REACHABILITY"
+        ],
+        "short_circuit": false,
+        "skipped": [],
+        "unreported": []
+      }
+    },
+    "counts": {
+      "commits": 3,
+      "holds": 1,
+      "proposals": 5,
+      "dialogues": 6
+    },
+    "trace_errors": 0
+  },
+  "raw_step_count": 55,
+  "publication_boundary": "Explicit bounded derivative. Original complete JSON, per-input snapshots, screenshots and immutable driver copies remain in the private local QA attempt directory. No failed attempt was replaced. QA attempts are not independent development runs."
+}

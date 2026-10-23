@@ -1,0 +1,99 @@
+{
+  "schema_version": "ontology-development-case/v1",
+  "case_id": "ontology-map-20261023-01",
+  "frozen_at": "2026-10-23T11:18:59.124Z",
+  "parent_seed": "seed_11eb1f38a3c4",
+  "backlog_source": "2026-10-23 ontology structure/evidence placement and actual development follow-up",
+  "task": "Add a read-only bilingual ontology structure-to-evidence map to the existing game dashboard",
+  "run_count": 1,
+  "independent_repeats": 0,
+  "starting_head": "c74df65eefe7984293b5175f9b325d333e132965",
+  "starting_working_tree_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "execution_workspace": "exact selected public checkout of c74df65; private working tree is not a study input",
+  "requested_model": "gpt-6.1-sol",
+  "identity_policy": "Require native rollout turn_context.model=gpt-6.1-sol linked to completed thread; this establishes runtime-reported selection, not independent provider weights/revision. Missing provider-returned identity, immutable revision and cost stay null; model self-report is not identity evidence.",
+  "input_sha256": {
+    "game-track/web/dashboard/index.html": "6a9037f069fbf6db297697b9bd13aaa963a4f887b19892b4f58099a503c9bcae",
+    "game-track/web/dashboard/dashboard.css": "0dbf90c0612c48356767f566f23ce8ec9ccf5e3dec1b9b923e7aceb40dc2d19a",
+    "game-track/web/dashboard/dashboard.js": "9e1bf396dc67532e6d2ab8debf7141eb0517ba832da2568246480139d4844788",
+    "research/npc-disclosure/reveal-hint-expectations-v1.json": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+    "research/npc-disclosure/reveal-hint-expectations-v1.sha256": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/web/dashboard/disclosure-reference.json": "7dc31b8530fd5e1b21c4387bf094b6209a3ecc5fa029b3944e1f4d6f5cab1846",
+    "src/nesy_game/disclosure.py": "01e0c23e507690baf312f5cb681b1dacba69883a5914922e5efa10d2352f94ae"
+  },
+  "scope_files": [
+    "game-track/web/dashboard/index.html",
+    "game-track/web/dashboard/dashboard.css",
+    "game-track/web/dashboard/dashboard.js",
+    "game-track/web/dashboard/ontology-map.json"
+  ],
+  "ontology_role_ids": [
+    "world",
+    "actor",
+    "knowledge",
+    "fact",
+    "policy",
+    "quest",
+    "action",
+    "trace"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "DEV-01",
+      "criterion": "Versioned source-grounded JSON contains all eight distinct roles, bilingual labels, canonical identifiers/rules, evidence packet references and frozen packet SHA256; no invented runtime state."
+    },
+    {
+      "id": "DEV-02",
+      "criterion": "Accessible read-only table in existing Engineering detail separates declared ontology from observed event state and labels missing/unreported evidence explicitly."
+    },
+    {
+      "id": "DEV-03",
+      "criterion": "Actual browser at1440px/390px shows all roles, no document overflow, keyboard-reachable details and no console/page/network errors; inspection never mutates state or frozen comparison."
+    },
+    {
+      "id": "DEV-04",
+      "criterion": "Existing signal rendering and real game denial/fresh/redisplay boundaries remain intact; no Godot/hard-writer source change."
+    },
+    {
+      "id": "DEV-05",
+      "criterion": "Authored map behavior tests and existing signal/Web tests pass; real Web build succeeds with canonical project.godot unchanged; outputs link to frozen inputs, actual prompt/tool events and verification receipts."
+    }
+  ],
+  "verification_commands": [
+    {
+      "argv": [
+        "uv",
+        "run",
+        "--extra",
+        "dev",
+        "python",
+        "-m",
+        "pytest",
+        "tests/test_ontology_evidence_map.py",
+        "tests/test_signal_explainer.py",
+        "tests/test_godot_web_release.py",
+        "-q"
+      ],
+      "expected_exit_code": 0,
+      "expected_output": "All authored map behavior and unchanged signal/Web checks pass; no skipped hard requirement."
+    },
+    {
+      "argv": [
+        "bash",
+        "scripts/build_godot_web.sh"
+      ],
+      "expected_exit_code": 0,
+      "expected_output": "Actual Web export/approved asset package built; canonical project.godot digest unchanged."
+    }
+  ],
+  "browser_verification": "1440/390 DOM/screenshot/diagnostic receipts; actual keyboard/mouse input only for game observations. Synthetic events confined to explicitly labeled component tests.",
+  "stopping_policy": "One initial native coding invocation; real failures, repairs and reverification are within this same case. No replacement run or provider fallback.",
+  "evidence_policy": "Preserve outer command argv/stdout/stderr/exit/elapsed and native tool JSONL. Unavailable inner-tool separated streams remain unavailable; never fabricate them. Missing provider model/seed/revision/cost=null; tool calls/attempts are not independent samples.",
+  "non_goals": [
+    "No human/efficacy/superiority/generalization claims",
+    "No authority/schema/permission or Godot state mutation changes",
+    "No credentials/install/global config/Git actions by coder",
+    "No private intake/report/raw prompts/other sessions read"
+  ]
+}

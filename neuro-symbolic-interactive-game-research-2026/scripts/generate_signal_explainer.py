@@ -35,6 +35,7 @@ FACTUAL = RESULTS / "factual-summary.json"
 METADATA = RESULTS / "metadata.json"
 SCENARIO = ROOT / "game-track/godot/data/sealed_lighthouse.json"
 REFERENCE = ROOT / "game-track/web/dashboard/disclosure-reference.json"
+ONTOLOGY_MAP = ROOT / "game-track/web/dashboard/ontology-map.json"
 FIGURES = ROOT / "paper/latex/figures"
 EXPECTED_PACKET_SHA = "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028"
 ARMS = ("unchecked_isolated", "general_rule", "ontology_gate")
@@ -520,10 +521,18 @@ def svg_text(x: int, y: int, value: str, cls: str = "body", anchor: str = "start
 
 
 def svg_box(
-    x: int, y: int, w: int, h: int, fill: str, stroke: str = "#C9CDD1", dash: str = ""
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    fill: str,
+    stroke: str = "#C9CDD1",
+    dash: str = "",
+    class_name: str = "",
 ) -> str:
     dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
-    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{fill}" stroke="{stroke}" stroke-width="2"{dash_attr}/>'
+    class_attr = f' class="{class_name}"' if class_name else ""
+    return f'<rect{class_attr} x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{fill}" stroke="{stroke}" stroke-width="2"{dash_attr}/>'
 
 
 def svg_header(width: int, height: int, title: str, desc: str, label: str) -> list[str]:
@@ -539,60 +548,135 @@ def svg_header(width: int, height: int, title: str, desc: str, label: str) -> li
 
 
 def mechanism_svg() -> str:
-    width, height = 640, 908
+    ontology = read_json(ONTOLOGY_MAP)
+    require(
+        isinstance(ontology, dict) and ontology.get("schema_version") == "ontology-evidence-map/v1",
+        "mechanism ontology schema drift",
+    )
+    role_ids = ("world", "actor", "knowledge", "fact", "policy", "quest", "action", "trace")
+    roles = {role["id"]: role["labels"]["en"] for role in ontology["roles"]}
+    require(
+        len(ontology["roles"]) == len(role_ids) and set(roles) == set(role_ids),
+        "mechanism ontology role vocabulary drift",
+    )
+    packet = read_json(PACKET)
+    source_packet = ontology.get("source_packet")
+    scenario = ontology.get("scenario")
+    scenario_path = SCENARIO.relative_to(ROOT).as_posix()
+    require(
+        isinstance(source_packet, dict)
+        and source_packet.get("path") == PACKET.relative_to(ROOT).as_posix()
+        and all(
+            source_packet.get(field) == packet[field]
+            for field in ("packet_id", "packet_version", "status")
+        )
+        and source_packet.get("sha256") == sha(PACKET) == EXPECTED_PACKET_SHA
+        and isinstance(scenario, dict)
+        and scenario.get("path") == scenario_path
+        and scenario.get("sha256") == sha(SCENARIO) == packet["source_hashes"][scenario_path],
+        "mechanism ontology source binding drift",
+    )
+    width, height = 1280, 1060
     parts = svg_header(
         width,
         height,
-        "TRACE-RPG semantic mechanism",
-        "Typed input flows through semantic entities, relations, rules and recorded checks to a bounded decision and canonical state effect. Runtime policy remains separate from authored methods ontology simulation. Python Boolean checks, Godot display families and frozen disclosure rules are distinct vocabularies; absent coverage is unreported, never passed, skipped or out of scope.",
+        "TRACE-RPG source-bound ontology mechanism",
+        "Eight roles from ontology-map.json connect scenario and frozen expectation sources to relations and constraints, actual recorded checks, a bounded decision and canonical state effect. This is an explicit authored ontology, not hidden model state or a seven-dimensional embedding. Python Boolean checks, Godot display families and disclosure rules remain separate vocabularies. Missing checks are unreported, never passed.",
         "fig:signal-mechanism",
     )
     stages = [
-        ("#EAF4FA", "#0072B2", "TYPED INPUT", ("operation / role / subject /", "stage / booleans")),
+        (
+            "#EAF4FA",
+            "#0072B2",
+            "SOURCE + TYPED REQUEST",
+            ("scenario + frozen expectations", "reveal_hint(actor_id, fact_id)"),
+        ),
         (
             "#E8F5EF",
             "#007A59",
-            "ONTOLOGY",
-            ("entities / knowledge /", "disclosed relations / rules"),
+            "EIGHT ONTOLOGY ROLES",
+            (
+                f"{roles['world']} declares {roles['actor']} / {roles['fact']} / {roles['quest']}",
+                f"{roles['knowledge']} links {roles['actor']} to {roles['fact']}",
+                f"{roles['policy']} constrains {roles['action']}",
+                f"{roles['trace']} records checks and effects",
+            ),
+        ),
+        (
+            "#E8F5EF",
+            "#007A59",
+            "RELATIONS / CONSTRAINTS",
+            (
+                "actor knows fact; fact disclosed",
+                "forbidden / minimum quest stage",
+                "knowledge or history ≠ permission",
+            ),
         ),
         (
             "#FFF2DD",
             "#A05A00",
-            "ACTUAL CHECKS",
-            ("policy / actor / knowledge /", "stage / template"),
+            "ACTUAL RECORDED CHECKS",
+            (
+                "policy / actor / knowledge",
+                "stage gate + state-effect rules",
+                "only emitted checks shown",
+            ),
         ),
-        ("#FBECEC", "#B54747", "DECISION", ("authorized fresh /", "authorized redisplay / denied")),
+        (
+            "#FBECEC",
+            "#B54747",
+            "DECISION",
+            ("authorized fresh /", "authorized redisplay / denied"),
+        ),
         (
             "#EEF0F2",
             "#666A6D",
-            "STATE EFFECT",
-            ("fresh disclosure;", "redisplay or denial: no mutation"),
+            "CANONICAL STATE EFFECT",
+            (
+                "fresh: add fact + disclosed ID",
+                "tide_marks_hint only: relationship memory",
+                "redisplay / denial: no mutation",
+                "quest stage preserved",
+            ),
         ),
     ]
-    for index, (fill, stroke, title, detail) in enumerate(stages):
-        y = 12 + index * 166
+    # Snake order leaves dedicated connector channels outside padded cards.
+    positions = ((20, 16), (660, 16), (660, 316), (20, 316), (20, 616), (660, 616))
+    for (x, y), (fill, stroke, title, detail) in zip(positions, stages):
         parts += [
-            svg_box(20, y, 600, 134, fill, stroke),
-            svg_text(320, y + 38, title, "head", "middle"),
+            svg_box(x, y, 600, 252, fill, stroke),
+            svg_text(x + 300, y + 54, title, "head", "middle"),
         ]
         parts.extend(
-            svg_text(320, y + 78 + line * 34, value, "body", "middle")
+            svg_text(x + 300, y + 104 + line * 38, value, "body", "middle")
             for line, value in enumerate(detail)
         )
-        if index < len(stages) - 1:
-            parts.append(
-                f'<path class="connector" d="M320,{y + 136} L320,{y + 160}" fill="none" stroke="#0072B2" stroke-width="2" marker-end="url(#arrow-blue)"/>'
-            )
-    parts += [
-        svg_text(320, 850, "Absent checks = unreported,", "body", "middle"),
-        svg_text(320, 886, "not passed.", "body", "middle"),
-        "</svg>",
-    ]
+    for route in (
+        "M626,142 H654",
+        "M960,274 V310",
+        "M654,442 H626",
+        "M320,574 V610",
+        "M626,742 H654",
+    ):
+        parts.append(
+            f'<path class="connector" d="{route}" fill="none" stroke="#0072B2" '
+            'stroke-width="2" marker-end="url(#arrow-blue)"/>'
+        )
+    for line, value in enumerate(
+        (
+            "Roles: ontology-map.json",
+            f"{len(PYTHON7)} Python checks | {len(GODOT6)} Godot families | {len(DISCLOSURE7)} DISC rules",
+            "Missing checks: unreported, not pass",
+            "Authored structure, not model state",
+        )
+    ):
+        parts.append(svg_text(640, 922 + line * 38, value, "small", "middle"))
+    parts.append("</svg>")
     return "\n".join(parts) + "\n"
 
 
 def comparison_svg(data: dict[str, Any]) -> str:
-    width, height = 748, 1560
+    width, height = 1280, 1362
     parts = svg_header(
         width,
         height,
@@ -601,40 +685,28 @@ def comparison_svg(data: dict[str, Any]) -> str:
         "fig:signal-comparison",
     )
     parts += [
-        svg_text(24, 42, "FROZEN INDEPENDENT", "title"),
-        svg_text(24, 82, "COMPARISON | 60 INPUTS x 3 ARMS", "title"),
-        svg_text(24, 124, "Unsafe != semantic mismatch | no time trend", "subtitle"),
-        svg_text(24, 166, "A/D: allow / deny", "small"),
-        svg_text(24, 202, "Checks P/F: recorded pass / fail only", "small"),
+        svg_text(24, 48, "FROZEN INDEPENDENT", "title"),
+        svg_text(24, 92, "COMPARISON | 60 INPUTS × 3 ARMS", "title"),
+        svg_text(24, 136, "Unsafe ≠ semantic mismatch | no time trend", "subtitle"),
+        svg_text(24, 178, "A/D: allow / deny", "small"),
+        svg_text(600, 178, "Checks P/F: recorded pass / fail only", "small"),
     ]
-    x0, label_w, cell_w = 24, 160, 180
-    parts.append(svg_text(x0 + 12, 282, "Input cases", "small"))
-    for index, (_, name) in enumerate(STRATA):
-        x = x0 + label_w + index * cell_w
-        parts.append(svg_box(x, 226, cell_w, 72, "#F4F5F6"))
-        parts.append(svg_text(x + cell_w / 2, 254, name.capitalize(), "small", "middle"))
-        parts.append(
-            svg_text(
-                x + cell_w / 2,
-                286,
-                f"n={data['frozen_comparison']['cells'][ARMS[0]][name]['n']}",
-                "small",
-                "middle",
-            )
-        )
     labels = {
         "unchecked_isolated": ("UNCHECKED", "#FBECEC"),
         "general_rule": ("GENERAL", "#E8F5EF"),
         "ontology_gate": ("ONTOLOGY", "#EAF4FA"),
     }
-    for row, arm in enumerate(ARMS):
-        y = 312 + row * 218
-        parts.append(svg_box(x0, y, 700, 204, labels[arm][1]))
-        parts.append(svg_text(x0 + 12, y + 33, labels[arm][0], "label"))
-        for line, metric in enumerate(("A/D", "Unsafe", "Mismatch", "Checks P/F")):
-            parts.append(svg_text(x0 + 12, y + 72 + line * 40, metric, "small"))
-        for column, (_, name) in enumerate(STRATA):
-            x = x0 + label_w + column * cell_w
+    # One row per arm/stratum gives every value a real padded table cell.
+    x0, table_y, header_h, row_h = 24, 208, 76, 68
+    widths = (220, 244, 164, 160, 176, 268)
+    headings = ("Arm", "Input cases", "A/D", "Unsafe", "Mismatch", "Checks P/F")
+    cursor = x0
+    for cell_w, heading in zip(widths, headings):
+        parts.append(svg_box(cursor, table_y, cell_w, header_h, "#F4F5F6"))
+        parts.append(svg_text(cursor + cell_w / 2, table_y + 48, heading, "label", "middle"))
+        cursor += cell_w
+    for arm_index, arm in enumerate(ARMS):
+        for stratum_index, (_, name) in enumerate(STRATA):
             cell = data["frozen_comparison"]["cells"][arm][name]
             check_label = (
                 f"{cell['checks']['pass']} / {cell['checks']['fail']}"
@@ -642,56 +714,46 @@ def comparison_svg(data: dict[str, Any]) -> str:
                 else "unreported"
             )
             values = (
+                labels[arm][0],
+                f"{name.capitalize()}  n={cell['n']}",
                 f"{cell['outcome']['allowed']} / {cell['outcome']['denied']}",
                 str(cell["unsafe"]),
                 str(cell["mismatch"]),
                 check_label,
             )
-            for line, value in enumerate(values):
-                parts.append(
-                    svg_text(
-                        x + cell_w / 2,
-                        y + 72 + line * 40,
-                        value,
-                        "small" if line == 3 else "cell",
-                        "middle",
-                    )
-                )
-    chart_x, chart_y, chart_w, chart_h = 24, 982, 700, 430
+            y = table_y + header_h + (arm_index * 3 + stratum_index) * row_h
+            cursor = x0
+            for cell_w, value in zip(widths, values):
+                parts.append(svg_box(cursor, y, cell_w, row_h, labels[arm][1]))
+                parts.append(svg_text(cursor + cell_w / 2, y + 44, value, "cell", "middle"))
+                cursor += cell_w
+    chart_y = 928
     parts += [
-        svg_box(chart_x, chart_y, chart_w, chart_h, "#F7F7F5"),
-        svg_text(chart_x + 16, chart_y + 38, "UNSAFE VS SEMANTIC MISMATCH", "head"),
-        svg_text(chart_x + 16, chart_y + 74, "Case counts; horizontal scale 0 to 60", "small"),
-        svg_text(chart_x + 16, chart_y + 110, "Red = unsafe   Blue = mismatch", "small"),
+        svg_box(24, chart_y, 1232, 288, "#F7F7F5"),
+        svg_text(52, chart_y + 50, "UNSAFE VS SEMANTIC MISMATCH", "head"),
+        svg_text(52, chart_y + 94, "Case counts; horizontal scale 0 to 60", "small"),
+        svg_text(764, chart_y + 94, "Red = unsafe   Blue = mismatch", "small"),
     ]
-    axis_x0, axis_x1 = 218, 666
-    for tick in (0, 30, 60):
-        tx = axis_x0 + (axis_x1 - axis_x0) * tick / 60
-        parts += [
-            f'<path class="connector grid-line" d="M{tx:.1f},{chart_y + 152} L{tx:.1f},{chart_y + 410}" fill="none" stroke="#D0D3D6" stroke-width="1"/>',
-            svg_text(int(tx), chart_y + 144, str(tick), "small", "middle"),
-        ]
-    colors = ("#B54747", "#0072B2")
     for index, arm in enumerate(ARMS):
-        center_y = chart_y + 188 + index * 86
-        unsafe = sum(data["frozen_comparison"]["cells"][arm][name]["unsafe"] for _, name in STRATA)
-        mismatch = sum(
-            data["frozen_comparison"]["cells"][arm][name]["mismatch"] for _, name in STRATA
-        )
-        parts.append(svg_text(chart_x + 16, center_y + 16, labels[arm][0].capitalize(), "small"))
-        for series, value in enumerate((unsafe, mismatch)):
-            bar_y = center_y - 16 + series * 34
-            bar_w = round(value / 60 * (axis_x1 - axis_x0))
+        group_x, track_w = 52 + index * 400, 306
+        parts.append(svg_text(group_x, chart_y + 140, labels[arm][0].capitalize(), "label"))
+        for series, (metric, color) in enumerate((("unsafe", "#B54747"), ("mismatch", "#0072B2"))):
+            value = sum(data["frozen_comparison"]["cells"][arm][name][metric] for _, name in STRATA)
+            bar_y = chart_y + 166 + series * 40
+            bar_w = int(track_w * value / 60)
+            parts.append(svg_box(group_x, bar_y, track_w, 20, "#FFFFFF"))
             if value:
-                parts.append(svg_box(axis_x0, bar_y, bar_w, 18, colors[series], colors[series]))
-            parts.append(svg_text(axis_x0 + bar_w + 8, bar_y + 19, str(value), "small"))
-    parts.append(
-        f'<path class="connector" d="M{axis_x0},{chart_y + 410} L{axis_x1},{chart_y + 410}" fill="none" stroke="#80868B" stroke-width="2"/>'
-    )
+                parts.append(
+                    svg_box(group_x, bar_y, bar_w, 20, color, color, class_name="data-mark")
+                )
+            parts.append(svg_text(group_x + track_w + 12, bar_y + 20, str(value), "small"))
+        for tick in (0, 30, 60):
+            tx = group_x + track_w * tick / 60
+            parts.append(svg_text(int(tx), chart_y + 266, str(tick), "small", "middle"))
     parts += [
-        svg_text(24, 1452, "General = ontology: 60 equal cases", "note"),
-        svg_text(24, 1490, "General / ontology / unchecked:", "note"),
-        svg_text(24, 1528, "unsafe = 0 / 0 / 51; mismatch = 0 / 0 / 60", "note"),
+        svg_text(24, 1258, "General = ontology: 60 equal cases", "note"),
+        svg_text(24, 1298, "General / ontology / unchecked:", "note"),
+        svg_text(24, 1338, "unsafe = 0 / 0 / 51; mismatch = 0 / 0 / 60", "note"),
         "</svg>",
     ]
     return "\n".join(parts) + "\n"

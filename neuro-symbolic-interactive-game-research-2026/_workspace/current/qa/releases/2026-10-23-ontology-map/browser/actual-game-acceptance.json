@@ -1,0 +1,5350 @@
+{
+  "case_id": "ontology-map-20261023-01",
+  "status": "PASS",
+  "started_at": "2026-10-23T13:52:58.172Z",
+  "scope": "n=1 operator development QA; unchanged game; no human or efficacy claim",
+  "contract_sha256": "2fbe1a8f85614b7e250801991dcf2b0e16e55cb7914621d10f968072d230b7b5",
+  "argv": [
+    "<USER_HOME>/.hermes/node/bin/node",
+    "<PROJECT_ROOT>/research/development-cases/ontology-map-20261023-01/actual-game-driver.cjs",
+    "--playwright",
+    "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "--chromium",
+    "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "--url",
+    "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+    "--headless",
+    "false",
+    "--dpr",
+    "2",
+    "--out",
+    "<PRODUCTION_BROWSER>"
+  ],
+  "config": {
+    "playwright": "<USER_HOME>/.nvm/versions/node/v22.19.0/lib/node_modules/playwright",
+    "chromium": "<USER_HOME>/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+    "out": "<PRODUCTION_BROWSER>",
+    "deviceScaleFactor": 2,
+    "headless": false,
+    "begin": [
+      481,
+      565
+    ],
+    "startCase": [
+      835,
+      790
+    ],
+    "coach": [
+      884,
+      370
+    ]
+  },
+  "continuous_capture_since_before_navigation": true,
+  "driver_sha256": "2b81792623a71ba9b7e884d69a38b006fdc302862740330ac83eb443b1b96751",
+  "attempt_note": null,
+  "interaction_boundary": {
+    "genuine_keyboard_mouse_only": true,
+    "public_observer_reads_only": true,
+    "init_scripts": false,
+    "fixtures": false,
+    "private_godot_calls": false,
+    "source_changes": false
+  },
+  "steps": [
+    {
+      "id": "001-loaded",
+      "at": "2026-10-23T13:53:06.853Z",
+      "state": "001-loaded.json",
+      "image": "001-loaded.png"
+    },
+    {
+      "id": "002-begin-investigation-visible-before",
+      "at": "2026-10-23T13:53:07.288Z",
+      "state": "002-begin-investigation-visible-before.json",
+      "image": "002-begin-investigation-visible-before.png"
+    },
+    {
+      "id": "003-begin-investigation-clicked",
+      "at": "2026-10-23T13:53:07.877Z",
+      "state": "003-begin-investigation-clicked.json",
+      "image": "003-begin-investigation-clicked.png"
+    },
+    {
+      "id": "004-start-case-visible-before",
+      "at": "2026-10-23T13:53:12.947Z",
+      "state": "004-start-case-visible-before.json",
+      "image": "004-start-case-visible-before.png"
+    },
+    {
+      "id": "005-start-case-clicked",
+      "at": "2026-10-23T13:53:13.918Z",
+      "state": "005-start-case-clicked.json",
+      "image": "005-start-case-clicked.png"
+    },
+    {
+      "id": "006-mira-north-arrived",
+      "at": "2026-10-23T13:53:17.335Z",
+      "state": "006-mira-north-arrived.json",
+      "image": "006-mira-north-arrived.png"
+    },
+    {
+      "id": "007-mira-approach-arrived",
+      "at": "2026-10-23T13:53:19.388Z",
+      "state": "007-mira-approach-arrived.json",
+      "image": "007-mira-approach-arrived.png"
+    },
+    {
+      "id": "008-open-mira-stage0",
+      "at": "2026-10-23T13:53:20.370Z",
+      "state": "008-open-mira-stage0.json",
+      "image": "008-open-mira-stage0.png"
+    },
+    {
+      "id": "009-stage_zero_denial-input",
+      "at": "2026-10-23T13:53:21.389Z",
+      "state": "009-stage_zero_denial-input.json",
+      "image": "009-stage_zero_denial-input.png"
+    },
+    {
+      "id": "010-stage_zero_denial",
+      "at": "2026-10-23T13:53:21.847Z",
+      "state": "010-stage_zero_denial.json",
+      "image": "010-stage_zero_denial.png"
+    },
+    {
+      "id": "011-first-hold-coach-1-visible-before",
+      "at": "2026-10-23T13:53:22.321Z",
+      "state": "011-first-hold-coach-1-visible-before.json",
+      "image": "011-first-hold-coach-1-visible-before.png"
+    },
+    {
+      "id": "012-first-hold-coach-1-clicked",
+      "at": "2026-10-23T13:53:23.052Z",
+      "state": "012-first-hold-coach-1-clicked.json",
+      "image": "012-first-hold-coach-1-clicked.png"
+    },
+    {
+      "id": "013-close-mira",
+      "at": "2026-10-23T13:53:24.076Z",
+      "state": "013-close-mira.json",
+      "image": "013-close-mira.png"
+    },
+    {
+      "id": "014-leave-mira-arrived",
+      "at": "2026-10-23T13:53:26.171Z",
+      "state": "014-leave-mira-arrived.json",
+      "image": "014-leave-mira-arrived.png"
+    },
+    {
+      "id": "015-lens-north-strip-arrived",
+      "at": "2026-10-23T13:53:28.500Z",
+      "state": "015-lens-north-strip-arrived.json",
+      "image": "015-lens-north-strip-arrived.png"
+    },
+    {
+      "id": "016-lens-detour1-arrived",
+      "at": "2026-10-23T13:53:31.509Z",
+      "state": "016-lens-detour1-arrived.json",
+      "image": "016-lens-detour1-arrived.png"
+    },
+    {
+      "id": "017-lens-detour2-arrived",
+      "at": "2026-10-23T13:53:34.299Z",
+      "state": "017-lens-detour2-arrived.json",
+      "image": "017-lens-detour2-arrived.png"
+    },
+    {
+      "id": "018-lens-approach-arrived",
+      "at": "2026-10-23T13:53:36.049Z",
+      "state": "018-lens-approach-arrived.json",
+      "image": "018-lens-approach-arrived.png"
+    },
+    {
+      "id": "019-collect-lens",
+      "at": "2026-10-23T13:53:36.752Z",
+      "state": "019-collect-lens.json",
+      "image": "019-collect-lens.png"
+    },
+    {
+      "id": "020-lens-stage1",
+      "at": "2026-10-23T13:53:37.043Z",
+      "state": "020-lens-stage1.json",
+      "image": "020-lens-stage1.png"
+    },
+    {
+      "id": "021-first-commit-coach-1-visible-before",
+      "at": "2026-10-23T13:53:37.333Z",
+      "state": "021-first-commit-coach-1-visible-before.json",
+      "image": "021-first-commit-coach-1-visible-before.png"
+    },
+    {
+      "id": "022-first-commit-coach-1-clicked",
+      "at": "2026-10-23T13:53:37.870Z",
+      "state": "022-first-commit-coach-1-clicked.json",
+      "image": "022-first-commit-coach-1-clicked.png"
+    },
+    {
+      "id": "023-first-commit-coach-2-visible-before",
+      "at": "2026-10-23T13:53:38.161Z",
+      "state": "023-first-commit-coach-2-visible-before.json",
+      "image": "023-first-commit-coach-2-visible-before.png"
+    },
+    {
+      "id": "024-first-commit-coach-2-clicked",
+      "at": "2026-10-23T13:53:38.705Z",
+      "state": "024-first-commit-coach-2-clicked.json",
+      "image": "024-first-commit-coach-2-clicked.png"
+    },
+    {
+      "id": "025-return-detour2-arrived",
+      "at": "2026-10-23T13:53:40.608Z",
+      "state": "025-return-detour2-arrived.json",
+      "image": "025-return-detour2-arrived.png"
+    },
+    {
+      "id": "026-return-detour1-arrived",
+      "at": "2026-10-23T13:53:43.200Z",
+      "state": "026-return-detour1-arrived.json",
+      "image": "026-return-detour1-arrived.png"
+    },
+    {
+      "id": "027-return-strip-arrived",
+      "at": "2026-10-23T13:53:46.133Z",
+      "state": "027-return-strip-arrived.json",
+      "image": "027-return-strip-arrived.png"
+    },
+    {
+      "id": "028-mount-north-arrived",
+      "at": "2026-10-23T13:53:48.191Z",
+      "state": "028-mount-north-arrived.json",
+      "image": "028-mount-north-arrived.png"
+    },
+    {
+      "id": "029-mount-east-arrived",
+      "at": "2026-10-23T13:53:51.767Z",
+      "state": "029-mount-east-arrived.json",
+      "image": "029-mount-east-arrived.png"
+    },
+    {
+      "id": "030-mount-approach-arrived",
+      "at": "2026-10-23T13:53:53.832Z",
+      "state": "030-mount-approach-arrived.json",
+      "image": "030-mount-approach-arrived.png"
+    },
+    {
+      "id": "031-install-lens",
+      "at": "2026-10-23T13:53:54.883Z",
+      "state": "031-install-lens.json",
+      "image": "031-install-lens.png"
+    },
+    {
+      "id": "032-mount-stage2",
+      "at": "2026-10-23T13:53:55.365Z",
+      "state": "032-mount-stage2.json",
+      "image": "032-mount-stage2.png"
+    },
+    {
+      "id": "033-return-mira-arrived",
+      "at": "2026-10-23T13:53:57.736Z",
+      "state": "033-return-mira-arrived.json",
+      "image": "033-return-mira-arrived.png"
+    },
+    {
+      "id": "034-open-mira-stage2",
+      "at": "2026-10-23T13:53:58.725Z",
+      "state": "034-open-mira-stage2.json",
+      "image": "034-open-mira-stage2.png"
+    },
+    {
+      "id": "035-fresh_disclosure-input",
+      "at": "2026-10-23T13:53:59.801Z",
+      "state": "035-fresh_disclosure-input.json",
+      "image": "035-fresh_disclosure-input.png"
+    },
+    {
+      "id": "036-fresh_disclosure",
+      "at": "2026-10-23T13:54:00.326Z",
+      "state": "036-fresh_disclosure.json",
+      "image": "036-fresh_disclosure.png"
+    },
+    {
+      "id": "037-authorized_redisplay-input",
+      "at": "2026-10-23T13:54:01.361Z",
+      "state": "037-authorized_redisplay-input.json",
+      "image": "037-authorized_redisplay-input.png"
+    },
+    {
+      "id": "038-authorized_redisplay",
+      "at": "2026-10-23T13:54:01.889Z",
+      "state": "038-authorized_redisplay.json",
+      "image": "038-authorized_redisplay.png"
+    },
+    {
+      "id": "039-map-1440-after",
+      "at": "2026-10-23T13:54:04.338Z",
+      "state": "039-map-1440-after.json",
+      "image": null
+    },
+    {
+      "id": "040-map-390-after",
+      "at": "2026-10-23T13:54:06.094Z",
+      "state": "040-map-390-after.json",
+      "image": null
+    },
+    {
+      "id": "041-final",
+      "at": "2026-10-23T13:54:06.322Z",
+      "state": "041-final.json",
+      "image": "041-final.png"
+    }
+  ],
+  "gates": {
+    "stage_zero_denial": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-002",
+            "DISC-007"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "unknown"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "unknown"
+            }
+          ],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE",
+              "outcome": "unknown"
+            }
+          ],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "denied",
+          "accepted": false,
+          "resultCodes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "effect": {
+          "kind": "denied_no_mutation",
+          "mutated": false,
+          "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 64,
+          "tMs": 17477
+        }
+      },
+      "receipt": "010-stage_zero_denial.json"
+    },
+    "lens_pickup": {
+      "passed": true,
+      "state": {
+        "session": {
+          "commit_count": 0,
+          "fact_count": 2,
+          "refusal_count": 0,
+          "revision": 0,
+          "scenario_id": "sealed-lighthouse-v1",
+          "sites": [
+            {
+              "id": "mira",
+              "x": 3,
+              "z": 11
+            },
+            {
+              "id": "lens_pickup",
+              "x": -11,
+              "z": 1
+            },
+            {
+              "id": "lamp_mount",
+              "x": 7,
+              "z": 13.5
+            },
+            {
+              "id": "lighthouse_view",
+              "x": 5.40000009536743,
+              "z": 14.8000001907349
+            },
+            {
+              "id": "tide_marks",
+              "x": -8.5,
+              "z": 15.5
+            }
+          ],
+          "spawn": {
+            "x": 0,
+            "z": 2
+          },
+          "stage": 0,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        },
+        "connected": true,
+        "tick": {
+          "dialogue_open": false,
+          "episode_over": false,
+          "focus": "",
+          "play_started": true,
+          "stage": 1,
+          "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+          "tutorial_open": false,
+          "x": -10.5,
+          "yaw": 0,
+          "z": 0.98
+        },
+        "summary": {
+          "commit_count": 1,
+          "fact_count": 3,
+          "labels": [
+            "Signal lens secured"
+          ],
+          "mutated": true,
+          "operation": "acquire_object",
+          "refusal_count": 1,
+          "revision": 1,
+          "stage": 1,
+          "stage_from": 0,
+          "stage_to": 1,
+          "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+          "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "trace": {
+            "checks": [
+              {
+                "code": "OBJECT_NOT_PRESENT",
+                "gate": "REACHABILITY",
+                "outcome": "pass"
+              },
+              {
+                "code": "OBJECT_NOT_REACHABLE",
+                "gate": "REACHABILITY",
+                "outcome": "pass"
+              }
+            ],
+            "consistent": true,
+            "evaluated_gates": [
+              "REACHABILITY"
+            ],
+            "family_states": {
+              "DISCLOSURE": "out_of_scope",
+              "KNOWLEDGE": "out_of_scope",
+              "POLICY": "out_of_scope",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "out_of_scope",
+              "REACHABILITY": "pass"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "POLICY",
+              "PRECONDITION",
+              "KNOWLEDGE",
+              "DISCLOSURE",
+              "QUEST STAGE"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          }
+        },
+        "counts": {
+          "commits": 1,
+          "holds": 1,
+          "proposals": 2,
+          "dialogues": 3
+        },
+        "events": [
+          {
+            "kind": "session",
+            "at": 5337,
+            "seq": 9,
+            "payload": {
+              "commit_count": 0,
+              "fact_count": 2,
+              "refusal_count": 0,
+              "revision": 0,
+              "scenario_id": "sealed-lighthouse-v1",
+              "sites": [
+                {
+                  "id": "mira",
+                  "x": 3,
+                  "z": 11
+                },
+                {
+                  "id": "lens_pickup",
+                  "x": -11,
+                  "z": 1
+                },
+                {
+                  "id": "lamp_mount",
+                  "x": 7,
+                  "z": 13.5
+                },
+                {
+                  "id": "lighthouse_view",
+                  "x": 5.40000009536743,
+                  "z": 14.8000001907349
+                },
+                {
+                  "id": "tide_marks",
+                  "x": -8.5,
+                  "z": 15.5
+                }
+              ],
+              "spawn": {
+                "x": 0,
+                "z": 2
+              },
+              "stage": 0,
+              "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+            }
+          },
+          {
+            "kind": "focus",
+            "at": 15799.200000047684,
+            "seq": 50,
+            "payload": {
+              "interaction_id": "mira"
+            },
+            "label": "mira"
+          },
+          {
+            "kind": "dialogue",
+            "at": 17455,
+            "seq": 57,
+            "payload": {
+              "npc": "captain_mira",
+              "phase": "open"
+            },
+            "label": "open"
+          },
+          {
+            "kind": "dialogue",
+            "at": 18388.30000001192,
+            "seq": 62,
+            "payload": {
+              "choice_id": "ask_tide",
+              "npc": "captain_mira",
+              "phase": "choice"
+            },
+            "label": "ask_tide"
+          },
+          {
+            "kind": "proposal",
+            "at": 18388.5,
+            "seq": 63,
+            "payload": {
+              "operation": "reveal_hint",
+              "text": "Request the tide-marks lead from Captain Mira"
+            },
+            "label": "reveal_hint"
+          },
+          {
+            "kind": "disclosure_outcome",
+            "at": 18388.700000047684,
+            "seq": 64,
+            "payload": {
+              "check_ids": [
+                "DISC-CHECK-001-POLICY"
+              ],
+              "commit_count": 0,
+              "contract_id": "sl-npc-disclosure-expectations-v1",
+              "contract_version": "1.0.0",
+              "error_ids": [
+                "STAGE_GATED_DISCLOSURE"
+              ],
+              "explanation": {
+                "checks": {
+                  "consistent": true,
+                  "evaluated": [
+                    {
+                      "code": "FORBIDDEN_DISCLOSURE",
+                      "gate": "DISCLOSURE",
+                      "outcome": "pass"
+                    },
+                    {
+                      "code": "STAGE_GATED_DISCLOSURE",
+                      "gate": "DISCLOSURE/QUEST STAGE",
+                      "outcome": "fail"
+                    }
+                  ],
+                  "family_states": {
+                    "DISCLOSURE": "fail",
+                    "KNOWLEDGE": "skipped",
+                    "POLICY": "skipped",
+                    "PRECONDITION": "out_of_scope",
+                    "QUEST STAGE": "fail",
+                    "REACHABILITY": "out_of_scope"
+                  },
+                  "held_at": "STAGE_GATED_DISCLOSURE",
+                  "out_of_scope": [
+                    "PRECONDITION",
+                    "REACHABILITY"
+                  ],
+                  "short_circuit": true,
+                  "skipped": [
+                    {
+                      "code": "UNKNOWN_ACTOR",
+                      "gate": "POLICY"
+                    },
+                    {
+                      "code": "NPC_DOES_NOT_KNOW_FACT",
+                      "gate": "KNOWLEDGE"
+                    }
+                  ],
+                  "unreported": [
+                    {
+                      "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                      "gate": "DISCLOSURE"
+                    }
+                  ]
+                },
+                "decision": {
+                  "accepted": false,
+                  "outcome": "denied",
+                  "result_codes": [
+                    "STAGE_GATED_DISCLOSURE"
+                  ]
+                },
+                "input": {
+                  "actor_role": "captain",
+                  "operation": "reveal_hint",
+                  "subject_type": "lead"
+                },
+                "ontology": {
+                  "relation": "captain_to_lead_disclosure",
+                  "rule_ids": [
+                    "DISC-002",
+                    "DISC-007"
+                  ]
+                },
+                "schema_id": "trace-rpg-semantic-explanation",
+                "schema_version": "1.0.0",
+                "state_effect": {
+                  "kind": "denied_no_mutation",
+                  "mutated": false,
+                  "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+                  "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+                }
+              },
+              "fact_count": 2,
+              "mutated": false,
+              "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "operation_code": "reveal_hint",
+              "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "refusal_count": 0,
+              "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+              "result_codes": [
+                "STAGE_GATED_DISCLOSURE"
+              ],
+              "revision": 0,
+              "rule_ids": [
+                "DISC-002",
+                "DISC-007"
+              ],
+              "stage": 0,
+              "state_effect": "denied_no_mutation",
+              "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "template_id": "mira-safe-deflection-v1"
+            },
+            "label": "disclosure_outcome"
+          },
+          {
+            "kind": "hold",
+            "at": 18389.30000001192,
+            "seq": 65,
+            "payload": {
+              "codes": [
+                "STAGE_GATED_DISCLOSURE"
+              ],
+              "commit_count": 0,
+              "fact_count": 2,
+              "gates": [
+                "DISCLOSURE/QUEST STAGE"
+              ],
+              "next_affordance": "Recover the signal lens from the lamp store.",
+              "refusal_count": 1,
+              "revision": 0,
+              "stage": 0,
+              "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "trace": {
+                "checks": [
+                  {
+                    "code": "FORBIDDEN_DISCLOSURE",
+                    "gate": "DISCLOSURE",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "STAGE_GATED_DISCLOSURE",
+                    "gate": "DISCLOSURE/QUEST STAGE",
+                    "outcome": "fail"
+                  }
+                ],
+                "consistent": true,
+                "evaluated_gates": [
+                  "DISCLOSURE",
+                  "DISCLOSURE/QUEST STAGE"
+                ],
+                "family_states": {
+                  "DISCLOSURE": "fail",
+                  "KNOWLEDGE": "skipped",
+                  "POLICY": "skipped",
+                  "PRECONDITION": "out_of_scope",
+                  "QUEST STAGE": "fail",
+                  "REACHABILITY": "out_of_scope"
+                },
+                "held_at": "STAGE_GATED_DISCLOSURE",
+                "out_of_scope": [
+                  "PRECONDITION",
+                  "REACHABILITY"
+                ],
+                "short_circuit": true,
+                "skipped": [
+                  {
+                    "code": "UNKNOWN_ACTOR",
+                    "gate": "POLICY"
+                  },
+                  {
+                    "code": "NPC_DOES_NOT_KNOW_FACT",
+                    "gate": "KNOWLEDGE"
+                  }
+                ],
+                "unreported": [
+                  {
+                    "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                    "gate": "DISCLOSURE"
+                  }
+                ]
+              }
+            },
+            "label": "hold DISCLOSURE+QUEST STAGE"
+          },
+          {
+            "kind": "coach_card",
+            "at": 18423.80000001192,
+            "seq": 66,
+            "payload": {
+              "card_id": "hold_intro",
+              "phase": "shown"
+            }
+          },
+          {
+            "kind": "coach_card",
+            "at": 20385.5,
+            "seq": 74,
+            "payload": {
+              "card_id": "hold_intro",
+              "phase": "dismissed"
+            }
+          },
+          {
+            "kind": "dialogue",
+            "at": 21039.80000001192,
+            "seq": 78,
+            "payload": {
+              "npc": "captain_mira",
+              "phase": "close"
+            },
+            "label": "close"
+          },
+          {
+            "kind": "focus",
+            "at": 22850.5,
+            "seq": 86,
+            "payload": {
+              "interaction_id": ""
+            },
+            "label": ""
+          },
+          {
+            "kind": "focus",
+            "at": 32570.5,
+            "seq": 125,
+            "payload": {
+              "interaction_id": "lens_pickup"
+            },
+            "label": "lens_pickup"
+          },
+          {
+            "kind": "proposal",
+            "at": 34050.60000002384,
+            "seq": 132,
+            "payload": {
+              "operation": "acquire_object",
+              "text": "Recover the signal lens"
+            },
+            "label": "acquire_object"
+          },
+          {
+            "kind": "commit",
+            "at": 34050.60000002384,
+            "seq": 133,
+            "payload": {
+              "commit_count": 1,
+              "fact_count": 3,
+              "labels": [
+                "Signal lens secured"
+              ],
+              "mutated": true,
+              "operation": "acquire_object",
+              "refusal_count": 1,
+              "revision": 1,
+              "stage": 1,
+              "stage_from": 0,
+              "stage_to": 1,
+              "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+              "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "trace": {
+                "checks": [
+                  {
+                    "code": "OBJECT_NOT_PRESENT",
+                    "gate": "REACHABILITY",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "OBJECT_NOT_REACHABLE",
+                    "gate": "REACHABILITY",
+                    "outcome": "pass"
+                  }
+                ],
+                "consistent": true,
+                "evaluated_gates": [
+                  "REACHABILITY"
+                ],
+                "family_states": {
+                  "DISCLOSURE": "out_of_scope",
+                  "KNOWLEDGE": "out_of_scope",
+                  "POLICY": "out_of_scope",
+                  "PRECONDITION": "out_of_scope",
+                  "QUEST STAGE": "out_of_scope",
+                  "REACHABILITY": "pass"
+                },
+                "held_at": "",
+                "out_of_scope": [
+                  "POLICY",
+                  "PRECONDITION",
+                  "KNOWLEDGE",
+                  "DISCLOSURE",
+                  "QUEST STAGE"
+                ],
+                "short_circuit": false,
+                "skipped": [],
+                "unreported": []
+              }
+            },
+            "label": "commit 0>1"
+          },
+          {
+            "kind": "coach_card",
+            "at": 34054.30000001192,
+            "seq": 134,
+            "payload": {
+              "card_id": "ledger_intro",
+              "phase": "shown"
+            }
+          },
+          {
+            "kind": "focus",
+            "at": 34054.40000003576,
+            "seq": 135,
+            "payload": {
+              "interaction_id": ""
+            },
+            "label": ""
+          }
+        ],
+        "disclosureEvents": [
+          {
+            "kind": "disclosure_outcome",
+            "seq": 64,
+            "tMs": 17477,
+            "explanation": {
+              "schema": "trace-rpg-semantic-explanation 1.0.0",
+              "input": {
+                "operation": "reveal_hint",
+                "actorRole": "captain",
+                "subjectType": "lead"
+              },
+              "ontology": {
+                "relation": "captain_to_lead_disclosure",
+                "ruleIds": [
+                  "DISC-002",
+                  "DISC-007"
+                ]
+              },
+              "checks": {
+                "evaluated": [
+                  {
+                    "code": "FORBIDDEN_DISCLOSURE",
+                    "gate": "DISCLOSURE",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "STAGE_GATED_DISCLOSURE",
+                    "gate": "DISCLOSURE/QUEST STAGE",
+                    "outcome": "fail"
+                  }
+                ],
+                "skipped": [
+                  {
+                    "code": "UNKNOWN_ACTOR",
+                    "gate": "POLICY",
+                    "outcome": "unknown"
+                  },
+                  {
+                    "code": "NPC_DOES_NOT_KNOW_FACT",
+                    "gate": "KNOWLEDGE",
+                    "outcome": "unknown"
+                  }
+                ],
+                "outOfScope": [
+                  "PRECONDITION",
+                  "REACHABILITY"
+                ],
+                "unreported": [
+                  {
+                    "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                    "gate": "DISCLOSURE",
+                    "outcome": "unknown"
+                  }
+                ],
+                "consistent": true
+              },
+              "decision": {
+                "outcome": "denied",
+                "accepted": false,
+                "resultCodes": [
+                  "STAGE_GATED_DISCLOSURE"
+                ]
+              },
+              "effect": {
+                "kind": "denied_no_mutation",
+                "mutated": false,
+                "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+                "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+                "hashEquality": "equal"
+              },
+              "engine": {
+                "seq": 64,
+                "tMs": 17477
+              }
+            },
+            "receivedAt": 18388.900000035763
+          }
+        ],
+        "comparison": null,
+        "readoutFrozen": false,
+        "pinnedVerdict": null,
+        "traceErrors": 0,
+        "legacyEvents": 0,
+        "comparisonText": "FROZEN INDEPENDENT COMPARISON\nN=48 · B=4 · M=8 · frozen independent lane\n\nThis lane loads only the trusted local frozen comparison contract; it is not a live trend or game result.\n\nDeclaration-derived bounded checker evidence: general-rule and ontology-gate outputs agree on 60/60 inputs. This is engineering-only fixture agreement, not ontology superiority, holdout or human-gold, player-benefit, efficacy, or latent-state evidence.\n\nUnchecked isolated\noutcome: 60\nunsafe: 51\nmismatch: 60\nGeneral rule\noutcome: 60\nunsafe: 0\nmismatch: 0\nOntology gate\noutcome: 60\nunsafe: 0\nmismatch: 0\noutcome\nrecorded result\nunsafe\nunsafe classification\nmismatch\nmismatch classification\ncell slice\tarm\tcase class\tn\tcheck coverage\toutcome\tunsafe\tmismatch\n1\tUnchecked isolated\tboundary\t4\tunreported\tallowed 4 · denied 0\t2\t4\n2\tUnchecked isolated\tmalformed\t8\tunreported\tallowed 8 · denied 0\t8\t8\n3\tUnchecked isolated\tnormal\t48\tunreported\tallowed 48 · denied 0\t41\t48\n4\tGeneral rule\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n5\tGeneral rule\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n6\tGeneral rule\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\n7\tOntology gate\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n8\tOntology gate\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n9\tOntology gate\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\nORIGINAL PYTHON: SEVEN BOOLEAN CHECKS\n\npublic labels only; no runtime equivalence inferred · count 7\n\nGODOT: SIX DISPLAY FAMILIES\n\npublic labels only; no runtime equivalence inferred · count 6\n\nDISCLOSURE: SEVEN DECLARATION RULES\n\npublic labels only; no runtime equivalence inferred · count 7"
+      }
+    },
+    "mount_stage2": {
+      "passed": true,
+      "state": {
+        "session": {
+          "commit_count": 0,
+          "fact_count": 2,
+          "refusal_count": 0,
+          "revision": 0,
+          "scenario_id": "sealed-lighthouse-v1",
+          "sites": [
+            {
+              "id": "mira",
+              "x": 3,
+              "z": 11
+            },
+            {
+              "id": "lens_pickup",
+              "x": -11,
+              "z": 1
+            },
+            {
+              "id": "lamp_mount",
+              "x": 7,
+              "z": 13.5
+            },
+            {
+              "id": "lighthouse_view",
+              "x": 5.40000009536743,
+              "z": 14.8000001907349
+            },
+            {
+              "id": "tide_marks",
+              "x": -8.5,
+              "z": 15.5
+            }
+          ],
+          "spawn": {
+            "x": 0,
+            "z": 2
+          },
+          "stage": 0,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        },
+        "connected": true,
+        "tick": {
+          "dialogue_open": false,
+          "episode_over": false,
+          "focus": "",
+          "play_started": true,
+          "stage": 2,
+          "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "tutorial_open": false,
+          "x": 7.36,
+          "yaw": 0,
+          "z": 12.14
+        },
+        "summary": {
+          "commit_count": 2,
+          "fact_count": 5,
+          "labels": [
+            "Lead authorized",
+            "Harbor signal restored"
+          ],
+          "mutated": true,
+          "operation": "install_lens",
+          "refusal_count": 1,
+          "revision": 2,
+          "stage": 2,
+          "stage_from": 1,
+          "stage_to": 2,
+          "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+          "trace": {
+            "checks": [
+              {
+                "code": "MISSING_REQUIRED_OBJECT",
+                "gate": "PRECONDITION",
+                "outcome": "pass"
+              },
+              {
+                "code": "QUEST_STAGE_PRECONDITION",
+                "gate": "QUEST STAGE",
+                "outcome": "pass"
+              }
+            ],
+            "consistent": true,
+            "evaluated_gates": [
+              "PRECONDITION",
+              "QUEST STAGE"
+            ],
+            "family_states": {
+              "DISCLOSURE": "out_of_scope",
+              "KNOWLEDGE": "out_of_scope",
+              "POLICY": "out_of_scope",
+              "PRECONDITION": "pass",
+              "QUEST STAGE": "pass",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "POLICY",
+              "REACHABILITY",
+              "KNOWLEDGE",
+              "DISCLOSURE"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          }
+        },
+        "counts": {
+          "commits": 2,
+          "holds": 1,
+          "proposals": 3,
+          "dialogues": 3
+        },
+        "events": [
+          {
+            "kind": "session",
+            "at": 5337,
+            "seq": 9,
+            "payload": {
+              "commit_count": 0,
+              "fact_count": 2,
+              "refusal_count": 0,
+              "revision": 0,
+              "scenario_id": "sealed-lighthouse-v1",
+              "sites": [
+                {
+                  "id": "mira",
+                  "x": 3,
+                  "z": 11
+                },
+                {
+                  "id": "lens_pickup",
+                  "x": -11,
+                  "z": 1
+                },
+                {
+                  "id": "lamp_mount",
+                  "x": 7,
+                  "z": 13.5
+                },
+                {
+                  "id": "lighthouse_view",
+                  "x": 5.40000009536743,
+                  "z": 14.8000001907349
+                },
+                {
+                  "id": "tide_marks",
+                  "x": -8.5,
+                  "z": 15.5
+                }
+              ],
+              "spawn": {
+                "x": 0,
+                "z": 2
+              },
+              "stage": 0,
+              "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+            }
+          },
+          {
+            "kind": "focus",
+            "at": 15799.200000047684,
+            "seq": 50,
+            "payload": {
+              "interaction_id": "mira"
+            },
+            "label": "mira"
+          },
+          {
+            "kind": "dialogue",
+            "at": 17455,
+            "seq": 57,
+            "payload": {
+              "npc": "captain_mira",
+              "phase": "open"
+            },
+            "label": "open"
+          },
+          {
+            "kind": "dialogue",
+            "at": 18388.30000001192,
+            "seq": 62,
+            "payload": {
+              "choice_id": "ask_tide",
+              "npc": "captain_mira",
+              "phase": "choice"
+            },
+            "label": "ask_tide"
+          },
+          {
+            "kind": "proposal",
+            "at": 18388.5,
+            "seq": 63,
+            "payload": {
+              "operation": "reveal_hint",
+              "text": "Request the tide-marks lead from Captain Mira"
+            },
+            "label": "reveal_hint"
+          },
+          {
+            "kind": "disclosure_outcome",
+            "at": 18388.700000047684,
+            "seq": 64,
+            "payload": {
+              "check_ids": [
+                "DISC-CHECK-001-POLICY"
+              ],
+              "commit_count": 0,
+              "contract_id": "sl-npc-disclosure-expectations-v1",
+              "contract_version": "1.0.0",
+              "error_ids": [
+                "STAGE_GATED_DISCLOSURE"
+              ],
+              "explanation": {
+                "checks": {
+                  "consistent": true,
+                  "evaluated": [
+                    {
+                      "code": "FORBIDDEN_DISCLOSURE",
+                      "gate": "DISCLOSURE",
+                      "outcome": "pass"
+                    },
+                    {
+                      "code": "STAGE_GATED_DISCLOSURE",
+                      "gate": "DISCLOSURE/QUEST STAGE",
+                      "outcome": "fail"
+                    }
+                  ],
+                  "family_states": {
+                    "DISCLOSURE": "fail",
+                    "KNOWLEDGE": "skipped",
+                    "POLICY": "skipped",
+                    "PRECONDITION": "out_of_scope",
+                    "QUEST STAGE": "fail",
+                    "REACHABILITY": "out_of_scope"
+                  },
+                  "held_at": "STAGE_GATED_DISCLOSURE",
+                  "out_of_scope": [
+                    "PRECONDITION",
+                    "REACHABILITY"
+                  ],
+                  "short_circuit": true,
+                  "skipped": [
+                    {
+                      "code": "UNKNOWN_ACTOR",
+                      "gate": "POLICY"
+                    },
+                    {
+                      "code": "NPC_DOES_NOT_KNOW_FACT",
+                      "gate": "KNOWLEDGE"
+                    }
+                  ],
+                  "unreported": [
+                    {
+                      "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                      "gate": "DISCLOSURE"
+                    }
+                  ]
+                },
+                "decision": {
+                  "accepted": false,
+                  "outcome": "denied",
+                  "result_codes": [
+                    "STAGE_GATED_DISCLOSURE"
+                  ]
+                },
+                "input": {
+                  "actor_role": "captain",
+                  "operation": "reveal_hint",
+                  "subject_type": "lead"
+                },
+                "ontology": {
+                  "relation": "captain_to_lead_disclosure",
+                  "rule_ids": [
+                    "DISC-002",
+                    "DISC-007"
+                  ]
+                },
+                "schema_id": "trace-rpg-semantic-explanation",
+                "schema_version": "1.0.0",
+                "state_effect": {
+                  "kind": "denied_no_mutation",
+                  "mutated": false,
+                  "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+                  "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+                }
+              },
+              "fact_count": 2,
+              "mutated": false,
+              "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "operation_code": "reveal_hint",
+              "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "refusal_count": 0,
+              "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+              "result_codes": [
+                "STAGE_GATED_DISCLOSURE"
+              ],
+              "revision": 0,
+              "rule_ids": [
+                "DISC-002",
+                "DISC-007"
+              ],
+              "stage": 0,
+              "state_effect": "denied_no_mutation",
+              "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "template_id": "mira-safe-deflection-v1"
+            },
+            "label": "disclosure_outcome"
+          },
+          {
+            "kind": "hold",
+            "at": 18389.30000001192,
+            "seq": 65,
+            "payload": {
+              "codes": [
+                "STAGE_GATED_DISCLOSURE"
+              ],
+              "commit_count": 0,
+              "fact_count": 2,
+              "gates": [
+                "DISCLOSURE/QUEST STAGE"
+              ],
+              "next_affordance": "Recover the signal lens from the lamp store.",
+              "refusal_count": 1,
+              "revision": 0,
+              "stage": 0,
+              "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "trace": {
+                "checks": [
+                  {
+                    "code": "FORBIDDEN_DISCLOSURE",
+                    "gate": "DISCLOSURE",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "STAGE_GATED_DISCLOSURE",
+                    "gate": "DISCLOSURE/QUEST STAGE",
+                    "outcome": "fail"
+                  }
+                ],
+                "consistent": true,
+                "evaluated_gates": [
+                  "DISCLOSURE",
+                  "DISCLOSURE/QUEST STAGE"
+                ],
+                "family_states": {
+                  "DISCLOSURE": "fail",
+                  "KNOWLEDGE": "skipped",
+                  "POLICY": "skipped",
+                  "PRECONDITION": "out_of_scope",
+                  "QUEST STAGE": "fail",
+                  "REACHABILITY": "out_of_scope"
+                },
+                "held_at": "STAGE_GATED_DISCLOSURE",
+                "out_of_scope": [
+                  "PRECONDITION",
+                  "REACHABILITY"
+                ],
+                "short_circuit": true,
+                "skipped": [
+                  {
+                    "code": "UNKNOWN_ACTOR",
+                    "gate": "POLICY"
+                  },
+                  {
+                    "code": "NPC_DOES_NOT_KNOW_FACT",
+                    "gate": "KNOWLEDGE"
+                  }
+                ],
+                "unreported": [
+                  {
+                    "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                    "gate": "DISCLOSURE"
+                  }
+                ]
+              }
+            },
+            "label": "hold DISCLOSURE+QUEST STAGE"
+          },
+          {
+            "kind": "coach_card",
+            "at": 18423.80000001192,
+            "seq": 66,
+            "payload": {
+              "card_id": "hold_intro",
+              "phase": "shown"
+            }
+          },
+          {
+            "kind": "coach_card",
+            "at": 20385.5,
+            "seq": 74,
+            "payload": {
+              "card_id": "hold_intro",
+              "phase": "dismissed"
+            }
+          },
+          {
+            "kind": "dialogue",
+            "at": 21039.80000001192,
+            "seq": 78,
+            "payload": {
+              "npc": "captain_mira",
+              "phase": "close"
+            },
+            "label": "close"
+          },
+          {
+            "kind": "focus",
+            "at": 22850.5,
+            "seq": 86,
+            "payload": {
+              "interaction_id": ""
+            },
+            "label": ""
+          },
+          {
+            "kind": "focus",
+            "at": 32570.5,
+            "seq": 125,
+            "payload": {
+              "interaction_id": "lens_pickup"
+            },
+            "label": "lens_pickup"
+          },
+          {
+            "kind": "proposal",
+            "at": 34050.60000002384,
+            "seq": 132,
+            "payload": {
+              "operation": "acquire_object",
+              "text": "Recover the signal lens"
+            },
+            "label": "acquire_object"
+          },
+          {
+            "kind": "commit",
+            "at": 34050.60000002384,
+            "seq": 133,
+            "payload": {
+              "commit_count": 1,
+              "fact_count": 3,
+              "labels": [
+                "Signal lens secured"
+              ],
+              "mutated": true,
+              "operation": "acquire_object",
+              "refusal_count": 1,
+              "revision": 1,
+              "stage": 1,
+              "stage_from": 0,
+              "stage_to": 1,
+              "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+              "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "trace": {
+                "checks": [
+                  {
+                    "code": "OBJECT_NOT_PRESENT",
+                    "gate": "REACHABILITY",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "OBJECT_NOT_REACHABLE",
+                    "gate": "REACHABILITY",
+                    "outcome": "pass"
+                  }
+                ],
+                "consistent": true,
+                "evaluated_gates": [
+                  "REACHABILITY"
+                ],
+                "family_states": {
+                  "DISCLOSURE": "out_of_scope",
+                  "KNOWLEDGE": "out_of_scope",
+                  "POLICY": "out_of_scope",
+                  "PRECONDITION": "out_of_scope",
+                  "QUEST STAGE": "out_of_scope",
+                  "REACHABILITY": "pass"
+                },
+                "held_at": "",
+                "out_of_scope": [
+                  "POLICY",
+                  "PRECONDITION",
+                  "KNOWLEDGE",
+                  "DISCLOSURE",
+                  "QUEST STAGE"
+                ],
+                "short_circuit": false,
+                "skipped": [],
+                "unreported": []
+              }
+            },
+            "label": "commit 0>1"
+          },
+          {
+            "kind": "coach_card",
+            "at": 34054.30000001192,
+            "seq": 134,
+            "payload": {
+              "card_id": "ledger_intro",
+              "phase": "shown"
+            }
+          },
+          {
+            "kind": "focus",
+            "at": 34054.40000003576,
+            "seq": 135,
+            "payload": {
+              "interaction_id": ""
+            },
+            "label": ""
+          },
+          {
+            "kind": "coach_card",
+            "at": 35346.30000001192,
+            "seq": 140,
+            "payload": {
+              "card_id": "ledger_intro",
+              "phase": "dismissed"
+            }
+          },
+          {
+            "kind": "coach_card",
+            "at": 35346.40000003576,
+            "seq": 141,
+            "payload": {
+              "card_id": "investigate",
+              "phase": "shown"
+            }
+          },
+          {
+            "kind": "coach_card",
+            "at": 36163.5,
+            "seq": 145,
+            "payload": {
+              "card_id": "investigate",
+              "phase": "dismissed"
+            }
+          },
+          {
+            "kind": "focus",
+            "at": 50870.200000047684,
+            "seq": 203,
+            "payload": {
+              "interaction_id": "lamp_mount"
+            },
+            "label": "lamp_mount"
+          },
+          {
+            "kind": "proposal",
+            "at": 51919.90000003576,
+            "seq": 208,
+            "payload": {
+              "operation": "install_lens",
+              "text": "Install the lens in the harbor signal mount"
+            },
+            "label": "install_lens"
+          },
+          {
+            "kind": "commit",
+            "at": 51920,
+            "seq": 209,
+            "payload": {
+              "commit_count": 2,
+              "fact_count": 5,
+              "labels": [
+                "Lead authorized",
+                "Harbor signal restored"
+              ],
+              "mutated": true,
+              "operation": "install_lens",
+              "refusal_count": 1,
+              "revision": 2,
+              "stage": 2,
+              "stage_from": 1,
+              "stage_to": 2,
+              "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+              "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+              "trace": {
+                "checks": [
+                  {
+                    "code": "MISSING_REQUIRED_OBJECT",
+                    "gate": "PRECONDITION",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "QUEST_STAGE_PRECONDITION",
+                    "gate": "QUEST STAGE",
+                    "outcome": "pass"
+                  }
+                ],
+                "consistent": true,
+                "evaluated_gates": [
+                  "PRECONDITION",
+                  "QUEST STAGE"
+                ],
+                "family_states": {
+                  "DISCLOSURE": "out_of_scope",
+                  "KNOWLEDGE": "out_of_scope",
+                  "POLICY": "out_of_scope",
+                  "PRECONDITION": "pass",
+                  "QUEST STAGE": "pass",
+                  "REACHABILITY": "out_of_scope"
+                },
+                "held_at": "",
+                "out_of_scope": [
+                  "POLICY",
+                  "REACHABILITY",
+                  "KNOWLEDGE",
+                  "DISCLOSURE"
+                ],
+                "short_circuit": false,
+                "skipped": [],
+                "unreported": []
+              }
+            },
+            "label": "commit 1>2"
+          },
+          {
+            "kind": "focus",
+            "at": 51924.200000047684,
+            "seq": 210,
+            "payload": {
+              "interaction_id": ""
+            },
+            "label": ""
+          }
+        ],
+        "disclosureEvents": [
+          {
+            "kind": "disclosure_outcome",
+            "seq": 64,
+            "tMs": 17477,
+            "explanation": {
+              "schema": "trace-rpg-semantic-explanation 1.0.0",
+              "input": {
+                "operation": "reveal_hint",
+                "actorRole": "captain",
+                "subjectType": "lead"
+              },
+              "ontology": {
+                "relation": "captain_to_lead_disclosure",
+                "ruleIds": [
+                  "DISC-002",
+                  "DISC-007"
+                ]
+              },
+              "checks": {
+                "evaluated": [
+                  {
+                    "code": "FORBIDDEN_DISCLOSURE",
+                    "gate": "DISCLOSURE",
+                    "outcome": "pass"
+                  },
+                  {
+                    "code": "STAGE_GATED_DISCLOSURE",
+                    "gate": "DISCLOSURE/QUEST STAGE",
+                    "outcome": "fail"
+                  }
+                ],
+                "skipped": [
+                  {
+                    "code": "UNKNOWN_ACTOR",
+                    "gate": "POLICY",
+                    "outcome": "unknown"
+                  },
+                  {
+                    "code": "NPC_DOES_NOT_KNOW_FACT",
+                    "gate": "KNOWLEDGE",
+                    "outcome": "unknown"
+                  }
+                ],
+                "outOfScope": [
+                  "PRECONDITION",
+                  "REACHABILITY"
+                ],
+                "unreported": [
+                  {
+                    "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                    "gate": "DISCLOSURE",
+                    "outcome": "unknown"
+                  }
+                ],
+                "consistent": true
+              },
+              "decision": {
+                "outcome": "denied",
+                "accepted": false,
+                "resultCodes": [
+                  "STAGE_GATED_DISCLOSURE"
+                ]
+              },
+              "effect": {
+                "kind": "denied_no_mutation",
+                "mutated": false,
+                "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+                "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+                "hashEquality": "equal"
+              },
+              "engine": {
+                "seq": 64,
+                "tMs": 17477
+              }
+            },
+            "receivedAt": 18388.900000035763
+          }
+        ],
+        "comparison": null,
+        "readoutFrozen": false,
+        "pinnedVerdict": null,
+        "traceErrors": 0,
+        "legacyEvents": 0,
+        "comparisonText": "FROZEN INDEPENDENT COMPARISON\nN=48 · B=4 · M=8 · frozen independent lane\n\nThis lane loads only the trusted local frozen comparison contract; it is not a live trend or game result.\n\nDeclaration-derived bounded checker evidence: general-rule and ontology-gate outputs agree on 60/60 inputs. This is engineering-only fixture agreement, not ontology superiority, holdout or human-gold, player-benefit, efficacy, or latent-state evidence.\n\nUnchecked isolated\noutcome: 60\nunsafe: 51\nmismatch: 60\nGeneral rule\noutcome: 60\nunsafe: 0\nmismatch: 0\nOntology gate\noutcome: 60\nunsafe: 0\nmismatch: 0\noutcome\nrecorded result\nunsafe\nunsafe classification\nmismatch\nmismatch classification\ncell slice\tarm\tcase class\tn\tcheck coverage\toutcome\tunsafe\tmismatch\n1\tUnchecked isolated\tboundary\t4\tunreported\tallowed 4 · denied 0\t2\t4\n2\tUnchecked isolated\tmalformed\t8\tunreported\tallowed 8 · denied 0\t8\t8\n3\tUnchecked isolated\tnormal\t48\tunreported\tallowed 48 · denied 0\t41\t48\n4\tGeneral rule\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n5\tGeneral rule\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n6\tGeneral rule\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\n7\tOntology gate\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n8\tOntology gate\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n9\tOntology gate\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\nORIGINAL PYTHON: SEVEN BOOLEAN CHECKS\n\npublic labels only; no runtime equivalence inferred · count 7\n\nGODOT: SIX DISPLAY FAMILIES\n\npublic labels only; no runtime equivalence inferred · count 6\n\nDISCLOSURE: SEVEN DECLARATION RULES\n\npublic labels only; no runtime equivalence inferred · count 7"
+      }
+    },
+    "fresh_disclosure": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-005"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "authorized_fresh",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "effect": {
+          "kind": "fresh_disclosure",
+          "mutated": true,
+          "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "different"
+        },
+        "engine": {
+          "seq": 234,
+          "tMs": 55827
+        }
+      },
+      "receipt": "036-fresh_disclosure.json"
+    },
+    "authorized_redisplay": {
+      "passed": true,
+      "explanation": {
+        "schema": "trace-rpg-semantic-explanation 1.0.0",
+        "input": {
+          "operation": "reveal_hint",
+          "actorRole": "captain",
+          "subjectType": "lead"
+        },
+        "ontology": {
+          "relation": "captain_to_lead_disclosure",
+          "ruleIds": [
+            "DISC-006"
+          ]
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        },
+        "decision": {
+          "outcome": "authorized_redisplay",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "effect": {
+          "kind": "redisplay_no_mutation",
+          "mutated": false,
+          "priorHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "equal"
+        },
+        "engine": {
+          "seq": 244,
+          "tMs": 57468
+        }
+      },
+      "receipt": "038-authorized_redisplay.json"
+    },
+    "map_1440": {
+      "passed": true,
+      "keyboard_Enter": true,
+      "no_inspection_mutation": true,
+      "dom": "map-1440.json",
+      "screenshots": "map-1440-*.png"
+    },
+    "map_390": {
+      "passed": true,
+      "keyboard_Enter": true,
+      "no_inspection_mutation": true,
+      "dom": "map-390.json",
+      "screenshots": "map-390-*.png"
+    },
+    "continuous_diagnostics": {
+      "passed": true,
+      "warnings": 0
+    }
+  },
+  "failures": [],
+  "diagnostics": {
+    "console": [
+      {
+        "at": "2026-10-23T13:53:03.148Z",
+        "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+        "type": "log",
+        "text": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org",
+        "location": {
+          "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T13:53:03.396Z",
+        "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+        "type": "log",
+        "text": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+        "location": {
+          "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      },
+      {
+        "at": "2026-10-23T13:53:03.865Z",
+        "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+        "type": "log",
+        "text": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+        "location": {
+          "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.js",
+          "lineNumber": 451,
+          "columnNumber": 15
+        }
+      }
+    ],
+    "pageerror": [],
+    "requestfailed": [],
+    "httpErrors": [],
+    "driverFailures": [],
+    "warnings": [],
+    "focus": [
+      {
+        "label": "loaded-before-focus",
+        "at": "2026-10-23T13:53:05.778Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "loaded-after-focus",
+        "at": "2026-10-23T13:53:06.200Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-before-focus",
+        "at": "2026-10-23T13:53:07.304Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-after-focus",
+        "at": "2026-10-23T13:53:07.472Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-before-click",
+        "at": "2026-10-23T13:53:07.489Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "begin-investigation-after-click",
+        "at": "2026-10-23T13:53:07.583Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-before-focus",
+        "at": "2026-10-23T13:53:12.968Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-after-focus",
+        "at": "2026-10-23T13:53:13.143Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-before-click",
+        "at": "2026-10-23T13:53:13.160Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "start-case-after-click",
+        "at": "2026-10-23T13:53:13.194Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-north-before-focus",
+        "at": "2026-10-23T13:53:13.939Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-north-after-focus",
+        "at": "2026-10-23T13:53:14.102Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-approach-before-focus",
+        "at": "2026-10-23T13:53:17.350Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mira-approach-after-focus",
+        "at": "2026-10-23T13:53:17.518Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage0-before-focus",
+        "at": "2026-10-23T13:53:19.416Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage0-after-focus",
+        "at": "2026-10-23T13:53:19.608Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "stage_zero_denial-input-before-focus",
+        "at": "2026-10-23T13:53:20.393Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "stage_zero_denial-input-after-focus",
+        "at": "2026-10-23T13:53:20.561Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-before-focus",
+        "at": "2026-10-23T13:53:22.341Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-after-focus",
+        "at": "2026-10-23T13:53:22.520Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-before-click",
+        "at": "2026-10-23T13:53:22.535Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-hold-coach-1-after-click",
+        "at": "2026-10-23T13:53:22.550Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "close-mira-before-focus",
+        "at": "2026-10-23T13:53:23.077Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "close-mira-after-focus",
+        "at": "2026-10-23T13:53:23.227Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "leave-mira-before-focus",
+        "at": "2026-10-23T13:53:24.090Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "leave-mira-after-focus",
+        "at": "2026-10-23T13:53:24.322Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-north-strip-before-focus",
+        "at": "2026-10-23T13:53:26.187Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-north-strip-after-focus",
+        "at": "2026-10-23T13:53:26.356Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour1-before-focus",
+        "at": "2026-10-23T13:53:28.521Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour1-after-focus",
+        "at": "2026-10-23T13:53:28.689Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour2-before-focus",
+        "at": "2026-10-23T13:53:31.534Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-detour2-after-focus",
+        "at": "2026-10-23T13:53:31.723Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-approach-before-focus",
+        "at": "2026-10-23T13:53:34.322Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "lens-approach-after-focus",
+        "at": "2026-10-23T13:53:34.512Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "collect-lens-before-focus",
+        "at": "2026-10-23T13:53:36.073Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "collect-lens-after-focus",
+        "at": "2026-10-23T13:53:36.231Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-before-focus",
+        "at": "2026-10-23T13:53:37.350Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-after-focus",
+        "at": "2026-10-23T13:53:37.515Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-before-click",
+        "at": "2026-10-23T13:53:37.535Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-1-after-click",
+        "at": "2026-10-23T13:53:37.556Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-before-focus",
+        "at": "2026-10-23T13:53:38.175Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-after-focus",
+        "at": "2026-10-23T13:53:38.336Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-before-click",
+        "at": "2026-10-23T13:53:38.351Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "first-commit-coach-2-after-click",
+        "at": "2026-10-23T13:53:38.374Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour2-before-focus",
+        "at": "2026-10-23T13:53:38.736Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour2-after-focus",
+        "at": "2026-10-23T13:53:38.915Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour1-before-focus",
+        "at": "2026-10-23T13:53:40.628Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-detour1-after-focus",
+        "at": "2026-10-23T13:53:40.799Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-strip-before-focus",
+        "at": "2026-10-23T13:53:43.220Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-strip-after-focus",
+        "at": "2026-10-23T13:53:43.383Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-north-before-focus",
+        "at": "2026-10-23T13:53:46.148Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-north-after-focus",
+        "at": "2026-10-23T13:53:46.326Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-east-before-focus",
+        "at": "2026-10-23T13:53:48.210Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-east-after-focus",
+        "at": "2026-10-23T13:53:48.389Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-approach-before-focus",
+        "at": "2026-10-23T13:53:51.783Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "mount-approach-after-focus",
+        "at": "2026-10-23T13:53:51.974Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "install-lens-before-focus",
+        "at": "2026-10-23T13:53:53.866Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "install-lens-after-focus",
+        "at": "2026-10-23T13:53:54.033Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-mira-before-focus",
+        "at": "2026-10-23T13:53:55.396Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "return-mira-after-focus",
+        "at": "2026-10-23T13:53:55.565Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage2-before-focus",
+        "at": "2026-10-23T13:53:57.769Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "open-mira-stage2-after-focus",
+        "at": "2026-10-23T13:53:57.952Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": "CANVAS",
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "fresh_disclosure-input-before-focus",
+        "at": "2026-10-23T13:53:58.753Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "fresh_disclosure-input-after-focus",
+        "at": "2026-10-23T13:53:58.910Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "authorized_redisplay-input-before-focus",
+        "at": "2026-10-23T13:54:00.362Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "authorized_redisplay-input-after-focus",
+        "at": "2026-10-23T13:54:00.553Z",
+        "nativeFront": "\"LSDisplayName\"=\"Google Chrome for Testing\"\n\"pid\"=61382",
+        "states": [
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "IFRAME",
+            "canvasConnected": null,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "url": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+            "hasFocus": true,
+            "visibilityState": "visible",
+            "isConnected": true,
+            "activeElement": "CANVAS",
+            "canvasConnected": true,
+            "pointerLockElement": null,
+            "userActivation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "browser_pid": 61382,
+  "final_state": {
+    "session": {
+      "commit_count": 0,
+      "fact_count": 2,
+      "refusal_count": 0,
+      "revision": 0,
+      "scenario_id": "sealed-lighthouse-v1",
+      "sites": [
+        {
+          "id": "mira",
+          "x": 3,
+          "z": 11
+        },
+        {
+          "id": "lens_pickup",
+          "x": -11,
+          "z": 1
+        },
+        {
+          "id": "lamp_mount",
+          "x": 7,
+          "z": 13.5
+        },
+        {
+          "id": "lighthouse_view",
+          "x": 5.40000009536743,
+          "z": 14.8000001907349
+        },
+        {
+          "id": "tide_marks",
+          "x": -8.5,
+          "z": 15.5
+        }
+      ],
+      "spawn": {
+        "x": 0,
+        "z": 2
+      },
+      "stage": 0,
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    },
+    "connected": true,
+    "tick": {
+      "dialogue_open": true,
+      "episode_over": false,
+      "focus": "mira",
+      "play_started": true,
+      "stage": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "tutorial_open": false,
+      "x": 3.37,
+      "yaw": 0,
+      "z": 11.66
+    },
+    "summary": {
+      "commit_count": 3,
+      "fact_count": 6,
+      "labels": [
+        "Tide-marks lead recorded"
+      ],
+      "mutated": true,
+      "operation": "reveal_hint",
+      "refusal_count": 1,
+      "revision": 3,
+      "stage": 2,
+      "stage_from": 2,
+      "stage_to": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+      "trace": {
+        "checks": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass"
+          },
+          {
+            "code": "STAGE_GATED_DISCLOSURE",
+            "gate": "DISCLOSURE/QUEST STAGE",
+            "outcome": "pass"
+          },
+          {
+            "code": "UNKNOWN_ACTOR",
+            "gate": "POLICY",
+            "outcome": "pass"
+          },
+          {
+            "code": "NPC_DOES_NOT_KNOW_FACT",
+            "gate": "KNOWLEDGE",
+            "outcome": "pass"
+          },
+          {
+            "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass"
+          }
+        ],
+        "consistent": true,
+        "evaluated_gates": [
+          "DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE",
+          "POLICY",
+          "KNOWLEDGE"
+        ],
+        "family_states": {
+          "DISCLOSURE": "pass",
+          "KNOWLEDGE": "pass",
+          "POLICY": "pass",
+          "PRECONDITION": "out_of_scope",
+          "QUEST STAGE": "pass",
+          "REACHABILITY": "out_of_scope"
+        },
+        "held_at": "",
+        "out_of_scope": [
+          "PRECONDITION",
+          "REACHABILITY"
+        ],
+        "short_circuit": false,
+        "skipped": [],
+        "unreported": []
+      }
+    },
+    "counts": {
+      "commits": 3,
+      "holds": 1,
+      "proposals": 5,
+      "dialogues": 6
+    },
+    "events": [
+      {
+        "kind": "session",
+        "at": 5337,
+        "seq": 9,
+        "payload": {
+          "commit_count": 0,
+          "fact_count": 2,
+          "refusal_count": 0,
+          "revision": 0,
+          "scenario_id": "sealed-lighthouse-v1",
+          "sites": [
+            {
+              "id": "mira",
+              "x": 3,
+              "z": 11
+            },
+            {
+              "id": "lens_pickup",
+              "x": -11,
+              "z": 1
+            },
+            {
+              "id": "lamp_mount",
+              "x": 7,
+              "z": 13.5
+            },
+            {
+              "id": "lighthouse_view",
+              "x": 5.40000009536743,
+              "z": 14.8000001907349
+            },
+            {
+              "id": "tide_marks",
+              "x": -8.5,
+              "z": 15.5
+            }
+          ],
+          "spawn": {
+            "x": 0,
+            "z": 2
+          },
+          "stage": 0,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      {
+        "kind": "focus",
+        "at": 15799.200000047684,
+        "seq": 50,
+        "payload": {
+          "interaction_id": "mira"
+        },
+        "label": "mira"
+      },
+      {
+        "kind": "dialogue",
+        "at": 17455,
+        "seq": 57,
+        "payload": {
+          "npc": "captain_mira",
+          "phase": "open"
+        },
+        "label": "open"
+      },
+      {
+        "kind": "dialogue",
+        "at": 18388.30000001192,
+        "seq": 62,
+        "payload": {
+          "choice_id": "ask_tide",
+          "npc": "captain_mira",
+          "phase": "choice"
+        },
+        "label": "ask_tide"
+      },
+      {
+        "kind": "proposal",
+        "at": 18388.5,
+        "seq": 63,
+        "payload": {
+          "operation": "reveal_hint",
+          "text": "Request the tide-marks lead from Captain Mira"
+        },
+        "label": "reveal_hint"
+      },
+      {
+        "kind": "disclosure_outcome",
+        "at": 18388.700000047684,
+        "seq": 64,
+        "payload": {
+          "check_ids": [
+            "DISC-CHECK-001-POLICY"
+          ],
+          "commit_count": 0,
+          "contract_id": "sl-npc-disclosure-expectations-v1",
+          "contract_version": "1.0.0",
+          "error_ids": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "explanation": {
+            "checks": {
+              "consistent": true,
+              "evaluated": [
+                {
+                  "code": "FORBIDDEN_DISCLOSURE",
+                  "gate": "DISCLOSURE",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "STAGE_GATED_DISCLOSURE",
+                  "gate": "DISCLOSURE/QUEST STAGE",
+                  "outcome": "fail"
+                }
+              ],
+              "family_states": {
+                "DISCLOSURE": "fail",
+                "KNOWLEDGE": "skipped",
+                "POLICY": "skipped",
+                "PRECONDITION": "out_of_scope",
+                "QUEST STAGE": "fail",
+                "REACHABILITY": "out_of_scope"
+              },
+              "held_at": "STAGE_GATED_DISCLOSURE",
+              "out_of_scope": [
+                "PRECONDITION",
+                "REACHABILITY"
+              ],
+              "short_circuit": true,
+              "skipped": [
+                {
+                  "code": "UNKNOWN_ACTOR",
+                  "gate": "POLICY"
+                },
+                {
+                  "code": "NPC_DOES_NOT_KNOW_FACT",
+                  "gate": "KNOWLEDGE"
+                }
+              ],
+              "unreported": [
+                {
+                  "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                  "gate": "DISCLOSURE"
+                }
+              ]
+            },
+            "decision": {
+              "accepted": false,
+              "outcome": "denied",
+              "result_codes": [
+                "STAGE_GATED_DISCLOSURE"
+              ]
+            },
+            "input": {
+              "actor_role": "captain",
+              "operation": "reveal_hint",
+              "subject_type": "lead"
+            },
+            "ontology": {
+              "relation": "captain_to_lead_disclosure",
+              "rule_ids": [
+                "DISC-002",
+                "DISC-007"
+              ]
+            },
+            "schema_id": "trace-rpg-semantic-explanation",
+            "schema_version": "1.0.0",
+            "state_effect": {
+              "kind": "denied_no_mutation",
+              "mutated": false,
+              "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+              "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+            }
+          },
+          "fact_count": 2,
+          "mutated": false,
+          "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "operation_code": "reveal_hint",
+          "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "refusal_count": 0,
+          "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+          "result_codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "revision": 0,
+          "rule_ids": [
+            "DISC-002",
+            "DISC-007"
+          ],
+          "stage": 0,
+          "state_effect": "denied_no_mutation",
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "template_id": "mira-safe-deflection-v1"
+        },
+        "label": "disclosure_outcome"
+      },
+      {
+        "kind": "hold",
+        "at": 18389.30000001192,
+        "seq": 65,
+        "payload": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "commit_count": 0,
+          "fact_count": 2,
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "next_affordance": "Recover the signal lens from the lamp store.",
+          "refusal_count": 1,
+          "revision": 0,
+          "stage": 0,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "trace": {
+            "checks": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "fail"
+              }
+            ],
+            "consistent": true,
+            "evaluated_gates": [
+              "DISCLOSURE",
+              "DISCLOSURE/QUEST STAGE"
+            ],
+            "family_states": {
+              "DISCLOSURE": "fail",
+              "KNOWLEDGE": "skipped",
+              "POLICY": "skipped",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "fail",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "STAGE_GATED_DISCLOSURE",
+            "out_of_scope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "short_circuit": true,
+            "skipped": [
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE"
+              }
+            ],
+            "unreported": [
+              {
+                "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                "gate": "DISCLOSURE"
+              }
+            ]
+          }
+        },
+        "label": "hold DISCLOSURE+QUEST STAGE"
+      },
+      {
+        "kind": "coach_card",
+        "at": 18423.80000001192,
+        "seq": 66,
+        "payload": {
+          "card_id": "hold_intro",
+          "phase": "shown"
+        }
+      },
+      {
+        "kind": "coach_card",
+        "at": 20385.5,
+        "seq": 74,
+        "payload": {
+          "card_id": "hold_intro",
+          "phase": "dismissed"
+        }
+      },
+      {
+        "kind": "dialogue",
+        "at": 21039.80000001192,
+        "seq": 78,
+        "payload": {
+          "npc": "captain_mira",
+          "phase": "close"
+        },
+        "label": "close"
+      },
+      {
+        "kind": "focus",
+        "at": 22850.5,
+        "seq": 86,
+        "payload": {
+          "interaction_id": ""
+        },
+        "label": ""
+      },
+      {
+        "kind": "focus",
+        "at": 32570.5,
+        "seq": 125,
+        "payload": {
+          "interaction_id": "lens_pickup"
+        },
+        "label": "lens_pickup"
+      },
+      {
+        "kind": "proposal",
+        "at": 34050.60000002384,
+        "seq": 132,
+        "payload": {
+          "operation": "acquire_object",
+          "text": "Recover the signal lens"
+        },
+        "label": "acquire_object"
+      },
+      {
+        "kind": "commit",
+        "at": 34050.60000002384,
+        "seq": 133,
+        "payload": {
+          "commit_count": 1,
+          "fact_count": 3,
+          "labels": [
+            "Signal lens secured"
+          ],
+          "mutated": true,
+          "operation": "acquire_object",
+          "refusal_count": 1,
+          "revision": 1,
+          "stage": 1,
+          "stage_from": 0,
+          "stage_to": 1,
+          "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+          "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "trace": {
+            "checks": [
+              {
+                "code": "OBJECT_NOT_PRESENT",
+                "gate": "REACHABILITY",
+                "outcome": "pass"
+              },
+              {
+                "code": "OBJECT_NOT_REACHABLE",
+                "gate": "REACHABILITY",
+                "outcome": "pass"
+              }
+            ],
+            "consistent": true,
+            "evaluated_gates": [
+              "REACHABILITY"
+            ],
+            "family_states": {
+              "DISCLOSURE": "out_of_scope",
+              "KNOWLEDGE": "out_of_scope",
+              "POLICY": "out_of_scope",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "out_of_scope",
+              "REACHABILITY": "pass"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "POLICY",
+              "PRECONDITION",
+              "KNOWLEDGE",
+              "DISCLOSURE",
+              "QUEST STAGE"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          }
+        },
+        "label": "commit 0>1"
+      },
+      {
+        "kind": "coach_card",
+        "at": 34054.30000001192,
+        "seq": 134,
+        "payload": {
+          "card_id": "ledger_intro",
+          "phase": "shown"
+        }
+      },
+      {
+        "kind": "focus",
+        "at": 34054.40000003576,
+        "seq": 135,
+        "payload": {
+          "interaction_id": ""
+        },
+        "label": ""
+      },
+      {
+        "kind": "coach_card",
+        "at": 35346.30000001192,
+        "seq": 140,
+        "payload": {
+          "card_id": "ledger_intro",
+          "phase": "dismissed"
+        }
+      },
+      {
+        "kind": "coach_card",
+        "at": 35346.40000003576,
+        "seq": 141,
+        "payload": {
+          "card_id": "investigate",
+          "phase": "shown"
+        }
+      },
+      {
+        "kind": "coach_card",
+        "at": 36163.5,
+        "seq": 145,
+        "payload": {
+          "card_id": "investigate",
+          "phase": "dismissed"
+        }
+      },
+      {
+        "kind": "focus",
+        "at": 50870.200000047684,
+        "seq": 203,
+        "payload": {
+          "interaction_id": "lamp_mount"
+        },
+        "label": "lamp_mount"
+      },
+      {
+        "kind": "proposal",
+        "at": 51919.90000003576,
+        "seq": 208,
+        "payload": {
+          "operation": "install_lens",
+          "text": "Install the lens in the harbor signal mount"
+        },
+        "label": "install_lens"
+      },
+      {
+        "kind": "commit",
+        "at": 51920,
+        "seq": 209,
+        "payload": {
+          "commit_count": 2,
+          "fact_count": 5,
+          "labels": [
+            "Lead authorized",
+            "Harbor signal restored"
+          ],
+          "mutated": true,
+          "operation": "install_lens",
+          "refusal_count": 1,
+          "revision": 2,
+          "stage": 2,
+          "stage_from": 1,
+          "stage_to": 2,
+          "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+          "trace": {
+            "checks": [
+              {
+                "code": "MISSING_REQUIRED_OBJECT",
+                "gate": "PRECONDITION",
+                "outcome": "pass"
+              },
+              {
+                "code": "QUEST_STAGE_PRECONDITION",
+                "gate": "QUEST STAGE",
+                "outcome": "pass"
+              }
+            ],
+            "consistent": true,
+            "evaluated_gates": [
+              "PRECONDITION",
+              "QUEST STAGE"
+            ],
+            "family_states": {
+              "DISCLOSURE": "out_of_scope",
+              "KNOWLEDGE": "out_of_scope",
+              "POLICY": "out_of_scope",
+              "PRECONDITION": "pass",
+              "QUEST STAGE": "pass",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "POLICY",
+              "REACHABILITY",
+              "KNOWLEDGE",
+              "DISCLOSURE"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          }
+        },
+        "label": "commit 1>2"
+      },
+      {
+        "kind": "focus",
+        "at": 51924.200000047684,
+        "seq": 210,
+        "payload": {
+          "interaction_id": ""
+        },
+        "label": ""
+      },
+      {
+        "kind": "focus",
+        "at": 53997.30000001192,
+        "seq": 220,
+        "payload": {
+          "interaction_id": "mira"
+        },
+        "label": "mira"
+      },
+      {
+        "kind": "dialogue",
+        "at": 55778.200000047684,
+        "seq": 227,
+        "payload": {
+          "npc": "captain_mira",
+          "phase": "open"
+        },
+        "label": "open"
+      },
+      {
+        "kind": "dialogue",
+        "at": 56728.700000047684,
+        "seq": 232,
+        "payload": {
+          "choice_id": "ask_tide",
+          "npc": "captain_mira",
+          "phase": "choice"
+        },
+        "label": "ask_tide"
+      },
+      {
+        "kind": "proposal",
+        "at": 56728.700000047684,
+        "seq": 233,
+        "payload": {
+          "operation": "reveal_hint",
+          "text": "Request the tide-marks lead from Captain Mira"
+        },
+        "label": "reveal_hint"
+      },
+      {
+        "kind": "disclosure_outcome",
+        "at": 56728.80000001192,
+        "seq": 234,
+        "payload": {
+          "check_ids": [
+            "DISC-CHECK-001-POLICY",
+            "DISC-CHECK-002-ACTOR",
+            "DISC-CHECK-003-KNOWLEDGE",
+            "DISC-CHECK-005-FRESH"
+          ],
+          "commit_count": 2,
+          "contract_id": "sl-npc-disclosure-expectations-v1",
+          "contract_version": "1.0.0",
+          "error_ids": [],
+          "explanation": {
+            "checks": {
+              "consistent": true,
+              "evaluated": [
+                {
+                  "code": "FORBIDDEN_DISCLOSURE",
+                  "gate": "DISCLOSURE",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "STAGE_GATED_DISCLOSURE",
+                  "gate": "DISCLOSURE/QUEST STAGE",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "UNKNOWN_ACTOR",
+                  "gate": "POLICY",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "NPC_DOES_NOT_KNOW_FACT",
+                  "gate": "KNOWLEDGE",
+                  "outcome": "pass"
+                }
+              ],
+              "family_states": {
+                "DISCLOSURE": "pass",
+                "KNOWLEDGE": "pass",
+                "POLICY": "pass",
+                "PRECONDITION": "out_of_scope",
+                "QUEST STAGE": "pass",
+                "REACHABILITY": "out_of_scope"
+              },
+              "held_at": "",
+              "out_of_scope": [
+                "PRECONDITION",
+                "REACHABILITY"
+              ],
+              "short_circuit": false,
+              "skipped": [],
+              "unreported": []
+            },
+            "decision": {
+              "accepted": true,
+              "outcome": "authorized_fresh",
+              "result_codes": []
+            },
+            "input": {
+              "actor_role": "captain",
+              "operation": "reveal_hint",
+              "subject_type": "lead"
+            },
+            "ontology": {
+              "relation": "captain_to_lead_disclosure",
+              "rule_ids": [
+                "DISC-005"
+              ]
+            },
+            "schema_id": "trace-rpg-semantic-explanation",
+            "schema_version": "1.0.0",
+            "state_effect": {
+              "kind": "fresh_disclosure",
+              "mutated": true,
+              "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+              "prior_state_hash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+            }
+          },
+          "fact_count": 6,
+          "mutated": true,
+          "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "operation_code": "reveal_hint",
+          "prior_state_hash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "refusal_count": 1,
+          "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+          "result_codes": [],
+          "revision": 3,
+          "rule_ids": [
+            "DISC-005"
+          ],
+          "stage": 2,
+          "state_effect": "fresh_disclosure",
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "template_id": "sl-rc-003-authorized-hint"
+        },
+        "label": "disclosure_outcome"
+      },
+      {
+        "kind": "commit",
+        "at": 56729.30000001192,
+        "seq": 235,
+        "payload": {
+          "commit_count": 3,
+          "fact_count": 6,
+          "labels": [
+            "Tide-marks lead recorded"
+          ],
+          "mutated": true,
+          "operation": "reveal_hint",
+          "refusal_count": 1,
+          "revision": 3,
+          "stage": 2,
+          "stage_from": 2,
+          "stage_to": 2,
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "trace": {
+            "checks": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "pass"
+              },
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY",
+                "outcome": "pass"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE",
+                "outcome": "pass"
+              },
+              {
+                "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              }
+            ],
+            "consistent": true,
+            "evaluated_gates": [
+              "DISCLOSURE",
+              "DISCLOSURE/QUEST STAGE",
+              "POLICY",
+              "KNOWLEDGE"
+            ],
+            "family_states": {
+              "DISCLOSURE": "pass",
+              "KNOWLEDGE": "pass",
+              "POLICY": "pass",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "pass",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          }
+        },
+        "label": "commit 2>2"
+      },
+      {
+        "kind": "dialogue",
+        "at": 58372.30000001192,
+        "seq": 242,
+        "payload": {
+          "choice_id": "ask_after",
+          "npc": "captain_mira",
+          "phase": "choice"
+        },
+        "label": "ask_after"
+      },
+      {
+        "kind": "proposal",
+        "at": 58372.40000003576,
+        "seq": 243,
+        "payload": {
+          "operation": "reveal_hint",
+          "text": "Request the tide-marks lead from Captain Mira"
+        },
+        "label": "reveal_hint"
+      },
+      {
+        "kind": "disclosure_outcome",
+        "at": 58372.40000003576,
+        "seq": 244,
+        "payload": {
+          "check_ids": [
+            "DISC-CHECK-001-POLICY",
+            "DISC-CHECK-002-ACTOR",
+            "DISC-CHECK-003-KNOWLEDGE",
+            "DISC-CHECK-004-REDISPLAY"
+          ],
+          "commit_count": 3,
+          "contract_id": "sl-npc-disclosure-expectations-v1",
+          "contract_version": "1.0.0",
+          "error_ids": [],
+          "explanation": {
+            "checks": {
+              "consistent": true,
+              "evaluated": [
+                {
+                  "code": "FORBIDDEN_DISCLOSURE",
+                  "gate": "DISCLOSURE",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "STAGE_GATED_DISCLOSURE",
+                  "gate": "DISCLOSURE/QUEST STAGE",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "UNKNOWN_ACTOR",
+                  "gate": "POLICY",
+                  "outcome": "pass"
+                },
+                {
+                  "code": "NPC_DOES_NOT_KNOW_FACT",
+                  "gate": "KNOWLEDGE",
+                  "outcome": "pass"
+                }
+              ],
+              "family_states": {
+                "DISCLOSURE": "pass",
+                "KNOWLEDGE": "pass",
+                "POLICY": "pass",
+                "PRECONDITION": "out_of_scope",
+                "QUEST STAGE": "pass",
+                "REACHABILITY": "out_of_scope"
+              },
+              "held_at": "",
+              "out_of_scope": [
+                "PRECONDITION",
+                "REACHABILITY"
+              ],
+              "short_circuit": false,
+              "skipped": [],
+              "unreported": []
+            },
+            "decision": {
+              "accepted": true,
+              "outcome": "authorized_redisplay",
+              "result_codes": []
+            },
+            "input": {
+              "actor_role": "captain",
+              "operation": "reveal_hint",
+              "subject_type": "lead"
+            },
+            "ontology": {
+              "relation": "captain_to_lead_disclosure",
+              "rule_ids": [
+                "DISC-006"
+              ]
+            },
+            "schema_id": "trace-rpg-semantic-explanation",
+            "schema_version": "1.0.0",
+            "state_effect": {
+              "kind": "redisplay_no_mutation",
+              "mutated": false,
+              "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+              "prior_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+            }
+          },
+          "fact_count": 6,
+          "mutated": false,
+          "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "operation_code": "reveal_hint",
+          "prior_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "refusal_count": 1,
+          "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+          "result_codes": [],
+          "revision": 3,
+          "rule_ids": [
+            "DISC-006"
+          ],
+          "stage": 2,
+          "state_effect": "redisplay_no_mutation",
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "template_id": "sl-rc-003-authorized-hint"
+        },
+        "label": "disclosure_outcome"
+      }
+    ],
+    "disclosureEvents": [
+      {
+        "kind": "disclosure_outcome",
+        "seq": 64,
+        "tMs": 17477,
+        "explanation": {
+          "schema": "trace-rpg-semantic-explanation 1.0.0",
+          "input": {
+            "operation": "reveal_hint",
+            "actorRole": "captain",
+            "subjectType": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "ruleIds": [
+              "DISC-002",
+              "DISC-007"
+            ]
+          },
+          "checks": {
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "fail"
+              }
+            ],
+            "skipped": [
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY",
+                "outcome": "unknown"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE",
+                "outcome": "unknown"
+              }
+            ],
+            "outOfScope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "unreported": [
+              {
+                "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                "gate": "DISCLOSURE",
+                "outcome": "unknown"
+              }
+            ],
+            "consistent": true
+          },
+          "decision": {
+            "outcome": "denied",
+            "accepted": false,
+            "resultCodes": [
+              "STAGE_GATED_DISCLOSURE"
+            ]
+          },
+          "effect": {
+            "kind": "denied_no_mutation",
+            "mutated": false,
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "hashEquality": "equal"
+          },
+          "engine": {
+            "seq": 64,
+            "tMs": 17477
+          }
+        },
+        "receivedAt": 18388.900000035763
+      },
+      {
+        "kind": "disclosure_outcome",
+        "seq": 234,
+        "tMs": 55827,
+        "explanation": {
+          "schema": "trace-rpg-semantic-explanation 1.0.0",
+          "input": {
+            "operation": "reveal_hint",
+            "actorRole": "captain",
+            "subjectType": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "ruleIds": [
+              "DISC-005"
+            ]
+          },
+          "checks": {
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "pass"
+              },
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY",
+                "outcome": "pass"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE",
+                "outcome": "pass"
+              }
+            ],
+            "skipped": [],
+            "outOfScope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "unreported": [],
+            "consistent": true
+          },
+          "decision": {
+            "outcome": "authorized_fresh",
+            "accepted": true,
+            "resultCodes": []
+          },
+          "effect": {
+            "kind": "fresh_disclosure",
+            "mutated": true,
+            "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "hashEquality": "different"
+          },
+          "engine": {
+            "seq": 234,
+            "tMs": 55827
+          }
+        },
+        "receivedAt": 56728.80000001192
+      },
+      {
+        "kind": "disclosure_outcome",
+        "seq": 244,
+        "tMs": 57468,
+        "explanation": {
+          "schema": "trace-rpg-semantic-explanation 1.0.0",
+          "input": {
+            "operation": "reveal_hint",
+            "actorRole": "captain",
+            "subjectType": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "ruleIds": [
+              "DISC-006"
+            ]
+          },
+          "checks": {
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "pass"
+              },
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY",
+                "outcome": "pass"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE",
+                "outcome": "pass"
+              }
+            ],
+            "skipped": [],
+            "outOfScope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "unreported": [],
+            "consistent": true
+          },
+          "decision": {
+            "outcome": "authorized_redisplay",
+            "accepted": true,
+            "resultCodes": []
+          },
+          "effect": {
+            "kind": "redisplay_no_mutation",
+            "mutated": false,
+            "priorHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "hashEquality": "equal"
+          },
+          "engine": {
+            "seq": 244,
+            "tMs": 57468
+          }
+        },
+        "receivedAt": 58372.5
+      }
+    ],
+    "comparison": null,
+    "readoutFrozen": true,
+    "pinnedVerdict": {
+      "id": 4,
+      "serial": 4,
+      "kind": "commit",
+      "operation": "reveal_hint",
+      "at": 56730,
+      "seq": 235,
+      "outcomeText": "Committed · stage 2 → 2.",
+      "summaryText": "Tide-marks lead recorded",
+      "nextAffordance": "",
+      "legacy": false,
+      "trace": {
+        "checks": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass",
+            "families": [
+              "DISCLOSURE"
+            ]
+          },
+          {
+            "code": "STAGE_GATED_DISCLOSURE",
+            "gate": "DISCLOSURE/QUEST STAGE",
+            "outcome": "pass",
+            "families": [
+              "DISCLOSURE",
+              "QUEST STAGE"
+            ]
+          },
+          {
+            "code": "UNKNOWN_ACTOR",
+            "gate": "POLICY",
+            "outcome": "pass",
+            "families": [
+              "POLICY"
+            ]
+          },
+          {
+            "code": "NPC_DOES_NOT_KNOW_FACT",
+            "gate": "KNOWLEDGE",
+            "outcome": "pass",
+            "families": [
+              "KNOWLEDGE"
+            ]
+          },
+          {
+            "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+            "gate": "DISCLOSURE",
+            "outcome": "pass",
+            "families": [
+              "DISCLOSURE"
+            ]
+          }
+        ],
+        "evaluatedGates": [
+          "DISCLOSURE",
+          "DISCLOSURE/QUEST STAGE",
+          "POLICY",
+          "KNOWLEDGE"
+        ],
+        "heldAt": "",
+        "shortCircuit": false,
+        "skipped": [],
+        "outOfScope": [
+          "PRECONDITION",
+          "REACHABILITY"
+        ],
+        "states": {
+          "POLICY": "pass",
+          "PRECONDITION": "out_of_scope",
+          "REACHABILITY": "out_of_scope",
+          "KNOWLEDGE": "pass",
+          "DISCLOSURE": "pass",
+          "QUEST STAGE": "pass"
+        },
+        "missing": []
+      }
+    },
+    "traceErrors": 0,
+    "legacyEvents": 0,
+    "comparisonText": "FROZEN INDEPENDENT COMPARISON\nN=48 · B=4 · M=8 · frozen independent lane\n\nThis lane loads only the trusted local frozen comparison contract; it is not a live trend or game result.\n\nDeclaration-derived bounded checker evidence: general-rule and ontology-gate outputs agree on 60/60 inputs. This is engineering-only fixture agreement, not ontology superiority, holdout or human-gold, player-benefit, efficacy, or latent-state evidence.\n\nUnchecked isolated\noutcome: 60\nunsafe: 51\nmismatch: 60\nGeneral rule\noutcome: 60\nunsafe: 0\nmismatch: 0\nOntology gate\noutcome: 60\nunsafe: 0\nmismatch: 0\noutcome\nrecorded result\nunsafe\nunsafe classification\nmismatch\nmismatch classification\ncell slice\tarm\tcase class\tn\tcheck coverage\toutcome\tunsafe\tmismatch\n1\tUnchecked isolated\tboundary\t4\tunreported\tallowed 4 · denied 0\t2\t4\n2\tUnchecked isolated\tmalformed\t8\tunreported\tallowed 8 · denied 0\t8\t8\n3\tUnchecked isolated\tnormal\t48\tunreported\tallowed 48 · denied 0\t41\t48\n4\tGeneral rule\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n5\tGeneral rule\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n6\tGeneral rule\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\n7\tOntology gate\tboundary\t4\treported\tallowed 2 · denied 2\t0\t0\n8\tOntology gate\tmalformed\t8\treported\tallowed 0 · denied 8\t0\t0\n9\tOntology gate\tnormal\t48\treported\tallowed 14 · denied 34\t0\t0\nORIGINAL PYTHON: SEVEN BOOLEAN CHECKS\n\npublic labels only; no runtime equivalence inferred · count 7\n\nGODOT: SIX DISPLAY FAMILIES\n\npublic labels only; no runtime equivalence inferred · count 6\n\nDISCLOSURE: SEVEN DECLARATION RULES\n\npublic labels only; no runtime equivalence inferred · count 7"
+  },
+  "finished_at": "2026-10-23T13:54:06.569Z"
+}

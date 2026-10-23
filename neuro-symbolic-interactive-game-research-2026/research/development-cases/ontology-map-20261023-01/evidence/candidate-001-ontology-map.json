@@ -1,0 +1,282 @@
+{
+  "schema_version": "ontology-evidence-map/v1",
+  "source_packet": {
+    "path": "research/npc-disclosure/reveal-hint-expectations-v1.json",
+    "packet_id": "sl-npc-disclosure-expectations-v1",
+    "packet_version": "1.0.0",
+    "sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+    "status": "FROZEN_EXPECTATIONS_NOT_RUNTIME_RESULTS"
+  },
+  "scenario": {
+    "path": "game-track/godot/data/sealed_lighthouse.json",
+    "sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+  },
+  "rule_sets": {
+    "boundary": "Python validator checks, Godot display families, and frozen disclosure rules are distinct non-isomorphic label sets.",
+    "disclosure7": [
+      {
+        "id": "DISC-001",
+        "label": "Permanent prohibition"
+      },
+      {
+        "id": "DISC-002",
+        "label": "Stage-gated denial"
+      },
+      {
+        "id": "DISC-003",
+        "label": "Eligible actor"
+      },
+      {
+        "id": "DISC-004",
+        "label": "Actor knowledge"
+      },
+      {
+        "id": "DISC-005",
+        "label": "Fresh authorized disclosure"
+      },
+      {
+        "id": "DISC-006",
+        "label": "Authorized redisplay"
+      },
+      {
+        "id": "DISC-007",
+        "label": "Denial preserves state"
+      }
+    ],
+    "godot6": [
+      {
+        "id": "POLICY",
+        "label": "Policy"
+      },
+      {
+        "id": "PRECONDITION",
+        "label": "Precondition"
+      },
+      {
+        "id": "REACHABILITY",
+        "label": "Reachability"
+      },
+      {
+        "id": "KNOWLEDGE",
+        "label": "Knowledge"
+      },
+      {
+        "id": "DISCLOSURE",
+        "label": "Disclosure"
+      },
+      {
+        "id": "QUEST STAGE",
+        "label": "Quest stage"
+      }
+    ],
+    "python7": [
+      {
+        "id": "action_policy",
+        "label": "Action policy"
+      },
+      {
+        "id": "precondition",
+        "label": "Precondition"
+      },
+      {
+        "id": "object_reachability",
+        "label": "Object reachability"
+      },
+      {
+        "id": "npc_knowledge",
+        "label": "NPC knowledge"
+      },
+      {
+        "id": "forbidden_disclosure",
+        "label": "Forbidden disclosure"
+      },
+      {
+        "id": "quest_stage",
+        "label": "Quest stage"
+      },
+      {
+        "id": "quest_stage_monotonicity",
+        "label": "Quest-stage monotonicity"
+      }
+    ]
+  },
+  "disclosure_rule_meanings": {
+    "DISC-001": "permanently_forbidden fact is always denied",
+    "DISC-002": "stage-gated fact is denied below minimum stage",
+    "DISC-003": "only captain_mira is an eligible actor",
+    "DISC-004": "eligible actor must know the requested fact",
+    "DISC-005": "fresh allowed disclosure adds the requested canonical fact and disclosed ID; tide_marks_hint additionally adds the declared relationship-memory entry; stage is preserved",
+    "DISC-006": "allowed redisplay rechecks current authorization and has no canonical mutation",
+    "DISC-007": "denial preserves canonical state and emits only the safe fallback template"
+  },
+  "roles": [
+    {
+      "id": "world",
+      "labels": {
+        "en": "World",
+        "ko": "세계"
+      },
+      "identifiers": "sealed-lighthouse-v1; initial_state.world; initial_state.player",
+      "content": {
+        "en": "Initially harbor_dock and lamp_store are reachable; signal_lens is at lamp_store. These are scenario declarations, not current player position.",
+        "ko": "초기 도달 가능 장소는 harbor_dock, lamp_store이며 signal_lens는 lamp_store에 있다. 현재 플레이어 위치를 뜻하지 않는다."
+      },
+      "evidence_refs": [
+        "scope.scenario_id",
+        "declaration_derivation.stage_axis"
+      ],
+      "rule_ids": []
+    },
+    {
+      "id": "actor",
+      "labels": {
+        "en": "Actor",
+        "ko": "행위자"
+      },
+      "identifiers": "captain_mira; initial_state.npcs.captain_mira",
+      "content": {
+        "en": "captain_mira is the only eligible disclosure actor. Actor eligibility is checked after policy; unknown actors are denied.",
+        "ko": "공개 적격 행위자는 captain_mira뿐이다. 정책 확인 후 적격성을 확인하며 미등록 행위자는 거부한다."
+      },
+      "evidence_refs": [
+        "scope.eligible_actor_ids",
+        "M-001",
+        "M-007"
+      ],
+      "rule_ids": [
+        "DISC-003",
+        "DISC-007"
+      ]
+    },
+    {
+      "id": "knowledge",
+      "labels": {
+        "en": "Knowledge",
+        "ko": "지식"
+      },
+      "identifiers": "captain_mira.knowledge → canonical fact IDs",
+      "content": {
+        "en": "Mira initially knows dock_saved, keeper_betrayal, lighthouse_dark and tide_marks_hint. Knowing a fact does not authorize disclosure; prior disclosed membership also does not bypass authorization.",
+        "ko": "미라의 초기 지식은 dock_saved, keeper_betrayal, lighthouse_dark, tide_marks_hint이다. 지식이나 과거 공개 이력만으로 공개가 허용되지는 않는다."
+      },
+      "evidence_refs": [
+        "declaration_derivation.knowledge_axis",
+        "declaration_derivation.prior_disclosure_axis"
+      ],
+      "rule_ids": [
+        "DISC-004",
+        "DISC-006"
+      ]
+    },
+    {
+      "id": "fact",
+      "labels": {
+        "en": "Fact",
+        "ko": "사실"
+      },
+      "identifiers": "dock_saved; keeper_betrayal; lighthouse_dark; tide_marks_hint",
+      "content": {
+        "en": "Initial facts are dock_saved and lighthouse_dark. The four canonical IDs are the union of initial facts and Mira knowledge; keeper_betrayal is an identifier only, with no secret payload here.",
+        "ko": "초기 사실은 dock_saved, lighthouse_dark이다. 네 정규 ID는 초기 사실과 미라 지식의 합집합이며 keeper_betrayal의 비밀 내용은 포함하지 않는다."
+      },
+      "evidence_refs": [
+        "scope.canonical_fact_ids",
+        "declaration_derivation.fact_axis"
+      ],
+      "rule_ids": [
+        "DISC-001",
+        "DISC-005"
+      ]
+    },
+    {
+      "id": "policy",
+      "labels": {
+        "en": "Policy",
+        "ko": "정책"
+      },
+      "identifiers": "sealed-lighthouse-disclosure-v1; permanently_forbidden; stage_gates",
+      "content": {
+        "en": "keeper_betrayal is permanently forbidden. tide_marks_hint requires quest.stage ≥ 2. Policy denial precedes actor/knowledge checks; denial uses mira-safe-deflection-v1 without canonical mutation.",
+        "ko": "keeper_betrayal은 영구 공개 금지이다. tide_marks_hint에는 quest.stage ≥ 2가 필요하다. 정책 거부는 행위자·지식 확인보다 우선하며 mira-safe-deflection-v1만 표시하고 정규 상태를 보존한다."
+      },
+      "evidence_refs": [
+        "rule_ids",
+        "M-007",
+        "M-008"
+      ],
+      "rule_ids": [
+        "DISC-001",
+        "DISC-002",
+        "DISC-007"
+      ]
+    },
+    {
+      "id": "quest",
+      "labels": {
+        "en": "Quest",
+        "ko": "퀘스트"
+      },
+      "identifiers": "initial_state.quest.stage; quest.flags; tide_marks_hint",
+      "content": {
+        "en": "Initial stage is 0 with dock_saved flag. The hint gate is stage 2; disclosure preserves stage. B-003/B-004 probe stages 1/2, not observed quest progress.",
+        "ko": "초기 단계는 0이며 dock_saved 플래그가 있다. 힌트 허용 단계는 2이고 공개 시 단계는 유지된다. B-003/B-004는 단계 1/2의 기대 사례이며 관측 진행도가 아니다."
+      },
+      "evidence_refs": [
+        "declaration_derivation.stage_axis",
+        "B-003",
+        "B-004"
+      ],
+      "rule_ids": [
+        "DISC-002",
+        "DISC-005"
+      ]
+    },
+    {
+      "id": "action",
+      "labels": {
+        "en": "Action",
+        "ko": "행동"
+      },
+      "identifiers": "reveal_hint(actor_id, fact_id); sl-rc-003-authorized-hint",
+      "content": {
+        "en": "Fresh authorization adds the requested fact and disclosed ID, preserves stage and increments revision once. Only tide_marks_hint adds turn-05:mira-shared-tide-marks-hint. Authorized redisplay rechecks permission with no mutation; generic allowed facts have no dialogue template.",
+        "ko": "최초 허용 공개는 요청 사실과 공개 ID를 추가하고 단계를 보존하며 리비전을 한 번 증가시킨다. tide_marks_hint만 turn-05:mira-shared-tide-marks-hint를 추가한다. 재표시는 권한을 재확인하고 상태를 바꾸지 않는다. 일반 허용 사실에는 대화 템플릿이 없다."
+      },
+      "evidence_refs": [
+        "declaration_derivation.first_disclosure_effect",
+        "declaration_derivation.redisplay_effect",
+        "integration_contract.display_assertions"
+      ],
+      "rule_ids": [
+        "DISC-005",
+        "DISC-006",
+        "DISC-007"
+      ]
+    },
+    {
+      "id": "trace",
+      "labels": {
+        "en": "Trace",
+        "ko": "추적"
+      },
+      "identifiers": "prior_state_hash; next_state_hash; rule_ids; template_id; case_id",
+      "content": {
+        "en": "Frozen expectations contain 48 normal, 4 boundary and 8 malformed cases, plus two rule-change fixtures. They are not live events. Evidence binds packet/version, rules, hashes and template; missing runtime fields cannot establish a pass or full state.",
+        "ko": "동결 기대값은 정상 48건, 경계 4건, 비정상 8건과 규칙 변경 픽스처 2건이다. 실시간 이벤트가 아니다. 근거에는 패킷·버전, 규칙, 해시, 템플릿이 연결되며 누락 필드는 통과나 전체 상태의 근거가 될 수 없다."
+      },
+      "evidence_refs": [
+        "strata_denominators",
+        "integration_contract.evidence"
+      ],
+      "rule_ids": [
+        "DISC-001",
+        "DISC-002",
+        "DISC-003",
+        "DISC-004",
+        "DISC-005",
+        "DISC-006",
+        "DISC-007"
+      ]
+    }
+  ]
+}

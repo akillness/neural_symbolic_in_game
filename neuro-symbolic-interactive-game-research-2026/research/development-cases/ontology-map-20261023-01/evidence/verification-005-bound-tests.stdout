@@ -1,0 +1,84 @@
+.................F.......................................                [100%]
+=================================== FAILURES ===================================
+_ test_isolated_component_map_and_existing_observer_contracts[unsafe-text-390] _
+
+component_dashboard_url = 'http://127.0.0.1:50770', mode = 'unsafe-text'
+width = 390
+
+    @pytest.mark.parametrize(
+        "mode,width",
+        [
+            ("valid", 1440),
+            ("valid", 390),
+            ("unsafe-text", 390),
+            ("missing", 1440),
+            ("malformed-json", 1440),
+            ("null", 1440),
+            ("duplicate-role", 1440),
+            ("missing-role", 1440),
+            ("wrong-hash", 1440),
+            ("unknown-rule", 1440),
+            ("missing-translation", 1440),
+            ("unknown-evidence-ref", 1440),
+            ("arbitrary-rule-sets", 1440),
+            ("wrong-packet-path", 1440),
+            ("wrong-packet-status", 1440),
+            ("wrong-scenario-path", 1440),
+            ("wrong-scenario-hash", 1440),
+        ],
+        ids=lambda value: str(value),
+    )
+    def test_isolated_component_map_and_existing_observer_contracts(
+        component_dashboard_url, mode, width
+    ):
+        """Browser-only fixture evidence: no synthetic result is labeled actual gameplay."""
+        playwright = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+        assert playwright, "Playwright is required to verify the frozen browser contract"
+        env = os.environ.copy()
+        env["NODE_PATH"] = str(Path(playwright).parent.parent / "lib/node_modules")
+        candidates = sorted(
+            Path.home().glob(
+                "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/"
+                "Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+            )
+        )
+        if candidates and not env.get("PLAYWRIGHT_EXECUTABLE_PATH"):
+            env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(candidates[-1])
+        result = subprocess.run(
+            ["node", str(ROOT / "tests/ontology_evidence_map_driver.cjs")],
+            input=json.dumps(
+                {
+                    "baseUrl": component_dashboard_url,
+                    "mapPath": str(MAP),
+                    "roles": _read(CASE / "contract.json")["ontology_role_ids"],
+                    "mode": mode,
+                    "width": width,
+                }
+            ),
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: AssertionError [ERR_ASSERTION]: all structural roles must render
+E         
+E         0 !== 8
+E         
+E             at main (<SELECTED_PROJECT>/tests/ontology_evidence_map_driver.cjs:109:14)
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['node', '<SELECTED_CHECKOUT>/neuro-symbolic-interactive-game-research...selected-public-UiERwD/neuro-symbolic-interactive-game-research-2026/tests/ontology_evidence_map_driver.cjs:109:14)\n').returncode
+
+tests/test_ontology_evidence_map.py:244: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [23/Oct/2026 20:37:58] "GET /dashboard/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:37:58] "GET /dashboard/dashboard.css?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:37:58] "GET /dashboard/dashboard.js?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:37:58] "GET /dashboard/disclosure-reference.json HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:37:58] "GET /public/index.icon.png HTTP/1.1" 200 -
+=========================== short test summary info ============================
+FAILED tests/test_ontology_evidence_map.py::test_isolated_component_map_and_existing_observer_contracts[unsafe-text-390]
+1 failed, 56 passed in 30.40s

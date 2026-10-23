@@ -1,0 +1,492 @@
+{
+  "schema_version": "ontology-development-result/v1",
+  "case_id": "ontology-map-20261023-01",
+  "status": "ACCEPTED",
+  "frozen_contract": "contract.json",
+  "frozen_contract_sha256": "2fbe1a8f85614b7e250801991dcf2b0e16e55cb7914621d10f968072d230b7b5",
+  "starting_head": "c74df65eefe7984293b5175f9b325d333e132965",
+  "development_runs": 1,
+  "independent_repeats": 0,
+  "comparison_development_arm": null,
+  "native_cli_invocations": 6,
+  "native_editing_turns": 5,
+  "native_code_repair_rounds": 4,
+  "read_only_no_edit_resume": 1,
+  "model": {
+    "requested": "gpt-6.1-sol",
+    "native_runtime_selected": "gpt-6.1-sol",
+    "native_runtime_gate": "PASS",
+    "provider_returned_model": null,
+    "immutable_revision": null,
+    "seed": null,
+    "cost": null,
+    "proof": "runtime-identity.public.json"
+  },
+  "timing": {
+    "frozen_at": "2026-10-23T11:18:59.124Z",
+    "accepted_game_at": "2026-10-23T12:58:01.789Z",
+    "observed_case_wall_seconds": 5942.665,
+    "native_outer_cli_elapsed_seconds": 263.31998920799884,
+    "model_only_api_latency_seconds": null,
+    "meaning": "Observed case wall time includes orchestration, auxiliary reviews, failed QA setup/control attempts and verification. CLI elapsed is not pure inference latency or a productivity comparison."
+  },
+  "tokens": {
+    "source": "owned native rollout final cumulative total, cross-checked against last CLI usage",
+    "cumulative": {
+      "input_tokens": 1567972,
+      "cached_input_tokens": 1442304,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 9565,
+      "reasoning_output_tokens": 480,
+      "total_tokens": 1577537
+    },
+    "do_not_sum_invocation_cumulative_totals": true
+  },
+  "ontology": {
+    "roles": [
+      "world",
+      "actor",
+      "knowledge",
+      "fact",
+      "policy",
+      "quest",
+      "action",
+      "trace"
+    ],
+    "role_count": 8,
+    "python_predicates": 7,
+    "godot_display_families": 6,
+    "disclosure_rules": 7,
+    "not_one_to_one": true,
+    "map": "../../../game-track/web/dashboard/ontology-map.json",
+    "packet_sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+    "boundary": "Authored structural roles and deterministic external checks, not latent model state or a seven-dimensional embedding."
+  },
+  "final_source_sha256": {
+    "game-track/web/dashboard/index.html": "b758885c278447452ed33d8b056f003f195fef4399573561e58d061c13925187",
+    "game-track/web/dashboard/dashboard.css": "72b638e381b0e766ded000a150bef271b67a2d86046d02e338f301cbc0ce850c",
+    "game-track/web/dashboard/dashboard.js": "4d2d74a0a1cf5032e7ac69d02744a67a607ee0b328e6ee2b22f2d73c3c0c3abd",
+    "game-track/web/dashboard/ontology-map.json": "70219baf3601a4493e5ae25b3efa282d80901bedf3c7315dfc9036bc294a747e"
+  },
+  "protected_input_sha256": {
+    "research/npc-disclosure/reveal-hint-expectations-v1.json": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+    "research/npc-disclosure/reveal-hint-expectations-v1.sha256": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/web/dashboard/disclosure-reference.json": "7dc31b8530fd5e1b21c4387bf094b6209a3ecc5fa029b3944e1f4d6f5cab1846",
+    "src/nesy_game/disclosure.py": "01e0c23e507690baf312f5cb681b1dacba69883a5914922e5efa10d2352f94ae"
+  },
+  "qa_driver_sha256": "2b81792623a71ba9b7e884d69a38b006fdc302862740330ac83eb443b1b96751",
+  "verification": {
+    "combined_command": [
+      "uv",
+      "run",
+      "--extra",
+      "dev",
+      "python",
+      "-m",
+      "pytest",
+      "tests/test_ontology_evidence_map.py",
+      "tests/test_signal_explainer.py",
+      "tests/test_godot_web_release.py",
+      "-q"
+    ],
+    "combined_receipt": "evidence/verification-009-mobile-complete-tests.json",
+    "observed_tests_passed": 62,
+    "observed_tests_failed": 0,
+    "includes_internal_mobile_content_geometry": true,
+    "build_command": [
+      "bash",
+      "scripts/build_godot_web.sh"
+    ],
+    "build_receipt": "evidence/verification-010-mobile-complete-build.json",
+    "build_exit_code": 0,
+    "actual_game_receipt": "evidence/qa-attempt-10.json",
+    "actual_game_status": "PASS",
+    "actual_signals": {
+      "stage_zero_denial": {
+        "engine": {
+          "seq": 68,
+          "tMs": 19468
+        },
+        "outcome": {
+          "outcome": "denied",
+          "accepted": false,
+          "resultCodes": [
+            "STAGE_GATED_DISCLOSURE"
+          ]
+        },
+        "rule_ids": [
+          "DISC-002",
+          "DISC-007"
+        ],
+        "state_effect": {
+          "kind": "denied_no_mutation",
+          "mutated": false,
+          "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "hashEquality": "equal"
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "unknown"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "unknown"
+            }
+          ],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE",
+              "outcome": "unknown"
+            }
+          ],
+          "consistent": true
+        }
+      },
+      "fresh_disclosure": {
+        "engine": {
+          "seq": 239,
+          "tMs": 58234
+        },
+        "outcome": {
+          "outcome": "authorized_fresh",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": {
+          "kind": "fresh_disclosure",
+          "mutated": true,
+          "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "different"
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        }
+      },
+      "authorized_redisplay": {
+        "engine": {
+          "seq": 249,
+          "tMs": 59793
+        },
+        "outcome": {
+          "outcome": "authorized_redisplay",
+          "accepted": true,
+          "resultCodes": []
+        },
+        "rule_ids": [
+          "DISC-006"
+        ],
+        "state_effect": {
+          "kind": "redisplay_no_mutation",
+          "mutated": false,
+          "priorHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "hashEquality": "equal"
+        },
+        "checks": {
+          "evaluated": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            }
+          ],
+          "skipped": [],
+          "outOfScope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "unreported": [],
+          "consistent": true
+        }
+      }
+    },
+    "actual_viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 900
+      }
+    ],
+    "role_rows": [
+      8,
+      8
+    ],
+    "keyboard_enter": true,
+    "inspection_no_mutation": true,
+    "frozen_comparison_unchanged": true,
+    "continuous_pre_navigation_diagnostics": {
+      "console_errors": 0,
+      "page_errors": 0,
+      "request_failures": 0,
+      "http_errors": 0,
+      "warnings": 0
+    },
+    "evidence_images": [
+      {
+        "path": "browser/010-stage_zero_denial.png",
+        "sha256": "58e1ee6c31668e210265990ee377fa8a683049b378a271e4f05155176db62bb0",
+        "source_attempt": 10,
+        "type": "actual-real-input-viewport-PNG"
+      },
+      {
+        "path": "browser/036-fresh_disclosure.png",
+        "sha256": "80d551408b22169fb07184383093d5a08242ca789d5d3588b41160059bfe01f4",
+        "source_attempt": 10,
+        "type": "actual-real-input-viewport-PNG"
+      },
+      {
+        "path": "browser/038-authorized_redisplay.png",
+        "sha256": "fd376892d51fced4563c07a3f1e13b5a3f42eb5118e2020d59e49d9180d363a2",
+        "source_attempt": 10,
+        "type": "actual-real-input-viewport-PNG"
+      },
+      {
+        "path": "browser/map-1440-action.png",
+        "sha256": "d45fd7c8048bc92b1da4cc87d540417c0f36d9c5d0dbe86bdf704cd2ff090344",
+        "source_attempt": 10,
+        "type": "actual-real-input-viewport-PNG"
+      },
+      {
+        "path": "browser/map-390-action.png",
+        "sha256": "7713d5a1fca23e3f90f3654e891ac8835e4891cdc7390abe31dc86a791be8b13",
+        "source_attempt": 10,
+        "type": "actual-real-input-viewport-PNG"
+      }
+    ]
+  },
+  "qa_attempts": [
+    {
+      "attempt": 1,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-01.json",
+      "receipt_sha256": "5f93630cbc98ffee34481d9c4c4c3f56efb4f6c7e94e52915dfe25bb3272192a",
+      "raw_sha256": "529314d2e07188512a1865aa5182c3086a07ec7d4e9a1a3b2b248b46292793b5",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 1,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 2,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-02.json",
+      "receipt_sha256": "544c684d66116fb504ec48185e7e468e913e9e658e698ec5a949c5a25f66cd83",
+      "raw_sha256": "bc6d1284c5263eebd52850f43afe8058c721009f9444f4754a170f396bae00b1",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 0,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 3,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-03.json",
+      "receipt_sha256": "7a8e44c89d497dec7f92bcfa506dfb955a7928ca2c7887f9c232ab23f79e9eba",
+      "raw_sha256": "9bac0410013d4d5e48adee7c5a82e54e95ea8c3f0340750fdde2151e630b7837",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 2,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 4,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-04.json",
+      "receipt_sha256": "8c151ca321ee920fbf98aa7550de597e16e487dd4278f45d72be0fc29e526932",
+      "raw_sha256": "8759b1eb38c5ae85c6129b4ab0f1717ef6197cf993e908043227658c7183e0ef",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 8,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 5,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-05.json",
+      "receipt_sha256": "8f71b9fdd2b1d4fbaa6a473c226128fb749e675ea485555e6d70b27e8c166054",
+      "raw_sha256": "c41cb161ae40c2a7602eb5dfbaf987660cd8551b8532ca56be949e00d92deb6f",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 0,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 6,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-06.json",
+      "receipt_sha256": "32a237c88d3e25aa9906051e48f7fd08acf19f779965807e9da3630ff32af492",
+      "raw_sha256": "6b081426acb32301ca919c064b9b3ce9d729a6676b8000b59b26bd4ffa8b343c",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 4,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 7,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-07.json",
+      "receipt_sha256": "953881e3f5c680ccbf857b503a9de6a2538bfbf1ebcac03f256a87981998246b",
+      "raw_sha256": "604be61985784bc1f626a422bfcc3996efb4a7d0b06d46c152031bfbf0ddfef3",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 0,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 8,
+      "status": "NOT_PASS",
+      "receipt": "evidence/qa-attempt-08.json",
+      "receipt_sha256": "79d3cb39dcedbbdc5078e64c8858593b322960ddd3ef77bdf17c39827876f426",
+      "raw_sha256": "be476cfab97bbc6d600d7ec6853572f792cc2ee6965fa9ebf00614cdad9e34fd",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 0,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 9,
+      "status": "PASS",
+      "receipt": "evidence/qa-attempt-09.json",
+      "receipt_sha256": "ce24ee3557c20b10511054bf5d7797a1ceb9c7bf8d2c58a280c57c4bd4d8457d",
+      "raw_sha256": "cab333a1991a6b332be29693db7e8a5e19fec726190206e644f098aea7ff533a",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 0,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    },
+    {
+      "attempt": 10,
+      "status": "PASS",
+      "receipt": "evidence/qa-attempt-10.json",
+      "receipt_sha256": "aeee6f515ab40d360eb17226ce0419557f8df2609502a549741ba813839c531f",
+      "raw_sha256": "5fb8917e86ac6088472c0312915c9e4500a2301cb5dd64ddd0228b2ce93b4a05",
+      "diagnostic_counts": {
+        "console_errors": 0,
+        "page_errors": 0,
+        "request_failures": 0,
+        "http_errors": 0
+      }
+    }
+  ],
+  "jev_advisory": {
+    "receipt": "evidence/advisory-jev-001.json",
+    "requested_backend": "api",
+    "returned_model": "jev-1.14.0",
+    "tier": "unvalidated",
+    "verdict": "proposal_only",
+    "evidence_supports": {
+      "probability": 0.27,
+      "answer": "no",
+      "confidence": 0.73
+    },
+    "api_latency_ms": 305,
+    "usage": {
+      "input_tokens": 611,
+      "output_tokens": 80
+    },
+    "boundary": "One preliminary advisory request while final evidence was pending. Not calibrated, not scientific gold, not an approval or publication/commit gate."
+  },
+  "preserved_failures": [
+    "Initial static declaration exposed internal story IDs in page text.",
+    "Raw-ID browser test oracle conflicted with the existing public privacy gate and was corrected without dropping semantic/source coverage.",
+    "One resume made no edit under the default read-only sandbox.",
+    "Malformed source/reference/rule-set bindings were reproduced and repaired, including missing/duplicate per-role sets.",
+    "Literal-text fixture incorrectly mixed display content with forged source refs and was split into separate positive/negative contracts.",
+    "390px document overflow passed while an inherited660px table minimum clipped content internally. Independent geometry RED was preserved before the native scoped fix.",
+    "QA environment/route failures from attempts01-08 and earlier browser-wrapper failures were not erased or counted as independent development samples.",
+    "Jev advisory did not approve the preliminary evidence claim."
+  ],
+  "inference_boundary": "One operator-assisted coding development case with independently authored behavioral tests and source reviews. No baseline development comparator, independent repetitions, statistical significance, model ranking, productivity improvement, player benefit, narrative quality, human efficacy, or provider-weight attestation is established.",
+  "publication_boundary": "Explicit public derivatives retain original/public SHA256 separately. Private original rollout and complete QA snapshots remain unchanged locally."
+}

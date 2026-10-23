@@ -1,0 +1,144 @@
+..............FF..................................                       [100%]
+=================================== FAILURES ===================================
+___ test_isolated_component_map_and_existing_observer_contracts[valid-1440] ____
+
+component_dashboard_url = 'http://127.0.0.1:49306', mode = 'valid', width = 1440
+
+    @pytest.mark.parametrize(
+        "mode,width",
+        [
+            ("valid", 1440),
+            ("valid", 390),
+            ("unsafe-text", 390),
+            ("missing", 1440),
+            ("malformed-json", 1440),
+            ("null", 1440),
+            ("duplicate-role", 1440),
+            ("missing-role", 1440),
+            ("wrong-hash", 1440),
+            ("unknown-rule", 1440),
+            ("missing-translation", 1440),
+        ],
+        ids=lambda value: str(value),
+    )
+    def test_isolated_component_map_and_existing_observer_contracts(
+        component_dashboard_url, mode, width
+    ):
+        """Browser-only fixture evidence: no synthetic result is labeled actual gameplay."""
+        playwright = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+        assert playwright, "Playwright is required to verify the frozen browser contract"
+        env = os.environ.copy()
+        env["NODE_PATH"] = str(Path(playwright).parent.parent / "lib/node_modules")
+        candidates = sorted(
+            Path.home().glob(
+                "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/"
+                "Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+            )
+        )
+        if candidates and not env.get("PLAYWRIGHT_EXECUTABLE_PATH"):
+            env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(candidates[-1])
+        result = subprocess.run(
+            ["node", str(ROOT / "tests/ontology_evidence_map_driver.cjs")],
+            input=json.dumps(
+                {
+                    "baseUrl": component_dashboard_url,
+                    "mapPath": str(MAP),
+                    "roles": _read(CASE / "contract.json")["ontology_role_ids"],
+                    "mode": mode,
+                    "width": width,
+                }
+            ),
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: AssertionError [ERR_ASSERTION]: world lost concrete declared relationships
+E             at main (<SELECTED_PROJECT>/tests/ontology_evidence_map_driver.cjs:89:11)
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['node', '<SELECTED_CHECKOUT>/neuro-symbolic-interactive-game-research...-selected-public-UiERwD/neuro-symbolic-interactive-game-research-2026/tests/ontology_evidence_map_driver.cjs:89:11)\n').returncode
+
+tests/test_ontology_evidence_map.py:214: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [23/Oct/2026 20:31:30] "GET /dashboard/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:30] "GET /dashboard/dashboard.css?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:30] "GET /dashboard/dashboard.js?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:30] "GET /dashboard/disclosure-reference.json HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:30] "GET /public/index.icon.png HTTP/1.1" 200 -
+____ test_isolated_component_map_and_existing_observer_contracts[valid-390] ____
+
+component_dashboard_url = 'http://127.0.0.1:49306', mode = 'valid', width = 390
+
+    @pytest.mark.parametrize(
+        "mode,width",
+        [
+            ("valid", 1440),
+            ("valid", 390),
+            ("unsafe-text", 390),
+            ("missing", 1440),
+            ("malformed-json", 1440),
+            ("null", 1440),
+            ("duplicate-role", 1440),
+            ("missing-role", 1440),
+            ("wrong-hash", 1440),
+            ("unknown-rule", 1440),
+            ("missing-translation", 1440),
+        ],
+        ids=lambda value: str(value),
+    )
+    def test_isolated_component_map_and_existing_observer_contracts(
+        component_dashboard_url, mode, width
+    ):
+        """Browser-only fixture evidence: no synthetic result is labeled actual gameplay."""
+        playwright = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+        assert playwright, "Playwright is required to verify the frozen browser contract"
+        env = os.environ.copy()
+        env["NODE_PATH"] = str(Path(playwright).parent.parent / "lib/node_modules")
+        candidates = sorted(
+            Path.home().glob(
+                "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/"
+                "Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+            )
+        )
+        if candidates and not env.get("PLAYWRIGHT_EXECUTABLE_PATH"):
+            env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(candidates[-1])
+        result = subprocess.run(
+            ["node", str(ROOT / "tests/ontology_evidence_map_driver.cjs")],
+            input=json.dumps(
+                {
+                    "baseUrl": component_dashboard_url,
+                    "mapPath": str(MAP),
+                    "roles": _read(CASE / "contract.json")["ontology_role_ids"],
+                    "mode": mode,
+                    "width": width,
+                }
+            ),
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: AssertionError [ERR_ASSERTION]: world lost concrete declared relationships
+E             at main (<SELECTED_PROJECT>/tests/ontology_evidence_map_driver.cjs:89:11)
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['node', '<SELECTED_CHECKOUT>/neuro-symbolic-interactive-game-research...-selected-public-UiERwD/neuro-symbolic-interactive-game-research-2026/tests/ontology_evidence_map_driver.cjs:89:11)\n').returncode
+
+tests/test_ontology_evidence_map.py:214: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [23/Oct/2026 20:31:32] "GET /dashboard/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:32] "GET /dashboard/dashboard.css?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:32] "GET /dashboard/dashboard.js?v=20261023-signal-explainer HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:32] "GET /dashboard/disclosure-reference.json HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 20:31:32] "GET /public/index.icon.png HTTP/1.1" 200 -
+=========================== short test summary info ============================
+FAILED tests/test_ontology_evidence_map.py::test_isolated_component_map_and_existing_observer_contracts[valid-1440]
+FAILED tests/test_ontology_evidence_map.py::test_isolated_component_map_and_existing_observer_contracts[valid-390]
+2 failed, 48 passed in 21.55s

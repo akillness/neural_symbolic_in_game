@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import io
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -47,6 +48,139 @@ class VisualAssetValidatorTests(unittest.TestCase):
         validator._validate_tables(missing_anchor)
         self.assertTrue(any("missing table anchor" in error for error in validator.errors))
 
+    def test_generated_disclosure_tables_keep_local_120_spacing_before_each_body(self) -> None:
+        for language in ("en", "ko"):
+            source = (ROOT / f"paper/latex/generated/disclosure_tables_{language}.tex").read_text(
+                encoding="utf-8"
+            )
+            fragments = re.findall(r"\\begin\{table\*?\}.*?\\end\{table\*?\}", source, re.DOTALL)
+            self.assertTrue(fragments, language)
+            for fragment in fragments:
+                body_start = fragment.index(r"\begin{tabular")
+                self.assertLess(fragment.index(r"\setlength{\tabcolsep}{4pt}"), body_start)
+                self.assertLess(fragment.index(r"\renewcommand{\arraystretch}{1.20}"), body_start)
+
+    def _validate_table_spacing_fixture(self, spacing: str, suffix: str = "") -> list[str]:
+        table = (
+            "\n".join(
+                (
+                    r"\begin{table}[t]",
+                    r"\centering",
+                    spacing.rstrip("\n"),
+                    r"\begin{tabular}{ll}",
+                    r"\toprule",
+                    r"A & B \\",
+                    r"\bottomrule",
+                    r"\end{tabular}",
+                    r"\label{tab:fixture}",
+                    r"\end{table}",
+                )
+            )
+            + "\n"
+        )
+        table += suffix
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            generated = root / "paper/latex/generated"
+            generated.mkdir(parents=True)
+            (generated / "fixture.tex").write_text(table, encoding="utf-8")
+            for filename, contents in {
+                "pilot_tables_en.tex": "Interpretation Rows have different denominators",
+                "pilot_tables_ko.tex": "해석 범위 분모와 성공 방향",
+                "live_pilot_tables_en.tex": r"$\Delta$ matched candidates",
+                "live_pilot_tables_ko.tex": r"$\Delta$ 동일 후보",
+            }.items():
+                (generated / filename).write_text(contents, encoding="utf-8")
+            for language in ("en", "ko"):
+                main = root / f"paper/latex/{language}/main.tex"
+                main.parent.mkdir(parents=True, exist_ok=True)
+                main.write_text(r"\input{../generated/fixture}" + "\n", encoding="utf-8")
+            manifest = {
+                "rendered_surfaces": [
+                    {
+                        "id": "paper-en",
+                        "editable_source": {"path": "paper/latex/en/main.tex"},
+                    },
+                    {
+                        "id": "paper-ko",
+                        "editable_source": {"path": "paper/latex/ko/main.tex"},
+                    },
+                ],
+                "table_sources": [
+                    {
+                        "id": "fixture-table",
+                        "layout_sources": [{"path": "paper/latex/generated/fixture.tex"}],
+                        "rendered_in": ["paper-en", "paper-ko"],
+                        "anchors": ["tab:fixture"],
+                    }
+                ],
+            }
+            validator = visual_validator.Validator(
+                require_pdf_tools=False, check_regeneration=False
+            )
+            with patch.object(visual_validator, "ROOT", root):
+                validator._validate_tables(manifest)
+            return validator.errors
+
+    def test_table_spacing_mutations_keep_missing_and_110_floor_checks(self) -> None:
+        cases = (
+            ("missing", "", "no explicit arraystretch"),
+            (
+                "below-floor",
+                r"\renewcommand{\arraystretch}{1.09}" + "\n",
+                "row spacing below the 1.10 floor",
+            ),
+        )
+        for name, spacing, message in cases:
+            with self.subTest(spacing=name):
+                errors = self._validate_table_spacing_fixture(spacing)
+                self.assertTrue(any(message in error for error in errors), errors)
+
+    def test_generated_table_spacing_is_checked_per_table_block(self) -> None:
+        cases = (
+            ("missing-second", "", "table 2 has no explicit arraystretch"),
+            (
+                "below-floor-second",
+                r"\renewcommand{\arraystretch}{1.05}" + "\n",
+                "table 2 row spacing below the 1.10 floor",
+            ),
+        )
+        for name, second_spacing, message in cases:
+            second = (
+                "\n".join(
+                    (
+                        r"\begin{table}[t]",
+                        r"\centering",
+                        second_spacing.rstrip("\n"),
+                        r"\begin{tabular}{ll}",
+                        r"\toprule",
+                        r"A & B \\",
+                        r"\bottomrule",
+                        r"\end{tabular}",
+                        r"\label{tab:second}",
+                        r"\end{table}",
+                    )
+                )
+                + "\n"
+            )
+            with self.subTest(spacing=name):
+                errors = self._validate_table_spacing_fixture(
+                    r"\renewcommand{\arraystretch}{1.20}" + "\n", second
+                )
+                self.assertTrue(any(message in error for error in errors), errors)
+
+    def test_generated_standalone_tabular_outside_table_block_is_rejected(self) -> None:
+        orphan = r"\begin{tabular}{ll}" + "\n" + r"A & B \\" + "\n" + r"\end{tabular}" + "\n"
+        errors = self._validate_table_spacing_fixture(
+            r"\renewcommand{\arraystretch}{1.20}" + "\n", orphan
+        )
+        self.assertTrue(
+            any(
+                "tabular content exists outside rendered table blocks" in error for error in errors
+            ),
+            errors,
+        )
+
     def test_unsupported_connector_path_is_not_silently_skipped(self) -> None:
         self.assertIsNone(visual_validator.Validator._path_segments("M0 0 C 1 2, 3 4, 5 6"))
         root = ET.fromstring(
@@ -73,6 +207,66 @@ class VisualAssetValidatorTests(unittest.TestCase):
         validator._validate_svg_geometry(root, Path("synthetic.svg"))
         self.assertTrue(any("nearest container" in error for error in validator.errors))
         self.assertTrue(any("text boxes overlap" in error for error in validator.errors))
+
+    def _validate_svg_fixture(self, body: str, *, kind: str) -> list[str]:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "paper/latex/figures/fixture.svg"
+            path.parent.mkdir(parents=True)
+            path.write_text(
+                '<svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 100 100">'
+                "<title>Fixture chart</title><desc>Contract fixture</desc>"
+                "<style>.label { font-size: 28px; }</style>"
+                f"{body}</svg>",
+                encoding="utf-8",
+            )
+            validator = visual_validator.Validator(
+                require_pdf_tools=False, check_regeneration=False
+            )
+            with patch.object(visual_validator, "ROOT", root):
+                validator._validate_svg(path, paper=True, kind=kind)
+            return validator.errors
+
+    def test_chart_accepts_visible_colored_data_marks_or_existing_connectors(self) -> None:
+        cases = {
+            "colored bar": (
+                '<rect class="chart-track" x="10" y="10" width="80" height="80" fill="#eeeeee"/>'
+                '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="#1f77b4"/>'
+            ),
+            "connector": '<path class="connector" d="M10 50 L90 50" stroke="#1f77b4"/>',
+        }
+        for name, body in cases.items():
+            with self.subTest(evidence=name):
+                self.assertEqual(self._validate_svg_fixture(body, kind="chart"), [])
+
+    def test_chart_rejects_absent_hidden_zero_or_invisible_data_marks(self) -> None:
+        cases = {
+            "absent": '<rect class="chart-track" x="10" y="10" width="80" height="80" fill="#eeeeee"/>',
+            "hidden": '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="#1f77b4" opacity="0"/>',
+            "zero": '<rect class="data-mark" x="20" y="40" width="0" height="45" fill="#1f77b4"/>',
+            "invisible": '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="none"/>',
+            "display-hidden": '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="#1f77b4" display="none"/>',
+            "visibility-hidden": '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="#1f77b4" visibility="hidden"/>',
+            "nonfinite-width": '<rect class="data-mark" x="20" y="40" width="nan" height="45" fill="#1f77b4"/>',
+            "nonfinite-opacity": '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="#1f77b4" opacity="nan"/>',
+        }
+        for name, body in cases.items():
+            with self.subTest(mark=name):
+                errors = self._validate_svg_fixture(body, kind="chart")
+                self.assertTrue(
+                    any(
+                        "chart requires visible data marks or connectors" in error
+                        for error in errors
+                    ),
+                    errors,
+                )
+
+    def test_diagram_still_requires_a_connector_even_with_data_marks(self) -> None:
+        errors = self._validate_svg_fixture(
+            '<rect class="data-mark" x="20" y="40" width="18" height="45" fill="#1f77b4"/>',
+            kind="diagram",
+        )
+        self.assertTrue(any("connector paths are not classed" in error for error in errors), errors)
 
 
 class HistoricalRegenerationTests(unittest.TestCase):
@@ -206,6 +400,88 @@ class PublicationLinkTests(unittest.TestCase):
         ):
             validator._validate_paper_links(manifest)
         return validator.errors
+
+    def figure_manifest(self, rendered_path: str = "paper/latex/figures/current.pdf") -> dict:
+        return {
+            "visual_assets": [
+                {
+                    "id": "current-figure",
+                    "publication_role": "current-figure",
+                    "used_by": [str(path.relative_to(self.root)) for path in self.papers],
+                    "editable_sources": [{"path": "paper/latex/figures/current.svg"}],
+                    "rendered": [{"path": rendered_path}],
+                }
+            ]
+        }
+
+    def write_figure_wrapper(self, wrapper: str, target: str = "current.pdf") -> None:
+        for paper in self.papers:
+            paper.write_text(wrapper.replace("target", f"../figures/{target}"), encoding="utf-8")
+
+    def test_columnwidth_remains_accepted_for_a_single_column_figure(self) -> None:
+        self.write_figure_wrapper(
+            r"""\begin{figure}[t]
+\includegraphics[width=\columnwidth]{target}
+\end{figure}
+"""
+        )
+        self.assertEqual(self.validate_links(self.figure_manifest()), [])
+
+    def test_textwidth_is_accepted_only_inside_a_real_full_width_figure(self) -> None:
+        self.write_figure_wrapper(
+            r"""\begin{figure*}[t]
+\includegraphics[width=\textwidth]{target}
+\end{figure*}
+"""
+        )
+        self.assertEqual(self.validate_links(self.figure_manifest()), [])
+
+    def test_single_column_textwidth_and_custom_or_narrow_widths_are_rejected(self) -> None:
+        cases = {
+            "single-column textwidth": r"""\begin{figure}[t]
+\includegraphics[width=\textwidth]{target}
+\end{figure}
+""",
+            "narrow columnwidth": r"""\begin{figure}[t]
+\includegraphics[width=0.9\columnwidth]{target}
+\end{figure}
+""",
+            "custom textwidth": r"""\begin{figure*}[t]
+\includegraphics[width=0.9\textwidth]{target}
+\end{figure*}
+""",
+            "omitted width": r"""\begin{figure}[t]
+\includegraphics{target}
+\end{figure}
+""",
+            "full-width height override": r"""\begin{figure*}[t]
+\includegraphics[width=\textwidth,height=1pt]{target}
+\end{figure*}
+""",
+            "column scale override": r"""\begin{figure}[t]
+\includegraphics[width=\columnwidth,scale=0.1]{target}
+\end{figure}
+""",
+        }
+        for name, wrapper in cases.items():
+            with self.subTest(width_contract=name):
+                self.write_figure_wrapper(wrapper)
+                errors = self.validate_links(self.figure_manifest())
+                self.assertTrue(
+                    any("must use the legible single-column contract" in error for error in errors),
+                    errors,
+                )
+
+    def test_raw_raster_inclusion_is_rejected_even_when_owned(self) -> None:
+        self.write_figure_wrapper(
+            r"""\begin{figure}[t]
+\includegraphics[width=\columnwidth]{target}
+\end{figure}
+""",
+            target="current.png",
+        )
+        errors = self.validate_links(self.figure_manifest("paper/latex/figures/current.png"))
+        self.assertTrue(any("raster paper figure inclusion" in error for error in errors), errors)
 
     def test_retained_optional_figure_does_not_require_inclusion_but_current_figure_requires_each_owner(
         self,

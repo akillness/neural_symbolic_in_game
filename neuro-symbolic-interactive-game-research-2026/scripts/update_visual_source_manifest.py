@@ -195,7 +195,12 @@ def build_manifest() -> dict[str, Any]:
                 rendered=(f"{base}.pdf", f"{base}.png"),
                 editable=(f"{base}.svg",),
                 generator=generator,
-                data=DISCLOSURE_DATA,
+                data=DISCLOSURE_DATA
+                + (
+                    ("game-track/web/dashboard/ontology-map.json",)
+                    if stem == "fig_signal_mechanism"
+                    else ()
+                ),
                 used_by=paper_usage if active else (),
                 publication_role="current-figure" if active else "retained-optional",
                 represented_by=None

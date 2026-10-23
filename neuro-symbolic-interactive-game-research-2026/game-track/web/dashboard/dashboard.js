@@ -643,6 +643,171 @@
       engine: { seq, tMs },
     };
   }
+  // Local read-only map: never writes game state or the frozen comparison reference.
+  const ONTOLOGY_ROLES = ["world", "actor", "knowledge", "fact", "policy", "quest", "action", "trace"];
+  // Resolvable packet fields/case IDs for each frozen role. These local binding
+  // checks constrain a display artifact; they do not authenticate server content.
+  const ONTOLOGY_EVIDENCE_REFS = {
+    world: ["scope.scenario_id", "declaration_derivation.stage_axis"],
+    actor: ["scope.eligible_actor_ids", "M-001", "M-007"],
+    knowledge: ["declaration_derivation.knowledge_axis", "declaration_derivation.prior_disclosure_axis"],
+    fact: ["scope.canonical_fact_ids", "declaration_derivation.fact_axis"],
+    policy: ["rule_ids", "M-007", "M-008"],
+    quest: ["declaration_derivation.stage_axis", "B-003", "B-004"],
+    action: ["declaration_derivation.first_disclosure_effect", "declaration_derivation.redisplay_effect", "integration_contract.display_assertions"],
+    trace: ["strata_denominators", "integration_contract.evidence"],
+  };
+  const ONTOLOGY_RULE_IDS = {
+    python7: new Set(["action_policy", "precondition", "object_reachability", "npc_knowledge", "forbidden_disclosure", "quest_stage", "quest_stage_monotonicity"]),
+    godot6: new Set(FAMILIES),
+    disclosure7: DISCLOSURE_RULE_IDS,
+  };
+  // Exact role bindings from the frozen ontology-map.json declaration.
+  const ONTOLOGY_ROLE_RULE_IDS = {
+    world: [],
+    actor: ["DISC-003", "DISC-007"],
+    knowledge: ["DISC-004", "DISC-006"],
+    fact: ["DISC-001", "DISC-005"],
+    policy: ["DISC-001", "DISC-002", "DISC-007"],
+    quest: ["DISC-002", "DISC-005"],
+    action: ["DISC-005", "DISC-006", "DISC-007"],
+    trace: [...DISCLOSURE_RULE_IDS],
+  };
+  let ontologyMap = null;
+  const unavailableEvidence = "unavailable · missing/unreported / 확인 불가 · 누락·미보고";
+  function validOntologyMap(map) {
+    const text = (value) => typeof value === "string" && value.trim().length > 0 && value.length <= 4000;
+    const bilingual = (value) => value && text(value.en) && text(value.ko);
+    const strings = (value) => Array.isArray(value) && value.length <= 32 && value.every(text);
+    const exactSet = (value, expected) => strings(value)
+      && value.length === expected.length && new Set(value).size === expected.length
+      && expected.every((item) => value.includes(item));
+    const sets = map?.rule_sets;
+    return map?.schema_version === "ontology-evidence-map/v1"
+      && map.source_packet?.sha256 === "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028"
+      && map.source_packet?.packet_id === "sl-npc-disclosure-expectations-v1"
+      && map.source_packet?.packet_version === "1.0.0"
+      && map.source_packet?.path === "research/npc-disclosure/reveal-hint-expectations-v1.json"
+      && map.source_packet?.status === "FROZEN_EXPECTATIONS_NOT_RUNTIME_RESULTS"
+      && map.scenario?.path === "game-track/godot/data/sealed_lighthouse.json"
+      && map.scenario?.sha256 === "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+      && Array.isArray(map.roles) && map.roles.length === ONTOLOGY_ROLES.length
+      && ONTOLOGY_ROLES.every((id) => map.roles.filter((role) => role?.id === id).length === 1)
+      && map.roles.every((role) => bilingual(role.labels) && bilingual(role.content) && text(role.identifiers)
+        && exactSet(role.evidence_refs, ONTOLOGY_EVIDENCE_REFS[role.id])
+        && exactSet(role.rule_ids, ONTOLOGY_ROLE_RULE_IDS[role.id]))
+      && Object.entries(ONTOLOGY_RULE_IDS).every(([key, ids]) =>
+        Array.isArray(sets?.[key]) && sets[key].length === ids.size
+        && new Set(sets[key].map((rule) => rule?.id)).size === ids.size
+        && sets[key].every((rule) => ids.has(rule?.id) && text(rule?.label)))
+      && [...DISCLOSURE_RULE_IDS].every((id) => text(map.disclosure_rule_meanings?.[id])
+        && sets.disclosure7.some((rule) => rule.id === id));
+  }
+  function ontologyObserved(id) {
+    const event = state.disclosureEvents[state.disclosureEvents.length - 1];
+    const e = event?.explanation;
+    if (!e) return unavailableEvidence;
+    const value = (v) => v === null || v === undefined || v === "unknown" || v === "" ? unavailableEvidence : String(v);
+    const rules = e.ontology.ruleIds.length ? e.ontology.ruleIds.map(value).join(", ") : unavailableEvidence;
+    switch (id) {
+      case "world": return `Current world/location / 현재 세계·위치: ${unavailableEvidence}`;
+      case "actor": return `Reported actor role / 보고된 행위자 역할: ${value(e.input.actorRole)}. Actor ID / 행위자 ID: ${unavailableEvidence}`;
+      case "knowledge": return `Knowledge membership; disclosed set / 지식 포함 여부·공개 집합: ${unavailableEvidence}. Relation / 관계: ${value(e.ontology.relation)}`;
+      case "fact": return `Subject type / 대상 유형: ${value(e.input.subjectType)}. Canonical fact ID and full facts / 정규 사실 ID·전체 사실: ${unavailableEvidence}`;
+      case "policy": return `Reported rule IDs / 보고된 규칙 ID: ${rules}. Full current policy / 전체 현재 정책: ${unavailableEvidence}`;
+      case "quest": return `Current quest stage and flags / 현재 퀘스트 단계·플래그: ${unavailableEvidence}`;
+      case "action": return `Operation / 연산: ${value(e.input.operation)} · decision / 결정: ${value(e.decision.outcome)} · state effect / 상태 효과: ${value(e.effect.kind)} · mutated / 변경 여부: ${value(e.effect.mutated)}`;
+      case "trace": {
+        const checks = (items) => items === null ? unavailableEvidence : items.length ? items.map((c) => `${value(c.code)} (${value(c.gate)}): ${value(c.outcome)}`).join("; ") : "none reported / 보고 항목 없음";
+        return `seq: ${value(e.engine.seq)} · t_ms: ${value(e.engine.tMs)} · evaluated / 실행: ${checks(e.checks.evaluated)} · skipped / 건너뜀: ${checks(e.checks.skipped)} · unreported / 미보고: ${checks(e.checks.unreported)} · out of scope / 범위 밖: ${e.checks.outOfScope === null ? unavailableEvidence : e.checks.outOfScope.join(", ") || "none reported / 보고 항목 없음"} · prior hash: ${value(e.effect.priorHash)} · next hash: ${value(e.effect.nextHash)} · template ID / 템플릿 ID: ${unavailableEvidence}`;
+      }
+      default: return unavailableEvidence;
+    }
+  }
+  function renderOntologyEvidence() {
+    const body = $("ontology-map-rows");
+    if (!body || !ontologyMap) return;
+    for (const id of ONTOLOGY_ROLES) {
+      const cell = body.querySelector(`[data-observed-role="${id}"]`);
+      if (cell) cell.textContent = ontologyObserved(id);
+    }
+  }
+  // Project frozen declarations into public aliases at the text boundary only.
+  // Longest identifiers come first so compound memory/template paths cannot
+  // disclose story wording through a partially replaced actor or fact segment.
+  function publicOntologyText(text) {
+    const aliases = {
+      "turn-05:mira-shared-tide-marks-hint": "[memory-A]",
+      "sl-rc-003-authorized-hint": "[authorized-template]",
+      "mira-safe-deflection-v1": "[fallback-template]",
+      "sealed-lighthouse-disclosure-v1": "[policy-A]",
+      "sealed-lighthouse-v1": "[world-A]",
+      "captain_mira": "[actor-A]",
+      "dock_saved": "[fact-A]",
+      "keeper_betrayal": "[fact-B]",
+      "lighthouse_dark": "[fact-C]",
+      "tide_marks_hint": "[fact-D]",
+      "harbor_dock": "[location-A]",
+      "lamp_store": "[location-B]",
+      "signal_lens": "[object-A]",
+      "Mira": "[actor-A]",
+      "미라": "[행위자-A]",
+    };
+    let projected = String(text);
+    for (const [identifier, alias] of Object.entries(aliases)) {
+      projected = projected.split(identifier).join(alias);
+    }
+    return projected;
+  }
+  function renderOntologyMap(map) {
+    const body = $("ontology-map-rows"), sets = $("ontology-map-rules");
+    if (!body || !sets) return;
+    clearChildren(body); clearChildren(sets);
+    function paragraph(parent, text, lang) {
+      const node = document.createElement("p"); node.textContent = publicOntologyText(text);
+      if (lang) node.lang = lang;
+      parent.appendChild(node);
+    }
+    for (const id of ONTOLOGY_ROLES) {
+      const role = map.roles.find((item) => item.id === id), row = document.createElement("tr");
+      const heading = document.createElement("th"); heading.scope = "row";
+      paragraph(heading, `${role.labels.en} (${role.id})`, "en"); paragraph(heading, role.labels.ko, "ko"); row.appendChild(heading);
+      const declared = document.createElement("td"); declared.dataset.label = "Declared / 선언";
+      paragraph(declared, role.identifiers); paragraph(declared, role.content.en, "en"); paragraph(declared, role.content.ko, "ko"); row.appendChild(declared);
+      const evidence = document.createElement("td"); evidence.dataset.label = "Frozen evidence / 동결 근거";
+      paragraph(evidence, `${map.source_packet.packet_id} · ${role.evidence_refs.join("; ")}`);
+      paragraph(evidence, role.rule_ids.join(", ") || "No disclosure rule assigned / 연결된 공개 규칙 없음"); row.appendChild(evidence);
+      const observed = document.createElement("td"); observed.dataset.label = "Observed event / 관측 이벤트";
+      observed.dataset.observedRole = id; row.appendChild(observed); body.appendChild(row);
+    }
+    for (const [key, title] of [["python7", "Seven Python checks / Python 검사 7개"], ["godot6", "Six Godot families / Godot 표시 계열 6개"], ["disclosure7", "Seven DISC rules / DISC 선언 규칙 7개"]]) {
+      const section = document.createElement("section"), heading = document.createElement("h3"), list = document.createElement("ul");
+      heading.textContent = title; section.appendChild(heading);
+      for (const rule of map.rule_sets[key]) {
+        const item = document.createElement("li");
+        item.textContent = publicOntologyText(`${rule.id}: ${key === "disclosure7" ? map.disclosure_rule_meanings[rule.id] : rule.label}`);
+        list.appendChild(item);
+      }
+      section.appendChild(list); sets.appendChild(section);
+    }
+    $("ontology-map-source").textContent = publicOntologyText(`${map.source_packet.path} · v${map.source_packet.packet_version} · SHA256 ${map.source_packet.sha256}. Expectations, not runtime results / 기대값이며 실행 결과가 아님. Public aliases redact story identifiers and path segments; exact references remain in the source JSON / 공개 별칭은 이야기 식별자와 경로 부분을 가리며 정확한 참조는 원본 JSON에 보존됨. Python checks, Godot families and DISC rules are distinct, not one-to-one / 세 집합은 별개이며 일대일 대응이 아님.`);
+    $("ontology-map-status").textContent = "Declarations loaded · observed column follows latest public disclosure event only / 선언 로드 완료 · 관측 열은 최신 공개 이벤트만 반영";
+    renderOntologyEvidence();
+  }
+  function loadOntologyMap() {
+    fetch("ontology-map.json").then((response) => {
+      if (!response.ok) throw new Error("map unavailable");
+      return response.json();
+    }).then((map) => {
+      if (!validOntologyMap(map)) throw new Error("malformed map");
+      ontologyMap = map; renderOntologyMap(map);
+    }).catch(() => {
+      ontologyMap = null;
+      clearChildren($("ontology-map-rows")); clearChildren($("ontology-map-rules"));
+      $("ontology-map-source").textContent = "";
+      $("ontology-map-status").textContent = "Ontology map unavailable (missing or malformed); evidence missing/unreported / 온톨로지 맵 확인 불가 (누락 또는 형식 오류) · 근거 누락·미보고";
+    });
+  }
   function displayValue(value) { return value === null || value === undefined || value === "" ? "unknown" : String(value); }
   function renderSemanticExplanation(explanation, hasEvent = false) {
     const root = $("semantic-explanation");
@@ -961,7 +1126,7 @@
     state.lastTrace=null;state.legendRows=[];state.legacyEvents=0;state.traceErrors=0;state.pendingOperation="";state.hashChain=[];state.lastSummary=null;state.lastTick=null;state.lastTickAt=null;state.events=[];state.disclosureEvents=[];state.latestExplanation=null;state.trail=[];state.player=null;state.focus="";state.lastHoldGates=[];state.episodeOver=false;
     state.verdicts=[];state.selectedVerdictId=null;state.verdictSerial=0;state.readoutFrozen=false;state.pinnedVerdict=null;state.metMira=false;state.startedAt=performance.now(); clearChildren($("log"));$("log-count").textContent="0 events";
     $("kpi-commits").textContent="0";$("kpi-holds").textContent="0";$("kpi-stage").textContent="—";$("kpi-revision").textContent="0";$("kpi-facts").textContent="0";$("kpi-episode").textContent="waiting";
-    resetEdges();FAMILIES.forEach((f)=>setFamilyState(f,"idle"));setTerminalState("commit","terminal_idle");setTerminalState("hold","terminal_idle");renderLegend();renderLastTrace();renderGateTable();renderReference();renderChain();renderQuest(null);renderVerdictHistory();renderMinimap();renderTimeline();renderSemanticExplanation(null);renderDisclosureTimeline();updateLinkState();
+    resetEdges();FAMILIES.forEach((f)=>setFamilyState(f,"idle"));setTerminalState("commit","terminal_idle");setTerminalState("hold","terminal_idle");renderLegend();renderLastTrace();renderGateTable();renderReference();renderChain();renderQuest(null);renderVerdictHistory();renderMinimap();renderTimeline();renderSemanticExplanation(null);renderDisclosureTimeline();renderOntologyEvidence();updateLinkState();
   }
   $("freeze-readout").addEventListener("click",()=>{if(state.readoutFrozen){state.readoutFrozen=false;state.pinnedVerdict=null;const latest=state.verdicts[state.verdicts.length-1];state.selectedVerdictId=latest?latest.id:null;}else{state.readoutFrozen=true;state.pinnedVerdict=state.verdicts.find((item)=>item.id===state.selectedVerdictId)||null;}renderVerdictHistory();});
   $("follow-latest").addEventListener("click",()=>{state.readoutFrozen=false;state.pinnedVerdict=null;const latest=state.verdicts[state.verdicts.length-1];state.selectedVerdictId=latest?latest.id:null;renderVerdictHistory();});
@@ -1033,6 +1198,7 @@
         if (state.disclosureEvents.length > 180) state.disclosureEvents.shift();
         state.latestExplanation = explanation;
         renderSemanticExplanation(explanation, true);
+        renderOntologyEvidence();
         renderDisclosureTimeline();
         record.label = kind;
         logLine(kind, explanation ? `${explanation.decision.outcome} · ${explanation.effect.kind} · hashes ${explanation.effect.hashEquality}` : "unknown semantic explanation (malformed or unavailable)");
@@ -1075,6 +1241,7 @@
     try { handle(data); } catch (error) { console.error("dashboard handler failed", error, data); }
   });
 
+  loadOntologyMap();
   const referenceSource = fetch("disclosure-reference.json").then((response) => { if (!response.ok) throw new Error("semantic reference unavailable"); return response.json(); }).catch(() => fetch("paper-reference.json").then((response) => { if (!response.ok) throw new Error("legacy reference unavailable"); return response.json(); }));
   referenceSource.then((ref) => { state.reference = ref; renderGateTable(); renderReference(); renderComparison(); }).catch(() => { renderGateTable(); renderReference(); renderComparison(); });
   renderChain();
