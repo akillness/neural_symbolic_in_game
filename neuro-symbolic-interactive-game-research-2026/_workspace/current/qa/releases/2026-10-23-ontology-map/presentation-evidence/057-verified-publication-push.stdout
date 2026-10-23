@@ -1,0 +1,133 @@
+
+=== Install locked environment ===
+PASS Install locked environment
+
+=== Unit tests ===
+generated NPC paper fragments and tmp5w0wh_2p/figures/fig_npc_screening.svg from research/academic-pipeline/npc-goal-recovery/verified-run-006; validation_mode=historical-evidence-root packet_scope=dated-historical-only
+generated NPC paper fragments and tmpyj7p4o2x/0/figures/fig_npc_screening.svg from research/academic-pipeline/npc-goal-recovery/verified-run-006; validation_mode=historical-evidence-root packet_scope=dated-historical-only
+generated NPC paper fragments and tmpyj7p4o2x/1/figures/fig_npc_screening.svg from research/academic-pipeline/npc-goal-recovery/verified-run-006; validation_mode=historical-evidence-root packet_scope=dated-historical-only
+generated bilingual offline and live-screening inputs from research/academic-pipeline/stage-04-pilot/pilot-results.json and research/academic-pipeline/rq2-live-pilot/promotion-manifest.json
+{"clean": false, "violation_codes": ["FORBIDDEN_DISCLOSURE"], "matched_facts": ["keeper_betrayal"], "screen": "lexical-identifier-screen", "semantic_oracle_required": true}
+PASS Unit tests
+
+=== Ruff lint and format ===
+All checks passed!
+100 files already formatted
+PASS Ruff lint and format
+
+=== Project integrity ===
+PASS: structure, LaTeX, bridge, SVG, captures, raw hashes, KG simulation, and Graphify layers
+PASS Project integrity
+
+=== Contribution and reference crosswalk ===
+contribution/reference crosswalk passed: 5 contributions, 58 references, 9 topics, 3 experiment lanes + 1 engineering lane
+PASS Contribution and reference crosswalk
+
+=== Editable visual and table sources ===
+NOTE: checked 132 unique source/artifact receipts
+NOTE: manifest covers 10 SVG assets
+FAIL Editable visual and table sources
+
+=== Offline experiment smoke ===
+{
+  "records": [
+    {
+      "schema_version": "1.2.0",
+      "run_id": "offline-smoke",
+      "arm_id": "default",
+      "scenario_id": "NPC-HARBOR-001",
+      "seed": 23,
+      "model_id": "offline/recorded-controller",
+      "model_revision": "fixture-sha256-demo-v1",
+      "status": "commit",
+      "failure_type": null,
+      "provider_latency_ms": 842.5,
+      "runner_latency_ms": 0.29579101828858256,
+      "input_tokens": 318,
+      "output_tokens": 41,
+      "repair_attempts": 0,
+      "trace_hash": "73ecf8529024a0d8e69a92636359a3d2440fab8d37b31fe059e1d7fe15714488",
+      "prior_state_id": "harbor-0",
+      "final_state_id": "bfa0a44f4f98288b",
+      "controller_config_hash": "380ebf754e0ac2b075979449853dce19af3217f1ee9711bbc4a0eaa1458cb138",
+      "assignment_input_hash": "ba479d4e6d20fad10041bb888e928c2324972229460b8736df7643131633b19a",
+      "prior_state_hash": "1a189763723170d3431bfeece0fbeadb1e999c3abe861f89b9a6648de406b54e",
+      "final_state_hash": "224f123a2dcd8bd6c93631b3ccf5938eba7f5ca7865ce5f51189708b83ded104",
+      "proposal_hash": "71b22dc286b14dbddac7ab0c294a7bb4efcf13180c2ee7f6acd6476aedc59208",
+      "record_hash": "fbf2195c1bb553733f7500a45be65a74665ac1cd642231666400ff9207cb9844"
+    },
+    {
+      "schema_version": "1.2.0",
+      "run_id": "offline-smoke",
+      "arm_id": "default",
+      "scenario_id": "NPC-HARBOR-001",
+      "seed": 47,
+      "model_id": "offline/recorded-controller",
+      "model_revision": "fixture-sha256-demo-v1",
+      "status": "adapter_failure",
+      "failure_type": "recorded_timeout",
+      "provider_latency_ms": null,
+      "runner_latency_ms": 0.008833012543618679,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "repair_attempts": 0,
+      "trace_hash": null,
+      "prior_state_id": "harbor-0",
+      "final_state_id": "harbor-0",
+      "controller_config_hash": "380ebf754e0ac2b075979449853dce19af3217f1ee9711bbc4a0eaa1458cb138",
+      "assignment_input_hash": "d12b8a13fa3a2359cb7046915cf362eff84615bebd9484a6e9e38381c9c495ee",
+      "prior_state_hash": "1a189763723170d3431bfeece0fbeadb1e999c3abe861f89b9a6648de406b54e",
+      "final_state_hash": "1a189763723170d3431bfeece0fbeadb1e999c3abe861f89b9a6648de406b54e",
+      "proposal_hash": null,
+      "record_hash": "b43c32376154987360bb1c75d7872bdfccfa27d023a194888a8a350acf27476c"
+    }
+  ],
+  "summary": {
+    "assigned_cases": 2,
+    "commit_rate": 0.5,
+    "overall_failure_rate": 0.5,
+    "hard_validation_failure_rate": 0.0,
+    "adapter_failure_rate": 0.5,
+    "controller_failure_rate": 0.0,
+    "latency_observed_cases": 1,
+    "provider_response_latency_p50_ms": 842.5,
+    "provider_response_latency_p95_ms": 842.5,
+    "total_input_tokens": 318,
+    "total_output_tokens": 41
+  }
+}
+PASS Offline experiment smoke
+
+=== Harness structure ===
+PASS: 15 agents, 3 skills, ownership and workflows
+PASS Harness structure
+
+=== Experimental game-track contracts ===
+PASS: game-studio workspace, rules, bilingual design, dual tracks, and claim boundary
+PASS public-safe exclusion manifest: 10 image byte streams absent
+PASS motion intake lane: 0 staged GLB assets, raw-source guard clean
+PASS curated player asset: 3559148 bytes, 15463 triangles, clips=Casual_Walk,Idle
+........................ [ 30%]
+......................................................                   [100%]
+78 passed, 48 subtests passed in 104.40s (0:01:44)
+All checks passed!
+16 files already formatted
+PASS Experimental game-track contracts
+
+=== Deep-research result contracts ===
+Deep-research contract: 14/14 records valid
+PASS Deep-research result contracts
+
+=== Survey artifact contract ===
+PASS: survey contract (3 artifacts)
+PASS Survey artifact contract
+
+=== Wiki lint ===
+Vault: <PUBLICATION_TREE>/llm-wiki
+Pages: 76
+
+No structural issues found.
+PASS Wiki lint
+
+CI-equivalent failures (1):
+  - Editable visual and table sources

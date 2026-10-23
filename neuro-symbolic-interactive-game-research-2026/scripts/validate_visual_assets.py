@@ -1139,6 +1139,23 @@ class Validator:
             staged.mkdir()
             evidence_root = Path(tmp) / "historical-source"
             try:
+                # Hooks export repository-local context that overrides cwd discovery.
+                # Keep config, authentication, and safety settings in the child environment.
+                git_env = dict(__import__("os").environ)
+                for name in (
+                    "GIT_DIR",
+                    "GIT_WORK_TREE",
+                    "GIT_IMPLICIT_WORK_TREE",
+                    "GIT_COMMON_DIR",
+                    "GIT_INDEX_FILE",
+                    "GIT_OBJECT_DIRECTORY",
+                    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+                    "GIT_PREFIX",
+                    "GIT_GRAFT_FILE",
+                    "GIT_SHALLOW_FILE",
+                    "GIT_REPLACE_REF_BASE",
+                ):
+                    git_env.pop(name, None)
                 git_root = Path(
                     subprocess.run(
                         ["git", "rev-parse", "--show-toplevel"],
@@ -1146,6 +1163,7 @@ class Validator:
                         check=True,
                         capture_output=True,
                         text=True,
+                        env=git_env,
                     ).stdout.strip()
                 )
                 prefix = ROOT.relative_to(git_root).as_posix()
@@ -1162,6 +1180,7 @@ class Validator:
                     cwd=git_root,
                     check=True,
                     capture_output=True,
+                    env=git_env,
                 ).stdout
                 with zipfile.ZipFile(io.BytesIO(archive)) as snapshot:
                     snapshot.extractall(evidence_root)

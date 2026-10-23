@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import io
 import json
+import os
 import re
 import subprocess
 import sys
@@ -327,6 +328,132 @@ class HistoricalRegenerationTests(unittest.TestCase):
                 validator._validate_lightweight_regeneration({})
 
             self.assertEqual(validator.errors, [])
+            self.assertEqual(len(historical_roots), 2)
+            self.assertEqual(historical_roots[0], historical_roots[1])
+            self.assertTrue(all(not path.exists() for path in historical_roots + staged_roots))
+            self.assertEqual((root / source_relative).read_bytes(), b"current checkout bytes")
+            self.assertEqual(output.read_bytes(), b"historical snapshot bytes")
+
+    def test_historical_extraction_ignores_inherited_hook_git_context_for_selected_subtree(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory) / "repository"
+            root = repository / "neuro-symbolic-interactive-game-research-2026"
+            source_relative = "game-track/godot/scripts/sealed_lighthouse_machine.gd"
+            output_relative = "paper/latex/generated/historical-hook-env-test.tex"
+            for relative in (
+                "scripts/generate_npc_paper_results.py",
+                "research/academic-pipeline/stage-04-pilot",
+                "research/academic-pipeline/rq2-live-pilot",
+                "research/academic-pipeline/contribution-evidence-matrix.csv",
+                "research/academic-pipeline/experiment-evidence-matrix.csv",
+                "research/claim-ledger.yaml",
+                "game-track/godot/docs/latest/balance-archetypes.json",
+                *visual_validator.NPC_REGENERATION_SUPPORT,
+            ):
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"current checkout bytes")
+            output = root / output_relative
+            output.parent.mkdir(parents=True)
+            output.write_bytes(b"historical snapshot bytes")
+            archive_bytes = io.BytesIO()
+            with zipfile.ZipFile(archive_bytes, "w") as archive:
+                archive.writestr(source_relative, b"historical snapshot bytes")
+            archive_commands: list[tuple[list[str], dict[str, str]]] = []
+            discovery_environments: list[dict[str, str]] = []
+            historical_roots: list[Path] = []
+            staged_roots: list[Path] = []
+            local_git_context = {
+                "GIT_DIR": "relative-hook-worktree/.git",
+                "GIT_WORK_TREE": "relative-hook-worktree",
+                "GIT_IMPLICIT_WORK_TREE": "true",
+                "GIT_COMMON_DIR": "relative-common",
+                "GIT_INDEX_FILE": "relative-hook-index",
+                "GIT_OBJECT_DIRECTORY": "relative-object",
+                "GIT_ALTERNATE_OBJECT_DIRECTORIES": "relative-alternate",
+                "GIT_PREFIX": "relative-prefix",
+                "GIT_GRAFT_FILE": "relative-graft",
+                "GIT_SHALLOW_FILE": "relative-shallow",
+                "GIT_REPLACE_REF_BASE": "relative-replace",
+            }
+            preserved_environment = {
+                "TRACE_PARENT_MARKER": "parent-preserved",
+                "PYTHONDONTWRITEBYTECODE": "safety-preserved",
+                "GIT_CONFIG_COUNT": "1",
+                "GIT_CONFIG_KEY_0": "safe.option",
+                "GIT_CONFIG_VALUE_0": "preserved",
+                "GIT_NO_REPLACE_OBJECTS": "1",
+                "GIT_SSH_COMMAND": "ssh-safe-wrapper",
+                "GIT_TERMINAL_PROMPT": "0",
+            }
+
+            def run(command, *, cwd, **kwargs):
+                effective_env = dict(kwargs.get("env", os.environ))
+                if command[:3] == ["git", "rev-parse", "--local-env-vars"]:
+                    return subprocess.CompletedProcess(
+                        command,
+                        0,
+                        stdout="GIT_DIR\nGIT_WORK_TREE\nGIT_INDEX_FILE\n",
+                    )
+                if command[:2] == ["git", "rev-parse"]:
+                    discovery_environments.append(effective_env)
+                    git_root = (
+                        root
+                        if any(effective_env.get(key) for key in local_git_context)
+                        else repository
+                    )
+                    return subprocess.CompletedProcess(command, 0, stdout=f"{git_root}\n")
+                if command[:2] == ["git", "archive"]:
+                    archive_commands.append((command, effective_env))
+                    expected_tree = (
+                        "fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09:"
+                        "neuro-symbolic-interactive-game-research-2026"
+                    )
+                    if expected_tree not in command:
+                        raise subprocess.CalledProcessError(
+                            128, command, stderr="wrong historical subtree"
+                        )
+                    return subprocess.CompletedProcess(command, 0, stdout=archive_bytes.getvalue())
+                if "scripts/generate_npc_paper_results.py" in command:
+                    evidence_root = Path(command[command.index("--evidence-root") + 1])
+                    historical_roots.append(evidence_root)
+                    staged_roots.append(Path(cwd))
+                    generated = Path(cwd) / output_relative
+                    generated.parent.mkdir(parents=True, exist_ok=True)
+                    generated.write_bytes((evidence_root / source_relative).read_bytes())
+                return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+
+            with patch.dict(
+                os.environ, {**local_git_context, **preserved_environment}, clear=False
+            ):
+                parent_environment = dict(os.environ)
+                validator = visual_validator.Validator(
+                    require_pdf_tools=False, check_regeneration=True
+                )
+                with (
+                    patch.object(visual_validator, "ROOT", root),
+                    patch.object(visual_validator, "LIGHTWEIGHT_OUTPUTS", (output_relative,)),
+                    patch.object(visual_validator.subprocess, "run", side_effect=run),
+                ):
+                    validator._validate_lightweight_regeneration({})
+                self.assertEqual(dict(os.environ), parent_environment)
+
+            self.assertEqual(validator.errors, [])
+            self.assertEqual(len(archive_commands), 1)
+            self.assertEqual(len(discovery_environments), 1)
+            archive_command, archive_environment = archive_commands[0]
+            for child_environment in [discovery_environments[0], archive_environment]:
+                for key in local_git_context:
+                    self.assertNotIn(key, child_environment)
+                for key, value in preserved_environment.items():
+                    self.assertEqual(child_environment[key], value)
+            self.assertIn(
+                "fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09:"
+                "neuro-symbolic-interactive-game-research-2026",
+                archive_command,
+            )
             self.assertEqual(len(historical_roots), 2)
             self.assertEqual(historical_roots[0], historical_roots[1])
             self.assertTrue(all(not path.exists() for path in historical_roots + staged_roots))

@@ -1,0 +1,161 @@
+{
+  "schema_version": "trace-rpg-push-hook-repair/v1",
+  "status": "VERIFIED_FOR_PUSH_RETRY",
+  "observed_at": "2026-10-23T17:03:41.830Z",
+  "previous_publication_commit": "137de0fd9da307f647ed501ebbb687fb5a852806",
+  "previous_release_receipt": {
+    "path": "presentation-final-verification.json",
+    "sha256": "0740fe59c50dbb39ebe20e5db5c4112f9d613c88a28f236e6ed7cb140cf5857c",
+    "scope": "Exact pre-hook-fix sources at the previous publication commit; retained unchanged"
+  },
+  "failure": {
+    "receipt": "presentation-evidence/057-verified-publication-push.json",
+    "exit_code": 1,
+    "reason": "Git local context inherited by historical extraction derived the dot subtree; push was blocked, not bypassed"
+  },
+  "fix": {
+    "scope": "Only two historical-lookup Git child environments isolated; pinned historical commit and source paths unchanged",
+    "parent_environment": "Unchanged",
+    "configuration_authentication_and_safety_environment": "Preserved",
+    "source_fingerprints": {
+      "scripts/validate_visual_assets.py": "0b7883cff68367856b0a2c0e92289a8c593b969c883c88a808e841bbcdcff730",
+      "tests/test_visual_asset_validator.py": "fb10ab1f4f4dd43b3bde10de055842c514511a1fd64b02265824027463f4559d"
+    }
+  },
+  "verification": {
+    "targeted": {
+      "passed": 23,
+      "subtests_passed": 23,
+      "receipt": "presentation-evidence/060-hook-context-targeted-tests.json"
+    },
+    "actual_git_dir_context_visual": {
+      "status": "PASS",
+      "receipts": 132,
+      "svg_assets": 10,
+      "double_regenerated_sources": 22,
+      "receipt": "presentation-evidence/061-hook-context-visual-regeneration.json"
+    },
+    "lint": {
+      "status": "PASS",
+      "receipt": "presentation-evidence/059-hook-context-lint.json"
+    },
+    "reviews": [
+      {
+        "agent": "HookCorrectionCodeReview",
+        "verdict": "APPROVE",
+        "findings": [],
+        "review": "The scoped change copies the parent environment, removes exactly the 11 repository-local Git context variables, and passes the isolated copy to both rev-parse and archive. Parent environment, configuration, authentication, and safety variables remain intact. The pinned fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09 subtree selection is unchanged. The added regression checks both child environments, parent preservation, subtree identity, two regeneration passes, temporary-directory cleanup, and unchanged checkout bytes.",
+        "verification": "Read-only inspection of staged/unstaged scoped diffs and surrounding regeneration/test code. No edits, tests, formatters, lint, builds, or Git mutations performed. Main's final targeted and actual-push checks remain outstanding.",
+        "summary": "## Review Summary\n\n| Severity | Count | Status |\n|----------|-------|--------|\n| CRITICAL | 0 | pass |\n| HIGH | 0 | pass |\n| MEDIUM | 0 | pass |\n| LOW | 0 | pass |\n\nVerdict: APPROVE"
+      },
+      {
+        "agent": "HookCorrectionPythonReview",
+        "verdict": "APPROVE",
+        "findings": [],
+        "review_basis": [
+          "scripts/validate_visual_assets.py:1142-1164 copies the parent environment, removes exactly the eleven repository-context keys from that copy, and supplies it to repository discovery without mutating os.environ.",
+          "scripts/validate_visual_assets.py:1166-1188 reuses that environment for byte-mode archive extraction, retains the exact historical commit/subtree and NPC_REGENERATION_SUPPORT plus configs/npc-goal-recovery.json, and preserves checked subprocess failure handling.",
+          "scripts/validate_visual_assets.py:1134-1220 retains temporary-directory ownership across both regeneration passes, archive context-manager closure, extraction-failure early return, and cleanup on exit.",
+          "tests/test_visual_asset_validator.py:335-457 checks both Git child environments, preservation of config/authentication/safety variables, unchanged parent environment, exact commit/subtree, two historical-source uses, temporary-root cleanup, and unchanged checkout bytes. Existing extraction-failure assertions at lines 496-499 require one error, no generators, and no success note."
+        ],
+        "verification_scope": "Source review only; no edits, builds, formatters, linters, or test suites executed. A targeted git diff was read under the reviewer-role instruction. The supplied actual GIT_DIR-only reproduction and real 22-source GREEN claim were not independently rerun or altered."
+      }
+    ]
+  },
+  "public_evidence": {
+    "files": [
+      {
+        "path": "presentation-evidence/057-verified-publication-push.stdout",
+        "raw_sha256": "4aa424c15404afa3ecc845949ae7474c9b94f87c1a477512241296e18010cfa9",
+        "public_sha256": "cb499f608b363dcda03961e2400e18a3182d7020c5fdbdf84f17e18eb1ca7922",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/057-verified-publication-push.stderr",
+        "raw_sha256": "b99bbaee7d66392e2da6358766515c35d48568abda905ca84deb7cd8f985a380",
+        "public_sha256": "b99bbaee7d66392e2da6358766515c35d48568abda905ca84deb7cd8f985a380",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/057-verified-publication-push.json",
+        "raw_sha256": "9a9702cd448fd6c64cd429acd4d100d61a9cac5049faec807bd3d1376dd51d70",
+        "public_sha256": "4d64cb65cb29f46ffbb94fca4434af36a5a1c00784776085027f8fe30b80a45b",
+        "derivation": "Public command receipt binds public streams and separately retains raw hashes"
+      },
+      {
+        "path": "presentation-evidence/058-hook-context-format.stdout",
+        "raw_sha256": "10869b88a75066aa23546ef1f95fcd4678c3fb92a56ed46ef91688052b67976a",
+        "public_sha256": "10869b88a75066aa23546ef1f95fcd4678c3fb92a56ed46ef91688052b67976a",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/058-hook-context-format.stderr",
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/058-hook-context-format.json",
+        "raw_sha256": "ee77798e84494ad4abba54ba686aa2d142b3f9bb30a2f564919259fbef3fbd77",
+        "public_sha256": "1bcb3e7dcacfc2ba0d8bfe7e5639a791abfb25db5bbd982349d5ea3156e4908f",
+        "derivation": "Public command receipt binds public streams and separately retains raw hashes"
+      },
+      {
+        "path": "presentation-evidence/059-hook-context-lint.stdout",
+        "raw_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "public_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/059-hook-context-lint.stderr",
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/059-hook-context-lint.json",
+        "raw_sha256": "4a8778868a6adceb6b953d84354db2a9191f350c2d8c2b818a31e08382a82bc1",
+        "public_sha256": "980be6dae4d9958f21ac547b8fcf3e577c5db72e94c0ff6636c40c06910d6d45",
+        "derivation": "Public command receipt binds public streams and separately retains raw hashes"
+      },
+      {
+        "path": "presentation-evidence/060-hook-context-targeted-tests.stdout",
+        "raw_sha256": "ab79d8e3daf90ea9e7038fe52cd8d90208319e98aba4c8e6b94cada0725d2e48",
+        "public_sha256": "ab79d8e3daf90ea9e7038fe52cd8d90208319e98aba4c8e6b94cada0725d2e48",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/060-hook-context-targeted-tests.stderr",
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/060-hook-context-targeted-tests.json",
+        "raw_sha256": "e4bb0e9489f75558b90660a096c266b7d070a3f743521cd4a80270d64f012422",
+        "public_sha256": "bc49dced44a8166e862623dfa2f856815b7f6d9ba3850379960f512b2dea164e",
+        "derivation": "Public command receipt binds public streams and separately retains raw hashes"
+      },
+      {
+        "path": "presentation-evidence/061-hook-context-visual-regeneration.stdout",
+        "raw_sha256": "729c837a5e0b1dbbc74d79a5b824f078f63e206a549dabeb5d339c204004c9c5",
+        "public_sha256": "729c837a5e0b1dbbc74d79a5b824f078f63e206a549dabeb5d339c204004c9c5",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/061-hook-context-visual-regeneration.stderr",
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "derivation": "Account/home/temporary-root/email masking; raw originals preserved privately"
+      },
+      {
+        "path": "presentation-evidence/061-hook-context-visual-regeneration.json",
+        "raw_sha256": "90b04a731b05ff52c3838e561b8972119ed6b416642247150f94cb5db66974b0",
+        "public_sha256": "43226b92d04572bf6354a62d7e7d30da7fe329287aed8a77c5e54dc033dd223b",
+        "derivation": "Public command receipt binds public streams and separately retains raw hashes"
+      }
+    ],
+    "originals_retained_privately": true
+  },
+  "claim_boundary": "No paper/game/scenario/data/cohort/metric changes. Actual push and complete hook result remain to be established by remote history and command output."
+}
