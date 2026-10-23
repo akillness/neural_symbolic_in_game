@@ -1,0 +1,72 @@
+{
+  "canonical_project_sha256_after": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+  "canonical_project_sha256_before": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/signal-r3-public-safe-smoke-vipgllxw/project",
+    "res://scenes/main_3d.tscn",
+    "--quit-after",
+    "120",
+    "--",
+    "--smoke",
+    "--public-safe"
+  ],
+  "earlier_line_only_record": "public-safe-smoke-r3.json",
+  "elapsed_seconds": 5.128,
+  "engine_version": "4.7.1.stable.official.a13da4feb",
+  "exit_code": 0,
+  "finished_at": "2026-10-23T07:06:18.720450+00:00",
+  "log": "public-safe-smoke-r3.log",
+  "parser_note": "Decoded the actual pretty-printed JSON object from retained stdout; earlier line-only record remains unchanged.",
+  "payload": {
+    "checks": [
+      {
+        "check": "early_secret_refused_without_mutation",
+        "pass": true
+      },
+      {
+        "check": "early_hint_stage_gated",
+        "pass": true
+      },
+      {
+        "check": "install_without_lens_refused",
+        "pass": true
+      },
+      {
+        "check": "lens_acquired",
+        "pass": true
+      },
+      {
+        "check": "lens_installed_stage_2",
+        "pass": true
+      },
+      {
+        "check": "authorized_hint_disclosed",
+        "pass": true
+      },
+      {
+        "check": "presentation_sync_and_fall_recovery",
+        "pass": true
+      },
+      {
+        "check": "corrupt_save_rejected",
+        "pass": true
+      }
+    ],
+    "final_state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+    "passed": true,
+    "smoke": "sealed-lighthouse-3d"
+  },
+  "preflight_command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--editor",
+    "--path",
+    "/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/signal-r3-public-safe-smoke-vipgllxw/project",
+    "--quit"
+  ],
+  "started_at": "2026-10-23T07:06:13.592607+00:00",
+  "status": "PASS"
+}

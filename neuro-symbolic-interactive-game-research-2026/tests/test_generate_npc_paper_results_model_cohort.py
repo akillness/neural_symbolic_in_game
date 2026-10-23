@@ -1,11 +1,13 @@
 import json
-import os
+import shutil
 import sys
 import unittest
 from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
+
+from npc_historical_fixture import archive_historical_npc_sources
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -14,6 +16,17 @@ import generate_npc_paper_results as generator
 
 
 class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls._historical_tempdir = TemporaryDirectory(dir=ROOT)
+        cls.historical_root = Path(cls._historical_tempdir.name) / "historical-source-root"
+        cls.historical_root.mkdir()
+        archive_historical_npc_sources(ROOT, cls.historical_root)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._historical_tempdir.cleanup()
+
     def _load_packet_with_model_mutation(self, mutate):
         original_rows = generator._rows
 
@@ -25,7 +38,7 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
             return records
 
         with patch.object(generator, "_rows", side_effect=rows):
-            return generator._load_packet()
+            return generator._load_packet(self.historical_root)
 
     def _load_packet_with_screening_mutation(self, mutate):
         original_rows = generator._rows
@@ -37,12 +50,190 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
             return records
 
         with patch.object(generator, "_rows", side_effect=rows):
-            return generator._load_packet()
+            return generator._load_packet(self.historical_root)
 
     @staticmethod
     def _set_model_cohort(rows, requested, returned):
         for row in rows:
             row["model"].update(requested=requested, returned=returned)
+
+    def test_default_current_root_rejects_verified_run_source_drift(self):
+        with self.assertRaisesRegex(
+            ValueError,
+            r"NPC-ENG1: source manifest runtime_source_hashes_before mismatch: .*; source manifest runtime_source_hashes_after mismatch:",
+        ):
+            generator._load_packet()
+
+    def test_nonexistent_explicit_root_fails_without_current_root_fallback(self):
+        with TemporaryDirectory(dir=ROOT) as temporary_directory:
+            temporary_root = Path(temporary_directory)
+            missing_root = temporary_root / "does-not-exist"
+            output_dir = temporary_root / "generated"
+            figures_dir = temporary_root / "figures"
+            with (
+                patch.object(generator, "OUT", output_dir),
+                patch.object(generator, "FIGURES", figures_dir),
+                self.assertRaisesRegex(
+                    ValueError, rf"missing NPC evidence root: {missing_root.resolve()}"
+                ),
+            ):
+                generator.main(missing_root)
+            self.assertFalse(output_dir.exists())
+            self.assertFalse(figures_dir.exists())
+
+    def test_historical_main_preserves_numeric_outcomes_and_portable_scope_metadata(self):
+        expected_outcomes = {
+            "NPC-ENG1": {"valid": True, "publishable": False, "errors": []},
+            "NPC-SCR1": {"valid": True, "publishable": True, "errors": []},
+        }
+        with TemporaryDirectory(dir=ROOT) as temporary_directory:
+            output_root = Path(temporary_directory)
+            output_dir = output_root / "generated"
+            figures_dir = output_root / "figures"
+            with (
+                patch.object(generator, "OUT", output_dir),
+                patch.object(generator, "FIGURES", figures_dir),
+            ):
+                generator.main(self.historical_root)
+
+            reports = json.loads(
+                (output_dir / "npc_validation_reports.json").read_text(encoding="utf-8")
+            )
+
+        for packet_id, outcome in expected_outcomes.items():
+            with self.subTest(packet_id=packet_id):
+                report = reports[packet_id]
+                self.assertEqual(
+                    {key: report[key] for key in ("valid", "publishable", "errors")},
+                    outcome,
+                )
+                self.assertEqual(
+                    report["validation_context"],
+                    {
+                        "mode": "historical-evidence-root",
+                        "source_root": "explicit-archived-root",
+                        "packet_scope": "dated-historical-only",
+                        "current_release_authority": False,
+                        "historical_reference": {"revision": "fa9fb8a", "date": "2026-10-17"},
+                    },
+                )
+                self.assertEqual(
+                    report["packet_dir"],
+                    "research/academic-pipeline/npc-goal-recovery/verified-run-006",
+                )
+                self.assertFalse(Path(report["packet_dir"]).is_absolute())
+                self.assertNotIn(str(self.historical_root), json.dumps(report))
+
+    def test_relocated_clean_source_tree_reproduces_historical_reports_without_promotion(self):
+        before = {
+            path.relative_to(generator.PACKET): path.read_bytes()
+            for path in generator.PACKET.rglob("*")
+            if path.is_file()
+        }
+        with (
+            TemporaryDirectory() as relocated_directory,
+            TemporaryDirectory(dir=ROOT) as output_directory,
+        ):
+            relocated_root = Path(relocated_directory) / "clean-checkout"
+            shutil.copytree(self.historical_root, relocated_root)
+            output_root = Path(output_directory)
+            reports = []
+            fragments = []
+            for index, source_root in enumerate((self.historical_root, relocated_root)):
+                with (
+                    patch.object(generator, "OUT", output_root / str(index) / "generated"),
+                    patch.object(generator, "FIGURES", output_root / str(index) / "figures"),
+                ):
+                    generator.main(source_root)
+                    reports.append(
+                        json.loads(
+                            (generator.OUT / "npc_validation_reports.json").read_text(
+                                encoding="utf-8"
+                            )
+                        )
+                    )
+                    fragments.append(
+                        {path.name: path.read_bytes() for path in generator.OUT.glob("*.tex")}
+                    )
+
+            self.assertEqual(reports[0], reports[1])
+            self.assertEqual(fragments[0], fragments[1])
+            for packet_id in ("NPC-ENG1", "NPC-SCR1"):
+                self.assertTrue(reports[1][packet_id]["valid"])
+                self.assertEqual(
+                    reports[1][packet_id]["validation_context"]["packet_scope"],
+                    "dated-historical-only",
+                )
+                self.assertFalse(
+                    reports[1][packet_id]["validation_context"]["current_release_authority"]
+                )
+            self.assertNotIn(str(relocated_root), json.dumps(reports[1]))
+        self.assertEqual(
+            {
+                path.relative_to(generator.PACKET): path.read_bytes()
+                for path in generator.PACKET.rglob("*")
+                if path.is_file()
+            },
+            before,
+        )
+
+    def test_relocated_historical_source_tampering_fails_before_writing_outputs(self):
+        for relative in (
+            "game-track/godot/scripts/game3d/game_3d.gd",
+            "configs/npc-goal-recovery.json",
+            "game-track/schemas/npc-goal-recovery.schema.json",
+        ):
+            with (
+                self.subTest(source=relative),
+                TemporaryDirectory() as relocated_directory,
+                TemporaryDirectory(dir=ROOT) as output_directory,
+            ):
+                relocated_root = Path(relocated_directory) / "clean-checkout"
+                shutil.copytree(self.historical_root, relocated_root)
+                source = relocated_root / relative
+                source.write_bytes(source.read_bytes() + b"\n")
+                output_root = Path(output_directory)
+                with (
+                    patch.object(generator, "OUT", output_root / "generated"),
+                    patch.object(generator, "FIGURES", output_root / "figures"),
+                    self.assertRaisesRegex(ValueError, "(?i)(hash|sha|mismatch|drift)"),
+                ):
+                    generator.main(relocated_root)
+                self.assertFalse((output_root / "generated").exists())
+                self.assertFalse((output_root / "figures").exists())
+
+    def test_explicit_historical_load_exposes_historical_context(self):
+        packet = generator._load_packet(self.historical_root)
+        self.assertEqual(
+            packet["validation_context"],
+            {
+                "mode": "historical-evidence-root",
+                "source_root": "explicit-archived-root",
+                "packet_scope": "dated-historical-only",
+                "current_release_authority": False,
+                "historical_reference": {"revision": "fa9fb8a", "date": "2026-10-17"},
+            },
+        )
+        expected_arms = {
+            arm: {
+                "n": 24,
+                "completed_n": 20,
+                "assigned_failure_n": 4,
+                "goal_reached_n": 4,
+                "recovery_eligible_n": 24,
+                "recovery_unreachable_n": 0,
+                "source_independent_n": 0,
+                "terminal_status_counts": {"assigned_failure": 4, "completed": 20},
+            }
+            for arm in ("P", "R", "O")
+        }
+        self.assertEqual(
+            {
+                arm: {key: packet["aggregate"]["arms"][arm][key] for key in expected}
+                for arm, expected in expected_arms.items()
+            },
+            expected_arms,
+        )
 
     def test_uniform_null_cohort_is_accepted_and_disclosed_in_both_languages(self):
         packet = self._load_packet_with_model_mutation(
@@ -192,7 +383,7 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
         self.assertNotIn("provider revision: gpt-5.6-sol", korean)
 
     def test_stale_control_disclosure_retains_all_failures_and_counts_verified_controls(self):
-        packet = generator._load_packet()
+        packet = generator._load_packet(self.historical_root)
         disclosure = packet["stale_disclosure"]
 
         self.assertEqual(disclosure["assigned_failure_rows"], 12)
@@ -249,48 +440,11 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
                 self.assertIn("other assigned failures (1) remain unclassified", english)
                 self.assertNotIn("expected_negative_gates", english)
 
-    def test_generated_validation_reports_use_project_relative_packet_dir_and_preserve_outcomes(
-        self,
-    ):
-        expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-006"
-        expected_outcomes = {
-            "NPC-ENG1": {"valid": True, "publishable": False, "errors": []},
-            "NPC-SCR1": {"valid": True, "publishable": True, "errors": []},
-        }
-
-        with TemporaryDirectory(dir=ROOT) as temporary_directory:
-            output_root = Path(temporary_directory)
-            output_dir = output_root / "generated"
-            figures_dir = output_root / "figures"
-            original_cwd = Path.cwd()
-            os.chdir(output_root)
-            try:
-                with (
-                    patch.object(generator, "OUT", output_dir),
-                    patch.object(generator, "FIGURES", figures_dir),
-                ):
-                    generator.main()
-            finally:
-                os.chdir(original_cwd)
-
-            reports = json.loads(
-                (output_dir / "npc_validation_reports.json").read_text(encoding="utf-8")
-            )
-
-        self.assertEqual(set(reports), set(expected_outcomes))
-        for packet_id, outcome in expected_outcomes.items():
-            with self.subTest(packet_id=packet_id):
-                report = reports[packet_id]
-                self.assertEqual(report["packet_dir"], expected_packet_dir)
-                self.assertFalse(Path(report["packet_dir"]).is_absolute())
-                self.assertEqual(
-                    {key: report[key] for key in ("valid", "publishable", "errors")},
-                    outcome,
-                )
-
     def test_portable_report_only_normalizes_exact_packet_and_preserves_payload(self):
         expected_packet_dir = "research/academic-pipeline/npc-goal-recovery/verified-run-006"
-        source_report = generator._load_packet()["validation_reports"]["NPC-SCR1"]
+        source_report = generator._load_packet(self.historical_root)["validation_reports"][
+            "NPC-SCR1"
+        ]
         same_basename_elsewhere = ROOT / "tests" / "not-the-npc-packet" / generator.PACKET.name
         cases = {
             "canonical packet": (str(generator.PACKET), expected_packet_dir),

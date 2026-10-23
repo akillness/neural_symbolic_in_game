@@ -1,0 +1,56 @@
+\begin{table}[t]
+\caption{Frozen reveal\_hint contract structure, content, rule IDs, and result provenance.}
+\label{tab:disclosure-contract}
+\centering\scriptsize
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+\toprule
+Field & Value \\
+\midrule
+Operation & reveal\_hint \\
+Scenario & sealed-lighthouse-v1 \\
+Normal denominator & 48 \\
+Boundary & 4 \\
+Malformed & 8 \\
+Canonical facts & dock\_saved, keeper\_betrayal, lighthouse\_dark, tide\_marks\_hint \\
+Eligible actor & captain\_mira \\
+Ontology & sl-npc-disclosure-expectations-v1:runtime-disclosure \\
+Rule IDs & DISC-001, DISC-002, DISC-003, DISC-004, DISC-005, DISC-006, DISC-007 \\
+Templates & mira-safe-deflection-v1; sl-rc-003-authorized-hint \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.97\columnwidth}{\scriptsize Expectations are not derived from gate output; denominators are read from the frozen declaration.}
+\end{table}
+\begin{table*}[t]
+\caption{Raw-trace observations for the three disclosure arms with separate normal, boundary, and malformed denominators.}
+\label{tab:disclosure-arms}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}l r r >{\raggedleft\arraybackslash}X >{\raggedleft\arraybackslash}X r r@{}}
+\toprule
+Arm & n (N/B/M) & Allow/Deny & Semantic mismatch & State/Display fail & Replay fail & Unique unsafe \\
+\midrule
+unchecked\_isolated & 48/4/8 & 60/0 & 60 & 0/0 & 0 & 51 \\
+general\_rule & 48/4/8 & 16/44 & 0 & 0/0 & 0 & 0 \\
+ontology\_gate & 48/4/8 & 16/44 & 0 & 0/0 & 0 & 0 \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.97\textwidth}{\scriptsize N/B/M = normal/boundary/malformed. Semantic mismatch compares the complete expected outcome; unique unsafe cases are the union of unauthorized allows and redisplay mutations. Permitted fresh-disclosure representation mismatches alone are not unsafe. Unchecked observations do not establish efficacy, superiority, or generalization.}
+\end{table*}
+\begin{table*}[t]
+\caption{Rule-change fixture traceability and edit scope for paired cases; the shipped scenario is not modified.}
+\label{tab:disclosure-fixtures}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.1pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X r@{}}
+\toprule
+Fixture & Mutation & Paired cases & Changed paths & Missed cases & Match \\
+\midrule
+RC-001-stage-gate-2-to-1 & disclosure\_\allowbreak{}policy.stage\_\allowbreak{}gates[0].minimum\_\allowbreak{}stage 2→1 & N-043, N-044 & disclosure\_\allowbreak{}policy.\allowbreak{}stage\_\allowbreak{}gates[0].\allowbreak{}minimum\_\allowbreak{}stage & none & PASS \\
+RC-002-forbid-tide-marks-hint & disclosure\_\allowbreak{}policy.permanently\_\allowbreak{}forbidden ['keeper\_\allowbreak{}betrayal']→['keeper\_\allowbreak{}betrayal', 'tide\_\allowbreak{}marks\_\allowbreak{}hint'] & N-047, N-048 & disclosure\_\allowbreak{}policy.\allowbreak{}permanently\_\allowbreak{}forbidden[1] & none & PASS \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.97\textwidth}{\scriptsize Each fixture applies the same mutation to general\_rule and ontology\_gate. PASS requires no missed case and mutation\_scope\_preserved=true.}
+\end{table*}

@@ -1,0 +1,35 @@
+contract: signal-explainer-plan/v1
+seed: ../../../../.ouroboros/seeds/seed-20261023-signal-explainer-b35b22f4227d.yaml
+status: APPROVED_CRITERIA_IMPLEMENTATION_PLAN
+planning_tool: "spec-kit MCP attempted specify plan; installed CLI has no plan subcommand. This explicit seed-derived plan is the fallback, not a successful spec-kit run."
+goal: "Content-first typed input -> ontology relations/rules -> observed checks -> decision -> state transition, optional in-game explainer and separate live/fixed-case graph views; aligned EN/KO <=10-page papers; verified existing-site deployment."
+architecture:
+  runtime: "Godot remains the sole canonical writer. Explainer is optional read-only presentation; no new game/model authority. Use existing UI/input patterns, English ASCII labels, keyboard/mobile dismissal and existing panel lifecycle."
+  live_contract: "Existing disclosure_outcome/disclosure_replay embedded Web event pipeline is primary. Any additive semantic explanation object is versioned, public-safe and documented in its schema; coordinate exact shape before consumer edits. Use engine seq/t_ms and before/after hashes, never browser receipt time as model latency. No hidden fact IDs or sealed labels."
+  comparison_contract: "New derived disclosure-reference.json in existing dashboard, generated from immutable 180-record independent60x3 source, contains safe categorical/count/case outcomes and typed semantic definitions, not raw world states or hidden fact labels. Denominators normal48/boundary4/malformed8 per arm; unsafe51 differs from mismatch60. Empty sparse check cells are unreported."
+  charts: "No new chart dependency: existing HTML/CSS/SVG patterns; distinguish within-session categorical event history from independent frozen-case counts/matrix. Both use content/semantic labels, not folder paths."
+  manuscript: "Preserve claims, all required evidence and bilingual numerical/ID alignment. Explain typed data, runtime policy versus authored methods ontology, actual check coverage and categorical signals. New comparison/mechanism figures are deterministic projections. Condense redundant prose/table layout to <=10 pages without shrinking body font or margins."
+parallel_owners:
+  - id: SignalRuntime
+    targets: [game-track/godot/scripts/game3d/game_3d.gd, game-track/godot/scripts/game3d/evaluation_trace.gd, game-track/godot/scripts/sealed_lighthouse_machine.gd, game-track/schemas]
+    deliverable: "Optional read-only explainer and truthful public live disclosure metadata; repair source/mirror drift at semantic source, not hash-only."
+  - id: SignalDashboard
+    targets: [game-track/web/dashboard/index.html, game-track/web/dashboard/dashboard.js, game-track/web/dashboard]
+    deliverable: "Dedicated disclosure event consumer/timeline and independent comparison/semantic explanation UI; no backchannel to game. Own HTML/JS/CSS, not generated reference JSON."
+  - id: SignalData
+    targets: [scripts/generate_signal_explainer.py, game-track/web/dashboard/disclosure-reference.json, paper/latex/figures/fig_signal_mechanism.svg, paper/latex/figures/fig_signal_comparison.svg]
+    deliverable: "Minimum deterministic stdlib producer for public-safe derived comparison and paired semantic figure content; no frozen-source mutation."
+  - id: SignalPapers
+    targets: [paper/latex/en/main.tex, paper/latex/ko/main.tex, scripts/generate_disclosure_paper_results.py]
+    deliverable: "Content-first matched narrative/figure integration, correct prior incorrect npc_disclosure.py pointer (actual module disclosure.py), both PDFs <=10 pages without claim/evidence loss. Coordinate generated producer inputs with SignalData."
+coordination:
+  - "Runtime and Dashboard agree live payload via IRC before changing consumer; Data and Dashboard agree reference JSON. Papers and Data agree figure IDs and safe captions."
+  - "Do not edit frozen expectation JSON, immutable raw/history packets, or source-bound earlier report. Preserve current working-tree changes. No project-wide suite/formatter/linter in worker lanes."
+  - "Workers may run only a minimal targeted smoke relevant to their own changes, using disposable staged Godot copies only. Main owns consolidated verification and release."
+verification:
+  - "Stage-only engine script/import smoke and actual reveal_hint event path; failure/allow/redisplay preserve hard semantics and existing inputs/panel lifecycle."
+  - "After initial smoke, independent Tester authors behavioral regressions for changed contracts and presentation; Main runs only added/modified focused tests and required release gates."
+  - "Independent code, JS/Python, security and a11y review; no path/hidden-label leak or missing->pass coercion."
+  - "Generate derived evidence, producer/checker, EN/KO build/page/font/claim-parity gates; current source bindings must be renewed after runtime changes without rewriting old evidence."
+  - "Disposable public-safe Web build; existing Vercel combined deployment; verify READY, anonymous asset/PDF routes, served byte hashes, browser core gameplay, disclosure signals and panel behavior, desktop/mobile, console errors. Record real rollback target."
+non_goals: [human_efficacy_study, model_comparison, live_core_python_authorization_in_game, new_external_service, hidden_fact_exposure, invented_seven_runtime_signals, statistical_superiority_claims]

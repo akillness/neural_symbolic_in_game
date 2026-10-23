@@ -1,0 +1,941 @@
+{
+  "target": "http://127.0.0.1:8898/dashboard/?release=20261023-signal-explainer-r3-main",
+  "observed_at": "2026-10-23T07:22:56.102Z",
+  "input_policy": "Actual mouse and canvas keyboard only; observer receives engine messages but never injects events or writes game state",
+  "non_tick_events": [
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "session",
+      "payload": {
+        "commit_count": 0,
+        "fact_count": 2,
+        "refusal_count": 0,
+        "revision": 0,
+        "scenario_id": "sealed-lighthouse-v1",
+        "sites": [
+          {
+            "id": "mira",
+            "x": 3,
+            "z": 11
+          },
+          {
+            "id": "lens_pickup",
+            "x": -11,
+            "z": 1
+          },
+          {
+            "id": "lamp_mount",
+            "x": 7,
+            "z": 13.5
+          },
+          {
+            "id": "lighthouse_view",
+            "x": 5.40000009536743,
+            "z": 14.8000001907349
+          },
+          {
+            "id": "tide_marks",
+            "x": -8.5,
+            "z": 15.5
+          }
+        ],
+        "spawn": {
+          "x": 0,
+          "z": 2
+        },
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "seq": 136,
+      "t_ms": 37714
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": "mira"
+      },
+      "seq": 349,
+      "t_ms": 94165
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "npc": "captain_mira",
+        "phase": "open"
+      },
+      "seq": 391,
+      "t_ms": 105137
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "choice_id": "ask_lighthouse",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "seq": 411,
+      "t_ms": 116471
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "choice_id": "ask_tide",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "seq": 460,
+      "t_ms": 213308
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "proposal",
+      "payload": {
+        "operation": "reveal_hint",
+        "text": "Request the tide-marks lead from Captain Mira"
+      },
+      "seq": 461,
+      "t_ms": 213311
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "disclosure_outcome",
+      "payload": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY"
+        ],
+        "commit_count": 0,
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "explanation": {
+          "checks": {
+            "consistent": true,
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "fail"
+              }
+            ],
+            "family_states": {
+              "DISCLOSURE": "fail",
+              "KNOWLEDGE": "skipped",
+              "POLICY": "skipped",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "fail",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "STAGE_GATED_DISCLOSURE",
+            "out_of_scope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "short_circuit": true,
+            "skipped": [
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE"
+              }
+            ],
+            "unreported": [
+              {
+                "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+                "gate": "DISCLOSURE"
+              }
+            ]
+          },
+          "decision": {
+            "accepted": false,
+            "outcome": "denied",
+            "result_codes": [
+              "STAGE_GATED_DISCLOSURE"
+            ]
+          },
+          "input": {
+            "actor_role": "captain",
+            "operation": "reveal_hint",
+            "subject_type": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "rule_ids": [
+              "DISC-002",
+              "DISC-007"
+            ]
+          },
+          "schema_id": "trace-rpg-semantic-explanation",
+          "schema_version": "1.0.0",
+          "state_effect": {
+            "kind": "denied_no_mutation",
+            "mutated": false,
+            "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          }
+        },
+        "fact_count": 2,
+        "mutated": false,
+        "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "operation_code": "reveal_hint",
+        "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "refusal_count": 0,
+        "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+        "result_codes": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "revision": 0,
+        "rule_ids": [
+          "DISC-002",
+          "DISC-007"
+        ],
+        "stage": 0,
+        "state_effect": "denied_no_mutation",
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "seq": 462,
+      "t_ms": 213314
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "hold",
+      "payload": {
+        "codes": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "commit_count": 0,
+        "fact_count": 2,
+        "gates": [
+          "DISCLOSURE/QUEST STAGE"
+        ],
+        "next_affordance": "Recover the signal lens from the lamp store.",
+        "refusal_count": 1,
+        "revision": 0,
+        "stage": 0,
+        "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "trace": {
+          "checks": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "fail"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "DISCLOSURE",
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "family_states": {
+            "DISCLOSURE": "fail",
+            "KNOWLEDGE": "skipped",
+            "POLICY": "skipped",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "fail",
+            "REACHABILITY": "out_of_scope"
+          },
+          "held_at": "STAGE_GATED_DISCLOSURE",
+          "out_of_scope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "short_circuit": true,
+          "skipped": [
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE"
+            },
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE"
+            }
+          ]
+        }
+      },
+      "seq": 463,
+      "t_ms": 213320
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "coach_card",
+      "payload": {
+        "card_id": "hold_intro",
+        "phase": "shown"
+      },
+      "seq": 464,
+      "t_ms": 213322
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "coach_card",
+      "payload": {
+        "card_id": "hold_intro",
+        "phase": "dismissed"
+      },
+      "seq": 587,
+      "t_ms": 245727
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "choice_id": "leave",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "seq": 647,
+      "t_ms": 329880
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "npc": "captain_mira",
+        "phase": "close"
+      },
+      "seq": 648,
+      "t_ms": 329881
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": ""
+      },
+      "seq": 679,
+      "t_ms": 424237
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": "lens_pickup"
+      },
+      "seq": 890,
+      "t_ms": 480283
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "proposal",
+      "payload": {
+        "operation": "acquire_object",
+        "text": "Recover the signal lens"
+      },
+      "seq": 920,
+      "t_ms": 488068
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "commit",
+      "payload": {
+        "commit_count": 1,
+        "fact_count": 3,
+        "labels": [
+          "Signal lens secured"
+        ],
+        "mutated": true,
+        "operation": "acquire_object",
+        "refusal_count": 1,
+        "revision": 1,
+        "stage": 1,
+        "stage_from": 0,
+        "stage_to": 1,
+        "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+        "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "trace": {
+          "checks": [
+            {
+              "code": "OBJECT_NOT_PRESENT",
+              "gate": "REACHABILITY",
+              "outcome": "pass"
+            },
+            {
+              "code": "OBJECT_NOT_REACHABLE",
+              "gate": "REACHABILITY",
+              "outcome": "pass"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "REACHABILITY"
+          ],
+          "family_states": {
+            "DISCLOSURE": "out_of_scope",
+            "KNOWLEDGE": "out_of_scope",
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "out_of_scope",
+            "REACHABILITY": "pass"
+          },
+          "held_at": "",
+          "out_of_scope": [
+            "POLICY",
+            "PRECONDITION",
+            "KNOWLEDGE",
+            "DISCLOSURE",
+            "QUEST STAGE"
+          ],
+          "short_circuit": false,
+          "skipped": []
+        }
+      },
+      "seq": 921,
+      "t_ms": 488074
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "coach_card",
+      "payload": {
+        "card_id": "ledger_intro",
+        "phase": "shown"
+      },
+      "seq": 922,
+      "t_ms": 488075
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": ""
+      },
+      "seq": 923,
+      "t_ms": 488077
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "coach_card",
+      "payload": {
+        "card_id": "ledger_intro",
+        "phase": "dismissed"
+      },
+      "seq": 1002,
+      "t_ms": 508683
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "coach_card",
+      "payload": {
+        "card_id": "investigate",
+        "phase": "shown"
+      },
+      "seq": 1003,
+      "t_ms": 508685
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "coach_card",
+      "payload": {
+        "card_id": "investigate",
+        "phase": "dismissed"
+      },
+      "seq": 1070,
+      "t_ms": 526283
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": "lamp_mount"
+      },
+      "seq": 1076,
+      "t_ms": 527832
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "proposal",
+      "payload": {
+        "operation": "install_lens",
+        "text": "Install the lens in the harbor signal mount"
+      },
+      "seq": 1144,
+      "t_ms": 545699
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "commit",
+      "payload": {
+        "commit_count": 2,
+        "fact_count": 5,
+        "labels": [
+          "Lead authorized",
+          "Harbor signal restored"
+        ],
+        "mutated": true,
+        "operation": "install_lens",
+        "refusal_count": 1,
+        "revision": 2,
+        "stage": 2,
+        "stage_from": 1,
+        "stage_to": 2,
+        "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+        "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+        "trace": {
+          "checks": [
+            {
+              "code": "MISSING_REQUIRED_OBJECT",
+              "gate": "PRECONDITION",
+              "outcome": "pass"
+            },
+            {
+              "code": "QUEST_STAGE_PRECONDITION",
+              "gate": "QUEST STAGE",
+              "outcome": "pass"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "PRECONDITION",
+            "QUEST STAGE"
+          ],
+          "family_states": {
+            "DISCLOSURE": "out_of_scope",
+            "KNOWLEDGE": "out_of_scope",
+            "POLICY": "out_of_scope",
+            "PRECONDITION": "pass",
+            "QUEST STAGE": "pass",
+            "REACHABILITY": "out_of_scope"
+          },
+          "held_at": "",
+          "out_of_scope": [
+            "POLICY",
+            "REACHABILITY",
+            "KNOWLEDGE",
+            "DISCLOSURE"
+          ],
+          "short_circuit": false,
+          "skipped": []
+        }
+      },
+      "seq": 1145,
+      "t_ms": 545704
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": ""
+      },
+      "seq": 1146,
+      "t_ms": 545708
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "focus",
+      "payload": {
+        "interaction_id": "mira"
+      },
+      "seq": 1693,
+      "t_ms": 691841
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "npc": "captain_mira",
+        "phase": "open"
+      },
+      "seq": 1695,
+      "t_ms": 692115
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "choice_id": "ask_tide",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "seq": 1779,
+      "t_ms": 714358
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "proposal",
+      "payload": {
+        "operation": "reveal_hint",
+        "text": "Request the tide-marks lead from Captain Mira"
+      },
+      "seq": 1780,
+      "t_ms": 714359
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "disclosure_outcome",
+      "payload": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY",
+          "DISC-CHECK-002-ACTOR",
+          "DISC-CHECK-003-KNOWLEDGE",
+          "DISC-CHECK-005-FRESH"
+        ],
+        "commit_count": 2,
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [],
+        "explanation": {
+          "checks": {
+            "consistent": true,
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "pass"
+              },
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY",
+                "outcome": "pass"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE",
+                "outcome": "pass"
+              }
+            ],
+            "family_states": {
+              "DISCLOSURE": "pass",
+              "KNOWLEDGE": "pass",
+              "POLICY": "pass",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "pass",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          },
+          "decision": {
+            "accepted": true,
+            "outcome": "authorized_fresh",
+            "result_codes": []
+          },
+          "input": {
+            "actor_role": "captain",
+            "operation": "reveal_hint",
+            "subject_type": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "rule_ids": [
+              "DISC-005"
+            ]
+          },
+          "schema_id": "trace-rpg-semantic-explanation",
+          "schema_version": "1.0.0",
+          "state_effect": {
+            "kind": "fresh_disclosure",
+            "mutated": true,
+            "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "prior_state_hash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+          }
+        },
+        "fact_count": 6,
+        "mutated": true,
+        "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "operation_code": "reveal_hint",
+        "prior_state_hash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+        "refusal_count": 1,
+        "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+        "result_codes": [],
+        "revision": 3,
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "stage": 2,
+        "state_effect": "fresh_disclosure",
+        "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "template_id": "sl-rc-003-authorized-hint"
+      },
+      "seq": 1781,
+      "t_ms": 714360
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "commit",
+      "payload": {
+        "commit_count": 3,
+        "fact_count": 6,
+        "labels": [
+          "Tide-marks lead recorded"
+        ],
+        "mutated": true,
+        "operation": "reveal_hint",
+        "refusal_count": 1,
+        "revision": 3,
+        "stage": 2,
+        "stage_from": 2,
+        "stage_to": 2,
+        "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+        "trace": {
+          "checks": [
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            },
+            {
+              "code": "STAGE_GATED_DISCLOSURE",
+              "gate": "DISCLOSURE/QUEST STAGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "UNKNOWN_ACTOR",
+              "gate": "POLICY",
+              "outcome": "pass"
+            },
+            {
+              "code": "NPC_DOES_NOT_KNOW_FACT",
+              "gate": "KNOWLEDGE",
+              "outcome": "pass"
+            },
+            {
+              "code": "DISCLOSURE_TEMPLATE_UNAVAILABLE",
+              "gate": "DISCLOSURE",
+              "outcome": "pass"
+            }
+          ],
+          "consistent": true,
+          "evaluated_gates": [
+            "DISCLOSURE",
+            "DISCLOSURE/QUEST STAGE",
+            "POLICY",
+            "KNOWLEDGE"
+          ],
+          "family_states": {
+            "DISCLOSURE": "pass",
+            "KNOWLEDGE": "pass",
+            "POLICY": "pass",
+            "PRECONDITION": "out_of_scope",
+            "QUEST STAGE": "pass",
+            "REACHABILITY": "out_of_scope"
+          },
+          "held_at": "",
+          "out_of_scope": [
+            "PRECONDITION",
+            "REACHABILITY"
+          ],
+          "short_circuit": false,
+          "skipped": []
+        }
+      },
+      "seq": 1782,
+      "t_ms": 714362
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "dialogue",
+      "payload": {
+        "choice_id": "ask_after",
+        "npc": "captain_mira",
+        "phase": "choice"
+      },
+      "seq": 1891,
+      "t_ms": 743158
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "proposal",
+      "payload": {
+        "operation": "reveal_hint",
+        "text": "Request the tide-marks lead from Captain Mira"
+      },
+      "seq": 1892,
+      "t_ms": 743159
+    },
+    {
+      "channel": "trace-rpg-dashboard",
+      "engineering_only": true,
+      "kind": "disclosure_outcome",
+      "payload": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY",
+          "DISC-CHECK-002-ACTOR",
+          "DISC-CHECK-003-KNOWLEDGE",
+          "DISC-CHECK-004-REDISPLAY"
+        ],
+        "commit_count": 3,
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [],
+        "explanation": {
+          "checks": {
+            "consistent": true,
+            "evaluated": [
+              {
+                "code": "FORBIDDEN_DISCLOSURE",
+                "gate": "DISCLOSURE",
+                "outcome": "pass"
+              },
+              {
+                "code": "STAGE_GATED_DISCLOSURE",
+                "gate": "DISCLOSURE/QUEST STAGE",
+                "outcome": "pass"
+              },
+              {
+                "code": "UNKNOWN_ACTOR",
+                "gate": "POLICY",
+                "outcome": "pass"
+              },
+              {
+                "code": "NPC_DOES_NOT_KNOW_FACT",
+                "gate": "KNOWLEDGE",
+                "outcome": "pass"
+              }
+            ],
+            "family_states": {
+              "DISCLOSURE": "pass",
+              "KNOWLEDGE": "pass",
+              "POLICY": "pass",
+              "PRECONDITION": "out_of_scope",
+              "QUEST STAGE": "pass",
+              "REACHABILITY": "out_of_scope"
+            },
+            "held_at": "",
+            "out_of_scope": [
+              "PRECONDITION",
+              "REACHABILITY"
+            ],
+            "short_circuit": false,
+            "skipped": [],
+            "unreported": []
+          },
+          "decision": {
+            "accepted": true,
+            "outcome": "authorized_redisplay",
+            "result_codes": []
+          },
+          "input": {
+            "actor_role": "captain",
+            "operation": "reveal_hint",
+            "subject_type": "lead"
+          },
+          "ontology": {
+            "relation": "captain_to_lead_disclosure",
+            "rule_ids": [
+              "DISC-006"
+            ]
+          },
+          "schema_id": "trace-rpg-semantic-explanation",
+          "schema_version": "1.0.0",
+          "state_effect": {
+            "kind": "redisplay_no_mutation",
+            "mutated": false,
+            "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "prior_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+          }
+        },
+        "fact_count": 6,
+        "mutated": false,
+        "next_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "operation_code": "reveal_hint",
+        "prior_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "refusal_count": 1,
+        "request_sha256": "7f00737dfab03fc9da7dadc7df2a3728697fd83b0f731c7c41ac039a47cd4617",
+        "result_codes": [],
+        "revision": 3,
+        "rule_ids": [
+          "DISC-006"
+        ],
+        "stage": 2,
+        "state_effect": "redisplay_no_mutation",
+        "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "template_id": "sl-rc-003-authorized-hint"
+      },
+      "seq": 1893,
+      "t_ms": 743161
+    }
+  ],
+  "last_tick": {
+    "channel": "trace-rpg-dashboard",
+    "engineering_only": true,
+    "kind": "tick",
+    "payload": {
+      "dialogue_open": true,
+      "episode_over": false,
+      "focus": "mira",
+      "play_started": true,
+      "stage": 2,
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "tutorial_open": false,
+      "x": 3.13,
+      "yaw": 0,
+      "z": 9.82
+    },
+    "seq": 2121,
+    "t_ms": 803786
+  },
+  "frozen_comparison_text": "cell slicearmcase classncheck coverageoutcomeunsafemismatch1Unchecked isolatedboundary4unreportedallowed 4 · denied 0242Unchecked isolatedmalformed8unreportedallowed 8 · denied 0883Unchecked isolatednormal48unreportedallowed 48 · denied 041484General ruleboundary4reportedallowed 2 · denied 2005General rulemalformed8reportedallowed 0 · denied 8006General rulenormal48reportedallowed 14 · denied 34007Ontology gateboundary4reportedallowed 2 · denied 2008Ontology gatemalformed8reportedallowed 0 · denied 8009Ontology gatenormal48reportedallowed 14 · denied 3400",
+  "live_disclosure_rows": 3,
+  "diagnostics": [],
+  "source_capture": "current-disclosure-capture-r3.json",
+  "automation_notes": [
+    "Premature polling before dismissing the visible first-hold coach, and before approaching within interaction radius, timed out; both were completed by actual UI input."
+  ]
+}

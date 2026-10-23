@@ -1,0 +1,56 @@
+\begin{table}[t]
+\caption{동결된 reveal\_hint 계약의 구조·내용·규칙 ID와 실제 결과 provenance.}
+\label{tab:disclosure-contract}
+\centering\scriptsize
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\columnwidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+\toprule
+Field / 항목 & Value / 값 \\
+\midrule
+Operation / 연산 & reveal\_hint \\
+Scenario / 시나리오 & sealed-lighthouse-v1 \\
+Normal denominator / 정상 분모 & 48 \\
+Boundary / 경계 & 4 \\
+Malformed / 잘못된 입력 & 8 \\
+Canonical facts / 정형 사실 & dock\_saved, keeper\_betrayal, lighthouse\_dark, tide\_marks\_hint \\
+Eligible actor / 적격 행위자 & captain\_mira \\
+Ontology / 온톨로지 & sl-npc-disclosure-expectations-v1:runtime-disclosure \\
+Rule IDs / 규칙 ID & DISC-001, DISC-002, DISC-003, DISC-004, DISC-005, DISC-006, DISC-007 \\
+Templates / 템플릿 & mira-safe-deflection-v1; sl-rc-003-authorized-hint \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.97\columnwidth}{\scriptsize 기대값은 gate 출력에서 유도하지 않았고, 표의 분모는 동결 선언에서 읽었다.}
+\end{table}
+\begin{table*}[t]
+\caption{세 disclosure arm의 raw trace 관측 계수; 정상/경계/잘못된 입력 분모를 분리한다.}
+\label{tab:disclosure-arms}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}l r r >{\raggedleft\arraybackslash}X >{\raggedleft\arraybackslash}X r r@{}}
+\toprule
+Arm & n (N/B/M) & Allow/Deny & Semantic mismatch & State/Display fail & Replay fail & Unique unsafe \\
+\midrule
+unchecked\_isolated & 48/4/8 & 60/0 & 60 & 0/0 & 0 & 51 \\
+general\_rule & 48/4/8 & 16/44 & 0 & 0/0 & 0 & 0 \\
+ontology\_gate & 48/4/8 & 16/44 & 0 & 0/0 & 0 & 0 \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.97\textwidth}{\scriptsize N/B/M = normal/boundary/malformed. 의미 불일치는 전체 기대 결과와의 차이이고, 고유 위험 사례는 무허가 허용 또는 재표시 상태 변경의 합집합이다. 허용된 최초 공개의 표현 불일치만으로 위험 사례에 포함하지 않는다. 무검사군은 격리된 관측이며 효능·우월성·일반화 결과가 아니다.}
+\end{table*}
+\begin{table*}[t]
+\caption{규칙 변경 fixture의 paired-case traceability와 수정 범위; shipped scenario는 변경하지 않는다.}
+\label{tab:disclosure-fixtures}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.1pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X r@{}}
+\toprule
+Fixture & Mutation & Paired cases & Changed paths & Missed cases & Match \\
+\midrule
+RC-001-stage-gate-2-to-1 & disclosure\_\allowbreak{}policy.stage\_\allowbreak{}gates[0].minimum\_\allowbreak{}stage 2→1 & N-043, N-044 & disclosure\_\allowbreak{}policy.\allowbreak{}stage\_\allowbreak{}gates[0].\allowbreak{}minimum\_\allowbreak{}stage & none & PASS \\
+RC-002-forbid-tide-marks-hint & disclosure\_\allowbreak{}policy.permanently\_\allowbreak{}forbidden ['keeper\_\allowbreak{}betrayal']→['keeper\_\allowbreak{}betrayal', 'tide\_\allowbreak{}marks\_\allowbreak{}hint'] & N-047, N-048 & disclosure\_\allowbreak{}policy.\allowbreak{}permanently\_\allowbreak{}forbidden[1] & none & PASS \\
+\bottomrule
+\end{tabularx}
+\vspace{1pt}\parbox{0.97\textwidth}{\scriptsize 두 fixture는 general\_rule과 ontology\_gate에 같은 변경을 적용한다. missed case가 없고 mutation\_scope\_preserved가 true인 경우만 PASS이다.}
+\end{table*}

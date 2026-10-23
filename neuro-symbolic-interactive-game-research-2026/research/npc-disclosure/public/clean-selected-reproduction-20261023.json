@@ -1,0 +1,67 @@
+{
+  "case_counts": {
+    "boundary": 4,
+    "malformed": 8,
+    "normal": 48,
+    "total": 60
+  },
+  "claim_boundary": "Fresh verification of public publication materialization and separate deterministic Python evaluation only. All Godot/gameplay observations remain historical; no model calls, new studies, PDF rebuild or deployment.",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "scripts/run_disclosure_evaluation.py",
+        "--public-sources",
+        "--output-dir",
+        "<new-empty-result-dir>",
+        "--json"
+      ],
+      "cwd": "selected-project",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/generate_disclosure_paper_results.py"
+      ],
+      "cwd": "selected-project",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/generate_signal_explainer.py",
+        "--check"
+      ],
+      "cwd": "selected-project",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/check_disclosure_paper_evidence.py",
+        "--public-receipt",
+        "research/npc-disclosure/public/selected-materialization.json"
+      ],
+      "cwd": "selected-project",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  ],
+  "frozen_packet_sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+  "general_ontology_equal": true,
+  "original_evidence_preservation": {
+    "all_bytes_unchanged": true,
+    "files_compared": 23,
+    "scope": "all existing disclosure results-* files, original private report, original frozen packet and sidecar"
+  },
+  "private_intake_present": false,
+  "private_report_present": false,
+  "public_materialization_receipt_sha256": "f96c2ba3580e611d9e1388c72bf24353b09fcbcd3a1dfa8019c33ce6b7cae7b5",
+  "schema_version": "disclosure-clean-public-reproduction/v1",
+  "selection": "project src/scripts, disclosure research packets/public sources/results, Godot scripts/data, selected existing publication outputs and logs; no workspace llm-wiki, .ouroboros or reviewer-intake copied",
+  "status": "PASS"
+}

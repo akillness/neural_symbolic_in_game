@@ -1,0 +1,54 @@
+{
+  "target": "http://127.0.0.1:8898/dashboard/",
+  "browser": "SignalGameplay",
+  "runtime": "fresh disposable headless Chrome via browser tool; dashboard iframe game at /public/index.html",
+  "input_policy": "real mouse clicks and focused canvas keyboard input only; no postMessage injection, synthetic DOM events, game-state writes, or private account browsing",
+  "route_observed": [
+    "Click embedded game canvas to start; focus remains on canvas.",
+    "WASD movement from spawn to the authored interaction sites; E opens the focused NPC/object interaction.",
+    "At Captain Mira after the authorized hint commit, the visible dialogue offered [1] Where do I go now?; pressing 1 produced the reveal_hint redisplay request.",
+    "Repeated reveal_hint was accepted as authorized_redisplay with DISC-CHECK-004-REDISPLAY; no new commit, hold, revision, fact, or state mutation."
+  ],
+  "redisplay_evidence": {
+    "before": {
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "commits": "3",
+      "holds": "0",
+      "stage": "2",
+      "revision": "3",
+      "facts": "6",
+      "non_tick_event_count": 30
+    },
+    "after": {
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "commits": "3",
+      "holds": "0",
+      "stage": "2",
+      "revision": "3",
+      "facts": "6",
+      "non_tick_event_count": 33
+    },
+    "hash_unchanged": true,
+    "counts_unchanged": true,
+    "decision": "authorized_redisplay",
+    "operation": "reveal_hint",
+    "rule_id": "DISC-006",
+    "check_ids": [
+      "DISC-CHECK-001-POLICY",
+      "DISC-CHECK-002-ACTOR",
+      "DISC-CHECK-003-KNOWLEDGE",
+      "DISC-CHECK-004-REDISPLAY"
+    ],
+    "mutated": false
+  },
+  "screenshots": [
+    "candidate-mira-redisplay-open.png",
+    "candidate-mira-redisplay-result.png",
+    "candidate-mira-redisplay-choice1.png",
+    "candidate-panel-closed.png"
+  ],
+  "notes": [
+    "Physical X / visible [X] EXPLAIN is blocked while Mira dialogue is open; the panel had already been opened and closed through the canvas before the redisplay check.",
+    "The current dialogue's visible choice id was ask_after (the earlier fresh reveal used ask_tide); both map to the same reveal_hint operation in the observed runtime."
+  ]
+}

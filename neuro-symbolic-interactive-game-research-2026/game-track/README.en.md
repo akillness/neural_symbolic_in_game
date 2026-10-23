@@ -1,12 +1,39 @@
 # Game-development track — The Sealed Lighthouse
 
+## Current evidence selection (2026-10-23)
+
+[`current.json`](../_workspace/current/engineering/tech-verification/current.json) selects
+`godot-4.7.1-20261023-publication-r5`; its
+[manifest](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)
+records four real Godot runs and three non-headless macOS scripted fixture-trace replay panels
+captured at `2026-10-23 11:00:42` UTC, not participant gameplay or live model inference.
+The retained [R3 production verification](../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
+records `PASS_FOR_APPROVED_BOUNDED_RELEASE` for deployment `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`,
+9 deployed-asset byte matches, 8 public-safe checks, and 7 canonical Godot cases. This is an
+existing receipt, not a deployment or live-site recheck performed by this documentation update.
+**G4 and full G6 remain `FIX`; no efficacy or player-benefit result is established.**
+
+Keep four evidence surfaces separate: the selected render is authored render/state correspondence;
+the [paper producer manifest](../paper/latex/generated/disclosure_producer_manifest.json) describes
+publication-only materialization from current `results-signal-explainer-20261023-r5` deterministic Python/Godot artifacts, with no new model observation;
+its public interview derivative is not byte-equivalent to the private historical source; and
+the [actual browser-input gameplay receipt](../_workspace/current/qa/releases/2026-10-23-signal-explainer/receipt.json)
+records 3 commits and 1 hold, stopping after Mira's authorized hint without attempting the tide-mark
+deduction. These are not interchangeable. A later disclosure-only observation does not replace
+the selected render unless `current.json` changes.
+
+Trace/receipt defects were repaired; Main reports the targeted eight-file run passed 53 tests
+and 48 subtests. Final selected-tree CI, Git, push and deployment remain pending.
+
+## Historical release record (2026-09-06)
+
 Updated 2026-09-06: [play and inspect the dashboard](https://sealed-lighthouse-trace-rpg.vercel.app/),
 [English paper](https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf),
 [Korean paper](https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf).
-The current release includes the fact-checked bilingual manuscripts and corrected dashboard
-rule accounting. All 16 deployed files match the local artifacts; 188 tests and 83 subtests
-pass. This is an engineering demonstration; human usability and model efficacy remain unproven.
-See [the current release receipt](../_workspace/current/qa/factcheck-release-2026-09-06.md).
+That release included the fact-checked bilingual manuscripts and corrected dashboard rule
+accounting. Its receipt reports 16 deployed-file matches, 188 tests and 83 subtests; those are
+dated observations, not current-runtime certification. Human usability and model efficacy remain
+unproven. See [the historical receipt](../_workspace/current/qa/factcheck-release-2026-09-06.md).
 
 The game track does not embed research code directly inside the engine. The target architecture has
 the engine emit stable bridge observations and the research runtime return authorization events.
@@ -69,7 +96,7 @@ provenance and a proven procedural fallback.
 
 ![Scripted golden-path route (76 s, 1.5x): intro, held request naming the gate, lens recovery, signal restoration, tide lead, case-complete receipt](godot/docs/latest/golden-path.gif)
 
-**[Current full-route gameplay recording (Godot Movie Maker `--autoplay --public-safe` route, H.264 MP4, 76.3 s)](godot/docs/latest/trace-rpg-gameplay.mp4)**
+**[Historical full-route scripted gameplay recording (Godot Movie Maker `--autoplay --public-safe` route, 2026-09-19, H.264 MP4, 76.3 s)](godot/docs/latest/trace-rpg-gameplay.mp4)**
 shows the start gate and page-1 field guide, the held request naming its gate (with the rule and
 what it tells you), lens recovery, signal restoration, the authorized tide lead, the slot-assembly
 deduction at the tide marks, and the paged case-complete receipt from the D-073 local build
@@ -129,11 +156,11 @@ From the project root:
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-The current English UI + tracked-player artifact is deployed at `/public/`: 10 runtime files /
+Historical English UI + tracked-player deployment record (2026-09-03): `/public/`, 10 runtime files /
 50,754,386 bytes; PCK 10,902,124 bytes, SHA-256
 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. The 4-file / 32,117-byte
 commit-gate dashboard is served at the site root via `/dashboard/`.
-Deployment status: **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+Historical deployment status: **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)** as recorded then, not the selected R3 deployment.
 All runtime and dashboard files returned anonymous success responses and matched the staged bytes;
 redirects, MIME types, security headers, and the same-origin embedded-frame message guard passed.
 Desktop and 390×844 dashboard checks had zero console/page errors and no horizontal overflow. The
@@ -162,18 +189,18 @@ non-headless Godot pass over the canonical authored fixture:
 
 `SL-CAPTURE-001` is the paper-crosswalk bundle label, not an engine-manifest field; the manifest
 uses the three `sl-rc-*` capture IDs above. The selected immutable evidence set is
-`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`. Earlier immutable packets remain retained and
-superseded through visual QA, toolchain-provenance binding, and CI-portability repair. The current
-manifest binds the capture pipeline, PNG decoder, schema, retained validator, dependency lock, and
-capture-host tool versions.
+`godot-4.7.1-20261023-publication-r5`, selected by `current.json`. R4 (`godot-4.7.1-20261023-publication-r4`) and the previous
+`godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3` and earlier immutable packets remain
+retained as dated history. The selected manifest binds the capture pipeline, PNG decoder, schema,
+retained validator, dependency lock, and capture-host tool versions.
 These panels use structured state/text and programmatic engine graphics, not generated concept art.
 They do not demonstrate live Python authorization, model or visual efficacy, usability, immersion,
 human-study outcomes, G4, or G6.
 
-![SL-CAPTURE-001 arrival observation](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
+![SL-CAPTURE-001 arrival observation](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![SL-CAPTURE-001 rejected disclosure](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![SL-CAPTURE-001 rejected disclosure](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![SL-CAPTURE-001 authorized hint](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![SL-CAPTURE-001 authorized hint](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 Offline reproduction guide: [`recorded-experiment.en.md`](recorded-experiment.en.md)

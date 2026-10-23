@@ -141,3 +141,8 @@
 
 
 
+
+## 2026-10-23 public-source publication
+
+- [Current disclosure r5 publication receipt](../neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/public/public-materialization-20261023-r5-final.json) binds the unchanged 60-case expectation packet, explicit public-source substitution, actual seven-case Godot receipt, and paired ten-page EN/KO manuscripts. Original NPC006 remains dated historical evidence from fa9fb8a; no efficacy or superiority is established.
+- [Public source-substitution manifest](../neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/public/source-substitution-v1.json) permits reproduction without publishing the private reviewer intake/report; original observations are preserved rather than silently redacted.

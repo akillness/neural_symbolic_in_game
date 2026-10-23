@@ -1,0 +1,36 @@
+{
+  "target": "http://127.0.0.1:8898/dashboard/?release=20261023-signal-explainer-r2",
+  "browser": "SignalGameplay",
+  "runtime": "fresh disposable headless Chrome via browser tool; dashboard iframe game at /public/index.html",
+  "input_policy": "real mouse click to start plus focused canvas keyboard keys only; no postMessage injection, synthetic DOM events, game-state writes, or private-account browsing",
+  "route_observed": [
+    "Open staged candidate dashboard in fresh browser.",
+    "Click embedded Godot canvas with real mouse input to begin gameplay; canvas accepts focused keyboard input.",
+    "Before X, normal-play HUD visibly exposes [X] EXPLAIN in the upper-right corner; screenshot candidate-r2-explain-before-x.png.",
+    "Press physical x on focused canvas; read-only PUBLIC SIGNAL EXPLANATION panel opens; screenshot candidate-r2-explain-after-x.png.",
+    "Panel body visibly reads: PUBLIC PAYLOAD v1.0.0; WAITING | No result/check/state/hash reported.; INPUT | reveal_hint | actor=captain | subject=lead; ONTOLOGY | relation=captain_to_lead_disclosure | rules=[]; STATE | No canonical state was read or changed.",
+    "Press physical Escape on focused canvas; panel closes and normal-play HUD returns; screenshot candidate-r2-explain-closed.png."
+  ],
+  "read_only_check": {
+    "before": {"commits": "0", "holds": "0", "stage": "0", "revision": "0", "facts": "2", "episode": "open"},
+    "after_close": {"commits": "0", "holds": "0", "stage": "0", "revision": "0", "facts": "2", "episode": "open"},
+    "dashboard_counts_unchanged": true,
+    "accepted_false_visible": false,
+    "state_write_or_injection": false,
+    "notes": "Open/close was performed with physical x/Escape on the focused canvas. The panel is an explanation view; it did not create a commit, hold, stage transition, fact change, or revision change."
+  },
+  "screenshots": [
+    "candidate-r2-game-started.png",
+    "candidate-r2-explain-before-x.png",
+    "candidate-r2-explain-after-x.png",
+    "candidate-r2-explain-closed.png"
+  ],
+  "browser_constraints": {
+    "viewport": "1440x1000",
+    "canvas_css": "893x720",
+    "pointer_lock": "canvas after focused interaction; no pointer lock before initial click in fresh session",
+    "user_agent": "Chrome/155.0.0.0 headless on macOS arm64",
+    "webgl": "WebGL 2.0; ANGLE Apple Metal Renderer: Apple M2 Pro"
+  },
+  "claim_boundary": "This is real-input UI/read-only behavior evidence for the staged local candidate only. It does not establish production behavior, player efficacy, or disclosure correctness beyond the visible panel and unchanged public counters."
+}

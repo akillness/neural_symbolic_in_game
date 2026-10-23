@@ -1,0 +1,280 @@
+{
+  "contract": "npc-disclosure-final-verification/v1",
+  "recorded_at": "2026-10-23T01:24:31.965Z",
+  "status": "BOUNDED_IMPLEMENTATION_VERIFIED_PUBLICATION_FIX",
+  "seed": "../.ouroboros/seeds/seed-20261023-npc-disclosure-37ffdf78a47d.yaml",
+  "artifact_path_base": "neuro-symbolic-interactive-game-research-2026",
+  "scope": "Frozen reveal_hint disclosure contract and paired manuscript evidence; not a production release or efficacy experiment",
+  "frozen_case_counts": {
+    "normal": 48,
+    "boundary": 4,
+    "malformed": 8,
+    "total": 60,
+    "rule_change_fixtures": 2,
+    "paired_rule_change_cases": 4
+  },
+  "comparison": {
+    "general_rule": {
+      "case_count": 60,
+      "allowed": 16,
+      "denied": 44,
+      "semantic_mismatch": 0,
+      "unique_unsafe_cases": 0,
+      "replay_mismatch": 0
+    },
+    "ontology_gate": {
+      "case_count": 60,
+      "allowed": 16,
+      "denied": 44,
+      "semantic_mismatch": 0,
+      "unique_unsafe_cases": 0,
+      "replay_mismatch": 0
+    },
+    "unchecked_isolated": {
+      "case_count": 60,
+      "semantic_mismatch": 60,
+      "unauthorized_allow": 44,
+      "redisplay_mutation": 7,
+      "unique_unsafe_cases": 51,
+      "permitted_fresh_representation_mismatch": 9
+    },
+    "note": "Semantic mismatch is not the unsafe-case metric. Unsafe is the unique-case union of unauthorized allow and redisplay mutation; permitted fresh representation differences are not unsafe.",
+    "source": "research/npc-disclosure/results-current/comparison-summary.json"
+  },
+  "focused_regression": {
+    "argv": [
+      "uv",
+      "run",
+      "pytest",
+      "-q",
+      "tests/test_npc_disclosure.py",
+      "tests/test_godot_npc_disclosure.py",
+      "tests/test_check_disclosure_paper_evidence.py",
+      "tests/test_generate_disclosure_paper_results.py"
+    ],
+    "observed_result": "36 passed in 7.26s",
+    "exit_code": 0,
+    "evidence": "artifact://992",
+    "scope": "Changed Python disclosure, staged Godot integration, authentic evidence-checker and producer metric regressions only; not a project-wide test run"
+  },
+  "main_command_evidence": [
+    {
+      "name": "six_deliverable_check",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "scripts/check_disclosure_paper_evidence.py"
+      ],
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "started_at": "2026-10-23T01:23:00.391Z",
+      "finished_at": "2026-10-23T01:23:00.702Z",
+      "exit_code": 0,
+      "stdout": "{\"godot_receipt\": \"research/npc-disclosure/results-current/godot-receipt.json\", \"manifest\": \"paper/latex/generated/disclosure_producer_manifest.json\", \"pdfs\": [\"paper/latex/en/main.pdf\", \"paper/latex/ko/main.pdf\"], \"status\": \"PASS\"}\n",
+      "stderr": ""
+    },
+    {
+      "name": "english_page_count",
+      "argv": [
+        "pdfinfo",
+        "paper/latex/en/main.pdf"
+      ],
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "started_at": "2026-10-23T01:23:00.397Z",
+      "finished_at": "2026-10-23T01:23:00.502Z",
+      "exit_code": 0,
+      "stdout": "Title:           \nSubject:         \nKeywords:        \nAuthor:          \nCreator:         LaTeX with hyperref\nProducer:        pdfTeX-1.40.27\nCreationDate:    Fri Oct 23 10:21:26 2026 KST\nModDate:         Fri Oct 23 10:21:26 2026 KST\nCustom Metadata: yes\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           12\nEncrypted:       no\nPage size:       612 x 792 pts (letter)\nPage rot:        0\nFile size:       1747228 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "stderr": ""
+    },
+    {
+      "name": "korean_page_count",
+      "argv": [
+        "pdfinfo",
+        "paper/latex/ko/main.pdf"
+      ],
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026",
+      "started_at": "2026-10-23T01:23:00.399Z",
+      "finished_at": "2026-10-23T01:23:00.503Z",
+      "exit_code": 0,
+      "stdout": "Creator:         LaTeX with hyperref\nProducer:        xdvipdfmx (20250205)\nCreationDate:    Fri Oct 23 10:21:30 2026 KST\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           12\nEncrypted:       no\nPage size:       612 x 792 pts (letter)\nPage rot:        0\nFile size:       1822405 bytes\nOptimized:       no\nPDF version:     1.5\n",
+      "stderr": ""
+    }
+  ],
+  "godot": {
+    "receipt": "research/npc-disclosure/results-current/godot-receipt.json",
+    "passed": true,
+    "semantic_case_count": 7,
+    "case_ids": [
+      "N-013",
+      "N-003",
+      "N-027",
+      "N-047",
+      "N-048",
+      "M-007",
+      "M-008"
+    ],
+    "scope": "Source-bound headless writer cases via focused integration test, not all 60 cases executed in Godot and not production/browser verification"
+  },
+  "six_deliverables": {
+    "status": "PASS",
+    "mapping": "paper/latex/generated/disclosure_producer_manifest.json",
+    "checker": "scripts/check_disclosure_paper_evidence.py",
+    "items": [
+      "ontology_contract",
+      "python_godot_boundary",
+      "raw_backed_signals",
+      "three_arm_comparison",
+      "paired_manuscripts",
+      "game_fixture_mapping"
+    ]
+  },
+  "manuscript_builds": [
+    {
+      "language": "en",
+      "cwd": "paper/latex/en",
+      "argv": [
+        "latexmk",
+        "-pdf",
+        "-g",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "main.tex"
+      ],
+      "status": "PASS",
+      "observer": "PairedManuscript",
+      "pdf": "paper/latex/en/main.pdf",
+      "pages": 12
+    },
+    {
+      "language": "ko",
+      "cwd": "paper/latex/ko",
+      "argv": [
+        "latexmk",
+        "-xelatex",
+        "-g",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "main.tex"
+      ],
+      "status": "PASS",
+      "observer": "PairedManuscript",
+      "pdf": "paper/latex/ko/main.pdf",
+      "pages": 12
+    }
+  ],
+  "paired_evidence": {
+    "status": "PASS",
+    "scope": "Generated disclosure labels, counts, packet identity and source binding checked; not a claim of complete translation equivalence for every sentence",
+    "labels": [
+      "tab:disclosure-contract",
+      "tab:disclosure-arms",
+      "tab:disclosure-fixtures",
+      "fig:disclosure-signals"
+    ]
+  },
+  "visual_evidence": [
+    {
+      "source": "/tmp/trace-en-final-08.png",
+      "path": "research/npc-disclosure/verification-20261023/trace-en-final-08.png",
+      "sha256": "f7c8192ed8c1b5b46adff422b4ebb3866878a3bc9200d91b45da33ca6d8ad639",
+      "reviewer": "PairedManuscript",
+      "result": "PASS",
+      "scope": "Selected disclosure pages only; not every page of either PDF"
+    },
+    {
+      "source": "/tmp/trace-en-final-09.png",
+      "path": "research/npc-disclosure/verification-20261023/trace-en-final-09.png",
+      "sha256": "fb3126ace2ebf591899c2712a9d53d1ad768454f3163c4d0ade97579aef9c43f",
+      "reviewer": "PairedManuscript",
+      "result": "PASS",
+      "scope": "Selected disclosure pages only; not every page of either PDF"
+    },
+    {
+      "source": "/tmp/trace-ko-final-07.png",
+      "path": "research/npc-disclosure/verification-20261023/trace-ko-final-07.png",
+      "sha256": "2b28d5e6e4df841a7a9267d509664e3b3cd7d3273aa1c97536408857668f4310",
+      "reviewer": "PairedManuscript",
+      "result": "PASS",
+      "scope": "Selected disclosure pages only; not every page of either PDF"
+    },
+    {
+      "source": "/tmp/trace-ko-final-08.png",
+      "path": "research/npc-disclosure/verification-20261023/trace-ko-final-08.png",
+      "sha256": "5754e9d2ea29db4fad1628c38f0755a6ffca1fb8a1f43a0a1513fb5da2295610",
+      "reviewer": "PairedManuscript",
+      "result": "PASS",
+      "scope": "Selected disclosure pages only; not every page of either PDF"
+    }
+  ],
+  "bounded_code_review": {
+    "reviewer": "DisclosureCodeReview",
+    "verdict": "APPROVE",
+    "unresolved_findings": [],
+    "scope": "Frozen reveal_hint runtime/trace/replay, unsafe and producer metrics, strict authentic receipt binding, M-007/M-008 actors, and final table layout patch",
+    "reviewer_reran_suite": false
+  },
+  "advisory_review": {
+    "provider": "Jev API",
+    "returned_model": "jev-1.14.0",
+    "evidence_supports": 0.72,
+    "threshold": 0.8,
+    "status": "PROPOSAL_ONLY_NOT_APPROVED",
+    "source": "../llm-wiki/wiki/reports/2026-10-22-ontology-signals-interview.md#9",
+    "not_experiment_data": true
+  },
+  "claim_boundaries": {
+    "engineering_only": true,
+    "not_efficacy": true,
+    "not_human_gold": true,
+    "not_access_separated_holdout": true,
+    "not_ontology_superiority": true,
+    "not_player_benefit": true,
+    "not_latent_model_state_measurement": true,
+    "not_model_comparison": true
+  },
+  "publication": {
+    "status": "FIX",
+    "gate": "Each manuscript must be at most 10 pages",
+    "observed": {
+      "en": 12,
+      "ko": 12
+    },
+    "gate_relaxed": false,
+    "body_font_or_margins_reduced": false
+  },
+  "not_performed": [
+    "Commit or push",
+    "Clean release build",
+    "Production deployment",
+    "Production browser/observer verification",
+    "New model efficacy experiment",
+    "Human study"
+  ],
+  "identities": {
+    ".ouroboros/seeds/seed-20261023-npc-disclosure-37ffdf78a47d.yaml": {
+      "sha256": "3e601c02f44f64c90715254a9376e7c97c638f92dd27479ecb1e3df7592b81e2",
+      "bytes": 10147
+    },
+    "neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/reveal-hint-expectations-v1.json": {
+      "sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+      "bytes": 27294
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/generated/disclosure_producer_manifest.json": {
+      "sha256": "98e3535a1ae5bed709862becc102d31de034ed78f427a84986975b2cfd2a90b2",
+      "bytes": 6150
+    },
+    "neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/results-current/godot-receipt.json": {
+      "sha256": "65dd4f7d6bc031b85352c8fc2e03a1adde313c08025518acd63b58e2327060f3",
+      "bytes": 15931
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf": {
+      "sha256": "485ac772562c9202560232a6a3a9393098c9b5bd1ccf22ae610878d57ed6286c",
+      "bytes": 1747228
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf": {
+      "sha256": "2eb139a7a1094e7d52b527435d08c6ac7ef987f8fc344f3b53e3b66094ed910b",
+      "bytes": 1822405
+    }
+  },
+  "frozen_source_note": "Frozen expectation sidecar is preserved. Intentional runtime/report changes remain reported as baseline mismatches; current runtime bindings are verified separately rather than rewriting frozen evidence."
+}

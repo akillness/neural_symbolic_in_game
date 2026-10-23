@@ -704,9 +704,7 @@ def _tables(data: dict[str, Any], korean: bool) -> str:
 def _live_result_text(packet: dict[str, Any], korean: bool) -> str:
     cells = packet["current"]
     headline = cells["signal_v2_blind"]
-    model_id = _escape(headline["model_id"])
     call_count = headline["counts"]["seeds"]
-    repair_budget = headline["repair_budget"]
     guided_commits = headline["per_arm"]["guided_repair"]["commits"]
     blind_commits = headline["per_arm"]["unchanged_retry"]["commits"]
     noncommits = sum(
@@ -728,34 +726,19 @@ def _live_result_text(packet: dict[str, Any], korean: bool) -> str:
     seed_counts = {int(cells[key]["counts"]["seeds"]) for key in ordered_keys}
     if len(seed_counts) != 1:
         raise ValueError(f"live screening seed denominators diverge: {sorted(seed_counts)}")
-    calls_per_cell = next(iter(seed_counts))
-    initial_valid_cells = sum(
-        int(cells[key]["counts"]["initially_valid"]) == calls_per_cell for key in ordered_keys
-    )
-    goal_summary = cells["frozen_goal_blind"]
-    goal_initial_invalid = int(goal_summary["counts"]["initially_invalid"])
-    goal_guided_commits = int(goal_summary["per_arm"]["guided_repair"]["commits"])
-    goal_blind_commits = int(goal_summary["per_arm"]["unchanged_retry"]["commits"])
-    goal_regime = (
-        "null regime" if goal_guided_commits == goal_blind_commits == 0 else "goal-directed regime"
-    )
 
     if korean:
         return (
             rf"""
 \subsection{{라이브 스크리닝 파일럿 (pilot-only)}}
-별도 스크리닝 파일럿은 hosted proposer {model_id}을 호출했다. 셀마다 seed로 구분한 제안 호출 {call_count}회와 수리 예산 $K={repair_budget}$을 사용했고, 각 호출의 최초 후보 하나를 블라인드 동일 후보 retry와 $\rho$가 공유했다. Hosted revision은 고정되지 않았고 token 회계는 제공되지 않았으며 seed는 hosted sampler를 제어하지 않으므로 이 호출들은 독립 무작위 표본이 아니라 준반복이다. 따라서 추론 통계나 모델 순위를 보고하지 않는다.
-
-표~\ref{{tab:live-screening}}에서 유도 우위는 의도적으로 guided-repairable 오류가 나오도록 구성한 signal-repair state(Signal-v2)의 policy-blind 셀에서만 나타났다. 최초 후보 {call_count}/{call_count}가 모두 무효였고 $\rho$는 {guided_commits}/{call_count}, 블라인드는 {blind_commits}/{call_count}를 commit했다. 나머지 현재 셀 {len(ordered_keys) - 1}개는 유도 우위를 보이지 않았다. {initial_valid_cells}개 셀은 최초 후보가 이미 유효했고, 동결 기저의 goal-directed 셀은 QSR {goal_initial_invalid}/{calls_per_cell}인 {goal_regime}로 양 arm commit이 {goal_guided_commits}/{calls_per_cell}, {goal_blind_commits}/{calls_per_cell}였다. 현재 셀의 모든 noncommit arm 결과 {isolated}/{noncommits}가 prior-state hash를 보존했다. 이 결과는 해당 오류 regime에서의 mechanism transfer만 지지하며 모집단 효능, 모델 승격, 표본 효율 일반화는 지지하지 않는다. 따라서 두 스크리닝 관찰은 pilot-only이며 확증적 전이 claim은 열린 채로 남는다. 폐기된 v1 진단에서는 동반 오류가 최대 {max_initial_errors}개에서 수리 불가 knowledge 오류 1개로 줄었지만 commit되지 않아, 오류 하나라도 수리 불가이면 부분 수리가 합성되지 않음을 보여 주었다.
+표~\ref{{tab:live-screening}}의 pilot-only 집계에서 Signal-v2/policy-blind 셀은 최초 후보 {call_count}/{call_count}가 모두 무효였고 $\rho$가 {guided_commits}/{call_count}, 블라인드가 {blind_commits}/{call_count}를 commit했다. 나머지 현재 4개 셀은 null 관측이며 noncommit arm의 {isolated}/{noncommits} 결과가 prior-state hash를 보존했다. 폐기된 v1 진단에서는 동반 오류가 최대 {max_initial_errors}개에서 수리 불가 knowledge 오류 1개로 줄었지만 commit되지 않았다.
 """.strip()
             + "\n"
         )
     return (
         rf"""
 \subsection{{Live Screening Pilot (Pilot-Only)}}
-A separate screening pilot called the hosted proposer {model_id}. It used {call_count} seed-indexed proposal calls per cell and repair budget $K={repair_budget}$; within each call, blind unchanged retry and $\rho$ received the same initial candidate. The hosted revision was unpinned, token accounting was unavailable, and the seeds did not control the hosted sampler, so the calls are quasi-replicates rather than independent randomized samples. We report neither inferential statistics nor a model ranking.
-
-In Table~\ref{{tab:live-screening}}, a guided advantage appeared only in the policy-blind cell of the signal-repair state (Signal-v2), a state deliberately constructed to elicit guided-repairable errors. All {call_count}/{call_count} initial candidates were invalid; $\rho$ committed {guided_commits}/{call_count}, whereas blind retry committed {blind_commits}/{call_count}. The other {len(ordered_keys) - 1} current cells showed no guided advantage: {initial_valid_cells} had already-valid initial candidates, and the frozen-base goal-directed cell had QSR in {goal_initial_invalid}/{calls_per_cell}, a {goal_regime} with guided and blind commits of {goal_guided_commits}/{calls_per_cell} and {goal_blind_commits}/{calls_per_cell}. All {isolated}/{noncommits} noncommit arm outcomes in the current cells preserved the prior-state hash. This supports mechanism transfer only in that error regime, not population efficacy, model promotion, or a general sample-efficiency claim. Accordingly, the two screening observations are pilot-only; the confirmatory transfer claim remains open. In the superseded v1 diagnostic, guided repair reduced up to {max_initial_errors} co-occurring errors to one irreparable knowledge error but still could not commit, showing that partial per-error repairs do not compose when any residual error is irreparable.
+The pilot-only counts in Table~\ref{{tab:live-screening}} show that Signal-v2/policy-blind had {call_count}/{call_count} invalid initial candidates; $\rho$ committed {guided_commits}/{call_count} and blind retry {blind_commits}/{call_count}. The other four current cells were null, while all {isolated}/{noncommits} noncommit outcomes preserved the prior-state hash. In the superseded v1 diagnostic, up to {max_initial_errors} co-occurring errors were reduced to one irreparable knowledge error but still did not commit.
 """.strip()
         + "\n"
     )

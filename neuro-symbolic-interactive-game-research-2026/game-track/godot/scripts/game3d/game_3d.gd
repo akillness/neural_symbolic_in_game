@@ -16,6 +16,8 @@ const CanonicalState = preload("res://scripts/canonical_state.gd")
 const ProceduralAudioFeedbackScript = preload("res://scripts/game3d/procedural_audio.gd")
 const EvaluationTraceScript = preload("res://scripts/game3d/evaluation_trace.gd")
 const NpcAgentClientScript = preload("res://scripts/game3d/npc_agent_client.gd")
+const GoldenPathLayout = preload("res://scripts/game3d/golden_path_layout.gd")
+const PlayerInvestigator3D = preload("res://scripts/game3d/player_3d.gd")
 
 const SCENARIO_PATH := "res://data/sealed_lighthouse.json"
 const NPC_CONFIG_PATH := "res://data/npc-goal-recovery.json"
@@ -81,6 +83,16 @@ var _dashboard_enabled: bool = false
 var _receipt_export_failed: bool = false
 const RECEIPT_MAX_ROWS := 4096
 var _receipt_recording_enabled: bool = false
+var _last_disclosure_outcome: Dictionary = {}
+## Optional read-only semantic explanation surface (D-074). It mirrors only the
+## public result returned by the canonical writer; opening/closing never writes,
+## saves, replays or changes the canonical snapshot.
+var _explain_open: bool = false
+var _last_explanation: Dictionary = {}
+var _explainer_panel: PanelContainer
+var _explainer_body: RichTextLabel
+var _explainer_close: Button
+var _explainer_button: Button
 var _receipt_overflowed: bool = false
 var _dashboard_seq: int = 0
 var _dashboard_tick_elapsed: float = 0.0
@@ -185,6 +197,7 @@ func _ready() -> void:
 
 	ui = HarborLedgerUI.new()
 	add_child(ui)
+	_build_explainer()
 	npc_client = NpcAgentClientScript.new()
 	add_child(npc_client)
 	npc_client.setup(self, ui)
@@ -426,6 +439,7 @@ func _start_experience(unlock_audio: bool) -> void:
 	if _play_started:
 		return
 	_play_started = true
+	_update_explainer_affordance()
 	if unlock_audio:
 		audio_feedback.unlock_from_gesture()
 		audio_feedback.play_cue("start")
@@ -564,6 +578,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	_unlock_audio_from_event(event)
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode == KEY_X:
+			_toggle_explainer()
+			return
+		if event.physical_keycode == KEY_ESCAPE and _explain_open:
+			_close_explainer()
+			return
+	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode == KEY_ESCAPE and ui.is_tutorial_open():
 			ui.hide_tutorial()
 			return
@@ -648,6 +669,286 @@ func _toggle_reduced_motion() -> void:
 	ui.reduce_motion = reduced
 	ui.toast("REDUCED MOTION | " + ("ON" if reduced else "OFF"))
 
+
+func _explainer_panel_style(background: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = background
+	style.border_color = border
+	style.set_border_width_all(width)
+	style.set_corner_radius_all(radius)
+	style.content_margin_left = 16.0
+	style.content_margin_right = 16.0
+	style.content_margin_top = 12.0
+	style.content_margin_bottom = 12.0
+	return style
+
+
+func _build_explainer() -> void:
+	if ui == null or _explainer_panel != null:
+		return
+	var palette: Dictionary = SealedLighthouseWorldBuilder.PALETTE
+	_explainer_button = Button.new()
+	_explainer_button.name = "SemanticExplainerButton"
+	_explainer_button.text = "[X] EXPLAIN"
+	_explainer_button.tooltip_text = "Show the last public disclosure explanation"
+	_explainer_button.focus_mode = Control.FOCUS_ALL
+	_explainer_button.custom_minimum_size = Vector2(176.0, 44.0)
+	_explainer_button.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_explainer_button.offset_left = -196.0
+	_explainer_button.offset_top = 12.0
+	_explainer_button.offset_right = -12.0
+	_explainer_button.offset_bottom = 56.0
+	_explainer_button.add_theme_font_size_override("font_size", 16)
+	_explainer_button.add_theme_color_override("font_color", palette.paper_fog)
+	_explainer_button.add_theme_stylebox_override(
+		"normal", _explainer_panel_style(Color(palette.storm_ink, 0.90), Color(palette.brass, 0.78), 1, 8)
+	)
+	_explainer_button.add_theme_stylebox_override(
+		"hover", _explainer_panel_style(Color(palette.wet_slate, 0.96), palette.signal_amber, 2, 8)
+	)
+	_explainer_button.pressed.connect(_toggle_explainer)
+	_explainer_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	ui.add_child(_explainer_button)
+
+	_explainer_panel = PanelContainer.new()
+	_explainer_panel.name = "SemanticExplainerPanel"
+	_explainer_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_explainer_panel.offset_left = 48.0
+	_explainer_panel.offset_top = 76.0
+	_explainer_panel.offset_right = -48.0
+	_explainer_panel.offset_bottom = -48.0
+	_explainer_panel.add_theme_stylebox_override(
+		"panel", _explainer_panel_style(Color(palette.storm_ink, 0.97), palette.brass, 2, 10)
+	)
+	_explainer_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_explainer_panel.visible = false
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 12)
+	margin.add_theme_constant_override("margin_right", 12)
+	margin.add_theme_constant_override("margin_top", 10)
+	margin.add_theme_constant_override("margin_bottom", 10)
+	_explainer_panel.add_child(margin)
+	var stack := VBoxContainer.new()
+	stack.add_theme_constant_override("separation", 8)
+	margin.add_child(stack)
+	var title := Label.new()
+	title.text = "PUBLIC SIGNAL EXPLANATION"
+	title.add_theme_font_size_override("font_size", 20)
+	title.add_theme_color_override("font_color", palette.signal_amber)
+	stack.add_child(title)
+	_explainer_body = RichTextLabel.new()
+	_explainer_body.name = "ExplanationBody"
+	_explainer_body.bbcode_enabled = false
+	_explainer_body.fit_content = false
+	_explainer_body.scroll_active = true
+	_explainer_body.custom_minimum_size = Vector2(0.0, 160.0)
+	_explainer_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_explainer_body.add_theme_font_size_override("normal_font_size", 16)
+	_explainer_body.add_theme_color_override("default_color", palette.paper_fog)
+	_explainer_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stack.add_child(_explainer_body)
+	_explainer_close = Button.new()
+	_explainer_close.name = "ExplanationClose"
+	_explainer_close.text = "CLOSE [Esc]"
+	_explainer_close.tooltip_text = "Close explanation and return to exploration"
+	_explainer_close.focus_mode = Control.FOCUS_ALL
+	_explainer_close.custom_minimum_size = Vector2(0.0, 44.0)
+	_explainer_close.add_theme_font_size_override("font_size", 16)
+	_explainer_close.add_theme_color_override("font_color", palette.paper_fog)
+	_explainer_close.add_theme_stylebox_override(
+		"normal", _explainer_panel_style(Color(palette.wet_slate, 0.85), palette.brass, 1, 8)
+	)
+	_explainer_close.add_theme_stylebox_override(
+		"hover", _explainer_panel_style(Color(palette.wet_slate, 1.0), palette.signal_amber, 2, 8)
+	)
+	_explainer_close.pressed.connect(_close_explainer)
+	stack.add_child(_explainer_close)
+	ui.add_child(_explainer_panel)
+	_render_explainer(_explainer_waiting_snapshot())
+	_update_explainer_affordance()
+
+
+func _explainer_waiting_snapshot() -> Dictionary:
+	return {
+		"schema_id": "trace-rpg-semantic-explanation",
+		"schema_version": "1.0.0",
+		"input": {"operation": "reveal_hint", "actor_role": "captain", "subject_type": "lead"},
+		"ontology": {"relation": "captain_to_lead_disclosure", "rule_ids": []},
+		"checks": {
+			"evaluated": [],
+			"skipped": [],
+			"out_of_scope": [],
+			"unreported": [],
+			"consistent": "unknown",
+			"short_circuit": "unknown",
+			"held_at": "not_reported",
+			"family_states": {},
+		},
+		"decision": {"outcome": "waiting_for_disclosure_event", "accepted": "unknown", "result_codes": []},
+		"state_effect": {
+			"kind": "not_reported",
+			"mutated": "unknown",
+			"prior_state_hash": "not_reported",
+			"next_state_hash": "not_reported",
+		},
+	}
+
+
+func _public_string_array(value: Variant) -> Array:
+	var output: Array = []
+	if not value is Array:
+		return output
+	for item in value:
+		if item is String and not str(item).is_empty():
+			output.append(str(item))
+	return output
+
+
+func _build_public_explanation(result: Dictionary, arguments: Dictionary) -> Dictionary:
+	var actor_id := str(arguments.get("actor_id", ""))
+	var fact_id := str(arguments.get("fact_id", ""))
+	var actor_role := "captain" if actor_id == "captain_mira" else "unknown/restricted"
+	var subject_type := "lead" if fact_id == "tide_marks_hint" else "unknown/restricted"
+	var relation := "captain_to_lead_disclosure" if actor_role == "captain" and subject_type == "lead" else "unknown/restricted"
+	var trace_variant: Variant = result.get("disclosure_trace", {})
+	var trace: Dictionary = trace_variant if trace_variant is Dictionary else {}
+	var raw_trace: Dictionary = _last_dashboard_trace.duplicate(true)
+	var consistent := bool(raw_trace.get("consistent", false))
+	var evaluated: Array = raw_trace.get("checks", []) if raw_trace.get("checks", []) is Array else []
+	var skipped: Array = raw_trace.get("skipped", []) if raw_trace.get("skipped", []) is Array else []
+	var out_of_scope: Array = raw_trace.get("out_of_scope", []) if raw_trace.get("out_of_scope", []) is Array else []
+	# The template availability predicate is conditional: a passing template
+	# lookup is not a separate public check, and a pre-template short-circuit
+	# leaves it unreported rather than fabricating a skipped outcome. This keeps
+	# the public trace aligned with the machine's returned check IDs.
+	var public_evaluated: Array = []
+	for entry in evaluated:
+		if entry is Dictionary and str(entry.get("code", "")) == "DISCLOSURE_TEMPLATE_UNAVAILABLE" and str(entry.get("outcome", "")) == "pass":
+			continue
+		public_evaluated.append(entry)
+	var public_skipped: Array = []
+	for entry in skipped:
+		if entry is Dictionary and str(entry.get("code", "")) == "DISCLOSURE_TEMPLATE_UNAVAILABLE":
+			continue
+		public_skipped.append(entry)
+	var unreported: Array = raw_trace.get("unreported", []).duplicate(true)
+	if not consistent:
+		var plan := EvaluationTraceScript.plan_for("reveal_hint")
+		for code in plan:
+			var reported := false
+			for check in evaluated:
+				if check is Dictionary and str(check.get("code", "")) == str(code):
+					reported = true
+					break
+			if not reported:
+				unreported.append({"code": str(code), "gate": gate_for_code(str(code))})
+	var accepted := bool(result.get("accepted", false))
+	var mutated := bool(result.get("mutated", false))
+	var outcome := "denied"
+	if accepted:
+		outcome = "authorized_fresh" if mutated else "authorized_redisplay"
+	var prior_hash := str(result.get("prior_state_hash", trace.get("prior_state_hash", "")))
+	var next_hash := str(result.get("next_state_hash", trace.get("next_state_hash", "")))
+	return {
+		"schema_id": "trace-rpg-semantic-explanation",
+		"schema_version": "1.0.0",
+		"input": {"operation": "reveal_hint", "actor_role": actor_role, "subject_type": subject_type},
+		"ontology": {
+			"relation": relation,
+			"rule_ids": _public_string_array(result.get("rule_ids", [])),
+		},
+		"checks": {
+			"evaluated": public_evaluated.duplicate(true),
+			"skipped": public_skipped.duplicate(true),
+			"out_of_scope": out_of_scope.duplicate(true),
+			"unreported": unreported,
+			"consistent": consistent,
+			"short_circuit": bool(raw_trace.get("short_circuit", false)),
+			"held_at": str(raw_trace.get("held_at", "")),
+			"family_states": raw_trace.get("family_states", {}).duplicate(true) if raw_trace.get("family_states", {}) is Dictionary else {},
+		},
+		"decision": {
+			"outcome": outcome,
+			"accepted": accepted,
+			"result_codes": _public_string_array(result.get("codes", [])),
+		},
+		"state_effect": {
+			"kind": str(result.get("state_effect", "denied_no_mutation")),
+			"mutated": mutated,
+			"prior_state_hash": prior_hash,
+			"next_state_hash": next_hash,
+		},
+	}
+
+
+func _set_explainer_snapshot(payload: Dictionary) -> void:
+	_last_explanation = payload.duplicate(true)
+	if _explain_open:
+		_render_explainer(_last_explanation)
+
+
+func _render_explainer(payload: Dictionary) -> void:
+	if _explainer_body == null:
+		return
+	var input: Dictionary = payload.get("input", {}) if payload.get("input", {}) is Dictionary else {}
+	var ontology: Dictionary = payload.get("ontology", {}) if payload.get("ontology", {}) is Dictionary else {}
+	var checks: Dictionary = payload.get("checks", {}) if payload.get("checks", {}) is Dictionary else {}
+	var decision: Dictionary = payload.get("decision", {}) if payload.get("decision", {}) is Dictionary else {}
+	var effect: Dictionary = payload.get("state_effect", {}) if payload.get("state_effect", {}) is Dictionary else {}
+	var evaluated: Array = checks.get("evaluated", []) if checks.get("evaluated", []) is Array else []
+	var skipped: Array = checks.get("skipped", []) if checks.get("skipped", []) is Array else []
+	var out_of_scope: Array = checks.get("out_of_scope", []) if checks.get("out_of_scope", []) is Array else []
+	var unreported: Array = checks.get("unreported", []) if checks.get("unreported", []) is Array else []
+	if str(decision.get("outcome", "")) == "waiting_for_disclosure_event":
+		_explainer_body.text = "PUBLIC PAYLOAD v%s\n" % str(payload.get("schema_version", "unknown")) \
+			+ "WAITING | No result/check/state/hash reported.\n" \
+			+ "INPUT | %s | actor=%s | subject=%s\n" % [str(input.get("operation", "unknown")), str(input.get("actor_role", "unknown/restricted")), str(input.get("subject_type", "unknown/restricted"))] \
+			+ "ONTOLOGY | relation=%s | rules=%s\n" % [str(ontology.get("relation", "unknown/restricted")), JSON.stringify(ontology.get("rule_ids", []))] \
+			+ "STATE | No canonical state was read or changed."
+		return
+	_explainer_body.text = "PUBLIC PAYLOAD v%s\n" % str(payload.get("schema_version", "unknown")) \
+		+ "INPUT | %s | actor=%s | subject=%s\n" % [str(input.get("operation", "unknown")), str(input.get("actor_role", "unknown/restricted")), str(input.get("subject_type", "unknown/restricted"))] \
+		+ "ONTOLOGY | relation=%s | rules=%s\n" % [str(ontology.get("relation", "unknown/restricted")), JSON.stringify(ontology.get("rule_ids", []))] \
+		+ "CHECKS | evaluated=%s\n" % JSON.stringify(evaluated) \
+		+ "CHECKS | skipped=%s | out_of_scope=%s | unreported=%s\n" % [JSON.stringify(skipped), JSON.stringify(out_of_scope), JSON.stringify(unreported)] \
+		+ "TRACE | consistent=%s | short_circuit=%s | held_at=%s\n" % [str(checks.get("consistent", false)), str(checks.get("short_circuit", false)), str(checks.get("held_at", ""))] \
+		+ "DECISION | %s | accepted=%s | codes=%s\n" % [str(decision.get("outcome", "unknown")), str(decision.get("accepted", false)), JSON.stringify(decision.get("result_codes", []))] \
+		+ "STATE | %s | mutated=%s\n" % [str(effect.get("kind", "not_reported")), str(effect.get("mutated", false))] \
+		+ "HASH | prior=%s\n" % str(effect.get("prior_state_hash", "not reported")) \
+		+ "HASH | next=%s" % str(effect.get("next_state_hash", "not reported"))
+
+
+func _explainer_is_blocked() -> bool:
+	return _smoke_mode or _evaluate_mode or episode_over or not _play_started \
+		or _dialogue_open or _deduction_open \
+		or (ui != null and (ui.is_tutorial_open() or ui.is_evidence_board_open()))
+
+
+func _update_explainer_affordance() -> void:
+	if _explainer_button == null:
+		return
+	_explainer_button.visible = not _explain_open and not _explainer_is_blocked()
+
+
+func _toggle_explainer() -> void:
+	if _explain_open:
+		_close_explainer()
+		return
+	if _explainer_is_blocked() or _explainer_panel == null:
+		return
+	_explain_open = true
+	_explainer_panel.visible = true
+	_explainer_button.visible = false
+	_render_explainer(_last_explanation if not _last_explanation.is_empty() else _explainer_waiting_snapshot())
+
+
+func _close_explainer() -> void:
+	if not _explain_open:
+		return
+	_explain_open = false
+	if _explainer_panel != null:
+		_explainer_panel.visible = false
+	_update_explainer_affordance()
 
 func _unlock_audio_from_event(event: InputEvent) -> void:
 	if audio_feedback.is_unlocked():
@@ -858,6 +1159,7 @@ func _open_tutorial(full_guide: bool = false) -> void:
 	ui.show_tutorial(full_guide)
 	# The full folio covers what the queued coach cards would say.
 	_coach_cards_pending.clear()
+	_update_explainer_affordance()
 	ui.dismiss_coach_card()
 
 
@@ -872,6 +1174,7 @@ func _on_tutorial_closed() -> void:
 			# The folio covered the intro hint on first sessions; re-anchor the
 			# first objective the instant real control begins.
 			ui.toast("CURRENT LEAD | Follow the amber beacon to Captain Mira.")
+	_update_explainer_affordance()
 
 
 ## ---------------------------------------------------------------- proposals
@@ -896,7 +1199,11 @@ func _propose(
 		mirror["checks"], mirror["plan"],
 		EvaluationTraceScript.consistent(mirror["checks"], result["codes"])
 	)
-	if result["accepted"]:
+	if operation == "reveal_hint":
+		_set_explainer_snapshot(_build_public_explanation(result, arguments))
+		_last_disclosure_outcome = _record_disclosure_outcome(result, arguments)
+	var disclosure_replay: bool = operation == "reveal_hint" and bool(result["accepted"]) and not bool(result.get("mutated", false))
+	if result["accepted"] and not disclosure_replay:
 		commit_count += 1
 		ui.flash("commit")
 		# Reward cadence escalates with earned trust: the first commit is the
@@ -931,7 +1238,7 @@ func _propose(
 		_record_observation_receipt(
 			"commit_emitted",
 			"COMMIT",
-			CanonicalState.sha256(result["prior_state"]),
+			machine.state_hash() if operation == "reveal_hint" else CanonicalState.sha256(result["prior_state"]),
 			machine.state_hash(),
 			{
 				"operation_code": operation,
@@ -949,6 +1256,11 @@ func _propose(
 		elif commit_count == 2:
 			ui.toast("ENTRY %d | The ledger remembers the route." % commit_count)
 		_on_commit_presentation(proposal_text)
+	elif result["accepted"]:
+		# `_record_disclosure_outcome` above is the single semantic event and
+		# observation receipt for both fresh and redisplay attempts. Do not emit a
+		# second `disclosure_replay` event for the same canonical result.
+		pass
 	else:
 		refusal_count += 1
 		ui.flash("refusal")
@@ -961,6 +1273,49 @@ func _propose(
 		_remember_held_text(proposal_text)
 	return result
 
+
+
+
+func _disclosure_outcome_payload(result: Dictionary, arguments: Dictionary) -> Dictionary:
+	var trace_variant: Variant = result.get("disclosure_trace", {})
+	if not trace_variant is Dictionary:
+		return {}
+	var trace: Dictionary = trace_variant
+	var prior_hash := str(trace.get("prior_state_hash", ""))
+	var next_hash := str(trace.get("next_state_hash", ""))
+	var request_hash := CanonicalState.sha256({
+		"operation": "reveal_hint",
+		"actor_id": str(arguments.get("actor_id", "")),
+		"fact_id": str(arguments.get("fact_id", "")),
+	})
+	var explanation := _last_explanation.duplicate(true)
+	if explanation.is_empty():
+		explanation = _build_public_explanation(result, arguments)
+	return {
+		"operation_code": "reveal_hint",
+		"request_sha256": request_hash,
+		"contract_id": str(trace.get("contract_id", "")),
+		"contract_version": str(trace.get("contract_version", "")),
+		"template_id": result.get("template_id", null),
+		"rule_ids": result.get("rule_ids", []),
+		"check_ids": trace.get("check_ids", []),
+		"error_ids": trace.get("error_ids", []),
+		"state_effect": str(result.get("state_effect", "")),
+		"prior_state_hash": prior_hash,
+		"next_state_hash": next_hash,
+		"result_codes": result.get("codes", []),
+		"mutated": bool(result.get("mutated", false)),
+		"explanation": explanation,
+	}
+
+
+func _record_disclosure_outcome(result: Dictionary, arguments: Dictionary) -> Dictionary:
+	var payload := _disclosure_outcome_payload(result, arguments)
+	if payload.is_empty():
+		return {}
+	_emit_dashboard("disclosure_outcome", payload.duplicate(true).merged(_dashboard_state_summary()))
+	_record_observation_receipt("disclosure_outcome", "DISCLOSURE", str(payload["prior_state_hash"]), str(payload["next_state_hash"]), payload)
+	return payload
 
 func _play_verdict_ritual(target: Node3D, committed: bool) -> void:
 	# RitualVfx additive surface: the 3-phase inspection→verdict→settle ritual
@@ -1010,6 +1365,7 @@ const GATE_BY_CODE := {
 	"OBJECT_NOT_PRESENT": "REACHABILITY",
 	"OBJECT_NOT_REACHABLE": "REACHABILITY",
 	"NPC_DOES_NOT_KNOW_FACT": "KNOWLEDGE",
+	"DISCLOSURE_TEMPLATE_UNAVAILABLE": "DISCLOSURE",
 	"UNKNOWN_ACTOR": "POLICY",
 	"UNKNOWN_OPERATION": "POLICY",
 	"LENS_UNREACHABLE": "REACHABILITY",
@@ -1088,8 +1444,14 @@ func dashboard_trace(trace: Array, plan: Array = [], consistent: bool = true) ->
 			if outcome == "fail" or not family_states.has(family):
 				family_states[family] = outcome
 	var skipped: Array = []
+	var unreported: Array = []
 	for code in plan:
 		if str(code) in evaluated_codes:
+			continue
+		# Template lookup is conditional on reaching the authorized hint path;
+		# it is not an ordinary later check skipped by a policy short-circuit.
+		if str(code) == "DISCLOSURE_TEMPLATE_UNAVAILABLE":
+			unreported.append({"code": str(code), "gate": gate_for_code(str(code))})
 			continue
 		var gate := gate_for_code(str(code))
 		skipped.append({"code": str(code), "gate": gate})
@@ -1107,6 +1469,7 @@ func dashboard_trace(trace: Array, plan: Array = [], consistent: bool = true) ->
 		"held_at": held_at,
 		"short_circuit": held_at != "",
 		"skipped": skipped,
+		"unreported": unreported,
 		"out_of_scope": out_of_scope,
 		"family_states": family_states,
 		"consistent": true,
@@ -1461,6 +1824,7 @@ func _propose_install() -> void:
 
 func _open_mira_dialogue() -> void:
 	_dialogue_open = true
+	_update_explainer_affordance()
 	_npc_waiting_action.clear()
 	var resume_interpretation := npc_client.has_accepted_interpretation()
 	npc_client.begin_dialogue()
@@ -1561,9 +1925,7 @@ func _on_choice(choice_id: String) -> void:
 		"ask_tide":
 			_propose_tide_hint()
 		"ask_after":
-			ui.ledger_line("dialogue", "Follow the low-tide marks. The next tide will open the path. The tower can wait until then.")
-			_complete_input_feedback_probe("mira-dialogue-ledger-line")
-			_show_mira_choices()
+			_propose_tide_hint()
 		"leave":
 			_close_dialogue()
 			_complete_input_feedback_probe("dialogue-close")
@@ -1579,16 +1941,29 @@ func _propose_tide_hint() -> Dictionary:
 		"Request the tide-marks lead from Captain Mira",
 		_interactable("mira"),
 	)
+	var display: Variant = result.get("display", null)
 	if result["accepted"]:
-		# P-B05: one ledger link turns solid; restrained bell, signal glow.
-		ui.ledger_line("dialogue", "Good. The lens is in place, so I can tell you. At the tide marks on the west breakwater, the path appears when the water falls below the third mark.")
-		ui.ledger_commit(commit_count, "Tide-marks lead disclosed. Authorization confirmed; entry valid.")
-		_ledger_last_contribution()
-		audio_feedback.play_cue("hint")
-		director.set_tension_stage(3)
-		var world: Node3D = handles["world"]
-		director.play_commit_glow(world.get_node("TideMarks"), "TideGlow", 1.6)
+		if display is Dictionary:
+			var approved: Dictionary = display
+			var narrative := str(approved.get("narrative", ""))
+			if not narrative.is_empty():
+				ui.ledger_line("dialogue", narrative)
+			var title_status := "%s | %s" % [str(approved.get("title", "")), str(approved.get("status", ""))]
+			if bool(result.get("mutated", false)):
+				ui.ledger_commit(commit_count, title_status)
+				_ledger_last_contribution()
+				audio_feedback.play_cue("hint")
+				director.set_tension_stage(3)
+				var world: Node3D = handles["world"]
+				director.play_commit_glow(world.get_node("TideMarks"), "TideGlow", 1.6)
+			else:
+				ui.ledger_line("narration", title_status)
 	else:
+		if display is Dictionary:
+			var fallback: Dictionary = display
+			var fallback_text := str(fallback.get("text_en", ""))
+			if not fallback_text.is_empty():
+				ui.ledger_line("dialogue", fallback_text)
 		_refusal_feedback(result["codes"])
 	_sync_presentation()
 	_show_mira_choices()
@@ -1609,6 +1984,7 @@ func _close_dialogue() -> void:
 	if not _smoke_mode and not _evaluate_mode:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		ui.set_cursor_captured(true)
+	_update_explainer_affordance()
 func _on_npc_capability_submitted(value: String) -> void:
 	var capability := value.strip_edges()
 	if capability.is_empty() or capability.length() > 512 or capability.find("\r") != -1 or capability.find("\n") != -1:
@@ -1718,8 +2094,14 @@ func _npc_commit_reveal(action_id: String, context: Dictionary) -> void:
 	# No await is permitted between this gate and the existing hard writer.
 	var result := _propose_tide_hint()
 	_npc_action_results[action_id] = {"accepted": bool(result.get("accepted", false)), "codes": result.get("codes", []), "mutated": bool(result.get("mutated", false))}
-	var status := "APPLIED" if bool(result.get("accepted", false)) else "REJECTED"
-	var feedback := "Tide lead committed." if status == "APPLIED" else "Tide lead held: %s" % ",".join(result.get("codes", []))
+	var accepted := bool(result.get("accepted", false))
+	var mutated := bool(result.get("mutated", false))
+	var status := "APPLIED" if accepted else "REJECTED"
+	var feedback := ""
+	if accepted:
+		feedback = "Tide lead committed." if mutated else "Tide lead replayed; canonical state unchanged."
+	else:
+		feedback = "Tide lead held: %s" % ",".join(result.get("codes", []))
 	npc_client.submit_action_result(context, action_id, "reveal_hint", status, feedback)
 
 func _on_npc_result_recorded(envelope: Dictionary, context: Dictionary) -> void:
@@ -1880,6 +2262,7 @@ func _sync_presentation() -> void:
 		and not _evaluate_mode
 	):
 		_show_coach_card_once("investigate")
+	_update_explainer_affordance()
 
 
 func _build_objective_beacon() -> Node3D:
@@ -2145,8 +2528,10 @@ func _toggle_case_file() -> void:
 		if not _dialogue_open:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			ui.set_cursor_captured(true)
+		_update_explainer_affordance()
 		return
 	_show_case_file()
+	_update_explainer_affordance()
 	var opened_chain := _case_chain_from_state(machine.state)
 	_case_revisit_sequence += 1
 	_record_observation_receipt(
@@ -2321,6 +2706,7 @@ static func _deterministic_shuffle(items: Array, seed_text: String) -> void:
 func _open_deduction() -> void:
 	_dialogue_open = true
 	_deduction_open = true
+	_update_explainer_affordance()
 	_deduction_picks = []
 	_emit_dashboard("dialogue", {"phase": "deduction", "beat": "open", "attempts": _deduction_attempts})
 	ui.hide_prompt()
@@ -2402,12 +2788,14 @@ func _close_deduction() -> void:
 	if not _smoke_mode and not _evaluate_mode and not episode_over:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		ui.set_cursor_captured(true)
+	_update_explainer_affordance()
 
 
 func _finish_episode() -> void:
 	if episode_over:
 		return
 	episode_over = true
+	_update_explainer_affordance()
 	_emit_dashboard("episode_complete", {
 		"holds_by_gate": _holds_by_gate.duplicate(),
 	}.merged(_dashboard_state_summary()))
@@ -2591,6 +2979,7 @@ func _receipt_payload_safe(receipt: Dictionary) -> bool:
 		"case_chain_opened": ["action_code", "revisit_index", "chain_filled", "chain_total"],
 		"case_chain_closed": ["action_code", "revisit_index", "chain_filled", "chain_total"],
 		"session_end_emitted": ["commit_count", "refusal_count", "chain_filled", "chain_total"],
+		"disclosure_outcome": ["operation_code", "request_sha256", "contract_id", "contract_version", "template_id", "rule_ids", "check_ids", "error_ids", "state_effect", "prior_state_hash", "next_state_hash", "result_codes", "mutated", "explanation"],
 	}
 	var kind := str(receipt.get("receipt_kind", ""))
 	if not allowed_keys.has(kind):
@@ -3672,27 +4061,34 @@ func _run_npc_engineering_evaluation(path: String) -> void:
 	print("NPC-ENGINEERING-EVALUATION " + JSON.stringify({"passed": report["passed"], "written": written, "path": ProjectSettings.globalize_path(path)}))
 	get_tree().quit(0 if bool(report["passed"]) and written else 1)
 
-
 func _run_npc_replay(path: String) -> void:
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(ProjectSettings.globalize_path(path))) \
-		if FileAccess.file_exists(ProjectSettings.globalize_path(path)) else null
-	var actions: Array = parsed.get("actions", []) if parsed is Dictionary else []
+	var absolute_path := ProjectSettings.globalize_path(path)
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(absolute_path)) \
+		if FileAccess.file_exists(absolute_path) else null
+	var actions: Array = parsed.get("actions", []) if parsed is Dictionary and parsed.get("actions", []) is Array else []
 	var initial_ref := npc_state_ref()
 	var rows: Array = []
+	var replay_errors: Array[String] = []
 	var seen_action_ids: Dictionary = {}
 	var passed := parsed is Dictionary and actions.size() > 0
-	for action in actions:
-		if not action is Dictionary:
+	_last_disclosure_outcome = {}
+	for action_index in actions.size():
+		var action_variant: Variant = actions[action_index]
+		if not action_variant is Dictionary:
 			passed = false
+			replay_errors.append("ACTION_%d_NOT_OBJECT" % action_index)
 			continue
+		var action: Dictionary = action_variant
 		var action_id := str(action.get("action_id", ""))
 		var operation := str(action.get("operation", ""))
 		var before := npc_state_ref()
-		var expected_ref: Dictionary = action.get("state_ref", {})
-		var stale := str(expected_ref.get("sha256", "")) != "" and str(expected_ref.get("sha256", "")) != str(before["sha256"])
+		var expected_ref: Dictionary = action.get("state_ref", {}) if action.get("state_ref", {}) is Dictionary else {}
+		var expected_ref_hash := str(expected_ref.get("sha256", ""))
+		var stale := not expected_ref_hash.is_empty() and expected_ref_hash != str(before["sha256"])
 		var duplicate := action_id != "" and seen_action_ids.has(action_id)
 		if action_id != "":
 			seen_action_ids[action_id] = true
+		_last_disclosure_outcome = {}
 		var result: Dictionary = {"accepted": false, "codes": ["UNKNOWN_OPERATION"]}
 		if stale:
 			result = {"accepted": false, "codes": ["STALE_SESSION_OR_STATE"]}
@@ -3705,7 +4101,8 @@ func _run_npc_replay(path: String) -> void:
 				"install_lens":
 					result = _propose("install_lens", {"object_id": "signal_lens"}, "Replay install", handles.get("lamp_mount") as Node3D)
 				"reveal_hint":
-					var args: Dictionary = action.get("arguments", {})
+					var args_variant: Variant = action.get("arguments", {})
+					var args: Dictionary = args_variant if args_variant is Dictionary else {}
 					if args == {"actor_id": "captain_mira", "fact_id": "tide_marks_hint"}:
 						result = _propose_tide_hint()
 					else:
@@ -3718,36 +4115,104 @@ func _run_npc_replay(path: String) -> void:
 			status = "STALE"
 		elif duplicate:
 			status = "DUPLICATE"
-		rows.append({
+		var actual_codes_variant: Variant = result.get("codes", [])
+		var actual_codes: Array = CanonicalState.sorted_unique(actual_codes_variant) if actual_codes_variant is Array else []
+		var expected_payload: Dictionary = action.get("expected", {}) if action.get("expected", {}) is Dictionary else {}
+		var expected_status_variant: Variant = action.get("expect_status", null)
+		if expected_status_variant == null and expected_payload.has("status"):
+			expected_status_variant = expected_payload.get("status")
+		var expected_status := str(expected_status_variant) if expected_status_variant != null else ""
+		var expected_codes_variant: Variant = action.get("expect_codes", null)
+		if expected_codes_variant == null and expected_payload.has("codes"):
+			expected_codes_variant = expected_payload.get("codes")
+		var expected_codes: Array = CanonicalState.sorted_unique(expected_codes_variant) if expected_codes_variant is Array else []
+		var row_errors: Array[String] = []
+		if expected_status.is_empty():
+			row_errors.append("EXPECTED_STATUS_MISSING")
+		elif expected_status != status:
+			row_errors.append("EXPECTED_STATUS_MISMATCH")
+		if not expected_codes_variant is Array:
+			row_errors.append("EXPECTED_CODES_MISSING")
+		elif expected_codes != actual_codes:
+			row_errors.append("EXPECTED_CODES_MISMATCH")
+		if not stale and not duplicate and not expected_ref_hash.is_empty() and expected_ref_hash != str(before["sha256"]):
+			row_errors.append("EXPECTED_STATE_REF_MISMATCH")
+		var optional_mutated_present := action.has("expect_mutated") or expected_payload.has("mutated") or action.has("mutated")
+		var expected_mutated := false
+		if action.has("expect_mutated"):
+			expected_mutated = bool(action.get("expect_mutated"))
+		elif expected_payload.has("mutated"):
+			expected_mutated = bool(expected_payload.get("mutated"))
+		elif action.has("mutated"):
+			expected_mutated = bool(action.get("mutated"))
+		if optional_mutated_present and expected_mutated != bool(result.get("mutated", false)):
+			row_errors.append("EXPECTED_MUTATED_MISMATCH")
+		var optional_state_effect_present := action.has("expect_state_effect") or expected_payload.has("state_effect") or action.has("state_effect")
+		var expected_state_effect := ""
+		if action.has("expect_state_effect"):
+			expected_state_effect = str(action.get("expect_state_effect"))
+		elif expected_payload.has("state_effect"):
+			expected_state_effect = str(expected_payload.get("state_effect"))
+		elif action.has("state_effect"):
+			expected_state_effect = str(action.get("state_effect"))
+		if optional_state_effect_present and expected_state_effect != str(result.get("state_effect", "")):
+			row_errors.append("EXPECTED_STATE_EFFECT_MISMATCH")
+		var row_passed := row_errors.is_empty()
+		if not row_passed:
+			passed = false
+			for error_code in row_errors:
+				replay_errors.append("ACTION_%d_%s" % [action_index, error_code])
+		var row: Dictionary = {
 			"action_id": action_id,
 			"operation": operation,
 			"status": status,
+			"expected_status": expected_status,
 			"state_ref_before": before,
 			"state_ref_after": after,
-			"codes": result.get("codes", []),
-		})
-		if stale and str(action.get("expect_status", "")) != "STALE":
-			passed = false
-		if duplicate and str(action.get("expect_status", "")) != "DUPLICATE":
-			passed = false
-		if not stale and not duplicate and str(action.get("state_ref", {}).get("sha256", "")) != "" \
-			and str(action["state_ref"]["sha256"]) != str(before["sha256"]):
-			passed = false
+			"codes": actual_codes,
+			"expected_codes": expected_codes,
+			"mutated": bool(result.get("mutated", false)),
+			"state_effect": str(result.get("state_effect", "")),
+			"passed": row_passed,
+			"errors": row_errors,
+		}
+		if operation == "reveal_hint":
+			var reveal_args_variant: Variant = action.get("arguments", {})
+			var reveal_args: Dictionary = reveal_args_variant if reveal_args_variant is Dictionary else {}
+			var display_variant: Variant = result.get("display", {})
+			var display: Dictionary = display_variant if display_variant is Dictionary else {}
+			var trace_variant: Variant = result.get("disclosure_trace", {})
+			var trace: Dictionary = trace_variant if trace_variant is Dictionary else {}
+			row["case_id"] = str(action.get("case_id", ""))
+			row["actor_id"] = str(action.get("actor_id", reveal_args.get("actor_id", "")))
+			row["fact_id"] = str(action.get("fact_id", reveal_args.get("fact_id", "")))
+			row["stage"] = action.get("stage", null)
+			row["prior_disclosed"] = action.get("prior_disclosed", null)
+			row["template_id"] = result.get("template_id", null)
+			row["rule_ids"] = result.get("rule_ids", [])
+			row["display"] = display.duplicate(true)
+			row["source"] = str(display.get("source", ""))
+			row["disclosure_trace"] = trace.duplicate(true)
+			row["disclosure_outcome"] = _last_disclosure_outcome.duplicate(true)
+			row["contract_id"] = str(trace.get("contract_id", ""))
+			row["contract_version"] = str(trace.get("contract_version", ""))
+		rows.append(row)
 	var final_ref := npc_state_ref()
 	var report := {
 		"schema_version": "npc-engineering/1",
 		"mode": "replay",
 		"command": "godot --headless --path game-track/godot --scene scenes/main_3d.tscn -- --npc-replay <path>",
-		"path": ProjectSettings.globalize_path(path),
+		"path": absolute_path,
 		"initial_state_sha256": initial_ref["sha256"],
 		"final_state_sha256": final_ref["sha256"],
 		"actions": rows,
+		"errors": replay_errors,
 		"passed": passed,
 		"claim_boundary": "Deterministic recorded-action replay and state-hash evidence only; model is not rerun.",
 	}
-	var output_path := ProjectSettings.globalize_path(path) + ".result.json"
+	var output_path := absolute_path + ".result.json"
 	var written := _write_json_atomic(output_path, report)
-	print("NPC-ENGINEERING-REPLAY " + JSON.stringify({"passed": passed, "written": written, "path": output_path, "input_path": ProjectSettings.globalize_path(path)}))
+	print("NPC-ENGINEERING-REPLAY " + JSON.stringify({"passed": passed, "written": written, "path": output_path, "input_path": absolute_path}))
 	get_tree().quit(0 if passed and written else 1)
 
 func _write_json_atomic(path: String, payload: Dictionary) -> bool:

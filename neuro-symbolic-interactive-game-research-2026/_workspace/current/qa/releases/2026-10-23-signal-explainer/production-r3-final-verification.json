@@ -1,0 +1,190 @@
+{
+  "contract": "signal-explainer-approved-release-verification-v1",
+  "observed_at": "2026-10-23T07:34:34.105503+00:00",
+  "approved_seed": ".ouroboros/seeds/seed-20261023-signal-explainer-b35b22f4227d.yaml",
+  "status": "PASS_FOR_APPROVED_BOUNDED_RELEASE",
+  "deployment": {
+    "id": "dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM",
+    "url": "https://sealed-lighthouse-trace-8ounjwipl-akillness-projects.vercel.app",
+    "production_alias": "https://sealed-lighthouse-trace-rpg.vercel.app",
+    "provider_observation_command": [
+      "vercel",
+      "inspect",
+      "https://sealed-lighthouse-trace-rpg.vercel.app",
+      "--scope",
+      "akillness-projects",
+      "--json"
+    ],
+    "provider_ready_state": "READY",
+    "deploy_command": [
+      "bash",
+      "scripts/deploy_vercel_dashboard.sh"
+    ],
+    "root_redirect": {
+      "requested": "https://sealed-lighthouse-trace-rpg.vercel.app/",
+      "final_url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+      "status": 200,
+      "redirects_to_dashboard": true
+    }
+  },
+  "acceptance_checks": {
+    "content_first_optional_panel": true,
+    "live_and_independent_evidence_separated": true,
+    "truthful_missing_skipped_out_of_scope": true,
+    "paired_pdf_at_most_ten_pages": true,
+    "production_artifact_and_real_behavior": true
+  },
+  "supporting_receipts": [
+    "production-r3-asset-identity.json",
+    "production-r3-browser-proof.json",
+    "production-r3-mobile-comparison.json",
+    "focused-tests-r3.json",
+    "paper-publication-r3.json",
+    "public-safe-smoke-r3-verified.json",
+    "current-disclosure-capture-r3.json"
+  ],
+  "results": {
+    "general_rule": {
+      "case_count": 60,
+      "allowed_count": 16,
+      "denied_count": 44,
+      "unique_unsafe_case_count": 0,
+      "unauthorized_allow_count": 0,
+      "redisplay_mutation_count": 0,
+      "expected_mismatch_count": 0
+    },
+    "ontology_gate": {
+      "case_count": 60,
+      "allowed_count": 16,
+      "denied_count": 44,
+      "unique_unsafe_case_count": 0,
+      "unauthorized_allow_count": 0,
+      "redisplay_mutation_count": 0,
+      "expected_mismatch_count": 0
+    },
+    "unchecked_isolated": {
+      "case_count": 60,
+      "allowed_count": 60,
+      "denied_count": 0,
+      "unique_unsafe_case_count": 51,
+      "unauthorized_allow_count": 44,
+      "redisplay_mutation_count": 7,
+      "expected_mismatch_count": 60
+    }
+  },
+  "verification": {
+    "focused_tests": {
+      "exit_code": 0,
+      "stdout": "........................................................ [ 84%]\n..........                                                               [100%]\n66 passed, 16 subtests passed in 44.03s\n",
+      "command": [
+        "uv",
+        "run",
+        "pytest",
+        "-q",
+        "tests/test_signal_explainer.py",
+        "tests/test_godot_signal_explainer.py",
+        "tests/test_evaluation_trace_mirror.py",
+        "tests/test_generate_npc_paper_results_model_cohort.py",
+        "tests/test_check_disclosure_paper_evidence.py",
+        "tests/test_generate_disclosure_paper_results.py",
+        "tests/test_run_disclosure_evaluation_cli.py"
+      ]
+    },
+    "godot_canonical_cases": 7,
+    "godot_canonical_passed": true,
+    "public_safe_checks": 8,
+    "deployed_asset_byte_matches": 9,
+    "observed_browser_diagnostics": [],
+    "narrow_viewport": {
+      "width": 390,
+      "page_width": 390,
+      "graph_label_px": 11,
+      "status": "PASS"
+    },
+    "papers": [
+      {
+        "bytes": 560363,
+        "figure_page": 8,
+        "figure_render_command": [
+          "pdftoppm",
+          "-f",
+          "8",
+          "-l",
+          "8",
+          "-scale-to",
+          "1800",
+          "-png",
+          "-singlefile",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/paper-en-disclosure-final-r3"
+        ],
+        "figure_render_exit_code": 0,
+        "language": "en",
+        "pages": 10,
+        "path": "paper/latex/en/main.pdf",
+        "pdffonts_command": [
+          "pdffonts",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf"
+        ],
+        "pdfinfo_command": [
+          "pdfinfo",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf"
+        ],
+        "sha256": "c7bc65ba4e914bc0d4ef6d8eaf7b90f16567afe2afb1b9f81a78bbbe78b28b72",
+        "type3_font_present": false
+      },
+      {
+        "bytes": 538454,
+        "figure_page": 7,
+        "figure_render_command": [
+          "pdftoppm",
+          "-f",
+          "7",
+          "-l",
+          "7",
+          "-scale-to",
+          "1800",
+          "-png",
+          "-singlefile",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/paper-ko-disclosure-final-r3"
+        ],
+        "figure_render_exit_code": 0,
+        "language": "ko",
+        "pages": 10,
+        "path": "paper/latex/ko/main.pdf",
+        "pdffonts_command": [
+          "pdffonts",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf"
+        ],
+        "pdfinfo_command": [
+          "pdfinfo",
+          "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf"
+        ],
+        "sha256": "448aa2dafe0cd491e9106b54ef35bfcad8ef7dda4bbda5782a82082a35a2dbfd",
+        "type3_font_present": false
+      }
+    ]
+  },
+  "claim_boundaries": [
+    "Bounded declaration-derived engineering conformance only",
+    "No ontology superiority: general-rule and ontology-gate results agree on all 60 fixed cases",
+    "No human gold, access-separated holdout, efficacy, player-benefit or latent-model-state claim",
+    "390px reflow is not real-device mobile gameplay qualification",
+    "G4 and full G6 remain FIX; no new human or long-soak study",
+    "Historical NPC evidence and frozen previous result folders remain dated evidence, not current-runtime certification"
+  ],
+  "independent_implementation_review": {
+    "reviewer": "SignalFinalCode",
+    "verdict": "APPROVE",
+    "outstanding_blockers": 0,
+    "scope": "read-only frozen R3 implementation review, not independent production-browser execution"
+  },
+  "probe_notes": [
+    "The Python 3.10 verifier lacked hashlib.file_digest; streaming SHA-256 was used instead",
+    "The Python default CA path was absent; the verified system CA bundle was used without disabling TLS verification",
+    "A browser wait initially checked a nonexistent top-level outcome field; actual semantic explanation decision confirmed authorized_fresh",
+    "A mobile screenshot initially used an obsolete id; observed section class was used for the capture"
+  ],
+  "source_edits_during_production_verification": false
+}

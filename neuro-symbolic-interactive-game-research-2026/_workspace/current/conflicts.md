@@ -194,3 +194,11 @@ evidence in the same change set. The explanation lives here and in
 - Receipt: `qa/releases/2026-10-14/shared-tree-preservation.json` relative to this workspace.
   Final formatting, source-manifest regeneration, tests, and push remain Main-owned; only
   explicit task-owned pathspecs may be staged. The pre-existing dirty UI/README work is excluded.
+
+## 2026-10-23 — D-085 stale publication lock takeover
+
+- The existing Git lock records Main, D-085, 2026-10-17, base `25394a4`. The host process table starts at the 2026-10-18 boot, so that original process cannot still own it. The official Aside session list has no active project studio owner, and the harness reports no live peer agents.
+- Main takes ownership for the user-authorized publication of the completed D-086 signal-explainer release and the subsequent GPT-6.1-SOL development study. D-085 and D-086 are consumed decision IDs. The stale lock is renamed and preserved before acquiring a fresh lock; no other worktree changes are restored, stashed, or deleted.
+- The separate study handoff `exec_4c84925b05a3` was cancelled before an active AC attempt was observed, preserving the required order: publish the completed release first, then freeze and execute the measured development task. Its frozen Seed remains `seed_11eb1f38a3c4`; cancellation is not study completion.
+- The one running Aside session concerns an unrelated job application; other listed sessions are idle/interrupted and do not establish ownership of this repository. Automatic wiki ingestion continues and stays excluded from explicit staging.
+- Publication blockers are the reviewer-account information in a hash-bound report and stale/current-versus-historical provenance gates. Preserve original reports and receipts; use explicit public derivatives and renewed bindings, never silent redaction under an old hash.

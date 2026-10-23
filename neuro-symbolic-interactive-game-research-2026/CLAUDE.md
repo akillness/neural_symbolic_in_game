@@ -72,6 +72,34 @@ _workspace/
 - Never commit `.env`, access tokens, `~/.codex/auth.json`, Godot editor caches under `.godot/`, or
   raw participant/personal telemetry.
 
+## Publication provenance and release pickup — 2026-10-23 (D-087)
+
+The publication correction is **pending final pipeline verification, Git commit/push, and new
+release verification**. The last verified production deployment remains D-086/R3; its receipt is
+historical source-bound evidence, not proof that the revised tree is deployed. The subsequent
+GPT-6.1-SOL development case is **not completed**. Current selection and evidence identities live in
+`_workspace/current/production/task-manifest.md` under D-087.
+
+1. For public reproduction, use `research/npc-disclosure/public/source-substitution-v1.json`
+   and its public derivative/relocated Seed. Validate their explicit hashes against the unchanged
+   frozen packet; preserve the original private report, packets and old receipts. The derivative
+   is publication-materialization provenance, not a byte-equivalent private source or a new
+   model/gameplay observation. Never repair an old hash by rewriting its original source.
+2. Select current disclosure outputs through `paper/latex/generated/disclosure_producer_manifest.json`
+   and require a fresh authentic, source-bound Godot receipt in that selected output directory.
+   The Python normal48/boundary4/malformed8 denominator and Godot seven-case semantic probe are
+   separate. Source drift requires a new receipt; changing metadata on an old receipt is not a run.
+   Original NPC `verified-run-006` is historical-only: validate it against the explicit pinned
+   `fa9fb8a` source extraction via `generate_npc_paper_results.py --evidence-root <extracted-root>`.
+   An archived-root PASS cannot authorize the current release or alter the original packet.
+3. Compare the source hashes of the render selected by
+   `_workspace/current/engineering/tech-verification/current.json` with the revised source before
+   calling it current. A Game3D change, including the `UNKNOWN_ACTOR` → `POLICY` display-family
+   correction, can make the selected render historical. Preserve that render and promote a newly
+   captured unique set on a disposable project; old pixels or a source-map edit do not establish
+   a current-source capture. Main owns final pipeline and Git; release closure requires their
+   recorded results, not this documentation refresh.
+
 ## 2. Engine perspective: headless evidence plus separate playable, capture, and Web passes
 
 This is a Godot 4.x headless-first, turn-based narrative investigation micro-RPG with a separate

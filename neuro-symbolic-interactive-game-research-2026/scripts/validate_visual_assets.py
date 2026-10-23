@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import importlib.util
+import io
 import json
 import re
 import shutil
@@ -13,6 +14,7 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
+import zipfile
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Any
@@ -237,7 +239,11 @@ class Validator:
                 owner = ROOT / used_by
                 self.check(owner.is_file(), f"{asset_id}: missing owner {used_by}")
                 if owner.is_file():
-                    text = owner.read_text(encoding="utf-8")
+                    text = (
+                        self._source_closure(owner)[1]
+                        if owner.suffix == ".tex"
+                        else owner.read_text(encoding="utf-8")
+                    )
                     referenced = any(Path(item).name in text for item in rendered_paths)
                     self.check(referenced, f"{asset_id}: {used_by} does not reference its artifact")
 
@@ -615,39 +621,95 @@ class Validator:
                 f"{relative}: PDF/SVG aspect ratios differ",
             )
 
+    def _publication_sources(self, entry: Path) -> dict[str, str]:
+        """Resolve this repo's literal inputs and zero-argument macros in order.
+
+        This is not a TeX engine: invoked parameterized macros fail closed rather
+        than silently hiding graphics, and recursive inputs/macros are rejected.
+        """
+        sources: dict[str, str] = {}
+        macros: dict[str, tuple[int, str]] = {}
+        active_inputs: set[str] = set()
+        command = re.compile(r"\\([A-Za-z]+)\*?")
+        definition = re.compile(
+            r"\\(?:newcommand|renewcommand|providecommand)\*?\s*"
+            r"\{\\([A-Za-z]+)\}\s*(?:\[(\d+)\])?\s*"
+        )
+
+        def group(text: str, start: int) -> tuple[str, int]:
+            if start >= len(text) or text[start] != "{":
+                raise ValueError("expected literal brace group")
+            depth, end = 1, start + 1
+            while end < len(text) and depth:
+                if text[end] in "{}" and text[end - 1] != "\\":
+                    depth += 1 if text[end] == "{" else -1
+                end += 1
+            if depth:
+                raise ValueError("unclosed brace group")
+            return text[start + 1 : end - 1], end
+
+        def expand(text: str, current: Path, trail: tuple[str, ...] = ()) -> str:
+            parts: list[str] = []
+            position = 0
+            while match := command.search(text, position):
+                parts.append(text[position : match.start()])
+                name = match.group(1)
+                position = match.end()
+                if name in {"newcommand", "renewcommand", "providecommand"}:
+                    header = definition.match(text, match.start())
+                    if header is None:
+                        raise ValueError("unsupported macro definition")
+                    body, position = group(text, header.end())
+                    if name != "providecommand" or header.group(1) not in macros:
+                        macros[header.group(1)] = (int(header.group(2) or 0), body)
+                elif name in {"input", "include"}:
+                    start = position + len(text[position:]) - len(text[position:].lstrip())
+                    target, position = group(text, start)
+                    if "\\" in target or "#" in target:
+                        raise ValueError("unsupported nonliteral input path")
+                    child = current.parent / target
+                    visit(child if child.suffix else child.with_suffix(".tex"))
+                elif name in macros:
+                    arity, body = macros[name]
+                    if arity:
+                        raise ValueError(f"unsupported parameterized macro {name}")
+                    if name in trail:
+                        raise ValueError(f"recursive macro expansion: {name}")
+                    parts.append(expand(body, current, (*trail, name)))
+                else:
+                    parts.append(match.group(0))
+            parts.append(text[position:])
+            return "".join(parts)
+
+        def visit(current: Path) -> None:
+            relative = str(current.resolve().relative_to(ROOT))
+            if relative in active_inputs:
+                raise ValueError(f"recursive paper input: {relative}")
+            if not current.is_file():
+                raise ValueError(f"paper source is missing: {relative}")
+            active_inputs.add(relative)
+            try:
+                text = re.sub(r"(?<!\\)%[^\n]*", "", current.read_text(encoding="utf-8"))
+                effective = expand(text, current)
+                sources[relative] = sources.get(relative, "") + effective
+            finally:
+                active_inputs.remove(relative)
+
+        try:
+            visit(entry)
+        except (OSError, ValueError) as exc:
+            self.errors.append(f"{entry}: paper source traversal failed: {exc}")
+        return sources
+
+    def _source_closure(self, entry: Path) -> tuple[set[str], str]:
+        sources = self._publication_sources(entry)
+        return set(sources), "\n".join(sources.values())
+
     def _validate_tables(self, manifest: dict[str, Any]) -> None:
         table_sources = manifest.get("table_sources", [])
         surfaces = manifest.get("rendered_surfaces", [])
         surface_ids = [surface.get("id") for surface in surfaces]
         self.check(len(surface_ids) == len(set(surface_ids)), "rendered surface ids must be unique")
-
-        input_pattern = re.compile(r"\\input\{([^}]+)\}")
-
-        def source_closure(entry: Path) -> tuple[set[str], str]:
-            pending = [entry]
-            paths: set[str] = set()
-            texts: list[str] = []
-            while pending:
-                current = pending.pop()
-                try:
-                    relative = str(current.resolve().relative_to(ROOT))
-                except ValueError:
-                    self.errors.append(f"paper source escapes project: {current}")
-                    continue
-                if relative in paths:
-                    continue
-                if not current.is_file():
-                    self.errors.append(f"paper source is missing: {relative}")
-                    continue
-                paths.add(relative)
-                text = current.read_text(encoding="utf-8")
-                texts.append(text)
-                for target in input_pattern.findall(text):
-                    child = current.parent / target
-                    if child.suffix == "":
-                        child = child.with_suffix(".tex")
-                    pending.append(child)
-            return paths, "\n".join(texts)
 
         surface_closures: dict[str, tuple[set[str], str]] = {}
         for surface in surfaces:
@@ -656,7 +718,7 @@ class Validator:
             if not isinstance(surface_id, str) or not isinstance(source, str):
                 self.errors.append("rendered surface needs string id and editable_source.path")
                 continue
-            surface_closures[surface_id] = source_closure(ROOT / source)
+            surface_closures[surface_id] = self._source_closure(ROOT / source)
 
         covered_layouts = {
             record["path"]
@@ -665,9 +727,15 @@ class Validator:
         }
         generated_table_fragments = {
             str(path.relative_to(ROOT))
-            for path in (ROOT / "paper/latex/generated").glob("*.tex")
+            for path in (ROOT / "paper/latex/generated").rglob("*.tex")
             if "\\begin{tabular" in path.read_text(encoding="utf-8")
         }
+        for paths, _ in surface_closures.values():
+            generated_table_fragments.update(
+                path
+                for path in paths
+                if "\\begin{tabular" in (ROOT / path).read_text(encoding="utf-8")
+            )
         self.check(
             generated_table_fragments <= covered_layouts,
             "generated paper table fragment missing from source manifest: "
@@ -763,47 +831,85 @@ class Validator:
         )
 
     def _validate_paper_links(self, manifest: dict[str, Any]) -> None:
-        covered = {
-            record["path"]
-            for asset in manifest.get("visual_assets", [])
-            for record in asset.get("rendered", [])
-        }
+        assets = manifest.get("visual_assets", [])
+        covered = {record["path"] for asset in assets for record in asset.get("rendered", [])}
         covered.update(
             record["path"]
             for exception in manifest.get("noneditable_evidence", [])
             for record in exception.get("rendered", [])
         )
-        paper_stems = {path.stem for path in PAPER_FIGURE_DIR.glob("*.svg")}
-        include_pattern = re.compile(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}")
-        for main in PAPER_MAIN:
-            text = main.read_text(encoding="utf-8")
-            included: set[str] = set()
-            for target in include_pattern.findall(text):
-                resolved = (main.parent / target).resolve()
-                try:
-                    included.add(str(resolved.relative_to(ROOT)))
-                except ValueError:
-                    self.errors.append(
-                        f"{main.relative_to(ROOT)}: include escapes project: {target}"
-                    )
-            missing = included - covered
-            self.check(
-                not missing, f"{main.relative_to(ROOT)}: unmanifested graphics {sorted(missing)}"
+        paper_assets = [
+            asset
+            for asset in assets
+            if any(
+                record["path"].startswith("paper/latex/figures/")
+                for record in asset.get("editable_sources", [])
             )
-            for stem in paper_stems:
-                expected = f"../figures/{stem}.pdf"
+        ]
+        table_sources = {source["id"]: source for source in manifest.get("table_sources", [])}
+        for asset in paper_assets:
+            role = asset.get("publication_role")
+            self.check(
+                role in {"current-figure", "retained-optional"},
+                f"{asset['id']}: missing or unknown publication role",
+            )
+            owners = asset.get("used_by", [])
+            if role == "current-figure":
+                self.check(bool(owners), f"{asset['id']}: current figure has no publication owner")
+            elif role == "retained-optional":
                 self.check(
-                    expected in text, f"{main.relative_to(ROOT)}: must include vector {expected}"
+                    not owners, f"{asset['id']}: retained optional asset declares paper ownership"
+                )
+            representation = asset.get("represented_by")
+            if representation:
+                source = table_sources.get(representation.get("table_source_id"), {})
+                self.check(
+                    representation.get("anchor") in source.get("anchors", []),
+                    f"{asset['id']}: table representation has no declared anchor",
                 )
                 self.check(
-                    f"../figures/{stem}.png" not in text,
-                    f"{main.relative_to(ROOT)}: raster paper figure inclusion is forbidden",
+                    set(source.get("rendered_in", [])) == {"paper-en", "paper-ko"},
+                    f"{asset['id']}: table representation must render in both papers",
                 )
-                include_line = next((line for line in text.splitlines() if expected in line), "")
+        include_pattern = re.compile(r"\\includegraphics(?:\[([^\]]*)\])?\{([^}]+)\}")
+        for main in PAPER_MAIN:
+            owner = str(main.relative_to(ROOT))
+            included: dict[str, list[str]] = {}
+            # Resolve each input relative to its source, as TeX does for this project.
+            for source_path, effective in self._publication_sources(main).items():
+                source = ROOT / source_path
+                for options, target in include_pattern.findall(effective):
+                    resolved = (source.parent / target).resolve()
+                    try:
+                        included.setdefault(str(resolved.relative_to(ROOT)), []).append(options)
+                    except ValueError:
+                        self.errors.append(f"{owner}: include escapes project: {target}")
+            missing = set(included) - covered
+            self.check(not missing, f"{owner}: unmanifested graphics {sorted(missing)}")
+            for asset in paper_assets:
+                rendered = {record["path"] for record in asset.get("rendered", [])}
+                pdfs = {path for path in rendered if path.endswith(".pdf")}
+                declared = owner in asset.get("used_by", [])
+                actual = rendered & set(included)
+                if declared:
+                    self.check(
+                        bool(pdfs & set(included)),
+                        f"{owner}: must include vector for {asset['id']}",
+                    )
                 self.check(
-                    "width=\\columnwidth" in include_line,
-                    f"{main.relative_to(ROOT)}: {stem} must use the legible single-column contract",
+                    not actual or declared,
+                    f"{owner}: {asset['id']} rendered without publication ownership",
                 )
+                for relative in actual:
+                    self.check(
+                        relative.endswith(".pdf"),
+                        f"{owner}: raster paper figure inclusion is forbidden",
+                    )
+                    for options in included[relative]:
+                        self.check(
+                            "width=\\columnwidth" in options,
+                            f"{owner}: {Path(relative).stem} must use the legible single-column contract",
+                        )
 
     def _validate_engine_evidence(self, manifest: dict[str, Any]) -> None:
         exceptions = manifest.get("noneditable_evidence", [])
@@ -866,12 +972,17 @@ class Validator:
                 self.errors.append(f"{label} output is missing or unreadable: {relative}: {exc}")
         return digests
 
-    def _run_lightweight_generators(self, staged_root: Path) -> None:
+    def _run_lightweight_generators(self, staged_root: Path, evidence_root: Path) -> None:
         commands = (
             [sys.executable, "scripts/generate_paper_figures.py"],
             [sys.executable, "scripts/generate_direction_figures.py"],
             [sys.executable, "scripts/generate_paper_results.py"],
-            [sys.executable, "scripts/generate_npc_paper_results.py"],
+            [
+                sys.executable,
+                "scripts/generate_npc_paper_results.py",
+                "--evidence-root",
+                str(evidence_root),
+            ],
             [
                 sys.executable,
                 "-c",
@@ -912,6 +1023,37 @@ class Validator:
         with tempfile.TemporaryDirectory(prefix="trace-rpg-visual-check-") as tmp:
             staged = Path(tmp) / "project"
             staged.mkdir()
+            evidence_root = Path(tmp) / "historical-source"
+            try:
+                git_root = Path(
+                    subprocess.run(
+                        ["git", "rev-parse", "--show-toplevel"],
+                        cwd=ROOT,
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                    ).stdout.strip()
+                )
+                prefix = ROOT.relative_to(git_root).as_posix()
+                # Keep NPC006 bound to its original bytes, never the current checkout.
+                archive = subprocess.run(
+                    [
+                        "git",
+                        "archive",
+                        "--format=zip",
+                        f"fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09:{prefix}",
+                        *NPC_REGENERATION_SUPPORT,
+                        "configs/npc-goal-recovery.json",
+                    ],
+                    cwd=git_root,
+                    check=True,
+                    capture_output=True,
+                ).stdout
+                with zipfile.ZipFile(io.BytesIO(archive)) as snapshot:
+                    snapshot.extractall(evidence_root)
+            except (OSError, subprocess.CalledProcessError, zipfile.BadZipFile) as exc:
+                self.errors.append(f"historical NPC source extraction failed: {exc}")
+                return
             relative_paths = (
                 "scripts",
                 "research/academic-pipeline/stage-04-pilot",
@@ -930,9 +1072,9 @@ class Validator:
                     self.errors.append(
                         f"lightweight regeneration staging failed for {relative}: {exc}"
                     )
-            self._run_lightweight_generators(staged)
+            self._run_lightweight_generators(staged, evidence_root)
             first = self._digest_paths(staged, LIGHTWEIGHT_OUTPUTS, label="first regeneration")
-            self._run_lightweight_generators(staged)
+            self._run_lightweight_generators(staged, evidence_root)
             second = self._digest_paths(staged, LIGHTWEIGHT_OUTPUTS, label="second regeneration")
             self.check(
                 first == second, "lightweight figure/table generators are not byte deterministic"

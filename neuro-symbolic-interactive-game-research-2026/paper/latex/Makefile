@@ -6,13 +6,16 @@ export SOURCE_DATE_EPOCH
 export FORCE_SOURCE_DATE := 1
 export TZ := UTC
 
+NPC_PAPER_EVIDENCE_ROOT ?=
+NPC_PAPER_EVIDENCE_ARG = $(if $(strip $(NPC_PAPER_EVIDENCE_ROOT)),--evidence-root "$(NPC_PAPER_EVIDENCE_ROOT)",)
+
 .PHONY: all generated figures english korean check clean
 
 all: check
 
 generated:
 	cd ../.. && uv run python scripts/generate_paper_results.py
-	cd ../.. && uv run python scripts/generate_npc_paper_results.py
+	cd ../.. && uv run python scripts/generate_npc_paper_results.py $(NPC_PAPER_EVIDENCE_ARG)
 	cd ../.. && uv run python scripts/run_kg_ontology_simulation.py --check --no-database
 
 figures: generated

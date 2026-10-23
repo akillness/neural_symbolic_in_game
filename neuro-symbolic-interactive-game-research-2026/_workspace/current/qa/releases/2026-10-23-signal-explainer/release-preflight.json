@@ -1,0 +1,78 @@
+{
+  "contract": "signal-explainer-release-preflight/v1",
+  "observed_at": "2026-10-23T05:18:24.808Z",
+  "mode": "read_only_preflight",
+  "target": "https://sealed-lighthouse-trace-rpg.vercel.app",
+  "rollback_deployment": {
+    "id": "dpl_AGBJGGQXarMD6pN7iXzNevBF78us",
+    "url": "https://sealed-lighthouse-trace-i135ceofb-akillness-projects.vercel.app",
+    "readyState": "READY",
+    "observed_by": "vercel inspect production alias --scope akillness-projects --json"
+  },
+  "godot": {
+    "version": "4.7.1.stable.official.a13da4feb",
+    "templates_observed": [
+      "web_nothreads_release.zip",
+      "web_nothreads_debug.zip"
+    ]
+  },
+  "vercel_account": "akillness",
+  "assets": [
+    {
+      "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 7347,
+      "sha256": "d9aa7ade0ce6fbf048ab953f3160cda758b64e6e91e822247ebb7b15331cf2d0",
+      "headers": {
+        "nosniff": "nosniff",
+        "permissions_policy": "camera=(), microphone=(), geolocation=()"
+      }
+    },
+    {
+      "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/dashboard.js",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8",
+      "bytes": 58765,
+      "sha256": "62be4fb626e9c628a70a080523e82ff4e85de481a586f0da70490518b61b98cf",
+      "headers": {
+        "nosniff": "nosniff",
+        "permissions_policy": "camera=(), microphone=(), geolocation=()"
+      }
+    },
+    {
+      "url": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/disclosure-reference.json",
+      "status": 404,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 79,
+      "sha256": "56b988a9d22cd63bac3edd6542935333b0f03e0c6fabb571c0b1d3766f31801f",
+      "headers": {
+        "nosniff": "nosniff",
+        "permissions_policy": "camera=(), microphone=(), geolocation=()"
+      }
+    },
+    {
+      "url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 1496693,
+      "sha256": "d8bfee1dbe6dd99b64bb3ae093225da74d5701eb6f76481d0d5af4b02a043ccc",
+      "headers": {
+        "nosniff": "nosniff",
+        "permissions_policy": "camera=(), microphone=(), geolocation=()"
+      }
+    },
+    {
+      "url": "https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 1574444,
+      "sha256": "5aed4089bf4a02916697b07fb8a5658c7cb5f656d941c2a73bdef5e3d763bd11",
+      "headers": {
+        "nosniff": "nosniff",
+        "permissions_policy": "camera=(), microphone=(), geolocation=()"
+      }
+    }
+  ],
+  "scope": "Current production baseline and rollback identity only; no new deployment or updated gameplay verified"
+}

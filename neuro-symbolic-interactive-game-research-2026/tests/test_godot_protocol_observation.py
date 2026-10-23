@@ -248,10 +248,15 @@ def test_observation_receipts_are_ordered_timed_and_privacy_safe(
     receipts = telemetry["receipts"]
 
     assert telemetry["passed"] is True
-    assert [row["receipt_kind"] for row in receipts] == ["objective_rendered", "hold_emitted"]
-    assert [row["receipt_seq"] for row in receipts] == [1, 2]
+    assert [row["receipt_kind"] for row in receipts] == [
+        "objective_rendered",
+        "disclosure_outcome",
+        "hold_emitted",
+    ]
+    assert [row["receipt_seq"] for row in receipts] == [1, 2, 3]
     assert receipts[0]["phase_code"] == "ARRIVAL"
-    assert receipts[1]["phase_code"] == "HOLD"
+    assert receipts[1]["phase_code"] == "DISCLOSURE"
+    assert receipts[2]["phase_code"] == "HOLD"
     assert receipts[0]["payload"] == {
         "objective_code": "MIRA_AUTHORIZATION",
         "next_affordance_target": "mira",
@@ -273,7 +278,7 @@ def test_observation_receipts_are_ordered_timed_and_privacy_safe(
         assert receipt["scene_id"] == "main_3d"
         assert isinstance(receipt["payload"], dict)
 
-    hold = receipts[1]
+    hold = receipts[2]
     assert hold["canonical_state_unchanged"] is True
     assert hold["prior_state_sha256"] == hold["next_state_sha256"]
     assert hold["payload"] == {
@@ -282,6 +287,13 @@ def test_observation_receipts_are_ordered_timed_and_privacy_safe(
         "correction_code": "ASK_AUTHORIZED_LEAD",
         "next_affordance_target": "mira",
     }
+
+    disclosure = receipts[1]
+    assert disclosure["canonical_state_unchanged"] is True
+    assert disclosure["prior_state_sha256"] == disclosure["next_state_sha256"]
+    assert disclosure["payload"]["operation_code"] == "reveal_hint"
+    assert disclosure["payload"]["state_effect"] == "denied_no_mutation"
+    assert disclosure["payload"]["mutated"] is False
 
     serialized_receipts = json.dumps(receipts, ensure_ascii=False, sort_keys=True).lower()
     for token in FORBIDDEN_RECEIPT_TOKENS:

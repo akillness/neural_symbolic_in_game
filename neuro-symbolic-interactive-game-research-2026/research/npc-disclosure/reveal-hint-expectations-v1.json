@@ -1,0 +1,199 @@
+{
+  "packet_id": "sl-npc-disclosure-expectations-v1",
+  "packet_version": "1.0.0",
+  "status": "FROZEN_EXPECTATIONS_NOT_RUNTIME_RESULTS",
+  "frozen_at_utc": "2026-10-23T00:45:07Z",
+  "authorship": {
+    "role": "Independent Disclosure Expectation Author",
+    "author_id": "DisclosureFreeze",
+    "derivation": "declaration_review_without_executing_any_gate",
+    "expectations_source": "sealed_lighthouse.json declarations plus the approved interview/Seed scope",
+    "not_derived_from_gate_output": true,
+    "not_human_gold": true,
+    "not_access_separated_holdout": true,
+    "jev_role": "advisory_only_no_label_or_commit_authority",
+    "arms": ["unchecked_isolated", "general_rule", "ontology_gate"],
+    "shared_cases_and_expectations": true
+  },
+  "scope": {
+    "operation": "reveal_hint",
+    "scenario_id": "sealed-lighthouse-v1",
+    "scenario_resource": "game-track/godot/data/sealed_lighthouse.json",
+    "canonical_fact_ids": ["dock_saved", "keeper_betrayal", "lighthouse_dark", "tide_marks_hint"],
+    "eligible_actor_ids": ["captain_mira"],
+    "normal_stage_values": [0, 1, 2],
+    "normal_knowledge_values": [false, true],
+    "normal_disclosed_values": [false, true],
+    "normal_denominator_formula": "1 eligible actor x 4 declared fact IDs x 3 declared stage values x 2 knowledge values x 2 prior-disclosed values",
+    "normal_denominator": 48,
+    "boundary_and_malformed_excluded_from_normal": true,
+    "closed_world_display_scope": "Only canonical fact IDs and the two approved templates below are in scope. No free natural-language implication, hidden fact payload, or unlisted template is asserted."
+  },
+  "source_hashes": {
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scripts/evidence_capture_runner.gd": "c11bdebcc2a8b69e8d69b64958a449016038481e08be158f07b19ce01da3846e",
+    "game-track/godot/scripts/game3d/game_3d.gd": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+    ".ouroboros/seeds/seed-20261023-npc-disclosure-37ffdf78a47d.yaml": "3e601c02f44f64c90715254a9376e7c97c638f92dd27479ecb1e3df7592b81e2",
+    "llm-wiki/wiki/reports/2026-10-22-ontology-signals-interview.md": "6ac3c97d539f09ca148704388cdd063d7d80143e0444222712212e1f15a9133d"
+  },
+  "declaration_derivation": {
+    "actor_axis": "The scenario declares one NPC key captain_mira; the runtime binding and approved action arguments also name captain_mira.",
+    "fact_axis": "The four IDs are the ordered union of initial_state.facts and captain_mira.knowledge, deduplicated; keeper_betrayal remains an ID only and no secret payload is included.",
+    "stage_axis": "The initial quest stage is 0 and the sole stage gate declares tide_marks_hint minimum_stage 2; normal strata are 0, 1, and 2. -1 and 3 are boundary-only probes.",
+    "knowledge_axis": "Each normal case toggles whether the requested canonical ID is present in the actor knowledge declaration; this is a state fixture axis, not a claim about a new NPC.",
+    "prior_disclosure_axis": "Each normal case toggles whether the requested canonical ID is already in actor disclosed. A true value is a redisplay request and must still recheck current policy/actor/knowledge.",
+    "decision_order": "Evaluate policy codes first; if any policy code exists, return that set and do not evaluate actor/knowledge. Otherwise reject unknown actor, then reject missing actor knowledge. Code arrays are compared as sets semantically.",
+    "allow_rule": "Allow iff the requested ID is not permanently forbidden, every stage gate for it is satisfied, actor is eligible, and actor knows the ID.",
+    "first_disclosure_effect": "For an allowed request with prior_disclosed=false, disclose exactly the requested canonical fact. For tide_marks_hint only, add the declared relationship-memory entry turn-05:mira-shared-tide-marks-hint; for dock_saved and lighthouse_dark, add no relationship-memory entry because no such declaration exists. Preserve stage and increase revision once.",
+    "redisplay_effect": "For an allowed request with prior_disclosed=true, return the same approved template but do not mutate facts, actor.disclosed, relationship_memory, revision, or canonical state hash.",
+    "deny_effect": "For any denied request, add no requested fact or approved dialogue assertion and preserve the complete canonical state. The safe fallback template is the only denial display assertion."
+  },
+  "approved_templates": [
+    {
+      "template_id": "mira-safe-deflection-v1",
+      "kind": "deny_fallback",
+      "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+      "text_en": "Mira studies the dark tower and asks you to recover the signal lens first.",
+      "text_ko": "미라는 어두운 탑을 바라보며 먼저 신호 렌즈를 회수해 달라고 말한다.",
+      "permitted_for": "all denied cases"
+    },
+    {
+      "template_id": "sl-rc-003-authorized-hint",
+      "kind": "authorized_disclosure",
+      "source": "game-track/godot/scripts/evidence_capture_runner.gd:30-40",
+      "capture_id": "sl-rc-003-authorized-hint",
+      "title": "AUTHORIZED HINT / COMMIT",
+      "narrative": "The restored lens authorizes Mira's tide-marks hint.",
+      "status": "COMMIT · REPLAY-BOUND",
+      "permitted_for": "fresh or redisplayed tide_marks_hint when all authorization conditions pass"
+    }
+  ],
+  "rule_ids": {
+    "DISC-001": "permanently_forbidden fact is always denied",
+    "DISC-002": "stage-gated fact is denied below minimum stage",
+    "DISC-003": "only captain_mira is an eligible actor",
+    "DISC-004": "eligible actor must know the requested fact",
+    "DISC-005": "fresh allowed disclosure adds the requested canonical fact and disclosed ID; tide_marks_hint additionally adds the declared relationship-memory entry; stage is preserved",
+    "DISC-006": "allowed redisplay rechecks current authorization and has no canonical mutation",
+    "DISC-007": "denial preserves canonical state and emits only the safe fallback template"
+  },
+  "normal_cases": [
+    {"case_id":"N-001","actor_id":"captain_mira","fact_id":"dock_saved","stage":0,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-002","actor_id":"captain_mira","fact_id":"dock_saved","stage":0,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-003","actor_id":"captain_mira","fact_id":"dock_saved","stage":0,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-004","actor_id":"captain_mira","fact_id":"dock_saved","stage":0,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}},
+    {"case_id":"N-005","actor_id":"captain_mira","fact_id":"dock_saved","stage":1,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-006","actor_id":"captain_mira","fact_id":"dock_saved","stage":1,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-007","actor_id":"captain_mira","fact_id":"dock_saved","stage":1,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-008","actor_id":"captain_mira","fact_id":"dock_saved","stage":1,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}},
+    {"case_id":"N-009","actor_id":"captain_mira","fact_id":"dock_saved","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-010","actor_id":"captain_mira","fact_id":"dock_saved","stage":2,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-011","actor_id":"captain_mira","fact_id":"dock_saved","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-012","actor_id":"captain_mira","fact_id":"dock_saved","stage":2,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}},
+    {"case_id":"N-013","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":0,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-014","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":0,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-015","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":0,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-016","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":0,"knows":true,"prior_disclosed":true,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-017","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":1,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-018","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":1,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-019","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":1,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-020","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":1,"knows":true,"prior_disclosed":true,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-021","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-022","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":2,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-023","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-024","actor_id":"captain_mira","fact_id":"keeper_betrayal","stage":2,"knows":true,"prior_disclosed":true,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"N-025","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":0,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-026","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":0,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-027","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":0,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-028","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":0,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}},
+    {"case_id":"N-029","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":1,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-030","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":1,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-031","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":1,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-032","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":1,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}},
+    {"case_id":"N-033","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-034","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":2,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-035","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-036","actor_id":"captain_mira","fact_id":"lighthouse_dark","stage":2,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":null,"state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}},
+    {"case_id":"N-037","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":0,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-038","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":0,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-039","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":0,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-040","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":0,"knows":true,"prior_disclosed":true,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-041","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":1,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-042","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":1,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-043","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":1,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-044","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":1,"knows":true,"prior_disclosed":true,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"N-045","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-046","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":2,"knows":false,"prior_disclosed":true,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"N-047","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":"sl-rc-003-authorized-hint","state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"N-048","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":2,"knows":true,"prior_disclosed":true,"expected":{"allowed":true,"codes":[],"template_id":"sl-rc-003-authorized-hint","state_effect":"redisplay_no_mutation","rule_ids":["DISC-006"]}}
+  ],
+  "boundary_cases": [
+    {"case_id":"B-001","kind":"stage_below_declared_domain","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":-1,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"B-002","kind":"stage_above_normal_domain","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":3,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":"sl-rc-003-authorized-hint","state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}},
+    {"case_id":"B-003","kind":"stage_exactly_below_gate","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":1,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}},
+    {"case_id":"B-004","kind":"stage_exactly_at_gate","actor_id":"captain_mira","fact_id":"tide_marks_hint","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":true,"codes":[],"template_id":"sl-rc-003-authorized-hint","state_effect":"fresh_disclosure","rule_ids":["DISC-005"]}}
+  ],
+  "malformed_cases": [
+    {"case_id":"M-001","kind":"unknown_actor","actor_id":"harbor_ghost","fact_id":"tide_marks_hint","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["UNKNOWN_ACTOR"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-003","DISC-007"]}},
+    {"case_id":"M-002","kind":"empty_actor","actor_id":"","fact_id":"tide_marks_hint","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["UNKNOWN_ACTOR"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-003","DISC-007"]}},
+    {"case_id":"M-003","kind":"missing_actor","fact_id":"tide_marks_hint","stage":2,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["UNKNOWN_ACTOR"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-003","DISC-007"]}},
+    {"case_id":"M-004","kind":"unknown_fact","actor_id":"captain_mira","fact_id":"sea_glass_rumor","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"M-005","kind":"empty_fact","actor_id":"captain_mira","fact_id":"","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"M-006","kind":"missing_fact","actor_id":"captain_mira","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["NPC_DOES_NOT_KNOW_FACT"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-004","DISC-007"]}},
+    {"case_id":"M-007","kind":"unknown_actor_and_forbidden_fact","actor_id":"harbor_ghost","fact_id":"keeper_betrayal","stage":2,"knows":false,"prior_disclosed":false,"expected":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-001","DISC-007"]}},
+    {"case_id":"M-008","kind":"unknown_actor_and_stage_gated_fact","actor_id":"harbor_ghost","fact_id":"tide_marks_hint","stage":1,"knows":true,"prior_disclosed":false,"expected":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"],"template_id":"mira-safe-deflection-v1","rule_ids":["DISC-002","DISC-007"]}}
+  ],
+  "rule_change_fixtures": [
+    {
+      "fixture_id":"RC-001-stage-gate-2-to-1",
+      "kind":"isolated_policy_mutation",
+      "mutation":{"path":"disclosure_policy.stage_gates[0].minimum_stage","from":2,"to":1},
+      "base_policy_id":"sealed-lighthouse-disclosure-v1",
+      "paired_case_ids":["N-043","N-044"],
+      "expected_deltas":[
+        {"case_id":"N-043","baseline":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"]},"mutated":{"allowed":true,"codes":[],"state_effect":"fresh_disclosure","template_id":"sl-rc-003-authorized-hint"}},
+        {"case_id":"N-044","baseline":{"allowed":false,"codes":["STAGE_GATED_DISCLOSURE"]},"mutated":{"allowed":true,"codes":[],"state_effect":"redisplay_no_mutation","template_id":"sl-rc-003-authorized-hint"}}
+      ],
+      "expected_general_code_edit":"DISC-002 minimum-stage declaration only",
+      "expected_ontology_declaration_edit":"stage_gates[0].minimum_stage only",
+      "mutation_scope":"fixture only; never modify the shipped scenario"
+    },
+    {
+      "fixture_id":"RC-002-forbid-tide-marks-hint",
+      "kind":"isolated_policy_mutation",
+      "mutation":{"path":"disclosure_policy.permanently_forbidden","from":["keeper_betrayal"],"to":["keeper_betrayal","tide_marks_hint"]},
+      "base_policy_id":"sealed-lighthouse-disclosure-v1",
+      "paired_case_ids":["N-047","N-048"],
+      "expected_deltas":[
+        {"case_id":"N-047","baseline":{"allowed":true,"codes":[],"state_effect":"fresh_disclosure","template_id":"sl-rc-003-authorized-hint"},"mutated":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1"}},
+        {"case_id":"N-048","baseline":{"allowed":true,"codes":[],"state_effect":"redisplay_no_mutation","template_id":"sl-rc-003-authorized-hint"},"mutated":{"allowed":false,"codes":["FORBIDDEN_DISCLOSURE"],"template_id":"mira-safe-deflection-v1"}}
+      ],
+      "expected_general_code_edit":"DISC-001 forbidden-list declaration only",
+      "expected_ontology_declaration_edit":"permanently_forbidden list only",
+      "mutation_scope":"fixture only; never modify the shipped scenario"
+    }
+  ],
+  "strata_denominators": {
+    "normal": {"case_count":48,"formula":"1 x 4 x 3 x 2 x 2","included_case_ids":"N-001..N-048"},
+    "boundary": {"case_count":4,"formula":"four explicit stage boundary probes","included_case_ids":"B-001..B-004","excluded_from_normal":true},
+    "malformed": {"case_count":8,"formula":"eight explicit actor/fact shape and precedence probes","included_case_ids":"M-001..M-008","excluded_from_normal":true},
+    "rule_change": {"fixture_count":2,"paired_case_count":4,"excluded_from_normal":true}
+  },
+  "integration_contract": {
+    "materialization": "Load scenario_resource, deep-copy initial_state, set quest.stage to case.stage, set captain_mira.knowledge membership for case.fact_id to case.knows, and set captain_mira.disclosed membership for case.fact_id to case.prior_disclosed. Do not execute a gate to derive expected fields.",
+    "request": "Invoke reveal_hint with actor_id/fact_id from the case. For missing actor/fact malformed cases, omit the named key exactly as represented by the case.",
+    "comparison": "All three arms consume the same case IDs and expected object. Compare allowed, semantic code set, template permission, and state effect. Code array ordering is non-semantic; compare as sorted unique sets.",
+    "fresh_state_assertions": ["denied: complete canonical state unchanged", "allowed fresh: requested fact/disclosed ID added, tide_marks_hint adds only turn-05:mira-shared-tide-marks-hint, generic allowed facts add no memory, stage unchanged, revision +1, hash changes", "allowed redisplay: facts/disclosed/relationship_memory/revision/hash byte-for-byte unchanged"],
+    "display_assertions": "Denied cases may assert only mira-safe-deflection-v1. Only tide_marks_hint allowed cases may assert sl-rc-003-authorized-hint. Generic allowed canonical facts have template_id null and must not invent dialogue text.",
+    "arm_boundary": "unchecked_isolated may observe intentional violations; general_rule and ontology_gate are held to the frozen expectations. No arm may rewrite this packet.",
+    "mutation_execution": "Clone only the declared policy fixture in memory or a disposable fixture file; run paired case IDs and report edit scope, missed cases, and changed expectations. Never alter game-track/godot/data/sealed_lighthouse.json.",
+    "evidence": "Record packet path, packet sidecar SHA-256, source hashes, contract version, case ID, rule IDs, prior/next state hashes, and rendered template ID. Do not report this packet as human gold, holdout, efficacy, or player benefit evidence."
+  },
+  "limitations": [
+    "This is a closed declaration-derived engineering expectation set, not all reachable game states.",
+    "No free natural-language semantics, implicit inference, hidden payload, or all-channel leakage claim is made.",
+    "No new NPC, story, arm, human annotation, independent semantic gold, or access-separated holdout is introduced.",
+    "The shipped machine currently predates the redisplay no-mutation contract; this packet freezes the approved target behavior for implementation and evaluation."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "target": "http://127.0.0.1:8898/dashboard/",
+  "browser": "SignalGameplay",
+  "input_policy": "Fresh headless Chromium; real mouse click, Escape, WASD, E, and number key 3 only; no postMessage injection, no game-state writes, no synthetic DOM events.",
+  "route": [
+    "Open dashboard and click center of embedded iframe to start.",
+    "Press Escape to release pointer lock while retaining canvas focus.",
+    "Walk with focused canvas using real WASD toward Captain Mira; observed final position x=2.92, z=9.95 and dashboard focus mira.",
+    "Press E to open Captain Mira dialogue.",
+    "Press 3 for the visible tide-marks request (ask_tide)."
+  ],
+  "observed": {
+    "dialogue": "captain_mira open, then choice ask_tide",
+    "proposal": {"operation": "reveal_hint", "text": "Request the tide-marks lead from Captain Mira"},
+    "disclosure_outcome": {
+      "outcome": "denied",
+      "mutated": false,
+      "result_codes": ["STAGE_GATED_DISCLOSURE"],
+      "error_ids": ["STAGE_GATED_DISCLOSURE"],
+      "held_at": "STAGE_GATED_DISCLOSURE",
+      "evaluated_gates": ["DISCLOSURE", "DISCLOSURE/QUEST STAGE"],
+      "next_affordance": "Recover the signal lens from the lamp store.",
+      "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+    },
+    "hold": {
+      "codes": ["STAGE_GATED_DISCLOSURE"],
+      "commit_count": 0,
+      "fact_count": 2,
+      "refusal_count": 1,
+      "stage": 0,
+      "revision": 0,
+      "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "next_affordance": "Recover the signal lens from the lamp store."
+    },
+    "coach_card": "hold_intro shown"
+  },
+  "evidence": [
+    "candidate-loopback-early-mira-open.png",
+    "candidate-loopback-early-tide-denied.png",
+    "candidate-loopback-early-denial-dashboard.png"
+  ],
+  "constraints": [
+    "Canvas uses WebGL 2 / ANGLE Apple M2 Pro; pointer lock is available after canvas focus/click.",
+    "Keyboard input required focused canvas; Escape releases pointer lock but keyboard remained usable.",
+    "No private account or authenticated browser state used."
+  ]
+}

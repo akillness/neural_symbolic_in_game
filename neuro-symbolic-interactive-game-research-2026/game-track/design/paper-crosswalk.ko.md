@@ -74,10 +74,33 @@ Stage 6 C1은 전체 논문 효과와 외적 타당성이 없다고 판정한다
 관찰 행은 엔진 로컬 정책 미러 근거다. 런타임 간 M6 통합 주장에는 라이브 Python 권한 transport가
 필요하다. 어떤 행도 `C-RESULT-*` 상태를 바꾸지 않는다.
 선택된 현재 machine-bound render 패킷은
-`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`다. 이전 불변 패킷은 보존하며
-visual QA, validation-toolchain provenance 결속, CI portability 수정을 거쳐 superseded 처리했다.
-현재 evidence chain은 capture/decoder/schema/validator/lock hash와 tool version을 기록하되
-verifier host가 capture host를 가장하도록 요구하지 않는다.
+`godot-4.7.1-20261023-publication-r5`이며
+[`current.json`](../../_workspace/current/engineering/tech-verification/current.json)이 선택한다.
+[매니페스트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)는
+실제 Godot 실행 4종과 `2026-10-23 11:00:42` UTC의 macOS non-headless 스크립트 fixture-trace
+재생 패널 3개를 기록하며 라이브 Python 권한 transport나 neural inference를 사용하지 않았다.
+source/toolchain hash와 tool version을 기록한 저자 작성 render/state 대응이지 실제 플레이어 상호작용이 아니다. R4(`godot-4.7.1-20261023-publication-r4`)와 이전
+`godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`과 더 오래된 불변 패킷은 당시 근거로
+보존하며 현재 런타임 인증으로 취급하지 않는다.
+
+기존 [R3 프로덕션 영수증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
+`dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`의 `PASS_FOR_APPROVED_BOUNDED_RELEASE`, Godot 정식
+사례 7개, public-safe 검사 8개, 배포 자산 바이트 일치 9개를 기록한다. 고정 60사례에서
+general-rule과 ontology-gate는 각각 허용 16개, 거절 44개, 기대 불일치 0개로 일치한다.
+이는 선언 유래의 한정된 공학적 적합성이며 온톨로지 우월성이나 효능이 아니다.
+**G4와 전체 G6는 `FIX`다.** 이번 문서 갱신은 새 배포나 push를 주장하지 않는다.
+
+[논문 producer 매니페스트](../../paper/latex/generated/disclosure_producer_manifest.json)는 별도로
+현재 `results-signal-explainer-20261023-r5` 결정론적 Python/Godot artifact의 출판 전용 materialization을 기록하며 새 모델 관측은 없다. 공개 인터뷰
+파생본은 과거 비공개 원문과 바이트 동일하지 않고 원래 동결 패킷과 과거 런타임 영수증은 유지한다.
+출판 materialization과 공개 파생본 모두 선택 렌더를 대체하지 않는다.
+[실제 브라우저 입력 gameplay 영수증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/receipt.json)은
+commit 3회와 hold 1회 뒤 미라의 승인 힌트에서 멈췄고 조수위 표식 추리는 시도하지 않았다.
+스크립트 재생, 출판 provenance, 실제 gameplay는 다른 근거 종류다. 이후 공개 전용 관측도
+소유자의 `current.json` 갱신 없이는 렌더 선택을 바꾸지 않는다.
+
+trace/receipt 결함을 수정했고 Main은 대상 8파일 실행에서 테스트 53개와 subtest 48개 통과를
+보고했다. 최종 선택 트리 CI·Git·push·배포는 아직 대기 중이다.
 
 ## 6. 게임 artifact → 논문 사용
 

@@ -1,0 +1,66 @@
+{
+  "target": "https://sealed-lighthouse-trace-rpg.vercel.app/dashboard/",
+  "browser": {
+    "name": "SignalGameplay",
+    "runtime": "headless Chromium 155",
+    "viewport": "1440x1000",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "iframe": {
+      "id": "game",
+      "src": "https://sealed-lighthouse-trace-rpg.vercel.app/public/index.html",
+      "allow": "autoplay; fullscreen",
+      "canvas_css_size": "893x720",
+      "canvas_tabindex": 0
+    },
+    "webgl": {
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "unmasked_vendor": "Google Inc. (Apple)",
+      "unmasked_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2 Pro, Unspecified Version)"
+    },
+    "pointer_constraint": "document.pointerLockElement remained null in the embedded iframe; direct canvas clicks did not establish pointer lock. Keyboard delivery became reliable after the canvas was focused."
+  },
+  "input_contract": {
+    "injection": false,
+    "internal_state_writes": false,
+    "postMessage_injection": false,
+    "actions": "Browser mouse clicks plus page keyboard down/up/press against the game canvas; no synthetic DOM events were dispatched."
+  },
+  "route": [
+    {"order": 1, "input": "real mouse click on BEGIN INVESTIGATION", "observed": "dashboard changed to live session; stage 0, commits 0, holds 0, facts 2"},
+    {"order": 2, "input": "real mouse click START CASE when the intro modal appeared (modal was optional on the restarted run; the intro settled into the active scene after ~3.5s)", "observed": "active dock scene; current lead asked for Captain Mira; canvas controls visible"},
+    {"order": 3, "input": "focus canvas; hold S+D, then S, to reach Captain Mira", "observed": "dashboard focus became mira"},
+    {"order": 4, "input": "E", "observed": "Captain Mira dialogue opened"},
+    {"order": 5, "input": "1", "observed": "dashboard event ask_lighthouse; objective changed to Collect the signal lens; no verdict"},
+    {"order": 6, "input": "2", "observed": "HOLD ask_secret; holds 1; dashboard showed HELD, game state unchanged, FORBIDDEN_DISCLOSURE failed and STAGE_GATED_DISCLOSURE passed"},
+    {"order": 7, "input": "Enter to dismiss hold card; real click CANCEL; key 4 to leave Mira dialogue", "observed": "dashboard events open, leave, close; no state change from cancellation"},
+    {"order": 8, "input": "W+A, A, then W+A through the authored corridor to lens_pickup", "observed": "dashboard focus became lens_pickup; [E] Inspect the signal lens prompt"},
+    {"order": 9, "input": "E", "observed": "COMMIT acquire_object; commits 1; stage 0 -> 1; facts 3; objective Install the lens at the harbor beacon"},
+    {"order": 10, "input": "S+D, then D to lamp_mount", "observed": "dashboard focus became lamp_mount; commit guidance card appeared and was dismissed with a real click"},
+    {"order": 11, "input": "E", "observed": "COMMIT install_lens; commits 2; stage 1 -> 2; facts 5; objective Ask Mira for the tide route"},
+    {"order": 12, "input": "W+A to return to Mira; E; dismiss guide card with real click", "observed": "Mira stage-2 dialogue opened; case chain showed [x] LENS -> [x] MOUNT -> [ ] LEAD"},
+    {"order": 13, "input": "3", "observed": "COMMIT reveal_hint; ask_tide -> reveal_hint; commits 3; holds 1; stage remains 2; facts 6; dashboard current lead became Inspect the tide marks; game ledger showed ENTRY #3 COMMITTED and chain 3/3"}
+  ],
+  "final_state": {
+    "dashboard": {"commits": 3, "holds": 1, "stage": 2, "revision": 3, "facts": 6, "episode": "open", "focus": "mira", "objective": "Ask Mira for the tide route"},
+    "last_verdict": "COMMIT reveal_hint · Tide-marks lead recorded",
+    "trace_checks": ["FORBIDDEN_DISCLOSURE passed", "STAGE_GATED_DISCLOSURE passed", "UNKNOWN_ACTOR passed", "NPC_DOES_NOT_KNOW_FACT passed"],
+    "not_completed": "The tide-mark inspect/deduction interaction was not attempted; route stopped immediately after the successful Mira reveal commit."
+  },
+  "screenshots": [
+    "baseline-dashboard.png",
+    "baseline-game-iframe.png",
+    "after-begin-game.png",
+    "after-start-case.png",
+    "mira-dialogue.png",
+    "mira-choice-1.png",
+    "mira-secret-hold.png",
+    "hold-dismissed.png",
+    "lens-approach.png",
+    "lens-commit.png",
+    "beacon-approach.png",
+    "mount-commit.png",
+    "mira-stage2-dialogue.png",
+    "mira-tide-reveal.png",
+    "final-dashboard-readout.png"
+  ]
+}

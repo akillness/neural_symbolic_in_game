@@ -16,6 +16,24 @@ PAPER_FIGURE_GENERATOR = "scripts/generate_paper_figures.py"
 DIRECTION_GENERATOR = "scripts/generate_direction_figures.py"
 PAPER_TABLE_GENERATOR = "scripts/generate_paper_results.py"
 NPC_TABLE_GENERATOR = "scripts/generate_npc_paper_results.py"
+DISCLOSURE_GENERATOR = "scripts/generate_disclosure_paper_results.py"
+SIGNAL_GENERATOR = "scripts/generate_signal_explainer.py"
+DISCLOSURE_ROOT = "research/npc-disclosure/results-signal-explainer-20261023-r5"
+DISCLOSURE_DATA = (
+    "research/npc-disclosure/reveal-hint-expectations-v1.json",
+    "research/npc-disclosure/reveal-hint-expectations-v1.sha256",
+    *(
+        f"{DISCLOSURE_ROOT}/{name}"
+        for name in (
+            "disclosure-trace.jsonl",
+            "comparison-summary.json",
+            "factual-summary.json",
+            "metadata.json",
+        )
+    ),
+    "src/nesy_game/disclosure.py",
+    "game-track/godot/data/sealed_lighthouse.json",
+)
 KG_GENERATOR = "src/nesy_game/kg_ontology_simulation.py"
 BALANCE_GENERATOR = "scripts/run_balance_archetypes.py"
 CONFORMANCE_GENERATOR = "scripts/run_conformance_pilot.py"
@@ -73,6 +91,8 @@ def visual_asset(
     generator: str,
     data: tuple[str, ...] = (),
     used_by: tuple[str, ...] = (),
+    publication_role: str | None = None,
+    represented_by: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     return {
         "id": asset_id,
@@ -82,6 +102,8 @@ def visual_asset(
         "generator": receipt(generator),
         "data_sources": receipts(data),
         "used_by": list(used_by),
+        **({"publication_role": publication_role} if publication_role else {}),
+        **({"represented_by": represented_by} if represented_by else {}),
     }
 
 
@@ -134,7 +156,10 @@ def build_manifest() -> dict[str, Any]:
                 editable=(f"{base}.svg",),
                 generator=PAPER_FIGURE_GENERATOR,
                 data=data,
-                used_by=paper_usage,
+                used_by=paper_usage if stem == "fig_architecture" else (),
+                publication_role="current-figure"
+                if stem == "fig_architecture"
+                else "retained-optional",
             )
         )
     paper_assets.append(
@@ -154,9 +179,33 @@ def build_manifest() -> dict[str, Any]:
                 "research/academic-pipeline/npc-goal-recovery/verified-run-006/aggregate.json",
                 "research/academic-pipeline/npc-goal-recovery/verified-run-006/screening-assignment-manifest.json",
             ),
-            used_by=paper_usage,
+            publication_role="retained-optional",
         )
     )
+    for stem, asset_id, generator, active in (
+        ("fig_disclosure_signals", "paper-disclosure-signals", DISCLOSURE_GENERATOR, True),
+        ("fig_signal_mechanism", "paper-signal-mechanism", SIGNAL_GENERATOR, True),
+        ("fig_signal_comparison", "paper-signal-comparison", SIGNAL_GENERATOR, False),
+    ):
+        base = f"paper/latex/figures/{stem}"
+        paper_assets.append(
+            visual_asset(
+                asset_id,
+                "diagram" if stem == "fig_signal_mechanism" else "chart",
+                rendered=(f"{base}.pdf", f"{base}.png"),
+                editable=(f"{base}.svg",),
+                generator=generator,
+                data=DISCLOSURE_DATA,
+                used_by=paper_usage if active else (),
+                publication_role="current-figure" if active else "retained-optional",
+                represented_by=None
+                if active
+                else {
+                    "table_source_id": "disclosure-paper-tables",
+                    "anchor": "tab:disclosure-arms",
+                },
+            )
+        )
 
     adjacent_assets = [
         visual_asset(
@@ -210,6 +259,17 @@ def build_manifest() -> dict[str, Any]:
                 "alg:commit",
                 "tab:rho-rules",
             ),
+        ),
+        table_source(
+            "disclosure-paper-tables",
+            layouts=(
+                "paper/latex/generated/disclosure_tables_en.tex",
+                "paper/latex/generated/disclosure_tables_ko.tex",
+            ),
+            generator=DISCLOSURE_GENERATOR,
+            data=DISCLOSURE_DATA,
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:disclosure-contract", "tab:disclosure-arms", "tab:disclosure-fixtures"),
         ),
         table_source(
             "offline-pilot-paper-tables",

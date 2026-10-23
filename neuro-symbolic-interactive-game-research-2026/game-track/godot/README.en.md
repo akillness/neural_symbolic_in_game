@@ -1,8 +1,30 @@
 # The Sealed Lighthouse — Godot conformance, playable, capture, and Web passes
 
-Status: **Cycle 2 immutable v5 retained; Cycle 3 public-safe evaluation passes `4/4` fixtures and
-`52/52` core combined checks plus the separately counted `4/4` D-073 extension; the archetype balance probe `SL-BALANCE-PROBE-001` passes 5/5; production
-deployment `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` serves the live commit-gate dashboard at the site root with the English tracked-player artifact embedded at `/public/`.**
+Updated 2026-10-23: [`current.json`](../../_workspace/current/engineering/tech-verification/current.json)
+selects `godot-4.7.1-20261023-publication-r5`. Its
+[manifest](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)
+records four real Godot runs and three scripted fixture-trace replay panels, captured non-headless
+on macOS at `2026-10-23 11:00:42` UTC, not participant gameplay or live model inference.
+The existing [R3 verification](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
+records `PASS_FOR_APPROVED_BOUNDED_RELEASE` for `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`, with
+7 canonical Godot cases, 8 public-safe checks and 9 deployed-asset byte matches. **G4 and full G6
+remain `FIX`; no efficacy claim follows.** This document update performed no new deployment.
+
+The [paper producer manifest](../../paper/latex/generated/disclosure_producer_manifest.json) records
+publication-only materialization from current `results-signal-explainer-20261023-r5` deterministic
+Python/Godot artifacts, with no new model observation; its public interview derivative is not byte-equivalent to the private historical source.
+Keep these separate from both the selected render and the
+[actual browser-input gameplay receipt](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/receipt.json):
+that route observed 3 commits and 1 hold, stopped after Mira's authorized hint, and did not attempt
+the tide-mark deduction. Later disclosure-only observations do not change the selected render
+unless the owner updates `current.json`.
+
+Trace/receipt defects were repaired; Main reports the targeted eight-file run passed 53 tests
+and 48 subtests. Final selected-tree CI, Git, push and deployment remain pending.
+
+Historical Cycle 3 records below report `4/4` fixtures, `52/52` core checks, the separately counted
+`4/4` D-073 extension and a `5/5` archetype probe. The retained Cycle 2 v5 packet and deployment
+`dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` are dated evidence, not the current selection or deployment.
 
 This Godot 4.x project is a paper-facing, deterministic micro-RPG fixture. It exercises a compact
 quest and disclosure path through an engine-local authored policy mirror without embedding the
@@ -70,20 +92,20 @@ event, save, and summary against the JSON Schemas.
 
 The authoritative current machine-bound evidence set is selected by
 `../../_workspace/current/engineering/tech-verification/current.json` and currently resolves to
-`evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/`. The canonical,
-duplicate-ID, timeout, and corrupt-save runs each made three commits and reached the frozen
-terminal/oracle hash; the corrupt-save probe was rejected before live-state mutation. The selected
-retained Cycle 2 packet reports `40 tests, 44 subtests`; the current game-track gate reports
-`50 passed, 48 subtests`. Performance budgets did not all pass:
-five-sample headless frame p95 values included startup transients and were `116.667`, `100.000`,
-`98.760`, and `112.907 ms`, respectively, in the selected retained packet.
+`evidence/godot-4.7.1-20261023-publication-r5/`. Its four canonical/fault-injection runs
+each made three commits and reached the frozen terminal/oracle hash; the corrupt-save probe was
+rejected before live-state mutation. Performance budgets did not all pass.
+Historical Cycle 2 records report `40 tests, 44 subtests`; an earlier game-track gate reports
+`50 passed, 48 subtests`. The old selected packet's five-sample headless frame p95 values
+(`116.667`, `100.000`, `98.760`, `112.907 ms`) include startup transients; they are retained
+history, not measurements of the newly selected packet or current interactive frame performance.
 
 ## Non-headless capture packet
 
 The current capture packet records `SL-CAPTURE-001` as the paper label for the selected immutable
-evidence set `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`. Earlier packets remain
-retained and superseded through clipping, top-margin, status-contrast, toolchain-provenance, and
-CI-portability reviews. The current primary structured-state panels are:
+evidence set `godot-4.7.1-20261023-publication-r5`. R4 (`godot-4.7.1-20261023-publication-r4`) and the previous selections
+`godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3` and earlier packets remain dated
+history. The selected primary structured-state panels are:
 
 | Panel | Source beat | File |
 |---|---|---|
@@ -99,11 +121,11 @@ retained validator, and `uv.lock`, and records the capture-host Python/jsonschem
 verifier may run on another supported Python version; it verifies the recorded capture environment
 and current source hashes without pretending to reproduce it exactly.
 
-![Arrival observation](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
+![Arrival observation](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![Rejected disclosure](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![Rejected disclosure](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![Authorized hint](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![Authorized hint](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 ## 3D presentation slice (`scenes/main_3d.tscn`)
 
@@ -173,7 +195,7 @@ The four 1280×720 PNGs are latest engineering working captures generated from a
 Web build because this sandbox cannot render Godot `--shot`. The capture-only query hook never enters
 tracked source. The PNGs do not replace or amend the immutable v5 packet.
 
-Current full-route gameplay (dev-only `main_3d.tscn -- --autoplay --public-safe` under `--write-movie`, 2026-09-19): **[H.264 MP4, 76.3 s](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
+Historical full-route scripted gameplay (dev-only `main_3d.tscn -- --autoplay --public-safe` under `--write-movie`, 2026-09-19): **[H.264 MP4, 76.3 s](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
 (MP4 `1280×720`, 30 fps, 2,289 frames, 10,990,889 bytes, SHA-256
 `c20c197e2b2568bda24d0c80f646fee2c80e15b5a4867b02f60e44dae56e551c`; GIF 560×315, 6 fps, 305 frames at 1.5× speed, 6,469,565 bytes, SHA-256
 `e353f35370cd75822a4cd86889c2a8dcdd72941b3ec936f390c1da60a88bf5cf`). The route ends in the D-073 slot-assembly deduction
@@ -192,7 +214,7 @@ The builder copies the Godot project to a temporary directory, selects `main_3d.
 copy, uses a single-threaded extension-free Web preset, and leaves canonical `project.godot`
 unchanged. Never run Godot editor/import against the real evidence-bound project. The 2026-09-03
 ignored artifact has 10 runtime files / 50,754,386 bytes; `index.pck` is 10,902,124 bytes with SHA-256
-`b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. It is deployed as
+`b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. Its historical deployment was
 **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`](https://sealed-lighthouse-trace-rpg.vercel.app)** through `scripts/deploy_vercel_dashboard.sh`:
 the site root redirects to `/dashboard/` (the D-065 live commit-gate dashboard, 4 files / 32,117 bytes),
 the game is served from `/public/`, and old `/index.html` links redirect there. All 10 runtime files and
@@ -213,7 +235,7 @@ confirmation, warmed-frame/input, a 30-minute soak, and rollback evidence.
 
 ## Gameplay dashboard preview (2026-10-02)
 
-The local dashboard at `http://localhost:8788/dashboard/` keeps the game primary and shows the engine-reported three-stage quest, live player/site map, recent actions, and selectable/freezeable verdicts. The page cannot send game commands or write canonical state. `docs/latest/vercel-dashboard.png` is now the **local** real-gameplay capture after lens acquisition: stage 1/3, 1 commit, 2 holds; the prior release and headless/mobile results above remain historical evidence, not verification of this revision. The new independent browser gate is pending and production deployment is blocked. Layout and synthetic fixtures do not establish usability, fun, efficacy, or G4/G6.
+Historical 2026-10-02 preview: the local dashboard at `http://localhost:8788/dashboard/` kept the game primary and showed the engine-reported three-stage quest, live player/site map, recent actions, and selectable/freezeable verdicts. The page could not send game commands or write canonical state. `docs/latest/vercel-dashboard.png` recorded local real gameplay after lens acquisition: stage 1/3, 1 commit, 2 holds. The independent browser gate was pending and production deployment was blocked at that date; this is not the later R3 release status. Layout and synthetic fixtures do not establish usability, fun, efficacy, or G4/G6.
 
 ![Local real-gameplay dashboard after lens acquisition: stage 1/3 and the install-lens objective](docs/latest/vercel-dashboard.png)
 

@@ -74,10 +74,33 @@ oracle, holdout, or analysis requirements.
 These observed rows are engine-local policy-mirror evidence. Live Python authorization transport
 remains required for a cross-runtime M6 integration claim. No row changes a `C-RESULT-*` state.
 The selected current machine-bound render packet is
-`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`; earlier immutable packets remain
-retained and superseded through visual QA, validation-toolchain provenance binding, and CI-portability
-repair. The current evidence chain records capture/decoder/schema/validator/lock hashes and tool
-versions without requiring a verifier host to impersonate the capture host.
+`godot-4.7.1-20261023-publication-r5`, selected by
+[`current.json`](../../_workspace/current/engineering/tech-verification/current.json). Its
+[manifest](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)
+records four real Godot runs and three non-headless macOS scripted fixture-trace replay panels at `2026-10-23 11:00:42` UTC, with no live
+Python authorization transport or neural inference. It records source/toolchain hashes and tool
+versions; it is authored render/state correspondence, not actual player interaction. R4 (`godot-4.7.1-20261023-publication-r4`) and the prior
+`godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3` and earlier immutable packets remain
+retained as dated history, not current-runtime certification.
+
+The existing [R3 production receipt](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)
+records `PASS_FOR_APPROVED_BOUNDED_RELEASE` for `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`, with
+7 canonical Godot cases, 8 public-safe checks and 9 deployed-asset byte matches. Its fixed 60-case
+general-rule and ontology-gate arms agree (16 allowed, 44 denied, 0 expectation mismatches each);
+this is bounded declaration-derived engineering conformance, not ontology superiority or efficacy.
+**G4 and full G6 remain `FIX`.** This documentation update asserts no new deployment or push.
+
+The [paper producer manifest](../../paper/latex/generated/disclosure_producer_manifest.json) separately
+records publication-only materialization from current `results-signal-explainer-20261023-r5` deterministic Python/Godot artifacts, with no new model observation.
+Its public interview derivative is not byte-equivalent to the private historical source; original
+frozen packets and runtime receipts remain unchanged. Neither materialization nor that derivative
+replaces the selected render. The [actual browser-input gameplay receipt](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/receipt.json)
+records 3 commits and 1 hold through Mira's authorized hint, with tide-mark deduction not attempted.
+Scripted replay, publication provenance, and actual gameplay are distinct evidence classes. A later
+disclosure-only observation cannot change render selection without an owner update to `current.json`.
+
+Trace/receipt defects were repaired; Main reports the targeted eight-file run passed 53 tests
+and 48 subtests. Final selected-tree CI, Git, push and deployment remain pending.
 
 ## 6. Game artifact → paper use
 

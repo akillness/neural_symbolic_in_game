@@ -1,8 +1,29 @@
 # 봉인된 등대 — Godot 적합성·플레이어블·캡처·Web pass
 
-상태: **Cycle 2 불변 v5를 유지하고 Cycle 3 public-safe 평가는 fixture `4/4`, core 합계 `52/52`(별도 집계 D-073 확장 `4/4`)
-검사를 통과했다. 아키타입 밸런스 프로브 `SL-BALANCE-PROBE-001`은 5/5 통과했고, 프로덕션
-배포 `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`는 사이트 루트에서 라이브 commit-gate 대시보드를 서빙하고 영문 추적 플레이어 산출물을 `/public/`에 임베드한다.**
+2026-10-23 갱신: [`current.json`](../../_workspace/current/engineering/tech-verification/current.json)이
+선택한 ID는 `godot-4.7.1-20261023-publication-r5`이다.
+[매니페스트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)는
+실제 Godot 실행 4종과 `2026-10-23 11:00:42` UTC의 macOS non-headless 스크립트 fixture-trace
+재생 패널 3개를 기록한다. 참가자 gameplay나 라이브 모델 추론이 아니다.
+기존 [R3 검증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
+`dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`의 `PASS_FOR_APPROVED_BOUNDED_RELEASE`, Godot 정식
+사례 7개, public-safe 검사 8개, 배포 자산 바이트 일치 9개를 기록한다. **G4와 전체 G6는
+`FIX`이며 효능을 주장하지 않는다.** 이번 문서 갱신은 새 배포를 수행하지 않았다.
+
+[논문 producer 매니페스트](../../paper/latex/generated/disclosure_producer_manifest.json)는
+현재 `results-signal-explainer-20261023-r5` 결정론적 Python/Godot artifact의 출판 전용 materialization을 기록하며 새 모델 관측은 없다.
+공개 인터뷰 파생본은 과거 비공개 원문과 바이트 동일하지 않다. 이 둘은 선택 렌더 및
+[실제 브라우저 입력 gameplay 영수증](../../_workspace/current/qa/releases/2026-10-23-signal-explainer/receipt.json)과
+구별한다. 해당 경로는 commit 3회와 hold 1회를 관측하고 미라의 승인 힌트에서 멈췄으며
+조수위 표식 추리는 시도하지 않았다. 이후 공개 전용 관측이 추가되어도 소유자가
+`current.json`을 갱신하지 않는 한 선택 렌더는 바뀌지 않는다.
+
+trace/receipt 결함을 수정했고 Main은 대상 8파일 실행에서 테스트 53개와 subtest 48개 통과를
+보고했다. 최종 선택 트리 CI·Git·push·배포는 아직 대기 중이다.
+
+아래 과거 Cycle 3 기록은 fixture `4/4`, core `52/52`, 별도 D-073 확장 `4/4`, 아키타입
+프로브 `5/5`를 보고한다. 보존 Cycle 2 v5 패킷과 배포 `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`는
+당시 근거이며 현재 선택이나 배포가 아니다.
 
 이 Godot 4.x 프로젝트는 논문에서 인용할 수 있도록 설계한 결정론적 마이크로 RPG
 fixture다. 연구 런타임을 엔진에 내장하지 않고 엔진 로컬 저자 정책 미러를 실행한다. 지원
@@ -70,20 +91,20 @@ JSON Schema로 검증한다.
 
 현재 machine-bound 권위 근거 세트는
 `../../_workspace/current/engineering/tech-verification/current.json`이 지정하며 현재
-`evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/`로 해석된다. 정식,
-중복 ID, timeout, 손상 저장 실행은 각각 commit 3회를 수행하고 동결 종료/oracle 해시에
-도달했으며, 손상 저장 probe는 live state mutation 전에 거절됐다. 선택된 보존 Cycle 2
-packet은 `40 tests, 44 subtests`를 기록하고, 현재 game-track gate는 `50 passed, 48 subtests`를
-기록한다. 성능 budget은 모두 통과하지 않았다. 시작 transient를
-포함한 5개 표본의 헤드리스 frame p95는 선택 보존 패킷에서 각각 `116.667`, `100.000`,
-`98.760`, `112.907 ms`다.
+`evidence/godot-4.7.1-20261023-publication-r5/`로 해석된다. 정식/결함 주입 실행 4종은
+각각 commit 3회를 수행하고 동결 종료/oracle 해시에 도달했으며, 손상 저장 probe는 live state
+mutation 전에 거절됐다. 성능 budget은 모두 통과하지 않았다.
+과거 Cycle 2 기록은 `40 tests, 44 subtests`, 이전 game-track gate는 `50 passed, 48 subtests`를
+보고한다. 이전 선택 패킷의 5표본 헤드리스 frame p95(`116.667`, `100.000`, `98.760`,
+`112.907 ms`)는 시작 transient를 포함한 과거 기록이며 새 선택 패킷이나 현재 interactive
+frame 성능 측정값이 아니다.
 
 ## Non-headless capture 패킷
 
 현재 capture 패킷은 선택된 불변 근거 세트
-`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`을 `SL-CAPTURE-001` 논문 label로
-기록한다. 이전 패킷은 보존하며 clipping, top margin, status contrast, toolchain provenance,
-CI portability 검토를 거쳐 superseded 처리했다. 현재 primary 구조화 상태 패널은 다음과 같다.
+`godot-4.7.1-20261023-publication-r5`를 `SL-CAPTURE-001` 논문 label로 기록한다. R4(`godot-4.7.1-20261023-publication-r4`)와 이전 선택
+`godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`과 더 오래된 패킷은 당시 근거로
+보존한다. 선택된 primary 구조화 상태 패널은 다음과 같다.
 
 | 패널 | source 시점 | 파일 |
 |---|---|---|
@@ -99,11 +120,11 @@ hash와 capture host Python/jsonschema tool version을 추가로 기록한다. v
 Python 버전에서도 실행할 수 있으며 기록된 capture 환경과 현재 source hash를 검증하되 동일
 host라고 가장하지 않는다.
 
-![도착 관찰](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
+![도착 관찰](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![공개 거절](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![공개 거절](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![승인 힌트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![승인 힌트](../../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 ## 3D 연출 슬라이스 (`scenes/main_3d.tscn`)
 
@@ -173,7 +194,7 @@ fixture `4/4` 모두 정확한 종료 SHA-256
 생성한 최신 엔지니어링 작업 캡처다. 캡처 전용 query hook은 추적 source에 들어가지 않았다.
 불변 v5 패킷을 대체하거나 수정하지 않는다.
 
-현재 전체 경로 플레이 영상(dev 전용 `main_3d.tscn -- --autoplay --public-safe`, `--write-movie`, 2026-09-19): **[H.264 MP4, 76.3초](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
+과거 전체 경로 스크립트 gameplay(dev 전용 `main_3d.tscn -- --autoplay --public-safe`, `--write-movie`, 2026-09-19): **[H.264 MP4, 76.3초](docs/latest/trace-rpg-gameplay.mp4)** · **[GIF](docs/latest/golden-path.gif)**
 (MP4 `1280×720`, 30 fps, 2,289 프레임, 10,990,889바이트, SHA-256
 `c20c197e2b2568bda24d0c80f646fee2c80e15b5a4867b02f60e44dae56e551c`; GIF 560×315, 6 fps, 305 프레임 1.5배속, 6,469,565바이트, SHA-256
 `e353f35370cd75822a4cd86889c2a8dcdd72941b3ec936f390c1da60a88bf5cf`). D-073 슬롯 조립 추리와 페이지형 영수증으로 끝나는
@@ -193,8 +214,8 @@ python3 -m http.server 4173 --directory game-track/web/public
 결속된 실제 프로젝트에는 Godot editor/import를 실행하지 않는다. 2026-08-30 무시 대상
 2026-09-03 산출물은 런타임 파일 10개 / 50,754,386바이트이며 `index.pck`은 10,902,124바이트, SHA-256
 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`이다. 이 산출물은
-**[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
-`scripts/deploy_vercel_dashboard.sh`로 배포됐다. 사이트 루트는 `/dashboard/`(D-065 라이브 commit-gate
+과거 **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y`](https://sealed-lighthouse-trace-rpg.vercel.app)**에
+`scripts/deploy_vercel_dashboard.sh`로 배포됐다. 당시 사이트 루트는 `/dashboard/`(D-065 라이브 commit-gate
 대시보드, 파일 4개 / 32,117바이트)로 리다이렉트되고, 게임은 `/public/`에서 서빙되며, 예전 `/index.html`
 링크는 그쪽으로 리다이렉트된다. 런타임 파일 10개와 대시보드 파일 4개는 익명 요청에서 모두 `200`이며
 스테이징 바이트와 일치했다. WASM은 `application/wasm`, 설정된 응답 헤더가 유지됐으며 `vercel.json`은
@@ -212,7 +233,7 @@ rollback 근거가 없어 `FIX`다.
 
 ## Gameplay 대시보드 미리보기 (2026-10-02)
 
-로컬 대시보드 `http://localhost:8788/dashboard/`는 게임을 주 화면으로 두고 엔진이 보고한 3단계 quest·플레이어/지점 지도·최근 행동·선택/고정 가능한 판정을 표시한다. 페이지는 게임 명령을 보내거나 정식 상태를 쓰지 못한다. `docs/latest/vercel-dashboard.png`는 이제 렌즈 회수 뒤의 **로컬** 실제 gameplay 캡처다(stage 1/3, commit 1, hold 2). 위 이전 배포와 headless/모바일 결과는 과거 근거이며 이번 리비전의 검증이 아니다. 새 독립 브라우저 gate가 대기 중이므로 프로덕션 배포는 차단 상태다. Layout과 합성 fixture는 사용성·재미·효능·G4/G6를 입증하지 않는다.
+과거 2026-10-02 미리보기: 로컬 대시보드 `http://localhost:8788/dashboard/`는 게임을 주 화면으로 두고 엔진이 보고한 3단계 quest·플레이어/지점 지도·최근 행동·선택/고정 가능한 판정을 표시했다. 페이지는 게임 명령을 보내거나 정식 상태를 쓰지 못했다. `docs/latest/vercel-dashboard.png`는 렌즈 회수 뒤의 로컬 실제 gameplay 기록이다(stage 1/3, commit 1, hold 2). 그 날짜에는 독립 브라우저 gate가 대기 중이어서 프로덕션 배포가 차단됐으며, 이는 이후 R3 릴리스 상태가 아니다. Layout과 합성 fixture는 사용성·재미·효능·G4/G6를 입증하지 않는다.
 
 ![렌즈 회수 뒤의 로컬 실제 gameplay 대시보드: stage 1/3과 렌즈 설치 목표](docs/latest/vercel-dashboard.png)
 

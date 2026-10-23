@@ -1,0 +1,399 @@
+{
+  "disclosure_rules": {
+    "boundary": "Python validator checks, Godot display families, and frozen disclosure rules are distinct non-isomorphic label sets.",
+    "disclosure7": [
+      {
+        "id": "DISC-001",
+        "label": "Permanent prohibition"
+      },
+      {
+        "id": "DISC-002",
+        "label": "Stage-gated denial"
+      },
+      {
+        "id": "DISC-003",
+        "label": "Eligible actor"
+      },
+      {
+        "id": "DISC-004",
+        "label": "Actor knowledge"
+      },
+      {
+        "id": "DISC-005",
+        "label": "Fresh authorized disclosure"
+      },
+      {
+        "id": "DISC-006",
+        "label": "Authorized redisplay"
+      },
+      {
+        "id": "DISC-007",
+        "label": "Denial preserves state"
+      }
+    ],
+    "godot6": [
+      {
+        "id": "POLICY",
+        "label": "Policy"
+      },
+      {
+        "id": "PRECONDITION",
+        "label": "Precondition"
+      },
+      {
+        "id": "REACHABILITY",
+        "label": "Reachability"
+      },
+      {
+        "id": "KNOWLEDGE",
+        "label": "Knowledge"
+      },
+      {
+        "id": "DISCLOSURE",
+        "label": "Disclosure"
+      },
+      {
+        "id": "QUEST STAGE",
+        "label": "Quest stage"
+      }
+    ],
+    "python7": [
+      {
+        "id": "action_policy",
+        "label": "Action policy"
+      },
+      {
+        "id": "precondition",
+        "label": "Precondition"
+      },
+      {
+        "id": "object_reachability",
+        "label": "Object reachability"
+      },
+      {
+        "id": "npc_knowledge",
+        "label": "NPC knowledge"
+      },
+      {
+        "id": "forbidden_disclosure",
+        "label": "Forbidden disclosure"
+      },
+      {
+        "id": "quest_stage",
+        "label": "Quest stage"
+      },
+      {
+        "id": "quest_stage_monotonicity",
+        "label": "Quest-stage monotonicity"
+      }
+    ]
+  },
+  "frozen_comparison": {
+    "arms": [
+      "unchecked_isolated",
+      "general_rule",
+      "ontology_gate"
+    ],
+    "case_counts": {
+      "boundary": 4,
+      "malformed": 8,
+      "normal": 48,
+      "total": 60
+    },
+    "cells": {
+      "general_rule": {
+        "boundary": {
+          "checks": {
+            "fail": 4,
+            "pass": 2,
+            "report_status": "reported"
+          },
+          "mismatch": 0,
+          "n": 4,
+          "outcome": {
+            "allowed": 2,
+            "denied": 2
+          },
+          "replay": {
+            "equal": 4,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 0
+        },
+        "malformed": {
+          "checks": {
+            "fail": 16,
+            "pass": 0,
+            "report_status": "reported"
+          },
+          "mismatch": 0,
+          "n": 8,
+          "outcome": {
+            "allowed": 0,
+            "denied": 8
+          },
+          "replay": {
+            "equal": 8,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 0
+        },
+        "normal": {
+          "checks": {
+            "fail": 68,
+            "pass": 14,
+            "report_status": "reported"
+          },
+          "mismatch": 0,
+          "n": 48,
+          "outcome": {
+            "allowed": 14,
+            "denied": 34
+          },
+          "replay": {
+            "equal": 48,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 0
+        }
+      },
+      "ontology_gate": {
+        "boundary": {
+          "checks": {
+            "fail": 4,
+            "pass": 2,
+            "report_status": "reported"
+          },
+          "mismatch": 0,
+          "n": 4,
+          "outcome": {
+            "allowed": 2,
+            "denied": 2
+          },
+          "replay": {
+            "equal": 4,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 0
+        },
+        "malformed": {
+          "checks": {
+            "fail": 16,
+            "pass": 0,
+            "report_status": "reported"
+          },
+          "mismatch": 0,
+          "n": 8,
+          "outcome": {
+            "allowed": 0,
+            "denied": 8
+          },
+          "replay": {
+            "equal": 8,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 0
+        },
+        "normal": {
+          "checks": {
+            "fail": 68,
+            "pass": 14,
+            "report_status": "reported"
+          },
+          "mismatch": 0,
+          "n": 48,
+          "outcome": {
+            "allowed": 14,
+            "denied": 34
+          },
+          "replay": {
+            "equal": 48,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 0
+        }
+      },
+      "unchecked_isolated": {
+        "boundary": {
+          "checks": {
+            "fail": 0,
+            "pass": 0,
+            "report_status": "unreported"
+          },
+          "mismatch": 4,
+          "n": 4,
+          "outcome": {
+            "allowed": 4,
+            "denied": 0
+          },
+          "replay": {
+            "equal": 4,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 2
+        },
+        "malformed": {
+          "checks": {
+            "fail": 0,
+            "pass": 0,
+            "report_status": "unreported"
+          },
+          "mismatch": 8,
+          "n": 8,
+          "outcome": {
+            "allowed": 8,
+            "denied": 0
+          },
+          "replay": {
+            "equal": 8,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 8
+        },
+        "normal": {
+          "checks": {
+            "fail": 0,
+            "pass": 0,
+            "report_status": "unreported"
+          },
+          "mismatch": 48,
+          "n": 48,
+          "outcome": {
+            "allowed": 48,
+            "denied": 0
+          },
+          "replay": {
+            "equal": 48,
+            "unequal": 0
+          },
+          "report_status": "reported",
+          "unsafe": 41
+        }
+      }
+    },
+    "claim_boundary": {
+      "engineering_only": true,
+      "not_efficacy": true,
+      "not_holdout": true,
+      "not_human_gold": true,
+      "not_ontology_superiority": true,
+      "not_player_benefit": true
+    },
+    "counts": {
+      "general_ontology_equal": 60,
+      "mismatch_by_arm": {
+        "general_rule": 0,
+        "ontology_gate": 0,
+        "unchecked_isolated": 60
+      },
+      "unsafe_by_arm": {
+        "general_rule": 0,
+        "ontology_gate": 0,
+        "unchecked_isolated": 51
+      }
+    },
+    "graph": {
+      "boundary": "Methods ontology simulation is separate from runtime policy; no live capture or superiority claim.",
+      "edges": [
+        [
+          "typed_input",
+          "ontology"
+        ],
+        [
+          "ontology",
+          "checks"
+        ],
+        [
+          "checks",
+          "decision"
+        ],
+        [
+          "decision",
+          "state_effect"
+        ]
+      ],
+      "nodes": [
+        {
+          "id": "typed_input",
+          "label": "Typed input"
+        },
+        {
+          "id": "ontology",
+          "label": "Entities, relations, rules"
+        },
+        {
+          "id": "checks",
+          "label": "Actual checks"
+        },
+        {
+          "id": "decision",
+          "label": "Allowed or denied"
+        },
+        {
+          "id": "state_effect",
+          "label": "Canonical state effect"
+        }
+      ]
+    },
+    "independent_inputs": 60
+  },
+  "live": {
+    "clock": {
+      "provider_latency": "out_of_scope",
+      "seq": "unreported",
+      "t_ms": "unreported"
+    },
+    "counts": {
+      "runtime_events": 0
+    },
+    "events": [],
+    "note": "The live timeline starts empty and is populated only by new sequential engine events; independent fixture evidence remains in its own checker and paper lanes.",
+    "status": "awaiting_runtime",
+    "timeline_source": "runtime_embedded_events"
+  },
+  "provenance": {
+    "input_hashes": {
+      "comparison": "068a06dad6d882999bd8b3e23a527c4b3d44f3b1ab60e5ab818efcbf17e740a7",
+      "factual": "783ffc27d8d1eb0759478bd6b10cebdc0a842cdcef138e433986dad06f76d74d",
+      "metadata": "1ae9c299a1970205d7382b17903aaa0a98935c62e08af39815a74b10fcb9179e",
+      "packet": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+      "packet_sidecar": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6",
+      "scenario": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+      "trace": "35ef78c889e644f6bd38f43cd136c6f43f880f3a21be15e097077aed0202ac42"
+    },
+    "packet_sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+    "source_mismatches": {
+      "game-track/godot/scripts/game3d/game_3d.gd": {
+        "expected": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0",
+        "observed": "eec3427a69e84729021e6616b9695012036d48fb4a0a73fd68167069cf09f2f7"
+      },
+      "game-track/godot/scripts/sealed_lighthouse_machine.gd": {
+        "expected": "48da35d485473abfa9805e0dddb80d6aa6bad5c0bd183c57541886e768f839c1",
+        "observed": "5d5cffb4335378e7130dae8a994908111757a33a2ed46f0a4066f6674e4dd8b7"
+      },
+      "llm-wiki/wiki/reports/2026-10-22-ontology-signals-interview.md": {
+        "expected": "6ac3c97d539f09ca148704388cdd063d7d80143e0444222712212e1f15a9133d",
+        "observed": "7de768cdfd1f9ab1dc843df1c2a83fe9e605f48740d6b677583f6af868934956"
+      }
+    }
+  },
+  "schema_version": "trace-rpg-signal-explainer/v1",
+  "semantic_labels": {
+    "checks": "only checks actually recorded are shown; absent coverage is unreported",
+    "decision": "authorized fresh, authorized redisplay, or denied",
+    "entities": "actor and fact references are typed; unsafe raw identifiers are omitted from public projections",
+    "missingness": "unreported is evidence absence, never pass, skipped, or out_of_scope",
+    "relations": "knowledge and prior-disclosure relations connect typed input to policy checks",
+    "rules": "minimum stage, forbidden membership, eligible actor, and knowledge predicates",
+    "state_effect": "fresh disclosure, redisplay without mutation, or denied without mutation",
+    "typed_input": "operation, actor role, subject type, integer quest stage, knowledge/disclosed boolean axes"
+  }
+}

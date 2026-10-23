@@ -1,0 +1,467 @@
+{
+  "cases": [
+    {
+      "accepted": false,
+      "actor_id": "captain_mira",
+      "case_id": "N-013",
+      "codes": [
+        "FORBIDDEN_DISCLOSURE"
+      ],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "denied_no_mutation",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "display": {
+        "kind": "deny_fallback",
+        "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+        "template_id": "mira-safe-deflection-v1",
+        "text_en": "Mira studies the dark tower and asks you to recover the signal lens first.",
+        "text_ko": "미라는 어두운 탑을 바라보며 먼저 신호 렌즈를 회수해 달라고 말한다."
+      },
+      "expected": {
+        "allowed": false,
+        "codes": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "rule_ids": [
+          "DISC-001",
+          "DISC-007"
+        ],
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "fact_id": "keeper_betrayal",
+      "mutated": false,
+      "next_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "observed": {
+        "accepted": false,
+        "allowed": false,
+        "codes": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "rule_ids": [
+          "DISC-001",
+          "DISC-007"
+        ],
+        "state_effect": "denied_no_mutation",
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": false,
+      "prior_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "rule_ids": [
+        "DISC-001",
+        "DISC-007"
+      ],
+      "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+      "stage": 0,
+      "state_effect": "denied_no_mutation",
+      "template_id": "mira-safe-deflection-v1"
+    },
+    {
+      "accepted": true,
+      "actor_id": "captain_mira",
+      "case_id": "N-003",
+      "codes": [],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "fresh_disclosure",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY",
+          "DISC-CHECK-002-ACTOR",
+          "DISC-CHECK-003-KNOWLEDGE",
+          "DISC-CHECK-005-FRESH"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [],
+        "next_state_hash": "9f0f5d7cf7ea844c2d40a61a80cf16a9587e7e96887a7ff05bfd2dd0d3c58879",
+        "prior_state_hash": "199b6cc13280b21f2e837e421a0771cb449996b52297cf0641e559be3306973e"
+      },
+      "display": {},
+      "expected": {
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": "fresh_disclosure",
+        "template_id": null
+      },
+      "fact_id": "dock_saved",
+      "mutated": true,
+      "next_state_hash": "9f0f5d7cf7ea844c2d40a61a80cf16a9587e7e96887a7ff05bfd2dd0d3c58879",
+      "observed": {
+        "accepted": true,
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": "fresh_disclosure",
+        "template_id": null
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": false,
+      "prior_state_hash": "199b6cc13280b21f2e837e421a0771cb449996b52297cf0641e559be3306973e",
+      "rule_ids": [
+        "DISC-005"
+      ],
+      "source": "",
+      "stage": 0,
+      "state_effect": "fresh_disclosure",
+      "template_id": null
+    },
+    {
+      "accepted": true,
+      "actor_id": "captain_mira",
+      "case_id": "N-027",
+      "codes": [],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "fresh_disclosure",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY",
+          "DISC-CHECK-002-ACTOR",
+          "DISC-CHECK-003-KNOWLEDGE",
+          "DISC-CHECK-005-FRESH"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [],
+        "next_state_hash": "9f0f5d7cf7ea844c2d40a61a80cf16a9587e7e96887a7ff05bfd2dd0d3c58879",
+        "prior_state_hash": "2473bc729f77cf9c047d346867944d46385fdd9773667ea4d78ade8890d379a6"
+      },
+      "display": {},
+      "expected": {
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": "fresh_disclosure",
+        "template_id": null
+      },
+      "fact_id": "lighthouse_dark",
+      "mutated": true,
+      "next_state_hash": "9f0f5d7cf7ea844c2d40a61a80cf16a9587e7e96887a7ff05bfd2dd0d3c58879",
+      "observed": {
+        "accepted": true,
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": "fresh_disclosure",
+        "template_id": null
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": false,
+      "prior_state_hash": "2473bc729f77cf9c047d346867944d46385fdd9773667ea4d78ade8890d379a6",
+      "rule_ids": [
+        "DISC-005"
+      ],
+      "source": "",
+      "stage": 0,
+      "state_effect": "fresh_disclosure",
+      "template_id": null
+    },
+    {
+      "accepted": true,
+      "actor_id": "captain_mira",
+      "case_id": "N-047",
+      "codes": [],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "fresh_disclosure",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY",
+          "DISC-CHECK-002-ACTOR",
+          "DISC-CHECK-003-KNOWLEDGE",
+          "DISC-CHECK-005-FRESH"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [],
+        "next_state_hash": "e1a173723ac34ad1ca00b7b0452e059b6fe80679856c1249164b2983460b6960",
+        "prior_state_hash": "72910cca4eb2233989ab6fe3934e7d554b6193a1357c6e7e42a6cebe96b0171e"
+      },
+      "display": {
+        "capture_id": "sl-rc-003-authorized-hint",
+        "kind": "authorized_disclosure",
+        "narrative": "The restored lens authorizes Mira's tide-marks hint.",
+        "source": "game-track/godot/scripts/evidence_capture_runner.gd:30-40",
+        "status": "COMMIT · REPLAY-BOUND",
+        "template_id": "sl-rc-003-authorized-hint",
+        "title": "AUTHORIZED HINT / COMMIT"
+      },
+      "expected": {
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": "fresh_disclosure",
+        "template_id": "sl-rc-003-authorized-hint"
+      },
+      "fact_id": "tide_marks_hint",
+      "mutated": true,
+      "next_state_hash": "e1a173723ac34ad1ca00b7b0452e059b6fe80679856c1249164b2983460b6960",
+      "observed": {
+        "accepted": true,
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-005"
+        ],
+        "state_effect": "fresh_disclosure",
+        "template_id": "sl-rc-003-authorized-hint"
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": false,
+      "prior_state_hash": "72910cca4eb2233989ab6fe3934e7d554b6193a1357c6e7e42a6cebe96b0171e",
+      "rule_ids": [
+        "DISC-005"
+      ],
+      "source": "game-track/godot/scripts/evidence_capture_runner.gd:30-40",
+      "stage": 2,
+      "state_effect": "fresh_disclosure",
+      "template_id": "sl-rc-003-authorized-hint"
+    },
+    {
+      "accepted": true,
+      "actor_id": "captain_mira",
+      "case_id": "N-048",
+      "codes": [],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "redisplay_no_mutation",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY",
+          "DISC-CHECK-002-ACTOR",
+          "DISC-CHECK-003-KNOWLEDGE",
+          "DISC-CHECK-004-REDISPLAY"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [],
+        "next_state_hash": "3ea64b8cdee0f8f8ba88665ab2c57b4efc74c66bfb130b93ab95695fcff22ae3",
+        "prior_state_hash": "3ea64b8cdee0f8f8ba88665ab2c57b4efc74c66bfb130b93ab95695fcff22ae3"
+      },
+      "display": {
+        "capture_id": "sl-rc-003-authorized-hint",
+        "kind": "authorized_disclosure",
+        "narrative": "The restored lens authorizes Mira's tide-marks hint.",
+        "source": "game-track/godot/scripts/evidence_capture_runner.gd:30-40",
+        "status": "COMMIT · REPLAY-BOUND",
+        "template_id": "sl-rc-003-authorized-hint",
+        "title": "AUTHORIZED HINT / COMMIT"
+      },
+      "expected": {
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-006"
+        ],
+        "state_effect": "redisplay_no_mutation",
+        "template_id": "sl-rc-003-authorized-hint"
+      },
+      "fact_id": "tide_marks_hint",
+      "mutated": false,
+      "next_state_hash": "3ea64b8cdee0f8f8ba88665ab2c57b4efc74c66bfb130b93ab95695fcff22ae3",
+      "observed": {
+        "accepted": true,
+        "allowed": true,
+        "codes": [],
+        "rule_ids": [
+          "DISC-006"
+        ],
+        "state_effect": "redisplay_no_mutation",
+        "template_id": "sl-rc-003-authorized-hint"
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": true,
+      "prior_state_hash": "3ea64b8cdee0f8f8ba88665ab2c57b4efc74c66bfb130b93ab95695fcff22ae3",
+      "rule_ids": [
+        "DISC-006"
+      ],
+      "source": "game-track/godot/scripts/evidence_capture_runner.gd:30-40",
+      "stage": 2,
+      "state_effect": "redisplay_no_mutation",
+      "template_id": "sl-rc-003-authorized-hint"
+    },
+    {
+      "accepted": false,
+      "actor_id": "harbor_ghost",
+      "case_id": "M-007",
+      "codes": [
+        "FORBIDDEN_DISCLOSURE"
+      ],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "denied_no_mutation",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "next_state_hash": "72910cca4eb2233989ab6fe3934e7d554b6193a1357c6e7e42a6cebe96b0171e",
+        "prior_state_hash": "72910cca4eb2233989ab6fe3934e7d554b6193a1357c6e7e42a6cebe96b0171e"
+      },
+      "display": {
+        "kind": "deny_fallback",
+        "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+        "template_id": "mira-safe-deflection-v1",
+        "text_en": "Mira studies the dark tower and asks you to recover the signal lens first.",
+        "text_ko": "미라는 어두운 탑을 바라보며 먼저 신호 렌즈를 회수해 달라고 말한다."
+      },
+      "expected": {
+        "allowed": false,
+        "codes": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "rule_ids": [
+          "DISC-001",
+          "DISC-007"
+        ],
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "fact_id": "keeper_betrayal",
+      "mutated": false,
+      "next_state_hash": "72910cca4eb2233989ab6fe3934e7d554b6193a1357c6e7e42a6cebe96b0171e",
+      "observed": {
+        "accepted": false,
+        "allowed": false,
+        "codes": [
+          "FORBIDDEN_DISCLOSURE"
+        ],
+        "rule_ids": [
+          "DISC-001",
+          "DISC-007"
+        ],
+        "state_effect": "denied_no_mutation",
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": false,
+      "prior_state_hash": "72910cca4eb2233989ab6fe3934e7d554b6193a1357c6e7e42a6cebe96b0171e",
+      "rule_ids": [
+        "DISC-001",
+        "DISC-007"
+      ],
+      "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+      "stage": 2,
+      "state_effect": "denied_no_mutation",
+      "template_id": "mira-safe-deflection-v1"
+    },
+    {
+      "accepted": false,
+      "actor_id": "harbor_ghost",
+      "case_id": "M-008",
+      "codes": [
+        "STAGE_GATED_DISCLOSURE"
+      ],
+      "contract_id": "sl-npc-disclosure-expectations-v1",
+      "contract_version": "1.0.0",
+      "disclosure_outcome": "denied_no_mutation",
+      "disclosure_trace": {
+        "check_ids": [
+          "DISC-CHECK-001-POLICY"
+        ],
+        "contract_id": "sl-npc-disclosure-expectations-v1",
+        "contract_version": "1.0.0",
+        "error_ids": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "next_state_hash": "e2e20fed269362440b454d7362b74050683baeabbd95131d0c7adf8241a387d8",
+        "prior_state_hash": "e2e20fed269362440b454d7362b74050683baeabbd95131d0c7adf8241a387d8"
+      },
+      "display": {
+        "kind": "deny_fallback",
+        "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+        "template_id": "mira-safe-deflection-v1",
+        "text_en": "Mira studies the dark tower and asks you to recover the signal lens first.",
+        "text_ko": "미라는 어두운 탑을 바라보며 먼저 신호 렌즈를 회수해 달라고 말한다."
+      },
+      "expected": {
+        "allowed": false,
+        "codes": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "rule_ids": [
+          "DISC-002",
+          "DISC-007"
+        ],
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "fact_id": "tide_marks_hint",
+      "mutated": false,
+      "next_state_hash": "e2e20fed269362440b454d7362b74050683baeabbd95131d0c7adf8241a387d8",
+      "observed": {
+        "accepted": false,
+        "allowed": false,
+        "codes": [
+          "STAGE_GATED_DISCLOSURE"
+        ],
+        "rule_ids": [
+          "DISC-002",
+          "DISC-007"
+        ],
+        "state_effect": "denied_no_mutation",
+        "template_id": "mira-safe-deflection-v1"
+      },
+      "operation": "reveal_hint",
+      "prior_disclosed": false,
+      "prior_state_hash": "e2e20fed269362440b454d7362b74050683baeabbd95131d0c7adf8241a387d8",
+      "rule_ids": [
+        "DISC-002",
+        "DISC-007"
+      ],
+      "source": "game-track/godot/data/sealed_lighthouse.json:safe_fallback",
+      "stage": 1,
+      "state_effect": "denied_no_mutation",
+      "template_id": "mira-safe-deflection-v1"
+    }
+  ],
+  "failures": [],
+  "marker": "NPC_DISCLOSURE_RESULT",
+  "marker_payload": {
+    "failures": [],
+    "passed": true
+  },
+  "packet_sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028",
+  "passed": true,
+  "scenario_source": "game-track/godot/data/sealed_lighthouse.json",
+  "semantic_assertions": {
+    "canonical_recomputation": true,
+    "display_safety": true,
+    "semantic_outcomes": true,
+    "state_hash_binding": true
+  },
+  "source_hashes": {
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scripts/canonical_state.gd": "6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58",
+    "game-track/godot/scripts/evidence_capture_runner.gd": "c11bdebcc2a8b69e8d69b64958a449016038481e08be158f07b19ce01da3846e",
+    "game-track/godot/scripts/game3d/game_3d.gd": "2209fd627bcd3b41d427baccefb5427f69693f3cc4f28331d4247c7d5232dcd9",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "5d5cffb4335378e7130dae8a994908111757a33a2ed46f0a4066f6674e4dd8b7",
+    "tests/npc_disclosure_harness.gd": "07dcea181d1a3ec86f06020d98cb2c8c9de7517f17fa79ee948fde649887587c"
+  }
+}

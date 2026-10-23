@@ -7,6 +7,7 @@ fragments are deliberately not read or rewritten here.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import sys
@@ -32,6 +33,8 @@ FIGURES = ROOT / "paper/latex/figures"
 PROJECT_CONFIG_SHA256 = "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd"
 NPC_CONFIG_SHA256 = "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098"
 ARMS = ("P", "R", "O")
+HISTORICAL_SOURCE_REVISION = "fa9fb8a"
+HISTORICAL_SOURCE_DATE = "2026-10-17"
 
 
 def _read_json(path: Path) -> Any:
@@ -72,13 +75,34 @@ def _portable_validation_report(report: dict[str, Any]) -> dict[str, Any]:
     return portable
 
 
-def _load_packet() -> dict[str, Any]:
+def _validation_context(evidence_root: Path) -> dict[str, Any]:
+    historical = evidence_root.resolve() != ROOT.resolve()
+    return {
+        "mode": "historical-evidence-root" if historical else "current-source-root",
+        "source_root": "explicit-archived-root" if historical else ".",
+        "packet_scope": "dated-historical-only" if historical else "current-source-bound",
+        "current_release_authority": not historical,
+        "historical_reference": (
+            {
+                "revision": HISTORICAL_SOURCE_REVISION,
+                "date": HISTORICAL_SOURCE_DATE,
+            }
+            if historical
+            else None
+        ),
+    }
+
+
+def _load_packet(evidence_root: Path = ROOT) -> dict[str, Any]:
     _require(PACKET.is_dir(), f"missing NPC packet: {PACKET}")
+    evidence_root = evidence_root.expanduser().resolve()
+    _require(evidence_root.is_dir(), f"missing NPC evidence root: {evidence_root}")
     from validate_npc_goal_evidence import validate_packet
 
+    validation_context = _validation_context(evidence_root)
     validation_reports: dict[str, Any] = {}
     for packet_id in ("NPC-ENG1", "NPC-SCR1"):
-        report, errors = validate_packet(packet_id, ROOT, packet_dir=PACKET)
+        report, errors = validate_packet(packet_id, evidence_root, packet_dir=PACKET)
         _require(not errors and report.get("valid") is True, f"{packet_id}: " + "; ".join(errors))
         _require(
             report.get("source", {}).get("test_only") is not True,
@@ -89,10 +113,15 @@ def _load_packet() -> dict[str, Any]:
                 report.get("publishable") is True,
                 f"{packet_id} is not publication-admissible",
             )
-        validation_reports[packet_id] = _portable_validation_report(report)
-    config = _read_json(CONFIG)
-    _require(_sha(GAME_CONFIG) == PROJECT_CONFIG_SHA256, "NPC game config SHA file drift")
-    _require(_sha(CONFIG) == NPC_CONFIG_SHA256, "NPC protocol config SHA file drift")
+        portable_report = _portable_validation_report(report)
+        portable_report["validation_context"] = validation_context
+        validation_reports[packet_id] = portable_report
+    config_path = evidence_root / CONFIG.relative_to(ROOT)
+    game_config_path = evidence_root / GAME_CONFIG.relative_to(ROOT)
+    schema_path = evidence_root / SCHEMA.relative_to(ROOT)
+    config = _read_json(config_path)
+    _require(_sha(game_config_path) == PROJECT_CONFIG_SHA256, "NPC game config SHA file drift")
+    _require(_sha(config_path) == NPC_CONFIG_SHA256, "NPC protocol config SHA file drift")
     _require(
         config.get("goal", {}).get("id") == "harbor-signal-restored-authorized-tide-lead-v1",
         "NPC goal identity drift",
@@ -127,7 +156,7 @@ def _load_packet() -> dict[str, Any]:
         aggregate.get("npc_protocol_config_sha256") == NPC_CONFIG_SHA256,
         "NPC protocol config SHA drift",
     )
-    _require(aggregate.get("source_schema_sha256") == _sha(SCHEMA), "NPC schema SHA drift")
+    _require(aggregate.get("source_schema_sha256") == _sha(schema_path), "NPC schema SHA drift")
     _require(len(engineering) == 16, "NPC-ENG1 JSONL cardinality drift")
     _require(len(screening) == 72, "NPC-SCR1 JSONL cardinality drift")
     _require(aggregate.get("run_mode") == "publish", "NPC preflight is not publishable")
@@ -296,6 +325,7 @@ def _load_packet() -> dict[str, Any]:
         "model_metadata": model_metadata,
         "stale_disclosure": stale_disclosure,
         "validation_reports": validation_reports,
+        "validation_context": validation_context,
         "receipts": receipts,
     }
 
@@ -388,13 +418,33 @@ def _results(packet: dict[str, Any], korean: bool) -> str:
             f"denominator, not method-performance outcomes; other assigned failures "
             f"({unclassified_failure_rows}) remain unclassified."
         )
+    historical_validation = packet["validation_context"]["mode"] == "historical-evidence-root"
+    if korean:
+        provenance_disclosure = (
+            f"이 생성물은 {HISTORICAL_SOURCE_DATE}의 보관 source bytes "
+            f"(revision {HISTORICAL_SOURCE_REVISION})에 대해 immutable verified-run-006을 "
+            "재검증한 역사적 packet 산출물이다. 현재 checkout의 NPC runtime이나 현재 release "
+            "authority를 인증하지 않는다."
+            if historical_validation
+            else ""
+        )
+    else:
+        provenance_disclosure = (
+            f"This generation revalidates immutable verified-run-006 against archived source bytes "
+            f"dated {HISTORICAL_SOURCE_DATE} (revision {HISTORICAL_SOURCE_REVISION}). It is a "
+            "historical packet result and does not certify the current checkout NPC runtime or "
+            "current release authority."
+            if historical_validation
+            else ""
+        )
     if korean:
         return (
             rf"""
 \subsection{{고정 목표 NPC 운영 (NPC-ENG1/NPC-SCR1)}}
 Mira의 고정 목표는 항구 신호 복구 후 허가된 조석 단서를 제공하는 것이다. Python은 typed intent와 공개 관측으로 bounded BFS 계획을 계산한다. 획득·설치는 플레이어가, 허가된 \texttt{{reveal\_hint}}는 NPC가 수행한다. Godot은 session/epoch/request/goal/policy/revision/hash를 동기 검사한 뒤 기존 writer를 await 없이 호출한다. 결과와 새 관측이 다음 계획을 결정하므로 단일 후보의 validator-error repair와 구별된다.
 
-NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 engineering 사례 {eng_n}개({eng_status})다. NPC-SCR1은 P/R/O 각 24개, 전체 {aggregate["assignment_count"]}개 배정과 실패를 모두 보존한다({scr_status}). P는 인증된 Codex CLI 실행 시도 {p_attempts}회, 반환 decision {p_decisions}개, 배정 실패 {p_failures}개를 기록했다. 이는 원격 과금 호출 횟수가 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이며 provider revision이 아니다. provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. R은 작성된 규칙을 사용한다. O는 \texttt{{same\_model\_family\_auxiliary}}로 선언된 protocol auxiliary일 뿐이며 실제 모델 계열 일치는 unverified(검증되지 않음)이다. 독립 원본은 0개이고 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}과 그림~\ref{{fig:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다. efficacy는 pending이며 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론이나 적대적 기밀성은 검증하지 않았다.
+NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 engineering 사례 {eng_n}개({eng_status})다. NPC-SCR1은 P/R/O 각 24개, 전체 {aggregate["assignment_count"]}개 배정과 실패를 모두 보존한다({scr_status}). P는 인증된 Codex CLI 실행 시도 {p_attempts}회, 반환 decision {p_decisions}개, 배정 실패 {p_failures}개를 기록했다. 이는 원격 과금 호출 횟수가 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이며 provider revision이 아니다. provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. R은 작성된 규칙을 사용한다. O는 \texttt{{same\_model\_family\_auxiliary}}로 선언된 protocol auxiliary일 뿐이며 실제 모델 계열 일치는 unverified(검증되지 않음)이다. 독립 원본은 0개이고 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다. efficacy는 pending이며 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론이나 적대적 기밀성은 검증하지 않았다.
+{provenance_disclosure}
 {stale_failure_disclosure}
 재현 검증은 내보낸 epoch 내부에 한정한다(\texttt{{intent\_lineage\_scope={intent_scope_label}}}). epoch 간 의도 연속성은 입증하지 않는다(\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). 불투명한 연속 지점을 허용하는 예외는 양의 epoch snapshot에서 인접한 선두 observation 요청·decision 쌍에만 적용한다. epoch 0의 고아 관측, 그 밖의 의도 확정 전 관측 요청, 후속 의도 불일치는 계속 거절한다.
 
@@ -406,7 +456,8 @@ NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 enginee
 \subsection{{Fixed-Goal NPC Operation (NPC-ENG1/NPC-SCR1)}}
 Mira's fixed goal is to deliver the authorized tide lead after harbor-signal restoration. Python computes bounded BFS plans from typed intent and public observations. Acquire/install remain player actions; the NPC may only commit the authorized \texttt{{reveal\_hint}}. Godot synchronously checks session/epoch/request/goal/policy/revision/hash before calling the existing writer without an await. Results and new observations determine the next plan, unlike single-candidate validator-error repair.
 
-NPC-ENG1 comprises {eng_n} deterministic R-arm engineering cases initialized from actual engine snapshots ({eng_status}). NPC-SCR1 retains all {aggregate["assignment_count"]} assignments and failures, 24 per P/R/O arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures; these are not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter propagates the configured selector, not a provider revision; the provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. R uses authored rules. O is a protocol-declared auxiliary under \texttt{{same\_model\_family\_auxiliary}}. Actual model-family matching is unverified. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} and Fig.~\ref{{fig:npc-screening}} report bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates. Efficacy remains pending; tokens and cost are unmeasured. A read-only CLI and isolated working directory were used, but tool-free inference and adversarial confidentiality were not established.
+NPC-ENG1 comprises {eng_n} deterministic R-arm engineering cases initialized from actual engine snapshots ({eng_status}). NPC-SCR1 retains all {aggregate["assignment_count"]} assignments and failures, 24 per P/R/O arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures; these are not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter propagates the configured selector, not a provider revision; the provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. R uses authored rules. O is a protocol-declared auxiliary under \texttt{{same\_model\_family\_auxiliary}}. Actual model-family matching is unverified. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} reports bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates. Efficacy remains pending; tokens and cost are unmeasured. A read-only CLI and isolated working directory were used, but tool-free inference and adversarial confidentiality were not established.
+{provenance_disclosure}
 {stale_failure_disclosure}
 Replay validation is limited to the exported epoch (\texttt{{intent\_lineage\_scope={intent_scope_label}}}); it does not prove intent continuity across epochs (\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). The opaque-anchor exception is restricted to an adjacent leading observation request/decision pair in a positive-epoch snapshot. Epoch-zero orphans, other observation requests before intent commitment, and later intent mismatches remain rejected.
 """.strip()
@@ -522,8 +573,8 @@ def _svg(packet: dict[str, Any]) -> str:
     return "\n".join(parts) + "\n"
 
 
-def main() -> None:
-    packet = _load_packet()
+def main(evidence_root: Path = ROOT) -> None:
+    packet = _load_packet(evidence_root)
     OUT.mkdir(parents=True, exist_ok=True)
     FIGURES.mkdir(parents=True, exist_ok=True)
     (OUT / "npc_validation_reports.json").write_text(
@@ -539,10 +590,20 @@ def main() -> None:
         )
     target = FIGURES / "fig_npc_screening.svg"
     target.write_text(_svg(packet), encoding="utf-8", newline="\n")
+    context = packet["validation_context"]
     print(
-        f"generated NPC paper fragments and {target.relative_to(ROOT)} from {PACKET.relative_to(ROOT)}"
+        f"generated NPC paper fragments and {target.relative_to(ROOT)} from "
+        f"{PACKET.relative_to(ROOT)}; "
+        + "validation_mode={} packet_scope={}".format(context["mode"], context["packet_scope"])
     )
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--evidence-root",
+        type=Path,
+        default=ROOT,
+        help="explicit source root whose bytes must validate the immutable NPC packet",
+    )
+    main(parser.parse_args().evidence_root)

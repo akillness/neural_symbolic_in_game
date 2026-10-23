@@ -1,0 +1,126 @@
+{
+  "receipt_id": "signal-gameplay-20261023-r3",
+  "recorded_at_utc": "2026-10-23T07:09:51.251292+00:00",
+  "target": "http://127.0.0.1:8898/dashboard/?release=20261023-signal-explainer-r3",
+  "browser": "SignalGameplay",
+  "runtime": "fresh disposable headless Chrome via browser tool; dashboard iframe game at /public/index.html",
+  "input_policy": "Real mouse click and focused canvas keyboard input only. No postMessage injection, synthetic DOM events, internal state writes, private account browsing, or game-state monkeypatching.",
+  "route_observed": [
+    "Open the staged R3 dashboard URL in a fresh SignalGameplay browser.",
+    "Click the embedded Godot canvas to start; pointer lock is acquired by the real click and Escape releases it while leaving the canvas keyboard route usable.",
+    "Use focused canvas WASD movement to Captain Mira at the authored interaction site, then press E to open her dialogue.",
+    "At Captain Mira after the authorized tide-hint commit, the visible dialogue offered [1] Where do I go now?; press 1 to request the same reveal_hint again.",
+    "The repeated request is accepted as authorized_redisplay; no new commit, hold, revision, fact, or state mutation is produced."
+  ],
+  "observed_session": {
+    "stage_before_redisplay": 2,
+    "revision_before_redisplay": 3,
+    "facts_before_redisplay": 6,
+    "commits_before_redisplay": 3,
+    "holds_before_redisplay": 0,
+    "state_sha256_before": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+    "dialogue_choice_id": "ask_after",
+    "dialogue_npc": "captain_mira",
+    "dialogue_phase": "choice",
+    "proposal_operation": "reveal_hint",
+    "proposal_text": "Request the tide-marks lead from Captain Mira"
+  },
+  "observed_fresh_authorized_hint": {
+    "status": "OBSERVED",
+    "operation": "reveal_hint",
+    "decision": "commit",
+    "commit_count": 3,
+    "revision": 3,
+    "stage": 2,
+    "fact_count": 6,
+    "mutated": true,
+    "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+    "rule_id": "DISC-005",
+    "contract_id": "sl-npc-disclosure-expectations-v1",
+    "contract_version": "1.0.0",
+    "check_ids": [
+      "DISC-CHECK-001-POLICY",
+      "DISC-CHECK-002-ACTOR",
+      "DISC-CHECK-003-KNOWLEDGE",
+      "DISC-CHECK-005-FRESH"
+    ],
+    "error_ids": [],
+    "trace_summary": {
+      "consistent": true,
+      "evaluated_gates": ["DISCLOSURE", "DISCLOSURE/QUEST STAGE", "POLICY", "KNOWLEDGE"],
+      "family_states": {
+        "DISCLOSURE": "pass",
+        "KNOWLEDGE": "pass",
+        "POLICY": "pass",
+        "PRECONDITION": "out_of_scope",
+        "QUEST STAGE": "pass",
+        "REACHABILITY": "out_of_scope"
+      },
+      "short_circuit": false,
+      "skipped": []
+    },
+    "note": "The authoritative full hash for the post-fresh state is recorded in the dashboard event stream and is the same hash retained through redisplay: 4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+  },
+  "early_denial": {
+    "status": "NOT_EXERCISED",
+    "reason": "Fresh R3 route preparation did not execute the early pre-lens tide request in this receipt; no denial payload is claimed here."
+  },
+  "observed_redisplay": {
+    "status": "OBSERVED",
+    "operation": "reveal_hint",
+    "decision": "authorized_redisplay",
+    "rule_id": "DISC-006",
+    "check_ids": [
+      "DISC-CHECK-001-POLICY",
+      "DISC-CHECK-002-ACTOR",
+      "DISC-CHECK-003-KNOWLEDGE",
+      "DISC-CHECK-004-REDISPLAY"
+    ],
+    "error_ids": [],
+    "mutated": false,
+    "hash_unchanged": true,
+    "counts_unchanged": true,
+    "before": {
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "commits": 3,
+      "holds": 0,
+      "stage": 2,
+      "revision": 3,
+      "facts": 6,
+      "non_tick_event_count": 30
+    },
+    "after": {
+      "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "commits": 3,
+      "holds": 0,
+      "stage": 2,
+      "revision": 3,
+      "facts": 6,
+      "non_tick_event_count": 33
+    },
+    "freshness": {
+      "operation_code": "reveal_hint",
+      "actor_id": "captain_mira",
+      "fact_id": "tide_marks_hint",
+      "state_effect": "redisplay_no_mutation"
+    }
+  },
+  "screenshots": [
+    "candidate-r3-initial-dashboard.png",
+    "candidate-r3-game-started.png",
+    "candidate-r3-stage2-mira-open.png",
+    "candidate-r3-stage2-mira-choice1.png",
+    "candidate-r3-authorized-hint-final.png",
+    "candidate-r3-redisplay-final.png",
+    "candidate-r3-early-tide-denial-final.png"
+  ],
+  "browser_constraints": {
+    "viewport": "1440x1000",
+    "canvas_css_size": "893x720",
+    "iframe": "/public/index.html",
+    "pointer_lock": "Real canvas click acquires pointer lock; Escape releases it. Browser tool canvas focus is required before keyboard input.",
+    "dialogue_modal": "While Captain Mira dialogue is open, physical X/visible [X] EXPLAIN is blocked by the modal; close dialogue first before using EXPLAIN.",
+    "source_origin": "http://127.0.0.1:8898"
+  },
+  "claim_boundary": "Real-input UI/read-only behavior evidence for staged local R3 only. This does not establish production behavior, player efficacy, immersion, usability, or G4/G6 evidence."
+}

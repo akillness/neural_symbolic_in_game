@@ -1,0 +1,50 @@
+goal: 게임에도 선택형 설명 패널. 작동 과정과 비교 함께. 파일명과 자료 데이터를 폴더 단위로 기제하지않고, 그 내용을 정리해서 어떤 데이터
+  타입으로 실험을 전개했고, 온톨로지로 구성하여 단계가 진행되었는지 이해할수있도록 구성해야해.
+task_type: code
+brownfield_context:
+  project_type: brownfield
+  context_references: []
+  existing_patterns: []
+  existing_dependencies: []
+constraints:
+- 인간 효능 실험·모델 변경·새 외부 서비스는 포함하지 않습니다.
+- 게임의 기존 정규 상태 변경 권한과 비공개 사실 보호를 유지합니다. 독립 사례를 시간 추세·온톨로지 우월성으로 해석하지 않습니다.
+- 작동 과정과 비교 함께
+- 게임에도 선택형 설명 패널
+- 이 기준으로 구현·배포
+acceptance_criteria:
+- description: 파일 목록 대신 데이터 타입→온톨로지 관계·규칙→실제 검사→상태 전이를 설명하는 선택형 인게임 패널
+  semantic_ac_key: ac_4637068a06ad28be
+- description: 실제 사건순 신호와 독립 60사례·3조건 비교를 분리한 대시보드
+  semantic_ac_key: ac_63d2e401db634d8e
+- description: 미기록·건너뜀·범위외를 통과로 꾸미지 않는 표시
+  semantic_ac_key: ac_230b4db87a4f77b7
+- description: 같은 의미·수치·근거를 반영한 한영 논문과 각 10쪽 이하 PDF(본문 글자·여백 축소 없이)
+  semantic_ac_key: ac_3b8044eecc665df8
+- description: 검증한 게임 빌드의 기존 사이트 배포와 배포 후 실제 동작 확인
+  semantic_ac_key: ac_830871cd901379fe
+ontology_schema:
+  name: SessionSettledContract
+  description: Requirements the session already settled, crystallized without an interview.
+    Every entry is verbatim host-supplied material — no LLM composed any part of this
+    Seed.
+  fields: []
+evaluation_principles:
+- name: settled_requirements
+  description: Evaluate only the session-settled requirements.
+  weight: 1.0
+exit_conditions:
+- name: settled_requirements_met
+  description: All session-settled requirements are satisfied.
+  criteria: Every listed acceptance criterion passes.
+metadata:
+  seed_id: seed_b35b22f4227d
+  version: 1.0.0
+  created_at: '2026-10-23T05:14:56.946030Z'
+  ambiguity_score: 0.2
+  interview_id: session-context
+  parent_seed_id: null
+  generation_mode: normal
+  degraded: false
+  unresolved_slots: []
+  recovery_reason: null

@@ -10,6 +10,7 @@ and its check plan must be re-audited in the same change.
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -17,10 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 MACHINE = ROOT / "game-track/godot/scripts/sealed_lighthouse_machine.gd"
 MIRROR = ROOT / "game-track/godot/scripts/game3d/evaluation_trace.gd"
 CONTROLLER = ROOT / "game-track/godot/scripts/game3d/game_3d.gd"
-EVIDENCE_MANIFEST = (
-    ROOT
-    / "_workspace/current/engineering/tech-verification/evidence/godot-4.7.1/evidence-manifest.json"
-)
+TECH_ROOT = ROOT / "_workspace/current/engineering/tech-verification"
+CURRENT_POINTER = TECH_ROOT / "current.json"
 
 MACHINE_CHECK_ORDER = {
     "acquire_object": ["OBJECT_NOT_PRESENT", "OBJECT_NOT_REACHABLE"],
@@ -30,8 +29,18 @@ MACHINE_CHECK_ORDER = {
         "STAGE_GATED_DISCLOSURE",
         "UNKNOWN_ACTOR",
         "NPC_DOES_NOT_KNOW_FACT",
+        "DISCLOSURE_TEMPLATE_UNAVAILABLE",
     ],
 }
+
+
+def _current_evidence_manifest() -> Path:
+    pointer = json.loads(CURRENT_POINTER.read_text("utf-8"))
+    assert pointer["schema_version"] == "1.0.0"
+    manifest = TECH_ROOT / "evidence" / pointer["evidence_set_id"] / "evidence-manifest.json"
+    assert manifest.is_file(), f"current evidence manifest missing: {manifest}"
+    assert hashlib.sha256(manifest.read_bytes()).hexdigest() == pointer["manifest_sha256"]
+    return manifest
 
 
 def _pinned_hash() -> str:
@@ -44,8 +53,8 @@ def test_mirror_is_pinned_to_the_current_machine_bytes() -> None:
     assert _pinned_hash() == hashlib.sha256(MACHINE.read_bytes()).hexdigest()
 
 
-def test_mirror_pin_equals_the_retained_engine_evidence_binding() -> None:
-    manifest = EVIDENCE_MANIFEST.read_text("utf-8")
+def test_mirror_pin_equals_the_current_engine_evidence_binding() -> None:
+    manifest = _current_evidence_manifest().read_text("utf-8")
     bound = set(re.findall(r'"machine_sha256":\s*"([0-9a-f]{64})"', manifest))
     assert bound == {_pinned_hash()}
 

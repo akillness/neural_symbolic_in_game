@@ -6,26 +6,26 @@
       "id": "paper-en",
       "artifact": {
         "path": "paper/latex/en/main.pdf",
-        "bytes": 1496693,
-        "sha256": "d8bfee1dbe6dd99b64bb3ae093225da74d5701eb6f76481d0d5af4b02a043ccc"
+        "bytes": 555249,
+        "sha256": "356a9b8ba01281b38004c4f2e59e433f0880a5e8956fb6386aa3cc751099a5b9"
       },
       "editable_source": {
         "path": "paper/latex/en/main.tex",
-        "bytes": 38340,
-        "sha256": "2820c5237e9b157d52694924f0c3f1ce9c34e835d1681991c658bd0e2408a770"
+        "bytes": 30246,
+        "sha256": "c93f6c8da0e2f946a34938bc9edf66d185a592a1e78998779d986ebb2257aaed"
       }
     },
     {
       "id": "paper-ko",
       "artifact": {
         "path": "paper/latex/ko/main.pdf",
-        "bytes": 1574444,
-        "sha256": "5aed4089bf4a02916697b07fb8a5658c7cb5f656d941c2a73bdef5e3d763bd11"
+        "bytes": 533421,
+        "sha256": "83fe7ee08457d5250369bebe8803c694b81a32cc381c0f6978530206dfd2526b"
       },
       "editable_source": {
         "path": "paper/latex/ko/main.tex",
-        "bytes": 42882,
-        "sha256": "e05c44b392296c1a03eb785dcfbdf049b2f17e398d49e2e7d877b14a87509a15"
+        "bytes": 35172,
+        "sha256": "215b5662c2b794f44609cc5b0ead042856d95b8198b62c26e47a555ac11d1834"
       }
     }
   ],
@@ -61,7 +61,8 @@
       "used_by": [
         "paper/latex/en/main.tex",
         "paper/latex/ko/main.tex"
-      ]
+      ],
+      "publication_role": "current-figure"
     },
     {
       "id": "paper-evidence-regimes",
@@ -107,10 +108,8 @@
           "sha256": "ed0825aff27c7f4d8022e9d717ce47abbba233af6c9546b69191cc0843e1b703"
         }
       ],
-      "used_by": [
-        "paper/latex/en/main.tex",
-        "paper/latex/ko/main.tex"
-      ]
+      "used_by": [],
+      "publication_role": "retained-optional"
     },
     {
       "id": "paper-npc-screening",
@@ -136,8 +135,8 @@
       ],
       "generator": {
         "path": "scripts/generate_npc_paper_results.py",
-        "bytes": 28794,
-        "sha256": "a0acbd7bf9c6a9785f178b6dfcb0c2888e0c2d5ac98fe0f9c700ac48b1c7ca77"
+        "bytes": 31606,
+        "sha256": "d7c4852b13f237d9ecc285caf53739d727d1fe2ed8c899a34e5aab5617d2396a"
       },
       "data_sources": [
         {
@@ -166,10 +165,234 @@
           "sha256": "bfeaea97629cc9ae280e2a4d2d0417cb9f36469b416017331cef11fea478a600"
         }
       ],
+      "used_by": [],
+      "publication_role": "retained-optional"
+    },
+    {
+      "id": "paper-disclosure-signals",
+      "kind": "chart",
+      "rendered": [
+        {
+          "path": "paper/latex/figures/fig_disclosure_signals.pdf",
+          "bytes": 92342,
+          "sha256": "2e132951c27aca9e5bfb2bee1e490fccb980e8fa278862e23336c529280e9921"
+        },
+        {
+          "path": "paper/latex/figures/fig_disclosure_signals.png",
+          "bytes": 121126,
+          "sha256": "1d6808a2690b50bfd74783fc26365bbf10e46644c3c13e9284f43b98075702ac"
+        }
+      ],
+      "editable_sources": [
+        {
+          "path": "paper/latex/figures/fig_disclosure_signals.svg",
+          "bytes": 6102,
+          "sha256": "9eabdb6fdb74b18d2456ab5fb96f2e9560e082449ffa351d272e2d2a3acd6026"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_disclosure_paper_results.py",
+        "bytes": 44507,
+        "sha256": "e0e728b0cb3b9111dea173a4c5a342895c5361156e5fe650c1160d18c5381290"
+      },
+      "data_sources": [
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.json",
+          "bytes": 27294,
+          "sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028"
+        },
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.sha256",
+          "bytes": 123,
+          "sha256": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/disclosure-trace.jsonl",
+          "bytes": 1041541,
+          "sha256": "35ef78c889e644f6bd38f43cd136c6f43f880f3a21be15e097077aed0202ac42"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/comparison-summary.json",
+          "bytes": 10153,
+          "sha256": "068a06dad6d882999bd8b3e23a527c4b3d44f3b1ab60e5ab818efcbf17e740a7"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/factual-summary.json",
+          "bytes": 2969,
+          "sha256": "783ffc27d8d1eb0759478bd6b10cebdc0a842cdcef138e433986dad06f76d74d"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/metadata.json",
+          "bytes": 6181,
+          "sha256": "1ae9c299a1970205d7382b17903aaa0a98935c62e08af39815a74b10fcb9179e"
+        },
+        {
+          "path": "src/nesy_game/disclosure.py",
+          "bytes": 47830,
+          "sha256": "01e0c23e507690baf312f5cb681b1dacba69883a5914922e5efa10d2352f94ae"
+        },
+        {
+          "path": "game-track/godot/data/sealed_lighthouse.json",
+          "bytes": 1525,
+          "sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        }
+      ],
       "used_by": [
         "paper/latex/en/main.tex",
         "paper/latex/ko/main.tex"
-      ]
+      ],
+      "publication_role": "current-figure"
+    },
+    {
+      "id": "paper-signal-mechanism",
+      "kind": "diagram",
+      "rendered": [
+        {
+          "path": "paper/latex/figures/fig_signal_mechanism.pdf",
+          "bytes": 68703,
+          "sha256": "bcf475cdebb56c8b1da037d2bf9031bae798f68158b6f1d7cca16fb2cd74ee0d"
+        },
+        {
+          "path": "paper/latex/figures/fig_signal_mechanism.png",
+          "bytes": 106734,
+          "sha256": "31a978ae480e3a4a9e38ba2148b862455fea361234864817e828383dd08e3b6d"
+        }
+      ],
+      "editable_sources": [
+        {
+          "path": "paper/latex/figures/fig_signal_mechanism.svg",
+          "bytes": 3666,
+          "sha256": "bb795f47f38ec0aaeba3a44a4fed2d52a7507410851c53c79726ec16b39bd016"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_signal_explainer.py",
+        "bytes": 34082,
+        "sha256": "c1bd995af89dbd0b12597697bf82eb08ed16154781aeace6b37c34e66d69b8db"
+      },
+      "data_sources": [
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.json",
+          "bytes": 27294,
+          "sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028"
+        },
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.sha256",
+          "bytes": 123,
+          "sha256": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/disclosure-trace.jsonl",
+          "bytes": 1041541,
+          "sha256": "35ef78c889e644f6bd38f43cd136c6f43f880f3a21be15e097077aed0202ac42"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/comparison-summary.json",
+          "bytes": 10153,
+          "sha256": "068a06dad6d882999bd8b3e23a527c4b3d44f3b1ab60e5ab818efcbf17e740a7"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/factual-summary.json",
+          "bytes": 2969,
+          "sha256": "783ffc27d8d1eb0759478bd6b10cebdc0a842cdcef138e433986dad06f76d74d"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/metadata.json",
+          "bytes": 6181,
+          "sha256": "1ae9c299a1970205d7382b17903aaa0a98935c62e08af39815a74b10fcb9179e"
+        },
+        {
+          "path": "src/nesy_game/disclosure.py",
+          "bytes": 47830,
+          "sha256": "01e0c23e507690baf312f5cb681b1dacba69883a5914922e5efa10d2352f94ae"
+        },
+        {
+          "path": "game-track/godot/data/sealed_lighthouse.json",
+          "bytes": 1525,
+          "sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        }
+      ],
+      "used_by": [
+        "paper/latex/en/main.tex",
+        "paper/latex/ko/main.tex"
+      ],
+      "publication_role": "current-figure"
+    },
+    {
+      "id": "paper-signal-comparison",
+      "kind": "chart",
+      "rendered": [
+        {
+          "path": "paper/latex/figures/fig_signal_comparison.pdf",
+          "bytes": 137751,
+          "sha256": "ccae6ad0a6f025af0a046debae9b9be51a7316636b4440cc1fda4161d7a18c49"
+        },
+        {
+          "path": "paper/latex/figures/fig_signal_comparison.png",
+          "bytes": 209431,
+          "sha256": "9d36ef51d7bae92bc928706b227ad0aefa7e81f7854a07fa264c4180e41f694a"
+        }
+      ],
+      "editable_sources": [
+        {
+          "path": "paper/latex/figures/fig_signal_comparison.svg",
+          "bytes": 8355,
+          "sha256": "8f7f6dd179f8480f04d7e8dd9b16f0ca31e4a55f02dd6b5c777033e8fa57f139"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_signal_explainer.py",
+        "bytes": 34082,
+        "sha256": "c1bd995af89dbd0b12597697bf82eb08ed16154781aeace6b37c34e66d69b8db"
+      },
+      "data_sources": [
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.json",
+          "bytes": 27294,
+          "sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028"
+        },
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.sha256",
+          "bytes": 123,
+          "sha256": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/disclosure-trace.jsonl",
+          "bytes": 1041541,
+          "sha256": "35ef78c889e644f6bd38f43cd136c6f43f880f3a21be15e097077aed0202ac42"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/comparison-summary.json",
+          "bytes": 10153,
+          "sha256": "068a06dad6d882999bd8b3e23a527c4b3d44f3b1ab60e5ab818efcbf17e740a7"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/factual-summary.json",
+          "bytes": 2969,
+          "sha256": "783ffc27d8d1eb0759478bd6b10cebdc0a842cdcef138e433986dad06f76d74d"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/metadata.json",
+          "bytes": 6181,
+          "sha256": "1ae9c299a1970205d7382b17903aaa0a98935c62e08af39815a74b10fcb9179e"
+        },
+        {
+          "path": "src/nesy_game/disclosure.py",
+          "bytes": 47830,
+          "sha256": "01e0c23e507690baf312f5cb681b1dacba69883a5914922e5efa10d2352f94ae"
+        },
+        {
+          "path": "game-track/godot/data/sealed_lighthouse.json",
+          "bytes": 1525,
+          "sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        }
+      ],
+      "used_by": [],
+      "publication_role": "retained-optional",
+      "represented_by": {
+        "table_source_id": "disclosure-paper-tables",
+        "anchor": "tab:disclosure-arms"
+      }
     },
     {
       "id": "direction-consensus-gate-lanes",
@@ -302,13 +525,13 @@
       "layout_sources": [
         {
           "path": "paper/latex/en/main.tex",
-          "bytes": 38340,
-          "sha256": "2820c5237e9b157d52694924f0c3f1ce9c34e835d1681991c658bd0e2408a770"
+          "bytes": 30246,
+          "sha256": "c93f6c8da0e2f946a34938bc9edf66d185a592a1e78998779d986ebb2257aaed"
         },
         {
           "path": "paper/latex/ko/main.tex",
-          "bytes": 42882,
-          "sha256": "e05c44b392296c1a03eb785dcfbdf049b2f17e398d49e2e7d877b14a87509a15"
+          "bytes": 35172,
+          "sha256": "215b5662c2b794f44609cc5b0ead042856d95b8198b62c26e47a555ac11d1834"
         }
       ],
       "generator": null,
@@ -322,6 +545,79 @@
         "tab:validators",
         "alg:commit",
         "tab:rho-rules"
+      ]
+    },
+    {
+      "id": "disclosure-paper-tables",
+      "kind": "table",
+      "layout_sources": [
+        {
+          "path": "paper/latex/generated/disclosure_tables_en.tex",
+          "bytes": 3374,
+          "sha256": "3d3ee870fd5055afcc36829d43896944f4288bdff5db9ce6bf8444563a158ff9"
+        },
+        {
+          "path": "paper/latex/generated/disclosure_tables_ko.tex",
+          "bytes": 3599,
+          "sha256": "1e522aa04d029dcc6790e0ed2ed60126870f2a438c00f7efb0c24e4203be1101"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_disclosure_paper_results.py",
+        "bytes": 44507,
+        "sha256": "e0e728b0cb3b9111dea173a4c5a342895c5361156e5fe650c1160d18c5381290"
+      },
+      "data_sources": [
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.json",
+          "bytes": 27294,
+          "sha256": "9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028"
+        },
+        {
+          "path": "research/npc-disclosure/reveal-hint-expectations-v1.sha256",
+          "bytes": 123,
+          "sha256": "507758bcdb0cc1a805353dbb350bfbf42fd8d249b814597ec235365f3ef0feb6"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/disclosure-trace.jsonl",
+          "bytes": 1041541,
+          "sha256": "35ef78c889e644f6bd38f43cd136c6f43f880f3a21be15e097077aed0202ac42"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/comparison-summary.json",
+          "bytes": 10153,
+          "sha256": "068a06dad6d882999bd8b3e23a527c4b3d44f3b1ab60e5ab818efcbf17e740a7"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/factual-summary.json",
+          "bytes": 2969,
+          "sha256": "783ffc27d8d1eb0759478bd6b10cebdc0a842cdcef138e433986dad06f76d74d"
+        },
+        {
+          "path": "research/npc-disclosure/results-signal-explainer-20261023-r5/metadata.json",
+          "bytes": 6181,
+          "sha256": "1ae9c299a1970205d7382b17903aaa0a98935c62e08af39815a74b10fcb9179e"
+        },
+        {
+          "path": "src/nesy_game/disclosure.py",
+          "bytes": 47830,
+          "sha256": "01e0c23e507690baf312f5cb681b1dacba69883a5914922e5efa10d2352f94ae"
+        },
+        {
+          "path": "game-track/godot/data/sealed_lighthouse.json",
+          "bytes": 1525,
+          "sha256": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"
+        }
+      ],
+      "readable_sources": [],
+      "rendered_in": [
+        "paper-en",
+        "paper-ko"
+      ],
+      "anchors": [
+        "tab:disclosure-contract",
+        "tab:disclosure-arms",
+        "tab:disclosure-fixtures"
       ]
     },
     {
@@ -341,8 +637,8 @@
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 51740,
-        "sha256": "9ccaac8016a7ce21c91dbc9074d6d9342fb6873848630833bd0293e2d90ff27a"
+        "bytes": 48358,
+        "sha256": "6350223e4b9bfa570120e2a968cfe02717154e5e780572bfa88005e9cf89d3f8"
       },
       "data_sources": [
         {
@@ -378,8 +674,8 @@
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 51740,
-        "sha256": "9ccaac8016a7ce21c91dbc9074d6d9342fb6873848630833bd0293e2d90ff27a"
+        "bytes": 48358,
+        "sha256": "6350223e4b9bfa570120e2a968cfe02717154e5e780572bfa88005e9cf89d3f8"
       },
       "data_sources": [
         {
@@ -438,19 +734,19 @@
         },
         {
           "path": "paper/latex/generated/npc_results_en.tex",
-          "bytes": 2601,
-          "sha256": "1f0707462322e5417ddb91735f3bf20c5230883b1cfdd2145862787fdbc809fd"
+          "bytes": 2808,
+          "sha256": "3b990dbab0d9a992462a5756a631aef5b5eac39d31243ba1808a63724ca1fce7"
         },
         {
           "path": "paper/latex/generated/npc_results_ko.tex",
-          "bytes": 2834,
-          "sha256": "c1d8d22af864dcf60782a54adc46e7867c9d07c879232fd25bf4fdc80766584d"
+          "bytes": 3046,
+          "sha256": "28df5b3f5e554b3053f44c946feedb9ed15c4f7651400f3753c1aa7d81006837"
         }
       ],
       "generator": {
         "path": "scripts/generate_npc_paper_results.py",
-        "bytes": 28794,
-        "sha256": "a0acbd7bf9c6a9785f178b6dfcb0c2888e0c2d5ac98fe0f9c700ac48b1c7ca77"
+        "bytes": 31606,
+        "sha256": "d7c4852b13f237d9ecc285caf53739d727d1fe2ed8c899a34e5aab5617d2396a"
       },
       "data_sources": [
         {
@@ -540,8 +836,8 @@
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 51740,
-        "sha256": "9ccaac8016a7ce21c91dbc9074d6d9342fb6873848630833bd0293e2d90ff27a"
+        "bytes": 48358,
+        "sha256": "6350223e4b9bfa570120e2a968cfe02717154e5e780572bfa88005e9cf89d3f8"
       },
       "data_sources": [
         {
@@ -877,8 +1173,8 @@
         },
         {
           "path": "game-track/godot/scripts/game3d/game_3d.gd",
-          "bytes": 174477,
-          "sha256": "a17361b8f17fbfd6392ebcd754dbc89ccb1b9a57e016108a0fc667a076c6cfd0"
+          "bytes": 196644,
+          "sha256": "eec3427a69e84729021e6616b9695012036d48fb4a0a73fd68167069cf09f2f7"
         },
         {
           "path": "game-track/godot/scripts/game3d/harbor_ledger_ui.gd",

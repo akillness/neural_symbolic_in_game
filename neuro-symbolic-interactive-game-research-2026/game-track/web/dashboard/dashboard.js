@@ -102,6 +102,9 @@
     pinnedVerdict: null,
     metMira: false,
     lastTickAt: null,
+    disclosureEvents: [],
+    latestExplanation: null,
+    comparison: null,
   };
   window.__traceDashboard = state;
 
@@ -539,7 +542,7 @@
   function renderGateTable() {
     const table = $("gate-table");
     const max = Math.max(1, ...Object.values(state.holdsByGate));
-    const ref = state.reference ? state.reference.paper_predicates : [];
+    const ref = Array.isArray(state.reference?.paper_predicates) ? state.reference.paper_predicates : [];
     const rows = FAMILIES.map((f) => {
       const meta = ref.find((r) => r.family === f) || { symbol: "", engine_codes: [] };
       const n = state.holdsByGate[f] || 0;
@@ -560,6 +563,7 @@
     const r = state.reference;
     const table = $("ref-table");
     if (!r) { table.innerHTML = `<tr><td class="hint">paper-reference.json not loaded</td></tr>`; return; }
+    if (!r.e1 || !r.e1.repair_arms) { table.innerHTML = `<tr><td class="hint">Legacy paper counts are not present in this semantic reference; live and frozen lanes stay separate.</td></tr>`; return; }
     const ga = r.e1.repair_arms.guided_repair, ua = r.e1.repair_arms.unchanged_retry;
     const blindCommits = ua.guided_repairable.commits + ua.oracle_only.commits + ua.irreparable.commits;
     const blindCases = ua.guided_repairable.cases + ua.oracle_only.cases + ua.irreparable.cases;
@@ -584,6 +588,213 @@
     $("kpi-episode").textContent = state.episodeOver ? "complete" : "open";
     $("session-hash").textContent = `state ${short(summary.state_sha256)}`;
     renderQuest(summary);
+  }
+  // ------------------------------------------------------------------ public semantic disclosure lane
+  // Only the additive, public-safe explanation contract is consumed here. Unknown
+  // or malformed values remain unknown; the dashboard never turns absence into pass.
+  const HASH_RE = /^[a-f0-9]{64}$/i;
+  const safeToken = (value, fallback = "unknown") => {
+    if (typeof value !== "string") return fallback;
+    const token = value.trim().slice(0, 120);
+    return token && /^[A-Za-z0-9_.:/+ -]+$/.test(token) ? token : fallback;
+  };
+  const safeHash = (value) => typeof value === "string" && HASH_RE.test(value) ? value.toLowerCase() : null;
+  const EXPLANATION_SCHEMA_ID = "trace-rpg-semantic-explanation";
+  const EXPLANATION_SCHEMA_VERSION = "1.0.0";
+  const PUBLIC_OPERATION_CODES = new Set(["reveal_hint"]);
+  const PUBLIC_ACTOR_ROLES = new Set(["captain", "unknown/restricted"]);
+  const PUBLIC_SUBJECT_TYPES = new Set(["lead", "unknown/restricted"]);
+  const PUBLIC_RELATIONS = new Set(["captain_to_lead_disclosure", "unknown/restricted"]);
+  const PUBLIC_DECISIONS = new Set(["authorized_fresh", "authorized_redisplay", "denied"]);
+  const PUBLIC_STATE_EFFECTS = new Set(["fresh_disclosure", "redisplay_no_mutation", "denied_no_mutation"]);
+  const PUBLIC_CHECK_CODES = new Set(["FORBIDDEN_DISCLOSURE", "STAGE_GATED_DISCLOSURE", "UNKNOWN_ACTOR", "NPC_DOES_NOT_KNOW_FACT", "DISCLOSURE_TEMPLATE_UNAVAILABLE"]);
+  const PUBLIC_GATE_LABELS = new Set([...FAMILIES, "DISCLOSURE/QUEST STAGE"]);
+  const DISCLOSURE_RULE_IDS = new Set(["DISC-001", "DISC-002", "DISC-003", "DISC-004", "DISC-005", "DISC-006", "DISC-007"]);
+  const publicEnum = (value, allowed) => typeof value === "string" && allowed.has(value) ? value : "unknown";
+  const safeRuleId = (value) => DISCLOSURE_RULE_IDS.has(value) ? value : "unknown";
+  const boolOrUnknown = (value) => typeof value === "boolean" ? value : null;
+  const numberOrUnknown = (value) => Number.isSafeInteger(value) && value >= 0 ? value : null;
+  function normalizeExplanation(payload, envelope) {
+    const raw = payload && typeof payload.explanation === "object" && payload.explanation !== null ? payload.explanation : null;
+    if (!raw || raw.schema_id !== EXPLANATION_SCHEMA_ID || raw.schema_version !== EXPLANATION_SCHEMA_VERSION) return null;
+    const input = raw.input && typeof raw.input === "object" ? raw.input : {};
+    const ontology = raw.ontology && typeof raw.ontology === "object" ? raw.ontology : {};
+    const checks = raw.checks && typeof raw.checks === "object" ? raw.checks : {};
+    const decision = raw.decision && typeof raw.decision === "object" ? raw.decision : {};
+    const effect = raw.state_effect && typeof raw.state_effect === "object" ? raw.state_effect : {};
+    const engine = raw.engine && typeof raw.engine === "object" ? raw.engine : {};
+    const mapCheck = (item) => item && typeof item === "object" ? { code: publicEnum(item.code, PUBLIC_CHECK_CODES), gate: publicEnum(item.gate, PUBLIC_GATE_LABELS), outcome: item.outcome === "pass" || item.outcome === "fail" ? item.outcome : "unknown" } : { code: "unknown", gate: "unknown", outcome: "unknown" };
+    const evaluated = Array.isArray(checks.evaluated) ? checks.evaluated.map(mapCheck) : null;
+    const skipped = Array.isArray(checks.skipped) ? checks.skipped.map(mapCheck) : null;
+    const outOfScope = Array.isArray(checks.out_of_scope) ? checks.out_of_scope.map((value) => publicEnum(value, PUBLIC_GATE_LABELS)).slice(0, 12) : null;
+    const unreported = Array.isArray(checks.unreported) ? checks.unreported.map(mapCheck) : null;
+    const priorHash = safeHash(effect.prior_state_hash);
+    const nextHash = safeHash(effect.next_state_hash);
+    const hashEquality = priorHash && nextHash ? (priorHash === nextHash ? "equal" : "different") : "unknown";
+    const seq = numberOrUnknown(engine.seq) ?? numberOrUnknown(envelope.seq);
+    const tMs = numberOrUnknown(engine.t_ms) ?? numberOrUnknown(envelope.t_ms);
+    return {
+      schema: `${EXPLANATION_SCHEMA_ID} ${EXPLANATION_SCHEMA_VERSION}`,
+      input: { operation: publicEnum(input.operation, PUBLIC_OPERATION_CODES), actorRole: publicEnum(input.actor_role, PUBLIC_ACTOR_ROLES), subjectType: publicEnum(input.subject_type, PUBLIC_SUBJECT_TYPES) },
+      ontology: { relation: publicEnum(ontology.relation, PUBLIC_RELATIONS), ruleIds: Array.isArray(ontology.rule_ids) ? ontology.rule_ids.map(safeRuleId).slice(0, 16) : [] },
+      checks: { evaluated, skipped, outOfScope, unreported, consistent: boolOrUnknown(checks.consistent) },
+      decision: { outcome: publicEnum(decision.outcome, PUBLIC_DECISIONS), accepted: boolOrUnknown(decision.accepted), resultCodes: Array.isArray(decision.result_codes) ? decision.result_codes.map((value) => publicEnum(value, PUBLIC_CHECK_CODES)).slice(0, 16) : [] },
+      effect: { kind: publicEnum(effect.kind, PUBLIC_STATE_EFFECTS), mutated: boolOrUnknown(effect.mutated), priorHash, nextHash, hashEquality },
+      engine: { seq, tMs },
+    };
+  }
+  function displayValue(value) { return value === null || value === undefined || value === "" ? "unknown" : String(value); }
+  function renderSemanticExplanation(explanation, hasEvent = false) {
+    const root = $("semantic-explanation");
+    clearChildren(root);
+    if (!explanation) {
+      const note = document.createElement("p"); note.className = `empty-note ${hasEvent ? "unknown" : "waiting"}`; note.textContent = hasEvent ? "Semantic explanation unknown: malformed or unavailable public-safe payload." : "Waiting for a disclosure outcome or replay from the game."; root.appendChild(note); return;
+    }
+    const checkCount = (value) => Array.isArray(value) ? value.length : "unknown";
+    const checksKnown = [explanation.checks.evaluated, explanation.checks.skipped, explanation.checks.outOfScope, explanation.checks.unreported].every(Array.isArray) && explanation.checks.consistent === true && explanation.checks.unreported.length === 0;
+    const unreportedCodes = explanation.checks.unreported === null ? "unknown" : explanation.checks.unreported.map((check) => check.code).join(", ") || "none";
+    const steps = [
+      ["Typed input", `${explanation.input.operation}`, `actor role: ${displayValue(explanation.input.actorRole)} · subject: ${displayValue(explanation.input.subjectType)}`, "known"],
+      ["Ontology relation", explanation.ontology.relation, explanation.ontology.ruleIds.length ? `rules: ${explanation.ontology.ruleIds.join(", ")}` : "rules: unknown", "known"],
+      ["Actual checks", `${checkCount(explanation.checks.evaluated)} evaluated · ${checkCount(explanation.checks.skipped)} skipped · ${checkCount(explanation.checks.unreported)} unreported`, `${checkCount(explanation.checks.outOfScope)} out of scope · consistent: ${displayValue(explanation.checks.consistent)} · unreported: ${unreportedCodes}`, checksKnown ? "known" : "unknown"],
+      ["Decision", explanation.decision.outcome, `accepted: ${displayValue(explanation.decision.accepted)} · codes: ${explanation.decision.resultCodes.join(", ") || "none reported"}`, explanation.decision.outcome === "unknown" ? "unknown" : "known"],
+      ["State transition", explanation.effect.kind, `mutated: ${displayValue(explanation.effect.mutated)} · hashes: ${explanation.effect.hashEquality}`, explanation.effect.hashEquality === "unknown" ? "unknown" : "known"],
+      ["Engine record", `seq ${displayValue(explanation.engine.seq)}`, `t_ms ${displayValue(explanation.engine.tMs)} · ${explanation.schema}`, explanation.engine.seq === null || explanation.engine.tMs === null ? "unknown" : "known"],
+    ];
+    for (const [heading, value, detail, status] of steps) {
+      const article = document.createElement("article"); article.className = "semantic-step"; article.dataset.state = status;
+      const h = document.createElement("h3"); h.textContent = heading;
+      const p = document.createElement("p"); p.textContent = value;
+      const small = document.createElement("span"); small.className = "semantic-detail"; small.textContent = detail;
+      article.append(h, p, small); root.appendChild(article);
+    }
+  }
+  function renderDisclosureTimeline() {
+    const svg = $("disclosure-timeline"), list = $("disclosure-events"), clock = $("timeline-clock"), status = $("disclosure-live-status");
+    clearChildren(svg); clearChildren(list);
+    const events = [...state.disclosureEvents].sort((a, b) => (a.seq ?? Number.MAX_SAFE_INTEGER) - (b.seq ?? Number.MAX_SAFE_INTEGER) || (a.tMs ?? Number.MAX_SAFE_INTEGER) - (b.tMs ?? Number.MAX_SAFE_INTEGER));
+    if (!events.length) {
+      status.textContent = "waiting for disclosure events"; clock.textContent = "engine clock: waiting";
+      const li = document.createElement("li"); li.className = "empty-note"; li.textContent = "Waiting for disclosure_outcome or disclosure_replay events."; list.appendChild(li); return;
+    }
+    const knownTimes = events.map((event) => event.tMs).filter((value) => value !== null);
+    const minTime = knownTimes.length ? Math.min(...knownTimes) : null;
+    const maxTime = knownTimes.length ? Math.max(...knownTimes) : null;
+    const completeClock = knownTimes.length === events.length;
+    clock.textContent = minTime === null ? "engine clock: unknown (t_ms not reported); positions show event order" : !completeClock ? "engine clock: incomplete (some t_ms unreported); positions show event order" : `engine clock: t_ms milliseconds · ${minTime}–${maxTime}`;
+    status.textContent = `${events.length} disclosure signal${events.length === 1 ? "" : "s"} · ordered by engine seq/t_ms`;
+    const xFor = (event, index) => !completeClock || maxTime === minTime ? 100 + index * (800 / Math.max(1, events.length - 1)) : 100 + ((event.tMs - minTime) / (maxTime - minTime)) * 800;
+    const lanes = [{ label: "outcome", y: 48 }, { label: "state effect", y: 100 }, { label: "hash equality", y: 152 }];
+    lanes.forEach((lane) => { el("line", { x1: 88, y1: lane.y, x2: 990, y2: lane.y, stroke: COLORS.line }, svg); const text = el("text", { x: 8, y: lane.y + 4, "font-size": 11, fill: COLORS.muted }, svg); text.textContent = lane.label; });
+    events.forEach((event, index) => {
+      const eventKnown = Boolean(event.explanation && event.explanation.decision.outcome !== "unknown" && event.explanation.effect.kind !== "unknown");
+      const x = xFor(event, index), outcomeColor = event.explanation?.decision.outcome === "denied" ? COLORS.coral : eventKnown ? COLORS.green : COLORS.amber;
+      el("line", { x1: x, y1: 30, x2: x, y2: 166, stroke: outcomeColor, "stroke-width": 1, opacity: 0.55 }, svg);
+      el("circle", { cx: x, cy: 48, r: 6, fill: outcomeColor }, svg);
+      const effect = event.explanation?.effect.kind || "unknown";
+      el("rect", { x: x - 5, y: 95, width: 10, height: 10, fill: effect === "unknown" ? COLORS.amber : COLORS.blue, rx: 2 }, svg);
+      const equality = event.explanation?.effect.hashEquality || "unknown";
+      el("circle", { cx: x, cy: 152, r: 6, fill: equality === "equal" ? COLORS.green : equality === "different" ? COLORS.coral : COLORS.amber }, svg);
+      const label = el("text", { x, y: 20, "font-size": 9, "text-anchor": "middle", fill: outcomeColor }, svg); label.textContent = `#${displayValue(event.seq)}`;
+      const li = document.createElement("li"); li.className = "disclosure-event"; li.dataset.outcome = event.explanation?.decision.outcome === "denied" ? "denied" : eventKnown ? "known" : "unknown";
+      const indexNode = document.createElement("span"); indexNode.className = "event-index"; indexNode.textContent = `#${index + 1}`;
+      const main = document.createElement("div"); main.className = "event-main";
+      const head = document.createElement("div"); head.className = "event-head"; head.textContent = `${event.kind} · ${event.explanation?.decision.outcome || "unknown outcome"}`;
+      const meta = document.createElement("div"); meta.className = "event-meta";
+      const e = event.explanation;
+      meta.textContent = `seq ${displayValue(event.seq)} · t_ms ${displayValue(event.tMs)} · checks ${e ? `${e.checks.evaluated?.length ?? "unknown"} evaluated, ${e.checks.skipped?.length ?? "unknown"} skipped, ${e.checks.outOfScope?.length ?? "unknown"} out of scope, ${e.checks.unreported?.length ?? "unknown"} unreported` : "unknown"} · errors ${e ? (e.decision.resultCodes.join(", ") || "none reported") : "unknown"} · state ${e?.effect.kind || "unknown"} · hash equality ${e?.effect.hashEquality || "unknown"}`;
+      main.append(head, meta); li.append(indexNode, main); list.appendChild(li);
+    });
+  }
+  function comparisonEntries(reference) {
+    const comparison = reference?.frozen_comparison;
+    if (!comparison || typeof comparison !== "object") return [];
+    const labels = { unchecked_isolated: "Unchecked isolated", general_rule: "General rule", ontology_gate: "Ontology gate" };
+    const fromArm = (id, arm, index) => {
+      const strata = comparison.cells?.[id] && typeof comparison.cells[id] === "object" ? comparison.cells[id] : {};
+      const outcome = Object.values(strata).reduce((sum, cell) => sum + (cell?.report_status === "reported" && typeof cell.n === "number" ? cell.n : 0), 0);
+      return { id: safeToken(id, `arm-${index + 1}`), label: safeToken(arm?.label, labels[id] || id || `arm ${index + 1}`), counts: arm?.counts && typeof arm.counts === "object" ? arm.counts : { outcome, unsafe: comparison.counts?.unsafe_by_arm?.[id], mismatch: comparison.counts?.mismatch_by_arm?.[id] } };
+    };
+    if (Array.isArray(comparison.arms)) return comparison.arms.map((arm, index) => fromArm(typeof arm === "string" ? arm : arm?.id, typeof arm === "string" ? null : arm, index));
+    return Object.entries(comparison.arms || {}).map(([id, arm], index) => fromArm(id, arm, index));
+  }
+  function comparisonCells(comparison, entries) {
+    if (Array.isArray(comparison?.cells)) return comparison.cells;
+    return entries.flatMap((entry) => Object.entries(comparison?.cells?.[entry.id] || {}).map(([caseClass, cell]) => ({ ...cell, arm: entry.label, case_class: caseClass })));
+  }
+  function metricValue(counts, metric, aliases = []) {
+    const candidate = counts?.[metric];
+    if (typeof candidate === "number" && Number.isFinite(candidate)) return candidate;
+    if (candidate && typeof candidate === "object") {
+      if (typeof candidate.count === "number" && Number.isFinite(candidate.count)) return candidate.count;
+      for (const alias of aliases) {
+        const value = candidate[alias];
+        if (typeof value === "number" && Number.isFinite(value)) return value;
+        if (value && typeof value.count === "number" && Number.isFinite(value.count)) return value.count;
+      }
+    }
+    return null;
+  }
+  function metricForEntry(entry, metric, comparison) {
+    return metricValue(entry.counts, metric, [entry.id, entry.label]) ?? metricValue(comparison?.counts, metric, [entry.id, entry.label]);
+  }
+  function renderRuleBoundaries(reference) {
+    const root = $("rule-boundaries"); if (!root) return; clearChildren(root);
+    const rules = reference?.disclosure_rules;
+    const entries = [["python7", "Original Python: seven Boolean checks"], ["godot6", "Godot: six display families"], ["disclosure7", "Disclosure: seven declaration rules"]];
+    for (const [key, title] of entries) {
+      const item = document.createElement("article"); item.className = "rule-boundary";
+      const heading = document.createElement("h3"); heading.textContent = title;
+      const body = document.createElement("p"); const value = rules && typeof rules[key] === "object" ? rules[key] : null;
+      const count = Array.isArray(value) ? `count ${value.length}` : value && typeof value.count === "number" ? `count ${value.count}` : "count unknown";
+      const label = Array.isArray(value) ? "public labels only; no runtime equivalence inferred" : value && typeof value.label === "string" ? safeToken(value.label) : "public rule boundary not reported";
+      body.textContent = `${label} · ${count}`; item.append(heading, body); root.appendChild(item);
+    }
+  }
+  function formatCaseCounts(comparison) {
+    const cases = comparison?.case_counts;
+    if (cases && typeof cases === "object") {
+      const normal = cases.normal ?? cases.N ?? cases.n;
+      const boundary = cases.boundary ?? cases.B ?? cases.b;
+      const malformed = cases.malformed ?? cases.M ?? cases.m;
+      if ([normal, boundary, malformed].every((value) => typeof value === "number")) return `N=${normal} · B=${boundary} · M=${malformed}`;
+    }
+    const strata = comparison?.cells?.general_rule || comparison?.cells?.ontology_gate || comparison?.cells?.unchecked_isolated;
+    const normal = strata?.normal?.n, boundary = strata?.boundary?.n, malformed = strata?.malformed?.n;
+    if ([normal, boundary, malformed].every((value) => typeof value === "number")) return `N=${normal} · B=${boundary} · M=${malformed}`;
+    return typeof comparison?.denominator === "string" ? comparison.denominator : "60 inputs × 3 arms";
+  }
+  function renderComparison() {
+    const graph = $("comparison-graph"), legend = $("comparison-legend"), matrix = $("comparison-matrix"), status = $("comparison-status"), claim = $("comparison-claim-boundary");
+    clearChildren(graph); clearChildren(legend); clearChildren(matrix); renderRuleBoundaries(null);
+    const reference = state.reference, comparison = reference?.frozen_comparison, claims = comparison?.claim_boundary, cases = comparison?.case_counts;
+    const trusted = reference?.schema_version === "trace-rpg-signal-explainer/v1"
+      && comparison?.independent_inputs === 60
+      && cases?.normal === 48 && cases?.boundary === 4 && cases?.malformed === 8 && cases?.total === 60
+      && comparison?.counts?.general_ontology_equal === 60
+      && claims?.engineering_only === true && claims?.not_efficacy === true
+      && claims?.not_holdout === true && claims?.not_human_gold === true
+      && claims?.not_ontology_superiority === true && claims?.not_player_benefit === true;
+    const entries = trusted ? comparisonEntries(reference) : [];
+    if (!trusted || !entries.length) {
+      status.textContent = "frozen comparison unavailable · no live values inferred";
+      claim.textContent = "Bounded checker evidence unavailable or invalid. No superiority, holdout, human-gold, player-benefit, efficacy, or latent-state claim is inferred.";
+      matrix.innerHTML = `<tr><td class="hint">Frozen comparison is unavailable or malformed. Cells remain unreported.</td></tr>`;
+      return;
+    }
+    renderRuleBoundaries(reference);
+    claim.textContent = "Declaration-derived bounded checker evidence: general-rule and ontology-gate outputs agree on 60/60 inputs. This is engineering-only fixture agreement, not ontology superiority, holdout or human-gold, player-benefit, efficacy, or latent-state evidence.";
+    const metrics = ["outcome", "unsafe", "mismatch"], colors = { outcome: COLORS.blue, unsafe: COLORS.coral, mismatch: COLORS.amber };
+    status.textContent = `${formatCaseCounts(comparison)} · frozen independent lane`;
+    const max = Math.max(1, ...entries.flatMap((entry) => metrics.map((metric) => metricForEntry(entry, metric, comparison) ?? 0)));
+    entries.forEach((entry, armIndex) => {
+      const y = 36 + armIndex * 68; const label = el("text", { x: 8, y, "font-size": 11, fill: COLORS.ink }, graph); label.textContent = entry.label;
+      metrics.forEach((metric, metricIndex) => { const value = metricForEntry(entry, metric, comparison); const x = 245, rowY = y + metricIndex * 18; el("rect", { x, y: rowY - 12, width: value === null ? 6 : Math.max(0, (graph.viewBox.baseVal.width - x - 18) * value / max), height: 14, fill: value === null ? "none" : colors[metric], stroke: colors[metric], "stroke-dasharray": value === null ? "3 3" : "", rx: 3 }, graph); const text = el("text", { x: 130, y: rowY + 1, "font-size": 10, fill: COLORS.ink }, graph); text.textContent = `${metric}: ${value === null ? "unknown" : value}`; });
+    });
+    metrics.forEach((metric) => { const span = document.createElement("span"); const b = document.createElement("b"); b.textContent = metric; span.append(b, document.createTextNode(metric === "outcome" ? " recorded result" : metric === "unsafe" ? " unsafe classification" : " mismatch classification")); legend.appendChild(span); });
+    const cells = comparisonCells(comparison, entries);
+    const rows = cells.slice(0, 180).map((cell, index) => { const reportStatus = cell?.checks && typeof cell.checks === "object" ? (cell.checks.report_status === "reported" ? "reported" : "unreported") : cell?.report_status === "reported" ? "reported" : "unreported"; const outcomeValue = typeof cell?.outcome === "string" ? safeToken(cell.outcome) : cell?.outcome && typeof cell.outcome === "object" ? Object.entries(cell.outcome).filter(([, value]) => typeof value === "number").map(([key, value]) => `${safeToken(key)} ${value}`).join(" · ") || "unknown" : "unknown"; const outcome = outcomeValue; const unsafe = displayValue(cell.unsafe); const mismatch = displayValue(cell.mismatch); return `<tr><td class="mono">${index + 1}</td><td>${safeToken(cell?.arm, "unknown")}</td><td>${safeToken(cell?.case_class, "unknown")}</td><td>${displayValue(cell?.n)}</td><td data-status="${reportStatus}">${reportStatus}</td><td>${outcome}</td><td>${unsafe}</td><td>${mismatch}</td></tr>`; });
+    matrix.innerHTML = `<tr><th>cell slice</th><th>arm</th><th>case class</th><th>n</th><th>check coverage</th><th>outcome</th><th>unsafe</th><th>mismatch</th></tr>${rows.join("") || `<tr><td colspan="8" class="hint">No cells reported; empty cells are unreported, not pass, skipped, or out of scope.</td></tr>`}`;
   }
 
   // ------------------------------------------------------------------ timeline
@@ -747,10 +958,10 @@
   function resetSessionPresentation() {
     state.counts={commits:0,holds:0,proposals:0,dialogues:0}; state.holdsByGate=Object.fromEntries(FAMILIES.map((f)=>[f,0])); state.codeCounts={}; state.nodeWeight={};
     state.familyEval=Object.fromEntries(FAMILIES.map((f)=>[f,{evaluated:0,passed:0,failed:0}])); state.familyState=Object.fromEntries(FAMILIES.map((f)=>[f,"idle"]));
-    state.lastTrace=null;state.legendRows=[];state.legacyEvents=0;state.traceErrors=0;state.pendingOperation="";state.hashChain=[];state.lastSummary=null;state.lastTick=null;state.lastTickAt=null;state.events=[];state.trail=[];state.player=null;state.focus="";state.lastHoldGates=[];state.episodeOver=false;
+    state.lastTrace=null;state.legendRows=[];state.legacyEvents=0;state.traceErrors=0;state.pendingOperation="";state.hashChain=[];state.lastSummary=null;state.lastTick=null;state.lastTickAt=null;state.events=[];state.disclosureEvents=[];state.latestExplanation=null;state.trail=[];state.player=null;state.focus="";state.lastHoldGates=[];state.episodeOver=false;
     state.verdicts=[];state.selectedVerdictId=null;state.verdictSerial=0;state.readoutFrozen=false;state.pinnedVerdict=null;state.metMira=false;state.startedAt=performance.now(); clearChildren($("log"));$("log-count").textContent="0 events";
     $("kpi-commits").textContent="0";$("kpi-holds").textContent="0";$("kpi-stage").textContent="—";$("kpi-revision").textContent="0";$("kpi-facts").textContent="0";$("kpi-episode").textContent="waiting";
-    resetEdges();FAMILIES.forEach((f)=>setFamilyState(f,"idle"));setTerminalState("commit","terminal_idle");setTerminalState("hold","terminal_idle");renderLegend();renderLastTrace();renderGateTable();renderReference();renderChain();renderQuest(null);renderVerdictHistory();renderMinimap();renderTimeline();updateLinkState();
+    resetEdges();FAMILIES.forEach((f)=>setFamilyState(f,"idle"));setTerminalState("commit","terminal_idle");setTerminalState("hold","terminal_idle");renderLegend();renderLastTrace();renderGateTable();renderReference();renderChain();renderQuest(null);renderVerdictHistory();renderMinimap();renderTimeline();renderSemanticExplanation(null);renderDisclosureTimeline();updateLinkState();
   }
   $("freeze-readout").addEventListener("click",()=>{if(state.readoutFrozen){state.readoutFrozen=false;state.pinnedVerdict=null;const latest=state.verdicts[state.verdicts.length-1];state.selectedVerdictId=latest?latest.id:null;}else{state.readoutFrozen=true;state.pinnedVerdict=state.verdicts.find((item)=>item.id===state.selectedVerdictId)||null;}renderVerdictHistory();});
   $("follow-latest").addEventListener("click",()=>{state.readoutFrozen=false;state.pinnedVerdict=null;const latest=state.verdicts[state.verdicts.length-1];state.selectedVerdictId=latest?latest.id:null;renderVerdictHistory();});
@@ -814,6 +1025,19 @@
         renderKpis(payload); renderGateTable(); renderReference();
         logLine("hold", `${payload.codes.join(", ")} · gate ${payload.gates.join(", ")} · state unchanged ${short(payload.state_sha256)} · next: ${payload.next_affordance}${traceLogTag()}`);
         break;
+      case "disclosure_outcome":
+      case "disclosure_replay": {
+        const explanation = normalizeExplanation(payload, msg);
+        const event = { kind, seq: explanation?.engine.seq ?? numberOrUnknown(msg.seq), tMs: explanation?.engine.tMs ?? numberOrUnknown(msg.t_ms), explanation, receivedAt: performance.now() };
+        state.disclosureEvents.push(event);
+        if (state.disclosureEvents.length > 180) state.disclosureEvents.shift();
+        state.latestExplanation = explanation;
+        renderSemanticExplanation(explanation, true);
+        renderDisclosureTimeline();
+        record.label = kind;
+        logLine(kind, explanation ? `${explanation.decision.outcome} · ${explanation.effect.kind} · hashes ${explanation.effect.hashEquality}` : "unknown semantic explanation (malformed or unavailable)");
+        break;
+      }
       case "dialogue":
         state.counts.dialogues += 1;
         if (payload.npc === "captain_mira" && payload.phase === "open") { state.metMira = true; renderQuest(); }
@@ -851,13 +1075,14 @@
     try { handle(data); } catch (error) { console.error("dashboard handler failed", error, data); }
   });
 
-  fetch("paper-reference.json")
-    .then((r) => r.json())
-    .then((ref) => { state.reference = ref; renderGateTable(); renderReference(); })
-    .catch(() => { renderGateTable(); renderReference(); });
+  const referenceSource = fetch("disclosure-reference.json").then((response) => { if (!response.ok) throw new Error("semantic reference unavailable"); return response.json(); }).catch(() => fetch("paper-reference.json").then((response) => { if (!response.ok) throw new Error("legacy reference unavailable"); return response.json(); }));
+  referenceSource.then((ref) => { state.reference = ref; renderGateTable(); renderReference(); renderComparison(); }).catch(() => { renderGateTable(); renderReference(); renderComparison(); });
   renderChain();
   renderMinimap();
   renderTimeline();
   renderLegend();
   renderLastTrace();
+  renderSemanticExplanation(null);
+  renderDisclosureTimeline();
+  renderComparison();
 })();

@@ -1,5 +1,6 @@
 class_name EvaluationTrace
 extends RefCounted
+const EvidenceCaptureRunner = preload("res://scripts/evidence_capture_runner.gd")
 
 ## D-073 per-proposal evaluation trace for the observer dashboard.
 ##
@@ -15,7 +16,7 @@ extends RefCounted
 ## refusal codes the real machine returned (`consistent`). Recording never adds
 ## an evaluation; nothing here reads or writes canonical state.
 
-const MACHINE_SOURCE_SHA256 := "cc531b6b93c066807eb628c0616d060a275a71d7f65c118983d2e8a90cc6b962"
+const MACHINE_SOURCE_SHA256 := "5d5cffb4335378e7130dae8a994908111757a33a2ed46f0a4066f6674e4dd8b7"
 
 ## Authored check order per operation (execution order inside the machine).
 const CHECK_PLAN := {
@@ -26,6 +27,7 @@ const CHECK_PLAN := {
 		"STAGE_GATED_DISCLOSURE",
 		"UNKNOWN_ACTOR",
 		"NPC_DOES_NOT_KNOW_FACT",
+		"DISCLOSURE_TEMPLATE_UNAVAILABLE",
 	],
 	"validate_disclosure": ["FORBIDDEN_DISCLOSURE", "STAGE_GATED_DISCLOSURE"],
 }
@@ -37,6 +39,18 @@ static func plan_for(operation: String) -> Array:
 
 static func _entry(code: String, failed: bool) -> Dictionary:
 	return {"code": code, "outcome": "fail" if failed else "pass"}
+
+
+static func _authorized_hint_template_available() -> bool:
+	for raw_spec in EvidenceCaptureRunner.CAPTURE_SPECS:
+		var spec: Dictionary = raw_spec
+		if str(spec.get("capture_id", "")) != "sl-rc-003-authorized-hint":
+			continue
+		return not str(spec.get("title", "")).is_empty() \
+			and not str(spec.get("narrative", "")).is_empty() \
+			and not str(spec.get("status", "")).is_empty()
+	return false
+
 
 
 ## Mirror of `SealedLighthouseMachine.validate_disclosure` for one fact list.
@@ -88,6 +102,8 @@ static func reconstruct(
 				if not unknown_actor:
 					var known: bool = fact_id in state["npcs"][actor_id]["knowledge"]
 					checks.append(_entry("NPC_DOES_NOT_KNOW_FACT", not known))
+					if known and fact_id == "tide_marks_hint":
+						checks.append(_entry("DISCLOSURE_TEMPLATE_UNAVAILABLE", not _authorized_hint_template_available()))
 		_:
 			checks.append(_entry("UNKNOWN_OPERATION", true))
 	return {"plan": plan_for(operation), "checks": checks}

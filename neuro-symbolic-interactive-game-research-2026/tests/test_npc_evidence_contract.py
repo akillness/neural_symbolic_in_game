@@ -10,6 +10,8 @@ from collections import Counter
 from copy import deepcopy
 from pathlib import Path
 
+from npc_historical_fixture import archive_historical_npc_sources
+
 P = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(P / "src"))
 sys.path.insert(0, str(P / "scripts"))
@@ -149,33 +151,14 @@ class NpcEvidenceFixtureTests(unittest.TestCase):
         shutil.copytree(source, destination)
         return holder, destination
 
-    def _copy_portable_project(self) -> tuple[tempfile.TemporaryDirectory[str], Path, Path]:
+    def _copy_portable_project(
+        self, source_root: Path
+    ) -> tuple[tempfile.TemporaryDirectory[str], Path, Path]:
         holder = tempfile.TemporaryDirectory()
         root = Path(holder.name) / "relocated-project"
-        root.mkdir()
+        shutil.copytree(source_root, root)
         packet = root / "research/academic-pipeline/npc-goal-recovery/verified-run-006"
         shutil.copytree(self._verified_dir(), packet)
-        required = (
-            "configs/npc-goal-recovery.json",
-            "data/fixtures/npc-goal-recovery/validated-v5/engineering.json",
-            "data/fixtures/npc-goal-recovery/validated-v5/screening.json",
-            "game-track/schemas/npc-goal-recovery.schema.json",
-            "game-track/godot/project.godot",
-            "game-track/godot/data/npc-goal-recovery.json",
-            "game-track/godot/data/sealed_lighthouse.json",
-            "src/nesy_game/npc_goal.py",
-            "scripts/codex_oauth_llm.py",
-            "scripts/run_npc_goal_experiment.py",
-            "game-track/godot/scripts/game3d/game_3d.gd",
-            "game-track/godot/scripts/game3d/npc_agent_client.gd",
-            "game-track/godot/scripts/sealed_lighthouse_machine.gd",
-            "game-track/godot/scripts/canonical_state.gd",
-            "game-track/godot/scenes/main_3d.tscn",
-        )
-        for relative in required:
-            destination = root / relative
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(P / relative, destination)
         return holder, root, packet
 
     def _copy_immutable_native_positive(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
@@ -1032,14 +1015,23 @@ class NpcEvidenceFixtureTests(unittest.TestCase):
 
     def test_canonical_packet_survives_relocation_and_rejects_input_substitution(self) -> None:
         canonical = self._verified_dir()
+        historical_root = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        archive_historical_npc_sources(P, historical_root)
         for packet_id in ("NPC-ENG1", "NPC-SCR1"):
             with self.subTest(location="canonical", packet=packet_id):
-                report, errors = validate_packet(packet_id, P, canonical)
+                report, errors = validate_packet(packet_id, historical_root, canonical)
                 self.assertTrue(report["valid"], errors)
+
+        holder, root, packet = self._copy_portable_project(historical_root)
+        with holder:
+            for packet_id in ("NPC-ENG1", "NPC-SCR1"):
+                with self.subTest(location="relocated", packet=packet_id):
+                    report, errors = validate_packet(packet_id, root, packet)
+                    self.assertTrue(report["valid"], errors)
 
         negative_cases = ("actual_input", "outside_packet", "same_basename", "input_tamper")
         for variant in negative_cases:
-            holder, root, packet = self._copy_portable_project()
+            holder, root, packet = self._copy_portable_project(historical_root)
             with holder, self.subTest(location="relocated", variant=variant):
                 if variant == "input_tamper":
                     rows = self._read_jsonl(packet / "engineering-results.jsonl")

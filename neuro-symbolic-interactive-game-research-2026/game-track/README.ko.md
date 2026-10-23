@@ -1,12 +1,39 @@
 # 게임 개발 트랙 — 봉인된 등대
 
+## 현재 근거 선택 (2026-10-23)
+
+[`current.json`](../_workspace/current/engineering/tech-verification/current.json)이 선택한 ID는
+`godot-4.7.1-20261023-publication-r5`이다.
+[매니페스트](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/evidence-manifest.json)는
+실제 Godot 실행 4종과 `2026-10-23 11:00:42` UTC의 macOS non-headless 스크립트 fixture-trace
+재생 패널 3개를 기록한다. 참가자 gameplay나 라이브 모델 추론이 아니며 패널은 아래에 있다.
+보존된 [R3 프로덕션 검증](../_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json)은
+배포 `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`의 `PASS_FOR_APPROVED_BOUNDED_RELEASE`,
+배포 자산 바이트 일치 9개, public-safe 검사 8개, Godot 정식 사례 7개를 기록한다.
+이는 기존 영수증이며 이번 문서 갱신에서 새로 배포하거나 라이브 사이트를 재검사한 결과가 아니다.
+**G4와 전체 G6는 `FIX`이며 효능이나 플레이어 편익 결과는 성립하지 않는다.**
+
+네 근거 표면을 구분한다. 선택된 렌더는 저자 작성 render/state 대응이고,
+[논문 producer 매니페스트](../paper/latex/generated/disclosure_producer_manifest.json)의 새 산출물은
+현재 `results-signal-explainer-20261023-r5` 결정론적 Python/Godot artifact의 출판 전용 materialization이며 새 모델 관측은 없다.
+공개 인터뷰 파생본은 과거 비공개 원문과 바이트 동일하지 않다.
+[실제 브라우저 입력 gameplay 영수증](../_workspace/current/qa/releases/2026-10-23-signal-explainer/receipt.json)은
+commit 3회와 hold 1회 뒤 미라의 승인 힌트에서 멈췄고 조수위 표식 추리는 시도하지 않았다.
+이 근거들은 서로 대체하지 않는다. 이후 공개 전용 관측이 추가되어도 `current.json`을
+변경하지 않는 한 선택 렌더를 대체하지 않는다.
+
+trace/receipt 결함을 수정했고 Main은 대상 8파일 실행에서 테스트 53개와 subtest 48개 통과를
+보고했다. 최종 선택 트리 CI·Git·push·배포는 아직 대기 중이다.
+
+## 과거 릴리스 기록 (2026-09-06)
+
 2026-09-06 업데이트: [게임·대시보드](https://sealed-lighthouse-trace-rpg.vercel.app/),
 [영문 논문](https://sealed-lighthouse-trace-rpg.vercel.app/paper/en.pdf),
 [한국어 논문](https://sealed-lighthouse-trace-rpg.vercel.app/paper/ko.pdf).
-인용 범위를 바로잡은 한·영 논문과 규칙 집계 오류를 수정한 대시보드를 함께 배포했다.
-배포 파일 16개가 검증한 로컬 파일과 일치하며, 테스트 188개와 하위 검사 83개가 통과했다.
-공학적 시연이며 인간 사용성·모델 효과를 입증한 결과는 아니다.
-[현재 배포 검증 기록](../_workspace/current/qa/factcheck-release-2026-09-06.md)을 참고한다.
+당시 인용 범위를 바로잡은 한·영 논문과 규칙 집계 오류를 수정한 대시보드를 함께 배포했다.
+영수증의 배포 파일 일치 16개, 테스트 188개와 하위 검사 83개는 당시 관측이며 현재 런타임
+인증이 아니다. 인간 사용성·모델 효과는 입증하지 않는다.
+[과거 배포 검증 기록](../_workspace/current/qa/factcheck-release-2026-09-06.md)을 참고한다.
 
 게임 트랙은 연구 코드를 엔진 내부에 직접 결합하지 않는다. 목표 아키텍처는 엔진이 안정 브리지
 관찰을 보내고 연구 런타임이 권한 이벤트를 반환하는 구조다. 현재 Godot fixture는 엔진 로컬 저자
@@ -65,7 +92,7 @@ VLM/UI 트랙에만 들어갈 수 있다. 설계나 headless 슬라이스는 참
 
 ![스크립트 골든패스 경로(76초, 1.5배속): 인트로, 게이트를 명시한 보류, 렌즈 회수, 신호 복구, 조석 단서, 사건 종결 영수증](godot/docs/latest/golden-path.gif)
 
-**[현재 전체 경로 플레이 영상(Godot Movie Maker `--autoplay --public-safe` 경로, H.264 MP4, 76.3초)](godot/docs/latest/trace-rpg-gameplay.mp4)**은
+**[과거 전체 경로 스크립트 gameplay 영상(Godot Movie Maker `--autoplay --public-safe`, 2026-09-19, H.264 MP4, 76.3초)](godot/docs/latest/trace-rpg-gameplay.mp4)**은
 D-073 로컬 빌드의 시작 게이트와 1페이지 필드 가이드, 게이트·규칙·의미를 명시한 보류, 렌즈 회수,
 신호 복구, 승인된 조석 단서, 조수위 표식에서의 슬롯 조립 추리, 페이지형 사건 종결 영수증을
 담는다(`1280×720`, 30 fps, 2,289 프레임, 10,990,889바이트; SHA-256
@@ -123,11 +150,11 @@ G6는 프로덕션 save/reload, 현 배포 모바일 검증, 사람 포인터/�
 python3 -m http.server 4173 --directory game-track/web/public
 ```
 
-현재 영문 UI + 추적 플레이어 산출물은 `/public/`에 배포됐다: 런타임 파일 10개 /
+과거 영문 UI + 추적 플레이어 배포 기록(2026-09-03): `/public/`, 런타임 파일 10개 /
 50,754,386바이트, PCK 10,902,124바이트, SHA-256
 `b92af65d854d921440cd8b748591ce13032de989f3697e6b6648c855b9688075`. 4파일 / 32,117바이트
 commit-gate 대시보드는 사이트 루트에서 `/dashboard/`로 서빙된다.
-배포 상태: **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**.
+과거 배포 상태: **[Vercel `dpl_AMVHgXcYKRgqz9UCyNUBfLhsfB3Y` READY](https://sealed-lighthouse-trace-rpg.vercel.app)**는 당시 기록이며 선택된 R3 배포가 아니다.
 런타임과 대시보드 파일은 익명 요청에서 성공 응답을 주고 스테이징 바이트와 일치했다.
 리다이렉트·MIME·보안 헤더·동일 출처 임베드 프레임 메시지 가드를 확인했다. 데스크톱과
 390×844 대시보드 검사는 콘솔·페이지 오류 0건, 가로 넘침 0건이었다. 이전 2026-08-21 프로덕션 배포 `dpl_EbgGYuzM2E6gUuFcKFk26RHFpCWW`는
@@ -155,17 +182,17 @@ Cycle 2는 정식 저자 fixture를 별도 non-headless Godot pass로 렌더링�
 
 `SL-CAPTURE-001`은 엔진 manifest 필드가 아닌 논문 연결표 bundle label이며 manifest는 위
 `sl-rc-*` capture ID 3개를 사용한다. 선택 불변 근거 세트 ID는
-`godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`이다. 이전 불변 패킷은 보존하며
-visual QA, toolchain provenance 결속, CI portability 수정을 거쳐 superseded 처리했다. 현재
-manifest는 capture pipeline, PNG decoder, schema, retained validator, dependency lock, capture
-host tool version을 결속한다. 이 패널은 생성 콘셉트
+`godot-4.7.1-20261023-publication-r5`이며 `current.json`이 선택한다. R4(`godot-4.7.1-20261023-publication-r4`)와 이전
+`godot-4.7.1-20261023-signal-explainer-r1`, `godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3`과 더 오래된 불변 패킷은
+당시 근거로 보존한다. 선택 manifest는 capture pipeline, PNG decoder, schema, retained
+validator, dependency lock, capture host tool version을 결속한다. 이 패널은 생성 콘셉트
 아트가 아니라 구조화 상태/텍스트와 프로그램 방식 엔진 그래픽만 사용한다. 라이브 Python 권한,
 모델·시각 효능, 사용성, 몰입, 인간연구 결과, G4 또는 G6를 입증하지 않는다.
 
-![SL-CAPTURE-001 도착 관찰](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-001-arrival.png)
+![SL-CAPTURE-001 도착 관찰](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-001-arrival.png)
 
-![SL-CAPTURE-001 공개 거절](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
+![SL-CAPTURE-001 공개 거절](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-002-rejected-secret.png)
 
-![SL-CAPTURE-001 승인 힌트](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261015t083849z-sealed-lighthouse-current-v3/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
+![SL-CAPTURE-001 승인 힌트](../_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261023-publication-r5/rendered-canonical-v1/sl-rc-003-authorized-hint.png)
 
 오프라인 재현 안내: [`recorded-experiment.ko.md`](recorded-experiment.ko.md)

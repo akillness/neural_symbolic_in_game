@@ -2,9 +2,53 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 
-## Current source verification — 2026-10-17 (D-085)
+## Publication correction in progress — 2026-10-23 (D-087)
 
-`verified-run-006` is the current strict-admitted NPC packet: genuine 512.27s collection; all 16 engineering + 72 screening assignments retained; selected-tree strict validation exits 0 with no missing rows/errors and zero replay model calls. Ten runtime source identities stayed unchanged during collection. Screening keeps 20 completed + 4 assigned failures per arm, with observed goals 4/24; engineering keeps 14 completed + 2 failures. There were 24 authenticated CLI executions, with requested/returned model IDs, provider revision/seed/tokens/cost unavailable. These are bounded engineering/descriptive records, not efficacy, independent gold, verified model-family matching, superiority, generalization, or human-benefit evidence.
+**Publication gate: PENDING, not complete.** Owner: Main for final pipeline, Git and release;
+Release Rule and Status Editor for this status refresh. Publication commit/push and the new
+GPT-6.1-SOL development case are **not completed**. The last verified production remains the
+D-086 R3 deployment below; no revised-tree build/deploy/browser PASS is inferred from it.
+
+| Evidence/work item | Observed status and boundary | Next required evidence |
+|---|---|---|
+| Current disclosure selection | `paper/latex/generated/disclosure_producer_manifest.json` selects `research/npc-disclosure/results-signal-explainer-20261023-r5/`, materialized from current deterministic Python/Godot artifacts. No new model observation. | Final selected-tree pipeline receipt; materialization alone does not close publication. |
+| Authentic Godot receipt | R5 `godot-receipt.json` records seven semantic cases, `passed: true`, no failures; SHA-256 `8abefd6370fe420becbcd640c6dedd75011939bd492f5e8e7d9f0e795198dd12`. Its Game3D binding is `eec3427a69e84729021e6616b9695012036d48fb4a0a73fd68167069cf09f2f7`, freshly hashed from the actual current source and matched to the receipt. | Keep this source-bound proof distinct from Python normal48/boundary4/malformed8 and public-safe smoke8/8; recollect after further bound-source drift. |
+| Trace/receipt correction | Actual trace/receipt bugs are repaired; Main reports the exact targeted eight-file run passed 53 tests and 48 subtests. The source-family `UNKNOWN_ACTOR` → `POLICY` correction remains bounded engineering behavior, not new authority or efficacy. | Final selected-tree CI, Git, push and deployment remain pending; the focused result is not a full-CI receipt. |
+| Public provenance | `research/npc-disclosure/public/source-substitution-v1.json` SHA-256 `fd08736902f0f542c311b367125a71f47ee20930e9294402b9c70c3481b37d05` binds the public derivative against unchanged frozen packet SHA-256 `9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028`. `public/clean-selected-reproduction-20261023.json` records 23 original files byte-preserved, private report/intake absent from its public snapshot, and reproduction commands exit0. | Preserve originals and explicit substitution provenance; this earlier reproduction receipt is not a fresh R4 Godot, PDF, deployment or final-pipeline receipt. |
+| Historical NPC006 | Original `research/academic-pipeline/npc-goal-recovery/verified-run-006/` validates only against its pinned `fa9fb8a` historical source extraction; generator `--evidence-root` explicitly marks archived-root validation historical and without current-release authority. | Retain original observations/failures/hashes; validate dated material with that extraction rather than relabelling the current source as the original collection source. |
+| Selected render | `engineering/tech-verification/current.json` now selects `godot-4.7.1-20261023-publication-r5`; manifest SHA-256 `745c100fc053e02f78c744cbf599f5e708fda9227942a9c429041539a3bce5d2`. It records four real Godot runs and three non-headless macOS 1280×720 scripted replay panels at `2026-10-23 11:00:42` UTC. All three PNG hashes match the manifest. Game3D separately matches the R5 disclosure receipt (not a direct render-manifest binding). | Final selected-tree publication pipeline remains pending; render/state correspondence is not gameplay, efficacy, G4 or full G6 evidence. |
+
+Documentation verification: read `current.json` and the selected R5 manifest, producer and Godot
+receipt; read-only `shasum -a 256` checks of the manifest, receipt, actual Game3D source and all three
+selected PNGs exited0 and matched their recorded identities. Relative current image links resolve
+to these hashed R5 PNGs. No tests, formatters, linters, project-wide suites or Git commands were run
+for this documentation assignment. G4/full G6 and all efficacy, independent-gold,
+ontology-superiority and human-benefit boundaries remain unchanged.
+
+Dated R4 history remains retained: `godot-4.7.1-20261023-publication-r4` captured three panels at
+`2026-10-23 10:31:19` UTC; manifest SHA-256
+`4950c5df0871595b142ce629b4b775b7965b307faad864e039d0e88b86bcd189`.
+It and the prior `godot-4.7.1-20261023-signal-explainer-r1` are not the current selection.
+
+Next action: Main records final selected-tree pipeline and publication Git results before
+starting/completing the separately measured development case. The selected capture refresh is
+recorded above; no push, deployment or full-CI completion is claimed here.
+
+## Last verified production: D-086 R3 historical deployment — 2026-10-23
+
+**`PASS_FOR_APPROVED_BOUNDED_RELEASE`**, observed `2026-10-23T07:34:34.105503+00:00`: [final receipt](../qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json) closes the [approved Seed](../../../../.ouroboros/seeds/seed-20261023-signal-explainer-b35b22f4227d.yaml). `vercel inspect https://sealed-lighthouse-trace-rpg.vercel.app --scope akillness-projects --json` → READY, `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM`; implementation/build/deploy complete, focused66+16 subtests, separate canonical Godot7 and authored public-safe smoke8/8, deployed byte matches9/9, EN/KO each10 pages/Type3 absent, zero observed browser diagnostics. [Detailed real-input/three-commit proof, exact focused command and comparison denominators](../../../../llm-wiki/wiki/queries/2026-10-23-signal-data-types-interview.md#2026-10-23-승인된-한정-release-종료) remain separate from historical receipts below. 390px covers dashboard reflow only, not mobile gameplay certification; G4/full G6 remain FIX, with no human efficacy/gold/holdout, ontology-superiority or latent-state promotion.
+
+## Historical bounded disclosure verification — 2026-10-23T01:24:31.965Z
+
+Approved Seed `.ouroboros/seeds/seed-20261023-npc-disclosure-37ffdf78a47d.yaml`: **bounded implementation and six-deliverable verification PASS; publication page gate FIX**. Main's [final receipt](../../../research/npc-disclosure/final-verification-20261023.json) records focused four-file suite 36 passed in 7.26s (`artifact://992`) and authentic Godot 7 semantic cases PASS. The 7 cases are separate from the earlier 8 smoke assertions and from Python normal48/boundary4/malformed8; two rule-change fixtures/four paired cases remain separately frozen, not all reachable states.
+
+At this dated verification, six deliverables and source/output bindings were recorded in `paper/latex/generated/disclosure_producer_manifest.json`; `uv run python scripts/check_disclosure_paper_evidence.py` exited0/PASS. The source-bound repo interview report §11 remains frozen; that earlier unbound final receipt closed its verification. General/ontology agreed60/60 with unsafe0 each; unchecked unsafe51=unauthorized44+redisplay-mutation7, distinct from semantic mismatch60. EN/KO builds, generated disclosure parity and selected-page visual checks passed, but each PDF was **12 pages: the existing ≤10-page publication gate was FIX, not relaxed**. That proof was neither full translation equivalence nor all-page visual review and made no then-current release/deployment/human-efficacy claim. strict-admitted006 and D-085 remain dated historical evidence, not readiness for changed sources.
+
+The preceding paragraph preserves the earlier 12-page failure and then-unperformed release as history. The current approved signal-explainer closure above supersedes those status limits without rewriting the bound report or earlier receipts.
+
+## Historical selected-source verification — 2026-10-17 (D-085)
+
+At the dated D-085 verification, `verified-run-006` was the strict-admitted NPC packet: genuine 512.27s collection; all 16 engineering + 72 screening assignments retained; selected-tree strict validation exited 0 with no missing rows/errors and zero replay model calls. Ten runtime source identities stayed unchanged during collection. Screening keeps 20 completed + 4 assigned failures per arm, with observed goals 4/24; engineering keeps 14 completed + 2 failures. There were 24 authenticated CLI executions, with requested/returned model IDs, provider revision/seed/tokens/cost unavailable. Its present admissibility is historical-only against pinned `fa9fb8a`, not current-source authority. These are bounded engineering/descriptive records, not efficacy, independent gold, verified model-family matching, superiority, generalization, or human-benefit evidence.
 
 **READY_FOR_SELECTED_COMMIT:** composed actual Codex source/artifact reviews close with 82 exact final byte identities. The selected-tree CI passes 333 unit tests, 78 game tests and 48 subtests; final prepared-not-submitted EN/KO PDFs are each 10 pages. Current QA: `qa/paper-project-review-20261015/codex006-final-publication-gate.json`, `codex006-final-ci-corrected.json`, and `codex006-final-guide-provenance-approval-trace.json`. Selective commit/push, clean Godot release build, production deployment and real production-browser proof are still pending. Older dated “current” statements below are historical; packets 002–005/native012 do not admit current-source bytes. Two lost-original unit RED receipts remain disclosed separately from canonical experiment payloads. G4/G6 remain open.
 
