@@ -88,7 +88,7 @@
 생성 이벤트는 없는 아이템 요구, 모르는 사실 주장, 금지 공개, 비인가 효과, 단계 후퇴를 일으킬 수 있다. 그럴듯한 대화는 실행 가능한 전이가 아니며 \cite{S11_cote2019textworld,S12_wang2022scienceworld}, quest/entity grounding도 권한은 아니다 \cite{S03_weir2024ontologically,S20_ashby2023personalized}. \textbf{비신뢰 제안의 상태 변경은 \system{}의 외부 결정론적 gate만 허가한다}(그림~\ref{fig:architecture}).
 
 
-\textbf{지원되는 기여.} 표~\ref{tab:contribution-map}의 C1--C5는 bounded design/conformance 표면이다. 활성 E1/E3/ENG1/NPC-DISC-1/DEV-CASE 근거를 개발 모델에 귀속하지 않는다. 새 기여는 출처 결속 읽기 전용 ontology view와 단일 Codex 통합 패키지이며 C6나 full-game round trip이 아니다.
+\textbf{C1---계약}, \textbf{C2---검사--수리--커밋}, \textbf{C3---감사 연결 근거}, \textbf{C4---할당별 회계}, \textbf{C5---유도 수리}는 bounded design/conformance 표면이다(표~\ref{tab:contribution-map}). 활성 E1/E3/ENG1/NPC-DISC-1/DEV-CASE 근거를 개발 모델에 귀속하지 않는다. 새 기여는 출처 결속 읽기 전용 ontology view와 단일 Codex 통합 패키지이며 C6나 full-game round trip이 아니다.
 
 \input{../generated/contribution_map_ko.tex}
 
@@ -137,7 +137,7 @@ Fixture는 정리가 아닌 구현 불변량을 시험한다. \textbf{I1:} valid
 
 \section{TRACE-RPG 아키텍처와 알고리즘}\label{sec:arch}
 \subsection{신뢰 경계와 계약}
-모델/recorded adapter는 canonical owner 밖에서 제안한다. Parser는 모호한 숫자·collection type과 unknown top-level field를 거부하며 독립 policy는 required precondition/allowed effect를 정의한다. Versioned bridge는 observation/proposal/validation/rejection/fallback/commit을 전달하고 유효 commit만 변경을 승인한다. 근거는 unknown-key rejection parity뿐이며 전체 proposal-default/replay-parser 동등성·상용 엔진 portability는 아니다. 일곱 Python predicate ID는 정확히 \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity}이며 Godot 여섯 state-relative family와 DISC 규칙 일곱 개는 서로 다른 비동형 label set이다. Godot의 단일 \texttt{QUEST STAGE} display family는 두 Python quest check(\texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity})를 포괄하지만, 비인가 quest-stage effect는 여전히 action-policy failure다(표~\ref{tab:validators}).
+모델/recorded adapter는 canonical owner 밖에서 제안한다. Parser는 모호한 숫자·collection type과 unknown top-level field를 거부하며 독립 policy는 required precondition/allowed effect를 정의한다. Versioned bridge는 observation/proposal/validation/rejection/fallback/commit을 전달하고 유효 commit만 변경을 승인한다. 근거는 unknown-key rejection parity뿐이며 전체 proposal-default/replay-parser 동등성·상용 엔진 portability는 아니다. 일곱 개의 결정론적 검사는 Python predicate ID \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity}로 식별된다. Godot의 여섯 상태 상대 계열과 DISC 규칙 일곱 개는 서로 다른 비동형 label set이다. Godot의 단일 \texttt{QUEST STAGE} display family는 두 Python quest check(\texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity})를 포괄하지만, 비인가 quest-stage effect는 여전히 action-policy failure다(표~\ref{tab:validators}).
 \begin{figure*}[!tbp]
   \centering
   \includegraphics[width=\textwidth]{../figures/fig_signal_mechanism.pdf}
@@ -333,7 +333,7 @@ TR06 & non-author가 선언된 audit/replay target을 독립 실행 & exercised 
 \end{table}
 
 \section{타당성 위협, 윤리, 산출물 범위}
-\textbf{위협과 경계.} Comparator/repeat/neutral complete attempt inventory/independent traceability score가 없다. 별도 predicate/role/Godot/DISC 출처 집합은 latent-state vector가 아니며 declaration expectation은 human gold/holdout이 아니다. Historical/활성 lane은 분모가 달라 합산하지 않는다. 참가자·정서·이해·agency·즐거움·몰입·편익·population·safety-rate·model-ranking·상용 성능을 추론하지 않는다. Unkeyed hash는 authentication이 아니며 replay equality는 semantic correctness가 아니다. 미래 human/affect 연구에는 review, consent, 보상 고지, 최소수집·보존·삭제, opt-out, calibrated judge가 필요하다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
+\textbf{위협과 경계.} Comparator/repeat/neutral complete attempt inventory/independent traceability score가 없다. 상태 일관성만으로 행동·서사 일관성을 입증하지 않는다 \cite{S55_huang2026beyond}. 별도 predicate/role/Godot/DISC 출처 집합은 latent-state vector가 아니며 declaration expectation은 human gold/holdout이 아니다. Historical/활성 lane은 분모가 달라 합산하지 않는다. 참가자·정서·이해·agency·즐거움·몰입·편익·population·safety-rate·model-ranking·상용 성능을 추론하지 않는다. Unkeyed hash는 authentication이 아니며 replay equality는 semantic correctness가 아니다. 미래 human/affect 연구에는 review, consent, 보상 고지, 최소수집·보존·삭제, opt-out, calibrated judge가 필요하다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 \section{결론}
 \system{}은 bounded C1--C5 authorization/repair/replay/accounting과 출처 결속 한·영 observer를 결합한다. 단일 Codex 통합 사례는 실패·acceptance 경계를 보존하며 모델 성능 근거가 아니다. 시간·traceability·whole-game·repeated-cross-model 평가는 미래 작업이고 historical cohort는 합산하지 않는다.
@@ -342,7 +342,7 @@ TR06 & non-author가 선언된 audit/replay target을 독립 실행 & exercised 
 \section*{AI 사용 고지}
 LLM은 prose/code/test/citation check를 보조했고 hosted model candidate는 표기했다. Curated AI UI art/desk mesh는 파일 provenance를 가지며 rendered snapshot/hash/ledger는 presentation-only다. 저자가 source를 대조하고 책임진다. NPC 입력/표는 assignment·project/protocol/schema hash와 unknown token/cost/model-revision을 보존한다.
 \section*{데이터 및 코드 가용성}
-Implementation/build source, frozen packet, Godot slice, deterministic evaluation, 기계 검증 contribution/reference-topic/experiment matrix: \path{research/academic-pipeline/}. 제안 rubric/codebook/source manifest: \path{research/traceability-scoring-20261023/}; prospective whole-game/repeated-cross-model plan: \path{research/development-comparison-20261023/}. Frozen disclosure expectation/sidecar/한영 input: \path{paper/latex/generated/disclosure_producer_manifest.json}. Standalone artifacts: \path{paper/latex/figures/fig_signal_comparison.pdf}, \path{paper/latex/figures/fig_npc_screening.pdf}; 원고 signal diagram/three-arm table은 별도 역할이다. 이전 디렉터리는 historical receipt이지 current-runtime proof가 아니며 reviewer archive/DOI deposit은 주장하지 않는다.
+Implementation/build source, frozen packet, Godot slice, deterministic evaluation, 기계 검증 기여·참조 주제·실험 매트릭스: \path{research/academic-pipeline/}. 제안 rubric/codebook/source manifest: \path{research/traceability-scoring-20261023/}; prospective whole-game/repeated-cross-model plan: \path{research/development-comparison-20261023/}. Frozen disclosure expectation/sidecar/한영 input: \path{paper/latex/generated/disclosure_producer_manifest.json}. Standalone artifacts: \path{paper/latex/figures/fig_signal_comparison.pdf}, \path{paper/latex/figures/fig_npc_screening.pdf}; 원고 signal diagram/three-arm table은 별도 역할이다. 이전 디렉터리는 historical receipt이지 current-runtime proof가 아니며 reviewer archive/DOI deposit은 주장하지 않는다.
 
 \bibliographystyle{IEEEtran}
 \bibliography{../references}

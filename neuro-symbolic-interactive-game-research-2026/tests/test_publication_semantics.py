@@ -14,8 +14,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import generate_disclosure_paper_results as disclosure_producer
 import validate_contribution_crosswalk as crosswalk_validator
-from nesy_game.validator import VALIDATOR_CHECKS
 
+from nesy_game.validator import VALIDATOR_CHECKS
 
 E3_METRIC_ROWS = {
     "S0": "S0 degree baseline & 0.000 & 0.000 & 0.282 & 0.315 & 0.556",
@@ -89,15 +89,12 @@ def test_validator_table_keeps_canonical_predicate_meanings_and_stage_policy_own
             assert row is not None, f"{language}: missing canonical predicate row {predicate['id']}"
             assert semantic_label in row
 
-        policy_row = next(
-            row for row in rows if "action policy" in row or "action_policy" in row
-        )
+        policy_row = next(row for row in rows if "action policy" in row or "action_policy" in row)
         monotonicity_row = next(row for row in rows if "quest_stage_monotonicity" in row)
         eligibility_row = next(
             row
             for row in rows
-            if ("quest stage" in row or "quest_stage" in row)
-            and "monotonicity" not in row
+            if ("quest stage" in row or "quest_stage" in row) and "monotonicity" not in row
         )
 
         assert "stage" in policy_row
@@ -116,7 +113,9 @@ def test_e3_generated_table_is_in_effective_paper_closure_with_baseline(language
     """Both editions must consume the generated E3 table, including its comparator row."""
     main_path = (ROOT / f"paper/latex/{language}/main.tex").resolve()
     closure = crosswalk_validator._tex_input_closure(main_path)
-    generated_path = (ROOT / f"paper/latex/generated/kg_ontology_simulation_{language}.tex").resolve()
+    generated_path = (
+        ROOT / f"paper/latex/generated/kg_ontology_simulation_{language}.tex"
+    ).resolve()
     assert generated_path in closure
 
     generated = generated_path.read_text(encoding="utf-8")
@@ -124,11 +123,7 @@ def test_e3_generated_table_is_in_effective_paper_closure_with_baseline(language
     for row in E3_METRIC_ROWS.values():
         assert row.casefold() in generated.casefold()
         assert row.casefold() in closure_text.casefold()
-    assert (
-        "runtime" in generated.casefold()
-        or "런타임" in generated
-        or "실행" in generated
-    )
+    assert "runtime" in generated.casefold() or "런타임" in generated or "실행" in generated
     assert "efficacy" in generated.casefold() or "효능" in generated
 
     e3 = _section(
@@ -142,7 +137,9 @@ def test_e3_generated_table_is_in_effective_paper_closure_with_baseline(language
     e3_without_input = e3.replace(
         rf"\input{{../generated/kg_ontology_simulation_{language}.tex}}", ""
     )
-    assert not any(metric in e3_without_input for metric in ("0.282", "0.315", "0.556", "0.944", "0.131"))
+    assert not any(
+        metric in e3_without_input for metric in ("0.282", "0.315", "0.556", "0.944", "0.131")
+    )
 
 
 def test_bilingual_discussion_restores_repair_positioning_and_citation_parity() -> None:
@@ -157,13 +154,20 @@ def test_bilingual_discussion_restores_repair_positioning_and_citation_parity() 
             for group in re.findall(r"\\cite\{([^}]+)\}", intro)
             for key in group.split(",")
         }
-        assert {"S45_madaan2023selfrefine", "S46_chen2023selfdebug", "S47_solarlezama2006sketching", "S48_shinn2023reflexion"} <= citations
-        assert any(marker in intro.casefold() for marker in ("deterministic pre-execution", "deterministic pre-execution 오류"))
+        assert {
+            "S45_madaan2023selfrefine",
+            "S46_chen2023selfdebug",
+            "S47_solarlezama2006sketching",
+            "S48_shinn2023reflexion",
+        } <= citations
+        assert any(
+            marker in intro.casefold()
+            for marker in ("deterministic pre-execution", "deterministic pre-execution 오류")
+        )
         assert "oracle-only" in intro.casefold()
         assert "capability" in intro.casefold()
-        assert (
-            ("ontology" in intro.casefold() and "superiority" in intro.casefold())
-            or ("ontology" in intro.casefold() and "우월성" in intro)
+        assert ("ontology" in intro.casefold() and "superiority" in intro.casefold()) or (
+            "ontology" in intro.casefold() and "우월성" in intro
         )
 
     def citation_keys(value: str) -> set[str]:
@@ -184,7 +188,9 @@ def test_disclosure_narrative_derives_actual_equality_counts_and_scopes_claim() 
         if korean:
             assert re.search(r"결과가 동일(?:하다|하지 않다)\(60/60\)", rendered)
         else:
-            assert re.search(r"(?:identical outcomes|not identical)[^.\n]*60 (?:of|across) 60", rendered)
+            assert re.search(
+                r"(?:identical outcomes|not identical)[^.\n]*60 (?:of|across) 60", rendered
+            )
         assert "discriminating case" in rendered
         assert "authorization-conformance limit" in rendered
         assert "ontology superiority" in rendered
@@ -197,5 +203,7 @@ def test_disclosure_narrative_derives_actual_equality_counts_and_scopes_claim() 
         if korean:
             assert re.search(r"결과가 동일(?:하다|하지 않다)\(7/11\)", rendered)
         else:
-            assert re.search(r"(?:identical outcomes|not identical)[^.\n]*7 (?:of|across) 11", rendered)
+            assert re.search(
+                r"(?:identical outcomes|not identical)[^.\n]*7 (?:of|across) 11", rendered
+            )
         assert "60/60" not in rendered and "60 of 60" not in rendered

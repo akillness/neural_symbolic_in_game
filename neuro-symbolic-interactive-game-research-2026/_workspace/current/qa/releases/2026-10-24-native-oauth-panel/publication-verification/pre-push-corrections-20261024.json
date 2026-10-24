@@ -1,0 +1,127 @@
+{
+  "schema_version": "publication-pre-push-corrections/v1",
+  "recorded_at": "2026-10-24T09:20:48.365Z",
+  "first_attempt": {
+    "commit": "4758c4f9285388ab0640e0f60b02e91ccf7614b7",
+    "command": [
+      "git",
+      "push",
+      "origin",
+      "HEAD:main"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 371.11,
+    "transferred": false,
+    "failed_gates": [
+      "Ruff lint and format",
+      "Contribution and reference crosswalk"
+    ],
+    "observed_passes": {
+      "unit_tests": 359,
+      "game_tests": 78,
+      "game_subtests": 48,
+      "visual_receipts": 121,
+      "svg_assets": 9,
+      "isolated_double_regenerations": 17,
+      "wiki_pages": 80
+    },
+    "capture": "Session-local tool artifact5043; raw captures are not published"
+  },
+  "repairs": {
+    "validator_requirements_changed": false,
+    "restored_canonical_markers_both_languages": true,
+    "restored_S55_limitation_citation_both_languages": true,
+    "restored_all_five_meaningful_contribution_markers": true,
+    "restored_precise_matrix_availability_text": true,
+    "test_change": "Project Ruff import/format correction only; assertions unchanged",
+    "typesetting": "Installed microtype in pdfLaTeX EN only; nominal font sizes, page geometry, full-column figures,4pt table padding and1.20 arraystretch retained; unsuccessful URL/float probes reverted"
+  },
+  "local_verification": {
+    "crosswalk": {
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "scripts/validate_contribution_crosswalk.py"
+      ],
+      "exit_code": 0,
+      "result": "5 contributions,58 references,9 topics,3 experiment lanes+1 engineering lane"
+    },
+    "ruff_lint": {
+      "argv": [
+        "uv",
+        "run",
+        "ruff",
+        "check",
+        "tests/test_publication_semantics.py"
+      ],
+      "exit_code": 0
+    },
+    "ruff_format": {
+      "argv": [
+        "uv",
+        "run",
+        "ruff",
+        "format",
+        "--check",
+        "tests/test_publication_semantics.py"
+      ],
+      "exit_code": 0
+    },
+    "affected_tests": {
+      "argv": [
+        "uv",
+        "run",
+        "pytest",
+        "-q",
+        "tests/test_publication_semantics.py",
+        "tests/test_current_research_publication.py"
+      ],
+      "exit_code": 0,
+      "passed": 24,
+      "elapsed_seconds": 2.4
+    },
+    "paper": {
+      "exit_code": 0,
+      "status": "PASS",
+      "pages": {
+        "en": 10,
+        "ko": 10
+      },
+      "elapsed_seconds": 3.786725,
+      "original_private_receipt_path": "_workspace/current/qa/releases/2026-10-24-native-oauth-panel/serial-delivery-microtype-final/paper/receipt.json",
+      "original_private_receipt_sha256": "16eb846447b86857563b06e9f81bc1b9776b6f1ec3faf114424f01fd1f3d7068",
+      "stdout_sha256": "6282023320ec2d60043ad7d21d0210aba57d29963860ec7893a3f5927e2b8d0f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reproduction_argv": [
+        "make",
+        "-C",
+        "paper/latex",
+        "check",
+        "NPC_PAPER_EVIDENCE_ROOT=<authentic fa9fb8a source extraction>"
+      ],
+      "command_substitution": "Temporary evidence-root path explicitly replaced in this portable derivative",
+      "pdf_sha256": {
+        "en": "48345f7522f7d3f1f3c8fe4b05498f4c941d2351bf0cf77c37134f19516ef52f",
+        "ko": "f244b34dce33b9306105b9478e8e0a9e61a80b2e2061e103396c6516adbff0c6"
+      }
+    },
+    "visuals": {
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "scripts/validate_visual_assets.py",
+        "--require-pdf-tools",
+        "--check-regeneration"
+      ],
+      "exit_code": 0,
+      "checked_receipts": 121,
+      "svg_assets": 9,
+      "isolated_double_regenerated_sources": 17
+    }
+  },
+  "next_pre_push_status": "NOT_YET_RUN",
+  "new_native_generation_calls": 0,
+  "claim_boundary": "Local correction evidence only; not a successful Git transfer, native authorization, model result or cryptographic attestation"
+}

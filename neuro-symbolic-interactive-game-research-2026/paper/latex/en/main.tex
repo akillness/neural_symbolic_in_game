@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{url}
+\usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 
 \newcommand{\system}{TRACE-RPG}
@@ -42,7 +43,7 @@ game AI, interactive narrative, symbolic validation, constrained generation, rep
 \IEEEPARstart{G}{enerated} events may require absent items, assert unknown facts, disclose secrets, introduce unauthorized effects, or regress quests. Plausibility \cite{S11_cote2019textworld,S12_wang2022scienceworld} and quest/entity grounding \cite{S03_weir2024ontologically,S20_ashby2023personalized} confer no authority: \textbf{only \system{}'s external deterministic gate authorizes mutation} (Fig.~\ref{fig:architecture}).
 
 
-\textbf{Supported contributions.} Table~\ref{tab:contribution-map} bounds C1--C5 design/conformance surfaces. Active E1, E3, ENG1, NPC-DISC-1, and DEV-CASE evidence is not attributed to the development model. The contribution is the source-bound read-only ontology view and single Codex integration package, not C6 or a full-game round trip.
+\textbf{C1---contracts}, \textbf{C2---validate--repair--commit}, \textbf{C3---audit-linked evidence}, \textbf{C4---assignment accounting}, and \textbf{C5---guided repair} are bounded design/conformance surfaces (Table~\ref{tab:contribution-map}). Active E1, E3, ENG1, NPC-DISC-1, and DEV-CASE evidence is not attributed to the development model. The new contribution is the source-bound read-only ontology view and single Codex integration package, not C6 or a full-game round trip.
 
 \input{../generated/contribution_map_en.tex}
 
@@ -99,7 +100,7 @@ Assumptions: correct policy, faithful extraction, deterministic versions, return
 
 \section{TRACE-RPG Architecture and Algorithms}\label{sec:arch}
 \subsection{Trust Boundary and Contracts}
-External models/adapters propose; parsing rejects ambiguous types/unknown keys; independent policy defines preconditions/effects. The versioned bridge carries observations, proposals, validations, rejections, fallbacks, and commits (Fig.~\ref{fig:architecture}); unknown-key parity establishes neither full parser equivalence nor commercial portability. Python has exactly seven predicate IDs: \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, and \texttt{quest\_stage\_monotonicity}. Godot's six state-relative families and seven DISC rules are distinct, non-isomorphic label sets; its single \texttt{QUEST STAGE} display family spans the two Python quest checks, while unauthorized quest-stage effects remain action-policy failures.
+External models/adapters propose; parsing rejects ambiguous types/unknown keys; independent policy defines preconditions/effects. The versioned bridge carries observations, proposals, validations, rejections, fallbacks, and commits (Fig.~\ref{fig:architecture}); unknown-key parity establishes neither full parser equivalence nor commercial portability. Python has exactly seven deterministic checks with predicate IDs: \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, and \texttt{quest\_stage\_monotonicity}. Godot's six state-relative families and seven DISC rules are distinct, non-isomorphic label sets; its single \texttt{QUEST STAGE} display family spans the two Python quest checks, while unauthorized quest-stage effects remain action-policy failures.
 
 \begin{table}[!tbp]
 \caption{Encoded Validator Boundary}
@@ -275,7 +276,7 @@ TR06 & non-author independent exercise of declared audit/replay target & exercis
 \par\vspace{2pt}\noindent\parbox{0.96\columnwidth}{\footnotesize Proposed and unmeasured; codebooks/source rationale: Data and Code Availability. No score was collected or validated.}
 \end{table}
 
-\textbf{Threats and boundaries.} No comparator, repeats, neutral complete-attempt inventory, or independent traceability scores exist. Predicate/role/Godot/DISC sets are not latent-state vectors; declaration expectations are not human gold/holdouts, and historical/active lanes keep separate denominators. No participant/\allowbreak affect/\allowbreak comprehension/\allowbreak agency/\allowbreak enjoyment/\allowbreak immersion/\allowbreak benefit, population, safety-rate, model-ranking, or commercial-performance inference follows. Hashes do not authenticate; replay equality does not prove semantic correctness. Future human/affect studies require ethics review, consent, compensation disclosure, minimization, retention/deletion, opt-out, and calibrated judges \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
+\textbf{Threats and boundaries.} No comparator, repeats, neutral complete-attempt inventory, or independent traceability scores exist. State consistency alone establishes neither behavioral nor narrative coherence \cite{S55_huang2026beyond}. Predicate/role/Godot/DISC sets are not latent-state vectors; declaration expectations are not human gold/holdouts, and historical/active lanes keep separate denominators. No participant/\allowbreak affect/\allowbreak comprehension/\allowbreak agency/\allowbreak enjoyment/\allowbreak immersion/\allowbreak benefit, population, safety-rate, model-ranking, or commercial-performance inference follows. Hashes do not authenticate; replay equality does not prove semantic correctness. Future human/affect studies require ethics review, consent, compensation disclosure, minimization, retention/deletion, opt-out, and calibrated judges \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 
 \section{Conclusion}
@@ -287,7 +288,7 @@ LLMs assisted prose/code/tests/citations; hosted candidates were labelled. Curat
 
 \section*{Data and Code Availability}
 \begingroup\DeclareUrlCommand\path{\urlstyle{same}}
-Implementation/build source, frozen packets, Godot slice, deterministic evaluation, and machine-checked matrices: \path{research/academic-pipeline/}. Proposed rubric/codebook/source manifest: \path{research/traceability-scoring-20261023/}; future whole-game/repeated-cross-model plan: \path{research/development-comparison-20261023/}. Frozen disclosure inputs: \path{paper/latex/generated/disclosure_producer_manifest.json}. Standalone artifacts: \path{paper/latex/figures/fig_signal_comparison.pdf}, \path{paper/latex/figures/fig_npc_screening.pdf}; in-paper signal diagram/three-arm table have distinct roles. Earlier directories are historical receipts, not current-runtime proof; no reviewer archive/DOI deposit is claimed.
+Implementation/build source, frozen packets, Godot slice, deterministic evaluation, and machine-checked contribution, reference-topic, and experiment matrices: \path{research/academic-pipeline/}. Proposed rubric/codebook/source manifest: \path{research/traceability-scoring-20261023/}; future whole-game/repeated-cross-model plan: \path{research/development-comparison-20261023/}. Frozen disclosure inputs: \path{paper/latex/generated/disclosure_producer_manifest.json}. Standalone artifacts: \path{paper/latex/figures/fig_signal_comparison.pdf}, \path{paper/latex/figures/fig_npc_screening.pdf}; in-paper signal diagram/three-arm table have distinct roles. Earlier directories are historical receipts, not current-runtime proof; no reviewer archive/DOI deposit is claimed.
 \par\endgroup
 
 \bibliographystyle{IEEEtran}
