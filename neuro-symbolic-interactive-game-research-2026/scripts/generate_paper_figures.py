@@ -640,8 +640,6 @@ def compact_architecture_svg() -> str:
         items.append(text(x + 146, 934, lines[0], css_class="ledger", anchor="middle"))
         items.append(multiline(x + 146, 980, lines[1:], css_class="small", line_height=32))
 
-
-
     items.append("</svg>")
     return "\n".join(items) + "\n"
 

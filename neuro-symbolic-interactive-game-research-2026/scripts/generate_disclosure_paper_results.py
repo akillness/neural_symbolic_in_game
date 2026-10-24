@@ -399,12 +399,10 @@ def _narrative(data: dict[str, Any], korean: bool) -> str:
     fixture_count = len(fixtures)
     paired_case_count = sum(len(fixture.get("paired_case_ids", [])) for fixture in fixtures)
     arms_equal = (
-        arm_comparison.get("outcome_equal") is True
-        and equal_case_count == equality_case_count
+        arm_comparison.get("outcome_equal") is True and equal_case_count == equality_case_count
     )
-    fixtures_equal = (
-        fixture_comparison.get("all_fixtures_match") is True
-        and all(fixture.get("all_pairs_match") is True for fixture in fixtures)
+    fixtures_equal = fixture_comparison.get("all_fixtures_match") is True and all(
+        fixture.get("all_pairs_match") is True for fixture in fixtures
     )
     arm_equality_en = (
         f"The checked general-rule and ontology-gate arms have identical outcomes on all {equal_case_count} of {equality_case_count} authored cases."

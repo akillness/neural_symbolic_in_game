@@ -121,7 +121,86 @@
       "isolated_double_regenerated_sources": 17
     }
   },
-  "next_pre_push_status": "NOT_YET_RUN",
+  "next_pre_push_status": "SECOND_ATTEMPT_BLOCKED; THIRD_ATTEMPT_NOT_YET_RUN",
   "new_native_generation_calls": 0,
-  "claim_boundary": "Local correction evidence only; not a successful Git transfer, native authorization, model result or cryptographic attestation"
+  "claim_boundary": "Local correction evidence only; not a successful Git transfer, native authorization, model result or cryptographic attestation",
+  "second_attempt": {
+    "commit": "a76da39aaf0d867adc5ba14c6377b46151803fb8",
+    "command": [
+      "git",
+      "push",
+      "origin",
+      "HEAD:main"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 381.3,
+    "transferred": false,
+    "failed_gates": [
+      "Ruff format: four additional publication files"
+    ],
+    "observed_passes": {
+      "unit_tests": 359,
+      "game_tests": 78,
+      "game_subtests": 48,
+      "crosswalk_contributions": 5,
+      "crosswalk_references": 58,
+      "crosswalk_topics": 9,
+      "visual_receipts": 121,
+      "svg_assets": 9,
+      "isolated_double_regenerations": 17,
+      "wiki_pages": 80
+    },
+    "raw_capture": "Session-local artifact://5077; not a public raw log"
+  },
+  "format_followup": {
+    "files": [
+      "scripts/generate_disclosure_paper_results.py",
+      "scripts/generate_paper_figures.py",
+      "tests/test_current_research_publication.py",
+      "tests/test_generate_disclosure_paper_results.py"
+    ],
+    "formatter_argv": [
+      "uv",
+      "run",
+      "ruff",
+      "format",
+      "scripts/generate_disclosure_paper_results.py",
+      "scripts/generate_paper_figures.py",
+      "tests/test_current_research_publication.py",
+      "tests/test_generate_disclosure_paper_results.py"
+    ],
+    "formatting_only_review": {
+      "agent": "SerialFormatReview",
+      "verdict": "APPROVE",
+      "assertions_preserved": true,
+      "behavior_changed": false
+    },
+    "manifest_refreshed": true,
+    "visual_validation": {
+      "exit_code": 0,
+      "checked_receipts": 121,
+      "svg_assets": 9,
+      "isolated_double_regenerations": 17
+    },
+    "affected_tests": {
+      "argv": [
+        "uv",
+        "run",
+        "pytest",
+        "-q",
+        "tests/test_current_research_publication.py",
+        "tests/test_generate_disclosure_paper_results.py",
+        "tests/test_generate_paper_results.py",
+        "tests/test_visual_asset_validator.py",
+        "tests/test_publication_presentation.py",
+        "tests/test_publication_semantics.py"
+      ],
+      "exit_code": 0,
+      "passed": 97,
+      "subtests_passed": 23,
+      "elapsed_seconds": 37.6
+    },
+    "scope_note": "Untracked, unfinished native-panel code is excluded from this publication checkpoint; its working-tree lint errors were not suppressed, repaired or staged here.",
+    "paper_receipt_limit": "The paired-paper wrapper script is untracked and not delivered in this checkpoint. Its captured subprocess was the versioned make -C paper/latex check with an explicitly substituted authentic historical evidence-root path; the wrapper itself is not claimed as a versioned reproducer."
+  }
 }

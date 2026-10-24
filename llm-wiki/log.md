@@ -1,5 +1,10 @@
 # Log
 
+## [2026-10-24] pre-push correction | Two blocked transfers retained
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Pre-push correction / 푸시 전 게이트 교정 — 2026-10-24]] and the [portable correction record](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-native-oauth-panel/publication-verification/pre-push-corrections-20261024.json) retain the blocked `4758c4f` and `a76da39` pushes separately. Passing component checks were not relabeled as a successful transfer.
+- Restored canonical crosswalk wording/citations without weakening validation. The additional four-file Ruff correction was independently reviewed as formatting-only; producer hashes were refreshed, visual regeneration passed, and 97 affected publication tests/23 subtests passed in 37.60 seconds. Both papers remain 10 pages with original nominal type size and table spacing.
+- The local paired-paper wrapper is untracked and not shipped here; the receipt records its versioned `make -C paper/latex check` subprocess and explicit historical-source path substitution. Private auto-ingest additions and unfinished native code remain outside the publication commit. No model launch or graph/index rebuild is inferred; a successful remote transfer requires its own receipt.
+
 ## [2026-10-24] verified publication | Serial delivery before native experiments
 - [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Serial delivery checkpoint / 단일 실행 전달 체크포인트 — 2026-10-24]] records the actual hosted Jev API critique, preserved unvalidated/proposal-only judgment, and the user-directed Git-first, single-worker execution order.
 - The [final portable verification summary](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-native-oauth-panel/publication-verification/final-verification-20261024.json) records EN 10 pages and KO 10 pages, 97 affected publication tests plus 23 subtests, and the unchanged visual/regeneration gate with 121 receipts, 9 SVGs and 17 isolated double-regenerations. General-code and Python reviews both approved without blocking/high/medium findings.

@@ -301,9 +301,20 @@ def test_prospective_comparison_plan_is_nonexecuted_independent_and_fail_closed(
     assert caps["status"] == "PARTIALLY_APPROVED_AGGREGATE_ONLY"
     assert caps["aggregate_additional_api_spend_cap_usd"] == 100
     assert caps["aggregate_spend_approval_status"] == "APPROVED_VIA_USER_ASK_2026-10-23"
-    assert set(caps["aggregate_spend_scope"]) == {"whole_game_coding", "ontology_content_generation"}
-    for field in ("budget_usd", "input_token_cap", "output_token_cap", "wall_time_cap_seconds",
-                  "repair_attempt_cap", "tool_call_cap", "operator_intervention_cap", "price_guard"):
+    assert set(caps["aggregate_spend_scope"]) == {
+        "whole_game_coding",
+        "ontology_content_generation",
+    }
+    for field in (
+        "budget_usd",
+        "input_token_cap",
+        "output_token_cap",
+        "wall_time_cap_seconds",
+        "repair_attempt_cap",
+        "tool_call_cap",
+        "operator_intervention_cap",
+        "price_guard",
+    ):
         assert caps[field] is None
     assert caps["operational_caps_status"] == "REQUIRED_UNAPPROVED_PARAMETERS"
     assert caps["approval_receipt"] is None
@@ -326,8 +337,12 @@ def test_prospective_comparison_plan_is_nonexecuted_independent_and_fail_closed(
     assert cohort["status"] == "PROPOSED_NOT_EXECUTED"
     assert all(candidate["canonical_id"] is None for candidate in cohort["candidates"])
     assert all(candidate["coding_tool_capable"] is None for candidate in cohort["candidates"])
-    assert all(candidate["content_generation_capable"] is None for candidate in cohort["candidates"])
-    assert "No candidate in this expanded cohort has been called" in cohort["no_execution_statement"]
+    assert all(
+        candidate["content_generation_capable"] is None for candidate in cohort["candidates"]
+    )
+    assert (
+        "No candidate in this expanded cohort has been called" in cohort["no_execution_statement"]
+    )
     assert "no resume-as-repeat" in protocol["microgame_task_contract"]["freshness"]
     assert "old" not in current["source_case_scope"].casefold()
 

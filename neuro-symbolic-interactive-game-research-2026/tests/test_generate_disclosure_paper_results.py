@@ -316,7 +316,9 @@ def test_arms_table_labels_semantic_mismatches_and_unique_unsafe_cases_separatel
         header = next(
             line
             for line in table.splitlines()
-            if all(token in line for token in ("Arm", "N/B/M", "Semantic mismatch", "Unique unsafe"))
+            if all(
+                token in line for token in ("Arm", "N/B/M", "Semantic mismatch", "Unique unsafe")
+            )
         )
         row = next(line for line in table.splitlines() if line.startswith(r"unchecked\_isolated"))
         cells = [cell.strip() for cell in row.removesuffix(r"\\").split("&")]
