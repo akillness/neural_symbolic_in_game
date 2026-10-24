@@ -1,0 +1,39 @@
+{
+  "schema_version": "publication-command-public-projection/v1",
+  "evidence_kind": "Derivative of actually captured command output, not a fresh execution",
+  "scope": "Four affected publication regression files; not a full project suite or model study",
+  "reproduction_argv": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/test_current_research_publication.py",
+    "tests/test_generate_paper_results.py",
+    "tests/test_visual_asset_validator.py",
+    "tests/test_publication_presentation.py",
+    "-q"
+  ],
+  "reproduction_argv_is_exact": true,
+  "path_substitutions": {},
+  "working_directory": "neuro-symbolic-interactive-game-research-2026",
+  "started_at": "2026-10-24T05:50:21.266Z",
+  "finished_at": "2026-10-24T05:51:17.633Z",
+  "elapsed_seconds": 56.367,
+  "exit_code": 0,
+  "timed_out": false,
+  "original_private_receipt_path": "/private/tmp/trace-rpg-61-revision-1792796216921/062-resumed-publication-regressions.json",
+  "original_private_receipt_sha256": "4181850264eb18d877693b210a741ae6e5eb7ffacfe0004d79d37f7510e8b2b2",
+  "stdout_sha256": "7108fd68df4cb145bd43db4b599c00c9f958ed2567e7eb04e3f439a6f453987a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_excerpt": "................................................. [ 56%]\n......................................                                   [100%]\n87 passed, 23 subtests passed in 55.52s\n",
+  "stderr_excerpt": "",
+  "observed_result": {
+    "passed_tests": 87,
+    "passed_subtests": 23,
+    "reported_test_seconds": 55.52
+  },
+  "claim_limits": [
+    "No new model launches are established",
+    "No deployment, Git push or final release approval is established",
+    "Unkeyed hashes are integrity checks, not signatures"
+  ]
+}

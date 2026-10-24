@@ -52,13 +52,6 @@ CONFORMANCE_TABLE_STEMS = (
     "repair-class-summary",
 )
 
-LIVE_SUMMARIES = (
-    "research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/policy_visible/summary.json",
-    "research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/policy_blind/summary.json",
-    "research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/goal_directed_blind/summary.json",
-    "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_visible/summary.json",
-    "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json",
-)
 
 EVIDENCE_ROOT = (
     "_workspace/current/engineering/tech-verification/evidence/"
@@ -134,19 +127,7 @@ def build_manifest() -> dict[str, Any]:
     direction_note = ("research/directions/consensus-vs-symbolic-gate.md",)
 
     paper_assets = []
-    for stem, asset_id, kind, data in (
-        ("fig_architecture", "paper-architecture", "diagram", ()),
-        (
-            "fig_evidence_regimes",
-            "paper-evidence-regimes",
-            "chart",
-            (
-                "research/academic-pipeline/stage-04-pilot/pilot-results.json",
-                "research/academic-pipeline/rq2-live-pilot/signal-repair-v2/policy_blind/summary.json",
-                "research/academic-pipeline/rq2-live-pilot/frozen-pilot-base/goal_directed_blind/summary.json",
-            ),
-        ),
-    ):
+    for stem, asset_id, kind, data in (("fig_architecture", "paper-architecture", "diagram", ()),):
         base = f"paper/latex/figures/{stem}"
         paper_assets.append(
             visual_asset(
@@ -263,6 +244,8 @@ def build_manifest() -> dict[str, Any]:
                 "tab:validators",
                 "alg:commit",
                 "tab:rho-rules",
+                "tab:ontology-roles",
+                "tab:traceability-rubric",
             ),
         ),
         table_source(
@@ -288,18 +271,20 @@ def build_manifest() -> dict[str, Any]:
             anchors=("tab:pilot-repair", "tab:pilot-accounting"),
         ),
         table_source(
-            "live-screening-paper-table",
+            "contribution-and-lane-paper-tables",
             layouts=(
-                "paper/latex/generated/live_pilot_tables_en.tex",
-                "paper/latex/generated/live_pilot_tables_ko.tex",
+                "paper/latex/generated/contribution_map_en.tex",
+                "paper/latex/generated/contribution_map_ko.tex",
+                "paper/latex/generated/evidence_lanes_en.tex",
+                "paper/latex/generated/evidence_lanes_ko.tex",
             ),
             generator=PAPER_TABLE_GENERATOR,
             data=(
-                "research/academic-pipeline/rq2-live-pilot/promotion-manifest.json",
-                *LIVE_SUMMARIES,
+                "research/academic-pipeline/contribution-evidence-matrix.csv",
+                "research/academic-pipeline/experiment-evidence-matrix.csv",
             ),
             rendered_in=("paper-en", "paper-ko"),
-            anchors=("tab:live-screening",),
+            anchors=("tab:contribution-map", "tab:evidence-lanes"),
         ),
         table_source(
             "npc-goal-recovery-paper-tables",
@@ -326,22 +311,6 @@ def build_manifest() -> dict[str, Any]:
             anchors=("tab:npc-screening",),
         ),
         table_source(
-            "contribution-and-lane-paper-tables",
-            layouts=(
-                "paper/latex/generated/contribution_map_en.tex",
-                "paper/latex/generated/contribution_map_ko.tex",
-                "paper/latex/generated/evidence_lanes_en.tex",
-                "paper/latex/generated/evidence_lanes_ko.tex",
-            ),
-            generator=PAPER_TABLE_GENERATOR,
-            data=(
-                "research/academic-pipeline/contribution-evidence-matrix.csv",
-                "research/academic-pipeline/experiment-evidence-matrix.csv",
-            ),
-            rendered_in=("paper-en", "paper-ko"),
-            anchors=("tab:contribution-map", "tab:evidence-lanes"),
-        ),
-        table_source(
             "kg-ontology-paper-fragments",
             layouts=(
                 "paper/latex/generated/kg_ontology_simulation_en.tex",
@@ -349,7 +318,7 @@ def build_manifest() -> dict[str, Any]:
             ),
             generator=KG_GENERATOR,
             data=("research/simulation/kg-ontology/latest/evaluation-matrix.json",),
-            rendered_in=(),
+            rendered_in=("paper-en", "paper-ko"),
             anchors=("tab:kg-ontology-simulation",),
         ),
         table_source(

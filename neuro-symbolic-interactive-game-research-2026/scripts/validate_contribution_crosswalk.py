@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import importlib.util
 import json
 import re
 from collections import Counter
@@ -28,6 +29,8 @@ LIVE_PILOT_PLAN = ROOT / "research/directions/rq2-live-pilot-plan.md"
 
 CONTRIBUTION_IDS = {f"C{index}" for index in range(1, 6)}
 LANE_IDS = {"E1", "E2", "E3", "ENG1"}
+ACTIVE_LANE_IDS = {"E1", "E3", "ENG1"}
+HISTORICAL_LANE_IDS = {"E2"}
 RESULT_CLAIMS = {f"C-RESULT-00{index}" for index in range(1, 6)}
 TOPIC_IDS = {f"T{index}" for index in range(1, 10)}
 
@@ -131,12 +134,67 @@ def _citation_keys(tex: str) -> set[str]:
     return keys
 
 
+RETIRED_INPUT_MARKERS = ("live_pilot", "live-pilot", "historical-live")
+ACTIVE_GENERATED_NAMES = (
+    "contribution_map_{language}.tex",
+    "evidence_lanes_{language}.tex",
+    "pilot_results_{language}.tex",
+    "pilot_tables_{language}.tex",
+)
+
+
+def _tex_input_closure(main_path: Path) -> set[Path]:
+    visual_path = ROOT / "scripts/validate_visual_assets.py"
+    spec = importlib.util.spec_from_file_location("publication_visual_validator", visual_path)
+    if spec is None or spec.loader is None:
+        raise ValueError(f"{main_path}: cannot load effective TeX closure validator")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    checker = module.Validator(require_pdf_tools=False, check_regeneration=False)
+    source_paths, _ = checker._source_closure(main_path)
+    if checker.errors:
+        raise ValueError(f"{main_path}: effective TeX closure failed: {checker.errors}")
+    closure = {(ROOT / relative).resolve() for relative in source_paths}
+    for path in closure:
+        if any(marker in part.lower() for part in path.parts for marker in RETIRED_INPUT_MARKERS):
+            raise ValueError(
+                f"{main_path}: retired live-pilot input in publication closure: {path}"
+            )
+    return closure
+
+
+def _validate_generated_input_closure(language: str) -> None:
+    main_path = (ROOT / f"paper/latex/{language}/main.tex").resolve()
+    closure = _tex_input_closure(main_path)
+    required = {
+        (ROOT / "paper/latex/generated" / name.format(language=language)).resolve()
+        for name in ACTIVE_GENERATED_NAMES
+    }
+    missing = sorted(str(path.relative_to(ROOT.resolve())) for path in required - closure)
+    if missing:
+        raise ValueError(
+            f"{main_path}: active publication closure omits generated fragments: {missing}"
+        )
+
+
 def _assert_paths(rows: list[dict[str, str]], field: str) -> None:
+    root = ROOT.resolve()
     for row in rows:
         row_id = row.get("contribution_id") or row.get("evidence_lane_id") or "unknown"
         for relative in _pipe(row[field]):
-            if not (ROOT / relative).exists():
-                raise ValueError(f"{row_id} points to missing evidence: {relative}")
+            candidate = Path(relative)
+            if candidate.is_absolute():
+                raise ValueError(f"{row_id} evidence path must be relative: {relative}")
+            try:
+                resolved = (ROOT / candidate).resolve(strict=False)
+            except (OSError, RuntimeError) as exc:
+                raise ValueError(f"{row_id} evidence path cannot be resolved: {relative}") from exc
+            try:
+                resolved.relative_to(root)
+            except ValueError as exc:
+                raise ValueError(f"{row_id} evidence path escapes repository: {relative}") from exc
+            if not resolved.is_file():
+                raise ValueError(f"{row_id} points to missing or non-file evidence: {relative}")
 
 
 def _validate_headline_sources(experiment_rows: dict[str, dict[str, str]]) -> None:
@@ -231,12 +289,13 @@ def _validate_headline_sources(experiment_rows: dict[str, dict[str, str]]) -> No
     if (isolated, noncommits) != (15, 15):
         raise ValueError(f"E2 state-isolation headline drift: {(isolated, noncommits)!r}")
     e2_row = experiment_rows["E2"]
-    if "K=1" not in e2_row["unit_or_budget"]:
-        raise ValueError("E2 matrix omits the frozen K=1 budget")
-    e2_headline = e2_row["headline_observation"]
-    for token in ("5/5 initial", "rho committed 5/5", "blind 0/5", "15/15"):
-        if token not in e2_headline:
-            raise ValueError(f"E2 matrix omits source-backed token: {token}")
+    if (
+        e2_row["publication_scope"] != "historical"
+        or "historical-only" not in e2_row["evidence_status"]
+    ):
+        raise ValueError("E2 matrix must remain explicitly historical-only")
+    if "excluded from active" not in e2_row["headline_observation"].lower():
+        raise ValueError("E2 matrix must state exclusion from active publication")
 
     kg = json.loads(
         (ROOT / "research/simulation/kg-ontology/latest/evaluation-matrix.json").read_text(
@@ -354,6 +413,8 @@ def main() -> None:
         language: (ROOT / f"paper/latex/{language}/main.tex").read_text(encoding="utf-8")
         for language in ("en", "ko")
     }
+    for language in manuscript_texts:
+        _validate_generated_input_closure(language)
     if len(VALIDATOR_CHECKS) != 7:
         raise ValueError(f"paper check-count contract drift: {VALIDATOR_CHECKS!r}")
     validator_count_markers = {
@@ -374,11 +435,21 @@ def main() -> None:
         for contribution_id in sorted(CONTRIBUTION_IDS):
             if rf"\textbf{{{contribution_id}---" not in tex:
                 raise ValueError(f"{language} manuscript lacks marker {contribution_id}")
-        for lane_id in ("E1", "E2", "E3"):
-            if rf"\textbf{{{lane_id}}}" not in tex:
-                raise ValueError(f"{language} manuscript lacks evidence-lane marker {lane_id}")
-        if r"\textbf{ENG1.}" not in tex:
-            raise ValueError(f"{language} manuscript lacks evidence-lane marker ENG1")
+        for lane_id in sorted(ACTIVE_LANE_IDS):
+            marker = rf"\textbf{{{lane_id}}}" if lane_id != "ENG1" else r"\textbf{ENG1.}"
+            if marker not in tex:
+                raise ValueError(
+                    f"{language} manuscript lacks active evidence-lane marker {lane_id}"
+                )
+        for forbidden in (
+            r"\input{generated/live_pilot_",
+            "Live Screening Pilot",
+            "라이브 스크리닝 파일럿",
+        ):
+            if forbidden in tex:
+                raise ValueError(
+                    f"{language} manuscript retains retired active E2 fragment: {forbidden}"
+                )
         for npc_marker in ("NPC-ENG1", "NPC-SCR1"):
             if npc_marker not in tex:
                 raise ValueError(f"{language} manuscript lacks additive NPC marker {npc_marker}")
@@ -431,6 +502,8 @@ def main() -> None:
             raise ValueError(f"{contribution_id} contains an unknown claim ID")
         if not set(_pipe(row["evidence_lane_ids"])) <= LANE_IDS:
             raise ValueError(f"{contribution_id} contains an unknown evidence lane")
+        if "E2" in _pipe(row["evidence_lane_ids"]):
+            raise ValueError(f"{contribution_id} must not use historical E2 as active evidence")
         if "efficacy" in row["evidence_status"].lower():
             raise ValueError(f"{contribution_id} improperly claims efficacy")
     c2_mechanism = contribution_by_id["C2"]["manuscript_claim"]
@@ -443,6 +516,15 @@ def main() -> None:
     if len(experiment_rows) != 4 or set(experiment_by_id) != LANE_IDS:
         raise ValueError("experiment matrix must contain E1, E2, E3, and ENG1 exactly once")
     _assert_paths(experiment_rows, "evidence_paths")
+    if any(
+        experiment_by_id[lane_id]["publication_scope"] != "active" for lane_id in ACTIVE_LANE_IDS
+    ):
+        raise ValueError("active evidence lanes must be marked publication_scope=active")
+    if any(
+        experiment_by_id[lane_id]["publication_scope"] != "historical"
+        for lane_id in HISTORICAL_LANE_IDS
+    ):
+        raise ValueError("historical E2 must be marked publication_scope=historical")
     for lane_id, row in experiment_by_id.items():
         supporting = set(_pipe(row["supporting_claim_ids"]))
         prohibited = set(_pipe(row["prohibited_claim_ids"]))
@@ -452,6 +534,10 @@ def main() -> None:
             raise ValueError(f"{lane_id} improperly promotes a C-RESULT claim")
         if prohibited != RESULT_CLAIMS:
             raise ValueError(f"{lane_id} must explicitly prohibit every C-RESULT claim")
+        if lane_id in ACTIVE_LANE_IDS and "rq2-live-pilot" in row["evidence_paths"]:
+            raise ValueError(f"{lane_id} active evidence must not point to retired E2 receipts")
+    if "historical-only" not in experiment_by_id["E2"]["evidence_status"]:
+        raise ValueError("E2 evidence status must declare historical-only")
     _validate_headline_sources(experiment_by_id)
 
     _validate_npc_crosswalk()

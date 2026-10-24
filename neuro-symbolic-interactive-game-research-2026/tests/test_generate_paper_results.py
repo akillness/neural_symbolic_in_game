@@ -24,18 +24,13 @@ class GeneratePaperResultsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "initial validator-code count drift"):
             generator._guided_commit_error_codes(data)
 
-    def test_live_packet_generation_and_claim_boundary_fail_closed(self) -> None:
-        packet = generator._load_live_packet()
-        self.assertEqual(set(packet["current"]), {key for key, _ in generator.LIVE_CURRENT_CELLS})
-        self.assertIn("5/5", generator._live_result_text(packet, korean=False))
-        self.assertIn("15/15", generator._live_result_text(packet, korean=True))
-        self.assertIn("pilot-only", generator._live_result_text(packet, korean=False))
-        self.assertNotIn("C-PILOT", generator._live_result_text(packet, korean=False))
-        self.assertIn("0/5", generator._live_tables(packet, korean=False))
-
+    def test_active_generation_emits_only_current_publication_fragments(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "generated"
-            with patch.object(generator, "OUT", output):
+            with (
+                patch.object(generator, "OUT", output),
+                patch.object(sys, "argv", ["generate_paper_results.py"]),
+            ):
                 generator.main()
             self.assertEqual(
                 {path.name for path in output.iterdir()},
@@ -44,10 +39,6 @@ class GeneratePaperResultsTests(unittest.TestCase):
                     "pilot_results_ko.tex",
                     "pilot_tables_en.tex",
                     "pilot_tables_ko.tex",
-                    "live_pilot_results_en.tex",
-                    "live_pilot_results_ko.tex",
-                    "live_pilot_tables_en.tex",
-                    "live_pilot_tables_ko.tex",
                     "contribution_map_en.tex",
                     "contribution_map_ko.tex",
                     "evidence_lanes_en.tex",
@@ -60,10 +51,39 @@ class GeneratePaperResultsTests(unittest.TestCase):
                 self.assertIn(f"{contribution_id} & ", contribution_map)
             lanes = (output / "evidence_lanes_ko.tex").read_text(encoding="utf-8")
             self.assertIn(r"\label{tab:evidence-lanes}", lanes)
-            for lane_id in ("E1", "E2", "E3", "ENG1"):
+            for lane_id in ("E1", "E3", "ENG1"):
                 self.assertIn(f"{lane_id} & ", lanes)
+            self.assertNotIn("E2 &", lanes)
             self.assertIn(
                 r"\allowbreak{}", (output / "pilot_results_en.tex").read_text(encoding="utf-8")
+            )
+
+    def test_historical_live_generation_remains_explicit_and_claim_bound(self) -> None:
+        packet = generator._load_live_packet()
+        self.assertEqual(set(packet["current"]), {key for key, _ in generator.LIVE_CURRENT_CELLS})
+        self.assertIn("5/5", generator._live_result_text(packet, korean=False))
+        self.assertIn("15/15", generator._live_result_text(packet, korean=True))
+        self.assertIn("pilot-only", generator._live_result_text(packet, korean=False))
+        self.assertNotIn("C-PILOT", generator._live_result_text(packet, korean=False))
+        self.assertIn("0/5", generator._live_tables(packet, korean=False))
+
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            output = Path(directory) / "generated"
+            historical_output = output / "historical-live"
+            with (
+                patch.object(sys, "argv", ["generate_paper_results.py", "--historical-live"]),
+                patch.object(generator, "OUT", output),
+                patch.object(generator, "HISTORICAL_OUT", historical_output),
+            ):
+                generator.main()
+            self.assertEqual(
+                {path.name for path in historical_output.iterdir()},
+                {
+                    "live_pilot_results_en.tex",
+                    "live_pilot_results_ko.tex",
+                    "live_pilot_tables_en.tex",
+                    "live_pilot_tables_ko.tex",
+                },
             )
 
         with tempfile.TemporaryDirectory() as directory:

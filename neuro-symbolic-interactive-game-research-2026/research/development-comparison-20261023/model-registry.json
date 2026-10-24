@@ -1,0 +1,291 @@
+{
+  "schema_version": "development-comparison-model-registry/v1",
+  "registry_status": "READ_ONLY_PREFLIGHT_COMPLETE",
+  "study_label": "development-comparison-20261023",
+  "retrieval_date": "2026-10-23",
+  "measured_runs": 0,
+  "evidence_count_summary": {"public_source_records": 47, "native_safe_command_receipts": 6, "jev_advisory_receipts": 1, "user_decision_receipts": 2, "total_records": 56},
+  "expanded_panel_status": "PROPOSED_NOT_EXECUTED",
+  "identity_policy": "Preserve raw_user_label exactly as supplied by the user. Keep raw_user_label, requested_label, protocol_label, display_alias, canonical candidate ID, possible IDs, mapping confidence, runtime-reported identity, provider-returned identity, and serving revision in separate fields. Display formatting is not identity mapping. A public card, UI selector, installed catalog entry, or self-report is not account access or provider attestation.",
+  "legacy_boundary": {
+    "status": "DESCRIPTIVE_ONLY_EXCLUDED_FROM_EXPANDED_PANEL",
+    "case_path": "research/development-cases/ontology-map-20261023-01/",
+    "development_runs": 1,
+    "native_cli_invocations": 6,
+    "independent_repeats": 0,
+    "observed_wall_time_s": 5942.665,
+    "rule": "The old n1/CLI6/repeats0 dashboard case and its wall time remain historical context; they are not a new candidate run, endpoint baseline, efficacy result, or denominator contribution for this nine-candidate panel."
+  },
+  "caps": {
+    "approved_budget_usd": 100,
+    "token_cap": null,
+    "wall_time_s": null,
+    "tool_call_cap": null,
+    "repair_attempt_cap": null,
+    "operator_intervention_cap": null,
+    "approval_status": "APPROVED_AGGREGATE_BUDGET_ONLY",
+    "approval_receipt_id": "USER-DECISION-2026-10-23",
+    "launch_gate": "FAIL_CLOSED_WHEN_ANY_OPERATIONAL_CAP_OR_APPROVAL_IS_NULL"
+  },
+
+  "approval_receipts": [
+    {
+      "receipt_id": "USER-DECISION-2026-10-23",
+      "source": "Plain user decision relayed by Main",
+      "date": "2026-10-23",
+      "approved_scope": "Both tracks; aggregate additional API cap",
+      "approved_budget_usd": 100,
+      "execution_status": "No experiments launched; per-run, time and token caps remain null and launch remains fail-closed."
+    },
+    {
+      "receipt_id": "USER-DECISION-2026-10-24-NATIVE-OAUTH-V3",
+      "source": "Plain user route amendment relayed by Main",
+      "date": "2026-10-24",
+      "approved_scope": "OAuth-authenticated native CLI route decision; API arms remain 0; legacy Argon B1/C1 evidence remains boundary-only",
+      "execution_status": "Planned and awaiting receipts; no experiment launched; provider identity, serving revision, tool parity, caps and actual cost remain unverified/null."
+    }
+  ],
+  "oauth_native_cli_route": {
+    "receipt_id": "USER-DECISION-2026-10-24-NATIVE-OAUTH-V3",
+    "provider": "Google Antigravity (agy)",
+    "route": "OAUTH_AUTHENTICATED_NATIVE_CLI",
+    "route_status": "PLANNED_AWAITING_NATIVE_OAUTH_RECEIPTS_NOT_LAUNCHED",
+    "scope": "Native CLI feasibility path only; API arms remain 0",
+    "authentication_receipt": null,
+    "api_arms_launched": 0,
+    "execution_status": "PROPOSED_NOT_EXECUTED",
+    "provider_returned_identity": null,
+    "model_version": null,
+    "serving_revision": null,
+    "effective_tool_manifest": null,
+    "actual_cost_usd": null,
+    "identity_boundary": "Route choice is not provider attestation or an inference receipt; no runtime result, parity, revision, seed, cap or cost claim is permitted until exact receipts arrive."
+  },
+  "access_route_attestation": {
+    "receipt_id": "USER-ATTESTATION-AGY-PERSONAL-2026-10-24",
+    "source": "Main user attestation plus Main native agy usage receipt",
+    "provider": "Google Antigravity (agy)",
+    "route": "PERSONAL_PRO_OR_ULTRA_ACCOUNT_ROUTE",
+    "route_gate": "SATISFIED_FOR_APPROVED_AGY_PILOT",
+    "plan_tier": "USER_ATTESTED_PERSONAL_PRO_OR_ULTRA; PROVIDER_TIER_UNVERIFIED",
+    "quota_mode": "PERSONAL_SUBSCRIPTION_BASELINE_QUOTA_ONLY",
+    "configured_use_g1_credits": null,
+    "effective_use_g1_credits": false,
+    "settings_validation": {"modelProvider": null, "useG1Credits": null, "api_key_env_override": false, "adc_env_override": false, "base_url_env_override": false},
+    "usage_receipt": {"command": "agy --print /usage --output-format json --print-timeout 15s --sandbox", "observed": "num_turns=0; all_tokens=0; quota groups reported as Argon weekly=100%, Gemini weekly/five-hour=100%, Claude/GPT weekly=0%", "plan_fields_present": false, "inference_executed": false},
+    "actual_billed_cost_usd": null,
+    "identity_boundary": "Route and quota evidence only; it does not establish provider-returned model ID, modelVersion, serving revision, inference result, actual cost or tool parity."
+  },
+  "jev_advisory": {
+    "status": "RECEIPT_SUPPLIED_ADVISORY_ONLY",
+    "receipt": {
+      "version": "jev-1.14.0",
+      "validation": "unvalidated",
+      "study_status": "proposal_only",
+      "addresses_task": {"p_yes": 0.45, "decision": "no"},
+      "evidence_supports": {"p_yes": 0.10, "decision": "no"},
+      "needs_clarification": {"p_yes": 0.66, "decision": "yes"},
+      "request_count": 1,
+      "input_tokens": 966,
+      "output_tokens": 80,
+      "elapsed_ms": 368,
+      "scientific_study_launched": 0
+    },
+    "role": "ADVISORY_ONLY; NEVER_GOLD_LABEL_OR_COMMIT_AUTHORITY"
+  },
+  "native_safe_command_receipts": [
+    {
+      "receipt_id": "N-OAI-1",
+      "command": "codex --version",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "observed_on": "2026-10-23",
+      "observed": "codex-cli 0.163.0",
+      "private_data": false
+    },
+    {
+      "receipt_id": "N-OAI-2",
+      "command": "codex --help",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "observed_on": "2026-10-23",
+      "observed": "Exposes -m/--model, exec, and sandbox values read-only, workspace-write, danger-full-access; no model inference was run.",
+      "private_data": false
+    },
+    {
+      "receipt_id": "N-OAI-3",
+      "command": "codex debug models --bundled",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "observed_on": "2026-10-23",
+      "observed": "Successful bundled JSON catalog containing 11 entries, including separate exact slugs gpt-6.1-sol and gpt-6-sol; raw output artifact://3382.",
+      "private_data": false,
+      "caveat": "Bundled catalog metadata and comp_hash=3000 are not provider-returned model revision evidence."
+    },
+    {
+      "receipt_id": "N-CLAUDE-1",
+      "command": "claude --version",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "observed_on": "2026-10-23",
+      "observed": "2.1.302 (Claude Code)",
+      "private_data": false
+    },
+    {
+      "receipt_id": "N-CLAUDE-2",
+      "command": "claude --help",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "observed_on": "2026-10-23",
+      "observed": "Help returned model/effort/tools/MCP/permission/bare/JSON/budget controls; no model catalog or seed option appeared. This bounded absence is not proof that hidden capabilities do not exist.",
+      "private_data": false
+    },
+    {
+      "receipt_id": "N-GEMINI-1",
+      "command": "agy --print /usage --output-format json --print-timeout 15s --sandbox",
+      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "observed_on": "2026-10-24",
+      "observed": "Usage report succeeded with num_turns=0 and all tokens=0; quota groups reported Argon weekly=100%, Gemini weekly/five-hour=100%, Claude/GPT weekly=0%; no plan fields.",
+      "documentation_source_ids": ["G20"],
+      "usage_semantics": "Official Antigravity headless CLI documentation says num_turns is cumulative user turns for the session, not provider request/inference count; conversation_id is observable. The documentation does not define whether thinking is included in output or cache-read subset semantics.",
+      "private_data": false,
+      "inference_executed": false
+    }
+  ],
+  "sources": [
+    {"id":"O1","url":"https://developers.openai.com/api/docs/models/gpt-6.1-sol","retrieved":"2026-10-23","establishes":"Exact GPT-6.1 Sol model ID, API endpoints, reasoning controls, context/pricing facts and undated selector; no immutable backend revision observed."},
+    {"id":"O2","url":"https://developers.openai.com/api/docs/models/gpt-6-sol","retrieved":"2026-10-23","establishes":"Exact GPT-6 Sol model ID, API endpoints, reasoning controls, context/pricing facts and undated selector; no immutable backend revision observed."},
+    {"id":"O3","url":"https://developers.openai.com/api/docs/models/","retrieved":"2026-10-23","establishes":"Official model catalog context and current model names."},
+    {"id":"O4","url":"https://learn.chatgpt.com/docs/models","retrieved":"2026-10-23","establishes":"Codex/model selection documentation; Astra and Luna product/model references and rollout caveats."},
+    {"id":"O5","url":"https://learn.chatgpt.com/docs/codex/cli","retrieved":"2026-10-23","establishes":"Native Codex CLI can inspect files, make edits and run installed tools; interface documentation only."},
+    {"id":"O6","url":"https://learn.chatgpt.com/docs/non-interactive-mode#make-output-machine-readable","retrieved":"2026-10-23","establishes":"Codex JSONL event/usage observability documentation."},
+    {"id":"O7","url":"https://learn.chatgpt.com/docs/app-server#list-models-modellist","retrieved":"2026-10-23","establishes":"Account/client-dependent model-list and reroute fields; not called in this preflight."},
+    {"id":"O8","url":"https://developers.openai.com/api/reference/resources/responses/methods/create/","retrieved":"2026-10-23","establishes":"Responses response model field and tool surface documentation; no response was obtained."},
+    {"id":"A1","url":"https://developers.openai.com/api/docs/models/gpt-6-astra","retrieved":"2026-10-23","establishes":"Possible Astra candidate GPT-6 Astra, ID gpt-6-astra, Responses/Chat Completions and Responses tools."},
+    {"id":"A2","url":"https://openai.com/index/gpt-6-astra-next-generation-work/","retrieved":"2026-10-23","establishes":"OpenAI names GPT-6 Astra as available in Codex and API; marketing claims excluded."},
+    {"id":"A3","url":"https://deepmind.google/models/project-astra/","retrieved":"2026-10-23","establishes":"Separate Google Project Astra research prototype; no callable coding-model ID established."},
+    {"id":"L1","url":"https://developers.openai.com/api/docs/models/gpt-6-luna","retrieved":"2026-10-23","establishes":"Possible Luna candidate GPT-6 Luna, ID gpt-6-luna, Responses/Chat Completions and tools."},
+    {"id":"L2","url":"https://developers.openai.com/api/docs/models/gpt-5.6-luna","retrieved":"2026-10-23","establishes":"Distinct possible Luna candidate GPT-5.6 Luna, ID gpt-5.6-luna."},
+    {"id":"L3","url":"https://marketplace.visualstudio.com/items?itemName=derekshreds.lunacode","retrieved":"2026-10-23","establishes":"Luna Code is a configurable OpenRouter VS Code coding product, not a model ID; publisher documents files/shell/build/test and auxiliary/fallback model hazards."},
+    {"id":"L4","url":"https://marketplace.visualstudio.com/items?itemName=lunabaseai.luna-co-pilot","retrieved":"2026-10-23","establishes":"Luna Studio is a configurable upstream-model VS Code product, not a unique model ID; publisher documents workspace/terminal/browser capabilities."},
+    {"id":"F1","url":"https://platform.claude.com/docs/en/models/fable-5-1/overview","retrieved":"2026-10-23","establishes":"Exact Claude Fable 5.1 ID claude-fable-5-1, release and provider IDs."},
+    {"id":"F2","url":"https://platform.claude.com/docs/en/models/fable-5-1/whats-new-fable-5-1","retrieved":"2026-10-23","establishes":"Fable 5.1 is distinct from Mythos 5.1; adaptive thinking always on; forced tool choice unsupported."},
+    {"id":"F3","url":"https://code.claude.com/docs/en/model-config","retrieved":"2026-10-23","establishes":"Claude Code support/version, full-name selectors, alias routing, modelUsage, availability/content fallback and policy replacement behavior."},
+    {"id":"F4","url":"https://code.claude.com/docs/en/headless","retrieved":"2026-10-23","establishes":"Claude Code programmatic Read/Edit/Bash interface and agent-loop distinction; no command executed."},
+    {"id":"F5","url":"https://code.claude.com/docs/en/env-vars","retrieved":"2026-10-23","establishes":"CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK=1 documented fallback control; not configured or tested."},
+    {"id":"F6","url":"https://code.claude.com/docs/en/settings-reference","retrieved":"2026-10-23","establishes":"switchModelsOnFlag=false documented fail-closed setting; not configured or tested."},
+    {"id":"P1","url":"https://platform.claude.com/docs/en/models/opus-5-5/overview","retrieved":"2026-10-23","establishes":"Exact Claude Opus 5.5 ID claude-opus-5-5, Active/latest, release date and adaptive-thinking/default-effort facts."},
+    {"id":"P2","url":"https://platform.claude.com/docs/en/models/sonnet-5-5/overview","retrieved":"2026-10-23","establishes":"Separate Claude Sonnet 5.5 ID claude-sonnet-5-5, Active/latest, release date, default effort and tool-choice facts; does not map literal sonnect."},
+    {"id":"P3","url":"https://platform.claude.com/docs/en/models/overview","retrieved":"2026-10-23","establishes":"Current Claude comparison lists Opus 5.5 and Sonnet 5.5; literal sonnect not established."},
+    {"id":"P4","url":"https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions","retrieved":"2026-10-23","establishes":"Dateless generation-4.6+ IDs pin weights/configuration while serving infrastructure/safety/sampling can change."},
+    {"id":"P5","url":"https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5","retrieved":"2026-10-23","establishes":"Opus 5.5 tool_choice limitations and computer-tool compatibility."},
+    {"id":"P6","url":"https://code.claude.com/docs/en/cli-reference","retrieved":"2026-10-23","establishes":"Claude CLI controls, MCP distinction, and max-budget-usd client-estimate caveat."},
+    {"id":"P7","url":"https://code.claude.com/docs/en/agent-sdk/cost-tracking","retrieved":"2026-10-23","establishes":"modelUsage and total_cost_usd/costUSD are client estimates, not authoritative billing."},
+    {"id":"P8","url":"https://platform.claude.com/docs/en/api/models/list","retrieved":"2026-10-23","establishes":"Authenticated Models API would determine API availability; no request performed."},
+    {"id":"G1","url":"https://ai.google.dev/gemini-api/docs/models","retrieved":"2026-10-23","establishes":"Stable model IDs and latest-alias semantics; Stable usually does not change, not immutable attestation."},
+    {"id":"G2","url":"https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash","retrieved":"2026-10-23","establishes":"Exact Gemini 3.8 Flash ID gemini-3.8-flash, capabilities and Stable status."},
+    {"id":"G3","url":"https://ai.google.dev/gemini-api/docs/models/gemini-4-argon","retrieved":"2026-10-23","establishes":"Exact Gemini 4 Argon ID gemini-4-argon, capabilities and Stable status."},
+    {"id":"G4","url":"https://ai.google.dev/gemini-api/docs/whats-new-gemini-3.8","retrieved":"2026-10-23","establishes":"Flash model ID, thinking default and deprecated sampling-parameter behavior."},
+    {"id":"G5","url":"https://ai.google.dev/api/generate-content#v1beta.GenerateContentResponse","retrieved":"2026-10-23","establishes":"Schema fields modelVersion, responseId, usageMetadata and generic seed; no observed values or candidate-specific deterministic guarantee."},
+    {"id":"G6","url":"https://ai.google.dev/gemini-api/docs/latest-model","retrieved":"2026-10-23","establishes":"Argon ID, medium thinking default and ignored temperature/top_p/top_k."},
+    {"id":"G7","url":"https://ai.google.dev/gemini-api/docs/function-calling","retrieved":"2026-10-23","establishes":"Function calling is executed by caller application, not by model itself."},
+    {"id":"G8","url":"https://ai.google.dev/gemini-api/docs/code-execution","retrieved":"2026-10-23","establishes":"Ordinary Gemini API code execution is Python-only and distinct from repository shell access."},
+    {"id":"G9","url":"https://ai.google.dev/gemini-api/docs/antigravity-agent","retrieved":"2026-10-23","establishes":"Antigravity preview agent ID, exact Flash/Argon model selectors, file/shell/build/test environment, best-effort max_total_tokens and unsupported config/tools."},
+    {"id":"G10","url":"https://geminicli.com/docs/cli/model/","retrieved":"2026-10-23","establishes":"Gemini CLI model selection, subagent non-override behavior and Argon optimization warning."},
+    {"id":"G11","url":"https://geminicli.com/docs/cli/model-routing/","retrieved":"2026-10-23","establishes":"Gemini CLI fallback and silent utility routing hazards."},
+    {"id":"G12","url":"https://ai.google.dev/gemini-api/docs/managed-agents-quickstart","retrieved":"2026-10-23","establishes":"Antigravity interaction/environment IDs, steps and usage; fresh-run distinction."},
+    {"id":"G13","url":"https://support.google.com/gemini/answer/16047321?hl=en","retrieved":"2026-10-23","establishes":"Gemini App Canvas coding/editing/preview/export UI; no local repository shell or model revision attestation."},
+    {"id":"G14","url":"https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/","retrieved":"2026-10-23","establishes":"Consumer/CLI transition and explicit lack of initial one-to-one feature parity."},
+    {"id":"G15","url":"https://geminicli.com/docs/cli/headless/","retrieved":"2026-10-23","establishes":"Gemini CLI headless JSON/stream-json event and per-model usage documentation."},
+    {"id":"G20","url":"https://antigravity.google/docs/cli/headless.md","retrieved":"2026-10-24","establishes":"Official Antigravity headless JSON usage semantics: num_turns is cumulative user turns per session, conversation_id is observable, and example usage exposes input/output/thinking/total fields without defining thinking inclusion or cache-read subset semantics."},
+    {"id":"G16","url":"https://ai.google.dev/gemini-api/docs/changelog","retrieved":"2026-10-23","establishes":"Flash and Argon GA dates and endpoint-routing caveat; exact IDs required."},
+    {"id":"G19","url":"https://ai.google.dev/gemini-api/docs/pricing","retrieved":"2026-10-23","establishes":"Published rates and tier caveats; not observed spend or entitlement."},
+    {"id":"G21","url":"research/development-comparison-20261023/native-argon-probe-20261024-02-b1only/report.json","retrieved":"2026-10-24","establishes":"Two fresh B1-only one-shot Argon coding-agent feasibility attempts: general_rule wall_time_s=180.043 and ontology wall_time_s=180.038; both native_status=TIMEOUT, stop_reason=print_timeout, runtime/provider identity null, no usage, no checker invocation. This is non-conforming feasibility evidence and not a measured panel run."}
+  ],
+  "candidates": [
+    {
+      "candidate_key":"gpt_6_1_sol","protocol_candidate_id":"gpt_6_1_sol","raw_user_label":"gpt 6.1 sol","requested_label":"gpt 6.1 sol","protocol_label":"gpt-6.1-sol","display_alias":"gpt-6.1-sol","provider":"OpenAI","canonical_id":"gpt-6.1-sol","canonical_display_name":"GPT-6.1-Sol","mapping_confidence":"EXACT_PUBLIC_ID_AND_BUNDLED_CATALOG_ENTRY","alternate_or_possible_ids":[],"source_ids":["O1","O3","O4","O5","O6","O7","O8","N-OAI-1","N-OAI-2","N-OAI-3"],
+      "catalog_or_runtime_observations":{"installed_runtime":"Codex CLI","installed_runtime_version":"0.163.0","bundled_catalog":{"slug":"gpt-6.1-sol","display_name":"GPT-6.1-Sol","visibility":"list","supported_in_api":true,"catalog_comp_hash":"3000"},"runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"gpt-6.1-sol","immutable_backend_revision":null,"revision_status":"NO_IMMUTABLE_REVISION_FIELD_OBSERVED","distinction":"Undated selector/card and bundled comp_hash are catalog metadata; neither is provider-returned serving-revision evidence."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Responses API with exact model ID and tools excluded","documented_controls":{"reasoning_effort":["low","medium","high","xhigh","max"],"api_default":"medium"},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Codex CLI with -m/--model and exec","documented_tools":["unified_exec","freeform apply_patch","text/image web search"],"native_default_reasoning":"low","native_service_tier":null,"tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Provider/app-server reroute is documented as possible; no reroute receipt exists.","default_effort":"Native default low differs from API default medium; normalize explicitly.","service_tier":"No native default tier field observed; do not assume Standard.","context":"API card and bundled CLI expose different context limits; record chosen surface separately.","seed":null,"cost":null},
+      "launch_blockers":["Account/project/workspace entitlement unverified.","Exact launch and provider-returned identity unverified.","Immutable serving revision and seed unobserved.","Effective tools, effort, tier, caps and no-reroute policy unverified.","No approved execution, consent or non-null caps."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"gpt_6_sol","protocol_candidate_id":"gpt_6_sol","raw_user_label":"gpt 6 sol","requested_label":"gpt 6 sol","protocol_label":"gpt-6-sol","display_alias":"gpt-6-sol","provider":"OpenAI","canonical_id":"gpt-6-sol","canonical_display_name":"GPT-6-Sol","mapping_confidence":"EXACT_PUBLIC_ID_AND_BUNDLED_CATALOG_ENTRY","alternate_or_possible_ids":[],"source_ids":["O2","O3","O4","O5","O6","O7","O8","N-OAI-1","N-OAI-2","N-OAI-3"],
+      "catalog_or_runtime_observations":{"installed_runtime":"Codex CLI","installed_runtime_version":"0.163.0","bundled_catalog":{"slug":"gpt-6-sol","display_name":"GPT-6-Sol","visibility":"list","supported_in_api":true,"catalog_comp_hash":"3000"},"runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"gpt-6-sol","immutable_backend_revision":null,"revision_status":"NO_IMMUTABLE_REVISION_FIELD_OBSERVED","distinction":"Undated selector/card and bundled comp_hash are catalog metadata; neither is provider-returned serving-revision evidence."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Responses API with exact model ID and tools excluded","documented_controls":{"reasoning_effort":["none","low","medium","high","xhigh","max"],"api_default":"medium"},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Codex CLI with -m/--model and exec","documented_tools":["unified_exec","freeform apply_patch","text/image web search"],"native_default_reasoning":"medium","native_service_tier":"priority/Fast","tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Provider/app-server reroute is documented as possible; no reroute receipt exists.","default_effort":"Native default medium matches API default, but explicit normalization is still required.","service_tier":"Native priority/Fast default differs from gpt-6.1-sol's missing tier field; do not pool defaults.","context":"API card and bundled CLI expose different context limits; record chosen surface separately.","seed":null,"cost":null},
+      "launch_blockers":["Account/project/workspace entitlement unverified.","Exact launch and provider-returned identity unverified.","Immutable serving revision and seed unobserved.","Effective tools, effort, tier, caps and no-reroute policy unverified.","No approved execution, consent or non-null caps."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"astra","protocol_candidate_id":"astra","raw_user_label":"astra","requested_label":"astra","protocol_label":"Astra","display_alias":"Astra","provider":"OpenAI","canonical_id":"gpt-6-astra","canonical_display_name":"GPT-6 Astra","mapping_confidence":"USER_CONFIRMED_AND_CATALOG_EVIDENCE","alternate_or_possible_ids":[{"provider":"Google DeepMind","display_name":"Project Astra","id":null,"kind":"research prototype/product","mapping":"EXCLUDED_NOT_CHOSEN","source_ids":["A3"]}],"source_ids":["A1","A2","A3","O4","O5","C1","C2"],"user_decision_receipt_id":"USER-DECISION-2026-10-23","catalog_or_runtime_observations":{"installed_runtime":null,"installed_runtime_version":null,"bundled_catalog":null,"documented_catalog_entry":"gpt-6-astra (C2)","runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"gpt-6-astra","immutable_backend_revision":null,"revision_status":"NO_IMMUTABLE_REVISION_FIELD_OBSERVED","distinction":"Public selector and documented catalog entry identify the candidate; no provider-returned serving revision was observed."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Responses or Chat Completions API with exact gpt-6-astra ID and tools excluded","documented_controls":null,"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Codex CLI/app with gpt-6-astra selection","documented_tools":["hosted_shell","apply_patch","Codex local file/edit/command tools"],"tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Provider/app-server reroute is possible; no containment receipt exists.","default_effort":null,"service_tier":null,"context":null,"seed":null,"cost":null},
+      "launch_blockers":["Account/project/workspace entitlement unverified.","Exact launch and provider-returned identity unverified despite user-confirmed label mapping.","Immutable serving revision, seed and effective tools unobserved.","Fallback/reroute policy and operational caps remain unverified/null."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"luna","protocol_candidate_id":"luna","raw_user_label":"luna","requested_label":"luna","protocol_label":"Luna","display_alias":"Luna","provider":"OpenAI","canonical_id":"gpt-6-luna","canonical_display_name":"GPT-6 Luna","mapping_confidence":"USER_CONFIRMED_AND_CATALOG_EVIDENCE","alternate_or_possible_ids":[{"provider":"OpenAI","display_name":"GPT-5.6 Luna","id":"gpt-5.6-luna","kind":"model","mapping":"EXCLUDED_NOT_CHOSEN","source_ids":["L2"]},{"provider":"Derek Morris","display_name":"Luna Code","id":"derekshreds.lunacode","kind":"VS Code coding product","mapping":"PRODUCT_NOT_MODEL_EXCLUDED_NOT_CHOSEN","source_ids":["L3"]},{"provider":"Luna Base AI / Luna Base Inc.","display_name":"Luna Studio","id":"lunabaseai.luna-co-pilot","kind":"VS Code autonomous coding-agent product","mapping":"PRODUCT_NOT_MODEL_EXCLUDED_NOT_CHOSEN","source_ids":["L4"]}],"source_ids":["L1","L2","L3","L4","O4","O5","C2"],"user_decision_receipt_id":"USER-DECISION-2026-10-23","catalog_or_runtime_observations":{"installed_runtime":null,"installed_runtime_version":null,"bundled_catalog":null,"documented_catalog_entry":"gpt-6-luna (C2)","runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"gpt-6-luna","immutable_backend_revision":null,"revision_status":"NO_IMMUTABLE_REVISION_FIELD_OBSERVED","distinction":"Public selector and documented catalog entry identify the selected generation; no provider-returned serving revision was observed."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Responses or Chat Completions API with exact gpt-6-luna ID and tools excluded","documented_controls":{"reasoning_effort":["none","low","medium","high","xhigh","max"]},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Codex CLI/app with gpt-6-luna selection","documented_tools":["hosted_shell","apply_patch","Codex local file/edit/command tools"],"tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Provider/app-server reroute is possible; excluded Luna products document configurable fallback, subagent and summarizer hazards.","default_effort":null,"service_tier":null,"context":null,"seed":null,"cost":null},
+      "launch_blockers":["Account/project/workspace entitlement unverified.","Exact launch and provider-returned identity unverified despite user-confirmed label mapping.","Excluded product alternatives must not be substituted; effective tools, fallback/reroute policy, revision and caps remain unverified/null."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"opus_5_5","protocol_candidate_id":"opus_5_5","raw_user_label":"opus 5.5","requested_label":"opus 5.5","protocol_label":"Opus5.5","display_alias":"Opus 5.5","provider":"Anthropic","canonical_id":"claude-opus-5-5","canonical_display_name":"Claude Opus 5.5","mapping_confidence":"VERIFIED_OFFICIAL_DOCUMENTATION; PROVIDER_DEPLOYMENT_UNBOUND","alternate_or_possible_ids":[{"provider":"Amazon Bedrock","display_name":"Claude Opus 5.5","id":"anthropic.claude-opus-5-5","kind":"provider deployment ID","mapping":"PLATFORM_SPECIFIC_ID","source_ids":["P1"]}],"source_ids":["P1","P3","P4","P5","P6","P7","P8","N-CLAUDE-1","N-CLAUDE-2"],
+      "catalog_or_runtime_observations":{"installed_runtime":"Claude Code","installed_runtime_version":"2.1.302","bundled_catalog":null,"runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"claude-opus-5-5","immutable_backend_revision":"Pinned weights/configuration semantics for existing dateless ID","revision_status":"DOCUMENTED_SNAPSHOT; SERVING_REVISION_UNOBSERVED","distinction":"Anthropic says weights/configuration do not change for an existing ID, while serving infrastructure, safety classifiers and sampling logic can change."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Direct Claude Messages/API arm with tools disabled","documented_controls":{"adaptive_thinking":"always on","default_effort":"medium","tool_choice":["auto","none"]},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Claude Code -p/agent loop; --tools controls built-ins but not MCP","documented_tools":["Read","Edit","Bash"],"tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Availability/content fallback, policy replacement and subagent model changes are documented; no settings were read or changed.","default_effort":"Adaptive thinking cannot be disabled; API default effort medium.","service_tier":"Provider selector may be API name, Bedrock profile ARN, Foundry deployment or Google version name; deployment unbound.","model_usage":"result modelUsage can identify actual model tree; no result exists.","cost":"total_cost_usd/costUSD and max-budget-usd are client estimates and may be exceeded; authoritative billing null.","seed":null},
+      "launch_blockers":["Selected provider/deployment and account access unverified.","Literal provider selector must be exact; alias/routing differences remain.","Fallback/subagent containment and effective MCP/tool manifest unverified.","Provider-returned identity, revision, seed, usage and costs null.","No approved execution, consent or non-null caps."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"sonnect_5_5","protocol_candidate_id":"literal_sonnect_5_5","raw_user_label":"sonnect 5.5","requested_label":"sonnect 5.5","protocol_label":"ClaudeSonnet5.5","display_alias":"Claude Sonnet 5.5","provider":"Anthropic","canonical_id":"claude-sonnet-5-5","canonical_display_name":"Claude Sonnet 5.5","mapping_confidence":"EDITORIAL_NORMALIZATION_USER_CONFIRMED_SPELLING; OFFICIAL_ID_DOCUMENTED; PROVIDER_ATTESTATION_UNVERIFIED","alternate_or_possible_ids":[],"source_ids":["P2","P3","P4","P6","P7","N-CLAUDE-1","N-CLAUDE-2"],"user_decision_receipt_id":"USER-DECISION-2026-10-23","editorial_normalization":{"from_literal":"sonnect 5.5","normalized_label":"ClaudeSonnet5.5","basis":"USER_CONFIRMED_OBVIOUS_TYPO","provider_attestation":false},"catalog_or_runtime_observations":{"installed_runtime":"Claude Code","installed_runtime_version":"2.1.302","bundled_catalog":null,"runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"claude-sonnet-5-5","immutable_backend_revision":"Pinned weights/configuration semantics for existing dateless ID","revision_status":"DOCUMENTED_SNAPSHOT; SERVING_REVISION_UNOBSERVED","distinction":"Editorial normalization selects the documented ID for study planning; it is not provider-returned serving identity."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Direct Claude Sonnet 5.5 Messages/API arm with tools disabled","documented_controls":{"adaptive_thinking":"default","default_effort":"high","tool_choice":["auto","none"]},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Claude Code arm using exact claude-sonnet-5-5 selector","documented_tools":["Read","Edit","Bash"],"tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Claude availability/content fallback and provider-specific alias resolution remain hazards; no containment receipt exists.","default_effort":"Possible Sonnet candidate default high; explicit normalization required.","service_tier":"Provider deployment unbound.","model_usage":"Would require result modelUsage; none exists.","cost":"Client estimate only if later run; actual cost null.","seed":null},
+      "launch_blockers":["Editorial normalization is not provider attestation; exact account/provider launch and returned identity remain unverified.","Fallback/tool parity, serving revision, seed, cost and operational caps remain unverified/null."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"fable_5_1","protocol_candidate_id":"fable_5_1","raw_user_label":"fable 5.1","requested_label":"fable 5.1","protocol_label":"Fable5.1","display_alias":"Fable 5.1","provider":"Anthropic","canonical_id":"claude-fable-5-1","canonical_display_name":"Claude Fable 5.1","mapping_confidence":"VERIFIED_OFFICIAL_DOCUMENTATION; RUNTIME_UNVERIFIED","alternate_or_possible_ids":[{"provider":"Amazon Bedrock","display_name":"Claude Fable 5.1","id":"anthropic.claude-fable-5-1","kind":"provider deployment ID","mapping":"PLATFORM_SPECIFIC_ID","source_ids":["F1"]}],"source_ids":["F1","F2","F3","F4","F5","F6","P7","N-CLAUDE-1","N-CLAUDE-2"],
+      "catalog_or_runtime_observations":{"installed_runtime":"Claude Code","installed_runtime_version":"2.1.302","bundled_catalog":null,"runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_QUERIED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"claude-fable-5-1","immutable_backend_revision":"Pinned weights/configuration semantics for existing dateless ID","revision_status":"DOCUMENTED_SNAPSHOT; SERVING_REVISION_UNOBSERVED","distinction":"Documented model ID semantics do not establish provider-returned revision or account serving identity."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Direct Claude API arm with tools disabled","documented_controls":{"adaptive_thinking":"always on","tool_choice":["auto","none"],"forced_any_or_named_tool":"unsupported"},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Claude Code support from v2.1.257; use full ID, not fable/best aliases","documented_tools":["Read","Edit","Bash"],"tool_execution":"UNVERIFIED"}},
+      "fallback_default_tier_hazards":{"fallback":"Documented safety fallback can switch Fable to other models; controls were not configured/tested.","default_effort":"Adaptive thinking always on; no inferred equal effort.","service_tier":"Provider deployment unbound.","alias":"fable/best aliases can resolve to Fable 5 rather than 5.1 on Claude Apps gateway.","cost":"Claude Code -p may bill usage credits without interactive consent; no run occurred.","seed":null},
+      "launch_blockers":["Account/provider access and exact runtime/provider identity unverified.","No-fallback control and effective tool/MCP manifest unverified.","Revision, seed, usage, costs and operational caps remain null/unapproved."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_FALLBACK_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"literal_gemin_3_8flash","protocol_candidate_id":"literal_gemin3_8_flash","raw_user_label":"gemin 3.8flash","requested_label":"gemin 3.8flash","protocol_label":"Gemini3.8Flash","display_alias":"Gemini 3.8 Flash","provider":"Google","canonical_id":"gemini-3.8-flash","canonical_display_name":"Gemini 3.8 Flash","mapping_confidence":"EDITORIAL_NORMALIZATION_USER_CONFIRMED_SPELLING; OFFICIAL_ID_DOCUMENTED; PROVIDER_ATTESTATION_UNVERIFIED","alternate_or_possible_ids":[],"source_ids":["G1","G2","G4","G5","G7","G8","G9","G10","G11","G13","G14","G15","G16","G19"],"user_decision_receipt_id":"USER-DECISION-2026-10-23","editorial_normalization":{"from_literal":"gemin 3.8flash","normalized_label":"Gemini3.8Flash","basis":"USER_CONFIRMED_OBVIOUS_TYPO","provider_attestation":false},"catalog_or_runtime_observations":{"installed_runtime":null,"installed_runtime_version":null,"bundled_catalog":null,"runtime_reported_model":null,"provider_returned_model":null,"account_access":"UNVERIFIED_NOT_ACCESSED","active_tool_manifest":"UNVERIFIED"},
+      "snapshot_vs_serving_revision":{"public_selector":"gemini-3.8-flash","immutable_backend_revision":null,"revision_status":"NO_IMMUTABLE_REVISION_ESTABLISHED","distinction":"Editorial normalization selects the documented public candidate; Google Stable is not a provider-returned immutable revision."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Gemini API with model=gemini-3.8-flash and tools excluded","documented_controls":{"thinking_default":"medium","function_calling":"caller executes","code_execution":"Python-only when enabled"},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Antigravity preview agent with model=gemini-3.8-flash","documented_agent_id":"antigravity-preview-09-2026","documented_tools":["sandbox file read/write/edit/search/list","Bash/Python/Node","build/test"],"tool_execution":"UNVERIFIED"},"app_ui":{"status":"DISPLAY_LABEL_ONLY_NOT_PROVIDER_ATTESTED","observed_selector":"3.8 Flash","local_runtime":null}},
+      "fallback_default_tier_hazards":{"fallback":"Gemini CLI can silently route utility/subagent calls; --model does not override subagent models.","default_effort":"Flash documentation reports medium thinking default; editorial normalization is not provider attestation.","service_tier":"Antigravity max_total_tokens is best-effort if used; per-run caps remain null.","sampling":"Flash migration docs remove/deprecate sampling controls; do not invent temperature parity.","seed":null,"cost":null},
+      "launch_blockers":["Editorial normalization is not provider attestation; account/API access and exact provider-returned modelVersion remain unverified.","Gemini App/UI does not establish coding tools; Antigravity parity and fallback/subagent containment remain unverified.","Immutable revision, seed, cost and operational caps remain unverified/null."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    },
+    {
+      "candidate_key":"gemini_argon","protocol_candidate_id":"gemini_argon","raw_user_label":"gemini argon","requested_label":"gemini argon","protocol_label":"GeminiArgon","display_alias":"Gemini Argon","provider":"Google","canonical_id":"gemini-4-argon","canonical_display_name":"Gemini 4 Argon","mapping_confidence":"VERIFIED_PUBLIC_CANDIDATE; APP_BACKING_IDENTITY_UNATTESTED","alternate_or_possible_ids":[{"provider":"Google managed agent","display_name":"Antigravity preview agent","id":"antigravity-preview-09-2026","kind":"coding-agent interface ID, not model ID","mapping":"SEPARATE_INTERFACE","source_ids":["G9","G12"]}],"source_ids":["G1","G3","G5","G6","G7","G8","G9","G10","G11","G12","G13","G14","G15","G16","G19"],
+      "catalog_or_runtime_observations":{"installed_runtime":"Antigravity CLI (agy)","installed_runtime_version":"1.4.4","bundled_catalog":null,"native_cli_selector":"gemini-4-argon-medium","native_catalog_model":"gemini-4-argon-medium","runtime_reported_model":null,"provider_returned_model":null,"account_access":"USER_ATTESTED_PERSONAL_ROUTE; PROVIDER_ENTITLEMENT_UNVERIFIED","access_route_receipt_id":"USER-ATTESTATION-AGY-PERSONAL-2026-10-24","active_tool_manifest":"UNVERIFIED","app_selector_observed":"4 Argon (Main-provided display observation only)","native_probe_receipts":[{"probe_id":"C1","report_path":"research/development-comparison-20261023/native-argon-probe-20261024-01/report.json","report_line":2,"status":"OBSERVED","classification":"FEASIBILITY_PROTOCOL_DEVIATION_GLOBAL_TOOLS_NOT_EXCLUDED","launches":2,"num_turns":[1,1],"tokens":[26791,17972],"after_quota_percent":99,"provider_returned_model":null,"runtime_reported_model":null,"serving_revision":null,"seed":null,"counts_toward_measured_runs":false,"counts_toward_conforming_study":false,"comparative_result":false}],"native_b1_only_probe_receipts":[{"probe_id":"B1-20261024-02","report_path":"research/development-comparison-20261023/native-argon-probe-20261024-02-b1only/report.json","status":"OBSERVED_NONCONFORMING_FEASIBILITY","attempts":[{"representation":"general_rule","wall_time_s":180.043,"native_status":"TIMEOUT","stop_reason":"print_timeout","usage":null,"runtime_reported_model":null,"provider_returned_model":null,"serving_revision":null,"seed":null},{"representation":"ontology","wall_time_s":180.038,"native_status":"TIMEOUT","stop_reason":"print_timeout","usage":null,"runtime_reported_model":null,"provider_returned_model":null,"serving_revision":null,"seed":null}],"counts_toward_measured_runs":false,"counts_toward_conforming_study":false,"comparative_result":false,"claim_boundary":"One-shot bounded code-generation feasibility only; not an autonomous tool-enabled coding-agent run or full-game comparison."}]},
+      "snapshot_vs_serving_revision":{"public_selector":"gemini-4-argon","immutable_backend_revision":null,"revision_status":"NO_IMMUTABLE_REVISION_ESTABLISHED","distinction":"Google Stable means usually does not change; no immutable provider revision or app-backed identity was observed."},
+      "interfaces":{"model_only":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Gemini API with model=gemini-4-argon and tools excluded","documented_controls":{"thinking_default":"medium","function_calling":"caller executes","code_execution":"Python-only when enabled","temperature_top_p_top_k":"ignored for latest model"},"observed_response":null},"coding_agent":{"status":"PROPOSED_NOT_EXECUTED","documented_surface":"Antigravity preview agent with agent_config.model=gemini-4-argon","documented_agent_id":"antigravity-preview-09-2026","documented_tools":["sandbox file read/write/edit/search/list","Bash/Python/Node","build/test"],"tool_execution":"UNVERIFIED"},"app_ui":{"status":"DISPLAY_LABEL_ONLY_NOT_PROVIDER_ATTESTED","observed_selector":"4 Argon","local_runtime":null}},
+      "fallback_default_tier_hazards":{"fallback":"Gemini CLI warns it is not optimized for Argon; CLI fallback/subagent routing can change actual model.","default_effort":"Argon API thinking default medium; exact app/runtime effort unverified.","service_tier":"Antigravity max_total_tokens is best-effort and may be slightly exceeded; per-run caps remain null.","sampling":"Latest-model docs say temperature/top_p/top_k are ignored; do not claim shared sampling controls.","seed":null,"cost":null},
+      "launch_blockers":["Provider entitlement and provider-returned modelVersion remain unverified; the user-attested personal route is not provider identity.","App selector does not attest gemini-4-argon backing identity.","Antigravity tool/observer parity, environment identity and fresh-run evidence unverified.","Fallback/subagent containment, immutable revision, seed, actual cost and operational caps remain unverified/null."],
+      "experiment_status":"PROPOSED_NOT_EXECUTED","launch_status":"BLOCKED_PENDING_ACCESS_IDENTITY_PARITY_AND_CAPS","measured_runs":0
+    }
+  ],
+  "common_launch_checklist": [
+    {"id":"L01","status":"REQUIRED_NOT_SATISFIED","check":"Exact requested label is bound to an official selector without silent alias substitution."},
+    {"id":"L02","status":"REQUIRED_NOT_SATISFIED","check":"Account/provider entitlement and exact launch receipt are independently observed."},
+    {"id":"L03","status":"REQUIRED_NOT_SATISFIED","check":"Runtime-reported model and provider-returned identity/modelVersion are captured separately."},
+    {"id":"L04","status":"REQUIRED_NOT_SATISFIED","check":"Serving revision/snapshot semantics are recorded separately; catalog hash or UI label is not used as revision."},
+    {"id":"L05","status":"REQUIRED_NOT_SATISFIED","check":"Model-only and coding-agent interfaces are separate arms with explicit tool manifests."},
+    {"id":"L06","status":"REQUIRED_NOT_SATISFIED","check":"Fallback, reroute, subagent and policy replacement are disabled or receipt-proven absent; otherwise arm is blocked or separately classified."},
+    {"id":"L07","status":"REQUIRED_NOT_SATISFIED","check":"Common effort, service tier, context, sampling restrictions, fresh workspace/thread and observer schema are frozen."},
+    {"id":"L08","status":"REQUIRED_NOT_SATISFIED","check":"All approved caps and consent are non-null; unknown numeric caps remain null and fail closed."},
+    {"id":"L09","status":"REQUIRED_NOT_SATISFIED","check":"One Jev receipt is supplied, but it is advisory-only and cannot replace independent human/neutral grading or establish experiment truth."},
+    {"id":"L10","status":"REQUIRED_NOT_SATISFIED","check":"Measured runs remain 0 until a separate approved launch receipt exists; legacy n1/CLI6 case is excluded."}
+  ]
+}

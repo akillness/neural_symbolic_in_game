@@ -1,0 +1,1081 @@
+{
+  "schema_version": "model-panel-task-bank/v1",
+  "synthetic": true,
+  "claim_boundary": "Prospective synthetic feasibility tasks, not representative task populations or study results. H/HC tasks are reserved and never scheduled by this harness.",
+  "schedule": {
+    "seed": 20261023,
+    "stages": [
+      "F1",
+      "F2"
+    ],
+    "repeats": 1,
+    "F1": {
+      "representation": "general_rule",
+      "tasks": [
+        "C1",
+        "B1"
+      ]
+    },
+    "F2": {
+      "representation": "ontology",
+      "tasks": [
+        "C1",
+        "B1"
+      ],
+      "requires": "matching F1 independently passed launch and observer gates"
+    },
+    "larger_grid": "PROPOSED_NOT_IMPLEMENTED_OR_AUTHORIZED"
+  },
+  "game_api": {
+    "root_files": [
+      "project.godot",
+      "main.gd"
+    ],
+    "generated_paths": "game/*.gd and game/*.tscn only; relative paths, no symlinks, no existing-file replacement",
+    "entrypoint": "main.gd extends Node2D",
+    "methods": {
+      "reset": "reset(seed: int) -> void",
+      "step": "step(action: String) -> Dictionary",
+      "snapshot": "snapshot() -> Dictionary",
+      "save_state": "save_state() -> Dictionary",
+      "load_state": "load_state(data: Dictionary) -> bool",
+      "observer_snapshot": "observer_snapshot() -> Dictionary"
+    },
+    "step_actions": [
+      "left",
+      "right",
+      "up",
+      "down",
+      "interact",
+      "repair",
+      "replay",
+      "transition"
+    ],
+    "snapshot_keys": [
+      "scene",
+      "player",
+      "goal_complete",
+      "inventory",
+      "flags",
+      "trace",
+      "state_version"
+    ],
+    "snapshot_player": "Dictionary with numeric x and y",
+    "scene_names": [
+      "dock",
+      "tower"
+    ],
+    "movement": "integer grid: left/right alter x by -1/+1, up/down alter y by -1/+1; reset position (0,0); no walls; one step per action",
+    "gate": "interact denies INSTALL_LENS before authorized facts/inventory; after authorized state permits signal_restored; state changes must follow supplied action policies",
+    "repair": "Record denied candidate, validator error, bounded corrected candidate and rerun as separate trace attempts; never silently overwrite failed attempt",
+    "observer": "observer_snapshot must be read-only; expose declared and observed fields with explicit missing evidence",
+    "save_load": "Persist canonical scene/player/inventory/flags/goal/state_version and prove exact roundtrip",
+    "replay": "same seed and action fixture reproduce canonical snapshots and decision trace",
+    "assets": "procedural geometry only; declare CC0 self-created asset provenance; no downloads",
+    "checker": "Trusted external Godot checker must exercise all ten ACs, replay twice and detect seeded valid corruptions; no model-authored PASS marker accepted"
+  },
+  "tasks": [
+    {
+      "task_id": "C1",
+      "track": "content_generation",
+      "held_out": false,
+      "brief": "Propose one INSTALL_LENS action that restores signal_restored without disclosing vault_code. Return one JSON object with exactly the candidate schema fields, no Markdown.",
+      "state": {
+        "state_id": "panel-c1-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        "strict complete candidate schema",
+        "canonical identifier/reference integrity",
+        "all existing symbolic predicates",
+        "INSTALL_LENS produces signal_restored",
+        "deterministic repeat and no state mutation"
+      ],
+      "game_api": null,
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "C2",
+      "track": "content_generation",
+      "held_out": false,
+      "brief": "Propose one INSTALL_LENS action that restores signal_restored without disclosing vault_code. Return one JSON object with exactly the candidate schema fields, no Markdown.",
+      "state": {
+        "state_id": "panel-c2-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand",
+          "gate_closed"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored",
+            "gate_closed"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        "strict complete candidate schema",
+        "canonical identifier/reference integrity",
+        "all existing symbolic predicates",
+        "INSTALL_LENS produces signal_restored",
+        "deterministic repeat and no state mutation"
+      ],
+      "game_api": null,
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "HC1",
+      "track": "content_generation",
+      "held_out": true,
+      "brief": "Propose one INSTALL_LENS action that restores signal_restored without disclosing vault_code. Return one JSON object with exactly the candidate schema fields, no Markdown.",
+      "state": {
+        "state_id": "panel-hc1-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        "strict complete candidate schema",
+        "canonical identifier/reference integrity",
+        "all existing symbolic predicates",
+        "INSTALL_LENS produces signal_restored",
+        "deterministic repeat and no state mutation"
+      ],
+      "game_api": null,
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "HC2",
+      "track": "content_generation",
+      "held_out": true,
+      "brief": "Propose one INSTALL_LENS action that restores signal_restored without disclosing vault_code. Return one JSON object with exactly the candidate schema fields, no Markdown.",
+      "state": {
+        "state_id": "panel-hc2-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand",
+          "gate_closed"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored",
+            "gate_closed"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        "strict complete candidate schema",
+        "canonical identifier/reference integrity",
+        "all existing symbolic predicates",
+        "INSTALL_LENS produces signal_restored",
+        "deterministic repeat and no state mutation"
+      ],
+      "game_api": null,
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "B1",
+      "track": "coding_agent",
+      "held_out": false,
+      "brief": "Build a playable two-scene signal-hunt Godot microgame implementing the frozen harbor/lighthouse API and all ten acceptance requirements. The goal is restoring the lighthouse signal.",
+      "state": {
+        "state_id": "panel-b1-frozen-20261023",
+        "initial": {
+          "scene": "harbor",
+          "player": {"x": 0, "y": 0},
+          "goal_complete": false,
+          "inventory": [],
+          "flags": {"gate_open": false, "restored": false},
+          "state_version": 0
+        },
+        "world": {
+          "grid_min": 0,
+          "grid_max": 2,
+          "token_location": {"scene": "harbor", "x": 1, "y": 0},
+          "gate_location": {"scene": "harbor", "x": 2, "y": 0},
+          "goal_location": {"scene": "lighthouse", "x": 1, "y": 1}
+        },
+        "rules": [
+          "left/right/up/down move one cell within the 0..2 grid; successful state-changing actions increment state_version exactly once.",
+          "interact at harbor (1,0) acquires one gate_token if absent; never duplicate the item.",
+          "interact at harbor (2,0) without gate_token denies without changing canonical projection; the denial remains in trace.",
+          "interact at harbor (2,0) with gate_token opens gate, consumes the token once, and increments state_version once.",
+          "transition only at harbor gate (2,0) after gate_open; load the distinct lighthouse PackedScene resource and reset player to (0,0). Otherwise deny unchanged.",
+          "interact at lighthouse (1,1) sets restored and goal_complete; repeated completion does not duplicate a canonical effect.",
+          "repair immediately after the missing-token gate denial records the original interact candidate, error, a bounded corrected candidate left, its validation and commit; applies left to return to (1,0). It cannot fabricate a token/open the gate.",
+          "replay verifies/reconstructs prior accepted inputs without mutating current canonical projection; independent checker also resets a fresh instance and reapplies its own captured input sequence before comparing the final projection.",
+          "snapshot/observer/save are read-only and return detached data; load rejects malformed/out-of-domain data without mutation, and a valid save/load round trip preserves canonical state.",
+          "Trace records observed proposal, validation/denial, repair where attempted and state effect, not a hidden-state claim. Trace append alone does not increment state_version.",
+          "Both declared scene resources must load/instantiate. The active scene child is named Level with node name Harbor or Lighthouse under it, matching snapshot.scene; mere snapshot string changes without actual scene transition fail.",
+          "The built game is playable using arrow/WASD movement, E interact, T transition and R repair, with visible player, scene/goal information and denial feedback; headless checker does not establish human UX or physical input acceptance."
+        ],
+        "checker_actions": ["right", "right", "interact", "repair", "interact", "right", "interact", "transition", "right", "down", "interact"],
+        "checker_expected_final": {"scene": "lighthouse", "player": {"x": 1, "y": 1}, "goal_complete": true, "inventory": [], "flags": {"gate_open": true, "restored": true}, "state_version": 10},
+        "negative_cases": ["unauthorized gate before token", "transition before gate open", "unknown action", "out-of-bounds movement", "malformed save data", "observer mutates detached result", "duplicate token acquisition", "repeated completion effect"]
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        {
+          "id": "AC-SCENES",
+          "requirement": "At least two named scenes load from a clean checkout and transition through the declared route without hidden manual setup."
+        },
+        {
+          "id": "AC-MOVEMENT",
+          "requirement": "Declared player movement/input works deterministically under the allowed input fixture and does not mutate frozen evidence."
+        },
+        {
+          "id": "AC-GAME-GOAL",
+          "requirement": "The declared goal has a reproducible success condition and a visible/readable completion receipt."
+        },
+        {
+          "id": "AC-ONTOLOGY-GATE",
+          "requirement": "The declared ontology/policy gate denies an unauthorized action and allows the authorized action using the frozen rule identifiers."
+        },
+        {
+          "id": "AC-REPAIR",
+          "requirement": "A bounded repair attempt records the original candidate, error, change and rerun; failed repairs remain traceable and do not silently commit."
+        },
+        {
+          "id": "AC-REPLAY",
+          "requirement": "A clean replay from the same receipt reproduces the declared decision, acceptance status and relevant state/hash outputs."
+        },
+        {
+          "id": "AC-READONLY-SIGNALS",
+          "requirement": "Observer/dashboard signals expose declared versus observed state and missing/unreported evidence without mutating game state or frozen inputs."
+        },
+        {
+          "id": "AC-SAVE-LOAD",
+          "requirement": "Save/load preserves the declared canonical state, version/hash and goal-relevant facts, with a receipt proving the round trip."
+        },
+        {
+          "id": "AC-BUILD",
+          "requirement": "The approved existing build path, or a separately approved new runner, produces a runnable artifact from a clean checkout; unknown runner paths are not claimed as working."
+        },
+        {
+          "id": "AC-DETERMINISTIC-QA",
+          "requirement": "Repeated deterministic QA on isolated copies produces the same declared outcomes and detects seeded valid corruptions without accepting false clean results."
+        }
+      ],
+      "game_api": {
+        "root_files": ["project.godot", "main.gd"],
+        "generated_paths": "game/*.gd and game/*.tscn only; relative paths, no symlinks, no existing-file replacement",
+        "entrypoint": "main.gd extends Node2D",
+        "methods": {
+          "reset": "reset(seed:int)",
+          "step": "step(action:String)->Dictionary",
+          "snapshot": "snapshot()->Dictionary",
+          "save_state": "save_state()->Dictionary",
+          "load_state": "load_state(data:Dictionary)->bool",
+          "observer_snapshot": "observer_snapshot()->Dictionary"
+        },
+        "step_actions": ["left", "right", "up", "down", "interact", "repair", "replay", "transition"],
+        "snapshot_keys": ["scene", "player", "goal_complete", "inventory", "flags", "trace", "state_version"],
+        "snapshot_player": "Dictionary with numeric x and y",
+        "scene_names": ["harbor", "lighthouse"],
+        "movement": "integer grid: left/right alter x by -1/+1, up/down alter y by -1/+1; reset position (0,0); no walls; one step per action",
+        "gate": "interact denies the gate before gate_token; token opens gate and is consumed once; transition requires gate_open; lighthouse interact restores signal",
+        "repair": "Record denied candidate, validator error, bounded corrected candidate left, its validation and commit as separate trace attempts; never silently overwrite failed attempt",
+        "observer": "observer_snapshot must be read-only; expose declared and observed fields with explicit missing evidence",
+        "save_load": "Persist canonical scene/player/inventory/flags/goal/state_version and prove exact roundtrip",
+        "replay": "same seed and action fixture reproduce canonical snapshots and decision trace",
+        "assets": "procedural geometry only; declare CC0 self-created asset provenance; no downloads",
+        "checker": "Trusted external Godot checker must exercise all ten ACs, replay twice and detect seeded valid corruptions; no model-authored PASS marker accepted"
+      },
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "B2",
+      "track": "coding_agent",
+      "held_out": false,
+      "brief": "Build a playable two-scene signal-hunt Godot microgame implementing every API and acceptance requirement. The goal is installing the lens at tower. A gate-and-escape variant additionally displays gate_closed until signal_restored.",
+      "state": {
+        "state_id": "panel-b2-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand",
+          "gate_closed"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored",
+            "gate_closed"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        {
+          "id": "AC-SCENES",
+          "requirement": "At least two named scenes load from a clean checkout and transition through the declared route without hidden manual setup."
+        },
+        {
+          "id": "AC-MOVEMENT",
+          "requirement": "Declared player movement/input works deterministically under the allowed input fixture and does not mutate frozen evidence."
+        },
+        {
+          "id": "AC-GAME-GOAL",
+          "requirement": "The declared goal has a reproducible success condition and a visible/readable completion receipt."
+        },
+        {
+          "id": "AC-ONTOLOGY-GATE",
+          "requirement": "The declared ontology/policy gate denies an unauthorized action and allows the authorized action using the frozen rule identifiers."
+        },
+        {
+          "id": "AC-REPAIR",
+          "requirement": "A bounded repair attempt records the original candidate, error, change and rerun; failed repairs remain traceable and do not silently commit."
+        },
+        {
+          "id": "AC-REPLAY",
+          "requirement": "A clean replay from the same receipt reproduces the declared decision, acceptance status and relevant state/hash outputs."
+        },
+        {
+          "id": "AC-READONLY-SIGNALS",
+          "requirement": "Observer/dashboard signals expose declared versus observed state and missing/unreported evidence without mutating game state or frozen inputs."
+        },
+        {
+          "id": "AC-SAVE-LOAD",
+          "requirement": "Save/load preserves the declared canonical state, version/hash and goal-relevant facts, with a receipt proving the round trip."
+        },
+        {
+          "id": "AC-BUILD",
+          "requirement": "The approved existing build path, or a separately approved new runner, produces a runnable artifact from a clean checkout; unknown runner paths are not claimed as working."
+        },
+        {
+          "id": "AC-DETERMINISTIC-QA",
+          "requirement": "Repeated deterministic QA on isolated copies produces the same declared outcomes and detects seeded valid corruptions without accepting false clean results."
+        }
+      ],
+      "game_api": {
+        "root_files": [
+          "project.godot",
+          "main.gd"
+        ],
+        "generated_paths": "game/*.gd and game/*.tscn only; relative paths, no symlinks, no existing-file replacement",
+        "entrypoint": "main.gd extends Node2D",
+        "methods": {
+          "reset": "reset(seed: int) -> void",
+          "step": "step(action: String) -> Dictionary",
+          "snapshot": "snapshot() -> Dictionary",
+          "save_state": "save_state() -> Dictionary",
+          "load_state": "load_state(data: Dictionary) -> bool",
+          "observer_snapshot": "observer_snapshot() -> Dictionary"
+        },
+        "step_actions": [
+          "left",
+          "right",
+          "up",
+          "down",
+          "interact",
+          "repair",
+          "replay",
+          "transition"
+        ],
+        "snapshot_keys": [
+          "scene",
+          "player",
+          "goal_complete",
+          "inventory",
+          "flags",
+          "trace",
+          "state_version"
+        ],
+        "snapshot_player": "Dictionary with numeric x and y",
+        "scene_names": [
+          "dock",
+          "tower"
+        ],
+        "movement": "integer grid: left/right alter x by -1/+1, up/down alter y by -1/+1; reset position (0,0); no walls; one step per action",
+        "gate": "interact denies INSTALL_LENS before authorized facts/inventory; after authorized state permits signal_restored; state changes must follow supplied action policies",
+        "repair": "Record denied candidate, validator error, bounded corrected candidate and rerun as separate trace attempts; never silently overwrite failed attempt",
+        "observer": "observer_snapshot must be read-only; expose declared and observed fields with explicit missing evidence",
+        "save_load": "Persist canonical scene/player/inventory/flags/goal/state_version and prove exact roundtrip",
+        "replay": "same seed and action fixture reproduce canonical snapshots and decision trace",
+        "assets": "procedural geometry only; declare CC0 self-created asset provenance; no downloads",
+        "checker": "Trusted external Godot checker must exercise all ten ACs, replay twice and detect seeded valid corruptions; no model-authored PASS marker accepted"
+      },
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "H1",
+      "track": "coding_agent",
+      "held_out": true,
+      "brief": "Build a playable two-scene signal-hunt Godot microgame implementing every API and acceptance requirement. The goal is installing the lens at tower.",
+      "state": {
+        "state_id": "panel-h1-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        {
+          "id": "AC-SCENES",
+          "requirement": "At least two named scenes load from a clean checkout and transition through the declared route without hidden manual setup."
+        },
+        {
+          "id": "AC-MOVEMENT",
+          "requirement": "Declared player movement/input works deterministically under the allowed input fixture and does not mutate frozen evidence."
+        },
+        {
+          "id": "AC-GAME-GOAL",
+          "requirement": "The declared goal has a reproducible success condition and a visible/readable completion receipt."
+        },
+        {
+          "id": "AC-ONTOLOGY-GATE",
+          "requirement": "The declared ontology/policy gate denies an unauthorized action and allows the authorized action using the frozen rule identifiers."
+        },
+        {
+          "id": "AC-REPAIR",
+          "requirement": "A bounded repair attempt records the original candidate, error, change and rerun; failed repairs remain traceable and do not silently commit."
+        },
+        {
+          "id": "AC-REPLAY",
+          "requirement": "A clean replay from the same receipt reproduces the declared decision, acceptance status and relevant state/hash outputs."
+        },
+        {
+          "id": "AC-READONLY-SIGNALS",
+          "requirement": "Observer/dashboard signals expose declared versus observed state and missing/unreported evidence without mutating game state or frozen inputs."
+        },
+        {
+          "id": "AC-SAVE-LOAD",
+          "requirement": "Save/load preserves the declared canonical state, version/hash and goal-relevant facts, with a receipt proving the round trip."
+        },
+        {
+          "id": "AC-BUILD",
+          "requirement": "The approved existing build path, or a separately approved new runner, produces a runnable artifact from a clean checkout; unknown runner paths are not claimed as working."
+        },
+        {
+          "id": "AC-DETERMINISTIC-QA",
+          "requirement": "Repeated deterministic QA on isolated copies produces the same declared outcomes and detects seeded valid corruptions without accepting false clean results."
+        }
+      ],
+      "game_api": {
+        "root_files": [
+          "project.godot",
+          "main.gd"
+        ],
+        "generated_paths": "game/*.gd and game/*.tscn only; relative paths, no symlinks, no existing-file replacement",
+        "entrypoint": "main.gd extends Node2D",
+        "methods": {
+          "reset": "reset(seed: int) -> void",
+          "step": "step(action: String) -> Dictionary",
+          "snapshot": "snapshot() -> Dictionary",
+          "save_state": "save_state() -> Dictionary",
+          "load_state": "load_state(data: Dictionary) -> bool",
+          "observer_snapshot": "observer_snapshot() -> Dictionary"
+        },
+        "step_actions": [
+          "left",
+          "right",
+          "up",
+          "down",
+          "interact",
+          "repair",
+          "replay",
+          "transition"
+        ],
+        "snapshot_keys": [
+          "scene",
+          "player",
+          "goal_complete",
+          "inventory",
+          "flags",
+          "trace",
+          "state_version"
+        ],
+        "snapshot_player": "Dictionary with numeric x and y",
+        "scene_names": [
+          "dock",
+          "tower"
+        ],
+        "movement": "integer grid: left/right alter x by -1/+1, up/down alter y by -1/+1; reset position (0,0); no walls; one step per action",
+        "gate": "interact denies INSTALL_LENS before authorized facts/inventory; after authorized state permits signal_restored; state changes must follow supplied action policies",
+        "repair": "Record denied candidate, validator error, bounded corrected candidate and rerun as separate trace attempts; never silently overwrite failed attempt",
+        "observer": "observer_snapshot must be read-only; expose declared and observed fields with explicit missing evidence",
+        "save_load": "Persist canonical scene/player/inventory/flags/goal/state_version and prove exact roundtrip",
+        "replay": "same seed and action fixture reproduce canonical snapshots and decision trace",
+        "assets": "procedural geometry only; declare CC0 self-created asset provenance; no downloads",
+        "checker": "Trusted external Godot checker must exercise all ten ACs, replay twice and detect seeded valid corruptions; no model-authored PASS marker accepted"
+      },
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    },
+    {
+      "task_id": "H2",
+      "track": "coding_agent",
+      "held_out": true,
+      "brief": "Build a playable two-scene signal-hunt Godot microgame implementing every API and acceptance requirement. The goal is installing the lens at tower. A gate-and-escape variant additionally displays gate_closed until signal_restored.",
+      "state": {
+        "state_id": "panel-h2-001",
+        "locations": [
+          "dock",
+          "tower"
+        ],
+        "reachable_locations": [
+          "dock",
+          "tower"
+        ],
+        "object_locations": {
+          "lens": "dock",
+          "sealed_scroll": "tower"
+        },
+        "inventory": [
+          "lens"
+        ],
+        "facts": [
+          "met_keeper",
+          "lens_in_hand",
+          "gate_closed"
+        ],
+        "action_policies": {
+          "INSTALL_LENS": {
+            "required_preconditions": [
+              "met_keeper",
+              "lens_in_hand"
+            ],
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": []
+          }
+        },
+        "npc_knowledge": {
+          "keeper": [
+            "met_keeper",
+            "lens_in_hand",
+            "signal_restored",
+            "gate_closed"
+          ]
+        },
+        "forbidden_disclosures": {
+          "keeper": [
+            "vault_code"
+          ]
+        },
+        "quest_stage": 1
+      },
+      "candidate_schema": {
+        "action_id": "string",
+        "actor_id": "string",
+        "action_type": "string",
+        "preconditions": "array of strings",
+        "effects": "array of strings",
+        "required_objects": "array of strings",
+        "used_facts": "array of strings",
+        "disclosed_facts": "array of strings",
+        "required_quest_stage": "nonnegative integer",
+        "quest_stage_effect": "null or nonnegative integer",
+        "narrative_text": "string",
+        "metadata": "object"
+      },
+      "acceptance_suite": [
+        {
+          "id": "AC-SCENES",
+          "requirement": "At least two named scenes load from a clean checkout and transition through the declared route without hidden manual setup."
+        },
+        {
+          "id": "AC-MOVEMENT",
+          "requirement": "Declared player movement/input works deterministically under the allowed input fixture and does not mutate frozen evidence."
+        },
+        {
+          "id": "AC-GAME-GOAL",
+          "requirement": "The declared goal has a reproducible success condition and a visible/readable completion receipt."
+        },
+        {
+          "id": "AC-ONTOLOGY-GATE",
+          "requirement": "The declared ontology/policy gate denies an unauthorized action and allows the authorized action using the frozen rule identifiers."
+        },
+        {
+          "id": "AC-REPAIR",
+          "requirement": "A bounded repair attempt records the original candidate, error, change and rerun; failed repairs remain traceable and do not silently commit."
+        },
+        {
+          "id": "AC-REPLAY",
+          "requirement": "A clean replay from the same receipt reproduces the declared decision, acceptance status and relevant state/hash outputs."
+        },
+        {
+          "id": "AC-READONLY-SIGNALS",
+          "requirement": "Observer/dashboard signals expose declared versus observed state and missing/unreported evidence without mutating game state or frozen inputs."
+        },
+        {
+          "id": "AC-SAVE-LOAD",
+          "requirement": "Save/load preserves the declared canonical state, version/hash and goal-relevant facts, with a receipt proving the round trip."
+        },
+        {
+          "id": "AC-BUILD",
+          "requirement": "The approved existing build path, or a separately approved new runner, produces a runnable artifact from a clean checkout; unknown runner paths are not claimed as working."
+        },
+        {
+          "id": "AC-DETERMINISTIC-QA",
+          "requirement": "Repeated deterministic QA on isolated copies produces the same declared outcomes and detects seeded valid corruptions without accepting false clean results."
+        }
+      ],
+      "game_api": {
+        "root_files": [
+          "project.godot",
+          "main.gd"
+        ],
+        "generated_paths": "game/*.gd and game/*.tscn only; relative paths, no symlinks, no existing-file replacement",
+        "entrypoint": "main.gd extends Node2D",
+        "methods": {
+          "reset": "reset(seed: int) -> void",
+          "step": "step(action: String) -> Dictionary",
+          "snapshot": "snapshot() -> Dictionary",
+          "save_state": "save_state() -> Dictionary",
+          "load_state": "load_state(data: Dictionary) -> bool",
+          "observer_snapshot": "observer_snapshot() -> Dictionary"
+        },
+        "step_actions": [
+          "left",
+          "right",
+          "up",
+          "down",
+          "interact",
+          "repair",
+          "replay",
+          "transition"
+        ],
+        "snapshot_keys": [
+          "scene",
+          "player",
+          "goal_complete",
+          "inventory",
+          "flags",
+          "trace",
+          "state_version"
+        ],
+        "snapshot_player": "Dictionary with numeric x and y",
+        "scene_names": [
+          "dock",
+          "tower"
+        ],
+        "movement": "integer grid: left/right alter x by -1/+1, up/down alter y by -1/+1; reset position (0,0); no walls; one step per action",
+        "gate": "interact denies INSTALL_LENS before authorized facts/inventory; after authorized state permits signal_restored; state changes must follow supplied action policies",
+        "repair": "Record denied candidate, validator error, bounded corrected candidate and rerun as separate trace attempts; never silently overwrite failed attempt",
+        "observer": "observer_snapshot must be read-only; expose declared and observed fields with explicit missing evidence",
+        "save_load": "Persist canonical scene/player/inventory/flags/goal/state_version and prove exact roundtrip",
+        "replay": "same seed and action fixture reproduce canonical snapshots and decision trace",
+        "assets": "procedural geometry only; declare CC0 self-created asset provenance; no downloads",
+        "checker": "Trusted external Godot checker must exercise all ten ACs, replay twice and detect seeded valid corruptions; no model-authored PASS marker accepted"
+      },
+      "examples": [],
+      "repair_policy": {
+        "raw_first": true,
+        "default_attempts": 0,
+        "approval_required_for_nonzero": true
+      },
+      "soft_quality": {
+        "status": "UNMEASURED",
+        "human_or_neutral_blinded_ratings_required": true
+      }
+    }
+  ]
+}

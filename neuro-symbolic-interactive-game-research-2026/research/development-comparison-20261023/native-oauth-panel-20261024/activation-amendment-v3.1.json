@@ -1,0 +1,106 @@
+{
+  "schema_version": "native-oauth-panel-activation-amendment/v3.1",
+  "artifact_id": "native-oauth-panel-20261024-activation-amendment-v3.1",
+  "status": "PENDING_TRANSPORT_AND_TEST_STABILITY",
+  "freeze_date": "2026-10-24",
+  "revision": "3.1",
+  "scope": "Pre-inference activation amendment only; frozen v3 authorization/protocol/schedule/input artifacts remain immutable.",
+  "base_v3_artifact": {
+    "path": "authorization-v3.json",
+    "artifact_id": "native-oauth-panel-authorization-v3",
+    "base_freeze_hash": "72f29c460e657e1d70f770f353d01274182a1a68ab15c27e70eb809a194d52c1",
+    "raw_artifact_sha256": "fcdc7f5eea4e23f66757ceb98d97efdbcba6c46e607cde7c3e4962a10802d6bf"
+  },
+  "source_artifacts_sha256": {
+    "authorization-v3.json": "fcdc7f5eea4e23f66757ceb98d97efdbcba6c46e607cde7c3e4962a10802d6bf",
+    "protocol.json": "88f6523cce90a8a77a9e5232e42472bf350f0ef342a741e018ec31a0aed09096",
+    "schedule.json": "a24bca933fdbe5dc96ced2d9d6ec84d2cdba5cc6de22f815f6f0d9fd5353c293",
+    "frozen-inputs.json": "b4b245870c690363c91d8e6241d2bc2567350c408fdf087fd44e6be50ff54afa",
+    "assignment-manifest.json": "2ab38676e04cbcdda481d0cf87682594397b1028580cdf4c871cebe2fa1739c9",
+    "plan.en.md": "1db4745c98012f36462dbd8ec81c9d72a3ef9afc9975def8122727b78d78de40",
+    "plan.ko.md": "8ccf38041be4aa9b26b52b686fd7075521bd48c6ba6db6438344e5499dba1005"
+  },
+  "launch_signal": "LAUNCH_NATIVE_OAUTH_V3",
+  "provider_calls_by_this_artifact_owner": false,
+  "counterbalance": {
+    "seed": 20261023,
+    "candidate_order": [
+      {"pair_order": 1, "candidate_key": "luna", "provider_family": "OpenAI", "first_representation": "general_rule"},
+      {"pair_order": 2, "candidate_key": "literal_sonnect_5_5", "provider_family": "Anthropic", "first_representation": "general_rule"},
+      {"pair_order": 3, "candidate_key": "gpt_6_1_sol", "provider_family": "OpenAI", "first_representation": "general_rule"},
+      {"pair_order": 4, "candidate_key": "astra", "provider_family": "OpenAI", "first_representation": "ontology"},
+      {"pair_order": 5, "candidate_key": "literal_gemin3_8_flash", "provider_family": "Google", "first_representation": "general_rule"},
+      {"pair_order": 6, "candidate_key": "gpt_6_sol", "provider_family": "OpenAI", "first_representation": "ontology"},
+      {"pair_order": 7, "candidate_key": "fable_5_1", "provider_family": "Anthropic", "first_representation": "general_rule"},
+      {"pair_order": 8, "candidate_key": "gemini_argon", "provider_family": "Google", "first_representation": "ontology"},
+      {"pair_order": 9, "candidate_key": "opus_5_5", "provider_family": "Anthropic", "first_representation": "ontology"}
+    ],
+    "family_strata": {
+      "OpenAI": {"candidate_count": 4, "general_rule_first": 2, "ontology_first": 2},
+      "Anthropic": {"candidate_count": 3, "general_rule_first": 2, "ontology_first": 1},
+      "Google": {"candidate_count": 2, "general_rule_first": 1, "ontology_first": 1}
+    },
+    "first_representation_counts": {"general_rule": 5, "ontology": 4},
+    "same_first_representation_for": ["C1", "B1"],
+    "pairing": "Candidate-local representation pairs; C1 and B1 are adjacent within each representation pair to reduce quota-starvation risk."
+  },
+  "order_policy": {
+    "assignment_count": 36,
+    "assignment_ids_unchanged": true,
+    "prompt_hashes_unchanged": true,
+    "order_position_and_pair_order_are_independent_of_legacy_stage_labels": true,
+    "legacy_F1_F2_labels": "labels only; not execution priority, dependency, or quality evidence",
+    "common_metadata_safety_gate_per_arm": true,
+    "other_arm_quality_must_not_block_arm": true,
+    "derived_schedule_status": "PENDING_TRANSPORT_AND_TEST_STABILITY",
+    "assignment_order_ref": "Final activation only; generated deterministically from seed 20261023 after transport/test stability."
+  },
+  "dependency_policy": {
+    "native_ontology_F1_dependency_removed": true,
+    "old_api_route": "separate archived never-called route; no dependency",
+    "old_argon": "new same-task occurrence 2 with changed permission mode; not independent_repeat_2 because independence is unverified",
+    "source_budget": "36 new launches plus old 4 separately authorized historical attempts"
+  },
+  "b1_record_hygiene": {
+    "fixture_proof": "Authored sandbox fixture 10/10 PASS is stored once at run root only.",
+    "per_attempt_projection": ["checker_admission_receipt_sha256", "checker_profile_sha256", "source_hashes", "verified_flags", "fixture_origin"],
+    "assignment_result_separate_from_fixture": true,
+    "fresh_assignment_may_remain": "NOT_REACHED",
+    "fixture_pass_must_not_be_copied_to_assignment": true
+  },
+  "operational_status_policy": {
+    "quota_auth_refusal_statuses_are_operational_not_quality_failures": true,
+    "unknown_identity_revision_seed_usage_latency_cost_remain_null": true,
+    "hard_usd_cap_enforcement": "UNVERIFIED_NOT_ENFORCEABLE_BY_NATIVE_CLI"
+  },
+  "agy_version_gate": {
+    "required_actual_version": "1.4.7",
+    "old_probe_version": "1.4.4",
+    "old_version_must_not_be_frozen_as_current": true,
+    "required_evidence": ["actual_binary_receipt", "agy_help_receipt", "catalog_or_feature_receipt"],
+    "evidence_paths": null
+  },
+  "argv_activation_gate": {
+    "status": "PENDING_TRANSPORT_STABILITY",
+    "derive_from_actual_command_builder": true,
+    "hand_typed_second_ssot_forbidden": true,
+    "exact_rendered_argv_must_equal_frozen_builder_output_before_each_launch": true,
+    "provider_help_and_feature_catalog_receipts_required": true,
+    "adapter_and_public_runner_bytes_sha256_required": true,
+    "current_receipts": null,
+    "codex_user_bypass": "Permitted only if a whole-CLI outer sandbox proof passes; current read-only/no-bypass tests are not final-mode proof."
+  },
+  "confounding_boundary": {
+    "full_context_source_cache_is_a_system_confound": true,
+    "pure_model_or_ontology_efficacy_claim_permitted": false,
+    "permission_provider_route_agent_mediated_surface_are_system_factors": true,
+    "oauth_cli_proof_distinct_from_godot_qa_proof": true
+  },
+  "activation_gate": {
+    "fail_closed": true,
+    "no_provider_calls_before_explicit_signal": true,
+    "required_preconditions": ["transport_stable", "native_tests_stable", "derived_argv_receipts_present", "agy_1.4.7_evidence_present", "fixture_hygiene_projection_supported", "Main_explicit_LAUNCH_NATIVE_OAUTH_V3"],
+    "final_activation_file": "activation-v3.1.json"
+  },
+  "append_only_rule": "Append this amendment; do not rewrite or mutate frozen v3 artifacts. Final activation must be a separate file."
+}

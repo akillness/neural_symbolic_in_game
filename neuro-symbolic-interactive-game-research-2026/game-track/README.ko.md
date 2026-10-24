@@ -74,6 +74,7 @@ Codex 런타임이 `gpt-6.1-sol`을 선택한 코딩 사례 1개, native CLI 턴
 [논문/근거 연결표](design/paper-crosswalk.ko.md#51-온톨로지-구조근거-개발-사례)를 따른다.
 Godot 소스·쓰기 권한, 정식 R5 캡처와 기존 60사례 코호트는 그대로이며,
 **G4/전체 G6는 `FIX`다**. 현재 프로덕션과 별도 CI/Git 증명은 위 절을 따른다.
+보존된 retired hosted-model 코호트와 과거 표기는 provenance 전용이며 현재 런타임 근거·활성 계수·모델 결과가 아니다. 어떤 label/result도 `gpt-6.1-sol` 사례로 이전하지 않는다. 제안된 source-derived traceability rubric은 아직 측정하지 않았고 [`research/traceability-scoring-20261023/`](../research/traceability-scoring-20261023/)에 있다. whole-game/repeated-cross-model 비교는 실행하지 않은 prospective 계획이며 [`research/development-comparison-20261023/`](../research/development-comparison-20261023/)에서 관리한다.
 
 ## 과거 릴리스 기록 (2026-09-06)
 

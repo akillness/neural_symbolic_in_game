@@ -1,0 +1,542 @@
+{
+  "schema_version": "prospective-development-comparison/v1",
+  "status": "PROPOSED_NOT_EXECUTED",
+  "as_of": "2026-10-23",
+  "study_label": "development-comparison-20261023",
+  "purpose": "Plan a prospective, independent, whole-game comparison only if the present evidence is insufficient for that claim.",
+  "execution_boundary": {
+    "runs_started": 0,
+    "model_calls_started": 0,
+    "paid_calls_started": 0,
+    "builds_started": 0,
+    "deployments_started": 0,
+    "git_actions_started": 0,
+    "raw_private_intake_read": false,
+    "status_rule": "Every future assignment and artifact remains PROPOSED_NOT_EXECUTED until explicit approval and a passed launch gate."
+  },
+  "current_evidence_boundary": {
+    "source_case": "research/development-cases/ontology-map-20261023-01",
+    "source_case_scope": "one operator-assisted, read-only bilingual dashboard extension",
+    "development_runs": 1,
+    "native_cli_invocations": 6,
+    "independent_repeats": 0,
+    "whole_game_creation_evidence": false,
+    "comparator_evidence": false,
+    "observed_case_wall_seconds": 5942.665,
+    "observed_case_wall_meaning": "Descriptive wall time for the prior case, including orchestration, auxiliary reviews, failed QA setup/control attempts and verification; not a new endpoint baseline, not pure inference latency, and not a productivity comparison.",
+    "identity_boundary": "The prior runtime-reported gpt-6.1-sol selection is not provider revision, immutable model identity, cost, or a repeated-sample claim; missing provider-returned identity, revision, seed and cost stay null."
+  },
+  "approval_revision": {
+    "revision_id": "approval-revision-20261023-01",
+    "status": "APPROVED_FOR_PLANNING_ONLY",
+    "approval_source": "User-approved via ask on 2026-10-23; no execution receipt",
+    "aggregate_additional_api_spend_cap_usd": 100,
+    "aggregate_scope": ["whole_game_coding", "ontology_content_generation"],
+    "registry_join_path": "model-registry.json",
+    "registry_panels": ["model-panel.en.md", "model-panel.ko.md"],
+    "operational_guard_boundary": "The pooled ceiling does not populate per-run budget, token, wall-time, repair, tool-call, operator-intervention or price guards; those remain null until separately approved.",
+    "launch_boundary": "No blanket claim that all launch gates pass or that the 72-assignment-per-track grid is funded. No new study has executed."
+  },
+  "staged_plan": [
+    {
+      "stage_id": "S1",
+      "name": "credential-free replay, observer, rubric and adapter preflight",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "objective": "Establish that the evidence, observer inventory, acceptance rubric and adapters can be checked without credentials, provider calls, paid spend, deployment or model generation.",
+      "actions": [
+        "Replay only preserved, immutable receipts from the prior case and verify their hashes, event ordering, status semantics and read-only boundary; do not treat replay as a new run.",
+        "Freeze an arm-neutral observer inventory before any coding assignment, including prompt/evidence receipt, workspace/thread, starting checkout, identity, tool calls, file diffs, commands, stdout/stderr/exit/elapsed, repair boundaries, reruns, acceptance checks, save/load hashes, replay hashes, operator intervention and stop reason.",
+        "Dry-validate the bilingual rubric and its rule-to-check bindings on fixtures, including missing, N/A, failure, timeout, not-reached and safety-stop states; no model call is needed.",
+        "Check adapter capability declarations against existing local runner evidence. Unknown new runners remain IMPLEMENTATION_REQUIRED rather than being represented as working.",
+        "Record a preflight receipt with pass/fail/indeterminate per item; any incomplete inventory is coverage INDETERMINATE, never a complete percentage."
+      ],
+      "exit_gate": "All required schemas parse, preserved replay is read-only, observer fields have owners, rubric fixtures preserve fail-closed semantics, and no credential/provider/paid boundary is crossed."
+    },
+    {
+      "stage_id": "S2",
+      "name": "shared-tool-interface feasibility",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "objective": "Determine whether the candidate systems can perform the same coding task through a common observable tool interface.",
+      "actions": [
+        "Verify native Codex runtime selection as runtime-reported gpt-6.1-sol only when an actual native turn receipt reports that value; leave provider-returned model, immutable revision, seed and cost null when unavailable.",
+        "Discover and verify an exact Claude model identity from the actual authorized runtime before freezing the study; never invent a model ID or infer availability from a UI label.",
+        "Test Gemini App Argon for actual file-edit, command/build, readback and observer capabilities. UI consultation alone is not a coding comparison. Preserve the product/model naming exactly; never relabel Pro or Flash as Argon.",
+        "If equal coding/tool/observer parity is unavailable, select SPLIT_STACK_COMPARISON (with the difference disclosed and no pooled coding endpoint) or BLOCK_ARGON_CODING_ARM. Do not silently substitute a fallback model/system.",
+        "Freeze capability results and missingness before any whole-game assignment."
+      ],
+      "exit_gate": "At least two systems have verified, comparable coding/tool/observer capabilities for a coding comparison, or the protocol explicitly records split-stack/blocking and excludes the unavailable coding arm."
+    },
+    {
+      "stage_id": "S3",
+      "name": "fresh whole-game microgame assignments",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "objective": "Run a fresh-workspace, fresh-thread, self-contained Godot microgame task with a frozen complete acceptance suite.",
+      "actions": [
+        "Create each assignment from the same frozen checkout/brief/assets/evidence receipt; start a fresh workspace and fresh thread. Resume is never an independent repeat.",
+        "Use only licensed or procedural assets with a recorded license/provenance receipt; no unapproved downloads or paid generation.",
+        "Require every acceptance check in the frozen suite: scenes, movement, game goal, ontology gate, repair, replay, read-only signals, save/load, build and deterministic QA.",
+        "Preserve unfinished, failed, timeout and safety-stop assignments as not completed. Stop time is never a success time.",
+        "Collect raw observer receipts and independently exercised acceptance evidence before adjudication."
+      ],
+      "exit_gate": "A run is complete only when every applicable acceptance check has an independently verified PASS and the observer inventory is complete; otherwise it remains incomplete/failed/indeterminate with its reason."
+    },
+    {
+      "stage_id": "S4",
+      "name": "matched-information factorial blocks",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "objective": "Compare general-rule and ontology representations by model/system and independent task-run blocks without confounding representation, order or resumed state.",
+      "actions": [
+        "Give every arm the same complete game brief, starting checkout, assets, tool permissions, acceptance suite, rule facts and observer requirements. Change only the frozen representation encoding: general-rule versus ontology representation.",
+        "Randomize or counterbalance representation and system order using a frozen seed recorded before launch; do not use convenience order.",
+        "Treat each fresh workspace/thread/task execution as an independent run. A repair retry inside one run is an attempt, not a repeat.",
+        "Keep arm-level quality, time and traceability outputs separate; do not combine them into a composite score or presume ontology/model superiority.",
+        "Account for task-block clustering and matched pairs in analysis; report per-cell data before any paired or clustered summary."
+      ],
+      "exit_gate": "All assigned cells have a declared denominator and order assignment, and every launched run has a complete status record even when blocked, failed or timed out."
+    },
+    {
+      "stage_id": "S5",
+      "name": "feasibility pilot, then larger repetition and held-out task study",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "objective": "Use an explicitly exploratory pilot to test operational feasibility, then decide whether a larger repeated and held-out study is justified.",
+      "actions": [
+        "Run only the approved exploratory pilot matrix below; it is not powered or confirmatory and produces no sample-size benefit claim.",
+        "Assess adapter parity, observer completeness, frozen-acceptance executability, missingness, repair-boundary capture, timing capture, and deterministic replay before expanding.",
+        "If the feasibility gate passes, freeze a larger repetition count and held-out task set before any larger run. Held-out tasks are not used to tune the pilot rubric or representation.",
+        "If the gate fails, report the concrete blocker and stop the affected arm/study; do not repair the evidence by dropping failed or unavailable assignments."
+      ],
+      "exit_gate": "Expansion is allowed only after an approved decision records feasibility evidence, caps, task holdout, and analysis denominators; otherwise the pilot remains exploratory and no superiority/efficacy claim is made."
+    }
+  ],
+  "shared_interface": {
+    "required_capabilities": [
+      "fresh_workspace_and_fresh_thread",
+      "same_brief_and_evidence_receipt",
+      "read_and_write_project_files",
+      "common_prompts_and_tool_permissions",
+      "common_compute_environment_and_clock",
+      "same_starting_checkout_and_asset_provenance",
+      "execute_allowed_commands_and_build_or_test_checks",
+      "record_command_argv_stdout_stderr_exit_elapsed",
+      "record_tool_calls_and_interventions",
+      "record_runtime_reported_identity_and_available_provider_identity",
+      "preserve_repair_attempt_boundaries_and_reruns",
+      "readback_diff_and_acceptance_receipts",
+      "save_load_and_deterministic_replay",
+      "stop_without_fallback_when_caps_or_safety_are_missing"
+    ],
+    "systems": [
+      {
+        "system_id": "codex_native_gpt-6.1-sol",
+        "coding_arm_status": "CONDITIONAL_PROPOSED",
+        "identity_requirement": "Native runtime receipt must report gpt-6.1-sol; requested, runtime-reported, provider-returned and immutable revision are separate fields.",
+        "unavailable_fields": ["provider_returned_model", "immutable_revision", "seed", "cost"],
+        "no_inference_rule": "A model self-report or requested name does not establish provider identity or a new run."
+      },
+      {
+        "system_id": "claude_verified_model",
+        "coding_arm_status": "CONDITIONAL_PROPOSED",
+        "identity_requirement": "Exact model identifier must be discovered from and verified by the authorized runtime before protocol freeze.",
+        "model_id": null,
+        "availability": null,
+        "no_inference_rule": "Do not invent an ID or treat documentation/UI text as an executed coding capability."
+      },
+      {
+        "system_id": "gemini_app_argon",
+        "coding_arm_status": "BLOCKED_UNLESS_TOOL_CAPABLE",
+        "identity_requirement": "Argon must return an actual coding/tool/observer receipt; UI consultation is not a coding run.",
+        "tool_capable": null,
+        "availability": null,
+        "naming_rule": "Never rename Pro or Flash as Argon and never substitute another Gemini model.",
+        "consultation_ui_observed": true,
+        "consultation_ui_note": "The requested account showed a '4 Argon complex tasks' option and Argon was selected; no response or coding-tool parity was established. This is consultation UI availability only.",
+        "coding_tool_parity": null,
+        "fallback_policy": "If not tool-capable or not independently observable, block the Argon coding arm or disclose a non-pooled split-stack comparison."
+      }
+    ],
+    "parity_decision": "UNDECIDED_UNTIL_S2",
+    "runner_contract_status": "Only existing actual runners may be named as working; an unknown new model runner is an implementation task."
+  },
+  "microgame_task_contract": {
+    "task_id": "GODOT-MICROGAME-FULL-001",
+    "status": "FROZEN_ONLY_AFTER_APPROVAL",
+    "freshness": "fresh workspace and fresh thread per assignment; no resume-as-repeat",
+    "brief": "Build a self-contained Godot microgame from the frozen checkout, using a small playable world and the supplied complete rules/evidence. The player must traverse scenes, move, achieve a declared goal, encounter an ontology-governed action, observe a repair/replay trace, save/load state, and pass deterministic QA.",
+    "matched_information": "General-rule and ontology representations contain the same facts, policies, examples, allowed tools, assets and complete acceptance suite; representation syntax is the only planned information factor.",
+    "asset_policy": "Licensed or procedural assets only; provenance and license receipt are required. No unapproved downloads, paid generation or provider fallback.",
+    "acceptance_suite": [
+      {"id": "AC-SCENES", "requirement": "At least two named scenes load from a clean checkout and transition through the declared route without hidden manual setup."},
+      {"id": "AC-MOVEMENT", "requirement": "Declared player movement/input works deterministically under the allowed input fixture and does not mutate frozen evidence."},
+      {"id": "AC-GAME-GOAL", "requirement": "The declared goal has a reproducible success condition and a visible/readable completion receipt."},
+      {"id": "AC-ONTOLOGY-GATE", "requirement": "The declared ontology/policy gate denies an unauthorized action and allows the authorized action using the frozen rule identifiers."},
+      {"id": "AC-REPAIR", "requirement": "A bounded repair attempt records the original candidate, error, change and rerun; failed repairs remain traceable and do not silently commit."},
+      {"id": "AC-REPLAY", "requirement": "A clean replay from the same receipt reproduces the declared decision, acceptance status and relevant state/hash outputs."},
+      {"id": "AC-READONLY-SIGNALS", "requirement": "Observer/dashboard signals expose declared versus observed state and missing/unreported evidence without mutating game state or frozen inputs."},
+      {"id": "AC-SAVE-LOAD", "requirement": "Save/load preserves the declared canonical state, version/hash and goal-relevant facts, with a receipt proving the round trip."},
+      {"id": "AC-BUILD", "requirement": "The approved existing build path, or a separately approved new runner, produces a runnable artifact from a clean checkout; unknown runner paths are not claimed as working."},
+      {"id": "AC-DETERMINISTIC-QA", "requirement": "Repeated deterministic QA on isolated copies produces the same declared outcomes and detects seeded valid corruptions without accepting false clean results."}
+    ],
+    "task_blocks": [
+      {"task_block_id": "B1", "label": "exploratory signal-hunt microgame", "pilot_role": "candidate pilot only"},
+      {"task_block_id": "B2", "label": "exploratory gate-and-escape microgame", "pilot_role": "candidate pilot only"},
+      {"task_block_id": "H1", "label": "held-out task block 1", "pilot_role": "reserved; not used in pilot tuning"},
+      {"task_block_id": "H2", "label": "held-out task block 2", "pilot_role": "reserved; not used in pilot tuning"}
+    ],
+    "acceptance_scope_rule": "The two pilot task blocks and later held-out blocks must each instantiate all ten acceptance IDs; labels do not relax the suite."
+  },
+  "candidate_pilot_matrix": {
+    "label": "EXPLORATORY_NOT_POWERED_CONFIRMATORY",
+    "status": "PROPOSED_NOT_EXECUTED",
+    "scope": "LEGACY_SUBSET_EXAMPLE_ONLY_NOT_FULL_CANDIDATE_COHORT",
+    "representations": ["general_rule", "ontology_representation"],
+    "systems": ["codex_native_gpt-6.1-sol", "claude_verified_model", "gemini_app_argon"],
+    "task_blocks": ["B1", "B2"],
+    "independent_repeats_per_cell": 2,
+    "cells": [
+      {"representation": "general_rule", "system": "codex_native_gpt-6.1-sol", "task_block": "B1", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2"},
+      {"representation": "ontology_representation", "system": "codex_native_gpt-6.1-sol", "task_block": "B1", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2"},
+      {"representation": "general_rule", "system": "codex_native_gpt-6.1-sol", "task_block": "B2", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2"},
+      {"representation": "ontology_representation", "system": "codex_native_gpt-6.1-sol", "task_block": "B2", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2"},
+      {"representation": "general_rule", "system": "claude_verified_model", "task_block": "B1", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2_AND_MODEL_ID"},
+      {"representation": "ontology_representation", "system": "claude_verified_model", "task_block": "B1", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2_AND_MODEL_ID"},
+      {"representation": "general_rule", "system": "claude_verified_model", "task_block": "B2", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2_AND_MODEL_ID"},
+      {"representation": "ontology_representation", "system": "claude_verified_model", "task_block": "B2", "assigned_runs": 2, "launch_status": "CONDITIONAL_ON_S2_AND_MODEL_ID"},
+      {"representation": "general_rule", "system": "gemini_app_argon", "task_block": "B1", "assigned_runs": 2, "launch_status": "BLOCKED_UNLESS_TOOL_CAPABLE"},
+      {"representation": "ontology_representation", "system": "gemini_app_argon", "task_block": "B1", "assigned_runs": 2, "launch_status": "BLOCKED_UNLESS_TOOL_CAPABLE"},
+      {"representation": "general_rule", "system": "gemini_app_argon", "task_block": "B2", "assigned_runs": 2, "launch_status": "BLOCKED_UNLESS_TOOL_CAPABLE"},
+      {"representation": "ontology_representation", "system": "gemini_app_argon", "task_block": "B2", "assigned_runs": 2, "launch_status": "BLOCKED_UNLESS_TOOL_CAPABLE"}
+    ],
+    "formula": {
+      "planned_cell_count": "R * S * T where R=2 representations, S=number of systems passing S2, T=2 pilot task blocks",
+      "assigned_run_count": "N_assigned = R * S * T * I, where I=2 fresh independent repeats per cell; blocked systems retain planned cells but have N_launched=0 and are not silently removed",
+      "full_three_system_candidate_count": 24,
+      "two_system_feasibility_count": 16,
+      "interpretation": "These counts are assignment plans, not observed results, power calculations, or sample-size benefits."
+    },
+    "order_rule": "Use a frozen randomization/counterbalance seed and record representation/system/task order before launch; no convenience ordering and no resumed run as an independent repeat."
+  },
+  "endpoints_and_denominators": {
+    "primary_endpoint": {
+      "name": "time_to_first_all_predeclared_validation_pass",
+      "unit": "continuous seconds",
+      "start": "timestamp when the complete frozen brief and evidence receipt is delivered to the fresh run",
+      "stop": "timestamp when the last applicable acceptance check first independently verifies PASS",
+      "included_time": ["planning", "waiting", "tool calls", "coding", "build/test", "repairs", "reruns", "authorized operator interventions"],
+      "non_success": ["unfinished", "failure", "timeout", "safety stop", "blocked", "missing evidence"],
+      "rule": "Stop time for an unfinished or failed run is never a success time."
+    },
+    "secondary_outputs": {
+      "quality": "Per-acceptance-ID PASS/FAIL/NOT_REACHED/TIMEOUT/SAFETY_STOP/MISSING; no composite quality-time score.",
+      "time": "Per-run primary endpoint plus censoring/stop reason; do not replace missing success time with a cap.",
+      "traceability": {
+        "dimensions": [
+          "D1 exact artifact/activity binding",
+          "D2 request-to-rule-version-to-check-result-to-decision",
+          "D3 decision-to-observed-state/diff/no-op outcome",
+          "D4 trigger-to-repair-change-to-rerun-to-actual-result",
+          "D5 requirements-to-implementation-to-verification plus reverse change-to-requirement coverage",
+          "D6 independently exercised audit/replay targets"
+        ],
+        "per_dimension_formula": "n_d = applicable units with ALL predeclared links independently verified; N_d = ALL applicable opportunities in the complete arm-neutral observer inventory; report n_d/N_d and per-link counts separately.",
+        "missing_rule": "A missing required link is 0, not PASS.",
+        "inventory_rule": "If the observer inventory is incomplete, the dimension is coverage INDETERMINATE, not a complete percentage.",
+        "repair_na_rule": "Repair is N/A only when an actual zero repairs is independently verified; a failed repair may still be fully traceable."
+      }
+    },
+    "assigned_denominators": {
+      "N_planned_cells": "all representation x system x task-block cells declared before launch, including conditionally blocked cells",
+      "N_assigned": "sum of assigned fresh independent runs across all declared cells",
+      "N_launched": "assigned runs that crossed the launch receipt boundary",
+      "N_completed": "launched runs with every applicable acceptance check resolved and complete observer inventory",
+      "N_all_acceptance": "per acceptance ID, all applicable launched runs; report pass/fail/not-reached separately",
+      "N_all_pass": "runs where every applicable acceptance ID independently verified PASS",
+      "N_failed": "launched runs with a failed acceptance or failed safety/validity check",
+      "N_timeout": "launched runs stopped at a frozen time cap without first all-pass",
+      "N_blocked_unavailable": "planned cells not launched because model/tool/consent/capability prerequisite was absent",
+      "N_missing_evidence": "launched runs whose required observer evidence is absent; retain in denominator and mark invalid/indeterminate",
+      "N_d": "all applicable observer opportunities for traceability dimension d, not only successful runs",
+      "N_link": "per-link opportunity denominator inside each N_d; retain link type and missingness",
+      "cluster_key": "task_block_id paired within representation/system when both arms exist; repeated fresh runs are nested in task blocks, not independent task-level populations"
+    },
+    "analysis_rule": "Report descriptive per-cell distributions first, then paired/clustered analyses that respect task-block nesting and repeated fresh runs. Do not pool blocked systems, invent denominators, or claim significance/superiority from the pilot."
+  },
+  "observer_inventory": {
+    "completeness_required_before_validity": true,
+    "required_event_types": [
+      "brief_and_evidence_receipt",
+      "rule_version_and_representation_receipt",
+      "fresh_workspace_and_thread_identity",
+      "starting_checkout_and_asset_license_hashes",
+      "requested_runtime_reported_provider_returned_identity_revision_seed_cost",
+      "tool_and_adaptor_capability_receipt",
+      "every_tool_call_with_argv_or_structured_arguments",
+      "file_read_write_diff_and_commit_boundary",
+      "build_test_qa_and_replay_commands_with_outputs",
+      "repair_attempt_start_change_rerun_result_and_boundary",
+      "save_load_state_hash_or_explicit_failure",
+      "read_only_signal_observation_and_missing_fields",
+      "operator_intervention_and_authorization",
+      "stop_reason_and_timestamp",
+      "content_candidate_raw_output_and_schema_receipt",
+      "hard_validity_gate_vector_and_forbidden_fact_check",
+      "content_repair_attempt_boundaries_and_budget_usage",
+      "novelty_metric_input_output_and_duplicate_control_receipt",
+      "independent_human_or_neutral_quality_grader_raw_rating",
+      "final_acceptance_vector_and_independent_assessor_receipt"
+    ],
+    "observer_roles": ["runner", "arm-neutral observer", "independent acceptance assessor", "adjudicator"],
+    "independence_rule": "The author/runner does not silently author the independent acceptance result; two blinded-as-feasible coders lock raw ratings before adjudication for traceability dimensions.",
+    "replay_mutation_controls": [
+      "seed receipt deletion",
+      "swapped attempt/revision",
+      "polarity inversion",
+      "omitted failed repair",
+      "format-only or irrelevant decorative change",
+      "clean control copy"
+    ],
+    "expected_detection": "Record detected valid corruptions, seeded valid corruptions and false alarms separately; format-only/irrelevant decorative changes should not alter grades."
+  },
+  "data_statuses": ["PASS", "FAIL", "NOT_REACHED", "TIMEOUT", "SAFETY_STOP", "BLOCKED_UNAVAILABLE", "MISSING_EVIDENCE", "N_A", "COVERAGE_INDETERMINATE"],
+  "canonical_rubric_reference": {
+    "path": "research/traceability-scoring-20261023/rubric.json",
+    "status": "PROPOSED_NOT_EXECUTED",
+    "validated": false,
+    "mapping": {
+      "D1": "TR01 identity/activity binding",
+      "D2": "TR02 decision evidence chain",
+      "D3": "TR03 decision-to-effect",
+      "D4": "TR04 repair chain",
+      "D5": "TR05 bidirectional requirement coverage (forward/reverse separately)",
+      "D6": "TR06 independent evidence exercisability"
+    },
+    "rule": "This cross-reference is planned, not validated or executed; no rubric score is implied."
+  },
+  "caps_and_approval": {
+    "status": "PARTIALLY_APPROVED_AGGREGATE_ONLY",
+    "aggregate_additional_api_spend_cap_usd": 100,
+    "aggregate_spend_approval_status": "APPROVED_VIA_USER_ASK_2026-10-23",
+    "aggregate_spend_scope": ["whole_game_coding", "ontology_content_generation"],
+    "budget_usd": null,
+    "budget_usd_meaning": "Per-run operational budget; null and not supplied by the aggregate ceiling.",
+    "input_token_cap": null,
+    "output_token_cap": null,
+    "wall_time_cap_seconds": null,
+    "repair_attempt_cap": null,
+    "tool_call_cap": null,
+    "operator_intervention_cap": null,
+    "price_guard": null,
+    "operational_caps_status": "REQUIRED_UNAPPROVED_PARAMETERS",
+    "approval_receipt": null,
+    "rule": "The USD 100 pooled ceiling is planning authorization only. Null or missing operational cap/launch approval fails the launch gate; do not infer consent, provider availability, pricing, or funding for the 72-assignment grid."
+  },
+  "prerequisites_before_assignment": [
+    "approved study brief and execution boundary",
+    "same prompts, evidence, tool permissions, compute environment and clock source",
+    "exact starting checkout plus licensed/procedural asset provenance",
+    "neutral acceptance author, independent assessors and complete observer schema",
+    "frozen randomization seed and verified capability/adaptor receipts",
+    "non-null approved budget/token/wall-time/repair/tool/intervention caps and consent"
+  ],
+  "known_existing_runner_contract": {
+    "status": "OBSERVED_EXISTING_ONLY",
+    "commands": [
+      {
+        "purpose": "prior_case_focused_checks",
+        "argv": ["uv", "run", "--extra", "dev", "python", "-m", "pytest", "tests/test_ontology_evidence_map.py", "tests/test_signal_explainer.py", "tests/test_godot_web_release.py", "-q"],
+        "observed_scope": "existing dashboard-extension case only; not a microgame runner"
+      },
+      {
+        "purpose": "prior_case_web_build",
+        "argv": ["bash", "scripts/build_godot_web.sh"],
+        "observed_scope": "existing project web build only; applicability to a new microgame is unverified"
+      }
+    ],
+    "new_microgame_runner": {
+      "status": "IMPLEMENTATION_REQUIRED",
+      "argv": null,
+      "config_entrypoint": null,
+      "rule": "Do not present an unknown new runner as already working; freeze its exact argv/config only after a credential-free implementation/preflight receipt."
+    }
+  },
+  "roles": [
+    {"role_id": "plan_owner", "responsibility": "maintain this bilingual plan/protocol and claim boundary"},
+    {"role_id": "adapter_runner_engineer", "responsibility": "implement/verify only the shared interface and exact runner receipts"},
+    {"role_id": "neutral_acceptance_author", "responsibility": "freeze rules, acceptance and expected outcomes before runs"},
+    {"role_id": "arm_neutral_observer", "responsibility": "capture complete inventory and immutable raw receipts"},
+    {"role_id": "independent_assessor_a", "responsibility": "blind-as-feasible raw traceability/acceptance coding"},
+    {"role_id": "independent_assessor_b", "responsibility": "second raw coding before adjudication"},
+    {"role_id": "safety_release_gate", "responsibility": "check consent, caps, licenses, no-network/no-spend/no-deploy boundaries and stop/rollback"},
+    {"role_id": "adjudicator", "responsibility": "reconcile locked ratings without rewriting raw observations"}
+  ],
+  "pickup_steps": [
+    "Read this protocol and the two bilingual plans; confirm status remains PROPOSED_NOT_EXECUTED.",
+    "Read only the public current contract/result and interview note named in the plans; preserve immutable raw/archives/frozen results and do not read private intake.",
+    "Implement or locate the credential-free S1 replay/observer/rubric/adaptor preflight; produce a receipt without provider calls.",
+    "Run S2 capability discovery. Fill exact Claude model identity only from a verified runtime receipt; decide whether Argon is tool-capable. If not, mark BLOCKED_ARGON_CODING_ARM or SPLIT_STACK_COMPARISON.",
+    "Freeze the complete microgame brief, task blocks, representation encodings, assets/licenses, acceptance IDs, randomization seed, observer schema and all caps/approvals.",
+    "Implement the unknown microgame runner only if approved; name its exact argv/config after it exists and is verified. Do not use the prior dashboard runner as a proxy.",
+    "Launch the exploratory pilot matrix with fresh workspaces/threads and independent repeats; preserve every assigned denominator and stop reason.",
+    "Have two independent coders lock raw traceability/acceptance ratings before adjudication; run replay mutation and clean-control checks.",
+    "Issue a feasibility decision. Only then freeze any larger repetition and held-out task study; otherwise stop with the concrete blocker and no comparative claim.",
+    "Ingest all nine exact candidate labels without alias normalization; canonical_id remains null until the verified registry confirms it.",
+    "Freeze separate B1/B2 coding and C1/C2 content task banks plus H1/H2/HC1/HC2 held-out blocks, schema/hard-validity rules, novelty controls and independent grader access.",
+    "Implement and preflight separate whole-game coding and ontology-content runners; both remain IMPLEMENTATION_REQUIRED until exact argv/config receipts exist.",
+    "Do not launch either track until common information/tool/compute/clock/budget parity, non-null approvals/caps and the fail-closed checklist pass."
+  ],
+  "stop_rollback_safety": {
+    "stop_conditions": [
+      "any required cap, approval, consent or asset license is null/unverified",
+      "credential, paid provider, unapproved network, deployment or Git action would be required",
+      "model/tool/observer identity or parity cannot be verified",
+      "observer inventory is incomplete for a required validity claim",
+      "acceptance or replay evidence is missing, ambiguous or mutated",
+      "a repair exceeds its frozen boundary or silently changes the frozen task/rubric",
+      "safety, privacy or data-loss risk appears"
+    ],
+    "rollback": "Stop the affected assignment, preserve immutable raw receipts and workspace snapshot, mark the assignment STOPPED/FAILED/BLOCKED as applicable, and restart only from a newly authorized fresh assignment. Never overwrite frozen evidence or count a resumed repair as an independent repeat.",
+    "no_fallback": "No provider/model fallback, no relabeling, no dropping failed runs, no treating UI consultation as coding, no borrowing historical PASS as current evidence."
+  },
+  "acceptance_artifacts": [
+    "credential-free S1 preflight receipt",
+    "verified capability/adaptor matrix with requested/runtime/provider identity separated",
+    "frozen bilingual brief and representation packets",
+    "frozen acceptance/rubric and expected-outcome packet",
+    "fresh-workspace/thread assignment manifest and randomization receipt",
+    "licensed/procedural asset provenance receipt",
+    "per-run immutable raw observer trace and command receipts",
+    "per-run acceptance vector, save/load/replay receipts and stop reason",
+    "complete arm-neutral observer inventory and missingness report",
+    "two locked raw assessor codings plus adjudication log",
+    "exploratory pilot per-cell descriptive summary and denominator ledger",
+    "expanded nine-candidate label and identity-boundary packet with canonical_id null policy",
+    "separate C1/C2 ontology-content task bank, schema/hard-validity receipt and held-out HC1/HC2 freeze",
+    "content repair-boundary/budget receipt, independent human/neutral grader ratings and separate novelty/quality outputs",
+    "track-specific runner capability receipts or explicit IMPLEMENTATION_REQUIRED gap records",
+    "feasibility decision and, only if approved, larger-study/held-out-task freeze packet"
+  ],
+  "remaining_decisions": [
+    "approval to execute any provider/model call or paid work",
+    "exact verified Claude model identifier and runtime",
+    "whether Gemini App Argon is actually tool-capable and independently observable",
+    "common tool interface and new microgame runner implementation",
+    "budget, token, wall-time, repair, tool-call and intervention caps",
+    "final B1/B2 briefs and held-out H1/H2 briefs",
+    "representation equivalence wording and expected-outcome author/access separation",
+    "randomization/counterbalance seed",
+    "asset provenance/license choices",
+    "larger repetition count, holdout selection and expansion threshold",
+    "exact nine-candidate registry evidence and canonical-ID confirmation",
+    "candidate-specific coding/content capability and adaptor parity",
+    "C1/C2/HC1/HC2 content bank, hard schema/validity contract and repair cap",
+    "novelty unit, duplicate baseline, quality rubric and neutral grader access",
+    "track-specific runner implementation plus multiplicity/censoring/clustering controls",
+    "independent assessor access and adjudication procedure"
+  ],
+  "claims_not_permitted": [
+    "model superiority, ontology superiority or general efficacy",
+    "developer productivity improvement or player benefit",
+    "provider-weight, immutable-revision or cost claims without direct evidence",
+    "statistical significance or confirmatory power from the exploratory pilot",
+    "full-game evidence from the prior dashboard-extension case",
+    "independent samples by counting tool calls, repair attempts or resumed sessions"
+  ],
+  "expanded_candidate_cohort": {
+    "status": "PROPOSED_NOT_EXECUTED",
+    "canonical_id_policy": "Preserve each exact user label. canonical_id stays null in this protocol until the Main-owned verified candidate evidence registry confirms it; public catalog labels, runtime availability, provider-returned identity and backend revision remain separate fields.",
+    "no_execution_statement": "No candidate in this expanded cohort has been called, built, deployed or used to generate a result.",
+    "candidates": [
+      {"candidate_key": "gpt_6_1_sol", "candidate_label": "gpt-6.1-sol", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "launch_status": "CONDITIONAL_ON_READ_ONLY_IDENTITY_AND_TOOL_PREFLIGHT"},
+      {"candidate_key": "gpt_6_sol", "candidate_label": "gpt-6-sol", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "launch_status": "CONDITIONAL_ON_READ_ONLY_IDENTITY_AND_TOOL_PREFLIGHT"},
+      {"candidate_key": "astra", "candidate_label": "Astra", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "approved_mapping_hint": {"display_label": "GPT6Astra", "candidate_id": "gpt-6-astra", "status": "APPROVED_PENDING_REGISTRY_JOIN"}, "launch_status": "UNVERIFIED_PENDING_READ_ONLY_REGISTRY"},
+      {"candidate_key": "luna", "candidate_label": "Luna", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "approved_mapping_hint": {"display_label": "GPT6Luna", "candidate_id": "gpt-6-luna", "status": "APPROVED_PENDING_REGISTRY_JOIN"}, "launch_status": "UNVERIFIED_PENDING_READ_ONLY_REGISTRY"},
+      {"candidate_key": "opus_5_5", "candidate_label": "Opus5.5", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "launch_status": "CONDITIONAL_ON_READ_ONLY_IDENTITY_AND_TOOL_PREFLIGHT"},
+      {"candidate_key": "literal_sonnect_5_5", "candidate_label": "literal 'sonnect5.5'", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "editorial_display_normalization": "Sonnet5.5", "provider_attestation": null, "launch_status": "UNVERIFIED_NO_SUBSTITUTION"},
+      {"candidate_key": "fable_5_1", "candidate_label": "Fable5.1", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "fallback_risk": "Documented auto-fallback risk; require runtime/provider-returned identity for the requested candidate before launch.", "launch_status": "CONDITIONAL_ON_READ_ONLY_IDENTITY_AND_TOOL_PREFLIGHT"},
+      {"candidate_key": "literal_gemin3_8_flash", "candidate_label": "literal 'gemin3.8flash'", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "editorial_display_normalization": "Gemini3.8Flash", "provider_attestation": null, "launch_status": "UNVERIFIED_NO_SUBSTITUTION"},
+      {"candidate_key": "gemini_argon", "candidate_label": "GeminiArgon", "canonical_id": null, "coding_tool_capable": null, "content_generation_capable": null, "consultation_ui_observed": true, "launch_status": "BLOCKED_UNLESS_CODING_OR_CONTENT_TOOL_CAPABLE"}
+    ],
+    "planned_registry_refs": {
+      "registry": "model-registry.json",
+      "panel_en": "model-panel.en.md",
+      "panel_ko": "model-panel.ko.md",
+      "source_of_truth": "model-registry.json identity evidence; protocol candidate labels remain the prospective contract",
+      "join_key": "exact requested_label plus source_id",
+      "duplicate_identity_rule": "Do not join or merge by display name; do not duplicate identity claims across registry, panels and protocol.",
+      "s1_boundary": "Registry/panel records and S1 preflight evidence are readiness evidence, not study results and do not imply a launched run."
+    },
+    "identity_boundary": "Read-only identity agents may supply candidate evidence to the Main-owned registry. No label, official card, UI option or runtime version proves account access, provider-returned identity, immutable revision, spend, coding parity or content-generation parity."
+  },
+  "tracks": {
+    "whole_game_coding": {
+      "status": "PROPOSED_NOT_EXECUTED",
+      "task_blocks": ["B1", "B2"],
+      "held_out_task_blocks": ["H1", "H2"],
+      "acceptance_reference": "microgame_task_contract.acceptance_suite",
+      "candidate_eligibility": "Each candidate requires its own read-only capability/adaptor receipt; no candidate is presumed runnable."
+    },
+    "ontology_content_generation": {
+      "status": "PROPOSED_NOT_EXECUTED",
+      "task_blocks": ["C1", "C2"],
+      "held_out_task_blocks": ["HC1", "HC2"],
+      "matched_input": "Each representation receives the same frozen facts, rules, examples, task brief, tool permissions, compute, clock and start checkout; only general-rule versus ontology representation changes.",
+      "hard_validity_checks": [
+        "schema completeness and type validity",
+        "canonical identifier and relation/reference integrity",
+        "rule/policy consistency and forbidden-fact exclusion",
+        "deterministic replay and read-only evidence binding"
+      ],
+      "repair_budget": {"cap_field": "repair_attempt_cap", "value": null, "status": "REQUIRED_UNAPPROVED_PARAMETER", "rule": "Every repair attempt, boundary, change, rerun and result is recorded; failed repair remains a result and cannot silently pass."},
+      "quality_novelty_policy": "Novelty and quality are separate exploratory outputs from hard validity. Freeze a novelty definition, duplicate/near-duplicate controls, blind grading instructions and quality rubric before launch. No quality or novelty score can override a hard-validity failure, and no composite score is formed.",
+      "grader_policy": "Use independent human or neutral graders with locked raw ratings before adjudication. Jev may be advisory but is not the gold label, independent human truth or commit authority.",
+      "runner_status": "IMPLEMENTATION_REQUIRED"
+    }
+  },
+  "minimal_feasibility_schedule": {
+    "status": "PROPOSED_NOT_EXECUTED",
+    "freeze_before_any_model_call": true,
+    "aggregate_budget_ceiling_usd": 100,
+    "budget_interpretation": "Shared planning ceiling only; does not fund or authorize all scheduled assignments and does not replace per-run guards.",
+    "stages": [
+      {"stage_id": "F0", "purpose": "Credential-free S1 replay/observer/rubric/adaptor preflight for every candidate and track; no provider call.", "maximum_assignments": 0},
+      {"stage_id": "F1", "purpose": "After identity/tool capability and operational guards are receipt-backed, one fresh B1 coding and one fresh C1 content assignment per verified candidate using general_rule only.", "maximum_assignments": 18},
+      {"stage_id": "F2", "purpose": "Only for F1 cells passing hard launch/observer checks, one fresh matched ontology_representation assignment per candidate and track.", "maximum_assignments": 18}
+    ],
+    "maximum_planned_assignments_if_all_gates_pass": 36,
+    "interpretation": "Descriptive feasibility schedule only; not powered or confirmatory. Failures, blocks and missing evidence retain denominators and stop reasons. The full 72-per-track matrix remains separately proposed, unfunded and not assumed executable.",
+    "no_execution_statement": "No F0, F1 or F2 assignment has started."
+  },
+  "expanded_candidate_matrix": {
+    "label": "EXPLORATORY_NOT_POWERED_CONFIRMATORY",
+    "status": "PROPOSED_NOT_EXECUTED",
+    "candidate_labels": ["gpt-6.1-sol", "gpt-6-sol", "Astra", "Luna", "Opus5.5", "literal 'sonnect5.5'", "Fable5.1", "literal 'gemin3.8flash'", "GeminiArgon"],
+    "representations": ["general_rule", "ontology_representation"],
+    "task_blocks_per_track": 2,
+    "independent_repeats_per_cell": 2,
+    "formula": "N_planned_per_track = 9 candidates * 2 representations * 2 task blocks * 2 fresh independent repeats = 72",
+    "planned_runs_per_track": 72,
+    "planned_runs_if_both_tracks_are_declared": 144,
+    "legacy_subset_examples": {"three_arm_subset_planned_runs": 24, "two_arm_feasibility_subset_planned_runs": 16, "scope": "Old subset examples only; do not call them the full nine-candidate cohort."},
+    "interpretation": "72 is planned only per track. No candidate is launched, no run is counted, and no sample-power or benefit claim follows. The pooled USD 100 ceiling is not evidence that 72 calls are funded. Blocked/unavailable cells retain planned denominators and have N_launched=0."
+  },
+  "cross_track_controls": {
+    "exact_task_bank": "Freeze C1/C2 and B1/B2 prompts, facts, rules, examples, expected outputs, acceptance IDs and held-out HC1/HC2/H1/H2 before any candidate run; no post hoc task substitution.",
+    "information_equivalence": "Representations must carry identical semantic information, tool permissions, compute environment, clock source, start checkout and asset/license packet; syntax is the planned factor.",
+    "tool_budget_parity": "Use the same allowed tool surface and frozen per-run budget/token/wall-time/repair/intervention/price guards across matched cells; all operational cap values remain null until separately approved. The pooled USD 100 ceiling is shared across tracks and does not replace these guards.",
+    "grader_independence": "Human/neutral graders are independent of candidate authors/runners, lock raw ratings before adjudication, and do not use Jev as gold.",
+    "clustering": "Cluster or pair by task block within each track; fresh repeats are nested runs, not independent task populations.",
+    "censoring": "Keep unfinished/failure/timeout/safety-stop/blocked/missing evidence as non-success statuses; never replace a missing time-to-pass with stop time or cap.",
+    "multiplicity": "Freeze the confirmatory contrasts, family structure and multiplicity procedure before any larger study; pilot outputs remain descriptive and exploratory.",
+    "held_out": "Do not tune prompts, representations, rubric, novelty metric or repairs on HC1/HC2/H1/H2; report held-out results separately.",
+    "novelty_controls": "Predeclare novelty unit, duplicate/near-duplicate baseline, seed/control cases, grader blinding and false-alarm handling; report novelty separately from hard validity and quality."
+  },
+  "new_runner_gaps": {
+    "whole_game_coding_runner": {"status": "IMPLEMENTATION_REQUIRED", "argv": null, "config_entrypoint": null},
+    "ontology_content_generation_runner": {"status": "IMPLEMENTATION_REQUIRED", "argv": null, "config_entrypoint": null},
+    "rule": "Only an existing, credential-free, observed runner may be named as working. Unknown runner work is an implementation task and cannot be represented as a completed capability."
+  },
+  "references_used_for_planning": [
+    "research/development-cases/ontology-map-20261023-01/contract.json",
+    "research/development-cases/ontology-map-20261023-01/result.json",
+    "research/npc-disclosure/public/ontology-signals-interview.public.txt"
+  ]
+}

@@ -160,6 +160,7 @@ This additional development-engineering case does not enlarge the frozen 60-case
 or NPC88 and establishes no human benefit, fun, efficacy, productivity or ontology superiority.
 Godot source/writer authority and canonical R5 engine capture remain unchanged. **G4/full G6 remain
 `FIX`.** Current production and separate CI/Git attestation are described above.
+The retired hosted-model cohort (including historical labels, fixture60, and NPC88) is provenance-only and excluded from active paper tables, counts, and runtime-model claims; no label or outcome is transferred to the runtime-reported `gpt-6.1-sol` development case. The source-derived traceability instrument is a proposal, not a measured score: [`codebook.en.md`](../../research/traceability-scoring-20261023/codebook.en.md) and [`sources.json`](../../research/traceability-scoring-20261023/sources.json). Whole-game matched-information and repeated-cross-model comparison remain `PROPOSED_NOT_EXECUTED`: [`plan.en.md`](../../research/development-comparison-20261023/plan.en.md).
 
 ## 6. Game artifact → paper use
 

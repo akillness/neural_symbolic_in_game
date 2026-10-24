@@ -324,6 +324,11 @@ paid/free result.
   the push until inspected.
 - Do not restore or overwrite another session's changes. Record collisions in
   `_workspace/current/conflicts.md`.
+- For the 2026-10-24 model-comparison work, use a serial queue: one active worker or native
+  assignment at a time. Wait for its terminal receipt before starting the next; run builds,
+  checks, staging, and pushes only while workers are stopped. Confirm the publication checkpoint
+  push before starting new model generation. The user reported workstation instability under
+  concurrent agents.
 
 ## 6. Verification and reporting
 

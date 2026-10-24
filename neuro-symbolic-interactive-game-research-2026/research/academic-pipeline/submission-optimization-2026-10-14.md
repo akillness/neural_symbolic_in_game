@@ -1,16 +1,16 @@
-# TRACE-RPG submission optimization / 논문·실험 최적화 (D-075)
+# TRACE-RPG submission optimization / 논문·실험 최적화 (D-075; maintained revision note)
 
-Date / 기준일: 2026-10-14. Scope: evidence-bounded methods and instrumentation revision, not a new efficacy study or a journal acceptance decision.
+Date / 기준일: 2026-10-23 update to the 2026-10-14 record. Scope: evidence-bounded methods, artifact, and single-development-case revision; not a new efficacy study or a journal acceptance decision.
 
 ## Current paper contract / 현재 원고 계약
 
-The synchronized English and Korean manuscripts are **TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds**. The contribution is an implemented authorization/repair/replay/accounting contract under authored policies. It is not a first-ever transaction protocol, a full event-sourcing guarantee, semantic completeness, authenticated provenance, model ranking, or player benefit.
+The synchronized English and Korean manuscripts are **TRACE-RPG: Source-Bound Ontology Evidence and a Bounded Codex-Assisted Integration Case in an Interactive Game**. The contribution is an implemented authorization/repair/replay/accounting contract, a read-only bilingual ontology-to-evidence view, and one runtime-reported Codex development case ($n{=}1$, independent repeats $0$). It is not a model-performance comparison, full-game efficacy result, authenticated provenance claim, semantic completeness claim, or player-benefit study.
 
-한·영 원고는 문제 → 신뢰 경계 → 일곱 검증 조건 → 오류 기반 수리 → 실험 lane → 관찰 결과 → 한계의 흐름으로 정리했다. 수리 연산자 ρ는 이전 candidate와 typed validator error만 읽으며, 이 error가 유일한 state-derived 입력이다. 직접 `WorldState`를 읽는 `policy_restore` oracle과 구분한다. 동일 error에 대한 고정점은 수리 루프 수렴을 뜻하지 않으며, K는 시도 수의 상한이지 callback 시간 제한이 아니다.
+한·영 원고는 문제 → 신뢰 경계 → 일곱 검증 조건 → 오류 기반 수리 → typed evidence lane → 단일 개발 사례 → 한계의 흐름으로 정리했다. 수리 연산자 $\rho$는 이전 candidate와 typed validator error만 읽으며, `policy_restore` oracle과 구분한다. 현재 본문은 과거 live-screening/E2 코호트를 active table·count·outcome에서 제외하고 immutable historical provenance로만 남긴다. 과거 label/outcome은 runtime-reported `gpt-6.1-sol` 사례로 이전하지 않는다.
 
-The target remains IEEE Transactions on Games, Full Paper / instrumentation-and-methods. Removing legacy 7pt/6.5pt typography overrides produced 9-page EN/KO PDFs under standard IEEE typography; the provisional 6-page Short Paper gate failed and was explicitly superseded, not hidden by shrinking fonts or deleting evidence. The build enforces the detailed official Full Paper ceiling of 10 pages including references. Korean reference columns use the native IEEEtran trigger for this 58-reference snapshot.
+현재 모델 표기는 native runtime context의 `gpt-6.1-sol` 선택 보고일 뿐 provider attestation이 아니다. Provider identity, immutable revision, seed, cost는 `null`; model-only latency도 없다. 실제 사례는 six native CLI calls, zero independent repeats, dashboard observer extension, named failures, 62 frozen checks와 Godot Web build를 기록하지만 full-game creation이나 model efficacy를 주장하지 않는다. 표준 IEEE type과 ≤10-page intent를 유지하며, 결과물 재생성·빌드·Git 검증은 Main 소유다.
 
-Official guidance: <https://transactions.games/submit/submission-guidelines>, retrieved 2026-10-14. Its summary lists Full 10–14 / Short 6–8 while the detailed sections specify ceilings of 10 / 6; the top notice adopts double-anonymous review from 2025 while a later paragraph still says single-blind. The manuscript follows the newer anonymity notice and detailed 10-page ceiling. **The author must confirm the current category/format in the submission system; an editor decision, anonymous reviewer archive, DOI deposit, and originality declaration are not claimed.**
+공식 guidance: <https://transactions.games/submit/submission-guidelines> (2026-10-14 확인). 원고는 최신 anonymity notice와 detailed Full Paper ceiling을 따르며, author가 제출 category/format을 확인해야 한다. editor decision, reviewer archive, DOI deposit, originality declaration은 주장하지 않는다.
 
 ## Verified recent literature / 최신 문헌 대조
 
@@ -24,26 +24,26 @@ The current bibliography has **58 entries: 48 VERIFIED identity records and 10 P
 
 All three were checked against primary arXiv records and corroborating identity metadata on 2026-10-14. Revision, retrieval date, unresolved venue conflicts and license limits are recorded in `research/sources/scraped/arxiv-*.md` and `research/source-ledger.yaml`. Missing paper licenses are not inferred from code/dataset licenses. S58's acceptance comment is not promoted without an established proceedings record.
 
-## Experiment-to-evidence map / 실험과 근거 연결
+## Current experiment-to-evidence map / 현재 실험과 근거 연결
 
 | Lane | Evidence actually available | Allowed conclusion / 해석 상한 |
 |---|---|---|
-| E1 offline | 13 authored gate expectations; 12 invalid repair cases per arm; rejection-only 0/12, blind unchanged retry 0/12, error-guided ρ 5/12, state-reading oracle 6/12; 121 provenance rows = 85 executed + 36 aggregate | Encoded conformance in authored fixtures, not validator accuracy or independent population samples. |
-| E2 live | Frozen screening packet, 5 cells × 5 calls; 3 cells initially valid; constructed policy-blind Signal-v2 ρ 5/5 vs blind 0/5; goal-blind null regime 0/5 vs 0/5 | `screening-pilot-only`, regime-dependent mechanism transfer; no general sample-efficiency/model superiority. |
-| E3 methods graph | Existing closed-world simulation; source-input hashes refreshed after citation/ledger changes | Simulation-only; not retrieval/memory runtime efficacy and not a new simulation result. |
-| ENG1 game | Authored Godot fixture/replay/presentation conformance; fixed 52/52 core, separate 4-check extension, fixed 8/8 smoke; new local receipt integrity lane | Engine-local engineering evidence; no live Python round-trip, attention, comprehension, latency, enjoyment, immersion or agency claim. |
+| E1 offline | Authored gate/repair fixtures, frozen classes, integrity and assignment accounting | Encoded conformance in authored fixtures; not validator accuracy or population evidence. |
+| E3 methods graph | Existing closed-world typed-link simulation and authored holdout construction | Simulation/construction only; not retrieval or memory efficacy. |
+| ENG1 game | Authored Godot fixture/replay/presentation conformance with no live Python transport | Engine-local evidence; no live authorization round trip, player, latency, or efficacy claim. |
+| NPC-DISC-1 | Frozen declaration-derived disclosure strata and public-safe trace records | Bounded engineering counts; E/R/C/NR remain typed and non-pooled. |
+| DEV-CASE | One read-only bilingual dashboard integration case: 6 native CLI calls, $n{=}1$, repeats 0, runtime-reported `gpt-6.1-sol` | Descriptive integration evidence only; provider metadata unavailable and no model comparison. |
+| E2 / old live screening | Immutable historical packet retained for provenance/hash validation | **HISTORICAL_ARCHIVE_ONLY**; excluded from active tables, counts, and runtime-model outcomes. |
 
-`C-RESULT-001`–`005` remain `TODO-RESULT`; G4/G6 are not promoted. There are **0 human participants**. The 64 = 43 + 21 values in historical narrative/passport snapshots do not replace the current hash-bound 121-row Stage-04 packet.
-
+`C1`–`C5` remain bounded design/conformance descriptions; no C6 or full-game round-trip is promoted. The proposed source-derived traceability rubric is unmeasured and is documented in `research/traceability-scoring-20261023/`. Whole-game matched-information and repeated-cross-model comparison are `PROPOSED_NOT_EXECUTED` in `research/development-comparison-20261023/`.
 ### Reproduction observed this revision
 
 `uv run python scripts/run_conformance_pilot.py --output-dir <temporary>/runs --release-dir <temporary>/release` exited 0 without writing the frozen bundle. `pilot-results.json` and assignment manifest were identical; **11/11 CSVs were byte-identical**. See `_workspace/current/qa/releases/2026-10-14/conformance-replication.json` for the exact command and hashes. The frozen assignment manifest remains `64308191b933d0ceaad1d15689c48d2a6ea22c0f6b03ee19b9c571defa414d48`.
 
 ## Environment, visuals and layout / 환경·시각자료·레이아웃
 
-- The architecture SVG now distinguishes E1, E2 and ENG1 while showing proposal → parser/policy → validate → repair/fallback → commit → record → replay. `fig_evidence_regimes.svg` displays raw, non-pooled regime contrasts from the three registered JSON sources; no generated image supplies measured data.
-- All numerical table prose is derived from frozen JSON inputs. The state-reading oracle, typed-error operator and blind unchanged control stay distinguishable in both languages; initial-valid and null live regimes are retained.
-- The manuscript's playable readout uses `paper/latex/captures/playable-readout-20261014-r2/`: three fresh native PNG + shot-receipt pairs, measured trim boxes, full source/state hashes, dimensions and bytes. They are illustration-only working captures, never retouched or promoted to efficacy evidence.
+- Any older architecture/evidence-regime figure that names E2 is historical context only; active manuscript figures and tables show E1/E3/ENG1/NPC-DISC-1/DEV-CASE as typed, separate lanes, with no E2 result or old model label as a current outcome.
+- Current traceability proposal uses source-derived TR01--TR06 dimensions with explicit denominator, missingness, independence, and outcome-status rules; no score was collected in this revision.
 - Captures were produced on a disposable project by `python3 scripts/run_playable_evaluation.py --godot <Godot-4.7.1> --capture`: 4/4 screenshots and 52/52 core checks. Canonical `project.godot` remains `2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd`.
 - `make -C paper/latex check` builds the two PDFs, checks page counts, rejects Type 3 fonts and layout/reference/glyph errors, and now fails closed if PDF inspection or conversion tools fail. Temporary figure outputs are promoted only after all conversions succeed. The negative-path Makefile tests reject stale-PDF success, missing page metadata, >10 pages, tool failures and an early Type 3 figure.
 
@@ -67,4 +67,4 @@ Final CI-equivalent verification and push status are recorded in `_workspace/cur
 
 ### Submission boundary / 실제 제출 경계
 
-The deliverable is a defensible, reproducible **methods/instrumentation submission candidate**, not an unconditional claim of journal readiness or acceptance. A reviewer archive and author declarations still need author completion, and official category wording needs confirmation. Confirmatory multi-model/held-out semantic, retrieval/memory and human studies would be required before asserting the corresponding efficacy claims; this revision neither fabricates them nor disguises fixtures as participants.
+The deliverable is a defensible, reproducible **methods/instrumentation submission candidate with one bounded development case**, not an unconditional claim of journal readiness or acceptance. A reviewer archive and author declarations still need author completion, and official category wording needs confirmation. Confirmatory whole-game, repeated-cross-model, held-out semantic, retrieval/memory, and human studies would be required before asserting corresponding efficacy claims; this revision neither fabricates them nor disguises fixtures as participants.

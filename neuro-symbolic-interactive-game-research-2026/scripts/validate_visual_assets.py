@@ -36,7 +36,6 @@ SVG_INVENTORY_ROOTS = (
 
 LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
-    "paper/latex/figures/fig_evidence_regimes.svg",
     "paper/latex/figures/fig_npc_screening.svg",
     "research/directions/figures/fig_consensus_gate_lanes.svg",
     "research/directions/figures/fig_cost_validity_pareto_concept.svg",
@@ -44,10 +43,6 @@ LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/generated/pilot_results_ko.tex",
     "paper/latex/generated/pilot_tables_en.tex",
     "paper/latex/generated/pilot_tables_ko.tex",
-    "paper/latex/generated/live_pilot_results_en.tex",
-    "paper/latex/generated/live_pilot_results_ko.tex",
-    "paper/latex/generated/live_pilot_tables_en.tex",
-    "paper/latex/generated/live_pilot_tables_ko.tex",
     "paper/latex/generated/contribution_map_en.tex",
     "paper/latex/generated/contribution_map_ko.tex",
     "paper/latex/generated/evidence_lanes_en.tex",
@@ -690,6 +685,12 @@ class Validator:
             r"\{\\([A-Za-z]+)\}\s*(?:\[(\d+)\])?\s*"
         )
 
+        def is_retired_live_fragment(relative: str) -> bool:
+            path = Path(relative)
+            return "historical-live" in path.parts or (
+                path.suffix == ".tex" and path.stem.startswith("live_pilot_")
+            )
+
         def group(text: str, start: int) -> tuple[str, int]:
             if start >= len(text) or text[start] != "{":
                 raise ValueError("expected literal brace group")
@@ -737,6 +738,10 @@ class Validator:
 
         def visit(current: Path) -> None:
             relative = str(current.resolve().relative_to(ROOT))
+            if is_retired_live_fragment(relative):
+                raise ValueError(
+                    f"active paper input imports retired historical live fragment: {relative}"
+                )
             if relative in active_inputs:
                 raise ValueError(f"recursive paper input: {relative}")
             if not current.is_file():
@@ -779,11 +784,9 @@ class Validator:
             for source in table_sources
             for record in source.get("layout_sources", [])
         }
-        generated_table_fragments = {
-            str(path.relative_to(ROOT))
-            for path in (ROOT / "paper/latex/generated").rglob("*.tex")
-            if "\\begin{tabular" in path.read_text(encoding="utf-8")
-        }
+        # Only files reached through an active paper source closure are publication-owned.
+        # Historical or retired generated fragments may remain on disk without becoming active.
+        generated_table_fragments: set[str] = set()
         for paths, _ in surface_closures.values():
             generated_table_fragments.update(
                 path
@@ -895,25 +898,12 @@ class Validator:
         offline_ko = (ROOT / "paper/latex/generated/pilot_tables_ko.tex").read_text(
             encoding="utf-8"
         )
-        live_en = (ROOT / "paper/latex/generated/live_pilot_tables_en.tex").read_text(
-            encoding="utf-8"
-        )
-        live_ko = (ROOT / "paper/latex/generated/live_pilot_tables_ko.tex").read_text(
-            encoding="utf-8"
-        )
         self.check("Interpretation" in offline_en, "offline EN accounting table needs scope column")
         self.check("해석 범위" in offline_ko, "offline KO accounting table needs scope column")
         self.check(
             "Rows have different denominators" in offline_en, "offline EN scope note missing"
         )
         self.check("분모와 성공 방향" in offline_ko, "offline KO scope note missing")
-        self.check(
-            "$\\Delta$" in live_en and "matched candidates" in live_en,
-            "live EN matched delta missing",
-        )
-        self.check(
-            "$\\Delta$" in live_ko and "동일 후보" in live_ko, "live KO matched delta missing"
-        )
 
     def _validate_paper_links(self, manifest: dict[str, Any]) -> None:
         assets = manifest.get("visual_assets", [])
@@ -1190,7 +1180,6 @@ class Validator:
             relative_paths = (
                 "scripts",
                 "research/academic-pipeline/stage-04-pilot",
-                "research/academic-pipeline/rq2-live-pilot",
                 "research/academic-pipeline/contribution-evidence-matrix.csv",
                 "research/academic-pipeline/experiment-evidence-matrix.csv",
                 "research/claim-ledger.yaml",

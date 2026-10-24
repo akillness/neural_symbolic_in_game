@@ -31,7 +31,7 @@ class VisualAssetValidatorTests(unittest.TestCase):
         source = next(
             item
             for item in unknown_surface["table_sources"]
-            if item["id"] == "offline-pilot-paper-tables"
+            if item["id"] == "current-paper-hand-authored-tables"
         )
         source["rendered_in"] = ["paper-missing"]
         validator = visual_validator.Validator(require_pdf_tools=False, check_regeneration=False)
@@ -42,7 +42,7 @@ class VisualAssetValidatorTests(unittest.TestCase):
         source = next(
             item
             for item in missing_anchor["table_sources"]
-            if item["id"] == "offline-pilot-paper-tables"
+            if item["id"] == "current-paper-hand-authored-tables"
         )
         source["anchors"].append("tab:not-present")
         validator = visual_validator.Validator(require_pdf_tools=False, check_regeneration=False)

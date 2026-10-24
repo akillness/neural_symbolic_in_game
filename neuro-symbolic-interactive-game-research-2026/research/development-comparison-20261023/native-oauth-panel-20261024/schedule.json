@@ -1,0 +1,46 @@
+{
+  "schema_version": "native-oauth-panel-schedule/v3",
+  "artifact_id": "native-oauth-panel-20261024-schedule-v3",
+  "status": "FROZEN_NOT_EXECUTED",
+  "freeze_date": "2026-10-24",
+  "seed": 20261023,
+  "formula": "9 exact candidates x 2 task arms (C1,B1) x 2 representations (general_rule,ontology) = 36 predeclared assignments",
+  "stages": [
+    {"stage_id": "F0", "representation": null, "assignment_count": 0, "purpose": "Read-only OAuth status, source/hash/observer/transport preflight; no provider call."},
+    {"stage_id": "F1", "representation": "general_rule", "assignment_count": 18, "purpose": "One C1 and one B1 assignment per candidate; counterpart arms are independent."},
+    {"stage_id": "F2", "representation": "ontology", "assignment_count": 18, "purpose": "Matched C1 and B1 assignments per candidate; remains predeclared regardless F1 raw validity."}
+  ],
+  "candidate_selectors": [
+    {"candidate_key": "gpt_6_1_sol", "candidate_label": "gpt-6.1-sol", "raw_user_label": "gpt 6.1 sol", "provider_family": "OpenAI", "registry_selector": "gpt-6.1-sol", "cli_selector": "gpt-6.1-sol"},
+    {"candidate_key": "gpt_6_sol", "candidate_label": "gpt-6-sol", "raw_user_label": "gpt 6 sol", "provider_family": "OpenAI", "registry_selector": "gpt-6-sol", "cli_selector": "gpt-6-sol"},
+    {"candidate_key": "astra", "candidate_label": "Astra", "raw_user_label": "astra", "provider_family": "OpenAI", "registry_selector": "gpt-6-astra", "cli_selector": "gpt-6-astra"},
+    {"candidate_key": "luna", "candidate_label": "Luna", "raw_user_label": "luna", "provider_family": "OpenAI", "registry_selector": "gpt-6-luna", "cli_selector": "gpt-6-luna"},
+    {"candidate_key": "opus_5_5", "candidate_label": "Opus5.5", "raw_user_label": "opus 5.5", "provider_family": "Anthropic", "registry_selector": "claude-opus-5-5", "cli_selector": "claude-opus-5-5"},
+    {"candidate_key": "literal_sonnect_5_5", "candidate_label": "literal 'sonnect5.5'", "raw_user_label": "sonnect 5.5", "provider_family": "Anthropic", "registry_selector": "claude-sonnet-5-5", "cli_selector": "claude-sonnet-5-5"},
+    {"candidate_key": "fable_5_1", "candidate_label": "Fable5.1", "raw_user_label": "fable 5.1", "provider_family": "Anthropic", "registry_selector": "claude-fable-5-1", "cli_selector": "claude-fable-5-1"},
+    {"candidate_key": "literal_gemin3_8_flash", "candidate_label": "literal 'gemin3.8flash'", "raw_user_label": "gemin 3.8flash", "provider_family": "Google", "registry_selector": "gemini-3.8-flash", "cli_selector": "gemini-3.8-flash"},
+    {"candidate_key": "gemini_argon", "candidate_label": "GeminiArgon", "raw_user_label": "gemini argon", "provider_family": "Google", "registry_selector": "gemini-4-argon", "cli_selector": "gemini-4-argon-medium", "selector_note": "Native agy catalog selector observed; provider/runtime identity remains unverified."}
+  ],
+  "frozen_order": {
+    "algorithm": "Python random.Random(seed).shuffle over registry candidate order x [content_generation,coding_agent]",
+    "F1_order": [
+      "literal_sonnect_5_5/coding_agent/B1", "literal_sonnect_5_5/content_generation/C1", "astra/content_generation/C1", "gpt_6_sol/content_generation/C1", "luna/coding_agent/B1", "fable_5_1/content_generation/C1", "literal_gemin3_8_flash/content_generation/C1", "gpt_6_1_sol/coding_agent/B1", "literal_gemin3_8_flash/coding_agent/B1", "gpt_6_1_sol/content_generation/C1", "fable_5_1/coding_agent/B1", "opus_5_5/coding_agent/B1", "gpt_6_sol/coding_agent/B1", "astra/coding_agent/B1", "gemini_argon/content_generation/C1", "luna/content_generation/C1", "gemini_argon/coding_agent/B1", "opus_5_5/content_generation/C1"
+    ],
+    "F2_order": [
+      "literal_sonnect_5_5/coding_agent/B1", "literal_sonnect_5_5/content_generation/C1", "astra/content_generation/C1", "gpt_6_sol/content_generation/C1", "luna/coding_agent/B1", "fable_5_1/content_generation/C1", "literal_gemin3_8_flash/content_generation/C1", "gpt_6_1_sol/coding_agent/B1", "literal_gemin3_8_flash/coding_agent/B1", "gpt_6_1_sol/content_generation/C1", "fable_5_1/coding_agent/B1", "opus_5_5/coding_agent/B1", "gpt_6_sol/coding_agent/B1", "astra/coding_agent/B1", "gemini_argon/content_generation/C1", "luna/content_generation/C1", "gemini_argon/coding_agent/B1", "opus_5_5/content_generation/C1"
+    ],
+    "stage_assignment_id_rule": "<stage>--<registry_selector>--<track>; task_id is C1 for content_generation and B1 for coding_agent."
+  },
+  "launch_rules": {
+    "fresh_workspace": true,
+    "fresh_session": true,
+    "max_wall_time_s": 180,
+    "retry": false,
+    "resume": false,
+    "fallback": false,
+    "concurrency": "No launch before transport owner records the exact frozen order receipt.",
+    "F2_gate": "Only authorization/transport/observer preconditions can block a stage launch; raw C1/B1 validity does not delete the paired assignment.",
+    "status_before_launch": "PREDECLARED_NOT_STARTED"
+  },
+  "freeze_hashes": {"frozen_inputs_sha256": "72f29c460e657e1d70f770f353d01274182a1a68ab15c27e70eb809a194d52c1", "source_ref": "frozen-inputs.json"}
+}

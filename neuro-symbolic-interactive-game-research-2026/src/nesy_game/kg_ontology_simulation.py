@@ -1178,6 +1178,7 @@ def render_paper_tex(matrix: dict[str, Any], *, korean: bool) -> str:
             "\\begin{table}[t]",
             "\\centering",
             "\\small",
+            "\\renewcommand{\\arraystretch}{1.20}",
             f"\\caption{{{caption}}}",
             "\\label{tab:kg-ontology-simulation}",
             "\\begin{tabular}{lrrrrr}",

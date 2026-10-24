@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "traceability-scoring-rubric-20261023",
+  "status": "PROPOSED_NOT_VALIDATED",
+  "construct": "Recoverable correspondence among observable requirements, artifacts, activities, decisions, repairs, and outcomes; not hidden reasoning, correctness, safety, task success, human benefit, or ontology superiority.",
+  "dimensions": [
+    {
+      "id": "TR01",
+      "name_en": "Identity and activity binding",
+      "name_ko": "식별자·활동 결속",
+      "unit": "Each required artifact-reference slot in an arm-neutral observer-inventoried activity.",
+      "required_links": ["task_run_attempt", "artifact_revision_or_digest", "producing_or_using_activity", "responsible_actor", "source_locator"],
+      "positive_anchor": "Exact source/version and locator verify every required identity/activity relationship.",
+      "complete_chain_numerator": "n_01 = applicable slots whose every required TR01 link is verified",
+      "complete_chain_denominator": "N_01 = all applicable slots required by the frozen stage schema in the neutral activity inventory",
+      "source_refs": ["SRC01", "SRC03"]
+    },
+    {
+      "id": "TR02",
+      "name_en": "Decision evidence chain",
+      "name_ko": "판단 근거 사슬",
+      "unit": "Each observable decision, with coding decisions and game-action decisions reported separately.",
+      "required_links": ["input_or_request", "applicable_rule_or_requirement_version", "actual_evaluated_check_and_result", "emitted_decision", "source_locator"],
+      "positive_anchor": "Evidence verifies what actually ran, not what could have run.",
+      "complete_chain_numerator": "n_02 = decisions whose every applicable TR02 link is verified",
+      "complete_chain_denominator": "N_02 = all decisions in the neutral observer inventory that require a TR02 chain",
+      "source_refs": ["SRC01", "SRC02", "SRC03"]
+    },
+    {
+      "id": "TR03",
+      "name_en": "Decision-to-effect correspondence",
+      "name_ko": "판단-효과 대응",
+      "unit": "Each decision requiring an observable state or artifact outcome record.",
+      "required_links": ["decision", "observed_state_or_artifact_outcome", "before_after_evidence", "denied_or_noop_outcome_when_applicable", "source_locator"],
+      "positive_anchor": "Evidence connects the decision to the observed effect; hash equality alone is not semantic correctness or safety.",
+      "complete_chain_numerator": "n_03 = decisions whose every required TR03 effect link is verified",
+      "complete_chain_denominator": "N_03 = all inventoried decisions requiring an outcome record under the frozen schema",
+      "source_refs": ["SRC01", "SRC03", "SRC05"]
+    },
+    {
+      "id": "TR04",
+      "name_en": "Repair chain",
+      "name_ko": "수정 사슬",
+      "unit": "Each actual repair attempt reconciled from independent change and event records.",
+      "required_links": ["triggering_failure_or_unmet_requirement", "corrective_change_package", "exact_revalidation_execution", "observed_result_or_unresolved_state", "source_locator"],
+      "positive_anchor": "The complete trigger-to-change-to-revalidation-to-result chain is independently resolvable, whether the repair passes or fails.",
+      "complete_chain_numerator": "n_04 = repair attempts whose every required TR04 link is verified",
+      "complete_chain_denominator": "N_04 = all actual repair attempts in the reconciled neutral inventory",
+      "zero_repair_rule": "N/A only when independent evidence verifies zero actual repairs; an empty repair log is not sufficient.",
+      "source_refs": ["SRC01", "SRC02", "SRC03"]
+    },
+    {
+      "id": "TR05",
+      "name_en": "Bidirectional requirement coverage",
+      "name_ko": "양방향 요구사항 커버리지",
+      "unit": "Each predeclared requirement and each inventoried in-scope change, reported as separate forward and reverse views.",
+      "required_links_forward": ["predeclared_requirement", "implementing_artifact", "relevant_verification_evidence", "source_locator"],
+      "required_links_reverse": ["in_scope_change", "justified_requirement", "source_locator"],
+      "positive_anchor": "Semantic requirement-to-artifact-to-evidence and change-to-requirement relationships are verified; code presence or a test name is insufficient.",
+      "complete_chain_numerator_forward": "n_05F = fully linked predeclared requirements",
+      "complete_chain_denominator_forward": "N_05F = all predeclared requirements",
+      "complete_chain_numerator_reverse": "n_05R = justified in-scope changes",
+      "complete_chain_denominator_reverse": "N_05R = all inventoried in-scope changes",
+      "aggregation_rule": "Never average or collapse forward and reverse rates.",
+      "source_refs": ["SRC02", "SRC03"]
+    },
+    {
+      "id": "TR06",
+      "name_en": "Independent evidence exercisability",
+      "name_ko": "독립 근거 실행 가능성",
+      "unit": "Each predeclared artifact-audit or replay target.",
+      "required_links": ["documented_inputs", "dependencies", "commands", "tolerances", "retained_receipt", "independent_assessor_identity", "source_locator"],
+      "positive_anchor": "A non-author assessor exercises the target and retains the receipt, agreement, or disagreement.",
+      "complete_chain_numerator": "n_06 = successfully independently exercised targets",
+      "complete_chain_denominator": "N_06 = all predeclared audit/replay targets",
+      "attempt_accounting": "Report attempted and not-attempted targets separately; non-attempt is not N/A.",
+      "source_refs": ["SRC03", "SRC05"]
+    }
+  ],
+  "scoring": {
+    "binary_link_rule": "A required link is 1 only when exact source/version, claimed relationship, and supporting locator are independently resolved; otherwise 0 with one primary missingness reason.",
+    "complete_chain_formula": "For dimension d, N_d = |{u in U_d : applicable(u)=true}| and n_d = |{u in U_d : applicable(u)=true and every link in L_d(u) is verified}|. Report n_d/N_d only when inventory_complete=true and N_d>0.",
+    "per_link_formula": "Optional only: l_d/m_d where l_d is the count of verified required links and m_d is the count of applicable required links across the same frozen units. It is not complete-chain coverage.",
+    "zero_denominator": "Report N/A only with independently verified non-applicability. For TR04, this is independently verified zero actual repair attempts.",
+    "outcome_separation": "Record actual outcome independently as PASS, FAIL, NOT_RUN, STAGE_NOT_REACHED, OUT_OF_SCOPE, or MISSING. Traceability does not imply success.",
+    "six_dimension_aggregation": "Do not average TR01-TR06, primary time, defect outcomes, or audit burden into one score."
+  },
+  "missingness": {
+    "allowed_primary_reasons": ["missing", "stale", "contradicted", "inaccessible", "unverified"],
+    "all_are_nonpassing": true,
+    "incomplete_inventory": "coverage=INDETERMINATE; disclose observed counts and the inventory gap; do not publish a complete-looking percentage.",
+    "stage_not_reached": "Record verified predecessor/guard and stage reason. It can satisfy a status-explanation link but never makes a later check executed or passed.",
+    "empty_log": "An empty trace or repair log cannot establish zero activity.",
+    "mandatory_not_attempted": "A mandatory audit/replay or validation stage not attempted is not N/A."
+  },
+  "reliability": {
+    "assessors": "At least two assessors who did not generate the traces or implement the artifact.",
+    "pre_adjudication": "Preserve each assessor's ratings and evidence locators before adjudication; calculate reliability before consensus.",
+    "measure": "Nominal Krippendorff alpha for binary/status labels where estimable, with uncertainty where estimable.",
+    "undefined_policy": "No variation or inadequate support is UNDEFINED or NOT_ESTIMABLE, never perfect reliability.",
+    "blinding": "Blind arm/model labels where feasible; record access and blinding failures.",
+    "nested_units": "Links are nested within decisions, repairs, requirements, targets, and runs; do not treat all links as independent study samples.",
+    "current_status": "No pilot or reliability estimate was executed for this proposal."
+  },
+  "controls": {
+    "seeded_corruptions": ["remove_receipt", "swap_attempt_id", "bind_old_artifact_revision", "reverse_decision_or_status", "omit_failed_repair"],
+    "control_rates": ["detected_valid_corruptions/seeded_valid_corruptions", "false_alarms/clean_control_units"],
+    "separate_accounting": "Malformed or inapplicable controls are retained separately.",
+    "invariance_controls": ["clean_duplicate", "irrelevant_decorative_addition", "semantics_preserving_format_change"],
+    "format_invariance": "Semantic format changes should not change grades; no RDF, ontology triples, layout, or decorative fields are required.",
+    "burden": "Record assessor minutes per unit, evidence objects inspected, access failures, and instrumentation/intervention overhead symmetrically; burden is not a score."
+  },
+  "primary_time": {
+    "endpoint": "time-to-first-all-predeclared-validation-pass",
+    "prospective_definition": "Continuous task-clock seconds from receipt of the matched complete request/evidence to the first exact receipt passing every pre-frozen mandatory check; waiting, edits, tools, provider waits, and repairs stay on the clock.",
+    "failed_or_unfinished_runs": "Do not assign successful-completion times; disclose completion status for every assigned run.",
+    "current_case_value_seconds": 5942.665,
+    "current_case_role": "Descriptive wall-clock value from an older case, not a newly predeclared prospective metric and not model-only inference latency."
+  },
+  "measurement_status": {
+    "proposal_not_measured": true,
+    "current_case": "One operator-assisted Codex task; n=1; independent repeats=0; no matched comparator; no independently scored TR01-TR06 values.",
+    "known_integrity_evidence": "107/107 released file/hash bindings match (102 manifest entries plus 5 actual images); this is byte-integrity evidence, not an independent study, publisher approval, authenticity proof, or efficacy result.",
+    "dated_qa10": "QA10 is a dated PASS under its then-current acceptance set.",
+    "newest_overall": "The newer additive overall QA record is NOT_PASS; it must not be collapsed into the dated QA10 PASS.",
+    "planned_comparison": {
+      "study_label": "development-comparison-20261023",
+      "task_id": "GODOT-MICROGAME-FULL-001",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "paths": [
+        "research/development-comparison-20261023/plan.en.md",
+        "research/development-comparison-20261023/plan.ko.md",
+        "research/development-comparison-20261023/protocol.json"
+      ]
+    }
+  },
+  "source_refs": ["SRC01", "SRC02", "SRC03", "SRC04", "SRC05"],
+  "nonclaims": [
+    "No traceability percentage or dimension score is measured by this proposal.",
+    "No causal superiority, ontology necessity, faster development, repair improvement, correctness, safety, human/player benefit, or model-quality claim follows from the current case.",
+    "Six CLI invocations, test counts, fixture counts, or native turn contexts are not independent task-runs.",
+    "Jev/Gemini consultation is advisory and not independent gold or calibrated correctness.",
+    "107/107 file/hash integrity does not prove independent study, publisher approval, authenticity, or efficacy.",
+    "The project rubric is not certified by PROV, NASA, ACM, Hayes-Krippendorff, or JCGM; JCGM metrological traceability is not software evidence traceability."
+  ]
+}

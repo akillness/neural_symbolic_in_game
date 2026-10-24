@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "id": "traceability-scoring-sources-20261023",
+  "status": "PROPOSED_NOT_VALIDATED",
+  "accessed_date": "2026-10-23",
+  "source_count": 5,
+  "primary_sources": [
+    {
+      "id": "SRC01",
+      "identity": {
+        "title": "PROV-DM: The PROV Data Model",
+        "authors_or_editor": "Luc Moreau and Paolo Missier, editors; W3C",
+        "publication_date": "2013-04-30",
+        "edition_or_version": "W3C Recommendation"
+      },
+      "primary_url": "https://www.w3.org/TR/2013/REC-prov-dm-20130430/",
+      "evidence_level": "official normative specification; conceptual overview and entity/activity/usage/generation/agent definitions inspected",
+      "license_or_reuse_boundary": "W3C document-use rules apply; citation does not grant a blanket license to reproduce, translate, or rebrand the specification.",
+      "used_claim_mapping": [
+        "TR01 identity and activity binding",
+        "TR02 input-rule-check-decision provenance",
+        "TR03 decision-to-effect derivation",
+        "TR04 repair activity and revalidation provenance",
+        "source-versus-activity distinction"
+      ],
+      "metrological_traceability_distinction": "PROV supplies domain-neutral provenance concepts. It does not define or certify this software traceability score, establish truth, or require an OWL/RDF representation."
+    },
+    {
+      "id": "SRC02",
+      "identity": {
+        "title": "NASA Software Engineering Handbook, SWE-052: Bidirectional Traceability",
+        "authors_or_editor": "NASA Software Engineering Handbook, version D",
+        "publication_date": "not established for the inspected page",
+        "edition_or_version": "SWE-052, section 3.12.1; page version 51"
+      },
+      "primary_url": "https://swehb.nasa.gov/spaces/SWEHBVD/pages/102695427/SWE-052+-+Bidirectional+Traceability",
+      "evidence_level": "official agency handbook and guidance; requirement-to-design/implementation/verification relationships inspected",
+      "license_or_reuse_boundary": "NASA and third-party reuse boundaries apply; no blanket license or universal NASA-class applicability is inferred for this project.",
+      "used_claim_mapping": [
+        "TR02 applicable rule/requirement to actual check",
+        "TR04 trigger-change-revalidation chain",
+        "TR05 forward and reverse requirement coverage",
+        "requirement coverage is not code/test-name presence"
+      ],
+      "metrological_traceability_distinction": "SWE-052 motivates bidirectional software requirement relationships. It is not a metrological calibration-chain standard and does not validate the proposed denominators or scores."
+    },
+    {
+      "id": "SRC03",
+      "identity": {
+        "title": "Artifact Review and Badging Version 1.1",
+        "authors_or_editor": "Association for Computing Machinery (ACM)",
+        "publication_date": "2020-08-24",
+        "edition_or_version": "Artifact Review and Badging v1.1"
+      },
+      "primary_url": "https://www.acm.org/publications/policies/artifact-review-and-badging-current",
+      "evidence_level": "official professional-society policy; documented, consistent, complete, exercisable, and independence distinctions inspected",
+      "license_or_reuse_boundary": "Copyright ACM; citation does not award an ACM badge or authorize badge/logo reuse, policy reproduction, or a claim of ACM review.",
+      "used_claim_mapping": [
+        "TR01 complete identity/activity records",
+        "TR03 evidence consistency and outcome correspondence",
+        "TR04 retained repair evidence",
+        "TR05 consistency/completeness",
+        "TR06 independent exercisability",
+        "availability/audit/results validation are distinct"
+      ],
+      "metrological_traceability_distinction": "ACM artifact review criteria distinguish availability, auditability, and result validation. They do not certify this rubric or convert artifact integrity into scientific efficacy."
+    },
+    {
+      "id": "SRC04",
+      "identity": {
+        "title": "Answering the Call for a Standard Reliability Measure for Coding Data",
+        "authors_or_editor": "Andrew F. Hayes and Klaus Krippendorff",
+        "publication_date": "2007-04",
+        "edition_or_version": "Communication Methods and Measures 1(1), 77–89; DOI 10.1080/19312450709336664"
+      },
+      "primary_url": "https://www.asc.upenn.edu/sites/default/files/2021-03/Answering%20the%20Call%20for%20a%20Standard%20Reliability%20Measure%20for%20Coding%20Data.pdf",
+      "evidence_level": "author/institution-hosted primary manuscript; reliability-measure argument inspected and identity cross-checked by DOI metadata",
+      "license_or_reuse_boundary": "Public access is not an open redistribution license; cite or paraphrase the manuscript and do not redistribute or rebrand its full text.",
+      "used_claim_mapping": [
+        "two independent assessors",
+        "pre-adjudication ratings",
+        "nominal Krippendorff alpha where estimable",
+        "undefined/no-variation reliability is not perfect",
+        "consensus labels are excluded from reliability estimation"
+      ],
+      "metrological_traceability_distinction": "This source concerns reliability of coding judgments, not metrological traceability, calibration chains, software correctness, or validation of TR01–TR06. No universal alpha threshold is imported."
+    },
+    {
+      "id": "SRC05",
+      "identity": {
+        "title": "International Vocabulary of Metrology (VIM), JCGM 200:2012",
+        "authors_or_editor": "Joint Committee for Guides in Metrology (JCGM)",
+        "publication_date": "2008 version with minor corrections 2012",
+        "edition_or_version": "Third edition; sections 2.3 and 2.44–2.45 inspected"
+      },
+      "primary_url": "https://www.bipm.org/documents/20126/2071204/JCGM_200_2012.pdf",
+      "evidence_level": "official primary vocabulary; measurand, verification, and intended-use validation definitions inspected",
+      "license_or_reuse_boundary": "JCGM reserves copyright and requires permission for reproduction, translation, or rebranding; cite/paraphrase only.",
+      "used_claim_mapping": [
+        "TR03 verification versus semantic correctness",
+        "TR06 exercise and intended-use validation boundary",
+        "verification is distinct from validation",
+        "measurement-status and nonclaim guardrails"
+      ],
+      "metrological_traceability_distinction": "JCGM metrological traceability is a calibration-chain concept with a relation to a reference through documented calibrations. It is explicitly not a synonym for software evidence traceability and does not certify this project-authored rubric."
+    }
+  ],
+  "citation_policy": {
+    "fulltext_redistribution": false,
+    "new_bibliography_ids": false,
+    "direct_urls_allowed_in_codebook": true,
+    "primary_sources_support_concepts_not_rubric_validation": true,
+    "robots_or_license_status": "No robots disallow was reported for the exact harvest URLs; robots retrieval was unverified for ACM, NASA, UPenn, and DOI/API hosts. This is not a license or permission finding."
+  }
+}

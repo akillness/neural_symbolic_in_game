@@ -1,0 +1,115 @@
+{
+  "schema_version": "native-oauth-panel-frozen-inputs/v3",
+  "artifact_id": "native-oauth-panel-20261024-frozen-inputs",
+  "status": "FROZEN_NOT_EXECUTED",
+  "freeze_date": "2026-10-24",
+  "source_registry": "research/development-comparison-20261023/model-registry.json",
+  "source_config": "configs/model-panel-20261023.json",
+  "source_hashes": {
+    "configs/model-panel-20261023.json": {"sha256": "3b485c9d07235046678491e15d5ebe0772dc8d1b1cab9d0e1b04630ba2c24ad1", "bytes": 42024},
+    "src/nesy_game/model_panel.py": {"sha256": "2672fac3a9f41cd4d6b36326bf4ce9a2d0ee7ca429ced852fc94f8cb0d17cf46", "bytes": 43924},
+    "src/nesy_game/contracts.py": {"sha256": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce", "bytes": 15413},
+    "src/nesy_game/runtime.py": {"sha256": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4", "bytes": 18776},
+    "src/nesy_game/validator.py": {"sha256": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6", "bytes": 5911},
+    "scripts/check_model_panel_game.gd": {"sha256": "6f5d5d1fb68d4fb6a8da36c8181b42953ad3b67aba25b3c72fcb39ee741fe491", "bytes": 15535, "trust_status": "NOT_TRUSTED_FOR_HOST_QA_PENDING_SANDBOX_GATE_REPAIR"}
+  },
+  "implementation_contract": {
+    "prompt_builder": "src/nesy_game/model_panel.py::build_prompt",
+    "representation_builder": "src/nesy_game/model_panel.py::proposition_views",
+    "content_grader": "src/nesy_game/model_panel.py::content_grade",
+    "representation_runtime_names": ["general_rule", "ontology"],
+    "builder_policy": "Reuse these functions without edits; no API fallback and no model-generated prompt substitution.",
+    "frozen_input_sha256": "72f29c460e657e1d70f770f353d01274182a1a68ab15c27e70eb809a194d52c1"
+  },
+  "task_contracts": {
+    "C1": {
+      "track": "content_generation",
+      "held_out": false,
+      "brief": "Propose one INSTALL_LENS action that restores signal_restored without disclosing vault_code. Return one JSON object with exactly the candidate schema fields, no Markdown.",
+      "task_sha256": "abc8ff7349ee0229870b1d017e0732e77cd47d4e001305e2ece07aa759eee5f3",
+      "inventory_sha256": "ebc31f1535d694eb71c023ebf782231e5cb5978f12a6bf3987998c03988020e0",
+      "prompt_sha256": {"general_rule": "14c0142cc94d3a34f4a775060574dc5eae510b054dae91c32789596a24e54e32", "ontology": "042ac6ae2894cad46fef37225bef65058053460445321188eca0d0d35da8bd20"},
+      "state": {
+        "state_id": "panel-c1-001",
+        "locations": ["dock", "tower"],
+        "reachable_locations": ["dock", "tower"],
+        "object_locations": {"lens": "dock", "sealed_scroll": "tower"},
+        "inventory": ["lens"],
+        "facts": ["met_keeper", "lens_in_hand"],
+        "action_policies": {"INSTALL_LENS": {"required_preconditions": ["met_keeper", "lens_in_hand"], "allowed_effects": ["signal_restored"], "required_effects": ["signal_restored"], "allowed_quest_stage_effects": []}},
+        "npc_knowledge": {"keeper": ["met_keeper", "lens_in_hand", "signal_restored"]},
+        "forbidden_disclosures": {"keeper": ["vault_code"]},
+        "quest_stage": 1
+      },
+      "candidate_schema": {"action_id": "string", "actor_id": "string", "action_type": "string", "preconditions": "array of strings", "effects": "array of strings", "required_objects": "array of strings", "used_facts": "array of strings", "disclosed_facts": "array of strings", "required_quest_stage": "nonnegative integer", "quest_stage_effect": "null or nonnegative integer", "narrative_text": "string", "metadata": "object"},
+      "acceptance": ["strict complete candidate schema", "canonical identifier/reference integrity", "all existing symbolic predicates", "INSTALL_LENS produces signal_restored", "deterministic repeat and no state mutation"],
+      "repair_policy": {"raw_first": true, "default_attempts": 0, "approval_required_for_nonzero": true}
+    },
+    "B1": {
+      "track": "coding_agent",
+      "held_out": false,
+      "brief": "Build a playable two-scene signal-hunt Godot microgame implementing the frozen harbor/lighthouse API and all ten acceptance requirements. The goal is restoring the lighthouse signal.",
+      "task_sha256": "70d8a14a219b99f4823318ad57dbe3bfb6a61d5d5a9c57c3f8b75403e162dabd",
+      "inventory_sha256": "b34022f80d779541ca056275e3992d62d257297c13e3e3c99d52b3afab39280e",
+      "prompt_sha256": {"general_rule": "34a3368ca1f283ee0291e30dcd9fed305882dd4c43bce68ef801c742dc2cb6a1", "ontology": "87705c36777bdf94a5c7387f69563762d18690061dee1a147c575b1f82df9e87"},
+      "state_summary": {
+        "state_id": "panel-b1-frozen-20261023",
+        "initial": {"scene": "harbor", "player": {"x": 0, "y": 0}, "goal_complete": false, "inventory": [], "flags": {"gate_open": false, "restored": false}, "state_version": 0},
+        "world": {"grid_min": 0, "grid_max": 2, "token_location": {"scene": "harbor", "x": 1, "y": 0}, "gate_location": {"scene": "harbor", "x": 2, "y": 0}, "goal_location": {"scene": "lighthouse", "x": 1, "y": 1}},
+        "checker_actions": ["right", "right", "interact", "repair", "interact", "right", "interact", "transition", "right", "down", "interact"],
+        "checker_expected_final": {"scene": "lighthouse", "player": {"x": 1, "y": 1}, "goal_complete": true, "inventory": [], "flags": {"gate_open": true, "restored": true}, "state_version": 10},
+        "negative_cases": ["unauthorized gate before token", "transition before gate open", "unknown action", "out-of-bounds movement", "malformed save data", "observer mutates detached result", "duplicate token acquisition", "repeated completion effect"]
+      },
+      "acceptance_suite": [
+        {"id": "AC-SCENES", "requirement": "At least two named scenes load from a clean checkout and transition through the declared route without hidden manual setup."},
+        {"id": "AC-MOVEMENT", "requirement": "Declared player movement/input works deterministically under the allowed input fixture and does not mutate frozen evidence."},
+        {"id": "AC-GAME-GOAL", "requirement": "The declared goal has a reproducible success condition and a visible/readable completion receipt."},
+        {"id": "AC-ONTOLOGY-GATE", "requirement": "The declared ontology/policy gate denies an unauthorized action and allows the authorized action using the frozen rule identifiers."},
+        {"id": "AC-REPAIR", "requirement": "A bounded repair attempt records the original candidate, error, change and rerun; failed repairs remain traceable and do not silently commit."},
+        {"id": "AC-REPLAY", "requirement": "A clean replay from the same receipt reproduces the declared decision, acceptance status and relevant state/hash outputs."},
+        {"id": "AC-READONLY-SIGNALS", "requirement": "Observer/dashboard signals expose declared versus observed state and missing/unreported evidence without mutating game state or frozen inputs."},
+        {"id": "AC-SAVE-LOAD", "requirement": "Save/load preserves the declared canonical state, version/hash and goal-relevant facts, with a receipt proving the round trip."},
+        {"id": "AC-BUILD", "requirement": "The approved existing build path, or a separately approved new runner, produces a runnable artifact from a clean checkout; unknown runner paths are not claimed as working."},
+        {"id": "AC-DETERMINISTIC-QA", "requirement": "Repeated deterministic QA on isolated copies produces the same declared outcomes and detects seeded valid corruptions without accepting false clean results."}
+      ],
+      "game_api": {
+        "root_files": ["project.godot", "main.gd"],
+        "generated_paths": "game/*.gd and game/*.tscn only; relative paths, no symlinks, no existing-file replacement",
+        "entrypoint": "main.gd extends Node2D",
+        "methods": {"reset": "reset(seed:int)", "step": "step(action:String)->Dictionary", "snapshot": "snapshot()->Dictionary", "save_state": "save_state()->Dictionary", "load_state": "load_state(data:Dictionary)->bool", "observer_snapshot": "observer_snapshot()->Dictionary"},
+        "step_actions": ["left", "right", "up", "down", "interact", "repair", "replay", "transition"],
+        "snapshot_keys": ["scene", "player", "goal_complete", "inventory", "flags", "trace", "state_version"],
+        "scene_names": ["harbor", "lighthouse"],
+        "movement": "integer grid: left/right alter x by -1/+1, up/down alter y by -1/+1; reset position (0,0); no walls; one step per action",
+        "gate": "interact denies the gate before gate_token; token opens gate and is consumed once; transition requires gate_open; lighthouse interact restores signal",
+        "repair": "Record denied candidate, validator error, bounded corrected candidate left, its validation and commit as separate trace attempts; never silently overwrite failed attempt",
+        "observer": "observer_snapshot must be read-only; expose declared and observed fields with explicit missing evidence",
+        "save_load": "Persist canonical scene/player/inventory/flags/goal/state_version and prove exact roundtrip",
+        "replay": "same seed and action fixture reproduce canonical snapshots and decision trace",
+        "assets": "procedural geometry only; declare CC0 self-created asset provenance; no downloads",
+        "checker": "Trusted external Godot checker must exercise all ten ACs, replay twice and detect seeded valid corruptions; no model-authored PASS marker accepted"
+      },
+      "repair_policy": {"raw_first": true, "default_attempts": 0, "approval_required_for_nonzero": true}
+    }
+  },
+  "B1_file_manifest_appendix": {
+    "status": "FROZEN_PRE_RUN",
+    "root_files": ["project.godot", "main.gd"],
+    "generated_only": ["game/*.gd", "game/*.tscn"],
+    "path_rules": ["relative paths only", "no symlinks", "no existing-file replacement", "UTF-8 bounded files", "no downloads"],
+    "pre_run_generated_files": [],
+    "source_hashes_for_checker_and_logic": "source_hashes above",
+    "host_QA": "BLOCKED_PENDING_SANDBOX_GATE_REPAIR_AND_FRESH_CHECKER_PROFILE_PROOF",
+    "root_game_api_usage": "B1 task-local harbor/lighthouse API is authoritative; root shared game_api is unused and must not be imported as a substitute",
+    "scene_locations": {"C1": ["dock", "tower"], "B1": ["harbor", "lighthouse"]}
+  },
+  "withheld_payloads": {"included": [], "rule": "Do not read, copy, hash as task content, or expose C2/H1 or any held-out payload in this artifact."},
+  "per_assignment_contract": {
+    "source_hashes_ref": "source_hashes",
+    "task_hash_ref": "task_contracts.<task_id>.task_sha256",
+    "prompt_hash_ref": "task_contracts.<task_id>.prompt_sha256[representation]",
+    "inventory_hash_ref": "task_contracts.<task_id>.inventory_sha256",
+    "runtime_fields_initial": {"context_session_hash": null, "requested_model": null, "runtime_model": null, "provider_model": null, "weights_revision": null, "model_seed": null, "usage": null, "latency_s": null, "billed_usd": null, "failure": null},
+    "append_only_rule": "As a permitted transport run arrives, persist stdout, stderr, partial stream, usage, latency, model selection, context/session hashes and failure without overwriting earlier data."
+  }
+}

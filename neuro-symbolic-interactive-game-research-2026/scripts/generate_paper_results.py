@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import hashlib
 import json
@@ -33,6 +34,8 @@ OUT = ROOT / "paper/latex/generated"
 PIPELINE = ROOT / "research/academic-pipeline"
 CONTRIBUTION_MATRIX = PIPELINE / "contribution-evidence-matrix.csv"
 EXPERIMENT_MATRIX = PIPELINE / "experiment-evidence-matrix.csv"
+ACTIVE_LANE_IDS = ("E1", "E3", "ENG1")
+HISTORICAL_OUT = OUT / "historical-live"
 # Bilingual short labels for the nine prior-work topics of reference-topic-crosswalk.csv.
 TOPIC_LABELS = {
     "T1": ("grounded game worlds", "근거 게임 세계"),
@@ -70,23 +73,6 @@ LANE_ROWS = {
             "7 adapter",
             "3 accounting",
         ),
-    },
-    "E2": {
-        "en": (
-            "Screening-pilot-only RQ2",
-            "one hosted proposer, matched candidate",
-            "5 cells $\\times$ 5 calls; $K{=}1$",
-            "$\\rho$ vs blind per regime",
-            "screening-pilot-only transfer screen",
-        ),
-        "ko": (
-            "RQ2 screening-pilot-only",
-            "hosted proposer 1개, matched candidate",
-            "5 cell $\\times$ 5 call; $K{=}1$",
-            "regime별 $\\rho$ / blind",
-            "screening-pilot-only 전이 screen",
-        ),
-        "tokens": ("5 current cells x 5 calls", "K=1"),
     },
     "E3": {
         "en": (
@@ -362,6 +348,8 @@ def _contribution_map(korean: bool) -> str:
     rows = _read_csv(CONTRIBUTION_MATRIX)
     if [row["contribution_id"] for row in rows] != ["C1", "C2", "C3", "C4", "C5"]:
         raise ValueError("contribution matrix must list C1 through C5 in order")
+    if any("E2" in row["evidence_lane_ids"].split("|") for row in rows):
+        raise ValueError("active contribution map must not bind historical E2")
     names = {
         "C1": ("Trust-boundary contracts", "신뢰경계 contract"),
         "C2": ("Validate--repair--commit controller", "validate--repair--commit controller"),
@@ -374,8 +362,19 @@ def _contribution_map(korean: bool) -> str:
         "C2": ("mechanism behavior on frozen cases", "동결 사례의 메커니즘 동작"),
         "C3": ("integrity/replay on named fixtures", "명명 fixture의 무결성·재생"),
         "C4": ("exact designed-case accounting", "설계 사례 정확 집계"),
-        "C5": ("frozen classes + one regime screen", "동결 class + 단일 regime screen"),
+        "C5": ("frozen offline repairability classes", "동결 offline repairability class"),
     }
+    ceiling_tokens = {
+        "C1": "contract",
+        "C2": "mechanism",
+        "C3": "integrity",
+        "C4": "accounting",
+        "C5": "repairability",
+    }
+    for row in rows:
+        token = ceiling_tokens[row["contribution_id"]]
+        if token not in row["inference_ceiling"].lower():
+            raise ValueError(f"{row['contribution_id']} inference ceiling drift: {token}")
     body = []
     for row in rows:
         cid = row["contribution_id"]
@@ -435,9 +434,21 @@ def _contribution_map(korean: bool) -> str:
 
 
 def _lane_table(korean: bool) -> str:
-    rows = {row["evidence_lane_id"]: row for row in _read_csv(EXPERIMENT_MATRIX)}
-    if set(rows) != set(LANE_ROWS):
-        raise ValueError("experiment matrix lanes do not match the generated lane table")
+    matrix_rows = _read_csv(EXPERIMENT_MATRIX)
+    rows = {
+        row["evidence_lane_id"]: row
+        for row in matrix_rows
+        if row["evidence_lane_id"] in ACTIVE_LANE_IDS
+    }
+    if {row["evidence_lane_id"] for row in matrix_rows} != {"E1", "E2", "E3", "ENG1"}:
+        raise ValueError("experiment matrix lanes must include active lanes and historical E2")
+    if set(rows) != set(ACTIVE_LANE_IDS):
+        raise ValueError("experiment matrix is missing an active lane")
+    e2_rows = [row for row in matrix_rows if row["evidence_lane_id"] == "E2"]
+    if len(e2_rows) != 1 or e2_rows[0]["publication_scope"] != "historical":
+        raise ValueError("E2 must be explicitly historical")
+    if any(rows[lane_id]["publication_scope"] != "active" for lane_id in ACTIVE_LANE_IDS):
+        raise ValueError("active lane table received a non-active lane")
     body = []
     for lane_id, spec in LANE_ROWS.items():
         source = rows[lane_id]
@@ -453,15 +464,15 @@ def _lane_table(korean: bool) -> str:
         caption = "실험 레인 요약: 설계, 단위, 비교, 추론 상한(실험 매트릭스에서 생성)"
         head = r"\textbf{레인} & \textbf{설계} & \textbf{단위 / 예산} & \textbf{비교} & \textbf{상한} \\"
         note = (
-            r"E1--E3와 ENG1은 서로 대체할 수 없으며 분모가 다르다. E2는 screening-pilot-only이고 ENG1은 engineering-only다. "
-            r"어떤 레인도 모집단 효능, 모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다."
+            r"E1, E3, ENG1은 서로 대체할 수 없으며 분모가 다르다. 역사적 E2 receipt는 활성 생성에서 제외된다. "
+            r"어떤 활성 레인도 모집단 효능, 모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다."
         )
     else:
         caption = "Evidence Lanes at a Glance: Design, Unit, Comparison, and Ceiling (Generated from the Experiment Matrix)"
         head = r"\textbf{Lane} & \textbf{Design} & \textbf{Unit / budget} & \textbf{Comparison} & \textbf{Ceiling} \\"
         note = (
-            r"Lanes are non-interchangeable with different denominators; E2 is screening-pilot-only and ENG1 is engineering-only. "
-            r"None establishes population efficacy, model ranking, player experience, retrieval benefit, or commercial-engine performance."
+            r"Active lanes are non-interchangeable with different denominators; the historical E2 receipts are excluded from active generation and ENG1 is engineering-only. "
+            r"No active lane establishes population efficacy, model ranking, player experience, retrieval benefit, or commercial-engine performance."
         )
     return (
         "% Generated by scripts/generate_paper_results.py from experiment-evidence-matrix.csv; do not hand-edit.\n"
@@ -851,30 +862,41 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Generate active bilingual publication fragments")
+    parser.add_argument(
+        "--historical-live",
+        action="store_true",
+        help="also reproduce retired E2 fragments under paper/latex/generated/historical-live/",
+    )
+    args = parser.parse_args()
     data = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
     if data.get("inference") != "none; raw designed-fixture counts only":
         raise ValueError("pilot result scope is not the expected descriptive-only contract")
-    live_packet = _load_live_packet()
     OUT.mkdir(parents=True, exist_ok=True)
     for language, korean in (("en", False), ("ko", True)):
         (OUT / f"pilot_results_{language}.tex").write_text(
             _result_text(data, korean), encoding="utf-8"
         )
         (OUT / f"pilot_tables_{language}.tex").write_text(_tables(data, korean), encoding="utf-8")
-        (OUT / f"live_pilot_results_{language}.tex").write_text(
-            _live_result_text(live_packet, korean), encoding="utf-8"
-        )
-        (OUT / f"live_pilot_tables_{language}.tex").write_text(
-            _live_tables(live_packet, korean), encoding="utf-8"
-        )
         (OUT / f"contribution_map_{language}.tex").write_text(
             _contribution_map(korean), encoding="utf-8"
         )
         (OUT / f"evidence_lanes_{language}.tex").write_text(_lane_table(korean), encoding="utf-8")
     print(
-        "generated bilingual offline and live-screening inputs from "
-        f"{RESULTS_PATH.relative_to(ROOT)} and {LIVE_MANIFEST_PATH.relative_to(ROOT)}"
+        "generated active bilingual offline inputs from "
+        f"{RESULTS_PATH.relative_to(ROOT)} and structured publication matrices"
     )
+    if args.historical_live:
+        live_packet = _load_live_packet()
+        HISTORICAL_OUT.mkdir(parents=True, exist_ok=True)
+        for language, korean in (("en", False), ("ko", True)):
+            (HISTORICAL_OUT / f"live_pilot_results_{language}.tex").write_text(
+                _live_result_text(live_packet, korean), encoding="utf-8"
+            )
+            (HISTORICAL_OUT / f"live_pilot_tables_{language}.tex").write_text(
+                _live_tables(live_packet, korean), encoding="utf-8"
+            )
+        print(f"reproduced retired E2 fragments under {HISTORICAL_OUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

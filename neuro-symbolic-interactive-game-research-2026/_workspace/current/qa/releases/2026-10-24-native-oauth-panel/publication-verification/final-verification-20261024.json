@@ -1,0 +1,87 @@
+{
+  "schema_version": "publication-checkpoint-verification/v1",
+  "recorded_at": "2026-10-24T08:46:13.270Z",
+  "scope": "Bilingual source-bound research publication, not native-model experiment acceptance",
+  "paper": {
+    "status": "PASS",
+    "exit_code": 0,
+    "started_at": "2026-10-24T08:23:22.527838+00:00",
+    "finished_at": "2026-10-24T08:23:28.580565+00:00",
+    "elapsed_seconds": 6.035369,
+    "reproduction_argv": [
+      "make",
+      "-C",
+      "paper/latex",
+      "check",
+      "NPC_PAPER_EVIDENCE_ROOT=<authentic fa9fb8a source extraction>"
+    ],
+    "command_substitution": "Only the temporary historical-source extraction path is replaced; this is a portable derivative, not a byte-identical original command receipt",
+    "original_private_receipt_path": "_workspace/current/qa/releases/2026-10-24-native-oauth-panel/serial-delivery-checks-final/paper/receipt.json",
+    "original_private_receipt_sha256": "1f5c47a0ce28c76727da44a34e6c0345d20c77ab3faeca5fcb046e877f09601f",
+    "original_stdout_sha256": "a0848fde0ec2579fe898bb5e9de1b7809d30defd29e3008a7bda63a71e025785",
+    "original_stderr_sha256": "e0a826d2acf133e2fb5b98440fc792c2e2d332b32b7c65902d064cb23bb0092c",
+    "pages": {
+      "en": 10,
+      "ko": 10
+    },
+    "pdf_sha256": {
+      "en": "14efc6a76e3871aaace6060b017093bcd772a0545f2fbae40a749fcab2277e6b",
+      "ko": "bc894dfbb20ccb182cb390527401ef23af56cec9a7735213176095583bf11a48"
+    },
+    "source_revision": "fa9fb8a",
+    "private_capture_lifetime": "Uncommitted local receipts and temporary source extraction are not permanent public artifacts; prior failed attempts remain retained locally"
+  },
+  "visuals": {
+    "argv": [
+      "uv",
+      "run",
+      "python",
+      "scripts/validate_visual_assets.py",
+      "--require-pdf-tools",
+      "--check-regeneration"
+    ],
+    "exit_code": 0,
+    "result": "PASS",
+    "checked_receipts": 121,
+    "svg_assets": 9,
+    "isolated_double_regenerated_sources": 17
+  },
+  "publication_tests": {
+    "argv": [
+      "uv",
+      "run",
+      "pytest",
+      "-q",
+      "tests/test_current_research_publication.py",
+      "tests/test_generate_paper_results.py",
+      "tests/test_visual_asset_validator.py",
+      "tests/test_publication_presentation.py",
+      "tests/test_publication_semantics.py",
+      "tests/test_generate_disclosure_paper_results.py"
+    ],
+    "exit_code": 0,
+    "observed_stdout": "97 passed, 23 subtests passed in 37.63s",
+    "observation_source": "Actual terminal command output, not an independently signed attestation"
+  },
+  "reviews": {
+    "general": {
+      "agent": "code-reviewer",
+      "verdict": "APPROVE",
+      "blocking_findings": 0
+    },
+    "python": {
+      "agent": "python-reviewer",
+      "verdict": "APPROVE",
+      "blocking_findings": 0,
+      "high_findings": 0,
+      "medium_findings": 0
+    }
+  },
+  "study_boundary": {
+    "new_native_generation_calls": 0,
+    "planned_cells": 36,
+    "final_activation": "ABSENT",
+    "permission": "No model launch authorization is implied by publication checks"
+  },
+  "execution_policy": "One worker or experiment process at a time; no concurrent agents"
+}

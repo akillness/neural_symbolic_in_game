@@ -1,0 +1,144 @@
+{
+  "schema_version": "native-oauth-panel-authorization/v3",
+  "artifact_id": "native-oauth-panel-20261024-authorization-v3",
+  "status": "FROZEN_NOT_EXECUTED",
+  "freeze_date": "2026-10-24",
+  "authorization_revision": "authorization-v3-native-oauth-mode-amendment",
+  "user_verbatim_decision": "oauth 인증받은 codex, claude, agy --dangerously-skip-permissions 이용한 cli 로 실험",
+  "decision_effect": "This amendment replaces the strict-API-only route for the new stage. It authorizes source-bound feasibility scheduling through authenticated native Codex, Claude and agy CLIs only; it does not itself authorize a provider call or any assignment launch.",
+  "route": {
+    "mode": "authenticated_native_oauth_cli",
+    "transport": "native_cli_only",
+    "api_transport": "RETIRED_NOT_CALLED",
+    "api_fallback": "FORBIDDEN",
+    "new_api_keys": false,
+    "read_only_oauth_status_preflight": true,
+    "auth_file_read": false,
+    "email_read": false,
+    "external_provider_calls_by_this_artifact_owner": false
+  },
+  "provider_call_policy": {
+    "max_new_launches": 36,
+    "max_wall_time_s": 180,
+    "retry": false,
+    "resume": false,
+    "fallback": false,
+    "actual_calls_by_this_owner": 0,
+    "no_model_calls_by_this_owner": true
+  },
+  "read_only_preflight": {
+    "status": "REQUIRED_BEFORE_ANY_STAGE_CALL",
+    "auth_file_read": false,
+    "email_read": false,
+    "provider_call": false,
+    "oauth_status_only": true
+  },
+  "freeze_contract": {
+    "schedule_seed": 20261023,
+    "assignment_formula": "9 exact candidates x 2 independent task arms (C1,B1) x 2 representations (general_rule,ontology) = 36",
+    "immutable_before_new_stage_calls": true,
+    "source_prompt_inventory_hashes": "frozen-inputs.json",
+    "counterpart_arm_rule": "Within a candidate, C1 and B1 remain scheduled independently regardless of the other arm's raw validity or status.",
+    "withheld_payloads": "No C2, H1 or other held-out task payload is included in this freeze."
+  },
+  "no_execution_statement": "This owner created only authorization and frozen-input artifacts; no model call, provider request, generated-code execution, build, QA, deployment, retry, resume or fallback occurred.",
+  "supersedes": "strict-api-only route for the new native stage; old API route was never called and is retired with review block",
+  "cli_parity": {
+    "known_flags": {
+      "codex": ["exec", "--json", "--ephemeral", "--skip-git-repo-check", "--ignore-user-config", "--ignore-rules", "-s read-only", "--config approval_policy=never", "--model", "-C"],
+      "claude": ["-p", "--model", "--dangerously-skip-permissions", "--disable-slash-commands", "--no-session-persistence", "--output-format stream-json", "--tools ''"],
+      "agy": ["--print", "--sandbox", "--dangerously-skip-permissions", "--disable-slash-commands", "--model", "--effort medium", "--output-format stream-json", "--print-timeout 180s"]
+    },
+    "unverified_flags": {"codex": ["candidate-specific selector entitlement"], "claude": ["candidate-specific selector entitlement"], "agy": ["B1 plan-mode flag", "global tool manifest", "candidate-specific selector entitlement"]},
+    "agy_global_tools": "UNVERIFIED; no claim of absence"
+  },
+  "assignment_policy": {
+    "representations": ["general_rule", "ontology"],
+    "task_arms": ["C1", "B1"],
+    "all_36_predeclared": true,
+    "stage_calls": "F1 general_rule then F2 ontology; F2 remains predeclared even when an F1 raw result is invalid, but launch gate is checked independently."
+  },
+  "permission_factor": {
+    "factor_id": "native_oauth_permission_mode",
+    "level": "system_agent_mediated_comparison",
+    "description": "CLI permission and sandbox mode is a declared system/agent-mediated factor. It is not a pure-model factor and does not establish model or ontology causal efficacy.",
+    "fixed_for_all_new_assignments": true,
+    "causal_claim_permitted": false
+  },
+  "candidate_contract": {
+    "count": 9,
+    "provider_family_counts": {"OpenAI": 4, "Anthropic": 3, "Google": 2},
+    "exact_contract_labels": ["gpt-6.1-sol", "gpt-6-sol", "Astra", "Luna", "Opus5.5", "literal 'sonnect5.5'", "Fable5.1", "literal 'gemin3.8flash'", "GeminiArgon"],
+    "raw_user_labels": ["gpt 6.1 sol", "gpt 6 sol", "astra", "luna", "opus 5.5", "sonnect 5.5", "fable 5.1", "gemin 3.8flash", "gemini argon"],
+    "labels_are_exact_and_case_sensitive": true,
+    "canonical_id_source": "research/development-comparison-20261023/model-registry.json",
+    "runtime_reported_model": null,
+    "provider_returned_model": null,
+    "weights_or_revision": null,
+    "seed": null,
+    "cost": null,
+    "missing_fields_rule": "Keep null; never infer, substitute, or normalize a requested label into a provider result."
+  },
+  "cli_entrypoints_source": "NativeOAuthTransport IRC receipt 2026-10-24; source-supported help only",
+  "cli_entrypoints": {
+    "codex": {
+      "argv_template": ["codex", "exec", "--json", "--ephemeral", "--skip-git-repo-check", "--ignore-user-config", "--ignore-rules", "-s", "read-only", "--config", "approval_policy=never", "--model", "<exact-selector>", "-C", "<fresh-cwd>"],
+      "prompt_transport": "stdin",
+      "sandbox": "read-only workspace",
+      "oauth": "normal native Codex home/store; do not read auth file",
+      "forbidden": ["--dangerously-bypass-approvals-and-sandbox", "API key/provider-routing override"]
+    },
+    "claude": {
+      "argv_template": ["claude", "-p", "--model", "<exact-selector>", "--dangerously-skip-permissions", "--disable-slash-commands", "--no-session-persistence", "--output-format", "stream-json", "--tools", ""],
+      "prompt_transport": "positional prompt",
+      "sandbox": "provider/CLI permission mode only; no host-wide bypass added",
+      "oauth": "normal native Claude home/store; do not read auth file",
+      "forbidden": ["--bare", "API key/provider-routing override"],
+      "safe_mode_note": "--safe-mode is OAuth-compatible but is not used for this explicit dangerous-permission lane because it disables customization."
+    },
+    "agy": {
+      "argv_template": ["agy", "--print", "<prompt>", "--sandbox", "--dangerously-skip-permissions", "--disable-slash-commands", "--model", "<exact-selector>", "--effort", "medium", "--output-format", "stream-json", "--print-timeout", "180s"],
+      "prompt_transport": "positional prompt",
+      "sandbox": "--sandbox required",
+      "oauth": "normal native agy home/store; do not read auth file",
+      "global_tools": "UNVERIFIED; do not claim absent",
+      "b1_plan_mode": "Use only if the exact existing probe/help receipt proves the flag; otherwise omit and record unverified."
+    }
+  },
+  "environment_projection": {
+    "allowlist": ["PATH", "HOME", "TMPDIR", "LANG", "LC_ALL", "LC_CTYPE", "TERM", "USER", "LOGNAME"],
+    "removed_categories": ["API keys", "provider-routing overrides", "ADC overrides"],
+    "recording_rule": "Record removed variable names and counts only; never persist secret values.",
+    "native_home_selectors": ["Codex HOME", "Claude HOME", "agy HOME"]
+  },
+  "caps_and_billing": {
+    "aggregate_planning_ceiling_usd": 100,
+    "hard_usd_cap": 100,
+    "hard_usd_enforcement": "UNVERIFIED_NOT_ENFORCEABLE_BY_NATIVE_CLI",
+    "cap_gate_status": "NOT_PASS",
+    "billing_basis": "native_subscription_quota",
+    "billed_usd": null,
+    "unit_quota_receipt": null,
+    "shared_cost_stop_threshold_usd": 80,
+    "additional_g1_credits": "DISABLED_NOT_ENABLED",
+    "price_reserve": false,
+    "interpretation": "USD 100 is planning context only; it is not a fake price reserve, per-run guard, or proof that calls are funded."
+  },
+  "scope_and_legacy": {
+    "new_assignments": 36,
+    "formula": "9 candidates x C1/B1 x general_rule/ontology",
+    "old_argon_attempts": "separate historical feasibility artifacts; immutable; never new results or independent repeats",
+    "old_api_attempt": "never called; retired with review block; not a source-efficacy result",
+    "old_probe_paths": ["research/development-comparison-20261023/native-argon-probe-20261024-01", "research/development-comparison-20261023/native-argon-probe-20261024-02-b1only"],
+    "new_stage_calls": "none by authorization owner"
+  },
+  "launch_boundary": {
+    "requires": ["this v3 freeze hash", "assignment manifest", "exact prompt/source hashes", "transport receipt", "fresh disposable workspace", "fresh session", "180s cap", "no retry/fallback/resume"],
+    "per_assignment_default_status": "PREDECLARED_NOT_STARTED",
+    "launch_gate": "FAIL_CLOSED",
+    "generated_Godot_execution": "BLOCKED_PENDING_SANDBOX_GATE_REPAIR_AND_FRESH_CHECKER_PROOF",
+    "B1_host_QA": "BLOCKED_PENDING_FRESH_CHECKER_PROFILE_PROOF",
+    "C1_B1_raw_validity_coupling": "none; within each candidate both arms remain scheduled regardless raw validity of the counterpart"
+  },
+  "freeze_inputs_sha256": "72f29c460e657e1d70f770f353d01274182a1a68ab15c27e70eb809a194d52c1"
+}

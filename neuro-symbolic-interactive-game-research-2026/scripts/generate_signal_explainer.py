@@ -576,7 +576,7 @@ def mechanism_svg() -> str:
         and scenario.get("sha256") == sha(SCENARIO) == packet["source_hashes"][scenario_path],
         "mechanism ontology source binding drift",
     )
-    width, height = 1280, 1060
+    width, height = 1280, 960
     parts = svg_header(
         width,
         height,
@@ -641,22 +641,22 @@ def mechanism_svg() -> str:
         ),
     ]
     # Snake order leaves dedicated connector channels outside padded cards.
-    positions = ((20, 16), (660, 16), (660, 316), (20, 316), (20, 616), (660, 616))
+    positions = ((20, 16), (660, 16), (660, 276), (20, 276), (20, 536), (660, 536))
     for (x, y), (fill, stroke, title, detail) in zip(positions, stages):
         parts += [
-            svg_box(x, y, 600, 252, fill, stroke),
-            svg_text(x + 300, y + 54, title, "head", "middle"),
+            svg_box(x, y, 600, 236, fill, stroke),
+            svg_text(x + 300, y + 50, title, "head", "middle"),
         ]
         parts.extend(
-            svg_text(x + 300, y + 104 + line * 38, value, "body", "middle")
+            svg_text(x + 300, y + 96 + line * 38, value, "body", "middle")
             for line, value in enumerate(detail)
         )
     for route in (
-        "M626,142 H654",
-        "M960,274 V310",
-        "M654,442 H626",
-        "M320,574 V610",
-        "M626,742 H654",
+        "M626,134 H654",
+        "M960,258 V270",
+        "M654,394 H626",
+        "M320,518 V530",
+        "M626,654 H654",
     ):
         parts.append(
             f'<path class="connector" d="{route}" fill="none" stroke="#0072B2" '
@@ -670,7 +670,7 @@ def mechanism_svg() -> str:
             "Authored structure, not model state",
         )
     ):
-        parts.append(svg_text(640, 922 + line * 38, value, "small", "middle"))
+        parts.append(svg_text(640, 820 + line * 38, value, "small", "middle"))
     parts.append("</svg>")
     return "\n".join(parts) + "\n"
 

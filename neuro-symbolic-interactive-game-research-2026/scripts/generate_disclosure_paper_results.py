@@ -391,6 +391,41 @@ def _narrative(data: dict[str, Any], korean: bool) -> str:
     rules = packet["rule_ids"]
     source_mismatches = metadata.get("source_hash_mismatches") or {}
     mismatch_paths = ", ".join(_latex(path) for path in sorted(source_mismatches)) or "none"
+    arm_comparison = comparison["general_vs_ontology"]
+    fixture_comparison = comparison["rule_change_comparison"]
+    equal_case_count = arm_comparison["equal_case_count"]
+    equality_case_count = arm_comparison["case_count"]
+    fixtures = fixture_comparison.get("fixtures", [])
+    fixture_count = len(fixtures)
+    paired_case_count = sum(len(fixture.get("paired_case_ids", [])) for fixture in fixtures)
+    arms_equal = (
+        arm_comparison.get("outcome_equal") is True
+        and equal_case_count == equality_case_count
+    )
+    fixtures_equal = (
+        fixture_comparison.get("all_fixtures_match") is True
+        and all(fixture.get("all_pairs_match") is True for fixture in fixtures)
+    )
+    arm_equality_en = (
+        f"The checked general-rule and ontology-gate arms have identical outcomes on all {equal_case_count} of {equality_case_count} authored cases."
+        if arms_equal
+        else f"The checked general-rule and ontology-gate arms are not identical across {equal_case_count} of {equality_case_count} authored cases."
+    )
+    fixture_limit_en = (
+        f"The rule-change fixture set contains no discriminating case between these arms: all {fixture_count} fixtures and their {paired_case_count} paired cases match."
+        if fixtures_equal
+        else f"The rule-change fixture set does not establish the absence of a discriminating case between these arms ({fixture_count} fixtures; {paired_case_count} paired cases)."
+    )
+    arm_equality_ko = (
+        f"검증된 general-rule과 ontology-gate arm은 저작된 사례 전체에서 결과가 동일하다({equal_case_count}/{equality_case_count})."
+        if arms_equal
+        else f"검증된 general-rule과 ontology-gate arm은 저작된 사례 전체에서 결과가 동일하지 않다({equal_case_count}/{equality_case_count})."
+    )
+    fixture_limit_ko = (
+        f"rule-change fixture 집합에는 두 arm을 가르는 discriminating case가 없으며, {fixture_count}개 fixture의 {paired_case_count}개 paired case가 모두 일치한다."
+        if fixtures_equal
+        else f"rule-change fixture 집합은 두 arm 사이에 discriminating case가 없음을 확립하지 않는다({fixture_count}개 fixture; {paired_case_count}개 paired case)."
+    )
     if korean:
         mismatch_note = (
             f"실행 시점 관측 hash는 현재 source와 일치한다. 동결 패킷 baseline과 다른 source는 "
@@ -407,7 +442,7 @@ def _narrative(data: dict[str, Any], korean: bool) -> str:
 Python evaluator는 같은 사례·기대 객체를 세 격리 arm에 materialize하고 semantic outcome, check trace, error, 상태 전후 SHA-256, template ID, replay equality를 기록한다. Godot은 별도 실행 경계에서 기존 \texttt{{reveal\_hint}} writer와 canonical mutation을 소유하며 이 producer는 이를 재구성하지 않는다. Python--Godot 연결은 operation \texttt{{reveal\_hint}}, scenario \texttt{{{_latex(packet["scope"]["scenario_id"])}}}, actor \texttt{{{_latex(packet["scope"]["eligible_actor_ids"][0])}}}, source hash로 추적한다.
 {mismatch_note}
 
-표~\ref{{tab:disclosure-arms}}는 같은 {counts["total"]}개 사례의 세 arm을 정상/경계/잘못된 입력 분모로 분리해 보고한다. unchecked 위반은 의도된 격리 관측이며 general-rule과 ontology-gate의 frozen expectation mismatch는 각각 0개이다. 그림~\ref{{fig:disclosure-signals}}는 기대 일치·재생 사례 계수(E/R), check-record PASS/FAIL 계수(C), 기록된 check가 없는 사례 수(NR)를 구별한다. NR은 skipped, pass, out-of-scope를 뜻하지 않는다. 표~\ref{{tab:disclosure-fixtures}}는 두 rule-change fixture와 네 paired case를 shipped scenario를 바꾸지 않는 disposable clone에 매핑한다.
+표~\ref{{tab:disclosure-arms}}는 같은 {counts["total"]}개 사례의 세 arm을 정상/경계/잘못된 입력 분모로 분리해 보고한다. unchecked 위반은 의도된 격리 관측이다. {arm_equality_ko} {fixture_limit_ko} 이는 공유된 동결 규칙 아래의 authorization-conformance limit이며, 일반적인 ontology equivalence 또는 ontology superiority의 증거가 아니다. 그림~\ref{{fig:disclosure-signals}}는 기대 일치·재생 사례 계수(E/R), check-record PASS/FAIL 계수(C), 기록된 check가 없는 사례 수(NR)를 구별한다. NR은 skipped, pass, out-of-scope를 뜻하지 않는다. 표~\ref{{tab:disclosure-fixtures}}는 rule-change fixture와 paired case를 shipped scenario를 바꾸지 않는 disposable clone에 매핑한다.
 
 주장은 bounded engineering conformance에 한정된다. human gold, access-separated holdout, efficacy, superiority, generalization, player benefit, model latent state 또는 cost를 주장하지 않는다. 정확한 입력 경로·hash·재생성 명령은 \path{{paper/latex/generated/disclosure_producer_manifest.json}}에 결속된다."""
         ).strip() + "\n"
@@ -426,7 +461,7 @@ The runtime declaration is \texttt{{{_latex_code(ontology.get("ontology_id", f"{
 The Python evaluator materializes the same cases and expectation object in three isolated arms and records semantic outcomes, check traces, errors, before/after state SHA-256 values, rendered template IDs, and replay equality. Godot is the separate game-execution boundary that owns the existing \texttt{{reveal\_hint}} writer and canonical mutation; this producer neither reconstructs nor replaces Godot state. The mapping is traceable through operation \texttt{{reveal\_hint}}, scenario \texttt{{{_latex(packet["scope"]["scenario_id"])}}}, actor \texttt{{{_latex(packet["scope"]["eligible_actor_ids"][0])}}}, and bound source hashes.
 {mismatch_note}
 
-Table~\ref{{tab:disclosure-arms}} reports the three arms over the same {counts["total"]} cases with separate normal, boundary, and malformed denominators. Violations in unchecked are intentional isolated observations; general-rule and ontology-gate are separately checked for 0 frozen-expectation mismatches. Figure~\ref{{fig:disclosure-signals}} distinguishes expected-match/replay case counts (E/R), check-record PASS/FAIL counts (C), and counts of cases with no reported checks (NR). NR does not mean skipped, pass, or out-of-scope. Table~\ref{{tab:disclosure-fixtures}} maps two rule-change fixtures and four paired cases to disposable policy clones; the shipped scenario is not modified.
+Table~\ref{{tab:disclosure-arms}} reports the three arms over the same {counts["total"]} cases with separate normal, boundary, and malformed denominators. Violations in unchecked are intentional isolated observations. {arm_equality_en} {fixture_limit_en} This is an authorization-conformance limit under the shared frozen rules, not evidence of general ontology equivalence or ontology superiority. Figure~\ref{{fig:disclosure-signals}} distinguishes expected-match/replay case counts (E/R), check-record PASS/FAIL counts (C), and counts of cases with no reported checks (NR). NR does not mean skipped, pass, or out-of-scope. Table~\ref{{tab:disclosure-fixtures}} maps the rule-change fixtures and paired cases to disposable policy clones; the shipped scenario is not modified.
 
 Claims are limited to bounded engineering conformance. This evidence does not establish human gold labels, an access-separated holdout, efficacy, superiority, generalization, player benefit, model latent state, or cost. Exact input paths, hashes, and reproduction commands are bound by \path{{paper/latex/generated/disclosure_producer_manifest.json}}."""
     ).strip() + "\n"

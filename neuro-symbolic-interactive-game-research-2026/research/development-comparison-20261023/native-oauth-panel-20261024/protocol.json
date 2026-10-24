@@ -1,0 +1,121 @@
+{
+  "schema_version": "native-oauth-panel-protocol/v3",
+  "artifact_id": "native-oauth-panel-20261024-protocol-v3",
+  "status": "FROZEN_NOT_EXECUTED",
+  "study_label": "development-comparison-20261023/native-oauth-panel-20261024",
+  "freeze_date": "2026-10-24",
+  "authorization_ref": "authorization-v3.json",
+  "manifest_ref": "assignment-manifest.json",
+  "schedule_ref": "schedule.json",
+  "frozen_input_ref": "frozen-inputs.json",
+  "purpose": "Predeclare a source-bound feasibility stage using authenticated native OAuth CLIs after the user mode amendment; do not claim pure-model, ontology, productivity, or whole-game causal efficacy.",
+  "mode_amendment": {
+    "user_verbatim_decision": "oauth 인증받은 codex, claude, agy --dangerously-skip-permissions 이용한 cli 로 실험",
+    "supersedes": "strict API-only route for the new stage",
+    "route": "authenticated native CLI only; no direct API transport, API fallback, or new API keys",
+    "old_api_attempt": {"status": "NEVER_CALLED_RETIRED_WITH_REVIEW_BLOCK", "interpretation": "not a source-efficacy result"},
+    "permission_factor": "system/agent-mediated comparison; not pure model or ontology causal efficacy"
+  },
+  "candidate_set": {
+    "count": 9,
+    "provider_family_counts": {"OpenAI": 4, "Anthropic": 3, "Google": 2},
+    "exact_contract_labels": ["gpt-6.1-sol", "gpt-6-sol", "Astra", "Luna", "Opus5.5", "literal 'sonnect5.5'", "Fable5.1", "literal 'gemin3.8flash'", "GeminiArgon"],
+    "raw_user_labels_by_protocol_label": {"gpt-6.1-sol": "gpt 6.1 sol", "gpt-6-sol": "gpt 6 sol", "Astra": "astra", "Luna": "luna", "Opus5.5": "opus 5.5", "literal 'sonnect5.5'": "sonnect 5.5", "Fable5.1": "fable 5.1", "literal 'gemin3.8flash'": "gemin 3.8flash", "GeminiArgon": "gemini argon"},
+    "registry_source": "../model-registry.json",
+    "identity_fields": ["requested_label", "runtime_reported_model", "provider_returned_model", "weights_or_revision", "model_seed", "billed_usd"],
+    "unknown_rule": "Null is retained for missing identity, revision, seed, usage, latency and cost; no alias or fallback is a result."
+  },
+  "factors": {
+    "task_arms": ["C1", "B1"],
+    "representations": ["general_rule", "ontology"],
+    "within_candidate_rule": "Every candidate has both task arms predeclared for both representations. A raw invalidity or failure in C1 never removes B1, and B1 never removes C1.",
+    "information_equivalence": "C1 and B1 inputs are source-bound; representation changes only the syntax emitted by proposition_views/build_prompt. Facts, rules, examples, tool contract, acceptance and source checkout are otherwise unchanged.",
+    "causal_boundary": "Permission mode, provider route and agent-mediated tool surface are system factors; this design cannot attribute their effects to a pure model or ontology representation."
+  },
+  "source_and_prompt_contract": {
+    "implementation": "Reuse src/nesy_game/model_panel.py::build_prompt, ::proposition_views and ::content_grade without edits.",
+    "source_hash_manifest": "frozen-inputs.json#source_hashes",
+    "task_hash_manifest": "frozen-inputs.json#task_contracts",
+    "prompt_hash_rule": "SHA-256 of exact UTF-8 build_prompt(task, representation) bytes; no post-hoc prompt edits.",
+    "inventory_hash_rule": "SHA-256 inventory digest returned by proposition_views for the task state.",
+    "per_run_required_fields": ["assignment_id", "stage", "candidate_label", "requested_selector", "track", "task_id", "representation", "fresh_workspace", "fresh_session", "source_hashes", "task_sha256", "inventory_sha256", "prompt_sha256", "ordering_seed", "model_seed", "context_session_hash", "runtime_reported_model", "provider_returned_model", "weights_or_revision", "usage", "latency_s", "billed_usd", "status", "failure", "stop_reason"],
+    "append_only_evidence": ["stdout", "stderr", "partial_stream", "usage", "latency", "model_selection", "context_session_hash", "failure"],
+    "no_attempt_evidence_at_freeze": true
+  },
+  "native_cli_protocol": {
+    "codex": {"argv": "codex exec --json --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules -s read-only --config approval_policy=never --model <exact-selector> -C <fresh-cwd>", "prompt": "stdin", "sandbox": "read-only workspace", "known": ["exec", "--json", "--ephemeral", "--skip-git-repo-check", "--ignore-user-config", "--ignore-rules", "-s", "--config", "--model", "-C"], "unverified": ["candidate selector entitlement"], "forbidden": ["--dangerously-bypass-approvals-and-sandbox", "API/provider-routing overrides"]},
+    "claude": {"argv": "claude -p --model <exact-selector> --dangerously-skip-permissions --disable-slash-commands --no-session-persistence --output-format stream-json --tools ''", "prompt": "positional prompt", "known": ["-p", "--model", "--dangerously-skip-permissions", "--disable-slash-commands", "--no-session-persistence", "--output-format", "--tools"], "unverified": ["candidate selector entitlement"], "forbidden": ["--bare", "API/provider-routing overrides"], "safe_mode": "Not used in this lane; --safe-mode is OAuth-compatible but disables customization."},
+    "agy": {"argv": "agy --print <prompt> --sandbox --dangerously-skip-permissions --disable-slash-commands --model <exact-selector> --effort medium --output-format stream-json --print-timeout 180s", "prompt": "positional prompt", "known": ["--print", "--sandbox", "--dangerously-skip-permissions", "--disable-slash-commands", "--model", "--effort", "--output-format", "--print-timeout"], "unverified": ["B1 plan-mode flag", "global tool manifest", "candidate selector entitlement"], "global_tools": "UNVERIFIED; do not claim absent"}
+  },
+  "environment_and_auth": {
+    "oauth_status_preflight": "read-only; no auth-file or email read",
+    "allowed_env": ["PATH", "HOME", "TMPDIR", "LANG", "LC_ALL", "LC_CTYPE", "TERM", "USER", "LOGNAME"],
+    "removed_env_categories": ["API keys", "provider routing", "ADC overrides"],
+    "secret_recording": "Persist names/counts only; never secret values."
+  },
+  "stages": {
+    "F0": {"purpose": "Credential-free source, observer, prompt and transport preflight", "max_new_launches": 0, "provider_calls": false, "status": "PREDECLARED_NOT_STARTED"},
+    "F1": {"representation": "general_rule", "assignments": 18, "rule": "One C1 content and one B1 coding assignment per exact candidate; both are scheduled independently.", "status": "PREDECLARED_NOT_STARTED"},
+    "F2": {"representation": "ontology", "assignments": 18, "rule": "One matched C1 and one matched B1 assignment per exact candidate; counterpart arms remain scheduled regardless of F1 raw validity. F2 launch may stop on authorization/observer failure only.", "status": "PREDECLARED_NOT_STARTED"}
+  },
+  "operational_caps": {
+    "max_new_launches": 36,
+    "max_wall_time_s_per_launch": 180,
+    "retry": false,
+    "resume": false,
+    "fallback": false,
+    "concurrency": "planned order only; no launch occurs until transport owner records the frozen order receipt",
+    "aggregate_planning_ceiling_usd": 100,
+    "hard_usd_cap": {"value": 100, "enforcement_status": "UNVERIFIED_NOT_ENFORCEABLE_BY_NATIVE_CLI", "gate": "NOT_PASS"},
+    "billing_unit": "native_subscription_quota",
+    "billed_usd": null,
+    "stop_threshold_if_reported_usd": 80,
+    "extra_g1_credits": false,
+    "no_price_reserve": true
+  },
+  "freshness_and_replay": {
+    "workspace": "fresh disposable workspace per assignment",
+    "session": "fresh CLI session per assignment",
+    "resume_is_repeat": false,
+    "seed": 20261023,
+    "model_seed": null,
+    "order_rule": "Frozen deterministic order from schedule.json; no convenience ordering.",
+    "replay": "No resume or retry. Any later authorized repeat receives a new assignment and new workspace."
+  },
+  "B1_safety_boundary": {
+    "generated_code_execution": "DO_NOT_EXECUTE_PENDING_SANDBOX_GATE_REPAIR_AND_FRESH_CHECKER_PROOF",
+    "host_QA": "BLOCKED_PENDING_FRESH_CHECKER_PROFILE_PROOF",
+    "task_local_api": "harbor/lighthouse only; root shared game_api is unused",
+    "acceptance_suite": "Ten ACs in frozen-inputs.json#task_contracts.B1.acceptance_suite",
+    "model_self_report": "Never accepted as AC pass"
+  },
+  "C1_validity_boundary": {
+    "hard_gate": ["strict schema", "canonical references", "symbolic predicates", "INSTALL_LENS -> signal_restored", "deterministic repeat", "no state mutation"],
+    "repair": "No repair by default; nonzero repair requires separate approval and immutable raw-first evidence.",
+    "quality": "Novelty and quality are separate exploratory outputs and never override hard validity; no composite score."
+  },
+  "status_ledger": {
+    "planned": 36,
+    "assigned": 36,
+    "launched": 0,
+    "completed": 0,
+    "all_pass": 0,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "missing_evidence": 0,
+    "no_execution_statement": "No new stage call has occurred in this owner lane."
+  },
+  "legacy_boundary": {
+    "old_argon_paths": ["../native-argon-probe-20261024-01", "../native-argon-probe-20261024-02-b1only"],
+    "classification": "immutable historical/feasibility evidence; not new results and not independent repeats",
+    "old_api_route": "never called, retired with review block",
+    "no_inheritance": "No historical pass, quota, identity, revision or timing is inherited by any new assignment."
+  },
+  "withheld_payload_policy": {"included_task_payloads": ["C1", "B1"], "withheld_task_payloads": [], "rule": "No C2, H1 or other held-out payload is included; do not leak or reconstruct withheld content."},
+  "freeze_hashes": {
+    "frozen_inputs_sha256": "72f29c460e657e1d70f770f353d01274182a1a68ab15c27e70eb809a194d52c1",
+    "C1_task_sha256": "abc8ff7349ee0229870b1d017e0732e77cd47d4e001305e2ece07aa759eee5f3",
+    "B1_task_sha256": "70d8a14a219b99f4823318ad57dbe3bfb6a61d5d5a9c57c3f8b75403e162dabd"
+  }
+}

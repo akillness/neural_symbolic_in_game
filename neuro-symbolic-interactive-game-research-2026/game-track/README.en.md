@@ -77,6 +77,7 @@ crosswalk](design/paper-crosswalk.en.md#51-ontology-structure-to-evidence-develo
 for the public manifest, actual browser PNGs, mechanism figure and paired manuscripts.
 Godot source and writer authority, the canonical R5 capture and the old 60-case cohort are
 unchanged; **G4/full G6 stay `FIX`**. Current production and separate CI/Git attestation are described above.
+The retired hosted-model cohort and its historical labels are provenance-only; they are not current-runtime evidence, active counts, or model outcomes, and no label/result is transferred to the `gpt-6.1-sol` case. The proposed source-derived traceability rubric is unmeasured and lives at [`research/traceability-scoring-20261023/`](../research/traceability-scoring-20261023/); the whole-game/repeated-cross-model comparison is a prospective, unexecuted plan at [`research/development-comparison-20261023/`](../research/development-comparison-20261023/).
 
 ## Historical release record (2026-09-06)
 

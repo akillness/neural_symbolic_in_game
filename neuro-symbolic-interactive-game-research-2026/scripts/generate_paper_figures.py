@@ -8,7 +8,6 @@ from future, unmeasured efficacy claims.
 
 from __future__ import annotations
 
-import json
 import xml.etree.ElementTree as ET
 from html import escape
 from pathlib import Path
@@ -35,6 +34,7 @@ MATH_LABELS = {
     "external q_t": 'external <tspan font-style="italic">q<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan>',
     "6 families -> E": '6 families → <tspan font-style="italic">E</tspan>',
     "invalid: rho": 'invalid: <tspan font-style="italic">ρ</tspan>',
+    "invalid: rho(a,E)": 'invalid: <tspan font-style="italic">ρ(a,E)</tspan>',
     "reads a and E": 'reads <tspan font-style="italic">a</tspan> and <tspan font-style="italic">E</tspan>',
     "all v_i hold:": 'all <tspan font-style="italic">v<tspan baseline-shift="sub" font-size="70%">i</tspan></tspan> hold:',
     "recheck, T(c_t, a)": 'recheck, <tspan font-style="italic">T(c<tspan baseline-shift="sub" font-size="70%">t</tspan>, a)</tspan>',
@@ -280,8 +280,8 @@ def vertical_label_chip(
     return [
         '  <g class="connector-label" data-line-clearance="shielded">',
         (
-            f'    <rect class="label-shield" x="{x - 34}" y="{y - height // 2}" '
-            f'width="68" height="{height}" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>'
+            f'    <rect class="label-shield" x="{x - 40}" y="{y - height // 2}" '
+            f'width="80" height="{height}" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>'
         ),
         (
             f'    <text x="{x}" y="{y}" class="section" text-anchor="middle" dominant-baseline="central" '
@@ -497,17 +497,17 @@ def architecture_svg() -> str:
 
 def compact_architecture_svg() -> str:
     """Render the full-width transaction pipeline with padded stages and scope tags."""
-    width, height = 1280, 1220
+    width, height = 1280, 1070
     items = svg_header(
         width,
         height,
         "TRACE-RPG transaction pipeline overview",
-        "One generated event read left to right: an untrusted proposal crosses the trust boundary as a typed candidate, and seven deterministic checks grouped into six state-relative families decide it from external policy and state. A failing candidate may be repaired from its typed errors at most K times or falls back unchanged; a passing candidate is rechecked and committed. Evidence tags are scope labels only: E1 offline conformance, E2 screening-pilot-only, and ENG1 engineering-only. No figure element supports population efficacy or player-experience claims. The lower strip shows the playable ledger grammar derived from committed snapshots.",
+        "One generated event read left to right: an untrusted proposal crosses the trust boundary as a typed candidate, and seven deterministic checks grouped into six state-relative families decide it from external policy and state. Evidence tags are scope labels only: DESIGN structure, E1 offline conformance, and ENG1 engineering-only. No figure element supports population efficacy or player-experience claims. The lower strip shows the playable ledger grammar derived from committed snapshots.",
     )
     items.insert(
         len(items) - 1, "<style>.tag,.ledger,.legend {font-size:28px;font-weight:700}</style>"
     )
-    tag_colors = {"E1": BLUE, "E2": ORANGE, "ENG1": GREEN}
+    tag_colors = {"DESIGN": GRAY, "E1": BLUE, "ENG1": GREEN}
 
     def stage(
         x: int,
@@ -522,9 +522,9 @@ def compact_architecture_svg() -> str:
         dashed: bool = False,
     ) -> list[str]:
         parts = [
-            rect(x, y, box_width, 204, fill=fill, stroke=accent, dash="8 6" if dashed else None),
-            text(x + box_width // 2, y + 44, title_value, css_class="box-title", anchor="middle"),
-            multiline(x + box_width // 2, y + 94, body_lines, css_class="small", line_height=38),
+            rect(x, y, box_width, 200, fill=fill, stroke=accent, dash="8 6" if dashed else None),
+            text(x + box_width // 2, y + 50, title_value, css_class="box-title", anchor="middle"),
+            multiline(x + box_width // 2, y + 98, body_lines, css_class="small", line_height=38),
         ]
         # Text-only scope tags avoid miniature chips with near-zero internal padding.
         span = 80 * (len(tags) - 1)
@@ -542,15 +542,15 @@ def compact_architecture_svg() -> str:
         return parts
 
     items += [
-        rect(10, 15, 1260, 880, fill=LIGHT_GRAY),
+        rect(10, 15, 1260, 800, fill=LIGHT_GRAY),
         text(35, 65, "ONE GENERATED EVENT AS A TRANSACTION", css_class="section"),
-        text(35, 110, "E1 offline", css_class="legend", fill=BLUE),
-        text(365, 110, "E2 screening-pilot-only", css_class="legend", fill=ORANGE),
-        text(855, 110, "ENG1 engineering-only", css_class="legend", fill=GREEN),
+        text(35, 110, "DESIGN structure", css_class="legend", fill=GRAY),
+        text(365, 110, "E1 offline", css_class="legend", fill=BLUE),
+        text(700, 110, "ENG1 engineering-only", css_class="legend", fill=GREEN),
     ]
-    row1, row2, row3 = 140, 404, 668
+    row1, row2, row3 = 140, 365, 590
     for x, accent, title_value, body_lines, fill, tags, dashed in (
-        (20, GRAY, "PROPOSAL", ("untrusted", "model output"), PALE_GRAY, ("E2",), True),
+        (20, GRAY, "PROPOSAL", ("untrusted", "model output"), PALE_GRAY, ("DESIGN",), True),
         (362, BLUE, "PARSER", ("type-strict", "known keys"), PALE_BLUE, ("E1",), False),
         (674, BLUE, "POLICY", ("external q_t", "who may act"), PALE_BLUE, ("E1", "ENG1"), False),
         (
@@ -559,7 +559,7 @@ def compact_architecture_svg() -> str:
             "VALIDATE",
             ("7 checks", "6 families -> E"),
             PALE_BLUE,
-            ("E1", "E2", "ENG1"),
+            ("E1", "ENG1"),
             False,
         ),
     ):
@@ -582,7 +582,7 @@ def compact_architecture_svg() -> str:
         title_value="FALLBACK",
         body_lines=("j = K:", "no mutation"),
         fill=PALE_GRAY,
-        tags=("E1", "E2"),
+        tags=("E1",),
         dashed=True,
     )
     items += stage(
@@ -591,9 +591,9 @@ def compact_architecture_svg() -> str:
         270,
         accent=ORANGE,
         title_value="REPAIR",
-        body_lines=("invalid: rho", "reads a and E"),
+        body_lines=("invalid: rho(a,E)", "reads a and E"),
         fill=PALE_ORANGE,
-        tags=("E1", "E2"),
+        tags=("E1",),
     )
     for x, title_value, body_lines in (
         (20, "COMMIT", ("all v_i hold:", "recheck, T(c_t, a)")),
@@ -611,23 +611,22 @@ def compact_architecture_svg() -> str:
             tags=("E1", "ENG1"),
         )
     for x1, x2, color, marker in ((638, 668, BLUE, "blue"), (950, 980, BLUE, "blue")):
-        items.append(line(x1, 242, x2, 242, color=color, marker=marker))
-    items.append(line(326, 132, 326, 352, color=ORANGE, width=3, dash="11 7"))
-    items += vertical_label_chip(326, 164, "TRUST", color=ORANGE, height=156)
-    items.append(line(296, 242, 356, 242, color=GRAY, marker="gray"))
-    items.append(line(1080, 350, 1080, 398, color=ORANGE, marker="orange"))
-    items += arrow_label(1032, 380, "E", color=ORANGE, width=64)
-    items.append(path("M1220 398 V350", color=ORANGE, marker="orange", dash="9 6"))
-    items.append(line(980, 506, 940, 506, color=GRAY, marker="gray"))
-    items.append(path("M800 614 V638 H640 V662", color=GRAY, marker="gray"))
-    items.append(path("M980 264 H960 V374 H210 V662", color=GREEN, marker="green"))
-    items += arrow_label(210, 506, "valid", color=GREEN, width=112)
-    items.append(line(406, 770, 444, 770, color=GREEN, marker="green"))
-    items.append(line(836, 770, 874, 770, color=GREEN, marker="green"))
+        items.append(line(x1, 240, x2, 240, color=color, marker=marker))
+    items.append(line(326, 132, 326, 355, color=ORANGE, width=3, dash="11 7"))
+    items += vertical_label_chip(312, 164, "TRUST", color=ORANGE, height=192)
+    items.append(line(296, 240, 356, 240, color=GRAY, marker="gray"))
+    items.append(line(1080, 346, 1080, 359, color=ORANGE, marker="orange"))
+    items.append(path("M1220 359 V346", color=ORANGE, marker="orange", dash="9 6"))
+    items.append(line(980, 465, 940, 465, color=GRAY, marker="gray"))
+    items.append(path("M800 575 V578 H640 V584", color=GRAY, marker="gray"))
+    items.append(path("M980 240 H960 V355 H210 V584", color=GREEN, marker="green"))
+    items += arrow_label(210, 470, "valid", color=GREEN, width=112)
+    items.append(line(406, 690, 444, 690, color=GREEN, marker="green"))
+    items.append(line(836, 690, 874, 690, color=GREEN, marker="green"))
 
     items += [
-        rect(10, 915, 1260, 285, fill=LIGHT_GRAY),
-        text(35, 965, "PLAYABLE LEDGER GRAMMAR (ENG1)", css_class="section"),
+        rect(10, 830, 1260, 225, fill=LIGHT_GRAY),
+        text(35, 875, "PLAYABLE LEDGER GRAMMAR (ENG1)", css_class="section"),
     ]
     for x, accent, fill, dashed, lines in (
         (24, GREEN, PALE_GREEN, False, ("ENTRY #N", "COMMITTED", "7 checks hold")),
@@ -636,215 +635,19 @@ def compact_architecture_svg() -> str:
         (960, BLUE, PALE_BLUE, False, ("RULE", "GATE family", "recalled later")),
     ):
         items.append(
-            rect(x, 1000, 292, 170, fill=fill, stroke=accent, dash="8 6" if dashed else None)
+            rect(x, 890, 292, 160, fill=fill, stroke=accent, dash="8 6" if dashed else None)
         )
-        items.append(text(x + 146, 1044, lines[0], css_class="ledger", anchor="middle"))
-        items.append(multiline(x + 146, 1090, lines[1:], css_class="small", line_height=40))
-    items.append("</svg>")
-    return "\n".join(items) + "\n"
+        items.append(text(x + 146, 934, lines[0], css_class="ledger", anchor="middle"))
+        items.append(multiline(x + 146, 980, lines[1:], css_class="small", line_height=32))
 
 
-def evidence_regimes_svg() -> str:
-    """Render a compact, descriptive contrast from the frozen E1 and E2 counts."""
 
-    e1_path = (
-        PROJECT_ROOT / "research" / "academic-pipeline" / "stage-04-pilot" / "pilot-results.json"
-    )
-    e2_signal_path = (
-        PROJECT_ROOT
-        / "research"
-        / "academic-pipeline"
-        / "rq2-live-pilot"
-        / "signal-repair-v2"
-        / "policy_blind"
-        / "summary.json"
-    )
-    e2_null_path = (
-        PROJECT_ROOT
-        / "research"
-        / "academic-pipeline"
-        / "rq2-live-pilot"
-        / "frozen-pilot-base"
-        / "goal_directed_blind"
-        / "summary.json"
-    )
-
-    def load(path_value: Path) -> dict:
-        return json.loads(path_value.read_text(encoding="utf-8"))
-
-    e1 = load(e1_path)
-    e1_rows = {row["arm_id"]: row for row in e1["repair_arms"]["raw_counts_by_arm"]}
-    e1_specs = (
-        ("rejection_only", "Rejection-only", BLUE),
-        ("unchanged_retry", "Blind retry", BLUE),
-        ("guided_repair", "Guided ρ", ORANGE),
-        ("structured_repair", "State oracle", GREEN),
-    )
-    if set(e1_rows) != {spec[0] for spec in e1_specs}:
-        raise ValueError("E1 repair-arm set changed; refusing to draw a stale contrast")
-    if any(row["case_count"] != 12 for row in e1_rows.values()):
-        raise ValueError("E1 denominator is not the frozen 12-case arm count")
-    e1_counts = [
-        (label, int(e1_rows[arm_id]["commit_count"]), 12, color)
-        for arm_id, label, color in e1_specs
-    ]
-
-    def e2_counts(path_value: Path, expected_condition: str) -> tuple[int, int, int]:
-        data = load(path_value)
-        if data.get("condition") != expected_condition:
-            raise ValueError(f"{path_value}: expected condition {expected_condition!r}")
-        if data.get("evidence_tier") != "screening-pilot-only":
-            raise ValueError(f"{path_value}: evidence tier is not screening-pilot-only")
-        if data.get("matched_candidate_per_seed") is not True:
-            raise ValueError(f"{path_value}: matched-candidate contract changed")
-        counts = data["counts"]
-        if counts["seeds"] != 5 or counts["proposals_returned"] != 5:
-            raise ValueError(f"{path_value}: expected five matched pilot seeds")
-        if counts["initially_invalid"] != 5 or counts["initially_valid"] != 0:
-            raise ValueError(f"{path_value}: expected five initially invalid proposals")
-        per_arm = data["per_arm"]
-        return (
-            int(per_arm["guided_repair"]["commits"]),
-            int(per_arm["unchanged_retry"]["commits"]),
-            5,
-        )
-
-    e2_signal = e2_counts(e2_signal_path, "policy_blind")
-    e2_null = e2_counts(e2_null_path, "goal_directed_blind")
-    width, height = 900, 468
-    items = svg_header(
-        width,
-        height,
-        "TRACE-RPG evidence regime contrast",
-        (
-            "Descriptive raw counts only: E1 frozen offline repair arms use twelve cases per arm; "
-            "E2 screening-pilot-only matched candidates show the Signal-v2 policy-blind contrast "
-            "and a goal-directed null regime. Denominators are not pooled and the figure supports "
-            "no population efficacy, model ranking, or player-experience inference."
-        ),
-    )
-    items.insert(
-        len(items) - 1,
-        "  <style>"
-        " .evidence-label { font-size: 28px; font-weight: 700; }"
-        " .panel-title { font-size: 28px; font-weight: 700; }"
-        " .evidence-value { font-size: 28px; font-weight: 700; }"
-        " .evidence-tiny { font-size: 28px; font-weight: 400; }"
-        " .evidence-note { font-size: 28px; font-style: italic; fill: #5F6368; }"
-        "</style>",
-    )
-    items += band(
-        10,
-        10,
-        880,
-        450,
-        accent=BLUE,
-        title_value="EVIDENCE REGIME CONTRAST (RAW COUNTS ONLY)",
-    )
-    items.append(
-        text(
-            35,
-            78,
-            "E1 offline + E2 screening-pilot-only; no inference",
-            css_class="evidence-note",
-        )
-    )
-
-    # E1: preserve the four-arm denominator contrast without pooling strata.
-    items.append(rect(25, 95, 420, 300, fill="#FFFFFF", stroke=BLUE, radius=5))
-    items.append(text(42, 127, "E1  FROZEN OFFLINE", css_class="panel-title", fill=BLUE))
-    items.append(text(42, 166, "initially invalid: n=12", css_class="evidence-tiny", fill=MUTED))
-    track_x, track_width = 190, 165
-    for index, (label, commits, denominator, color) in enumerate(e1_counts):
-        y = 181 + index * 45
-        items.append(
-            text(
-                193,
-                y + 20,
-                label.replace("Rejection-only", "Reject-only"),
-                css_class="evidence-label",
-                anchor="end",
-            )
-        )
-        items.append(rect(track_x, y, track_width, 24, fill=PALE_GRAY, stroke=BORDER, radius=3))
-        fill_width = round(track_width * commits / denominator)
-        if fill_width:
-            items.append(rect(track_x, y, fill_width, 24, fill=color, stroke=color, radius=3))
-        items.append(
-            text(
-                track_x + track_width + 10,
-                y + 21,
-                f"{commits}/{denominator}",
-                css_class="evidence-value",
-            )
-        )
-    items.append(text(track_x, 380, "0", css_class="evidence-tiny", anchor="middle", fill=MUTED))
-    items.append(
-        text(
-            track_x + track_width // 2,
-            380,
-            "6",
-            css_class="evidence-tiny",
-            anchor="middle",
-            fill=MUTED,
-        )
-    )
-    items.append(
-        text(
-            track_x + track_width, 380, "12", css_class="evidence-tiny", anchor="middle", fill=MUTED
-        )
-    )
-
-    # E2: separate one contrast from its null regime; never aggregate them.
-    items.append(rect(460, 95, 420, 300, fill="#FFFFFF", stroke=ORANGE, radius=5))
-    items.append(text(477, 127, "E2  SCREENING-PILOT-ONLY", css_class="panel-title", fill=ORANGE))
-    items.append(text(477, 166, "matched calls: 5/cell", css_class="evidence-tiny", fill=MUTED))
-
-    def regime_card(
-        y: int, title: str, values: tuple[int, int, int], *, null: bool = False
-    ) -> None:
-        guided, blind, denominator = values
-        card_fill = PALE_GRAY if null else PALE_ORANGE
-        card_stroke = GRAY if null else ORANGE
-        items.append(
-            rect(
-                475,
-                y,
-                390,
-                105,
-                fill=card_fill,
-                stroke=card_stroke,
-                radius=4,
-                dash="8 6" if null else None,
-            )
-        )
-        items.append(text(489, y + 25, title, css_class="evidence-label"))
-        for row_index, (label, count, color) in enumerate(
-            (("rho", guided, ORANGE), ("blind", blind, BLUE))
-        ):
-            row_y = y + 43 + row_index * 33
-            items.append(rect(570, row_y, 170, 19, fill="#FFFFFF", stroke=BORDER, radius=3))
-            fill_width = round(170 * count / denominator)
-            if fill_width:
-                items.append(rect(570, row_y, fill_width, 19, fill=color, stroke=color, radius=3))
-            items.append(
-                text(752, row_y + 17, f"{count}/{denominator}", css_class="evidence-value")
-            )
-
-    regime_card(173, "Signal-v2 / policy-blind", e2_signal)
-    regime_card(282, "goal-directed / null", e2_null, null=True)
-    items.append(line(450, 95, 450, 395, color=BORDER, width=2))
-    items.append(
-        text(477, 417, "rho = guided; blind = unchanged", css_class="evidence-tiny", fill=MUTED)
-    )
-    items.append(text(477, 450, "Denominators separate.", css_class="evidence-note"))
     items.append("</svg>")
     return "\n".join(items) + "\n"
 
 
 FIGURES = {
     "fig_architecture.svg": compact_architecture_svg,
-    "fig_evidence_regimes.svg": evidence_regimes_svg,
 }
 
 

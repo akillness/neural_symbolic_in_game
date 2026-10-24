@@ -158,6 +158,7 @@ stage-zero 거절·최초 공개·승인된 재표시를 기록한다. 읽기 �
 이 추가 개발 공학 사례는 동결 공개 코호트 60사례나 NPC88을 늘리지 않으며 인간 편익·재미·
 효능·생산성·온톨로지 우월성을 입증하지 않는다. Godot 소스·쓰기 권한과 정식 R5 엔진 캡처는
 그대로다. **G4/전체 G6는 `FIX`다.** 현재 프로덕션과 별도 CI/Git 증명은 위 절을 따른다.
+보존된 retired hosted-model 코호트(과거 표기, fixture60, NPC88 포함)는 provenance 전용이며 활성 논문 표·계수·런타임 모델 주장에서는 제외한다. 어떤 label/result도 런타임이 보고한 `gpt-6.1-sol` 개발 사례로 이전하지 않는다. 출처 기반 traceability instrument는 제안일 뿐 score를 측정하지 않았다: [`codebook.ko.md`](../../research/traceability-scoring-20261023/codebook.ko.md), [`sources.json`](../../research/traceability-scoring-20261023/sources.json). Whole-game matched-information 및 repeated-cross-model 비교는 `PROPOSED_NOT_EXECUTED` 계획이다: [`plan.ko.md`](../../research/development-comparison-20261023/plan.ko.md).
 
 ## 6. 게임 artifact → 논문 사용
 

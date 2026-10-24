@@ -313,7 +313,11 @@ def test_arms_table_labels_semantic_mismatches_and_unique_unsafe_cases_separatel
 
     for language in (False, True):
         table = producer._arms_table(data, korean=language)
-        header = next(line for line in table.splitlines() if "Arm" in line and "n (N/B/M)" in line)
+        header = next(
+            line
+            for line in table.splitlines()
+            if all(token in line for token in ("Arm", "N/B/M", "Semantic mismatch", "Unique unsafe"))
+        )
         row = next(line for line in table.splitlines() if line.startswith(r"unchecked\_isolated"))
         cells = [cell.strip() for cell in row.removesuffix(r"\\").split("&")]
         assert len(cells) == 7

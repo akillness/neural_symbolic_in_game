@@ -506,7 +506,6 @@ def _assert_no_word_collisions(words):
         "contribution_map",
         "evidence_lanes",
         "pilot_tables",
-        "live_pilot_tables",
         "npc_tables",
     ),
 )
