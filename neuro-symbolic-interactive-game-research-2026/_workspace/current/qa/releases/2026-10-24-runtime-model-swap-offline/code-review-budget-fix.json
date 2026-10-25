@@ -1,0 +1,14 @@
+{
+  "schema_version": "runtime-model-swap/review-receipt-1",
+  "verdict": "FIX",
+  "source": "RuntimeFinalCodeReview supplemental direct IRC review",
+  "receipt_kind": "projection_of_observed_IRC_not_original_agent_artifact",
+  "severity": "HIGH",
+  "finding": "Post-dispatch observed host-call deltas can exceed the frozen cap without blocking commit",
+  "anchors": ["src/nesy_game/runtime_model_swap.py:336-339", "src/nesy_game/runtime_model_swap.py:423-426", "src/nesy_game/runtime_model_swap.py:466"],
+  "reproducer": "max_host_calls=1; before_count=0; proposal source produces 2 observed prompt callbacks and returns a valid goal-completing proposal. Accounting becomes 2, but the source currently proceeds to validation and commit.",
+  "required_behavior": "Retain and charge all observed invocations; discard the over-budget proposal before commit or primary credit. Exactly the final allowed invocation may still complete the goal.",
+  "scope": "Existing generic observed-invocation accounting branch; not a claim that hidden provider requests are observable or capped.",
+  "commands_run_by_reviewer": false,
+  "non_promoted_observation": "Configuration exceptions are outside the initial try, but the fixed Godot configure hook is internal/trusted; no malicious-property issue was promoted."
+}

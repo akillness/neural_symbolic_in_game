@@ -1,0 +1,413 @@
+{
+  "schema_version": "runtime-model-swap-pre-run-proposal/v1",
+  "artifact_id": "runtime-model-swap-20261024-pre-run-proposal-v1",
+  "status": "PENDING_USER_APPROVAL",
+  "study_id": "runtime-model-swap-20261024",
+  "date": "2026-10-24",
+  "approval_requested_for": [
+    "one batched design decision packet",
+    "implementation of missing runtime harness and observer",
+    "credential-free or existing authorized zero-generation metadata preflight",
+    "offline validation only"
+  ],
+  "live_provider_launch_authorization_requested": false,
+  "approved_endpoint_amendment_ref": "endpoint-amendment-v1.json",
+  "approved_endpoint_amendment_sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199",
+  "runtime_readiness_ref": "runtime-readiness-20261024.json",
+  "runtime_readiness_verdict": "IMPLEMENTATION_REQUIRED",
+  "proposed_defaults": {
+    "stage": "exploratory_feasibility_pilot_before_independent_confirmatory_study",
+    "candidate_roster": [
+      {
+        "role": "fresh_reference",
+        "requested_label": "gpt 6.1 sol",
+        "documented_id": "gpt-6.1-sol",
+        "sources": [
+          "OAI-CATALOG-20261024"
+        ],
+        "native_transport_selector": null,
+        "account_access_verified": false,
+        "provider_returned_identity": null,
+        "served_revision": null,
+        "capability_tier": null,
+        "cost_advantage_verified": false,
+        "proposed_api_id": "gpt-6.1-sol",
+        "provider_mapping": {
+          "native_executable_or_transport": null,
+          "literal_native_selector": null,
+          "account_access_receipt": null,
+          "fallback_containment_receipt": null,
+          "runtime_reported_model": null,
+          "provider_returned_model": null,
+          "served_revision": null,
+          "tool_context_parity_receipt": null,
+          "verified_at": null,
+          "approval_state": "UNAPPROVED_UNVERIFIED"
+        }
+      },
+      {
+        "role": "candidate",
+        "requested_label": "gpt 5.5",
+        "documented_id": "gpt-5.5",
+        "sources": [
+          "OAI-CATALOG-20261024"
+        ],
+        "native_transport_selector": null,
+        "account_access_verified": false,
+        "provider_returned_identity": null,
+        "served_revision": null,
+        "capability_tier": null,
+        "cost_advantage_verified": false,
+        "proposed_api_id": "gpt-5.5-2026-04-23",
+        "provider_mapping": {
+          "native_executable_or_transport": null,
+          "literal_native_selector": null,
+          "account_access_receipt": null,
+          "fallback_containment_receipt": null,
+          "runtime_reported_model": null,
+          "provider_returned_model": null,
+          "served_revision": null,
+          "tool_context_parity_receipt": null,
+          "verified_at": null,
+          "approval_state": "UNAPPROVED_UNVERIFIED"
+        }
+      },
+      {
+        "role": "candidate",
+        "requested_label": "gpt 5.6",
+        "documented_id": "gpt-5.6-sol",
+        "sources": [
+          "OAI-CATALOG-20261024",
+          "OAI-56-ALIAS-20261024"
+        ],
+        "native_transport_selector": null,
+        "account_access_verified": false,
+        "provider_returned_identity": null,
+        "served_revision": null,
+        "capability_tier": null,
+        "cost_advantage_verified": false,
+        "proposed_api_id": "gpt-5.6-sol",
+        "provider_mapping": {
+          "native_executable_or_transport": null,
+          "literal_native_selector": null,
+          "account_access_receipt": null,
+          "fallback_containment_receipt": null,
+          "runtime_reported_model": null,
+          "provider_returned_model": null,
+          "served_revision": null,
+          "tool_context_parity_receipt": null,
+          "verified_at": null,
+          "approval_state": "UNAPPROVED_UNVERIFIED"
+        }
+      },
+      {
+        "role": "candidate",
+        "requested_label": "opus 5",
+        "documented_id": "claude-opus-5",
+        "sources": [
+          "CLAUDE-OPUS5-20261024"
+        ],
+        "native_transport_selector": null,
+        "account_access_verified": false,
+        "provider_returned_identity": null,
+        "served_revision": null,
+        "capability_tier": null,
+        "cost_advantage_verified": false,
+        "proposed_api_id": "claude-opus-5",
+        "provider_mapping": {
+          "native_executable_or_transport": null,
+          "literal_native_selector": null,
+          "account_access_receipt": null,
+          "fallback_containment_receipt": null,
+          "runtime_reported_model": null,
+          "provider_returned_model": null,
+          "served_revision": null,
+          "tool_context_parity_receipt": null,
+          "verified_at": null,
+          "approval_state": "UNAPPROVED_UNVERIFIED"
+        }
+      },
+      {
+        "role": "candidate",
+        "requested_label": "sonnect 5",
+        "documented_id": "claude-sonnet-5",
+        "sources": [
+          "CLAUDE-SONNET5-20261024"
+        ],
+        "native_transport_selector": null,
+        "account_access_verified": false,
+        "provider_returned_identity": null,
+        "served_revision": null,
+        "capability_tier": null,
+        "cost_advantage_verified": false,
+        "proposed_api_id": "claude-sonnet-5",
+        "provider_mapping": {
+          "native_executable_or_transport": null,
+          "literal_native_selector": null,
+          "account_access_receipt": null,
+          "fallback_containment_receipt": null,
+          "runtime_reported_model": null,
+          "provider_returned_model": null,
+          "served_revision": null,
+          "tool_context_parity_receipt": null,
+          "verified_at": null,
+          "approval_state": "UNAPPROVED_UNVERIFIED"
+        }
+      },
+      {
+        "role": "candidate",
+        "requested_label": "antigravity gemini 3.8 flash",
+        "documented_id": "gemini-3.8-flash",
+        "sources": [
+          "GOOGLE-FLASH38-20261024"
+        ],
+        "native_transport_selector": null,
+        "account_access_verified": false,
+        "provider_returned_identity": null,
+        "served_revision": null,
+        "capability_tier": null,
+        "cost_advantage_verified": false,
+        "proposed_api_id": "gemini-3.8-flash",
+        "provider_mapping": {
+          "native_executable_or_transport": null,
+          "literal_native_selector": null,
+          "account_access_receipt": null,
+          "fallback_containment_receipt": null,
+          "runtime_reported_model": null,
+          "provider_returned_model": null,
+          "served_revision": null,
+          "tool_context_parity_receipt": null,
+          "verified_at": null,
+          "approval_state": "UNAPPROVED_UNVERIFIED"
+        }
+      }
+    ],
+    "candidate_unavailable_policy": "Block that candidate before assignment and return a roster amendment for approval; no silent replacement, revision change or fallback.",
+    "transport": "Prefer existing authorized native OAuth routes through a common typed proposal boundary; exact selectors/context/tool parity remain blocking preflight prerequisites. No direct API fallback or new credentials.",
+    "model_claim_boundary": "If agent context, tools, fallback or identity parity is not established, label results as model-plus-transport/system observations rather than pure model effects.",
+    "representations": [
+      "information_matched_general_rule",
+      "ontology_view"
+    ],
+    "common_components": [
+      "same fixed game and executable quest workflow",
+      "same independent hard validator and task oracle",
+      "same semantic facts/rules/examples",
+      "same candidate-visible output contract and budgets"
+    ],
+    "representation_effect_scope": "Effect of ontology exposure/representation for the proposer only. Both conditions retain the common ontology-derived workflow; this does not isolate the causal effect of having any ontology in the whole system.",
+    "authoring_provenance": "Record all human/model authors and all game/ontology/prompt tuning; freeze exact hashes before held-out candidate evaluation. No candidate-specific evaluation-set tuning.",
+    "pilot_held_out_quest_variants": 12,
+    "pilot_fresh_repeats_per_quest": 2,
+    "pilot_episodes_per_model_representation_cell": 24,
+    "pilot_candidate_count_including_reference": 6,
+    "pilot_cell_count": 12,
+    "pilot_total_episodes_if_roster_accessible": 288,
+    "pilot_assignments_finalized": false,
+    "quest_split": "Use separate development/calibration quests; these 12 evaluation quests and their motif/entity/relation hold-outs must be sealed before evaluation and never tuned on. Exact payloads/split hashes are not yet authored/frozen.",
+    "episode_wall_time_seconds": 180,
+    "provider_response_deadline_seconds": 60,
+    "max_repairs_per_decision": 2,
+    "call_budget_semantics": "Count the observable host invocation atom only. Every attempted initial request, malformed response, refusal, timeout, corrective request and transport retry is charged. Unknown native internal provider/model requests remain null and are not claimed bounded.",
+    "max_total_host_model_invocations_if_all_cells_assigned": 3456,
+    "serial_episode_wall_cap_hours_excluding_setup": 14.4,
+    "ordering_seed": 20261024,
+    "concurrency": 1,
+    "freshness": "Fresh state/session for every episode; no resumes or replay counted as new independent samples. Quests remain statistical clusters across repeats and models.",
+    "pilot_analysis": "Report assigned denominators, goal-completion intervals, paired quest-level differences, raw-first proposal violations, repairs, safety failures and all unknown fields. Use quest-cluster-respecting resampling for descriptive uncertainty once the number and structure of clusters are checked; do not claim powered equivalence/non-inferiority.",
+    "confirmatory_C_primary_contrast": "Candidate ontology-view goal completion minus fresh Sol ontology-view completion under the same fixed task/budgets.",
+    "confirmatory_margin_percentage_points_proposed": 5,
+    "margin_is_human_practical_policy_not_literature_standard": true,
+    "absolute_practical_success_floor_proposed": 0.8,
+    "floor_is_human_policy_proposal_not_measured_usability": true,
+    "confirmatory_alpha_familywise_one_sided_proposed": 0.025,
+    "confirmatory_power_proposed": 0.8,
+    "confirmatory_candidate_comparisons_proposed": 5,
+    "confirmatory_multiplicity_proposal": "Holm over the five prespecified C contrasts, with compatible one-sided bounds; use Bonferroni only in the scale illustration, not as a claim that the final clustered design is powered.",
+    "confirmatory_sample_size": null,
+    "confirmatory_analysis": "A separate independent held-out study requires prospective power simulation under observed pilot nuisance parameters, pairing/quest clustering and missingness, and a separately frozen version. Pilot outcomes do not enter confirmatory efficacy estimates or change the practical margin post hoc.",
+    "native_billed_usd": null,
+    "monetary_cap_enforceability": "UNVERIFIED; old development-panel USD authorization is not inherited.",
+    "tokens_and_full_model_identity": "Keep unknown as null; no automatic token/price inference from byte counts, aliases or CLI quota.",
+    "max_host_invocations_per_episode_including_repairs_and_transport_retries": 12,
+    "internal_provider_request_count": null,
+    "deadline_dominance": {
+      "clock": "Monotonic clock starts immediately before the first episode host invocation and ends at verified goal observation or terminal stop. Include planning, validation, repair, host waits and engine actions within the episode.",
+      "dispatch_deadline": "min(remaining episode wall allowance, proposed provider-response deadline); never dispatch after the episode deadline.",
+      "timeout": "Record and charge the host invocation; stop/kill owned descendants according to an offline-proved process policy, reject late results and do not commit them.",
+      "cancellation_boundary": "Remote provider cancellation and billing stop are not guaranteed; descendant/process and late-result rejection proofs are mandatory before live use.",
+      "status": "PROPOSED_UNAPPROVED_MECHANICAL_PROOF_MISSING"
+    },
+    "confirmatory_decision_rule_proposed": "Require multiplicity-compatible one-sided lower bound for candidate-minus-fresh-Sol completion to exceed -delta under the frozen cluster/pairing-aware analysis, satisfy the separately adopted absolute practical floor rule and complete safety gate, and preserve all assigned/missing outcomes. All numerical/analysis parameters remain unapproved."
+  },
+  "feasibility_scale_assumptions": {
+    "classification": "ILLUSTRATIVE_NORMAL_APPROXIMATION_NOT_A_POWERED_DESIGN",
+    "equal_success_probability_assumed": 0.5,
+    "true_risk_difference_assumed": 0.0,
+    "candidate_contrasts": 5,
+    "familywise_one_sided_alpha": 0.025,
+    "per_contrast_alpha_bonferroni": 0.005,
+    "target_power": 0.8,
+    "independent_bernoulli_arms": true,
+    "pairing_correlation": null,
+    "quest_cluster_design_effect": null,
+    "missingness_allowance": null,
+    "provider_cost_usd": null
+  },
+  "feasibility_scale_formula": "n_per_arm = ceil((z_(1-alpha_per_contrast) + z_power)^2 * (0.25+0.25) / delta^2). Equal independent Bernoulli arms, true difference zero; ignores clustering, pairing, dropout and pilot selection.",
+  "feasibility_scale_examples": [
+    {
+      "margin_percentage_points": 10,
+      "episodes_per_model_representation_cell": 584,
+      "classification": "FORMULA_OUTPUT_NOT_RECOMMENDED_N_OR_POWER_PROOF",
+      "C_ontology_only_six_model_arithmetic": {
+        "episodes": 3504,
+        "host_invocation_arithmetic_ceiling_if_twelve_per_episode": 42048,
+        "serial_wall_hours_if_180_seconds_per_episode": 175.2
+      },
+      "optional_two_representation_factorial_arithmetic": {
+        "episodes": 7008,
+        "host_invocation_arithmetic_ceiling_if_twelve_per_episode": 84096,
+        "serial_wall_hours_if_180_seconds_per_episode": 350.4
+      }
+    },
+    {
+      "margin_percentage_points": 5,
+      "episodes_per_model_representation_cell": 2336,
+      "classification": "FORMULA_OUTPUT_NOT_RECOMMENDED_N_OR_POWER_PROOF",
+      "C_ontology_only_six_model_arithmetic": {
+        "episodes": 14016,
+        "host_invocation_arithmetic_ceiling_if_twelve_per_episode": 168192,
+        "serial_wall_hours_if_180_seconds_per_episode": 700.8
+      },
+      "optional_two_representation_factorial_arithmetic": {
+        "episodes": 28032,
+        "host_invocation_arithmetic_ceiling_if_twelve_per_episode": 336384,
+        "serial_wall_hours_if_180_seconds_per_episode": 1401.6
+      }
+    }
+  ],
+  "interpretation": "584/2336 are formula outputs under intentionally unrealistic independent-arm planning assumptions, not recommended sample sizes or final power. C ontology-only arithmetic is separate from optional two-representation factorial expansion. Pilot 24 episodes per cell has no confirmatory noninferiority claim. Duration ceilings assume proposed caps that still require mechanical verification and exclude setup; they are not observed latency, provider-request counts or spend.",
+  "blocking_preconditions_before_live_calls": [
+    "harness/source/observer implementation and offline acceptance",
+    "fixed game/ontology/prompt/quest/oracle hash freeze",
+    "exact native selectors and authorized access",
+    "fallback and tool/context parity audit or explicit stack-scope correction",
+    "mechanically proved deadlines/host-call/repair limits",
+    "billing/privacy/launch authorization",
+    "complete prospective analysis and assignment contracts",
+    "independent goal/safety oracle validation; existing authored O arm is not an independent validated oracle"
+  ],
+  "source_records": [
+    {
+      "source_id": "OAI-CATALOG-20261024",
+      "url": "https://developers.openai.com/api/reference/resources/beta/subresources/responses/methods/cancel",
+      "retrieval_method": "Context7 /websites/developers_openai_api",
+      "retrieval_date": "2026-10-24",
+      "evidence_level": "official_documentation_excerpt",
+      "establishes": [
+        "gpt-6.1-sol",
+        "gpt-5.5",
+        "gpt-5.5-2026-04-23",
+        "gpt-5.6-sol"
+      ],
+      "does_not_establish": [
+        "account_access",
+        "native_selector",
+        "served_revision"
+      ],
+      "license": null
+    },
+    {
+      "source_id": "OAI-56-ALIAS-20261024",
+      "url": "https://developers.openai.com/api/docs/changelog",
+      "retrieval_method": "Context7 /websites/developers_openai_api",
+      "retrieval_date": "2026-10-24",
+      "evidence_level": "official_documentation_excerpt",
+      "establishes": [
+        "gpt-5.6 alias routes to gpt-5.6-sol; Terra and Luna are distinct"
+      ],
+      "does_not_establish": [
+        "account_access",
+        "native_selector",
+        "served_revision"
+      ],
+      "license": null
+    },
+    {
+      "source_id": "CLAUDE-OPUS5-20261024",
+      "url": "https://platform.claude.com/docs/en/models/opus-5/overview",
+      "retrieval_method": "read alternate official markdown",
+      "retrieval_date": "2026-10-24",
+      "evidence_level": "primary_documentation",
+      "establishes": [
+        "claude-opus-5 is a documented active legacy ID, not claude-opus-5-5"
+      ],
+      "does_not_establish": [
+        "account_access",
+        "native_selector",
+        "served_revision"
+      ],
+      "license": null
+    },
+    {
+      "source_id": "CLAUDE-SONNET5-20261024",
+      "url": "https://platform.claude.com/docs/en/models/sonnet-5/overview",
+      "retrieval_method": "read alternate official markdown",
+      "retrieval_date": "2026-10-24",
+      "evidence_level": "primary_documentation",
+      "establishes": [
+        "claude-sonnet-5 is a documented active legacy ID, not claude-sonnet-5-5"
+      ],
+      "does_not_establish": [
+        "account_access",
+        "native_selector",
+        "served_revision"
+      ],
+      "license": null
+    },
+    {
+      "source_id": "GOOGLE-FLASH38-20261024",
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+      "retrieval_method": "read official page",
+      "retrieval_date": "2026-10-24",
+      "evidence_level": "primary_documentation",
+      "establishes": [
+        "gemini-3.8-flash is documented as a stable model code"
+      ],
+      "does_not_establish": [
+        "account_access",
+        "Antigravity native selector",
+        "served_revision"
+      ],
+      "license": "Documentation CC-BY-4.0; code samples Apache-2.0 as stated on page"
+    }
+  ],
+  "append_only_rule": "Keep this proposal separate from approved endpoint-amendment-v1.json. User approval is a separate amendment bound to the exact proposal hash; any revisions get new versioned artifacts. There is no approved full protocol-v1.",
+  "actual_new_study_model_calls": 0,
+  "approval_state_by_group": {
+    "roster_mapping": "UNAPPROVED",
+    "control_condition": "UNAPPROVED",
+    "pilot_quests_repeats": "UNAPPROVED",
+    "host_time_call_repair_caps": "UNAPPROVED",
+    "analysis_plan": "UNAPPROVED",
+    "noninferiority_margin_floor": "UNAPPROVED",
+    "implementation_scope": "UNAPPROVED",
+    "account_network_preflight": "UNAPPROVED",
+    "research_data_egress": "UNAPPROVED",
+    "provider_generation": "UNAPPROVED",
+    "spend": "UNAPPROVED",
+    "launch": "UNAPPROVED"
+  },
+  "authority_matrix": {
+    "offline_repository_and_public_document_inspection": "Performed for the authorized design task; does not authorize account or inference access.",
+    "implementation_and_offline_validation": "New explicit user approval requested in this packet; not granted by endpoint approval.",
+    "networked_account_metadata_preflight": "Separate explicit approval identifying provider/account scope required; not implied by implementation approval.",
+    "credential_handling": "Never read or publish credential/auth file contents; reuse authorized host login only after scoped approval.",
+    "research_context_egress_and_privacy": "Task/prompt/source disclosure boundary and provider terms must be explicitly accepted before any research-context transmission.",
+    "billed_generation_and_spend": "Separate explicit authorization and accounting/enforceability acknowledgement required; no prior study USD cap inherited.",
+    "live_launch": "Not requested by this design/offline packet; requires separate source-bound activation and explicit user launch permission."
+  },
+  "execution_status": "NOT_EXECUTED",
+  "runtime_readiness_sha256": "2e4c0029db1a5aeaa23c922d8f76d533c5fa4fb5eeb5e69da376a218d0426f12"
+}

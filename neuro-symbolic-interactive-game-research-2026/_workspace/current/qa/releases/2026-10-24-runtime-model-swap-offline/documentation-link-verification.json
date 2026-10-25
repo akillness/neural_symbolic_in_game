@@ -1,0 +1,128 @@
+{
+  "schema_version": "runtime-model-swap/documentation-link-verification-1",
+  "status": "PASS_SCOPED_LINKS_ONLY",
+  "scope": "Only four newly added checkpoint sections, not the whole wiki",
+  "scope_ranges": {
+    "llm-wiki/index.md": {
+      "first_line": 21,
+      "line_count": 2
+    },
+    "llm-wiki/log.md": {
+      "first_line": 3,
+      "line_count": 7
+    },
+    "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md": {
+      "first_line": 294,
+      "line_count": 33
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md": {
+      "first_line": 5,
+      "line_count": 13
+    }
+  },
+  "link_occurrences": 15,
+  "failures": [],
+  "links": [
+    {
+      "source": "llm-wiki/index.md",
+      "target": "../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/log.md",
+      "target": "../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/log.md",
+      "target": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Offline implementation verification / 오프라인 구현 검증 완료 — 2026-10-24",
+      "exists": true,
+      "anchor_valid": true,
+      "kind": "wikilink"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/offline-implementation-seed-v1.yaml",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-general-rule/episode.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-ontology/episode.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-test-command.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-frozen-integrity.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-code-review-final.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-python-fallback-review.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md",
+      "target": "../qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md",
+      "target": "../../../research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+      "exists": true,
+      "kind": "markdown"
+    },
+    {
+      "source": "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md",
+      "target": "../qa/releases/2026-10-24-runtime-model-swap-offline/release-test-command.json",
+      "exists": true,
+      "kind": "markdown"
+    }
+  ],
+  "global_wiki_lint": {
+    "status": "FIX",
+    "exit_code": 1,
+    "receipt": "wiki-lint-command.json",
+    "broken_history_link_occurrences": 180,
+    "missing_required_paths": 0,
+    "orphan_pages": 0,
+    "new_checkpoint_targets_among_broken": false
+  },
+  "verification_method": "Read explicit added ranges; resolve relative Markdown paths and vault-relative wikilinks; compare named heading; assert each target exists"
+}

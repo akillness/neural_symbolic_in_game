@@ -85,10 +85,11 @@
 \end{IEEEkeywords}
 
 \section{서론}
-생성 이벤트는 없는 아이템 요구, 모르는 사실 주장, 금지 공개, 비인가 효과, 단계 후퇴를 일으킬 수 있다. 그럴듯한 대화는 실행 가능한 전이가 아니며 \cite{S11_cote2019textworld,S12_wang2022scienceworld}, quest/entity grounding도 권한은 아니다 \cite{S03_weir2024ontologically,S20_ashby2023personalized}. \textbf{비신뢰 제안의 상태 변경은 \system{}의 외부 결정론적 gate만 허가한다}(그림~\ref{fig:architecture}).
+생성 이벤트는 없는 아이템 요구, 모르는 사실 주장, 금지 공개, 비인가 효과, 단계 후퇴를 일으킬 수 있다. 그럴듯한 대화는 실행 가능한 전이가 아니며 \cite{S11_cote2019textworld,S12_wang2022scienceworld}, quest/entity grounding도 권한은 아니다 \cite{S03_weir2024ontologically,S20_ashby2023personalized}. \textbf{비신뢰 제안의 상태 변경은 \system{}의 외부 결정론적 gate만 허가한다}(그림~\ref{fig:architecture}). 이 경계는 올바른 policy, 충실한 추출, deterministic version, 반환 callback, 단일 프로세스 파일 소유를 가정하며; fixture는 정리가 아닌 구현 불변량을 시험한다.
 
 
-\textbf{C1---계약}, \textbf{C2---검사--수리--커밋}, \textbf{C3---감사 연결 근거}, \textbf{C4---할당별 회계}, \textbf{C5---유도 수리}는 bounded design/conformance 표면이다(표~\ref{tab:contribution-map}). 활성 E1/E3/ENG1/NPC-DISC-1/DEV-CASE 근거를 개발 모델에 귀속하지 않는다. 새 기여는 출처 결속 읽기 전용 ontology view와 단일 Codex 통합 패키지이며 C6나 full-game round trip이 아니다.
+\textbf{C1---계약}, \textbf{C2---검사--수리--커밋}, \textbf{C3---감사 연결 근거}, \textbf{C4---할당별 회계}, \textbf{C5---유도 수리}는 표~\ref{tab:contribution-map}, 그림~\ref{fig:architecture}과 \ref{alg:commit}, 식~\ref{eq:transition}, 표~\ref{tab:validators}, \ref{tab:ontology-roles}, \ref{tab:rho-rules}에 연결된 bounded 표면이다. 중심 기여는 이 출처 결속·감사 가능한 경계와 읽기 전용 ontology observer, bounded Codex package이며 C6나 full-game round trip이 아니다; E1/E3/ENG1/NPC-DISC-1/DEV-CASE 근거를 개발 모델에 귀속하지 않는다.
+검증 가능한 systems 연구 질문은 고정된 출처 결속 policy와 bounded repair에서 비유효 제안의 상태를 보존하고 수락 전이를 replay하면서 ontology view나 repair operator에 mutation 권한을 주지 않을 수 있는가이다. 답은 authored fixture, construction simulation, historical conformance, 단일 사례 수준에 한정된다.
 
 \input{../generated/contribution_map_ko.tex}
 
@@ -101,15 +102,11 @@
 
 
 \section{관련 연구와 연구 공백}
-Quest/entity 대화, graph quest, memory--reflection--planning, 학습형 role 연구는 grounding/개연성을 다루며 \cite{S03_weir2024ontologically,S20_ashby2023personalized,S07_park2023generative,S08_shao2023character}, player/dialogue와 role 연구는 admissibility와 experience를 분리한다 \cite{S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized,S02_figueiredo2025scaffolded}. 참여도/생성 연구의 affect는 미래 과제이며 여기서는 비권위적·미구현이다 \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement}.
+Grounding/개연성 연구는 quest/entity 대화, graph quest, memory--reflection--planning, 학습형 role을 다룬다 \cite{S03_weir2024ontologically,S20_ashby2023personalized,S07_park2023generative,S08_shao2023character}; player/dialogue·role 연구는 admissibility와 experience를 분리하고 \cite{S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized,S02_figueiredo2025scaffolded}, engagement affect는 미래·비구현·비권위다 \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement}. 공백은 출처 결속 proposal-to-commit에서 authority, repair information, replay evidence를 명시하는 경계다.
 
-TextWorld/ScienceWorld, MineDojo, GVGAI, AgentBench, AgentBoard, SOTOPIA, BALROG와 자동 playtesting은 state·embodied·agent/game/content·과정·사회·장기 환경을 보완한다 \cite{S11_cote2019textworld,S12_wang2022scienceworld,S13_fan2022minedojo,S14_perezliebana2019gvgai,S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog,S19_lepelletier2022playtesting}; NCP-Bench는 narrative commitment/fact consistency이며 본 연구의 player outcome이 아니다 \cite{S58_ma2026ncpbench}.
+TextWorld/ScienceWorld, MineDojo, GVGAI, AgentBench, AgentBoard, SOTOPIA, BALROG와 자동 playtesting은 state·embodied·agent/game-content·과정·사회·장기 환경을 보완한다 \cite{S11_cote2019textworld,S12_wang2022scienceworld,S13_fan2022minedojo,S14_perezliebana2019gvgai,S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog,S19_lepelletier2022playtesting}; NCP-Bench는 narrative commitment/fact consistency이지 player outcome이 아니다 \cite{S58_ma2026ncpbench}. 구조 제약·critic·affordance·trigger rule·precondition/effect·rule refinement·incremental validation·authored transformation·JSONSchemaBench \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard,S50_kambhampati2024llmmodulo,S51_ichter2023saycan,S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S42_buongiorno2024pangea,S01_vaucher2026ivie,S44_gongora2026worldstate,S57_geng2025jsonschemabench}는 이 transaction/audit/repair 경계나 encoded predicate 밖의 우월성을 확립하지 않으며, G-Retriever/HippoRAG/Mem0도 commit authority가 없다 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}.
 
-구조 제약·critic·affordance·trigger rule·tool precondition·generated effect·rule refinement·incremental validation·authored transformation·JSONSchemaBench \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard,S50_kambhampati2024llmmodulo,S51_ichter2023saycan,S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S42_buongiorno2024pangea,S01_vaucher2026ivie,S44_gongora2026worldstate,S57_geng2025jsonschemabench}는 transaction/audit/repair 결합이나 encoded predicate 밖의 우월성을 제공하지 않는다. G-Retriever, HippoRAG, Mem0도 commit authority를 갖지 않는다 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}.
-
-재현성·평가 연구는 frozen artifact, 실패 보존, construct/rater/bias control과 justified margin/random effects를 요구한다 \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S34_henderson2020energy,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}. 우리는 admitted transition만 replay하고 leakage 검사는 분모를 보호할 뿐 효능을 입증하지 않는다 \cite{S56_feng2025agentrr,S59_sun2025bdc}.
-
-C1--C5는 기존 enforcement·game-state management·feedback repair·replay·action interposition·precondition/effect·abort·social logic·belief-aware planning의 결합이며 \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}, 발명/최초성 주장은 아니다.
+재현성·평가 연구는 frozen artifact, 실패 보존, construct/rater/bias control과 justified margin/random effects를 요구한다 \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S34_henderson2020energy,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}; 우리는 admitted transition만 replay하고 leakage 검사는 효능이 아닌 분모를 보호한다 \cite{S56_feng2025agentrr,S59_sun2025bdc}. C1--C5는 기존 enforcement·game-state management·feedback repair·replay·action interposition·precondition/effect·abort·social logic·belief-aware planning의 결합이며 \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}, 발명/최초성 주장은 아니다.
 
 \section{문제 정의와 보장 경계}
 입력 $c_t=(G_t,q_t)$는 typed snapshot $G_t$와 외부 저작 action-policy/disclosure/quest-stage 제약 $q_t$를 저장한다. Predicate는 terminal history $h_{<t}$를 읽거나 log로 \texttt{WorldState}를 복원하지 않는다. 수락 전이는 $G_t$만 바꾸며 policy rotation은 제외한다. Retrieval, score, rationale, memory, future affect는 비권위적이다.
@@ -137,7 +134,7 @@ Fixture는 정리가 아닌 구현 불변량을 시험한다. \textbf{I1:} valid
 
 \section{TRACE-RPG 아키텍처와 알고리즘}\label{sec:arch}
 \subsection{신뢰 경계와 계약}
-모델/recorded adapter는 canonical owner 밖에서 제안한다. Parser는 모호한 숫자·collection type과 unknown top-level field를 거부하며 독립 policy는 required precondition/allowed effect를 정의한다. Versioned bridge는 observation/proposal/validation/rejection/fallback/commit을 전달하고 유효 commit만 변경을 승인한다. 근거는 unknown-key rejection parity뿐이며 전체 proposal-default/replay-parser 동등성·상용 엔진 portability는 아니다. 일곱 개의 결정론적 검사는 Python predicate ID \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity}로 식별된다. Godot의 여섯 상태 상대 계열과 DISC 규칙 일곱 개는 서로 다른 비동형 label set이다. Godot의 단일 \texttt{QUEST STAGE} display family는 두 Python quest check(\texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity})를 포괄하지만, 비인가 quest-stage effect는 여전히 action-policy failure다(표~\ref{tab:validators}).
+모델/recorded adapter는 제안만 하며 parser는 모호한 type/unknown key를 거부하고 독립 policy가 precondition/effect를 정의한다. Versioned bridge는 observation/proposal/validation/rejection/fallback/commit을 전달한다(그림~\ref{fig:architecture}); unknown-key parity는 전체 parser 동등성·상용 portability가 아니다. Python에는 일곱 개의 결정론적 검사와 predicate ID \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity}가 있고, Godot의 여섯 상태 상대 계열과 DISC 일곱 rule은 비동형 label set이며 단일 \texttt{QUEST STAGE} display family는 두 Python quest check를 포괄한다.
 \begin{figure*}[!tbp]
   \centering
   \includegraphics[width=\textwidth]{../figures/fig_signal_mechanism.pdf}
@@ -147,6 +144,7 @@ Fixture는 정리가 아닌 구현 불변량을 시험한다. \textbf{I1:} valid
 
 \subsubsection{여덟 역할 구조와 source binding}
 읽기 전용 \path{game-track/web/dashboard/ontology-map.json}은 선언/frozen expectation을 결속하며 live state/권한을 추론하지 않는다. 표의 $I$는 \path{initial_state}다.
+온톨로지 view, repair information, mutation authority는 분리된다. 표~\ref{tab:ontology-roles}의 \texttt{reveal\_hint(actor\_id,fact\_id)}에서 view는 출처 결속 \texttt{tide\_marks\_hint}와 stage-$2$ policy를 보이고, guided operator는 $a_t,E_t$만 읽어 predicate를 삽입할 뿐 \texttt{WorldState}를 읽지 않는다. 일곱 검사 통과만 $T$에 도달하고 Godot이 commit한다; 최초 공개 revision $+1$, 재표시는 불변이다.
 \begin{table}[!tbp]
 \caption{여덟 온톨로지 역할과 구체적 source 관계}
 \label{tab:ontology-roles}
@@ -242,25 +240,23 @@ Repair는 상태를 바꾸지 않으며 소진 시 unchanged fallback을 반환�
 \end{table}
 
 \subsection{무결성, 의미적 리플레이, 계수}\label{sec:audit}
-키 없는 SHA-256 checksum/trace 연결은 우발적·시험 대상 변경만 탐지하며 writer identity나 content/checksum 동시 재작성을 보장하지 않는다. Replay는 prior state/candidate/validation을 엄격 parsing하고 invalid nonfinal attempt, 종단 상태 재계산·일치, 인접 JSONL continuity를 요구하며 repair는 재실행하지 않는다. Request$\rightarrow$decision$\rightarrow$result와 첫 issued-action/exactly-one-receipt binding은 duplicate-action-ID나 authentication을 보장하지 않는다.
+키 없는 SHA-256 link는 writer identity나 공동 재작성을 막지 않는다. Replay는 prior state/candidate/validation을 parsing하고 invalid nonfinal attempt, 종단 상태 재계산·일치, JSONL continuity를 요구하며 repair는 재실행하지 않는다. Request$\longrightarrow$decision$\longrightarrow$result와 first-issued-action/exactly-one-receipt는 duplicate ID/authentication을 막지 않는다. Terminal은 commit/symbolic fallback/adapter failure/controller failure이며 마지막은 state/assignment를 보존한다. Pre-execution key는 run, arm, scenario, seed, model, revision, configuration/input/prior-state hash를 결속하고 집계는 duplicate/missing/unexpected key를 거부하며 실패를 분리한다.
 
-종단 class는 commit, symbolic fallback, adapter failure, controller failure이며 마지막은 completed trace 없이 상태/assignment를 보존한다. 실행 전 key는 run, arm, scenario, seed, model, revision, configuration/input/prior-state hash를 결속하고, 집계는 중복/누락/예기치 않은 key를 거부하며 실패를 분리한다.
 
 \section{실험 레인과 근거 경계}\label{sec:lanes}
 \input{../generated/evidence_lanes_ko.tex}
-추가 typed lane NPC-DISC-1의 frozen disclosure 계수와 DEV-CASE dashboard 관측은 E1/E3/ENG1과 합산하지 않는다.
+근거는 세 수준으로 pooling하지 않는다: Level 1 authored finite-case mechanism/conformance(E1 gate·repairability fixture), Level 2 authored closed-world construction simulation(E3 graph-edge-withheld target 6개), Level 3 historical NPC conformance(ENG1/NPC-ENG1/NPC-SCR1)와 단일 bounded assisted development observation(DEV-CASE). 각 수준은 실패/stale control을 보존하고 다른 질문에 답하므로 model/efficacy 추정치가 아니다.
 \subsection{\textbf{E1} 오프라인 적합성 설계}
 PQ1--PQ5는 불변성, frozen-class repair, checksum/semantic/linkage/continuity fault, second-append rollback, fail-closed assignment/adapter/manifest 계수, proposal/replay unknown-key 거부를 시험한다.
 
-Gate fixture는 13개(valid 1/negative 12), repair fixture는 12개다. 생성 결과는 모든 arm의 \emph{guided-repairable}(오류 충분), \emph{oracle-only}(상태 필요), \emph{irreparable}(commit 불가)을 구분한다.
+Gate fixture는 13개(valid 1/negative 12), repair fixture는 12개다. 결과는 모든 arm의 \emph{guided-repairable}(오류 충분), \emph{oracle-only}(상태 필요), \emph{irreparable}(commit 불가)를 구분하며 latency/token 상수는 accounting이지 population/detector 성능이 아니다. Packet은 fixture/assignment/schema/result/code를 결속한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
-Count는 detector/모집단 통계가 아니며 latency/token 상수는 회계용이다. Packet은 fixture/assignment/schema/result/code를 결속한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
 
 \subsection{보존된 live-screening 자료}
 보존 live-screening은 immutable provenance/hash 근거일 뿐 활성 표·계수·주장에서 제외되며 \texttt{gpt-6.1-sol}에 이전하지 않는다.
 
 \subsection{\textbf{NPC-ENG1} 고정 목표 engineering 레인}
-Stable v5는 engineering assignment 16개와 screening recipe 12개($12\times2\times3=72$; 결합 $R/P/O=40/24/24$)로 bootstrap, identity/hash, intent/plan/role/result, 음성/stale/duplicate/deadline, replay를 시험한다. Status/count/latency/재현: \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/}과 runner/validator; Verified-run-002/003/004는 immutable history, preflight는 NPC-SCR1 밖이다.
+Stable v5는 engineering assignment 16개와 screening recipe 12개($12\times2\times3=72$; $R/P/O=40/24/24$)로 bootstrap, identity/hash, intent/plan/role/result, negative/stale/duplicate/deadline, replay를 시험한다. P는 authenticated Codex OAuth without fallback, O는 100\% auxiliary-source(not independent gold)다. Status/count/latency/reproduction은 \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/}; verified-run-002/003/004는 historical이며 ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 C6 근거가 아닌 provenance다.
 
 \subsection{\textbf{NPC-SCR1} 기술적 스크리닝}
 NPC-SCR1 $12\times2\times3$ P/R/O row(72; arm당 24)에 ENG1을 더하면 88 assignment/28 definition($R/P/O=40/24/24$)이며 ENG1/E1과 별개다. 실패 strata, recovery-eligible/unreachable, P/R/O·미상 metadata·실패/stale-ACK/epoch-local replay를 보존·명시한다. O의 same-family 일치는 미검증, auxiliary-source 100\%, independent gold 없음. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 provenance이지 C6 근거가 아니다.
@@ -301,14 +297,14 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이지 provider receipt
 \noindent\textbf{ENG1.} Godot 4.7.1은 authored rejection/commit을 prior/offline hash로 replay한다(no live transport). Capture는 presentation-only이며 board/hint/coach/chain prompt와 dashboard checks를 보인다. Core 52/52와 extension 4개는 engine-local conformance이지 transport, participant, narrative, usability, efficacy 근거가 아니다.
 
 \subsection{단일 과제 Codex 개발 관측}\label{sec:development-case}
-동결 \texttt{ontology-map-20261023-01}은 읽기 전용 한·영 dashboard 과제 하나($n{=}1$, independent repeats $0$)이지 NPC trial/cohort 확장이 아니다. Native CLI 6회(initial $+$ resume 5, read-only/no-edit 1)는 한 사례다. \texttt{turn\_context.model=gpt-6.1-sol}은 runtime 선택 보고이지 provider attestation이 아니며 provider identity/revision/seed/cost는 \texttt{null}, model-only latency는 미상이다. Wall-clock 5942.665\,s와 CLI 263.32\,s는 inference latency나 사전 선언된 미래 endpoint가 아니다.
+동결 \texttt{ontology-map-20261023-01}은 읽기 전용 한·영 dashboard 과제 하나($n{=}1$, independent repeats $0$)이지 NPC trial/cohort가 아니다. Native CLI 6회(initial $+$ resume 5, read-only/no-edit 1)는 한 사례다. \texttt{turn\_context.model=gpt-6.1-sol}은 runtime 선택이지 provider attestation이 아니며 provider identity/revision/seed/cost는 \texttt{null}, model-only latency는 미상이다. Wall-clock 5942.665\,s와 CLI 263.32\,s는 inference latency나 future endpoint가 아니다.
 
 여섯째 호출은 상속된 mobile table 최소 너비 660\,px를 수리했다. 독립 geometry RED(2 실패/35 통과) 뒤 cell/paragraph 포함 map/signal/Web 검사 62/62와 Godot Web build가 통과했다. 실제 입력 browser attempt 10은 통과했고 01--08 setup/route 실패, 09 이전 gate 통과/clipping을 보존한다. 최종 $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ 거부 $(68,19468)$(hash 동일), 최초 공개 $(239,58234)$(상이), 승인 재표시 $(249,59793)$(동일). 1440$\times$900/390$\times$900, keyboard Enter, inspection/frozen-comparison 불변, pre-navigation부터 console/page/network 오류·warning 0을 관측했다. Dated QA10 PASS와 최신 additive overall \textbf{NOT\_PASS}는 별도다(구성 gate 7개 통과, pointer-lock/yaw-guard 및 pointer-lock page error 4개 잔존). Full-game creation/Python--Godot authorization round trip/모델 결과가 아닌 제한된 통합이다. Privacy/source-binding 실패와 동일 thread 수리는 추가 $n$이 아니다. Jev는 label/approval 권한 없는 \texttt{proposal\_only}다. 보고서/계약: \path{research/development-cases/ontology-map-20261023-01/}\path{result.json}, \path{contract.json}.
 
 \section{논의}
 Semantic repair \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching}와 달리 $\rho$는 deterministic pre-execution 오류를 사용하고 oracle-only는 state-reading만 처리한다. Frozen-case rule 일치와 edit-scope 진단은 capability나 ontology 우월성이 아니다.
 
-미실행 계획은 matched-information whole-game 비교, 정확한 provider/model revision의 repeated cross-model run, independent semantic oracle, 필요시 blinded human study다(아래 locator). 미래 endpoint는 matched request/evidence 수신부터 모든 동결 mandatory check를 통과한 첫 receipt까지 time-to-first-all-predeclared-validation-pass이며 unfinished/timeout/fail/stage-not-reached에 성공 시간을 부여하지 않는다.
+질문 A(model/stack consistency)와 C(fresh-reference noninferiority)는 미실행이다. A는 고정 source/policy/replay에서 substituted model/stack의 budget-bounded goal completion을, C는 sealed assignment에서 candidate와 fresh reference를 비교한다. 둘 다 exact identity/revision field와 별도 safety/replay accounting이 필요하다. Goal completion은 safety/replay와 다른 endpoint이며 현재 lane은 A/C에 답하지 않는다. 별도의 제작 평가에서 미래 endpoint는 matched request/evidence 수신부터 모든 동결 mandatory check를 통과한 첫 receipt까지의 time-to-first-all-predeclared-validation-pass이며 unfinished/timeout/fail/stage-not-reached에는 성공 시간이 없다.
 \subsection{제안된 traceability instrument (미측정)}
 제안 construct는 observable requirement/artifact/action/outcome의 recoverable correspondence이지 correctness/hidden reasoning/developer skill/player benefit이 아니다. Neutral $U_d$/link $L_d(u)$를 동결하고 independent assessor가 exact source/version, 모든 raw-evidence 관계, locator를 확인할 때만 unit=1이다. 가중 composite 없이 $n_d/N_d$, disagreement, seeded-corruption control을 보고하며 불완전 inventory는 indeterminate다. Missing/inaccessible/stale/contradicted/unverified는 이유와 함께 0이다. 검증된 zero repair만 N/A이며 빈 log는 zero가 아니다. PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, MISSING을 별도 보고하고 \texttt{stage\_not\_reached}는 PASS가 아니다.
 \begin{table}[t]

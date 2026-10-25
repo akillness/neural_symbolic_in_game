@@ -13,7 +13,15 @@
 
 ## Sources and reports
 
-- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan]] — **현재 검증·API 자문·순차 비교 준비**: 기존 `gpt-6.1-sol` 사례는 `n=1`, CLI 6회, 독립 반복 0회다. 한·영 논문 각 10쪽, 수정 후 출판 테스트 97개·subtest 23개 및 시각자료 재생성 검사가 통과했다. 사전 푸시 2회 차단과 교정 근거는 별도로 보존하며 최종 원격 전달은 실제 영수증으로 확인한다. 실제 hosted Jev API 응답은 미검증 `proposal_only`다. 9후보의 새 비교 36셀은 이 체크포인트에서 호출 0회이며 v3.1 변경안도 비활성이다. Git 전달 후 단일 작업·실험 큐를 사용한다. 과거 Argon 관측·제안 채점표·전체 게임 비교 계획은 완료된 새 연구 결과가 아니다.
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan]] — **검증·Git 전달·순차 실험 준비**: `c08ed75` 원격 전달과 전체 pre-push 통과를 확인했다. 기존 사례는 `n=1`, CLI 6회, 독립 반복 0회이며 논문은 각 10쪽이다. 출판 테스트 97개·subtest 23개와 시각자료 검사가 통과했고, 이전 푸시 2회 차단은 보존했다. 후속 검토는 승인하되 공개 경로·할당량 메타데이터 문제 1건을 발견했다. 작업본 가림과 19개 검사는 완료했으나 후속 전달·과거 Git 노출은 별개다. Jev는 미검증 `proposal_only`; 이 체크포인트의 새 비교 36셀은 호출 0회다. 실험은 단일 큐로 수행하며 과거 Argon 관측·제안 채점표를 새 완료 결과로 쓰지 않는다.
+  - [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Ontology consistency interview / 온톨로지 일관성 인터뷰 — 2026-10-24]] — **새 인터뷰 진행 중**: 매 질의 Jev 라우팅 규칙 반영·실제 API 라우팅 확인. 형식 일관성/실행 안전/개발 편익을 분리하고, 동일 정보의 일반규칙 대조군과 새 Sol 기준선 필요성을 제안했다. 이번 후보명은 기존 패널로 자동 대체하지 않으며 새 비교 실험·동결계약 변경은 없다.
+    - 사용자 선택: **A 실행 일관성 + C 비최상위 후보의 실용성**. B 중심 권고는 미채택이다. 다음 인터뷰는 고정 게임 내부의 실행 모델 비교와 게임 제작 에이전트 비교를 구분한다. 기존 동결 계약 변경·실험 실행은 없다.
+    - **실행 비교·지표 개정 승인:** 같은 게임 내부의 모델 교체와 A+C가 주 목표다. 새 런타임 연구의 **1차는 예산 내 목표 달성률(사전 한도 내 수정 허용)**로 확정했고, 최초 제안 위반율·수정 횟수·완료 시간·비용은 2차, 커밋 안전은 별도 필수 게이트다. 내러티브→온톨로지→워크플로우는 별도 산출물 검증이며 모델별 게임 제작은 탐색 제안이다. **C 허용차·예산·전체 프로토콜은 아직 미확정**이며 기존 동결계약 변경·실험 실행은 없다.
+    - **지표 개정 JSON 동결 완료 / 전체 프로토콜 미동결:** [새 런타임 연구의 지표 원본](../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/endpoint-amendment-v1.json)과 SHA-256을 생성·검증했다. [일괄 결정안](../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json)은 `PENDING_USER_APPROVAL`; 하니스 감사는 `IMPLEMENTATION_REQUIRED`다. 파일럿 조건당24회·최대288회는 미승인 탐색 제안이며 C 비열등성 결과가 아니다. 검토 최초FIX→교정후APPROVE·JSON4개 파싱·해시2개 일치만 검증했고 모델 실험 실행은 없다.
+    - **오프라인 구현·실제 엔진 검증 완료:** [최종 영수증](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json). 일반규칙/온톨로지 표현 각각 실제 Godot 4판단·3커밋·목표 달성·안전 PASS·새 프로세스 재실행 PASS, 회귀53개와 subtest32개·Ruff·형식 검사 통과, 보호46파일 바이트 불변. 전용 Python 검토기429는 실패로 남기고 독립 Python 기준 대체 검토로 결함을 닫았다. **주입 응답을 쓴 QA이며 실모델 비교0·A/C 미입증·전체 프로토콜/실행 승인 미완료**다. 앞선 정적 감사와 실패 영수증은 이력으로 보존한다.
+      - **전체 위키 구조 검사는 FIX:** 이번 인계 추가 영역 밖의 자동수집 이력 링크180개가 끊어져 exit1이었다. 이 실패를 보존했으며 원본·과거 링크를 삭제해 통과시키지 않았다. 런타임 검증 PASS와 전체 위키 건강 상태는 별개다.
+    - [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Independent manuscript review / 독립 논문 검토 — 2026-10-24]] — **논거·임팩트·구성 독립 검토 3개 완료**: [원문 대조 통합판](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/meta-review.json). 중심 기여는 source-bound 제안→승인→변경의 감사 경계로 정리하며, A/C·온톨로지 인과 효과는 미입증 그대로다. NPC 한영 한계 누락 지적은 원문 전체 대조로 비채택했다. native preflight 현재 부재와 과거 언급의 충돌은 `[uncertain]`으로 보존한다. 논문 개정·실험·Git 전달을 완료했다는 뜻이 아니다.
+    - [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Revised publication checkpoint / 개정 출판 체크포인트 — 2026-10-24]] — **한영 각10쪽·최종 과학 검토 APPROVE_BOUNDED**: F1--F6 참조/경로/윤리/한정 오류 교정, 기여5·참조58 교차검증 통과. 이전 전체 CI의 unittest412개·game78개/subtest48개 PASS는 별도 영수증에 보존한다. 과거 캡처 참조180개는 원본 미확보를 명시했고 구조 lint는 통과했다. 개인 경로 원본은 수정하지 않고 해시 결속 가림본만 공개한다. Git 전달은 대기이며 실모델 A/C·재배포 완료가 아니다.
 
 - [[wiki/reports/2026-10-23-signal-notation-review]] — **새 표기·시각화 감사 / 추가 live QA 전체 NOT_PASS**: 관련 테스트104개 통과, 검토한 한영 PDF 영역의 잘림·겹침 없음. E/R은 사례 수, C는 검사 기록 수, NR은 미보고 사례 수이며 재생 일치는 안전성이 아니다. Python 검사 ID·퀘스트 조건 연결에 보완점이 남는다. 새 Jev API는 미검증 `proposal_only`; headed yaw guard와 headless pointer-lock 오류4건을 보존한다. 후자는 행동·맵7개 항목이 통과했지만 전체 승인이 아니다. 아래 과거 배포 PASS·동결 실험 수치와 구분하며 새 개발 표본·논문/게임 수정·재배포는 없다.
   - 인터뷰 지표 추가: **검증 완료 시간(1차) + 판단·수정 추적 가능성(핵심 2차)**. 근거·규칙·검사·결정 및 오류·수정·재검증 연결을 별도로 평가한다. 실패한 수정도 추적 가능할 수 있으며, 기록 누락은 통과가 아니다. 세부 측정법은 제안 단계이고 새 결과·실험·논문/게임 수정은 아니다.
@@ -148,15 +156,150 @@
 
 - [[wiki/queries/2026-09-06-003827-prompt]] - 이어서 진행해
 
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-222444-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-222444-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-224103-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-224103-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-224434-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-224434-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-225244-system-instructions`) - ## System Instructions
 
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-225244-system-instructions`) - ## System Instructions
 
-## 2026-10-23 public-source publication
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-225321-system-instructions`) - ## System Instructions
 
-- [Current disclosure r5 publication receipt](../neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/public/public-materialization-20261023-r5-final.json) binds the unchanged 60-case expectation packet, explicit public-source substitution, actual seven-case Godot receipt, and paired ten-page EN/KO manuscripts. Original NPC006 remains dated historical evidence from fa9fb8a; no efficacy or superiority is established.
-- [Public source-substitution manifest](../neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/public/source-substitution-v1.json) permits reproduction without publishing the private reviewer intake/report; original observations are preserved rather than silently redacted.
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-225321-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-230028-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-230028-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-232633-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-232633-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-233038-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-233038-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-22-235602-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-22-235602-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-000436-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-000436-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-000538-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-000538-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-000623-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-000623-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-000638-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-000638-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-001018-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-001018-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-001141-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-001141-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-004316-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-004316-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-004444-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-004444-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-004445-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-004445-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-004449-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-004449-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-050222-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-050222-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-051127-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-051127-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085003-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085003-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085044-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085044-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085129-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085129-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085204-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085204-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085238-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085238-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085323-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085323-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085407-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085407-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-085644-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-085644-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-223131-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-223131-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-224506-model-deasdfas`) - /model deasdfas
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-224506-model-deasdfas`) - /model deasdfas
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-225314-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-225314-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-225428-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-225428-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-225538-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-225538-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-225623-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-225623-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/sources/2026-10-23-225814-system-instructions`) - ## System Instructions
+
+- (capture unavailable in checkout: `wiki/queries/2026-10-23-225814-system-instructions`) - ## System Instructions
+
+- (Private source note retained locally; excluded from publication: `wiki/sources/2026-10-24-154756-system-instructions`) - ## System Instructions
+
+- (Private query note retained locally; excluded from publication: `wiki/queries/2026-10-24-154756-system-instructions`) - ## System Instructions

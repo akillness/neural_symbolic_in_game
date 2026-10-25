@@ -1,0 +1,192 @@
+{
+  "schema_version": "runtime-model-swap/offline-final-verification-1",
+  "checkpoint": "2026-10-24",
+  "status": "PASS_OFFLINE_ENGINEERING_ONLY",
+  "scope": "Approved fixed-game offline harness; not scientific efficacy, full study freeze, live readiness or production release",
+  "source_sha256": {
+    "src/nesy_game/runtime_model_swap.py": "127b3ccad6b9aa164ad2f54dd50c7b0668678e5dd304a8ee0207f34dc1f48ff1",
+    "scripts/run_runtime_model_swap.py": "0d00845926529b1d89040813e08c7ae6aa2fe8d63471f0ed699aa2cdc6e2779b",
+    "tests/test_runtime_model_swap.py": "2d145ee5cc5ce347ba5e00ca933b3e150e4e0dd54749c1e6b3036b665b0f16bd",
+    "tests/test_runtime_model_swap_godot.py": "202cb79c9c0c31e406a3122b7030d3a960633629436cc771fc82da26d8f526d1"
+  },
+  "frozen_integrity": {
+    "receipt": "release-frozen-integrity.json",
+    "protected_count": 46,
+    "changed_protected_files": []
+  },
+  "tests": {
+    "command_receipt": "release-test-command.json",
+    "junit": "tests-release.xml",
+    "top_level_passed": 53,
+    "subtests_passed": 32,
+    "junit_testcases": 85,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "runner_seconds": 18.14,
+    "project_wide_suites_run": false
+  },
+  "static_checks": {
+    "ruff_check": {
+      "status": "PASS",
+      "receipt": "release-lint-command.json"
+    },
+    "ruff_format_check": {
+      "status": "PASS",
+      "receipt": "release-format-check-command.json"
+    }
+  },
+  "episodes": {
+    "general_rule": {
+      "path": "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-general-rule/episode.json",
+      "record_hash": "3ff92d8c711d9db29bb5400db2116911cd0991e9926177ce69308198163a7c0c",
+      "primary_success": true,
+      "engineering_status": "PASS",
+      "goal_reached": true,
+      "decisions": 4,
+      "host_calls": 4,
+      "committed_transitions": 3,
+      "committed_invariant_violations": 0,
+      "safety": "PASS",
+      "fresh_process_reexecution_checks": 4,
+      "replay_model_calls": 0,
+      "input_byte_identity_verified": true,
+      "limits": {
+        "max_host_calls": 12,
+        "max_repairs_per_decision": 2,
+        "response_seconds": 60.0,
+        "wall_seconds": 180.0
+      },
+      "provider_process_launch_count": 0,
+      "synthetic": true
+    },
+    "ontology": {
+      "path": "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-ontology/episode.json",
+      "record_hash": "44908ff51149e970c60035e2216d5d46e99f42ebe3b933f0810a6a5a226ae575",
+      "primary_success": true,
+      "engineering_status": "PASS",
+      "goal_reached": true,
+      "decisions": 4,
+      "host_calls": 4,
+      "committed_transitions": 3,
+      "committed_invariant_violations": 0,
+      "safety": "PASS",
+      "fresh_process_reexecution_checks": 4,
+      "replay_model_calls": 0,
+      "input_byte_identity_verified": true,
+      "limits": {
+        "max_host_calls": 12,
+        "max_repairs_per_decision": 2,
+        "response_seconds": 60.0,
+        "wall_seconds": 180.0
+      },
+      "provider_process_launch_count": 0,
+      "synthetic": true
+    }
+  },
+  "paired_canonical_initial_and_final_states_equal": true,
+  "portable_input_resolution": "Resolve engine input_path relative to its artifact_root; persisted input bytes were re-hashed and matched before/after hashes",
+  "disposable_staged_projects_removed": true,
+  "disposable_staged_project_count": 2,
+  "live_rejection": {
+    "status": "PASS",
+    "expected_exit_code": 2,
+    "provider_process_launch_count": 0,
+    "no_output_directory_created": true,
+    "receipt": "release-live-rejection-command.json"
+  },
+  "reviews": {
+    "correctness": {
+      "verdict": "APPROVE",
+      "receipt": "release-code-review-final.json",
+      "kind": "Full base review plus source-final delta closure; final closure is a labeled IRC projection"
+    },
+    "python_specific": {
+      "verdict": "APPROVE",
+      "receipt": "release-python-fallback-review.json",
+      "actual_agent": "reviewer",
+      "kind": "Independent Python-rubric fallback; final closure is a labeled IRC projection"
+    },
+    "named_python_reviewer": {
+      "status": "UNAVAILABLE_HTTP_429_NOT_PASS",
+      "receipt": "python-review-unavailable.json"
+    }
+  },
+  "failure_evidence_retained": [
+    "code-review-initial.json",
+    "code-review-followup-fix.json",
+    "code-review-pre-final-fix.json",
+    "code-review-budget-fix.json",
+    "python-fallback-fix.json",
+    "tests-unicode-budget-red.xml",
+    "tests-telemetry-red.xml",
+    "telemetry-red-command.json",
+    "telemetry-green-command.json"
+  ],
+  "successful_telemetry_regression_receipt": "telemetry-green-v2-command.json",
+  "study_boundary": {
+    "research_live_model_episodes": 0,
+    "offline_qa_is_not_a_model_trial": true,
+    "both_views_retain_common_ontology_derived_workflow": true,
+    "no_ontology_presence_causal_claim": true,
+    "A_cross_model_consistency_established": false,
+    "C_noninferiority_established": false,
+    "full_protocol": "INCOMPLETE_NOT_FROZEN_NOT_AUTHORIZED",
+    "pre_run_decision_bundle": "PENDING_USER_APPROVAL",
+    "no_model_identity_revision_cost_inferred": true,
+    "no_commits_pushes_deployments_or_graph_rebuilds": true
+  },
+  "documentation": {
+    "status": "PASS_SCOPED_FILINGS_GLOBAL_WIKI_FIX_RETAINED",
+    "obsidian_surface_receipt": "obsidian-handoff-surface.json",
+    "method": "Existing project files; filesystem fallback after Obsidian CLI exit1",
+    "files": [
+      "llm-wiki/index.md",
+      "llm-wiki/log.md",
+      "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md"
+    ],
+    "scoped_links": {
+      "status": "PASS",
+      "occurrences": 15,
+      "receipt": "documentation-link-verification.json"
+    },
+    "global_wiki_lint": {
+      "status": "FIX",
+      "exit_code": 1,
+      "broken_link_occurrences": 180,
+      "scope": "Auto-capture history references outside the newly added checkpoint sections",
+      "receipt": "wiki-lint-command.json"
+    },
+    "raw_source_or_history_deletions": 0
+  },
+  "self_evaluation": {
+    "scope": "Approved offline deliverable, not unrequested live research or whole-vault repair",
+    "accuracy": {
+      "score": 4,
+      "evidence": "53 tests+32 subtests, source-bound paired engine/replay and byte identities; final reviewer originals could not be retrieved, so labeled IRC projections are retained"
+    },
+    "completeness": {
+      "score": 5,
+      "evidence": "Approved offline acceptance, failure/admission/repair/timing boundaries, original-source integrity and durable handoff covered; global wiki failure separately retained"
+    },
+    "clarity": {
+      "score": 4,
+      "evidence": "Trace success is primary goal, not safety/replay approval; consumers must also check accepted_for_engineering_verification as documented"
+    },
+    "actionability": {
+      "score": 5,
+      "evidence": "Working offline CLI, exact commands, final source hashes, full episode records and denied-live proof retained"
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "Headline counts repeat across four required handoff surfaces; this canonical receipt is the single pickup point rather than intermediate final/green-named files"
+    },
+    "overall": 4.4,
+    "improvements": [
+      "Recover original final reviewer results when lifecycle retrieval is repaired; do not relabel projections as originals",
+      "Keep downstream consumers gated on primary_success and accepted_for_engineering_verification; use canonical receipt links to avoid intermediate evidence"
+    ],
+    "self_check": "User agreement is not observed; offline-only scope, reviewer fallback and unresolved global wiki FIX are explicit"
+  }
+}

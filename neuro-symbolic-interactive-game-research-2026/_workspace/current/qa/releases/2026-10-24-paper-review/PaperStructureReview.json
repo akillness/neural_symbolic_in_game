@@ -1,0 +1,211 @@
+{
+  "scope_and_confidence": "Read-only review of paper/latex/en/main.tex, ko/main.tex, all active generated EN/KO inputs, en/main.pdf and ko/main.pdf text extraction, result-promotion.yaml, the offline verification artifact, endpoint-amendment-v1, pre-run-decision-proposal-v1, and runtime-readiness. No files were edited and no commands/tests/builds/formatters were run. Structural claims are high-confidence source claims. Rendered geometry, float placement, and actual PDF fit are explicitly unverified from text extraction alone; external novelty/venue judgments are [INFERENCE].",
+  "current_outline": [
+    {
+      "part": "Front matter + Introduction",
+      "anchors": "en/main.tex:25-63; ko/main.tex:70-100",
+      "content": "Title/abstract/keywords; problem motivation; C1-C5 contribution paragraph and generated contribution map; architecture figure. EN declares both full-width figures before Related Work (en/main.tex:50-63); KO declares only architecture figure here."
+    },
+    {
+      "part": "Related Work and Research Gap",
+      "anchors": "en/main.tex:66-75; ko/main.tex:103-112",
+      "content": "Grounding/believability, game/agent environments, structural constraints/runtime interposition, reproducibility/evaluation, then a no-invention claim for C1-C5. There is no explicit RQ/RQ-ID in either source."
+    },
+    {
+      "part": "Problem Definition and Guarantee Boundary",
+      "anchors": "en/main.tex:77-99; ko/main.tex:114-136",
+      "content": "State/context notation, seven Boolean validators, transition equation, I1-I4 invariants, assumptions, and replay limits."
+    },
+    {
+      "part": "TRACE-RPG Architecture and Algorithms",
+      "anchors": "en/main.tex:101-200; ko/main.tex:138-247",
+      "content": "Trust boundary; validator/ontology tables; fixed-goal NPC integration and NPC-DISC-1 contract; Validate-Repair-Commit algorithm and rho table; integrity/replay/accounting."
+    },
+    {
+      "part": "Evidence Lanes and Boundaries",
+      "anchors": "en/main.tex:202-217; ko/main.tex:249-272",
+      "content": "Generated lane table; E1 offline conformance design; archived live-screening; NPC-ENG1/NPC-SCR1; E3 closed-world simulation and its construction-only ceiling."
+    },
+    {
+      "part": "Pilot Results",
+      "anchors": "en/main.tex:218-249; ko/main.tex:273-306",
+      "content": "Six generated blocks are inserted under one section: E1 tables/results, NPC results/table, disclosure results/tables, then disclosure figure and ENG1 paragraph, followed by single-task Codex DEV-CASE. EN source order is pilot tables then pilot prose (220-221); KO is pilot prose then tables (275-276)."
+    },
+    {
+      "part": "Discussion, Threats, Ethics, Artifact Scope",
+      "anchors": "en/main.tex:251-279; ko/main.tex:308-337",
+      "content": "Repair relation to prior work; unexecuted whole-game/cross-model/human plans; proposed unmeasured traceability rubric; threats and ethics."
+    },
+    {
+      "part": "Conclusion and end matter",
+      "anchors": "en/main.tex:282-295; ko/main.tex:338-348",
+      "content": "C1-C5 plus source-bound observer summary; explicit non-efficacy limitation; AI-use and data/code availability; references."
+    }
+  ],
+  "pdf_text_evidence": "The extracted EN PDF contains page markers 1 through 10 (for example en/main.pdf:31 and :753); the extracted KO PDF likewise contains page markers including 2, 5, and 10 (ko/main.pdf:83, :305, :697). This confirms only that page-number text exists in the extraction. I do not claim rendered 10-page fit, whitespace, float positions, column balance, or geometry inspection.",
+  "current_vs_recommended_outline": {
+    "current_flow_assessment": "The skeleton is logically Introduction -> Related Work -> formal boundary -> architecture -> evidence -> results -> discussion -> conclusion, but the research-question step is absent, two diagrams and provenance-heavy material are front-loaded, and the single Pilot Results section makes five non-comparable evidence types look like one study. The abstract is unusually honest about n=1 and missing provider identity, but the core reader must reconstruct which question each lane answers.",
+    "recommended_10_page_budget": "Approximate page-equivalents only; not a rendered geometry claim. Reserve about 1.5 page-equivalents for references/end matter, leaving about 8.5 for argument and evidence.",
+    "recommended_outline": [
+      {
+        "budget": "0.9 pp",
+        "section": "1. Introduction, explicit study questions, contribution/claim ledger",
+        "content": "Title/abstract; one motivating failure; three bounded questions (C1-C5 mechanism conformance; source-bound read-only observer; bounded integration observation); contribution map reduced to one compact table. No full-width signal figure here."
+      },
+      {
+        "budget": "0.9 pp",
+        "section": "2. Related work and gap + guarantee boundary",
+        "content": "Three synthesized literature clusters, one paragraph on what is not claimed, then compact c_t/V/transition definition and assumptions. Move detailed reproducibility citations to Evidence Design."
+      },
+      {
+        "budget": "1.0 pp",
+        "section": "3. Architecture and contracts",
+        "content": "Trust boundary, seven predicates, source-bound ontology view, fixed-goal/NPC-DISC boundary, and signal-mechanism figure adjacent to the text that explains it. Keep service paths/ports in a short artifact note."
+      },
+      {
+        "budget": "1.0 pp",
+        "section": "4. Controller, audit, and evidence design",
+        "content": "Validate-Repair-Commit algorithm, rho rule table, replay/accounting, generated Evidence-Lanes table, and one centralized claim-ceiling paragraph."
+      },
+      {
+        "budget": "1.0 pp",
+        "section": "5. E1 offline conformance results",
+        "content": "Immediately pair E1 prose with repair/accounting tables; keep 13/13, 5/5, 6/12, 10/10, 1/1, 3/3 as authored-fixture facts, never rates."
+      },
+      {
+        "budget": "0.9 pp",
+        "section": "6. E3 and ENG1 engineering results",
+        "content": "E3 table explicitly titled construction-only, then ENG1 Godot/Web engine-local conformance. Keep the numerical metric table but put the ceiling before the metrics."
+      },
+      {
+        "budget": "1.0 pp",
+        "section": "7. NPC-DISC-1 contract and results",
+        "content": "Contract, 48/4/8 strata, three-arm table, rule-change fixtures, and disclosure figure together; make the shared-rule/non-discriminating-case limit the first sentence."
+      },
+      {
+        "budget": "0.8 pp",
+        "section": "8. DEV-CASE and runtime infrastructure status",
+        "content": "One short DEV-CASE paragraph (n=1, no provider attestation) plus a separately boxed offline-runtime status: PASS_OFFLINE_ENGINEERING_ONLY, synthetic fixtures, provider process launches 0, research live-model episodes 0, not a model trial."
+      },
+      {
+        "budget": "1.0 pp",
+        "section": "9. Discussion, threats, future tracks, conclusion",
+        "content": "Limitations first; then two explicitly separate future tracks: (A/C) fixed-game runtime consistency/substitution, and whole-game-authoring timing/traceability. State that neither has results. End with concise conclusion."
+      },
+      {
+        "budget": "1.5 pp",
+        "section": "10. AI-use/data-code availability/references",
+        "content": "Keep end matter compact; references are expected to occupy roughly the remaining page-equivalents. Re-render and inspect geometry after any cut/move."
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "anchor": "paper/latex/en/main.tex:42-48,66-75; paper/latex/ko/main.tex:87-112",
+      "issue": "No explicit research question, numbered RQ, or direct mapping from question to lane. The reader sees a broad literature inventory and C1-C5 list but must infer what the paper is asking.",
+      "severity": "High",
+      "proposed_fix": "Insert a 3-sentence 'Study questions and claim boundary' block after the Introduction motivation and before Related Work: Q1 bounded C1-C5 mechanism/conformance; Q2 source-bound read-only observer traceability; Q3 what the single Codex integration observation demonstrates and does not demonstrate. Map Q1 to E1/E3/ENG1, Q2 to NPC-DISC-1, Q3 to DEV-CASE. Do not phrase any as model efficacy or player benefit.",
+      "status": "Fixable-now; no new data needed."
+    },
+    {
+      "id": "F2",
+      "anchor": "paper/latex/en/main.tex:50-63 (especially comment at 57); paper/latex/ko/main.tex:95-100 and 141-146",
+      "issue": "The EN source queues both full-width figures before Related Work; the signal-mechanism figure is therefore declared before the architecture section. KO places signal-mechanism inside Architecture. This delays the core idea, creates bilingual structural drift, and makes source order harder to follow. This is a source-declaration issue, not a claim about rendered float geometry.",
+      "severity": "High",
+      "proposed_fix": "Declare the architecture figure once in the Introduction only if needed; move signal-mechanism to Architecture immediately after the source-binding/validator explanation, and make EN/KO declaration order identical. Re-render later to check actual floats.",
+      "status": "Fixable-now; rendered geometry needs a later build/visual check."
+    },
+    {
+      "id": "F3",
+      "anchor": "paper/latex/en/main.tex:77-99,101-200; generated/pilot_results_en.tex:1-8; generated/disclosure_results_en.tex:1-13",
+      "issue": "Formal notation, validator descriptions, replay limits, and claim ceilings are repeated across Problem Definition, Architecture, lane prose, and each generated result block. c_t, V, E_t, rho, E1/E3/ENG1, P/R/O, and NPC-DISC-1 are introduced without a single reader-facing lexicon. Repeated 'not efficacy/superiority/player benefit' caveats are truthful but consume attention and page budget.",
+      "severity": "Medium-High",
+      "proposed_fix": "Keep one transition equation and one algorithm; add a compact notation/arm legend near the first use; centralize the general inference ceiling in Evidence Design and shorten local footnotes to lane-specific exceptions. Move service ports, file paths, and hash/provenance detail to one artifact paragraph.",
+      "status": "Fixable-now; citation/terminology validation remains an author check."
+    },
+    {
+      "id": "F4",
+      "anchor": "paper/latex/en/main.tex:202-244,220-228; paper/latex/ko/main.tex:249-306,273-286; generated/pilot_tables_en.tex:1-48; generated/pilot_results_en.tex:1-8; generated/npc_results_en.tex:1-7; generated/disclosure_results_en.tex:1-13",
+      "issue": "Pilot Results is a container for E1, E3, ENG1, NPC-SCR1/ENG1, NPC-DISC-1, and DEV-CASE, despite different denominators, provenance, and inference ceilings. ENG1 is an unheaded bold paragraph, and generated prose/tables are not locally paired. EN and KO also use different pilot input order (tables->prose versus prose->tables).",
+      "severity": "High",
+      "proposed_fix": "Split Results into named subsections in fixed order: E1; E3/ENG1; NPC-DISC-1; DEV-CASE. Place each generated table immediately after the sentence that defines its denominator and before its interpretation. Choose one generated input order and use it in both languages; preserve all labels and IDs.",
+      "status": "Fixable-now; re-render needed to assess the page budget."
+    },
+    {
+      "id": "F5",
+      "anchor": "paper/latex/en/main.tex:246-249; generated/npc_results_en.tex:4-5; _workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json:39-84,127-137; research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json:386-411",
+      "issue": "The paper's DEV-CASE contains `gpt-6.1-sol` runtime-selection text beside extensive QA observations, while the latest runtime-model-swap artifact is explicitly synthetic offline engineering QA: both episodes have `synthetic=true` and provider_process_launch_count=0, and the study boundary says research_live_model_episodes=0 and offline QA is not a model trial. Without a visible status boundary, readers can overread QA numbers as model observations.",
+      "severity": "Critical",
+      "proposed_fix": "Precede Results with a boxed 'Evidence status' sentence: current runtime-model-swap study episodes=0; offline QA is engineering-only and synthetic; no provider/model observation is reported. Keep DEV-CASE as one historical/observational n=1 integration case, explicitly distinct from the offline harness. Do not put QA53+32 or synthetic episode counts into a model-results table.",
+      "status": "Fixable-now; no live data should be invented."
+    },
+    {
+      "id": "F6",
+      "anchor": "paper/latex/en/main.tex:251-257,282-283; research/runtime-model-swap-20261024/endpoint-amendment-v1.json:5,8,17-24,27-44,105-117,143-149,184; pre-run-decision-proposal-v1.json:4,198-241,290,386-411",
+      "issue": "The Discussion combines the whole-game timing endpoint (`time-to-first-all-predeclared-validation-pass`, en/main.tex:255) with a prospective A/C runtime study that has a different primary endpoint. The endpoint amendment is frozen but not executed, the parent protocol is incomplete/not authorized, launch is false, and the pre-run proposal is pending with actual_new_study_model_calls=0. The two future tracks can be mistaken for one study.",
+      "severity": "High",
+      "proposed_fix": "Create two explicit future-study paragraphs. (A/C runtime track): budget-bounded goal completion is primary, every assigned episode remains in the denominator, safety is a separate mandatory gate, and no episodes are reported yet. Whole-game authoring timing track: retain the existing time-to-first-all-predeclared-validation-pass definition as a separate authoring endpoint; do not pool it with runtime episodes or DEV-CASE.",
+      "status": "Fixable-now; needs future data only if either study is later executed."
+    },
+    {
+      "id": "F7",
+      "anchor": "paper/latex/en/main.tex:25,35,46-75; paper/latex/ko/main.tex:70,80-112",
+      "issue": "Title/abstract foreground a bounded Codex integration case and source-bound ontology view, while the body presents five C1-C5 surfaces plus E1/E3/ENG1/NPC-DISC-1/DEV-CASE. Related Work is citation-dense topic listing (especially en/main.tex:67-75), and 'ontology' denotes at least a source-bound observer, E3 construction simulation, and an ontology-gate arm. Korean title says 'single Codex integration case' but does not preserve the English 'bounded Codex-assisted' nuance exactly.",
+      "severity": "Medium",
+      "proposed_fix": "State the artifact-paper thesis in the abstract's first sentence (five bounded conformance surfaces plus a source-bound observer; no live efficacy study), then describe the single Codex case as one lane. Compress Related Work into three synthesized gaps. Define and consistently distinguish source-bound observer, E3 construction simulation, and ontology-gate arm. Align the Korean title's bounded/assisted qualifier with EN.",
+      "status": "Fixable-now; external citation-support/novelty checks are separate."
+    },
+    {
+      "id": "F8",
+      "anchor": "paper/latex/en/main.tex:214-217; generated/kg_ontology_simulation_en.tex:6-18; corresponding KO: main.tex:269-272 and generated/kg_ontology_simulation_ko.tex:6-18",
+      "issue": "E3 presents Precision/Recall/MRR/Brier/Sem@3 values including 1.000 values before the reader sees the full limitation. The table is construction-only authored closed-world link recovery, but its visual form resembles an efficacy evaluation and is positioned in Evidence Lanes before the main results.",
+      "severity": "Medium",
+      "proposed_fix": "Move E3 to the split Results subsection, put the construction-only ceiling before the table, rename the caption/subsection to 'E3 construction simulation (not retrieval/effectiveness)', and keep the 43-node/106-reference-edge/24-typed-edge counts as graph-construction facts. If page pressure persists, move the metric table to a supplement and retain one summary sentence in the paper.",
+      "status": "Fixable-now; no new data needed."
+    }
+  ],
+  "runtime_and_future_study_placement": {
+    "offline_runtime_infrastructure": "Place a short E0/status subsection at the start of Evidence Design or immediately before Results, not inside DEV-CASE and not as a model-result lane. Source-grounded facts are verification-final.json:4-5 (PASS_OFFLINE_ENGINEERING_ONLY; not efficacy/full study/live readiness), :39-84 (two synthetic episodes, provider launches 0), and :127-137 (research_live_model_episodes=0; offline QA is not a model trial; A and C not established; protocol incomplete). This is engineering readiness/provenance, not current research-model evidence.",
+    "prospective_AC": "Place the A/C runtime-model study in Methods as 'Prospective runtime study (not executed)' or in Discussion immediately after limitations, with a boxed endpoint contract. Use endpoint-amendment-v1:27-44 for budget-bounded goal completion and its separate safety gate, and :105-117 for the explicit noninferiority fields that are still null. Keep the parent protocol status incomplete/not authorized (:184), launch unauthorized (:143-149), and no episodes (:149). The pre-run proposal remains pending/not executed (:4, :386-411).",
+    "whole_game_authoring_timing": "Keep the existing timing track at en/main.tex:255 as a separate future endpoint: time-to-first-all-predeclared-validation-pass for matched request/evidence receipt. Label it 'whole-game authoring timing' and do not rewrite it as A/C runtime completion time, DEV-CASE wall-clock, provider latency, or model sample evidence.",
+    "C_RESULT_gate": "Do not promote planned efficacy IDs. result-promotion.yaml:1-8 states the C-RESULT-001..005 studio boundary fail-closes while they remain TODO-RESULT; :23-25 forbids TODO-RESULT->verified-empirical and pilot-only->verified-empirical."
+  },
+  "en_ko_parity": {
+    "confirmed_alignments": [
+      "Section semantics align despite line offsets: EN sections at 42,66,77,101,202,218,251,282 correspond to KO 87,103,114,138,249,273,308,338.",
+      "C1-C5 contribution IDs and the contribution-map label `tab:contribution-map` match (EN generated/contribution_map_en.tex:3-20; KO generated/contribution_map_ko.tex:3-20).",
+      "E1/E3/ENG1 lane IDs, lane counts, and ceilings match (EN/KΟ evidence_lanes files:12-17).",
+      "KG table label `tab:kg-ontology-simulation` and values S0 (0,0,0.282,0.315,0.556) and S2 (1,1,0.944,0.131,1) match in EN/KO generated KG inputs:12-18.",
+      "Pilot repair and accounting counts match: 0/5, 0/1, 0/6; rho 5/5,0/1,0/6; oracle 5/5,1/1,0/6; accounting 13/13, 2/2, 1/1, 10/10, 1/1, 1/commit+1/fallback+5/failures, 3/3 (EN generated/pilot_tables_en.tex:14-46; KO generated/pilot_tables_ko.tex:14-46).",
+      "NPC-SCR1 table label and rows match exactly: P/R/O each 24 assigned, 20/4 complete/fail, 4 goal reached, 24/0 recovery (EN/KO generated/npc_tables files:2-16).",
+      "Disclosure table label and rows match exactly: 48/4/8 strata; unchecked 60/0 with 60 mismatch and 51 unique unsafe; checked arms 16/44 with zeros (EN/KO generated/disclosure_tables files:25-40). All corresponding major labels (`tab:validators`, `tab:ontology-roles`, `alg:commit`, `tab:rho-rules`, `fig:disclosure-signals`, `tab:traceability-rubric`) are present in both source languages."
+    ],
+    "parity_findings": [
+      "Architecture visual order differs: EN signal-mechanism is declared at en/main.tex:58-63 before Related Work, while KO declares it at ko/main.tex:141-146 inside Architecture after the trust-boundary text. EN places validator table before ontology-role table (105-145); KO places ontology-role table before validator table (150-196). EN places the validator table immediately after trust-boundary prose and before fixed-goal text; KO places it after fixed-goal/NPC-DISC prose (ko/main.tex:171-180). These are substantive source-structure mismatches even though labels/IDs match.",
+      "Pilot generated input order differs: EN main.tex:220-228 inserts pilot_tables -> pilot_results -> npc_results -> npc_tables -> disclosure_results -> disclosure_tables; KO main.tex:275-286 inserts pilot_results -> pilot_tables -> npc_results -> npc_tables -> disclosure_results -> disclosure_tables. Make the order identical to preserve bilingual narrative/table adjacency.",
+      "Title nuance is not exact: EN main.tex:25 says 'Bounded Codex-Assisted Integration Case'; KO main.tex:70 says '단일 Codex 통합 사례' (single Codex integration case), which omits the explicit bounded/assisted qualifiers. Align wording or explicitly justify the shorter Korean title.",
+      "Rendered table/figure numbering and geometry are not claimed. Source labels are parity-checked; PDF extraction showing page markers does not establish that floats occupy the same positions or that both rendered PDFs fit exactly ten pages. Long generated prose parity was checked for labels and numeric rows; exact sentence-level bilingual equivalence for every long line is not asserted where the extracted line was truncated."
+    ]
+  },
+  "scores": {
+    "overall_scholar_evaluation": "3/5 (adequate, substantial structural revision needed)",
+    "clarity": "3/5",
+    "clarity_evidence": "The abstract and conclusion explicitly state n=1, zero independent repeats, missing provider identity/revision/seed/cost/latency, and non-efficacy limits (en/main.tex:35,247-249,282-291). Clarity is reduced by the absent RQ, dense acronym/notation load (77-200), and multiple meanings of ontology.",
+    "structure": "3/5",
+    "structure_evidence": "The high-level section order is sensible (42->66->77->101->202->218->251->282), but two figure declarations are front-loaded (50-63), Results mixes distinct lanes (218-249), EN/KO generated input order differs (220-228 vs 275-286), and future study tracks are not explicitly separated (251-257).",
+    "problem_and_question": "2/5",
+    "methodology": "4/5",
+    "data_and_evidence": "4/5",
+    "analysis_and_interpretation": "3/5",
+    "limitations_and_boundaries": "5/5",
+    "writing_and_structure_rubric": "3/5",
+    "citations_and_context": "3/5",
+    "score_note": "Citations are broad and generally attached to topical claims, but Related Work is list-like and external citation correctness/novelty/venue acceptance were not independently checked."
+  },
+  "top_three_structural_edits": [
+    "Add an explicit bounded RQ/claim-to-lane block after the first motivating paragraph; move/condense contribution mapping so the paper states what each lane answers before presenting evidence.",
+    "Normalize EN/KO source order: move signal-mechanism into Architecture in both; use the same validator/ontology table order and the same generated prose/table order; split Pilot Results into E1, E3/ENG1, NPC-DISC-1, and DEV-CASE subsections.",
+    "Install a visible evidence-status/future-track boundary: offline runtime QA is synthetic engineering-only with zero live research model episodes; the A/C runtime study is frozen/not executed with safety separate; the whole-game-authoring timing track remains a distinct future endpoint."
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": "runtime-study-artifact-review/v1",
+  "date": "2026-10-24",
+  "endpoint_amendment_sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199",
+  "proposal_sha256": "cd4c5b90df3818bfbcaf83ea10b7978be1487e5846f3b954e9453892f790a7e6",
+  "initial_review": {
+    "verdict": "FIX",
+    "review_scope": "Read-only, one-pass review of the three drafts plus the approval-scope section of the cited report. No execution, model/provider/engine invocation, tests, formatting, or edits performed.",
+    "blockers_before_endpoint_amendment_freeze": [
+      {
+        "priority": 1,
+        "severity": "HIGH",
+        "title": "The artifact presents an incomplete study protocol as frozen, despite approval covering only the endpoint amendment",
+        "evidence": [
+          "runtime-model-swap-protocol-v1-draft.json:5-8 combines status `FROZEN_NOT_EXECUTED` with `freeze_scope: APPROVED_ENDPOINT_AMENDMENT_ONLY` and `protocol_complete: false`.",
+          "The same artifact is named and versioned as `protocol/v1`, while its append-only rule treats `protocol-v1.json` as the frozen object.",
+          "The approval record at current-model-contribution-and-comparison-plan.md:224-246 says the user approved the endpoint operational definition only; the full protocol, numerical noninferiority choices, model/revision, budgets, repeats, and launch remain unapproved."
+        ],
+        "failure_mode": "A reader, registry, or publication extractor can reasonably treat the entire `protocol/v1` object—including null/unresolved design fields—as the frozen preregistration. The narrower `freeze_scope` field does not undo the top-level status and artifact identity.",
+        "required_change": "Publish this as an endpoint-amendment artifact, not a completed protocol: use an endpoint-amendment schema/artifact ID and an unambiguous status such as `ENDPOINT_AMENDMENT_FROZEN_NOT_EXECUTED`; explicitly mark the parent study protocol `INCOMPLETE_NOT_FROZEN_NOT_AUTHORIZED`. Scope the append-only rule to the approved endpoint block. A field-level freeze map is an acceptable alternative if the protocol container must remain."
+      },
+      {
+        "priority": 2,
+        "severity": "HIGH",
+        "title": "Two approved endpoint families remain observably underdefined and therefore are not yet freeze-ready",
+        "evidence": [
+          "runtime-model-swap-protocol-v1-draft.json:41 explicitly says the first-proposal violation rate still needs a final executable denominator definition from the observer contract.",
+          "Line 42 does not define what counts as a repair versus a transport retry, provider-internal retry, observation-driven replan, or ordinary next decision.",
+          "Lines 49-52 define transition-level safety evidence and `FAIL`/`NOT_PASS`, but do not state whether aggregation is per transition, episode, model/representation cell, arm, or whole-study safety claim.",
+          "Line 34 leaves the zero-assigned-episode result as a naked null."
+        ],
+        "failure_mode": "The observer or analyst could choose denominator membership, retry/repair classification, or safety aggregation after seeing outcomes. That can change reported violation and repair rates and can turn a local safety failure into a differently scoped claim.",
+        "required_change": "Before freezing the endpoint amendment, prospectively define: (a) the eligible decision opportunity and first-response denominator; (b) treatment of malformed output, refusal, timeout, no output, and unevaluable evidence; (c) mutually exclusive repair/retry/replan categories and their observable counting unit; (d) transition-to-episode-to-arm safety aggregation and exactly which safety claim a single committed violation fails; and (e) zero assigned episodes as `NOT_ESTIMABLE` rather than an unexplained null. Keep missing/unknown counts visible and prohibit post-assignment exclusions."
+      }
+    ],
+    "deferred_blockers_for_any_pre_run_approval_or_live_calls_not_required_to_freeze_the_endpoint_amendment": [
+      {
+        "priority": 3,
+        "severity": "HIGH",
+        "title": "Documented model IDs are labeled as exact even though native selector, access, and served identity are unknown",
+        "evidence": [
+          "runtime-model-swap-pre-run-proposal-v1-draft.json:25,40,55,71,86,101 populate `proposed_exact_id`, while the corresponding native selectors are null and account access is false at lines 29-30,44-45,60-61,75-76,90-91,105-106.",
+          "The source records establish documentation/API names only and explicitly do not establish account access, native selector, or served revision.",
+          "The proposal correctly blocks silent fallback at lines 113-115, but it does not define who may authorize account metadata access, network preflight, research data egress, provider terms, credentials, or spend."
+        ],
+        "failure_mode": "A documented API identifier can differ from the actual OAuth CLI selector, tier, alias target, or provider-returned revision. Calling it exact can misattribute a stack observation to a pure model and can imply authority to inspect account metadata or use a provider that the endpoint approval did not grant.",
+        "required_change": "Rename these fields to `documented_id`/`proposed_api_id` until separately verified. Add a provider mapping record containing native executable/transport, literal selector, account-access receipt, fallback containment, runtime/provider-returned identity, revision, tool/context parity, and verification time. Add an explicit authority matrix: offline inspection, networked zero-generation metadata lookup, credential/account use, data transmission/privacy, billed generation, and launch each require their own named authorization; implementation approval must not imply any of them."
+      },
+      {
+        "priority": 4,
+        "severity": "HIGH",
+        "title": "The call-budget fields mix observable host invocations with unobservable provider/model requests, and the proposed episode caps lack composed mechanical proof",
+        "evidence": [
+          "runtime-model-swap-pre-run-proposal-v1-draft.json:138 calls the episode cap `max_model_calls...`, line 140 admits native internal requests may be unobservable, and line 141 computes a `host_model_invocations` ceiling.",
+          "The feasibility examples at lines 182 and 189 call the same multiplication a `provider_call_cap`, which is not observable under the stated transport boundary.",
+          "The arithmetic itself is correct: 6×2×12×2=288 episodes; 288×12=3456 host invocations; 288×180 seconds=14.4 serial hours.",
+          "runtime-model-swap-readiness-draft.json:35-36 states the current runner is not a full episode driver and does not yet compose repeated cycles under those caps."
+        ],
+        "failure_mode": "One host CLI invocation may cause retries or multiple internal provider requests. Reporting a 12-call/provider cap would be false precision. Separately, a 60-second request deadline, 12 invocation allowance, and 180-second episode limit need an explicit dominance/cancellation rule; otherwise subprocess descendants or late results can escape the intended episode boundary.",
+        "required_change": "Define the enforceable counting atom as an observable host invocation and rename all related caps accordingly; retain internal provider-request count as unknown unless authoritatively exposed. Define clock start/stop, cumulative episode deadline dominance, timeout and malformed/refusal accounting, repair charging, cancellation/descendant termination, and late-result rejection. Change `provider_call_cap` to `host_invocation_arithmetic_ceiling`. Keep the 180/60/12 values proposed and unapproved; mechanical proof remains a fail-closed precondition, not something that must be implemented to freeze the endpoint amendment."
+      },
+      {
+        "priority": 5,
+        "severity": "MEDIUM",
+        "title": "The readiness packet is static but not source-bound",
+        "evidence": [
+          "runtime-model-swap-readiness-draft.json:46 has `source_hashes: null`, although its conclusions rely on path-and-line anchors into mutable source.",
+          "The packet honestly reports static inspection only, zero executed episodes, no engine/model invocation, and no tests."
+        ],
+        "failure_mode": "After source movement or edits, the line anchors can no longer prove which bytes supported the readiness conclusion.",
+        "required_change": "Before using this packet as a readiness receipt, bind it to a repository commit and/or hashes for every cited source/config/test file, or relabel it explicitly as an unbound draft that cannot satisfy the launch gate. This is not required for publishing the endpoint amendment itself."
+      },
+      {
+        "priority": 6,
+        "severity": "MEDIUM",
+        "title": "The noninferiority illustrations are arithmetically correct but need stronger anti-interpretation boundaries and a future practical decision rule",
+        "evidence": [
+          "runtime-model-swap-pre-run-proposal-v1-draft.json:163-170 correctly labels an illustrative independent-Bernoulli normal approximation with p=0.5, true difference 0, per-contrast alpha 0.005, and power 0.8.",
+          "The formula yields 584 per arm for 10 percentage points and 2336 per arm for 5 percentage points, matching lines 180 and 187.",
+          "Pairing correlation, quest-cluster design effect, and missingness allowance remain null; lines 146,156-157,193 correctly prohibit powered pilot or confirmatory claims.",
+          "The displayed totals double across two representations, although line 147 defines the confirmatory C contrast only on the ontology-view condition."
+        ],
+        "failure_mode": "Readers may mistake integer outputs for a final powered design, treat the two-representation totals as necessary for the stated ontology-view confirmatory contrast, or infer practical substitutability from nonsignificance alone.",
+        "required_change": "Label 584/2336 as formula outputs under deliberately unrealistic independent-arm assumptions, not recommended sample sizes. Separate the one-representation C arithmetic from an optional two-representation factorial expansion. In the future confirmatory protocol, predeclare a cluster/pairing-aware simulation and a practical decision rule: multiplicity-compatible one-sided lower bound above `-delta`, any adopted absolute success-floor rule, the mandatory safety gate, missingness/assignment handling, and claim scope. Keep delta, floor, sample size, and method unapproved/null now; do not seek their approval merely to freeze the endpoint amendment."
+      }
+    ],
+    "confirmed_no_finding": [
+      "The primary denominator is appropriately all finally assigned episodes, including failures, safety stops, timeouts, refusal-only outcomes, and missing goal verification (protocol lines 29-37). Scheduled but never assigned cells are kept distinct, which is correct if roster changes require a prospective amendment.",
+      "The drafts correctly keep the historical n=1 development case, the inactive development panel, independent game authoring, ontology-pipeline conformance, runtime episodes, and authored fixture tests as separate evidence units (protocol lines 20-24; proposal lines 126-127; readiness lines 35-36).",
+      "The proposal correctly limits any representation claim to proposer exposure, not the causal effect of having an ontology in the whole system, and correctly downgrades unequal transports/tools to model-plus-system observations (proposal lines 115 and 126).",
+      "The full-study launch gate is correctly fail-closed: authorization is false, unresolved required fields block launch, and endpoint approval is not launch permission (protocol lines 93-101). The null launch fields should remain unresolved rather than being invented or approved in this endpoint-only amendment.",
+      "The pilot is explicitly exploratory, its quest clusters are acknowledged, and the draft makes no confirmatory/equivalence claim from 24 episodes per cell."
+    ],
+    "optional_refinements": [
+      {
+        "title": "Make proposal status machine-checkable per decision",
+        "change": "Add an `approval_state` beside each proposed default or group (`UNAPPROVED`) so later copying cannot silently promote the 5pp margin, 0.8 floor, 180/60/12 caps, roster, or 288-cell plan."
+      },
+      {
+        "title": "Clarify the 288 number",
+        "change": "Call 288 the conditional maximum planned assignment count for a fully accessible six-model roster, not a committed denominator. Report inaccessible/pre-assignment cells separately and never remove post-assignment failures."
+      },
+      {
+        "title": "Tighten wording at proposal line 193",
+        "change": "Replace `under proposed mechanically verified caps` with `under proposed caps that still require mechanical verification`; readiness currently says the composed episode proof does not exist."
+      }
+    ],
+    "review_summary": {
+      "CRITICAL": {
+        "count": 0,
+        "status": "pass"
+      },
+      "HIGH": {
+        "count": 4,
+        "status": "warn"
+      },
+      "MEDIUM": {
+        "count": 2,
+        "status": "info"
+      },
+      "LOW": {
+        "count": 0,
+        "status": "pass"
+      },
+      "decision": "FIX — resolve the two endpoint-amendment blockers before freezing/publishing that amendment. The remaining four findings are explicitly deferred gates for the separate unapproved pre-run packet or later confirmatory protocol; they do not require completing the harness or choosing unresolved numerical parameters now."
+    }
+  },
+  "intermediate_residuals_fixed": [
+    "Use observable host invocations consistently in primary and launch fields",
+    "Reference endpoint-amendment-v1.json rather than an approved full protocol"
+  ],
+  "final_review": {
+    "verdict": "APPROVE",
+    "evidence_channel": "IRC from RuntimeProtocolReview after re-reading corrected drafts",
+    "message": "No remaining blocker to freezing/publishing the endpoint-only amendment or publishing the separate PENDING_USER_APPROVAL proposal. This does not approve its parameters, implementation, metadata access, provider calls, spend, or launch. No execution or edits performed."
+  },
+  "review_scope": "Corrected drafts; published semantic payloads are the same, with final hash provenance bindings filled.",
+  "not_a_scientific_efficacy_or_launch_approval": true
+}

@@ -1,0 +1,111 @@
+{
+  "schema_version": "paper-review-delivery-verification/1",
+  "status": "PASS_SCOPED_REVIEW_DELIVERY",
+  "scope": "Three requested independent reviews, source-checked synthesis and newly added handoff links only",
+  "verification_command": "functions.eval Python: json.loads + json.dumps(allow_nan=False); referenced report existence; synthesis source SHA-256 equality; scoped local link and wiki-heading checks",
+  "json_artifacts": {
+    "PaperArgumentReview.json": {
+      "json_parse": "PASS",
+      "non_finite_numbers": "none",
+      "sha256": "455f142afbd39c9f02c11b2e1254fe94ac8a7634d6c94cd7e295d702eacbeb1b"
+    },
+    "PaperImpactReview.json": {
+      "json_parse": "PASS",
+      "non_finite_numbers": "none",
+      "sha256": "2c0e853e99298479eb1379f89d00ab4f4d63944f48f9f4b9581681a9a333dd6d"
+    },
+    "PaperStructureReview.json": {
+      "json_parse": "PASS",
+      "non_finite_numbers": "none",
+      "sha256": "7ce4d0ca162ac2b89177f737596edb8f2819dd3d2ce916d6e433aa6b5dd13c0c"
+    },
+    "ProofReadinessAudit.json": {
+      "json_parse": "PASS",
+      "non_finite_numbers": "none",
+      "sha256": "241b2f71eef29317578ffc5a986e8f2480df2ce6cca99a0293883b35e8c098dd"
+    },
+    "meta-review.json": {
+      "json_parse": "PASS",
+      "non_finite_numbers": "none",
+      "sha256": "3f147c9e0ad450c00bc81971969433f7d430e3c7205f8bb8440cd6f96a5cba97"
+    },
+    "preflight-history-command.json": {
+      "json_parse": "PASS",
+      "non_finite_numbers": "none",
+      "sha256": "933391e5f3e19b9a794a34a3a82fbdec4c4fd4dc45c4f128b92da15013295ade"
+    }
+  },
+  "source_hash_checks": {
+    "count": 6,
+    "all_match": true,
+    "not_retroactive_reviewer_snapshots": true
+  },
+  "new_handoff_link_checks": [
+    {
+      "page": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/PaperArgumentReview.json",
+      "exists": true
+    },
+    {
+      "page": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/PaperImpactReview.json",
+      "exists": true
+    },
+    {
+      "page": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/PaperStructureReview.json",
+      "exists": true
+    },
+    {
+      "page": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/meta-review.json",
+      "exists": true
+    },
+    {
+      "page": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+      "target": "../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/preflight-history-command.json",
+      "exists": true
+    },
+    {
+      "page": "index.md",
+      "target": "../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/meta-review.json",
+      "exists": true
+    },
+    {
+      "page": "index.md",
+      "target": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Independent manuscript review / 독립 논문 검토 — 2026-10-24",
+      "exists": true,
+      "heading_exists": true
+    },
+    {
+      "page": "log.md",
+      "target": "../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/meta-review.json",
+      "exists": true
+    },
+    {
+      "page": "log.md",
+      "target": "wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Independent manuscript review / 독립 논문 검토 — 2026-10-24",
+      "exists": true,
+      "heading_exists": true
+    }
+  ],
+  "new_handoff_links_passed": 9,
+  "preflight_history_exact_output": {
+    "exit_code": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "receipt": "preflight-history-command.json",
+    "chronology": "[uncertain]"
+  },
+  "global_wiki_lint": {
+    "status": "FIX_RETAINED_NOT_RERUN_IN_THIS_REVIEW",
+    "last_recorded_broken_links": 180,
+    "not_overridden_by_scoped_pass": true
+  },
+  "not_verified": [
+    "Empirical A/C claims",
+    "External novelty",
+    "Full rendered PDF fit",
+    "Publication or push completion"
+  ]
+}

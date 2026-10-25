@@ -1,0 +1,15 @@
+{
+  "schema_version": "runtime-model-swap/review-receipt-1",
+  "receipt_kind": "explicit_projection_of_observed_IRC_not_original_agent_artifact",
+  "actual_agent_type": "code-reviewer",
+  "verdict": "APPROVE",
+  "findings": [],
+  "base_full_review": "code-review-final.json",
+  "review_kind": "bounded_current_source_delta_closure",
+  "source_sha256": "127b3ccad6b9aa164ad2f54dd50c7b0668678e5dd304a8ee0207f34dc1f48ff1",
+  "commands_run": false,
+  "tests_run": false,
+  "edits_made": false,
+  "verbatim_IRC": "APPROVE current source. Bounded delta is closed at runtime_model_swap.py:413-423: optional prompt_calls uses getattr, requires list rows/dict entries, and classifies timeout only on `timed_out is True`; lines 431-437 still charge the observed integer counter delta. Initial/repair counter-only regressions at tests/test_runtime_model_swap.py:1076-1215 retain strict assigned rows, typed ValueError evidence, 1+1 host calls, one repair, zero commits. Recorded telemetry green 2/2, release suite 53+32, paired fresh Godot/replay PASS, live rejection exit 2/no output, release integrity PASS with harness 127b3cca… and 46 protected unchanged. No new finding; no commands/tests/edits run by reviewer. Ownership released.",
+  "scope": "approved_offline_engineering_only; not scientific efficacy, production readiness or live launch approval"
+}

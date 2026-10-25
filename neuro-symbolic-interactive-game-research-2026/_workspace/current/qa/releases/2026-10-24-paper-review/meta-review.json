@@ -1,0 +1,169 @@
+{
+  "schema_version": "trace-rpg-paper-meta-review/1",
+  "date": "2026-10-24",
+  "status": "REVIEW_COMPLETE_NOT_EMPIRICAL_PROOF",
+  "review_basis": "Three separate subagent sessions reviewed the requested current manuscript bundle; this is not attested cross-model or blinded human peer review.",
+  "review_reports": [
+    "PaperArgumentReview.json",
+    "PaperImpactReview.json",
+    "PaperStructureReview.json"
+  ],
+  "advisory_prerequisite_report": "ProofReadinessAudit.json",
+  "decision": {
+    "current_defensible_thesis": "TRACE-RPG implements a bounded, source-bound, auditable proposal-to-commit boundary for generated game-state transitions. It separates untrusted proposals, deterministic authorization, bounded repair, canonical mutation, and replay evidence.",
+    "current_evidence_supports": [
+      "Authored finite-case engineering conformance",
+      "Explicit authority and repair-information boundaries",
+      "Source-bound historical protocol records and a bounded operator-assisted integration case"
+    ],
+    "not_established": [
+      "Model-independent ontology consistency",
+      "Causal benefit of ontology presence",
+      "Candidate-model noninferiority to a fresh reference model",
+      "Player benefit or narrative-quality gains",
+      "A machine-checked theorem or unconditional end-to-end safety guarantee"
+    ],
+    "impact_judgment": "[INFERENCE] The methods-and-audit contribution is more defensible than an ontology-superiority contribution. Adding models alone does not establish novelty or identify ontology causality."
+  },
+  "evidence_interpretation": [
+    {
+      "artifact": "paper/latex/generated/pilot_tables_en.tex:14-18",
+      "observation": "Validator-error-guided repair commits 5/5 G-repairable, 0/1 oracle-only, and 0/6 irreparable authored cases; the state-reading oracle commits 5/5, 1/1, and 0/6 respectively.",
+      "boundary": "These are designed repairability cases, not an independent model-accuracy benchmark."
+    },
+    {
+      "artifact": "paper/latex/generated/disclosure_results_en.tex:10-13",
+      "observation": "The reported shared-rule representation comparison is non-discriminating on its paired fixtures.",
+      "boundary": "It does not identify ontology superiority, ontology absence effects, or general ontology equivalence."
+    },
+    {
+      "artifact": "paper/latex/generated/npc_results_en.tex:4-7",
+      "observation": "The paper preserves 72 assigned P/R/O cases, 12 assigned failures, unknown requested/recorded model identities, and historical source scope; stale controls remain in the denominator.",
+      "boundary": "Do not relabel these as cross-model efficacy observations or current-runtime certification."
+    },
+    {
+      "artifact": "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "observation": "The separately recorded offline harness verification uses injected model responses and actual Godot execution.",
+      "boundary": "It contributes no new actual study-model episodes and cannot promote A/C claims."
+    }
+  ],
+  "main_adjudications": [
+    {
+      "topic": "NPC English/Korean limitations",
+      "verdict": "PARITY_FALSE_POSITIVE_NOT_ADOPTED",
+      "evidence": "The complete English line 4 explicitly says actual family matching is unverified, no source is independent, O is neither oracle nor semantic gold, efficacy is pending, tokens/cost are unmeasured, and tool-free inference/confidentiality were not established. These qualifications also appear in Korean line 4.",
+      "verification": "Read paper/latex/generated/npc_results_en.tex:4-4:raw; compare the already-read Korean line 4. A truncated preview was insufficient to establish an omission."
+    },
+    {
+      "topic": "Only the gate authorizes mutation",
+      "verdict": "WORDING_CLARIFICATION_NOT_CONFIRMED_LOGICAL_CONTRADICTION",
+      "evidence": "paper/latex/en/main.tex:77-100 explicitly scopes state/policy, gives the conditional transition rule, and states that fixtures test implementation invariants, not theorems.",
+      "recommendation": "Put the assumptions and exercised-writer boundary adjacent to headline safety wording. Do not call an implementation invariant a proved theorem."
+    },
+    {
+      "topic": "Preflight history versus current files",
+      "verdict": "[uncertain] CURRENT_ABSENCE_CONFIRMED_CHRONOLOGY_UNRESOLVED",
+      "evidence": "Both directory reads returned empty and the exact historical gemini-preflight.json path was not found. The terminal git log --all --diff-filter=AD lookup showed no output. An argv-captured repeat, preserved in preflight-history-command.json, confirms exit_code=0, stdout_bytes=0 and stderr_bytes=0; terminal status lines were not commit entries. No tracked addition/deletion was shown in accessible history.",
+      "boundary": "Unresolved conflict: the archived conversation mentions earlier receipts, but current files and accessible tracked history do not establish whether untracked/ignored receipts were never produced, removed, or stored elsewhere. Do not assert either chronology, restore or fabricate missing evidence, or certify readiness from the archived transcript."
+    },
+    {
+      "topic": "Study execution authority",
+      "verdict": "DISTINGUISH_FOLLOWUP_USER_REQUEST_FROM_EXISTING_ARTIFACT_STATUS",
+      "evidence": "The user subsequently asked to substantiate unproven claims, then prioritized manuscript review. Existing proposal and offline approval files do not themselves constitute an executed live study.",
+      "boundary": "No new authorization artifact, real candidate launch, or empirical result is created by this review."
+    }
+  ],
+  "recommended_revision_order": [
+    {
+      "priority": 1,
+      "change": "State a single testable systems question and an explicit contribution/evidence ledger in Introduction. Distinguish source-bound observer, the E3 construction simulation, and an ontology-gate arm."
+    },
+    {
+      "priority": 2,
+      "change": "Give the ontology a concrete typed-state/action/rule example, then distinguish the representation, information available to repair, and authority to commit."
+    },
+    {
+      "priority": 3,
+      "change": "Group results by evidential role rather than module inventory: mechanism/negative controls, bounded integration evidence, and unexecuted empirical questions. Place every material limitation next to its table."
+    },
+    {
+      "priority": 4,
+      "change": "Compress related work into the actual gaps and move operational chronology to artifact references. Verify external novelty separately rather than infer it from model count."
+    },
+    {
+      "priority": 5,
+      "change": "Align the English/Korean title qualifications and source-bound claim scopes. Do not manufacture a bilingual defect from a truncated preview."
+    },
+    {
+      "priority": 6,
+      "change": "Keep proposed A/C experiments in protocol/future-work text until their own execution, analysis, replay, and independent review gates pass."
+    }
+  ],
+  "minimum_decisive_empirical_package": [
+    {
+      "question": "What does the deterministic boundary guarantee?",
+      "design": "Use independent positive/negative expectations and explicit assumptions; test rejected proposals, bypass attempts, unchanged state on rejection, and replay. If a formal result is claimed, supply the proof and its exact domain.",
+      "limit": "Finite tests alone are not a universal theorem."
+    },
+    {
+      "question": "Does the ontology add value beyond the same rules?",
+      "design": "Hold facts, rule content, tools, information, and budgets fixed; include a strong plain-rule/programmatic baseline and a deterministic planner where applicable. Separate representation, repair, and gate interventions. Unsafe/no-gate observations must remain in an isolated non-production execution boundary.",
+      "limit": "Two representations sharing the same ontology-derived workflow cannot identify ontology presence effects."
+    },
+    {
+      "question": "Can a different model be substituted in the same fixed game?",
+      "design": "Pair candidates with a fresh reference on sealed independent assignments; preserve all assigned failures, exact requested/returned identity and unknown revisions, wall/call/repair budgets, goal completion, separate safety and replay, and measured-or-unknown latency/cost. Use the pilot to freeze a justified confirmatory sample and multiplicity-aware noninferiority analysis.",
+      "limit": "A successful exploratory pilot or a non-significant difference is not a noninferiority result. Re-seeded object placement is not a held-out relation/motif."
+    }
+  ],
+  "current_live_execution_gaps": [
+    "No current readable preflight receipt at the disputed historical paths",
+    "No demonstrated multi-provider live adapter and process-descendant deadline proof in the approved offline harness",
+    "No sealed structurally independent quest corpus; current objective/action vocabulary is fixed",
+    "No demonstrated restart-safe study-wide assignment ledger",
+    "No executed and independently reviewed confirmatory noninferiority analysis"
+  ],
+  "work_performed_in_this_checkpoint": [
+    "Collected the three independent manuscript critiques and a separately labeled prerequisite audit",
+    "Adjudicated selected findings against full source lines",
+    "Recorded current file-availability conflicts without inventing missing evidence"
+  ],
+  "not_performed_in_this_checkpoint": [
+    "Manuscript source revision",
+    "Real study-model launch",
+    "New theorem proof",
+    "External citation/novelty verification",
+    "PDF rebuild or visual page-fit verification",
+    "Commit, push, production deployment, or graph/index rebuild"
+  ],
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "Source checks rejected a bilingual false positive and qualified the preflight chronology; external novelty remains unverified."
+    },
+    "completeness": {
+      "score": 4,
+      "evidence": "Argument, impact, and structure were separately reviewed; this does not complete the earlier empirical/publication request."
+    },
+    "clarity": {
+      "score": 5,
+      "evidence": "Engineering conformance, formal proof, and empirical efficacy are explicitly separated."
+    },
+    "actionability": {
+      "score": 5,
+      "evidence": "Six ordered manuscript changes and three discriminating proof packages are specified."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "The synthesis points to preserved reports instead of duplicating every finding."
+    }
+  },
+  "source_hashes_at_synthesis_not_retroactive_reviewer_snapshots": {
+    "paper/latex/en/main.tex": "51ac76fe119077851b3e36e5fa81d11ed523a11401d084a91c5029797145ffdf",
+    "paper/latex/ko/main.tex": "54250920499af37c6a4c110e24a8afad816d0aa62f0f9d13b40e8eb3803386c8",
+    "paper/latex/generated/npc_results_en.tex": "3b990dbab0d9a992462a5756a631aef5b5eac39d31243ba1808a63724ca1fce7",
+    "paper/latex/generated/npc_results_ko.tex": "28df5b3f5e554b3053f44c946feedb9ed15c4f7651400f3753c1aa7d81006837",
+    "paper/latex/generated/pilot_tables_en.tex": "68d48f345b93ab6b22cb7b6e4837bb88c51fa72c0d445f2c93148d563d05f1f4",
+    "paper/latex/generated/disclosure_results_en.tex": "553d157e2062677c402e89722fa628912f6a274749d59274135575e393ff35c3"
+  }
+}

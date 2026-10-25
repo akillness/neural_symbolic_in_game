@@ -1,0 +1,15 @@
+{
+  "schema_version": "runtime-model-swap/review-receipt-1",
+  "receipt_kind": "explicit_projection_of_observed_IRC_not_original_agent_artifact",
+  "actual_agent_type": "reviewer",
+  "review_kind": "python_specific_fallback",
+  "verdict": "APPROVE",
+  "findings": [],
+  "closed_finding": "Counter-only prompt telemetry must not replace a callback ValueError with AttributeError or erase its assigned output row",
+  "commands_run": false,
+  "tests_run": false,
+  "source_sha256": "127b3ccad6b9aa164ad2f54dd50c7b0668678e5dd304a8ee0207f34dc1f48ff1",
+  "verbatim_IRC": "Final completed verdict: APPROVE; actual_agent_type=reviewer; review_kind=python_specific_fallback; commands_run=false; tests_run=false; findings empty. Original optional-telemetry finding CLOSED: current runtime_model_swap.py:413-420 uses getattr and list/dict guards with timed_out is True, retaining original callback failures while finally charges integer deltas. Reviewed new initial/repair regressions at tests/test_runtime_model_swap.py:1076-1205; telemetry-red XML proves original two AttributeErrors, green-v2 receipt/XML proves both pass, release receipt/XML proves 53 tests +32 subtests pass. Reviewed release lint/format, both full release episode records and command receipts, rejection receipt, and release-frozen-integrity.json: harness hash127b3ccad6b9aa164ad2f54dd50c7b0668678e5dd304a8ee0207f34dc1f48ff1 matches both episodes;46 protected unchanged reported. Episodes each4 calls/decisions,3 state-changing safe commits, independent goal and4 passing fresh-process replay comparisons,0 replay model calls, immutable input hashes. Earlier telemetry-green-command.json is an intermediate failure, NOT passing evidence. Read-only delta closure only, no broad re-audit, no execution or hash recomputation, no external legacy/Godot implementation audit, no efficacy/launch claim, and no claim unavailable named reviewer succeeded. Ownership released. Full result was successfully submitted twice via yield; this IRC is a projection of the last APPROVE closure.",
+  "named_python_reviewer_status": "UNAVAILABLE_HTTP_429_not_a_pass",
+  "scope": "approved_offline_engineering_only; no scientific efficacy or live launch approval"
+}

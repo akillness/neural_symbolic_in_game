@@ -1,0 +1,24 @@
+{
+  "schema_version": "runtime-model-swap/review-receipt-1",
+  "verdict": "FIX",
+  "source": "RuntimeCodeReview direct IRC handoff",
+  "receipt_kind": "explicit_projection_of_observed_review_not_original_agent_artifact",
+  "tests_run_by_reviewer": false,
+  "edits_by_reviewer": false,
+  "initial_finding_closure": {"1": "CLOSED", "2": "CLOSED", "3": "PARTIAL", "4": "CLOSED", "5": "CLOSED", "6": "CLOSED"},
+  "remaining_findings": [{
+    "id": "FINAL-1",
+    "severity": "HIGH",
+    "title": "Shared engine callback JSON ingress can still drop assigned records",
+    "anchors": ["src/nesy_game/runtime_model_swap.py:190-223", "src/nesy_game/runtime_model_swap.py:236-274", "src/nesy_game/runtime_model_swap.py:396-411", "src/nesy_game/runtime_model_swap.py:434-472", "src/nesy_game/runtime_model_swap.py:488-516"],
+    "reachable_paths": [
+      "state dictionary with set, object or NaN reaches rendering or final hashing",
+      "validate returns a list or non-JSON dictionary before type/serialization validation",
+      "commit returns a matching non-JSON state stored in evidence",
+      "objective_reached returns a non-JSON value stored before its boolean check",
+      "reexecute returns a list or non-JSON dictionary stored before finalization"
+    ],
+    "required_remedy": "Validate expected type and strict JSON at callback ingress before storage or dereference; retain JSON-safe diagnostic and assigned failure instead of dropping the row. Add output_path regressions."
+  }],
+  "scope_limits": ["Current paired CLI smokes precede final source formatting; bind fresh smoke evidence after corrections.", "Offline bookkeeping only; no scientific efficacy or live-readiness approval."]
+}

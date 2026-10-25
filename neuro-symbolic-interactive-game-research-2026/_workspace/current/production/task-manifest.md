@@ -2,6 +2,28 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 
+## Revised paper publication checkpoint — 2026-10-24
+
+Owner: **Main**. Status: **PAPER/BOUNDED SCIENTIFIC REVIEW VERIFIED; SELECTED COMMIT/PUSH PENDING**.
+- [Corrected paper build](../qa/releases/2026-10-24-paper-review/paper-build-scientific-fixes-compact.json): pinned historical NPC source, EN/KO 10 pages, unchanged fonts/LaTeX gates PASS. [Bounded scientific closure](../qa/releases/2026-10-24-paper-review/scientific-review-closure.json): F1--F6 closed; labeled IRC projection after resumed-result lookup failure. Prior failed builds retained; no typography shrink or empirical result promotion.
+- [Full CI](../qa/releases/2026-10-24-paper-review/full-ci-before-publication.json): 412 unittest tests; 78 game tests/48 subtests; all unchanged CI steps PASS. [Crosswalk](../qa/releases/2026-10-24-paper-review/contribution-crosswalk-compact.json): 5 contributions, 58 references, 9 topics.
+- [Wiki reference repair](../qa/releases/2026-10-24-paper-review/wiki-repair-verification.json): 180 unavailable references/108 targets explicitly annotated, historical text preserved; structural lint PASS is not source recovery. Private prompt/raw-derived intake is excluded from publication.
+- A/C, ontology causality and player benefit remain unproven; live-study model episodes 0. Candidate identity/access, context/billing permissions, transport/deadline proof and complete study freeze remain separate prerequisites. Current production and G4/full G6 are unchanged.
+- [Public projections](../qa/releases/2026-10-24-paper-review/public-projection-verification.json) preserve 8 original chain hashes. Exclude raw runtime trees/private prompts/unredacted ledger; never byte-edit hash-chained evidence for publication. Next beat: explicit-path commit and normal push with the full pre-push hook before new model generation. Local CI is not remote delivery; live-study authority remains unresolved.
+
+## Offline runtime implementation checkpoint — 2026-10-24
+
+Owner: **Main**. Status: **OFFLINE ENGINEERING VERIFIED**, not a production or research-launch gate.
+[Canonical final receipt](../qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json) ·
+[offline-only approval](../../../research/runtime-model-swap-20261024/offline-implementation-approval-v1.json).
+
+- Latest exact command: `PYTHONPATH=src rtk proxy .venv/bin/python -m pytest tests/test_runtime_model_swap.py tests/test_runtime_model_swap_godot.py -q --junitxml=_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/tests-release.xml` — **53 passed +32 subtests**,18.14s; [command receipt](../qa/releases/2026-10-24-runtime-model-swap-offline/release-test-command.json). Ruff and4-file formatting PASS; only affected tests were run.
+- Final `release-general-rule` and `release-ontology` actual Godot QA each completed4 decisions/3 safe state-changing commits, independent goal and4 fresh-process replay comparisons. Inputs byte-preserved;46 original/frozen files unchanged; disposable staged projects removed. Responses were injected; live research episodes remain0.
+- Independent correctness and Python-rubric fallback reviews APPROVE. Named Python reviewer429 remains UNAVAILABLE, not a completed review. Source-final closure receipts explicitly identify their IRC projection provenance. Primary goal, committed safety and replay/engineering acceptance remain separate.
+- Blocker for **live research**, not this offline deliverable: candidate access/served identity, egress/spend/launch authority and the full quest/repeat/margin/analysis protocol are not frozen/approved. `--live` deliberately rejects exit2 with0 provider processes. A/C efficacy, noninferiority, human benefit and G4/full G6 are not promoted.
+- Next action: read the canonical receipt and resolve that separate live-study contract before any real candidate run. Do not count these synthetic-response QA episodes as independent model observations. No commit/push/deploy/graph rebuild was performed for this checkpoint; current production below is unchanged.
+- Separate documentation-health gate: full wiki lint is **FIX**, exit1 with180 broken auto-capture history links outside the new handoff sections; required paths missing0/orphan0. Preserve this unresolved failure separately from offline runtime PASS; do not delete history/raw evidence to clear it.
+
 ## Verified current production — 2026-10-23 ontology map
 
 **Observed production `READY`: `dpl_75HRZ3UGnVtADdvZnFUJaG9espYY`.**

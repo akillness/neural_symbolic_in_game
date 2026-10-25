@@ -1,0 +1,43 @@
+{
+  "schema_version": "publication-privacy-projection-receipt/1",
+  "status": "PASS_PATH_PROJECTION_ORIGINALS_UNCHANGED",
+  "raw_files_modified": 0,
+  "original_chain_hashes": {
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json": "4daac0e159bd974bfa56da88ce4870e3c44f3c29d854403ede5ff216b3ccb759",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/delivery-verification.json": "55576118c71ad8f6c95c1f3e70e12da73ede0503e2c3beac3edff19c3ab4d223",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/final-frozen-integrity.json": "ec7827f3b2cfed86574a33f1eb0eeca29af3be704c21dce4464a7cb73e38623e",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/code-review-final.json": "ad08e6ecb2fa6e70bc152a77d9dc7a5e12d20f1188ebb781d129104675a82cf9",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/missing-capture-reference-ledger.json": "c460d5d946d5240eda4716efdefd57f8221de74e5c54a6ccdca18160b972345a",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/wiki-lint-command.json": "fe52de354292d9a07413096f0609ec9c5a555d69960177dc8253b608bc3c8ce3",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-general-rule/episode.json": "dc2d62a27e5e21479c5e99dc4aa46c52009e480dd57f1baf902782353377f82f",
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-ontology/episode.json": "c8d734b06d868c70644237334adc32e40b6ef4a29d0746d842f365a715abf642"
+  },
+  "public_projections": [
+    {
+      "source_path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/missing-capture-reference-ledger.json",
+      "source_sha256": "c460d5d946d5240eda4716efdefd57f8221de74e5c54a6ccdca18160b972345a",
+      "public_projection": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/public-projections/missing-capture-ledger.public.json",
+      "projection_file_sha256": "0c3ade642270730f3774cb8d8fa9f263d9bea75a46ccf0b5a14e98216cad2227"
+    },
+    {
+      "source_path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/wiki-lint-command.json",
+      "source_sha256": "fe52de354292d9a07413096f0609ec9c5a555d69960177dc8253b608bc3c8ce3",
+      "public_projection": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/public-projections/offline-wiki-lint.public.json",
+      "projection_file_sha256": "88369a28e871cd689a5d9f121e83f83124bbe2f2eab0556effd943f64c765bcf"
+    },
+    {
+      "source_path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-general-rule/episode.json",
+      "source_sha256": "dc2d62a27e5e21479c5e99dc4aa46c52009e480dd57f1baf902782353377f82f",
+      "public_projection": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/public-projections/offline-general-rule-episode.public.json",
+      "projection_file_sha256": "aab9232b3d4601ed7b8d6123b0f2a5b6cd9b51722b79dd28d69a9e37c59b381d"
+    },
+    {
+      "source_path": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/release-ontology/episode.json",
+      "source_sha256": "c8d734b06d868c70644237334adc32e40b6ef4a29d0746d842f365a715abf642",
+      "public_projection": "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/public-projections/offline-ontology-episode.public.json",
+      "projection_file_sha256": "41802624ea89f768ad0c279e8945e7a9a126de9d9fcb03c99686be0b9263a57f"
+    }
+  ],
+  "public_selection_policy": "Only explicitly enumerated safe source/contract/paper/receipt paths are staged. Original episode/log/input/staged-probe trees, raw prompts and unredacted capture ledger remain local, excluded from publication. Canonical offline verification/delivery receipts are copied byte-identically. Projections do not replace original digests or certify live research.",
+  "limitation": "Public clone lacks excluded raw runtime observations; projections disclose this and are not admitted as raw replay records."
+}

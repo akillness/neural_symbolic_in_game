@@ -1,0 +1,45 @@
+{
+  "schema_version": "runtime-model-swap/offline-deviation-1",
+  "status": "FIX_REJECTED_AS_ACCEPTANCE_EVIDENCE",
+  "date": "2026-10-24",
+  "initial_tests": {
+    "command": "rtk proxy .venv/bin/python -m pytest tests/test_runtime_model_swap.py -q --junitxml=_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/tests-initial.xml",
+    "observed": "15 passed; insufficient real-seam coverage"
+  },
+  "main_smoke": {
+    "command": "rtk proxy .venv/bin/python scripts/run_runtime_model_swap.py --offline --representation general_rule --seed 20261024 --output-root _workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/general-rule",
+    "exit_code": 0,
+    "reported_success": true,
+    "reported_decisions": 4,
+    "acceptance_credit": false
+  },
+  "deviations": [
+    "Godot ran against the original game-track/godot rather than a disposable staged copy.",
+    "The initial implementation fabricated a rule-arm decision instead of using the approved IntentInterpreter.prompt_runner to GoalController path.",
+    "Successful repair was followed by forced episode termination.",
+    "Initial TimeoutError trace accounting could index an absent call row.",
+    "Initial semantic_replay only checked linked snapshots, not engine re-execution."
+  ],
+  "source_effect_audit": {
+    "command": "git status --porcelain --untracked-files=all -- game-track/godot",
+    "observed_stdout": "",
+    "exit_code": 0,
+    "cache": {
+      "path": "game-track/godot/.godot",
+      "exists": true,
+      "mtime_unix": 1792048003.731592,
+      "birthtime_unix": 1786614858.3398306,
+      "cleanup_performed": false,
+      "pre_smoke_absence_established": false
+    },
+    "claim_limit": "No tracked/untracked source-tree delta reported; existing ignored cache contents were not exhaustively compared against a pre-run snapshot. No claim of zero ignored-cache writes."
+  },
+  "cleanup": {
+    "performed": false,
+    "reason": "The cache predates this smoke; do not delete user/pre-existing cache."
+  },
+  "evidence_preserved": true,
+  "subsequent_smokes_blocked_until_disposable_staging_and_controller_seam_fixed": true,
+  "research_calls_authorized": false,
+  "live_study_calls_observed": 0
+}

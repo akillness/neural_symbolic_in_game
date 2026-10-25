@@ -1,0 +1,21 @@
+{
+  "schema_version": "wiki-reference-repair-verification/1",
+  "status": "PASS_STRUCTURAL_REFERENCE_REPAIR_ONLY",
+  "before_lint_receipt": "wiki-lint-before-repair.json",
+  "after_lint_receipt": "wiki-lint-after-repair.json",
+  "before_broken_links": 180,
+  "after_broken_links": 0,
+  "missing_required_paths": 0,
+  "orphan_pages": 0,
+  "unique_unavailable_targets": 108,
+  "history_preservation": {
+    "exact_pre_edit_text_reconstructed_by_reversing_annotations": {
+      "log": true,
+      "index": true
+    },
+    "raw_capture_fabrication": false,
+    "missing_source_content_restored": false
+  },
+  "ledger": "missing-capture-reference-ledger.json",
+  "scope_boundary": "Structural links repaired by truthfully marking unavailable sources, not by claiming source recovery or erasing historical entries."
+}

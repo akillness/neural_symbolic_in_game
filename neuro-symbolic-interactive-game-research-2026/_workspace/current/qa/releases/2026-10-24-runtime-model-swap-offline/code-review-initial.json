@@ -1,0 +1,109 @@
+{
+  "verdict": "FIX",
+  "tests_run_by_reviewer": false,
+  "evidence_reviewed": [
+    "src/nesy_game/runtime_model_swap.py",
+    "scripts/run_runtime_model_swap.py",
+    "tests/test_runtime_model_swap.py",
+    "tests/test_runtime_model_swap_godot.py",
+    "research/runtime-model-swap-20261024/offline-implementation-seed-v1.yaml",
+    "research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+    "research/runtime-model-swap-20261024/endpoint-amendment-v1.json",
+    "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json",
+    "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/tests-pre-review.xml",
+    "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/initial-smoke-deviation.json"
+  ],
+  "findings": [
+    {
+      "severity": "HIGH",
+      "title": "Failed posthoc replay still produces an overall success and exit code 0",
+      "anchors": [
+        "src/nesy_game/runtime_model_swap.py:164-183",
+        "src/nesy_game/runtime_model_swap.py:411-426",
+        "src/nesy_game/runtime_model_swap.py:477-479",
+        "scripts/run_runtime_model_swap.py:111-123"
+      ],
+      "issue": "finish() records a replay exception or reexecute(valid=False), and _finish() correctly makes semantic_replay.valid false, but neither path clears success/status. The CLI exits solely on record['success'], and aggregate_episode_records counts the same record as a success without consulting semantic_replay or verify_episode_record().",
+      "failing_scenario": "A Godot episode reaches the goal, then one replay process is unavailable or returns a mismatched trace. The artifact says success=true/status=success, semantic_replay.valid=false; the CLI exits 0 and the assignment aggregate credits a success. verify_episode_record() would reject it, but neither the CLI nor aggregator calls it.",
+      "smallest_correct_remedy": "After replay is finalized, preserve the factual goal witness but set an explicit replay-verification failure/overall engineering status when replay.valid is false. Make CLI acceptance require that status (or verify_episode_record(record)); make aggregation reject unverifiable records rather than trusting only success/status. Add a regression where goal completion is followed by replay failure."
+    },
+    {
+      "severity": "HIGH",
+      "title": "Completed unsafe goal-reaching traces are discarded instead of separating goal outcome from the mandatory safety gate",
+      "anchors": [
+        "src/nesy_game/runtime_model_swap.py:382-385",
+        "src/nesy_game/runtime_model_swap.py:891-897",
+        "src/nesy_game/runtime_model_swap.py:477-487"
+      ],
+      "issue": "GodotEpisodeEngine.commit raises immediately whenever trace.passed is not true, before extracting the final snapshot, goal witness, applied-action evidence, or safety result. run_episode collapses every such case to generic commit_failure and leaves safety as NOT_ASSESSED or a prior PASS_DETERMINISTIC_GATES. Aggregation exposes no separate safety gate at all.",
+      "failing_scenario": "Godot returns status=completed with an APPLIED transition, goal_reached=true, and a post-commit invariant error causing passed=false. The harness hides the unsafe goal-reaching state, records goal_reached=false/commit_failure, and does not emit safety=FAIL. This violates the frozen rule that primary goal completion remains observable while any committed violation independently fails safety. A transport-unavailable result is also indistinguishable from an engine-rejected transition.",
+      "smallest_correct_remedy": "For completed traces, extract and retain the final public snapshot, top-level goal witness, actions, and exact invariant errors before evaluating safety. Represent primary goal outcome and safety gate independently; mark completed invariant rejection as safety FAIL, infrastructure loss as safety NOT_PASS/unavailable, and retain both in the assigned row. Extend aggregate_episode_records with separate PASS/FAIL/NOT_PASS safety coverage while leaving the primary numerator separate."
+    },
+    {
+      "severity": "HIGH",
+      "title": "Non-JSON callback returns poison evidence serialization and can drop the assigned row",
+      "anchors": [
+        "src/nesy_game/runtime_model_swap.py:286-297",
+        "src/nesy_game/runtime_model_swap.py:157-159",
+        "src/nesy_game/runtime_model_swap.py:758-763",
+        "src/nesy_game/runtime_model_swap.py:423-426"
+      ],
+      "issue": "Both the generic proposal path and _observed_prompt append callback values before proving they are JSON-serializable. The callback/format exception is caught, but finish() copies the retained object and _finish() hashes the whole record through _json(allow_nan=False), which raises outside the callback catch.",
+      "failing_scenario": "A prompt runner returns (0, object()), or a proposal dict contains a set or NaN. Intent parsing/JSON validation fails as expected, but the raw non-JSON value remains in raw_model_outputs/raw_proposals. Final hashing raises TypeError/ValueError, so run_episode returns no assigned failure record and writes no immutable episode artifact. Plain arbitrary Exceptions are otherwise retained correctly; this defect is specifically the returned non-JSON evidence path.",
+      "smallest_correct_remedy": "Validate/canonicalize evidence before appending it. Preserve valid JSON exactly; for invalid values store a JSON-safe diagnostic containing type and serialization error (and a bounded safe representation if desired), then continue the existing failure classification. Ensure finalization itself cannot be broken by untrusted callback evidence. Add tuple-payload, set, and NaN regressions."
+    },
+    {
+      "severity": "HIGH",
+      "title": "The frozen timing boundary is implemented on the wrong sides of setup and engine execution",
+      "anchors": [
+        "src/nesy_game/runtime_model_swap.py:92",
+        "src/nesy_game/runtime_model_swap.py:190-198",
+        "src/nesy_game/runtime_model_swap.py:622-633",
+        "src/nesy_game/runtime_model_swap.py:653-658",
+        "tests/test_runtime_model_swap_godot.py:427-434",
+        "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json:208-209",
+        "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json:234-237"
+      ],
+      "issue": "The episode clock starts before state/bootstrap/import, and preparation explicitly labels itself charged to the episode wall. The frozen proposal instead starts the monotonic episode clock immediately before the first host invocation and describes setup outside the serial episode cap. Conversely, _run caps every non-replay Godot process at response_seconds, even though 60 seconds is the provider-response deadline, not an engine-action deadline. The real-Godot integration test uses clock=lambda: 0.0, so it proves neither boundary.",
+      "failing_scenario": "A 150-second cold import followed by a prompt and engine actions that complete within 180 seconds after first host dispatch is failed because setup consumed the wall. Separately, a valid engine transition taking 70 seconds is killed at 60 seconds even with ample 180-second episode wall remaining. Both alter the primary within-budget outcome.",
+      "smallest_correct_remedy": "Measure preparation/bootstrap separately and start the episode wall immediately before the first model-host dispatch. Apply response_seconds only to prompt/model dispatch; bound episode engine actions by remaining wall (or a separately frozen engine timeout), and mark wall_expired whenever elapsed wall is exhausted. Replace the frozen-clock integration with a controllable advancing clock and assert setup, host, and engine boundaries independently."
+    },
+    {
+      "severity": "HIGH",
+      "title": "The offline CLI never wires the approved corrective-reproposal path",
+      "anchors": [
+        "scripts/run_runtime_model_swap.py:97-107",
+        "src/nesy_game/runtime_model_swap.py:251-320",
+        "src/nesy_game/runtime_model_swap.py:806-813"
+      ],
+      "issue": "GodotEpisodeEngine implements repair(), and run_episode supports max_repairs_per_decision, but the only runtime CLI passes proposal_source=engine.propose without repair_source=engine.repair. Its two-repair budget is therefore inert for typed-adapter format/validation failures.",
+      "failing_scenario": "The first scripted typed response is malformed and the second is valid. With max_repairs_per_decision=2, the approved behavior is one charged corrective request using the authoritative error. The CLI instead terminates after the first failure; no corrective prompt is dispatched and no successful repair can complete the episode. Existing repair coverage uses a standalone LighthouseEngine callback, not the real IntentInterpreter→GoalController adapter.",
+      "smallest_correct_remedy": "Pass repair_source=engine.repair in the CLI/runtime composition and add a Godot-adapter regression with malformed-first/valid-second outputs that verifies shared logical lineage, repair accounting, prompt forwarding, and continued whole-goal execution."
+    },
+    {
+      "severity": "MEDIUM",
+      "title": "Replay goal-witness equality treats missing evidence as a successful match",
+      "anchors": [
+        "src/nesy_game/runtime_model_swap.py:957-965",
+        "tests/test_runtime_model_swap_godot.py:500-526"
+      ],
+      "issue": "reexecute sets goal_witness from original.get('goal_reached') == replayed.get('goal_reached'). When both traces omit the top-level field, None == None passes. The fake transport used by the seam tests places goal only inside observations, so the current passing replay assertion demonstrates this vacuous success path.",
+      "failing_scenario": "Original and replay traces both omit top-level goal_reached, or one changes the final observation while both omit the top-level field. All structural comparisons can pass and reexecution.valid becomes true despite no independently comparable goal witness.",
+      "smallest_correct_remedy": "Require a boolean goal witness on both traces and compare it, or deterministically extract the final normalized public observation and compare its goal_reached field. Missing or malformed witness must make the replay check fail. Add missing/missing and true/false mismatch regressions."
+    }
+  ],
+  "confirmed_without_finding": [
+    "Broad Exception catches at adapter/process boundaries retain ordinary assigned failures; KeyboardInterrupt and SystemExit remain outside Exception and propagate as intended.",
+    "Within the serialized run_episode flow, wall checks before commit plus GodotEpisodeEngine.validate's state_ref equality block a confirmed stale-decision commit; no separate reachable TTL defect was established beyond the timing-boundary mismatch above.",
+    "General-rule and ontology paths expose the same semantic fields with representation-only rendering, and _observed_prompt forwards that rendering into the actual IntentInterpreter prompt instruction while preserving the user utterance.",
+    "The CLI stages a disposable project and rejects the source project path; provider identity, revision, request count, and cost remain null rather than being inferred from legacy P/codex labels.",
+    "No supported finding was made against immutable x-mode episode/input writes or the retained native sidecar/input-byte fields."
+  ],
+  "review_summary": {
+    "CRITICAL": 0,
+    "HIGH": 5,
+    "MEDIUM": 1,
+    "LOW": 0,
+    "verdict": "FIX — five HIGH correctness/research-integrity defects must be resolved before acceptance. The reported 28-test GREEN does not exercise these paths."
+  }
+}

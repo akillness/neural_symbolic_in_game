@@ -1,0 +1,212 @@
+{
+  "artifact_scope": "Read-only argument-validity and claim-to-evidence review of the fixed English/Korean manuscript bundle, generated English inputs, exact NPC/disclosure result artifacts, promotion workflow, offline QA receipt, and runtime endpoint/proposal records. No files changed.",
+  "scores": {
+    "problem_and_question": {
+      "score": 4,
+      "evidence": "The paper clearly separates authorization/conformance from narrative and player outcomes (paper/latex/en/main.tex:35-47, 251-255, 279, 282-283). The central problem is concrete, but the paper's strongest question is a systems/conformance question rather than an efficacy question.",
+      "priority": "medium"
+    },
+    "literature_and_context": {
+      "score": 4,
+      "evidence": "Related-work framing covers grounding, environments, structural constraints, evaluation, replay, and repair (main.tex:66-75). Whether the combination is novel relative to the cited literature is not independently checked here and remains [INFERENCE].",
+      "priority": "medium"
+    },
+    "methodology": {
+      "score": 3,
+      "evidence": "The transition equation, validator vector, assumptions, and separate authority boundary are explicit (main.tex:77-100, 101-177). The empirical tests are predominantly authored closed-world fixtures; the validator and expected outputs are not independently labelled.",
+      "priority": "high"
+    },
+    "data_and_evidence": {
+      "score": 2,
+      "evidence": "The active evidence is deterministic conformance/engineering evidence with no participants, no independent semantic labels, no comparator, no repeats for the Codex case, and unavailable provider/model revision for NPC P (main.tex:206-217, 244-249; generated/npc_results_en.tex:4-7; actual P row ...X01_P_rep1...json:107-113).",
+      "priority": "high"
+    },
+    "analysis_and_interpretation": {
+      "score": 3,
+      "evidence": "Interpretation is unusually candid about ceilings, but several exact counts can be misread as success/safety/model rates unless readers also parse the caveats (generated/pilot_tables_en.tex:14-18, 36-46; generated/disclosure_tables_en.tex:35-40).",
+      "priority": "high"
+    },
+    "results_and_conclusion": {
+      "score": 3,
+      "evidence": "The conclusion is aligned with the explicit boundary and does not claim model comparison or player benefit (main.tex:282-283). However, the NPC and disclosure tables still expose attractive numerators that have no independent semantic or model-efficacy denominator.",
+      "priority": "high"
+    },
+    "limitations_and_reproducibility": {
+      "score": 5,
+      "evidence": "Limitations explicitly include missing comparator/repeats/independent traceability scores, unavailable identity, hash limitations, and absent player/efficacy claims (main.tex:99, 199-200, 255-279; generated/npc_results_en.tex:4-7).",
+      "priority": "low"
+    },
+    "writing_structure": {
+      "score": 4,
+      "evidence": "The manuscript has a coherent contract→controller→lanes→results→boundaries progression and generated inputs are included at the result section (main.tex:101-228). Dense caveats and the different English/Korean generated wording create parity/readability risk.",
+      "priority": "medium"
+    },
+    "bilingual_claim_parity": {
+      "score": 3,
+      "evidence": "The Korean NPC narrative explicitly states O has zero independent sources, efficacy pending, and token/cost unmeasured (generated/npc_results_ko.tex:4), while the corresponding English line is truncated/less explicit in the rendered extraction (generated/npc_results_en.tex:4). Korean and English main sections also order/result-package material differently (ko/main.tex:273-306 versus en/main.tex:218-249). Exact source-level parity should be machine-checked before submission.",
+      "priority": "high"
+    }
+  },
+  "strongest_defensible_thesis": "TRACE-RPG is a source-bound, deterministic transaction/conformance architecture for proposing, validating, repairing, committing, recording, and replaying structured game-event mutations. On the named frozen fixtures and historical engine snapshots, it demonstrates implementation-level agreement with authored predicates, bounded repair behavior, state-preserving rejection/fallback, and audit/accounting mechanics under stated assumptions. It does not yet demonstrate semantic safety against independent labels, provider/model efficacy, ontology superiority, generalization, player benefit, whole-game performance, or a current live runtime-model comparison.",
+  "strengths": [
+    "The abstract and conclusion explicitly prevent the most dangerous overread: the single Codex case is not model-comparison or player-benefit evidence (main.tex:35-36, 246-249, 282-283).",
+    "Authority is assigned clearly: external model/adapters propose, while Python/Godot gates and Godot owns mutation (main.tex:43, 101-103, 147-150).",
+    "The formal transition boundary is compact and useful: commit only when all seven encoded predicates pass; otherwise preserve c_t (main.tex:80-95).",
+    "The paper distinguishes assumptions from implementation invariants and states that fixtures are not theorems (main.tex:97-100).",
+    "The generated result package retains assigned failures, separates active/historical lanes, and warns that rows have different denominators (generated/pilot_tables_en.tex:21, 46; generated/npc_tables_en.tex:16).",
+    "The paper discloses the key integrity limitation directly: unkeyed checksums and replay do not authenticate writer identity or repair provenance (main.tex:199-200; generated/pilot_results_en.tex:8).",
+    "The offline QA receipt is correctly labelled PASS_OFFLINE_ENGINEERING_ONLY and explicitly excludes scientific efficacy/full-study freeze/live readiness (qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json:2-5)."
+  ],
+  "highest_value_findings": [
+    {
+      "anchor": "paper/latex/en/main.tex:43,77-100",
+      "issue": "The sentence “only TRACE-RPG's external deterministic gate authorizes mutation” reads like an unconditional safety guarantee, while the formal result is conditional on correct policy, faithful extraction, deterministic versions, returning callbacks, and single-process file ownership. The paper itself states these assumptions, but the headline wording can outrun them.",
+      "severity": "High",
+      "proposed_fix": "Recast this as an architecture/property claim: under the stated assumptions and the exercised writer boundary, only the gate-authorized transition is admitted. Add an explicit distinction between a proved conditional invariant, an implementation test, and a production threat-model guarantee.",
+      "status": "Fixable now"
+    },
+    {
+      "anchor": "paper/latex/generated/pilot_results_en.tex:1-8; generated/pilot_tables_en.tex:14-18",
+      "issue": "The 13/13 gate agreement is explicitly a loader construction invariant: the loader admits one valid control plus one isolated instance per implemented code. The 5/5 rho and 5/5 oracle counts are over frozen, author-partitioned repairability classes. These are valid conformance observations, but not independent accuracy, safety, or repair-efficacy rates.",
+      "severity": "High",
+      "proposed_fix": "Keep the rows, but label them everywhere as authored-fixture conformance/coverage. Add a short “not an efficacy estimator” sentence immediately before the table and avoid rate-like language in the abstract/results summary. An access-separated semantic oracle and adversarial unseen fixtures are needed for an efficacy claim.",
+      "status": "Fixable now for wording; needs independent-holdout data for stronger claim"
+    },
+    {
+      "anchor": "paper/latex/generated/disclosure_tables_en.tex:35-40; generated/disclosure_results_en.tex:9-13",
+      "issue": "The general_rule and ontology_gate arms have identical 16/44 outcomes, zero mismatch, and zero replay/state/display failures across the same frozen cases. The two arms share the frozen expectations/rules, and the two rule-change fixtures are applied identically to both; therefore there is no intervention that isolates an ontology contribution. The unchecked arm is an isolated no-check observation, not a fair baseline.",
+      "severity": "High",
+      "proposed_fix": "State the result as “identical under a shared authored contract; no ontology effect is identifiable.” For causal/ontology claims, predefine a fresh, access-separated holdout with an ontology intervention that changes only the ontology-derived signal, plus an independent semantic oracle. Do not call unchecked a comparator for safety.",
+      "status": "Fixable now for interpretation; needs pilot/confirmatory design"
+    },
+    {
+      "anchor": "research/academic-pipeline/npc-goal-recovery/verified-run-006/godot-input/NPC-SCR1_SCR-X01_P_rep1.experiment.json.result.json:107-113,269-317,347-408; generated/npc_tables_en.tex:9-16",
+      "issue": "An actual P-arm result has backend=codex but model=null, recorded_response_ref=null, and trace_ref=null; its accepted reveal_hint transition is a fixture-bound P row with hashes, not attributable model output. The table reports P/R/O each 24 assignments, 20/4 complete/fail, and 4 goal-reached, but O has zero independent sources and all arms retain assigned failures. These counts cannot support model quality, recovery efficacy, or superiority.",
+      "severity": "High",
+      "proposed_fix": "Separate engineering protocol counts from model-attributable observations in table headers and prose. Require exact provider/model revision, source/response trace, and an assignment-level independent goal verifier before any model endpoint is reported. The planned endpoint amendment already defines assigned-denominator completion; the new study currently has zero model calls and is not executed.",
+      "status": "Fixable now for wording; needs live pilot/confirmatory data"
+    },
+    {
+      "anchor": "paper/latex/generated/npc_results_en.tex:4-7; research/academic-pipeline/npc-goal-recovery/verified-run-006/aggregate.json:1; .../validation-report.json:1",
+      "issue": "The NPC aggregate's per-arm 4 assigned failures and 4 goal-reached rows are true artifact facts, but the aggregate validation fields are false (assignment_complete, claim_boundaries_valid, hashes_valid, provenance_valid, replay_valid). The generated text appropriately calls the packet historical and non-certifying for the current checkout. A reader could still infer a current runtime result from the table location.",
+      "severity": "High",
+      "proposed_fix": "Put “historical packet; not current-runtime evidence” in the table caption or immediately before the table, not only in the generated paragraph. Keep historical counts in a clearly separate archival lane. Current-runtime claims require a current, valid, source-bound packet.",
+      "status": "Fixable now"
+    },
+    {
+      "anchor": "paper/latex/generated/disclosure_results_en.tex:9; paper/latex/en/main.tex:204,244-249; qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json:2-5,39-61",
+      "issue": "There are multiple source/runtime boundaries: disclosure execution reports three source hashes differing from the frozen baseline; NPC results revalidate archived source bytes dated 2026-10-17; offline QA is synthetic and has provider_process_launch_count=0. The manuscript discloses each limitation, but a single reader-facing evidence map is needed to prevent “current runtime” and “frozen packet” from collapsing into one claim.",
+      "severity": "High",
+      "proposed_fix": "Add a one-row-per-lane provenance table with source checkout/date/hash, runtime exercised, synthetic/live status, provider process status, and current-release applicability. Resolve/re-run hash drift before using a packet as current-runtime proof.",
+      "status": "Fixable now for presentation; rerun needed for current-runtime claim"
+    },
+    {
+      "anchor": "paper/latex/en/main.tex:199-200; generated/pilot_tables_en.tex:36-46; generated/pilot_results_en.tex:8",
+      "issue": "10/10 designated integrity-fault detections, 3/3 manifest guards, 1/1 known provenance-boundary acceptance, and 2/2 intentionally accepted open sentinels have different denominators and favorable directions. The 10/10 result is detector-operation conformance, not security coverage; the 1/1 replay pass demonstrates an undetected checksum-recomputing writer.",
+      "severity": "High",
+      "proposed_fix": "Report these as a typed outcome ledger (detected, intentionally accepted, not represented, and not run), never as one safety rate. Add keyed authentication/signatures or a trusted append boundary if repair provenance is part of the security claim; add adversarial unknown-natural-language and simultaneous omission cases outside the authored contract.",
+      "status": "Fixable now for interpretation; keyed provenance needs implementation"
+    },
+    {
+      "anchor": "harness/workflows/result-promotion.yaml:1-25; research/runtime-model-swap-20261024/endpoint-amendment-v1.json:27-42,178-185; pre-run-decision-proposal-v1.json:1-19,386-412",
+      "issue": "The promotion workflow fail-closes C-RESULT-001..005 in TODO-RESULT and forbids pilot-only→verified-empirical. The endpoint amendment is frozen for a future budget-bounded assigned-episode endpoint, but the parent protocol is incomplete/not frozen/not authorized; the proposal is PENDING_USER_APPROVAL/NOT_EXECUTED with actual new study model calls=0. Therefore no future endpoint or proposed exploratory pilot can appear as executed evidence.",
+      "severity": "High",
+      "proposed_fix": "Keep all proposed endpoint/pilot language in protocol/future-work text. Promote only after source-bound activation, approved assignment manifest, live calls, independent goal verification, and confirmatory review gates. Add a generated status banner to prevent accidental result inclusion.",
+      "status": "Fixable now"
+    }
+  ],
+  "claim_evidence_matrix": [
+    {
+      "claim": "Only the external deterministic gate authorizes mutation.",
+      "claim_class": "Formal/architecture; conditional invariant",
+      "evidence": "main.tex:43,77-95,101-103,147-150; exact P X01 row shows accepted=true, mutated=true, state revision 2→3 and goal false→true (...X01_P_rep1...json:269-317,347-408).",
+      "supports": "The implemented writer boundary and exercised transition under the declared assumptions.",
+      "does_not_support": "Unconditional safety, adversarial bypass resistance, semantic correctness, or current whole-game behavior."
+    },
+    {
+      "claim": "C1-C5 are the paper's bounded contributions.",
+      "claim_class": "Contribution mapping",
+      "evidence": "main.tex:46-48; generated/contribution_map_en.tex:13-20.",
+      "supports": "Traceability of each contribution to E1/ENG1 and its stated ceiling.",
+      "does_not_support": "Novelty or superiority over prior systems; those are [INFERENCE] unless independently literature-checked."
+    },
+    {
+      "claim": "The controller repairs candidates using typed errors without state access.",
+      "claim_class": "Formal/mechanism",
+      "evidence": "main.tex:153-177; generated/pilot_results_en.tex:4-5.",
+      "supports": "The specified rho operator and frozen guided-repairable rows.",
+      "does_not_support": "General repair capability, robustness to unseen errors, semantic validity, or model-generated repair quality."
+    },
+    {
+      "claim": "E1 gate and repair results are 13/13, rho 5/5 on guided class, oracle 6/6 across guided+oracle classes.",
+      "claim_class": "Authored-fixture conformance",
+      "evidence": "generated/pilot_tables_en.tex:14-18,36-46; generated/pilot_results_en.tex:1-8.",
+      "supports": "Exact behavior on the named designed fixtures and state-preserving failures.",
+      "does_not_support": "Population rates or independent safety/accuracy because classes and expected codes are authored and loader setup is partly invariant."
+    },
+    {
+      "claim": "Replay/integrity detects tampering.",
+      "claim_class": "Narrow integrity behavior",
+      "evidence": "main.tex:199-200; generated/pilot_results_en.tex:8; generated/pilot_tables_en.tex:39-40.",
+      "supports": "Designated detectable faults and replay equality on the tested operations.",
+      "does_not_support": "Writer identity, repair provenance, authenticated logs, or protection against recomputed unkeyed hashes."
+    },
+    {
+      "claim": "Ontology gate improves or contributes to disclosure safety.",
+      "claim_class": "Causal/ontology claim",
+      "evidence": "generated/disclosure_tables_en.tex:35-40; generated/disclosure_results_en.tex:11-13.",
+      "supports": "Only that both arms match on the same frozen authored cases and mutation fixtures.",
+      "does_not_support": "Any causal ontology effect, semantic completeness, or ontology superiority; no discriminating intervention/holdout exists."
+    },
+    {
+      "claim": "NPC arms provide a bounded runtime/model comparison.",
+      "claim_class": "Protocol/engineering count, not efficacy",
+      "evidence": "generated/npc_tables_en.tex:9-16; generated/npc_results_en.tex:4-7; actual P and R rows cited above.",
+      "supports": "Assignment/completion/failure accounting and protocol behavior on historical artifacts.",
+      "does_not_support": "Model attribution (P model null), provider revision, independent gold, superiority, recovery rate, or current checkout validity."
+    },
+    {
+      "claim": "The single Codex integration demonstrates useful engineering integration.",
+      "claim_class": "Single-case engineering observation",
+      "evidence": "main.tex:246-249; abstract main.tex:35; offline QA receipt lines2-5.",
+      "supports": "One operator-assisted case with geometry repair, 62/62 checks, Godot Web build, and explicitly described browser attempts.",
+      "does_not_support": "Repeatability, causal model effects, latency/inference cost, provider attestation, or player benefit."
+    },
+    {
+      "claim": "The proposed runtime endpoint is a study result.",
+      "claim_class": "Future protocol only",
+      "evidence": "endpoint-amendment-v1.json:27-42,184; pre-run proposal:1-19,386-412; result-promotion.yaml:1-25.",
+      "supports": "A frozen prospective endpoint definition and fail-closed status policy.",
+      "does_not_support": "Any executed sample, since the parent protocol is incomplete/not authorized and actual new-study model calls=0."
+    }
+  ],
+  "top3_required_proof_actions": [
+    {
+      "action": "Run the source-bound model-swap pilot/confirmatory study under an approved activation artifact.",
+      "proof": "Exact provider/model revision and response trace per assigned episode; predeclared assigned denominator including failures/timeouts/refusals; independent goal verifier; no post-assignment exclusions; report primary goal completion separately from safety and semantic quality. This is required before any A/C efficacy or cross-model claim."
+    },
+    {
+      "action": "Add an access-separated independent semantic/narrative evaluation.",
+      "proof": "Fresh holdout cases not used to author predicates/expectations, blinded independent labels or human rubric, explicit narrative disclosure and goal-quality outcomes, and a baseline that receives matched information. This closes the gap between encoded conformance and semantic safety/player-relevant quality."
+    },
+    {
+      "action": "Prove and adversarially exercise the authority/provenance boundary on the current checkout.",
+      "proof": "Current source hashes, writer exclusivity under process/concurrency/async failures, policy-fidelity checks, unknown-natural-language/simultaneous-omission cases, and keyed append/authentication for repair provenance. Re-run current runtime packets after any disclosed hash drift; retain old packets as historical."
+    }
+  ],
+  "what_the_paper_genuinely_establishes": [
+    "A clearly specified conditional transaction boundary in which encoded validators gate mutation and failed validation/fallback preserve canonical state, subject to the listed assumptions.",
+    "Exact implementation behavior on authored offline fixtures: validator code coverage, typed-error-guided versus state-reading repair on frozen classes, state-preserving negative paths, and designated integrity/accounting checks.",
+    "A source-bound read-only bilingual ontology/observer mapping declarations to typed roles and recorded decisions; it is not live hidden-state inference or authority.",
+    "A single operator-assisted Codex integration observation and an offline Godot/Web engineering receipt, both explicitly non-efficacy and non-player evidence."
+  ],
+  "uninspected_evidence_and_limits": [
+    "No graphical layout inspection was performed; conclusions about figures are limited to extracted captions/text, not rendered PDF appearance.",
+    "No full raw screening JSONL line was read because individual lines exceed the reader limit; representative actual result rows and aggregate/validation artifacts were inspected.",
+    "No external novelty, citation correctness, or IEEE Transactions on Games acceptance assessment was independently checked; those judgments are [INFERENCE] if made.",
+    "No source-code implementation audit, live provider call, participant/human study, current model-swap sample, or statistical analysis was performed.",
+    "The exact complete English generated paragraphs beyond reader truncation were not visually reconstructed; bilingual parity should be checked from source files/automated generated-input diffs before submission.",
+    "The review does not infer provider identity from the string gpt-6.1-sol; the manuscript itself says this is runtime selection, not attestation (main.tex:35,246-249)."
+  ],
+  "overall_verdict": "The argument is publishable as a bounded engineering/methods/conformance case only if every headline result remains under its explicit ceiling. The principal residual risk is not an overt overclaim in the conclusion; it is that attractive authored-fixture numerators, same-contract ontology arms, historical NPC counts, and an offline synthetic QA receipt can be read as safety, model, causal, or current-runtime evidence. The paper should tighten reader-facing labels now and defer all efficacy/ontology-superiority/A-C claims until the independently verified pilot and confirmatory study exist."
+}

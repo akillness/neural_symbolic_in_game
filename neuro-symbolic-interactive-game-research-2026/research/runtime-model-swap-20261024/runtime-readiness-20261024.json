@@ -1,0 +1,63 @@
+{
+  "schema_version": "runtime-model-swap-readiness/v1",
+  "artifact_id": "runtime-model-swap-20261024-static-readiness",
+  "date": "2026-10-24",
+  "status": "IMPLEMENTATION_REQUIRED",
+  "evidence_level": "STATIC_SOURCE_INSPECTION_ONLY_NOT_LIVE_VERIFICATION",
+  "source_root": "../..",
+  "agent_result": {
+    "verdict": "IMPLEMENTATION_REQUIRED",
+    "summary": "A fixed-same-game, multi-model EPISODE study cannot be launched today. The commit-authority substrate (Python<->Godot round trip, in-process budget enforcement, replay/tamper checks) is real and reusable, but the runner's live model surface is hardcoded to the Codex CLI with no Claude/Gemini sibling, and the unit of execution is a one-shot scripted assignment (<=2 model calls vs one frozen fixture case), not a sustained per-model playthrough bounded by episode caps. The development-comparison-20261023 panel (general_rule vs ontology_representation, multi-provider coding-agent candidates) is a separate, PROPOSED_NOT_EXECUTED study and correctly serves only as contrast.",
+    "anchors": [
+      "scripts/run_npc_goal_experiment.py:445 - backend map {\"P\":\"codex\",\"R\":\"rule\",\"O\":\"reference\"}; only arm P is a live model and it is fixed to codex",
+      "src/nesy_game/npc_goal.py:570-571 -> scripts/codex_oauth_llm.py:22,377-378 - IntentInterpreter arm P always shells out to the fixed `codex` binary; `model` only becomes a --model value on that same CLI, never a provider switch",
+      "src/nesy_game/codex_adapter.py:228 (CodexProposalAdapter) used only by scripts/run_live_pilot_rq2.py:39,314 - a second, separate Codex-only adapter satisfying the generic ProposalAdapter protocol (src/nesy_game/experiment.py:61), not wired into the target runner and with no Claude/Gemini sibling anywhere",
+      "src/nesy_game/kg_ontology_simulation.py:4-6 - explicit docstring: never participates in runtime authorization, never reads/writes the Godot project; confirms no 'ontology control' arm is wired into the NPC runtime",
+      "configs/npc-goal-recovery.json:66-70 - R is 'authored rule/grammar interpreter' (not literally general_rule/ontology terminology); O is explicitly 'not an independently validated oracle', same_model_family_auxiliary_fraction=1",
+      "scripts/run_npc_goal_experiment.py:960 and :1205 - controller.handle_request called at most twice per assignment (initial + one observation-triggered replan); not an until-goal-or-budget episode loop",
+      "src/nesy_game/npc_goal.py:112-119,134,782,970,1012,1056,1252-1253,1274-1275,1400-1404 - DEFAULT_BUDGET and BudgetExceeded raise sites; all six caps (max_intent_calls, max_replans, max_action_attempts, max_plan_expansions, intent_deadline_ms, episode_deadline_ms) are mechanically enforced in-process, independent of model identity",
+      "scripts/run_npc_goal_experiment.py:1891 + run_godot's subprocess.run(..., timeout=...) - engine-side wall-clock cap is mechanically enforced via subprocess.TimeoutExpired handling, contingent on Godot binary availability (not verified here)",
+      "tests/test_npc_runtime_regressions.py:1-29 - imports only nesy_game.npc_goal + jsonschema, uses stub interpreters (BarrierInterpreter/CountingInterpreter, arm R); zero subprocess/Godot/Codex-CLI references, i.e. authored-fixture controller-contract tests only, no live-integration evidence",
+      "tests/test_godot_experimental_game.py:94-98,268 - contrasting real subprocess integration tests against a headless Godot binary that self-skip via shutil.which(...) + self.skipTest(...) when the binary is absent"
+    ],
+    "usable_existing_components": [
+      "Python<->Godot commit-authority round trip: run_godot bootstrap/experiment/reexecution/tamper-rejection sidecars with sha256-verified state refs and byte-preservation checks",
+      "In-process GoalController session/budget state machine with all six caps mechanically enforced and independently testable via BudgetExceeded",
+      "Frozen-fixture/manifest/replay/provenance pipeline: make_assignments, freeze_manifest, aggregate, replay_report, sha256 manifest generation",
+      "One working live model backend (Codex CLI, arm P) with schema-validated typed-intent output and execution-attempt accounting via execution_observer"
+    ],
+    "missing_composition": [
+      "A Claude and a Gemini proposal path analogous to the Codex one, wired into the actual target runner (new IntentInterpreter branches or new ProposalAdapter subclasses with a verified per-provider subprocess/API contract)",
+      "An episode-level driver loop that repeats intent/plan/action cycles toward goal_reached until a budget or time cap fires, replacing today's <=2-call-per-assignment scripted exchange",
+      "A model-identity field threaded through the frozen protocol/schema and into assignment/record provenance (currently provenance.model is None for arm P)",
+      "A new evaluation/claim-boundary packet scoping what a multi-model episode result may and may not claim, analogous to the existing CLAIM_BOUNDARY discipline"
+    ],
+    "unit_of_analysis_mismatch": "Existing scripts define the unit as one case x arm x repetition assignment (assignment_count=72 for the screening packet), bounded to at most two model-intent calls against one frozen initial state. A fixed-same-game multi-model EPISODE study requires the unit to be one full playthrough per model against the same game instance, run until goal_reached or a budget/time cap fires, with model identity as an explicit factor. Scaling today's grid across new models would multiply case-rows, not produce episodes; no code aggregates multiple replan/action cycles into one per-model episode record.",
+    "episode_time_call_caps_mechanically_enforceable": "Yes in isolation - max_intent_calls, max_replans, max_action_attempts, max_plan_expansions, intent_deadline_ms, and episode_deadline_ms all raise BudgetExceeded and are model-independent; the Godot-side wall-clock timeout is enforced via subprocess.run(timeout=...). No, not yet for an actual episode - no driver loop currently composes repeated intent cycles into one episode bounded by those caps; today they bound a single assignment's <=2-call exchange.",
+    "prerequisite_list": [
+      "Implement and verify a Claude and a Gemini proposal surface wired into the target runner with a provider-specific subprocess/API contract (timeout, schema validation, execution-attempt accounting) equivalent to codex_oauth_llm.py",
+      "Add an explicit model-identity field to the frozen protocol/schema and to assignment/record provenance",
+      "Design and implement an episode-level driver loop bounded by episode_deadline_ms/max_intent_calls/max_replans, with its own frozen fixture/case contract distinct from or extending validated-v5",
+      "Verify Godot binary availability and the live-integration test lane (test_godot_experimental_game.py) in the actual execution environment before any engine-side readiness claim",
+      "Freeze a new evaluation/claim-boundary block for the multi-model episode study consistent with this codebase's existing no-superiority/no-efficacy discipline"
+    ],
+    "no_claims_of_live_proof": "No code was executed, no model or engine binary was invoked, and no test was run as part of this audit; all findings are source-grounded path:line anchors from static inspection only."
+  },
+  "source_hashes": {
+    "scripts/run_npc_goal_experiment.py": "194115148395b4d2a27834c042a52187714f29bcd9c7b57aa14037568e5379b4",
+    "src/nesy_game/npc_goal.py": "e0e23a25806a2d18be95d533ec2c689d4cc7569befb7e0f5d2f417fb79347983",
+    "scripts/codex_oauth_llm.py": "608e3640df42cd457e11097b4c3634d7ef14c6d3631e73540b81e26c4dc60223",
+    "src/nesy_game/codex_adapter.py": "f57695cdd5d85021741d9477234ce3e2e892f6cd06366f093e111a06738ec0e3",
+    "scripts/run_live_pilot_rq2.py": "59ab3e4403ad4640a6d37259dc574d4407c1b8c1c73f008be7690ca2c944beb9",
+    "src/nesy_game/experiment.py": "ea1681247acb41112237a32ccd86783d742fe0483fb548ae900e5cda86533198",
+    "src/nesy_game/kg_ontology_simulation.py": "1803c4488a4cbad41dfc8aac41aa0f21192c89fc7869e1300322ab775582cf5a",
+    "configs/npc-goal-recovery.json": "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098",
+    "tests/test_npc_runtime_regressions.py": "7cad037565270eb2589a05ccc1733fc67f0863ca003d74a05058b8b5cb3ee3d1",
+    "tests/test_godot_experimental_game.py": "ba7cc606f03228dc144a7fee646ee55933b07c29a0b969d3aaab5303bf72433a"
+  },
+  "runtime_study_episodes_executed": 0,
+  "engine_or_model_processes_invoked_by_auditor": false,
+  "tests_run_by_auditor": false,
+  "interpretation": "Existing NPC Godot/Python authority and budget code can be reused, but it is not a composed fixed-game multi-provider full-episode evaluation harness or proof of current live readiness.",
+  "hash_capture_method": "shasum -a 256 on the ten cited files after the static audit; source drift invalidates subsequent reliance on these anchors. This does not prove engine/provider execution."
+}

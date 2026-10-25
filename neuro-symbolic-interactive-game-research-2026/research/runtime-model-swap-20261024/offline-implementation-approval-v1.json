@@ -1,0 +1,63 @@
+{
+  "schema_version": "runtime-model-swap-offline-implementation-approval/v1",
+  "artifact_id": "runtime-model-swap-20261024-offline-implementation-approval-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "status": "APPROVED_OFFLINE_IMPLEMENTATION_ONLY",
+  "date": "2026-10-24",
+  "user_verbatim_decision": "응 진행하자.",
+  "approval_question_binding": "이 묶음안을 기준으로 하니스 구현·오프라인 검증까지 진행할까요? 계정 조회·연구 내용 전송·연구용 모델 호출·지출·실험 실행은 별도 승인 전에는 진행하지 않습니다.",
+  "approved_endpoint_ref": "endpoint-amendment-v1.json",
+  "approved_endpoint_sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199",
+  "decision_proposal_ref": "pre-run-decision-proposal-v1.json",
+  "decision_proposal_sha256": "cd4c5b90df3818bfbcaf83ea10b7978be1487e5846f3b954e9453892f790a7e6",
+  "pending_proposal_rewritten": false,
+  "approved_scope": [
+    "implement missing fixed-game full-episode harness",
+    "typed adapters through the existing injectable prompt_runner callable",
+    "offline scripted/recorded responses for engineering verification, never scientific model samples",
+    "information-matched general-rule/ontology prompt views with byte hashes",
+    "independent goal/safety observations and preserved assigned denominators",
+    "local disposable Godot execution and deterministic replay for offline verification",
+    "focused new/affected tests and offline regression checks"
+  ],
+  "design_defaults_approved_for_offline_implementation": {
+    "episode_wall_seconds": 180,
+    "response_deadline_seconds": 60,
+    "max_observable_host_invocations_per_episode": 12,
+    "max_logical_repairs_per_decision": 2,
+    "pilot_plan_quests": 12,
+    "pilot_plan_repeats": 2,
+    "pilot_plan_models_including_reference": 6,
+    "pilot_plan_representations": 2,
+    "pilot_plan_max_assignments": 288,
+    "pilot_assignments_authorized_to_execute": false,
+    "C_margin_percentage_points_planning_target": 5,
+    "C_absolute_success_floor_planning_target": 0.8,
+    "confirmatory_power_or_sample_size_approved": false
+  },
+  "permissions": {
+    "offline_code_and_fixture_work": true,
+    "local_engine_and_test_processes": true,
+    "provider_account_metadata_lookup": false,
+    "credential_file_access": false,
+    "research_context_egress": false,
+    "research_model_or_provider_calls": false,
+    "billed_generation_or_spend": false,
+    "research_episode_launch": false,
+    "deployment": false,
+    "git_push": false
+  },
+  "existing_separate_permission": "Per-query minimal Jev routing was explicitly requested earlier; its advisory inference is not a runtime-study episode or launch authorization.",
+  "frozen_boundary": [
+    "do not edit npc_goal.py or npc-goal-recovery 1.1.0 schema/controller for this harness",
+    "capture real provider/model/revision metadata in the outer episode trace; do not reinterpret legacy source=codex as provider identity",
+    "old development panel, endpoint amendment and pending proposal stay immutable",
+    "same-game runtime model swap is distinct from game authoring and ontology-pipeline conformance"
+  ],
+  "evidence_limits": [
+    "offline fixtures are authored engineering evidence, not live model quality or C noninferiority observations",
+    "native selectors, access, revisions, token/cost counters remain unverified/null unless separately observed",
+    "no study launch until a separate explicit source-bound activation authorization"
+  ],
+  "append_only_rule": "This approval is a new file bound to the exact pending proposal and endpoint hashes. Later scope changes require a new amendment; never rewrite those predecessor artifacts."
+}

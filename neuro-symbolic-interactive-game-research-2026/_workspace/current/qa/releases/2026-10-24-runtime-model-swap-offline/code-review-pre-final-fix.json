@@ -1,0 +1,175 @@
+{
+  "verdict": "FIX",
+  "review_mode": "read_only_static_review",
+  "commands_executed": false,
+  "tests_executed_by_reviewer": false,
+  "summary": "The six original review defects are closed for their reported scenarios. FINAL-1 is only partially closed: ordinary wrong-type, object, set, NaN, replay, final-state, and extension-evidence cases are retained safely, but a decoded lone UTF-16 surrogate can still pass the ingress checks and then crash UTF-8 hashing, dropping the assigned record. This is one HIGH acceptance blocker.",
+  "finding_closures": [
+    {
+      "id": "INITIAL-1",
+      "title": "Failed posthoc replay credited as overall engineering success",
+      "status": "CLOSED",
+      "evidence": [
+        "src/nesy_game/runtime_model_swap.py:533-551 derives semantic replay, primary_success, engineering_status, and accepted_for_engineering_verification separately.",
+        "scripts/run_runtime_model_swap.py:111-128 exposes both primary and engineering outcomes and exits successfully only when the primary goal and engineering acceptance both pass.",
+        "tests/test_runtime_model_swap.py:656-682 covers replay failure preserving the observed primary goal while rejecting engineering credit."
+      ]
+    },
+    {
+      "id": "INITIAL-2",
+      "title": "Unsafe goal-reaching traces discarded instead of separating outcome and safety",
+      "status": "CLOSED",
+      "evidence": [
+        "src/nesy_game/runtime_model_swap.py:1055-1075 retains the final snapshot and committed-transition evidence before classifying an engine-gate failure as FAIL or NOT_PASS.",
+        "src/nesy_game/runtime_model_swap.py:507-511 records an independently observed reached goal before stopping; src/nesy_game/runtime_model_swap.py:542-551 then rejects engineering acceptance when safety is FAIL.",
+        "tests/test_runtime_model_swap_godot.py:460-507 covers an unsafe reached goal: primary_success remains true, safety is FAIL, no further model dispatch occurs, and engineering acceptance is false."
+      ]
+    },
+    {
+      "id": "INITIAL-3",
+      "title": "Non-JSON callback evidence can drop an assigned row",
+      "status": "CLOSED_FOR_ORIGINAL_CASES",
+      "evidence": [
+        "src/nesy_game/runtime_model_swap.py:70-82 converts object, set, NaN, and recursion failures to bounded JSON-safe diagnostics.",
+        "src/nesy_game/runtime_model_swap.py:176-185 validates callback type and serialized shape before storage or dereference.",
+        "tests/test_runtime_model_swap.py:684-729 and tests/test_runtime_model_swap_godot.py:545-583 cover object, set, NaN, and prompt-callback evidence with immutable output rows."
+      ],
+      "qualification": "A distinct UTF-8 scalar-value gap remains under FINAL-1 and is the blocker reported below."
+    },
+    {
+      "id": "INITIAL-4",
+      "title": "Setup and engine execution charged to the wrong timing boundaries",
+      "status": "CLOSED",
+      "evidence": [
+        "src/nesy_game/runtime_model_swap.py:129-133 labels the episode boundary explicitly; src/nesy_game/runtime_model_swap.py:342-346 starts it at first proposal/host dispatch after preparation.",
+        "src/nesy_game/runtime_model_swap.py:809-811 bounds episode engine actions by remaining episode wall rather than the provider response deadline.",
+        "src/nesy_game/runtime_model_swap.py:1176-1182 labels replay as posthoc and outside the goal-completion wall.",
+        "tests/test_runtime_model_swap.py:984-1054 and tests/test_runtime_model_swap_godot.py:731-811 cover setup exclusion plus charged host, planning, validation, repair, and engine time."
+      ]
+    },
+    {
+      "id": "INITIAL-5",
+      "title": "CLI omitted the approved corrective re-proposal path",
+      "status": "CLOSED",
+      "evidence": [
+        "scripts/run_runtime_model_swap.py:99-100 wires engine.propose and engine.repair together.",
+        "tests/test_runtime_model_swap_godot.py:621-670 verifies malformed-first/valid-second adapter repair with a shared logical_request_id and validator-error lineage.",
+        "tests/test_runtime_model_swap_godot.py:813-859 verifies CLI composition passes the bound repair method."
+      ]
+    },
+    {
+      "id": "INITIAL-6",
+      "title": "Replay goal-witness equality accepted missing evidence",
+      "status": "CLOSED",
+      "evidence": [
+        "src/nesy_game/runtime_model_swap.py:1118-1143 requires an actual boolean final witness and rejects inconsistent top-level/action witnesses.",
+        "src/nesy_game/runtime_model_swap.py:1160-1173 requires both original and replay witnesses and includes the comparison in replay validity.",
+        "tests/test_runtime_model_swap_godot.py:672-729 covers missing top-level evidence with a final-witness mismatch and a conflicting top-level witness."
+      ]
+    },
+    {
+      "id": "FINAL-1",
+      "title": "Malformed callback ingress can drop assigned records",
+      "status": "PARTIAL",
+      "evidence": [
+        "src/nesy_game/runtime_model_swap.py:176-185 now protects state/context/validation/commit/goal/replay callbacks for the tested type and ordinary serialization failures.",
+        "src/nesy_game/runtime_model_swap.py:227-260 converts malformed replay and extension evidence into assigned-row diagnostics and non-acceptance.",
+        "tests/test_runtime_model_swap.py:731-982 covers malformed state/context/validation/commit/goal/replay/final-state outputs, while tests/test_runtime_model_swap_godot.py:545-583 covers malformed prompt output."
+      ],
+      "remaining_gap": "The serializer checks JSON shape but not whether the resulting text is UTF-8 encodable; the HIGH finding below remains reachable."
+    }
+  ],
+  "findings": [
+    {
+      "id": "FINAL-1-UTF8",
+      "severity": "HIGH",
+      "title": "Lone surrogate callback text still escapes ingress validation and drops the assigned record",
+      "source_anchors": [
+        "src/nesy_game/runtime_model_swap.py:60-67",
+        "src/nesy_game/runtime_model_swap.py:70-82",
+        "src/nesy_game/runtime_model_swap.py:176-185",
+        "src/nesy_game/runtime_model_swap.py:314-315",
+        "src/nesy_game/runtime_model_swap.py:552-559",
+        "src/nesy_game/runtime_model_swap.py:913-917"
+      ],
+      "exact_snippet": "_json uses json.dumps(..., ensure_ascii=False), while _hash later calls _json(value).encode(\"utf-8\").",
+      "concrete_input_path": "A state/context callback or prompt runner returns a Python string containing a decoded lone high surrogate U+D800. This can arise from JSON text containing an escaped lone surrogate. json.dumps with ensure_ascii=False returns a Python string, so checked() and _evidence_value() accept and retain it. A state/context value then reaches request_hash at lines 314-315; prompt output can be retained at lines 913-917 and later reaches the record hash at lines 552-554.",
+      "bad_outcome": "Strict UTF-8 encoding raises UnicodeEncodeError outside the callback guards. run_episode returns no assigned failure row; with output_path, no complete immutable episode record is written.",
+      "why_existing_guards_do_not_catch_it": "The guards call _json only and catch TypeError, ValueError, and RecursionError. They never test UTF-8 encodability and do not catch UnicodeEncodeError. The final hash/write path is not wrapped as an assigned callback failure.",
+      "required_fix": "At callback ingress, validate canonical JSON bytes, not only json.dumps text; convert non-UTF-8-scalar content to a bounded safe diagnostic before it enters state, proposal, validation, commit, replay, or extension evidence. Ensure diagnostic and exception strings are also UTF-8 safe. Add output_path regressions for a lone-surrogate state/context value and prompt output."
+    }
+  ],
+  "acceptance_fidelity": {
+    "primary_vs_engineering": "PASS except for the assigned-record-loss finding: primary goal completion is represented independently from replay/safety engineering acceptance.",
+    "unsafe_goal_events": "PASS: an actual reached goal remains primary_success=true, safety FAIL stops progression, and accepted_for_engineering_verification is false.",
+    "post_terminal_failures": "PASS for covered inputs: malformed final snapshots and replay failures preserve the observed primary outcome but reject engineering acceptance.",
+    "callback_ingress": "FAIL: covered malformed Python objects are safe, but lone-surrogate text remains a reproducible poison path.",
+    "timing_and_accounting": "PASS: setup is outside the episode wall; provider response, planning, validation, repair, engine actions, and posthoc replay have distinct boundaries; observable host calls, repairs, and transport retries are recorded.",
+    "staging_and_identity": "PASS: the CLI stages a disposable project, the engine rejects direct source-project execution, engine inputs use exclusive creation, and provider identity/revision/request count/cost remain explicit nulls rather than inferred values.",
+    "claim_boundary": "PASS: records and aggregation are labeled bookkeeping/offline synthetic engineering evidence; nothing reviewed promotes fixtures to scientific efficacy, noninferiority, or live-readiness evidence."
+  },
+  "standards_review": {
+    "critical_security_findings": 0,
+    "high_correctness_findings": 1,
+    "other_supported_findings": 0,
+    "notes": [
+      "No hardcoded credential, network/provider invocation, unsafe source-project execution, or scientific-claim promotion was found in the reviewed target.",
+      "No style-only or speculative findings were reported. The 1,194-line module was not flagged merely for size because no separate concrete failure mode was established from size alone."
+    ]
+  },
+  "reviewed_evidence": [
+    "src/nesy_game/runtime_model_swap.py",
+    "scripts/run_runtime_model_swap.py",
+    "tests/test_runtime_model_swap.py",
+    "tests/test_runtime_model_swap_godot.py",
+    "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/code-review-initial.json",
+    "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/code-review-followup-fix.json",
+    "research/runtime-model-swap-20261024/offline-implementation-seed-v1.yaml",
+    "research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+    "research/runtime-model-swap-20261024/endpoint-amendment-v1.json",
+    "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json timing clauses cited by the initial review",
+    "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/tests-final-v3.xml"
+  ],
+  "supplied_verification_evidence": {
+    "tests_final_v3": "The supplied JUnit artifact reports 71 tests, 0 failures, 0 errors, and 0 skipped; this reviewer did not execute or independently reproduce it.",
+    "ruff_and_format": "Reported by the assignment context only; this reviewer did not run or independently inspect command output.",
+    "paired_cli_smokes": "Supplied artifacts show four-decision general-rule and ontology engineering episodes, but the assignment states they precede final source formatting; they are not accepted here as final source-bound runtime proof."
+  },
+  "scope_limits": [
+    "No source, test, documentation, or artifact edits were made.",
+    "No commands, Git operations, formatters, linters, test suites, native processes, network calls, provider calls, or model calls were executed.",
+    "The review did not audit unrelated native launch work, immutable npc_goal.py, Godot schema/config, or frozen historical studies.",
+    "The aggregation path was reviewed only as offline bookkeeping. No inferential study, efficacy, noninferiority, model-superiority, live-capability, or launch claim is made.",
+    "Main still needs to rerun and hash-bind the paired real CLI smokes after the final source state, independent of this code-review blocker."
+  ],
+  "review_summary": {
+    "CRITICAL": 0,
+    "HIGH": 1,
+    "MEDIUM": 0,
+    "LOW": 0,
+    "verdict": "FIX — FINAL-1 is not fully closed because malformed Unicode callback evidence can still erase an assigned record."
+  },
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "Every closure and finding is tied to exact source/test anchors; the only limitation is that the Unicode failure is established by static Python serialization behavior rather than an executed regression, as execution was explicitly forbidden."
+    },
+    "completeness": {
+      "score": 5,
+      "evidence": "The four target files, both prior reviews, all three frozen contract artifacts, timing clauses, and supplied final test report were covered; all six initial defects and FINAL-1 have explicit closure states."
+    },
+    "clarity": {
+      "score": 5,
+      "evidence": "The result separates closures, the remaining blocker, acceptance fidelity, evidence provenance, and scope limits in machine-readable fields."
+    },
+    "actionability": {
+      "score": 5,
+      "evidence": "The blocker includes exact lines, a concrete callback input/path, the observed failure mechanism, why current guards miss it, and the smallest regression/fix boundary."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "The JSON is necessarily detailed to satisfy the requested closure matrix and evidence limits, but some evidence anchors repeat across closure and fidelity sections."
+    },
+    "overall": 4.6
+  }
+}

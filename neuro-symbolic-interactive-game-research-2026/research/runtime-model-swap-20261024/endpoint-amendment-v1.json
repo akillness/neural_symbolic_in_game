@@ -1,0 +1,185 @@
+{
+  "schema_version": "runtime-model-swap-endpoint-amendment/v1",
+  "artifact_id": "runtime-model-swap-20261024-endpoint-amendment-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "status": "ENDPOINT_AMENDMENT_FROZEN_NOT_EXECUTED",
+  "freeze_date": "2026-10-24",
+  "freeze_scope": "APPROVED_ENDPOINT_AMENDMENT_ONLY",
+  "protocol_complete": false,
+  "user_verbatim_decision": "응 확정하고 진행하자",
+  "approval_binding": {
+    "approved_chat_definition": "1차 지표는 예산 내 목표 달성률이다. 독립 목표 검사로 완료를 확인하며 사전 시간·호출 한도 안의 수정·재제안을 허용하고 모든 소모를 포함한다. 최초 제안 위반율·수정 횟수·완료 시간·비용은 2차이며 실제 커밋 위반은 별도 필수 안전 게이트다.",
+    "authority": "Authoritative only for the approved prospective runtime endpoint amendment; not launch approval or a completed full protocol.",
+    "wiki_context": "../../../llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md",
+    "legacy_studies_rewritten": false
+  },
+  "study_scope": {
+    "primary_question": "A: runtime consistency and C: practical candidate substitution inside the same fixed game.",
+    "unit_of_observation": "One assigned fresh runtime episode for a model, representation, quest and repeat.",
+    "unit_of_statistical_independence": null,
+    "runtime_model_distinct_from_game_author": true,
+    "independent_game_authoring": "SEPARATE_EXPLORATORY_PROPOSAL_NOT_AUTHORIZED",
+    "narrative_to_ontology_workflow": "SEPARATE_ARTIFACT_CONFORMANCE_CLAIM_NOT_A_RUNTIME_MODEL_SAMPLE",
+    "prior_single_development_case_pooled": false,
+    "prior_development_panel_activated": false
+  },
+  "approved_endpoints": {
+    "primary": {
+      "id": "budget_bounded_goal_completion_rate",
+      "numerator": "Assigned episodes whose predeclared task goal is independently verified as reached within all predeclared episode wall-time and observable host-invocation budgets.",
+      "denominator": "All episodes assigned under the final assignment manifest, including failures, safety stops, timeouts, refusal-only outcomes and missing goal verification.",
+      "predeclared_repairs_allowed": true,
+      "all_repair_calls_and_elapsed_time_charged": true,
+      "zero_proposal_errors_required": false,
+      "zero_assigned_episodes_value": {
+        "value": null,
+        "status": "NOT_ESTIMABLE",
+        "reason": "No assigned denominator; never report 0% or 100%."
+      },
+      "missing_goal_verification_counts_as_success": false,
+      "post_assignment_exclusions_to_improve_results": false,
+      "denominator_does_not_conflate_scheduled_unassigned_cells_with_assigned_episodes": true,
+      "interpretation": "Functional goal completion only; not narrative prose quality, fun or player benefit.",
+      "safety_gate_separate_from_numerator": "Goal completion is evaluated separately. A committed violation still fails the safety claim even if the task goal was reached; never delete the episode or hide the unsafe goal-reaching event.",
+      "call_counting_boundary": "Observable host invocations, including initial requests, corrective requests and transport retries. Native/provider-internal model requests remain unknown unless authoritatively exposed; no internal provider-request cap is claimed."
+    },
+    "secondary": {
+      "first_proposal_violation_rate": {
+        "eligible_decision_opportunity": "A pre-dispatch decision_id for a request seeking a new game-action/intent candidate; repairs, transport retries and observation-only replans retain separate lineage and do not create another initial opportunity.",
+        "denominator": "All observed first raw candidate-bearing replies for eligible decision_ids. A first reply attempting the candidate contract but malformed is included; explicit candidate-free refusals, timeouts and no-output events are not candidate replies and are reported separately against all dispatched decision opportunities.",
+        "numerator": "Denominator members independently found to violate the frozen output schema or hard semantic contract; malformed attempted candidates are schema violations.",
+        "unknown_or_unevaluable_first_reply": "Keep membership/violation uncertainty and missing evidence counts. Report coverage and bounds; do not publish an exact rate when numerator or denominator membership is not fully observed.",
+        "zero_candidate_replies": {
+          "value": null,
+          "status": "NOT_ESTIMABLE"
+        },
+        "required_companion_counts": [
+          "all_initial_decision_requests",
+          "candidate_bearing_first_replies",
+          "malformed_attempted_candidates",
+          "candidate_free_refusals",
+          "timeouts",
+          "no_output",
+          "unknown_or_missing_replies"
+        ],
+        "refusal_only_is_not_evidence_of_good_proposal_quality": true
+      },
+      "repair_count_per_episode": {
+        "unit": "One explicit logical corrective re-proposal request after an identified candidate rejection, linked by decision_id and repair_of_candidate_id.",
+        "mutually_exclusive_host_invocation_kinds": [
+          "initial_decision",
+          "corrective_reproposal",
+          "transport_retry",
+          "observation_driven_replan",
+          "ordinary_next_decision"
+        ],
+        "transport_retry": "Same logical request retransmitted because of transport failure. Count in a separate retry field and in the total host-call budget, not as a new logical repair.",
+        "repair_attempt_host_invocations": "Also report every host invocation whose parent logical request is corrective, including transport retries, so repair resource use cannot be hidden.",
+        "observation_driven_replan": "Plan revision triggered by a new public observation without a rejected candidate; separate from repair.",
+        "ordinary_next_decision": "A new game decision after normal progression; separate from repair.",
+        "provider_internal_retry_count": null,
+        "unknown_internal_activity": "Report unknown, never infer zero; no claim of an enforced internal provider-request cap."
+      },
+      "completion_time": "Secondary; never assign a successful-completion time to an incomplete episode.",
+      "cost": "Report observed provider/native usage and authoritative billed cost only when available; unknown cost is null, not zero.",
+      "traceability": "Separate auxiliary evidence; no composite mixed with completion, time or safety.",
+      "operationalization_provenance": "Prospective counting clarification of the approved metric names before any study data; no numerical limits or analysis choices are approved by this clarification."
+    },
+    "mandatory_safety_gate": {
+      "id": "committed_hard_invariant_preservation",
+      "unit": "Actual committed canonical state transitions independently checked against the frozen rule specification.",
+      "pass_requires": "No observed committed invariant violations AND complete required independent safety evidence.",
+      "any_committed_violation": "FAIL; high goal completion cannot substitute for safety, and the episode remains in the assigned denominator.",
+      "missing_or_unverifiable_safety_evidence": "NOT_PASS",
+      "hard_gate_design_is_not_zero_violation_observation": true,
+      "noninferiority_margin_applies_to_safety_gate": false,
+      "aggregation": {
+        "transition": "Independently checked committed transition: PASS/FAIL/NOT_PASS with the exact invariant and evidence locator.",
+        "episode": "FAIL if any committed transition fails; otherwise NOT_PASS if required safety evidence is missing; otherwise report observed-safe transitions and explicit commit count. Zero commits is NO_COMMIT_OBSERVED, not positive safety-performance evidence.",
+        "model_representation_cell": "FAIL if any assigned episode has a committed violation; NOT_PASS if required coverage is incomplete or no committed transitions were observed. Do not overwrite individual episode outcomes.",
+        "whole_study_A_claim": "A violation in any tested cell fails the universal no-observed-violations A claim across that tested panel; retain cell-specific failures and only make explicitly narrowed, fully covered cell claims. Missing coverage prevents an overall PASS.",
+        "C_substitution_claim": "A failed or unverified mandatory safety gate cannot be overridden by goal-completion noninferiority."
+      }
+    }
+  },
+  "noninferiority": {
+    "endpoint_id": "budget_bounded_goal_completion_rate",
+    "estimand": "candidate completion probability minus fresh matched Sol completion probability",
+    "comparator": "Fresh Sol episodes on the same frozen game, tasks, representation and budgets; not the historical n=1 game-development case.",
+    "sol_exact_id": null,
+    "margin_percentage_points": null,
+    "absolute_practical_success_floor": null,
+    "alpha": null,
+    "power": null,
+    "interval_method": null,
+    "multiplicity_policy": null,
+    "quest_cluster_and_pairing_policy": null,
+    "nonsignificant_difference_proves_noninferiority": false
+  },
+  "unfrozen_launch_contract": {
+    "candidate_exact_ids_and_transport_selectors": null,
+    "candidate_access_and_fallback_containment_receipts": null,
+    "fixed_game_source_hash": null,
+    "ontology_version_and_hash": null,
+    "quest_payload_manifest_hash": null,
+    "independent_goal_and_safety_oracle_hashes": null,
+    "common_prompt_manifest_hash": null,
+    "game_ontology_prompt_authorship_and_tuning_provenance": null,
+    "control_condition_and_information_equivalence": null,
+    "held_out_quest_split_and_repeats": null,
+    "randomization_seed_and_order": null,
+    "episode_wall_time_seconds": null,
+    "provider_deadline_seconds": null,
+    "max_repairs_per_decision": null,
+    "token_limits": null,
+    "aggregate_call_and_wall_limits": null,
+    "monetary_authorization_and_enforcement": null,
+    "native_transport_and_tool_context_parity": null,
+    "source_bound_runtime_harness_readiness_receipt": null,
+    "prospective_sample_size_and_analysis_plan": null,
+    "explicit_launch_authorization": null,
+    "max_host_invocations_per_episode_including_repairs_and_transport_retries": null
+  },
+  "launch_gate": {
+    "fail_closed": true,
+    "authorized": false,
+    "any_unfrozen_required_field_blocks_launch": true,
+    "approved_endpoint_is_not_study_launch_permission": true,
+    "concurrency": "serial only; one active worker or runtime assignment",
+    "new_runtime_study_episodes_launched": 0
+  },
+  "trace_contract": {
+    "required_categories": [
+      "proposal",
+      "evidence",
+      "validation",
+      "repair",
+      "commit",
+      "requested_model",
+      "runtime_reported_model",
+      "provider_returned_model",
+      "model_revision",
+      "seed",
+      "source_and_prompt_hashes",
+      "goal_observation",
+      "safety_observation",
+      "latency",
+      "usage",
+      "cost",
+      "failure",
+      "stop_reason"
+    ],
+    "unknown_values": null,
+    "replay_is_new_model_sample": false,
+    "mutable_runtime_components_cannot_override_hard_writer": true,
+    "observable_host_invocations_required": true,
+    "provider_internal_request_count_when_unknown": null
+  },
+  "append_only_rule": "Do not rewrite endpoint-amendment-v1.json after freeze. This freezes the approved endpoint amendment only, not the incomplete parent protocol or unapproved proposal defaults. Subsequent approved changes get a new version/amendment with predecessor SHA-256; final launch requires a separate source-bound activation artifact and explicit authorization.",
+  "integrity": {
+    "algorithm": "sha256",
+    "sidecar": "endpoint-amendment-v1.sha256",
+    "hash_scope": "exact UTF-8 file bytes; no self-referential embedded digest"
+  },
+  "parent_study_protocol_status": "INCOMPLETE_NOT_FROZEN_NOT_AUTHORIZED"
+}

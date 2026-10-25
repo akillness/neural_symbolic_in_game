@@ -1,0 +1,123 @@
+{
+  "artifact_scope": "Anonymous IEEE/Transactions-on-Games-oriented engineering/methods manuscript. I treated it as a systems/conformance paper, not a completed model-efficacy or player-study paper. I reviewed the English and Korean sources, compiled English PDF text (without inferring visual layout), all listed active English generated inputs, the Korean parity inputs, the contribution/reference/experiment matrices, the fail-closed promotion policy, the offline runtime verification receipt, and both prospective runtime-study artifacts.",
+  "evidence_basis": [
+    "The title/abstract foreground a source-bound ontology view and one Codex integration case, while explicitly disclaiming model comparison, ontology superiority, and player benefit (paper/latex/en/main.tex:25,34-46; paper/latex/ko/main.tex:70-92).",
+    "The contribution map defines C1-C5 as trust-boundary contracts, validate-repair-commit, audit-linked evidence, assignment accounting, and typed counterexample repair, with ceilings limited to encoded-field conformance, frozen-case mechanism behavior, named-fixture integrity/replay, exact designed-case accounting, and frozen offline repairability (paper/latex/generated/contribution_map_en.tex:11-20).",
+    "Active evidence is correctly partitioned into E1 offline conformance, E3 closed-world ontology simulation, and ENG1 engine-local engineering verification; the generated lane table explicitly prohibits population efficacy, model ranking, player experience, runtime retrieval benefit, and commercial-performance inference (paper/latex/generated/evidence_lanes_en.tex:10-18).",
+    "E1 is the strongest mechanism result: rejection-only and blind retry commit 0/12, error-only rho commits 5/12 (5/5 guided-repairable, 0/1 oracle-only, 0/6 irreparable), and the state-reading oracle commits 6/12; the table labels these authored fixture facts rather than population or live-model quality (paper/latex/generated/pilot_tables_en.tex:14-21).",
+    "E3 reports typed-link simulation performance (S0 precision/recall 0.000; S2 typed-lexical precision/recall 1.000, MRR 0.944, Brier 0.131, Sem@3 1.000) but explicitly limits it to authored closed-world link recovery, not runtime retrieval, semantic completeness, or efficacy (paper/latex/generated/kg_ontology_simulation_en.tex:6-19).",
+    "The disclosure arms are not causally discriminating: general_rule and ontology_gate have identical 60-case outcomes (16 allow/44 deny, zero semantic mismatch, zero state/display failure, zero replay failure), and the paired rule-change fixtures contain no discriminating case (paper/latex/generated/disclosure_tables_en.tex:25-40; paper/latex/generated/disclosure_results_en.tex:8-13).",
+    "The fixed-goal NPC table retains all 24 assignments per P/R/O arm with 4 goal-reached cases each and states that O has zero independent sources; the result prose keeps requested/decision model identifiers unknown and identifies the packet as historical, not current-runtime evidence (paper/latex/generated/npc_tables_en.tex:1-16; paper/latex/generated/npc_results_en.tex:1-7).",
+    "The latest runtime-swap receipt is explicitly PASS_OFFLINE_ENGINEERING_ONLY, not scientific efficacy or live readiness; its two episodes are synthetic with zero provider-process launches (verification-final.json:1-5,39-85). The pre-run proposal records actual_new_study_model_calls=0 and execution_status=NOT_EXECUTED (pre-run-decision-proposal-v1.json:387-412).",
+    "The promotion workflow forbids direct TODO-RESULT-to-verified-empirical and pilot-only-to-verified-empirical transitions (harness/workflows/result-promotion.yaml:1-25). The endpoint amendment is frozen only as a prospective endpoint, not a completed protocol or launch (endpoint-amendment-v1.json:1-24,105-117)."
+  ],
+  "overall_assessment": {
+    "overall_score": "3/5",
+    "confidence": "high",
+    "summary": "This is a credible and unusually disciplined systems-conformance manuscript whose strongest scholarly value is the composition of an external authority boundary, bounded typed-error repair, semantic replay, and assignment-complete failure accounting. The individual ingredients are intentionally not claimed as inventions; [INFERENCE] the novelty is therefore moderate and integration-based rather than algorithmic. E1 gives real mechanism evidence on frozen repairability classes, while E3, ENG1, NPC-DISC-1, and the Codex case are bounded engineering demonstrations. The current bundle cannot establish model robustness, ontology causal efficacy, generalization, player benefit, or superiority over a deterministic/scripted controller."
+  },
+  "scores": [
+    {
+      "dimension": "Problem and research question",
+      "score": "4/5",
+      "basis": "The failure mode and authority boundary are concrete, and the manuscript states its guarantees and non-guarantees before results (main.tex:42-46,77-99). The central research question is still more systems-design oriented than an explicit empirical question."
+    },
+    {
+      "dimension": "Literature and context",
+      "score": "4/5",
+      "basis": "Related Work spans grounded game worlds, agent environments, constraints, runtime interposition, repair, and reproducibility, and the local crosswalk binds 58 records to nine topics with no unmatched or hallucinated records in its verified scope (main.tex:66-75; contribution-reference-crosscheck.md:47-65). The gap is accurate but currently list-like."
+    },
+    {
+      "dimension": "Methodology",
+      "score": "4/5",
+      "basis": "For an artifact/conformance paper, contracts, state ownership, repair information boundaries, replay, failure classes, and denominator rules are unusually explicit (main.tex:77-99,199-217). For an efficacy paper, the missing independent oracle, comparator, held-out tasks, and repeated model observations would reduce this to 2/5."
+    },
+    {
+      "dimension": "Data and evidence",
+      "score": "3/5",
+      "basis": "Counts and hashes are exact and failure-retaining, but active evidence is authored, single-world or closed-world, with no stochastic model sample in the new runtime study and no population sampling."
+    },
+    {
+      "dimension": "Analysis",
+      "score": "3/5",
+      "basis": "The manuscript correctly separates denominators and inference ceilings, but has no causal analysis of ontology exposure, no independent semantic labels, and no test against a deterministic policy solving the same fixed task."
+    },
+    {
+      "dimension": "Results and interpretation",
+      "score": "4/5",
+      "basis": "Generated tables preserve failures, distinguish terminal classes, and repeatedly state what the numbers do not mean (pilot_tables_en.tex:24-47; npc_tables_en.tex:1-16; disclosure_tables_en.tex:25-56). The main risk is reviewer misreading of dense mixed lanes, not overclaiming by the authors."
+    },
+    {
+      "dimension": "Limitations and threats",
+      "score": "5/5",
+      "basis": "The paper explicitly disclaims authentication, semantic correctness, player outcomes, model ranking, generalization, and efficacy, and keeps historical cohorts unpooled (main.tex:251-283)."
+    },
+    {
+      "dimension": "Writing and structure",
+      "score": "4/5",
+      "basis": "The outline is coherent: Introduction -> Related Work -> Boundary -> Architecture -> Evidence Lanes -> Results -> Discussion/Threats -> Conclusion. English/Korean claim IDs and lane boundaries are stable (contribution-reference-crosscheck.md:94-100; generated contribution/evidence maps). The title/abstract and the heading 'Pilot Results' still foreground the wrong center of gravity."
+    },
+    {
+      "dimension": "Citation support",
+      "score": "4/5",
+      "basis": "The local crosswalk reports 48 verified and 10 preprint records, zero unmatched/hallucinated records, and explicit rate-limit coverage gaps; no new citations are needed for the recommended framing (contribution-reference-crosscheck.md:47-65)."
+    },
+    {
+      "dimension": "Current scholarly impact",
+      "score": "3/5",
+      "basis": "Moderate potential for reproducible LLM/game-state systems engineering; currently limited empirical impact because the manuscript cannot answer whether an LLM, ontology view, or this controller improves task success outside authored fixtures."
+    },
+    {
+      "dimension": "Current novelty",
+      "score": "3/5 [INFERENCE]",
+      "basis": "The source bundle itself says C1-C5 combine established mechanisms and makes no invention claim (main.tex:71-75; crosscheck.md:42-45). The defensible novelty is the integrated authority/evidence contract and its failure semantics, not a new schema, planner, mask, or logger."
+    },
+    {
+      "dimension": "Venue fit",
+      "score": "3/5 [INFERENCE]",
+      "basis": "Plausible for a Transactions-on-Games engineering/artifact-oriented contribution if framed around runtime authority and reproducibility; likely weak for a reviewer expecting model, player, or ontology-efficacy evidence. This is a fit judgment, not an acceptance prediction."
+    }
+  ],
+  "strongest_contribution": "The strongest reviewer-facing contribution beyond schema validation, action masking, symbolic planning, and logging is a fail-closed, auditable proposal-to-commit boundary: generated actions remain untrusted; an external policy/state owner performs independent validation; typed errors can drive a state-blind repair operator with a clear information boundary; successful candidates are defensively revalidated before mutation; all terminal outcomes, including no-trace failures, remain in an assignment-complete ledger; and replay checks the committed transition under an explicit integrity ceiling. E1 makes the information boundary scientifically legible by separating guided-repairable, oracle-only, and irreparable cases. That is a systems/evaluation contribution, not evidence that the ontology or model is better.",
+  "impact_and_positioning": {
+    "auditable_systems_contribution": "Strongest current claim. The artifact makes authority, repairability, replay, and missing/failure accounting explicit across a Python controller and Godot/Web boundary. It is more than a schema or mask because it specifies who may mutate state, what repair may know, what happens after exhaustion, and how non-generated/failed assignments remain visible. Current evidence supports named-fixture conformance only, not universal auditability or authentication.",
+    "bounded_demo_ui_case": "The bilingual ontology map and single Codex-assisted dashboard demonstrate source binding, browser/Godot integration, geometry repair, disclosure/redisplay behavior, and retained failures. The case is n=1 with zero independent repeats, unverified provider identity/revision/seed/cost, and no model-only latency; it should be presented as an integration vignette, not as a contribution to model capability or gameplay efficacy (main.tex:246-249).",
+    "model_robustness": "Not established. The historical NPC packet keeps unknown model metadata, O has zero independent sources, and the new runtime-swap study has zero live model samples. More rows from the same scaffold would not by themselves demonstrate robustness.",
+    "ontology_causal_efficacy": "Not established. E3 is an authored closed-world construction simulation. NPC-DISC-1's ontology_gate and general_rule arms share the same authored rules and are identical on all 60 cases; there is no representation-only, independent-oracle, held-out causal contrast."
+  },
+  "why_model_count_alone_does_not_fix_novelty": "A larger model count only supplies breadth if each model has exact provider-returned identity/revision, matched prompts/context/tools/budgets, fresh independent episodes, pre-frozen held-out tasks, no silent fallback, and an independent goal/safety oracle. Otherwise rows measure transport, scaffolding, task design, or shared deterministic controller effects. Model count also cannot distinguish ontology exposure from the common ontology-derived runtime workflow. The proposed pilot's 6-candidate/288-episode arithmetic is explicitly pending, unapproved, and a feasibility design rather than executed evidence (pre-run-decision-proposal-v1.json:198-228,257-290). A deterministic/scripted policy is a mandatory comparator because the fixed harbor task may be solved by a hand-authored action sequence without any LLM; if it reaches the same goal under the same budgets, the paper's claim must move from 'LLM enables completion' to 'the boundary safely governs interchangeable proposers and makes their failures auditable.'",
+  "findings": [
+    "paper/latex/en/main.tex:25,34-46 -> The title and abstract foreground 'source-bound ontology evidence' and a Codex case, while the strongest demonstrated contribution is the authority/evidence boundary; this invites reviewers to demand ontology or model efficacy that the paper does not claim. Severity: High. Proposed fix: recenter title/abstract on fail-closed proposal-to-commit control, and demote ontology/Codex to a bounded integration case [fixable-now].",
+    "paper/latex/en/main.tex:66-75; paper/latex/generated/contribution_map_en.tex:11-20 -> Related Work correctly says there is no invention claim, but the reviewer-facing novelty unit ('composition plus explicit information/failure/accounting semantics') is implicit rather than stated as a contrast against schema validation, masking, planning, and logging. Severity: High. Proposed fix: add one explicit gap paragraph organized by authority, repair observability, and assignment-complete evidence, with each axis linked to C1-C5 and its inference ceiling; use only the existing crosswalk [fixable-now].",
+    "paper/latex/generated/pilot_tables_en.tex:14-21; paper/latex/en/main.tex:214-221 -> E1's best result is mechanism separation on authored fixtures, but a deterministic/scripted policy could solve the same fixed task, so current completion counts do not establish that an LLM or rho is necessary. Severity: Critical. Proposed fix: run a scripted/no-LLM policy under the identical frozen game, validator, budgets, and safety gate, alongside reject-only, blind-retry, rho, and state-reading controls on fresh held-out tasks [needs-pilot/confirmatory-data].",
+    "paper/latex/generated/kg_ontology_simulation_en.tex:10-19; paper/latex/generated/disclosure_tables_en.tex:35-40 -> Typed ontology link recovery is perfect only on an authored closed-world simulation, and the runtime disclosure arms are identical; no result identifies an ontology-mediated causal gain. Severity: Critical. Proposed fix: pre-freeze a representation-only ablation (ontology view vs matched flattened/text view vs no ontology for the proposer), keep the common runtime workflow and hard validator fixed, add an independent semantic oracle, and evaluate held-out motif/entity/relation changes [needs-pilot/confirmatory-data].",
+    "paper/latex/generated/npc_results_en.tex:4-7; paper/latex/generated/npc_tables_en.tex:9-16; paper/latex/en/main.tex:246-249 -> Historical/engineering NPC rows have unknown model identity, O is auxiliary with zero independent sources, and the single Codex case has zero repeats and no provider attestation; these cannot support model robustness. Severity: Critical. Proposed fix: execute a separately frozen multi-candidate panel with exact provider-returned IDs/revisions, fresh sessions, repeated held-out quests, no fallback, and independent goal/safety verification; retain unknown/missing rows rather than imputing them [needs-pilot/confirmatory-data].",
+    "verification-final.json:1-5,39-85; harness/workflows/result-promotion.yaml:1-25 -> The latest offline runtime receipt is synthetic engineering QA with zero provider launches, and the promotion policy forbids efficacy promotion; dense 'Pilot Results' placement could still be misread by a reviewer as live empirical evidence. Severity: High. Proposed fix: rename/segment results headings and captions so E1/E3/ENG1/NPC-DISC-1/DEV-CASE visibly carry 'engineering-only/authored-fixture/historical/not executed' labels, and place the zero-live-sample status beside the runtime paragraph [fixable-now].",
+    "paper/latex/en/main.tex:246-257,282-291 -> The Codex/UI case has bounded practical significance but no independent traceability score, no user outcome, no whole-game round trip, and no player evidence; the proposed traceability instrument is explicitly unmeasured. Severity: Medium. Proposed fix: keep the case as a reproducible integration vignette now; if 'auditable' is intended as a human-facing property rather than an artifact property, add blinded non-author assessors, seeded-corruption controls, disagreement, and missingness before making that stronger claim [fixable-now for scope; needs-pilot/confirmatory-data for measured auditability]."
+  ],
+  "recommended_central_thesis": {
+    "statement": "TRACE-RPG is a fail-closed, source-bound authority and evidence boundary for generated game-state transitions: it separates untrusted proposal from canonical mutation, makes the information available to repair explicit, revalidates before commit, and preserves every success, failure, fallback, and missing trace for replayable audit. The current evidence establishes bounded mechanism and engine conformance on authored cases; it does not establish model robustness, ontology causal benefit, player benefit, or generalization.",
+    "recommended_title": "TRACE-RPG: A Fail-Closed, Auditable Proposal-to-Commit Boundary for Generated Game-State Transitions",
+    "candidate_contribution_bullets": [
+      "A versioned trust-boundary controller in which external proposers cannot mutate canonical game state; independent policy/state checks, unchanged fallback, and defensive pre-commit revalidation govern every admitted transition.",
+      "A typed counterexample-guided repair operator whose sole state-derived input is the validator error set, evaluated against rejection-only, blind retry, and state-reading controls to expose guided-repairable, oracle-only, and irreparable classes on frozen fixtures.",
+      "An assignment-complete audit/replay contract that binds request, rule version, validation, state hashes, terminal outcome, and ungenerated/failure cases, while explicitly distinguishing accidental-integrity detection from authentication.",
+      "A source-bound bilingual ontology observer and bounded Godot/Web integration case demonstrating contract and presentation correspondence, with explicit ceilings that exclude model efficacy, ontology superiority, player benefit, and commercial-engine performance."
+    ]
+  },
+  "minimum_decisive_experiment_package": [
+    {
+      "step": "Report the existing E1/E3/ENG1/NPC-DISC-1/DEV-CASE packet as engineering evidence and use the new study only for predeclared model/representation claims; do not pool historical NPC rows, the n=1 Codex case, or offline synthetic QA with prospective efficacy estimates. [fixable-now] and [needs-pilot/confirmatory-data] for the prospective data itself."
+    }
+  ],
+  "explicit_limits": [
+    "No current result demonstrates that an LLM is needed for the fixed task; a scripted policy may solve it.",
+    "No current result identifies a causal effect of ontology exposure; E3 and NPC-DISC-1 share authored structures and have no independent semantic holdout.",
+    "No current result supports model ranking or cross-model robustness: new runtime model calls are zero, historical rows have unknown/unverified identity, and O has no independent source.",
+    "No current result supports human semantic validity, player comprehension, agency, enjoyment, immersion, safety rate in a population, or commercial performance.",
+    "Unkeyed SHA-256 and replay equality detect bounded integrity/transition mismatches but do not authenticate writer identity or prove semantic correctness (main.tex:199-200,244-247).",
+    "The single Codex dashboard case demonstrates integration and presentation boundaries only; geometry checks, browser inputs, Godot Web build, and same-thread repair do not add independent model samples (main.tex:246-249).",
+    "No visual-layout conclusion is drawn from extracted PDF text. Bilingual parity is structurally strong and claim-aligned, but parity is not independent evidence of efficacy.",
+    "[INFERENCE] The paper's realistic impact path is a reusable, auditable runtime-control and evaluation pattern for LLM-mediated game-state transitions. Its current bounded practical significance is meaningful for reproducibility and safety engineering, but empirical game-AI impact requires the decisive package above."
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "verdict": "FIX",
+  "scope": "Bounded scientific claim/evidence review of paper/latex/en/main.tex and paper/latex/ko/main.tex plus generated fragments, aux numbering, rendered PDF text, git diff vs HEAD, and the named fresh receipts. No commands, builds, tests, or formatting were run by this review.",
+  "summary": "The bounded claim/evidence contract holds. Scope language (finite/historical/single-case), the no-theorem framing, the concrete ontology example, and the A/C separation are faithful and in several places improved by this revision. The defects are reference-type and EN/KO parity regressions introduced by the compression pass, concentrated in the one sentence that carries the contribution-to-artifact mapping, plus two EN-only deletions that the revision receipt does not record. No blocking scientific overclaim was found.",
+  "escalated_to_adversarial": true,
+  "escalation_reason": "Third MAJOR finding. Expanded beyond the two named files to git diff vs HEAD, main.aux numbering, rendered PDF text, generated fragments, and build receipts. That expansion is what surfaced F2/F3/F4, which are invisible when reading only the current source.",
+  "precommitment_vs_found": "Predicted (1) compression-induced overclaim, (2) EN/KO drift from one-sided edits, (3) intro Alg. reference targeting a figure float, (4) tested-invariant-to-theorem relabeling, (5) A/C scope collapse. Confirmed: (2) and (3). Refuted: (1), (4), (5) - hedges were strengthened, not weakened. The real damage was in deletions, not predicted, caught only by diffing against HEAD.",
+  "critical_findings": [],
+  "major_findings": [
+    {
+      "id": "F1",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": true,
+      "languages": "EN and KO",
+      "title": "Intro prints 'Alg. 3' but float 3 is a Figure; the body calls the same float 'Fig. 3'",
+      "evidence": "en/main.tex:46 'Alg.~\\ref{alg:commit}'; label at en/main.tex:167 inside \\begin{figure}[!tbp] opened at en/main.tex:154; en/main.aux resolves alg:commit -> 3; rendered en/main.pdf p1 prints 'map to Fig. 1, Eq. 2, Alg. 3, and Tables II-IV.'; body en/main.tex:152 'In Fig.~\\ref{alg:commit}'s'. KO identical: ko/main.tex:91 '알고리즘~', ko/main.tex:197 '그림~', label ko/main.tex:212. Counts: 'Alg.~' OLD EN 0 -> NEW 1; '알고리즘~' OLD KO 0 -> NEW 1.",
+      "why_it_matters": "No algorithm environment or counter exists in the document. A reader sent to 'Algorithm 3' finds nothing, and the same object carries two type names across intro and body. The revision receipt wording ('tied C1-C5 to ... commit algorithm') documents both the intent and the slip.",
+      "smallest_fix": "en/main.tex:46 change 'Alg.~' to 'Fig.~'; ko/main.tex:91 change '알고리즘~' to '그림~'. Promoting the float to a real algorithm environment also works but needs a package plus rebuild, which this contract excludes."
+    },
+    {
+      "id": "F2",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": true,
+      "languages": "EN and KO",
+      "title": "Revision deleted the only in-text citation of Table I, the contribution-to-evidence crosswalk",
+      "evidence": "ref{tab:contribution-map} OLD EN 1 -> NEW 0; OLD KO 1 -> NEW 0. Label/ref analysis lists tab:contribution-map UNREFERENCED in both languages. Old sentence read '...are bounded design/conformance surfaces (Table~\\ref{tab:contribution-map})'. Table I renders on EN PDF p1, uncited.",
+      "why_it_matters": "Table I is the artifact operationalizing RQ/contribution-to-evidence alignment and is backed by contribution-crosswalk-compact.json (exit 0: '5 contributions, 58 references, 9 topics, 3 experiment lanes + 1 engineering lane'). The revision swapped a correct crosswalk citation for a mislabeled one, regressing meta-review.json recommended_revision_order[0] ('explicit contribution/evidence ledger in Introduction').",
+      "smallest_fix": "Restore Table~\\ref{tab:contribution-map} in the same sentence at en/main.tex:46 and ko/main.tex:91. One edit resolves F1, F2, and F5 together."
+    },
+    {
+      "id": "F3",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": true,
+      "languages": "EN only",
+      "title": "EN lost the DEV-CASE artifact locator; KO retains it",
+      "evidence": "'development-cases' OLD EN 1 -> NEW 0; 'result.json' OLD EN present -> NEW absent; KO retains both at ko/main.tex:302. EN Data and Code Availability (en/main.tex:289) lists only research/academic-pipeline/, research/traceability-scoring-20261023/, research/development-comparison-20261023/ - none covers research/development-cases/. Directory verified present on disk with contract.json, result.json, public-evidence-manifest.json.",
+      "why_it_matters": "The abstract's headline evidence, the n=1 Codex case ontology-map-20261023-01, now has no retrievable path anywhere in the English paper, in a manuscript whose entire posture is source-binding and reproducibility. Directly in scope for availability coherence.",
+      "smallest_fix": "Append to the en/main.tex:289 availability list: \\path{research/development-cases/ontology-map-20261023-01/}"
+    }
+  ],
+  "minor_findings": [
+    {
+      "id": "F4",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": true,
+      "languages": "EN only",
+      "title": "EN ethics commitments reduced to a half-clause while the EN section title still advertises 'Ethics'",
+      "evidence": "en/main.tex:277 now ends 'require ethics review.'; OLD EN ended 'require ethics review, consent, compensation disclosure, minimization, retention/deletion, opt-out, and calibrated judges \\cite{S27,S28,S29,S30}'; ko/main.tex retains the full enumeration with the same four cites. EN section title remains 'Discussion, Threats, Ethics, and Artifact Scope'.",
+      "realist_downgrade": "Downgraded MAJOR to MINOR. Mitigated by: bounds unexecuted future work rather than a current claim; no human participants exist; S27-S30 remain cited in EN Related Work so no dangling reference; KO carries the full text.",
+      "smallest_fix": "Restore the enumeration at en/main.tex:277, or minimally recover 'consent' and 'minimization, retention/deletion'."
+    },
+    {
+      "id": "F5",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": true,
+      "languages": "EN vs KO divergence",
+      "title": "The same intro table range resolves to different table sets in EN vs KO",
+      "evidence": "aux: EN tab:validators=II, tab:ontology-roles=III, tab:rho-rules=IV, so 'Tables II-IV' spans 3 tables. KO tab:ontology-roles=II, tab:validators=III, tab:rho-rules=IV, so '표 III-IV' spans 2 tables, excluding ontology-roles.",
+      "realist_downgrade": "Downgraded to MINOR. Mitigated by: both ranges include the two tables actually encoding C1/C2/C5, and tab:ontology-roles is separately cited in prose in both languages so it is not orphaned.",
+      "smallest_fix": "Replace the order-dependent range with explicit refs, e.g. Tables~\\ref{tab:validators}, \\ref{tab:ontology-roles} and \\ref{tab:rho-rules}, making both languages cite an identical set."
+    },
+    {
+      "id": "F6",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": true,
+      "languages": "EN only",
+      "title": "EN dropped the 'presentation' hedge on ENG1 captures; KO keeps it",
+      "evidence": "en/main.tex:242 'captures show...'; OLD EN 'presentation captures show...'; ko retains 'Capture는 presentation-only이며'. Counts: 'presentation captures' OLD EN 1 -> NEW 0; 'presentation-only' EN 1, KO 2.",
+      "realist_downgrade": "MINOR. Mitigated by: recoverable from the disclosure fragment ('does not claim live capture') and the AI-usage section ('rendered snapshots/hashes/ledger are presentation-only').",
+      "smallest_fix": "Reinsert the word 'presentation' at en/main.tex:242."
+    },
+    {
+      "id": "F7",
+      "confidence": "HIGH",
+      "introduced_by_this_revision": false,
+      "pre_existing": true,
+      "languages": "EN and KO",
+      "title": "PRE-EXISTING: fig:signal-mechanism (Figure 2, a full-width figure*) is never cited in text",
+      "evidence": "ref{fig:signal-mechanism} count = 0 in OLD EN, NEW EN, OLD KO, NEW KO. Also uncited and pre-existing: eq:rho, tab:traceability-rubric.",
+      "classification": "Optional polish. Explicitly NOT introduced by this compression pass."
+    },
+    {
+      "id": "F8",
+      "confidence": "MEDIUM-HIGH",
+      "introduced_by_this_revision": false,
+      "pre_existing": true,
+      "languages": "EN and KO",
+      "title": "PRE-EXISTING: strategy-count wording tension between main.tex and generated evidence lanes",
+      "evidence": "main.tex (both languages) says 'seven fixed strategies'; generated evidence_lanes_*.tex says 'degree baseline vs 6 fixed strategies'. OLD EN also said 'seven', so compression did not cause it. Reconcilable: S0 baseline plus 6 equals 7; shown IDs S0/S2 imply S0-S6.",
+      "classification": "Optional polish. Surface numbers differ under different inclusion conventions."
+    }
+  ],
+  "whats_missing": [
+    "No sentence reconciles 7 predicates (tab:validators) with the 12 implemented error codes / 12 negative fixtures in pilot_results_*.tex. Pre-existing; a reviewer may read it as a count conflict.",
+    "The revision receipt bilingual-revision.json claims 'Existing exact counts, labels, equations, bibliography keys ... remain unchanged' - true for counts/equations/bib keys (verified), but it does not record the three deletions in F2/F3/F4. Silent deletions are the gap in this revision's own audit trail.",
+    "disclosure_results_*.tex discloses 3 source hashes differing from the frozen baseline; no main-text sentence points a reader at that disclosure."
+  ],
+  "confirmed_pass": {
+    "check_2_no_theorem_or_unconditional_safety": "PASS, strengthened. The revision ADDED to en/main.tex:43 and ko/main.tex:88 'fixtures test implementation invariants, not a theorem' adjacent to the bold mutation-gate sentence - precisely meta-review.json main_adjudications[1].recommendation. Every guarantee-class word in both languages appears only negated or scoped: 'guaranteed' (wall-clock termination is NOT guaranteed), 'proves' (parity proves NEITHER...), 'correctness' (NOT semantic correctness). 'Guarantee' survives only in the section title, matched in KO as 보장 경계.",
+    "check_3_concrete_ontology_example_faithful": "PASS. reveal_hint(actor_id,fact_id), tide_marks_hint minimum stage 2, keeper_betrayal as ID-not-payload, fresh disclosure revision +1 and redisplay unchanged, stage preserved, relationship memory only for the tide hint, rho reading only (a,E), Godot as sole writer - each matches disclosure_results_en.tex and pilot_results_en.tex in substance.",
+    "check_4_A_C_unexecuted_and_separated": "PASS, improved. Both named, 'remain unexecuted', budget-bounded goal completion on sealed assignments, exact identity/revision retention, 'separate safety/replay accounting', 'No current lane answers A/C', and the authoring endpoint introduced with 'Separately,' as a distinct prospective measure. Mirrored in KO.",
+    "check_5_counts_labels_equations_parity": "PASS. Every numeric token parity-checked. The five apparent EN-only numbers (13, 16, 60, 10, 004) are Korean counter-suffix regex artifacts, each verified present in KO. Both display equations and eq:rho are identical across languages. EN's structural merges (NPC-ENG1/NPC-SCR1; Discussion+Threats) are stylistic - merged-away NPC-SCR1 detail survives via the generated fragments, all four sampled generated files hash-identical to HEAD.",
+    "check_7_no_overclaim_introduced": "PASS. Checked each reworded hedge: 'establishes neither' -> 'proves neither' is a higher bar and weaker claim; dropped 'real-input'/'independent'/'predeclared' are strengthening words removed, understating not overstating; Related Work's 'do not provide our transaction/audit/repair combination' -> 'motivate encoded constraints, not this boundary's superiority' is MORE conservative, dropping an implicit novelty assertion. Only F6 weakens a hedge.",
+    "build_and_citation_closure_confirming_not_duplicating": "main.aux and main.log show EN 10 pages, KO 10 pages, zero overfull boxes, zero undefined refs, zero undefined citations. EN and KO cite identical 59-key sets; all resolve in references.bib; none dropped by the revision; \\bstctlcite{TRACE_RPG_BST_control} resolves. paper-build-passed.json argv confirms 'make -C paper/latex check' under the pinned historical evidence root, exit 0, with latexmk rerun reason 'Changed files: main.tex', so the receipt covers the CURRENT source.",
+    "pre_revision_report_handling": "meta-review.json recorded source hashes match HEAD, NOT the current files (EN 51ac76fe... = HEAD, current ffb9d18c...; KO 54250920... = HEAD, current 74015fe6...). Confirmed pre-revision and correctly treated as non-approval of current source."
+  },
+  "multi_perspective": {
+    "executor": "F1+F2+F5 are one line in each language. F3/F4/F6 are three short insertions. All six edits are textual and low-risk.",
+    "stakeholder": "The compression achieved its goal - receipts show EN was 11 pages (english-page-eleven.json, english-overflow-after-compression.json) and is now 10. The cost was paid in the reference layer and in EN-only locator and ethics text.",
+    "skeptic": "Strongest counter-argument is 'Table I sits on p1 beside the sentence, so the missing ref is cosmetic.' It is not - the sentence REPLACED the crosswalk citation with a citation that misnames its target, so the one sentence asserting contribution-to-evidence alignment now points away from the ledger and at a mislabeled float."
+  },
+  "page_budget_caution": "EN currently sits at exactly 10 pages after an 11-to-10 compression. F3/F4/F6 add roughly 250 characters. Re-run the page check after applying them; if 10 pages cannot hold all three, F3 (the headline artifact's locator) takes precedence over F4 and F6.",
+  "verdict_justification": "FIX, not APPROVE-with-reservations, because F1-F3 are confirmed defects in exactly the dimensions this review was scoped to (reference-type coherence, EN/KO parity, availability coherence), two arose from silent deletions absent from the revision's own receipt, and all are correctable without touching a claim, a count, or an equation. Not CRITICAL: no false scientific claim, build and page budget intact, evidence contract preserved. Realist Check downgraded F4 from MAJOR to MINOR and F5 to MINOR, each with an explicit mitigation rationale. No finding was moved to Open Questions on low confidence - each is mechanically verified against main.aux, the rendered PDF, or git show HEAD.",
+  "open_questions_unscored_and_uninspected": [
+    "External novelty / firstness: ABSENT - NOT CHECKED. I verified citation keys resolve and are EN/KO parity-matched; I did NOT verify that any cited work's content supports the sentence it is attached to. meta-review.json recommended_revision_order[3] ('Verify external novelty separately') remains unsatisfied by this review.",
+    "Venue acceptance, efficacy, production readiness: ABSENT - out of scope and unchanged. A/C remain unexecuted; traceability remains unmeasured; whole-game and repeated-cross-model studies remain proposed. Nothing in this review promotes any of them.",
+    "Whether to state the 7-predicate to 12-error-code relation explicitly is an author's call, not a defect.",
+    "Whether EN's title qualifier 'Bounded Codex-Assisted' and KO's '단일' should be harmonized is stylistic; both are scope-limiting and both abstracts carry n=1.",
+    "No CI, builds, or tests were re-run and no runtime-code audit was performed; existing receipts were read only, per contract."
+  ],
+  "ownership": "RELEASED. No files were modified. paper/latex/en/main.tex and paper/latex/ko/main.tex are untouched and free for Main."
+}

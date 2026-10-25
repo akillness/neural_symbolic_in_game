@@ -202,3 +202,9 @@ evidence in the same change set. The explanation lives here and in
 - The separate study handoff `exec_4c84925b05a3` was cancelled before an active AC attempt was observed, preserving the required order: publish the completed release first, then freeze and execute the measured development task. Its frozen Seed remains `seed_11eb1f38a3c4`; cancellation is not study completion.
 - The one running Aside session concerns an unrelated job application; other listed sessions are idle/interrupted and do not establish ownership of this repository. Automatic wiki ingestion continues and stays excluded from explicit staging.
 - Publication blockers are the reviewer-account information in a hash-bound report and stale/current-versus-historical provenance gates. Preserve original reports and receipts; use explicit public derivatives and renewed bindings, never silent redaction under an old hash.
+
+## 2026-10-24 — resumed Main publication ownership
+
+- Atomic lock creation returned `EEXIST`; staging stopped for ownership inspection. The existing owner is `Main`, mode `sequential-delivery-and-experiments`, with the same user instruction to publish first and run experiments one at a time. This resumed Main task continues that recorded scope; the existing lock is retained unchanged, not deleted or treated as a stale-lock takeover.
+- The host session listing showed no active project studio owner; the parent-agent roster had no running worker. The bounded paper reviewer released ownership after closing F1--F6. No unrelated session content is included in publication evidence.
+- Publication uses explicit pathspecs and a normal push only. Raw runtime episode/log/input/staging trees and private captures remain local; separate labeled public projections bind their original hashes. The canonical offline verification/delivery receipts are not rewritten for path redaction. Full live-study authority remains unresolved.

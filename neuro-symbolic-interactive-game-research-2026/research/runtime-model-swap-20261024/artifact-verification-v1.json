@@ -1,0 +1,80 @@
+{
+  "schema_version": "runtime-study-artifact-verification/v1",
+  "date": "2026-10-24",
+  "scope": "Actual on-disk JSON parsing and exact byte-digest verification only; no runtime or study execution.",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "endpoint-amendment-v1.json",
+        "/dev/null"
+      ],
+      "cwd": "research/runtime-model-swap-20261024",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "pre-run-decision-proposal-v1.json",
+        "/dev/null"
+      ],
+      "cwd": "research/runtime-model-swap-20261024",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "runtime-readiness-20261024.json",
+        "/dev/null"
+      ],
+      "cwd": "research/runtime-model-swap-20261024",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "artifact-review-v1.json",
+        "/dev/null"
+      ],
+      "cwd": "research/runtime-model-swap-20261024",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "shasum",
+        "-a",
+        "256",
+        "-c",
+        "endpoint-amendment-v1.sha256",
+        "pre-run-decision-proposal-v1.sha256"
+      ],
+      "cwd": "research/runtime-model-swap-20261024",
+      "exit_code": 0,
+      "stdout": "endpoint-amendment-v1.json: OK\npre-run-decision-proposal-v1.json: OK\n",
+      "stderr": ""
+    }
+  ],
+  "all_mechanical_checks_passed": true,
+  "endpoint_sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199",
+  "decision_packet_sha256": "cd4c5b90df3818bfbcaf83ea10b7978be1487e5846f3b954e9453892f790a7e6",
+  "source_audit_status": "STATIC_SOURCE_ONLY_IMPLEMENTATION_REQUIRED",
+  "final_artifact_review": "APPROVE_FOR_PUBLICATION_ONLY",
+  "study_model_launches": 0,
+  "whole_protocol_frozen": false
+}

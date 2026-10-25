@@ -93,11 +93,16 @@
     },
     "role": "ADVISORY_ONLY; NEVER_GOLD_LABEL_OR_COMMIT_AUTHORITY"
   },
+  "native_safe_command_receipts_public_projection": {
+    "cwd_substitution": "<REPOSITORY_ROOT> replaces the operator's absolute local path",
+    "account_quota_values": "REDACTED_FROM_CURRENT_PUBLIC_PROJECTION",
+    "historical_exposure": "Earlier Git commits retain the unredacted values; no history erasure is claimed"
+  },
   "native_safe_command_receipts": [
     {
       "receipt_id": "N-OAI-1",
       "command": "codex --version",
-      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "cwd": "<REPOSITORY_ROOT>",
       "observed_on": "2026-10-23",
       "observed": "codex-cli 0.163.0",
       "private_data": false
@@ -105,7 +110,7 @@
     {
       "receipt_id": "N-OAI-2",
       "command": "codex --help",
-      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "cwd": "<REPOSITORY_ROOT>",
       "observed_on": "2026-10-23",
       "observed": "Exposes -m/--model, exec, and sandbox values read-only, workspace-write, danger-full-access; no model inference was run.",
       "private_data": false
@@ -113,7 +118,7 @@
     {
       "receipt_id": "N-OAI-3",
       "command": "codex debug models --bundled",
-      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "cwd": "<REPOSITORY_ROOT>",
       "observed_on": "2026-10-23",
       "observed": "Successful bundled JSON catalog containing 11 entries, including separate exact slugs gpt-6.1-sol and gpt-6-sol; raw output artifact://3382.",
       "private_data": false,
@@ -122,7 +127,7 @@
     {
       "receipt_id": "N-CLAUDE-1",
       "command": "claude --version",
-      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "cwd": "<REPOSITORY_ROOT>",
       "observed_on": "2026-10-23",
       "observed": "2.1.302 (Claude Code)",
       "private_data": false
@@ -130,7 +135,7 @@
     {
       "receipt_id": "N-CLAUDE-2",
       "command": "claude --help",
-      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "cwd": "<REPOSITORY_ROOT>",
       "observed_on": "2026-10-23",
       "observed": "Help returned model/effort/tools/MCP/permission/bare/JSON/budget controls; no model catalog or seed option appeared. This bounded absence is not proof that hidden capabilities do not exist.",
       "private_data": false
@@ -138,9 +143,9 @@
     {
       "receipt_id": "N-GEMINI-1",
       "command": "agy --print /usage --output-format json --print-timeout 15s --sandbox",
-      "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+      "cwd": "<REPOSITORY_ROOT>",
       "observed_on": "2026-10-24",
-      "observed": "Usage report succeeded with num_turns=0 and all tokens=0; quota groups reported Argon weekly=100%, Gemini weekly/five-hour=100%, Claude/GPT weekly=0%; no plan fields.",
+      "observed": "Usage report succeeded with num_turns=0 and all tokens=0; private account-quota values are omitted from this public projection; no plan fields.",
       "documentation_source_ids": ["G20"],
       "usage_semantics": "Official Antigravity headless CLI documentation says num_turns is cumulative user turns for the session, not provider request/inference count; conversation_id is observable. The documentation does not define whether thinking is included in output or cache-read subset semantics.",
       "private_data": false,

@@ -115,7 +115,7 @@
 ## 7. 시각자료와 게임 연결의 현재 경계
 
 - [기존 구조도](../../../neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png): 7 checks / 6 families와 commit·repair·fallback 구조. 설명도이며 실행 캡처가 아니다.
-- [기존 결과 대비도](../../../neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_evidence_regimes.png): E1·E2 분모와 null regime 분리. 통계 추론 그래프가 아니다.
+- 기존 결과 대비도 (capture unavailable in checkout: `../../../neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_evidence_regimes.png`): E1·E2 분모와 null regime 분리. 통계 추론 그래프가 아니다. 이 과거 그림의 원본은 현재 미확보이며 다른 그림으로 대체하지 않는다.
 - Godot 대시보드는 POLICY/PRECONDITION/REACHABILITY/KNOWLEDGE/DISCLOSURE/QUEST STAGE의 **6개 군**을 표시한다. `pass/fail/skipped/out_of_scope`는 서로 다르며 missing을 pass로 바꾸지 않는다.
 - 현재 표시 trace는 Godot hard writer 판정을 별도 EvaluationTrace가 재구성한 미러다. 온톨로지 추론 또는 Python의 7개 결과를 그대로 전달하는 계측이 아니다.
 - E1/E2 핵심 Python hard-policy 승인 왕복은 현재 게임에 구현되어 있지 않다. 기존 ENG1은 Godot 지역 정책 미러다. 별도 NPC 경로는 Codex 의도 → Python claim 검증·공개상태 계획 → Godot 권한 검사·상태 기록이다.
@@ -268,7 +268,7 @@ Main이 실행하고 문서 담당자가 출력 또는 결과 파일을 읽어 �
 
 | 확인 명령/기록 | 관측 결과와 한계 |
 |---|---|
-| `NPC_DISCLOSURE_RECEIPT_PATH=/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/results-current/godot-receipt.json uv run pytest -q tests/test_npc_disclosure.py tests/test_godot_npc_disclosure.py tests/test_check_disclosure_paper_evidence.py tests/test_generate_disclosure_paper_results.py` | **36 passed in 9.11s**, `artifact://902` / raw `artifact://901`. M-007/M-008을 포함한 최종 네 파일 focused suite; project-wide suite·formatter·linter 실행으로 확대하지 않음 |
+| `NPC_DISCLOSURE_RECEIPT_PATH=research/npc-disclosure/results-current/godot-receipt.json uv run pytest -q tests/test_npc_disclosure.py tests/test_godot_npc_disclosure.py tests/test_check_disclosure_paper_evidence.py tests/test_generate_disclosure_paper_results.py` | **36 passed in 9.11s**, `artifact://902` / raw `artifact://901`. 공개 재현 명령은 연구 루트 상대 경로로 치환했으며 원래 실행 명령의 바이트 동일본이 아님. M-007/M-008을 포함한 최종 네 파일 focused suite; project-wide suite·formatter·linter 실행으로 확대하지 않음 |
 | `uv run python scripts/run_disclosure_evaluation.py --json` | `results-current/factual-summary.json`: PASS; 일반 규칙과 온톨로지 게이트가 각각 16 allow/44 deny, 기대·상태·표시·replay 실패 0; 두 게이트 60/60 일치; 규칙변경 2개/네 짝비교 기대 일치 및 누락 0 |
 | `uv run python scripts/generate_disclosure_paper_results.py` | `artifact://884`에서 producer PASS 확인. 이후 이 보고서 동결과 최신 receipt를 반영한 재생성·드리프트 검사는 아직 별도 closure 필요 |
 | `research/npc-disclosure/results-current/godot-receipt.json` | 실제 harness 결과, 동결 packet SHA와 현재 실행 source hash, 사례별 기대/관측·정형 display·prior/next state hash를 포함한다. Python 60사례 전수와 같은 Godot 분모로 읽지 않음 |

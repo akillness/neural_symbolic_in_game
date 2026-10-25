@@ -1,5 +1,56 @@
 # Log
 
+## [2026-10-24] revised publication checkpoint | Bilingual source/PDF and full CI
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Revised publication checkpoint / 개정 출판 체크포인트 — 2026-10-24]] records the actual revised manuscripts: explicit systems RQ, contribution/evidence anchors, ontology-view/error-only-repair/writer distinction, and non-pooled evidence levels. A/C goal completion is separate from prospective authoring validation time; A/C remain unexecuted.
+- Pinned-historical-source `make check` passed EN/KO 10 pages, font and LaTeX warning gates after retained 11-page/Overfull failures; no font/table-spacing shrink. Crosswalk passed 5 contributions/58 references/9 topics. Full unchanged CI-equivalent script passed 412 unittest tests and 78 game tests/48 subtests, plus all other gates. These are engineering/publication checks, not new model observations.
+- Truthful wiki repair annotates 180 unavailable references/108 targets, preserving every historical entry and target; reversing annotations recovers the previous two document hashes. Structural lint passed, but missing source contents were not recovered. Current private prompt captures and their derived notes remain local and excluded from publication.
+- Final bounded scientific closure APPROVE: F1--F6 corrected, EN/KO 10-page rebuild and contribution crosswalk passed again; see the report's source-bound closure. The resumed agent result was unavailable through lifecycle lookup, so the delivered IRC verdict is explicitly a projection. External novelty/citation-content support/venue acceptance/efficacy/production readiness remain uninspected. Git delivery is pending; no new study/deployment/graph rebuild or G4/full G6 promotion.
+- Public path-redacted audit views have their own source/payload hashes; the 8 checked original evidence-chain members remain byte-identical. Raw episode/log/input/staging trees, private prompts and the unredacted capture ledger remain local and excluded. Public projections are not new executions or raw replay records.
+
+## [2026-10-24] independent manuscript review | Argument, impact and structure
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Independent manuscript review / 독립 논문 검토 — 2026-10-24]] records three separate subagent critiques and the [source-checked meta-review](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/meta-review.json). Separate sessions are not attested cross-model independence or human peer review.
+- [INFERENCE] The defensible thesis is a bounded source-bound proposal-to-commit authority/audit boundary, not ontology superiority. A/C, ontology-presence causality and player benefit remain unproven. Existing designed fixtures, historical protocol counts, construction simulation and injected-response QA retain their original evidential scope.
+- Full English NPC line4 already contains the disputed limitations, so the alleged bilingual omission was rejected. Gate-ownership wording is not a confirmed contradiction; clarify its assumptions and do not relabel tested invariants as proved theorems. The current empty preflight directories conflict with archived mentions; exact captured git-history stdout/stderr are both0 bytes, which does not resolve untracked-file chronology. Preserve `[uncertain]`.
+- No manuscript edit, real study launch, PDF rebuild, external novelty verification, commit/push/deployment or graph rebuild was performed in this review checkpoint. Earlier empirical/publication work remains unfinished; the old global wiki lint FIX is not overridden. Obsidian CLI again exited1 because the app was not found; existing-file project-wiki fallback was used.
+
+## [2026-10-24] verified offline implementation | Fixed-game runtime harness
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Offline implementation verification / 오프라인 구현 검증 완료 — 2026-10-24]] records the approved offline-only implementation and [canonical final receipt](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json). The earlier static IMPLEMENTATION_REQUIRED audit and failed reviews/runs remain historical evidence.
+- Final affected run: 53 tests plus32 subtests, zero failures/errors/skips; Ruff and4-file format check PASS. General-rule and ontology each passed actual Godot4 decisions/3 state-changing commits, independent goal, safety and4 fresh-process replay comparisons with0 replay model calls. Paired initial/final states and persisted input-byte hashes match;46 protected files unchanged; temporary projects removed.
+- JSON/UTF8 and exception diagnostics, post-dispatch call-budget admission and optional-telemetry failure-row preservation were repaired without deleting assigned failures or conflating primary goal with safety/replay. Counter-only initial/repair exceptions were reproduced RED and passed after correction; the first green-named command was itself an intermediate failure, not acceptance evidence.
+- Final code review and independent Python-rubric fallback APPROVE. Named python-reviewer HTTP429 is UNAVAILABLE, not PASS. Final closures are explicitly labeled IRC projections after resumed-result lookup failed; exact command/engine artifacts remain separate evidence.
+- Live mode rejected exit2, provider processes0/no staging output. These are injected-response offline QA episodes, not scientific model samples: live study0, A/C and ontology-presence effects unproven, full study/launch contract still unauthorized. No commit/push/deployment/graph rebuild. Jev API routing remains unvalidated advisory; Obsidian CLI exit1 required existing-file project-wiki fallback.
+- Separate global wiki lint remains FIX: exit1,180 broken auto-capture history references in index/log outside this checkpoint's added sections; missing required paths0/orphan0. The failure is retained, not erased or relabeled by runtime PASS. No missing raw capture was fabricated or historical link removed.
+
+## [2026-10-24] frozen artifact | Runtime endpoint amendment and separate pending decisions
+- Published the new study's [endpoint-amendment-v1.json](../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/endpoint-amendment-v1.json), SHA-256 `9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199`, as endpoint-only frozen/not executed; its parent full protocol remains incomplete/unfrozen/unauthorized. Prior development artifacts were not mutated or activated.
+- The separate [pre-run-decision-proposal-v1.json](../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json) is PENDING_USER_APPROVAL, not an approved 288-episode pilot or live launch. It batches documented API IDs versus unverified native access, representation control, held-out quests/repeats, observable host-invocation budgets, approximate margin/sample scale and analysis proposals. Account/context egress/spend/launch permissions remain separate.
+- Static runtime readiness is IMPLEMENTATION_REQUIRED with ten cited source hashes. The Codex-only scripted assignment runner is not a multi-provider full-episode harness. The artifact review retains initial FIX and final APPROVE after counting/freeze-boundary corrections; it is not efficacy approval.
+- Actual on-disk verification: four json.tool commands exited0; shasum verified both frozen endpoint and pending-proposal digests. [Verification receipt](../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/artifact-verification-v1.json). Fixed Japanese `実行` to Korean `실행` in the index. No new runtime model episode, source-code change, publication rebuild, graph/index rebuild or deployment.
+
+## [2026-10-24] user approval | Prospective runtime primary-endpoint amendment
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Approved endpoint amendment / 1차 지표 전향적 개정 승인 — 2026-10-24]] preserves the user's `응 확정하고 진행하자`: the new A/C runtime study uses budget-bounded goal completion as primary, predefined repairs allowed; first-proposal violations, repair counts, completion time and cost are secondary, with a separate mandatory committed-state safety gate. Prior frozen studies/results remain unchanged.
+- The next question fixes C's acceptable loss in percentage points against a fresh matched Sol run. The margin, absolute practical-performance floor, budgets and full statistical/launch contract remain unset; this approval does not authorize new model assignments or the authoring pilot.
+- Actual Jev API routing returned `jev-1.14.0`, unvalidated, selecting grill-me in two requests; no automatic wrapper/hook activation. Obsidian unavailable; existing-file fallback; no study launch or graph rebuild.
+
+## [2026-10-24] interview decision | Fixed-game runtime comparison and separate authoring proposal
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Confirmed runtime scope and ontology-driven workflow / 실행 범위와 제작 경로 — 2026-10-24]] records the user's confirmed same-game runtime model-swap goal. Narrative-to-ontology workflow derivation is a separate artifact claim; independent per-model game authoring remains a separate exploratory proposal, not an activated arm.
+- Proposed an explicit prospective primary-endpoint amendment from completion time to budget-bounded violation-free goal completion, pending the user's answer. C still requires a predeclared metric/margin and fresh matched Sol comparator. Freeze and attribute ontology/prompt authorship and tuning before evaluation; do not pool pipeline checks or authoring runs with runtime episodes.
+- Before user approval, clarified the proposed primary as budget-bounded goal completion with predeclared repairs allowed, not zero proposal errors. First-proposal violation rate/repair count are separate secondaries; committed invariant violations fail a separate mandatory safety gate, without deleting runs. The earlier wording is retained as proposal history, not treated as an approved endpoint.
+- Actual Jev API routing returned `jev-1.14.0`, unvalidated, selecting academic-research and grill-with-docs in two requests. Only the applicable Socratic method continues; no automatic ADR workflow, model/experiment launch or graph rebuild. Obsidian unavailable; existing-file fallback used.
+
+## [2026-10-24] interview answer | A runtime consistency and C practical model substitution
+- The user chose `a,c 을 주장하고싶어`; [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#User answer / 사용자 응답 — A와 C]] preserves that decision without promoting a hypothesis to a result or changing the frozen experiment. The next question distinguishes models operating inside one fixed game from agents developing separate games.
+- Actual per-query Jev API routing returned `jev-1.14.0`, unvalidated, empty selection (`reason: gate`, one request); no successful selection or automatic enforcement is claimed. The answer is recorded in the wiki, not falsely reported as submitted to MCP. Obsidian unavailable; filesystem fallback; no experiment launch.
+
+## [2026-10-24] interview | Ontology consistency across model candidates
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Ontology consistency interview / 온톨로지 일관성 인터뷰 — 2026-10-24]] preserves the new question, candidate-label mismatch and proposed evidence boundaries. Existing Sol n=1/CLI6/zero repeats and the unlaunched panel stay separate; no new comparative result, frozen-panel mutation, paper/game change or deployment.
+- Root `AGENTS.md` now requires per-query Jev routing under the current host profile. Actual `jeopi` API routing returned `jev-1.14.0`, unvalidated, selecting `writing-for-agents`; this does not verify automatic hook enforcement or scientific claims. Obsidian was unavailable; filesystem fallback used. No graph/index rebuild.
+- Interview MCP timed out; `ouroboros init list` recovered `interview_20261024_154745` in progress with one round. The pending claim-selection question continues in chat, without a duplicate session or an invented user answer.
+
+## [2026-10-24] confirmed push | Serial post-push review
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Confirmed Git delivery and post-push review — 2026-10-24]] records successful transfer and remote read-back of `c08ed75a5234ed97449796d9173b26476b278f6e`, with every unchanged pre-push step passing. The push verification (capture unavailable in checkout: `../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-native-oauth-panel/publication-verification/push-verification-20261024.json`) was cited as separate post-commit local evidence; the missing receipt is not recreated here.
+- Post-push delivery review approved with no blocker and one medium privacy-labeling finding. Current working-tree public projections redact operator cwd and quota values; 19 publication tests pass. Those changes await follow-up delivery, and historical Git exposure is not erased. Private auto-ingest tails remain excluded; no graph/index rebuild or new native model launch is claimed.
+
 ## [2026-10-24] pre-push correction | Two blocked transfers retained
 - [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Pre-push correction / 푸시 전 게이트 교정 — 2026-10-24]] and the [portable correction record](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-native-oauth-panel/publication-verification/pre-push-corrections-20261024.json) retain the blocked `4758c4f` and `a76da39` pushes separately. Passing component checks were not relabeled as a successful transfer.
 - Restored canonical crosswalk wording/citations without weakening validation. The additional four-file Ruff correction was independently reviewed as formatting-only; producer hashes were refreshed, visual regeneration passed, and 97 affected publication tests/23 subtests passed in 37.60 seconds. Both papers remain 10 pages with original nominal type size and table spacing.
@@ -12,6 +63,33 @@
 - The native panel remains 0 new generation calls out of 36 planned assignments, with final activation absent; neither publication checks nor advisory API output authorizes a launch or proves whole-game completion, efficacy, superiority, native authentication or generated-game acceptance. Git push and post-push review require their own actual receipts.
 - Obsidian was unavailable; permitted filesystem fallback used. No graph or search-index rebuild.
 
+
+## [2026-10-24] checkpoint | Native OAuth study held before activation
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan#Native OAuth checkpoint / OAuth CLI 전환 체크포인트 — 2026-10-24]] records the user's superseding OAuth CLI route, nine candidates/36 planned fresh cells, zero new model launches, explicit Google medium mappings and fresh zero-inference CLI readiness. Native quota and unknown billed USD are not an API spending guarantee.
+- Old Argon C1 raw2PASS/provenanceFIX and B1 two timeouts/ten NOT_REACHED are retained separately; no whole-game, independent-repeat, efficacy or superiority claim follows. The immutable v3.1 amendment is inactive; final source/argv/proof-bound activation and Main's explicit signal are still required. Whole-CLI and generated-Godot security gates remain distinct and unresolved.
+- Aligned [[wiki/concepts/trace-rpg-controller]] with the current paper: canonical state is `(G_t,q_t)`, the event prefix is audit evidence rather than validator input, and the exact seven Python predicate IDs are not hidden-agent-state measurements or interchangeable with Godot6/DISC7.
+- Current [paired-paper command receipt](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-native-oauth-panel/publication-verification/paired-paper-check.json) records page-gate exit0; the [affected-regression receipt](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-native-oauth-panel/publication-verification/publication-regressions.json) records87 tests and23 subtests passed. Explicit public projections bind actual private captures by matching SHA-256 and label reproduction-path substitutions. They do not authorize the changed native runner or prove deployment/push. Obsidian remained unavailable; permitted filesystem fallback used, no graph/index rebuild.
+
+## [2026-10-23] research revision | Concrete criteria and future whole-game comparisons
+- [[wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan]] records the user-approved research direction, source-derived proposed TR01–TR06 codebook, critical n1/CLI6/repeats0 evidence ceiling, and executable S1–S5 pickup sequence for independent whole-game, rule-representation and eligible Codex/Claude/Argon comparisons. The two-repeat pilot matrix is not a powered confirmatory sample.
+- The prospective protocol has no launched runs; caps, coding-tool parity, exact identities, common observer/runner, final acceptance and independent assessment are launch blocks. Missing implementation is explicit, and failures/timeouts remain assigned runs.
+- Jev returned unvalidated `proposal_only` with unfavorable/uncertain evidence-support advice; no result was promoted. The authorized Gemini App Argon consultation is being collected. Final publication gates, scoped push and post-push review remain pending at this checkpoint; no new study or deployment is implied. Obsidian was unavailable, so the permitted filesystem fallback was used; no graph/index rebuild.
+
+## [2026-10-23] interview addition | Decision and repair traceability
+- User requested **판단·수정의 추적 가능성** in addition to time-to-pass-validation. Working hierarchy retains time as primary, adds traceability as a key secondary endpoint and preserves mandatory validity/defect gates. [[wiki/reports/2026-10-23-signal-notation-review#추적 가능성 추가 / Adding traceability — 2026-10-23]] separates the inclusion decision from the proposed measurement details.
+- One independent methods review sharpened two safeguards: reconcile all attempts against an arm-neutral observer inventory (incomplete inventory means indeterminate coverage), and separate fully traceable failed repairs from successful repairs. Decision/repair linkage counts remain separate; verified zero repairs may be N/A, missing logs may not. Internal model reasoning and safety are not established by plausible explanations or replay equality.
+- Interview records/navigation only; no new experiment, measured outcome, code change, paper revision, game update or deployment. Obsidian remained unavailable; permitted filesystem fallback used.
+
+## [2026-10-23] interview decision | Primary endpoint selected
+- User selected **검증 통과까지 걸린 시간 / time to pass validation**, with defect checks retained as mandatory quality gates. [[wiki/reports/2026-10-23-signal-notation-review#Interview decision / 인터뷰 결정 — 2026-10-23]] records task-run seconds, request-to-first-all-required-checks-pass boundaries, continuous-clock accounting, and retention of unfinished/failing runs.
+- This closes the primary-endpoint question, not the prospective protocol or permission to run it. Independent runs, task matching, resource/intervention rules, stopping budget and acceptance-set details remain unapproved; no new experiment, paper/game change, deployment or superiority claim.
+
+## [2026-10-23] audit | Signal notation and fresh verification
+- [[wiki/reports/2026-10-23-signal-notation-review]] records two independent source/semantics reviews, one actual EN/KO PDF visual review and selected related tests104/104 in77.80s. Inspected figure/math regions have no observed clipping/overlap; human comprehension was not measured. E/R case counts, C record counts and NR missingness remain distinct; exact Python check IDs and quest-condition attribution need clearer binding.
+- Fresh Jev API returned `jev-1.14.0`, tier `unvalidated`, verdict `proposal_only`, evidence-support p_yes0.74 and clarification-needed p_yes0.67. It is not approval and does not replace the historical negative advice.
+- Additional live QA is overall `NOT_PASS`: headed yaw guard stopped the route; headless passed seven behavior/map gates but four pointer-lock `WrongDocumentError` page errors failed continuous diagnostics. Failure receipts remain local and linked in the report; prior dated production PASS is not overwritten or reused as fresh acceptance.
+- No paper/figure/validator/game/frozen-result/deployment change or new experimental sample. Existing mechanism-plus-comparison choice is settled; next interview concerns a primary prospective development outcome, not the same display-priority choice again. Obsidian CLI reported the app unavailable, so this note/index/log were filed through the permitted filesystem fallback; no graph/index rebuild.
+
 ## [2026-10-23] report | Roomier publication and presentation release
 - [Presentation receipt](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-final-verification.json): `dpl_75HRZ3UGnVtADdvZnFUJaG9espYY` READY; [HTTP assets](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-http-assets.json) 18/18 HTTP200 with matching bytes/SHA-256, root307 → `/dashboard/`; [headed native-input acceptance](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-browser/actual-game-acceptance.json) eight gates PASS, DPR2, all console/page/request/HTTP errors0. The 390 px check is desktop reflow/keyboard inspection, not physical-mobile gameplay.
 - [Focused receipt049](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/049-frozen-affected-regressions.json) records 171 tests = frozen-case62 + publication-source43 + presentation44 + visual-validator22, plus23 passing subtests separately. [Paired-paper receipt050](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-ontology-map/presentation-evidence/050-frozen-paired-papers.json) retains EN/KO PDFs at675846/631282 bytes, each10 pages and Type3=0. Four SVGs and tables are roomier; 4 pt table padding, `arraystretch=1.20`, standard IEEE10 pt and properly typeset LaTeX math are retained. [[wiki/reports/2026-10-23-ontology-map-development-case]] records the evidence and preserved pre-refinement receipt/snapshot.
@@ -21,6 +99,62 @@
 - [[wiki/reports/2026-10-23-ontology-map-development-case]] records authored World/Actor/Knowledge/Fact/Policy/Quest/Action/Trace roles, their exact source references and distinct Python7/Godot6/DISC7 vocabularies. Model hidden state and a seven-dimensional embedding are not measured.
 - One linked Codex thread reports `gpt-6.1-sol`: six CLI invocations, five editing and one read-only, zero independent repeats. The accepted case retains its 62-check result and failures/repairs; 43 later publication-source regressions make 105 focused passes without enlarging the development sample. Jev remains negative, unvalidated and proposal-only; provider revision/cost remain null.
 - New production `dpl_5dv9w8DUeBJfc6cokE6ZzRfoto14` is READY; all18 game/dashboard/paper asset bytes match. Native-input denial/fresh/redisplay and same-session1440/390 inspection pass with zero console/page/request/HTTP errors. EN/KO PDFs remain10 pages; selected-source CI is reported by the linked release receipt and Git publication separately by history. G4/full G6 and efficacy/superiority/human benefit remain unestablished. Historical source-bound reports, raw sources and cohorts stay unchanged.
+
+## [2026-10-23] user direction | Ontology-first evidence mapping and actual-development measurement
+- User requests ontology composition/structure before packet labels, with each evidence packet attached to the structural role it tests. The next study applies the proposed method during actual Codex narrative-game development and measures development/environment observations, not merely replays of fixed fixtures.
+- Recorded concrete actor/fact/knowledge/policy/stage/disclosure-transition roles and DISC-001–007 semantics from the frozen declaration; lane names, packet IDs, protocol versions and observed result cohorts remain distinct. E3 methods simulation remains separate from runtime authority; E2 model labels are not assigned to historical unknown NPC models or future development runs.
+- Proposed task/run-level acceptance, time/repair/intervention observations and matched-information structure comparisons; runtime events are nested, missing metadata stays missing, failed runs stay retained, hard validity and soft narrative assessment remain separate. No sample size, API run, participant study or new experiment was launched.
+- [[wiki/queries/2026-10-23-signal-data-types-interview#2026-10-23 온톨로지 구조별 증거 배치와 실제 개발 실측 방향]] captures the bilingual framing and two independent read-only reviews. Only wiki direction records changed; released papers/game, frozen inputs/results and prior receipts remain unchanged.
+
+## [2026-10-23] historical interview | Combined mechanism and comparison view selected
+- User selected **작동 과정과 비교 함께** through the interview question. Main records a single-event semantic flow as the primary explanation and an independent-case comparison as a separate verification view. Content-first typed data/entity/relation/rule/state-transition presentation is fixed; no file/folder navigation replaces the explanation.
+- At this initial selection, sequential collection scope and acceptance criteria were still under interview; game/paper edits, build and deployment had not started. This dated intake was not release approval or approval for efficacy/human studies. The later bounded release closure appended below supplies current status.
+
+## [2026-10-23] historical interview | Content-first signal data and ontology stages
+- User requests subagents, Jev, an interview on signal graphs and subsequent game build/deployment. Latest clarification fixes the explanation around typed content, entities/relations/rules and stage/state transitions rather than files/folders. No graph-priority answer is assumed.
+- Source/data audits found independent60×3 records and live disclosure event producers, but no dedicated dashboard consumer/graph. Sparse checks require explicit unreported cells; original Python7 checks, Godot6 families and disclosure7 rules remain separate. Frozen case order is not time or efficacy.
+- Jev API returned `jev-1.14.0`, unvalidated/proposal_only; evidence_supports probability0.39, threshold0.80, one request. Two independent audits plus six interview advisory lanes completed; no game/paper edit, test, build or deployment was performed. The existing release path bundles both PDFs; the existing12-page publication FIX is not waived.
+- Durable content-first explanation and internal evidence: [[wiki/queries/2026-10-23-signal-data-types-interview]]. At intake, interview `interview_20261023_050206` still awaited the graph-purpose/priority choice; the user subsequently approved the implementation/deployment Seed. The source-bound earlier report stays frozen; current completion is the release closure appended below.
+
+## [2026-10-23T01:24:31.965Z] historical report | Bounded disclosure verified; then-publication page gate FIX
+- Main issued [the final verification receipt](../neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/final-verification-20261023.json) at `2026-10-23T01:24:31.965Z`: `BOUNDED_IMPLEMENTATION_VERIFIED_PUBLICATION_FIX`. This supersedes pending closure in earlier entries; the source-bound interview report remains unchanged after its freeze.
+- Final focused command in the research root: `uv run pytest -q tests/test_npc_disclosure.py tests/test_godot_npc_disclosure.py tests/test_check_disclosure_paper_evidence.py tests/test_generate_disclosure_paper_results.py` → exit 0, **36 passed in 7.26s**, `artifact://992`. `uv run python scripts/check_disclosure_paper_evidence.py` → exit 0, **PASS**, with authentic Godot receipt, six-category producer manifest and both PDFs checked.
+- Actual Godot writer receipt covers **7 semantic cases**: N-013/N-003/N-027/N-047/N-048/M-007/M-008. This is neither the earlier 8 smoke assertions nor all Python 60 cases. General/ontology agreement remains 60/60 and unsafe0; unchecked unsafe51 is unauthorized44+redisplay-mutation7, separate from semantic mismatch60. Frozen normal48/boundary4/malformed8 and RC2/four paired cases remain unchanged.
+- Final manuscript builds: EN `latexmk -pdf -g -interaction=nonstopmode -halt-on-error main.tex`; KO `latexmk -xelatex -g -interaction=nonstopmode -halt-on-error main.tex` in their respective `paper/latex/{en,ko}` directories. Both builds PASS; `pdfinfo` observes **12 pages each**, so the existing **≤10-page publication gate remains FIX**, not waived. PDF paths are `paper/latex/en/main.pdf` and `paper/latex/ko/main.pdf` under the research root.
+- Generated disclosure labels/counts/packet identity/source binding pass bilingual checks; this is not complete sentence-by-sentence translation equivalence. PairedManuscript's four selected-page visual reviews pass, not a review of every PDF page. Bounded code review is APPROVE with zero unresolved findings; the reviewer did not rerun the suite. Retained page images and hashes are in the final receipt and `research/npc-disclosure/verification-20261023/`.
+- Only unbound index/log/studio status were updated for this closure. strict-admitted006 remains historical; commit/push, clean release build, production/browser proof and human efficacy remain unperformed. No gold, isolated holdout, ontology superiority, model-internal-state or generalization claim; no formatter, linter or project-wide suite run.
+
+## [2026-10-23] report | Source-bound disclosure report frozen for final verification
+- Updated the existing interview report once at Main's coordination point, then froze it before evaluator/producer regeneration. Its §11 records the observed four-file focused suite (36 passed in 9.11s, `artifact://902`), exact invocation, six deliverable paths, paired `paper/latex/{en,ko}/main.pdf` locations, and current packet-bound Godot receipt. No more report edits may occur without regenerating its source bindings.
+- Corrected result interpretation: general/ontology gates match 60/60 with unsafe0; isolated unchecked unique unsafe51 = unauthorized44 + redisplay-mutation7, while semantic mismatch60 and representation-only mismatch9 remain separately visible. Two rule-change fixtures/four paired cases match with no omissions. Earlier unsafe60 and 32-/34-test receipts remain correction history, not final evidence.
+- Found and routed the bilingual figure-caption/actual-legend mismatch; manuscript owner aligned both captions. Final rebuilt PDF/checker/visual closure remains pending. Main owns the authoritative unbound `neuro-symbolic-interactive-game-research-2026/research/npc-disclosure/final-verification-20261023.json` receipt, not yet issued at this entry. Index/log/studio status may follow that receipt without changing the bound report.
+- Historical strict-admitted006 release boundaries, raw/frozen inputs, deployment/human-efficacy limits, and Argon partial-only status are preserved. No formatter, linter, project-wide test suite, global-vault sync, manuscript or runtime edits were performed by this documentation lane.
+
+## [2026-10-23] report | Approved bounded disclosure implementation; final verification pending
+- Supersedes the current-status meaning of the earlier approval-waiting entry without rewriting it. Approved `reveal_hint` implementation is present; Main reports Python deterministic evaluation PASS and staged Godot smoke 8/8. Final current-byte command receipts, focused regressions, generated evidence checks, and bilingual PDF checks remain pending.
+- Preserved frozen normal48/boundary4/malformed8 and two rule-change fixtures/four paired cases. Direct `shasum -a 256` check exits 0: Seed `3e601c02f44f64c90715254a9376e7c97c638f92dd27479ecb1e3df7592b81e2`; expectation packet `9920aa834910a3ee35ed4446de4fdba42bb67dda71b07a93bccfc7a0b2e09028` equals its sidecar. No raw/source/frozen packet edits.
+- Added six-category artifact mapping and explicit reviewer blockers: expected mismatch is not synonymous with unsafe violation; disclosure trace must survive actual consumers. No final unsafe count is promoted before corrected receipts. The producer manifest is `neuro-symbolic-interactive-game-research-2026/paper/latex/generated/disclosure_producer_manifest.json`.
+- strict-admitted006 remains the dated 2026-10-17 selected-source baseline, not release proof for this revision. Deployment and human efficacy remain unverified; no human gold, isolated holdout, model-internal-state, ontology-superiority or generalization claim. Full note: [[wiki/reports/2026-10-22-ontology-signals-interview]].
+
+## [2026-10-23] report | NPC disclosure Seed ready for approval
+- Preserved nine interview decisions and eight behavioral criteria; user-accepted A/B revisions add one bounded six-deliverable evidence criterion in Seed v1.1.0. Local read-only SeedLocalQA iteration 2 scores 0.95 against 0.90 after the Ouroboros QA timeout; this is document quality only.
+- Seed SHA-256 matches the saved QA receipt: `3e601c02f44f64c90715254a9376e7c97c638f92dd27479ecb1e3df7592b81e2`. Implementation approval remains pending; no new runtime, experiment, or bilingual-paper completion is claimed.
+- Contract and evidence paths: `.ouroboros/seeds/seed-20261023-npc-disclosure-37ffdf78a47d.yaml`, `.ouroboros/artifacts/seed-37ffdf78a47d-qa-iteration-2.json`. Full note: [[wiki/reports/2026-10-22-ontology-signals-interview]].
+
+## [2026-10-22] report | Ontology and seven-check interview evidence
+- Three local audits distinguish authoring assistance, historical E2 model labels, current unknown NPC model identity, seven Boolean checks/six families, the separate ontology-link simulation, and Godot authority from the Python research controller.
+- Recorded the authored OPEN_DOOR trace, unpooled E1/E2/E3/NPC comparison counts, existing visual evidence, stale concept dimensionality, and a current EvaluationTrace source-pin mismatch. No new runtime verification, efficacy claim, manuscript revision, or gameplay change.
+- Jev API returned advisory `proposal_only`; external reviewers and five journal dossiers are separate intake. Research scope and comparators are confirmed below; evaluation independence and quantitative acceptance remain open.
+- Full note: [[wiki/reports/2026-10-22-ontology-signals-interview]]
+- Interview answers confirmed through the question tool: primary research object is NPC/world state/actions (option 1); ontology direction is a bounded executable contract (option 2); primary claim is declared-rule enforcement and traceability; first action scope is NPC disclosure (`reveal_hint`, option 2). Coding-agent activity is provenance, not the primary object; no model-latent-state measurement claim. Only evaluation independence and quantitative acceptance remain undecided; no manuscript/runtime implementation has started.
+- Fifth interview choice: approved canonical fact IDs and fixed templates only in displayed NPC dialogue; enforce both disclosure-state writes and the bounded display path. This is a chosen implementation contract, not a completed leakage result. Only evaluation independence and quantitative acceptance remain open.
+- Sixth interview choice: three matched arms (ungated, typed explicit-policy code, ontology-built gate), with the unsafe arm evaluation-only. Measure equal-policy decision parity and rule-change edit scope, omissions, and traceability; do not infer ontology advantage from violation rate alone. Independent expectations and quantitative acceptance remain open. Ouroboros submission timed out; server persistence is not yet confirmed.
+- Scope consultation recommends NPC disclosure from the existing `reveal_hint` state mutation, not a log-only premise. Aside review is collected, unverified intake; Argon Deep Research is usage-limit blocked with no final report. Five venue dossiers are written; proposed experiments and unverified journal metrics remain explicitly non-results.
+- Latest request authorizes an Argon retry on the specified other Google account only; it is not acceptance-criteria approval. Advisory protocol correction: all three arms share reference labels and denominators, while the deliberately ungated negative control reports observed failures rather than being required to meet the production-gate safety bar. Expectation ownership and isolation remain unapproved.
+- Requested-account Argon retry is confirmed at `/u/1/app/00b4461cf722972b`: account, Argon selector, Deep Research, and “48 websites researching” observed at 2026-10-22T23:14:35.891Z. No final report yet; original-account quota block remains separate. Preserved initial retry receipt and progress JSON under the reviewer-intake folder; no duplicate research submission.
+- Seventh interview choice supersedes the earlier open expectation-ownership notes: a separate verification subagent derives case expectations from declared rules and freezes them before implementation, not from gate outputs. This supports bounded rule conformance/traceability/change-omission checks, not independent human gold, isolated holdout, or human benefit. Case domain and quantitative acceptance remain open. The remote interview event query observed an `interview.response.recorded` entry for this answer; the later local SQLite lookup did not contain this session and is not used as persistence evidence.
+- Eighth interview choice: exhaustive coverage of a declared finite current-scenario condition table, without new NPCs or story. Derive/freeze counts before implementation; both gates must match every expected verdict, reject forbidden committed/displayed facts, preserve version/rule-ID traceability, and reproduce verdict/disclosure state/dialogue from identical inputs. Ungated violations remain observations, not a zero-violation gate. Paired rule-change fixtures still need source-grounded definition in the frozen packet. Latest Ouroboros submission timed out; server persistence unconfirmed. No seed/runtime/manuscript implementation yet.
+- Ninth interview choice: revalidate current authorization for already-disclosed facts; authorized repeats display the canonical dialogue but leave facts/disclosed/memory/revision/state hash unchanged, with request/verdict recorded outside canonical state. Existing accepted operations increment revision before hashing, so current `mutated=true` is not evidence of repeat detection or idempotence. The verifier's 48-cell proposal covers only the eligible-actor stratum; complete stratified expectations/counts must still be frozen before implementation. No implementation or final Seed approval yet.
 
 ## [2026-10-17] report | Sound replay contracts and source-bound NPC005
 - Reproduced and repaired replay causal-order/result duplication and first-issued binding mismatch; legal cached shared action IDs remain accepted, later binding and duplicate results reject. Restored actual negative mutations against a valid 72-assignment screening baseline.
@@ -318,6 +452,195 @@
 - Updated only the four existing repository wiki documents in each root, using the available default-session backend and the authorized direct-write fallback because Obsidian was previously not running. Index/log edits are root-local; existing user/private automatic-ingest entries were not removed or copied into the selected projection. No new docs or raw/QA/manuscript/README/graph/source edits, model/provider experiments, credentials, formatter, linter, tests, Git, build or deploy operations were performed by this documentation task. Verification is receipt inspection and the successful bounded document-edit results, not a newly executed CI run.
 - Current report: [[wiki/reports/2026-10-15-npc-goal-operation-implementation]]; project: [[wiki/projects/trace-rpg-paper-2026]]. Release completion must be recorded from later execution evidence, not inferred from READY_FOR_SELECTED_COMMIT.
 
-## 2026-10-23 publication provenance and release-gate repair
+## [2026-10-22 22:24:44] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/222444-01a165b7-25e-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-222444-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-222444-system-instructions`)
 
-Prepared explicit public source materializations while retaining frozen packet and original reports/results. Mandatory gates exposed stale historical-source selection, omitted rejection classification, conditional-check reporting, and a double-counted disclosure observation transition. Source fixes passed targeted engine verification (53 tests and 48 subtests); a new r5 deterministic evaluation and authentic seven-case Godot receipt preserve the old results. Both final manuscripts rebuilt at ten pages with their existing typography. Public derivative, archived NPC006 source scope, current runtime observations, and previous production deployment remain separate. Selected-tree CI and Git publication are tracked separately; this entry is not a push/deploy or new-development-study completion claim.
+## [2026-10-22 22:41:03] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/224103-01a165c6-315-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-224103-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-224103-system-instructions`)
+
+## [2026-10-22 22:44:34] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/224434-01a165c9-74a-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-224434-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-224434-system-instructions`)
+
+## [2026-10-22 22:52:44] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/225244-01a165d0-da1-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-225244-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-225244-system-instructions`)
+
+## [2026-10-22 22:53:21] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/225321-01a165d1-88e-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-225321-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-225321-system-instructions`)
+
+## [2026-10-22 23:00:29] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/230028-01a165d8-052-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-230028-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-230028-system-instructions`)
+
+## [2026-10-22 23:26:33] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/232633-01a165ef-a1a-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-232633-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-232633-system-instructions`)
+
+## [2026-10-22 23:30:38] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/233038-01a165f3-a85-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-233038-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-233038-system-instructions`)
+
+## [2026-10-22 23:56:02] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/22/235602-01a1660a-c50-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-22-235602-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-22-235602-system-instructions`)
+
+## [2026-10-23 00:04:36] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/000436-01a16612-a89-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-000436-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-000436-system-instructions`)
+
+## [2026-10-23 00:05:38] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/000538-01a16613-847-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-000538-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-000538-system-instructions`)
+
+## [2026-10-23 00:06:23] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/000623-01a16614-4e1-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-000623-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-000623-system-instructions`)
+
+## [2026-10-23 00:06:38] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/000638-01a16614-97e-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-000638-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-000638-system-instructions`)
+
+## [2026-10-23 00:10:18] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/001018-01a16617-e60-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-001018-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-001018-system-instructions`)
+
+## [2026-10-23 00:11:41] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/001141-01a16619-3eb-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-001141-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-001141-system-instructions`)
+
+## [2026-10-23 00:43:16] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/004316-01a16636-1f4-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-004316-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-004316-system-instructions`)
+
+## [2026-10-23 00:44:44] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/004444-01a16636-e08-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-004444-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-004444-system-instructions`)
+
+## [2026-10-23 00:44:45] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/004445-01a16636-e09-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-004445-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-004445-system-instructions`)
+
+## [2026-10-23 00:44:49] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/004449-01a16636-e09-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-004449-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-004449-system-instructions`)
+
+## [2026-10-23 05:02:22] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/050222-01a16723-47c-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-050222-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-050222-system-instructions`)
+
+## [2026-10-23 05:11:27] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/051127-01a1672b-97c-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-051127-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-051127-system-instructions`)
+
+## [2026-10-23T07:34:34.105503+00:00] release closure | Approved signal-explainer implemented, built and deployed
+- **Current: `PASS_FOR_APPROVED_BOUNDED_RELEASE`.** [Final receipt](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-final-verification.json) closes the five criteria of the [approved Seed](../.ouroboros/seeds/seed-20261023-signal-explainer-b35b22f4227d.yaml): optional content-first game panel, separated live/independent dashboard evidence, truthful missing/skipped/out-of-scope states, paired ≤10-page papers, and verified production behavior. Earlier unimplemented/undeployed/12-page failures above are dated history, not current status; the old source-bound report remains immutable.
+- Latest exact provider verification recorded in that receipt: `vercel inspect https://sealed-lighthouse-trace-rpg.vercel.app --scope akillness-projects --json` → **READY**, `dpl_BvpyBPiSouiyoyzN3wG9WQN16YNM` at [production](https://sealed-lighthouse-trace-rpg.vercel.app). Deployment command: `bash scripts/deploy_vercel_dashboard.sh`. Production evidence is actual-input browser observation plus **9/9 deployed byte/SHA-256 matches**, not pytest.
+- Separately, [focused-tests-r3.json](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/focused-tests-r3.json), finished `2026-10-23T06:55:51.524307+00:00`: `uv run pytest -q tests/test_signal_explainer.py tests/test_godot_signal_explainer.py tests/test_evaluation_trace_mirror.py tests/test_generate_npc_paper_results_model_cohort.py tests/test_check_disclosure_paper_evidence.py tests/test_generate_disclosure_paper_results.py tests/test_run_disclosure_evaluation_cli.py` → exit0, **66 passed +16 subtests passed in44.03s**. Canonical Godot **7 semantic cases PASS** is separate from **8/8 authored public-safe smoke** and frozen Python60-case comparisons.
+- Same-directory [browser proof](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-browser-proof.json), `2026-10-23T07:32:07.896Z`: real mouse/keyboard `denied → legal progress → authorized_fresh → authorized_redisplay`, **only3 total canonical commits**, no redisplay mutation or panel-induced canonical commit/state change, **zero observed browser diagnostics**. [Asset identity](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-asset-identity.json) observed9/9 matches at `2026-10-23T07:27:52.760394+00:00`; final receipt records **EN/KO each10 pages, Type3 absent**, superseding the earlier12-page failure without changing its receipt.
+- General-rule and ontology-gate each retain **60 cases: allowed16/denied44/unsafe0** and agree60/60; isolated unchecked **unsafe51=44 unauthorized+7 redisplay mutation**, not semantic mismatch60. Normal48/boundary4/malformed8 and separate rule-change2/paired4 remain frozen. No ontology-superiority inference follows.
+- [Narrow dashboard receipt](../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-23-signal-explainer/production-r3-mobile-comparison.json), `2026-10-23T07:33:13.743Z`, covers **390px dashboard reflow only**, not real-device mobile gameplay/touch/performance certification. **G4/full G6 remain FIX**; no human efficacy/player-benefit, human-gold, access-separated holdout, latent-state, generalization/superiority, full translation-equivalence or journal-acceptance claim. See [[wiki/queries/2026-10-23-signal-data-types-interview#2026-10-23 승인된 한정 release 종료]] and studio D-086. This five-file status update runs no tests, formatting or linting and changes no code, paper sources, raw/frozen reports, historical results or prior receipts.
+
+## [2026-10-23 08:50:03] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085003-01a167f3-c43-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085003-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085003-system-instructions`)
+
+## [2026-10-23 08:50:44] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085044-01a167f4-665-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085044-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085044-system-instructions`)
+
+## [2026-10-23 08:51:29] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085129-01a167f5-1af-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085129-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085129-system-instructions`)
+
+## [2026-10-23 08:52:04] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085204-01a167f5-a3d-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085204-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085204-system-instructions`)
+
+## [2026-10-23 08:52:38] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085238-01a167f6-251-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085238-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085238-system-instructions`)
+
+## [2026-10-23 08:53:23] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085323-01a167f6-d49-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085323-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085323-system-instructions`)
+
+## [2026-10-23 08:54:07] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085407-01a167f7-866-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085407-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085407-system-instructions`)
+
+## [2026-10-23 08:56:44] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/085644-01a167f9-e66-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-085644-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-085644-system-instructions`)
+
+## [2026-10-23 22:31:31] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/223131-01a16ae3-c23-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-223131-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-223131-system-instructions`)
+
+## [2026-10-23 22:45:06] query | /model deasdfas
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/224506-01a16aef-ff4-model-deasdfas`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-224506-model-deasdfas`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-224506-model-deasdfas`)
+
+## [2026-10-23 22:53:14] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/225314-01a16af7-907-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-225314-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-225314-system-instructions`)
+
+## [2026-10-23 22:54:28] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/225428-01a16af8-9ae-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-225428-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-225428-system-instructions`)
+
+## [2026-10-23 22:55:38] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/225538-01a16af9-bfa-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-225538-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-225538-system-instructions`)
+
+## [2026-10-23 22:56:23] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/225623-01a16afa-680-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-225623-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-225623-system-instructions`)
+
+## [2026-10-23 22:58:14] query | ## System Instructions
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/23/225814-01a16afc-34f-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-23-225814-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-225814-system-instructions`)
+
+## [2026-10-24 15:47:56] query | ## System Instructions
+- Raw capture retained privately, excluded from publication: `raw/sources/prompts/2026/10/24/154756-01a16e98-bad-system-instructions`
+- Source note retained privately, excluded from publication: `wiki/sources/2026-10-24-154756-system-instructions`
+- Query note retained privately, excluded from publication: `wiki/queries/2026-10-24-154756-system-instructions`
