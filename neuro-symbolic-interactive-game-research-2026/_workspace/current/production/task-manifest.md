@@ -4,12 +4,12 @@ Run ID: `20260813-sealed-lighthouse-cycle-3`
 
 ## Revised paper publication checkpoint — 2026-10-24
 
-Owner: **Main**. Status: **PAPER/BOUNDED SCIENTIFIC REVIEW VERIFIED; SELECTED COMMIT/PUSH PENDING**.
+Owner: **Main**. Status: **SOURCE CHECKPOINT DELIVERED; LIVE-STUDY CONTRACT/AUTHORITY UNRESOLVED**.
 - [Corrected paper build](../qa/releases/2026-10-24-paper-review/paper-build-scientific-fixes-compact.json): pinned historical NPC source, EN/KO 10 pages, unchanged fonts/LaTeX gates PASS. [Bounded scientific closure](../qa/releases/2026-10-24-paper-review/scientific-review-closure.json): F1--F6 closed; labeled IRC projection after resumed-result lookup failure. Prior failed builds retained; no typography shrink or empirical result promotion.
-- [Full CI](../qa/releases/2026-10-24-paper-review/full-ci-before-publication.json): 412 unittest tests; 78 game tests/48 subtests; all unchanged CI steps PASS. [Crosswalk](../qa/releases/2026-10-24-paper-review/contribution-crosswalk-compact.json): 5 contributions, 58 references, 9 topics.
+- [Confirmed source delivery](../qa/releases/2026-10-24-paper-review/source-delivery-verification.json): `13b5c77401aefc0cb8ff3f10534d8944564e957b`, 104 explicit files, normal push and remote read-back. The unchanged full pre-push hook passed 412 unit tests, 78 game tests/48 subtests, 14 research records, 3 survey artifacts and local wiki lint. [Crosswalk](../qa/releases/2026-10-24-paper-review/contribution-crosswalk-scientific-fixes.json): 5 contributions, 58 references, 9 topics.
 - [Wiki reference repair](../qa/releases/2026-10-24-paper-review/wiki-repair-verification.json): 180 unavailable references/108 targets explicitly annotated, historical text preserved; structural lint PASS is not source recovery. Private prompt/raw-derived intake is excluded from publication.
 - A/C, ontology causality and player benefit remain unproven; live-study model episodes 0. Candidate identity/access, context/billing permissions, transport/deadline proof and complete study freeze remain separate prerequisites. Current production and G4/full G6 are unchanged.
-- [Public projections](../qa/releases/2026-10-24-paper-review/public-projection-verification.json) preserve 8 original chain hashes. Exclude raw runtime trees/private prompts/unredacted ledger; never byte-edit hash-chained evidence for publication. Next beat: explicit-path commit and normal push with the full pre-push hook before new model generation. Local CI is not remote delivery; live-study authority remains unresolved.
+- [Public projections](../qa/releases/2026-10-24-paper-review/public-projection-verification.json) preserve 8 original chain hashes. Excluded raw runtime trees/private prompts/unredacted ledger remain local; 116 public-set Markdown links passed. Next beat: settle native account/identity preflight, egress/spend/launch scope, quest/repeat/C-margin/analysis decisions before any real generation. Source publication does not authorize or establish the study.
 
 ## Offline runtime implementation checkpoint — 2026-10-24
 
