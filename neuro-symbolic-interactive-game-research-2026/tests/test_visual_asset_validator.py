@@ -287,6 +287,7 @@ class HistoricalRegenerationTests(unittest.TestCase):
                 "research/claim-ledger.yaml",
                 "game-track/godot/docs/latest/balance-archetypes.json",
                 *visual_validator.NPC_REGENERATION_SUPPORT,
+                *visual_validator.RUNTIME_COMPARISON_REGENERATION_SUPPORT,
             ):
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -351,6 +352,7 @@ class HistoricalRegenerationTests(unittest.TestCase):
                 "research/claim-ledger.yaml",
                 "game-track/godot/docs/latest/balance-archetypes.json",
                 *visual_validator.NPC_REGENERATION_SUPPORT,
+                *visual_validator.RUNTIME_COMPARISON_REGENERATION_SUPPORT,
             ):
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -563,6 +565,73 @@ class PublicationLinkTests(unittest.TestCase):
         )
         self.assertEqual(self.validate_links(self.figure_manifest()), [])
 
+    def _write_fractional_figure_svg(self, font_size: int) -> None:
+        path = self.root / "paper/latex/figures/current.svg"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">'
+            f"<style>text {{ font-size: {font_size}px; }}</style>"
+            '<text x="20" y="40">Runtime comparison</text></svg>',
+            encoding="utf-8",
+        )
+
+    def test_fractional_textwidth_is_allowed_only_with_an_eight_point_svg_proof(self) -> None:
+        self._write_fractional_figure_svg(font_size=28)
+        self.write_figure_wrapper(
+            r"""\begin{figure*}[t]
+\includegraphics[width=0.72\textwidth]{target}
+\end{figure*}
+"""
+        )
+        self.assertEqual(self.validate_links(self.figure_manifest()), [])
+
+        cases = {
+            "height transform": (
+                28,
+                r"""\begin{figure*}[t]
+\includegraphics[width=0.72\textwidth,height=1pt]{target}
+\end{figure*}
+""",
+            ),
+            "too-small print": (
+                12,
+                r"""\begin{figure*}[t]
+\includegraphics[width=0.72\textwidth]{target}
+\end{figure*}
+""",
+            ),
+            "fractional columnwidth": (
+                28,
+                r"""\begin{figure*}[t]
+\includegraphics[width=0.72\columnwidth]{target}
+\end{figure*}
+""",
+            ),
+            "scale transform": (
+                28,
+                r"""\begin{figure*}[t]
+\includegraphics[width=0.72\textwidth,scale=1]{target}
+\end{figure*}
+""",
+            ),
+            "non-full-width figure": (
+                28,
+                r"""\begin{figure}[t]
+\includegraphics[width=0.72\textwidth]{target}
+\end{figure}
+""",
+            ),
+        }
+        for name, (font_size, wrapper) in cases.items():
+            with self.subTest(width_contract=name):
+                self._write_fractional_figure_svg(font_size)
+                self.write_figure_wrapper(wrapper)
+                errors = self.validate_links(self.figure_manifest())
+                self.assertTrue(
+                    any("must use the legible single-column contract" in error for error in errors),
+                    errors,
+                )
+
     def test_single_column_textwidth_and_custom_or_narrow_widths_are_rejected(self) -> None:
         cases = {
             "single-column textwidth": r"""\begin{figure}[t]
@@ -609,6 +678,406 @@ class PublicationLinkTests(unittest.TestCase):
         )
         errors = self.validate_links(self.figure_manifest("paper/latex/figures/current.png"))
         self.assertTrue(any("raster paper figure inclusion" in error for error in errors), errors)
+
+    def test_declared_runtime_figure_anchor_fails_when_label_missing_or_renamed(self) -> None:
+        manifest = self.figure_manifest()
+        asset = manifest["visual_assets"][0]
+        asset["id"] = "paper-runtime-comparison"
+        asset["anchors"] = ["fig:runtime-comparison"]
+
+        cases = {
+            "correct label": r"\label{fig:runtime-comparison}",
+            "missing label": "",
+            "renamed label": r"\label{fig:runtime-comparison-renamed}",
+        }
+        for name, label in cases.items():
+            with self.subTest(label=name):
+                self.write_figure_wrapper(
+                    r"""\begin{figure*}[t]
+\includegraphics[width=\textwidth]{target}
+"""
+                    + (label + "\n" if label else "")
+                    + r"""\end{figure*}
+"""
+                )
+                errors = self.validate_links(manifest)
+                if name == "correct label":
+                    self.assertEqual(errors, [])
+                else:
+                    self.assertEqual(
+                        sorted(errors),
+                        sorted(
+                            [
+                                "paper/latex/en/main.tex: paper-runtime-comparison is missing figure anchor fig:runtime-comparison",
+                                "paper/latex/ko/main.tex: paper-runtime-comparison is missing figure anchor fig:runtime-comparison",
+                            ]
+                        ),
+                    )
+
+    def _write_runtime_table_fixture(self) -> None:
+        generated = self.root / "paper/latex/generated"
+        generated.mkdir(parents=True, exist_ok=True)
+        for language, marker in (("en", "Runtime results"), ("ko", "런타임 결과")):
+            (generated / f"runtime_comparison_results_{language}.tex").write_text(
+                marker + "\n", encoding="utf-8"
+            )
+            (generated / f"runtime_comparison_tables_{language}.tex").write_text(
+                "\\begin{table*}[t]\n"
+                "\\centering\n"
+                "\\renewcommand{\\arraystretch}{1.20}\n"
+                "\\begin{tabularx}{\\textwidth}{ll}\n"
+                "\\toprule\n"
+                "Runtime & Result \\\\\n"
+                "\\bottomrule\n"
+                "\\end{tabularx}\n"
+                "\\label{tab:runtime-comparison-aggregate}\n"
+                "\\end{table*}\n",
+                encoding="utf-8",
+            )
+        for language, marker in (
+            ("en", "Interpretation Rows have different denominators"),
+            ("ko", "해석 범위 분모와 성공 방향"),
+        ):
+            (generated / f"pilot_tables_{language}.tex").write_text(marker, encoding="utf-8")
+        self.papers[0].write_text(
+            "\\input{../generated/runtime_comparison_results_en}\n"
+            "\\input{../generated/runtime_comparison_tables_en}\n",
+            encoding="utf-8",
+        )
+        self.papers[1].write_text(
+            "\\input{../generated/runtime_comparison_results_ko}\n"
+            "\\input{../generated/runtime_comparison_tables_ko}\n",
+            encoding="utf-8",
+        )
+
+    def runtime_table_manifest(self) -> dict:
+        result_data = [
+            {
+                "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+                "bytes": 0,
+                "sha256": "0" * 64,
+            }
+        ]
+        return {
+            "rendered_surfaces": [
+                {"id": "paper-en", "editable_source": {"path": "paper/latex/en/main.tex"}},
+                {"id": "paper-ko", "editable_source": {"path": "paper/latex/ko/main.tex"}},
+            ],
+            "table_sources": [
+                {
+                    "id": "runtime-comparison-results-en",
+                    "layout_sources": [
+                        {"path": "paper/latex/generated/runtime_comparison_results_en.tex"}
+                    ],
+                    "data_sources": result_data,
+                    "rendered_in": ["paper-en"],
+                    "anchors": [],
+                },
+                {
+                    "id": "runtime-comparison-results-ko",
+                    "layout_sources": [
+                        {"path": "paper/latex/generated/runtime_comparison_results_ko.tex"}
+                    ],
+                    "data_sources": result_data,
+                    "rendered_in": ["paper-ko"],
+                    "anchors": [],
+                },
+                {
+                    "id": "runtime-comparison-tables-en",
+                    "layout_sources": [
+                        {"path": "paper/latex/generated/runtime_comparison_tables_en.tex"}
+                    ],
+                    "data_sources": result_data,
+                    "rendered_in": ["paper-en"],
+                    "anchors": ["tab:runtime-comparison-aggregate"],
+                },
+                {
+                    "id": "runtime-comparison-tables-ko",
+                    "layout_sources": [
+                        {"path": "paper/latex/generated/runtime_comparison_tables_ko.tex"}
+                    ],
+                    "data_sources": result_data,
+                    "rendered_in": ["paper-ko"],
+                    "anchors": ["tab:runtime-comparison-aggregate"],
+                },
+            ],
+        }
+
+    def validate_runtime_tables(self, manifest: dict) -> list[str]:
+        validator = visual_validator.Validator(require_pdf_tools=False, check_regeneration=False)
+        with patch.object(visual_validator, "ROOT", self.root):
+            validator._validate_tables(manifest)
+        return validator.errors
+
+    def test_runtime_result_and_table_sources_require_their_localized_closures(self) -> None:
+        self._write_runtime_table_fixture()
+        manifest = self.runtime_table_manifest()
+        self.assertEqual(self.validate_runtime_tables(manifest), [])
+
+        cases = {
+            "missing KO companion": lambda: (
+                self.papers[1].write_text(
+                    "\\input{../generated/runtime_comparison_tables_ko}\n", encoding="utf-8"
+                ),
+                (self.root / "paper/latex/generated/runtime_comparison_results_ko.tex").unlink(),
+            ),
+            "EN uses KO result fragment": lambda: self.papers[0].write_text(
+                "\\input{../generated/runtime_comparison_results_ko}\n"
+                "\\input{../generated/runtime_comparison_tables_en}\n",
+                encoding="utf-8",
+            ),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(closure=name):
+                self._write_runtime_table_fixture()
+                mutate()
+                errors = self.validate_runtime_tables(manifest)
+                self.assertTrue(
+                    any(
+                        "does not include a declared layout source" in error
+                        or "paper source traversal failed" in error
+                        for error in errors
+                    ),
+                    errors,
+                )
+
+    def _write_traceability_surface_fixture(self) -> None:
+        generated = self.root / "paper/latex/generated"
+        generated.mkdir(parents=True, exist_ok=True)
+        for language, marker in (
+            ("en", "Interpretation Rows have different denominators"),
+            ("ko", "해석 범위 분모와 성공 방향"),
+        ):
+            (generated / f"pilot_tables_{language}.tex").write_text(marker, encoding="utf-8")
+            paper_dir = self.root / f"paper/latex/{language}"
+            paper_dir.mkdir(parents=True, exist_ok=True)
+            (paper_dir / "main.tex").write_text(
+                "\\begin{table}[t]\n"
+                "\\centering\n"
+                "\\renewcommand{\\arraystretch}{1.20}\n"
+                "\\begin{tabular}{ll}\n"
+                "\\toprule\n"
+                "Measured & Value \\\\\n"
+                "\\bottomrule\n"
+                "\\end{tabular}\n"
+                "\\label{tab:measured}\n"
+                "\\end{table}\n",
+                encoding="utf-8",
+            )
+            (paper_dir / "traceability-supplement.tex").write_text(
+                "\\begin{table}[t]\n"
+                "\\centering\n"
+                "\\renewcommand{\\arraystretch}{1.20}\n"
+                "\\begin{tabular}{ll}\n"
+                "\\toprule\n"
+                "Rubric & Value \\\\\n"
+                "\\bottomrule\n"
+                "\\end{tabular}\n"
+                "\\label{tab:traceability-rubric}\n"
+                "\\end{table}\n",
+                encoding="utf-8",
+            )
+
+    def traceability_surface_manifest(self) -> dict:
+        return {
+            "rendered_surfaces": [
+                {
+                    "id": "paper-en",
+                    "artifact": {"path": "paper/latex/en/main.pdf"},
+                    "editable_source": {"path": "paper/latex/en/main.tex"},
+                },
+                {
+                    "id": "paper-ko",
+                    "artifact": {"path": "paper/latex/ko/main.pdf"},
+                    "editable_source": {"path": "paper/latex/ko/main.tex"},
+                },
+                {
+                    "id": "paper-en-traceability-supplement",
+                    "artifact": {"path": "paper/latex/en/traceability-supplement.pdf"},
+                    "editable_source": {"path": "paper/latex/en/traceability-supplement.tex"},
+                },
+                {
+                    "id": "paper-ko-traceability-supplement",
+                    "artifact": {"path": "paper/latex/ko/traceability-supplement.pdf"},
+                    "editable_source": {"path": "paper/latex/ko/traceability-supplement.tex"},
+                },
+            ],
+            "table_sources": [
+                {
+                    "id": "current-paper-hand-authored-tables",
+                    "layout_sources": [
+                        {"path": "paper/latex/en/main.tex"},
+                        {"path": "paper/latex/ko/main.tex"},
+                    ],
+                    "rendered_in": ["paper-en", "paper-ko"],
+                    "anchors": ["tab:measured"],
+                },
+                {
+                    "id": "traceability-supplement-table",
+                    "layout_sources": [
+                        {"path": "paper/latex/en/traceability-supplement.tex"},
+                        {"path": "paper/latex/ko/traceability-supplement.tex"},
+                    ],
+                    "rendered_in": [
+                        "paper-en-traceability-supplement",
+                        "paper-ko-traceability-supplement",
+                    ],
+                    "anchors": ["tab:traceability-rubric"],
+                },
+            ],
+        }
+
+    def test_traceability_rubric_anchor_is_owned_only_by_supplement_surfaces(self) -> None:
+        self._write_traceability_surface_fixture()
+        manifest = self.traceability_surface_manifest()
+        self.assertEqual(self.validate_runtime_tables(manifest), [])
+
+        cases = {
+            "rubric declared on main": lambda mutated: next(
+                source
+                for source in mutated["table_sources"]
+                if source["id"] == "current-paper-hand-authored-tables"
+            )["anchors"].append("tab:traceability-rubric"),
+            "KO supplement consumer omitted": lambda mutated: next(
+                source
+                for source in mutated["table_sources"]
+                if source["id"] == "traceability-supplement-table"
+            )["rendered_in"].remove("paper-ko-traceability-supplement"),
+            "KO supplement source missing": lambda mutated: (
+                self.root / "paper/latex/ko/traceability-supplement.tex"
+            ).unlink(),
+            "EN supplement label only": lambda mutated: (
+                self.root / "paper/latex/en/traceability-supplement.tex"
+            ).write_text("\\label{tab:traceability-rubric}\n", encoding="utf-8"),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(ownership=name):
+                self._write_traceability_surface_fixture()
+                mutated = copy.deepcopy(manifest)
+                mutate(mutated)
+                errors = self.validate_runtime_tables(mutated)
+                if name == "rubric declared on main":
+                    self.assertTrue(
+                        any(
+                            "paper-en is missing table anchor tab:traceability-rubric" in error
+                            for error in errors
+                        ),
+                        errors,
+                    )
+                elif name == "KO supplement consumer omitted":
+                    self.assertTrue(
+                        any(
+                            "anchor tab:traceability-rubric is rendered in undeclared surface paper-ko-traceability-supplement"
+                            in error
+                            for error in errors
+                        ),
+                        errors,
+                    )
+                elif name == "EN supplement label only":
+                    semantic_errors = [
+                        error
+                        for error in errors
+                        if "table anchor tab:traceability-rubric is not inside a rendered table block"
+                        in error
+                    ]
+                    self.assertEqual(
+                        semantic_errors,
+                        [
+                            "traceability-supplement-table: paper-en-traceability-supplement table anchor tab:traceability-rubric is not inside a rendered table block"
+                        ],
+                    )
+                else:
+                    self.assertTrue(
+                        any("paper source traversal failed" in error for error in errors),
+                        errors,
+                    )
+
+    def test_manifest_builder_owns_traceability_supplement_surfaces_and_table(self) -> None:
+        import update_visual_source_manifest as manifest_builder
+
+        manifest = manifest_builder.build_manifest()
+        expected_ids = {
+            "paper-en-traceability-supplement",
+            "paper-ko-traceability-supplement",
+        }
+        supplements = {
+            surface["id"]: surface
+            for surface in manifest["rendered_surfaces"]
+            if "traceability-supplement" in surface.get("id", "")
+        }
+        self.assertEqual(set(supplements), expected_ids)
+        self.assertEqual(
+            {
+                (
+                    surface_id,
+                    surface["artifact"]["path"],
+                    surface["editable_source"]["path"],
+                )
+                for surface_id, surface in supplements.items()
+            },
+            {
+                (
+                    "paper-en-traceability-supplement",
+                    "paper/latex/en/traceability-supplement.pdf",
+                    "paper/latex/en/traceability-supplement.tex",
+                ),
+                (
+                    "paper-ko-traceability-supplement",
+                    "paper/latex/ko/traceability-supplement.pdf",
+                    "paper/latex/ko/traceability-supplement.tex",
+                ),
+            },
+        )
+
+        source = next(
+            source
+            for source in manifest["table_sources"]
+            if source["id"] == "traceability-supplement-table"
+        )
+        self.assertEqual(
+            [record["path"] for record in source["layout_sources"]],
+            [
+                "paper/latex/en/traceability-supplement.tex",
+                "paper/latex/ko/traceability-supplement.tex",
+            ],
+        )
+        self.assertEqual(source["rendered_in"], sorted(expected_ids))
+        self.assertEqual(source["anchors"], ["tab:traceability-rubric"])
+
+    def test_missing_runtime_input_or_output_receipt_fails_closed(self) -> None:
+        validator = visual_validator.Validator(require_pdf_tools=False, check_regeneration=False)
+        manifest = {
+            "table_sources": [
+                {
+                    "id": "runtime-comparison-results-en",
+                    "data_sources": [
+                        {
+                            "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+                            "bytes": 0,
+                            "sha256": "0" * 64,
+                        }
+                    ],
+                    "layout_sources": [
+                        {
+                            "path": "paper/latex/generated/runtime_comparison_results_en.tex",
+                            "bytes": 0,
+                            "sha256": "0" * 64,
+                        }
+                    ],
+                }
+            ]
+        }
+        with patch.object(visual_validator, "ROOT", self.root):
+            validator._validate_receipts(manifest)
+        self.assertEqual(
+            sorted(validator.errors),
+            sorted(
+                [
+                    "manifest receipt is missing: research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+                    "manifest receipt is missing: paper/latex/generated/runtime_comparison_results_en.tex",
+                ]
+            ),
+        )
 
     def test_retained_optional_figure_does_not_require_inclusion_but_current_figure_requires_each_owner(
         self,

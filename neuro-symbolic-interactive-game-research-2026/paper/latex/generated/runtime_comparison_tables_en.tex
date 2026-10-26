@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\caption{Fixed-game native runtime comparison (n=2 per cell). All eight assignments, including the harness failure and timeouts, remain in denominators.}
+\label{tab:runtime-comparison-aggregate}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\textwidth}{@{}l l r r r r l r@{}}
+\toprule
+Requested selector & Form & Goal/assigned & Observed exec. & Host calls & Unsafe/committed & Elapsed median (n) & Fresh engine \\
+\midrule
+gpt-6.1-sol & general\_rule & 1/2 & 1 & 4 & 0/3 & 45.91 (1) & 1/0/0/1 \\
+gpt-6.1-sol & ontology & 0/2 & 2 & 3 & 0/1 & 72.35 (2) & 1/0/1/0 \\
+gpt-5.6-sol & general\_rule & 2/2 & 2 & 8 & 0/6 & 40.24 (2) & 2/0/0/0 \\
+gpt-5.6-sol & ontology & 2/2 & 2 & 8 & 0/6 & 33.11 (2) & 2/0/0/0 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}\noindent\parbox{0.98\textwidth}{\footnotesize Fresh engine counts follow VALID/INVALID/NOT\_RUN/NOT\_OBSERVED order. NR is unreported, not zero. Overall counts and the separate semantic replay are reported in the text.}
+\end{table*}

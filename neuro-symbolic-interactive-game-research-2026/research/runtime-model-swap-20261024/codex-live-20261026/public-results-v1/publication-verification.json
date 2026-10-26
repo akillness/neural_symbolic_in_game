@@ -1,0 +1,190 @@
+{
+  "checks": {
+    "affected_contracts": {
+      "command": ".venv/bin/python -m pytest tests/test_runtime_model_swap.py tests/test_runtime_model_swap_native.py tests/test_runtime_comparison_publication.py tests/test_visual_asset_validator.py tests/test_latex_makefile.py -q --tb=short",
+      "exit_code": 0,
+      "subtests_passed": 326,
+      "tests_passed": 185
+    },
+    "bilingual_parity": {
+      "citation_numbers_equal": true,
+      "labels_equal": true,
+      "main_citations": 58,
+      "results_bytes_unchanged": true
+    },
+    "crosswalk": {
+      "command": ".venv/bin/python scripts/validate_contribution_crosswalk.py",
+      "contributions": 5,
+      "engineering_lanes": 1,
+      "exit_code": 0,
+      "experiment_lanes": 3,
+      "references": 58,
+      "topics": 9
+    },
+    "paper_build": {
+      "command_template": "make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT=<archived-fa9fb8a-source-root>",
+      "exit_code": 0,
+      "forbidden_log_diagnostics": 0,
+      "historical_npc_source_is_not_current_runtime_certification": true,
+      "main_pages_each": 10,
+      "supplement_pages_each": 1,
+      "type3_fonts": 0
+    },
+    "project_integrity": {
+      "command": ".venv/bin/python scripts/validate_project.py",
+      "exit_code": 0
+    },
+    "visual_sources": {
+      "command": ".venv/bin/python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration",
+      "exit_code": 0,
+      "isolated_double_regenerated_sources": 22,
+      "svg_assets": 10,
+      "unique_receipts": 134
+    }
+  },
+  "date": "2026-10-26",
+  "frozen_results_sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e",
+  "limits": [
+    "Requested selectors are not attested served provider identities or immutable revisions.",
+    "Provider request counts, costs, credit consumption and cash charges remain unknown.",
+    "One quest, two repeats per cell and the retained source-revision confound do not establish model ranking, causal ontology advantage, noninferiority or player benefit.",
+    "No native experiment was launched during publication regeneration.",
+    "Unmeasured Table XIV and TR01-TR06 remain complete in the supplied bilingual supplements.",
+    "Git commit, push and selected-tree CI must be verified separately."
+  ],
+  "measured": {
+    "assigned": 8,
+    "fresh_engine_reexecution": {
+      "INVALID": 0,
+      "NOT_OBSERVED": 1,
+      "NOT_RUN": 1,
+      "VALID": 6
+    },
+    "host_invocations_observed": 23,
+    "observed_committed_transitions": 16,
+    "observed_native_executions": 7,
+    "observed_repairs": 0,
+    "observed_unsafe_committed_transitions": 0,
+    "semantic_record_link_replay": {
+      "invalid": 0,
+      "unobserved": 1,
+      "valid": 7
+    },
+    "system_goal_successes": 5
+  },
+  "pdfs": [
+    {
+      "artifact": "paper/latex/en/main.pdf",
+      "pages": 10,
+      "sha256": "577fe603d0faff4e661e9966b78df1cacc2b997ae40c3e0714af6285f7eb884e",
+      "table_xiv_and_six_dimensions": null
+    },
+    {
+      "artifact": "paper/latex/en/traceability-supplement.pdf",
+      "pages": 1,
+      "sha256": "aee38c9ad2487a9a0bdc0d0e0389c80596a01a2cfbe28c542c8f1758be66a071",
+      "table_xiv_and_six_dimensions": true
+    },
+    {
+      "artifact": "paper/latex/ko/main.pdf",
+      "pages": 10,
+      "sha256": "21be2dca155dae1bdacb1d0dd06493f13f55b4bb0ffef68e38ba696bb2343436",
+      "table_xiv_and_six_dimensions": null
+    },
+    {
+      "artifact": "paper/latex/ko/traceability-supplement.pdf",
+      "pages": 1,
+      "sha256": "a796a3ad9ea85b87c6cf25c63296b30b1f70431eee4e30bd8e0103ea8f78b91e",
+      "table_xiv_and_six_dimensions": true
+    }
+  ],
+  "privacy": {
+    "excluded_from_delivery": [
+      "raw operator and native transport records",
+      "authority/account/quota/CLI stdout and stderr",
+      "unrelated uncommitted planning and QA history",
+      "LaTeX build logs and caches"
+    ],
+    "public_projection_review": "No private absolute paths, credential/account/quota/API-key values found in the five public projections or bounded 15-file packet"
+  },
+  "public_packet": {
+    "files": [
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/protocol.json",
+        "sha256": "1d0b2649c3e5fad1e2d1faa803bf05fbbb71d5ae3caccf432cd41cb879ebb22e"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-input-manifest.json",
+        "sha256": "a7b0a1a21707df9b549e9b4822f09e73a793e66e0b493b88652099e23192e36e"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-input-manifest.json",
+        "sha256": "4ce42a7bf757584b74013de9a07a0842acff3e42d6fa0e9e78871a9fbfbd2bfb"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/source-manifest.json",
+        "sha256": "7b708435cdb155f93d5e166c2a7d9dacc8a2dc4cc1643e750bffba2368e2b1f3"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/independent-goal-safety-oracle.json",
+        "sha256": "a14a002e176c499b684beb1f6ad6c5b65cf43e7135be95a9b2724af80e47f5c8"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/runtime-output.schema.json",
+        "sha256": "525d2cae69c1ae1071834c61bf1bb39bced7871f22f61adfaed03ae98fac97a4"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-observation-frames.json",
+        "sha256": "c41b74aa67b9c59b5a88108765ad09cf50b85dd916bedf73fde3901f111c0357"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-observation-frames.json",
+        "sha256": "752ddaca31c69b3d26382b1b17e168852c0abed3d2914c1d3c7dad8290dde127"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-approved-request-bytes.json",
+        "sha256": "13b30cd7832b1b7a5f1e928e057a8ef142e36e893e0d96c4597b861446f4570f"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-approved-request-bytes.json",
+        "sha256": "b2d9043aa310ff13923c00cdaa4788ac5398653481bd27930b76ec0e2aabb257"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/quest.json",
+        "sha256": "c0531cac9027e32de5a20a43d9e93306d24c3ea765ba6c7152354c83de48c4a1"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/prompt.txt",
+        "sha256": "751825ad535d93b12206fd36925ee53b5d4348cfd425ea51daddbc6ba05e99e2"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/codex-no-tools-catalog-provenance.json",
+        "sha256": "1f4cbcccc59f47faed83d15c910b9a07bea4288dc0efad03f55037e2fbd35186"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/codex-sol-models-original-extract.json",
+        "sha256": "53f5395370dfffbe8ad5308500af0df0f81e17bf1ed589a2667a9abb818aa7e9"
+      },
+      {
+        "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/codex-sol-models-original-extract.json.license",
+        "sha256": "1959aac8a6f984f30b51bfe95cea7f113881bd7848bee8185eb00684bcd143d7"
+      }
+    ],
+    "licensing": {
+      "general_upstream_redistribution": "unverified; public-input user approval is not a blanket third-party redistribution grant",
+      "model_catalog_extract": "Apache-2.0; adjacent license and notices retained"
+    },
+    "preserved_protocol_status": "USER_APPROVED_SCOPE_ADMISSION_REVIEW_PENDING",
+    "role": "Frozen input/protocol provenance, not current execution-admission certification"
+  },
+  "review": {
+    "dedicated_native_verifier": "HTTP 429 before output; no dedicated-verifier PASS",
+    "label": "bounded independent code-reviewer fallback",
+    "not_attested_second_model_or_provider": true,
+    "supplementary_findings_closed": "PASS by source inspection plus behavioral regressions",
+    "supplementary_findings_initial": "FIX"
+  },
+  "schema_version": "fixed-game-native-publication-verification/1",
+  "scope": "Bounded fixed-game native pilot publication and working-tree checks; not confirmatory A/C, provider certification or Git-delivery attestation.",
+  "status": "PUBLICATION_CHECKS_PASS"
+}

@@ -13,6 +13,8 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from typing import Any, Protocol
 
+from nesy_game.runtime_model_swap_native import PromptTransportError
+
 
 class EpisodeEngine(Protocol):
     def state(self) -> dict[str, Any]: ...
@@ -101,6 +103,14 @@ def _render(semantic: Mapping[str, Any], representation: str) -> str:
     return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
 
 
+class EpisodePersistenceError(OSError):
+    """A final write failed after the complete episode record was finalized."""
+
+    def __init__(self, message: str, *, record: dict[str, Any]) -> None:
+        super().__init__(message)
+        self.record = record
+
+
 def run_episode(
     *,
     engine: EpisodeEngine,
@@ -111,9 +121,12 @@ def run_episode(
     clock: Callable[[], float],
     config: Mapping[str, Any],
     prompt: str,
-    repair_source: Callable[[dict[str, Any], dict[str, Any], int], dict[str, Any]] | None = None,
+    repair_source: Callable[[dict[str, Any], dict[str, Any], str, int], dict[str, Any]]
+    | None = None,
     provider_launcher: Callable[..., Any] | None = None,
     output_path: str | Path | None = None,
+    native_context: Mapping[str, Any] | None = None,
+    trusted_activation: Any | None = None,
 ) -> dict[str, Any]:
     if output_path is not None and Path(output_path).exists():
         raise FileExistsError(f"output already exists: {output_path}")
@@ -183,6 +196,8 @@ def run_episode(
         "goal_reached": False,
     }
     accounting = record["accounting"]
+    native_production_admitted = False
+    record["scientific"] = {"assigned": 0, "executed": 0, "eligible": False}
 
     def checked(name: str, value: Any, expected: type) -> Any:
         try:
@@ -245,6 +260,7 @@ def run_episode(
                     }
             for key, attribute, expected in (
                 ("raw_model_outputs", "raw_model_outputs", list),
+                ("prompt_receipts", "prompt_receipts", list),
                 ("engine_runs", "engine_evidence", list),
                 ("prompt_invocations", "prompt_calls", list),
                 ("source_hashes", "source_hashes", dict),
@@ -264,18 +280,94 @@ def run_episode(
                     )
                     if record["safety"]["status"] != "FAIL":
                         record["safety"]["status"] = "NOT_PASS"
+        receipts = evidence.get("prompt_receipts")
+        if isinstance(receipts, list):
+            actual_launches = 0
+            authoritative_requests: list[int] = []
+            for receipt in receipts:
+                if not isinstance(receipt, Mapping):
+                    continue
+                admitted = native_production_admitted
+                if (
+                    admitted
+                    and receipt.get("mode") == "native"
+                    and receipt.get("transport_kind") == "local_process"
+                    and receipt.get("local_process_started") is True
+                    and receipt.get("dispatch_started") is True
+                    and receipt.get("runner_injected") is False
+                    and receipt.get("activation_sha256") == trusted_activation.activation_sha256
+                    and receipt.get("plan_sha256") == trusted_activation.plan_sha256
+                    and receipt.get("row_id") == trusted_activation.row_id
+                ):
+                    actual_launches += 1
+                if admitted and receipt.get("provider_request_count_authoritative") is True:
+                    count = receipt.get("provider_request_count")
+                    if isinstance(count, int) and not isinstance(count, bool) and count >= 0:
+                        authoritative_requests.append(count)
+            evidence["provider_process_launch_count"] = actual_launches
+            if authoritative_requests:
+                evidence["provider_request_count"] = sum(authoritative_requests)
+            else:
+                evidence["provider_request_count"] = None
+        if native_production_admitted:
+            record["scientific"]["executed"] = (
+                1 if evidence.get("provider_process_launch_count", 0) > 0 else 0
+            )
         return _finish(record, output_path)
 
-    if not model.offline or model.provider is not None or provider_launcher is not None:
+    if native_context is not None:
+        from nesy_game.runtime_model_swap_native import validate_native_context
+
+        requested_model = {
+            "representation": model.representation,
+            "host": model.provider,
+            "selector": config.get("model_selector"),
+            "effort": config.get("effort"),
+            "offline": model.offline,
+        }
+        admission = validate_native_context(
+            native_context,
+            model=requested_model,
+            config=config,
+            prompt=prompt,
+            source_root=None,
+            trusted_activation=trusted_activation,
+        )
+        evidence["native_context"] = copy.deepcopy(admission)
+        mode = admission.get("mode")
+        evidence["provenance"] = {
+            "mode": mode if admission.get("ready") is True else "rejected",
+            "synthetic": mode in {"engineering_fixture", "test_simulation"}
+            and admission.get("ready") is True,
+            "scientific_eligible": bool(admission.get("scientific_eligible", False)),
+        }
+        if admission.get("ready") is not True:
+            record["failure_reason"] = "native_context_rejected"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        native_production_admitted = (
+            mode == "native" and admission.get("scientific_eligible") is True
+        )
+        if native_production_admitted:
+            accounting["assigned"] = 1
+            record["scientific"] = {"assigned": 1, "executed": 0, "eligible": True}
+        else:
+            accounting["denominator_eligible"] = False
+        if provider_launcher is not None:
+            record["failure_reason"] = "provider_launcher_not_allowed_native"
+            accounting["denominator_eligible"] = False
+            evidence["provenance"] = {"mode": "rejected", "synthetic": False}
+            return finish(observe=False)
+    elif not model.offline or model.provider is not None or provider_launcher is not None:
         record["failure_reason"] = "provider_not_allowed_offline"
         evidence["provenance"] = {"mode": "rejected", "synthetic": False}
         return finish(observe=False)
-    configure = getattr(engine, "configure_runtime", None)
-    if callable(configure):
-        configure(
-            limits=limits, clock=clock, started=started, model_id=model.model_id, prompt=prompt
-        )
     try:
+        configure = getattr(engine, "configure_runtime", None)
+        if callable(configure):
+            configure(
+                limits=limits, clock=clock, started=started, model_id=model.model_id, prompt=prompt
+            )
         record["initial_state"] = copy.deepcopy(checked("initial_state", engine.state(), dict))
         record["final_state"] = copy.deepcopy(record["initial_state"])
         if getattr(engine, "engine_error", None):
@@ -424,7 +516,7 @@ def run_episode(
                     break
                 if getattr(engine, "engine_error", None):
                     record["failure_reason"] = "engine_unavailable"
-                elif isinstance(exc, RuntimeError) and not attempt:
+                elif isinstance(exc, PromptTransportError) and not attempt:
                     retry_transport = True
                 elif repair_source is not None and attempt < limits.max_repairs_per_decision:
                     error = {"code": "PROPOSAL_FORMAT_ERROR", "message": row["error"]}
@@ -471,11 +563,7 @@ def run_episode(
         if accepted is None:
             if accounting["host_calls"] >= limits.max_host_calls:
                 record["failure_reason"] = "host_call_budget_exhausted"
-            elif (
-                retry_transport
-                and not getattr(engine, "engine_error", None)
-                and evidence["calls"][-1]["host_invocations"]
-            ):
+            elif retry_transport and not getattr(engine, "engine_error", None):
                 accounting["transport_retries"] += 1
                 record["failure_reason"] = None
                 continue
@@ -576,9 +664,12 @@ def _finish(record: dict[str, Any], output_path: str | Path | None) -> dict[str,
     )
     if output_path is not None:
         path = Path(output_path)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("x", encoding="utf-8") as handle:
-            handle.write(_json(record) + "\n")
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("x", encoding="utf-8") as handle:
+                handle.write(_json(record) + "\n")
+        except OSError as exc:
+            raise EpisodePersistenceError(_error_text(exc), record=record) from exc
     return record
 
 
@@ -688,6 +779,7 @@ class GodotEpisodeEngine:
         self.engine_evidence: list[dict[str, Any]] = []
         self.raw_model_outputs: list[dict[str, Any]] = []
         self.prompt_calls: list[dict[str, Any]] = []
+        self.prompt_receipts: list[dict[str, Any]] = []
         self._snapshot: dict[str, Any] = {}
         self._error: str | None = None
         self._policy_hash: str | None = None
@@ -928,12 +1020,60 @@ class GodotEpisodeEngine:
             "failed": False,
             "timeout_seconds": kwargs["timeout"],
         }
-        self.prompt_calls.append(row)
         try:
             result = self.prompt_runner(**kwargs)
-            if isinstance(result, tuple) and len(result) == 2:
+            if (
+                hasattr(result, "returncode")
+                and hasattr(result, "payload")
+                and hasattr(result, "receipt")
+            ):
+                receipt = _evidence_value(result.receipt)
+                if isinstance(receipt, dict):
+                    receipt.setdefault("runner_injected", self.prompt_runner is not None)
+                    self.prompt_receipts.append(receipt)
+                    nested_receipt = (
+                        receipt.get("receipt")
+                        if isinstance(receipt.get("receipt"), Mapping)
+                        else None
+                    )
+                    if receipt.get("timed_out") is True or (
+                        isinstance(nested_receipt, Mapping)
+                        and nested_receipt.get("timed_out") is True
+                    ):
+                        row["timed_out"] = True
+                    row["receipt"] = copy.deepcopy(receipt)
+                row["returncode"] = _evidence_value(result.returncode)
+                payload = _evidence_value(result.payload)
+                self.raw_model_outputs.append(payload)
+                if result.returncode != 0:
+                    failure_kind = (
+                        receipt.get("failure_kind") if isinstance(receipt, dict) else None
+                    )
+                    if failure_kind == "transport":
+                        from nesy_game.runtime_model_swap_native import PromptTransportError
+
+                        raise PromptTransportError(
+                            "native_prompt_transport_failed:" + str(receipt.get("error", "unknown"))
+                        )
+                    raise ValueError(
+                        "native_prompt_failed:" + str(receipt.get("error", "unknown"))
+                        if isinstance(receipt, dict)
+                        else "native_prompt_failed"
+                    )
+                result = (result.returncode, payload)
+            elif isinstance(result, tuple) and len(result) == 2:
                 row["returncode"] = _evidence_value(result[0])
-                self.raw_model_outputs.append(_evidence_value(result[1]))
+                tuple_payload = _evidence_value(result[1])
+                if isinstance(tuple_payload, Mapping) and isinstance(
+                    tuple_payload.get("receipt"), Mapping
+                ):
+                    receipt = dict(tuple_payload["receipt"])
+                    receipt.setdefault("runner_injected", True)
+                    self.prompt_receipts.append(receipt)
+                    row["receipt"] = copy.deepcopy(receipt)
+                    if receipt.get("timed_out") is True:
+                        row["timed_out"] = True
+                self.raw_model_outputs.append(tuple_payload)
             if self._clock() - row["started"] >= kwargs["timeout"]:
                 raise TimeoutError("response deadline exceeded; late output discarded")
             _json_bytes(result)
@@ -941,13 +1081,14 @@ class GodotEpisodeEngine:
         except Exception as exc:
             row.update(
                 failed=True,
-                timed_out=isinstance(exc, TimeoutError),
+                timed_out=bool(row.get("timed_out") or isinstance(exc, TimeoutError)),
                 error=_error_text(exc),
             )
             raise
         finally:
             row["ended"] = self._clock()
             row["duration_seconds"] = row["ended"] - row["started"]
+            self.prompt_calls.append(copy.deepcopy(row))
 
     def state(self) -> dict[str, Any]:
         self._bootstrap()
@@ -1207,6 +1348,7 @@ class GodotEpisodeEngine:
 
 __all__ = [
     "EpisodeLimits",
+    "EpisodePersistenceError",
     "GodotEpisodeEngine",
     "ModelSpec",
     "aggregate_episode_records",

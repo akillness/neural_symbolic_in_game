@@ -1,0 +1,94 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{iftex}
+\ifXeTeX
+  \usepackage{fontspec}
+  \usepackage{xeCJK}
+  \xeCJKsetup{CJKspace=true}
+  \defaultfontfeatures{Ligatures=TeX}
+  \IfFontExistsTF{TeX Gyre Termes}{%
+    \setmainfont{TeX Gyre Termes}%
+  }{%
+    \IfFontExistsTF{Times New Roman}{%
+      \setmainfont{Times New Roman}%
+    }{%
+      \setmainfont{STIX Two Text}%
+    }%
+  }
+  \IfFontExistsTF{NanumBarunGothicOTF}{%
+    \setCJKmainfont[
+      ItalicFont={NanumBarunGothicOTF},
+      SmallCapsFont={NanumBarunGothicOTF}
+    ]{NanumBarunGothicOTF}%
+    \setCJKsansfont{NanumBarunGothicOTF}%
+    \setCJKmonofont{NanumBarunGothicOTF}%
+  }{%
+    \IfFontExistsTF{Noto Sans CJK KR}{%
+      \setCJKmainfont[
+        ItalicFont={Noto Sans CJK KR},
+        SmallCapsFont={Noto Sans CJK KR}
+      ]{Noto Sans CJK KR}%
+      \setCJKsansfont{Noto Sans CJK KR}%
+      \setCJKmonofont{Noto Sans CJK KR}%
+    }{%
+      \setCJKmainfont[
+        ItalicFont={Apple SD Gothic Neo},
+        SmallCapsFont={Apple SD Gothic Neo}
+      ]{Apple SD Gothic Neo}%
+      \setCJKsansfont{Apple SD Gothic Neo}%
+      \setCJKmonofont{Apple SD Gothic Neo}%
+    }%
+  }
+  % NanumBarunGothic's CJK OpenType table does not expose U+00B7.
+  % Classify it as Latin punctuation so the main Latin font renders it.
+  \xeCJKDeclareCharClass{Default}{"00B7}
+\else
+  \PackageError{TRACE-RPG}{이 한글 원고는 XeLaTeX으로 빌드해야 합니다}{}
+\fi
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\system}{TRACE-RPG}
+
+% Shared table rhythm; paragraph columns wrap instead of reducing type size.
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+
+\title{Traceability 보충자료}
+\author{}
+
+\begin{document}
+\maketitle
+
+% 본문 표 번호를 보존한다: Table XIV.
+\setcounter{table}{13}
+
+\section{제안된 traceability instrument (미측정)}
+제안 construct는 observable requirement/artifact/action/outcome의 recoverable correspondence이지 correctness/hidden reasoning/developer skill/player benefit이 아니다. Neutral $U_d$/link $L_d(u)$를 동결하고 independent assessor가 exact source/version, 모든 raw-evidence 관계·locator를 확인할 때만 unit=1이다. 가중 composite 없이 $n_d/N_d$, disagreement, seeded-corruption control을 보고하며 불완전 inventory는 indeterminate다. Missing/inaccessible/stale/contradicted/unverified는 이유와 함께 0이다. 검증된 zero repair만 N/A, 빈 log는 zero가 아니다. PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, MISSING을 구분하고 \texttt{stage\_not\_reached}$\neq$ PASS다.
+\begin{table}[t]
+\caption{제안된 출처 기반 traceability dimension (미측정)}
+\label{tab:traceability-rubric}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.27\columnwidth}@{}}
+\toprule
+\textbf{ID} & \textbf{필수 correspondence} & \textbf{단위 분자/분모} \\
+\midrule
+TR01 & task, 정확한 artifact revision/digest, activity, actor의 identity/activity binding & complete slot / required slot \\
+TR02 & request/input $\rightarrow$ rule version $\rightarrow$ evaluated check/result $\rightarrow$ decision & complete chain / inventoried decision \\
+TR03 & decision $\rightarrow$ 관측 state/artifact effect와 before/after 근거 & complete correspondence / outcome-required decision \\
+TR04 & triggering failure $\rightarrow$ corrective package $\rightarrow$ exact revalidation $\rightarrow$ result & complete repair chain / actual repair attempt \\
+TR05 & forward requirement $\rightarrow$ artifact $\rightarrow$ verification 및 reverse in-scope change mapping & forward/reverse를 별도 보고 \\
+TR06 & non-author가 선언된 audit/replay target을 독립 실행 & exercised target / declared target \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}\noindent\parbox{0.96\columnwidth}{\footnotesize 미측정 제안이며 score 수집·검증은 없다. Codebook/일차 출처: 데이터 및 코드 가용성.}
+\end{table}
+
+\end{document}

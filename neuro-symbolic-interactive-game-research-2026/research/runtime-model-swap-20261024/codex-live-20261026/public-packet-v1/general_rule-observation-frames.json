@@ -1,0 +1,174 @@
+{
+  "schema_version": "runtime-public-derived-input-frames/1",
+  "representation": "general_rule",
+  "model_input_frames": [
+    {
+      "state": {
+        "observation": {
+          "goal_reached": false,
+          "in_dialogue": false,
+          "lens_carried": false,
+          "lens_reachable": true,
+          "signal_restored": false,
+          "tide_lead_authorized": false
+        },
+        "state_ref": {
+          "revision": 0,
+          "sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "legal_actions": [
+        "acquire_object"
+      ],
+      "preconditions": {
+        "acquire_object": [
+          "lens_reachable"
+        ],
+        "install_lens": [
+          "lens_carried"
+        ],
+        "negotiate": [
+          "signal_restored"
+        ],
+        "reveal_hint": [
+          "signal_restored",
+          "in_dialogue"
+        ]
+      },
+      "constraints": [
+        "godot_canonical_state",
+        "controller_derived_steps_only",
+        "goal_observed_by_engine"
+      ],
+      "objective": "harbor-signal-restored-authorized-tide-lead-v1",
+      "representation": "general_rule",
+      "rendering": "rules:state={\"observation\":{\"goal_reached\":false,\"in_dialogue\":false,\"lens_carried\":false,\"lens_reachable\":true,\"signal_restored\":false,\"tide_lead_authorized\":false},\"state_ref\":{\"revision\":0,\"sha256\":\"f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c\"}};legal_actions=[\"acquire_object\"];preconditions={\"acquire_object\":[\"lens_reachable\"],\"install_lens\":[\"lens_carried\"],\"negotiate\":[\"signal_restored\"],\"reveal_hint\":[\"signal_restored\",\"in_dialogue\"]};constraints=[\"godot_canonical_state\",\"controller_derived_steps_only\",\"goal_observed_by_engine\"];objective=\"harbor-signal-restored-authorized-tide-lead-v1\""
+    },
+    {
+      "state": {
+        "observation": {
+          "goal_reached": false,
+          "in_dialogue": false,
+          "lens_carried": true,
+          "lens_reachable": false,
+          "signal_restored": false,
+          "tide_lead_authorized": false
+        },
+        "state_ref": {
+          "revision": 1,
+          "sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+        }
+      },
+      "legal_actions": [
+        "install_lens"
+      ],
+      "preconditions": {
+        "acquire_object": [
+          "lens_reachable"
+        ],
+        "install_lens": [
+          "lens_carried"
+        ],
+        "negotiate": [
+          "signal_restored"
+        ],
+        "reveal_hint": [
+          "signal_restored",
+          "in_dialogue"
+        ]
+      },
+      "constraints": [
+        "godot_canonical_state",
+        "controller_derived_steps_only",
+        "goal_observed_by_engine"
+      ],
+      "objective": "harbor-signal-restored-authorized-tide-lead-v1",
+      "representation": "general_rule",
+      "rendering": "rules:state={\"observation\":{\"goal_reached\":false,\"in_dialogue\":false,\"lens_carried\":true,\"lens_reachable\":false,\"signal_restored\":false,\"tide_lead_authorized\":false},\"state_ref\":{\"revision\":1,\"sha256\":\"19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498\"}};legal_actions=[\"install_lens\"];preconditions={\"acquire_object\":[\"lens_reachable\"],\"install_lens\":[\"lens_carried\"],\"negotiate\":[\"signal_restored\"],\"reveal_hint\":[\"signal_restored\",\"in_dialogue\"]};constraints=[\"godot_canonical_state\",\"controller_derived_steps_only\",\"goal_observed_by_engine\"];objective=\"harbor-signal-restored-authorized-tide-lead-v1\""
+    },
+    {
+      "state": {
+        "observation": {
+          "goal_reached": false,
+          "in_dialogue": false,
+          "lens_carried": true,
+          "lens_reachable": false,
+          "signal_restored": true,
+          "tide_lead_authorized": true
+        },
+        "state_ref": {
+          "revision": 2,
+          "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+        }
+      },
+      "legal_actions": [
+        "negotiate"
+      ],
+      "preconditions": {
+        "acquire_object": [
+          "lens_reachable"
+        ],
+        "install_lens": [
+          "lens_carried"
+        ],
+        "negotiate": [
+          "signal_restored"
+        ],
+        "reveal_hint": [
+          "signal_restored",
+          "in_dialogue"
+        ]
+      },
+      "constraints": [
+        "godot_canonical_state",
+        "controller_derived_steps_only",
+        "goal_observed_by_engine"
+      ],
+      "objective": "harbor-signal-restored-authorized-tide-lead-v1",
+      "representation": "general_rule",
+      "rendering": "rules:state={\"observation\":{\"goal_reached\":false,\"in_dialogue\":false,\"lens_carried\":true,\"lens_reachable\":false,\"signal_restored\":true,\"tide_lead_authorized\":true},\"state_ref\":{\"revision\":2,\"sha256\":\"9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900\"}};legal_actions=[\"negotiate\"];preconditions={\"acquire_object\":[\"lens_reachable\"],\"install_lens\":[\"lens_carried\"],\"negotiate\":[\"signal_restored\"],\"reveal_hint\":[\"signal_restored\",\"in_dialogue\"]};constraints=[\"godot_canonical_state\",\"controller_derived_steps_only\",\"goal_observed_by_engine\"];objective=\"harbor-signal-restored-authorized-tide-lead-v1\""
+    },
+    {
+      "state": {
+        "observation": {
+          "goal_reached": false,
+          "in_dialogue": true,
+          "lens_carried": true,
+          "lens_reachable": false,
+          "signal_restored": true,
+          "tide_lead_authorized": true
+        },
+        "state_ref": {
+          "revision": 2,
+          "sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+        }
+      },
+      "legal_actions": [
+        "reveal_hint"
+      ],
+      "preconditions": {
+        "acquire_object": [
+          "lens_reachable"
+        ],
+        "install_lens": [
+          "lens_carried"
+        ],
+        "negotiate": [
+          "signal_restored"
+        ],
+        "reveal_hint": [
+          "signal_restored",
+          "in_dialogue"
+        ]
+      },
+      "constraints": [
+        "godot_canonical_state",
+        "controller_derived_steps_only",
+        "goal_observed_by_engine"
+      ],
+      "objective": "harbor-signal-restored-authorized-tide-lead-v1",
+      "representation": "general_rule",
+      "rendering": "rules:state={\"observation\":{\"goal_reached\":false,\"in_dialogue\":true,\"lens_carried\":true,\"lens_reachable\":false,\"signal_restored\":true,\"tide_lead_authorized\":true},\"state_ref\":{\"revision\":2,\"sha256\":\"9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900\"}};legal_actions=[\"reveal_hint\"];preconditions={\"acquire_object\":[\"lens_reachable\"],\"install_lens\":[\"lens_carried\"],\"negotiate\":[\"signal_restored\"],\"reveal_hint\":[\"signal_restored\",\"in_dialogue\"]};constraints=[\"godot_canonical_state\",\"controller_derived_steps_only\",\"goal_observed_by_engine\"];objective=\"harbor-signal-restored-authorized-tide-lead-v1\""
+    }
+  ]
+}

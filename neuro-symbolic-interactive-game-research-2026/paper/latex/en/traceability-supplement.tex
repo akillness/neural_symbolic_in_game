@@ -1,0 +1,49 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\system}{TRACE-RPG}
+
+% Shared table rhythm; paragraph columns wrap instead of reducing type size.
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+
+\title{Traceability Supplement}
+\author{}
+
+\begin{document}
+\maketitle
+
+% Preserve the main-manuscript table number: Table XIV.
+\setcounter{table}{13}
+
+\section{Proposed traceability instrument (not measured)}
+Traceability tests recover requirement/artifact/action/outcome correspondence, not correctness, hidden reasoning, developer skill, or player benefit. Freeze neutral $U_d$/links $L_d(u)$; independent assessors award 1 only for exact source/version, all raw-evidence relations, and locator; otherwise 0 with missing/inaccessible/stale/contradicted/unverified reasons. Report $n_d/N_d$, disagreement, and seeded-corruption controls; no weighted composites; incomplete inventories are indeterminate. Verified zero repairs may be N/A; empty logs are not zero. Distinguish PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, and MISSING; \texttt{stage\_not\_reached} never passes.
+\begin{table}[t]
+\caption{Proposed source-derived traceability dimensions (unmeasured)}
+\label{tab:traceability-rubric}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.27\columnwidth}@{}}
+\toprule
+\textbf{ID} & \textbf{Required correspondence} & \textbf{Unit numerator / denominator} \\
+\midrule
+TR01 & identity/activity binding to task, exact artifact revision/digest, activity, and actor & complete slots / required slots \\
+TR02 & request/input $\rightarrow$ rule version $\rightarrow$ evaluated check/result $\rightarrow$ decision & complete chains / inventoried decisions \\
+TR03 & decision $\rightarrow$ observed state or artifact effect with before/after evidence & complete correspondences / decisions requiring outcome \\
+TR04 & triggering failure $\rightarrow$ corrective package $\rightarrow$ exact revalidation $\rightarrow$ result & complete repair chains / actual repair attempts \\
+TR05 & forward requirement $\rightarrow$ artifact $\rightarrow$ verification and reverse in-scope change mapping & report forward and reverse separately \\
+TR06 & non-author independent exercise of declared audit/replay target & exercised targets / declared targets \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}\noindent\parbox{0.96\columnwidth}{\footnotesize Proposed and unmeasured; codebooks/source rationale: Data and Code Availability. No score was collected or validated.}
+\end{table}
+
+\end{document}

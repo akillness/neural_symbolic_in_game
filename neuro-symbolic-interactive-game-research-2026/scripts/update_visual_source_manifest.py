@@ -18,6 +18,10 @@ PAPER_TABLE_GENERATOR = "scripts/generate_paper_results.py"
 NPC_TABLE_GENERATOR = "scripts/generate_npc_paper_results.py"
 DISCLOSURE_GENERATOR = "scripts/generate_disclosure_paper_results.py"
 SIGNAL_GENERATOR = "scripts/generate_signal_explainer.py"
+RUNTIME_COMPARISON_GENERATOR = "scripts/generate_runtime_comparison_publication.py"
+RUNTIME_COMPARISON_DATA = (
+    "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+)
 DISCLOSURE_ROOT = "research/npc-disclosure/results-signal-explainer-20261023-r5"
 DISCLOSURE_DATA = (
     "research/npc-disclosure/reveal-hint-expectations-v1.json",
@@ -86,6 +90,7 @@ def visual_asset(
     used_by: tuple[str, ...] = (),
     publication_role: str | None = None,
     represented_by: dict[str, str] | None = None,
+    anchors: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     return {
         "id": asset_id,
@@ -97,6 +102,7 @@ def visual_asset(
         "used_by": list(used_by),
         **({"publication_role": publication_role} if publication_role else {}),
         **({"represented_by": represented_by} if represented_by else {}),
+        **({"anchors": list(anchors)} if anchors else {}),
     }
 
 
@@ -143,6 +149,22 @@ def build_manifest() -> dict[str, Any]:
                 else "retained-optional",
             )
         )
+    paper_assets.append(
+        visual_asset(
+            "paper-runtime-comparison",
+            "chart",
+            rendered=(
+                "paper/latex/figures/fig_runtime_comparison.pdf",
+                "paper/latex/figures/fig_runtime_comparison.png",
+            ),
+            editable=("paper/latex/figures/fig_runtime_comparison.svg",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_COMPARISON_DATA,
+            used_by=paper_usage,
+            publication_role="current-figure",
+            anchors=("fig:runtime-comparison",),
+        )
+    )
     paper_assets.append(
         visual_asset(
             "paper-npc-screening",
@@ -245,8 +267,20 @@ def build_manifest() -> dict[str, Any]:
                 "alg:commit",
                 "tab:rho-rules",
                 "tab:ontology-roles",
-                "tab:traceability-rubric",
             ),
+        ),
+        table_source(
+            "traceability-supplement-table",
+            layouts=(
+                "paper/latex/en/traceability-supplement.tex",
+                "paper/latex/ko/traceability-supplement.tex",
+            ),
+            generator=None,
+            rendered_in=(
+                "paper-en-traceability-supplement",
+                "paper-ko-traceability-supplement",
+            ),
+            anchors=("tab:traceability-rubric",),
         ),
         table_source(
             "disclosure-paper-tables",
@@ -258,6 +292,36 @@ def build_manifest() -> dict[str, Any]:
             data=DISCLOSURE_DATA,
             rendered_in=("paper-en", "paper-ko"),
             anchors=("tab:disclosure-contract", "tab:disclosure-arms", "tab:disclosure-fixtures"),
+        ),
+        table_source(
+            "runtime-comparison-results-en",
+            layouts=("paper/latex/generated/runtime_comparison_results_en.tex",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_COMPARISON_DATA,
+            rendered_in=("paper-en",),
+        ),
+        table_source(
+            "runtime-comparison-results-ko",
+            layouts=("paper/latex/generated/runtime_comparison_results_ko.tex",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_COMPARISON_DATA,
+            rendered_in=("paper-ko",),
+        ),
+        table_source(
+            "runtime-comparison-tables-en",
+            layouts=("paper/latex/generated/runtime_comparison_tables_en.tex",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_COMPARISON_DATA,
+            rendered_in=("paper-en",),
+            anchors=("tab:runtime-comparison-aggregate",),
+        ),
+        table_source(
+            "runtime-comparison-tables-ko",
+            layouts=("paper/latex/generated/runtime_comparison_tables_ko.tex",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_COMPARISON_DATA,
+            rendered_in=("paper-ko",),
+            anchors=("tab:runtime-comparison-aggregate",),
         ),
         table_source(
             "offline-pilot-paper-tables",
@@ -340,6 +404,16 @@ def build_manifest() -> dict[str, Any]:
             "id": "paper-ko",
             "artifact": receipt("paper/latex/ko/main.pdf"),
             "editable_source": receipt("paper/latex/ko/main.tex"),
+        },
+        {
+            "id": "paper-en-traceability-supplement",
+            "artifact": receipt("paper/latex/en/traceability-supplement.pdf"),
+            "editable_source": receipt("paper/latex/en/traceability-supplement.tex"),
+        },
+        {
+            "id": "paper-ko-traceability-supplement",
+            "artifact": receipt("paper/latex/ko/traceability-supplement.pdf"),
+            "editable_source": receipt("paper/latex/ko/traceability-supplement.tex"),
         },
     ]
 

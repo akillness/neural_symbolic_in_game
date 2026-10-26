@@ -25,6 +25,8 @@ MANIFEST_PATH = ROOT / "visuals" / "source-manifest.json"
 SVG_NS = "http://www.w3.org/2000/svg"
 PAPER_MAIN = (ROOT / "paper/latex/en/main.tex", ROOT / "paper/latex/ko/main.tex")
 PAPER_FIGURE_DIR = ROOT / "paper/latex/figures"
+IEEE_TEXTWIDTH_PT = 7.125 * 72.27
+MIN_RENDERED_TEXT_PT = 8.0
 
 SVG_INVENTORY_ROOTS = (
     ROOT / "paper/latex/figures",
@@ -39,6 +41,11 @@ LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_npc_screening.svg",
     "research/directions/figures/fig_consensus_gate_lanes.svg",
     "research/directions/figures/fig_cost_validity_pareto_concept.svg",
+    "paper/latex/figures/fig_runtime_comparison.svg",
+    "paper/latex/generated/runtime_comparison_results_en.tex",
+    "paper/latex/generated/runtime_comparison_results_ko.tex",
+    "paper/latex/generated/runtime_comparison_tables_en.tex",
+    "paper/latex/generated/runtime_comparison_tables_ko.tex",
     "paper/latex/generated/pilot_results_en.tex",
     "paper/latex/generated/pilot_results_ko.tex",
     "paper/latex/generated/pilot_tables_en.tex",
@@ -67,6 +74,10 @@ NPC_REGENERATION_SUPPORT = (
     "game-track/godot/scripts/sealed_lighthouse_machine.gd",
     "game-track/godot/scripts/canonical_state.gd",
     "data/fixtures/npc-goal-recovery/validated-v5",
+)
+RUNTIME_COMPARISON_REGENERATION_SUPPORT = (
+    "scripts/generate_runtime_comparison_publication.py",
+    "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
 )
 
 
@@ -196,6 +207,60 @@ class Validator:
     @staticmethod
     def _local_name(tag: str) -> str:
         return tag.rsplit("}", 1)[-1]
+
+    @staticmethod
+    def _svg_text_metrics(path: Path) -> tuple[float, float] | None:
+        try:
+            root = ET.parse(path).getroot()
+        except (ET.ParseError, OSError):
+            return None
+        view_box = root.attrib.get("viewBox", "").split()
+        if len(view_box) != 4:
+            return None
+        try:
+            svg_width = float(view_box[2])
+        except ValueError:
+            return None
+        if not math.isfinite(svg_width) or svg_width <= 0:
+            return None
+        style = "\n".join(
+            "".join(element.itertext())
+            for element in root.iter()
+            if Validator._local_name(element.tag) == "style"
+        )
+        sizes = [
+            float(value) for value in re.findall(r"font-size:\s*([0-9]+(?:\.[0-9]+)?)px", style)
+        ]
+        for element in root.iter():
+            value = element.attrib.get("font-size", "").strip()
+            match = re.fullmatch(r"([0-9]+(?:\.[0-9]+)?)(?:px)?", value)
+            if match:
+                sizes.append(float(match.group(1)))
+        sizes = [value for value in sizes if math.isfinite(value) and value > 0]
+        return (min(sizes), svg_width) if sizes else None
+
+    @classmethod
+    def _fractional_textwidth_is_legible(cls, path: Path, fraction: float) -> bool:
+        metrics = cls._svg_text_metrics(path)
+        if metrics is None:
+            return False
+        min_font_px, svg_width = metrics
+        rendered_pt = min_font_px * fraction * IEEE_TEXTWIDTH_PT / svg_width
+        return rendered_pt >= MIN_RENDERED_TEXT_PT
+
+    @staticmethod
+    def _anchor_in_rendered_table(closure_text: str, anchor: str) -> bool:
+        label = rf"\\label\{{{re.escape(anchor)}\}}"
+        table_pattern = re.compile(
+            r"\\begin\{(?P<environment>table\*?)\}(?:\[[^\]]*\])?"
+            r"(?P<body>.*?)\\end\{(?P=environment)\}",
+            re.DOTALL,
+        )
+        return any(
+            re.search(r"\\begin\{tabularx?\}", match.group("body"))
+            and re.search(label, match.group("body"))
+            for match in table_pattern.finditer(closure_text)
+        )
 
     def _validate_visual_assets(self, manifest: dict[str, Any]) -> None:
         pdfinfo = shutil.which("pdfinfo")
@@ -798,6 +863,12 @@ class Validator:
             "generated paper table fragment missing from source manifest: "
             f"{sorted(generated_table_fragments - covered_layouts)}",
         )
+        anchor_surfaces: dict[str, set[str]] = {}
+        for source in table_sources:
+            rendered_in = source.get("rendered_in", [])
+            for anchor in source.get("anchors", []):
+                if isinstance(anchor, str) and isinstance(rendered_in, list):
+                    anchor_surfaces.setdefault(anchor, set()).update(rendered_in)
 
         for source in table_sources:
             source_id = source.get("id", "<missing-id>")
@@ -824,14 +895,21 @@ class Validator:
                     f"{source_id}: {surface_id} does not include a declared layout source",
                 )
                 for anchor in anchors:
+                    has_anchor = rf"\label{{{anchor}}}" in closure_text
                     self.check(
-                        rf"\label{{{anchor}}}" in closure_text,
+                        has_anchor,
                         f"{source_id}: {surface_id} is missing table anchor {anchor}",
                     )
+                    if has_anchor and anchor.startswith("tab:"):
+                        self.check(
+                            self._anchor_in_rendered_table(closure_text, anchor),
+                            f"{source_id}: {surface_id} table anchor {anchor} is not inside a rendered table block",
+                        )
             for surface_id, (_, closure_text) in surface_closures.items():
-                if surface_id in rendered_in:
-                    continue
                 for anchor in anchors:
+                    declared_surfaces = anchor_surfaces.get(anchor, set())
+                    if surface_id in declared_surfaces:
+                        continue
                     self.check(
                         rf"\label{{{anchor}}}" not in closure_text,
                         f"{source_id}: anchor {anchor} is rendered in undeclared surface {surface_id}",
@@ -841,7 +919,11 @@ class Validator:
             for record in source.get("layout_sources", []):
                 relative = record["path"]
                 path = ROOT / relative
-                text = path.read_text(encoding="utf-8")
+                try:
+                    text = path.read_text(encoding="utf-8")
+                except OSError as exc:
+                    self.errors.append(f"{relative}: cannot read table layout source: {exc}")
+                    continue
                 if not rendered or "\\begin{tabular" not in text:
                     continue
                 self.check("\\toprule" in text, f"{relative}: rendered table lacks \\toprule")
@@ -935,6 +1017,13 @@ class Validator:
                 self.check(
                     not owners, f"{asset['id']}: retained optional asset declares paper ownership"
                 )
+            figure_anchors = asset.get("anchors", [])
+            self.check(
+                isinstance(figure_anchors, list),
+                f"{asset['id']}: figure anchors must be a list",
+            )
+            if not isinstance(figure_anchors, list):
+                figure_anchors = []
             representation = asset.get("represented_by")
             if representation:
                 source = table_sources.get(representation.get("table_source_id"), {})
@@ -951,8 +1040,14 @@ class Validator:
         for main in PAPER_MAIN:
             owner = str(main.relative_to(ROOT))
             included: dict[str, list[tuple[str, str | None]]] = {}
+            publication_sources = self._publication_sources(main)
+            owner_closure = (
+                "\n".join(publication_sources.values())
+                if any(asset.get("anchors") for asset in paper_assets)
+                else ""
+            )
             # Resolve each input relative to its source, as TeX does for this project.
-            for source_path, effective in self._publication_sources(main).items():
+            for source_path, effective in publication_sources.items():
                 source = ROOT / source_path
                 figure_spans = [
                     (match.start(), match.end(), match.group(1))
@@ -992,6 +1087,15 @@ class Validator:
                     not actual or declared,
                     f"{owner}: {asset['id']} rendered without publication ownership",
                 )
+                figure_anchors = asset.get("anchors", [])
+                if not isinstance(figure_anchors, list):
+                    figure_anchors = []
+                for anchor in figure_anchors:
+                    if declared:
+                        self.check(
+                            rf"\label{{{anchor}}}" in owner_closure,
+                            f"{owner}: {asset['id']} is missing figure anchor {anchor}",
+                        )
                 for relative in actual:
                     self.check(
                         relative.endswith(".pdf"),
@@ -1006,9 +1110,22 @@ class Validator:
                             if option.strip()
                         }
                         has_size_transform = bool(option_keys & {"height", "totalheight", "scale"})
+                        fraction_match = re.fullmatch(
+                            r"([0-9]+(?:\.[0-9]+)?)\\textwidth", exact_width
+                        )
+                        fractional_textwidth = False
+                        if fraction_match and figure_environment == "figure*":
+                            fraction = float(fraction_match.group(1))
+                            fractional_textwidth = (
+                                0.0 < fraction < 1.0
+                                and self._fractional_textwidth_is_legible(
+                                    ROOT / Path(relative).with_suffix(".svg"), fraction
+                                )
+                            )
                         valid_width = not has_size_transform and (
                             exact_width == r"\columnwidth"
                             or (exact_width == r"\textwidth" and figure_environment == "figure*")
+                            or fractional_textwidth
                         )
                         self.check(
                             valid_width,
@@ -1081,6 +1198,7 @@ class Validator:
             [sys.executable, "scripts/generate_paper_figures.py"],
             [sys.executable, "scripts/generate_direction_figures.py"],
             [sys.executable, "scripts/generate_paper_results.py"],
+            [sys.executable, "scripts/generate_runtime_comparison_publication.py"],
             [
                 sys.executable,
                 "scripts/generate_npc_paper_results.py",
@@ -1186,6 +1304,7 @@ class Validator:
                 "game-track/godot/docs/latest/balance-archetypes.json",
                 *NPC_REGENERATION_SUPPORT,
                 *self._manifest_generator_paths(manifest, "scripts/generate_npc_paper_results.py"),
+                *RUNTIME_COMPARISON_REGENERATION_SUPPORT,
             )
             for relative in dict.fromkeys(relative_paths):
                 try:

@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-\system{} combines external authorization, typed-error repair, unchanged fallback, revalidation, replay, and accounting for generated game events. Its read-only bilingual ontology view binds source declarations to public observations without mutation authority. One operator-assisted Codex dashboard case ($n{=}1$, independent repeats $0$) reports runtime \texttt{gpt-6.1-sol}, repaired geometry, retained failures, 62 checks, a Godot Web build, and real-input denial/disclosure/redisplay. Provider identity, revision, seed, cost, and inference latency remain unavailable. This bounded integration evidence is not model comparison, ontology superiority, or player benefit; traceability and whole-game/repeated-cross-model studies remain proposed.
+\system{} combines external authorization, typed-error repair, unchanged fallback, revalidation, replay, and accounting; its read-only bilingual ontology view binds source declarations to public observations without mutation authority. One operator-assisted Codex dashboard case ($n{=}1$, independent repeats $0$) reports \texttt{gpt-6.1-sol}, repaired geometry, retained failures, 62 checks, a Godot Web build, and real-input denial/disclosure/redisplay; provider identity, revision, seed, cost, request count, and inference latency remain unavailable. A fixed-game native pilot on one authored quest records 8 assigned rows (7 observed): 5 system-goal successes, one retained pre-response harness-serializer technical failure (executed \texttt{null}, not rerun), and 2 \texttt{gpt-6.1-sol} ontology response-timeout failures; 23 host invocations, 0 repairs, 0/16 unsafe committed transitions, 7 valid semantic-link replays, and 6 valid fresh-engine reexecutions (1 \texttt{NOT\_RUN}; first row unobserved). It is exploratory, with one stateless intent proposer and deterministic planner/checker; it does not establish A/C, ontology efficacy, ranking, noninferiority, or player benefit.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -40,39 +40,38 @@ game AI, interactive narrative, symbolic validation, constrained generation, rep
 \end{IEEEkeywords}
 
 \section{Introduction}
-\IEEEPARstart{G}{enerated} events can use absent items, unknown facts, forbidden disclosures, unauthorized effects or regressing quests. Plausibility \cite{S11_cote2019textworld,S12_wang2022scienceworld} and grounding \cite{S03_weir2024ontologically,S20_ashby2023personalized} grant no authority: \textbf{only \system{}'s external deterministic gate authorizes mutation} (Fig.~\ref{fig:architecture}). This assumes correct policy, faithful extraction, deterministic versions, returning callbacks and single-process file ownership; fixtures test implementation invariants, not a theorem.
+\IEEEPARstart{G}{enerated} events may request absent items, unknown facts, forbidden disclosures, unauthorized effects, or regressions. Plausibility \cite{S11_cote2019textworld,S12_wang2022scienceworld} and grounding \cite{S03_weir2024ontologically,S20_ashby2023personalized} do not authorize mutation: \textbf{only \system{}'s external deterministic gate authorizes mutation} (Fig.~\ref{fig:architecture}).
 
 
-\textbf{C1---contracts}, \textbf{C2---validate--repair--commit}, \textbf{C3---audit-linked evidence}, \textbf{C4---assignment accounting}, and \textbf{C5---guided repair} map to Table~\ref{tab:contribution-map}, Figs.~\ref{fig:architecture} and \ref{alg:commit}, Eq.~\ref{eq:transition}, and Tables~\ref{tab:validators}, \ref{tab:ontology-roles}, and \ref{tab:rho-rules}. Contributions are source-bound boundary/observer and bounded Codex package, not C6/full-game creation; E1/E3/ENG1/NPC-DISC-1/DEV-CASE are not development-model effects.
-We test whether invalid proposals preserve state and accepted transitions replay under fixed source/policy and bounded repair, without ontology-view or repair mutation authority. Evidence remains authored-fixture, construction-simulation, historical-conformance and single-case.
 
+Table~\ref{tab:contribution-map} scopes \textbf{C1---contracts}, \textbf{C2---validation/repair}, \textbf{C3---audit links}, \textbf{C4---assignment accounting}, and \textbf{C5---guided repair} to their evidence and inference ceilings.
 \input{../generated/contribution_map_en.tex}
 
 \begin{figure*}[!tbp]
   \centering
-  \includegraphics[width=\textwidth]{../figures/fig_architecture.pdf}
-  \caption{Policy/$c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback. Passing candidates are rechecked, committed, recorded, and replayed. Historical cohorts and legacy ENG1 remain archived, not active model evidence. Below: committed-snapshot ledger grammar.}
+  \includegraphics[width=0.72\textwidth]{../figures/fig_architecture.pdf}
+  \caption{Policy/$c_t$ gates proposals; errors feed bounded $\rho$ or unchanged fallback. Passing candidates are rechecked, committed, recorded, and replayed. Historical cohorts/legacy ENG1 remain archived, not active model evidence. Below: committed-snapshot ledger grammar.}
   \label{fig:architecture}
 \end{figure*}
 
 % Queue both full-width diagrams before two-column text postpones discovery.
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=\textwidth]{../figures/fig_signal_mechanism.pdf}
-  \caption{Eight-role ontology structure (Table~\ref{tab:ontology-roles}) connects declared source fields to authored checks and observed decisions. Only authorized transitions change canonical state; the diagram is not live capture or hidden-state evidence.}
+  \includegraphics[width=0.72\textwidth]{../figures/fig_signal_mechanism.pdf}
+  \caption{Eight-role ontology structure (Table~\ref{tab:ontology-roles}) links source fields to checks and observed decisions. Only authorized transitions change canonical state; the diagram is neither live capture nor hidden-state evidence.}
   \label{fig:signal-mechanism}
 \end{figure*}
 
 
 \section{Related Work and Research Gap}
-Grounding, memory/planning/role \cite{S03_weir2024ontologically,S20_ashby2023personalized,S07_park2023generative,S08_shao2023character} and player/dialogue research \cite{S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized,S02_figueiredo2025scaffolded} distinguish believability from admissibility. Affect/engagement \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement} remains future, unimplemented and non-authoritative here. We study source-bound authority, repair information and replay.
+Grounding/memory/planning/role \cite{S03_weir2024ontologically,S20_ashby2023personalized,S07_park2023generative,S08_shao2023character} and player/dialogue work \cite{S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized,S02_figueiredo2025scaffolded} distinguish believability from admissibility; affect/engagement \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement} remains future, unimplemented, and non-authoritative.
 
-Benchmarks span state, embodiment, content, process, social interaction and long-horizon play \cite{S11_cote2019textworld,S12_wang2022scienceworld,S13_fan2022minedojo,S14_perezliebana2019gvgai,S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog,S19_lepelletier2022playtesting}; NCP-Bench tests narrative commitment/fact consistency, not player outcomes \cite{S58_ma2026ncpbench}. Structural/schema, affordance and rule methods \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard,S50_kambhampati2024llmmodulo,S51_ichter2023saycan,S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S42_buongiorno2024pangea,S01_vaucher2026ivie,S44_gongora2026worldstate,S57_geng2025jsonschemabench} motivate encoded constraints, not this boundary's superiority; retrieval/memory supplies context without commit authority \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}.
+Benchmarks span state, embodiment, content, process, social interaction, and long-horizon play \cite{S11_cote2019textworld,S12_wang2022scienceworld,S13_fan2022minedojo,S14_perezliebana2019gvgai,S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog,S19_lepelletier2022playtesting}; NCP-Bench tests narrative commitment/fact consistency, not player outcomes \cite{S58_ma2026ncpbench}. Structural/schema, affordance, and rule methods \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard,S50_kambhampati2024llmmodulo,S51_ichter2023saycan,S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S42_buongiorno2024pangea,S01_vaucher2026ivie,S44_gongora2026worldstate,S57_geng2025jsonschemabench} motivate constraints, not superiority; retrieval/memory supplies context without commit authority \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}.
 
-Reproducibility/evaluation motivates frozen artifacts, retained failures, construct/rater/bias controls and justified margins/random effects \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S34_henderson2020energy,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}. Replay/leakage checks support denominators, not efficacy \cite{S56_feng2025agentrr,S59_sun2025bdc}. C1--C5 combine enforcement, state/transaction management, feedback repair, action interposition, preconditions/effects, abort, social/belief-aware planning and replay \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}; no invention/firstness claim is made.
+Reproducibility/evaluation motivates frozen artifacts, retained failures, construct/rater/bias controls, and justified margins/random effects \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S34_henderson2020energy,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}. Replay/leakage checks support denominators, not efficacy \cite{S56_feng2025agentrr,S59_sun2025bdc}. C1--C5 combine enforcement, state/transaction management, feedback repair, action interposition, preconditions/effects, abort, social/belief-aware planning, and replay \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}; no invention/firstness claim.
 
 \section{Problem Definition and Guarantee Boundary}
-$c_t=(G_t,q_t)$ stores typed snapshot $G_t$ and external action-policy/disclosure/quest-stage constraints $q_t$. Predicates neither read $h_{<t}$ nor reconstruct \texttt{WorldState} from logs; transitions update $G_t$, not $q_t$, and exclude policy rotation. Retrieval, scores, rationales, memory, and future affect have no authority.
+$c_t=(G_t,q_t)$ stores typed snapshot $G_t$ and external action-policy/disclosure/quest-stage constraints. Predicates neither read $h_{<t}$ nor reconstruct \texttt{WorldState}; transitions update $G_t$ only, excluding policy rotation. Retrieval, scores, rationales, memory, and future affect lack authority.
 
 Strict parsing of untrusted candidate $a_t$ enforces the shared key/schema contract, rejecting unknown top-level fields. Validation returns
 \begin{equation}
@@ -91,13 +90,13 @@ c_t, & \text{otherwise.}
 \label{eq:transition}
 \end{equation}
 
-Fixtures test implementation invariants, not theorems. \textbf{I1:} validation exhaustion or pre-commit proposal/controller failure preserves state. \textbf{I2:} returning callbacks and $K\geq0$ bound attempts to $K+1$ with pre-commit revalidation; without enforced deadlines, wall-clock termination is not guaranteed. \textbf{I3:} accepted \texttt{CandidateAction.effects} stay within \texttt{ActionPolicy.allowed\_effects}, including authorized quest-stage targets. \textbf{I4:} frozen schemas/deterministic transitions enable terminal-state reconstruction.
+Fixtures test invariants, not theorems. \textbf{I1:} validation exhaustion or pre-commit proposal/controller failure preserves state. \textbf{I2:} returning callbacks and $K\geq0$ bound attempts to $K+1$ with pre-commit revalidation; without deadlines, wall-clock termination is not guaranteed. \textbf{I3:} accepted \texttt{CandidateAction.effects} stay within \texttt{ActionPolicy.allowed\_effects}, including authorized quest-stage targets. \textbf{I4:} frozen schemas/deterministic transitions enable terminal-state reconstruction.
 
-Assumptions: correct policy, faithful extraction, deterministic versions, returning callbacks, and single-process file ownership. Replay checks structured transitions, not repair provenance, prompts, stochastic generation, or undeclared natural-language implications.
+Assumptions: correct policy/extraction, deterministic versions, returning callbacks, single-process ownership. Replay checks structured transitions, not repair provenance, prompts, stochastic generation, or undeclared natural-language implications.
 
 \section{TRACE-RPG Architecture and Algorithms}\label{sec:arch}
 \subsection{Trust Boundary and Contracts}
-External models/adapters propose; parsing rejects ambiguous types/unknown keys, and independent policy defines preconditions/effects. The versioned bridge carries observations, proposals, validations, rejections, fallbacks, and commits (Fig.~\ref{fig:architecture}); unknown-key parity proves neither full parser equivalence nor commercial portability. Python has exactly seven deterministic checks with predicate IDs: \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, and \texttt{quest\_stage\_monotonicity}. Godot's six state-relative families and seven DISC rules remain distinct, non-isomorphic label sets; its single \texttt{QUEST STAGE} display family spans two Python quest checks.
+External models/adapters propose; parser rejects ambiguous types/unknown keys; independent policy defines preconditions/effects. Versioned bridge carries observations, proposals, validations, rejections, fallbacks, and commits (Fig.~\ref{fig:architecture}); unknown-key parity proves neither parser equivalence nor portability. Python has exactly seven deterministic checks: \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, and \texttt{quest\_stage\_monotonicity}. Godot's six state-relative families and seven DISC rules are distinct, non-isomorphic labels; its \texttt{QUEST STAGE} display spans two Python quest checks.
 
 \begin{table}[!tbp]
 \caption{Encoded Validator Boundary}
@@ -108,21 +107,21 @@ External models/adapters propose; parsing rejects ambiguous types/unknown keys, 
 \toprule
 \textbf{Predicate} & \textbf{Rejects} & \textbf{On failure} \\
 \midrule
-Action policy & unknown action/type; omitted policy-required preconditions/effects; non-allowed effects or unauthorized quest-stage effects & unchanged \\
+Action policy & unknown action/type; omitted required preconditions/effects; disallowed effects or quest-stage effects & unchanged \\
 Precondition & absent/false requirement & unchanged \\
 Reachability & inaccessible object & unchanged \\
 NPC knowledge & undeclared known fact & unchanged \\
 Disclosure & forbidden fact & unchanged \\
-Quest stage (\texttt{quest\_stage}) & required stage above current stage & unchanged \\
+Quest stage (\texttt{quest\_stage}) & required stage above current & unchanged \\
 Quest-stage monotonicity (\path{quest_stage_monotonicity}) & regressive stage & unchanged \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 The role map \path{game-track/web/dashboard/ontology-map.json} binds declarations/frozen expectations; below, $I$ abbreviates \path{initial_state}.
-Table~\ref{tab:ontology-roles}'s \texttt{reveal\_hint(actor\_id,fact\_id)} separates view, repair and authority: the view exposes \texttt{tide\_marks\_hint}/stage-$2$ policy; $\rho$ sees only $a_t,E_t$, may insert a named predicate, and cannot read \texttt{WorldState}. Godot commits only all-seven-pass candidates; fresh disclosure increments revision $+1$, redisplay leaves it unchanged.
+Table~\ref{tab:ontology-roles}'s \texttt{reveal\_hint(actor\_id,fact\_id)} separates view, repair, and authority: the view exposes \texttt{tide\_marks\_hint}/stage-$2$ policy; $\rho$ sees only $a_t,E_t$, may insert a named predicate, and cannot read \texttt{WorldState}. Godot commits only all-seven-pass candidates; fresh disclosure increments revision $+1$; redisplay does not.
 \begin{table}[!tbp]
-\caption{Eight Ontology Roles: Read-Only Source Bindings, Not Live-State Inference or Authority}
+\caption{Eight ontology roles: read-only source bindings, not live inference or authority}
 \label{tab:ontology-roles}
 \centering
 \footnotesize
@@ -133,7 +132,7 @@ Table~\ref{tab:ontology-roles}'s \texttt{reveal\_hint(actor\_id,fact\_id)} separ
 World & $I$.\path{world.object_locations}: \texttt{signal\_lens}$\rightarrow$\texttt{lamp\_store}. \\
 Actor & $I$.\path{npcs.captain_mira}; sole \path{scope.eligible_actor_ids} member. \\
 Knowledge & Actor \path{knowledge}$\rightarrow$canonical Fact IDs, not permission. \\
-Fact & $I$.\path{facts}: \texttt{dock\_saved}, \texttt{lighthouse\_dark}; \texttt{keeper\_betrayal} is an ID, not secret payload. \\
+Fact & $I$.\path{facts}: \texttt{dock\_saved}, \texttt{lighthouse\_dark}; \texttt{keeper\_betrayal} is an ID, not payload. \\
 Policy & \path{disclosure_policy}: forbids \texttt{keeper\_betrayal}; \texttt{tide\_marks\_hint} needs minimum quest stage $2$. \\
 Quest & $I$.\path{quest}: stage $0$, flag \texttt{dock\_saved}; disclosure preserves stage. \\
 Action & \texttt{reveal\_hint(}\allowbreak\texttt{actor\_id,}\allowbreak\texttt{fact\_id)} adds Fact/disclosed ID; only tide hint adds relationship memory. Fresh revision $+1$; redisplay unchanged. \\
@@ -143,7 +142,7 @@ Trace & \path{prior_state_hash}, \path{next_state_hash}, \path{rule_ids}, \path{
 \end{table}
 
 \subsection{Fixed-goal NPC integration}
-Under \texttt{npc-goal-recovery/1.1.0}, Codex proposes intent, Python checks public claims/plans, and Godot alone writes state. The fixed harbor-restoration/authorized-tide-lead goal is not model-editable. Write bindings cover session, epoch, request, scenario, NPC, goal, version, policy/config hashes, revision/state hash, deadline/budget, and issued action. Service: loopback \texttt{127.0.0.1:8768}; browser origins: \texttt{localhost}, \texttt{127.0.0.1:8877}.
+Under \texttt{npc-goal-recovery/1.1.0}, Codex proposes intent, Python checks public claims/plans, and only Godot writes state. The fixed harbor-restoration/authorized-tide-lead goal is not model-editable. Bindings cover session, epoch, request, scenario, NPC, goal, version, policy/config hashes, revision/state hash, deadline/budget, and issued action. Service: \texttt{127.0.0.1:8768}; browser origins: \texttt{localhost}, \texttt{127.0.0.1:8877}.
 \subsubsection{NPC-DISC-1 disclosure contract and authority boundary}\label{sec:disclosure-contract}
 NPC-DISC-1's 60 declaration-derived \texttt{reveal\_hint} cases do not rerun/enlarge historical \texttt{verified-run-006}. Generated results/Tables~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures} define strata, bindings, and input-to-check mappings; Godot rechecks service bindings before mutation.
  
@@ -163,7 +162,7 @@ In Fig.~\ref{alg:commit}'s dependency-free pseudocode, Record appends in memory;
 7: & \quad $a\leftarrow\operatorname{Repair}(c,a,E)$; $j\leftarrow j+1$ \\
 8: & \textbf{until terminal}
 \end{tabular}
-\caption{Validate--repair--commit procedure. At most $K+1$ candidate attempts are recorded; success performs defensive validation before mutation.}
+\caption{Validate--repair--commit. At most $K+1$ candidate attempts are recorded; success defensively validates before mutation.}
 \label{alg:commit}
 \end{figure}
 
@@ -172,7 +171,7 @@ Repair cannot mutate state; exhaustion preserves it. Typed \texttt{counterexampl
 \rho(a,E)=a\oplus\bigcup_{e\in E}\delta(e),
 \label{eq:rho}
 \end{equation}
-Table~\ref{tab:rho-rules}'s $\oplus$ applies deterministic $\delta(e)$: one field/error entity, at most $|E|$/attempt; conflicting requirements/rejections leave fields unchanged. Fixed points require identical $E$, not convergence. The nondeployable state-reading oracle ignores errors, reconstructs preconditions/effects/both quest-stage fields from state, and never launders violations by deleting required objects/used facts/disclosed facts.
+Table~\ref{tab:rho-rules}'s $\oplus$ applies deterministic $\delta(e)$: one field/error entity, at most $|E|$/attempt; conflicting requirements/rejections leave fields unchanged. Fixed points require identical $E$, not convergence. The nondeployable state-reading oracle ignores errors, reconstructs preconditions/effects and both quest-stage fields from state, and never launders violations by deleting required objects/used facts/disclosed facts.
 
 \begin{table}[!tbp]
 \caption{Per-Error-Class Edits of the Guided Operator $\rho$}
@@ -189,30 +188,29 @@ Policy effect violation & drop the named effect \\
 Unsatisfied precondition & drop the named predicate \\
 Unauthorized stage mutation & clear \texttt{quest\_stage\_effect} \\
 Unknown action type & no-op (no registered alternative) \\
-Unreachable object; knowledge, disclosure, and stage classes & no-op (candidate-local edit would launder or needs state) \\
+Unreachable object; knowledge, disclosure, and stage classes & no-op (candidate edit would launder or needs state) \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \subsection{Integrity, Semantic Replay, and Accounting}\label{sec:audit}
-Unkeyed SHA-256 detects accidental/tested changes, not writer identity or joint rewriting. Replay checks prior-state/candidate/validation, invalid nonfinal attempts, recomputed final state and JSONL continuity, never repair. Request$\rightarrow$decision$\rightarrow$result and first-action/one-receipt bindings prevent neither duplicate IDs nor impersonation. Terminal classes: commit, symbolic fallback, adapter failure, controller failure (state/assignment preserved; no completed proposal trace). Pre-execution run/arm/scenario/seed/model/revision keys and configuration/input/prior-state hashes bind assignments; aggregation rejects duplicate/missing/unexpected keys and separates failures.
+Unkeyed SHA-256 detects accidental/tested changes, not identity or joint rewriting. Replay checks prior-state/candidate/validation, invalid nonfinal attempts, recomputed final state, and JSONL continuity, never repair. Request$\rightarrow$decision$\rightarrow$result and first-action/one-receipt bindings do not prevent duplicate IDs or impersonation. Terminal classes are commit, symbolic fallback, adapter failure, and controller failure (state/assignment preserved; no completed proposal trace). Pre-execution run/arm/scenario/seed/model/revision keys plus configuration/input/prior-state hashes bind assignments; aggregation rejects duplicate/missing/unexpected keys and separates failures.
 
 \section{Evidence Lanes and Boundaries}\label{sec:lanes}
 \input{../generated/evidence_lanes_en.tex}
-Three non-pooled evidence levels: authored gate/repairability fixtures (E1); authored construction simulation (E3: six graph-edge-withheld targets); historical conformance (ENG1/NPC-ENG1/NPC-SCR1) plus one assisted DEV-CASE. Failures/stale controls are retained, not model/efficacy estimates.
 \subsection{\textbf{E1} Offline Conformance Design}
-PQ1--PQ5 cover immutability, frozen-class repair, checksum/semantic/linkage/continuity faults, second-append rollback, fail-closed assignment/adapter/manifest accounting, and proposal/replay unknown-key rejection. Results enumerate 13 gate fixtures (1 valid, 12 negative) and 12 repair fixtures with classes; latency/token constants test accounting, not population or detector performance. Packets bind fixtures, assignments, schemas, results, and code.
+PQ1--PQ5 cover immutability, repair, checksum/semantic/linkage/continuity faults, rollback, fail-closed assignment/adapter/manifest accounting, and unknown-key rejection. Results enumerate 13 gate fixtures (1 valid, 12 negative) and 12 repair fixtures; latency/token constants test accounting, not population/detector performance. Packets bind fixtures, assignments, schemas, results, and code.
 
 \subsection{Archived live-screening materials}
 Archived live-screening is immutable provenance/hash evidence, excluded from active tables/counts/claims and never transferred to \texttt{gpt-6.1-sol}.
 \subsection{NPC-ENG1/NPC-SCR1: 88 Assignments, 28 Definitions}
-Stable v5 has 16 engineering assignments and 12 screening recipes ($12\times2\times3=72$; combined $R/P/O=40/24/24$), covering bootstrap, identity/hash, intent/plan/role/result, negative/stale/duplicate/deadline, and replay. P uses authenticated Codex OAuth without fallback; O is 100\% auxiliary-source, not independent gold. Status/count/latency/reproduction is at \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/}; verified-run-002/003/004 are historical. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, and \texttt{native012} are provenance, not C6 evidence.
+Stable v5 has 16 engineering assignments and 12 screening recipes ($12\times2\times3=72$; combined $R/P/O=40/24/24$), covering bootstrap, identity/hash, intent/plan/role/result, negative/stale/duplicate/deadline, and replay. P uses authenticated Codex OAuth without fallback; O is 100\% auxiliary-source, not independent gold. Status/count/latency/reproduction: \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/}; verified-run-002/003/004 are historical. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, and \texttt{native012} are provenance, not C6 evidence.
 
 
 \subsection{\textbf{E3} KG/Ontology Link-Proposal Simulation}
-E3 is an engineering-only, non-authoritative authored closed-world simulation. Six graph-edge-withheld authored targets select/summarize among seven fixed strategies, not an untouched or external test.
+E3 is an engineering-only, non-authoritative closed-world simulation: six authored graph-edge-withheld targets select/summarize among seven fixed strategies, not an untouched or external test.
 \input{../generated/kg_ontology_simulation_en.tex}
-The generated table is construction evidence only; it establishes neither OWL/SHACL conformance, runtime retrieval, semantic completeness, nor efficacy.
+The generated table is construction evidence, not OWL/SHACL conformance, runtime retrieval, semantic completeness, or efficacy.
 \section{Pilot Results}\label{sec:results}
 
 \input{../generated/pilot_tables_en.tex}
@@ -224,14 +222,13 @@ The generated table is construction evidence only; it establishes neither OWL/SH
 \input{../generated/npc_tables_en.tex}
 \input{../generated/disclosure_results_en.tex}
 \input{../generated/disclosure_tables_en.tex}
-Disclosure $\texttt{t\_ms}$/hashes/checks are engine-timeline signals, not provider receipt time, inference latency, or efficacy; missing differs from out-of-scope.
 
 
 
 \begin{figure}[!b]
   \centering
   \includegraphics[width=\columnwidth]{../figures/fig_disclosure_signals.pdf}
-  \caption{NPC-DISC-1 counts by arm/stratum. E/R: expected-match/replay; C: policy-check PASS/FAIL; NR: no reported check, not skipped. Packet-bound engineering counts do not measure latent state, free-language leakage, ontology superiority, or player benefit.}
+  \caption{NPC-DISC-1 counts by arm/stratum. E/R: expected-match/replay; C: policy-check PASS/FAIL; NR: no reported check, not skipped. Packet-bound engineering counts measure neither latent state, free-language leakage, ontology superiority, nor player benefit.}
   \label{fig:disclosure-signals}
 \end{figure}
 
@@ -239,54 +236,44 @@ Disclosure $\texttt{t\_ms}$/hashes/checks are engine-timeline signals, not provi
 
 
 
-\noindent\textbf{ENG1.} Legacy Godot 4.7.1 replays authored rejection/commit to prior/offline hashes; presentation captures show board/hints/coach/chain prompt and dashboard checks. Core 52/52 plus four extensions establish engine-local conformance, not transport, participants, narrative, usability, or efficacy.
+\noindent\textbf{ENG1.} Legacy Godot 4.7.1 replays authored rejection/commit against prior/offline hashes; captures show board/hints/coach/chain prompt and dashboard checks. Core 52/52 plus four extensions establish engine-local conformance, not transport, participants, narrative, usability, or efficacy.
 
 \subsection{Single-task Codex development observation}\label{sec:development-case}
-Frozen \texttt{ontology-map-20261023-01} covers one read-only bilingual dashboard task ($n{=}1$, independent repeats $0$), not an NPC trial/cohort. Six native CLI invocations (initial $+$ five resumes; one read-only/no-edit) are one case. \texttt{turn\_context.model=gpt-6.1-sol} is runtime selection, not provider attestation; provider identity/revision/seed/cost are \texttt{null}, model-only latency unavailable. Wall-clock 5942.665\,s and CLI 263.32\,s are neither inference latency nor the future endpoint.
+Frozen \texttt{ontology-map-20261023-01} covers one read-only bilingual dashboard task ($n{=}1$, independent repeats $0$), not an NPC trial/cohort. Six native CLI invocations (initial $+$ five resumes; one read-only/no-edit) form one case. \texttt{turn\_context.model=gpt-6.1-sol} is runtime selection, not provider attestation; provider identity/revision/seed/cost are \texttt{null}, and model-only latency is unavailable. Wall-clock 5942.665\,s and CLI 263.32\,s are neither inference latency nor the future endpoint.
 
-Invocation six fixed inherited 660\,px mobile-table minimum width: geometry RED (2 failed/35 passed), then 62/62 map/signal/Web checks (including cell/paragraph geometry) and a successful Godot Web build. Browser attempt 10 passed; 01--08 failed setup/routes; 09 passed older gates with clipping. Final $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ denial $(68,19468)$ (equal hashes), fresh disclosure $(239,58234)$ (different), authorized redisplay $(249,59793)$ (equal). At 1440$\times$900/390$\times$900, Enter, inspection/frozen-comparison invariance, and zero pre-navigation console/page/network errors or warnings were observed. Dated QA10 PASS differs from additive overall \textbf{NOT\_PASS}: seven component gates passed; pointer-lock/yaw-guard and four pointer-lock page errors remained. This bounded integration is neither full-game creation, Python--Godot authorization round trip, nor model outcome. Privacy/source-binding failures and same-thread repairs add no $n$; Jev is \texttt{proposal\_only}, without label/approval authority.
+Invocation six fixed inherited 660\,px mobile-table minimum width: geometry RED (2 failed/35 passed), followed by 62/62 map/signal/Web checks (including cell/paragraph geometry) and a successful Godot Web build. Browser attempt 10 passed; 01--08 failed setup/routes; 09 passed older gates with clipping. Final $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ denial $(68,19468)$ (equal hashes), fresh disclosure $(239,58234)$ (different), authorized redisplay $(249,59793)$ (equal). At 1440$\times$900/390$\times$900, Enter, inspection/frozen-comparison invariance, and zero pre-navigation console/page/network errors/warnings were observed. Dated QA10 PASS differs from additive overall \textbf{NOT\_PASS}: seven component gates passed; pointer-lock/yaw-guard and four pointer-lock page errors remained. This bounded integration is neither full-game creation, Python--Godot authorization round trip, nor a model outcome. Privacy/source-binding failures and same-thread repairs add no $n$; Jev is \texttt{proposal\_only}, without label/approval authority.
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{../figures/fig_runtime_comparison.pdf}
+  \caption{Trace-derived native runtime comparison for the fixed-game pilot (one authored quest; 8 assigned rows, 7 observed executions). System-goal outcomes and assigned denominators retain unknown provider identity, revision, cost, and request-count fields; one pre-response harness-serializer technical failure and two frozen 60-s \texttt{gpt-6.1-sol} ontology response-timeout failures are distinguished from goal successes. Evidence image, not gameplay screenshot.}
+  \label{fig:runtime-comparison}
+\end{figure*}
+
+\input{../generated/runtime_comparison_results_en.tex}
+\input{../generated/runtime_comparison_tables_en.tex}
+
 
 \section{Discussion, Threats, Ethics, and Artifact Scope}
-Semantic repair \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching} addresses iterative correction; $\rho$ uses deterministic pre-execution errors and oracle-only handles state reading. Frozen-case rule agreement and edit-scope diagnostics are neither capability nor ontology superiority.
+Semantic repair \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching} uses pre-execution errors; the oracle only reads state. Rule agreement/edit-scope diagnostics are neither capability nor ontology superiority.
+Implementation confound: row 1 failed under controller-v3 before a model response; rows 2--8 used controller-v4 after a one-line JSON-boundary correction with unchanged model-visible inputs, so selector/representation differences are not model-attributable.
 
 
-A (model/stack consistency) and C (fresh-reference noninferiority) remain unexecuted: compare budget-bounded goal completion under fixed source/policy on sealed assignments, retaining exact identity/revision fields and separate safety/replay accounting. No current lane answers A/C. Separately, the prospective authoring endpoint times matched request/evidence receipt to the first receipt passing all frozen mandatory checks (time-to-first-all-predeclared-validation-pass); unfinished/timeout/failure/stage-not-reached runs have no successful time.
-\subsection{Proposed traceability instrument (not measured)}
-Traceability tests recoverable requirement/artifact/action/outcome correspondence, not correctness, hidden reasoning, developer skill or player benefit. Freeze neutral $U_d$/links $L_d(u)$; independent assessors award 1 only for exact source/version, all raw-evidence relations and locator; otherwise 0 with missing/inaccessible/stale/contradicted/unverified reasons. Report $n_d/N_d$, disagreement and seeded-corruption controls; no weighted composites; incomplete inventories are indeterminate. Verified zero repairs may be N/A; empty logs are not zero. Distinguish PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE and MISSING; \texttt{stage\_not\_reached} never passes.
-\begin{table}[t]
-\caption{Proposed source-derived traceability dimensions (unmeasured)}
-\label{tab:traceability-rubric}
-\centering
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.27\columnwidth}@{}}
-\toprule
-\textbf{ID} & \textbf{Required correspondence} & \textbf{Unit numerator / denominator} \\
-\midrule
-TR01 & identity/activity binding to task, exact artifact revision/digest, activity, and actor & complete slots / required slots \\
-TR02 & request/input $\rightarrow$ rule version $\rightarrow$ evaluated check/result $\rightarrow$ decision & complete chains / inventoried decisions \\
-TR03 & decision $\rightarrow$ observed state or artifact effect with before/after evidence & complete correspondences / decisions requiring outcome \\
-TR04 & triggering failure $\rightarrow$ corrective package $\rightarrow$ exact revalidation $\rightarrow$ result & complete repair chains / actual repair attempts \\
-TR05 & forward requirement $\rightarrow$ artifact $\rightarrow$ verification and reverse in-scope change mapping & report forward and reverse separately \\
-TR06 & non-author independent exercise of declared audit/replay target & exercised targets / declared targets \\
-\bottomrule
-\end{tabularx}
-\par\vspace{2pt}\noindent\parbox{0.96\columnwidth}{\footnotesize Proposed and unmeasured; codebooks/source rationale: Data and Code Availability. No score was collected or validated.}
-\end{table}
+The fixed-game pilot is bounded native evidence; no ontology-efficacy test ran. A (model/stack consistency) and C (fresh-reference noninferiority) remain unexecuted and require budget-bounded completion under fixed source/policy, sealed assignments, exact identity/revision fields, and separate safety/replay accounting; it answers neither. Endpoint time is request/evidence receipt to the first receipt passing frozen mandatory checks (time-to-first-all-predeclared-validation-pass); unfinished/timeout/failure/stage-not-reached runs have no successful time.
 
-\textbf{Threats and boundaries.} Comparator, repeats, neutral complete-attempt inventory and independent traceability scores are absent. State consistency implies neither behavioral nor narrative coherence \cite{S55_huang2026beyond}. Predicate/role/Godot/DISC sets are not latent states; declarations are not human gold/holdouts; lanes retain separate denominators. No participant, affect, comprehension, agency, enjoyment, immersion, benefit, population, safety-rate, model-ranking or commercial-performance inference follows. Hashes do not authenticate; replay equality is not semantic correctness. Future human/affect studies require ethics review, consent, compensation disclosure, minimization, retention/deletion, opt-out and calibrated judges \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
+\textbf{Threats and boundaries.} The native pilot has one authored quest and two repeats per cell; comparator power, neutral complete-attempt inventories, and independent traceability scores are absent. State consistency implies neither behavioral nor narrative coherence \cite{S55_huang2026beyond}. Predicate/role/Godot/DISC sets are not latent states; declarations are not human gold/holdouts; lanes retain separate denominators. No participant, affect, comprehension, agency, enjoyment, immersion, benefit, population, safety-rate, model-ranking, or commercial-performance inference follows. Hashes do not authenticate; replay equality is not semantic correctness. Human/affect studies require ethics review, consent, compensation disclosure, minimization, retention/deletion, opt-out, and calibrated judges \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 
 \section{Conclusion}
-\system{} combines bounded C1--C5 authorization/repair/replay/accounting with a source-bound bilingual observer. The single Codex case retains failures and acceptance boundaries, not model-performance evidence. Whole-game, timing, traceability, and repeated-cross-model evaluation remain future work; historical cohorts stay unpooled.
+\system{} combines bounded C1--C5 authorization/repair/replay/accounting with a source-bound bilingual observer. The Codex case/native pilot retain failures and boundaries, not model-performance evidence. Whole-game, timing, traceability, confirmatory A/C, and repeated-cross-model evaluation remain future; historical cohorts stay unpooled.
 
 \begingroup
 \section*{Disclosure of AI Usage}
-LLMs assisted prose/code/tests/citations; hosted candidates were labelled. Curated AI art/desk mesh has file provenance; rendered snapshots/hashes/ledger are presentation-only. Authors checked sources and accept responsibility; NPC inputs/tables retain assignment/protocol/schema hashes and unknown token/cost/model-revision fields.
+LLMs assisted prose/code/tests/citations; hosted candidates were labelled. Curated AI art/desk mesh has file provenance; snapshots/hashes/ledger are presentation-only. Authors checked sources and accept responsibility; NPC inputs/tables retain assignment/protocol/schema hashes and unknown token/cost/model-revision fields.
 
 \section*{Data and Code Availability}
 \begingroup\DeclareUrlCommand\path{\urlstyle{same}}
-Implementation/build source, frozen packets, Godot slice, deterministic evaluation, and machine-checked contribution, reference-topic, and experiment matrices: \path{research/academic-pipeline/}. DEV-CASE: \path{research/development-cases/ontology-map-20261023-01/}. Proposed rubric/codebook/source manifest and future whole-game/repeated-cross-model plan: \path{research/traceability-scoring-20261023/}, \path{research/development-comparison-20261023/}. Frozen disclosure inputs and standalone signal/NPC artifacts remain under \path{paper/latex/generated/} and \path{paper/latex/figures/}; earlier directories are historical receipts, not current-runtime proof, and no reviewer archive/DOI deposit is claimed.
+Implementation/build source, frozen packets, Godot slice, deterministic evaluation, and machine-checked contribution, reference-topic, and experiment matrices: \path{research/academic-pipeline/}. DEV-CASE: \path{research/development-cases/ontology-map-20261023-01/}. Authoritative public native bundle (\texttt{results.json}, \texttt{public-traces.json}, \texttt{integrity-audit.json}): \path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/}; generated runtime tables/results and trace-derived figure: \path{paper/latex/generated/}, \path{paper/latex/figures/}. Proposed rubric/codebook/source manifest and future whole-game/repeated-cross-model plan: \path{research/traceability-scoring-20261023/}, \path{research/development-comparison-20261023/}. Frozen disclosure inputs and standalone signal/NPC artifacts: \path{paper/latex/generated/}, \path{paper/latex/figures/}; earlier directories are historical receipts, not current-runtime proof; no reviewer archive/DOI deposit claimed.
+Proposed, unmeasured Table~XIV is in \path{traceability-supplement.pdf} (matching \path{.tex} source) under \path{paper/latex/en/} and \path{paper/latex/ko/}.
 \par\endgroup
 
 \bibliographystyle{IEEEtran}

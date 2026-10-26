@@ -406,34 +406,33 @@ def _results(packet: dict[str, Any], korean: bool) -> str:
         stale_failure_disclosure = (
             f"검증된 사전 작성 stale-control ACK 거부는 arm별 {stale_arm_label}건"
             f"({stale_case_label})이며, {stale_verified_rows}개 인스턴스 모두 "
-            f"대응하는 음성 대조 gate가 모두 통과했다. 따라서 이 행들은 assigned failure로 "
-            f"분모에 남기되 method-performance 결과로 해석하지 않으며, 기타 assigned failure "
+            f"대응하는 음성 대조 gate가 모두 통과했다. 이 행들은 분모의 assigned failure로 "
+            f"남되 method-performance 결과로 해석하지 않으며, 기타 assigned failure "
             f"{unclassified_failure_rows}개는 미분류로 남긴다."
         )
     else:
         stale_failure_disclosure = (
             f"Verified pre-authored stale-control ACK rejections are {stale_arm_label} per arm"
             f" ({stale_case_label}); {stale_verified_rows} instances had all "
-            f"corresponding negative-control gates passed. These rows remain assigned failures in the "
+            f"corresponding negative-control gates passed. Assigned failures remain in the "
             f"denominator, not method-performance outcomes; other assigned failures "
             f"({unclassified_failure_rows}) remain unclassified."
         )
     historical_validation = packet["validation_context"]["mode"] == "historical-evidence-root"
     if korean:
         provenance_disclosure = (
-            f"이 생성물은 {HISTORICAL_SOURCE_DATE}의 보관 source bytes "
-            f"(revision {HISTORICAL_SOURCE_REVISION})에 대해 immutable verified-run-006을 "
-            "재검증한 역사적 packet 산출물이다. 현재 checkout의 NPC runtime이나 현재 release "
-            "authority를 인증하지 않는다."
+            f"{HISTORICAL_SOURCE_DATE}의 보관 source bytes (revision {HISTORICAL_SOURCE_REVISION})로 "
+            "immutable verified-run-006을 재검증한 역사적 packet 결과이며, 현재 checkout NPC "
+            "runtime이나 current release authority를 인증하지 않는다."
             if historical_validation
             else ""
         )
     else:
         provenance_disclosure = (
-            f"This generation revalidates immutable verified-run-006 against archived source bytes "
-            f"dated {HISTORICAL_SOURCE_DATE} (revision {HISTORICAL_SOURCE_REVISION}). It is a "
-            "historical packet result and does not certify the current checkout NPC runtime or "
-            "current release authority."
+            f"Immutable verified-run-006 is revalidated against archived source bytes dated "
+            f"{HISTORICAL_SOURCE_DATE} (revision {HISTORICAL_SOURCE_REVISION}); this historical "
+            "packet result does not certify the current checkout NPC runtime or current release "
+            "authority."
             if historical_validation
             else ""
         )
@@ -441,12 +440,12 @@ def _results(packet: dict[str, Any], korean: bool) -> str:
         return (
             rf"""
 \subsection{{고정 목표 NPC 운영 (NPC-ENG1/NPC-SCR1)}}
-Mira의 고정 목표는 항구 신호 복구 후 허가된 조석 단서를 제공하는 것이다. Python은 typed intent와 공개 관측으로 bounded BFS 계획을 계산한다. 획득·설치는 플레이어가, 허가된 \texttt{{reveal\_hint}}는 NPC가 수행한다. Godot은 session/epoch/request/goal/policy/revision/hash를 동기 검사한 뒤 기존 writer를 await 없이 호출한다. 결과와 새 관측이 다음 계획을 결정하므로 단일 후보의 validator-error repair와 구별된다.
+Mira의 고정 목표는 항구 신호 복구 후 허가된 조석 단서를 제공하는 것이다. Python은 typed intent/공개 관측으로 bounded BFS 계획을 계산하고, 획득·설치는 플레이어가, NPC는 허가된 \texttt{{reveal\_hint}}만 수행한다. Godot은 session/epoch/request/goal/policy/revision/hash를 동기 검사한 뒤 기존 writer를 await 없이 호출하며, 결과·새 관측으로 다음 계획을 정한다(단일 후보 validator-error repair와 다름).
 
-NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 engineering 사례 {eng_n}개({eng_status})다. NPC-SCR1은 P/R/O 각 24개, 전체 {aggregate["assignment_count"]}개 배정과 실패를 모두 보존한다({scr_status}). P는 인증된 Codex CLI 실행 시도 {p_attempts}회, 반환 decision {p_decisions}개, 배정 실패 {p_failures}개를 기록했다. 이는 원격 과금 호출 횟수가 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이며 provider revision이 아니다. provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. R은 작성된 규칙을 사용한다. O는 \texttt{{same\_model\_family\_auxiliary}}로 선언된 protocol auxiliary일 뿐이며 실제 모델 계열 일치는 unverified(검증되지 않음)이다. 독립 원본은 0개이고 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다. efficacy는 pending이며 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론이나 적대적 기밀성은 검증하지 않았다.
+NPC-ENG1은 실제 엔진 snapshot에서 시작한 결정론적 R-arm engineering 사례 {eng_n}개({eng_status})이며, NPC-SCR1은 P/R/O 각 24개씩 총 {aggregate["assignment_count"]}개 배정·실패를 보존한다({scr_status}). P는 인증된 Codex CLI 실행 {p_attempts}회, 반환 decision {p_decisions}개, assigned failure {p_failures}개를 기록하며 원격 과금 호출 수는 아니다. 요청 모델: {requested_label}; decision에 기록된 모델 식별자: {returned_label}. 후자는 설정된 selector이지 provider revision이 아니다; provider revision은 사용할 수 없고 null 식별자는 미상으로 남긴다. 전역 설정은 모델 식별 근거가 아니다. R은 작성된 규칙을 사용한다. O는 \texttt{{same\_model\_family\_auxiliary}}로 선언된 protocol auxiliary일 뿐이다. 실제 모델 계열 일치는 unverified(검증되지 않음). 독립 원본은 0개이며 O는 oracle이나 semantic gold가 아니다. 표~\ref{{tab:npc-screening}}은 bounded protocol-conformance 고정 사례의 기술적 계수이지 회복 효능·우월성·일반화 추정이 아니다; efficacy는 pending, 토큰·비용은 미측정이다. 읽기 전용 CLI와 격리 작업 디렉터리를 사용했지만 tool-free 추론과 적대적 기밀성은 검증하지 않았다.
 {provenance_disclosure}
 {stale_failure_disclosure}
-재현 검증은 내보낸 epoch 내부에 한정한다(\texttt{{intent\_lineage\_scope={intent_scope_label}}}). epoch 간 의도 연속성은 입증하지 않는다(\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). 불투명한 연속 지점을 허용하는 예외는 양의 epoch snapshot에서 인접한 선두 observation 요청·decision 쌍에만 적용한다. epoch 0의 고아 관측, 그 밖의 의도 확정 전 관측 요청, 후속 의도 불일치는 계속 거절한다.
+재현 검증은 내보낸 epoch 내부에 한정되며(\texttt{{intent\_lineage\_scope={intent_scope_label}}}), epoch 간 의도 연속성을 입증하지 않는다(\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). 불투명한 연속 지점 예외는 양의 epoch snapshot의 인접한 선두 observation 요청·decision 쌍에만 적용하며, epoch 0의 고아 관측, 그 밖의 의도 확정 전 관측 요청, 후속 의도 불일치는 계속 거절한다.
 
 """.strip()
             + "\n"
@@ -454,12 +453,12 @@ NPC-ENG1은 실제 엔진 snapshot에서 시작한 R arm의 결정론적 enginee
     return (
         rf"""
 \subsection{{Fixed-Goal NPC Operation (NPC-ENG1/NPC-SCR1)}}
-Mira's fixed goal is to deliver the authorized tide lead after harbor-signal restoration. Python computes bounded BFS plans from typed intent and public observations. Acquire/install remain player actions; the NPC may only commit the authorized \texttt{{reveal\_hint}}. Godot synchronously checks session/epoch/request/goal/policy/revision/hash before calling the existing writer without an await. Results and new observations determine the next plan, unlike single-candidate validator-error repair.
+Mira delivers the authorized tide lead after harbor-signal restoration. Python computes bounded BFS plans from typed intent/public observations; players acquire/install, while the NPC commits only the authorized \texttt{{reveal\_hint}}. Godot synchronously checks session/epoch/request/goal/policy/revision/hash before calling the existing writer without an await; results/new observations choose the next plan, not single-candidate validator-error repair.
 
-NPC-ENG1 comprises {eng_n} deterministic R-arm engineering cases initialized from actual engine snapshots ({eng_status}). NPC-SCR1 retains all {aggregate["assignment_count"]} assignments and failures, 24 per P/R/O arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures; these are not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter propagates the configured selector, not a provider revision; the provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. R uses authored rules. O is a protocol-declared auxiliary under \texttt{{same\_model\_family\_auxiliary}}. Actual model-family matching is unverified. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} reports bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates. Efficacy remains pending; tokens and cost are unmeasured. A read-only CLI and isolated working directory were used, but tool-free inference and adversarial confidentiality were not established.
+NPC-ENG1 has {eng_n} deterministic R-arm engineering cases from actual engine snapshots ({eng_status}); NPC-SCR1 retains all {aggregate["assignment_count"]} P/R/O assignments and failures, 24 per arm ({scr_status}). P records {p_attempts} authenticated Codex CLI exec attempts, {p_decisions} returned decisions, and {p_failures} assigned failures—not remote billing-call counts. Requested model: {requested_label}; recorded decision-model identifier: {returned_label}. The latter is the configured selector, not a provider revision; provider revision is unavailable. Null identifiers remain unknown; global defaults are not evidence. R uses authored rules. O is a protocol-declared auxiliary under \texttt{{same\_model\_family\_auxiliary}}. Actual model-family matching is unverified. No source is independent; O is neither an oracle nor semantic gold. Table~\ref{{tab:npc-screening}} gives bounded protocol-conformance fixed-case counts, not recovery-efficacy, superiority, or generalization estimates; efficacy pending, tokens/cost unmeasured. A read-only CLI and isolated working directory were used; tool-free inference and adversarial confidentiality were not established.
 {provenance_disclosure}
 {stale_failure_disclosure}
-Replay validation is limited to the exported epoch (\texttt{{intent\_lineage\_scope={intent_scope_label}}}); it does not prove intent continuity across epochs (\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). The opaque-anchor exception is restricted to an adjacent leading observation request/decision pair in a positive-epoch snapshot. Epoch-zero orphans, other observation requests before intent commitment, and later intent mismatches remain rejected.
+Replay validation is limited to the exported epoch (\texttt{{intent\_lineage\_scope={intent_scope_label}}}); it does not prove intent continuity across epochs (\texttt{{\small cross\_epoch\_intent\_continuity\_proven={continuity_label}}}). The opaque-anchor exception allows only an adjacent leading observation request/decision pair in a positive-epoch snapshot; epoch-zero orphans, other observation requests before intent commitment, and later intent mismatches remain rejected.
 """.strip()
         + "\n"
     )

@@ -23,6 +23,14 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+nesy_game = [
+  "codex_no_tools_models.json",
+  "codex_no_tools_models.json.license",
+  "codex_model_metadata.LICENSE",
+  "codex_model_metadata.NOTICE",
+]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

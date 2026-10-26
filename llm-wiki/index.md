@@ -303,3 +303,8 @@
 - (Private source note retained locally; excluded from publication: `wiki/sources/2026-10-24-154756-system-instructions`) - ## System Instructions
 
 - (Private query note retained locally; excluded from publication: `wiki/queries/2026-10-24-154756-system-instructions`) - ## System Instructions
+
+## Native runtime comparison — 2026-10-26
+
+- [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison]] — **PUBLICATION_CHECKS_PASS/GIT_DELIVERY_PENDING**: 고정 퀘스트1개·원래 배정8행·native 관측7행, system-goal5/8·host 호출23·관측 repair0·unsafe commit0/16. Fresh-engine는 VALID6/INVALID0/NOT_RUN1(row4)/NOT_OBSERVED1(row1), semantic link replay는 valid7/invalid0/unobserved1이다. 첫 직렬화 실패의 null·미재실행과 이후 소스 개정 교란을 보존한다.
+- [공개 출판 검증](../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/publication-verification.json)은 working-tree185 tests+326 subtests·한영 본문 각10쪽/보충 각1쪽·visual134 receipts/10 SVG/22 double-regeneration·crosswalk5 contributions/58 references/9 topics/3 experiment+1 engineering·PDF/AUX label/인용번호 일치를 기록한다. 초기 보충 검토 FIX4건은 한정 fallback PASS로 닫았고 실패 gate·증거·글자 크기를 보존했다. 현재 실측과 과거 native=0 계획·단일 개발 사례·E1/E2/E3/NPC·주입 QA·미실행 whole-game 패널은 합산하지 않는다. 동결 prelaunch pending은 현재 admission 판정이 아니며 일반 재배포 license는 미확인이다. A/C 확증·효능·모델 순위·player benefit은 미입증; selected-tree CI·commit·push는 Main의 별도 미완료 gate다. 새 보고서에 공개 근거와 그림·표·본문/보충 PDF·TeX 경로를 연결했다.

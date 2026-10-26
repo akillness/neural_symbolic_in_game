@@ -19,6 +19,7 @@ from nesy_game.runtime_model_swap import (
     run_episode,
     verify_episode_record,
 )
+from nesy_game.runtime_model_swap_native import PromptTransportError
 
 
 class FakeClock:
@@ -299,7 +300,7 @@ class RuntimeModelSwapTests(unittest.TestCase):
     def test_host_budget_counts_failed_and_timeout_calls_in_original_denominator(self) -> None:
         clock = FakeClock()
         source = SequenceSource(
-            [RuntimeError("provider failed"), TimeoutError("response timed out")]
+            [PromptTransportError("provider failed"), TimeoutError("response timed out")]
         )
 
         record = run_offline(

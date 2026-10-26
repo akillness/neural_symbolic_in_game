@@ -6,26 +6,52 @@
       "id": "paper-en",
       "artifact": {
         "path": "paper/latex/en/main.pdf",
-        "bytes": 679648,
-        "sha256": "1973e0c63230fc159162c41ea46db228998ec982e26dd24b1efc982290ef8675"
+        "bytes": 896224,
+        "sha256": "577fe603d0faff4e661e9966b78df1cacc2b997ae40c3e0714af6285f7eb884e"
       },
       "editable_source": {
         "path": "paper/latex/en/main.tex",
-        "bytes": 27354,
-        "sha256": "09ce1bb96e8feae6616fa06b5038273b31be9c5d744580cce47893b9cb607631"
+        "bytes": 25362,
+        "sha256": "f92c202ae0b70333e76f10e35ee00c27e5526b86b973858931cca4fcdda5133d"
       }
     },
     {
       "id": "paper-ko",
       "artifact": {
         "path": "paper/latex/ko/main.pdf",
-        "bytes": 629636,
-        "sha256": "f803f5c5e67b4514c80d282b6b8227562cd788a334e2dc1bd6bb911424440309"
+        "bytes": 845088,
+        "sha256": "21be2dca155dae1bdacb1d0dd06493f13f55b4bb0ffef68e38ba696bb2343436"
       },
       "editable_source": {
         "path": "paper/latex/ko/main.tex",
-        "bytes": 31553,
-        "sha256": "a48ca6c74d6f266a9f0f1f2c94e9a048fee89fe20cc0c716d1d0dfe455fb2260"
+        "bytes": 29421,
+        "sha256": "dc1665570834bdfdc323600e7967adb5f81b0403e7c8d5d962e1c74d7ff9b4bb"
+      }
+    },
+    {
+      "id": "paper-en-traceability-supplement",
+      "artifact": {
+        "path": "paper/latex/en/traceability-supplement.pdf",
+        "bytes": 72740,
+        "sha256": "aee38c9ad2487a9a0bdc0d0e0389c80596a01a2cfbe28c542c8f1758be66a071"
+      },
+      "editable_source": {
+        "path": "paper/latex/en/traceability-supplement.tex",
+        "bytes": 2780,
+        "sha256": "1bbc53fb6d0ae391a121a5d30c88c0861e335f691f4a20136676ddc9cae8d45b"
+      }
+    },
+    {
+      "id": "paper-ko-traceability-supplement",
+      "artifact": {
+        "path": "paper/latex/ko/traceability-supplement.pdf",
+        "bytes": 64075,
+        "sha256": "a796a3ad9ea85b87c6cf25c63296b30b1f70431eee4e30bd8e0103ea8f78b91e"
+      },
+      "editable_source": {
+        "path": "paper/latex/ko/traceability-supplement.tex",
+        "bytes": 4142,
+        "sha256": "07f0eab4e8c5a06ea56c370c251c0a8130c09e567f42120a101c7a5718757f17"
       }
     }
   ],
@@ -65,6 +91,49 @@
       "publication_role": "current-figure"
     },
     {
+      "id": "paper-runtime-comparison",
+      "kind": "chart",
+      "rendered": [
+        {
+          "path": "paper/latex/figures/fig_runtime_comparison.pdf",
+          "bytes": 218378,
+          "sha256": "3bcf191f80d9545d4ec0f9c15fac71a9df52904660be583586b733d11c7ec973"
+        },
+        {
+          "path": "paper/latex/figures/fig_runtime_comparison.png",
+          "bytes": 334571,
+          "sha256": "544432e0576e7074925345aeb86bab0ad909a697a30bcfe961f20b20946df55e"
+        }
+      ],
+      "editable_sources": [
+        {
+          "path": "paper/latex/figures/fig_runtime_comparison.svg",
+          "bytes": 11262,
+          "sha256": "71b921e5ce333db084ab11708115331c9ef3af7a9aef1bbb76f33532f6a0ac25"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_runtime_comparison_publication.py",
+        "bytes": 33934,
+        "sha256": "75e50cc40c8768b9b38672cf581180e8b4a1f522391dcc54ee77b2209168a3fb"
+      },
+      "data_sources": [
+        {
+          "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+          "bytes": 8437,
+          "sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e"
+        }
+      ],
+      "used_by": [
+        "paper/latex/en/main.tex",
+        "paper/latex/ko/main.tex"
+      ],
+      "publication_role": "current-figure",
+      "anchors": [
+        "fig:runtime-comparison"
+      ]
+    },
+    {
       "id": "paper-npc-screening",
       "kind": "chart",
       "rendered": [
@@ -88,8 +157,8 @@
       ],
       "generator": {
         "path": "scripts/generate_npc_paper_results.py",
-        "bytes": 31707,
-        "sha256": "230b96077ae13939515cb335e2dffd8f57bbb05068c61bf35d82faba15c9b901"
+        "bytes": 31436,
+        "sha256": "8915e13ad40942e2c726b5ce40cdc42788524c3ae2ac8357664fd9a995678f5a"
       },
       "data_sources": [
         {
@@ -145,8 +214,8 @@
       ],
       "generator": {
         "path": "scripts/generate_disclosure_paper_results.py",
-        "bytes": 47961,
-        "sha256": "5ab775814f3ca3f0677f667d7f47ee734ab8979e952216c4aabf7f0f46c23e36"
+        "bytes": 47383,
+        "sha256": "d203090ff85e815f7a333666666ad025245d6f8db3b96359343b16184524d49c"
       },
       "data_sources": [
         {
@@ -483,13 +552,13 @@
       "layout_sources": [
         {
           "path": "paper/latex/en/main.tex",
-          "bytes": 27354,
-          "sha256": "09ce1bb96e8feae6616fa06b5038273b31be9c5d744580cce47893b9cb607631"
+          "bytes": 25362,
+          "sha256": "f92c202ae0b70333e76f10e35ee00c27e5526b86b973858931cca4fcdda5133d"
         },
         {
           "path": "paper/latex/ko/main.tex",
-          "bytes": 31553,
-          "sha256": "a48ca6c74d6f266a9f0f1f2c94e9a048fee89fe20cc0c716d1d0dfe455fb2260"
+          "bytes": 29421,
+          "sha256": "dc1665570834bdfdc323600e7967adb5f81b0403e7c8d5d962e1c74d7ff9b4bb"
         }
       ],
       "generator": null,
@@ -503,7 +572,32 @@
         "tab:validators",
         "alg:commit",
         "tab:rho-rules",
-        "tab:ontology-roles",
+        "tab:ontology-roles"
+      ]
+    },
+    {
+      "id": "traceability-supplement-table",
+      "kind": "table",
+      "layout_sources": [
+        {
+          "path": "paper/latex/en/traceability-supplement.tex",
+          "bytes": 2780,
+          "sha256": "1bbc53fb6d0ae391a121a5d30c88c0861e335f691f4a20136676ddc9cae8d45b"
+        },
+        {
+          "path": "paper/latex/ko/traceability-supplement.tex",
+          "bytes": 4142,
+          "sha256": "07f0eab4e8c5a06ea56c370c251c0a8130c09e567f42120a101c7a5718757f17"
+        }
+      ],
+      "generator": null,
+      "data_sources": [],
+      "readable_sources": [],
+      "rendered_in": [
+        "paper-en-traceability-supplement",
+        "paper-ko-traceability-supplement"
+      ],
+      "anchors": [
         "tab:traceability-rubric"
       ]
     },
@@ -524,8 +618,8 @@
       ],
       "generator": {
         "path": "scripts/generate_disclosure_paper_results.py",
-        "bytes": 47961,
-        "sha256": "5ab775814f3ca3f0677f667d7f47ee734ab8979e952216c4aabf7f0f46c23e36"
+        "bytes": 47383,
+        "sha256": "d203090ff85e815f7a333666666ad025245d6f8db3b96359343b16184524d49c"
       },
       "data_sources": [
         {
@@ -581,6 +675,122 @@
       ]
     },
     {
+      "id": "runtime-comparison-results-en",
+      "kind": "table",
+      "layout_sources": [
+        {
+          "path": "paper/latex/generated/runtime_comparison_results_en.tex",
+          "bytes": 1392,
+          "sha256": "c000df4e5bf6fdc86349a8930f5ce70692c9dd09aca26e2230af53e17f278261"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_runtime_comparison_publication.py",
+        "bytes": 33934,
+        "sha256": "75e50cc40c8768b9b38672cf581180e8b4a1f522391dcc54ee77b2209168a3fb"
+      },
+      "data_sources": [
+        {
+          "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+          "bytes": 8437,
+          "sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e"
+        }
+      ],
+      "readable_sources": [],
+      "rendered_in": [
+        "paper-en"
+      ],
+      "anchors": []
+    },
+    {
+      "id": "runtime-comparison-results-ko",
+      "kind": "table",
+      "layout_sources": [
+        {
+          "path": "paper/latex/generated/runtime_comparison_results_ko.tex",
+          "bytes": 1458,
+          "sha256": "3e6563997e6a0acd0b896f0d7679eb46d2f0568c861917b02716735663e9ef54"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_runtime_comparison_publication.py",
+        "bytes": 33934,
+        "sha256": "75e50cc40c8768b9b38672cf581180e8b4a1f522391dcc54ee77b2209168a3fb"
+      },
+      "data_sources": [
+        {
+          "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+          "bytes": 8437,
+          "sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e"
+        }
+      ],
+      "readable_sources": [],
+      "rendered_in": [
+        "paper-ko"
+      ],
+      "anchors": []
+    },
+    {
+      "id": "runtime-comparison-tables-en",
+      "kind": "table",
+      "layout_sources": [
+        {
+          "path": "paper/latex/generated/runtime_comparison_tables_en.tex",
+          "bytes": 1059,
+          "sha256": "62a89ca6b81ebed72f8abb8f5076610881b4949637b6e554659a1155feaad577"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_runtime_comparison_publication.py",
+        "bytes": 33934,
+        "sha256": "75e50cc40c8768b9b38672cf581180e8b4a1f522391dcc54ee77b2209168a3fb"
+      },
+      "data_sources": [
+        {
+          "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+          "bytes": 8437,
+          "sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e"
+        }
+      ],
+      "readable_sources": [],
+      "rendered_in": [
+        "paper-en"
+      ],
+      "anchors": [
+        "tab:runtime-comparison-aggregate"
+      ]
+    },
+    {
+      "id": "runtime-comparison-tables-ko",
+      "kind": "table",
+      "layout_sources": [
+        {
+          "path": "paper/latex/generated/runtime_comparison_tables_ko.tex",
+          "bytes": 1059,
+          "sha256": "957bbe9b9ec87a11fbb159e365e7093456c8bcd7af5fa53b664e41bbefb48d8e"
+        }
+      ],
+      "generator": {
+        "path": "scripts/generate_runtime_comparison_publication.py",
+        "bytes": 33934,
+        "sha256": "75e50cc40c8768b9b38672cf581180e8b4a1f522391dcc54ee77b2209168a3fb"
+      },
+      "data_sources": [
+        {
+          "path": "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+          "bytes": 8437,
+          "sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e"
+        }
+      ],
+      "readable_sources": [],
+      "rendered_in": [
+        "paper-ko"
+      ],
+      "anchors": [
+        "tab:runtime-comparison-aggregate"
+      ]
+    },
+    {
       "id": "offline-pilot-paper-tables",
       "kind": "table",
       "layout_sources": [
@@ -597,8 +807,8 @@
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 50348,
-        "sha256": "1c943cb857981d409bec3288128de2c029e4b2b0d5466d9c9a47c20be3877264"
+        "bytes": 48284,
+        "sha256": "7185143306d57a64d25abb21a3ea51860728c08f8fb0671c8a734e9b0dcbc09c"
       },
       "data_sources": [
         {
@@ -644,8 +854,8 @@
       ],
       "generator": {
         "path": "scripts/generate_paper_results.py",
-        "bytes": 50348,
-        "sha256": "1c943cb857981d409bec3288128de2c029e4b2b0d5466d9c9a47c20be3877264"
+        "bytes": 48284,
+        "sha256": "7185143306d57a64d25abb21a3ea51860728c08f8fb0671c8a734e9b0dcbc09c"
       },
       "data_sources": [
         {
@@ -685,19 +895,19 @@
         },
         {
           "path": "paper/latex/generated/npc_results_en.tex",
-          "bytes": 2808,
-          "sha256": "3b990dbab0d9a992462a5756a631aef5b5eac39d31243ba1808a63724ca1fce7"
+          "bytes": 2668,
+          "sha256": "a8c45fe0a9f4185062b8e4f2b2026daa25848821e84aaf2050849e3e72208d5a"
         },
         {
           "path": "paper/latex/generated/npc_results_ko.tex",
-          "bytes": 3046,
-          "sha256": "28df5b3f5e554b3053f44c946feedb9ed15c4f7651400f3753c1aa7d81006837"
+          "bytes": 2931,
+          "sha256": "b4cadb4bca42ec93e3c876cd8dd091373c83131ee911065c86f62babb9200165"
         }
       ],
       "generator": {
         "path": "scripts/generate_npc_paper_results.py",
-        "bytes": 31707,
-        "sha256": "230b96077ae13939515cb335e2dffd8f57bbb05068c61bf35d82faba15c9b901"
+        "bytes": 31436,
+        "sha256": "8915e13ad40942e2c726b5ce40cdc42788524c3ae2ac8357664fd9a995678f5a"
       },
       "data_sources": [
         {

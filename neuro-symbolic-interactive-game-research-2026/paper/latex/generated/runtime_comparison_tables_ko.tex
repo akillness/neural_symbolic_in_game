@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\caption{고정 게임 native runtime 비교(n=2/셀). 기술 실패와 timeout을 포함한 원래 8개 배정 행을 분모에 보존한다.}
+\label{tab:runtime-comparison-aggregate}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\textwidth}{@{}l l r r r r l r@{}}
+\toprule
+요청 selector & 표현 & 목표/배정 & 관측 실행 & Host 호출 & Unsafe/Commit & Elapsed 중앙값(n) & Fresh engine \\
+\midrule
+gpt-6.1-sol & general\_rule & 1/2 & 1 & 4 & 0/3 & 45.91 (1) & 1/0/0/1 \\
+gpt-6.1-sol & ontology & 0/2 & 2 & 3 & 0/1 & 72.35 (2) & 1/0/1/0 \\
+gpt-5.6-sol & general\_rule & 2/2 & 2 & 8 & 0/6 & 40.24 (2) & 2/0/0/0 \\
+gpt-5.6-sol & ontology & 2/2 & 2 & 8 & 0/6 & 33.11 (2) & 2/0/0/0 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}\noindent\parbox{0.98\textwidth}{\footnotesize Fresh engine은 VALID/INVALID/NOT\_RUN/NOT\_OBSERVED 순서의 건수이다. NR은 미보고이지 0이 아니다. 전체 계수와 semantic replay의 구분은 본문에 보고한다.}
+\end{table*}

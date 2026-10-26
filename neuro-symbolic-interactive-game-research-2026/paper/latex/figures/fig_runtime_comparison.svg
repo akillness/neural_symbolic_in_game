@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="940" viewBox="0 0 1800 940" role="img" aria-labelledby="svg-title svg-desc">
+<title id="svg-title">Fixed-game native runtime comparison</title>
+<desc id="svg-desc">Eight assigned rows for one authored quest, showing requested selector, representation and repeat, status, goal, observed host calls, elapsed time, safety, semantic replay, and fresh-engine disposition. Fresh-engine labels are VALID, INVALID, NOT_RUN, or NOT_OBSERVED; NR means not reported; color is supplementary to explicit labels.</desc>
+<style>text{font-family:Helvetica,Arial,sans-serif;fill:#202124}.title{font-size:36px;font-weight:700}.subtitle{font-size:28px;fill:#5F6368}.head{font-size:30px;font-weight:700}.cell{font-size:28px}.small{font-size:28px;fill:#5F6368}.status{font-size:28px;font-weight:700}.rule{stroke:#C9CDD1;stroke-width:1}</style>
+<rect x="0" y="0" width="1800" height="940" fill="#FFFFFF"/>
+<text x="35" y="38" class="title">FIXED-GAME NATIVE RUNTIME COMPARISON | 8 ASSIGNED ROWS</text>
+<text x="35" y="86" class="subtitle">One authored quest; n=2 per selector/representation cell; NR = not reported, not zero. Labels remain explicit; color is supplementary.</text>
+<rect x="35" y="105" width="1730" height="100" fill="#EEF0F2" stroke="#C9CDD1"/>
+<text x="45" y="130" class="head" aria-label="Row"><tspan x="45" dy="0">Row</tspan></text>
+<text x="145" y="130" class="head" aria-label="Requested selector"><tspan x="145" dy="0">Requested</tspan><tspan x="145" dy="42">selector</tspan></text>
+<text x="345" y="130" class="head" aria-label="Representation / repeat"><tspan x="345" dy="0">Representation</tspan><tspan x="345" dy="42">/ repeat</tspan></text>
+<text x="590" y="130" class="head" aria-label="Status"><tspan x="590" dy="0">Status</tspan></text>
+<text x="800" y="130" class="head" aria-label="Goal"><tspan x="800" dy="0">Goal</tspan></text>
+<text x="940" y="130" class="head" aria-label="Observed host calls"><tspan x="940" dy="0">Host</tspan><tspan x="940" dy="42">calls</tspan></text>
+<text x="1080" y="130" class="head" aria-label="Elapsed (s)"><tspan x="1080" dy="0">Elapsed</tspan><tspan x="1080" dy="42">(s)</tspan></text>
+<text x="1240" y="130" class="head" aria-label="Safety / replay"><tspan x="1240" dy="0">Safety</tspan><tspan x="1240" dy="42">R record-link / E engine</tspan></text>
+<g id="row-1" aria-labelledby="row-1-title row-1-desc">
+<title id="row-1-title">row 1 failure_reason=harness_config_serialization</title>
+<desc id="row-1-desc">status=HARNESS; goal=NR; safety=NOT_OBSERVED; replay=NR; engine=NOT_OBSERVED; failure_reason=harness_config_serialization</desc>
+<rect x="35" y="205" width="1730" height="72" fill="#FFFFFF"/>
+<line x1="35" y1="277" x2="1765" y2="277" class="rule"/>
+<text x="45" y="249" class="cell">1</text>
+<text x="145" y="249" class="cell">gpt-6.1-sol</text>
+<text x="345" y="249" class="cell">general_rule / r1</text>
+<rect class="data-mark status-mark" x="590" y="220" width="200" height="36" rx="5" fill="#EEF0F2" stroke="#C9CDD1"/>
+<text x="602" y="246" class="status">HARNESS</text>
+<rect class="data-mark goal-mark" x="800" y="225" width="32" height="32" rx="4" fill="#EEF0F2" stroke="#C9CDD1"/>
+<text x="842" y="249" class="cell">NR</text>
+<text x="940" y="249" class="cell">0</text>
+<text x="1080" y="249" class="cell">NR</text>
+<text x="1240" y="233" class="cell">NOT_OBSERVED</text>
+<text x="1240" y="265" class="small">R NR / E NOT_OBSERVED</text>
+</g>
+<g id="row-2" aria-labelledby="row-2-title row-2-desc">
+<title id="row-2-title">row 2 failure_reason=null</title>
+<desc id="row-2-desc">status=SUCCESS; goal=YES; safety=PASS; replay=YES; engine=VALID; failure_reason=null</desc>
+<rect x="35" y="277" width="1730" height="72" fill="#F7F7F5"/>
+<line x1="35" y1="349" x2="1765" y2="349" class="rule"/>
+<text x="45" y="321" class="cell">2</text>
+<text x="145" y="321" class="cell">gpt-6.1-sol</text>
+<text x="345" y="321" class="cell">general_rule / r2</text>
+<rect class="data-mark status-mark" x="590" y="292" width="200" height="36" rx="5" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="602" y="318" class="status">SUCCESS</text>
+<rect class="data-mark goal-mark" x="800" y="297" width="32" height="32" rx="4" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="842" y="321" class="cell">YES</text>
+<text x="940" y="321" class="cell">4</text>
+<text x="1080" y="321" class="cell">45.91</text>
+<text x="1240" y="305" class="cell">PASS</text>
+<text x="1240" y="337" class="small">R YES / E VALID</text>
+</g>
+<g id="row-3" aria-labelledby="row-3-title row-3-desc">
+<title id="row-3-title">row 3 failure_reason=response_timeout</title>
+<desc id="row-3-desc">status=TIMEOUT; goal=NO; safety=PASS; replay=YES; engine=VALID; failure_reason=response_timeout</desc>
+<rect x="35" y="349" width="1730" height="72" fill="#FFFFFF"/>
+<line x1="35" y1="421" x2="1765" y2="421" class="rule"/>
+<text x="45" y="393" class="cell">3</text>
+<text x="145" y="393" class="cell">gpt-6.1-sol</text>
+<text x="345" y="393" class="cell">ontology / r1</text>
+<rect class="data-mark status-mark" x="590" y="364" width="200" height="36" rx="5" fill="#FFF2DD" stroke="#C9CDD1"/>
+<text x="602" y="390" class="status">TIMEOUT</text>
+<rect class="data-mark goal-mark" x="800" y="369" width="32" height="32" rx="4" fill="#FFF2DD" stroke="#C9CDD1"/>
+<text x="842" y="393" class="cell">NO</text>
+<text x="940" y="393" class="cell">2</text>
+<text x="1080" y="393" class="cell">84.66</text>
+<text x="1240" y="377" class="cell">PASS</text>
+<text x="1240" y="409" class="small">R YES / E VALID</text>
+</g>
+<g id="row-4" aria-labelledby="row-4-title row-4-desc">
+<title id="row-4-title">row 4 failure_reason=response_timeout</title>
+<desc id="row-4-desc">status=TIMEOUT; goal=NR; safety=NO_COMMIT_OBSERVED; replay=YES; engine=NOT_RUN; failure_reason=response_timeout</desc>
+<rect x="35" y="421" width="1730" height="72" fill="#F7F7F5"/>
+<line x1="35" y1="493" x2="1765" y2="493" class="rule"/>
+<text x="45" y="465" class="cell">4</text>
+<text x="145" y="465" class="cell">gpt-6.1-sol</text>
+<text x="345" y="465" class="cell">ontology / r2</text>
+<rect class="data-mark status-mark" x="590" y="436" width="200" height="36" rx="5" fill="#FFF2DD" stroke="#C9CDD1"/>
+<text x="602" y="462" class="status">TIMEOUT</text>
+<rect class="data-mark goal-mark" x="800" y="441" width="32" height="32" rx="4" fill="#EEF0F2" stroke="#C9CDD1"/>
+<text x="842" y="465" class="cell">NR</text>
+<text x="940" y="465" class="cell">1</text>
+<text x="1080" y="465" class="cell">60.04</text>
+<text x="1240" y="449" class="cell">NO_COMMIT_OBSERVED</text>
+<text x="1240" y="481" class="small">R YES / E NOT_RUN</text>
+</g>
+<g id="row-5" aria-labelledby="row-5-title row-5-desc">
+<title id="row-5-title">row 5 failure_reason=null</title>
+<desc id="row-5-desc">status=SUCCESS; goal=YES; safety=PASS; replay=YES; engine=VALID; failure_reason=null</desc>
+<rect x="35" y="493" width="1730" height="72" fill="#FFFFFF"/>
+<line x1="35" y1="565" x2="1765" y2="565" class="rule"/>
+<text x="45" y="537" class="cell">5</text>
+<text x="145" y="537" class="cell">gpt-5.6-sol</text>
+<text x="345" y="537" class="cell">general_rule / r1</text>
+<rect class="data-mark status-mark" x="590" y="508" width="200" height="36" rx="5" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="602" y="534" class="status">SUCCESS</text>
+<rect class="data-mark goal-mark" x="800" y="513" width="32" height="32" rx="4" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="842" y="537" class="cell">YES</text>
+<text x="940" y="537" class="cell">4</text>
+<text x="1080" y="537" class="cell">41.09</text>
+<text x="1240" y="521" class="cell">PASS</text>
+<text x="1240" y="553" class="small">R YES / E VALID</text>
+</g>
+<g id="row-6" aria-labelledby="row-6-title row-6-desc">
+<title id="row-6-title">row 6 failure_reason=null</title>
+<desc id="row-6-desc">status=SUCCESS; goal=YES; safety=PASS; replay=YES; engine=VALID; failure_reason=null</desc>
+<rect x="35" y="565" width="1730" height="72" fill="#F7F7F5"/>
+<line x1="35" y1="637" x2="1765" y2="637" class="rule"/>
+<text x="45" y="609" class="cell">6</text>
+<text x="145" y="609" class="cell">gpt-5.6-sol</text>
+<text x="345" y="609" class="cell">general_rule / r2</text>
+<rect class="data-mark status-mark" x="590" y="580" width="200" height="36" rx="5" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="602" y="606" class="status">SUCCESS</text>
+<rect class="data-mark goal-mark" x="800" y="585" width="32" height="32" rx="4" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="842" y="609" class="cell">YES</text>
+<text x="940" y="609" class="cell">4</text>
+<text x="1080" y="609" class="cell">39.39</text>
+<text x="1240" y="593" class="cell">PASS</text>
+<text x="1240" y="625" class="small">R YES / E VALID</text>
+</g>
+<g id="row-7" aria-labelledby="row-7-title row-7-desc">
+<title id="row-7-title">row 7 failure_reason=null</title>
+<desc id="row-7-desc">status=SUCCESS; goal=YES; safety=PASS; replay=YES; engine=VALID; failure_reason=null</desc>
+<rect x="35" y="637" width="1730" height="72" fill="#FFFFFF"/>
+<line x1="35" y1="709" x2="1765" y2="709" class="rule"/>
+<text x="45" y="681" class="cell">7</text>
+<text x="145" y="681" class="cell">gpt-5.6-sol</text>
+<text x="345" y="681" class="cell">ontology / r1</text>
+<rect class="data-mark status-mark" x="590" y="652" width="200" height="36" rx="5" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="602" y="678" class="status">SUCCESS</text>
+<rect class="data-mark goal-mark" x="800" y="657" width="32" height="32" rx="4" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="842" y="681" class="cell">YES</text>
+<text x="940" y="681" class="cell">4</text>
+<text x="1080" y="681" class="cell">36.68</text>
+<text x="1240" y="665" class="cell">PASS</text>
+<text x="1240" y="697" class="small">R YES / E VALID</text>
+</g>
+<g id="row-8" aria-labelledby="row-8-title row-8-desc">
+<title id="row-8-title">row 8 failure_reason=null</title>
+<desc id="row-8-desc">status=SUCCESS; goal=YES; safety=PASS; replay=YES; engine=VALID; failure_reason=null</desc>
+<rect x="35" y="709" width="1730" height="72" fill="#F7F7F5"/>
+<line x1="35" y1="781" x2="1765" y2="781" class="rule"/>
+<text x="45" y="753" class="cell">8</text>
+<text x="145" y="753" class="cell">gpt-5.6-sol</text>
+<text x="345" y="753" class="cell">ontology / r2</text>
+<rect class="data-mark status-mark" x="590" y="724" width="200" height="36" rx="5" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="602" y="750" class="status">SUCCESS</text>
+<rect class="data-mark goal-mark" x="800" y="729" width="32" height="32" rx="4" fill="#E8F5EF" stroke="#C9CDD1"/>
+<text x="842" y="753" class="cell">YES</text>
+<text x="940" y="753" class="cell">4</text>
+<text x="1080" y="753" class="cell">29.55</text>
+<text x="1240" y="737" class="cell">PASS</text>
+<text x="1240" y="769" class="small">R YES / E VALID</text>
+</g>
+<text x="35" y="820" class="small">Endpoint outcomes, receipt-derived host calls, and dispatch-to-terminal elapsed time.</text>
+<text x="35" y="860" class="small">Typed-intent proposal; deterministic planner/checker and Godot commit retain authority.</text>
+<text x="35" y="900" class="small">No efficacy/superiority/noninferiority/player-benefit claim; provider metadata and request counts remain NR.</text>
+</svg>

@@ -151,3 +151,140 @@ def test_check_fails_closed_for_pdf_inspection_errors(
     combined_output = result.stdout + result.stderr
     if expected_marker is not None:
         assert expected_marker.lower() in combined_output.lower()
+
+
+LOG_PATHS = (
+    "en/main.log",
+    "ko/main.log",
+    "en/traceability-supplement.log",
+    "ko/traceability-supplement.log",
+)
+
+
+def _prepare_log_check_workspace(
+    tmp_path: Path,
+    log_contents: dict[str, str | None],
+    *,
+    scanner_status: int | None = None,
+) -> tuple[Path, Path]:
+    workspace = tmp_path / "project" / "paper" / "latex"
+    workspace.mkdir(parents=True)
+    shutil.copy2(LATEX_DIR / "Makefile", workspace / "Makefile")
+
+    for directory in (workspace / "figures", workspace / "en", workspace / "ko"):
+        directory.mkdir()
+    for pdf in (
+        workspace / "figures" / "sample.pdf",
+        workspace / "en" / "main.pdf",
+        workspace / "ko" / "main.pdf",
+        workspace / "en" / "traceability-supplement.pdf",
+        workspace / "ko" / "traceability-supplement.pdf",
+    ):
+        pdf.write_bytes(b"bounded pdf fixture\n")
+
+    for relative_path, contents in log_contents.items():
+        if contents is not None:
+            (workspace / relative_path).write_text(contents, encoding="utf-8")
+
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    _write_stub(fake_bin / "pdfinfo", "#!/bin/sh\nprintf '%s\\n' 'Pages: 9'\n")
+    _write_stub(
+        fake_bin / "pdffonts",
+        "#!/bin/sh\n"
+        "printf '%s\\n' 'name type emb sub uni object ID'\n"
+        "printf '%s\\n' '---'\n"
+        "printf '%s\\n' 'fixture TrueType yes yes yes 1 0'\n",
+    )
+    if scanner_status is not None:
+        _write_stub(fake_bin / "grep", f"#!/bin/sh\nexit {scanner_status}\n")
+
+    return workspace, fake_bin
+
+
+def _run_log_check(workspace: Path, fake_bin: Path) -> subprocess.CompletedProcess[str]:
+    env = os.environ.copy()
+    env["PATH"] = f"{fake_bin}{os.pathsep}{env.get('PATH', '')}"
+    return subprocess.run(
+        [
+            "make",
+            "-o",
+            "generated",
+            "-o",
+            "figures",
+            "-o",
+            "english",
+            "-o",
+            "korean",
+            "-o",
+            "supplements",
+            "check",
+        ],
+        cwd=workspace,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+
+def _clean_logs(contents: str) -> dict[str, str | None]:
+    return {relative_path: contents for relative_path in LOG_PATHS}
+
+
+def test_check_accepts_four_clean_logs(tmp_path: Path) -> None:
+    workspace, fake_bin = _prepare_log_check_workspace(
+        tmp_path,
+        _clean_logs("Compilation completed without diagnostics.\n"),
+    )
+
+    result = _run_log_check(workspace, fake_bin)
+
+    assert result.returncode == 0
+
+
+def test_check_rejects_forbidden_log_diagnostic(tmp_path: Path) -> None:
+    logs = _clean_logs("Compilation completed without diagnostics.\n")
+    logs["en/main.log"] = "LaTeX Error: fixture failure\n"
+    workspace, fake_bin = _prepare_log_check_workspace(tmp_path, logs)
+
+    result = _run_log_check(workspace, fake_bin)
+
+    assert result.returncode != 0
+    assert "Paper logs contain forbidden diagnostics" in result.stdout + result.stderr
+
+
+def test_check_rejects_missing_log_with_scanner_diagnostic(tmp_path: Path) -> None:
+    logs = _clean_logs("Compilation completed without diagnostics.\n")
+    logs["ko/traceability-supplement.log"] = None
+    workspace, fake_bin = _prepare_log_check_workspace(tmp_path, logs)
+
+    result = _run_log_check(workspace, fake_bin)
+
+    assert result.returncode != 0
+    assert "Paper log scan could not complete (status 2)" in result.stdout + result.stderr
+
+
+@pytest.mark.parametrize(
+    "scanner_status",
+    (2, 127),
+    ids=("scanner-error", "scanner-unavailable"),
+)
+def test_check_rejects_scanner_error_status(
+    tmp_path: Path,
+    scanner_status: int,
+) -> None:
+    workspace, fake_bin = _prepare_log_check_workspace(
+        tmp_path,
+        _clean_logs("Compilation completed without diagnostics.\n"),
+        scanner_status=scanner_status,
+    )
+
+    result = _run_log_check(workspace, fake_bin)
+
+    assert result.returncode != 0
+    assert (
+        f"Paper log scan could not complete (status {scanner_status})"
+        in result.stdout + result.stderr
+    )
