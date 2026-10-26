@@ -34,6 +34,21 @@
       "command": ".venv/bin/python scripts/validate_project.py",
       "exit_code": 0
     },
+    "selected_tree_ci": {
+      "command": "bash scripts/verify_like_ci.sh",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1"
+      },
+      "exit_code": 0,
+      "game_track_subtests_passed": 48,
+      "game_track_tests_passed": 83,
+      "hosted_ci_attestation": false,
+      "scope": "All repository CI-equivalent steps in an isolated checkout of the exact 66-file public selection; not remote-ref or provider attestation.",
+      "source_commit": "b4a4abdd2f10f71c66f7adc1e6c04088df6743de",
+      "tree_sha1": "820833702716ca57cc3b1d0684de6a568b75d59a",
+      "unit_tests_passed": 528
+    },
     "visual_sources": {
       "command": ".venv/bin/python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration",
       "exit_code": 0,
@@ -50,7 +65,7 @@
     "One quest, two repeats per cell and the retained source-revision confound do not establish model ranking, causal ontology advantage, noninferiority or player benefit.",
     "No native experiment was launched during publication regeneration.",
     "Unmeasured Table XIV and TR01-TR06 remain complete in the supplied bilingual supplements.",
-    "Git commit, push and selected-tree CI must be verified separately."
+    "The selected-tree check is local CI-equivalent execution, not hosted CI, remote-ref attestation or provider certification."
   ],
   "measured": {
     "assigned": 8,
@@ -185,6 +200,6 @@
     "supplementary_findings_initial": "FIX"
   },
   "schema_version": "fixed-game-native-publication-verification/1",
-  "scope": "Bounded fixed-game native pilot publication and working-tree checks; not confirmatory A/C, provider certification or Git-delivery attestation.",
+  "scope": "Bounded fixed-game native pilot publication, working-tree checks and exact selected-source-tree CI; not confirmatory A/C, provider certification or Git-delivery attestation.",
   "status": "PUBLICATION_CHECKS_PASS"
 }
