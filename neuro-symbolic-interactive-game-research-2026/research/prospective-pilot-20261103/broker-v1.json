@@ -1,0 +1,30 @@
+{
+  "limits": {
+    "list_corpus_entries": 500,
+    "observation_bytes": 16384,
+    "prompt_bytes": 196608,
+    "public_check_output_bytes": 16384,
+    "search_excerpt_bytes": 200,
+    "search_hits": 50,
+    "write_file_bytes": 65536
+  },
+  "live_loop": "NOT_IMPLEMENTED",
+  "operations": {
+    "exp": [
+      "read_task_file",
+      "write_file",
+      "run_public_check",
+      "submit",
+      "list_corpus",
+      "read_corpus",
+      "search_corpus"
+    ],
+    "min": [
+      "read_task_file",
+      "write_file",
+      "run_public_check",
+      "submit"
+    ]
+  },
+  "schema": "prospective-pilot-broker/v1"
+}

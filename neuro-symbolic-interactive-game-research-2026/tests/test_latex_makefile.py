@@ -21,6 +21,7 @@ def test_figures_conversion_failure_cannot_fall_back_to_stale_pdf(tmp_path: Path
     scripts = workspace.parents[1] / "scripts"
     scripts.mkdir()
     (scripts / "generate_paper_figures.py").write_text("pass\n", encoding="utf-8")
+    (scripts / "generate_paired_feedback_figures.py").write_text("pass\n", encoding="utf-8")
     (scripts / "run_kg_ontology_simulation.py").write_text("pass\n", encoding="utf-8")
     figures = workspace / "figures"
     figures.mkdir()
@@ -66,7 +67,9 @@ def _write_stub(path: Path, body: str) -> None:
     (
         ("pdfinfo_nonzero", None),
         ("missing_pages", "page count"),
-        ("eleven_pages", "ceiling"),
+        ("zero_pages", "non-positive page count"),
+        ("non_numeric_pages", "page count"),
+        ("missing_main_pdf", None),
         ("pdffonts_nonzero", None),
         ("type3_first_figure", "Type 3"),
     ),
@@ -94,6 +97,8 @@ def test_check_fails_closed_for_pdf_inspection_errors(
     for language in ("en", "ko"):
         (workspace / language / "main.pdf").write_bytes(b"stub-pdf")
         (workspace / language / "main.log").write_text("", encoding="utf-8")
+    if case == "missing_main_pdf":
+        (workspace / "en" / "main.pdf").unlink()
     fake_bin = tmp_path / "bin"
     fake_bin.mkdir()
     _write_stub(fake_bin / "uv", "#!/bin/sh\nexit 0\n")
@@ -109,16 +114,21 @@ def test_check_fails_closed_for_pdf_inspection_errors(
     )
     _write_stub(
         fake_bin / "latexmk",
-        "#!/bin/sh\n: > main.pdf\n: > main.log\n",
+        "#!/bin/sh\n"
+        'if [ "$CHECK_CASE" = missing_main_pdf ]; then exit 0; fi\n'
+        ": > main.pdf\n: > main.log\n",
     )
     _write_stub(
         fake_bin / "pdfinfo",
         "#!/usr/bin/env python3\n"
         "import os, sys\n"
+        "if not os.path.exists(sys.argv[-1]): sys.exit(31)\n"
         "mode = os.environ['CHECK_CASE']\n"
         "if mode == 'pdfinfo_nonzero': sys.exit(23)\n"
         "if mode == 'missing_pages': print('Producer: stub'); sys.exit(0)\n"
-        "print('Pages: 11' if mode == 'eleven_pages' else 'Pages: 9')\n",
+        "if mode == 'non_numeric_pages': print('Pages: many'); sys.exit(0)\n"
+        "if mode == 'zero_pages': print('Pages: 0'); sys.exit(0)\n"
+        "print('Pages: 9')\n",
     )
     _write_stub(
         fake_bin / "pdffonts",
@@ -165,6 +175,7 @@ def _prepare_log_check_workspace(
     tmp_path: Path,
     log_contents: dict[str, str | None],
     *,
+    page_counts: tuple[int, int] = (9, 9),
     scanner_status: int | None = None,
 ) -> tuple[Path, Path]:
     workspace = tmp_path / "project" / "paper" / "latex"
@@ -188,7 +199,15 @@ def _prepare_log_check_workspace(
 
     fake_bin = tmp_path / "bin"
     fake_bin.mkdir()
-    _write_stub(fake_bin / "pdfinfo", "#!/bin/sh\nprintf '%s\\n' 'Pages: 9'\n")
+    en_pages, ko_pages = page_counts
+    _write_stub(
+        fake_bin / "pdfinfo",
+        "#!/usr/bin/env python3\n"
+        "import pathlib, sys\n"
+        "path = pathlib.Path(sys.argv[-1])\n"
+        "if not path.exists(): sys.exit(31)\n"
+        f"print('Pages: {en_pages}' if path.parent.name == 'en' else 'Pages: {ko_pages}')\n",
+    )
     _write_stub(
         fake_bin / "pdffonts",
         "#!/bin/sh\n"
@@ -231,6 +250,37 @@ def _run_log_check(workspace: Path, fake_bin: Path) -> subprocess.CompletedProce
 
 def _clean_logs(contents: str) -> dict[str, str | None]:
     return {relative_path: contents for relative_path in LOG_PATHS}
+
+
+@pytest.mark.parametrize(
+    "page_count",
+    (9, 10, 11, 37),
+    ids=("nine-pages", "ten-pages", "eleven-pages", "substantially-longer"),
+)
+def test_check_accepts_valid_pdf_page_counts_without_ceiling(
+    tmp_path: Path, page_count: int
+) -> None:
+    workspace, fake_bin = _prepare_log_check_workspace(
+        tmp_path,
+        _clean_logs("Compilation completed without diagnostics.\n"),
+        page_counts=(page_count, page_count),
+    )
+
+    result = _run_log_check(workspace, fake_bin)
+
+    assert result.returncode == 0
+
+
+def test_check_accepts_unequal_valid_en_ko_page_counts(tmp_path: Path) -> None:
+    workspace, fake_bin = _prepare_log_check_workspace(
+        tmp_path,
+        _clean_logs("Compilation completed without diagnostics.\n"),
+        page_counts=(11, 42),
+    )
+
+    result = _run_log_check(workspace, fake_bin)
+
+    assert result.returncode == 0
 
 
 def test_check_accepts_four_clean_logs(tmp_path: Path) -> None:

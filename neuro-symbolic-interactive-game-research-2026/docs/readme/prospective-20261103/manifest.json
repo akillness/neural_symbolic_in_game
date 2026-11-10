@@ -1,0 +1,975 @@
+{
+  "claim_boundary": "Local current-source presentation capture only. Shows engine/dashboard state correspondence for one operator-driven route; no deployment, production-byte, model-efficacy, usability, immersion or player-benefit claim.",
+  "created_utc": "2026-11-03T13:16:01Z",
+  "files": [
+    {
+      "bytes": 949070,
+      "canonical_state_sha256_tick": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "capture_method": "Playwright page.screenshot(full viewport)",
+      "captured_utc_approx": "2026-11-03T13:03:25.274Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 0,
+        "dialogues": 0,
+        "holds": 0,
+        "proposals": 0
+      },
+      "dpr": 2,
+      "event_binding": {},
+      "file": "browser-dashboard-arrival.png",
+      "height": 1800,
+      "role": "arrival",
+      "sha256": "18901eb24db591a4e2f5aa961403ae4e194772148f525c31f7f3892c8751f424",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/003-arrival-started.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "18901eb24db591a4e2f5aa961403ae4e194772148f525c31f7f3892c8751f424"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/003-arrival-started.json",
+        "sha256": "d2fc6ffed062a1fab3aef97a756804f5af71f15df0e34d4f9c1d6ef6a86acd71"
+      },
+      "summary": {
+        "commit_count": 0,
+        "fact_count": 2,
+        "refusal_count": 0,
+        "revision": 0,
+        "stage": 0
+      },
+      "tick": {
+        "dialogue_open": false,
+        "episode_over": false,
+        "focus": "",
+        "stage": 0,
+        "x": 0,
+        "z": 2
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "arrival / start: stage 0, 0 commits, 0 holds, no verdicts, trail at spawn (0.0, 2.0); Quest 'Speak with Captain Mira'",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 2880
+    },
+    {
+      "bytes": 933162,
+      "canonical_state_sha256_tick": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "capture_method": "Playwright page.screenshot(full viewport)",
+      "captured_utc_approx": "2026-11-03T13:03:40.676Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 0,
+        "dialogues": 2,
+        "holds": 1,
+        "proposals": 1
+      },
+      "dpr": 2,
+      "event_binding": {
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          }
+        ],
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-dashboard-hold.png",
+      "height": 1800,
+      "role": "HOLD",
+      "sha256": "d4ba033cd7acf0a0503b18ad400a0ac44f9f617f7d5a0e3fae3bd8b3ae8f52f3",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/007-hold-after-coach.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "d4ba033cd7acf0a0503b18ad400a0ac44f9f617f7d5a0e3fae3bd8b3ae8f52f3"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/007-hold-after-coach.json",
+        "sha256": "47c943d984a3c94b822179ce74927c21cd33479aa991e7c14212fd9e8cc43a3c"
+      },
+      "summary": {
+        "commit_count": 0,
+        "fact_count": 2,
+        "refusal_count": 1,
+        "revision": 0,
+        "stage": 0
+      },
+      "tick": {
+        "dialogue_open": true,
+        "episode_over": false,
+        "focus": "mira",
+        "stage": 0,
+        "x": 3.23,
+        "z": 9.79
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "refused disclosure: HOLD reveal_hint, ledger line 'GATE DISCLOSURE/QUEST STAGE | state unchanged', stage 0, commits 0, holds 1; Mira dialogue open",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 2880
+    },
+    {
+      "bytes": 578058,
+      "canonical_state_sha256_tick": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+      "capture_method": "Playwright page.screenshot(full viewport)",
+      "captured_utc_approx": "2026-11-03T13:04:03.337Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 1,
+        "dialogues": 3,
+        "holds": 1,
+        "proposals": 2
+      },
+      "dpr": 2,
+      "event_binding": {
+        "commits": [
+          {
+            "commit_count": 1,
+            "operation": "acquire_object",
+            "revision": 1,
+            "seq": 170,
+            "stage_from": 0,
+            "stage_to": 1,
+            "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+            "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          }
+        ],
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          }
+        ],
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-dashboard-commit.png",
+      "height": 1800,
+      "role": "COMMIT",
+      "sha256": "7de12a8b28f513eb8eec20643c045c996b073c470d4471f99c9f396ea82e6a69",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/012-lens-after-coach.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "7de12a8b28f513eb8eec20643c045c996b073c470d4471f99c9f396ea82e6a69"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/012-lens-after-coach.json",
+        "sha256": "7c08ce42562b7cbf3a2633be3a11e126f9b393b4b5e5b3b092890fdd9442d889"
+      },
+      "summary": {
+        "commit_count": 1,
+        "fact_count": 3,
+        "refusal_count": 1,
+        "revision": 1,
+        "stage": 1
+      },
+      "tick": {
+        "dialogue_open": false,
+        "episode_over": false,
+        "focus": "",
+        "stage": 1,
+        "x": -10.84,
+        "z": 1.13
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "lens acquisition COMMIT: commits 1, holds 1, stage 1, revision 1, facts 3; Recent actions 'COMMIT acquire_object - Signal lens secured'; Quest step 1 complete",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 2880
+    },
+    {
+      "bytes": 1035146,
+      "canonical_state_sha256_tick": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "capture_method": "Playwright page.screenshot(full viewport)",
+      "captured_utc_approx": "2026-11-03T13:04:25.234Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 3,
+        "dialogues": 5,
+        "holds": 1,
+        "proposals": 4
+      },
+      "dpr": 2,
+      "event_binding": {
+        "commits": [
+          {
+            "commit_count": 1,
+            "operation": "acquire_object",
+            "revision": 1,
+            "seq": 170,
+            "stage_from": 0,
+            "stage_to": 1,
+            "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+            "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          },
+          {
+            "commit_count": 2,
+            "operation": "install_lens",
+            "revision": 2,
+            "seq": 254,
+            "stage_from": 1,
+            "stage_to": 2,
+            "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+          },
+          {
+            "commit_count": 3,
+            "operation": "reveal_hint",
+            "revision": 3,
+            "seq": 289,
+            "stage_from": 2,
+            "stage_to": 2,
+            "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+          }
+        ],
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          },
+          {
+            "accepted": true,
+            "hashEquality": "different",
+            "mutated": true,
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "outcome": "authorized_fresh",
+            "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "seq": 288
+          }
+        ],
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-dashboard-authorized.png",
+      "height": 1800,
+      "role": "authorized progression",
+      "sha256": "9cf3ffd1f92aa61e9c45ac0854c34c96dc2af377a184aa478420713af392c6dd",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/015-authorized-fresh.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "9cf3ffd1f92aa61e9c45ac0854c34c96dc2af377a184aa478420713af392c6dd"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/015-authorized-fresh.json",
+        "sha256": "ee5c5be5a1b4c565b45be50b502e3ae3c2dc53dc6902fec638026b585d350873"
+      },
+      "summary": {
+        "commit_count": 3,
+        "fact_count": 6,
+        "refusal_count": 1,
+        "revision": 3,
+        "stage": 2
+      },
+      "tick": {
+        "dialogue_open": true,
+        "episode_over": false,
+        "focus": "mira",
+        "stage": 2,
+        "x": 3.05,
+        "z": 11.75
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "later authorized progression: commits 3, holds 1, stage 2, revision 3, facts 6; Recent actions 'COMMIT reveal_hint - Tide-marks lead recorded', 'COMMIT install_lens - Lead authorized'; Mira dialogue [1] Where do I go now?",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 2880
+    },
+    {
+      "bytes": 1197541,
+      "canonical_state_sha256_tick": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "capture_method": "Playwright page.screenshot(full viewport)",
+      "captured_utc_approx": "2026-11-03T13:05:28.429Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 3,
+        "dialogues": 12,
+        "holds": 1,
+        "proposals": 4
+      },
+      "dpr": 2,
+      "event_binding": {
+        "commits": [
+          {
+            "commit_count": 1,
+            "operation": "acquire_object",
+            "revision": 1,
+            "seq": 170,
+            "stage_from": 0,
+            "stage_to": 1,
+            "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+            "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          },
+          {
+            "commit_count": 2,
+            "operation": "install_lens",
+            "revision": 2,
+            "seq": 254,
+            "stage_from": 1,
+            "stage_to": 2,
+            "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+          },
+          {
+            "commit_count": 3,
+            "operation": "reveal_hint",
+            "revision": 3,
+            "seq": 289,
+            "stage_from": 2,
+            "stage_to": 2,
+            "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+          }
+        ],
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          },
+          {
+            "accepted": true,
+            "hashEquality": "different",
+            "mutated": true,
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "outcome": "authorized_fresh",
+            "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "seq": 288
+          }
+        ],
+        "episode_complete": {
+          "commit_count": 3,
+          "refusal_count": 1,
+          "revision": 3,
+          "seq": 507,
+          "stage": 2,
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+        },
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-dashboard-complete.png",
+      "height": 1800,
+      "role": "ending",
+      "sha256": "92618798bfb6f40c0966d397b4a7d4b636d5b1f59f8eabae9910c3b348f38078",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/020-ending-case-complete.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "92618798bfb6f40c0966d397b4a7d4b636d5b1f59f8eabae9910c3b348f38078"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/020-ending-case-complete.json",
+        "sha256": "f25067b45bfea0888dd890430f301c439703923d84c6104781fe511150a7ad94"
+      },
+      "summary": {
+        "commit_count": 3,
+        "fact_count": 6,
+        "refusal_count": 1,
+        "revision": 3,
+        "stage": 2
+      },
+      "tick": {
+        "dialogue_open": false,
+        "episode_over": true,
+        "focus": "tide_marks",
+        "stage": 2,
+        "x": -7.92,
+        "z": 13.59
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "ending: episode 'complete', Quest 'Episode complete.' 3/3, in-game 'CASE COMPLETE' ledger with 'DEDUCTION | confirmed in 1 attempt'",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 2880
+    },
+    {
+      "bytes": 967875,
+      "canonical_state_sha256_tick": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "capture_method": "Playwright frameLocator('#game').locator('canvas').screenshot()",
+      "captured_utc_approx": "2026-11-03T13:05:28.429Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 3,
+        "dialogues": 12,
+        "holds": 1,
+        "proposals": 4
+      },
+      "dpr": 2,
+      "event_binding": {
+        "commits": [
+          {
+            "commit_count": 1,
+            "operation": "acquire_object",
+            "revision": 1,
+            "seq": 170,
+            "stage_from": 0,
+            "stage_to": 1,
+            "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+            "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          },
+          {
+            "commit_count": 2,
+            "operation": "install_lens",
+            "revision": 2,
+            "seq": 254,
+            "stage_from": 1,
+            "stage_to": 2,
+            "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+          },
+          {
+            "commit_count": 3,
+            "operation": "reveal_hint",
+            "revision": 3,
+            "seq": 289,
+            "stage_from": 2,
+            "stage_to": 2,
+            "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+          }
+        ],
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          },
+          {
+            "accepted": true,
+            "hashEquality": "different",
+            "mutated": true,
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "outcome": "authorized_fresh",
+            "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "seq": 288
+          }
+        ],
+        "episode_complete": {
+          "commit_count": 3,
+          "refusal_count": 1,
+          "revision": 3,
+          "seq": 507,
+          "stage": 2,
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+        },
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-game-ending-canvas.png",
+      "height": 1442,
+      "role": "ending (game canvas only)",
+      "sha256": "2864b8ff3ad79e6d8267f6c415f694a28473907889f562802aeac1d751c613da",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/020-ending-case-complete-canvas.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "2864b8ff3ad79e6d8267f6c415f694a28473907889f562802aeac1d751c613da"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/020-ending-case-complete.json",
+        "sha256": "f25067b45bfea0888dd890430f301c439703923d84c6104781fe511150a7ad94"
+      },
+      "summary": {
+        "commit_count": 3,
+        "fact_count": 6,
+        "refusal_count": 1,
+        "revision": 3,
+        "stage": 2
+      },
+      "tick": {
+        "dialogue_open": false,
+        "episode_over": true,
+        "focus": "tide_marks",
+        "stage": 2,
+        "x": -7.92,
+        "z": 13.59
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "game canvas at the ending: 'THE SEALED LIGHTHOUSE | CASE COMPLETE', contributions #1-#3 with stage transitions, 'DEDUCTION | confirmed in 1 attempt', PAGE 1/3",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 1784
+    },
+    {
+      "bytes": 202203,
+      "canonical_state_sha256_tick": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "capture_method": "Playwright locator('section.disclosure-live').screenshot() (element clip of the live dashboard)",
+      "captured_utc_approx": "2026-11-03T13:05:33.873Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 3,
+        "dialogues": 12,
+        "holds": 1,
+        "proposals": 4
+      },
+      "dpr": 2,
+      "event_binding": {
+        "commits": [
+          {
+            "commit_count": 1,
+            "operation": "acquire_object",
+            "revision": 1,
+            "seq": 170,
+            "stage_from": 0,
+            "stage_to": 1,
+            "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+            "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          },
+          {
+            "commit_count": 2,
+            "operation": "install_lens",
+            "revision": 2,
+            "seq": 254,
+            "stage_from": 1,
+            "stage_to": 2,
+            "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+          },
+          {
+            "commit_count": 3,
+            "operation": "reveal_hint",
+            "revision": 3,
+            "seq": 289,
+            "stage_from": 2,
+            "stage_to": 2,
+            "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+          }
+        ],
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          },
+          {
+            "accepted": true,
+            "hashEquality": "different",
+            "mutated": true,
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "outcome": "authorized_fresh",
+            "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "seq": 288
+          }
+        ],
+        "episode_complete": {
+          "commit_count": 3,
+          "refusal_count": 1,
+          "revision": 3,
+          "seq": 507,
+          "stage": 2,
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+        },
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-dashboard-signals.png",
+      "height": 1254,
+      "role": "dashboard live disclosure signals",
+      "sha256": "a3c18dc5338bc5415d9e251d3ee418754c03e9c9d572f941c370efd2600c5ec7",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/panel-disclosure-live.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "a3c18dc5338bc5415d9e251d3ee418754c03e9c9d572f941c370efd2600c5ec7"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/021-dashboard-final.json",
+        "sha256": "55ef0fb9462337196c15969dfa8a7cdb9ca1971dd0332132f7f4bb8e19fef170"
+      },
+      "summary": {
+        "commit_count": 3,
+        "fact_count": 6,
+        "refusal_count": 1,
+        "revision": 3,
+        "stage": 2
+      },
+      "tick": {
+        "dialogue_open": false,
+        "episode_over": true,
+        "focus": "tide_marks",
+        "stage": 2,
+        "x": -7.92,
+        "z": 13.59
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "Live disclosure signals: seq 84 denied (hash equality equal, state denied_no_mutation) and seq 288 authorized_fresh (hash equality different, fresh_disclosure); 4 evaluated, 0 skipped, 0 unreported on the authorized event",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 2808
+    },
+    {
+      "bytes": 119352,
+      "canonical_state_sha256_tick": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "capture_method": "Playwright locator('section.action-card').screenshot() (element clip of the live dashboard)",
+      "captured_utc_approx": "2026-11-03T13:05:33.873Z",
+      "css_viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "dashboard_counts": {
+        "commits": 3,
+        "dialogues": 12,
+        "holds": 1,
+        "proposals": 4
+      },
+      "dpr": 2,
+      "event_binding": {
+        "commits": [
+          {
+            "commit_count": 1,
+            "operation": "acquire_object",
+            "revision": 1,
+            "seq": 170,
+            "stage_from": 0,
+            "stage_to": 1,
+            "state_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+            "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+          },
+          {
+            "commit_count": 2,
+            "operation": "install_lens",
+            "revision": 2,
+            "seq": 254,
+            "stage_from": 1,
+            "stage_to": 2,
+            "state_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "state_sha256_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+          },
+          {
+            "commit_count": 3,
+            "operation": "reveal_hint",
+            "revision": 3,
+            "seq": 289,
+            "stage_from": 2,
+            "stage_to": 2,
+            "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "state_sha256_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+          }
+        ],
+        "disclosure_events": [
+          {
+            "accepted": false,
+            "hashEquality": "equal",
+            "mutated": false,
+            "nextHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "outcome": "denied",
+            "priorHash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+            "seq": 84
+          },
+          {
+            "accepted": true,
+            "hashEquality": "different",
+            "mutated": true,
+            "nextHash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+            "outcome": "authorized_fresh",
+            "priorHash": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+            "seq": 288
+          }
+        ],
+        "episode_complete": {
+          "commit_count": 3,
+          "refusal_count": 1,
+          "revision": 3,
+          "seq": 507,
+          "stage": 2,
+          "state_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892"
+        },
+        "latest_hold": {
+          "codes": [
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "gates": [
+            "DISCLOSURE/QUEST STAGE"
+          ],
+          "seq": 85,
+          "state_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+        }
+      },
+      "file": "browser-dashboard-last-action.png",
+      "height": 884,
+      "role": "dashboard last action + verdict history",
+      "sha256": "57158ba193fea7a42bc00b04b0405cbd6888cc61e42c7b9ef8f5c8bfc624cb6b",
+      "source": {
+        "byte_identical_copy": true,
+        "file": "shots/panel-action-card.png",
+        "receipt_dir": "presentation/browser/runs/attempt-1",
+        "sha256": "57158ba193fea7a42bc00b04b0405cbd6888cc61e42c7b9ef8f5c8bfc624cb6b"
+      },
+      "state_snapshot": {
+        "file": "presentation/browser/runs/attempt-1/states/021-dashboard-final.json",
+        "sha256": "55ef0fb9462337196c15969dfa8a7cdb9ca1971dd0332132f7f4bb8e19fef170"
+      },
+      "summary": {
+        "commit_count": 3,
+        "fact_count": 6,
+        "refusal_count": 1,
+        "revision": 3,
+        "stage": 2
+      },
+      "tick": {
+        "dialogue_open": false,
+        "episode_over": true,
+        "focus": "tide_marks",
+        "stage": 2,
+        "x": -7.92,
+        "z": 13.59
+      },
+      "track": "browser",
+      "visual_review": {
+        "method": "decoded pixels read at display scale",
+        "reading": "Last action: Committed stage 2 -> 2, 5 executed checks passed, 2 not evaluated; verdict history HOLD reveal_hint, COMMIT acquire_object, COMMIT install_lens, COMMIT reveal_hint",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 1854
+    },
+    {
+      "bytes": 330292,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "file": "native-arrival.png",
+      "height": 720,
+      "role": "arrival",
+      "sha256": "e1310255b479ce5f914f6832a83c1a45fc8a5299d4160ff5b1b3bd038dbaadac",
+      "source": {
+        "byte_identical_copy": true,
+        "command_receipt": "native-current-capture.json",
+        "file": "arrival.png",
+        "receipt_dir": "presentation/native",
+        "sha256": "e1310255b479ce5f914f6832a83c1a45fc8a5299d4160ff5b1b3bd038dbaadac",
+        "sidecar": "presentation/native/arrival.shot.json",
+        "sidecar_sha256": "035c77a3e09cec76eeaa1d5becba7165323cf9167883271389791b0c8960cb3b"
+      },
+      "state_changed": false,
+      "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "track": "native",
+      "visual_review": {
+        "method": "decoded pixels read at native 1280x720",
+        "reading": "native arrival: STAGE 0 | ARRIVAL, INVENTORY EMPTY, ENTRIES 0, HOLDS 0, case chain [ ] LENS -> [ ] MOUNT -> [ ] LEAD",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 1280
+    },
+    {
+      "bytes": 477168,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "file": "native-refusal.png",
+      "height": 720,
+      "role": "HOLD",
+      "sha256": "ac2ec1cc619ad2e016594b4845ece085fa3b1b88f28e29c8b4fefbc2ceeb424e",
+      "source": {
+        "byte_identical_copy": true,
+        "command_receipt": "native-current-capture.json",
+        "file": "refusal.png",
+        "receipt_dir": "presentation/native",
+        "sha256": "ac2ec1cc619ad2e016594b4845ece085fa3b1b88f28e29c8b4fefbc2ceeb424e",
+        "sidecar": "presentation/native/refusal.shot.json",
+        "sidecar_sha256": "54f06dd092691dc3054b148b4cfd707be5580237d6ecaa9d298e085a7d0e4c5d"
+      },
+      "state_changed": false,
+      "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "track": "native",
+      "visual_review": {
+        "method": "decoded pixels read at native 1280x720",
+        "reading": "native refusal: HELD - request cannot be answered yet; GATE DISCLOSURE | state unchanged; STAGE 0, ENTRIES 0, HOLDS 1",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 1280
+    },
+    {
+      "bytes": 373844,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "file": "native-authorized_hint.png",
+      "height": 720,
+      "role": "authorized progression (COMMIT)",
+      "sha256": "e7e269acd394df798be7222d2873e72bb9664658b5098b7149b2afc5ab683abe",
+      "source": {
+        "byte_identical_copy": true,
+        "command_receipt": "native-current-capture.json",
+        "file": "authorized_hint.png",
+        "receipt_dir": "presentation/native",
+        "sha256": "e7e269acd394df798be7222d2873e72bb9664658b5098b7149b2afc5ab683abe",
+        "sidecar": "presentation/native/authorized_hint.shot.json",
+        "sidecar_sha256": "473624502c34b85fe143d0ae28efa255feb5da402a55323de7ff41a73b6c71c5"
+      },
+      "state_changed": true,
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "track": "native",
+      "visual_review": {
+        "method": "decoded pixels read at native 1280x720",
+        "reading": "native authorized hint: ENTRY #3 COMMITTED - AUTHORIZED HINT / COMMIT; STAGE 2 | TRACE_LOGGED, ENTRIES 3, HOLDS 0; case chain [x] LENS -> [x] MOUNT -> [x] LEAD",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 1280
+    },
+    {
+      "bytes": 405276,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "file": "native-ending.png",
+      "height": 720,
+      "role": "ending",
+      "sha256": "bd2c9b40bcf2321b00f58963043408520bf6822cc6f66683b77deae37f69ec9f",
+      "source": {
+        "byte_identical_copy": true,
+        "command_receipt": "native-current-capture.json",
+        "file": "ending.png",
+        "receipt_dir": "presentation/native",
+        "sha256": "bd2c9b40bcf2321b00f58963043408520bf6822cc6f66683b77deae37f69ec9f",
+        "sidecar": "presentation/native/ending.shot.json",
+        "sidecar_sha256": "e9b2babcd6dacb876362c4ce34a33755820e5f00477f9cb89ee8a972bda10f93"
+      },
+      "state_changed": true,
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "track": "native",
+      "visual_review": {
+        "method": "decoded pixels read at native 1280x720",
+        "reading": "native ending: 'CASE COMPLETE', contributions #1-#3, 'DEDUCTION | confirmed in 1 attempt', PAGE 1/3",
+        "reviewer": "capture engineer (CurrentBrowserCapture); NOT an independent reviewer",
+        "verdict": "READABLE_STATE_MATCHES"
+      },
+      "width": 1280
+    }
+  ],
+  "identity": "ac6-browser-presentation-20261103",
+  "receipts_root": "_workspace/current/qa/releases/2026-11-03-prospective-pilot",
+  "route_diagnostics": {
+    "console_errors": 0,
+    "failed_requests": 0,
+    "http_errors": 0,
+    "non_get_requests": 0,
+    "note": "page_errors are Chromium WrongDocumentError pointer-lock rejections (see browser/RESULT.json); game state and gates unaffected",
+    "page_errors": 5
+  },
+  "route_run": "presentation/browser/runs/attempt-1",
+  "route_status": "COMPLETE",
+  "schema_version": "ac6-display-manifest/1",
+  "source_snapshot_manifest": "presentation/browser/source-snapshot-manifest.json"
+}

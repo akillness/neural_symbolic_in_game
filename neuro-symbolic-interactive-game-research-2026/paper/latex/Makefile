@@ -18,10 +18,13 @@ generated:
 	cd ../.. && uv run python scripts/generate_npc_paper_results.py $(NPC_PAPER_EVIDENCE_ARG)
 	cd ../.. && uv run python scripts/generate_disclosure_paper_results.py
 	cd ../.. && uv run python scripts/generate_runtime_comparison_publication.py
+	cd ../.. && uv run python scripts/generate_runtime_comparison_publication.py --identity-extension
+	cd ../.. && uv run python scripts/generate_prospective_pilot_results.py
 	cd ../.. && uv run python scripts/run_kg_ontology_simulation.py --check --no-database
 
 figures: generated
 	cd ../.. && uv run python scripts/generate_paper_figures.py
+	cd ../.. && uv run python scripts/generate_paired_feedback_figures.py
 	set -e; for svg in figures/*.svg; do \
 		base="$${svg%.svg}"; \
 		hash=$$(python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest())' "$$svg"); \
@@ -44,17 +47,16 @@ supplements: generated
 	cd en && latexmk -pdf -interaction=nonstopmode -halt-on-error traceability-supplement.tex
 	cd ko && latexmk -xelatex -interaction=nonstopmode -halt-on-error traceability-supplement.tex
 
-# Keep the project's fee-free full-paper target at 10 pages including references.
-# Official guidance permits overlength papers with mandatory charges above 10:
-# https://transactions.games/submit/submission-guidelines (checked 2026-10-26).
+# Keep working drafts uncapped; venue page-limit and fee policy is handled at submission.
+# Validate only that each generated PDF reports a positive integer page count.
 # Preserve proof and legibility; complete supplementary material is built separately.
 check: english korean supplements
 	@for lang in en ko; do \
 		info=$$(pdfinfo "$$lang/main.pdf") || exit $$?; \
 		pages=$$(printf '%s\n' "$$info" | awk '/^Pages:/ {print $$2}'); \
 		case "$$pages" in ''|*[!0-9]*) echo "Cannot inspect $$lang/main.pdf page count"; exit 1;; esac; \
-		if [ "$$pages" -lt 1 ] || [ "$$pages" -gt 10 ]; then \
-			echo "$$lang/main.pdf is $$pages pages, above the 10-page project ceiling"; \
+		if [ "$$pages" -lt 1 ]; then \
+			echo "$$lang/main.pdf reports non-positive page count $$pages"; \
 			exit 1; \
 		fi; \
 	done

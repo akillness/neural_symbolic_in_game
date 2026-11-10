@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import re
+import shutil
 import subprocess
 import tempfile
 from copy import deepcopy
@@ -8,6 +10,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts import run_playable_evaluation as playable_evaluation
 from scripts.run_playable_evaluation import (
     CORE_PRESENTATION_CHECKS,
     EXACT_TERMINAL_HASH,
@@ -248,6 +251,204 @@ def test_stage_project_excludes_import_cache_and_latest_docs() -> None:
         assert not (destination / ".godot").exists()
         assert not (destination / "docs").exists()
         assert (source / ".godot/imported").read_text(encoding="utf-8") == "stale\n"
+
+
+@pytest.fixture
+def isolated_capture_cli(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    """Exercise the real evaluation pipeline with only engine execution replaced."""
+    root = tmp_path / "research"
+    project = root / "game-track/godot"
+    latest = project / "docs/latest"
+    latest.mkdir(parents=True)
+    (project / "project.godot").write_text("[application]\n", encoding="utf-8")
+    fixtures = root / "data/fixtures"
+    fixtures.mkdir(parents=True)
+    for index, filename in enumerate(FIXTURE_FILES):
+        (fixtures / filename).write_text(json.dumps(_fixture_document(index)), encoding="utf-8")
+    monkeypatch.setattr(playable_evaluation, "ROOT", root)
+    monkeypatch.setattr(playable_evaluation, "GODOT_PROJECT", project)
+    monkeypatch.setattr(playable_evaluation, "LATEST_DOCS", latest)
+    monkeypatch.setattr(playable_evaluation, "FIXTURE_ROOT", fixtures)
+    monkeypatch.setattr(
+        playable_evaluation,
+        "find_godot_4",
+        lambda explicit: (explicit or "/test/godot", "4.7.1.stable.official.test"),
+    )
+
+    def engine_run(command: list[str], **_kwargs: object) -> subprocess.CompletedProcess[str]:
+        fixture_arg = next((arg for arg in command if arg.startswith("--fixture=")), None)
+        if fixture_arg is not None:
+            fixture = Path(fixture_arg.split("=", 1)[1])
+            index = FIXTURE_FILES.index(fixture.name)
+            events = _fixture_events(index)
+            output_arg = next(arg for arg in command if arg.startswith("--output="))
+            output = Path(output_arg.split("=", 1)[1])
+            (output / "summary.json").write_text(
+                json.dumps(_fixture_summary(index, events)), encoding="utf-8"
+            )
+            (output / "events.jsonl").write_text(
+                "".join(json.dumps(event) + "\n" for event in events), encoding="utf-8"
+            )
+        elif "--evaluate" in command:
+            report = {
+                "evaluation": "sealed-lighthouse-3d-presentation-engineering",
+                "engineering_only": True,
+                "passed": True,
+                "state_sha256_before": "f" * 64,
+                "state_sha256_after": "f" * 64,
+                "supported_screenshot_stages": list(SCREENSHOT_STAGES),
+                "checks": [
+                    {"check": name, "pass": True} for name in sorted(EXPECTED_PRESENTATION_CHECKS)
+                ],
+            }
+            Path(command[command.index("--evaluate") + 1]).write_text(
+                json.dumps(report), encoding="utf-8"
+            )
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    def capture(_godot: str, _project: Path, output: Path, _logs: Path) -> None:
+        output.mkdir(parents=True)
+        for stage in SCREENSHOT_STAGES:
+            for suffix in (".png", ".shot.json"):
+                shutil.copy2(LATEST_DOCS / f"{stage}{suffix}", output / f"{stage}{suffix}")
+
+    monkeypatch.setattr(playable_evaluation, "_run_godot", engine_run)
+    monkeypatch.setattr(playable_evaluation, "_capture_screenshots", capture)
+    return root
+
+
+def test_cli_explicit_output_writes_fresh_capture_without_replacing_latest(
+    isolated_capture_cli: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    latest = isolated_capture_cli / "game-track/godot/docs/latest"
+    retained = latest / "evaluation-matrix.json"
+    retained.write_bytes(b"historical matrix must survive\n")
+    output = tmp_path / "fresh capture"
+
+    assert (
+        playable_evaluation.main(
+            ["--godot", "/test/godot", "--capture", "--output-dir", str(output)]
+        )
+        == 0
+    )
+
+    matrix = json.loads((output / "evaluation-matrix.json").read_text(encoding="utf-8"))
+    assert matrix["all_pass"] is True
+    assert matrix["execution"]["godot_version"] == "4.7.1.stable.official.test"
+    assert matrix["totals"]["screenshots_valid"] == len(SCREENSHOT_STAGES)
+    assert (output / "arrival.png").read_bytes() == (LATEST_DOCS / "arrival.png").read_bytes()
+    assert retained.read_bytes() == b"historical matrix must survive\n"
+    printed = capsys.readouterr().out
+    assert f"output={output}" in printed
+    assert "Godot 4.7.1.stable.official.test" in printed
+
+
+def test_cli_without_capture_evaluates_existing_screenshots_without_rendering(
+    isolated_capture_cli: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    latest = isolated_capture_cli / "game-track/godot/docs/latest"
+    for stage in SCREENSHOT_STAGES:
+        shutil.copy2(LATEST_DOCS / f"{stage}.png", latest / f"{stage}.png")
+    before = {path.name: path.read_bytes() for path in latest.iterdir()}
+
+    def unexpected_capture(*_args: object, **_kwargs: object) -> None:
+        pytest.fail("evaluation without --capture must not render or replace screenshots")
+
+    monkeypatch.setattr(playable_evaluation, "_capture_screenshots", unexpected_capture)
+    assert playable_evaluation.main(["--godot", "/test/godot"]) == 0
+
+    matrix = json.loads((latest / "evaluation-matrix.json").read_text(encoding="utf-8"))
+    assert matrix["all_pass"] is True
+    assert matrix["execution"]["godot_version"] == "4.7.1.stable.official.test"
+    assert {name: (latest / name).read_bytes() for name in before} == before
+    assert f"output={latest}" in capsys.readouterr().out
+
+
+def _assert_cli_destination_refused(
+    destination: Path,
+    diagnostic: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    def forbidden_dispatch(*_args: object, **_kwargs: object) -> None:
+        pytest.fail("unsafe output must be refused before engine discovery or evaluation")
+
+    monkeypatch.setattr(playable_evaluation, "find_godot_4", forbidden_dispatch)
+    monkeypatch.setattr(playable_evaluation, "run_evaluation", forbidden_dispatch)
+    try:
+        result = playable_evaluation.main(["--capture", "--output-dir", str(destination)])
+    except (ValueError, RuntimeError, OSError, SystemExit) as error:
+        if isinstance(error, SystemExit):
+            assert error.code not in (None, 0)
+        message = str(error)
+    else:
+        assert result != 0, "unsafe output was accepted"
+        message = ""
+    streams = capsys.readouterr()
+    message += streams.out + streams.err
+    assert "unrecognized arguments" not in message
+    assert re.search(diagnostic, message, re.IGNORECASE), message
+
+
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "game-track/godot/new-capture",
+        "game-track/godot/docs/latest",
+        "paper/latex/captures/new-capture",
+        "_workspace/archive/new-capture",
+        "_workspace/current/engineering/tech-verification/evidence/new-capture",
+        "game-track/godot/docs/../new-capture",
+    ],
+    ids=["canonical-game", "explicit-latest", "paper-captures", "archive", "promoted", "traversal"],
+)
+def test_cli_rejects_protected_output_before_engine_dispatch(
+    isolated_capture_cli: Path,
+    relative: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    destination = isolated_capture_cli / relative
+    existed = destination.exists()
+    _assert_cli_destination_refused(
+        destination, r"protect|canonical|immutable|not allowed|unsafe", monkeypatch, capsys
+    )
+    assert destination.exists() == existed
+
+
+def test_cli_rejects_symlink_alias_into_protected_output(
+    isolated_capture_cli: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    alias = tmp_path / "alias"
+    alias.symlink_to(isolated_capture_cli / "game-track/godot", target_is_directory=True)
+    _assert_cli_destination_refused(
+        alias / "new-capture",
+        r"protect|canonical|immutable|not allowed|unsafe",
+        monkeypatch,
+        capsys,
+    )
+    assert not (alias / "new-capture").exists()
+
+
+def test_cli_rejects_nonempty_output_without_overwriting_retained_bytes(
+    isolated_capture_cli: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    output = tmp_path / "existing-capture"
+    output.mkdir()
+    retained = output / "evaluation-matrix.json"
+    retained.write_bytes(b"retained capture\n")
+    _assert_cli_destination_refused(
+        output, r"exist|non.?empty|fresh|overwrite", monkeypatch, capsys
+    )
+    assert {path.name: path.read_bytes() for path in output.iterdir()} == {
+        "evaluation-matrix.json": b"retained capture\n"
+    }
 
 
 def test_atomic_latest_outputs_are_byte_stable() -> None:

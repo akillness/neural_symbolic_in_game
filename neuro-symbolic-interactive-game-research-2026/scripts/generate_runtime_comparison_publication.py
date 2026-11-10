@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Render the fixed-game native runtime comparison from public-safe results.
 
-The renderer is intentionally strict: it accepts only the frozen eight-row public
-packet, derives every aggregate from row observations, and emits no output when
-the packet is absent or invalid.  It uses only the Python standard library.
+Separate strict modes accept the frozen eight-row comparison or the stopped
+identity-admission packet, never a pooled cohort. Invalid or absent evidence
+produces no output. The renderer uses only the Python standard library.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ import json
 import math
 import statistics
 from collections.abc import Iterable, Mapping
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape
@@ -35,6 +36,61 @@ REPEATS = (1, 2)
 SEED = 20261024
 REQUIRED_STATUS = "complete"
 PUBLIC_RESULTS_SHA256 = "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e"
+IDENTITY_RESULTS_PATH = (
+    ROOT
+    / "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json"
+)
+IDENTITY_RESULTS_SHA256 = "12fee3535d99930311b71ffa7e56b9aaa8b220353a14533cc25194211bf5554c"
+IDENTITY_SELECTORS = ("gpt-6-luna", "gpt-6-sol", "gpt-5.6-luna", "gpt-5.6-sol", "gpt-5.6-terra")
+
+_IDENTITY_FIXED_METADATA = {
+    "prior_cohort": {
+        "results_sha256": PUBLIC_RESULTS_SHA256,
+        "pooled": False,
+        "unchanged": True,
+        "assigned": 8,
+        "system_goal_successes": 5,
+    },
+    "failure": {
+        "primary": "provider_identity_missing",
+        "secondary": "outgoing_request_tuple_not_bound",
+        "record_hash_valid": True,
+        "semantic_record_links_valid": True,
+        "engineering_record_accepted": False,
+        "raw_bootstrap_stop_reason": "episode_record_integrity_invalid",
+        "raw_terminal_failure_reason": "repair_source_error",
+        "safety": "NO_COMMIT_OBSERVED",
+        "fresh_engine_replay": "NOT_RUN",
+        "proposal_constraint_validity": None,
+        "model_incapability_inferred": False,
+    },
+    "unsupported_request": {
+        "requested_selector": "gpt-6-terra",
+        "catalog_status": "NOT_ADVERTISED_IN_PINNED_CATALOG",
+        "assigned": 0,
+        "substituted": False,
+    },
+    "diagnosis": {
+        "bounded_source_fallback_review": "PASS_UNATTESTED",
+        "dedicated_tracer_status": "UNAVAILABLE_HTTP_429",
+        "identity_state": "MISSING_NOT_MISMATCHED",
+        "logging_target_level_correct": True,
+        "missing_or_nonstring_header_unresolved": True,
+        "provider_model_header": "openai-model",
+        "source_urls": [
+            "https://github.com/openai/codex/blob/rust-v0.164.0/codex-rs/codex-api/src/sse/responses.rs#L38-L76",
+            "https://github.com/openai/codex/blob/rust-v0.164.0/codex-rs/core/src/session/turn.rs#L3121-L3135",
+            "https://github.com/openai/codex/blob/rust-v0.164.0/codex-rs/core/src/session/mod.rs#L4209-L4230",
+        ],
+    },
+    "claims": {
+        "new_verified_model_comparison": False,
+        "ontology_effect_demonstrated": False,
+        "confirmatory_A_C_established": False,
+        "zero_cost_or_zero_credit_claimed": False,
+        "no_rerun": True,
+    },
+}
 
 ROW_FIELDS = (
     "row_id",
@@ -726,9 +782,426 @@ def main(input_path: Path | str = INPUT_PATH) -> dict[str, Path]:
     return outputs
 
 
+def _validate_identity_metadata(payload: Mapping[str, Any]) -> None:
+    """Close all metadata objects; reject undeclared fields and misleading value coercions."""
+    for name, expected in _IDENTITY_FIXED_METADATA.items():
+        actual = payload[name]
+        _require(
+            isinstance(actual, Mapping) and set(actual) == set(expected),
+            f"identity {name} fields drifted",
+        )
+        for field, expected_value in expected.items():
+            _require(
+                type(actual[field]) is type(expected_value) and actual[field] == expected_value,
+                f"identity {name}.{field} value drifted",
+            )
+
+    digest_fields = (
+        "episode_sha256",
+        "operational_closure_sha256",
+        "plan_sha256",
+        "record_hash",
+        "source_manifest_sha256",
+        "source_snapshot_manifest_sha256",
+    )
+    provenance = payload["provenance"]
+    _require(
+        isinstance(provenance, Mapping)
+        and set(provenance)
+        == {
+            *digest_fields,
+            "execution_ended_at",
+            "installed_cli_version",
+            "source_snapshot_file_count",
+            "source_snapshot_visibility",
+        },
+        "identity provenance fields drifted",
+    )
+    for field in digest_fields:
+        _sha256(provenance[field], f"identity provenance {field}")
+    _require(
+        provenance["installed_cli_version"] == "0.164.0"
+        and provenance["source_snapshot_visibility"] == "local_only"
+        and _is_int(provenance["source_snapshot_file_count"])
+        and provenance["source_snapshot_file_count"] == 23,
+        "identity provenance source or CLI scope drifted",
+    )
+    ended_at = provenance["execution_ended_at"]
+    _require(isinstance(ended_at, str), "identity execution timestamp must be a UTC string")
+    try:
+        timestamp = datetime.fromisoformat(ended_at)
+    except ValueError:
+        raise ValueError("identity execution timestamp must be canonical UTC ISO8601") from None
+    _require(
+        timestamp.tzinfo == UTC and timestamp.isoformat() == ended_at,
+        "identity execution timestamp must be canonical UTC ISO8601",
+    )
+    timing = payload["timing"]
+    _require(
+        isinstance(timing, Mapping)
+        and set(timing)
+        == {
+            "preparation_seconds",
+            "episode_elapsed_seconds",
+            "native_process_seconds",
+            "orchestration_seconds",
+            "successful_completion_seconds",
+            "pure_inference_latency_claimed",
+        },
+        "identity timing fields drifted",
+    )
+
+
+def validate_identity_results(payload: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Validate this stopped cohort without turning absent identity into model evidence."""
+    fields = {
+        "schema_version",
+        "study_id",
+        "status",
+        "scope",
+        "counters",
+        "rows",
+        "failure",
+        "timing",
+        "unknowns",
+        "provenance",
+        "prior_cohort",
+        "unsupported_request",
+        "diagnosis",
+        "claims",
+    }
+    _require(
+        isinstance(payload, Mapping) and set(payload) == fields, "identity packet fields drifted"
+    )
+    _require(
+        payload["schema_version"] == "codex-native-identity-public-results/1",
+        "identity schema drifted",
+    )
+    _require(
+        payload["study_id"] == "runtime-model-swap-codex-identity-20261026-v1",
+        "identity study drifted",
+    )
+    _require(payload["status"] == "STOPPED_IDENTITY_UNVERIFIED", "identity disposition drifted")
+    _validate_identity_metadata(payload)
+    expected_scope = {
+        "quest_id": QUEST_ID,
+        "seed": SEED,
+        "requested_selectors": list(IDENTITY_SELECTORS),
+        "representations": list(REPRESENTATIONS),
+        "repeats": list(REPEATS),
+        "effort": "medium",
+        "serial_concurrency": 1,
+        "episode_wall_seconds": 180,
+        "response_seconds": 60,
+        "actual_native_dispatch_cap_per_episode": 12,
+        "logical_repair_budget_per_decision": 2,
+    }
+    scope = payload["scope"]
+    _require(scope == expected_scope, "identity frozen scope drifted")
+    for field in (
+        "seed",
+        "serial_concurrency",
+        "episode_wall_seconds",
+        "response_seconds",
+        "actual_native_dispatch_cap_per_episode",
+        "logical_repair_budget_per_decision",
+    ):
+        _require(_is_int(scope[field]), "identity scope count must be an integer")
+    _require(all(_is_int(value) for value in scope["repeats"]), "identity repeats must be integers")
+    expected_ids = tuple(
+        f"{QUEST_ID}:{selector}:{representation}:repeat-{repeat}"
+        for selector in IDENTITY_SELECTORS
+        for representation in REPRESENTATIONS
+        for repeat in REPEATS
+    )
+    rows = payload["rows"]
+    _require(
+        isinstance(rows, list) and len(rows) == len(expected_ids), "identity planned rows missing"
+    )
+    row_fields = {
+        "planned_id",
+        "requested_selector",
+        "representation",
+        "repeat",
+        "assigned",
+        "executed",
+        "identity_qualified",
+        "provider_identity",
+        "provider_revision",
+        "goal_reached",
+        "status",
+        "native_processes",
+        "host_invocations",
+        "blocked_repair_requests",
+    }
+    for index, (row, planned_id) in enumerate(zip(rows, expected_ids, strict=True)):
+        _require(isinstance(row, Mapping) and set(row) == row_fields, "identity row fields drifted")
+        _require(row["planned_id"] == planned_id, "identity planned row order drifted")
+        _, selector, representation, repeat = _parse_planned_id(planned_id)
+        _require(
+            row["requested_selector"] == selector
+            and row["representation"] == representation
+            and row["repeat"] == repeat
+            and _is_int(row["repeat"]),
+            "identity row binding drifted",
+        )
+        for field in (
+            "assigned",
+            "executed",
+            "native_processes",
+            "host_invocations",
+            "blocked_repair_requests",
+        ):
+            _require(
+                _is_int(row[field]) and row[field] >= 0, "identity row count must be an integer"
+            )
+        assigned = int(index == 0)
+        _require(
+            row["assigned"] == assigned
+            and row["executed"] == assigned
+            and row["native_processes"] == assigned,
+            "identity attempt disposition drifted",
+        )
+        _require(
+            row["host_invocations"] == 3 * assigned
+            and row["blocked_repair_requests"] == 2 * assigned,
+            "identity native and blocked-request counts drifted",
+        )
+        _require(
+            row["identity_qualified"] is False
+            and row["provider_identity"] is None
+            and row["provider_revision"] is None,
+            "unqualified identity cannot be promoted",
+        )
+        expected_goal = False if assigned else None
+        _require(row["goal_reached"] is expected_goal, "unobserved identity goal cannot be imputed")
+        _require(
+            row["status"] == ("IDENTITY_UNVERIFIED" if assigned else "NOT_RUN"),
+            "identity row status drifted",
+        )
+    counters = payload["counters"]
+    expected_counters = {
+        "planned": len(rows),
+        "assigned": sum(row["assigned"] for row in rows),
+        "executed": sum(row["executed"] for row in rows),
+        "identity_qualified": sum(row["identity_qualified"] for row in rows),
+        "unattempted": sum(row["assigned"] == 0 for row in rows),
+        "system_goal_successes": 0,
+        "native_processes": sum(row["native_processes"] for row in rows),
+        "host_invocations": sum(row["host_invocations"] for row in rows),
+        "blocked_repair_requests": sum(row["blocked_repair_requests"] for row in rows),
+        "committed_transitions": 0,
+        "unsafe_committed_transitions": 0,
+    }
+    _require(
+        isinstance(counters, Mapping)
+        and counters == expected_counters
+        and all(_is_int(value) for value in counters.values()),
+        "identity counters do not reconcile",
+    )
+    unknowns = payload["unknowns"]
+    _require(
+        isinstance(unknowns, Mapping)
+        and set(unknowns)
+        == {
+            "provider_identity",
+            "provider_revision",
+            "effective_effort",
+            "provider_request_count",
+            "provider_cost_usd",
+            "actual_credit_consumption",
+            "actual_cash_charge",
+        }
+        and all(value is None for value in unknowns.values()),
+        "identity unknowns cannot be invented",
+    )
+    for field in (
+        "preparation_seconds",
+        "episode_elapsed_seconds",
+        "native_process_seconds",
+        "orchestration_seconds",
+    ):
+        value = payload["timing"][field]
+        _optional_nonnegative_number(value, field)
+        _require(value is not None and value > 0, "observed identity timing must be positive")
+    _require(
+        payload["timing"]["successful_completion_seconds"] is None
+        and payload["timing"]["pure_inference_latency_claimed"] is False,
+        "failed identity timing is not successful completion or pure inference",
+    )
+    return payload
+
+
+def load_identity_results(path: Path | str = IDENTITY_RESULTS_PATH) -> Mapping[str, Any]:
+    """Read only exact sanitized bytes; preserve the separate original pilot."""
+    raw = Path(path).read_bytes()
+    _require(
+        hashlib.sha256(raw).hexdigest() == IDENTITY_RESULTS_SHA256,
+        "identity results digest mismatch",
+    )
+    _require(
+        hashlib.sha256(RESULTS_PATH.read_bytes()).hexdigest() == PUBLIC_RESULTS_SHA256,
+        "original pilot results changed",
+    )
+    return validate_identity_results(json.loads(raw))
+
+
+def render_identity_fragment(data: Mapping[str, Any], korean: bool = False) -> str:
+    """Render an admission failure report, not a benchmark with zero-filled model scores."""
+    data = validate_identity_results(data)
+    counts = data["counters"]
+    if korean:
+        paragraphs = [
+            (
+                r"\textbf{신원 admission 중단: not a model comparison.} "
+                f"별도 확장은 {counts['planned']}개 계획, {counts['assigned']}개 배정, "
+                f"{counts['native_processes']}회 native 프로세스 실행, {counts['identity_qualified']}개 신원 검증, "
+                f"{counts['unattempted']}개 미실행이다. "
+                r"첫 요청 \texttt{gpt-6-luna}/\texttt{general\_rule}의 CLI turn은 끝났지만 "
+                r"provider 모델 신원 증거가 없어 응답을 수용하지 않고 나머지 실행을 중단했다."
+            ),
+            (
+                r"요청 selector와 catalog 노출은 실제 응답 신원이 아니다. "
+                r"\texttt{openai-model}의 부재 또는 유효 문자열로 전달되지 않은 경우를 현재 증거로 구분하지 못한다. "
+                r"이는 관측된 모델 불일치나 모델 능력 실패가 아니다. "
+                r"\texttt{gpt-6-terra}는 고정 catalog에 없어서 배정하거나 다른 모델로 대체하지 않았다."
+            ),
+            (
+                r"감사 구분: \texttt{record hash valid=true}; \texttt{engineering record accepted=false}. "
+                r"원래 중단 label \texttt{episode\_record\_integrity\_invalid}는 보존한다. "
+                r"해시 재계산은 일치하지만 compound 검증 함수가 engineering/safety PASS도 요구하므로 "
+                r"이 label을 바이트 손상으로 해석하지 않는다. 커밋은 0개, safety는 "
+                r"\texttt{NO\_COMMIT\_OBSERVED}, 새 엔진 재생은 \texttt{NOT\_RUN}이며 안전 통과가 아니다."
+            ),
+            (
+                r"차단된 repair 요청 2회는 native 재실행이 아니다. 원래 8개 pilot은 바이트 불변으로 별도 보존하며 "
+                r"새 분모와 합산하지 않는다. Provider 신원/revision/유효 effort/요청 수/비용/실제 credit 및 현금 청구는 "
+                r"\texttt{unknown}이다. 계정 일치와 자동 충전 OFF를 전후 관측했고 설정 변경이나 구매는 하지 않았지만 "
+                r"0원 또는 credit 무사용의 증명은 아니다. 검증된 새 모델 비교, 온톨로지 효과, 확인적 A/C 근거는 없다."
+            ),
+        ]
+        caption = "신원 검증 중단 확장의 10개 셀. 계획과 실제 배정·신원 검증·미실행을 분리하며 모델 성능 표가 아니다."
+        header = r"요청 selector & 표현 & 계획 & 배정 & 신원 검증 & 미실행 \\"
+        total_label = "합계"
+    else:
+        paragraphs = [
+            (
+                r"\textbf{Identity-admission stop: not a model comparison.} "
+                f"The separate extension has {counts['planned']} planned rows, {counts['assigned']} assigned row, "
+                f"{counts['native_processes']} native process, {counts['identity_qualified']} identity-qualified rows "
+                f"and {counts['unattempted']} unattempted rows. "
+                r"The first requested \texttt{gpt-6-luna}/\texttt{general\_rule} CLI turn completed, "
+                r"but its response lacked provider model-identity evidence; it was not accepted and the batch stopped."
+            ),
+            (
+                r"A requested selector or catalog advertisement is not a served identity. The evidence cannot distinguish "
+                r"an absent \texttt{openai-model} header from one not delivered as a valid string. "
+                r"This is not an observed model mismatch or model-incapability result. "
+                r"\texttt{gpt-6-terra} was not advertised by the pinned catalog, was not assigned and was not substituted."
+            ),
+            (
+                r"Audit distinction: \texttt{record hash valid=true}; \texttt{engineering record accepted=false}. "
+                r"The original bootstrap label \texttt{episode\_record\_integrity\_invalid} is retained. "
+                r"The recomputed hash matches; the compound predicate also requires engineering/safety PASS, "
+                r"so this label is not evidence of corrupted bytes. There were 0 commits, safety is "
+                r"\texttt{NO\_COMMIT\_OBSERVED}, and fresh-engine replay is \texttt{NOT\_RUN}, not a safety pass."
+            ),
+            (
+                r"Two blocked repair requests were not native reruns. The original eight-row pilot remains byte-identical "
+                r"and unpooled. Provider identity, revision, effective effort, request count, cost, actual credit use "
+                r"and cash charge remain \texttt{unknown}. Matching accounts and automatic reload OFF were observed "
+                r"before and after, without a setting change or purchase; these are not zero-cost or zero-credit attestations. "
+                r"No verified new model comparison, ontology effect or confirmatory A/C evidence follows."
+            ),
+        ]
+        caption = "Ten identity-admission cells distinguish plans, assignments, qualified identity and unattempted rows; not model performance."
+        header = (
+            r"Requested selector & Representation & Planned & Assigned & ID-qualified & Not run \\"
+        )
+        total_label = "Total"
+    timing = data["timing"]
+    timing_text = (
+        f"Preparation {timing['preparation_seconds']:.3f} s; episode elapsed "
+        f"{timing['episode_elapsed_seconds']:.3f} s; native process {timing['native_process_seconds']:.3f} s; "
+        f"orchestration {timing['orchestration_seconds']:.3f} s. "
+        + (
+            "실패 시도의 서로 다른 시간 경계이며 순수 추론 지연이나 성공 시간이 아니다."
+            if korean
+            else "These are distinct failed-attempt boundaries, not pure inference latency or time to success."
+        )
+    )
+    paragraphs.append(timing_text)
+    out = [
+        "\n\n".join(paragraphs),
+        r"\setcounter{table}{14}",
+        r"\begin{table}[!ht]",
+        r"\centering",
+        r"\setlength{\tabcolsep}{4pt}",
+        r"\renewcommand{\arraystretch}{1.20}",
+        f"\\caption{{{caption}}}",
+        r"\label{tab:runtime-identity-admission}",
+        r"\begin{tabular}{llrrrr}",
+        r"\toprule",
+        header,
+        r"\midrule",
+    ]
+    for selector in IDENTITY_SELECTORS:
+        for representation in REPRESENTATIONS:
+            planned = assigned = qualified = not_run = 0
+            for row in data["rows"]:
+                if (
+                    row["requested_selector"] == selector
+                    and row["representation"] == representation
+                ):
+                    planned += 1
+                    assigned += row["assigned"]
+                    qualified += row["identity_qualified"]
+                    not_run += row["assigned"] == 0
+            out.append(
+                f"\\texttt{{{_latex(selector)}}} & \\texttt{{{_latex(representation)}}} & "
+                f"{planned} & {assigned} & {qualified} & {not_run} " + r"\\"
+            )
+    out.extend(
+        [
+            r"\midrule",
+            f"{total_label} & --- & {counts['planned']} & {counts['assigned']} & "
+            f"{counts['identity_qualified']} & {counts['unattempted']} " + r"\\",
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+        ]
+    )
+    return "\n".join(out) + "\n"
+
+
+def write_identity_fragments(input_path: Path | str = IDENTITY_RESULTS_PATH) -> tuple[Path, Path]:
+    """Write only the two new fragments; never rewrite the original eight outcomes."""
+    data = load_identity_results(input_path)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    paths = (
+        OUTPUT_DIR / "runtime_identity_extension_en.tex",
+        OUTPUT_DIR / "runtime_identity_extension_ko.tex",
+    )
+    for path, korean in zip(paths, (False, True), strict=True):
+        path.write_text(
+            render_identity_fragment(data, korean=korean), encoding="utf-8", newline="\n"
+        )
+    return paths
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--input", type=Path, default=INPUT_PATH, help="explicit public results JSON path"
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--input", type=Path, default=INPUT_PATH, help="explicit original public results JSON path"
     )
-    main(parser.parse_args().input)
+    mode.add_argument(
+        "--identity-extension",
+        action="store_true",
+        help="render the separate stopped identity-admission cohort",
+    )
+    args = parser.parse_args()
+    if args.identity_extension:
+        write_identity_fragments()
+    else:
+        main(args.input)

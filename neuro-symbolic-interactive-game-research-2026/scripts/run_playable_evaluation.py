@@ -9,6 +9,7 @@ usability, immersion, affect, or model/player efficacy.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
@@ -132,14 +133,13 @@ def find_godot_4(explicit: str | None = None) -> tuple[str, str]:
         resolved = shutil.which(command)
         if resolved:
             candidates.append(resolved)
-    candidates.extend(
-        str(path)
-        for path in (
-            Path("/Applications/Godot.app/Contents/MacOS/Godot"),
-            Path.home() / "Applications/Godot.app/Contents/MacOS/Godot",
-        )
-        if path.is_file()
-    )
+    for path in (
+        Path("/Applications/Godot.app/Contents/MacOS/Godot"),
+        Path.home() / "Applications/Godot.app/Contents/MacOS/Godot",
+    ):
+        with contextlib.suppress(OSError):
+            if path.is_file():
+                candidates.append(str(path))
     attempted: list[str] = []
     for candidate in dict.fromkeys(candidates):
         attempted.append(candidate)
@@ -909,16 +909,34 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Regenerate all four non-headless 1280x720 public-safe working screenshots.",
     )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        help="Write a fresh capture/evaluation set outside protected evidence directories.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
+    output_dir = LATEST_DOCS
+    if args.output_dir is not None:
+        output_dir = args.output_dir.expanduser().resolve()
+        protected = (
+            GODOT_PROJECT.resolve(),
+            (ROOT / "paper/latex/captures").resolve(),
+            (ROOT / "_workspace/archive").resolve(),
+            (ROOT / "_workspace/current/engineering/tech-verification/evidence").resolve(),
+        )
+        if any(output_dir == path or path in output_dir.parents for path in protected):
+            raise ValueError(f"protected capture output directory: {output_dir}")
+        if output_dir.exists() and (not output_dir.is_dir() or any(output_dir.iterdir())):
+            raise ValueError(f"capture output must be a fresh, empty directory: {output_dir}")
     godot, version = find_godot_4(args.godot)
     matrix = run_evaluation(
         godot=godot,
         godot_version=version,
-        output_dir=LATEST_DOCS,
+        output_dir=output_dir,
         capture=args.capture,
     )
     totals = matrix["totals"]
@@ -927,7 +945,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         f"{totals['fixtures_passed']}/{totals['fixtures_total']}, checks "
         f"{totals['combined_checks_passed']}/{totals['combined_checks_total']}, "
         f"screenshots {totals['screenshots_valid']}/{totals['screenshots_total']}; "
-        f"Godot {version}; output={LATEST_DOCS}"
+        f"Godot {version}; output={output_dir}"
     )
     return 0
 

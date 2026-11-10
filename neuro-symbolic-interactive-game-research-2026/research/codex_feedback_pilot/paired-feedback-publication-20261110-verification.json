@@ -1,0 +1,262 @@
+{
+  "schema": "paired-feedback-publication-verification/1",
+  "date": "2026-11-10",
+  "scope": "Offline publication and public-data projection; no new experiment dispatch",
+  "status": "VERIFIED_LOCALLY_DELIVERY_PENDING",
+  "counts": {
+    "assigned": 20,
+    "received": 20,
+    "parsed": 10,
+    "schema_failed": 10,
+    "gate_accepted": 8,
+    "goal_reached": 7,
+    "pending": 0
+  },
+  "scientific_boundary": {
+    "sample": "synthetic development-only; shared five fixtures; unequal feedback; fixed nominal Luna then Terra order",
+    "served_identity": "unknown",
+    "revision": "unknown",
+    "provider_request_count": "unknown",
+    "cost": "unknown",
+    "superiority_causal_ontology_efficacy_confirmatory_A_C": "NOT_ESTABLISHED"
+  },
+  "checks": [
+    {
+      "command": "rtk make check",
+      "cwd": "paper/latex",
+      "exit": 2,
+      "status": "FIX_PRESERVED",
+      "reason": "Historical NPC006 runtime-source hashes do not match the current source tree"
+    },
+    {
+      "command": "rtk make check NPC_PAPER_EVIDENCE_ROOT=\"$ARCHIVED_NPC_SOURCE\"",
+      "cwd": "paper/latex",
+      "exit": 0,
+      "historical_revision": "fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09",
+      "context": "historical-evidence-root; dated-historical-only; no current-release authority",
+      "environment": {
+        "SOURCE_DATE_EPOCH": "1794268800",
+        "FORCE_SOURCE_DATE": "1",
+        "TZ": "UTC",
+        "UV_OFFLINE": "1"
+      }
+    },
+    {
+      "command": "rtk proxy .venv/bin/python -m pytest tests/test_paired_feedback_figures.py tests/test_codex_feedback_publication.py tests/test_visual_asset_validator.py tests/test_latex_makefile.py -q -p no:cacheprovider",
+      "exit": 0,
+      "passed": 132,
+      "subtests_passed": 37,
+      "seconds": 11.8
+    },
+    {
+      "command": "rtk proxy .venv/bin/ruff check scripts/generate_paired_feedback_figures.py scripts/update_visual_source_manifest.py scripts/validate_visual_assets.py tests/test_paired_feedback_figures.py tests/test_codex_feedback_publication.py tests/test_visual_asset_validator.py tests/test_latex_makefile.py",
+      "exit": 0,
+      "files": 7
+    },
+    {
+      "command": "rtk proxy .venv/bin/ruff format --check scripts/generate_paired_feedback_figures.py scripts/update_visual_source_manifest.py scripts/validate_visual_assets.py tests/test_paired_feedback_figures.py tests/test_codex_feedback_publication.py tests/test_visual_asset_validator.py tests/test_latex_makefile.py",
+      "exit": 0,
+      "already_formatted": 7
+    },
+    {
+      "command": "rtk proxy .venv/bin/python scripts/generate_paired_feedback_figures.py --check",
+      "exit": 0
+    },
+    {
+      "command": "rtk proxy .venv/bin/python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration",
+      "exit": 0,
+      "unique_receipts": 147,
+      "svg_assets": 12,
+      "double_regenerated_sources": 24
+    },
+    {
+      "method": "Final PDF page rendering and visual inspection",
+      "pages_per_language": 17,
+      "figure_5_page": 10,
+      "figure_6_page": 11,
+      "inspected_languages": [
+        "en",
+        "ko"
+      ],
+      "observed_clipping_overlap": false
+    },
+    {
+      "method": "README local link existence and current-PDF/contact-sheet digest comparison",
+      "links": {
+        "README.md": {
+          "local_links": 29,
+          "missing": []
+        },
+        "README.ko.md": {
+          "local_links": 29,
+          "missing": []
+        }
+      },
+      "contact_hashes_match": true
+    }
+  ],
+  "protected_raw_files": {
+    "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-luna/approved_results.json": "690e2b6763efd3a5a1bb0fadcab27b88a03a014f24b87a5cd782f3ab16cb84a1",
+    "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-luna/results.json": "11e0d2d0eda6a73d83922adbfe2b3b87a300397fe1fd6ccd12793d502fd1d446",
+    "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-terra/approved_results.json": "b24ff0587c4fa4836b8fa6b303641708cee32284ed6c0d3db50ac99ec5c66eb8",
+    "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-terra/results.json": "d7adbd213704f6ca64f4968337620643a67c1b06ff4b16eb55030eafdcdc2942"
+  },
+  "protected_raw_files_byte_identical": true,
+  "public_projection": {
+    "directory": "research/codex_feedback_pilot/public-v5",
+    "files": 22,
+    "omitted_field": "metadata.codex_executable",
+    "change": "null executable path and add public_projection; all other values retained exactly",
+    "raw_hash_binding": true,
+    "raw_approvals_and_outcomes_delivery": "EXCLUDED_LOCAL_ONLY",
+    "source_zip": "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip",
+    "source_zip_role": "immutable seven-file source provenance; not standalone executable distribution"
+  },
+  "paper_contacts": [
+    {
+      "language": "en",
+      "path": "docs/readme/prospective-20261103/paper-en-pages.png",
+      "width": 1360,
+      "height": 2286,
+      "bytes": 1538089,
+      "sha256": "c18e285d5be56731841cfb2d3dcbd0f50718391ad2d1aa0685e7d877176f967a",
+      "source_pdf": {
+        "pages": 17,
+        "path": "paper/latex/en/main.pdf",
+        "bytes": 1437940,
+        "sha256": "fe6712564803086a22ea784ded2cdd44d0067fae3786fc5e4b602aa4893262fb"
+      }
+    },
+    {
+      "language": "ko",
+      "path": "docs/readme/prospective-20261103/paper-ko-pages.png",
+      "width": 1360,
+      "height": 2286,
+      "bytes": 1643703,
+      "sha256": "50c384077a31f600192fb10ab0a0b7ef9ece8241847825327bac01d02ac06a42",
+      "source_pdf": {
+        "pages": 17,
+        "path": "paper/latex/ko/main.pdf",
+        "bytes": 1392932,
+        "sha256": "97de9c7611261c03e22bf94ce742ee3cf4ea695f570fca77e8197bf3f731b077"
+      }
+    }
+  ],
+  "review": {
+    "dedicated_security_and_python_reviewers": "UNAVAILABLE_BEFORE_VERDICT_QUOTA_429",
+    "fallback": "separate-context review; not specialist or cross-provider attestation",
+    "initial_failures": "duplicate/pair/signal/receipt/type/export-alias defects and stale manifest preserved as findings; fixed with regressions",
+    "evidence_review": "bounded presentation adequate after checks_run list-length notation correction; no essential figure/table missing for bounded mechanism/accounting claim"
+  },
+  "routing": {
+    "openspace": "research-paper-writing ranked first; no automatic suggestion",
+    "jev_profile": "jeopi",
+    "backend": "api/typesafe",
+    "model": "jev-1.14.0",
+    "tier": "unvalidated",
+    "skills": [
+      "academic-research",
+      "research-paper-writing",
+      "audit-verify-explain-grade-5"
+    ],
+    "authority": "advisory only"
+  },
+  "not_claimed": [
+    "current-source full-tree CI pass",
+    "scientific superiority or efficacy",
+    "zero cost",
+    "new native model run",
+    "deployment or journal acceptance"
+  ],
+  "selected_delivery_followup": {
+    "scope": "Isolated export of the selected index, excluding unrelated unstaged runtime work; this receipt is a pre-delivery checkpoint, not a push receipt",
+    "tested_tree_before_receipt_append": "42f2fcc306e144564cd0d31914ed9c05b1795544",
+    "clean_selected_build": {
+      "command": "rtk make check NPC_PAPER_EVIDENCE_ROOT=\"$HISTORICAL_SOURCE\"",
+      "environment": {"PYTHONPATH": "$SELECTED_PROJECT/src", "UV_OFFLINE": "1", "SOURCE_DATE_EPOCH": "1794268800", "FORCE_SOURCE_DATE": "1", "TZ": "UTC"},
+      "historical_source_revision": "fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09",
+      "exit": 0,
+      "seconds": 23.47,
+      "english_main_pages": 17,
+      "korean_main_pages": 17,
+      "both_main_pdfs_byte_identical_to_delivery": true,
+      "korean_supplement_refresh": {
+        "path": "paper/latex/ko/traceability-supplement.pdf",
+        "previous_sha256": "d8451aa80af8339d537296bf048f874e0b2d1a34d3bf0d531b97fcf9bada024d",
+        "clean_selected_sha256": "24887cc2b630abe2e233821c10a5a4640a5be79ea44b59ebe2d0dfeadc5a202a",
+        "previous_bytes": 64243,
+        "clean_selected_bytes": 64074,
+        "pages": 1,
+        "reason": "Replaced the dated November 5 incremental artifact with the current clean selected-source build; inspected text diff and rendered page show layout/line-break changes, not changed research claims",
+        "source_manifest_refreshed": true
+      }
+    },
+    "import_qualified_regressions": {
+      "command": "rtk proxy .venv/bin/python -m pytest tests/test_paired_feedback_figures.py tests/test_codex_feedback_publication.py tests/test_visual_asset_validator.py tests/test_latex_makefile.py tests/test_current_research_publication.py tests/test_runtime_comparison_publication.py tests/test_playable_evaluation.py tests/test_prospective_pilot.py tests/test_prospective_pilot_admission.py tests/test_prospective_pilot_analysis.py tests/test_prospective_pilot_tasks.py tests/test_prospective_prepare.py tests/test_prospective_publication_checks.py -q -p no:cacheprovider",
+      "environment": {"PYTHONPATH": "$SELECTED_PROJECT/src", "UV_OFFLINE": "1"},
+      "interpreter": "Isolated selected-export .venv/bin/python, CPython 3.12.13",
+      "module_origin_probe": "Imported nesy_game.__file__ resolves to the selected export's src/nesy_game/__init__.py, not the original working tree",
+      "module_origin_verified_inside_selected_export": true,
+      "test_files": 13,
+      "exit": 0,
+      "tests_passed": 396,
+      "subtests_passed": 345,
+      "seconds": 34.73,
+      "qualification": "Authoritative targeted source-isolation run; not a full-current-working-tree CI or scientific-efficacy result"
+    },
+    "targeted_regressions": {
+      "command": "rtk proxy \"$PUBLICATION_PYTHON\" -m pytest tests/test_paired_feedback_figures.py tests/test_codex_feedback_publication.py tests/test_visual_asset_validator.py tests/test_latex_makefile.py tests/test_current_research_publication.py tests/test_runtime_comparison_publication.py tests/test_playable_evaluation.py tests/test_prospective_pilot.py tests/test_prospective_pilot_admission.py tests/test_prospective_pilot_analysis.py tests/test_prospective_pilot_tasks.py tests/test_prospective_prepare.py tests/test_prospective_publication_checks.py -q -p no:cacheprovider",
+      "interpreter": "Existing project CPython 3.11.14 environment, explicitly selected outside the isolated source export",
+      "qualification": "Preliminary external-environment run: editable-import origin was not observed; do not use this run alone as source-isolated evidence. Superseded for source-isolation by the explicit-src-PYTHONPATH qualified run",
+      "test_files": 13,
+      "exit": 0,
+      "tests_passed": 396,
+      "subtests_passed": 345,
+      "seconds": 40.91
+    },
+    "static_checks": {
+      "scope": "23 staged Python sources outside frozen research corpus snapshots",
+      "ruff_check": "PASS",
+      "ruff_format_check": "PASS",
+      "initial_format_failure": "One tuple in generate_paper_figures.py required wrapping; formatter-only correction and source-manifest refresh applied before the final selected-tree run"
+    },
+    "readme_delivery": {
+      "languages": ["en", "ko"],
+      "local_references_each": 56,
+      "markdown_references_each": 29,
+      "html_references_each": 27,
+      "missing_worktree": 0,
+      "missing_index": 0,
+      "capture_manifest_files_size_and_sha256_verified": 12,
+      "initial_failure": "Eight HTML-linked PNGs plus two further capture-manifest PNGs were missing from the initial selected index; explicitly added without staging raw logs"
+    },
+    "scope_correction": "Removed the unrelated three-line extension-catalog package-data addition from the index while preserving its working-tree bytes; no unrelated runtime implementation was added",
+    "review": {
+      "dedicated_commit_reviewer": "UNAVAILABLE_BEFORE_VERDICT_QUOTA_429",
+      "fallback_initial": "FIX: missing image dependencies and undelivered package-data declaration",
+      "fallback_closure": "APPROVE after a narrow fresh-index dependency/hash recheck; separate-context static fallback, not a specialist or cross-provider attestation"
+    },
+    "jev_review": {
+      "profile": "jeopi",
+      "backend": "api/typesafe",
+      "model": "jev-1.14.0",
+      "tier": "unvalidated",
+      "verdict": "proposal_only",
+      "receipt_version": 2,
+      "receipt": "36788977284ba691dc0120191cdd50fa31ac61697629f3964d527e839a19e446",
+      "authority": "Advisory only; not scientific evidence or autonomous execution authorization"
+    },
+    "isolated_environment": {
+      "initial_attempt": "Offline CPython 3.11.14 sync exited 1 because the pinned rpds-py wheel was not cached; no network download occurred",
+      "resolution_command": "rtk uv sync --offline --extra research --extra dev --python \"$CACHED_PYTHON\"",
+      "resolution_interpreter": "Already installed CPython 3.12.13",
+      "resolution_exit": 0,
+      "resolution_result": "Locked package built and 15 packages installed in the isolated environment entirely from local cache; original project environment unchanged"
+    },
+    "final_visual_regeneration": "147 unique receipts / 12 SVG / 24 double-regenerated sources: PASS"
+  },
+  "delivery": {
+    "commit": null,
+    "push": "PENDING"
+  }
+}

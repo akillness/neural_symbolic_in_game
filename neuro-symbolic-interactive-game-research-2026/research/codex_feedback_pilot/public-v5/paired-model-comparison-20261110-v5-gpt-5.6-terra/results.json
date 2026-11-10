@@ -1,0 +1,1725 @@
+{
+  "cases": [
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_precondition",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 7.754,
+        "events": [
+          {
+            "elapsed_seconds": 2.83,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.837,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "e5ff4d114594fbd9cb01575c8ccb4cdca84427849c4b04424f72fb47fa2c2515",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.838,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.838,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 7.73,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 7.734,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "d05a0bab143280d4433c5ad5bd4b395e2c209814a15e816342ec60baaaa12c02"
+        },
+        "stdout": {
+          "bytes": 1307,
+          "complete": true,
+          "sha256": "1268090c1bee88654842b33df52d0eedb5c8882dbbd59a1919d71bfeae83f22c"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:39:08.332010+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": [
+              "authorized"
+            ]
+          }
+        },
+        "facts": [
+          "authorized"
+        ],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "POLICY_PRECONDITION_OMISSION",
+            "entity": "authorized",
+            "reason": "Candidate omitted policy precondition 'authorized'.",
+            "repair_hint": "Restore the precondition from the authoritative action policy."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "missing_precondition-detailed.prompt.txt",
+      "prompt_sha256": "c170fee3b84fb28ac4f444a06de8d4fe4c76c2635661bd2643f46b12c4a73f3b",
+      "response_bytes": 284,
+      "response_sha256": "5cf40cac24132540a5cfff3db5c3e365548b104794697021d39ca841f1a0790d",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:38:59.444061+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6912,
+        "input_tokens": 8573,
+        "output_tokens": 73
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_precondition",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [
+            "authorized"
+          ],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": [
+                "authorized"
+              ]
+            }
+          },
+          "facts": [
+            "authorized",
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [
+                "authorized"
+              ],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "833844310103d0473283f48a3a5cd1c5aeb2d0cdc7ec098bae0068fe21329cff",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 8.53,
+        "events": [
+          {
+            "elapsed_seconds": 2.824,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.831,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "0cf8989e0ca11513ff443198da0533d9410ca1e0f31fb2dbdad551597eb9f120",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.831,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.831,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.484,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.491,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "eb7b1968bfb053992dfea581eb1eeea11c9af4fa4b4e35285f5fc0a42e9f97e2"
+        },
+        "stdout": {
+          "bytes": 1293,
+          "complete": true,
+          "sha256": "dc3a23d0de0bdd5f59eca6eaa729aeb9c8ac77d2a21af0ea1bb4ff097350d002"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:39:17.683619+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": [
+              "authorized"
+            ]
+          }
+        },
+        "facts": [
+          "authorized"
+        ],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "missing_precondition-generic.prompt.txt",
+      "prompt_sha256": "2ea2557fa7066c5ec07ad98334c4956befaf972afabd7d403a1a3cdf2404b9bd",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[\"authorized\"],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:39:08.333681+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 2816,
+        "input_tokens": 8498,
+        "output_tokens": 137
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_effect",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 7.667,
+        "events": [
+          {
+            "elapsed_seconds": 2.928,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.274,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "5b499f2f62dfdbe41f06facc51e5f69d00451651fd87a366b59537e2d994ceed",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.274,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.274,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 7.642,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 7.647,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "1e1c66e7408f0e143a81f8f9aa2b7468e9375b73ddfabe6e2adccc5722dbc669"
+        },
+        "stdout": {
+          "bytes": 1293,
+          "complete": true,
+          "sha256": "c935569287f35722b7b3c9dea3f02bb22f923d2f08127e2eb88c2bdff9902d25"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:39:26.416869+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "POLICY_EFFECT_OMISSION",
+            "entity": "signal_restored",
+            "reason": "Candidate omitted required policy effect 'signal_restored'.",
+            "repair_hint": "Restore the effect from the authoritative action policy."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "missing_effect-detailed.prompt.txt",
+      "prompt_sha256": "b08a05a826b1fe9f621f40886fee8b87e709377df45474a7d0cf706225cb3dc2",
+      "response_bytes": 272,
+      "response_sha256": "e237262d9ddbe3c2c5604410aeeca632ba5c962c440cf93a1023ba8f3a51db07",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:39:17.686088+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6912,
+        "input_tokens": 8570,
+        "output_tokens": 71
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_effect",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 7.848,
+        "events": [
+          {
+            "elapsed_seconds": 3.086,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.093,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "dab6980cde4ae4029b77f763c2ceafe5e9e94691927d989264ad1c1f02c0553a",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.093,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.093,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 7.81,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 7.814,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "83f592f4ae4ff25bc5befefff8740cae45a5c4d2595a2caf09fd31c4714bf87b"
+        },
+        "stdout": {
+          "bytes": 1293,
+          "complete": true,
+          "sha256": "64a38cc4864f8bf7aa22044dabb573975efa06a9d80df3c83c4d3e3ea5aff068"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:39:35.043987+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "missing_effect-generic.prompt.txt",
+      "prompt_sha256": "01cdff207840438069d993706f87f53604b268d704667e412a1db9ef0b8b62d1",
+      "response_bytes": 272,
+      "response_sha256": "e237262d9ddbe3c2c5604410aeeca632ba5c962c440cf93a1023ba8f3a51db07",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:39:26.418598+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 2816,
+        "input_tokens": 8492,
+        "output_tokens": 71
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unauthorized_objective",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 12.013,
+        "events": [
+          {
+            "elapsed_seconds": 3.29,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.299,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "5001b0cd21ff348435b0e57d21d77062757fe458d4f27deeb26b95ad45856dfc",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.301,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.301,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 11.917,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 11.936,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "1724670ff21e814f1393afcdfe1bdd7702ad646e9ef7c7276fcfa85874226701"
+        },
+        "stdout": {
+          "bytes": 2197,
+          "complete": true,
+          "sha256": "e6d3d0a7c44297bc2bae73d219f3e6607d45c5df4a18428ef1598c33ad5a5481"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:39:48.029485+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "POLICY_EFFECT_VIOLATION",
+            "entity": "signal_restored",
+            "reason": "Candidate declared non-allowed effect 'signal_restored'.",
+            "repair_hint": "Remove the effect or revise the policy through an audited authoring workflow."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "unauthorized_objective-detailed.prompt.txt",
+      "prompt_sha256": "b5a6860e5b71f5d084ae726e8e46bee35a7bf471721f77e8a482c0bf64818572",
+      "response_bytes": 1094,
+      "response_sha256": "1c702770da7094e73d9888c7ab0ab7035b624255c27e34d32e61518ade3a0ee4",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:39:35.050898+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 0,
+        "input_tokens": 8573,
+        "output_tokens": 259
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unauthorized_objective",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 9.923,
+        "events": [
+          {
+            "elapsed_seconds": 3.099,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.106,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "290e428c04742c719501b8e6110be560296c86ae38fdb27f856177e33b0e21d7",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.107,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.107,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 9.857,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 9.865,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "641f04c40e007ac6b48fe1a6c3f6b27e5169a662441860269837a8c7fdbc6963"
+        },
+        "stdout": {
+          "bytes": 1295,
+          "complete": true,
+          "sha256": "47ebfccbc57e11d641e1ba4023eb69fe72144d24d5579c4bc552661dc3f0c394"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:39:59.252463+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "unauthorized_objective-generic.prompt.txt",
+      "prompt_sha256": "fccaca628dd3fd5cb866197983b857eccd51485a82183ff5cde5d7c8afa16eac",
+      "response_bytes": 272,
+      "response_sha256": "5baf5f4ef390f83230918775b1108bcb87a23c87b280e9930ddb97a70cc867b2",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:39:48.031853+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6912,
+        "input_tokens": 8490,
+        "output_tokens": 162
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "forbidden_disclosure",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 8.432,
+        "events": [
+          {
+            "elapsed_seconds": 3.356,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.374,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "8fa1fc9ad4203320c1c2d671ba7ef45a89c1ada8fcb7ca870f0f962c9c42c47a",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.375,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.375,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.382,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.392,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "7f0fa2fcee857fbaa6fc54bf99d6f0b279824d8dfd3a0ad0b99906af54fd057b"
+        },
+        "stdout": {
+          "bytes": 1293,
+          "complete": true,
+          "sha256": "395fd9a94c1d8eb61d430666b9e7b07d1693adebf8494a964ae5a9ee5d56880a"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:40:09.126208+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "entity": "secret",
+            "reason": "Actor 'captain' disclosed a locked fact.",
+            "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "forbidden_disclosure-detailed.prompt.txt",
+      "prompt_sha256": "0c0042d860f385d562f0b80fa20597c903030bd42cf7d41839422e3473e44fdc",
+      "response_bytes": 272,
+      "response_sha256": "e237262d9ddbe3c2c5604410aeeca632ba5c962c440cf93a1023ba8f3a51db07",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [
+          "secret"
+        ],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:39:59.255508+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 2816,
+        "input_tokens": 8575,
+        "output_tokens": 71
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "forbidden_disclosure",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 11.112,
+        "events": [
+          {
+            "elapsed_seconds": 3.681,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.719,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "3f49e106befbe50914dfd10d2d610fc145073baf1bdb463762340261727c3aad",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.719,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.719,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 11.072,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 11.077,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "ac2762d9497b0b02ef340471af426396470939bf99501cc076016780b0d37c50"
+        },
+        "stdout": {
+          "bytes": 1864,
+          "complete": true,
+          "sha256": "185b2da9b98f00c682b895018d88b5efe31eb5602f5d88413049bb8e9613dc79"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:40:21.297514+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "forbidden_disclosure-generic.prompt.txt",
+      "prompt_sha256": "cc23f40d30fa6af264783e0ec45a7a668d87badd3e35da3b9513b9205d5bc71c",
+      "response_bytes": 782,
+      "response_sha256": "c5da47614adb0d5900056c7c607406f9ee4d4771ca7b81def5888b5378275522",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [
+          "secret"
+        ],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:40:09.129292+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6912,
+        "input_tokens": 8497,
+        "output_tokens": 187
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unsatisfied_dependency",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 9.124,
+        "events": [
+          {
+            "elapsed_seconds": 4.515,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 4.535,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "792c47f41bb2cab03c403a47ca6e72472f7a63b3a9acdbf35e7c55a9a1c80e0f",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 4.535,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 4.535,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 9.093,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 9.099,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "a7e811d341e047851356ba0592d1eba7e3fa07a362e74b855a65ed1aca0c1161"
+        },
+        "stdout": {
+          "bytes": 1293,
+          "complete": true,
+          "sha256": "3fe748a4a077cc5940dc7515a1045ce80afba7731bd8ca77cd790a3ef043d8ed"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:40:32.122162+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "UNSATISFIED_PRECONDITION",
+            "entity": "permission",
+            "reason": "Required predicate 'permission' is false in state scene.",
+            "repair_hint": "Remove the dependency or establish the predicate in an earlier valid action."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "unsatisfied_dependency-detailed.prompt.txt",
+      "prompt_sha256": "6aabfc843f7fbdb875e42667b99cd5b3db08e8677354e4dbfa79abe1c8782def",
+      "response_bytes": 272,
+      "response_sha256": "e237262d9ddbe3c2c5604410aeeca632ba5c962c440cf93a1023ba8f3a51db07",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [
+          "permission"
+        ],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:40:21.302025+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 2816,
+        "input_tokens": 8576,
+        "output_tokens": 71
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unsatisfied_dependency",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 8.987,
+        "events": [
+          {
+            "elapsed_seconds": 3.193,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 3.622,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "f3bee7f962a11e815349cc66e200c51cdebe836f9272e4d15a1cc9c5fe4220f1",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.623,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 3.623,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.954,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.958,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "d0a807e26e83857c17b955d99d355746a11d60d5bb9254525e9c7ffa97070c2e"
+        },
+        "stdout": {
+          "bytes": 1312,
+          "complete": true,
+          "sha256": "38a848a61eaaeedfd1eed47ff8ec558c0f468959f49f98b39a1f7a577c769f83"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:40:42.655903+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "unsatisfied_dependency-generic.prompt.txt",
+      "prompt_sha256": "1a6fca19d7670460812fa68eeeae523a0297cd91e00740e8bfe41002e6a635ce",
+      "response_bytes": 289,
+      "response_sha256": "dbe3c0c49f38f6fd6e87556da3cf6d4c78e6f8ee841c4647dce88f4ec73f572d",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [
+          "permission"
+        ],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:40:32.132266+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6912,
+        "input_tokens": 8494,
+        "output_tokens": 75
+      }
+    }
+  ],
+  "generic_rules_baseline": "NOT_IMPLEMENTED",
+  "human_evaluation": "NOT_RUN",
+  "metadata": {
+    "actual_model_identity": null,
+    "codex_executable": null,
+    "codex_executable_sha256": "030316ecfbb41f4e7946e584b0063ef333b7a36cd312ba349f2f6869e39b62cc",
+    "codex_version": "codex-cli 0.167.0",
+    "collector_protocol_amendment": {
+      "completion": "COMPLETED_WITH_FAILURES means collection finished, not all tasks passed",
+      "continuation": "only after successful adapter receipt; FAILED/evaluation_error; no retry",
+      "denominator": "all assigned rows; failed outputs count as zero gate/objective successes",
+      "expected_output_errors": [
+        "JSONDecodeError",
+        "CandidateParseError"
+      ],
+      "id": "parse-failures-continue-v1",
+      "other_errors": "hard stop; remaining assignments stay pending",
+      "prompt_and_evaluator": "unchanged"
+    },
+    "cost_usd": null,
+    "created_at": "2026-11-10T10:36:40.625903+00:00",
+    "execution_order": "fixture order, detailed then generic; sequential; one fresh ephemeral session per request",
+    "fixture_sha256": "d82dd5cd07f3dd4d2f31c82e31cec7ebee926465eacea1b73f72e199d0c7fffe",
+    "model_selector": "gpt-5.6-terra",
+    "objective": "gate commits and final facts contain signal_restored",
+    "pilot_protocol": "model-separated-v2",
+    "prompt_scope": "fictional synthetic state, candidate, goal and validator feedback; no private project context",
+    "python_version": "3.11.14",
+    "seed": null,
+    "seed_note": "Codex CLI exposes no seed option",
+    "source_sha256": {
+      "scripts/codex_feedback_live_adapter.py": "8edd5929e9046eb435619cee21c34cf603ed2273e9bc3ebf58dbd88915ef5871",
+      "scripts/codex_feedback_pilot.py": "b6b78cda66f483aaf7d7aadbf320b500d42b3650c3fd0d7c9d223bc9c6c0e5fc",
+      "scripts/codex_isolation_wrapper.py": "6770038864084969bcfe2619320fb84bc12628a9d29d3bfda9408b0beccf13a1",
+      "scripts/run_local_signal_comparison.py": "b1492464092d8c16ca65697a8bf0e5c76c4e60ea6ac67513c3921b697e8f0288",
+      "src/nesy_game/contracts.py": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce",
+      "src/nesy_game/runtime.py": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4",
+      "src/nesy_game/validator.py": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6"
+    },
+    "timeout_seconds": 120,
+    "usage_note": "only CLI-reported values, if present; actual model identity and cost unverified"
+  },
+  "public_projection": {
+    "omitted_fields": [
+      "metadata.codex_executable"
+    ],
+    "raw_source_sha256": "d7adbd213704f6ca64f4968337620643a67c1b06ff4b16eb55030eafdcdc2942",
+    "reason": "Local executable path omitted; outcomes and executable hash/version retained.",
+    "schema": "paired-feedback-public-projection/1"
+  },
+  "scope": "synthetic development pilot; not a new holdout or population evidence",
+  "summary": {
+    "detailed": {
+      "assigned": 5,
+      "completed": 0,
+      "failed": 5,
+      "gate_accepted": 0,
+      "objective_reached": 0,
+      "pending": 0
+    },
+    "generic": {
+      "assigned": 5,
+      "completed": 1,
+      "failed": 4,
+      "gate_accepted": 1,
+      "objective_reached": 1,
+      "pending": 0
+    }
+  }
+}

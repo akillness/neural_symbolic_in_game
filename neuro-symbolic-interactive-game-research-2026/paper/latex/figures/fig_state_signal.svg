@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">State signal before repair and the deterministic path after the response</title>
+  <desc id="svg-desc">A fixed state and shared invalid proposal are checked, not accepted. The requested selector receives structured detailed feedback or a generic rejection, then returns one candidate. Strict parsing and an identity check precede deterministic validation with repair budget zero. Only a valid candidate can commit; the separate objective requires signal_restored in committed facts. Source-derived schematic, not live capture.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#0072B2"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#A05A00"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#007A59"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#666A6D"/></marker>
+    <style>
+      text { font-family: Helvetica, Arial, sans-serif; fill: #202124; }
+      .section { font-size: 32px; font-weight: 700; }
+      .box-title { font-size: 30px; font-weight: 700; }
+      .body { font-size: 29px; font-weight: 400; }
+      .small { font-size: 28px; font-weight: 400; }
+      .note { font-size: 28px; font-style: italic; fill: #5F6368; }
+      .arrow-label { font-size: 28px; font-weight: 700; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="1440" height="1120" fill="#FFFFFF"/>
+  <rect x="20" y="20" width="1400" height="80" rx="5" fill="#F7F7F5" stroke="#C9CDD1" stroke-width="2"/>
+  <rect x="20" y="20" width="9" height="80" fill="#0072B2"/>
+  <text x="45" y="55" class="section" text-anchor="start">STATE SIGNAL | FROM REJECTION TO A CHECKED RESPONSE</text>
+  <text x="45" y="84" class="small" text-anchor="start" fill="#5F6368">One v5 assignment: the signal explains a failed check; it never authorizes a commit.</text>
+  <rect x="40" y="140" width="400" height="160" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2"/>
+  <rect x="40" y="140" width="8" height="160" rx="4" fill="#666A6D"/>
+  <text x="244" y="173" class="box-title" text-anchor="middle">FIXED INPUT</text>
+  <text x="244" y="206" class="small" text-anchor="middle"><tspan x="244" dy="0">same WorldState</tspan><tspan x="244" dy="29">same invalid proposal</tspan><tspan x="244" dy="29">same independent objective</tspan></text>
+  <line class="connector" x1="440" y1="220" x2="514" y2="220" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <rect x="520" y="140" width="880" height="160" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="520" y="140" width="8" height="160" rx="4" fill="#0072B2"/>
+  <text x="964" y="173" class="box-title" text-anchor="middle">SEVEN DETERMINISTIC CHECKS</text>
+  <text x="964" y="206" class="small" text-anchor="middle"><tspan x="964" dy="0">action_policy, precondition, object_reachability</tspan><tspan x="964" dy="29">npc_knowledge, forbidden_disclosure, quest_stage</tspan><tspan x="964" dy="29">quest_stage_monotonicity</tspan></text>
+  <path class="connector" d="M960 300 L960 325 L360 325 L360 354" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path class="connector" d="M960 300 L960 325 L1080 325 L1080 354" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <rect x="40" y="360" width="640" height="160" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2"/>
+  <rect x="40" y="360" width="8" height="160" rx="4" fill="#A05A00"/>
+  <text x="364" y="393" class="box-title" text-anchor="middle">DETAILED SIGNAL</text>
+  <text x="364" y="426" class="small" text-anchor="middle"><tspan x="364" dy="0">valid: false; len(checks_run): 7</tspan><tspan x="364" dy="29">errors: code, entity, reason, repair_hint</tspan><tspan x="364" dy="29">structured counterexample, not permission</tspan></text>
+  <rect x="760" y="360" width="640" height="160" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2"/>
+  <rect x="760" y="360" width="8" height="160" rx="4" fill="#666A6D"/>
+  <text x="1084" y="393" class="box-title" text-anchor="middle">GENERIC SIGNAL</text>
+  <text x="1084" y="426" class="small" text-anchor="middle"><tspan x="1084" dy="0">valid: false</tspan><tspan x="1084" dy="29">message: Action rejected.</tspan><tspan x="1084" dy="29">no error code or repair hint</tspan></text>
+  <path class="connector" d="M360 520 L360 540 L720 540 L720 554" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <path class="connector" d="M1080 520 L1080 540 L720 540 L720 554" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <rect x="40" y="560" width="1360" height="110" rx="7" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+  <rect x="40" y="560" width="8" height="110" rx="4" fill="#0072B2"/>
+  <text x="724" y="593" class="box-title" text-anchor="middle">REQUESTED SELECTOR RETURNS ONE RESPONSE</text>
+  <text x="724" y="626" class="small" text-anchor="middle"><tspan x="724" dy="0">one fresh ephemeral Codex session; prompt says no tools or network; no further model call</tspan></text>
+  <path class="connector" d="M720 670 L720 695 L230 695 L230 714" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <rect x="40" y="720" width="380" height="140" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="40" y="720" width="8" height="140" rx="4" fill="#0072B2"/>
+  <text x="234" y="753" class="box-title" text-anchor="middle">PARSE + ID CHECK</text>
+  <text x="234" y="786" class="small" text-anchor="middle"><tspan x="234" dy="0">exact candidate fields</tspan><tspan x="234" dy="29">preserve IDs and type</tspan><tspan x="234" dy="29">reject unknown keys</tspan></text>
+  <line class="connector" x1="420" y1="790" x2="524" y2="790" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <rect x="530" y="720" width="380" height="140" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="530" y="720" width="8" height="140" rx="4" fill="#0072B2"/>
+  <text x="724" y="753" class="box-title" text-anchor="middle">REVALIDATE</text>
+  <text x="724" y="786" class="small" text-anchor="middle"><tspan x="724" dy="0">same seven checks</tspan><tspan x="724" dy="29">repair budget 0</tspan><tspan x="724" dy="29">all must pass to commit</tspan></text>
+  <line class="connector" x1="910" y1="790" x2="1014" y2="790" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="1020" y="720" width="380" height="140" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
+  <rect x="1020" y="720" width="8" height="140" rx="4" fill="#007A59"/>
+  <text x="1214" y="753" class="box-title" text-anchor="middle">COMMIT</text>
+  <text x="1214" y="786" class="small" text-anchor="middle"><tspan x="1214" dy="0">apply validated transition</tspan><tspan x="1214" dy="29">record trace hash</tspan><tspan x="1214" dy="29">then check the objective</tspan></text>
+  <line class="connector" x1="230" y1="860" x2="230" y2="904" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
+  <rect x="40" y="910" width="380" height="140" rx="7" fill="#EEF0F2" stroke="#666A6D" stroke-width="2" stroke-dasharray="8 6"/>
+  <rect x="40" y="910" width="8" height="140" rx="4" fill="#666A6D"/>
+  <text x="234" y="943" class="box-title" text-anchor="middle">INVALID RESPONSE</text>
+  <text x="234" y="976" class="small" text-anchor="middle"><tspan x="234" dy="0">schema failure or ID change</tspan><tspan x="234" dy="29">no authorized transition</tspan><tspan x="234" dy="29">zero gate and goal success</tspan></text>
+  <line class="connector" x1="720" y1="860" x2="720" y2="904" stroke="#A05A00" stroke-width="3" fill="none" marker-end="url(#arrow-orange)"/>
+  <rect x="530" y="910" width="380" height="140" rx="7" fill="#FFF2DD" stroke="#A05A00" stroke-width="2" stroke-dasharray="8 6"/>
+  <rect x="530" y="910" width="8" height="140" rx="4" fill="#A05A00"/>
+  <text x="724" y="943" class="box-title" text-anchor="middle">REJECT / FALLBACK</text>
+  <text x="724" y="976" class="small" text-anchor="middle"><tspan x="724" dy="0">prior state unchanged</tspan><tspan x="724" dy="29">goal missed</tspan><tspan x="724" dy="29">failure stays in denominator</tspan></text>
+  <line class="connector" x1="1210" y1="860" x2="1210" y2="904" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <rect x="1020" y="910" width="380" height="140" rx="7" fill="#FFFFFF" stroke="#007A59" stroke-width="2"/>
+  <rect x="1020" y="910" width="8" height="140" rx="4" fill="#007A59"/>
+  <text x="1214" y="943" class="box-title" text-anchor="middle">INDEPENDENT GOAL</text>
+  <text x="1214" y="976" class="small" text-anchor="middle"><tspan x="1214" dy="0">signal_restored in facts</tspan><tspan x="1214" dy="29">a valid commit can miss it</tspan><tspan x="1214" dy="29">gate is not goal success</tspan></text>
+  <text x="40" y="1095" class="note" text-anchor="start">Authored flow from the frozen collector; signal fields from results. No hidden-state or efficacy claim.</text>
+</svg>

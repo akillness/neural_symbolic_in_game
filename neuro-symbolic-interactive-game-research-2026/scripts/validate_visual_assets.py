@@ -38,6 +38,8 @@ SVG_INVENTORY_ROOTS = (
 
 LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
+    "paper/latex/figures/fig_state_signal.svg",
+    "paper/latex/figures/fig_paired_feedback_flow.svg",
     "paper/latex/figures/fig_npc_screening.svg",
     "research/directions/figures/fig_consensus_gate_lanes.svg",
     "research/directions/figures/fig_cost_validity_pareto_concept.svg",
@@ -1196,6 +1198,7 @@ class Validator:
     def _run_lightweight_generators(self, staged_root: Path, evidence_root: Path) -> None:
         commands = (
             [sys.executable, "scripts/generate_paper_figures.py"],
+            [sys.executable, "scripts/generate_paired_feedback_figures.py"],
             [sys.executable, "scripts/generate_direction_figures.py"],
             [sys.executable, "scripts/generate_paper_results.py"],
             [sys.executable, "scripts/generate_runtime_comparison_publication.py"],
@@ -1305,6 +1308,9 @@ class Validator:
                 *NPC_REGENERATION_SUPPORT,
                 *self._manifest_generator_paths(manifest, "scripts/generate_npc_paper_results.py"),
                 *RUNTIME_COMPARISON_REGENERATION_SUPPORT,
+                *self._manifest_generator_paths(
+                    manifest, "scripts/generate_paired_feedback_figures.py"
+                ),
             )
             for relative in dict.fromkeys(relative_paths):
                 try:

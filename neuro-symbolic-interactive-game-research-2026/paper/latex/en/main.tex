@@ -4,7 +4,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{tabularx}
-\usepackage{url}
+\usepackage{xurl}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 
@@ -71,9 +71,9 @@ Benchmarks span state, embodiment, content, process, social interaction, and lon
 Reproducibility/evaluation motivates frozen artifacts, retained failures, construct/rater/bias controls, and justified margins/random effects \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S34_henderson2020energy,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}. Replay/leakage checks support denominators, not efficacy \cite{S56_feng2025agentrr,S59_sun2025bdc}. C1--C5 combine enforcement, state/transaction management, feedback repair, action interposition, preconditions/effects, abort, social/belief-aware planning, and replay \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}; no invention/firstness claim.
 
 \section{Problem Definition and Guarantee Boundary}
-$c_t=(G_t,q_t)$ stores typed snapshot $G_t$ and external action-policy/disclosure/quest-stage constraints. Predicates neither read $h_{<t}$ nor reconstruct \texttt{WorldState}; transitions update $G_t$ only, excluding policy rotation. Retrieval, scores, rationales, memory, and future affect lack authority.
+$c_t=(G_t,q_t)$ separates the typed game snapshot $G_t$ from externally authored action-policy/disclosure/quest-stage constraints $q_t$. In Python these are carried together by \texttt{WorldState}: locations, reachable locations, object locations, inventory, facts, NPC knowledge, and quest stage describe the encoded state; action policies and forbidden disclosures constrain it. An \texttt{ActionPolicy} specifies required preconditions, allowed and required effects, and allowed quest-stage targets. This is a conceptual separation, not a claim that Python stores two independent objects. Predicates neither read $h_{<t}$ nor reconstruct \texttt{WorldState}; transitions update $G_t$ only, excluding policy rotation. Retrieval, scores, rationales, memory, and future affect lack authority.
 
-Strict parsing of untrusted candidate $a_t$ enforces the shared key/schema contract, rejecting unknown top-level fields. Validation returns
+After strict parsing of the untrusted proposal $a_t$, the following is a conceptual representation of validation, not the literal Python return type:
 \begin{equation}
 \begin{aligned}
 V(c_t,a_t)&=(\boldsymbol{v},E_t),\\
@@ -81,7 +81,7 @@ V(c_t,a_t)&=(\boldsymbol{v},E_t),\\
 &\qquad v_{\mathrm{disc}},v_{\mathrm{elig}},v_{\mathrm{stage}})\in\{0,1\}^{7},
 \end{aligned}
 \end{equation}
-where $E_t$ is a structured error set. Mutation is
+Here $E_t$ denotes structured errors and the seven bits denote policy, precondition, reachability, NPC knowledge, forbidden disclosure, stage eligibility, and stage monotonicity, respectively. Python instead returns \texttt{ValidationResult(valid, errors, checks\_run)}: a single validity flag, errors with code/entity/reason/repair hint, and seven check identifiers, not seven returned Boolean outcomes. A check identifier indicates the check was run, not that a separate per-check result was observed. An absent trace or omitted field is unobserved, not a passing check or a failed one. Mutation is
 \begin{equation}
 c_{t+1}=\begin{cases}
 T(c_t,a_t), & \bigwedge_{i=1}^{7}(v_i=1),\\
@@ -89,6 +89,8 @@ c_t, & \text{otherwise.}
 \end{cases}
 \label{eq:transition}
 \end{equation}
+
+The operational path is proposal $\rightarrow$ deterministic validation $\rightarrow$ observable validity, check identifiers and structured errors $\rightarrow$ optional bounded repair $\rightarrow$ revalidation against the same state $\rightarrow$ commit or unchanged fallback. A valid candidate is checked again immediately before application; exhausted repair or no repairer leaves the state unchanged. The guided repair operator described below uses only the proposal and errors; the general Python repair callback nevertheless receives \texttt{WorldState}, so the restricted-input claim does not apply to every possible callback. For a controlled comparison, deterministic and model-based detailed repair must receive the same proposal and detailed errors, while the same model's generic-error condition receives a generic signal; no comparison outcome is implied by this design.
 
 Fixtures test invariants, not theorems. \textbf{I1:} validation exhaustion or pre-commit proposal/controller failure preserves state. \textbf{I2:} returning callbacks and $K\geq0$ bound attempts to $K+1$ with pre-commit revalidation; without deadlines, wall-clock termination is not guaranteed. \textbf{I3:} accepted \texttt{CandidateAction.effects} stay within \texttt{ActionPolicy.allowed\_effects}, including authorized quest-stage targets. \textbf{I4:} frozen schemas/deterministic transitions enable terminal-state reconstruction.
 
@@ -107,7 +109,7 @@ External models/adapters propose; parser rejects ambiguous types/unknown keys; i
 \toprule
 \textbf{Predicate} & \textbf{Rejects} & \textbf{On failure} \\
 \midrule
-Action policy & unknown action/type; omitted required preconditions/effects; disallowed effects or quest-stage effects & unchanged \\
+Action policy & unknown action/type; omitted required preconditions/effects; disallowed effects or unauthorized quest-stage effects & unchanged \\
 Precondition & absent/false requirement & unchanged \\
 Reachability & inaccessible object & unchanged \\
 NPC knowledge & undeclared known fact & unchanged \\
@@ -242,23 +244,77 @@ The generated table is construction evidence, not OWL/SHACL conformance, runtime
 Frozen \texttt{ontology-map-20261023-01} covers one read-only bilingual dashboard task ($n{=}1$, independent repeats $0$), not an NPC trial/cohort. Six native CLI invocations (initial $+$ five resumes; one read-only/no-edit) form one case. \texttt{turn\_context.model=gpt-6.1-sol} is runtime selection, not provider attestation; provider identity/revision/seed/cost are \texttt{null}, and model-only latency is unavailable. Wall-clock 5942.665\,s and CLI 263.32\,s are neither inference latency nor the future endpoint.
 
 Invocation six fixed inherited 660\,px mobile-table minimum width: geometry RED (2 failed/35 passed), followed by 62/62 map/signal/Web checks (including cell/paragraph geometry) and a successful Godot Web build. Browser attempt 10 passed; 01--08 failed setup/routes; 09 passed older gates with clipping. Final $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ denial $(68,19468)$ (equal hashes), fresh disclosure $(239,58234)$ (different), authorized redisplay $(249,59793)$ (equal). At 1440$\times$900/390$\times$900, Enter, inspection/frozen-comparison invariance, and zero pre-navigation console/page/network errors/warnings were observed. Dated QA10 PASS differs from additive overall \textbf{NOT\_PASS}: seven component gates passed; pointer-lock/yaw-guard and four pointer-lock page errors remained. This bounded integration is neither full-game creation, Python--Godot authorization round trip, nor a model outcome. Privacy/source-binding failures and same-thread repairs add no $n$; Jev is \texttt{proposal\_only}, without label/approval authority.
-\begin{figure*}[!t]
-  \centering
-  \includegraphics[width=\textwidth]{../figures/fig_runtime_comparison.pdf}
-  \caption{Trace-derived native runtime comparison for the fixed-game pilot (one authored quest; 8 assigned rows, 7 observed executions). System-goal outcomes and assigned denominators retain unknown provider identity, revision, cost, and request-count fields; one pre-response harness-serializer technical failure and two frozen 60-s \texttt{gpt-6.1-sol} ontology response-timeout failures are distinguished from goal successes. Evidence image, not gameplay screenshot.}
-  \label{fig:runtime-comparison}
-\end{figure*}
 
 \input{../generated/runtime_comparison_results_en.tex}
 \input{../generated/runtime_comparison_tables_en.tex}
 
+\subsection{Separate exploratory signal example}
+An exploratory receipt (\path{research/signal-exploratory-20261110T023502Z-cbf0c3b7/receipt.json}) records one synthetic \texttt{missing\_effect} case, separate from the preceding results and the prospective pilot. The shared proposal omitted the required \texttt{signal\_restored} effect. The deterministic control repaired it in one attempt, committed, and reached the independently specified objective that the committed state contain that fact.
+
+The two model conditions each had one recorded attempt and received signals of different information content: the detailed signal identified the error, missing effect, and repair hint, whereas the generic signal only said \texttt{Action rejected.} The detailed response added the effect and, upon revalidation, committed and reached the objective; the generic response left the effects empty, failed revalidation, and fell back without reaching the objective. This contrast is descriptive for one case, not an information-matched comparison, causal or statistical evidence, an overall study result, or an answer to questions A or C. The requested model was \texttt{gpt-6-luna}; the identity of the responding model, cost, provider request count and retries are unknown. Public availability of the inputs has not been verified.
+The receipt does not contain the complete prompts or the executed code version, so it does not support exact reproduction of these runs.
+
+\subsection{Separate synthetic development pilot}
+For each requested selector, \texttt{gpt-5.6-luna} and \texttt{gpt-5.6-terra}, the separate synthetic development pilot planned 10 assignments: the first detailed \texttt{missing\_precondition} assignment was recorded as \texttt{FAILED} with \texttt{protocol\_error}, the other 9 remained pending, and there were 0 valid model responses. Collection stopped after that first failure. Raw error text was not retained because it could contain sensitive data; the cause is unknown. Whether a request was transmitted or a provider response received, the actual provider model identity, and cost are unverified. These fictional development cases are neither a holdout nor a human evaluation; they are separate from the preceding single-case observation and other studies. They do not establish a completed performance comparison, a confirmatory result, a model failure or lack of support, or a statistical effect. Evidence: \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-evidence-20261110-luna/results.json} and \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-evidence-20261110-terra/results.json}.
+
+A separate diagnostic cohort planned 10 assignments per selector. Terra recorded the first detailed \texttt{missing\_precondition} assignment as \texttt{FAILED} with \texttt{protocol\_error} and left 9 pending. Luna's first detailed assignment remains \texttt{IN\_PROGRESS} in the case record, with 9 other rows pending; its aggregate status counts all 10 as pending. The operator reported that the process was absent; transmission and the reason for termination are unknown, and the unfinished row is not a success. These diagnostic records are not pooled with the earlier attempts and do not establish model performance or lack of support. Evidence: \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-diagnostic-20261110-terra/results.json} and \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-diagnostic-20261110-luna/results.json}.
+
+\subsection{Fresh v5 paired-selector development collection}
+This fresh v5 collection is separate from all earlier incomplete and diagnostic cohorts. Each requested selector received five synthetic development fixtures under detailed and generic feedback (10 assignments each), in nominal fixed serial order Luna then Terra. All 20 assignments have a received response and none remain pending; response receipt is not task success. Table~\ref{tab:paired-feedback-v5} separates strict validator-gate acceptance, independently specified objective success, and schema failure, each over all five assigned cases per cell.
+
+\begin{table*}[!tbp]
+\caption{Separate v5 synthetic development collection. Every denominator includes all five assigned cases, including schema failures; received responses do not imply successful tasks.}
+\label{tab:paired-feedback-v5}
+\centering
+\begin{tabularx}{\textwidth}{@{}ll*{4}{>{\centering\arraybackslash}X}@{}}
+\toprule
+\textbf{Requested selector} & \textbf{Signal} & \textbf{Received} & \textbf{Strict gate accepted} & \textbf{Goal} & \textbf{Schema failure} \\
+\midrule
+\texttt{gpt-5.6-luna} & Detailed & 5/5 & 4/5 & 3/5 & 1/5 \\
+\texttt{gpt-5.6-luna} & Generic & 5/5 & 3/5 & 3/5 & 0/5 \\
+\texttt{gpt-5.6-terra} & Detailed & 5/5 & 0/5 & 0/5 & 5/5 \\
+\texttt{gpt-5.6-terra} & Generic & 5/5 & 1/5 & 1/5 & 4/5 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Under the frozen collection amendment, a schema-invalid response remains a failed assignment and a goal failure, but collection continues after proven adapter completion; genuine transport or safety failures still stop collection. Gate acceptance is not objective success: one accepted Luna detailed case did not reach its goal. The small synthetic development set is neither held out nor a human or causal study, and detailed versus generic feedback has unequal information content. Actual served model identity/revision, provider request count, and cost remain unknown. These observations establish neither selector superiority, ontology efficacy, nor confirmation of A or C.
+
+Public outcome projections are under \path{research/codex_feedback_pilot/public-v5/}, in the \path{paired-model-comparison-20261110-v5-gpt-5.6-luna/} and \path{paired-model-comparison-20261110-v5-gpt-5.6-terra/} directories. Their \path{results.json} files retain all case outcomes, prompt hashes and executable hash/version, but omit the local executable path and disclose the original-file digest and omitted field. Frozen raw outcomes and approvals remain local and unchanged. The common immutable \path{paired-model-comparison-20261110-v5-source.zip}, one level above, preserves seven executed source files; it is a provenance snapshot, not a standalone runnable distribution.
+
+Figure~\ref{fig:state-signal} exposes the gate result as an explicit signal, not an affect estimate or permission: the detailed arm carries the failed check and repair hint, while the generic arm carries only rejection. Both responses face the same strict parser, identity check, and seven predicates. This v5 collector uses zero further repair calls, unlike the general bounded repair loop. Figure~\ref{fig:paired-feedback-flow} follows every assignment through receipt, parsing, gate acceptance and the independent goal; it also locates the schema failures and the accepted commit that missed the goal.
+
+\begin{figure*}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_state_signal.pdf}
+\caption{Source-derived v5 state-signal path. The structured $(\mathrm{ok},E)$ check result can guide a repair, but only revalidation authorizes mutation. Generic feedback omits error details. The objective is checked separately from gate acceptance; this is an authored mechanism diagram, not efficacy evidence.}
+\label{fig:state-signal}
+\end{figure*}
+
+\begin{figure*}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig_paired_feedback_flow.pdf}
+\caption{Frozen v5 collection flow and all 20 per-assignment outcomes, derived from the same receipts as Table~\ref{tab:paired-feedback-v5}. Ten schema failures remain in the denominator; eight accepted candidates yield seven goals. Seconds measure dispatch to terminal, including failed responses, not model-only latency. Requested selectors and unequal-information signals do not establish model superiority or ontology efficacy.}
+\label{fig:paired-feedback-flow}
+\end{figure*}
+
+
+\subsection{Prospective two-track pilot}\label{sec:prospective-pilot}
+The requested panel is Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, and Antigravity \texttt{gemini-3.8-flash-medium}; these are requested selectors, not attested served identities. Medium effort is nominal across providers, not equal compute. Runtime crosses three targets with two identical-information representations and ten fresh resets (60 units, 180\,s per episode). Bounded development crosses three targets, minimal input versus public-repository exploration, the same two representations, five tasks, and two fresh runs (120 units, 900\,s per assignment). Budget-bounded independently validated success is primary; hard safety remains a separate gate. The protocol preserves seeds, order, reset identifiers, repair and dispatch limits before collection.
+
+\input{../generated/prospective-pilot/status_en.tex}
+
+After the blocked collection snapshot, independent offline checks accepted two correct variants and rejected the baseline and plausible-wrong variant for each of five tasks; the task/corpus leakage check passed over 9303 files. These are fixture controls, not model runs, and do not retroactively admit blocked units. Included public tests and cross-language semantic mirrors are disclosed; the endpoint is bounded repair, not whole-game creation or retrieval of intact target originals. The later task freeze does not establish response-bound identity, no-credit enforcement, isolation, or new activation. The hypothesis that newer agents explore every relevant skill, source, and reference remains untested; permitted exploration is not observed exhaustive exploration. Current-source screenshots establish presentation/state correspondence only.
+
 
 \section{Discussion, Threats, Ethics, and Artifact Scope}
-Semantic repair \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching} uses pre-execution errors; the oracle only reads state. Rule agreement/edit-scope diagnostics are neither capability nor ontology superiority.
+Semantic repair \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching} uses deterministic pre-execution errors; the oracle-only arm reads state. Rule agreement/edit-scope diagnostics are neither capability nor ontology superiority.
 Implementation confound: row 1 failed under controller-v3 before a model response; rows 2--8 used controller-v4 after a one-line JSON-boundary correction with unchanged model-visible inputs, so selector/representation differences are not model-attributable.
 
 
 The fixed-game pilot is bounded native evidence; no ontology-efficacy test ran. A (model/stack consistency) and C (fresh-reference noninferiority) remain unexecuted and require budget-bounded completion under fixed source/policy, sealed assignments, exact identity/revision fields, and separate safety/replay accounting; it answers neither. Endpoint time is request/evidence receipt to the first receipt passing frozen mandatory checks (time-to-first-all-predeclared-validation-pass); unfinished/timeout/failure/stage-not-reached runs have no successful time.
+
+The separate identity-required extension in Appendix~\ref{app:runtime-identity} stopped at missing served-model evidence; no identity-qualified new comparison was obtained.
 
 \textbf{Threats and boundaries.} The native pilot has one authored quest and two repeats per cell; comparator power, neutral complete-attempt inventories, and independent traceability scores are absent. State consistency implies neither behavioral nor narrative coherence \cite{S55_huang2026beyond}. Predicate/role/Godot/DISC sets are not latent states; declarations are not human gold/holdouts; lanes retain separate denominators. No participant, affect, comprehension, agency, enjoyment, immersion, benefit, population, safety-rate, model-ranking, or commercial-performance inference follows. Hashes do not authenticate; replay equality is not semantic correctness. Human/affect studies require ethics review, consent, compensation disclosure, minimization, retention/deletion, opt-out, and calibrated judges \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
@@ -274,10 +330,55 @@ LLMs assisted prose/code/tests/citations; hosted candidates were labelled. Curat
 \begingroup\DeclareUrlCommand\path{\urlstyle{same}}
 Implementation/build source, frozen packets, Godot slice, deterministic evaluation, and machine-checked contribution, reference-topic, and experiment matrices: \path{research/academic-pipeline/}. DEV-CASE: \path{research/development-cases/ontology-map-20261023-01/}. Authoritative public native bundle (\texttt{results.json}, \texttt{public-traces.json}, \texttt{integrity-audit.json}): \path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/}; generated runtime tables/results and trace-derived figure: \path{paper/latex/generated/}, \path{paper/latex/figures/}. Proposed rubric/codebook/source manifest and future whole-game/repeated-cross-model plan: \path{research/traceability-scoring-20261023/}, \path{research/development-comparison-20261023/}. Frozen disclosure inputs and standalone signal/NPC artifacts: \path{paper/latex/generated/}, \path{paper/latex/figures/}; earlier directories are historical receipts, not current-runtime proof; no reviewer archive/DOI deposit claimed.
 Proposed, unmeasured Table~XIV is in \path{traceability-supplement.pdf} (matching \path{.tex} source) under \path{paper/latex/en/} and \path{paper/latex/ko/}.
+\par Separate identity-admission outcomes, not pooled with the original eight rows: \path{research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/}.
 \par\endgroup
 
+\clearpage
 \bibliographystyle{IEEEtran}
 \bibliography{../references}
 \endgroup
+
+\clearpage
+\onecolumn
+\appendices
+\section{Runtime Evidence Appendix}\label{app:runtime-evidence}
+\begin{figure*}[!ht]
+  \centering
+  \includegraphics[width=\textwidth]{../figures/fig_runtime_comparison.pdf}
+  \caption{Trace-derived native runtime comparison for the fixed-game pilot (one authored quest; 8 assigned rows, 7 observed executions). System-goal outcomes and assigned denominators retain unknown provider identity, revision, cost, and request-count fields; one pre-response harness-serializer technical failure and two frozen 60 s \texttt{gpt-6.1-sol} ontology response-timeout failures are distinguished from goal successes. Evidence image, not gameplay screenshot.}
+  \label{fig:runtime-comparison}
+\end{figure*}
+\clearpage
+\section{Identity-Required Extension}\label{app:runtime-identity}
+\input{../generated/runtime_identity_extension_en.tex}
+\clearpage
+\section{Local Ollama Feasibility Note}\label{app:runtime-ollama-feasibility}
+This appendix records a bounded, descriptive feasibility exercise rather than a result or comparison study. Four single-episode fixed-game assignments were executed (4/4); all four failed to reach the game goal (0/4). The pilot row was executed before its plan-only receipt was written; the other three plan-only receipts preceded execution, so these rows are not a frozen or prospective cohort. The four rows remain the denominator, and response-qualified eligibility is reported separately from success.
+The requested and response model names agree on the 21 non-timeout responses. The two timeout receipts have no response-model observation; in particular, the qwen2.5:0.5b \texttt{general\_rule} run has no response-model observation. These receipts are not treated as identity evidence. Ollama was version 0.30.10, and the model manifest/blob digests matched before and after the runs. Provider identity, revision, cost, hardware, load, and reproducible timing are unavailable. No network-observation claim is made beyond the configured loopback endpoint.
+
+The two representations are serializations of the same public facts, not independent semantic conditions. The language model classified the public utterance; a symbolic planner selected the action. These episodes therefore do not test an ontology effect, model-size effect, ranking, planning ability, efficacy, usability, or player benefit. The failure taxonomy is descriptive: one host-call-budget exhaustion, two response-timeout events under the cold-load deadline, and one repair-source error with four retained malformed-response receipts. Raw malformed responses were not retained, so their causes cannot be diagnosed.
+
+Rows 1--3 had no state-changing commit and retained the initial state hash; row 4 had one state-changing commit and replayed validly in a fresh Godot process. Replay used zero model calls. The record, receipt, and request hashes verify, but the adapter and runner source bytes were not contemporaneously hash-bound to the records; these artifacts are therefore not fully reproducible. Absolute local paths must be sanitized before any external release.
+
+Local-only source packets are under \path{_workspace/current/qa/releases/}. The continuation directory is \path{2026-10-28-runtime-ollama-continuation-20261028/}. The pilot directory is \path{2026-10-28-runtime-ollama-qwen15-general-rule-20261028/} and contains \path{episode.json}, \path{pilot-verification.json}, and the post-hoc \path{plan-only-output.json}.
+\begin{table*}[!ht]
+\caption{Local Ollama fixed-game feasibility observations. Each row is one assigned episode; receipt counts are verified/failed/timeout. Eligibility means that every receipt was response-qualified, not that the goal was reached.}
+\label{tab:ollama-feasibility}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X c c >{\raggedright\arraybackslash}X c >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+Model & Form & Assigned/executed & Receipts & Failure code & Eligible & State/replay & Engineering status \\
+\midrule
+qwen2.5:1.5b & \texttt{general\_rule} (pilot) & 1/1 & 12/0/0 & BUDGET & yes & no-change / valid & NOT\_PASS \\
+qwen2.5:1.5b & \texttt{ontology} & 1/1 & 4/0/1 & TIMEOUT & no & no-change / valid & NOT\_PASS \\
+qwen2.5:0.5b & \texttt{general\_rule} & 1/1 & 0/0/1 & TIMEOUT & no & no-change / NOT\_RUN & NOT\_PASS \\
+qwen2.5:0.5b & \texttt{ontology} & 1/1 & 1/4/0 & REPAIR & no & 1 change / valid & PASS \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}\noindent\parbox{0.98\textwidth}{\footnotesize Failure codes: BUDGET = \texttt{host\_call\_budget\_exhausted}; TIMEOUT = \texttt{response\_timeout}; REPAIR = \texttt{repair\_source\_error}. The 4-row roll-up is assigned/executed $4/4$, goal reached $0/4$, and response-qualified eligibility $1/4$. The one engineering PASS records a valid repaired state-changing step; it is not task success. The 30-second response deadline included cold model loading with \texttt{keep\_alive=0}.}
+\end{table*}
+\clearpage
 
 \end{document}

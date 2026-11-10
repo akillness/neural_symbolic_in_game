@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -43,6 +44,64 @@ RETIRED_MARKERS = (
     "C-RESULT-003",
     "signal-repair",
 )
+FROZEN_LEGACY_GENERATED_BASENAMES = (
+    "contribution_map",
+    "evidence_lanes",
+    "pilot_results",
+    "pilot_tables",
+    "kg_ontology_simulation",
+    "npc_results",
+    "npc_tables",
+    "disclosure_results",
+    "disclosure_tables",
+    "runtime_comparison_results",
+    "runtime_comparison_tables",
+)
+
+
+def _assert_bilingual_main_sources_retain_frozen_inputs(root: Path) -> None:
+    generated_dir = root / "paper/latex/generated"
+    bibliography_marker = r"\bibliography{../references}"
+    original_figure_marker = r"\label{fig:runtime-comparison}"
+    identity_appendix_marker = r"\label{app:runtime-identity}"
+    for language in ("en", "ko"):
+        source = (root / f"paper/latex/{language}/main.tex").read_text(encoding="utf-8")
+        appendix_index = source.index(r"\appendices")
+        expected_legacy_names = {
+            f"{basename}_{language}.tex" for basename in FROZEN_LEGACY_GENERATED_BASENAMES
+        }
+        identity_name = f"runtime_identity_extension_{language}.tex"
+        assert {
+            path.name
+            for path in generated_dir.iterdir()
+            if path.suffix == ".tex" and path.name.endswith(f"_{language}.tex")
+        } == expected_legacy_names | {identity_name}
+        for basename in FROZEN_LEGACY_GENERATED_BASENAMES:
+            path = generated_dir / f"{basename}_{language}.tex"
+            assert path.is_file()
+            input_line = rf"\input{{../generated/{path.name}}}"
+            assert source.count(input_line) == 1
+            assert source.index(input_line) < appendix_index
+
+        identity_path = generated_dir / identity_name
+        assert identity_path.is_file()
+        identity_input = rf"\input{{../generated/{identity_path.name}}}"
+        assert source.count(identity_input) == 1
+        identity_input_index = source.index(identity_input)
+
+        assert source.count(bibliography_marker) == 1
+        assert source.count(original_figure_marker) == 1
+        assert source.count(identity_appendix_marker) == 1
+        bibliography_end = source.index(bibliography_marker) + len(bibliography_marker)
+        original_figure_index = source.index(original_figure_marker)
+        identity_appendix_index = source.index(identity_appendix_marker)
+        assert appendix_index < identity_appendix_index
+        assert (
+            bibliography_end
+            < original_figure_index
+            < identity_appendix_index
+            < identity_input_index
+        )
 
 
 def _rows(path: Path) -> list[dict[str, str]]:
@@ -353,3 +412,90 @@ def test_prospective_comparison_plan_is_nonexecuted_independent_and_fail_closed(
             mutated["candidate_pilot_matrix"]["cells"][0]["assigned_runs"]
             == protocol["candidate_pilot_matrix"]["independent_repeats_per_cell"]
         )
+
+
+@pytest.mark.parametrize("language", ("en", "ko"))
+def test_main_manuscript_flushes_floats_before_references_and_appendix(language: str) -> None:
+    source = (ROOT / f"paper/latex/{language}/main.tex").read_text(encoding="utf-8")
+    bibliography_marker = r"\bibliographystyle{IEEEtran}"
+    appendix_marker = r"\appendices"
+    assert source.count(bibliography_marker) == 1
+    assert source.count(appendix_marker) == 1
+
+    bibliography_index = source.index(bibliography_marker)
+    appendix_index = source.index(appendix_marker)
+    assert source[:bibliography_index].rstrip().endswith(r"\clearpage")
+    assert re.search(r"\\clearpage\s*(?:\\onecolumn\s*)?$", source[:appendix_index])
+
+    bibliography_interval = source[bibliography_index:appendix_index]
+    assert not re.search(r"\\begin\{(?:figure|figure\*|table|table\*)\}", bibliography_interval)
+    assert r"\includegraphics" not in bibliography_interval
+
+    late_body = source[source.rfind(r"\section", 0, bibliography_index) : appendix_index]
+    assert not re.search(r"\\(?:small|footnotesize|scriptsize|tiny|fontsize)\b", late_body)
+    assert not re.search(r"\\(?:vspace|hspace)\s*\{\s*-", source[:appendix_index])
+    assert not re.search(
+        r"\\(?:addtolength|setlength)\s*\{[^}]+\}\s*\{\s*-", source[:appendix_index]
+    )
+    assert r"\IEEEtriggeratref" not in source[:appendix_index]
+
+
+@pytest.mark.parametrize("language", ("en", "ko"))
+def test_runtime_evidence_appendix_keeps_original_vector_figure_once(language: str) -> None:
+    source = (ROOT / f"paper/latex/{language}/main.tex").read_text(encoding="utf-8")
+    appendix_index = source.index(r"\appendices")
+    appendix = source[appendix_index:]
+    runtime_vector = re.compile(
+        r"\\includegraphics\s*\[\s*width\s*=\s*\\textwidth\s*\]"
+        r"\s*\{\.\./figures/fig_runtime_comparison\.pdf\}"
+    )
+
+    assert appendix.count(r"\label{app:runtime-evidence}") == 1
+    assert appendix.count(r"\label{fig:runtime-comparison}") == 1
+    assert len(runtime_vector.findall(appendix)) == 1
+    assert appendix.count(r"\begin{figure*}") == 1
+    assert source[:appendix_index].count(r"\label{fig:runtime-comparison}") == 0
+    assert len(runtime_vector.findall(source[:appendix_index])) == 0
+
+
+def test_bilingual_main_sources_retain_legacy_generated_inputs_and_place_identity_extension_in_appendix_b() -> (
+    None
+):
+    _assert_bilingual_main_sources_retain_frozen_inputs(ROOT)
+
+
+def test_missing_legacy_fragment_and_main_input_fails_frozen_inventory_guard(
+    tmp_path: Path,
+) -> None:
+    """Removing a legacy fragment together with its include cannot evade the explicit guard."""
+    fixture_root = tmp_path / "fixture"
+    shutil.copytree(ROOT / "paper/latex/generated", fixture_root / "paper/latex/generated")
+    for language in ("en", "ko"):
+        source_dir = fixture_root / f"paper/latex/{language}"
+        source_dir.mkdir(parents=True)
+        shutil.copy(ROOT / f"paper/latex/{language}/main.tex", source_dir / "main.tex")
+
+    victim = fixture_root / "paper/latex/generated/contribution_map_en.tex"
+    victim.unlink()
+    main_path = fixture_root / "paper/latex/en/main.tex"
+    source = main_path.read_text(encoding="utf-8")
+    victim_input = rf"\input{{../generated/{victim.name}}}"
+    assert source.count(victim_input) == 1
+    main_path.write_text(source.replace(victim_input, "", 1), encoding="utf-8")
+
+    with pytest.raises(AssertionError):
+        _assert_bilingual_main_sources_retain_frozen_inputs(fixture_root)
+
+
+@pytest.mark.parametrize("language", ("en", "ko"))
+def test_standalone_traceability_supplement_keeps_table_xiv_and_all_unmeasured_rows(
+    language: str,
+) -> None:
+    source = (ROOT / f"paper/latex/{language}/traceability-supplement.tex").read_text(
+        encoding="utf-8"
+    )
+    assert source.count(r"\setcounter{table}{13}") == 1
+    assert source.count(r"\begin{table}") == 1
+    assert source.count(r"\label{tab:traceability-rubric}") == 1
+    assert re.findall(r"(?m)^\s*(TR0[1-6])\s*&", source) == [f"TR0{index}" for index in range(1, 7)]
+    assert not re.search(r"(?im)^\s*\\textbf\{(?:score|rate)\}", source)

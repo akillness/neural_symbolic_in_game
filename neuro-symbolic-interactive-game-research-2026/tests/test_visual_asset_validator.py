@@ -280,6 +280,7 @@ class HistoricalRegenerationTests(unittest.TestCase):
             output_relative = "paper/latex/generated/historical-test.tex"
             for relative in (
                 "scripts/generate_npc_paper_results.py",
+                "scripts/generate_paired_feedback_figures.py",
                 "research/academic-pipeline/stage-04-pilot",
                 "research/academic-pipeline/rq2-live-pilot",
                 "research/academic-pipeline/contribution-evidence-matrix.csv",
@@ -345,6 +346,7 @@ class HistoricalRegenerationTests(unittest.TestCase):
             output_relative = "paper/latex/generated/historical-hook-env-test.tex"
             for relative in (
                 "scripts/generate_npc_paper_results.py",
+                "scripts/generate_paired_feedback_figures.py",
                 "research/academic-pipeline/stage-04-pilot",
                 "research/academic-pipeline/rq2-live-pilot",
                 "research/academic-pipeline/contribution-evidence-matrix.csv",

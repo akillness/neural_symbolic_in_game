@@ -1,0 +1,35 @@
+\textbf{신원 admission 중단: not a model comparison.} 별도 확장은 20개 계획, 1개 배정, 1회 native 프로세스 실행, 0개 신원 검증, 19개 미실행이다. 첫 요청 \texttt{gpt-6-luna}/\texttt{general\_rule}의 CLI turn은 끝났지만 provider 모델 신원 증거가 없어 응답을 수용하지 않고 나머지 실행을 중단했다.
+
+요청 selector와 catalog 노출은 실제 응답 신원이 아니다. \texttt{openai-model}의 부재 또는 유효 문자열로 전달되지 않은 경우를 현재 증거로 구분하지 못한다. 이는 관측된 모델 불일치나 모델 능력 실패가 아니다. \texttt{gpt-6-terra}는 고정 catalog에 없어서 배정하거나 다른 모델로 대체하지 않았다.
+
+감사 구분: \texttt{record hash valid=true}; \texttt{engineering record accepted=false}. 원래 중단 label \texttt{episode\_record\_integrity\_invalid}는 보존한다. 해시 재계산은 일치하지만 compound 검증 함수가 engineering/safety PASS도 요구하므로 이 label을 바이트 손상으로 해석하지 않는다. 커밋은 0개, safety는 \texttt{NO\_COMMIT\_OBSERVED}, 새 엔진 재생은 \texttt{NOT\_RUN}이며 안전 통과가 아니다.
+
+차단된 repair 요청 2회는 native 재실행이 아니다. 원래 8개 pilot은 바이트 불변으로 별도 보존하며 새 분모와 합산하지 않는다. Provider 신원/revision/유효 effort/요청 수/비용/실제 credit 및 현금 청구는 \texttt{unknown}이다. 계정 일치와 자동 충전 OFF를 전후 관측했고 설정 변경이나 구매는 하지 않았지만 0원 또는 credit 무사용의 증명은 아니다. 검증된 새 모델 비교, 온톨로지 효과, 확인적 A/C 근거는 없다.
+
+Preparation 7.144 s; episode elapsed 4.257 s; native process 4.207 s; orchestration 11.566 s. 실패 시도의 서로 다른 시간 경계이며 순수 추론 지연이나 성공 시간이 아니다.
+\setcounter{table}{14}
+\begin{table}[!ht]
+\centering
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\caption{신원 검증 중단 확장의 10개 셀. 계획과 실제 배정·신원 검증·미실행을 분리하며 모델 성능 표가 아니다.}
+\label{tab:runtime-identity-admission}
+\begin{tabular}{llrrrr}
+\toprule
+요청 selector & 표현 & 계획 & 배정 & 신원 검증 & 미실행 \\
+\midrule
+\texttt{gpt-6-luna} & \texttt{general\_rule} & 2 & 1 & 0 & 1 \\
+\texttt{gpt-6-luna} & \texttt{ontology} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-6-sol} & \texttt{general\_rule} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-6-sol} & \texttt{ontology} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-5.6-luna} & \texttt{general\_rule} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-5.6-luna} & \texttt{ontology} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-5.6-sol} & \texttt{general\_rule} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-5.6-sol} & \texttt{ontology} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-5.6-terra} & \texttt{general\_rule} & 2 & 0 & 0 & 2 \\
+\texttt{gpt-5.6-terra} & \texttt{ontology} & 2 & 0 & 0 & 2 \\
+\midrule
+합계 & --- & 20 & 1 & 0 & 19 \\
+\bottomrule
+\end{tabular}
+\end{table}

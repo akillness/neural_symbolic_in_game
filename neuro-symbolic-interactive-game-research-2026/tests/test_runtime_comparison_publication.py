@@ -665,5 +665,613 @@ class RuntimeComparisonPublicationTests(unittest.TestCase):
             self.assertFalse(figures_dir.exists())
 
 
+class IdentityAdmissionPublicationTests(unittest.TestCase):
+    @staticmethod
+    def _fixture_payload() -> dict[str, object]:
+        return json.loads(publication.IDENTITY_RESULTS_PATH.read_text(encoding="utf-8"))
+
+    def test_sanitized_identity_packet_is_validated_without_mutation(self) -> None:
+        """The fixed packet preserves its 20-row plan and observed 1/0/19 accounting."""
+        payload = self._fixture_payload()
+        before = copy.deepcopy(payload)
+
+        validated = publication.validate_identity_results(payload)
+        self.assertEqual(publication.load_identity_results(), validated)
+        self.assertEqual(
+            publication.IDENTITY_RESULTS_SHA256,
+            "12fee3535d99930311b71ffa7e56b9aaa8b220353a14533cc25194211bf5554c",
+        )
+
+        self.assertEqual(payload, before)
+        self.assertEqual(len(validated["rows"]), 20)
+        self.assertEqual(
+            tuple(row["planned_id"] for row in validated["rows"]),
+            tuple(
+                f"sealed-lighthouse-v1:{selector}:{representation}:repeat-{repeat}"
+                for selector in validated["scope"]["requested_selectors"]
+                for representation in validated["scope"]["representations"]
+                for repeat in validated["scope"]["repeats"]
+            ),
+        )
+        self.assertEqual(
+            validated["counters"],
+            {
+                "assigned": 1,
+                "blocked_repair_requests": 2,
+                "committed_transitions": 0,
+                "executed": 1,
+                "host_invocations": 3,
+                "identity_qualified": 0,
+                "native_processes": 1,
+                "planned": 20,
+                "system_goal_successes": 0,
+                "unattempted": 19,
+                "unsafe_committed_transitions": 0,
+            },
+        )
+        self.assertEqual(validated["rows"][0]["assigned"], 1)
+        self.assertEqual(validated["rows"][0]["executed"], 1)
+        self.assertEqual(validated["rows"][0]["identity_qualified"], False)
+        self.assertEqual(validated["rows"][0]["provider_identity"], None)
+        self.assertEqual(validated["rows"][0]["provider_revision"], None)
+        self.assertTrue(all(row["status"] == "NOT_RUN" for row in validated["rows"][1:]))
+        self.assertTrue(
+            all(
+                row["assigned"] == 0
+                and row["executed"] == 0
+                and row["goal_reached"] is None
+                and row["identity_qualified"] is False
+                for row in validated["rows"][1:]
+            )
+        )
+        self.assertEqual(validated["unknowns"]["provider_identity"], None)
+        self.assertEqual(validated["unknowns"]["provider_revision"], None)
+        self.assertEqual(validated["unknowns"]["provider_cost_usd"], None)
+        self.assertTrue(
+            all(
+                row["identity_qualified"] is False
+                and row["provider_identity"] is None
+                and row["provider_revision"] is None
+                for row in validated["rows"]
+            )
+        )
+        self.assertTrue(all(value is None for value in validated["unknowns"].values()))
+        self.assertFalse(validated["prior_cohort"]["pooled"])
+        self.assertEqual(
+            validated["prior_cohort"]["results_sha256"],
+            "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e",
+        )
+        self.assertTrue(validated["failure"]["record_hash_valid"])
+        self.assertFalse(validated["failure"]["engineering_record_accepted"])
+        self.assertEqual(
+            validated["failure"]["raw_bootstrap_stop_reason"], "episode_record_integrity_invalid"
+        )
+
+    def test_identity_loader_rejects_discarded_duplicate_and_reordered_planned_rows(self) -> None:
+        """The validator requires the complete frozen row sequence, not merely 20 plausible rows."""
+        mutations: list[tuple[str, dict[str, object]]] = []
+
+        discarded = self._fixture_payload()
+        discarded["rows"] = discarded["rows"][:-1]
+        mutations.append(("discarded planned row", discarded))
+
+        duplicated = self._fixture_payload()
+        duplicated["rows"][1]["planned_id"] = duplicated["rows"][0]["planned_id"]
+        mutations.append(("duplicated planned row", duplicated))
+
+        reordered = self._fixture_payload()
+        reordered["rows"][0], reordered["rows"][1] = reordered["rows"][1], reordered["rows"][0]
+        mutations.append(("reordered planned rows", reordered))
+
+        for name, mutation in mutations:
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                publication.validate_identity_results(mutation)
+
+    def test_identity_validation_rejects_counter_and_not_run_state_drift(self) -> None:
+        """Counters stay integer/reconciled, and NOT_RUN rows cannot acquire execution or a false goal."""
+        mutations: list[tuple[str, dict[str, object]]] = []
+
+        boolean_count = self._fixture_payload()
+        boolean_count["counters"]["assigned"] = True
+        row_boolean_count = self._fixture_payload()
+        row_boolean_count["rows"][0]["host_invocations"] = True
+        mutations.append(("boolean row count", row_boolean_count))
+
+        row_fractional_count = self._fixture_payload()
+        row_fractional_count["rows"][0]["blocked_repair_requests"] = 1.5
+        mutations.append(("fractional row count", row_fractional_count))
+        mutations.append(("boolean counter", boolean_count))
+
+        fractional_count = self._fixture_payload()
+        fractional_count["counters"]["executed"] = 1.5
+        mutations.append(("fractional counter", fractional_count))
+
+        counter_drift = self._fixture_payload()
+        counter_drift["counters"]["unattempted"] = 18
+        mutations.append(("counter reconciliation drift", counter_drift))
+
+        promoted_execution = self._fixture_payload()
+        promoted_execution["rows"][1]["executed"] = 1
+        mutations.append(("NOT_RUN promoted to execution", promoted_execution))
+
+        promoted_goal = self._fixture_payload()
+        promoted_goal["rows"][1]["goal_reached"] = False
+        mutations.append(("NOT_RUN promoted to false goal", promoted_goal))
+
+        for name, mutation in mutations:
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                publication.validate_identity_results(mutation)
+
+    def test_identity_validation_rejects_unqualified_identity_revision_cost_pooling_and_private_fields(
+        self,
+    ) -> None:
+        """Unqualified selector/catalog claims, invented unknowns, cohort pooling, and private fields stay out."""
+        mutations: list[tuple[str, dict[str, object]]] = []
+
+        qualified_without_proof = self._fixture_payload()
+        qualified_without_proof["rows"][0]["identity_qualified"] = True
+        mutations.append(("unqualified identity promoted", qualified_without_proof))
+
+        selector_claim = self._fixture_payload()
+        selector_claim["rows"][0]["provider_identity"] = "gpt-6-luna"
+        mutations.append(("requested selector treated as provider identity", selector_claim))
+
+        catalog_claim = self._fixture_payload()
+        catalog_claim["rows"][0]["provider_revision"] = "catalog"
+        mutations.append(("catalog treated as provider revision", catalog_claim))
+
+        invented_revision = self._fixture_payload()
+        invented_revision["unknowns"]["provider_revision"] = "invented-revision"
+        mutations.append(("invented unknown revision", invented_revision))
+
+        zero_cost = self._fixture_payload()
+        zero_cost["unknowns"]["provider_cost_usd"] = 0
+        mutations.append(("zero cost for unknown", zero_cost))
+
+        pooled = self._fixture_payload()
+        pooled["prior_cohort"]["pooled"] = True
+        mutations.append(("old eight-row cohort pooled", pooled))
+
+        private_top_level = self._fixture_payload()
+        private_top_level["_private_trace"] = "must not publish"
+        mutations.append(("unexpected private top-level field", private_top_level))
+
+        private_row = self._fixture_payload()
+        private_row["rows"][0]["private_header"] = "must not publish"
+        mutations.append(("unexpected private row field", private_row))
+
+        for name, mutation in mutations:
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                publication.validate_identity_results(mutation)
+
+    def test_identity_validation_rejects_private_operator_email_in_diagnosis(self) -> None:
+        """Diagnosis cannot smuggle an operator/account field into the public packet."""
+        payload = self._fixture_payload()
+        payload["diagnosis"]["operator_email"] = "private"
+
+        with self.assertRaises(ValueError):
+            publication.validate_identity_results(payload)
+
+    def test_identity_validation_rejects_private_operator_account_fields_in_every_public_mapping(
+        self,
+    ) -> None:
+        """Every public mapping is closed; private/operator/account extras are not publishable."""
+        mapping_paths = (
+            ("scope", ("scope",)),
+            ("counters", ("counters",)),
+            ("row", ("rows", 0)),
+            ("failure", ("failure",)),
+            ("timing", ("timing",)),
+            ("unknowns", ("unknowns",)),
+            ("provenance", ("provenance",)),
+            ("prior_cohort", ("prior_cohort",)),
+            ("unsupported_request", ("unsupported_request",)),
+            ("diagnosis", ("diagnosis",)),
+            ("claims", ("claims",)),
+        )
+        mapping_paths = mapping_paths + tuple(
+            (f"row[{index}]", ("rows", index)) for index in range(1, 20)
+        )
+        for mapping_name, path in mapping_paths:
+            for extra_key, extra_value in (
+                ("private_trace", "must not publish"),
+                ("operator_email", "private"),
+                ("account_id", "private"),
+            ):
+                payload = self._fixture_payload()
+                target = payload
+                for component in path:
+                    target = target[component]
+                target[extra_key] = extra_value
+                with (
+                    self.subTest(mapping=mapping_name, extra_key=extra_key),
+                    self.assertRaises(ValueError),
+                ):
+                    publication.validate_identity_results(payload)
+
+    def test_identity_validation_rejects_malformed_nested_public_mapping_types(self) -> None:
+        """Public metadata objects must remain mappings rather than null, list, or scalar values."""
+        metadata_paths = (
+            "scope",
+            "counters",
+            "rows",
+            "failure",
+            "timing",
+            "unknowns",
+            "provenance",
+            "prior_cohort",
+            "unsupported_request",
+            "diagnosis",
+            "claims",
+        )
+        for field in metadata_paths:
+            for malformed in (None, [], "not-a-mapping"):
+                payload = self._fixture_payload()
+                payload[field] = malformed
+                with (
+                    self.subTest(field=field, malformed=repr(malformed)),
+                    self.assertRaises(ValueError),
+                ):
+                    publication.validate_identity_results(payload)
+
+        for malformed in (None, [], "not-a-mapping"):
+            payload = self._fixture_payload()
+            payload["rows"][0] = malformed
+            with (
+                self.subTest(field="rows[0]", malformed=repr(malformed)),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+    def test_identity_validation_rejects_missing_keys_from_each_public_metadata_object(
+        self,
+    ) -> None:
+        """Required metadata keys cannot be omitted while leaving the packet otherwise plausible."""
+        required_keys = {
+            "failure": (
+                "engineering_record_accepted",
+                "fresh_engine_replay",
+                "model_incapability_inferred",
+                "primary",
+                "proposal_constraint_validity",
+                "raw_bootstrap_stop_reason",
+                "raw_terminal_failure_reason",
+                "record_hash_valid",
+                "safety",
+                "secondary",
+                "semantic_record_links_valid",
+            ),
+            "timing": (
+                "episode_elapsed_seconds",
+                "native_process_seconds",
+                "orchestration_seconds",
+                "preparation_seconds",
+                "pure_inference_latency_claimed",
+                "successful_completion_seconds",
+            ),
+            "unknowns": (
+                "actual_cash_charge",
+                "actual_credit_consumption",
+                "effective_effort",
+                "provider_cost_usd",
+                "provider_identity",
+                "provider_request_count",
+                "provider_revision",
+            ),
+            "provenance": (
+                "episode_sha256",
+                "execution_ended_at",
+                "installed_cli_version",
+                "operational_closure_sha256",
+                "plan_sha256",
+                "record_hash",
+                "source_manifest_sha256",
+                "source_snapshot_file_count",
+                "source_snapshot_manifest_sha256",
+                "source_snapshot_visibility",
+            ),
+            "prior_cohort": (
+                "assigned",
+                "pooled",
+                "results_sha256",
+                "system_goal_successes",
+                "unchanged",
+            ),
+            "unsupported_request": (
+                "assigned",
+                "catalog_status",
+                "requested_selector",
+                "substituted",
+            ),
+            "diagnosis": (
+                "bounded_source_fallback_review",
+                "dedicated_tracer_status",
+                "identity_state",
+                "logging_target_level_correct",
+                "missing_or_nonstring_header_unresolved",
+                "provider_model_header",
+                "source_urls",
+            ),
+            "claims": (
+                "confirmatory_A_C_established",
+                "new_verified_model_comparison",
+                "no_rerun",
+                "ontology_effect_demonstrated",
+                "zero_cost_or_zero_credit_claimed",
+            ),
+        }
+        for mapping_name, fields in required_keys.items():
+            for field in fields:
+                payload = self._fixture_payload()
+                del payload[mapping_name][field]
+                with self.subTest(mapping=mapping_name, field=field), self.assertRaises(ValueError):
+                    publication.validate_identity_results(payload)
+
+    def test_identity_validation_rejects_hash_timestamp_url_boolean_and_count_drift(self) -> None:
+        """Public metadata keeps strict hashes, UTC timestamps, source URLs, booleans, and counts."""
+        hash_fields = (
+            "episode_sha256",
+            "operational_closure_sha256",
+            "plan_sha256",
+            "record_hash",
+            "source_manifest_sha256",
+            "source_snapshot_manifest_sha256",
+        )
+        for field in hash_fields:
+            for invalid in ("A" * 64, "a" * 63, "not-a-hash"):
+                payload = self._fixture_payload()
+                payload["provenance"][field] = invalid
+                with (
+                    self.subTest(kind="provenance hash", field=field, invalid=invalid),
+                    self.assertRaises(ValueError),
+                ):
+                    publication.validate_identity_results(payload)
+
+        for invalid in (
+            "2026-10-27T00:07:50.534794",
+            "2026-10-27T00:07:50.534794+09:00",
+            "not-a-timestamp",
+        ):
+            payload = self._fixture_payload()
+            payload["provenance"]["execution_ended_at"] = invalid
+            with self.subTest(kind="UTC timestamp", invalid=invalid), self.assertRaises(ValueError):
+                publication.validate_identity_results(payload)
+
+        for invalid in (
+            ["file:///private/operator"],
+            ["https://example.invalid/not-codex-source"],
+            [
+                (
+                    "https://github.com/openai/codex/blob/rust-v0.163.0/"
+                    "codex-rs/core/src/session/turn.rs"
+                )
+            ],
+        ):
+            payload = self._fixture_payload()
+            payload["diagnosis"]["source_urls"] = invalid
+            with (
+                self.subTest(kind="public source URLs", invalid=invalid),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+        for field, invalid in (
+            ("installed_cli_version", "0.163.0"),
+            ("installed_cli_version", "private-cli"),
+            ("source_snapshot_visibility", "public"),
+            ("source_snapshot_visibility", None),
+        ):
+            payload = self._fixture_payload()
+            payload["provenance"][field] = invalid
+            with (
+                self.subTest(kind="provenance bounded value", field=field, invalid=invalid),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+        for field, invalid in (
+            ("bounded_source_fallback_review", "private-review"),
+            ("dedicated_tracer_status", "operator-only"),
+            ("identity_state", "PRIVATE_IDENTITY"),
+            ("provider_model_header", None),
+            ("provider_model_header", {"operator_email": "private"}),
+        ):
+            payload = self._fixture_payload()
+            payload["diagnosis"][field] = invalid
+            with (
+                self.subTest(kind="diagnosis bounded value", field=field, invalid=invalid),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+        for invalid in (None, "private-url", [None], ["https://example.invalid/private"]):
+            payload = self._fixture_payload()
+            payload["diagnosis"]["source_urls"] = invalid
+            with (
+                self.subTest(kind="diagnosis URL type", invalid=invalid),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+        for field, invalid in (
+            ("catalog_status", "private-catalog"),
+            ("requested_selector", "operator-model"),
+        ):
+            payload = self._fixture_payload()
+            payload["unsupported_request"][field] = invalid
+            with (
+                self.subTest(kind="unsupported request bound", field=field, invalid=invalid),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+        for mapping_name, field in (
+            ("diagnosis", "logging_target_level_correct"),
+            ("diagnosis", "missing_or_nonstring_header_unresolved"),
+            ("unsupported_request", "substituted"),
+            ("timing", "pure_inference_latency_claimed"),
+            ("prior_cohort", "pooled"),
+            ("prior_cohort", "unchanged"),
+            ("failure", "engineering_record_accepted"),
+            ("failure", "record_hash_valid"),
+            ("failure", "model_incapability_inferred"),
+            ("failure", "semantic_record_links_valid"),
+            ("claims", "confirmatory_A_C_established"),
+            ("claims", "new_verified_model_comparison"),
+            ("claims", "no_rerun"),
+            ("claims", "ontology_effect_demonstrated"),
+            ("claims", "zero_cost_or_zero_credit_claimed"),
+        ):
+            payload = self._fixture_payload()
+            payload[mapping_name][field] = 1
+            with (
+                self.subTest(kind="strict boolean", mapping=mapping_name, field=field),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+        for mapping_name, field, invalid in (
+            ("provenance", "source_snapshot_file_count", True),
+            ("provenance", "source_snapshot_file_count", 23.0),
+            ("provenance", "source_snapshot_file_count", -1),
+            ("unsupported_request", "assigned", True),
+            ("unsupported_request", "assigned", -1),
+            ("unsupported_request", "assigned", 0.5),
+            ("prior_cohort", "assigned", True),
+            ("prior_cohort", "assigned", -1),
+            ("prior_cohort", "assigned", 8.0),
+            ("prior_cohort", "system_goal_successes", True),
+            ("prior_cohort", "system_goal_successes", -1),
+            ("prior_cohort", "system_goal_successes", 5.0),
+        ):
+            payload = self._fixture_payload()
+            payload[mapping_name][field] = invalid
+            with (
+                self.subTest(
+                    kind="strict count", mapping=mapping_name, field=field, invalid=invalid
+                ),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+        for invalid in ("A" * 64, "a" * 63, "not-a-hash"):
+            payload = self._fixture_payload()
+            payload["prior_cohort"]["results_sha256"] = invalid
+            with (
+                self.subTest(kind="prior cohort hash", invalid=invalid),
+                self.assertRaises(ValueError),
+            ):
+                publication.validate_identity_results(payload)
+
+        for field in (
+            "preparation_seconds",
+            "episode_elapsed_seconds",
+            "native_process_seconds",
+            "orchestration_seconds",
+        ):
+            for invalid in (0, -1, float("inf"), None):
+                payload = self._fixture_payload()
+                payload["timing"][field] = invalid
+                with (
+                    self.subTest(kind="positive finite timing", field=field, invalid=invalid),
+                    self.assertRaises(ValueError),
+                ):
+                    publication.validate_identity_results(payload)
+
+    def test_identity_fragments_share_packet_accounting_and_publication_boundaries(self) -> None:
+        """Both languages expose 20/1/0/19 and the identity-admission caveats without layout shortcuts."""
+        packet = publication.validate_identity_results(self._fixture_payload())
+        rendered = [
+            publication.render_identity_fragment(packet),
+            publication.render_identity_fragment(packet, korean=True),
+        ]
+
+        for fragment in rendered:
+            lowered = fragment.lower()
+            normalized = lowered.replace("_", " ").replace("-", " ")
+            for value in ("20", "1", "0", "19"):
+                self.assertIn(value, fragment)
+            self.assertIn("unknown", lowered)
+            self.assertIn("not a model comparison", normalized)
+            self.assertIn("record hash valid", normalized)
+            self.assertIn("engineering record accepted", normalized)
+            self.assertTrue("true" in normalized or "valid" in normalized)
+            self.assertTrue(
+                "false" in normalized or "rejected" in normalized or "not accepted" in normalized
+            )
+            self.assertEqual(fragment.count(r"\label{tab:runtime-identity-admission}"), 1)
+            for forbidden in (r"\resizebox", r"\tiny", r"\scriptsize"):
+                self.assertNotIn(forbidden, fragment)
+            self.assertNotIn("reducedfont", lowered)
+
+            def normalize_cell(value: str) -> str:
+                cell = value.strip().rstrip("\\").strip()
+                prefix = r"\texttt{"
+                if cell.startswith(prefix) and cell.endswith("}"):
+                    cell = cell[len(prefix) : -1]
+                return cell.replace(r"\_", "_")
+
+            table_rows = [
+                tuple(normalize_cell(part) for part in line.strip().split(" & "))
+                for line in fragment.splitlines()
+                if " & " in line and line.strip().endswith(r"\\")
+            ]
+            body_rows = [
+                row
+                for row in table_rows
+                if len(row) == 6
+                and row[0] in packet["scope"]["requested_selectors"]
+                and row[1] in packet["scope"]["representations"]
+            ]
+            expected_cells = {
+                (selector, representation)
+                for selector in packet["scope"]["requested_selectors"]
+                for representation in packet["scope"]["representations"]
+            }
+            self.assertEqual(len(body_rows), 10)
+            self.assertEqual({row[:2] for row in body_rows}, expected_cells)
+
+    def test_identity_loader_digest_gate_and_writer_are_deterministic_and_non_mutating(
+        self,
+    ) -> None:
+        """Exact bytes are digest-pinned; writing uses OUTPUT_DIR and leaves the source unchanged."""
+        source = publication.IDENTITY_RESULTS_PATH
+        original_bytes = source.read_bytes()
+
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            input_path = root / "identity-results.json"
+            input_path.write_bytes(original_bytes)
+            altered_path = root / "altered-results.json"
+            altered_path.write_bytes(original_bytes.replace(b'"assigned":1', b'"assigned":2', 1))
+
+            with self.assertRaises(ValueError):
+                publication.load_identity_results(altered_path)
+
+            output_dir = root / "generated"
+            with patch.object(publication, "OUTPUT_DIR", output_dir):
+                first_paths = tuple(publication.write_identity_fragments(input_path=input_path))
+                first_bytes = tuple(path.read_bytes() for path in first_paths)
+                second_paths = tuple(publication.write_identity_fragments(input_path=input_path))
+                second_bytes = tuple(path.read_bytes() for path in second_paths)
+
+            self.assertEqual(first_paths, second_paths)
+            self.assertEqual(
+                tuple(path.name for path in first_paths),
+                ("runtime_identity_extension_en.tex", "runtime_identity_extension_ko.tex"),
+            )
+            self.assertEqual(first_bytes, second_bytes)
+            self.assertEqual(
+                first_bytes[0].decode("utf-8"),
+                publication.render_identity_fragment(publication.load_identity_results(input_path)),
+            )
+            self.assertEqual(
+                first_bytes[1].decode("utf-8"),
+                publication.render_identity_fragment(
+                    publication.load_identity_results(input_path), korean=True
+                ),
+            )
+
+        self.assertEqual(source.read_bytes(), original_bytes)
+
+
 if __name__ == "__main__":
     unittest.main()

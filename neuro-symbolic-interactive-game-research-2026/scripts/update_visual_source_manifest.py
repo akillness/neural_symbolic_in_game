@@ -19,7 +19,16 @@ NPC_TABLE_GENERATOR = "scripts/generate_npc_paper_results.py"
 DISCLOSURE_GENERATOR = "scripts/generate_disclosure_paper_results.py"
 SIGNAL_GENERATOR = "scripts/generate_signal_explainer.py"
 RUNTIME_COMPARISON_GENERATOR = "scripts/generate_runtime_comparison_publication.py"
+PAIRED_FEEDBACK_GENERATOR = "scripts/generate_paired_feedback_figures.py"
+PAIRED_FEEDBACK_DATA = tuple(
+    f"research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-{model}/results.json"
+    for model in ("luna", "terra")
+) + ("research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip",)
 RUNTIME_COMPARISON_DATA = (
+    "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+)
+RUNTIME_IDENTITY_EXTENSION_DATA = (
+    "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json",
     "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
 )
 DISCLOSURE_ROOT = "research/npc-disclosure/results-signal-explainer-20261023-r5"
@@ -149,6 +158,24 @@ def build_manifest() -> dict[str, Any]:
                 else "retained-optional",
             )
         )
+    for stem, kind, anchor in (
+        ("fig_state_signal", "diagram", "fig:state-signal"),
+        ("fig_paired_feedback_flow", "chart", "fig:paired-feedback-flow"),
+    ):
+        base = f"paper/latex/figures/{stem}"
+        paper_assets.append(
+            visual_asset(
+                stem.removeprefix("fig_").replace("_", "-"),
+                kind,
+                rendered=(f"{base}.pdf", f"{base}.png"),
+                editable=(f"{base}.svg",),
+                generator=PAIRED_FEEDBACK_GENERATOR,
+                data=(*PAIRED_FEEDBACK_DATA, "scripts/generate_paper_figures.py"),
+                used_by=paper_usage,
+                publication_role="current-figure",
+                anchors=(anchor,),
+            )
+        )
     paper_assets.append(
         visual_asset(
             "paper-runtime-comparison",
@@ -270,6 +297,14 @@ def build_manifest() -> dict[str, Any]:
             ),
         ),
         table_source(
+            "paired-feedback-v5",
+            layouts=paper_usage,
+            generator=None,
+            data=PAIRED_FEEDBACK_DATA,
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:paired-feedback-v5",),
+        ),
+        table_source(
             "traceability-supplement-table",
             layouts=(
                 "paper/latex/en/traceability-supplement.tex",
@@ -322,6 +357,22 @@ def build_manifest() -> dict[str, Any]:
             data=RUNTIME_COMPARISON_DATA,
             rendered_in=("paper-ko",),
             anchors=("tab:runtime-comparison-aggregate",),
+        ),
+        table_source(
+            "runtime-identity-extension-en",
+            layouts=("paper/latex/generated/runtime_identity_extension_en.tex",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_IDENTITY_EXTENSION_DATA,
+            rendered_in=("paper-en",),
+            anchors=("tab:runtime-identity-admission",),
+        ),
+        table_source(
+            "runtime-identity-extension-ko",
+            layouts=("paper/latex/generated/runtime_identity_extension_ko.tex",),
+            generator=RUNTIME_COMPARISON_GENERATOR,
+            data=RUNTIME_IDENTITY_EXTENSION_DATA,
+            rendered_in=("paper-ko",),
+            anchors=("tab:runtime-identity-admission",),
         ),
         table_source(
             "offline-pilot-paper-tables",

@@ -1,0 +1,2551 @@
+{
+  "cases": [
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_precondition",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [
+            "authorized"
+          ],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": [
+                "authorized"
+              ]
+            }
+          },
+          "facts": [
+            "authorized",
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [
+                "authorized"
+              ],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "833844310103d0473283f48a3a5cd1c5aeb2d0cdc7ec098bae0068fe21329cff",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 6.771,
+        "events": [
+          {
+            "elapsed_seconds": 2.742,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.749,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "6d0dcd142aa028c6ae967f67810653b63884cef3737aa8689a891be5e8aba804",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.749,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.749,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 6.732,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 6.739,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "9bee3fa0a610fc554146b37821da8251555b7adf266f5d33f834893e7f31e2d8"
+        },
+        "stdout": {
+          "bytes": 1292,
+          "complete": true,
+          "sha256": "789443d9cdd9c3704722cf86b206be7c44d8502f7de54624d4331b3dab9097d5"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:37:02.759450+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": [
+              "authorized"
+            ]
+          }
+        },
+        "facts": [
+          "authorized"
+        ],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "POLICY_PRECONDITION_OMISSION",
+            "entity": "authorized",
+            "reason": "Candidate omitted policy precondition 'authorized'.",
+            "repair_hint": "Restore the precondition from the authoritative action policy."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "missing_precondition-detailed.prompt.txt",
+      "prompt_sha256": "c170fee3b84fb28ac4f444a06de8d4fe4c76c2635661bd2643f46b12c4a73f3b",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[\"authorized\"],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:36:54.800337+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 7070,
+        "output_tokens": 96
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_precondition",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": true,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [
+            "authorized"
+          ],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": [
+            "authorized"
+          ]
+        },
+        "final_gate_accepted": false,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": [
+                "authorized"
+              ]
+            }
+          },
+          "facts": [
+            "authorized"
+          ],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "scene"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": false,
+        "outcome": "fallback",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [
+                "authorized"
+              ],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": [
+                "authorized"
+              ]
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [
+                {
+                  "code": "NPC_KNOWLEDGE_VIOLATION",
+                  "entity": "authorized",
+                  "reason": "Actor 'captain' used a fact outside its knowledge set.",
+                  "repair_hint": "Retrieve actor-visible evidence or remove the unsupported fact."
+                }
+              ],
+              "valid": false
+            }
+          }
+        ],
+        "trace_hash": "6ee24e983be827cec0ac969b46a72a2aa6b0247d5068f06e08a7f1b190624e6c",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "NPC_KNOWLEDGE_VIOLATION",
+              "entity": "authorized",
+              "reason": "Actor 'captain' used a fact outside its knowledge set.",
+              "repair_hint": "Retrieve actor-visible evidence or remove the unsupported fact."
+            }
+          ],
+          "valid": false
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 8.262,
+        "events": [
+          {
+            "elapsed_seconds": 2.922,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.928,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "c24b8d2baf0c0f7b77d82a17715430066745a6dc8a618beb464b4990f805ffb4",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.928,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.928,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.227,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.232,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "b0ca1de6d1c686591a8fb2ec4a64653bd5bdd21830a8bafdd7859fbb65947e8f"
+        },
+        "stdout": {
+          "bytes": 1307,
+          "complete": true,
+          "sha256": "8d5c5b9bc3fd51dd2f8e05c14dff81199afb5ee42a0cbe63359e606a9dd34149"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:37:11.833838+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": [
+              "authorized"
+            ]
+          }
+        },
+        "facts": [
+          "authorized"
+        ],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "missing_precondition-generic.prompt.txt",
+      "prompt_sha256": "2ea2557fa7066c5ec07ad98334c4956befaf972afabd7d403a1a3cdf2404b9bd",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[\"authorized\"],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[\"authorized\"]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:37:02.761565+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 6997,
+        "output_tokens": 158
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_effect",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [
+                "signal_restored"
+              ],
+              "required_preconditions": []
+            }
+          },
+          "facts": [
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "fac48b106a557f90e0f2b3928c7a063a3d42e67a2370019b74e6f2dd0d464a1d",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 7.085,
+        "events": [
+          {
+            "elapsed_seconds": 2.829,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.836,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "0ba52f5baba83f4f772155d17da5002154be5bef83698afcc9e4d9a46d064d33",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.837,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.837,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 7.05,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 7.054,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "42ae728957875002b62d03e402fd19fff3753bd45a14203cee235475546d288e"
+        },
+        "stdout": {
+          "bytes": 1279,
+          "complete": true,
+          "sha256": "3e25bd249534c8af1ed82608ac8fdf66c0aefe973417d2ccfdc78648fa67ea08"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:37:19.748879+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "POLICY_EFFECT_OMISSION",
+            "entity": "signal_restored",
+            "reason": "Candidate omitted required policy effect 'signal_restored'.",
+            "repair_hint": "Restore the effect from the authoritative action policy."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "missing_effect-detailed.prompt.txt",
+      "prompt_sha256": "b08a05a826b1fe9f621f40886fee8b87e709377df45474a7d0cf706225cb3dc2",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:37:11.835946+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 7065,
+        "output_tokens": 121
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "missing_effect",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [
+                "signal_restored"
+              ],
+              "required_preconditions": []
+            }
+          },
+          "facts": [
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "fac48b106a557f90e0f2b3928c7a063a3d42e67a2370019b74e6f2dd0d464a1d",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 9.764,
+        "events": [
+          {
+            "elapsed_seconds": 2.788,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.986,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "d49ba7cdfc45177e52944a758dcb809d4f7fa383702abfa78f31ac41449d883c",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.986,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.986,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 9.735,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 9.736,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "494e52a65f23d0f276e59f7ab9c641d1cdd48ac26fb8f89e6240939e7e907dd2"
+        },
+        "stdout": {
+          "bytes": 1280,
+          "complete": true,
+          "sha256": "7d37a167c099bff6fb0dc548284c6f49f34558cf5e25b9556e60ee591b50142b"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:37:30.254121+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "missing_effect-generic.prompt.txt",
+      "prompt_sha256": "01cdff207840438069d993706f87f53604b268d704667e412a1db9ef0b8b62d1",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:37:19.751015+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 6991,
+        "output_tokens": 205
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unauthorized_objective",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": []
+            }
+          },
+          "facts": [],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": false,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "936a934c763419428a76a7b6293b9374253391523c20dbcb68d7ec0841c9a831",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 10.31,
+        "events": [
+          {
+            "elapsed_seconds": 2.925,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.931,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "faba37f00a890a0edcc9709ac300037d0ddfeb0c534260e46d3acdd9b3cce28e",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.931,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.931,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 10.277,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 10.283,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "eac407b3e73edaeddbbc2ab9c15ca9480835e65e91ba2dc4f9db3bec05b30f45"
+        },
+        "stdout": {
+          "bytes": 1261,
+          "complete": true,
+          "sha256": "ec1793cd9664a9154eba43ffceaf8bacc5c9d03386d39fea254bfa1e7323dd9c"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:37:41.633936+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "POLICY_EFFECT_VIOLATION",
+            "entity": "signal_restored",
+            "reason": "Candidate declared non-allowed effect 'signal_restored'.",
+            "repair_hint": "Remove the effect or revise the policy through an audited authoring workflow."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "unauthorized_objective-detailed.prompt.txt",
+      "prompt_sha256": "b5a6860e5b71f5d084ae726e8e46bee35a7bf471721f77e8a482c0bf64818572",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:37:30.256140+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 7070,
+        "output_tokens": 288
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unauthorized_objective",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": true,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [
+            "signal_restored"
+          ],
+          "effects": [],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": false,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": []
+            }
+          },
+          "facts": [],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "scene"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": false,
+        "outcome": "fallback",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [
+                "signal_restored"
+              ],
+              "effects": [],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [
+                {
+                  "code": "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION",
+                  "entity": "signal_restored",
+                  "reason": "Actor 'captain' disclosed a fact outside its knowledge set.",
+                  "repair_hint": "Remove the disclosure or establish an actor-visible evidence event first."
+                }
+              ],
+              "valid": false
+            }
+          }
+        ],
+        "trace_hash": "17aa2bcfe81177424114c4aa9fc95c92a5e8b01466f9d7dc815077319811dcde",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION",
+              "entity": "signal_restored",
+              "reason": "Actor 'captain' disclosed a fact outside its knowledge set.",
+              "repair_hint": "Remove the disclosure or establish an actor-visible evidence event first."
+            }
+          ],
+          "valid": false
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 22.358,
+        "events": [
+          {
+            "elapsed_seconds": 2.926,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.934,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "4e4024b303e172ec725631a1b5ec8e3a932a60bbf7b2ec148c580c37e073be7f",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.935,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.935,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 22.294,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 22.328,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "808ae4cd55d0162c54027c3564988faa8e20ffebd87efb28cfd0ca9d94092f4b"
+        },
+        "stdout": {
+          "bytes": 1280,
+          "complete": true,
+          "sha256": "3dc2586580a595d6259ffb852f50ee36ecd3766a3737b7fd80b545cc8940c367"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:38:04.893358+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "unauthorized_objective-generic.prompt.txt",
+      "prompt_sha256": "fccaca628dd3fd5cb866197983b857eccd51485a82183ff5cde5d7c8afa16eac",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[\"signal_restored\"],\"effects\":[],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:37:41.636067+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 6989,
+        "output_tokens": 932
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "forbidden_disclosure",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": []
+            }
+          },
+          "facts": [
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "33249434da9bf481164d4bbe948db0eaf8b88fa687566ad924634f2c9606c2b9",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 8.302,
+        "events": [
+          {
+            "elapsed_seconds": 2.84,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.846,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "053c7018fa41d9f29a446cf97e16a9c2102fbb30a537427b8e9b94bb99e1db5a",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.846,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.846,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.183,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.212,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "3ad1c64b57fe3164b7a2483209fe7ebda98bf38d20ebafa43d17789fe6b3b04b"
+        },
+        "stdout": {
+          "bytes": 1279,
+          "complete": true,
+          "sha256": "4b74ba1d9562b3470f6573bd2f6651a127986495a0cdad138f60e53b8d5b1074"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:38:14.087585+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "FORBIDDEN_DISCLOSURE",
+            "entity": "secret",
+            "reason": "Actor 'captain' disclosed a locked fact.",
+            "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "forbidden_disclosure-detailed.prompt.txt",
+      "prompt_sha256": "0c0042d860f385d562f0b80fa20597c903030bd42cf7d41839422e3473e44fdc",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [
+          "secret"
+        ],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:38:04.897043+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 7072,
+        "output_tokens": 170
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "forbidden_disclosure",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": []
+            }
+          },
+          "facts": [
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "33249434da9bf481164d4bbe948db0eaf8b88fa687566ad924634f2c9606c2b9",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 8.664,
+        "events": [
+          {
+            "elapsed_seconds": 2.705,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.713,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "de4e3cbe56a85dfe89741bff33e227f1ee203c1f3ebe05afdc40ac63b6774898",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.713,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.713,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.645,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.645,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "f6244571c2769d723e7619b3703549c5ff67797184bf1648e4ef117a597da986"
+        },
+        "stdout": {
+          "bytes": 1280,
+          "complete": true,
+          "sha256": "081c616f5126acf6a9aee633284c2b6265562a76a29e9f65fc118fcb44b83068"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:38:23.988977+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "forbidden_disclosure-generic.prompt.txt",
+      "prompt_sha256": "cc23f40d30fa6af264783e0ec45a7a668d87badd3e35da3b9513b9205d5bc71c",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [
+          "secret"
+        ],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:38:14.091105+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 6994,
+        "output_tokens": 187
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unsatisfied_dependency",
+      "condition": "detailed",
+      "cost_usd": null,
+      "evaluation": null,
+      "evidence": {
+        "elapsed_seconds": 8.451,
+        "events": [
+          {
+            "elapsed_seconds": 2.974,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.982,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "0549794b2115978afee8fce7b019b88f795c429b3e3b7888f4b938ecdbf419ef",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.982,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.982,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 8.419,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 8.426,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "a8e3d1455add3439a41dd012002a47b9b25069e567dde4e4d337b345a1b4687b"
+        },
+        "stdout": {
+          "bytes": 1295,
+          "complete": true,
+          "sha256": "a011435cd29a9c3715aa4c2a3c3a7c9dc5a1fa54d5af6f7f74613904818b3a0f"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": {
+        "code": "evaluation_error",
+        "transmission": "unknown",
+        "type": "CandidateParseError"
+      },
+      "finished_at": "2026-11-10T10:38:33.409827+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "checks_run": [
+          "action_policy",
+          "precondition",
+          "object_reachability",
+          "npc_knowledge",
+          "forbidden_disclosure",
+          "quest_stage",
+          "quest_stage_monotonicity"
+        ],
+        "errors": [
+          {
+            "code": "UNSATISFIED_PRECONDITION",
+            "entity": "permission",
+            "reason": "Required predicate 'permission' is false in state scene.",
+            "repair_hint": "Remove the dependency or establish the predicate in an earlier valid action."
+          }
+        ],
+        "valid": false
+      },
+      "prompt_file": "unsatisfied_dependency-detailed.prompt.txt",
+      "prompt_sha256": "6aabfc843f7fbdb875e42667b99cd5b3db08e8677354e4dbfa79abe1c8782def",
+      "response_bytes": 272,
+      "response_sha256": "e237262d9ddbe3c2c5604410aeeca632ba5c962c440cf93a1023ba8f3a51db07",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [
+          "permission"
+        ],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:38:23.992698+00:00",
+      "status": "FAILED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 7075,
+        "output_tokens": 109
+      }
+    },
+    {
+      "actual_model_identity": null,
+      "attempt": 1,
+      "case_id": "unsatisfied_dependency",
+      "condition": "generic",
+      "cost_usd": null,
+      "evaluation": {
+        "fallback_state_unchanged": null,
+        "final_candidate": {
+          "action_id": "event",
+          "action_type": "signal",
+          "actor_id": "captain",
+          "disclosed_facts": [],
+          "effects": [
+            "signal_restored"
+          ],
+          "metadata": {},
+          "narrative_text": "",
+          "preconditions": [],
+          "quest_stage_effect": null,
+          "required_objects": [],
+          "required_quest_stage": 0,
+          "used_facts": []
+        },
+        "final_gate_accepted": true,
+        "final_state": {
+          "action_policies": {
+            "signal": {
+              "allowed_effects": [
+                "signal_restored"
+              ],
+              "allowed_quest_stage_effects": [],
+              "required_effects": [],
+              "required_preconditions": []
+            }
+          },
+          "facts": [
+            "signal_restored"
+          ],
+          "forbidden_disclosures": {
+            "captain": []
+          },
+          "inventory": [],
+          "locations": [
+            "harbor"
+          ],
+          "npc_knowledge": {
+            "captain": [
+              "secret"
+            ]
+          },
+          "object_locations": {},
+          "quest_stage": 0,
+          "reachable_locations": [
+            "harbor"
+          ],
+          "state_id": "ab5f09178c21720e"
+        },
+        "identity_preserved": true,
+        "initial_state_unchanged": true,
+        "objective_reached": true,
+        "outcome": "commit",
+        "trace": [
+          {
+            "attempt": 0,
+            "candidate": {
+              "action_id": "event",
+              "action_type": "signal",
+              "actor_id": "captain",
+              "disclosed_facts": [],
+              "effects": [
+                "signal_restored"
+              ],
+              "metadata": {},
+              "narrative_text": "",
+              "preconditions": [],
+              "quest_stage_effect": null,
+              "required_objects": [],
+              "required_quest_stage": 0,
+              "used_facts": []
+            },
+            "validation": {
+              "checks_run": [
+                "action_policy",
+                "precondition",
+                "object_reachability",
+                "npc_knowledge",
+                "forbidden_disclosure",
+                "quest_stage",
+                "quest_stage_monotonicity"
+              ],
+              "errors": [],
+              "valid": true
+            }
+          }
+        ],
+        "trace_hash": "d0ecab897bc329933524749c3e8ebcab7126938c3060214e12ed945331c3a2c3",
+        "validation": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        }
+      },
+      "evidence": {
+        "elapsed_seconds": 9.88,
+        "events": [
+          {
+            "elapsed_seconds": 2.929,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "thread.started"
+          },
+          {
+            "elapsed_seconds": 2.937,
+            "error_classification": "startup_config_warning",
+            "error_code": null,
+            "error_message_sha256": "f0b2d788049b8c785297de3a6e6dc680142b2da5010c82509e0e590221e7f0c8",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.937,
+            "error_classification": "startup_disabled_feature_warning",
+            "error_code": null,
+            "error_message_sha256": "098e801ebc95c9c7312a945849442846324dcf639365a297313248993822711b",
+            "http_status": null,
+            "item_type": "error",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 2.937,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.started"
+          },
+          {
+            "elapsed_seconds": 9.844,
+            "error_code": null,
+            "http_status": null,
+            "item_type": "agent_message",
+            "type": "item.completed"
+          },
+          {
+            "elapsed_seconds": 9.849,
+            "error_code": null,
+            "http_status": null,
+            "item_type": null,
+            "type": "turn.completed"
+          }
+        ],
+        "raw_text_omission_reason": "may contain credentials or sensitive server data",
+        "raw_text_retained": false,
+        "request_count": null,
+        "returncode": 0,
+        "stderr": {
+          "bytes": 317,
+          "complete": true,
+          "sha256": "967a2507fca433d11d8f2e9b60be5edae5ea8c179245807411b75b952550c229"
+        },
+        "stdout": {
+          "bytes": 1280,
+          "complete": true,
+          "sha256": "442e6ac52e664f71ca4c54a029935fa493e1e65f72c13dbd61bbd9890ee0d8fe"
+        },
+        "tls_payload_observed": false
+      },
+      "failure": null,
+      "finished_at": "2026-11-10T10:38:44.305867+00:00",
+      "initial_state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "scene"
+      },
+      "input_signal": {
+        "message": "Action rejected.",
+        "valid": false
+      },
+      "prompt_file": "unsatisfied_dependency-generic.prompt.txt",
+      "prompt_sha256": "1a6fca19d7670460812fa68eeeae523a0297cd91e00740e8bfe41002e6a635ce",
+      "response_text": "{\"action_id\":\"event\",\"action_type\":\"signal\",\"actor_id\":\"captain\",\"disclosed_facts\":[],\"effects\":[\"signal_restored\"],\"metadata\":{},\"narrative_text\":\"\",\"preconditions\":[],\"quest_stage_effect\":null,\"required_objects\":[],\"required_quest_stage\":0,\"used_facts\":[]}",
+      "seed": null,
+      "shared_proposal": {
+        "action_id": "event",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [
+          "permission"
+        ],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "started_at": "2026-11-10T10:38:33.412680+00:00",
+      "status": "COMPLETED",
+      "timeout_seconds": 120,
+      "tls_payload_observed": false,
+      "tokens": {
+        "cached_input_tokens": 6272,
+        "input_tokens": 6993,
+        "output_tokens": 218
+      }
+    }
+  ],
+  "generic_rules_baseline": "NOT_IMPLEMENTED",
+  "human_evaluation": "NOT_RUN",
+  "metadata": {
+    "actual_model_identity": null,
+    "codex_executable": null,
+    "codex_executable_sha256": "030316ecfbb41f4e7946e584b0063ef333b7a36cd312ba349f2f6869e39b62cc",
+    "codex_version": "codex-cli 0.167.0",
+    "collector_protocol_amendment": {
+      "completion": "COMPLETED_WITH_FAILURES means collection finished, not all tasks passed",
+      "continuation": "only after successful adapter receipt; FAILED/evaluation_error; no retry",
+      "denominator": "all assigned rows; failed outputs count as zero gate/objective successes",
+      "expected_output_errors": [
+        "JSONDecodeError",
+        "CandidateParseError"
+      ],
+      "id": "parse-failures-continue-v1",
+      "other_errors": "hard stop; remaining assignments stay pending",
+      "prompt_and_evaluator": "unchanged"
+    },
+    "cost_usd": null,
+    "created_at": "2026-11-10T10:36:37.230344+00:00",
+    "execution_order": "fixture order, detailed then generic; sequential; one fresh ephemeral session per request",
+    "fixture_sha256": "d82dd5cd07f3dd4d2f31c82e31cec7ebee926465eacea1b73f72e199d0c7fffe",
+    "model_selector": "gpt-5.6-luna",
+    "objective": "gate commits and final facts contain signal_restored",
+    "pilot_protocol": "model-separated-v2",
+    "prompt_scope": "fictional synthetic state, candidate, goal and validator feedback; no private project context",
+    "python_version": "3.11.14",
+    "seed": null,
+    "seed_note": "Codex CLI exposes no seed option",
+    "source_sha256": {
+      "scripts/codex_feedback_live_adapter.py": "8edd5929e9046eb435619cee21c34cf603ed2273e9bc3ebf58dbd88915ef5871",
+      "scripts/codex_feedback_pilot.py": "b6b78cda66f483aaf7d7aadbf320b500d42b3650c3fd0d7c9d223bc9c6c0e5fc",
+      "scripts/codex_isolation_wrapper.py": "6770038864084969bcfe2619320fb84bc12628a9d29d3bfda9408b0beccf13a1",
+      "scripts/run_local_signal_comparison.py": "b1492464092d8c16ca65697a8bf0e5c76c4e60ea6ac67513c3921b697e8f0288",
+      "src/nesy_game/contracts.py": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce",
+      "src/nesy_game/runtime.py": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4",
+      "src/nesy_game/validator.py": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6"
+    },
+    "timeout_seconds": 120,
+    "usage_note": "only CLI-reported values, if present; actual model identity and cost unverified"
+  },
+  "public_projection": {
+    "omitted_fields": [
+      "metadata.codex_executable"
+    ],
+    "raw_source_sha256": "11e0d2d0eda6a73d83922adbfe2b3b87a300397fe1fd6ccd12793d502fd1d446",
+    "reason": "Local executable path omitted; outcomes and executable hash/version retained.",
+    "schema": "paired-feedback-public-projection/1"
+  },
+  "scope": "synthetic development pilot; not a new holdout or population evidence",
+  "summary": {
+    "detailed": {
+      "assigned": 5,
+      "completed": 4,
+      "failed": 1,
+      "gate_accepted": 4,
+      "objective_reached": 3,
+      "pending": 0
+    },
+    "generic": {
+      "assigned": 5,
+      "completed": 5,
+      "failed": 0,
+      "gate_accepted": 3,
+      "objective_reached": 3,
+      "pending": 0
+    }
+  }
+}

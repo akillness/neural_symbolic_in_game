@@ -502,7 +502,7 @@ def compact_architecture_svg() -> str:
         width,
         height,
         "TRACE-RPG transaction pipeline overview",
-        "One generated event read left to right: an untrusted proposal crosses the trust boundary as a typed candidate, and seven deterministic checks grouped into six state-relative families decide it from external policy and state. Evidence tags are scope labels only: DESIGN structure, E1 offline conformance, and ENG1 engineering-only. No figure element supports population efficacy or player-experience claims. The lower strip shows the playable ledger grammar derived from committed snapshots.",
+        "A typed proposal is checked against stored game state and external policy. The observable signal contains validity, check identifiers and structured errors, not seven returned Boolean values. Errors guide bounded repair and the candidate returns for validation; valid candidates are rechecked before commit. Exhaustion or absence of a repairer leaves state unchanged. Scope tags do not establish population efficacy or player experience. The lower strip shows the playable ledger grammar derived from committed snapshots.",
     )
     items.insert(
         len(items) - 1, "<style>.tag,.ledger,.legend {font-size:28px;font-weight:700}</style>"
@@ -552,12 +552,20 @@ def compact_architecture_svg() -> str:
     for x, accent, title_value, body_lines, fill, tags, dashed in (
         (20, GRAY, "PROPOSAL", ("untrusted", "model output"), PALE_GRAY, ("DESIGN",), True),
         (362, BLUE, "PARSER", ("type-strict", "known keys"), PALE_BLUE, ("E1",), False),
-        (674, BLUE, "POLICY", ("external q_t", "who may act"), PALE_BLUE, ("E1", "ENG1"), False),
+        (
+            674,
+            BLUE,
+            "STATE + POLICY",
+            ("G_t and external q_t", "encoded constraints"),
+            PALE_BLUE,
+            ("E1", "ENG1"),
+            False,
+        ),
         (
             986,
             BLUE,
             "VALIDATE",
-            ("7 checks", "6 families -> E"),
+            ("valid + check IDs", "structured errors E"),
             PALE_BLUE,
             ("E1", "ENG1"),
             False,
@@ -580,7 +588,7 @@ def compact_architecture_svg() -> str:
         270,
         accent=GRAY,
         title_value="FALLBACK",
-        body_lines=("j = K:", "no mutation"),
+        body_lines=("no repair / budget:", "state unchanged"),
         fill=PALE_GRAY,
         tags=("E1",),
         dashed=True,
@@ -596,9 +604,9 @@ def compact_architecture_svg() -> str:
         tags=("E1",),
     )
     for x, title_value, body_lines in (
-        (20, "COMMIT", ("all v_i hold:", "recheck, T(c_t, a)")),
-        (450, "RECORD", ("SHA-256 linked", "terminal row")),
-        (880, "REPLAY", ("recompute T,", "compare state")),
+        (20, "COMMIT", ("valid: recheck", "then T(c_t, a)")),
+        (450, "RECORD", ("commit or fallback", "SHA-256 trace")),
+        (880, "REPLAY", ("verify outcome,", "compare state")),
     ):
         items += stage(
             x,

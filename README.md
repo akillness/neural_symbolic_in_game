@@ -15,17 +15,32 @@
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
 [![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
-![The Sealed Lighthouse golden path, 76 seconds: arrival at the harbor, a HELD request that names the gate, lens recovery, signal restoration, the authorized tide lead, and the case-complete receipt](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/golden-path.gif)
+![Current-source ending still captured on 2026-11-03: the investigator's contribution and validator receipt; engineering presentation, not a model result](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-ending.png)
 
 - **The gate.** Every generated event is treated as an untrusted transaction proposal. A type-strict parser, an external action policy, and seven deterministic checks in six state-relative families decide whether it commits; a rejected candidate gets bounded, counterexample-guided repair, and everything else falls back to the unchanged prior state.
 - **The game.** *The Sealed Lighthouse* is a turn-based investigation micro-RPG in Godot 4.7.1 whose in-world ledger shows the gate diegetically: a hold names the family that held it and teaches the rule; a commit posts a contribution, unlocks the next lead, and extends a SHA-256 receipt chain.
 - **The evidence — and its limits.** Four lanes (E1 offline fixtures, E2 live screening, E3 KG simulation, ENG1 engine conformance) report exact counts only: 13/13 gate agreement, ρ 5/5 on the guided-repairable class, 52/52 core playable checks plus the 4/4 D-073 extension, one shared terminal state hash. One authored world, one hosted proposer, no participants, no efficacy claim.
 
+<!-- prospective-pilot:start -->
+## Prospective comparison — 2026-11-03
+
+Study: `prospective-pilot-20261103`. Status: **NOT_RUN/BLOCKED**; conclusion: `NOT_MET`.
+
+| Track | Planned | Blocked | Assigned | Attempted | Executed |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Runtime | 60 | 60 | 0 | 0 | 0 |
+| Development | 120 | 120 | 0 | 0 | 0 |
+
+The requested panel is Codex `gpt-5.6-sol`, Codex `gpt-6.1-sol`, and Antigravity `gemini-3.8-flash-medium`, with nominal medium effort. Runtime compares identical-information general rules and ontology over ten fresh resets; bounded development crosses those representations with minimal input/public-repository exploration, five tasks and two fresh runs. These are planned assignments, not completed model runs. Served identity, enforceable no-credit operation, isolation and a new activation remain unproved; no inference was launched. Success rates, effects, costs and intervals are unmeasured, not zero.
+<!-- prospective-pilot:end -->
+
+[Frozen protocol](neuro-symbolic-interactive-game-research-2026/research/prospective-pilot-20261103/protocol-v1.json) · [Retained counts](neuro-symbolic-interactive-game-research-2026/research/prospective-pilot-20261103/results-v1/summary.json) · [Independent offline task controls](neuro-symbolic-interactive-game-research-2026/research/prospective-pilot-20261103/task-freeze-v1.json). Five task oracles each accepted two correct variants and rejected two defective/wrong variants; leakage checking covered 9,303 files. This is fixture evidence, not model efficacy. The historical eight-row 5/8 pilot, stopped identity extension, local Ollama observations and single development case remain separate. Exhaustive search by newer agents is an untested hypothesis, not an assumed capability.
+
 ## Paper at a glance
 
 ![Figure 1: the transaction pipeline — propose, parse, policy, seven checks in six families, bounded repair or unchanged fallback, commit, record, replay — with the ledger grammar band the player reads](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png)
 
-**TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds.** Anonymous-review draft targeting the IEEE Transactions on Games full-paper ceiling of 10 pages; the EN and KO manuscripts are 10 pages each and share one structure. The project records citation-identity, context and preprint-status checks for its 58 references; no journal submission or acceptance is claimed.
+**TRACE-RPG: Source-Bound Ontology Evidence and a Bounded Codex-Assisted Integration Case in an Interactive Game.** The current local PDFs measure **17 pages in English and 17 in Korean** (2026-11-10), with the existing manuscript organization and font sizes retained. Figures 5 and 6 appear on pages 10 and 11 in both languages. This is an anonymous-review working draft, not a claim of meeting a ten-page venue limit, journal submission or acceptance. Citation-identity, context and preprint-status checks for its 58 references remain recorded separately.
 
 **Thesis.** Fluent or schema-valid generated text does not establish that a proposed game event is executable, authorized, or consistent with canonical state. TRACE-RPG therefore treats every generated event as an untrusted transaction proposal and admits it only through a deterministic symbolic commit gate.
 
@@ -48,11 +63,11 @@ The seven checks, grouped into six state-relative families. Every failure leaves
 | Disclosure | 5 | Forbidden fact |
 | Quest | 6, 7 | Ineligible stage; stage regression |
 
-[![Contact sheet of the ten English manuscript pages](neuro-symbolic-interactive-game-research-2026/docs/readme/paper-en-pages.jpg)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
+[![Contact sheet of all 17 English manuscript pages, rendered from the current 2026-11-10 PDF](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/paper-en-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 
 ## Evidence
 
-Four lanes, four ceilings. Every number is a raw count from a deterministic runner or a hash-bound receipt; no inferential statistics are reported.
+The four historical lanes below retain their original counts and ceilings; they are not pooled with the separate v5 development collection. Every number is a raw count from a deterministic runner or a hash-bound receipt; no inferential statistics are reported.
 
 | Lane | Design | Unit | Headline count | Ceiling |
 |---|---|---|---|---|
@@ -79,6 +94,29 @@ Four lanes, four ceilings. Every number is a raw count from a deterministic runn
 - Generalization beyond the one authored world — all fixtures live in a single frozen world state.
 - Writer authentication — the hash chain is unkeyed, so it proves integrity only.
 - Engine performance — ENG1 is conformance evidence, not latency or throughput.
+
+### Separate v5 paired-selector development collection — 2026-11-10
+
+Five synthetic development fixtures × two feedback conditions × two requested selectors produced **20 received responses: 10 schema failures, 10 strictly parsed candidates, 8 gate acceptances and 7 independently specified goals reached**. Every row below retains all five assignments in its denominator; receipt is not task success, and an accepted commit can miss the goal.
+
+| Requested selector | Feedback | Received | Schema failure | Strictly parsed | Gate accepted | Goal reached |
+|---|---|---:|---:|---:|---:|---:|
+| `gpt-5.6-luna` | Detailed | 5/5 | 1/5 | 4/5 | 4/5 | 3/5 |
+| `gpt-5.6-luna` | Generic | 5/5 | 0/5 | 5/5 | 3/5 | 3/5 |
+| `gpt-5.6-terra` | Detailed | 5/5 | 5/5 | 0/5 | 0/5 | 0/5 |
+| `gpt-5.6-terra` | Generic | 5/5 | 4/5 | 1/5 | 1/5 | 1/5 |
+
+Luna reached 6/10 goals and Terra 1/10, descriptively. These are requested selectors, not attested served identities; actual identity, provider request count and cost are unknown. The small synthetic set is not held out, feedback information is unequal, and the nominal serial order was Luna then Terra. This is neither a human nor causal study and supports no model-superiority, ontology-efficacy or user-benefit claim. Earlier incomplete/diagnostic cohorts, the exploratory single case, the prospective pilot and NPC validated-v5 remain separate.
+
+Public inputs: [Luna results](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-luna/results.json) · [Terra results](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-terra/results.json) · [20 copied prompts](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/). The projections null only `metadata.codex_executable` and add the raw-file SHA-256 and omission receipt; outcomes, prompt hashes and executable hash/version remain. Raw cohorts and approvals remain local and unchanged. The common seven-file source ZIP establishes parent provenance only, not a standalone reproducer.
+
+![Figure 5: source-derived v5 state-signal diagram showing detailed typed errors versus generic rejection, followed by strict parsing, candidate-ID checking, seven-predicate revalidation, commit or unchanged fallback, and a separate goal check](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_state_signal.png)
+
+The signal explains rejection; it grants no mutation authority and estimates no affect. This authored diagram uses the frozen collector and recorded signal fields. After the single response, the v5 collector allows no further repair call; only revalidation can authorize commit.
+
+![Figure 6: frozen v5 collection flow from 20 assignments and responses to 10 parsed candidates, 8 accepted commits and 7 goals, with all 20 per-fixture outcomes and dispatch-to-terminal seconds including schema failures](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_paired_feedback_flow.png)
+
+The flow and matrix preserve all ten schema failures and the one accepted commit that missed its goal. Seconds include failed responses and measure dispatch to terminal, not model-only latency.
 
 ## The game
 
@@ -117,60 +155,62 @@ End card INVESTIGATOR'S CONTRIBUTION #1–#3 · RULES LEARNED · ENTRIES/HOLDS/F
 
 <table>
   <tr>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/refusal.png" alt="The HELD moment: the ledger names the DISCLOSURE gate, reports state unchanged, and teaches the rule"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/authorized_hint.png" alt="Commits with CONTRIBUTION and UNLOCKED lines after the lens is installed and the lead is authorized"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-arrival.png" alt="2026-11-03 current-source arrival before any proposal"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-refusal.png" alt="Current-source HOLD: the gate names its family and preserves the prior state"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Hold — the gate names its family</sub></td>
-    <td align="center"><sub>Commit — contribution and next affordance</sub></td>
+    <td align="center"><sub>Arrival — fresh disposable engine capture</sub></td>
+    <td align="center"><sub>HOLD — unchanged prior state</sub></td>
   </tr>
   <tr>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/ending.png" alt="End card: investigator's contribution, rules learned, entries/holds/final stage, validator receipt with the state hash, holds by gate"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/web-in-game.png" alt="The public-safe Web build running in a browser"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-authorized_hint.png" alt="Current-source authorized COMMIT with contribution and next affordance"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-ending.png" alt="Current-source ending and validator receipt"></td>
   </tr>
   <tr>
-    <td align="center"><sub>End card — the two-part receipt</sub></td>
-    <td align="center"><sub>Web build in the browser</sub></td>
+    <td align="center"><sub>COMMIT — authorized progression</sub></td>
+    <td align="center"><sub>Ending — validator receipt</sub></td>
   </tr>
 </table>
+
+**Historical production captures below:** retained as dated deployment evidence, not recaptured current-source or newly deployed bytes.
 
 <p align="center">
   <img width="32%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-mobile-start.png" alt="Production deployment on a mobile viewport: start screen">
   <img width="32%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-mobile-in-game.png" alt="Production deployment on a mobile viewport: in-game ledger">
 </p>
 
-All captures above are tracked 1280×720 engineering captures, not usability evidence. The UI art in the playable is curated AI-generated imagery (Higgsfield) with per-file provenance and a procedural fallback; the player rig is a curated Higgsfield GLB (Idle / Casual_Walk); Mixamo raw files are never tracked. Movement, camera, VFX, audio, and UI never mutate canonical state — only the proposal router and validator do, and no live Python round trip exists in the engine slice.
+The fresh still sequence above replaces the active historical gameplay GIF. Its four 1280×720 captures came from a disposable current-source Godot build (4/4 fixtures, 52/52 core checks and 4/4 captured states); they are not usability or model-efficacy evidence. [Capture manifest](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/manifest.json) records source, UTC, dimensions, bytes, SHA-256 and available state/event bindings. Historical originals and hash-bound receipts remain preserved. UI art is curated Higgsfield imagery with per-file provenance and procedural fallback; the player rig is a curated Higgsfield GLB (Idle / Casual_Walk), and Mixamo raw files are never tracked. Movement, camera, VFX, audio and UI do not mutate canonical state; only the proposal router and validator do, with no live Python round trip in the engine slice.
 
 ## Live commit-gate dashboard
 
-**2026-10-02 local gameplay UI:** the embedded game stays primary, with its reported three-stage quest, live player/site map, recent actions, and a stable last-action readout. Freeze and historical selection affect this readout only; game input and canonical state stay in the game. The new screenshots show real local input: two `ask_secret` holds preserved `f488d9c4…812c`, then lens acquisition committed stage 0 → 1 (`19b474dc…c498`, 1 commit / 2 holds). They are engineering captures, not usability, fun, efficacy, or G4/G6 evidence. The independent browser gate is still pending, so this revision is not yet deployed.
+**2026-11-03 current-source local capture:** real browser input completed arrival → HOLD → three COMMITs → ending, with one hold and state-bound dashboard readouts. This is an operator-driven presentation route, not a model assignment. Capture attempt 1 completed with **five pointer-lock page errors**; two bounded yaw/lock retries also remain in the diagnostic record. The clean-browser gate is **NOT_PASS**, not silently promoted by readable screenshots. No deployment, usability, immersion or model-benefit claim follows.
 
-The GIF and episode-complete image below retain the earlier renderer and its separate 3-commit / 1-hold run.
+The current still sequence below replaces the old dashboard GIF and earlier-renderer display copies. Immutable historical captures and failure receipts are retained.
 
-![Earlier dashboard route: three commits and one hold beside the embedded game; commit receipts extend the chain and the hold preserves state](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/dashboard-route.gif)
+![Current-source dashboard arrival on 2026-11-03: stage 0, no commits and no holds](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/browser-dashboard-arrival.png)
 
 <table>
   <tr>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-hold.png" alt="Real local ask_secret hold selected in history: state unchanged, failed disclosure check, passed stage check, other families not evaluated"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-commit.png" alt="Local gameplay view after lens acquisition: stage 1 of 3, one commit and two holds, install-lens objective"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/browser-dashboard-hold.png" alt="Current local stage-gated disclosure HOLD: initial state hash unchanged"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/browser-dashboard-commit.png" alt="Current local lens acquisition: stage 0 to 1, one commit and one hold"></td>
   </tr>
   <tr>
     <td align="center"><sub>Hold</sub></td>
     <td align="center"><sub>Commit</sub></td>
   </tr>
   <tr>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-complete.png" alt="Dashboard at episode completion: three commits, one hold, full chain"></td>
-    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/dashboard/dashboard-panels.png" alt="Real acquire_object verdict: stage 0 to 1, two reported reachability checks, other families not evaluated, selectable history"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/browser-dashboard-complete.png" alt="Current local ending: three commits and one hold"></td>
+    <td><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/browser-dashboard-last-action.png" alt="Current local last-action and verdict-history readout"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Earlier renderer · episode complete</sub></td>
-    <td align="center"><sub>Current last-action readout</sub></td>
+    <td align="center"><sub>Current-source ending · 3 commits / 1 hold</sub></td>
+    <td align="center"><sub>Current-source read-only verdict history</sub></td>
   </tr>
 </table>
 
-**Live:** [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app) — the production site root redirects to `/dashboard/`, and the embedded game is served from `/public/` (deployed 2026-09-03 through `scripts/deploy_vercel_dashboard.sh`; zero console/page errors on desktop and a 390×844 viewport).
+**Historical production endpoint:** [sealed-lighthouse-trace-rpg.vercel.app](https://sealed-lighthouse-trace-rpg.vercel.app). The recorded 2026-09-03 deployment redirected the site root to `/dashboard/` and served the embedded game at `/public/`; its recorded desktop/390×844 checks are historical. This refresh neither redeploys nor establishes that production bytes match the new local captures.
 
-<p align="center"><img width="100%" src="neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/vercel-dashboard.png" alt="2026-10-02 local gameplay dashboard after a real lens-acquisition commit: stage 1 of 3, live player position and the next objective"></p>
+<p align="center"><img width="100%" src="neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/browser-dashboard-signals.png" alt="2026-11-03 current-source local read-only disclosure signals"></p>
 
 To run it locally, the dashboard embeds the local Web build:
 
@@ -181,7 +221,7 @@ python3 -m http.server 4173 --bind 127.0.0.1 --directory game-track/web
 open http://127.0.0.1:4173/dashboard/                          # game at /public/, dashboard at /dashboard/
 ```
 
-The boundary is one-directional: the game mirrors typed events through `window.parent.postMessage` only when embedded; the page has no channel back into the game and never receives sealed fact IDs. The recorded route produced 3 commits and 1 hold (`FORBIDDEN_DISCLOSURE` → DISCLOSURE family) with the hash chain `f488d9c4…812c → 19b474dc…c498 → 93381457…b900 → 4b231017…8892`.
+The boundary is one-directional: the embedded game mirrors typed events through `window.parent.postMessage`; the page has no command channel back into the game and receives no sealed fact IDs. The fresh route recorded 3 commits and 1 hold. Its `STAGE_GATED_DISCLOSURE` hold preserved the initial state hash; the capture manifest retains the actual state/event bindings. These observations concern the current local route, not a newly deployed service or model performance.
 
 ## Slides
 
@@ -226,7 +266,10 @@ uv run python scripts/validate_visual_assets.py --require-pdf-tools
 ./scripts/validate_game_track.sh                     # Godot 4.7.1 on PATH: fixtures, smoke, balance probe
 uv run python scripts/run_playable_evaluation.py     # SL-PLAY-EVAL-001 on a disposable project copy
 ./scripts/verify_like_ci.sh                          # the CI-equivalent gate
-make -C paper/latex check                            # EN (pdflatex) + KO (xelatex) PDFs, page band, Type 3 check
+uv run python scripts/generate_paired_feedback_figures.py --check  # frozen public inputs -> SVG drift check; no model call
+ARCHIVED_NPC_SOURCE="$(mktemp -d)"                    # explicit empty directory for historical source
+git archive --format=tar fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09:neuro-symbolic-interactive-game-research-2026 | tar -xf - -C "$ARCHIVED_NPC_SOURCE"
+make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"
 ```
 
 - `uv sync` — installs the locked Python 3.11+ environment.
@@ -237,7 +280,8 @@ make -C paper/latex check                            # EN (pdflatex) + KO (xelat
 - `validate_game_track.sh` — Godot fixtures, the 3D smoke, and the archetype balance probe.
 - `run_playable_evaluation.py` — SL-PLAY-EVAL-001 (52 checks) on a disposable copy of the project.
 - `verify_like_ci.sh` — the same gate the `validate` workflow runs.
-- `make -C paper/latex check` — rebuilds both PDFs and rejects page-band and Type 3 font regressions.
+- `generate_paired_feedback_figures.py --check` — checks the two generated SVG sources against the frozen public v5 projections without rewriting or making model calls; PNG/PDF derivatives are built by the paper pipeline.
+- `make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"` — rebuilds both PDFs and checks source-bound evidence, positive page counts and Type 3 fonts. The archived project at the explicit revision supplies the historical NPC006 source, not current-runtime authority. This archived-source check passed; the default check without an archive remains **FIX** because NPC006 does not match current source. No current-source full-CI pass is claimed.
 
 Packets: offline pilot (frozen, hash-bound) in [`research/academic-pipeline/stage-04-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-04-pilot/); live screening in [`research/academic-pipeline/rq2-live-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/rq2-live-pilot/); KG simulation in [`research/simulation/kg-ontology/`](neuro-symbolic-interactive-game-research-2026/research/simulation/kg-ontology/); playable evaluation in [`game-track/godot/docs/latest/`](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/).
 
