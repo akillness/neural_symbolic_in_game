@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-10 | 출판 커밋 게시 후 전달 영수증 분리
+- [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#State-signal publication and public projections — 2026-11-10]]: 출판 커밋 `f3472955b06f3b2d832cf2d84fcce18aea7a12ed`와 실제 원격 main의 일치를 재확인하고 `paired-feedback-publication-20261110-post-delivery.json`을 별도로 남겼다. 기존 커밋 전 영수증의 null/PENDING 필드와 바이트는 보존했다.
+- 영수증은 원래 pre-push 12개 gate PASS(단위 539개·게임 트랙 100개), 정확한 명령·원격 관측·중단한 시도와 한계를 기록한다. 테스트 수는 중복 집합이므로 합산하지 않는다. 미스테이징 runtime의 기존 FIX, 신원·비용·과학적 효과 미검증을 유지하며 새 실험·GitHub Actions·배포 통과로 확대하지 않는다.
+
 ## 2026-11-10 | 상태 시그널 도해·수집 흐름·공개 투영 보강
 - [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#State-signal publication and public projections — 2026-11-10]]: 기존 v5 응답 20개를 재사용해 그림 5의 검사 신호→수리 응답→재검증→commit/fallback 경로와 그림 6의 20→20→10→8→7 집계·20개 개별 결과를 생성했다. 한영 PDF 각 17쪽, 그림 5/6은 10/11쪽, PNG 콘택트시트와 PDF 해시를 갱신했다.
 - 관련 132 tests·37 subtests, Ruff 7파일, 출처 147건·SVG 12개·24개 이중 재생성 PASS. 중복·누락·잘못된 타입·미완료 영수증·symlink/hardlink 원본 덮어쓰기를 회귀로 차단했다. 공개 투영은 실행 파일 로컬 경로만 제외하고 원본 4개를 바이트 불변으로 보존한다. 기본 NPC006 현재 소스 빌드는 FIX로 남기고 명시적 `fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09` archive 빌드는 통과했다. 전문 reviewer 429와 별도 문맥 대체 검토를 구분한다. 실험 추가·과학적 우월성·현재 전체 CI·배포 완료 주장은 없다.

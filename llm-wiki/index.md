@@ -13,7 +13,7 @@
 
 ## Sources and reports
 
-- [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#State-signal publication and public projections — 2026-11-10]] — **시그널·수집 흐름 보강**: 한영 각 17쪽, 그림 5/6은 두 언어 모두 10/11쪽이다. 선별 index 격리 검사 396 tests·345 subtests, 23파일 Ruff/format·147 receipt·12 SVG·24개 이중 재생성 PASS. README 각 56개 Markdown/HTML 로컬 참조와 12개 캡처의 index/해시를 확인했다. 공개 투영은 로컬 실행 경로만 제외하며 원본 4개 불변이다. NPC006 기본 현재 소스 검사 FIX와 역사 소스 빌드 PASS를 구분한다. 추가 실모델 호출·효능·미스테이징 runtime 전체 CI 주장은 없으며 Git 전달은 별도 기록한다.
+- [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#State-signal publication and public projections — 2026-11-10]] — **시그널·수집 흐름 보강 및 f347295 전달 확인**: 한영 각 17쪽, 그림 5/6은 두 언어 모두 10/11쪽이다. import 출처를 고정한 396 tests·345 subtests와 격리 출판 커밋의 기존 pre-push 12개 gate가 통과했다. 실제 원격 main 포인터를 재조회했으며 보고서에서 커밋 전 영수증과 별도 post-delivery 영수증을 연결한다. 원본 4개와 별도 runtime 작업은 보존했고 추가 실모델 실험·효능·미스테이징 runtime 전체 CI·배포 주장은 없다.
 
 - [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Completed v5 paired-selector collection — 2026-11-10]] — **별도 v5 개발 비교 수집 완료**: Luna/Terra 요청 selector 각 10개, terminal 응답 20개·pending 0. 목표 Luna 6/10·Terra 1/10, schema 실패 10/20을 유지했다. 한·영 본문 PDF 각 15쪽, 관련 282 tests·Ruff·142 출처 영수증/10 SVG 검사 PASS. serving 신원·실제 비용 unknown; 독립 gold/holdout·인과·우월성·확증 A/C 근거가 아니다. 과거 cohort 보존, 구매·설정 변경·commit/push 없음.
 

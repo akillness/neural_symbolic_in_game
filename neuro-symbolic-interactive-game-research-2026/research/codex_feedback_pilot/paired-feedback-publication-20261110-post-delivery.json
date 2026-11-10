@@ -1,0 +1,176 @@
+{
+  "schema": "paired-feedback-publication-post-delivery/1",
+  "recorded_at_utc": "2026-11-10T13:04:22Z",
+  "status": "DELIVERY_CONFIRMED",
+  "receipt_role": "Post-delivery observation of the publication commit, not a receipt for this documentation-only follow-up",
+  "subject": {
+    "publication_commit": "f3472955b06f3b2d832cf2d84fcce18aea7a12ed",
+    "remote": "https://github.com/akillness/neural_symbolic_in_game.git",
+    "target_ref": "refs/heads/main",
+    "previous_remote_commit": "17c0caf6629e84e5d3ca5efb0251b61c87654b63"
+  },
+  "pre_delivery_receipt": {
+    "path": "research/codex_feedback_pilot/paired-feedback-publication-20261110-verification.json",
+    "sha256": "3210d84f8425596af00bfae2e1fbc7387978bf9f57f0af1a908bfd2cf4aeefed",
+    "same_bytes_as_publication_commit": true,
+    "historical_delivery_fields_preserved": {
+      "commit": null,
+      "push": "PENDING"
+    }
+  },
+  "remote_confirmation": {
+    "observed_at_checkpoint_commit": "f3472955b06f3b2d832cf2d84fcce18aea7a12ed",
+    "checks": [
+      {
+        "command": "rtk git rev-parse HEAD refs/remotes/origin/main",
+        "exit": 0,
+        "observed": [
+          "f3472955b06f3b2d832cf2d84fcce18aea7a12ed",
+          "f3472955b06f3b2d832cf2d84fcce18aea7a12ed"
+        ]
+      },
+      {
+        "command": "rtk git ls-remote origin refs/heads/main",
+        "exit": 0,
+        "observed_commit": "f3472955b06f3b2d832cf2d84fcce18aea7a12ed",
+        "observed_ref": "refs/heads/main"
+      }
+    ],
+    "status": "LOCAL_FETCHED_AND_ACTUAL_REMOTE_REFS_MATCH_SUBJECT"
+  },
+  "completed_push": {
+    "command": "rtk proxy env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE -u GIT_COMMON_DIR -u GIT_OBJECT_DIRECTORY -u GIT_ALTERNATE_OBJECT_DIRECTORIES -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT git push origin f3472955b06f3b2d832cf2d84fcce18aea7a12ed:refs/heads/main",
+    "exit": 0,
+    "wall_seconds": 339.21,
+    "observed_update": "17c0caf..f347295 -> main",
+    "execution_scope": "Session-owned isolated clone of the committed publication tree; existing pre-push hook copied unchanged, no bypass",
+    "environment": {
+      "PYTHONPATH_description": "Explicit isolated-project src directory; actual imported nesy_game.__file__ was observed inside that export",
+      "UV_OFFLINE": "1",
+      "SOURCE_DATE_EPOCH": "1794268800",
+      "FORCE_SOURCE_DATE": "1",
+      "TZ": "UTC"
+    }
+  },
+  "pre_push_gate": {
+    "status": "PASS",
+    "required_stages": 12,
+    "passed_stages": 12,
+    "stages": [
+      {
+        "name": "Install locked environment",
+        "status": "PASS",
+        "command": "uv sync --extra research --extra dev",
+        "resolved_packages": 16
+      },
+      {
+        "name": "Unit tests",
+        "status": "PASS",
+        "command": "uv run python -m unittest discover -s tests",
+        "tests": 539,
+        "seconds": 189.478
+      },
+      {
+        "name": "Ruff lint and format",
+        "status": "PASS",
+        "commands": [
+          "uv run ruff check src tests scripts examples",
+          "uv run ruff format --check src tests scripts examples"
+        ],
+        "formatted_files": 123
+      },
+      {
+        "name": "Project integrity",
+        "status": "PASS",
+        "command": "uv run python scripts/validate_project.py"
+      },
+      {
+        "name": "Contribution and reference crosswalk",
+        "status": "PASS",
+        "command": "uv run python scripts/validate_contribution_crosswalk.py",
+        "contributions": 5,
+        "references": 58,
+        "topics": 9
+      },
+      {
+        "name": "Editable visual and table sources",
+        "status": "PASS",
+        "command": "uv run python scripts/validate_visual_assets.py --require-pdf-tools --check-regeneration",
+        "unique_receipts": 147,
+        "svg_assets": 12,
+        "double_regenerated_sources": 24
+      },
+      {
+        "name": "Offline experiment smoke",
+        "status": "PASS",
+        "command": "uv run python examples/recorded_experiment.py",
+        "mode": "recorded fixtures, not a new provider/model experiment"
+      },
+      {
+        "name": "Harness structure",
+        "status": "PASS",
+        "command": "uv run python scripts/validate_harness.py",
+        "agents": 15,
+        "skills": 3
+      },
+      {
+        "name": "Experimental game-track contracts",
+        "status": "PASS",
+        "command": "./scripts/validate_game_track.sh",
+        "tests": 100,
+        "subtests": 48,
+        "seconds": 133.13,
+        "additional_formatted_files": 16
+      },
+      {
+        "name": "Deep-research result contracts",
+        "status": "PASS",
+        "command": "uv run python scripts/validate_deep_research.py --fields research/deep-research/fields.yaml --dir research/deep-research/results --quiet",
+        "valid_records": 14,
+        "records": 14
+      },
+      {
+        "name": "Survey artifact contract",
+        "status": "PASS",
+        "command": "uv run python scripts/validate_survey_artifacts.py ../.survey/neuro-symbolic-interactive-game-2026 --require-provenance",
+        "artifacts": 3
+      },
+      {
+        "name": "Wiki lint",
+        "status": "PASS",
+        "command": "uv run python scripts/lint_wiki.py ../llm-wiki",
+        "pages": 81,
+        "structural_issues": 0
+      }
+    ],
+    "observed_terminal_message": "All CI steps passed locally; this tree should push clean.",
+    "warning": "A TemporaryDirectory ResourceWarning was emitted; the unit suite completed OK. Negative-fixture FIX output is not a promoted experimental success."
+  },
+  "additional_targeted_evidence": {
+    "tests": 396,
+    "subtests": 345,
+    "seconds": 34.73,
+    "source_import_qualified": true,
+    "suite_counts_not_additive": true,
+    "details_receipt": "research/codex_feedback_pilot/paired-feedback-publication-20261110-verification.json"
+  },
+  "interrupted_attempt": {
+    "status": "CANCELLED_NOT_A_PASS",
+    "reason": "Avoid carrying the original absolute Git-dir/worktree environment into Git-using test fixtures",
+    "original_head_after_cancel": "f3472955b06f3b2d832cf2d84fcce18aea7a12ed",
+    "original_index_after_cancel": "empty",
+    "original_core_worktree_after_cancel": "unset",
+    "remote_commit_before_final_push": "17c0caf6629e84e5d3ca5efb0251b61c87654b63"
+  },
+  "boundaries": {
+    "evidence_kind": "Observed engineering tool output and remote-ref read-back, not independent scientific or reviewer attestation",
+    "github_actions_verdict": "NOT_OBSERVED",
+    "original_uncommitted_runtime_full_ci": "NOT_CLAIMED; its previously observed NPC source mismatch remains FIX",
+    "new_native_model_experiment": false,
+    "served_identity_revision_cost_provider_requests": "unknown",
+    "model_superiority_causal_ontology_efficacy_confirmatory_A_C": "NOT_ESTABLISHED",
+    "dedicated_specialist_reviews": "UNAVAILABLE_BEFORE_VERDICT_HTTP_429",
+    "fallback_review": "Separate-context static review with narrow dependency/hash recheck, not specialist or cross-provider attestation",
+    "deployment_or_journal_acceptance": "NOT_CLAIMED"
+  }
+}
