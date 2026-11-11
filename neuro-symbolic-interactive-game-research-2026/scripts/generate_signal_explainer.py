@@ -664,7 +664,7 @@ def mechanism_svg() -> str:
         )
     for line, value in enumerate(
         (
-            "Roles: ontology-map.json",
+            "Roles: authored ontology map",
             f"{len(PYTHON7)} Python checks | {len(GODOT6)} Godot families | {len(DISCLOSURE7)} DISC rules",
             "Missing checks: unreported, not pass",
             "Authored structure, not model state",

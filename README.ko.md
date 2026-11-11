@@ -65,6 +65,8 @@ Study: `prospective-pilot-20261103`. Status: **NOT_RUN/BLOCKED**; conclusion: `N
 
 [![2026-11-11 리뷰·개정 PDF에서 렌더한 한국어 원고 17쪽 전체 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/paper-ko-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
 
+이 contact sheet는 2026-11-11 리뷰 당시의 과거 스냅샷이며 현재 원고의 미리보기가 아니다. 이미지를 누르면 현재 한국어 PDF가 열린다.
+
 ## 근거
 
 아래 네 과거 레인은 원래 count와 상한을 유지하며 별도 v5 개발 수집과 합산하지 않는다. 모든 숫자는 결정론적 runner 또는 hash로 묶인 영수증에서 나온 raw count이며, 추론 통계는 보고하지 않는다.

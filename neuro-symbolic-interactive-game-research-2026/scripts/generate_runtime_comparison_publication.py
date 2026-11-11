@@ -596,14 +596,14 @@ def render_tables_fragment(data: Mapping[str, Any], korean: bool = False) -> str
     if korean:
         caption = "고정 게임 native runtime 비교(n=2/셀). 기술 실패와 timeout을 포함한 원래 8개 배정 행을 분모에 보존한다."
         headers = (
-            "요청 selector & 표현 & 목표/배정 & 관측 실행 & Host 호출 & Unsafe/Commit & Elapsed 중앙값(n) & Fresh engine"
+            "요청 selector & 표현 & 목표/배정 & 관측 실행 & Host 호출 & Unsafe/Commit & Elapsed 중앙값(s; n) & Fresh engine"
             + r" \\"
         )
         note = f"Fresh engine은 {engine_order} 순서의 건수이다. NR은 미보고이지 0이 아니다. 전체 계수와 semantic replay의 구분은 본문에 보고한다."
     else:
         caption = "Fixed-game native runtime comparison (n=2 per cell). All eight assignments, including the harness failure and timeouts, remain in denominators."
         headers = (
-            "Requested selector & Form & Goal/assigned & Observed exec. & Host calls & Unsafe/committed & Elapsed median (n) & Fresh engine"
+            "Requested selector & Form & Goal/assigned & Observed exec. & Host calls & Unsafe/committed & Elapsed median (s; n) & Fresh engine"
             + r" \\"
         )
         note = f"Fresh engine counts follow {engine_order} order. NR is unreported, not zero. Overall counts and the separate semantic replay are reported in the text."

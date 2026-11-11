@@ -78,7 +78,7 @@
 \maketitle
 
 \begin{abstract}
-\system{}은 생성 게임 이벤트에 외부 권한 검사, typed-error repair, unchanged fallback, 재검증, replay, complete accounting을 결합한다. 읽기 전용 한·영 ontology view는 source 선언과 공개 관측만 연결한다. Codex dashboard 한 사례($n{=}1$, independent repeats $0$)는 \texttt{gpt-6.1-sol} 선택, geometry 수리, 실패 보존, 검사 62개, Godot Web build, 실제 입력 거절·공개·재표시를 기록한다. 이 단일 개발 사례의 seed는 미상이다. 고정 게임 native pilot은 8 assigned/7 observed/5 system-goal successes; 첫 행은 pre-response harness JSON serialization 기술 실패로 재실행하지 않았고 \texttt{gpt-6.1-sol}/ontology 두 행은 response timeout이다. Receipts는 host invocation 23, repair 0, unsafe/commit 0/16, semantic-link replay 7 valid, fresh-engine VALID/INVALID/NOT\_RUN/NOT\_OBSERVED=6/0/1/1을 보였다. Provider identity/revision/cost/request count와 inference latency는 미상이며 source 수정 confound가 있다. 이는 bounded 관측이지 A/C 확인적 평가가 아니며 ontology 일반 일관성·우월·비열등성, frontier 등급, 다중 벤더 일반화·인간 편익을 추론하지 않는다. Traceability·whole-game·repeated-cross-model 연구는 제안이다.
+\system{}은 생성 게임 이벤트에 외부 권한 검사, typed-error repair, unchanged fallback, 재검증, replay, complete accounting을 결합한다. 읽기 전용 한·영 ontology view는 source 선언과 공개 관측만 연결한다. Codex dashboard 한 사례($n{=}1$, independent repeats $0$)는 \texttt{gpt-6.1-sol} 선택, geometry 수리, 실패 보존, 검사 62개, Godot Web build, 실제 입력 거절·공개·재표시를 기록한다. 이 단일 개발 사례의 seed는 미상이다. 고정 게임 native pilot은 8 assigned/7 observed/5 system-goal successes; 첫 행은 pre-response harness JSON serialization 기술 실패로 재실행하지 않았고 \texttt{gpt-6.1-sol}/ontology 두 행은 response timeout이다. Receipts는 host invocation 23, repair 0, unsafe/commit 0/16, semantic-link replay 7 valid, fresh-engine VALID/INVALID/NOT\_RUN/NOT\_OBSERVED=6/0/1/1을 보였다. Provider identity/revision/cost/request count와 inference latency는 미상이며 source 수정 confound가 있다. 이는 bounded 관측이지 질문 A(model/stack consistency)와 C(fresh-reference noninferiority)에 대한 확인적 평가가 아니며 ontology 일반 일관성·우월·비열등성, frontier 등급, 다중 벤더 일반화·인간 편익을 추론하지 않는다. Traceability·whole-game·repeated-cross-model 연구는 제안이다.
 Native pilot의 seed는 20261024다. 별도의 합성 v5 개발 수집에서는 배정 20/20개에 응답을 받았고, 8/20개가 strict gate를 통과했으며 7/20개가 지정 목표에 도달했고 10/20개가 schema parsing에 실패했다. 모든 배정을 포함한 기술적 계수이며 피드백의 인과 효과나 모델 우월성을 입증하지 않는다.
 \end{abstract}
 
@@ -139,7 +139,7 @@ c_t, & \text{그 외.}
 
 실제 경로는 제안 $\rightarrow$ 결정론적 검증 $\rightarrow$ 관측 가능한 validity·검사 ID·구조화 오류 $\rightarrow$ 선택적 bounded repair $\rightarrow$ 동일 상태에 대한 재검증 $\rightarrow$ commit 또는 상태 불변 fallback이다. 유효 후보도 적용 직전에 다시 검사하며 repair가 없거나 예산이 소진되면 상태는 불변이다. 아래 guided repair operator는 제안과 오류만 사용하지만 일반 Python repair callback에는 \texttt{WorldState}가 전달되므로 이 입력 제한을 모든 callback의 성질로 일반화하지 않는다. 통제 비교에서는 결정론적 상세 수정과 모델 기반 상세 수정에 동일 제안과 상세 오류를 제공하고 같은 모델의 일반 오류 조건에는 일반 시그널을 제공한다. 이 설계 자체는 비교 결과를 뜻하지 않는다.
 
-Fixture는 다음 불변량을 시험하며 증명은 아니다. \textbf{I1:} validation 소진/commit 전 proposal·controller 실패 불변; \textbf{I2:} callback과 $K\geq0$에서 최대 $K+1$ attempt와 pre-commit 재검증(무deadline wall-clock 보장 없음); \textbf{I3:} 수락 \texttt{CandidateAction.effects}는 승인 quest-stage target을 포함해 \texttt{ActionPolicy.allowed\_effects} 안임; \textbf{I4:} 기록된 초기 스냅샷, 완전하고 순서가 보존된 전이 기록, 동결된 schema 및 결정론적 transition version이 주어지면 replay로 기록된 종단 구조화 상태를 복원할 수 있다. 이는 조건부 상태 복원이지 인증, 의미적 정확성 또는 모델 생성 과정의 재현이 아니다.
+Fixture는 다음 불변량을 시험하며 증명은 아니다. \textbf{I1:} validation 소진/commit 전 proposal·controller 실패 불변; \textbf{I2:} callback과 $K\in\mathbb{Z}_{\geq 0}$에서 최대 $K+1$ attempt와 pre-commit 재검증(무deadline wall-clock 보장 없음); \textbf{I3:} 수락 \texttt{CandidateAction.effects}는 승인 quest-stage target을 포함해 \texttt{ActionPolicy.allowed\_effects} 안임; \textbf{I4:} 기록된 초기 스냅샷, 완전하고 순서가 보존된 전이 기록, 동결된 schema 및 결정론적 transition version이 주어지면 replay로 기록된 종단 구조화 상태를 복원할 수 있다. 이는 조건부 상태 복원이지 인증, 의미적 정확성 또는 모델 생성 과정의 재현이 아니다.
 
 가정은 올바른 policy·충실한 추출·deterministic version·반환 callback·단일 프로세스 파일 소유다. Replay는 구조화 전이만 검사하며 repair provenance/prompt/확률 생성/미선언 자연어 함의는 검사하지 않는다.
 
@@ -168,7 +168,7 @@ Quest-stage monotonicity (\path{quest_stage_monotonicity}) & regressive stage & 
 
 
 \subsubsection{여덟 역할 구조와 source binding}
-읽기 전용 \path{game-track/web/dashboard/ontology-map.json}은 선언/frozen expectation만 결속하고 live state/권한은 추론하지 않는다. 표의 $I$는 \path{initial_state}다.
+읽기 전용 온톨로지 매핑은 선언과 동결된 기대값을 결속하며, 실시간 상태나 권한을 추론하지 않는다.
 Ontology view, repair information, mutation authority는 분리된다. 표~\ref{tab:ontology-roles}의 \texttt{reveal\_hint(actor\_id,fact\_id)}에서 view는 \texttt{tide\_marks\_hint}/stage-$2$ policy를 보이고 guided operator는 $a_t,E_t$만 읽어 predicate를 삽입할 뿐 \texttt{WorldState}를 읽지 않는다. 일곱 검사 통과만 $T$에 도달해 Godot이 commit하며 최초 공개 revision $+1$, 재표시는 불변이다.
 \begin{table}[!tbp]
 \caption{여덟 온톨로지 역할과 구체적 source 관계}
@@ -177,16 +177,16 @@ Ontology view, repair information, mutation authority는 분리된다. 표~\ref{
 \footnotesize
 \begin{tabularx}{\columnwidth}{@{}l>{\raggedright\arraybackslash}X@{}}
 \toprule
-\textbf{역할} & \textbf{Source field 또는 관계 예시} \\
+\textbf{역할} & \textbf{Source 선언 또는 관계 예시} \\
 \midrule
-World & $I$.\path{world.object_locations}: \texttt{signal\_lens}$\rightarrow$\texttt{lamp\_store}. \\
-Actor & $I$.\path{npcs.captain_mira}; \path{scope.eligible_actor_ids}의 유일 원소. \\
-Knowledge & Actor의 \path{knowledge}$\rightarrow$canonical Fact ID; 지식은 허가가 아니다. \\
-Fact & $I$.\path{facts}: \texttt{dock\_saved}, \texttt{lighthouse\_dark}; \texttt{keeper\_betrayal}은 ID이지 비밀 payload가 아니다. \\
-Policy & \path{disclosure_policy}: \texttt{keeper\_betrayal} 금지; \texttt{tide\_marks\_hint}는 최소 quest stage $2$ 필요. \\
-Quest & $I$.\path{quest}: stage $0$, flag \texttt{dock\_saved}; 공개는 stage 불변. \\
+World & 초기 객체 위치는 신호 렌즈를 등대 램프 보관소에 둔다. \\
+Actor & 미라 선장이 허용된 유일한 actor다. \\
+Knowledge & Actor의 지식이 canonical Fact ID를 가리킴; 지식은 허가가 아니다. \\
+Fact & 초기 사실에는 \texttt{dock\_saved}, \texttt{lighthouse\_dark}가 포함되며 \texttt{keeper\_betrayal}은 ID이지 비밀 payload가 아니다. \\
+Policy & 공개 정책은 \texttt{keeper\_betrayal}을 금지하고 \texttt{tide\_marks\_hint}에 최소 quest stage $2$를 요구한다. \\
+Quest & 초기 quest는 stage $0$, flag \texttt{dock\_saved}; 공개는 stage 불변. \\
 Action & \texttt{reveal\_hint(}\allowbreak\texttt{actor\_id,}\allowbreak\texttt{fact\_id)}는 Fact/disclosed ID를 추가하며 조석 단서만 relationship memory를 추가한다. 최초 공개는 revision $+1$; 재표시는 불변이다. \\
-Trace & \path{prior_state_hash}, \path{next_state_hash}, \path{rule_ids}, \path{template_id}, \path{case_id}가 packet/version을 근거에 결속하며 누락은 PASS가 아니다. \\
+Trace & 이전·다음 상태 hash, 규칙·template·case ID가 packet과 version을 근거에 결속하며 누락은 PASS가 아니다. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -200,7 +200,7 @@ Trace & \path{prior_state_hash}, \path{next_state_hash}, \path{rule_ids}, \path{
 
 
 \subsection{Validate--Repair--Commit}\label{sec:repair}
-그림~\ref{alg:commit}의 무의존성 의사코드에서 Record는 in-memory append, 영속 쓰기는 종단 일관성 검사 뒤다. $(\mathrm{ok},E)$는 $V$와 $\mathrm{ok}:=\bigwedge_{i=1}^{7}(v_i=1)$의 축약이며 $V(c,a).\mathrm{ok}$는 재검증이다.
+그림~\ref{alg:commit}의 무의존성 의사코드에서 repair budget은 $K\in\mathbb{Z}_{\geq 0}$이고 Record는 in-memory append, 영속 쓰기는 종단 일관성 검사 뒤다. $(\mathrm{ok},E)$는 $V$와 $\mathrm{ok}:=\bigwedge_{i=1}^{7}(v_i=1)$의 축약이며 $V(c,a).\mathrm{ok}$는 재검증이다.
 
 \begin{figure}[!tbp]
 \footnotesize
@@ -262,7 +262,7 @@ Gate fixture는 13개(valid 1/negative 12), repair fixture는 12개다. 결과�
 보존 live-screening은 immutable provenance/hash일 뿐 활성 표·계수·주장에서 제외하고 \texttt{gpt-6.1-sol}에 이전하지 않는다.
 
 \subsection{\textbf{NPC-ENG1} 고정 목표 engineering 레인}
-Stable v5는 engineering assignment 16개와 screening recipe 12개($12\times2\times3=72$; $R/P/O=40/24/24$)로 bootstrap해 identity/hash, intent/plan/role/result, negative/stale/duplicate/deadline/replay를 시험한다. P는 authenticated Codex OAuth without fallback, O는 100\% auxiliary-source(not independent gold)다. Status/count/latency/reproduction은 \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/}에 있고 verified-run-002/003/004는 historical이다. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 C6 근거가 아닌 provenance다.
+Stable v5는 engineering assignment 16개와 screening recipe 12개($12\times2\times3=72$; $R/P/O=40/24/24$)로 bootstrap해 identity/hash, intent/plan/role/result, negative/stale/duplicate/deadline/replay를 시험한다. P는 authenticated Codex OAuth without fallback, O는 100\% auxiliary-source(not independent gold)다. \texttt{verified-run-006}의 기록은 상태, 계수, 지연과 재현 정보를 보존하며 검증 실행 002/003/004는 historical이다. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 C6 근거가 아닌 provenance다.
 
 \subsection{\textbf{NPC-SCR1} 기술적 스크리닝}
 NPC-SCR1 $12\times2\times3$ P/R/O row(72; arm당 24)에 ENG1을 더하면 88 assignment/28 definition($R/P/O=40/24/24$)이며 ENG1/E1과 별개다. 실패 strata, recovery-eligible/unreachable, P/R/O·미상 metadata·실패/stale-ACK/epoch-local replay를 보존한다. O의 same-family 일치는 미검증, auxiliary-source 100\%, independent gold 없음. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 provenance이지 C6 근거가 아니다.
@@ -305,25 +305,26 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 \subsection{단일 과제 Codex 개발 관측}\label{sec:development-case}
 동결 \texttt{ontology-map-20261023-01}은 읽기 전용 한·영 dashboard 한 과제($n{=}1$, independent repeats $0$)이지 NPC trial/cohort가 아니다. Native CLI 6회(initial $+$ resume 5; read-only/no-edit 1)는 한 사례다. \texttt{turn\_context.model=gpt-6.1-sol}은 runtime 선택이지 provider attestation이 아니며 provider identity/revision/seed/cost는 \texttt{null}, model-only latency는 미상이다. Wall-clock 5942.665\,s와 CLI 263.32\,s는 inference latency/future endpoint가 아니다.
 
-여섯째 호출은 inherited mobile table 최소 너비 660\,px를 수리했다. Independent geometry RED(2 실패/35 통과) 후 cell/paragraph 포함 map/signal/Web 62/62와 Godot Web build가 통과했다. 실제 입력 browser attempt 10 통과; 01--08 setup/route 실패, 09 이전 gate 통과/clipping 보존. 최종 $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ 거부 $(68,19468)$(hash 동일), 최초 공개 $(239,58234)$(상이), 승인 재표시 $(249,59793)$(동일). 1440$\times$900/390$\times$900, Enter, inspection/frozen-comparison 불변과 pre-navigation console/page/network 오류·warning 0을 관측했다. Dated QA10 PASS와 additive overall \textbf{NOT\_PASS}는 별개(구성 gate 7개 통과; pointer-lock/yaw-guard 및 pointer-lock page error 4개 잔존). Full-game creation/Python--Godot authorization round trip/모델 결과가 아닌 제한된 통합이며 privacy/source-binding 실패와 동일 thread 수리는 추가 $n$이 아니다. Jev는 label/approval 권한 없는 \texttt{proposal\_only}다. 보고서/계약: \path{research/development-cases/ontology-map-20261023-01/}\path{result.json}, \path{contract.json}.
+여섯째 호출은 inherited mobile table 최소 너비 660\,px를 수리했다. Independent geometry RED(2 실패/35 통과) 후 cell/paragraph 포함 map/signal/Web 62/62와 Godot Web build가 통과했다. 실제 입력 browser attempt 10 통과; 01--08 setup/route 실패, 09 이전 gate 통과/clipping 보존. 최종 $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ 거부 $(68,19468)$(hash 동일), 최초 공개 $(239,58234)$(상이), 승인 재표시 $(249,59793)$(동일). 1440$\times$900/390$\times$900, Enter, inspection/frozen-comparison 불변과 pre-navigation console/page/network 오류·warning 0을 관측했다. 동일 driver를 production dashboard에서 다시 실행한 결과는 별도로 overall \textbf{NOT\_PASS}로 기록되었다. headed 실행은 변경되지 않은 yaw guard에서 멈췄고 headless 실행은 구성 gate 7개를 통과했으나 pointer-lock page error 4개를 남겼다. 이는 당시 수용 기준으로 판정된 dated attempt-10 PASS를 뒤집지 않는다. Full-game creation/Python--Godot authorization round trip/모델 결과가 아닌 제한된 통합이며 privacy/source-binding 실패와 동일 thread 수리는 추가 $n$이 아니다. Jev는 label/approval 권한 없는 \texttt{proposal\_only}다. 사례 결과 기록과 동결 계약은 관측 및 수용 기준을 각각 보존한다.
 \input{../generated/runtime_comparison_results_ko.tex}
 \input{../generated/runtime_comparison_tables_ko.tex}
 
 \subsection{별도의 신호 탐색 사례}
-탐색 영수증(\path{research/signal-exploratory-20261110T023502Z-cbf0c3b7/receipt.json})은 앞의 결과 및 사전 지정 파일럿과 별개인 합성 \texttt{missing\_effect} 사례 1건을 기록한다. 공통 제안은 필수 효과 \texttt{signal\_restored}를 누락했다. 결정적 대조는 한 번의 수리 후 commit되었고, commit된 상태에 해당 사실이 포함되어야 한다는 독립 지정 목표에 도달했다.
+탐색 영수증은 앞의 결과 및 사전 지정 파일럿과 별개인 합성 \texttt{missing\_effect} 사례 1건의 제안과 결과를 기록한다. 공통 제안은 필수 효과 \texttt{signal\_restored}를 누락했다. 결정적 대조는 한 번의 수리 후 commit되었고, commit된 상태에 해당 사실이 포함되어야 한다는 독립 지정 목표에 도달했다.
 
 두 모델 조건은 각각 한 번의 시도가 기록되었으며 서로 다른 정보량의 신호를 받았다. 상세 신호는 오류, 누락된 효과와 수리 힌트를 명시한 반면 일반 신호는 \texttt{Action rejected.}만 전달했다. 상세 조건의 응답은 효과를 추가하여 재검증 후 commit과 목표 도달로 이어졌고, 일반 조건의 응답은 빈 효과를 유지하여 재검증에 실패하고 목표에 도달하지 못한 채 fallback되었다. 이 대비는 단일 사례의 기술적 관측이며 정보량을 맞춘 비교, 인과 또는 통계 근거, 연구 전체 결과, 질문 A나 C의 답이 아니다. 요청 모델은 \texttt{gpt-6-luna}였으나 실제 응답 모델의 신원, 비용, 제공자 요청 횟수와 재시도 횟수는 미상이다. 입력의 공개 여부 검증은 완료되지 않았다.
 영수증에는 전체 프롬프트와 실행 코드 버전이 담겨 있지 않아 이 실행을 정확히 재현할 근거가 부족하다.
 
 \subsection{별도의 합성 개발 파일럿}
-요청 selector \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각각에 대해 별도의 합성 개발 파일럿은 10개 배정을 계획했다. 첫 상세 \texttt{missing\_precondition} 배정은 \texttt{protocol\_error}로 \texttt{FAILED} 기록되었고 나머지 9개는 pending이며 유효한 모델 응답은 0개였다. 첫 실패 후 수집을 중단했다. 오류 원문은 민감한 데이터를 포함할 수 있어 보존하지 않았고 원인은 미상이다. 요청 송신 또는 제공자 응답 수신 여부, 실제 제공자 모델 신원과 비용은 확인되지 않았다. 이 허구의 개발 사례들은 holdout이나 인간 평가가 아니며 앞의 단일 사례 및 다른 연구와 별개다. 완료된 성능 비교, 확증 결과, 모델 자체의 실패 또는 미지원, 통계적 효과를 입증하지 않는다. 근거: \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-evidence-20261110-luna/results.json}, \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-evidence-20261110-terra/results.json}.
+요청 selector \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각각에 대해 별도의 합성 개발 파일럿(v2 evidence cohort)은 10개 배정을 계획했다. 첫 상세 \texttt{missing\_precondition} 배정은 \texttt{protocol\_error}로 \texttt{FAILED} 기록되었고 나머지 9개는 pending이며 유효한 모델 응답은 0개였다. 첫 실패 후 수집을 중단했다. 오류 원문은 민감한 데이터를 포함할 수 있어 보존하지 않았고 원인은 미상이다. 요청 송신 또는 제공자 응답 수신 여부, 실제 제공자 모델 신원과 비용은 확인되지 않았다. 이 허구의 개발 사례들은 holdout이나 인간 평가가 아니며 앞의 단일 사례 및 다른 연구와 별개다. 완료된 성능 비교, 확증 결과, 모델 자체의 실패 또는 미지원, 통계적 효과를 입증하지 않는다. 두 selector의 결과 기록은 실패와 미완료 배정 상태를 보존한다.
 
-별도의 diagnostic cohort는 selector당 10개 배정을 계획했다. Terra는 첫 상세 \texttt{missing\_precondition} 배정을 \texttt{protocol\_error}로 \texttt{FAILED} 기록했고 9개는 pending으로 남았다. Luna의 첫 상세 배정은 사례 기록에 \texttt{IN\_PROGRESS}로 남아 있고 다른 9개 행은 pending이며, 집계 status는 10개 모두를 pending으로 센다. 운영자는 프로세스가 없다고 보고했다. 송신 여부와 종료 원인은 미상이며 미완료 행을 성공으로 해석하지 않는다. 이 diagnostic 기록은 앞선 시도와 합산하지 않으며 모델 성능이나 미지원을 입증하지 않는다. 근거: \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-diagnostic-20261110-terra/results.json}, \path{research/codex_feedback_pilot/codex-feedback-pilot-v2-diagnostic-20261110-luna/results.json}.
+별도의 diagnostic cohort(v2 diagnostic cohort)는 selector당 10개 배정을 계획했다. Terra는 첫 상세 \texttt{missing\_precondition} 배정을 \texttt{protocol\_error}로 \texttt{FAILED} 기록했고 9개는 pending으로 남았다. Luna의 첫 상세 배정은 사례 기록에 \texttt{IN\_PROGRESS}로 남아 있고 다른 9개 행은 pending이며, 집계 status는 10개 모두를 pending으로 센다. 운영자는 프로세스가 없다고 보고했다. 송신 여부와 종료 원인은 미상이며 미완료 행을 성공으로 해석하지 않는다. 이 diagnostic 기록은 앞선 시도와 합산하지 않으며 모델 성능이나 미지원을 입증하지 않는다. 각 selector의 diagnostic 결과 기록은 이 상태 불일치와 미완료 배정을 보존한다.
 
-\noindent\textbf{과거 파일 계수.} 완료/실패/pending 배정 행 수는 최초 파일럿 $0/7/3$, 초기 selector/native 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이다. 위의 v2 evidence/diagnostic 계수는 Luna의 \texttt{IN\_PROGRESS} 스냅샷을 포함해 그대로 유지한다. 이 묶음은 파일 계수용이지 합산된 독립 표본이나 제공자 요청 수가 아니며 pending 행은 요청이나 모델 실패를 입증하지 않고 v4와 v5도 별개로 둔다. 실제 응답 모델 신원, 비용, 제공자 요청 횟수는 미상이다. 안전한 투영 \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}은 코호트별 계수와 로컬 원본 digest를 보존할 뿐 원본 공개나 독립 실행 재현성을 제공하지 않는다.
+\noindent\textbf{과거 파일 계수.} 완료/실패/pending 배정 행 수는 최초 파일럿 $0/7/3$(실패 7건은 기술적 또는 중단된 시도이며 입증된 모델 오답 7건이 아님), 초기 selector/native 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이다. 위의 v2 evidence 계수(selector당 실패 1개·pending 9개)와 v2 diagnostic 계수는 Luna의 \texttt{IN\_PROGRESS} 스냅샷을 포함해 그대로 유지한다. 이 묶음은 파일 계수용이지 합산된 독립 표본이나 제공자 요청 수가 아니며 pending 행은 요청이나 모델 실패를 입증하지 않고 v4와 v5도 별개로 둔다. 실제 응답 모델 신원, 비용, 제공자 요청 횟수는 미상이다. 공개용 코호트 목록은 코호트별 계수와 로컬 원본 digest를 보존할 뿐 원본 공개나 독립 실행 재현성을 제공하지 않는다.
 
 \subsection{새로운 v5 paired-selector 개발 수집}
 이번 새로운 v5 수집은 이전의 모든 미완료 및 diagnostic cohort와 별개다. 각 요청 selector는 합성 개발 fixture 5개를 상세 및 일반 신호 조건으로 받았다(selector당 배정 10개). 명목상 고정 직렬 순서는 Luna 다음 Terra였다. 배정 20개 모두 응답을 수신했으며 pending은 없지만 응답 수신은 과제 성공이 아니다. 표~\ref{tab:paired-feedback-v5}는 strict validator gate 통과, 독립 지정 목표 달성, schema 실패를 구분하며 각 cell의 분모는 배정된 5개 전체다.
+수집기는 각 응답을 strict parser와 결정론적 검사에 적용하고, 통과 여부와 별도로 지정 목표를 평가했다. 전체 20개 중 gate 통과는 8개, 목표 달성은 7개, schema 실패는 10개다. 이는 이 배정 집합의 기술적 계수이며 신호의 인과 효과를 뜻하지 않는다.
 
 \begin{table*}[!tbp]
 \caption{별도의 v5 합성 개발 수집. 모든 분모는 schema 실패를 포함한 배정 5개 전체이며 응답 수신은 과제 성공을 뜻하지 않는다.}
@@ -341,10 +342,10 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 \end{tabularx}
 \end{table*}
 
-동결된 수집 amendment에 따라 schema가 유효하지 않은 응답은 실패 배정이자 목표 실패로 남지만 adapter 완료가 입증되면 다음 배정의 수집을 계속한다. 실제 transport 또는 safety 실패는 여전히 수집을 중단한다. Gate 통과는 목표 달성과 다르며 Luna 상세 조건에서 통과한 사례 1개는 목표에 도달하지 못했다. 다섯 fixture는 \path{missing_precondition}, \path{missing_effect}, \path{unauthorized_objective}, \path{forbidden_disclosure}, \path{unsatisfied_dependency}이다. \path{unauthorized_objective}에서는 동결된 \texttt{signal} policy가 어떤 효과도 허용하지 않지만 공통 목표는 \path{signal_restored}를 요구한다. Luna의 상세 피드백 응답은 금지된 효과를 제거하여 승인되었으나 해당 목표에는 도달하지 못했다. 이 policy·목표 충돌 사례를 포함한 다섯 배정을 각 분모에 그대로 유지한다. 소규모 합성 개발 집합은 holdout, 인간 평가 또는 인과 연구가 아니며 상세/일반 신호의 정보량도 다르다. 실제 응답 모델의 신원/revision, 제공자 요청 횟수와 비용은 미상이다. 이 관측은 selector 우월성, 온톨로지 효능 또는 A/C 확증을 입증하지 않는다.
+동결된 수집 amendment에 따라 schema가 유효하지 않은 응답은 실패 배정이자 목표 실패로 남지만 adapter 완료가 입증되면 다음 배정의 수집을 계속한다. 실제 transport 또는 safety 실패는 여전히 수집을 중단한다. Gate 통과는 목표 달성과 다르며 Luna 상세 조건에서 통과한 사례 1개는 목표에 도달하지 못했다. 다섯 fixture는 \texttt{missing\_precondition}, \texttt{missing\_effect}, \texttt{unauthorized\_objective}, \texttt{forbidden\_disclosure}, \texttt{unsatisfied\_dependency}이다. \texttt{unauthorized\_objective}에서는 동결된 \texttt{signal} policy가 어떤 효과도 허용하지 않지만 공통 목표는 \texttt{signal\_restored}를 요구한다. Luna의 상세 피드백 응답은 금지된 효과를 제거하여 승인되었으나 해당 목표에는 도달하지 못했다. 이 policy·목표 충돌 사례를 포함한 다섯 배정을 각 분모에 그대로 유지한다. 소규모 합성 개발 집합은 holdout, 인간 평가 또는 인과 연구가 아니며 상세/일반 신호의 정보량도 다르다. 실제 응답 모델의 신원/revision, 제공자 요청 횟수와 비용은 미상이다. 이 관측은 selector 우월성, 온톨로지 효능 또는 A/C 확증을 입증하지 않는다.
 
-공개 결과 투영은 \path{research/codex_feedback_pilot/public-v5/} 아래 \path{paired-model-comparison-20261110-v5-gpt-5.6-luna/}와 \path{paired-model-comparison-20261110-v5-gpt-5.6-terra/} 디렉터리에 둔다. 각 \path{results.json}은 모든 사례 결과, prompt hash, 실행 파일 hash/version을 유지하되 로컬 실행 경로를 생략하고 원본 파일 digest와 생략 필드를 명시한다. 동결 원본 결과와 승인 자료는 로컬에 변경 없이 보존한다. 한 단계 위의 공통 불변 \path{paired-model-comparison-20261110-v5-source.zip}은 실행된 소스 7개를 보존하는 출처 스냅샷이지 독립 실행 배포본은 아니다.
-이 v5 수집에서는 성공적으로 파싱된 \path{response_text}는 보존하지만 자격 증명이나 민감한 서버 데이터가 포함될 수 있어 CLI stdout/stderr 원문은 보존하지 않았으며 바이트 수, digest, 이벤트 요약은 남아 있다. 실패 배정 열 건은 null evaluation과 함께 \texttt{CandidateParseError}/\path{evaluation_error}로 기록되어 있으므로 보존된 산출물만으로 내용 수준의 원인을 확정할 수 없다. 이 실패들은 모든 배정 분모에 그대로 포함하며 수신이나 실패만으로 제공자 신원이나 모델 자체의 무능력을 입증하지 않는다.
+두 selector의 공개 결과 기록은 각 사례의 결과, prompt hash, 실행 파일 hash/version을 유지하면서 로컬 실행 경로를 생략하고 원본 digest와 생략 필드를 명시한다. 동결 원본 결과와 승인 자료는 로컬에 변경 없이 보존한다. 공통 불변 출처 스냅샷은 실행된 소스 7개를 보존하지만 독립 실행 배포본은 아니다.
+이 v5 수집에서는 성공적으로 파싱된 응답 텍스트는 보존하지만 자격 증명이나 민감한 서버 데이터가 포함될 수 있어 CLI stdout/stderr 원문은 보존하지 않았으며 바이트 수, digest, 이벤트 요약은 남아 있다. 실패 배정 열 건은 null evaluation과 함께 \texttt{CandidateParseError} 및 평가 오류로 기록되어 있으므로 보존된 산출물만으로 내용 수준의 원인을 확정할 수 없다. 이 실패들은 모든 배정 분모에 그대로 포함하며 수신이나 실패만으로 제공자 신원이나 모델 자체의 무능력을 입증하지 않는다.
 
 그림~\ref{fig:state-signal}은 게이트 검사 결과를 감정 추정이나 허가가 아닌 명시적 신호로 드러낸다. 상세 조건은 실패 검사와 수리 힌트를, 일반 조건은 거부만 전달한다. 두 응답에는 같은 strict parser, identity 검사와 7개 predicate를 적용한다. 이 v5 수집기는 일반적인 유한 수리 루프와 달리 추가 수리 호출이 0회다. 그림~\ref{fig:paired-feedback-flow}는 모든 배정을 응답 수신, 파싱, gate 통과, 독립 목표 달성으로 추적하며 schema 실패와 gate는 통과했으나 목표를 놓친 commit도 표시한다.
 
@@ -377,11 +378,12 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 이번 native runtime pilot은 한 authored quest에서 요청된 \texttt{gpt-6.1-sol}/\texttt{gpt-5.6-sol}, \texttt{medium}, \texttt{general\_rule}/\texttt{ontology}를 condition당 2회 요청한 bounded observation이다. 모델은 typed intent만 생성하고 deterministic planner/checker와 Godot이 권위를 유지한다; source 수정 confound와 provider identity/revision/request count/cost 미상이 남는다.
 구현 교란: 첫 행은 controller-v3에서 모델 응답 전에 직렬화 오류로 실패했다. 이후 행 2--8은 모델에 보이는 입력을 바꾸지 않고 JSON 경계 한 줄을 수정한 controller-v4를 사용했으므로 selector/representation 차이를 모델에 귀속할 수 없다.
 질문 A(model/stack consistency)와 C(fresh-reference noninferiority)는 미실행이다. A는 고정 source/policy/replay의 substituted model/stack budget-bounded goal completion, C는 sealed assignment의 candidate/fresh reference 비교다. Goal completion은 safety/replay와 다른 endpoint이며, 둘 다 exact identity/revision 및 별도 safety/replay accounting이 필요하다. 현재 pilot은 답하지 않는다. 미래 제작 endpoint는 matched request/evidence부터 동결 mandatory check를 모두 통과한 첫 receipt까지의 time-to-first-all-predeclared-validation-pass이며 unfinished/timeout/fail/stage-not-reached에는 성공 시간이 없다.
+제안된 endpoint의 단위는 연속 task-clock 초다.
 
 부록~\ref{app:runtime-identity}의 별도 신원 검증 확장은 실제 응답 모델의 증거 누락으로 중단됐으며 신원이 검증된 새 비교 결과는 얻지 못했다.
 
 \section{타당성 위협, 윤리, 산출물 범위}
-\textbf{위협과 경계.} State consistency는 behavior/narrative coherence를 입증하지 않는다 \cite{S55_huang2026beyond}. Predicate/role/Godot/DISC 집합은 latent-state vector가 아니고 declaration expectation은 human gold/holdout이 아니다. Historical/활성 lane은 분모가 달라 합산하지 않는다. Provider identity/revision/request count/cost는 미상이고 source 수정 confound가 있다. 참가자·정서·이해·agency·즐거움·몰입·편익·population·safety-rate·model-ranking·상용 성능을 추론하지 않는다. Unkeyed hash는 authentication이 아니며 replay equality는 semantic correctness가 아니다. 미래 human/affect 연구에는 review, consent, 보상 고지, 최소수집·보존·삭제, opt-out, calibrated judge가 필요하다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
+\textbf{위협과 경계.} State consistency는 behavioral consistency를 입증하지 않는다 \cite{S55_huang2026beyond}. 또한 narrative coherence도 입증하지 않는다. Predicate/role/Godot/DISC 집합은 latent-state vector가 아니고 declaration expectation은 human gold/holdout이 아니다. Historical/활성 lane은 분모가 달라 합산하지 않는다. Provider identity/revision/request count/cost는 미상이고 source 수정 confound가 있다. 참가자·정서·이해·agency·즐거움·몰입·편익·population·safety-rate·model-ranking·상용 성능을 추론하지 않는다. Unkeyed hash는 authentication이 아니며 replay equality는 semantic correctness가 아니다. 미래 human/affect 연구에는 review, consent, 보상 고지, 최소수집·보존·삭제, opt-out, calibrated judge가 필요하다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 \section{결론}
 \system{}은 bounded C1--C5 authorization/repair/replay/accounting과 출처 결속 한·영 observer를 결합한다. 단일 Codex 사례는 실패·acceptance 경계를 보존하며 모델 성능 근거가 아니다. Native pilot은 8 assigned/7 executed/5 system-goal successes인 bounded observation이며 A/C 확인적 평가·ontology/model 우월성 근거가 아니다. Time-to-first-all-predeclared-validation-pass·traceability·whole-game·repeated-cross-model 평가는 미래이고 historical cohort는 합산하지 않는다.
@@ -390,10 +392,9 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 \section*{AI 사용 고지}
 LLM은 prose/code/test/citation check를 보조하고 hosted model candidate를 표기했다. Curated AI UI art/desk mesh는 file provenance, rendered snapshot/hash/ledger는 presentation-only다. 저자가 source를 대조하고 책임진다. NPC 입력/표는 assignment/project/protocol/schema hash와 unknown token/cost/model-revision을 보존한다.
 \section*{데이터 및 코드 가용성}
-Implementation/build source, frozen packet, Godot slice, deterministic evaluation, 기계 검증 기여·참조 주제·실험 매트릭스: \path{research/academic-pipeline/}. Proposed rubric/codebook/source manifest: \path{research/traceability-scoring-20261023/}; prospective whole-game/repeated-cross-model plan: \path{research/development-comparison-20261023/}. Frozen disclosure expectation/sidecar/한영 input: \path{paper/latex/generated/disclosure_producer_manifest.json}. Standalone artifacts: \path{paper/latex/figures/fig_signal_comparison.pdf}, \path{paper/latex/figures/fig_npc_screening.pdf}; signal diagram/three-arm table은 별도 역할이다. 이전 디렉터리는 historical receipt이지 current-runtime proof가 아니며 reviewer archive/DOI deposit은 주장하지 않는다.
-\noindent Public runtime comparison JSON, traces, and integrity audit: \path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/}.
-제안·미측정 Table~XIV는 \path{paper/latex/en/} 및 \path{paper/latex/ko/}의 \path{traceability-supplement.pdf}와 같은 이름의 \path{.tex} source에 보존한다.
-\par 기존 8개와 합산하지 않는 별도 신원 admission 자료: \path{research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/}.
+구현·빌드 소스, 동결 packet, Godot slice와 결정론적 평가는 기계 검증 기여·참조 주제·실험 매트릭스와 함께 보존한다. 제안된 rubric과 codebook 및 출처 목록은 미측정 traceability 차원을 정의하며, 별도의 계획은 미래 whole-game 및 반복 cross-model 평가를 다룬다. 동결 공개 기대값과 한·영 입력을 결속한 manifest, 신호 비교와 NPC screening을 위한 독립 도식도 보존한다. 과거 기록은 current-runtime proof가 아니며 reviewer archive나 DOI deposit을 주장하지 않는다.
+개발 사례 기록은 한·영 dashboard 과제를 기술한다. 이 논문은 공개 투영을 독립적으로 찾아 접근할 repository 또는 deposit 식별자를 제공하지 않으므로 외부 접근성은 여기에서 확립되지 않았다.
+저자가 보유한 공개용 runtime 비교 기록(보관소에 기탁되지 않음)에는 JSON 결과, trace와 무결성 감사가 포함된다. 제안된 미측정 Table~XIV는 한·영 독립 보충자료와 그 소스에 보존한다. 별도의 신원 admission 자료는 기존 8개와 합산하지 않는다.
 
 \clearpage
 \bibliographystyle{IEEEtran}
@@ -422,7 +423,7 @@ timeout이 아닌 21개 응답에서는 requested model과 response model 이름
 
 1--3행은 state-changing commit이 없고 initial state hash를 유지했으며, 4행은 state-changing commit 1회가 fresh Godot process에서 valid replay되었다. Replay에는 model call이 0회였다. Record, receipt 및 request hash는 검증되었지만 adapter와 runner source bytes는 record에 contemporaneously hash-bound되지 않았다. 따라서 이 artifact는 완전 재현 가능한 기록이 아니다. 외부 공개 전 absolute local path를 정제해야 한다.
 
-Local-only source packet은 \path{_workspace/current/qa/releases/} 아래에 있다. Continuation directory는 \path{2026-10-28-runtime-ollama-continuation-20261028/}이다. Pilot directory는 \path{2026-10-28-runtime-ollama-qwen15-general-rule-20261028/}이며 \path{episode.json}, \path{pilot-verification.json}, post-hoc \path{plan-only-output.json}을 포함한다.
+로컬 전용 근거 묶음은 후속 실행 기록과 별도의 pilot 기록을 보존한다. Pilot 기록에는 episode 결과, 검증 결과, 실행 후 작성된 plan-only receipt가 포함된다.
 \begin{table*}[!ht]
 \caption{로컬 Ollama 고정 게임 feasibility 관측. 각 행은 하나의 배정 episode이며 receipt 수는 verified/failed/timeout 순이다. Eligibility는 모든 receipt가 response-qualified였다는 뜻이지 goal 달성을 뜻하지 않는다.}
 \label{tab:ollama-feasibility}

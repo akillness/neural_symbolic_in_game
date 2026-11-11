@@ -214,6 +214,12 @@ def _load() -> dict[str, Any]:
         packet,
         public_source_bindings=metadata.get("public_source_bindings"),
     )
+    expected_mismatches = {
+        source_path: {"expected": expected, "observed": observed_source_hashes[source_path]}
+        for source_path, expected in packet["source_hashes"].items()
+        if observed_source_hashes[source_path] != expected
+    }
+    _require(source_mismatches == expected_mismatches, "source-hash mismatch metadata drift")
     _require(factual.get("status") == "PASS", "general/ontology disclosure results are not PASS")
     _require(
         factual.get("general_ontology_equal") is True, "general and ontology outcomes are not equal"
@@ -390,7 +396,22 @@ def _narrative(data: dict[str, Any], korean: bool) -> str:
     ontology = metadata.get("runtime_ontology") or {}
     rules = packet["rule_ids"]
     source_mismatches = metadata.get("source_hash_mismatches") or {}
-    mismatch_paths = ", ".join(_latex(path) for path in sorted(source_mismatches)) or "none"
+    source_roles = {
+        "game-track/godot/scripts/game3d/game_3d.gd": ("game controller", "게임 컨트롤러"),
+        "game-track/godot/scripts/sealed_lighthouse_machine.gd": (
+            "lighthouse state machine",
+            "등대 상태 기계",
+        ),
+        "llm-wiki/wiki/reports/2026-10-22-ontology-signals-interview.md": (
+            "ontology-signals interview source as a non-identical public derivative",
+            "비동일 공개 파생본인 온톨로지 신호 인터뷰 원천",
+        ),
+    }
+    roles = [
+        source_roles.get(path, ("another bound source", "그 밖의 결속 원천"))[int(korean)]
+        for path in sorted(source_mismatches)
+    ]
+    role_note = f" ({', '.join(roles)})" if roles else ""
     arm_comparison = comparison["general_vs_ontology"]
     fixture_comparison = comparison["rule_change_comparison"]
     equal_case_count = arm_comparison["equal_case_count"]
@@ -426,8 +447,8 @@ def _narrative(data: dict[str, Any], korean: bool) -> str:
     )
     if korean:
         mismatch_note = (
-            f"실행 시점 관측 hash는 현재 source와 일치한다. 동결 패킷 baseline과 다른 source는 "
-            f"{len(source_mismatches)}개({mismatch_paths})이며, 패킷 hash는 수정하지 않고 이 차이를 공개한다."
+            f"실행 시점 관측 hash는 현재 source 집합과 일치한다. 동결 패킷 baseline과 다른 source는 "
+            f"{len(source_mismatches)}개{role_note}이며, 패킷 hash는 수정하지 않고 이 차이를 공개한다. 원천별 hash와 재생성 정보는 저자가 보유한 생산자 기록에 보존되며 기탁되지 않았다. 공개 파생본은 비공개 역사 원천과 바이트 동일하지 않은 공개용 출처 materialization이며, 새 게임플레이나 모델 관측을 뜻하지 않는다."
         )
         return (
             rf"""\subsection{{동결된 \texttt{{reveal\_hint}} 계약과 공개 증거}}
@@ -442,11 +463,11 @@ Python evaluator는 같은 사례·기대 객체를 세 격리 arm에 materializ
 
 표~\ref{{tab:disclosure-arms}}는 같은 {counts["total"]}개 사례의 세 arm을 정상/경계/잘못된 입력 분모로 보고하며, unchecked 위반은 의도된 격리 관측이다. {arm_equality_ko} {fixture_limit_ko} 이는 공유 동결 규칙 아래 authorization-conformance limit이며 일반적 ontology equivalence 또는 ontology superiority의 증거가 아니다. 그림~\ref{{fig:disclosure-signals}}는 E/R(기대 일치·재생 사례), C(check-record PASS/FAIL), NR(보고된 check가 없는 사례)를 구별한다. NR은 skipped/pass/out-of-scope가 아니다. 표~\ref{{tab:disclosure-fixtures}}는 rule-change fixture와 paired case를 disposable clone에 매핑하며 shipped scenario는 바꾸지 않는다.
 
-주장은 bounded engineering conformance에 한정된다. human gold, access-separated holdout, efficacy, superiority, generalization, player benefit, model latent state, cost는 주장하지 않는다. 정확한 입력 경로·hash·재생성 명령은 \path{{paper/latex/generated/disclosure_producer_manifest.json}}에 결속된다."""
+주장은 bounded engineering conformance에 한정된다. human gold, access-separated holdout, efficacy, superiority, generalization, player benefit, model latent state, cost는 주장하지 않는다. 저자가 보유한 생산자 기록에는 입력 식별과 hash가 결속되며, 재생성 명령은 여기에 제공하지 않는다."""
         ).strip() + "\n"
     mismatch_note = (
-        f"Execution-observed hashes match the current source. {len(source_mismatches)} source hash(es) differ from the frozen baseline "
-        f"({mismatch_paths}); the packet hash is preserved and the difference is disclosed."
+        f"Execution-observed hashes match the current source set. {len(source_mismatches)} source hash(es) differ from the frozen baseline{role_note}. "
+        "The packet hash is preserved; source-specific hashes and reproduction information remain in the authors' producer record, which is not deposited. The public derivative is not byte-equivalent to the private historical source; it is publication-materialization provenance only and implies no new gameplay or model observation."
     )
     return (
         rf"""\subsection{{Frozen \texttt{{reveal\_hint}} contract and disclosure evidence}}
@@ -461,7 +482,7 @@ Python evaluator materializes the same cases/expectation object in three isolate
 
 Table~\ref{{tab:disclosure-arms}} reports the three arms over the same {counts["total"]} cases with separate normal/boundary/malformed denominators; unchecked violations are intentional isolated observations. {arm_equality_en} {fixture_limit_en} This is an authorization-conformance limit under the shared frozen rules, not general ontology equivalence or ontology superiority. Figure~\ref{{fig:disclosure-signals}} distinguishes E/R (expected-match/replay cases), C (check-record PASS/FAIL), and NR (cases with no reported checks); NR is not skipped, pass, or out-of-scope. Table~\ref{{tab:disclosure-fixtures}} maps rule-change fixtures and paired cases to disposable policy clones; the shipped scenario is unchanged.
 
-Claims are limited to bounded engineering conformance: no human gold labels, access-separated holdout, efficacy, superiority, generalization, player benefit, model latent state, or cost. Exact input paths, hashes, and reproduction commands are bound by \path{{paper/latex/generated/disclosure_producer_manifest.json}}."""
+Claims are limited to bounded engineering conformance: no human gold labels, access-separated holdout, efficacy, superiority, generalization, player benefit, model latent state, or cost. The authors' producer record binds input identities and hashes; it is held locally and no reproduction commands are provided here."""
     ).strip() + "\n"
 
 

@@ -65,6 +65,8 @@ The seven checks, grouped into six state-relative families. Every failure leaves
 
 [![Contact sheet of all 17 English manuscript pages, rendered from the reviewed 2026-11-11 PDF](neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/paper-en-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 
+This contact sheet is a historical snapshot of the 2026-11-11 review, not a preview of the current manuscript. The image links to the current English PDF.
+
 ## Evidence
 
 The four historical lanes below retain their original counts and ceilings; they are not pooled with the separate v5 development collection. Every number is a raw count from a deterministic runner or a hash-bound receipt; no inferential statistics are reported.

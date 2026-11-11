@@ -517,6 +517,15 @@ class RuntimeComparisonPublicationTests(unittest.TestCase):
         self.assertIn("remain NR", en_results)
         self.assertIn("NR이다", ko_results)
 
+    def test_bilingual_elapsed_table_column_identifies_seconds(self) -> None:
+        """Both published table headers identify the elapsed median's unit as seconds."""
+        for korean in (False, True):
+            with self.subTest(korean=korean):
+                table = publication.render_tables_fragment(_synthetic_packet(), korean=korean)
+                header = table.split("\\toprule\n", 1)[1].split("\n\\midrule", 1)[0]
+                elapsed_column = header.split(" & ")[6]
+                self.assertRegex(elapsed_column, r"\b(?:s|seconds)\b|초")
+
     def test_svg_is_valid_explicitly_labelled_and_contains_all_eight_rows(self) -> None:
         """The comparison SVG is parseable, accessible by explicit labels, and renders each assigned row."""
         svg = publication.render_comparison_svg(_synthetic_packet())

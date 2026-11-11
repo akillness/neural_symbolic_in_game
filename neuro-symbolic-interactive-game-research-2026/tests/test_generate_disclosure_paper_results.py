@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import json
 import re
+import shutil
 import sys
 from pathlib import Path
 from xml.etree import ElementTree
+
+import pytest
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -58,6 +62,105 @@ def test_actual_generated_bilingual_outputs_preserve_numeric_evidence_parity() -
     numeric_tokens = checker._numeric_tokens(english)
     assert numeric_tokens == checker._numeric_tokens(korean)
     assert all(numeric_tokens[value] > 0 for value in ("48", "4", "8", "60", "0"))
+
+
+def test_bilingual_narrative_reports_mismatch_count_without_source_paths() -> None:
+    data = producer._load()
+    paths = ("private/first/file.py", "private/second/file.json")
+    data["metadata"]["source_hash_mismatches"] = {path: {} for path in paths}
+
+    english = producer._narrative(data, korean=False)
+    korean = producer._narrative(data, korean=True)
+
+    assert "2 source hash(es) differ from the frozen baseline" in english
+    assert re.search(r"baseline과 다른 source는 2개\b", korean)
+    for narrative in (english, korean):
+        assert all(path not in narrative for path in paths)
+        assert producer._latex(data["packet"]["packet_id"]) in narrative
+        assert producer._latex_code(data["packet_sha"]) in narrative
+        assert "60/60" in narrative or "60 of 60" in narrative
+
+
+def test_narrative_describes_actual_three_mismatched_sources() -> None:
+    data = producer._load()
+    english = producer._narrative(data, korean=False)
+    korean = producer._narrative(data, korean=True)
+    assert "3 source hash(es) differ from the frozen baseline" in english
+    assert "baseline과 다른 source는 3개" in korean
+    for role in (
+        "game controller",
+        "lighthouse state machine",
+        "ontology-signals interview source as a non-identical public derivative",
+    ):
+        assert role in english
+    for role in (
+        "게임 컨트롤러",
+        "등대 상태 기계",
+        "비동일 공개 파생본인 온톨로지 신호 인터뷰 원천",
+    ):
+        assert role in korean
+    assert "not byte-equivalent to the private historical source" in english
+    assert "비공개 역사 원천과 바이트 동일하지 않은" in korean
+    for path in data["metadata"]["source_hash_mismatches"]:
+        for narrative in (english, korean):
+            assert path not in narrative
+            assert path.replace("_", r"\_") not in narrative
+
+
+@pytest.mark.parametrize(
+    ("path", "english_role", "korean_role"),
+    [
+        ("game-track/godot/scripts/game3d/game_3d.gd", "game controller", "게임 컨트롤러"),
+        (
+            "game-track/godot/scripts/sealed_lighthouse_machine.gd",
+            "lighthouse state machine",
+            "등대 상태 기계",
+        ),
+        (
+            "llm-wiki/wiki/reports/2026-10-22-ontology-signals-interview.md",
+            "ontology-signals interview source as a non-identical public derivative",
+            "비동일 공개 파생본인 온톨로지 신호 인터뷰 원천",
+        ),
+        ("private/unrecognized/source.txt", "another bound source", "그 밖의 결속 원천"),
+    ],
+    ids=["controller", "state-machine", "interview", "unknown-source"],
+)
+def test_narrative_names_each_mismatched_source_role_without_its_path(
+    path: str, english_role: str, korean_role: str
+) -> None:
+    data = producer._load()
+    data["metadata"]["source_hash_mismatches"] = {path: {}}
+    english = producer._narrative(data, korean=False)
+    korean = producer._narrative(data, korean=True)
+    assert f"1 source hash(es) differ from the frozen baseline ({english_role})" in english
+    assert f"baseline과 다른 source는 1개 ({korean_role})" in korean
+    for narrative in (english, korean):
+        assert path not in narrative
+        assert path.replace("_", r"\_") not in narrative
+
+
+@pytest.mark.parametrize("change", ["expected", "observed", "remove", "empty", "extra"])
+def test_generator_rejects_mismatch_records_unbound_to_evidence(
+    tmp_path, monkeypatch, change
+) -> None:
+    results = tmp_path / "results"
+    shutil.copytree(producer.RESULTS, results)
+    metadata_path = results / producer.METADATA_NAME
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    mismatches = metadata["source_hash_mismatches"]
+    source = "game-track/godot/scripts/game3d/game_3d.gd"
+    if change in ("expected", "observed"):
+        mismatches[source][change] = "0" * 64
+    elif change == "remove":
+        del mismatches[source]
+    elif change == "empty":
+        mismatches.clear()
+    else:
+        mismatches["unknown/source"] = {"expected": "0" * 64, "observed": "1" * 64}
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    monkeypatch.setattr(producer, "RESULTS", results)
+    with pytest.raises(ValueError, match="(?i)(source|hash|mismatch)"):
+        producer._load()
 
 
 def _svg_text(element: ElementTree.Element) -> str:
