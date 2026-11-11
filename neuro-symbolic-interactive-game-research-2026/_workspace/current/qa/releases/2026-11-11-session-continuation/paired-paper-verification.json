@@ -1,0 +1,74 @@
+{
+  "schema_version": "paired-paper-verification/1",
+  "exit_code": 0,
+  "scope": "Final widened architecture card and disclosure-header repair rebuilt in isolated selected sources with fresh AUX state; explicit archived NPC evidence only",
+  "pdfs": [
+    {
+      "path": "paper/latex/en/main.pdf",
+      "pages": 17,
+      "bytes": 1443118,
+      "sha256": "7f3ff478c065b74d6464290d1162a4a3a255e43de80c5e96ca3eb862e00a8f34"
+    },
+    {
+      "path": "paper/latex/en/traceability-supplement.pdf",
+      "pages": 1,
+      "bytes": 72740,
+      "sha256": "781d97814349893ddbe4ed0cbce6d1a84de6009ac4d751b3533df16f7c748558"
+    },
+    {
+      "path": "paper/latex/ko/main.pdf",
+      "pages": 17,
+      "bytes": 1399975,
+      "sha256": "a98f2bd1c187c73cdd343cafd301650e058c78d49c13a86d7fb637c56e5458b8"
+    },
+    {
+      "path": "paper/latex/ko/traceability-supplement.pdf",
+      "pages": 1,
+      "bytes": 64072,
+      "sha256": "229869f46abfa90acaea3ac7d4b1628083ea9cdb64bead0e953954324d59e0c6"
+    }
+  ],
+  "bibliography_number_pairs_equal": 58,
+  "shared_label_number_pairs_equal": 36,
+  "shared_label_mismatches": {},
+  "font_shape_substitution_warning_counts": {
+    "paper/latex/en/main.log": 0,
+    "paper/latex/en/traceability-supplement.log": 0,
+    "paper/latex/ko/main.log": 5,
+    "paper/latex/ko/traceability-supplement.log": 5
+  },
+  "preview_manifest": "docs/readme/review-20261111/manifest.json",
+  "build_output_artifact": "artifact://473",
+  "other_observed_warnings": [
+    "English main.log records two float-only-page warnings; no overfull box, unresolved citation/reference or missing-character matches were observed in four logs."
+  ],
+  "build_seconds_observed": 18.59,
+  "build_context": "Isolated selected-publication source directory, not the original dirty working tree",
+  "source_isolated_build": true,
+  "prebuild_main_aux_state": {
+    "en": {
+      "aux": false,
+      "fdb_latexmk": false,
+      "fls": false
+    },
+    "ko": {
+      "aux": false,
+      "fdb_latexmk": false,
+      "fls": false
+    }
+  },
+  "build_input_sha256": {
+    "scripts/generate_paper_figures.py": "2a7cf4614964e5652e0eefdc377ba826d29d47a161b34f814bc64b8363387e09",
+    "scripts/generate_disclosure_paper_results.py": "0ed3975935a52622a1f8e5b82b472b07b5ffd0aee193d7b4d792f01f399028f5",
+    "paper/latex/figures/fig_architecture.svg": "679c63e3762815056893be42944a018075df3024a748bd46640b02bf08758149",
+    "paper/latex/figures/fig_disclosure_signals.svg": "7394065bdb69388928e7767c309a367da085bca0f01c1e6e8992cbce403c20c8"
+  },
+  "source_date_epoch": 1794316185,
+  "build_base_commit": "dfaf74a9b2ed201eeb51a2a2cd77ad7c16b094f9",
+  "cross_directory_pdf_byte_identity_claimed": false,
+  "visual_inspection": "Final architecture PNG inspected: widened state/policy card, unchanged labels/fonts/data and shortened connectors visible; original Aside geometry oracle passed in test-author all-2 run, not final bridge acceptance.",
+  "toolchain_scope": "Fresh AUX in a separate source directory on the same host/toolchain; not independent provider or independent toolchain evidence",
+  "command_template": "rtk proxy make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT=\"$HISTORICAL_NPC_SOURCE\"",
+  "command_publication_policy": "Only the task-local historical extraction path is replaced; original observed command/output remains private and is not claimed byte-identical to this template",
+  "original_private_receipt_sha256": "3ae0839a0adde416af9fd06baf3fb2dfde88c91399fe765eeb9dde9251112a3b"
+}

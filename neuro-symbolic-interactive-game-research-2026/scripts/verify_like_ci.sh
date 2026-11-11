@@ -49,7 +49,7 @@ ruff_gate() {
 }
 
 step "Install locked environment" uv sync --extra research --extra dev
-step "Unit tests" uv run python -m unittest discover -s tests
+step "Unit and publication regression tests" uv run pytest tests -q
 step "Ruff lint and format" ruff_gate
 step "Project integrity" uv run python scripts/validate_project.py
 step "Contribution and reference crosswalk" uv run python scripts/validate_contribution_crosswalk.py

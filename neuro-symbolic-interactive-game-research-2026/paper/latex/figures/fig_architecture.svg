@@ -32,9 +32,9 @@
   <text x="497" y="190" class="box-title" text-anchor="middle">PARSER</text>
   <text x="497" y="238" class="small" text-anchor="middle"><tspan x="497" dy="0">type-strict</tspan><tspan x="497" dy="38">known keys</tspan></text>
   <text x="497" y="318" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
-  <rect x="674" y="140" width="270" height="200" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
+  <rect x="662" y="140" width="294" height="200" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
   <text x="809" y="190" class="box-title" text-anchor="middle">STATE + POLICY</text>
-  <text x="809" y="238" class="small" text-anchor="middle"><tspan x="809" dy="0">G_t and external q_t</tspan><tspan x="809" dy="38">encoded constraints</tspan></text>
+  <text x="809" y="238" class="small" text-anchor="middle"><tspan x="809" dy="0"><tspan font-style="italic">G<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan> and external <tspan font-style="italic">q<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan></tspan><tspan x="809" dy="38">encoded constraints</tspan></text>
   <text x="769" y="318" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
   <text x="849" y="318" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
   <rect x="986" y="140" width="270" height="200" rx="7" fill="#EAF4FA" stroke="#0072B2" stroke-width="2"/>
@@ -52,7 +52,7 @@
   <text x="1121" y="543" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
   <rect x="20" y="590" width="380" height="200" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
   <text x="210" y="640" class="box-title" text-anchor="middle">COMMIT</text>
-  <text x="210" y="688" class="small" text-anchor="middle"><tspan x="210" dy="0">valid: recheck</tspan><tspan x="210" dy="38">then T(c_t, a)</tspan></text>
+  <text x="210" y="688" class="small" text-anchor="middle"><tspan x="210" dy="0">valid: recheck</tspan><tspan x="210" dy="38">then <tspan font-style="italic">T(c<tspan baseline-shift="sub" font-size="70%">t</tspan>, a)</tspan></tspan></text>
   <text x="170" y="768" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
   <text x="250" y="768" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
   <rect x="450" y="590" width="380" height="200" rx="7" fill="#E8F5EF" stroke="#007A59" stroke-width="2"/>
@@ -65,8 +65,8 @@
   <text x="1070" y="688" class="small" text-anchor="middle"><tspan x="1070" dy="0">verify outcome,</tspan><tspan x="1070" dy="38">compare state</tspan></text>
   <text x="1030" y="768" class="tag" text-anchor="middle" fill="#0072B2">E1</text>
   <text x="1110" y="768" class="tag" text-anchor="middle" fill="#007A59">ENG1</text>
-  <line class="connector" x1="638" y1="240" x2="668" y2="240" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-  <line class="connector" x1="950" y1="240" x2="980" y2="240" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <line class="connector" x1="638" y1="240" x2="656" y2="240" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <line class="connector" x1="962" y1="240" x2="980" y2="240" stroke="#0072B2" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
   <line class="connector" x1="326" y1="132" x2="326" y2="355" stroke="#A05A00" stroke-width="3" fill="none" stroke-dasharray="11 7"/>
   <g class="connector-label" data-line-clearance="shielded">
     <rect class="label-shield" x="272" y="68" width="80" height="192" rx="3" fill="#FFFFFF" stroke="#FFFFFF"/>
@@ -79,8 +79,8 @@
   <path class="connector" d="M800 575 V578 H640 V584" stroke="#666A6D" stroke-width="3" fill="none" marker-end="url(#arrow-gray)"/>
   <path class="connector" d="M980 240 H960 V355 H210 V584" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <g class="connector-label" data-line-clearance="shielded">
-    <rect class="label-shield" x="154" y="426" width="112" height="68" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>
-    <text x="210" y="470" class="arrow-label" text-anchor="middle" fill="#007A59">valid</text>
+    <rect class="label-shield" x="60" y="426" width="300" height="80" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>
+    <text x="210" y="470" class="arrow-label" text-anchor="middle" fill="#007A59">valid: all <tspan font-style="italic">v<tspan baseline-shift="sub" font-size="70%">i</tspan></tspan> hold →</text>
   </g>
   <line class="connector" x1="406" y1="690" x2="444" y2="690" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
   <line class="connector" x1="836" y1="690" x2="874" y2="690" stroke="#007A59" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>

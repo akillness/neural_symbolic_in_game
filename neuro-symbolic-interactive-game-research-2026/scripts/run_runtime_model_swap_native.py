@@ -34,6 +34,7 @@ from nesy_game.runtime_model_swap import (
     run_episode,
 )
 from nesy_game.runtime_model_swap_native import (
+    EXTENSION_ACTIVATION_SCHEMA,
     NativeActivationTrust,
     NativePromptRunner,
     _bound_json_object,
@@ -203,6 +204,7 @@ def _plan(args: argparse.Namespace) -> dict[str, Any]:
         source_manifest_sha256=args.source_manifest_sha256,
         input_manifest_sha256=args.input_manifest_sha256,
         panel=panel,
+        extension=args.extension,
     )
 
 
@@ -273,13 +275,27 @@ def _new_output_root(path: Path | None) -> Path:
 def _native_scientific_summary(
     record: Mapping[str, Any], trust: NativeActivationTrust
 ) -> dict[str, Any]:
-    summary = {"assigned": 1, "executed": 0, "eligible": True}
+    identity_required = trust.activation.get("schema_version") == EXTENSION_ACTIVATION_SCHEMA
+    summary = {"assigned": 1, "executed": 0, "eligible": not identity_required}
     supplied = record.get("scientific")
     if isinstance(supplied, Mapping):
         executed = supplied.get("executed")
         if type(executed) is int and executed in {0, 1}:
             summary["executed"] = executed
+        if "eligible" in supplied:
+            summary["eligible"] = supplied["eligible"] is True
     evidence = record.get("evidence")
+    if identity_required:
+        qualification = (
+            evidence.get("response_qualification") if isinstance(evidence, Mapping) else None
+        )
+        summary["eligible"] = (
+            isinstance(supplied, Mapping)
+            and supplied.get("eligible") is True
+            and isinstance(qualification, Mapping)
+            and qualification.get("required") is True
+            and qualification.get("qualified") is True
+        )
     receipts = evidence.get("prompt_receipts") if isinstance(evidence, Mapping) else None
     if isinstance(receipts, list):
         actual = 0
@@ -311,7 +327,11 @@ def _post_admission_failure(
     engine: Any = None,
     trusted_activation: NativeActivationTrust | None = None,
 ) -> dict[str, Any]:
-    scientific: dict[str, Any] = {"assigned": 1, "executed": 0, "eligible": True}
+    identity_required = (
+        isinstance(trusted_activation, NativeActivationTrust)
+        and trusted_activation.activation.get("schema_version") == EXTENSION_ACTIVATION_SCHEMA
+    )
+    scientific: dict[str, Any] = {"assigned": 1, "executed": 0, "eligible": not identity_required}
     execution_evidence = "pre_dispatch"
     receipts = getattr(engine, "prompt_receipts", None)
     if isinstance(record, Mapping) and isinstance(trusted_activation, NativeActivationTrust):
@@ -752,6 +772,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=20261024)
     parser.add_argument("--source-manifest-sha256", default="")
     parser.add_argument("--input-manifest-sha256", default="")
+    parser.add_argument(
+        "--extension",
+        action="store_true",
+        help="build the fixed identity-required assignment-plan/2 extension",
+    )
     parser.add_argument(
         "--prompt", default="Restore the lighthouse signal and reveal the authorized tide lead."
     )

@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from copy import deepcopy
 from pathlib import Path
+from unittest.mock import patch
 
 from jsonschema import Draft202012Validator
 
@@ -266,32 +267,74 @@ class GodotExperimentalGameContractTests(unittest.TestCase):
         godot = find_godot_4()
         if godot is None:
             self.skipTest("Godot 4.x is not installed; capture boundary cannot execute")
-        result = subprocess.run(
-            [
-                godot,
-                "--headless",
-                "--path",
-                str(GODOT_PROJECT),
-                "--scene",
-                "res://scenes/evidence_capture.tscn",
-                "--quit-after",
-                "5",
-                "--",
-                "--events=/missing/events.jsonl",
-                "--summary=/missing/summary.json",
-                "--output=/missing/output",
-                "--evidence-set-id=headless-negative-v1",
-            ],
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
+        with tempfile.TemporaryDirectory() as directory:
+            staged = Path(directory) / "project"
+            stage_project(GODOT_PROJECT, staged)
+            result = subprocess.run(
+                [
+                    godot,
+                    "--headless",
+                    "--path",
+                    str(staged),
+                    "--scene",
+                    "res://scenes/evidence_capture.tscn",
+                    "--quit-after",
+                    "5",
+                    "--",
+                    "--events=/missing/events.jsonl",
+                    "--summary=/missing/summary.json",
+                    "--output=/missing/output",
+                    "--evidence-set-id=headless-negative-v1",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(
             "render capture requires a non-headless display server",
             result.stdout + result.stderr,
         )
+
+    def test_headless_capture_negative_stages_engine_writes_without_changing_canonical_tree(
+        self,
+    ) -> None:
+        def inventory() -> dict[str, str | None]:
+            return {
+                str(path.relative_to(GODOT_PROJECT)): (
+                    hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+                )
+                for path in GODOT_PROJECT.rglob("*")
+            }
+
+        before = inventory()
+        dispatched = []
+
+        def engine_run(command: list[str], **_kwargs: object) -> subprocess.CompletedProcess[str]:
+            staged = Path(command[command.index("--path") + 1])
+            self.assertNotEqual(staged.resolve(), GODOT_PROJECT.resolve())
+            self.assertFalse(staged.resolve().is_relative_to(GODOT_PROJECT.resolve()))
+            self.assertEqual(
+                (staged / "project.godot").read_bytes(),
+                (GODOT_PROJECT / "project.godot").read_bytes(),
+            )
+            cache = staged / ".godot"
+            cache.mkdir(exist_ok=True)
+            (cache / "negative-test-import-marker").write_bytes(b"engine cache write\n")
+            dispatched.append(staged)
+            return subprocess.CompletedProcess(
+                command, 1, "", "render capture requires a non-headless display server"
+            )
+
+        with (
+            patch(f"{__name__}.find_godot_4", return_value="/test/godot"),
+            patch.object(subprocess, "run", side_effect=engine_run),
+        ):
+            self.test_render_capture_scene_rejects_headless_execution()
+
+        self.assertEqual(len(dispatched), 1)
+        self.assertEqual(inventory(), before)
 
     def test_retained_render_captures_bind_canonical_events_and_pixels(self) -> None:
         evidence_root = current_evidence_root()

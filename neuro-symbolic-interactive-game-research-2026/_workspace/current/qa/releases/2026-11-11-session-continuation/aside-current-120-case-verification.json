@@ -1,0 +1,232 @@
+{
+  "schema_version": "aside-curated-current-matrix/1",
+  "date": "2026-11-11",
+  "record_classification": "HISTORICAL_POSTFORMAT_120_CASE_FIX_SNAPSHOT_PRESERVED",
+  "superseded_for_current_integration_by": "dedicated-qa-full-ci-verification.json",
+  "superseding_proof_scope": "Separate one-shot frozen84 local12-stage CI PASS, exit0; metadata-only finalization afterward was not itself a full CI rerun. This120-case snapshot and its five failures remain unchanged, not relabeled120-pass or causally explained.",
+  "final85_selection_boundary": "Owner-supported final85 selection is exactly prior84 paths plus dedicated-qa-full-ci-verification.json, with metadata-only finalization; selection proof is not fullCI85 and full CI was NOT_RERUN on final85. See metadata_finalization.final85_selection in the superseding receipt; this historical120-case FIX remains unchanged",
+  "status": "FIX",
+  "scope": "One postformat controlled-loopback browser matrix; not full selected-tree CI, native SDK certification or scientific evidence",
+  "started_utc": "2026-11-11T05:57:07.053262+00:00",
+  "finished_utc": "2026-11-11T06:13:59.318495+00:00",
+  "attempts": 1,
+  "exit_code": 1,
+  "timed_out": false,
+  "elapsed_seconds": 996.836,
+  "bounded_timeout_seconds": 2400,
+  "counts": {
+    "cases": 120,
+    "passed": 115,
+    "failed": 5,
+    "errors": 0,
+    "skipped": 0
+  },
+  "identity_coverage": {
+    "original_cases": 70,
+    "covered_original_identities": 70,
+    "missing_original_identities": 0,
+    "additional_case_identities": 50,
+    "duplicate_executed_identities": 0,
+    "all_original70_present_unchanged": true
+  },
+  "reproduction": {
+    "classification": "REPRODUCTION_TEMPLATE_NOT_UNREDACTED_EXECUTION_RECEIPT",
+    "cwd_template": "$PROJECT_ROOT",
+    "command_template": "NSG_BROWSER_BACKEND=aside NSG_ASIDE_PROFILE=\"$APPROVED_ASIDE_PROFILE\" PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=\"$PROJECT_ROOT/src\" \"$PROJECT_ROOT/.venv/bin/python\" -m pytest -q -o addopts= -p no:cacheprovider tests/test_publication_presentation.py tests/test_ontology_evidence_map.py tests/test_signal_explainer.py -k 'not equations and not generated_tables and not disclosure_table' --junitxml=\"$LOCAL_TEST_ARTIFACTS/junit.xml\"",
+    "substitutions": [
+      "PROJECT_ROOT: local project root",
+      "APPROVED_ASIDE_PROFILE: approved private value supplied locally, never published",
+      "LOCAL_TEST_ARTIFACTS: local output directory"
+    ],
+    "executed_by_this_documentation_update": false
+  },
+  "source_bindings": {
+    "seven_sources_unchanged_during_matrix": true,
+    "sha256": {
+      "tests/aside_browser_backend.cjs": "8a5ee65542a921123d18401b1654eb661eb038956ef6e3fbb26a100005fbc442",
+      "tests/dashboard_signal_driver.cjs": "cc86658a0e40e12d469e5c3a8bf75db612e2ad2c5791aa627d35e449ffb436f0",
+      "tests/ontology_evidence_map_driver.cjs": "83809b96a60077644a6bc0d5d2f5177b0ac95848f9fa2de54c4344f49bc9683c",
+      "tests/publication_presentation_driver.cjs": "47c96edccbac80a697f713344b04367062751d8b7340c6658878df6884cf5ee7",
+      "tests/test_ontology_evidence_map.py": "058d4958d9b236b0ba41c9a76a759c1be6fe525511925391a78463aa867a0ff8",
+      "tests/test_publication_presentation.py": "a90a89a67a531c92533df25dd031ba6d741976d830f4e21e2764fbde73b6133a",
+      "tests/test_signal_explainer.py": "eb34e8664aa7d3070975439982c50f5b0e7cff109b23dccd205bd6e70180b63a"
+    },
+    "formatting_provenance": {
+      "python_files_formatted": 3,
+      "retained_preformat_asts_identical": true,
+      "preformat_green_is_current_acceptance": false
+    }
+  },
+  "failure_accounting": {
+    "all_five_include_unexpected_auxiliary_target": true,
+    "fixed_diagnostic_counts": {
+      "unknownCount": 1,
+      "staleOwnedCount": 0,
+      "currentTaskOriginCount": 0,
+      "otherKnownTaskOriginCount": 0,
+      "blankOrNewtabCount": 0,
+      "otherCount": 1
+    },
+    "fixed_diagnostic_flags": {
+      "mainPresent": true,
+      "mainHandleKnownOwned": true
+    },
+    "cases": [
+      {"case_category": "wrong-scenario-hash-1440", "phase": "open-replacement"},
+      {"case_category": "final-drain-error", "phase": "fixture"},
+      {"case_category": "final-drain-post", "phase": "fixture"},
+      {"case_category": "concurrent-rejected-source-csp", "phase": "open-initial"},
+      {"case_category": "stale-closed-main", "phase": "open-initial"}
+    ],
+    "cause": "UNKNOWN",
+    "sdk_or_user_attribution_established": false,
+    "nonblank_target_identity_established_by_classifier": false
+  },
+  "completed_repairs": {
+    "startup_error_sanitization": {"red": 5, "green": 5, "earlier_live_focused_passed": 5},
+    "exact_resource_route_and_fixed_literal_get_projection": {"red": 1, "green": 1, "synthetic_prefixed_map_get_disclosure_reproduced": true},
+    "scoped_current_matrix_privacy_cases_passed": true,
+    "scoped_auxiliary_during_close_cases_passed": true,
+    "whole_matrix_passed": false
+  },
+  "source_only_reviews": {
+    "code_blockers": 0,
+    "javascript_blockers": 0,
+    "python_blockers": 0,
+    "security_blockers": 0,
+    "runtime_acceptance": false,
+    "different_provider_independence_attested": false
+  },
+  "separate_static_loopback_api_diagnostic": {
+    "status": "COMPLETED_DIAGNOSTIC_ONLY",
+    "exit_code": 0,
+    "observation_count": 1,
+    "ordered_phase_count": 6,
+    "phases": ["first-passive-baseline", "session-globals-read", "open-initial", "close-initial", "open-replacement", "close-replacement"],
+    "unknown_counts": [0, 0, 0, 0, 0, 0],
+    "explicit_returned_target_count": 2,
+    "explicit_returned_targets_distinct": true,
+    "exact_own_return_handle_accounting": true,
+    "explicit_owned_closures_confirmed": true,
+    "baseline_preserved_every_observed_phase": true,
+    "post_close_inventories_equal_original_baseline": true,
+    "source_edits": false,
+    "historical_failure_cause_established": false,
+    "runtime_acceptance": false,
+    "limits": [
+      "No causal classification before the first passive inventory or after termination",
+      "No original fixture or failed matrix scenario rerun",
+      "Session membership alone is not ownership",
+      "Native SDK callbacks remain unverified"
+    ]
+  },
+  "separate_matched_aboutblank_api_diagnostic": {
+    "status": "COMPLETED_DIAGNOSTIC_ONLY",
+    "exit_code": 0,
+    "observation_count": 1,
+    "ordered_phase_count": 6,
+    "phases": ["first-passive-baseline", "session-globals-read", "open-initial", "close-initial", "open-replacement", "close-replacement"],
+    "unknown_counts": [0, 0, 0, 0, 0, 0],
+    "explicit_returned_targets_distinct": true,
+    "exact_own_return_handle_accounting": true,
+    "explicit_owned_closures_confirmed": true,
+    "baseline_preserved_every_observed_phase": true,
+    "post_close_inventories_equal_original_baseline": true,
+    "same_observed_phases_and_handle_equalities_as_static_loopback": true,
+    "same_inventory_deltas_as_static_loopback": [0, 0, 1, 0, 1, 0],
+    "absolute_inventory_counts_identical_between_diagnostics": false,
+    "historical_failure_cause_established": false,
+    "runtime_acceptance": false,
+    "timing_or_code_change_justified": false,
+    "source_edits": false
+  },
+  "separate_nonbrowser_ci_gates": {
+    "status": "10_LOGICAL_GATES_PASSED_SEPARATELY_NOT_FULL_CI",
+    "nonbrowser_ci_owner": "NonbrowserCIGates",
+    "isolated_validators": {
+      "passed": 7,
+      "exit_codes": [0, 0, 0, 0, 0, 0, 0],
+      "gates": ["project-integrity", "contribution-crosswalk", "recorded-offline-smoke", "harness", "deep-research", "survey", "wiki"],
+      "visual_regeneration": "BLOCKED_NOT_RUN_IN_AGENT_SCOPE",
+      "game_track_contracts": "BLOCKED_NOT_RUN_IN_AGENT_SCOPE",
+      "handoff_status_preserved": "7_PASS_2_BLOCKED_NOT_RUN"
+    },
+    "main_completed_followup": {
+      "visual_regeneration_exit_code": 0,
+      "visual_receipts": 147,
+      "svg_assets": 12,
+      "regenerated_sources": 24,
+      "game_track_contracts_exit_code": 0,
+      "game_track_tests_passed": 101,
+      "game_track_subtests_passed": 48,
+      "ruff_full_check_exit_code": 0,
+      "ruff_format_check_exit_code": 0
+    },
+    "logical_gate_accounting": "Seven isolated validators plus visual regeneration plus game-track contracts plus the paired Ruff check/format gate equals ten logical nonbrowser CI gates; overlapping test populations are not summed",
+    "counts_pooled_with_browser120": false,
+    "uv_sync_rerun": false,
+    "whole_project_unit_ci_script_rerun": false,
+    "full_selected_tree_ci_rerun": "NOT_RUN_BLOCKED"
+  },
+  "advisory_control_plane": {
+    "host": "jeopi",
+    "backend": "api",
+    "observed_model": "jev-1.14.0",
+    "tier": "unvalidated",
+    "review_verdict": "proposal_only",
+    "configuration_changed_by_this_work": false,
+    "execution_or_publication_authority_granted": false,
+    "native_hook_enforcement_verified": false,
+    "scientific_evidence": false
+  },
+  "controlled_next_validation": {
+    "profile_target_creator": "UNRESOLVED",
+    "operator_choice_needed": "Dedicated approved QA profile or quiescent current profile",
+    "user_activity_cause_established": false,
+    "timing_or_code_change_justified": false,
+    "new_browser_run_authorized_by_this_receipt": false
+  },
+  "checkpoint_history": [
+    {
+      "date": "2026-11-11",
+      "stage": "Before diagnostic and nonbrowser gate completion",
+      "matched_blank_api_diagnostic": "IN_PROGRESS_NO_OUTCOME",
+      "nine_isolated_nonbrowser_validators": "IN_PROGRESS_NO_RESULT",
+      "classification": "DATED_PRIOR_STATE_SUPERSEDED_BY_COMPLETED_FACTS_NOT_DELETED"
+    }
+  ],
+  "other_gates_at_checkpoint": {
+    "matched_blank_api_diagnostic": "COMPLETED_EXIT0_DIAGNOSTIC_ONLY",
+    "nine_isolated_nonbrowser_validators": "7_PASS_2_AGENT_RESTRICTED_NOT_RUN_THEN_MAIN_COMPLETED_BOTH_EXIT0",
+    "full_selected_tree_ci_rerun": "NOT_RUN_BLOCKED",
+    "current_integration_gate": "FIX",
+    "hide_identity_gate": "native_identity_required",
+    "hide_mission_created": false,
+    "commit_push_deployment": "NOT_PERFORMED",
+    "new_model_game_experiment": false
+  },
+  "historical_evidence": {
+    "preserved_as_separate_dated_records": [
+      "Earlier preformat 70-pass matrix",
+      "Rejected 73-case candidate",
+      "Rejected 82-case candidate: 80 passed, 2 failed",
+      "Earlier failed full selected-tree CI attempts"
+    ],
+    "prior_public_receipts": ["aside-browser-verification.json", "aside-ci-candidate-2.json", "ci-attempt-2.json"],
+    "earlier_results_override_current_fix": false
+  },
+  "publication_policy": {
+    "projection": "Curated fixed-schema facts only; not raw logs or a verbatim private receipt",
+    "browser_profile_identifiers_or_hashes_included": false,
+    "absolute_workstation_or_private_paths_included": false,
+    "target_identifiers_labels_urls_tokens_nonces_or_arbitrary_raw_text_included": false,
+    "hashes_included": "Executable/test source hashes only"
+  },
+  "limits": [
+    "All scientific counts, thresholds, unknown identity and cost, and 19 separate historical cohorts remain unchanged",
+    "EN17/KO17 main pages, one-page supplements, 58 citation-number pairs and 36 shared label-number pairs remain unchanged",
+    "Source-only reviews and both clean API-only diagnostics do not establish runtime acceptance or the cause of the five failures; neither justifies a timing or code change",
+    "Native request/pageerror callback certification and arbitrary forced-kill-after-tab-open cleanup remain unverified",
+    "No blind retry or source timing change is authorized by this receipt"
+  ]
+}

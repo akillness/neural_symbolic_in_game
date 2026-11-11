@@ -1,0 +1,196 @@
+{
+  "schema_version": "dedicated-qa-public-ci-verification/1",
+  "date": "2026-11-11",
+  "status": "PASS_LOCAL_12_STAGE_CI_EQUIVALENT",
+  "scope": "Exactly one full local CI-equivalent run on frozen84 selected inputs, followed by metadata-only publication finalization; not hosted CI, a rerun on finalized metadata, or scientific evidence",
+  "observed_process": {
+    "started_at_utc": "2026-11-11T09:02:41.281964+00:00",
+    "finished_at_utc": "2026-11-11T09:25:47.730712+00:00",
+    "elapsed_seconds": 1386.473,
+    "exit_code": 0,
+    "launch_count": 1,
+    "retry_count": 0,
+    "deadline_seconds": 5400,
+    "deadline_exceeded": false,
+    "recorder_reaped": true,
+    "timeout_signals_needed": false,
+    "actual_failure_count": 0,
+    "actual_error_count": 0
+  },
+  "reproduction": {
+    "classification": "EXPLICIT_REPRODUCTION_TEMPLATE_NOT_PRIVATE_COMMAND_OR_COMPLETE_ENVIRONMENT_RECEIPT",
+    "cwd_template": "$SELECTED_PROJECT_ROOT",
+    "command_template": "NSG_BROWSER_BACKEND=aside NSG_ASIDE_PROFILE=\"$APPROVED_ASIDE_PROFILE\" NPC_PLAY_LOOP_REAL_SERVICE=0 rtk proxy bash scripts/verify_like_ci.sh",
+    "substitutions": [
+      "SELECTED_PROJECT_ROOT: local root of the frozen selected project",
+      "APPROVED_ASIDE_PROFILE: operator-approved private dedicated QA value, supplied locally and never published"
+    ],
+    "canonical_command_argv": ["rtk", "proxy", "bash", "scripts/verify_like_ci.sh"],
+    "command_rerun_by_publication_writer": false,
+    "new_execution_authority": false,
+    "junit_requested": false,
+    "junit_named_file_count": 0,
+    "junit_limit": "No JUnit option was requested or added to the canonical run; no JUnit artifact is claimed"
+  },
+  "stages": [
+    {"stage": "Install locked environment", "status": "PASS"},
+    {"stage": "Unit and publication regression tests", "status": "PASS"},
+    {"stage": "Ruff lint and format", "status": "PASS"},
+    {"stage": "Project integrity", "status": "PASS"},
+    {"stage": "Contribution and reference crosswalk", "status": "PASS"},
+    {"stage": "Editable visual and table sources", "status": "PASS"},
+    {"stage": "Offline experiment smoke", "status": "PASS"},
+    {"stage": "Harness structure", "status": "PASS"},
+    {"stage": "Experimental game-track contracts", "status": "PASS"},
+    {"stage": "Deep-research result contracts", "status": "PASS"},
+    {"stage": "Survey artifact contract", "status": "PASS"},
+    {"stage": "Wiki lint", "status": "PASS"}
+  ],
+  "passed_stages": 12,
+  "total_stages": 12,
+  "unit_publication": {
+    "passed": 1656,
+    "skipped": 1,
+    "subtests_passed": 1179,
+    "mandatory_gate_skips": 0,
+    "optional_skip": {
+      "classification": "OPTIONAL_PAID_REAL_SERVICE_OPT_IN_NOT_ENABLED",
+      "source": "tests/test_npc_play_loop.py::test_optional_real_service_mode_uses_existing_endpoint_and_report_contract",
+      "opt_in_environment": "NPC_PLAY_LOOP_REAL_SERVICE",
+      "observed_value": "0",
+      "identity_basis": "Source-derived skip condition and explicit run environment with exactly one observed skip; canonical quiet output does not enumerate skipped node IDs"
+    }
+  },
+  "game_track": {
+    "passed": 101,
+    "subtests_passed": 48,
+    "counts_pooled_with_unit_publication": false
+  },
+  "locked_environment": {
+    "status": "PASS",
+    "canonical_sync_command": ["uv", "sync", "--extra", "research", "--extra", "dev"],
+    "sync_success_basis": "Canonical stage success; explicit sync was not bypassed by UV_NO_SYNC"
+  },
+  "source_binding": {
+    "selected_input_count": 84,
+    "all_selected_inputs_unchanged_during_ci": true,
+    "original_input_count": 84,
+    "all_original_inputs_unchanged_during_ci": true,
+    "runtime_binding_count": 48,
+    "all_runtime_bindings_unchanged_during_ci": true,
+    "frozen_source_count": 7,
+    "all_frozen_sources_unchanged_during_ci": true,
+    "input_snapshot_before_sha256": "261a3c6930ad31faa2bd72a55fcb95cdb3ee593a52961c1735f4d31e4a7e8421",
+    "input_snapshot_after_sha256": "261a3c6930ad31faa2bd72a55fcb95cdb3ee593a52961c1735f4d31e4a7e8421",
+    "source_set_receipt": "runtime-source-set.json",
+    "source_set_entries_or_base_provenance_modified_by_finalization": false,
+    "snapshot_limit": "84 selected regular-file receipts, not a complete Git tree identity or a whole-original-dirty-tree attestation"
+  },
+  "browser_lifecycle": {
+    "successful_global_closed_driver_receipts": 54,
+    "driver_counts": {
+      "tests/dashboard_signal_driver.cjs": 1,
+      "tests/ontology_evidence_map_driver.cjs": 24,
+      "tests/publication_presentation_driver.cjs": 29
+    },
+    "scope": "Existing fixtures assert task-owned tab inventory closure and CLI process-group absence before successful receipts",
+    "fresh_personal_or_baseline_tab_census_performed": false,
+    "personal_or_unknown_tabs_inspected_by_ci_owner": false,
+    "personal_or_unknown_tabs_closed": false,
+    "global_detached_descendant_absence_independently_certified": false,
+    "native_request_and_pageerror_callbacks_certified": false,
+    "arbitrary_forced_kill_after_tab_open_cleanup_certified": false,
+    "historical_failure_cause_established": false,
+    "timing_or_sdk_root_cause_claim": false
+  },
+  "dedicated_qa": {
+    "created_through_official_surface": true,
+    "sharing_choice": "Do not share",
+    "default_cli_settings_changed": false,
+    "automatic_active_view_change_disclosed": true,
+    "exact_private_target_supplied_explicitly": true,
+    "unique_connected_match_confirmed_before_exclusive_run": true,
+    "profile_or_backend_fallback_used": false,
+    "profile_identifiers_labels_or_hashes_published": false
+  },
+  "raw_capture_integrity": {
+    "raw_capture_bytes": 7545,
+    "raw_capture_sha256": "d208bb64f1feb0ec9c5e968d28a6aca8c9066b1240765fd6084f378c6f1c173f",
+    "outer_capture_bytes": 7545,
+    "outer_capture_sha256": "d208bb64f1feb0ec9c5e968d28a6aca8c9066b1240765fd6084f378c6f1c173f",
+    "byte_preserving_recorder": true,
+    "outer_capture_matches_raw": true,
+    "raw_log_contents_published": false
+  },
+  "historical_evidence": {
+    "earlier_120_case_receipt": "aside-current-120-case-verification.json",
+    "earlier_status": "FIX",
+    "earlier_counts": {"cases": 120, "passed": 115, "failed": 5, "errors": 0, "skipped": 0, "exit_code": 1},
+    "earlier_failure_cause": "UNKNOWN",
+    "earlier_failures_rewritten_or_erased": false,
+    "earlier_rejected_candidates_and_failed_ci_preserved": true,
+    "current_integration_supersession": "This separate frozen84 full-CI PASS supersedes the current gate pointer only; it is not a relabeled120-case PASS or an explanation of historical failures"
+  },
+  "advisory_control_plane": {
+    "host": "jeopi",
+    "backend": "API",
+    "model": "jev-1.14.0",
+    "tier": "unvalidated",
+    "latest_route_fits": [],
+    "review_verdict": "proposal_only",
+    "execution_or_publication_authority": false,
+    "scientific_evidence": false
+  },
+  "hide": {
+    "state": "BLOCKED",
+    "reason": "native_identity_required",
+    "native_jeopi_registrationId": null,
+    "mission_created": false,
+    "mission_executed": false,
+    "documented_auto_repair": false
+  },
+  "metadata_finalization": {
+    "scope": "PUBLICATION_METADATA_ONLY_AFTER_PASSING_FROZEN84_RUN",
+    "full_ci_rerun_on_finalized_metadata": false,
+    "final85_selection": {
+      "authority": "Owner-supported positive-scope selection handoff",
+      "relationship": "Exactly the prior84 path set plus dedicated-qa-full-ci-verification.json; existing paths received metadata-only finalization",
+      "selected_path_count": 85,
+      "observed_original_selected_staged_blob_matches": 85,
+      "observed_staged_status_counts": {"modified": 43, "added": 42},
+      "observed_unexpected_staged_path_count": 0,
+      "observed_private_staged_path_count": 0,
+      "observation_scope": "Selection observed before this metadata-only correction; not a post-correction byte-identity attestation",
+      "full_ci_on_final85": "NOT_RERUN",
+      "boundary": "Selection proof only, not fullCI85; the12-stage PASS and source_binding remain bound to frozen84"
+    },
+    "selected_isolated_checkout_modified": false,
+    "prior_documentation_worker": "FAILED_HTTP429_BEFORE_EXECUTION_NOT_COMPLETED_WORK",
+    "commit": "PENDING_NOT_PERFORMED",
+    "push": "PENDING_NOT_PERFORMED",
+    "deployment": "NOT_PERFORMED"
+  },
+  "scientific_preservation": {
+    "separate_cohorts": 19,
+    "cohorts_pooled_or_rewritten": false,
+    "scientific_counts_changed": false,
+    "served_model_identities": "unknown",
+    "provider_request_counts": "unknown",
+    "actual_costs": "unknown",
+    "main_pdf_pages": {"en": 17, "ko": 17},
+    "supplement_pdf_pages": {"en": 1, "ko": 1},
+    "matched_citation_number_pairs": 58,
+    "matched_shared_label_number_pairs": 36,
+    "new_model_game_or_real_service_run": false,
+    "efficacy_superiority_or_independence_claim": false
+  },
+  "publication_policy": {
+    "projection": "Strict allowlisted fixed-schema facts, not verbatim private handoff or raw logs",
+    "absolute_workstation_or_private_paths_included": false,
+    "profile_identifiers_labels_or_hashes_included": false,
+    "target_identifiers_urls_tokens_nonces_or_arbitrary_untrusted_text_included": false,
+    "permitted_hashes": "Source-input snapshot and raw-capture integrity hashes only",
+    "hosted_ci_claim": false,
+    "new_launch_authority": false
+  }
+}

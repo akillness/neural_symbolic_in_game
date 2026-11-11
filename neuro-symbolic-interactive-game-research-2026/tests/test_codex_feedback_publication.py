@@ -196,3 +196,147 @@ def test_v5_visual_manifest_links_bilingual_papers_to_actual_evidence_bytes():
         language = surface["id"].removeprefix("paper-")
         verify_receipts([surface["editable_source"]], [f"paper/latex/{language}/main.tex"])
         verify_receipts([surface["artifact"]], [f"paper/latex/{language}/main.pdf"])
+
+
+# Approved frozen inventory: assigned, completed, failed, IN_PROGRESS, PENDING,
+# gate accepted, objective reached, evaluated candidates. No private originals
+# are needed to defend these public snapshot counts in CI.
+HISTORY_COUNTS = {
+    "codex-feedback-pilot-20261110": (10, 0, 7, 0, 3, 0, 0, 0),
+    "codex-feedback-pilot-v2-20261110-luna": (10, 0, 0, 0, 10, 0, 0, 0),
+    "codex-feedback-pilot-v2-20261110-terra": (10, 0, 0, 0, 10, 0, 0, 0),
+    "codex-feedback-pilot-v2-diagnostic-20261110-luna": (10, 0, 0, 1, 9, 0, 0, 0),
+    "codex-feedback-pilot-v2-diagnostic-20261110-terra": (10, 0, 1, 0, 9, 0, 0, 0),
+    "codex-feedback-pilot-v2-evidence-20261110-luna": (10, 0, 1, 0, 9, 0, 0, 0),
+    "codex-feedback-pilot-v2-evidence-20261110-terra": (10, 0, 1, 0, 9, 0, 0, 0),
+    "gpt-5.6-luna": (10, 0, 0, 0, 10, 0, 0, 0),
+    "gpt-5.6-luna-native-0.167.0": (10, 0, 0, 0, 10, 0, 0, 0),
+    "gpt-5.6-terra": (10, 0, 0, 0, 10, 0, 0, 0),
+    "gpt-5.6-terra-native-0.167.0": (10, 0, 0, 0, 10, 0, 0, 0),
+    "paired-model-comparison-20261110-v3-gpt-5.6-luna": (10, 0, 0, 0, 10, 0, 0, 0),
+    "paired-model-comparison-20261110-v3-gpt-5.6-terra": (10, 0, 0, 0, 10, 0, 0, 0),
+    "paired-model-comparison-20261110-v4-gpt-5.6-luna": (10, 10, 0, 0, 0, 9, 8, 10),
+    "paired-model-comparison-20261110-v4-gpt-5.6-terra": (10, 0, 1, 0, 9, 0, 0, 0),
+    "paired-model-comparison-20261110-v5-gpt-5.6-luna": (10, 9, 1, 0, 0, 7, 6, 9),
+    "paired-model-comparison-20261110-v5-gpt-5.6-terra": (10, 1, 9, 0, 0, 1, 1, 1),
+    "startup-diagnostic-20261110-1794306144015386000-gpt-5.6-luna": (10, 0, 1, 0, 9, 0, 0, 0),
+    "startup-diagnostic-20261110-1794306144015386000-gpt-5.6-terra": (10, 0, 1, 0, 9, 0, 0, 0),
+}
+HISTORY_COUNT_FIELDS = (
+    "assigned",
+    "completed",
+    "failed",
+    "IN_PROGRESS",
+    "PENDING",
+    "gate_accepted",
+    "objective_reached",
+    "evaluated_candidate_count",
+)
+
+
+@pytest.fixture(scope="module")
+def history_inventory():
+    return _load(PILOT / "public-history-20261111" / "cohort-inventory.json")
+
+
+def test_public_history_represents_each_frozen_cohort_once(history_inventory):
+    assert Counter(row["cohort"] for row in history_inventory["rows"]) == Counter(
+        HISTORY_COUNTS.keys()
+    )
+
+
+@pytest.mark.parametrize("cohort", HISTORY_COUNTS)
+def test_public_history_preserves_per_cohort_status_and_success_accounting(
+    history_inventory, cohort
+):
+    rows = [row for row in history_inventory["rows"] if row["cohort"] == cohort]
+    assert len(rows) == 1
+    row = rows[0]
+    counts = tuple(row[field] for field in HISTORY_COUNT_FIELDS)
+    assert all(type(value) is int and value >= 0 for value in counts)
+    assert counts == HISTORY_COUNTS[cohort]
+    assert row["assigned"] == sum(
+        row[field] for field in ("completed", "failed", "IN_PROGRESS", "PENDING")
+    )
+    assert 0 <= row["gate_accepted"] <= row["evaluated_candidate_count"] <= row["assigned"]
+    assert 0 <= row["objective_reached"] <= row["evaluated_candidate_count"]
+    expected_selector = (
+        "gpt-6-luna"
+        if cohort == "codex-feedback-pilot-20261110"
+        else ("gpt-5.6-luna" if "luna" in cohort else "gpt-5.6-terra")
+    )
+    assert row["requested_selector"] == expected_selector
+
+
+@pytest.mark.parametrize("selector", SELECTORS)
+def test_public_history_v5_counts_and_digest_match_public_receipts(
+    history_inventory, cohorts, selector
+):
+    row = next(row for row in history_inventory["rows"] if row["cohort"] == f"{COHORT}-{selector}")
+    result = cohorts[selector]
+    cases = result["cases"]
+    statuses = Counter(case["status"] for case in cases)
+    assert row["assigned"] == len(cases)
+    for field, status in (
+        ("completed", "COMPLETED"),
+        ("failed", "FAILED"),
+        ("IN_PROGRESS", "IN_PROGRESS"),
+        ("PENDING", "PENDING"),
+    ):
+        assert row[field] == statuses[status]
+    evaluations = [case["evaluation"] for case in cases if case["evaluation"] is not None]
+    assert row["evaluated_candidate_count"] == len(evaluations)
+    assert row["gate_accepted"] == sum(
+        evaluation["final_gate_accepted"] is True for evaluation in evaluations
+    )
+    assert row["objective_reached"] == sum(
+        evaluation["objective_reached"] is True for evaluation in evaluations
+    )
+    assert row["received_response_count"] == sum(
+        case["evidence"]["returncode"] == 0
+        and any(event["type"] == "turn.completed" for event in case["evidence"]["events"])
+        for case in cases
+    )
+    assert row["raw_source_sha256"] == result["public_projection"]["raw_source_sha256"]
+
+
+def test_public_history_retains_only_safe_aggregate_fields_and_unknowns(history_inventory):
+    assert set(history_inventory) == {
+        "schema_version",
+        "counting_unit",
+        "source_digest_scope",
+        "source_reproducibility_limitation",
+        "rows",
+        "caveats",
+    }
+    allowed_row_fields = {
+        "cohort",
+        "requested_selector",
+        "raw_source_sha256",
+        "scope",
+        "actual_model_identity",
+        "cost_usd",
+        "provider_request_count",
+        *HISTORY_COUNT_FIELDS,
+    }
+    for row in history_inventory["rows"]:
+        expected_fields = allowed_row_fields | (
+            {"received_response_count"} if row["cohort"].startswith(f"{COHORT}-") else set()
+        )
+        assert set(row) == expected_fields, row["cohort"]
+        for field in ("actual_model_identity", "cost_usd", "provider_request_count"):
+            assert row[field] is None, (row["cohort"], field)
+        assert re.fullmatch(r"[0-9a-f]{64}", row["raw_source_sha256"])
+        assert isinstance(row["scope"], str)
+
+    def assert_no_local_paths(value):
+        if isinstance(value, dict):
+            for item in value.values():
+                assert_no_local_paths(item)
+        elif isinstance(value, list):
+            for item in value:
+                assert_no_local_paths(item)
+        elif isinstance(value, str):
+            assert not re.search(r"/(?:Users|home|tmp|private|var)/|~/|[A-Za-z]:\\", value)
+
+    assert_no_local_paths(history_inventory)

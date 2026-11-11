@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import signal
 import subprocess
 import tempfile
@@ -17,6 +18,7 @@ from typing import Any
 
 NATIVE_CONTEXT_SCHEMA = "runtime-native-context/1"
 ASSIGNMENT_PLAN_SCHEMA = "runtime-model-swap/assignment-plan/1"
+EXTENSION_ASSIGNMENT_PLAN_SCHEMA = "runtime-model-swap/assignment-plan/2"
 SUPPORTED_HOSTS = {"codex", "claude_code", "antigravity"}
 HASH_FIELDS = (
     "approved_proposal_sha256",
@@ -60,6 +62,33 @@ _ACTIVATION_EVIDENCE_FIELDS = (
     "context_isolation_receipt_sha256",
     "subscription_receipt_sha256",
 )
+EXTENSION_ACTIVATION_SCHEMA = "runtime-native-activation/3"
+EXTENSION_CODEX_TARGETS = (
+    "gpt-6-luna",
+    "gpt-6-sol",
+    "gpt-5.6-luna",
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+)
+EXTENSION_CODEX_CLI_VERSION = "0.164.0"
+EXTENSION_CODEX_IDENTITY_SOURCE = "codex_core::session"
+EXTENSION_CODEX_RESPONSE_IDENTITY_SOURCE = "codex::response_model"
+EXTENSION_CODEX_CATALOG_PATH = Path(__file__).with_name("codex_extension_no_tools_models.json")
+EXTENSION_CODEX_CATALOG_SHA256 = "7ebc473ef97b40fe3dba3d824524ecf808d41d3f93ced39b83c9cc14345afaf5"
+EXTENSION_CODEX_RUST_LOG = "off,codex_core::session=info"
+EXTENSION_IDENTITY_POLICY = {
+    "provider_header_source": EXTENSION_CODEX_IDENTITY_SOURCE,
+    "affirmative_comparison": "server reported model <selector> (matches requested model)",
+    "missing": "reject",
+    "mismatch": "reject",
+    "reroute": "reject",
+    "ambiguous": "reject",
+    "supports_websockets": False,
+    "request_max_retries": 0,
+    "stream_max_retries": 0,
+    "model_substitution": False,
+    "codex_cli_version": EXTENSION_CODEX_CLI_VERSION,
+}
 
 _CODEX_TOOL_CATALOG_PATH = Path(__file__).with_name("codex_no_tools_models.json")
 _CODEX_TOOL_CATALOG_SHA256 = "5293550d74b5ceea7e3c528799fe8a992cbcd215ea326516c4a1bc011c035d36"
@@ -127,6 +156,7 @@ class NativeActivationTrust:
     purpose: str = "production_native"
     origin: str = "trusted_bootstrap"
     source_root: str | None = None
+    trust_root: str | None = None
 
 
 class PromptTransportError(RuntimeError):
@@ -239,12 +269,22 @@ def load_pinned_native_activation(
         raise ValueError("native_activation_digest_mismatch")
     if _sha256(plan_raw) != plan_sha256:
         raise ValueError("native_activation_plan_digest_mismatch")
-    if activation.get("schema_version") != ACTIVATION_SCHEMA:
+    activation_schema = activation.get("schema_version")
+    plan_schema = plan.get("schema_version")
+    extension = activation_schema == EXTENSION_ACTIVATION_SCHEMA
+    if activation_schema not in {ACTIVATION_SCHEMA, EXTENSION_ACTIVATION_SCHEMA}:
         raise ValueError("native_activation_schema_mismatch")
     if activation.get("kind") != ACTIVATION_KIND:
         raise ValueError("native_activation_kind_mismatch")
-    if plan.get("schema_version") != ASSIGNMENT_PLAN_SCHEMA:
+    expected_plan_schema = EXTENSION_ASSIGNMENT_PLAN_SCHEMA if extension else ASSIGNMENT_PLAN_SCHEMA
+    if plan_schema != expected_plan_schema:
         raise ValueError("native_activation_plan_schema_mismatch")
+    if extension:
+        policy = activation.get("identity_policy")
+        if policy != EXTENSION_IDENTITY_POLICY:
+            raise ValueError("native_activation_identity_policy_invalid")
+        if plan.get("catalog_sha256") != EXTENSION_CODEX_CATALOG_SHA256:
+            raise ValueError("native_activation_plan_catalog_mismatch")
     if not isinstance(row_id, str) or not row_id:
         raise ValueError("native_activation_row_id_invalid")
     expires = _parse_time(activation.get("expires_at"))
@@ -269,11 +309,17 @@ def load_pinned_native_activation(
     if not isinstance(rows, list) or len(rows) != 20:
         raise ValueError("native_activation_plan_requires_exactly_twenty_rows")
     expected_targets = (
-        ("GPT-6.1-SOL", "codex", "gpt-6.1-sol", "medium"),
-        ("GPT-5.6-SOL", "codex", "gpt-5.6-sol", "medium"),
-        ("Claude Opus 5.5", "claude_code", "opus", "medium"),
-        ("Claude Sonnet 5.5", "claude_code", "sonnet", "medium"),
-        ("Gemini 3.8 Flash", "antigravity", "gemini-3.8-flash-medium", "medium"),
+        tuple(
+            (selector.upper(), "codex", selector, "medium") for selector in EXTENSION_CODEX_TARGETS
+        )
+        if extension
+        else (
+            ("GPT-6.1-SOL", "codex", "gpt-6.1-sol", "medium"),
+            ("GPT-5.6-SOL", "codex", "gpt-5.6-sol", "medium"),
+            ("Claude Opus 5.5", "claude_code", "opus", "medium"),
+            ("Claude Sonnet 5.5", "claude_code", "sonnet", "medium"),
+            ("Gemini 3.8 Flash", "antigravity", "gemini-3.8-flash-medium", "medium"),
+        )
     )
     if plan.get("status") != "planned" or not isinstance(plan.get("quest_id"), str):
         raise ValueError("native_activation_plan_header_invalid")
@@ -327,7 +373,7 @@ def load_pinned_native_activation(
     plan_binding = activation.get("plan")
     if (
         not isinstance(plan_binding, Mapping)
-        or plan_binding.get("schema_version") != ASSIGNMENT_PLAN_SCHEMA
+        or plan_binding.get("schema_version") != expected_plan_schema
         or plan_binding.get("sha256") != plan_sha256
         or plan_binding.get("row_id") != row_id
         or not _is_sha256(plan_binding.get("row_sha256"))
@@ -363,6 +409,11 @@ def load_pinned_native_activation(
         not _is_sha256(artifact_bindings.get(field)) for field in _ACTIVATION_HASH_FIELDS
     ):
         raise ValueError("native_activation_artifact_bindings_invalid")
+    if (
+        extension
+        and artifact_bindings.get("extension_catalog_sha256") != EXTENSION_CODEX_CATALOG_SHA256
+    ):
+        raise ValueError("native_activation_extension_catalog_mismatch")
     if selected.get("source_manifest_sha256") != artifact_bindings.get(
         "source_manifest_sha256"
     ) or selected.get("input_manifest_sha256") != artifact_bindings.get("input_manifest_sha256"):
@@ -386,6 +437,7 @@ def load_pinned_native_activation(
         purpose=purpose,
         origin=origin or expected_origin,
         source_root=str(trusted_source),
+        trust_root=str(trusted_root),
     )
 
 
@@ -424,6 +476,286 @@ def _is_sha256(value: Any) -> bool:
     except ValueError:
         return False
     return True
+
+
+def _claim_extension_activation(activation: NativeActivationTrust) -> str | None:
+    """Atomically consume one production extension row before native dispatch."""
+    if (
+        activation.purpose != "production_native"
+        or activation.activation.get("schema_version") != EXTENSION_ACTIVATION_SCHEMA
+    ):
+        return None
+    if not isinstance(activation.trust_root, str) or not activation.trust_root:
+        return "native_activation_claim_root_missing"
+    try:
+        trust_root = Path(activation.trust_root).resolve()
+        if not trust_root.is_dir():
+            return "native_activation_claim_root_missing"
+        claim_root = trust_root / ".native-activation-claims"
+        claim_root.mkdir(mode=0o700, exist_ok=True)
+        claim_name = _sha256(
+            f"{activation.activation_sha256}:{activation.plan_sha256}:{activation.row_id}"
+        )
+        claim_path = claim_root / f"{claim_name}.json"
+        fd = os.open(claim_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(
+                _json(
+                    {
+                        "activation_sha256": activation.activation_sha256,
+                        "plan_sha256": activation.plan_sha256,
+                        "row_id": activation.row_id,
+                        "row_sha256": activation.row_sha256,
+                    }
+                )
+            )
+    except FileExistsError:
+        return "native_activation_row_already_claimed"
+    except OSError:
+        return "native_activation_claim_failed"
+    return None
+
+
+_CODEX_LOG_TIMESTAMP = r"(?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?Z)"
+_CODEX_SESSION_LOG_LINE = re.compile(
+    rf"^(?:{_CODEX_LOG_TIMESTAMP}\s+)?(?P<level>INFO|WARN|ERROR|DEBUG|TRACE) "
+    rf"{re.escape(EXTENSION_CODEX_IDENTITY_SOURCE)}: (?P<message>.*)$"
+)
+_CODEX_IDENTITY_LINE = re.compile(
+    rf"^(?:{_CODEX_LOG_TIMESTAMP}\s+)?INFO {re.escape(EXTENSION_CODEX_IDENTITY_SOURCE)}: "
+    r"server reported model ([^\s()]+) \(matches requested model\)$"
+)
+_CODEX_REROUTE_LINE = re.compile(
+    rf"^(?:{_CODEX_LOG_TIMESTAMP}\s+)?(?:INFO|WARN|ERROR) "
+    rf"{re.escape(EXTENSION_CODEX_IDENTITY_SOURCE)}: server reported model "
+    r"([^\s()]+) while requested model was ([^\s()]+)$"
+)
+_CODEX_RETRY_EVIDENCE = re.compile(
+    r"\b(?:retrying|retried|retries)\b"
+    r"|(?<!::)(?<!n't )\bretry\b"
+    r"|\battempt=(?!0\b)\d+",
+    re.IGNORECASE,
+)
+
+
+_CODEX_RESPONSE_OBSERVATION_MESSAGE = "response model identity observation"
+_CODEX_RESPONSE_HEADER_MESSAGE = "response model header observation"
+_CODEX_RESPONSE_OBSERVATION_LINE = re.compile(
+    rf"^(?:{_CODEX_LOG_TIMESTAMP}\s+)?(?:INFO|WARN|ERROR|DEBUG|TRACE)\s+"
+    rf"{re.escape(EXTENSION_CODEX_RESPONSE_IDENTITY_SOURCE)}: "
+    rf"{_CODEX_RESPONSE_OBSERVATION_MESSAGE}(?P<fields>(?:\s+\S+)*)$"
+)
+_CODEX_CORRELATION_FIELD = re.compile(r"\brequest_correlation_id=(\S+)")
+_CODEX_OBSERVATION_KEYS = frozenset(
+    {
+        "transport",
+        "response_sequence",
+        "request_correlation_id",
+        "phase",
+        "identity",
+        "created_model",
+        "completed_model",
+        "id_binding",
+        "id_bound",
+    }
+)
+_CODEX_OBSERVATION_REJECTED_VALUES = frozenset(
+    {"Duplicate", "Conflict", "Mismatch", "Missing", "Null", "Invalid"}
+)
+_CODEX_ACCEPTED_IDENTITY_SOURCES = frozenset(
+    {EXTENSION_CODEX_IDENTITY_SOURCE, EXTENSION_CODEX_RESPONSE_IDENTITY_SOURCE}
+)
+
+
+def _is_response_model_line(line: str) -> bool:
+    return EXTENSION_CODEX_RESPONSE_IDENTITY_SOURCE in line
+
+
+def _is_response_identity_candidate(line: str) -> bool:
+    return _is_response_model_line(line) and _CODEX_RESPONSE_HEADER_MESSAGE not in line
+
+
+_CODEX_HANDOFF_MARKER = "responses request transport handoff"
+_CODEX_FINISH_MARKER = "responses request attempt finished"
+_CODEX_HANDOFF_RECORD = re.compile(
+    r"codex::responses_binding: responses request transport handoff "
+    r"correlation_id=(\S+) attempt=(\S+)$"
+)
+_CODEX_FINISH_RECORD = re.compile(
+    r"codex::responses_binding: responses request attempt finished "
+    r"correlation_id=(\S+) attempt=(\S+) transport_handoff=(\S+) status=(\S+) success=(\S+)$"
+)
+
+
+def _parse_response_model_observation(
+    lines: list[str], *, requested_selector: str
+) -> dict[str, Any]:
+    """Admit one response-bound observation only when it proves one completed attempt."""
+
+    def rejected(error: str) -> dict[str, Any]:
+        return {"status": "rejected", "provider_identity": None, "error": error}
+
+    if any(_CODEX_RETRY_EVIDENCE.search(line) for line in lines):
+        return rejected("provider_identity_reroute")
+    if any(_CODEX_REROUTE_LINE.fullmatch(line) for line in lines):
+        return rejected("provider_identity_reroute")
+    if any("server reported model" in line for line in lines):
+        return rejected("provider_identity_ambiguous")
+    correlations = {found for line in lines for found in _CODEX_CORRELATION_FIELD.findall(line)}
+    if len(correlations) > 1:
+        return rejected("provider_identity_correlation_ambiguous")
+    observations = [line for line in lines if _is_response_identity_candidate(line)]
+    if not observations:
+        return rejected("provider_identity_missing")
+    if len(observations) > 1:
+        return rejected("provider_identity_ambiguous")
+    match = _CODEX_RESPONSE_OBSERVATION_LINE.fullmatch(observations[0])
+    if match is None:
+        return rejected("provider_identity_observation_malformed")
+    fields: dict[str, str] = {}
+    for pair in match.group("fields").split():
+        key, separator, value = pair.partition("=")
+        if not separator or not value or key in fields:
+            return rejected("provider_identity_observation_malformed")
+        fields[key] = value
+    if set(fields) != _CODEX_OBSERVATION_KEYS:
+        return rejected("provider_identity_observation_malformed")
+    correlation = fields["request_correlation_id"]
+    if correlation == "missing":
+        return rejected("provider_identity_correlation_missing")
+    if fields["phase"] != "SseTerminal(Completed)":
+        return rejected("provider_identity_phase_not_completed")
+    for field in ("identity", "created_model", "completed_model", "id_binding"):
+        if field == "created_model" and fields[field] == "Missing":
+            continue
+        if fields[field] in _CODEX_OBSERVATION_REJECTED_VALUES:
+            return rejected(f"provider_identity_observation_{fields[field].lower()}")
+    if (
+        fields["transport"] != "Http"
+        or fields["identity"] != "Exact"
+        or fields["created_model"] not in ("Exact", "Missing")
+        or fields["completed_model"] != "Exact"
+        or fields["id_binding"] != "Match"
+    ):
+        return rejected("provider_identity_observation_unqualified")
+    if fields["id_bound"] != "true":
+        return rejected("provider_identity_observation_unbound")
+    handoffs = [line for line in lines if _CODEX_HANDOFF_MARKER in line]
+    finishes = [line for line in lines if _CODEX_FINISH_MARKER in line]
+    if not handoffs:
+        return rejected("provider_identity_handoff_missing")
+    if len(handoffs) > 1:
+        return rejected("provider_identity_handoff_ambiguous")
+    if not finishes:
+        return rejected("provider_identity_finish_missing")
+    if len(finishes) > 1:
+        return rejected("provider_identity_finish_ambiguous")
+    handoff = _CODEX_HANDOFF_RECORD.search(handoffs[0])
+    finish = _CODEX_FINISH_RECORD.search(finishes[0])
+    if handoff is None:
+        return rejected("provider_identity_handoff_malformed")
+    if finish is None:
+        return rejected("provider_identity_finish_malformed")
+    handoff_id, handoff_attempt = handoff.group(1), handoff.group(2)
+    finish_id, finish_attempt = finish.group(1), finish.group(2)
+    status, success = finish.group(4), finish.group(5)
+    if handoff_attempt != "0" or finish_attempt != "0":
+        return rejected("provider_identity_reroute")
+    if not (status.isdigit() and 200 <= int(status) <= 299):
+        return rejected("provider_identity_finish_status")
+    if success != "true":
+        return rejected("provider_identity_finish_unsuccessful")
+    if finish_id != handoff_id:
+        return rejected("provider_identity_handoff_mismatch")
+    if correlation != handoff_id:
+        return rejected("provider_identity_correlation_mismatch")
+    return {
+        "status": "verified",
+        "provider_identity": requested_selector,
+        "identity_source": EXTENSION_CODEX_RESPONSE_IDENTITY_SOURCE,
+        "identity_message": _CODEX_RESPONSE_OBSERVATION_MESSAGE,
+        "request_correlation_id": correlation,
+    }
+
+
+def parse_codex_provider_identity(stderr: str, *, requested_selector: str) -> dict[str, Any]:
+    """Admit one source-pinned provider comparison for the current HTTP response only."""
+    if (
+        not isinstance(stderr, str)
+        or not isinstance(requested_selector, str)
+        or not requested_selector
+    ):
+        return {
+            "status": "rejected",
+            "provider_identity": None,
+            "error": "provider_identity_transport_invalid",
+        }
+    lines = [line.strip() for line in stderr.splitlines() if line.strip()]
+    if any(_is_response_model_line(line) for line in lines):
+        return _parse_response_model_observation(lines, requested_selector=requested_selector)
+    matches: list[tuple[str, str]] = []
+    malformed = False
+    rerouted = False
+    retry_evidence = False
+    for line in lines:
+        source_line = _CODEX_SESSION_LOG_LINE.fullmatch(line)
+        if source_line is None:
+            if _CODEX_RETRY_EVIDENCE.search(line):
+                retry_evidence = True
+            continue
+        message = source_line.group("message")
+        if _CODEX_RETRY_EVIDENCE.search(message):
+            retry_evidence = True
+        match = _CODEX_IDENTITY_LINE.fullmatch(line)
+        if match is not None:
+            matches.append((line, match.group(1)))
+            continue
+        reroute = _CODEX_REROUTE_LINE.fullmatch(line)
+        if reroute is not None:
+            rerouted = True
+            continue
+        if "server reported model" in message:
+            malformed = True
+    if retry_evidence:
+        return {
+            "status": "rejected",
+            "provider_identity": None,
+            "error": "provider_identity_reroute",
+        }
+    if rerouted:
+        return {
+            "status": "rejected",
+            "provider_identity": None,
+            "error": "provider_identity_reroute",
+        }
+    if len(matches) > 1:
+        return {
+            "status": "rejected",
+            "provider_identity": None,
+            "error": "provider_identity_ambiguous",
+        }
+    if malformed:
+        return {
+            "status": "rejected",
+            "provider_identity": None,
+            "error": "provider_identity_malformed",
+        }
+    if matches:
+        message, provider_identity = matches[0]
+        if provider_identity != requested_selector:
+            return {
+                "status": "rejected",
+                "provider_identity": None,
+                "error": "provider_identity_mismatch",
+            }
+        return {
+            "status": "verified",
+            "provider_identity": provider_identity,
+            "identity_source": EXTENSION_CODEX_IDENTITY_SOURCE,
+            "identity_message": message.split(": ", 1)[-1],
+        }
+    error = "provider_identity_malformed" if malformed else "provider_identity_missing"
+    return {"status": "rejected", "provider_identity": None, "error": error}
 
 
 def _parse_time(value: Any) -> datetime | None:
@@ -531,6 +863,7 @@ def validate_manifest(
     mode: str = "engineering_fixture",
     source_root: str | Path | None = None,
     expected_sha256: str | None = None,
+    required_files: Mapping[str, str | None] | None = None,
 ) -> dict[str, Any]:
     """Validate a manifest and its declared leaves without recursive manifest loading."""
     if path is None:
@@ -666,6 +999,14 @@ def validate_manifest(
         listed_raw = _read_bound_bytes(listed)
         if listed_raw is None or _sha256(listed_raw) != entry["sha256"]:
             receipt.update(status="unresolved", reason="manifest_file_content_mismatch")
+    for required_path, required_digest in (required_files or {}).items():
+        if not _is_sha256(required_digest) or not any(
+            isinstance(entry, Mapping)
+            and entry.get("path") == required_path
+            and entry.get("sha256") == required_digest
+            for entry in entries
+        ):
+            receipt.update(status="unresolved", reason="manifest_required_file_unbound")
     return receipt
 
 
@@ -809,6 +1150,7 @@ def validate_native_context(
     source_root: str | Path | None = None,
     now: Any = None,
     trusted_activation: NativeActivationTrust | None = None,
+    required_source_files: Mapping[str, str | None] | None = None,
 ) -> dict[str, Any]:
     """Validate a source-bound activation context before any process is created.
 
@@ -1047,6 +1389,7 @@ def validate_native_context(
                     mode="native",
                     source_root=root,
                     expected_sha256=binding.get("sha256"),
+                    required_files=required_source_files if kind == "source" else None,
                 )
                 if receipt.get("status") != "verified":
                     reasons.append(
@@ -1310,6 +1653,12 @@ class NativePromptRunner:
             self.host, self.selector, self.effort = host, selector, effort
             self._identity_mismatch = False
         self.process_runner = process_runner
+        self._extension = (
+            isinstance(trusted_activation, NativeActivationTrust)
+            and trusted_activation.activation.get("schema_version") == EXTENSION_ACTIVATION_SCHEMA
+        )
+        self._activation_claimed = False
+        self._extension_dispatch_starts = 0
         self.clock = clock
 
     def _receipt(self, request_id: str, *, mode: str, **fields: Any) -> dict[str, Any]:
@@ -1323,9 +1672,14 @@ class NativePromptRunner:
             "selector": self.selector,
             "effort": self.effort,
             "provider_identity": None,
+            "provider_identity_verified": False,
             "provider_revision": None,
             "effective_effort": None,
-            "usage": None,
+            "identity_source": None,
+            "identity_request_hash": None,
+            "identity_transport": None,
+            "identity_cli_version": None,
+            "response_qualified": False,
             "cost_usd": None,
             "cost_estimate_usd": None,
             "cost_source": "unknown",
@@ -1367,10 +1721,16 @@ class NativePromptRunner:
             features = getattr(helper, "TOOL_POLICY_FEATURES", None)
             if not features:
                 raise RuntimeError("codex_feature_contract_unavailable")
-            catalog_bytes = _read_bound_bytes(_CODEX_TOOL_CATALOG_PATH)
+            catalog_source = (
+                EXTENSION_CODEX_CATALOG_PATH if self._extension else _CODEX_TOOL_CATALOG_PATH
+            )
+            catalog_digest = (
+                EXTENSION_CODEX_CATALOG_SHA256 if self._extension else _CODEX_TOOL_CATALOG_SHA256
+            )
+            catalog_bytes = _read_bound_bytes(catalog_source)
             if catalog_bytes is None:
                 raise ValueError("codex_tool_catalog_unavailable")
-            if _sha256(catalog_bytes) != _CODEX_TOOL_CATALOG_SHA256:
+            if _sha256(catalog_bytes) != catalog_digest:
                 raise ValueError("codex_tool_catalog_mismatch")
             catalog_path = scratch / "codex-models.json"
             catalog_path.write_bytes(catalog_bytes)
@@ -1381,6 +1741,48 @@ class NativePromptRunner:
             for feature in _CODEX_NO_TOOLS_FEATURES:
                 command.extend(("--disable", feature))
 
+            config_overrides = [
+                "-c",
+                f"model_catalog_json={json.dumps(str(catalog_path))}",
+                "-c",
+                "agents.enabled=false",
+                "-c",
+                "tools.experimental_request_user_input.enabled=false",
+                "-c",
+                "tools.update_plan.enabled=false",
+                "-c",
+                'web_search="disabled"',
+                "-c",
+                "project_doc_max_bytes=0",
+                "-c",
+                "memories.use_memories=false",
+                "-c",
+                "memories.generate_memories=false",
+                "-c",
+                "cloud.skills.enabled=false",
+                "-c",
+                'cli_auth_credentials_store="file"',
+            ]
+            if self._extension:
+                config_overrides.extend(
+                    [
+                        "-c",
+                        'model_provider="codex_extension_http"',
+                        "-c",
+                        'model_providers.codex_extension_http.name="OpenAI"',
+                        "-c",
+                        'model_providers.codex_extension_http.wire_api="responses"',
+                        "-c",
+                        "model_providers.codex_extension_http.requires_openai_auth=true",
+                        "-c",
+                        "model_providers.codex_extension_http.supports_websockets=false",
+                        "-c",
+                        "model_providers.codex_extension_http.request_max_retries=0",
+                        "-c",
+                        "model_providers.codex_extension_http.stream_max_retries=0",
+                    ]
+                )
+            config_overrides.extend(["-c", 'model_reasoning_effort="medium"'])
             command.extend(
                 [
                     "--output-schema",
@@ -1391,28 +1793,7 @@ class NativePromptRunner:
                     "--skip-git-repo-check",
                     "--ignore-user-config",
                     "--ignore-rules",
-                    "-c",
-                    f"model_catalog_json={json.dumps(str(catalog_path))}",
-                    "-c",
-                    "agents.enabled=false",
-                    "-c",
-                    "tools.experimental_request_user_input.enabled=false",
-                    "-c",
-                    "tools.update_plan.enabled=false",
-                    "-c",
-                    'web_search="disabled"',
-                    "-c",
-                    "project_doc_max_bytes=0",
-                    "-c",
-                    "memories.use_memories=false",
-                    "-c",
-                    "memories.generate_memories=false",
-                    "-c",
-                    "cloud.skills.enabled=false",
-                    "-c",
-                    'cli_auth_credentials_store="file"',
-                    "-c",
-                    'model_reasoning_effort="medium"',
+                    *config_overrides,
                     "--model",
                     self.selector,
                     "-",
@@ -1745,6 +2126,8 @@ class NativePromptRunner:
                     base.update(error=str(exc), failure_kind="authorization")
                     return NativePromptResult(2, {}, base)
                 environment = _sanitized_environment()
+                if self._extension and self.host == "codex":
+                    environment["RUST_LOG"] = EXTENSION_CODEX_RUST_LOG
                 if self.host == "codex":
                     codex_home = scratch / ".codex"
                     codex_home.mkdir()
@@ -1772,6 +2155,23 @@ class NativePromptRunner:
                         isolated_path = scratch / leaf
                         isolated_path.mkdir(parents=True, exist_ok=True)
                         environment[key] = str(isolated_path)
+                if (
+                    self._extension
+                    and isinstance(self.trusted_activation, NativeActivationTrust)
+                    and not self._activation_claimed
+                ):
+                    claim_error = _claim_extension_activation(self.trusted_activation)
+                    if claim_error is not None:
+                        base.update(error=claim_error, failure_kind="authorization")
+                        return NativePromptResult(2, {}, base)
+                    self._activation_claimed = True
+                if self._extension and self._extension_dispatch_starts >= 12:
+                    base.update(
+                        error="native_extension_dispatch_limit", failure_kind="authorization"
+                    )
+                    return NativePromptResult(2, {}, base)
+                if self._extension:
+                    self._extension_dispatch_starts += 1
                 base.update(
                     command=list(command),
                     attempted=True,
@@ -1806,6 +2206,34 @@ class NativePromptRunner:
                     return NativePromptResult(4, {}, base)
                 base["stdout"] = _safe_text(completed.stdout)
                 base["stderr"] = _safe_text(completed.stderr)
+                if self._extension and self.host == "codex":
+                    identity = parse_codex_provider_identity(
+                        str(completed.stderr or ""), requested_selector=self.selector
+                    )
+                    base["provider_identity_evidence"] = identity
+                    if identity.get("status") != "verified":
+                        base.update(
+                            error=identity.get("error", "provider_identity_missing"),
+                            failure_kind="identity",
+                        )
+                        return NativePromptResult(5, {}, base)
+                    base["provider_identity"] = identity.get("provider_identity")
+                    base["provider_revision"] = None
+                    base["identity_source"] = identity.get("identity_source")
+                    base["identity_request_hash"] = base["outgoing_request_sha256"]
+                    base["identity_transport"] = "http"
+                    base["identity_cli_version"] = EXTENSION_CODEX_CLI_VERSION
+                    base["response_qualified"] = (
+                        base["provider_identity"] == self.selector
+                        and base["identity_source"] in _CODEX_ACCEPTED_IDENTITY_SOURCES
+                        and base["identity_request_hash"] == base["outgoing_request_sha256"]
+                        and base["identity_transport"] == "http"
+                        and base["identity_cli_version"] == EXTENSION_CODEX_CLI_VERSION
+                    )
+                    base["provider_identity_verified"] = base["response_qualified"]
+                    if not base["response_qualified"]:
+                        base.update(error="provider_identity_unqualified", failure_kind="identity")
+                        return NativePromptResult(5, {}, base)
                 if elapsed >= timeout:
                     base.update(error="response_timeout", timed_out=True, failure_kind="timeout")
                     return NativePromptResult(124, {}, base)
@@ -1871,38 +2299,54 @@ def build_assignment_plan(
     source_manifest_sha256: str,
     input_manifest_sha256: str,
     panel: Sequence[Mapping[str, Any]] | None = None,
+    extension: bool = False,
 ) -> dict[str, Any]:
+    """Build the immutable legacy /1 plan or the fixed extension /2 plan."""
+    if not isinstance(extension, bool):
+        raise TypeError("assignment_plan_extension_invalid")
     approved_targets = (
-        {
-            "family_label": "GPT-6.1-SOL",
-            "host": "codex",
-            "selector": "gpt-6.1-sol",
-            "effort": "medium",
-        },
-        {
-            "family_label": "GPT-5.6-SOL",
-            "host": "codex",
-            "selector": "gpt-5.6-sol",
-            "effort": "medium",
-        },
-        {
-            "family_label": "Claude Opus 5.5",
-            "host": "claude_code",
-            "selector": "opus",
-            "effort": "medium",
-        },
-        {
-            "family_label": "Claude Sonnet 5.5",
-            "host": "claude_code",
-            "selector": "sonnet",
-            "effort": "medium",
-        },
-        {
-            "family_label": "Gemini 3.8 Flash",
-            "host": "antigravity",
-            "selector": "gemini-3.8-flash-medium",
-            "effort": "medium",
-        },
+        tuple(
+            {
+                "family_label": selector.upper(),
+                "host": "codex",
+                "selector": selector,
+                "effort": "medium",
+            }
+            for selector in EXTENSION_CODEX_TARGETS
+        )
+        if extension
+        else (
+            {
+                "family_label": "GPT-6.1-SOL",
+                "host": "codex",
+                "selector": "gpt-6.1-sol",
+                "effort": "medium",
+            },
+            {
+                "family_label": "GPT-5.6-SOL",
+                "host": "codex",
+                "selector": "gpt-5.6-sol",
+                "effort": "medium",
+            },
+            {
+                "family_label": "Claude Opus 5.5",
+                "host": "claude_code",
+                "selector": "opus",
+                "effort": "medium",
+            },
+            {
+                "family_label": "Claude Sonnet 5.5",
+                "host": "claude_code",
+                "selector": "sonnet",
+                "effort": "medium",
+            },
+            {
+                "family_label": "Gemini 3.8 Flash",
+                "host": "antigravity",
+                "selector": "gemini-3.8-flash-medium",
+                "effort": "medium",
+            },
+        )
     )
     targets = list(approved_targets if panel is None else panel)
     if not _is_sha256(source_manifest_sha256) or not _is_sha256(input_manifest_sha256):
@@ -1920,9 +2364,13 @@ def build_assignment_plan(
         for target in targets
     ):
         raise ValueError("assignment_plan_target_invalid")
-    expected = {tuple(target[field] for field in identity_fields) for target in approved_targets}
-    actual = {tuple(target[field] for field in identity_fields) for target in targets}
-    if actual != expected:
+    expected_tuple = tuple(
+        tuple(target[field] for field in identity_fields) for target in approved_targets
+    )
+    actual_tuple = tuple(tuple(target[field] for field in identity_fields) for target in targets)
+    if extension and actual_tuple != expected_tuple:
+        raise ValueError("assignment_plan_target_order_mismatch")
+    if not extension and set(actual_tuple) != set(expected_tuple):
         raise ValueError("assignment_plan_target_identity_mismatch")
     rows: list[dict[str, Any]] = []
     index = 0
@@ -1950,9 +2398,10 @@ def build_assignment_plan(
                 )
                 index += 1
     return {
-        "schema_version": ASSIGNMENT_PLAN_SCHEMA,
+        "schema_version": EXTENSION_ASSIGNMENT_PLAN_SCHEMA if extension else ASSIGNMENT_PLAN_SCHEMA,
         "status": "planned",
         "quest_id": quest_id,
+        "catalog_sha256": EXTENSION_CODEX_CATALOG_SHA256 if extension else None,
         "seed": seed,
         "rows": rows,
         "counts": {"quests": 1, "targets": 5, "representations": 2, "repeats": 2},
@@ -1966,17 +2415,28 @@ def build_assignment_plan(
     }
 
 
+def build_extension_assignment_plan(**kwargs: Any) -> dict[str, Any]:
+    """Build only the fixed five-target extension assignment plan (/2)."""
+    return build_assignment_plan(extension=True, **kwargs)
+
+
 __all__ = [
     "ACTIVATION_KIND",
     "ACTIVATION_SCHEMA",
     "ASSIGNMENT_PLAN_SCHEMA",
+    "EXTENSION_ACTIVATION_SCHEMA",
+    "EXTENSION_ASSIGNMENT_PLAN_SCHEMA",
+    "EXTENSION_CODEX_TARGETS",
+    "EXTENSION_IDENTITY_POLICY",
     "NATIVE_CONTEXT_SCHEMA",
     "NativeActivationTrust",
     "NativePromptResult",
     "NativePromptRunner",
     "PromptTransportError",
     "build_assignment_plan",
+    "build_extension_assignment_plan",
     "load_pinned_native_activation",
+    "parse_codex_provider_identity",
     "run_host_process",
     "validate_manifest",
     "validate_native_context",

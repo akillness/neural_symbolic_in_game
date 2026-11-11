@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import xml.etree.ElementTree as ET
 from itertools import pairwise
 from pathlib import Path
@@ -20,36 +21,103 @@ FULL_WIDTH = 7.16 * 96
 SINGLE_COLUMN = FULL_WIDTH / 2
 
 
-def _browser(figures):
-    playwright = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
-    if not playwright:
-        pytest.skip("Publication geometry requires installed Playwright/Chromium")
+def _browser(figures, *, bridge_control=False):
     env = os.environ.copy()
-    env["NODE_PATH"] = os.pathsep.join(
-        filter(
-            None, [env.get("NODE_PATH"), str(Path(playwright).parent.parent / "lib/node_modules")]
+    if env.get("NSG_BROWSER_BACKEND") == "aside":
+        assert shutil.which(env.get("ASIDE_BIN", "aside")), "Aside CLI is required"
+    else:
+        playwright = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+        if not playwright:
+            pytest.skip("Publication geometry requires installed Playwright/Chromium")
+        env["NODE_PATH"] = os.pathsep.join(
+            filter(
+                None,
+                [env.get("NODE_PATH"), str(Path(playwright).parent.parent / "lib/node_modules")],
+            )
         )
-    )
-    candidates = sorted(
-        Path.home().glob(
-            "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/"
-            "Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+        candidates = sorted(
+            Path.home().glob(
+                "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/"
+                "Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+            )
         )
-    )
-    if candidates and not env.get("PLAYWRIGHT_EXECUTABLE_PATH"):
-        env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(candidates[-1])
+        if candidates and not env.get("PLAYWRIGHT_EXECUTABLE_PATH"):
+            env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(candidates[-1])
     result = subprocess.run(
         ["node", str(ROOT / "tests/publication_presentation_driver.cjs")],
-        input=json.dumps({"figures": figures}),
+        input=json.dumps({"figures": figures, "bridgeControl": bridge_control}),
         cwd=ROOT,
         env=env,
         capture_output=True,
         text=True,
-        timeout=60,
+        timeout=140 if env.get("NSG_BROWSER_BACKEND") == "aside" else 60,
         check=False,
     )
-    assert result.returncode == 0, result.stdout + result.stderr
+    if result.returncode != 0:
+        raise AssertionError(result.stdout + result.stderr)
     return json.loads(result.stdout)
+
+
+def test_aside_main_world_bridge_preserves_untrusted_json_values_and_errors():
+    """Own __proto__ keys, sentinel-like text, undefined and async errors survive real transport."""
+    if os.environ.get("NSG_BROWSER_BACKEND") != "aside":
+        return
+    result = _browser(
+        [{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}],
+        bridge_control=True,
+    )
+    assert result == [
+        {
+            "mainWorld": True,
+            "ownProto": {"polluted": True},
+            "sentinel": "undefined",
+            "text": "</script><script>window.__nsgInjected=true</script>",
+        }
+    ]
+
+
+def test_aside_backend_terminates_a_cli_that_ignores_sigterm(tmp_path, monkeypatch):
+    """A real stuck external CLI is force-terminated and reports failure rather than hanging cleanup."""
+    executable = tmp_path / "aside-stuck-fixture"
+    executable.write_text(
+        f"#!{sys.executable}\nimport signal, sys\nsignal.signal(signal.SIGTERM, signal.SIG_IGN)\n"
+        "sys.stdin.read()\nprint('stuck CLI control ready', flush=True)\nwhile True: signal.pause()\n",
+        encoding="utf-8",
+    )
+    executable.chmod(0o700)
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", str(executable))
+    monkeypatch.setenv("NSG_ASIDE_GUARD_MS", "1000")
+    with pytest.raises(AssertionError, match="exceeded fixture CLI deadline") as failure:
+        _browser([{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}])
+    assert "SIGKILL escalation after ignored SIGTERM" in str(failure.value)
+
+
+@pytest.mark.parametrize("failure", ("missing-cli", "empty-envelope", "reported-error"))
+def test_aside_backend_refuses_missing_or_incomplete_browser_execution(
+    tmp_path, monkeypatch, failure
+):
+    """No unavailable CLI or successful-looking empty response may manufacture rendered geometry."""
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    executable = tmp_path / "aside-fixture"
+    monkeypatch.setenv("ASIDE_BIN", str(executable))
+    if failure == "missing-cli":
+        expected = "Aside CLI is required"
+    else:
+        envelope = {
+            "run": {
+                "content": [],
+                "error": None if failure == "empty-envelope" else "fixture backend error",
+            }
+        }
+        executable.write_text(
+            f"#!{sys.executable}\nimport sys\nsys.stdin.read()\nprint({json.dumps(json.dumps(envelope))})\n",
+            encoding="utf-8",
+        )
+        executable.chmod(0o700)
+        expected = "Aside exited before observation"
+    with pytest.raises(AssertionError, match=expected):
+        _browser([{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}])
 
 
 @pytest.fixture(scope="module")
@@ -327,10 +395,10 @@ def _architecture_notation_violations(figure):
     if (
         "ρ" not in rendered
         or "→" not in rendered
-        or re.search(r"\\[A-Za-z]+|\$|[qvc]_[tic]", rendered)
+        or re.search(r"\\[A-Za-z]+|\$|[qvcG]_[tic]", rendered)
     ):
         problems.append("math glyphs")
-    for base, suffix in (("q", "t"), ("v", "i"), ("c", "t")):
+    for base, suffix in (("q", "t"), ("v", "i"), ("c", "t"), ("G", "t")):
         candidates = [
             (first, second)
             for text in figure["texts"]
@@ -359,6 +427,8 @@ def test_architecture_renders_math_subscripts_without_rewriting_ledger_grammar(
     "mutation,violations",
     (
         ("flattened-subscripts", ("q_t subscript", "v_i subscript", "c_t subscript")),
+        ("flattened-graph-subscript", ("G_t subscript",)),
+        ("raw-graph-subscript", ("math glyphs", "G_t subscript")),
         ("raw-math-escape", ("math glyphs",)),
         ("ledger-arrow", ("ledger literal",)),
     ),
@@ -375,6 +445,8 @@ def test_architecture_notation_rejects_flattened_or_rewritten_labels(mutation, v
         ]
     )[0]
     assert set(violations) <= set(_architecture_notation_violations(figure))
+    if mutation == "flattened-graph-subscript":
+        assert _architecture_notation_violations(figure) == ["G_t subscript"]
 
 
 def test_comparison_visible_rows_preserve_frozen_trace_counts(rendered_signals):
@@ -552,3 +624,141 @@ def test_disclosure_table_preserves_observed_rows_with_intercell_space(tmp_path,
         assert min(gaps) >= 8 * 72 / 72.27 - 0.15, (arm, gaps)
     # Header wrapping and body rows may grow, but visible words must never collide.
     _assert_no_word_collisions(words)
+
+
+def test_aside_backend_kills_a_group_survivor_after_its_leader_exits(tmp_path, monkeypatch):
+    """A TERM-exiting CLI leader cannot hide its same-group, pipe-closed, TERM-ignoring child."""
+    pidfile = tmp_path / "descendant.json"
+    termfile = tmp_path / "leader-term.json"
+    child_code = (
+        "import json, os, signal, sys\n"
+        "signal.signal(signal.SIGTERM, signal.SIG_IGN)\n"
+        f"with open({str(pidfile)!r}, 'w') as record: json.dump({{'pid':os.getpid(),'pgid':os.getpgrp()}}, record)\n"
+        "print('ready', flush=True)\nos.close(sys.stdout.fileno())\n"
+        "while True: signal.pause()\n"
+    )
+    executable = tmp_path / "aside-descendant-fixture"
+    executable.write_text(
+        f"#!{sys.executable}\nimport json, os, signal, subprocess, sys\n"
+        f"child=subprocess.Popen([sys.executable, '-c', {child_code!r}], stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)\n"
+        "assert child.stdout.readline() == b'ready\\n'\nchild.stdout.close()\n"
+        f"def terminate(signum, frame):\n with open({str(termfile)!r}, 'w') as record: json.dump({{'leader':os.getpid(),'pgid':os.getpgrp()}}, record)\n os._exit(0)\n"
+        "signal.signal(signal.SIGTERM, terminate)\n"
+        "sys.stdin.read()\nsignal.pause()\n",
+        encoding="utf-8",
+    )
+    executable.chmod(0o700)
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", str(executable))
+    monkeypatch.setenv("NSG_ASIDE_GUARD_MS", "1000")
+    try:
+        with pytest.raises(AssertionError, match="exceeded fixture CLI deadline"):
+            _browser([{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}])
+        descendant = json.loads(pidfile.read_text())
+        leader = json.loads(termfile.read_text())
+        group = descendant["pgid"]
+        assert leader["leader"] == leader["pgid"] == group
+        assert descendant["pid"] != leader["leader"]
+        with pytest.raises(ProcessLookupError):
+            os.kill(descendant["pid"], 0)
+        with pytest.raises(ProcessLookupError):
+            os.killpg(group, 0)
+    finally:
+        if pidfile.exists():
+            group = json.loads(pidfile.read_text())["pgid"]
+            try:
+                os.killpg(group, 9)
+            except ProcessLookupError:
+                pass
+
+
+@pytest.mark.parametrize("channel", ("stdout", "stderr"))
+def test_aside_cli_early_failure_does_not_disclose_external_payload(tmp_path, monkeypatch, channel):
+    """An exited external CLI must fail without quoting its private stdout or stderr."""
+    secret = "SYNTHETIC_PRIVATE_TAB_METADATA_DO_NOT_PUBLISH"
+    executable = tmp_path / "aside-private-payload-fixture"
+    envelope = {"run": {"content": [], "error": {"message": secret}}}
+    executable.write_text(
+        f"#!{sys.executable}\nimport sys\nsys.stdin.read()\n"
+        + (
+            f"print({json.dumps(envelope)!r})\n"
+            if channel == "stdout"
+            else f"sys.stderr.write({secret!r})\n"
+        ),
+        encoding="utf-8",
+    )
+    executable.chmod(0o700)
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", str(executable))
+    with pytest.raises(AssertionError, match="Aside exited before observation") as failure:
+        _browser([{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}])
+    assert secret not in str(failure.value)
+
+
+@pytest.mark.parametrize(
+    "mutation,guard",
+    (
+        ("malformed-json", "Aside CLI execution envelope invalid"),
+        ("envelope-error", "Aside CLI reported an error"),
+        ("receipt-extra", "Aside CLI completion receipt invalid"),
+        ("receipt-value", "Aside CLI completion receipt invalid"),
+        ("nonzero-exit", "Aside CLI failed"),
+    ),
+)
+def test_aside_completed_cli_envelope_is_checked_without_echoing_opaque_values(
+    tmp_path, monkeypatch, mutation, guard
+):
+    """Real execution cannot legitimize opaque CLI errors, malformed JSON or forged receipt fields."""
+    real_cli = shutil.which(os.environ.get("ASIDE_BIN", "aside"))
+    assert real_cli, "Aside CLI is required"
+    secret = "SYNTHETIC_PRIVATE_TAB_METADATA_DO_NOT_PUBLISH"
+    executable = tmp_path / "aside-envelope-mutation-fixture"
+    executable.write_text(
+        f"#!{sys.executable}\nimport json, subprocess, sys\n"
+        f"result=subprocess.run([{real_cli!r},*sys.argv[1:]],input=sys.stdin.read(),text=True,capture_output=True)\n"
+        f"mutation={mutation!r}\nsecret={secret!r}\n"
+        "if mutation=='malformed-json':\n result.stdout=secret\n"
+        "elif mutation=='nonzero-exit':\n result.stderr=secret\n result.returncode=7\n"
+        "else:\n envelope=json.loads(result.stdout)\n"
+        " if mutation=='envelope-error':\n  envelope['run']['error']={'message':secret}\n"
+        " else:\n"
+        "  for item in envelope['run']['content']:\n"
+        "   if item.get('type')!='text': continue\n"
+        "   lines=[]\n"
+        "   for line in item.get('text','').splitlines():\n"
+        "    try: receipt=json.loads(line)\n"
+        "    except (ValueError,TypeError): receipt=None\n"
+        "    if isinstance(receipt,dict) and receipt.get('nsgAsideReceipt') is True:\n"
+        "     receipt['private_tab_metadata' if mutation=='receipt-extra' else 'commands']=secret\n"
+        "     line=json.dumps(receipt)\n"
+        "    lines.append(line)\n"
+        "   item['text']='\\n'.join(lines)\n"
+        " result.stdout=json.dumps(envelope)\n"
+        "sys.stdout.write(result.stdout)\nsys.stderr.write(result.stderr)\nsys.exit(result.returncode)\n",
+        encoding="utf-8",
+    )
+    executable.chmod(0o700)
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", str(executable))
+    with pytest.raises(AssertionError, match=guard) as failure:
+        _browser([{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}])
+    assert secret not in str(failure.value)
+
+
+def test_aside_publication_rejects_malformed_input_without_disclosing_parser_payload(monkeypatch):
+    """Malformed stdin fails category-only before any browser operation can start."""
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", "/nonexistent-aside-entry-control")
+    result = subprocess.run(
+        ["node", str(ROOT / "tests/publication_presentation_driver.cjs")],
+        input='{"private":"SYNTHETIC_PRIVATE_PARSER_PAYLOAD",',
+        cwd=ROOT,
+        env=os.environ.copy(),
+        capture_output=True,
+        text=True,
+        timeout=10,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert result.stderr == "Aside fixture operation failed\n"

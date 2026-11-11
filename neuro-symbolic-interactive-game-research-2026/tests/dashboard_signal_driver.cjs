@@ -1,9 +1,9 @@
 "use strict";
 
-const { chromium } = require("playwright");
+const assert = require("node:assert/strict");
+const { chromium } = process.env.NSG_BROWSER_BACKEND === "aside"
+  ? require("./aside_browser_backend.cjs") : require("playwright");
 
-const baseUrl = process.env.SIGNAL_DASHBOARD_BASE_URL;
-if (!baseUrl) throw new Error("SIGNAL_DASHBOARD_BASE_URL is required");
 
 const HASH_A = "a".repeat(64);
 const HASH_B = "b".repeat(64);
@@ -24,9 +24,30 @@ const explanation = (overrides = {}) => ({
 });
 
 async function main() {
+  const baseUrl = process.env.SIGNAL_DASHBOARD_BASE_URL;
+  if (!baseUrl) throw new Error("SIGNAL_DASHBOARD_BASE_URL is required");
   const browser = await chromium.launch({ headless: true, executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined });
   try {
     const page = await browser.newPage();
+    const pageErrors = [], requests = [], outgoing = [], nonParentMessages = [];
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    page.on("request", (request) => requests.push({ url: request.url(), method: request.method() }));
+    await page.exposeFunction("captureOutgoing", (value) => outgoing.push(value));
+    await page.exposeFunction("captureNonParent", (value) => nonParentMessages.push(value));
+    await page.addInitScript(() => {
+      if (window === window.top) return;
+      window.addEventListener("message", (event) => {
+        if (event.source === window.parent) window.parent.captureOutgoing(event.data);
+        else window.parent.captureNonParent({ source: "non-parent",
+          category: event.data?.type === "ASIDE_FIDO2_BRIDGE_READY" ? "Aside FIDO2 bridge ready" : "other" });
+      });
+    });
+    if (process.env.NSG_BROWSER_BACKEND === "aside") {
+      await page.route("**/public/index.html", (route) => route.fulfill({
+        contentType: "text/html",
+        body: '<!doctype html><title>ISOLATED COMPONENT FIXTURE, NOT GAMEPLAY</title><body>Component transport only</body>',
+      }));
+    }
     await page.goto(`${baseUrl}/dashboard/index.html`, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => document.querySelector("#comparison-status")?.textContent.includes("frozen independent lane"));
 
@@ -154,9 +175,13 @@ async function main() {
     const reset = await page.evaluate(() => ({ status: document.querySelector("#disclosure-live-status").textContent, events: document.querySelector("#disclosure-events").textContent, comparison: document.querySelector("#comparison-status").textContent }));
     if (!reset.status.includes("waiting for disclosure events") || !reset.events.includes("Waiting for disclosure_outcome")) throw new Error("session reset did not clear live disclosure state");
     if (!reset.comparison.includes("frozen independent lane")) throw new Error("session reset erased frozen denominator lane");
+    assert.deepEqual(pageErrors, [], "signal failure escaped local boundary");
+    assert.deepEqual(outgoing, [], "read-only signal sent a command to embedded game");
+    assert(requests.every((request) => request.method === "GET"), "read-only signal issued a write request");
+    console.error(JSON.stringify({ observer: "iframe messages not from dashboard parent", messageCount: nonParentMessages.length }));
   } finally {
     await browser.close();
   }
 }
 
-main().catch((error) => { console.error(error.stack || error); process.exitCode = 1; });
+main().catch((error) => { console.error(process.env.NSG_BROWSER_BACKEND === "aside" ? require("./aside_browser_backend.cjs").fixtureFailure(error) : error.stack || error); process.exitCode = 1; });

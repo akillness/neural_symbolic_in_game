@@ -3,10 +3,8 @@
 // ISOLATED COMPONENT FIXTURE ONLY. No real game or gameplay outcomes are exercised.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
-const { chromium } = require("playwright");
-const config = JSON.parse(fs.readFileSync(0, "utf8"));
-const map = JSON.parse(fs.readFileSync(config.mapPath, "utf8"));
-const roles = config.roles;
+const { chromium } = process.env.NSG_BROWSER_BACKEND === "aside"
+  ? require("./aside_browser_backend.cjs") : require("playwright");
 const HASH_A = "a".repeat(64);
 const HASH_B = "b".repeat(64);
 const attack = '<img src=x onerror="window.__ontologyInjected=true"><script>window.__ontologyInjected=true</script>';
@@ -51,12 +49,16 @@ const explanation = (overrides = {}) => ({
 });
 
 async function main() {
+  const config = JSON.parse(fs.readFileSync(0, "utf8"));
+  const map = JSON.parse(fs.readFileSync(config.mapPath, "utf8"));
+  const roles = config.roles;
   const browser = await chromium.launch({ headless: true, executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined });
   try {
     const context = await browser.newContext({ viewport: { width: config.width, height: 1000 }, reducedMotion: "reduce" });
     const page = await context.newPage();
     const pageErrors = [];
     const outgoing = [];
+    const nonParentMessages = [];
     const requests = [];
     page.on("pageerror", (error) => pageErrors.push(error.message));
     page.on("request", (request) => requests.push({ url: request.url(), method: request.method() }));
@@ -64,9 +66,14 @@ async function main() {
     // its real origin/source-validated event receiver are otherwise unmodified.
     await page.route("**/public/index.html", (route) => route.fulfill({ contentType: "text/html", body: '<!doctype html><title>ISOLATED COMPONENT FIXTURE, NOT GAMEPLAY</title><body>Component transport only</body>' }));
     await page.exposeFunction("captureOutgoing", (value) => outgoing.push(value));
+    await page.exposeFunction("captureNonParent", (value) => nonParentMessages.push(value));
     await page.addInitScript(() => {
       if (window === window.top) return;
-      window.addEventListener("message", (event) => window.parent.captureOutgoing(event.data));
+      window.addEventListener("message", (event) => {
+        if (event.source === window.parent) window.parent.captureOutgoing(event.data);
+        else window.parent.captureNonParent({ source: "non-parent",
+          category: event.data?.type === "ASIDE_FIDO2_BRIDGE_READY" ? "Aside FIDO2 bridge ready" : "other" });
+      });
     });
     await page.route("**/ontology-map.json", (route) => {
       const fixture = structuredClone(map);
@@ -170,6 +177,7 @@ async function main() {
         return {
           stage, container,
           table: { ...bounds(element), clientWidth: element.clientWidth, scrollWidth: element.scrollWidth },
+          caption: { ...bounds(element.querySelector("caption")), height: element.querySelector("caption").getBoundingClientRect().height },
           cells,
         };
       }, stage));
@@ -276,9 +284,65 @@ async function main() {
     await measureMobileLayout("reset");
     assert.equal(await page.locator(".frozen-comparison").textContent(), frozen);
     assert.deepEqual(pageErrors, [], "map failure escaped local boundary");
+    if (process.env.NSG_ASIDE_REJECT_CONTROL === "collector-loss") {
+      let first;
+      try {
+        await page.evaluate(async () => {
+          await new Promise((resolve) => {
+            window.addEventListener("error", resolve, { once: true });
+            queueMicrotask(() => { throw new Error("NSG partial collector exception"); });
+          });
+          delete document.querySelector("iframe").contentDocument.documentElement.dataset.nsgObserverReady;
+          throw new TypeError("NSG caught source failure");
+        });
+      } catch (error) { first = error; }
+      if (!first?.message.startsWith("Aside fixture collector failed:")) throw new Error("Collector loss was not recognized as a fatal transport health failure");
+      assert.match(first.sourceError, /TypeError: NSG caught source failure/, "collector failure replaced the independent trusted-source exception");
+      const partial = first.observation?.pageErrors;
+      if (partial?.length !== 1 || !partial[0].includes("NSG partial collector exception")) throw new Error("Already-drained top-document evidence was lost");
+      let subsequent;
+      try {
+        await page.evaluate(() => {
+          document.querySelector("iframe").contentDocument.documentElement.dataset.nsgObserverReady = window.__nsgAsideObserver.token;
+        });
+      } catch (error) { subsequent = error; }
+      if (subsequent !== first) throw new Error("Collector health failure did not remain sticky across a restoration attempt");
+      console.error(JSON.stringify({ fixtureControl: "collector-loss", partialTopErrors: partial.length, sticky: subsequent === first }));
+      throw first;
+    }
+    if (process.env.NSG_ASIDE_REJECT_CONTROL) {
+      const kind = process.env.NSG_ASIDE_REJECT_CONTROL;
+      assert(["error", "rejection", "outgoing", "csp", "post"].includes(kind));
+      await assert.rejects(page.evaluate(async ({ kind, sink }) => {
+        if (kind === "error" || kind === "rejection") {
+          await new Promise((resolve) => {
+            window.addEventListener(kind === "error" ? "error" : "unhandledrejection", resolve, { once: true });
+            if (kind === "error") queueMicrotask(() => { throw new Error("NSG concurrent observer exception"); });
+            else Promise.reject("NSG concurrent observer rejection");
+          });
+        } else if (kind === "outgoing") {
+          document.querySelector("iframe").contentWindow.postMessage({ nsgRejectedSourceControl: true }, location.origin);
+          await window.__nsgAsideObserver.barrier();
+        } else if (kind === "csp") {
+          await fetch(sink + "/rejected-source-post", { method: "POST", body: "must remain contained" }).catch(() => {});
+          await window.__nsgAsideObserver.barrier();
+        } else {
+          const response = await fetch("/__nsg_probe_write", { method: "POST", body: "rejected-source write control" });
+          if (response.status !== 501) throw new Error("POST control did not receive501");
+        }
+        throw new TypeError("NSG caught source failure");
+      }, { kind, sink: page.fixtureSinkOrigin }), /TypeError: NSG caught source failure/);
+    }
+    if (process.env.NSG_ASIDE_GET_CONTROL) {
+      assert.equal(process.env.NSG_ASIDE_GET_CONTROL, "prefixed-map");
+      await page.evaluate(async () => {
+        await fetch("/SYNTHETIC_PRIVATE_SEGMENT/ontology-map.json");
+      });
+    }
+    console.error(JSON.stringify({ observer: "iframe messages not from dashboard parent", messageCount: nonParentMessages.length }));
     console.log(JSON.stringify({ fixture: "isolated component transport; NOT actual gameplay", mode: config.mode, width: config.width, roles: valid ? roles.length : 0, result: "pass", mobileLayout }));
   } finally {
     await browser.close();
   }
 }
-main().catch((error) => { console.error(error.stack || error); process.exitCode = 1; });
+main().catch((error) => { console.error(process.env.NSG_BROWSER_BACKEND === "aside" ? require("./aside_browser_backend.cjs").fixtureFailure(error) : error.stack || error); process.exitCode = 1; });

@@ -31,14 +31,24 @@ from nesy_game.runtime_model_swap import (
     run_episode,
 )
 from nesy_game.runtime_model_swap_native import (
+    ACTIVATION_SCHEMA,
     ASSIGNMENT_PLAN_SCHEMA,
+    EXTENSION_ACTIVATION_SCHEMA,
+    EXTENSION_ASSIGNMENT_PLAN_SCHEMA,
+    EXTENSION_CODEX_CATALOG_SHA256,
+    EXTENSION_CODEX_CLI_VERSION,
+    EXTENSION_CODEX_IDENTITY_SOURCE,
+    EXTENSION_CODEX_TARGETS,
+    EXTENSION_IDENTITY_POLICY,
     MAX_BOUND_FILE_BYTES,
     NativeActivationTrust,
     NativePromptResult,
     NativePromptRunner,
     PromptTransportError,
     build_assignment_plan,
+    build_extension_assignment_plan,
     load_pinned_native_activation,
+    parse_codex_provider_identity,
     run_host_process,
     validate_native_context,
 )
@@ -512,7 +522,12 @@ def _canonical_bytes(value: Any) -> bytes:
     )
 
 
-def _simulation_bundle(root: Path, *, manifest_mutation: str | None = None) -> dict[str, Any]:
+def _simulation_bundle(
+    root: Path,
+    *,
+    manifest_mutation: str | None = None,
+    extension: bool = False,
+) -> dict[str, Any]:
     """Create separate source/trust roots with a bounded exact-request capability."""
 
     root.mkdir(parents=True, exist_ok=True)
@@ -585,11 +600,16 @@ def _simulation_bundle(root: Path, *, manifest_mutation: str | None = None) -> d
         relative, value, *raw = values
         write(relative, value, raw=bool(raw and raw[0]))
 
-    context = _native_context(host="codex", selector="gpt-6.1-sol", mode="native")
+    context = _native_context(
+        host="codex",
+        selector="gpt-6-luna" if extension else "gpt-6.1-sol",
+        mode="native",
+    )
     context["study_id"] = "runtime-model-swap-20261024"
     context["authority"].update(research_context_transmission=True, scientific_launch=True)
     context["model"]["revision"] = "fixture-revision-001"
-    plan = build_assignment_plan(
+    plan_builder = build_extension_assignment_plan if extension else build_assignment_plan
+    plan = plan_builder(
         quest_id="sealed-lighthouse-v1",
         seed=20261024,
         source_manifest_sha256=source_manifest_sha,
@@ -718,12 +738,15 @@ def _simulation_bundle(root: Path, *, manifest_mutation: str | None = None) -> d
         allowed_requests=allowed_requests,
         allowed_requests_sha256=allowed_requests_sha,
     )
+    if extension:
+        artifact_bindings["extension_catalog_sha256"] = EXTENSION_CODEX_CATALOG_SHA256
     evidence_digests = {
         f"{name}_receipt_sha256": context["evidence"][name]["receipt_artifact"]["sha256"]
         for name in ("public_input", "identity_setting", "context_isolation", "subscription")
     }
     activation = {
-        "schema_version": "runtime-native-activation/2",
+        "schema_version": EXTENSION_ACTIVATION_SCHEMA if extension else ACTIVATION_SCHEMA,
+        **({"identity_policy": EXTENSION_IDENTITY_POLICY} if extension else {}),
         "kind": "human_approved_native_launch",
         "activation_id": "activation-fixture-001",
         "study_id": context["study_id"],
@@ -737,7 +760,9 @@ def _simulation_bundle(root: Path, *, manifest_mutation: str | None = None) -> d
             "no_additional_charge_verified": True,
         },
         "plan": {
-            "schema_version": ASSIGNMENT_PLAN_SCHEMA,
+            "schema_version": EXTENSION_ASSIGNMENT_PLAN_SCHEMA
+            if extension
+            else ASSIGNMENT_PLAN_SCHEMA,
             "sha256": plan_sha,
             "row_id": selected["planned_id"],
             "row_sha256": hashlib.sha256(_canonical_bytes(selected)).hexdigest(),
@@ -915,7 +940,10 @@ def _existing_credit_policy_bundle(root: Path) -> dict[str, Any]:
 
 
 def _mutate_subscription_body(
-    bundle: dict[str, Any], *, updates: Mapping[str, Any], remove: tuple[str, ...] = ()
+    bundle: dict[str, Any],
+    *,
+    updates: Mapping[str, Any],
+    remove: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     context = bundle["context"]
     receipt = context["evidence"]["subscription"]["receipt_artifact"]
@@ -930,9 +958,9 @@ def _mutate_subscription_body(
     return _reload_pinned_activation(bundle)
 
 
-def _production_bundle(root: Path) -> dict[str, Any]:
+def _production_bundle(root: Path, *, extension: bool = False) -> dict[str, Any]:
     """Create a test-only externally pinned production-shaped capability."""
-    bundle = _simulation_bundle(root)
+    bundle = _simulation_bundle(root, extension=extension)
     context_path = bundle["source_root"] / "context.json"
     context_path.write_bytes(_canonical_bytes(bundle["context"]))
     capability = load_pinned_native_activation(
@@ -1093,7 +1121,14 @@ def _run_trusted_native_episode(
     engine.propose = proposal  # type: ignore[attr-defined]
     engine.repair = repair  # type: ignore[attr-defined]
 
-    with patch("nesy_game.runtime_model_swap_native.run_host_process", side_effect=local_process):
+    home = bundle["root"] / "home"
+    (home / ".codex").mkdir(parents=True, exist_ok=True)
+    (home / ".codex" / "auth.json").write_text("{}", encoding="utf-8")
+
+    with (
+        patch.dict(os.environ, {"HOME": str(home)}),
+        patch("nesy_game.runtime_model_swap_native.run_host_process", side_effect=local_process),
+    ):
         record = run_episode(
             engine=engine,
             proposal_source=engine.propose,  # type: ignore[attr-defined]
@@ -5574,6 +5609,1140 @@ class NativeProductionBootstrapTests(unittest.TestCase):
         self.assertEqual(result["failure_artifact"]["denominator"], result["scientific"])
 
 
+class ExtensionAssignmentPlanTests(unittest.TestCase):
+    def test_extension_plan_is_exact_five_target_twenty_row_crossproduct(self) -> None:
+        plan = build_extension_assignment_plan(
+            quest_id="sealed-lighthouse-v1",
+            seed=20261024,
+            source_manifest_sha256=SOURCE_SHA,
+            input_manifest_sha256=INPUT_SHA,
+        )
+        self.assertEqual(plan["schema_version"], EXTENSION_ASSIGNMENT_PLAN_SCHEMA)
+        self.assertEqual(plan["status"], "planned")
+        self.assertEqual(EXTENSION_ACTIVATION_SCHEMA, "runtime-native-activation/3")
+        self.assertEqual(len(plan["rows"]), 20)
+        self.assertEqual(
+            plan["counts"], {"quests": 1, "targets": 5, "representations": 2, "repeats": 2}
+        )
+        self.assertEqual(
+            [row["target"]["selector"] for row in plan["rows"][::4]],
+            list(EXTENSION_CODEX_TARGETS),
+        )
+        self.assertEqual(
+            {row["target"]["selector"] for row in plan["rows"]},
+            {
+                "gpt-6-luna",
+                "gpt-6-sol",
+                "gpt-5.6-luna",
+                "gpt-5.6-sol",
+                "gpt-5.6-terra",
+            },
+        )
+        self.assertNotIn("gpt-6-terra", {row["target"]["selector"] for row in plan["rows"]})
+        self.assertTrue(all(row["target"]["host"] == "codex" for row in plan["rows"]))
+        self.assertTrue(all(row["target"]["effort"] == "medium" for row in plan["rows"]))
+        self.assertEqual(
+            {row["representation"] for row in plan["rows"]}, {"general_rule", "ontology"}
+        )
+        self.assertEqual({row["repeat"] for row in plan["rows"]}, {1, 2})
+        self.assertTrue(all(row["reset"] is True for row in plan["rows"]))
+        self.assertEqual(plan["scientific"], {"assigned": 0, "executed": 0, "eligible": False})
+
+    def test_extension_builder_is_not_a_legacy_or_mixed_schema_alias(self) -> None:
+        legacy = build_assignment_plan(
+            quest_id="sealed-lighthouse-v1",
+            seed=20261024,
+            source_manifest_sha256=SOURCE_SHA,
+            input_manifest_sha256=INPUT_SHA,
+        )
+        extension = build_extension_assignment_plan(
+            quest_id="sealed-lighthouse-v1",
+            seed=20261024,
+            source_manifest_sha256=SOURCE_SHA,
+            input_manifest_sha256=INPUT_SHA,
+        )
+        self.assertEqual(legacy["schema_version"], ASSIGNMENT_PLAN_SCHEMA)
+        self.assertEqual(extension["schema_version"], EXTENSION_ASSIGNMENT_PLAN_SCHEMA)
+        self.assertNotEqual(
+            [row["target"]["selector"] for row in legacy["rows"]],
+            [row["target"]["selector"] for row in extension["rows"]],
+        )
+        self.assertNotEqual(extension["schema_version"], ASSIGNMENT_PLAN_SCHEMA)
+
+    def test_extension_activation_rejects_missing_or_wrong_catalog_digest(self) -> None:
+        for mutation in ("missing", "wrong"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                bundle = _simulation_bundle(Path(directory), extension=True)
+                plan = dict(bundle["plan"])
+                if mutation == "missing":
+                    plan.pop("catalog_sha256", None)
+                else:
+                    plan["catalog_sha256"] = "0" * 64
+                plan_bytes = _canonical_bytes(plan)
+                bundle["plan_path"].write_bytes(plan_bytes)
+                bundle["plan_sha256"] = hashlib.sha256(plan_bytes).hexdigest()
+                bundle["activation"]["plan"]["sha256"] = bundle["plan_sha256"]
+                activation_bytes = _canonical_bytes(bundle["activation"])
+                bundle["activation_path"].write_bytes(activation_bytes)
+                activation_sha = hashlib.sha256(activation_bytes).hexdigest()
+                with self.assertRaisesRegex(ValueError, "native_activation_plan_catalog_mismatch"):
+                    load_pinned_native_activation(
+                        activation_path=bundle["activation_path"],
+                        activation_sha256=activation_sha,
+                        plan_path=bundle["plan_path"],
+                        plan_sha256=bundle["plan_sha256"],
+                        row_id=bundle["row"]["planned_id"],
+                        purpose="test_simulation",
+                        trust_root=bundle["trust_root"],
+                        source_root=bundle["source_root"],
+                    )
+
+
+class ProviderIdentityAdmissionTests(unittest.TestCase):
+    _SELECTOR = "gpt-6-luna"
+    _MATCH = (
+        "2026-10-26T12:00:00Z INFO codex_core::session: "
+        "server reported model gpt-6-luna (matches requested model)"
+    )
+
+    def test_parser_accepts_only_narrow_provider_header_match(self) -> None:
+        result = parse_codex_provider_identity(
+            self._MATCH + "\n", requested_selector=self._SELECTOR
+        )
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["provider_identity"], self._SELECTOR)
+        self.assertEqual(result["identity_source"], "codex_core::session")
+        self.assertEqual(
+            result["identity_message"],
+            "server reported model gpt-6-luna (matches requested model)",
+        )
+        self.assertEqual(EXTENSION_CODEX_IDENTITY_SOURCE, "codex_core::session")
+        self.assertEqual(EXTENSION_CODEX_CLI_VERSION, "0.164.0")
+
+    def test_parser_rejects_missing_mismatch_reroute_ambiguous_and_malformed_identity(self) -> None:
+        cases = (
+            ("missing", "ordinary stderr\n", "provider_identity_missing"),
+            (
+                "mismatch",
+                "INFO codex_core::session: server reported model gpt-6-sol (matches requested model)\n",
+                "provider_identity_mismatch",
+            ),
+            (
+                "match-then-reroute",
+                f"{self._MATCH}\nINFO codex_core::session: server reported model gpt-6-sol while requested model was gpt-6-luna\n",
+                "provider_identity_reroute",
+            ),
+            (
+                "reroute",
+                "INFO codex_core::session: server reported model gpt-6-sol while requested model was gpt-6-luna\n",
+                "provider_identity_reroute",
+            ),
+            ("ambiguous", f"{self._MATCH}\n{self._MATCH}\n", "provider_identity_ambiguous"),
+            (
+                "malformed",
+                "INFO codex_core::session: server reported model gpt-6-luna\n",
+                "provider_identity_malformed",
+            ),
+        )
+        for name, stderr, expected_error in cases:
+            with self.subTest(name=name):
+                result = parse_codex_provider_identity(stderr, requested_selector=self._SELECTOR)
+                self.assertEqual(result["status"], "rejected")
+                self.assertIsNone(result["provider_identity"])
+                self.assertEqual(result["error"], expected_error)
+
+    def test_parser_does_not_accept_body_config_echo_or_retry_origin_as_identity(self) -> None:
+        spoofed_body = {
+            "model": self._SELECTOR,
+            "requested_model": self._SELECTOR,
+            "config": {"model": self._SELECTOR},
+        }
+        cases = (
+            json.dumps(spoofed_body),
+            (
+                "INFO codex_core::session: server reported model gpt-6-luna (matches requested model)\n"
+                "INFO codex_core::session: server reported model gpt-6-sol while requested model was gpt-6-luna\n"
+            ),
+        )
+        for stderr in cases:
+            result = parse_codex_provider_identity(stderr, requested_selector=self._SELECTOR)
+            self.assertEqual(result["status"], "rejected")
+            self.assertIsNone(result["provider_identity"])
+
+    def test_extension_runner_admits_only_current_provider_identity(self) -> None:
+        cases = (
+            ("matched", self._MATCH + "\n", 0, None),
+            ("missing", "ordinary stderr\n", 5, "provider_identity_missing"),
+            (
+                "mismatched",
+                "INFO codex_core::session: server reported model gpt-6-sol (matches requested model)\n",
+                5,
+                "provider_identity_mismatch",
+            ),
+            ("duplicate", f"{self._MATCH}\n{self._MATCH}\n", 5, "provider_identity_ambiguous"),
+            (
+                "match-then-reroute",
+                f"{self._MATCH}\nINFO codex_core::session: server reported model gpt-6-sol while requested model was gpt-6-luna\n",
+                5,
+                "provider_identity_reroute",
+            ),
+            (
+                "retry-origin",
+                "INFO codex_core::session: retrying request after transport failure\n"
+                + self._MATCH
+                + "\n",
+                5,
+                "provider_identity_reroute",
+            ),
+        )
+        for name, stderr, expected_returncode, expected_error in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                bundle = _simulation_bundle(Path(directory), extension=True)
+
+                class IdentityTransport(_CountingTransport):
+                    def __call__(
+                        self,
+                        command: list[str],
+                        *,
+                        _stderr: str = stderr,
+                        **kwargs: Any,
+                    ) -> subprocess.CompletedProcess[str]:
+                        self.calls.append({"command": list(command), **kwargs})
+                        return subprocess.CompletedProcess(
+                            command,
+                            0,
+                            json.dumps(
+                                {
+                                    "type": "item.completed",
+                                    "item": {
+                                        "type": "agent_message",
+                                        "text": json.dumps(
+                                            {
+                                                "request_id": "fixture:identity-matrix",
+                                                "action": "finish",
+                                            }
+                                        ),
+                                    },
+                                }
+                            ),
+                            _stderr,
+                        )
+
+                transport = IdentityTransport()
+                runner = NativePromptRunner(
+                    host="codex",
+                    selector="gpt-6-luna",
+                    effort="medium",
+                    native_context=bundle["context"],
+                    trusted_activation=bundle["capability"],
+                    process_runner=transport,
+                )
+                response = runner(
+                    request_id="fixture:identity-matrix",
+                    instruction="fixture prompt",
+                    user_prompt="fixture prompt",
+                    output_schema=bundle["source_root"] / "bound" / "output-schema.json",
+                    model="gpt-6-luna",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+                self.assertEqual(response.returncode, expected_returncode)
+                if expected_error is None:
+                    self.assertEqual(response.payload["action"], "finish")
+                    self.assertEqual(response.receipt["provider_identity"], "gpt-6-luna")
+                    self.assertEqual(response.receipt["identity_transport"], "http")
+                    self.assertEqual(
+                        response.receipt["identity_request_hash"],
+                        response.receipt["outgoing_request_sha256"],
+                    )
+                    config_values = {
+                        transport.calls[0]["command"][index + 1]
+                        for index, value in enumerate(transport.calls[0]["command"][:-1])
+                        if value == "-c"
+                    }
+                    self.assertIn('model_provider="codex_extension_http"', config_values)
+                    self.assertIn(
+                        'model_providers.codex_extension_http.name="OpenAI"', config_values
+                    )
+                    self.assertIn(
+                        'model_providers.codex_extension_http.wire_api="responses"', config_values
+                    )
+                    self.assertIn(
+                        "model_providers.codex_extension_http.requires_openai_auth=true",
+                        config_values,
+                    )
+                    self.assertIn(
+                        "model_providers.codex_extension_http.supports_websockets=false",
+                        config_values,
+                    )
+                    self.assertIn(
+                        "model_providers.codex_extension_http.request_max_retries=0",
+                        config_values,
+                    )
+                    self.assertIn(
+                        "model_providers.codex_extension_http.stream_max_retries=0",
+                        config_values,
+                    )
+                else:
+                    self.assertEqual(response.receipt["error"], expected_error)
+                    self.assertEqual(response.payload, {})
+
+    def test_injected_fixture_identity_remains_synthetic_even_with_positive_stderr(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = _simulation_bundle(Path(directory))
+
+            class IdentityFixtureTransport(_CountingTransport):
+                def __call__(
+                    self, command: list[str], **kwargs: Any
+                ) -> subprocess.CompletedProcess[str]:
+                    self.calls.append({"command": list(command), **kwargs})
+                    return subprocess.CompletedProcess(
+                        command,
+                        0,
+                        json.dumps(
+                            {
+                                "type": "item.completed",
+                                "item": {
+                                    "type": "agent_message",
+                                    "text": json.dumps(
+                                        {"request_id": "fixture:identity", "action": "finish"}
+                                    ),
+                                },
+                            }
+                        ),
+                        self._stderr,
+                    )
+
+                _stderr = ProviderIdentityAdmissionTests._MATCH + "\n"
+
+            transport = IdentityFixtureTransport()
+            runner = NativePromptRunner(
+                host="codex",
+                selector="gpt-6.1-sol",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+                process_runner=transport,
+            )
+            response = runner(
+                request_id="fixture:identity",
+                instruction="fixture prompt",
+                user_prompt="fixture prompt",
+                output_schema=bundle["source_root"] / "bound" / "output-schema.json",
+                model="gpt-6.1-sol",
+                timeout=1,
+                representation=bundle["row"]["representation"],
+            )
+        self.assertIsNone(response.receipt.get("identity_request_hash"))
+        self.assertIsNone(response.receipt.get("identity_transport"))
+        self.assertIsNone(response.receipt.get("identity_cli_version"))
+        self.assertEqual(response.returncode, 0)
+        self.assertEqual(response.payload["action"], "finish")
+        self.assertTrue(response.receipt["synthetic"])
+        self.assertIsNone(response.receipt["provider_identity"])
+
+    def test_parser_rejects_non_text_transport_without_coercion(self) -> None:
+        result = parse_codex_provider_identity(None, requested_selector=self._SELECTOR)  # type: ignore[arg-type]
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["error"], "provider_identity_transport_invalid")
+
+    def test_codex_extension_transport_is_http_zero_retry_narrow_and_secret_free(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = _simulation_bundle(Path(directory))
+
+            class Transport(_CountingTransport):
+                def __call__(
+                    self, command: list[str], **kwargs: Any
+                ) -> subprocess.CompletedProcess[str]:
+                    self.calls.append({"command": list(command), **kwargs})
+                    return subprocess.CompletedProcess(
+                        command,
+                        0,
+                        json.dumps(
+                            {
+                                "type": "item.completed",
+                                "item": {
+                                    "type": "agent_message",
+                                    "text": json.dumps(
+                                        {"request_id": "fixture:transport", "action": "observe"}
+                                    ),
+                                },
+                            }
+                        ),
+                        "",
+                    )
+
+            transport = Transport()
+            runner = NativePromptRunner(
+                host="codex",
+                selector="gpt-6.1-sol",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+                process_runner=transport,
+            )
+            with patch.dict(
+                os.environ,
+                {
+                    "OPENAI_API_KEY": "inherited-secret",
+                    "ANTHROPIC_API_KEY": "alternate-secret",
+                    "OPENAI_BASE_URL": "https://alternate.invalid",
+                    "CODEX_API_KEY": "alternate-secret",
+                },
+                clear=False,
+            ):
+                response = runner(
+                    request_id="fixture:transport",
+                    instruction="fixture prompt",
+                    user_prompt="fixture prompt",
+                    output_schema=bundle["source_root"] / "bound" / "output-schema.json",
+                    model="gpt-6.1-sol",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+        self.assertEqual(response.returncode, 0)
+        observed = transport.calls[0]
+        command = observed["command"]
+        config_values = {
+            command[index + 1] for index, value in enumerate(command[:-1]) if value == "-c"
+        }
+        for extension_override in (
+            'model_provider="codex_extension_http"',
+            'model_providers.codex_extension_http.name="OpenAI"',
+            'model_providers.codex_extension_http.wire_api="responses"',
+            "model_providers.codex_extension_http.requires_openai_auth=true",
+            "model_providers.codex_extension_http.supports_websockets=false",
+            "model_providers.codex_extension_http.request_max_retries=0",
+            "model_providers.codex_extension_http.stream_max_retries=0",
+        ):
+            self.assertNotIn(extension_override, config_values)
+        self.assertNotIn("RUST_LOG", observed["env"])
+        for key in (
+            "OPENAI_API_KEY",
+            "ANTHROPIC_API_KEY",
+            "OPENAI_BASE_URL",
+            "CODEX_API_KEY",
+        ):
+            self.assertNotIn(key, observed["env"])
+
+
+class ExtensionActivationClaimTests(unittest.TestCase):
+    def test_production_extension_row_claim_is_atomic_and_once_per_runner(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = _production_bundle(root / "fixture", extension=True)
+            schema_bytes = (bundle["source_root"] / "bound" / "output-schema.json").read_bytes()
+            output_roots = [root / name for name in ("output-a", "output-b", "output-c")]
+            schemas: list[Path] = []
+            for output_root in output_roots:
+                output_root.mkdir()
+                schema = output_root / "schema.json"
+                schema.write_bytes(schema_bytes)
+                schemas.append(schema)
+            dispatches: list[dict[str, Any]] = []
+            home = root / "home"
+            (home / ".codex").mkdir(parents=True)
+            (home / ".codex" / "auth.json").write_text("{}", encoding="utf-8")
+
+            def host_process(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+                dispatches.append({"command": list(command), **kwargs})
+                request_id = "fixture:claim-1" if len(dispatches) == 1 else "fixture:claim-2"
+                return subprocess.CompletedProcess(
+                    command,
+                    0,
+                    json.dumps(
+                        {
+                            "type": "item.completed",
+                            "item": {
+                                "type": "agent_message",
+                                "text": json.dumps({"request_id": request_id, "action": "finish"}),
+                            },
+                        }
+                    ),
+                    ProviderIdentityAdmissionTests._MATCH + "\n",
+                )
+
+            def invoke(
+                runner: NativePromptRunner,
+                request_id: str,
+                schema: Path,
+                *,
+                prompt: str = "fixture prompt",
+            ) -> NativePromptResult:
+                return runner(
+                    request_id=request_id,
+                    instruction=prompt,
+                    user_prompt=prompt,
+                    output_schema=schema,
+                    output_schema_sha256=bundle["activation"]["artifact_bindings"][
+                        "output_schema_sha256"
+                    ],
+                    allowed_requests_sha256=bundle["activation"]["artifact_bindings"][
+                        "allowed_requests_sha256"
+                    ],
+                    quest_id=bundle["row"]["quest_id"],
+                    seed=bundle["row"]["seed"],
+                    repeat=bundle["row"]["repeat"],
+                    reset=bundle["row"]["reset"],
+                    fixture_id=bundle["row"]["fixture_id"],
+                    fixture_sha256=bundle["row"]["fixture_sha256"],
+                    oracle_sha256=bundle["row"]["oracle_sha256"],
+                    model="gpt-6-luna",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+
+            runner_one = NativePromptRunner(
+                host="codex",
+                selector="gpt-6-luna",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+            runner_two = NativePromptRunner(
+                host="codex",
+                selector="gpt-6-luna",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+            with (
+                patch.object(
+                    native_runtime,
+                    "_sanitized_environment",
+                    side_effect=lambda: {"HOME": str(home)},
+                ),
+                patch.object(native_runtime, "run_host_process", side_effect=host_process),
+            ):
+                first = invoke(runner_one, "fixture:claim-1", schemas[0])
+                second = invoke(
+                    runner_one, "fixture:claim-2", schemas[1], prompt="fixture prompt second"
+                )
+                denied = invoke(runner_two, "fixture:claim-3", schemas[2])
+        self.assertEqual(first.returncode, 0)
+        self.assertEqual(second.returncode, 0, second.receipt)
+        self.assertEqual(denied.returncode, 2)
+        self.assertEqual(denied.receipt["error"], "native_activation_row_already_claimed")
+        self.assertEqual(len(dispatches), 2)
+
+
+class ProductionExtensionReceiptTests(unittest.TestCase):
+    _MATCH = (
+        "2026-10-26T12:00:00Z INFO codex_core::session: "
+        "server reported model gpt-6-luna (matches requested model)"
+    )
+
+    def _run_episode_with_stderr(
+        self, stderr: str
+    ) -> tuple[dict[str, Any], dict[str, Any], NativeActivationTrust]:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = _production_bundle(root / "fixture", extension=True)
+            home = root / "home"
+            (home / ".codex").mkdir(parents=True)
+            (home / ".codex" / "auth.json").write_text("{}", encoding="utf-8")
+            runner = NativePromptRunner(
+                host="codex",
+                selector="gpt-6-luna",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+            engine = _SimpleEngine()
+            engine.prompt_receipts = []
+
+            def host_process(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+                on_started = kwargs.get("on_started")
+                if callable(on_started):
+                    on_started()
+                return subprocess.CompletedProcess(
+                    command,
+                    0,
+                    json.dumps(
+                        {
+                            "type": "item.completed",
+                            "item": {
+                                "type": "agent_message",
+                                "text": json.dumps(
+                                    {"request_id": "decision-0", "action": "finish"}
+                                ),
+                            },
+                        }
+                    ),
+                    stderr,
+                )
+
+            def proposal(_context: dict[str, Any]) -> dict[str, Any]:
+                response = runner(
+                    request_id="decision-0",
+                    instruction="fixture prompt",
+                    user_prompt="fixture prompt",
+                    output_schema=bundle["source_root"] / "bound" / "output-schema.json",
+                    output_schema_sha256=bundle["activation"]["artifact_bindings"][
+                        "output_schema_sha256"
+                    ],
+                    allowed_requests_sha256=bundle["activation"]["artifact_bindings"][
+                        "allowed_requests_sha256"
+                    ],
+                    quest_id=bundle["row"]["quest_id"],
+                    seed=bundle["row"]["seed"],
+                    repeat=bundle["row"]["repeat"],
+                    reset=bundle["row"]["reset"],
+                    fixture_id=bundle["row"]["fixture_id"],
+                    fixture_sha256=bundle["row"]["fixture_sha256"],
+                    oracle_sha256=bundle["row"]["oracle_sha256"],
+                    model="gpt-6-luna",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+                engine.prompt_receipts.append(response.receipt)
+                if response.returncode != 0:
+                    raise PromptTransportError(response.receipt.get("error", "fixture failure"))
+                return response.payload
+
+            with (
+                patch.object(
+                    native_runtime, "_sanitized_environment", return_value={"HOME": str(home)}
+                ),
+                patch.object(native_runtime, "run_host_process", side_effect=host_process),
+            ):
+                record = run_episode(
+                    engine=engine,
+                    proposal_source=proposal,
+                    model=ModelSpec(
+                        "gpt-6-luna",
+                        bundle["row"]["representation"],
+                        provider="codex",
+                        offline=False,
+                    ),
+                    limits=EpisodeLimits(180, 60, 1, 0),
+                    seed=bundle["row"]["seed"],
+                    clock=lambda: 0.0,
+                    config=_production_config(bundle),
+                    prompt="fixture prompt",
+                    native_context=bundle["context"],
+                    trusted_activation=bundle["capability"],
+                )
+            return record, engine.prompt_receipts[0], bundle["capability"]
+
+    def test_production_receipt_qualification_controls_scientific_eligibility(self) -> None:
+        cases = (
+            ("verified", self._MATCH, True),
+            ("missing", "", False),
+            (
+                "wrong",
+                "2026-10-26T12:00:00Z INFO codex_core::session: server reported model gpt-6-sol (matches requested model)",
+                False,
+            ),
+            (
+                "reroute",
+                "2026-10-26T12:00:00Z INFO codex_core::session: server reported model gpt-6-sol while requested model was gpt-6-luna",
+                False,
+            ),
+        )
+        for name, stderr, qualified in cases:
+            with self.subTest(name=name):
+                record, receipt, capability = self._run_episode_with_stderr(stderr)
+                self.assertEqual(record["accounting"]["assigned"], 1)
+                self.assertEqual(record["scientific"]["assigned"], 1)
+                self.assertEqual(record["accounting"]["denominator_eligible"], True)
+                self.assertEqual(record["scientific"]["executed"], 1)
+                self.assertEqual(record["scientific"]["eligible"], qualified)
+                self.assertEqual(
+                    record["evidence"]["response_qualification"]["qualified"], qualified
+                )
+                self.assertEqual(
+                    native_cli._native_scientific_summary(record, capability),
+                    {"assigned": 1, "executed": 1, "eligible": qualified},
+                )
+                finalized_failure = native_cli._post_admission_failure(
+                    phase="record",
+                    exc=RuntimeError("fixture finalized failure"),
+                    source={"source": "fixture"},
+                    inputs={"input": "fixture"},
+                    output_root=Path("fixture-output"),
+                    record=record,
+                    trusted_activation=capability,
+                )
+                self.assertEqual(
+                    finalized_failure["scientific"],
+                    native_cli._native_scientific_summary(record, capability),
+                )
+                if qualified:
+                    mutations = (
+                        (
+                            "missing",
+                            lambda candidate: candidate["evidence"].pop("response_qualification"),
+                        ),
+                        (
+                            "malformed",
+                            lambda candidate: candidate["evidence"].update(
+                                response_qualification=[]
+                            ),
+                        ),
+                        (
+                            "boolean-like-required",
+                            lambda candidate: candidate["evidence"][
+                                "response_qualification"
+                            ].update(required=1),
+                        ),
+                        (
+                            "boolean-like-qualified",
+                            lambda candidate: candidate["evidence"][
+                                "response_qualification"
+                            ].update(qualified=1),
+                        ),
+                        (
+                            "boolean-like-eligible",
+                            lambda candidate: candidate["scientific"].update(eligible=1),
+                        ),
+                    )
+                    for mutation, mutate in mutations:
+                        candidate = json.loads(json.dumps(record))
+                        mutate(candidate)
+                        summary = native_cli._native_scientific_summary(candidate, capability)
+                        self.assertFalse(summary["eligible"], mutation)
+                if not qualified:
+                    self.assertEqual(len(record["decisions"]), 1)
+                    decision = record["decisions"][0]
+                    self.assertEqual(decision["raw_proposals"], [])
+                    self.assertIsNone(decision["validation"])
+                    self.assertIsNone(decision["repair"])
+                    self.assertIsNone(decision["commit"])
+                    self.assertEqual(record["evidence"]["commit"], [])
+                    self.assertFalse(record["success"])
+                    self.assertFalse(record["scientific"]["eligible"])
+                if qualified:
+                    self.assertTrue(record["success"])
+                    self.assertTrue(receipt["provider_identity_verified"])
+                    self.assertEqual(receipt["provider_identity"], "gpt-6-luna")
+                    self.assertEqual(receipt["identity_source"], EXTENSION_CODEX_IDENTITY_SOURCE)
+                    self.assertIsNone(receipt["provider_revision"])
+                    self.assertEqual(receipt["identity_transport"], "http")
+                    self.assertEqual(receipt["identity_cli_version"], EXTENSION_CODEX_CLI_VERSION)
+                    self.assertEqual(
+                        receipt["identity_request_hash"], receipt["outgoing_request_sha256"]
+                    )
+                else:
+                    self.assertFalse(record["success"])
+                    self.assertNotEqual(receipt.get("provider_identity_verified"), True)
+                    self.assertNotEqual(receipt.get("response_qualified"), True)
+
+    def test_extension_post_admission_failures_never_promote_without_finalized_qualification(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _record, receipt, capability = self._run_episode_with_stderr(self._MATCH)
+            no_record = native_cli._post_admission_failure(
+                phase="episode",
+                exc=RuntimeError("fixture opaque episode failure"),
+                source={},
+                inputs={},
+                output_root=root / "no-record",
+                engine=SimpleNamespace(prompt_receipts=[]),
+                trusted_activation=capability,
+            )
+            receipts_only = native_cli._post_admission_failure(
+                phase="episode",
+                exc=RuntimeError("fixture receipts-only failure"),
+                source={},
+                inputs={},
+                output_root=root / "receipts-only",
+                engine=SimpleNamespace(prompt_receipts=[receipt]),
+                trusted_activation=capability,
+            )
+            pre_dispatch = native_cli._post_admission_failure(
+                phase="admission",
+                exc=RuntimeError("fixture pre-dispatch failure"),
+                source={},
+                inputs={},
+                output_root=root / "pre-dispatch",
+                trusted_activation=capability,
+            )
+            legacy_bundle = _production_bundle(root / "legacy")
+            legacy = native_cli._post_admission_failure(
+                phase="episode",
+                exc=RuntimeError("fixture legacy failure"),
+                source={},
+                inputs={},
+                output_root=root / "legacy-output",
+                trusted_activation=legacy_bundle["capability"],
+            )
+        self.assertEqual(
+            no_record["scientific"],
+            {"assigned": 1, "executed": None, "eligible": False},
+        )
+        self.assertEqual(no_record["failure_artifact"]["execution_evidence"], "unknown")
+        self.assertEqual(
+            receipts_only["scientific"],
+            {"assigned": 1, "executed": 1, "eligible": False},
+        )
+        self.assertEqual(
+            receipts_only["failure_artifact"]["execution_evidence"],
+            "observed_trust_bound_start",
+        )
+        self.assertEqual(
+            pre_dispatch["scientific"], {"assigned": 1, "executed": 0, "eligible": False}
+        )
+        self.assertEqual(pre_dispatch["failure_artifact"]["execution_evidence"], "pre_dispatch")
+        self.assertEqual(legacy["scientific"], {"assigned": 1, "executed": None, "eligible": True})
+        self.assertEqual(
+            native_cli._native_scientific_summary({"evidence": {}}, legacy_bundle["capability"]),
+            {"assigned": 1, "executed": 0, "eligible": True},
+        )
+
+
+class ExtensionDispatchCapTests(unittest.TestCase):
+    def test_twelve_dispatches_are_cumulative_and_thirteenth_or_new_runner_is_denied(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = _production_bundle(root / "fixture", extension=True)
+            schema = bundle["source_root"] / "bound" / "output-schema.json"
+            home = root / "home"
+            (home / ".codex").mkdir(parents=True)
+            (home / ".codex" / "auth.json").write_text("{}", encoding="utf-8")
+            request_ids: list[str] = []
+            process_calls: list[str] = []
+            active_request_id = ""
+
+            def host_process(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+                process_calls.append(active_request_id)
+                on_started = kwargs.get("on_started")
+                if callable(on_started):
+                    on_started()
+                return subprocess.CompletedProcess(
+                    command,
+                    0,
+                    json.dumps(
+                        {
+                            "type": "item.completed",
+                            "item": {
+                                "type": "agent_message",
+                                "text": json.dumps(
+                                    {"request_id": active_request_id, "action": "finish"}
+                                ),
+                            },
+                        }
+                    ),
+                    ProductionExtensionReceiptTests._MATCH,
+                )
+
+            def invoke(runner: NativePromptRunner, request_id: str) -> NativePromptResult:
+                nonlocal active_request_id
+                active_request_id = request_id
+                request_ids.append(request_id)
+                return runner(
+                    request_id=request_id,
+                    instruction="fixture prompt",
+                    user_prompt="fixture prompt",
+                    output_schema=schema,
+                    output_schema_sha256=bundle["activation"]["artifact_bindings"][
+                        "output_schema_sha256"
+                    ],
+                    allowed_requests_sha256=bundle["activation"]["artifact_bindings"][
+                        "allowed_requests_sha256"
+                    ],
+                    quest_id=bundle["row"]["quest_id"],
+                    seed=bundle["row"]["seed"],
+                    repeat=bundle["row"]["repeat"],
+                    reset=bundle["row"]["reset"],
+                    fixture_id=bundle["row"]["fixture_id"],
+                    fixture_sha256=bundle["row"]["fixture_sha256"],
+                    oracle_sha256=bundle["row"]["oracle_sha256"],
+                    model="gpt-6-luna",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+
+            runner = NativePromptRunner(
+                host="codex",
+                selector="gpt-6-luna",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+            new_runner = NativePromptRunner(
+                host="codex",
+                selector="gpt-6-luna",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+            with (
+                patch.object(
+                    native_runtime,
+                    "_sanitized_environment",
+                    side_effect=lambda: {"HOME": str(home)},
+                ),
+                patch.object(native_runtime, "run_host_process", side_effect=host_process),
+            ):
+                results = [invoke(runner, f"fixture:episode-{index}") for index in range(1, 13)]
+                denied = invoke(runner, "fixture:episode-13")
+                claimed = invoke(new_runner, "fixture:new-runner")
+        self.assertEqual(len(request_ids), 14)
+        self.assertEqual(process_calls, request_ids[:12])
+        for result in results:
+            self.assertEqual(result.returncode, 0, result.receipt.get("error"))
+        self.assertEqual(denied.returncode, 2, denied.receipt.get("error"))
+        self.assertEqual(denied.receipt["error"], "native_extension_dispatch_limit")
+        self.assertEqual(denied.receipt["dispatch_started"], False)
+        self.assertEqual(claimed.returncode, 2, claimed.receipt.get("error"))
+        self.assertEqual(claimed.receipt["error"], "native_activation_row_already_claimed")
+        self.assertEqual(len(process_calls), 12)
+
+    def test_reusing_runner_across_episodes_cannot_reset_extension_dispatch_cap(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = _production_bundle(root / "fixture", extension=True)
+            schema = bundle["source_root"] / "bound" / "output-schema.json"
+            home = root / "home"
+            (home / ".codex").mkdir(parents=True)
+            (home / ".codex" / "auth.json").write_text("{}", encoding="utf-8")
+            request_ids: list[str] = []
+            process_calls: list[str] = []
+            active_request_id = ""
+            active_engine: _SimpleEngine | None = None
+
+            def host_process(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+                process_calls.append(active_request_id)
+                on_started = kwargs.get("on_started")
+                if callable(on_started):
+                    on_started()
+                return subprocess.CompletedProcess(
+                    command,
+                    0,
+                    json.dumps(
+                        {
+                            "type": "item.completed",
+                            "item": {
+                                "type": "agent_message",
+                                "text": json.dumps(
+                                    {"request_id": active_request_id, "action": "finish"}
+                                ),
+                            },
+                        }
+                    ),
+                    ProductionExtensionReceiptTests._MATCH,
+                )
+
+            runner = NativePromptRunner(
+                host="codex",
+                selector="gpt-6-luna",
+                effort="medium",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+
+            def invoke(request_id: str) -> NativePromptResult:
+                nonlocal active_request_id
+                active_request_id = request_id
+                request_ids.append(request_id)
+                return runner(
+                    request_id=request_id,
+                    instruction="fixture prompt",
+                    user_prompt="fixture prompt",
+                    output_schema=schema,
+                    output_schema_sha256=bundle["activation"]["artifact_bindings"][
+                        "output_schema_sha256"
+                    ],
+                    allowed_requests_sha256=bundle["activation"]["artifact_bindings"][
+                        "allowed_requests_sha256"
+                    ],
+                    quest_id=bundle["row"]["quest_id"],
+                    seed=bundle["row"]["seed"],
+                    repeat=bundle["row"]["repeat"],
+                    reset=bundle["row"]["reset"],
+                    fixture_id=bundle["row"]["fixture_id"],
+                    fixture_sha256=bundle["row"]["fixture_sha256"],
+                    oracle_sha256=bundle["row"]["oracle_sha256"],
+                    model="gpt-6-luna",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+
+            def proposal(_context: dict[str, Any]) -> dict[str, Any]:
+                response = invoke(f"fixture:episode-{len(request_ids) + 1}")
+                if active_engine is None:
+                    raise AssertionError("fixture engine was not initialized")
+                active_engine.prompt_receipts.append(response.receipt)
+                if response.returncode != 0:
+                    raise PromptTransportError(response.receipt.get("error", "fixture failure"))
+                return response.payload
+
+            def run_one(output_path: Path) -> dict[str, Any]:
+                nonlocal active_engine
+                engine = _SimpleEngine()
+                engine.prompt_receipts = []
+                active_engine = engine
+                with (
+                    patch.object(
+                        native_runtime,
+                        "_sanitized_environment",
+                        side_effect=lambda: {"HOME": str(home)},
+                    ),
+                    patch.object(native_runtime, "run_host_process", side_effect=host_process),
+                ):
+                    return run_episode(
+                        engine=engine,
+                        proposal_source=proposal,
+                        model=ModelSpec(
+                            "gpt-6-luna",
+                            bundle["row"]["representation"],
+                            provider="codex",
+                            offline=False,
+                        ),
+                        limits=EpisodeLimits(180, 60, 1, 0),
+                        seed=bundle["row"]["seed"],
+                        clock=lambda: 0.0,
+                        config=_production_config(bundle),
+                        prompt="fixture prompt",
+                        output_path=output_path,
+                        native_context=bundle["context"],
+                        trusted_activation=bundle["capability"],
+                    )
+
+            with (
+                patch.object(
+                    native_runtime,
+                    "_sanitized_environment",
+                    side_effect=lambda: {"HOME": str(home)},
+                ),
+                patch.object(native_runtime, "run_host_process", side_effect=host_process),
+            ):
+                for index in range(1, 12):
+                    preconsumed = invoke(f"fixture:preconsume-{index}")
+                    self.assertEqual(preconsumed.returncode, 0, preconsumed.receipt.get("error"))
+                first = run_one(root / "episode-first.json")
+                second = run_one(root / "episode-second.json")
+        self.assertEqual(process_calls, request_ids[:12])
+        self.assertEqual(len(process_calls), 12)
+        self.assertTrue(first["success"])
+        self.assertEqual(first["scientific"], {"assigned": 1, "executed": 1, "eligible": True})
+        self.assertEqual(len(first["evidence"]["commit"]), 1)
+        self.assertFalse(second["success"])
+        self.assertFalse(second["scientific"]["eligible"])
+        self.assertEqual(second["scientific"]["assigned"], 1)
+        self.assertEqual(second["scientific"]["executed"], 0)
+        self.assertTrue(second["accounting"]["denominator_eligible"])
+        self.assertEqual(second["decisions"][0]["raw_proposals"], [])
+        self.assertIsNone(second["decisions"][0]["validation"])
+        self.assertIsNone(second["decisions"][0]["repair"])
+        self.assertIsNone(second["decisions"][0]["commit"])
+        self.assertEqual(second["evidence"]["commit"], [])
+        self.assertEqual(
+            second["evidence"]["prompt_receipts"][0]["error"], "native_extension_dispatch_limit"
+        )
+
+
+class RejectedIdentityRuntimeBoundaryTests(unittest.TestCase):
+    def test_rejected_identity_cannot_commit_action_or_report_goal_success(self) -> None:
+        engine = _SimpleEngine()
+        calls: list[dict[str, Any]] = []
+
+        def rejected_identity(context: dict[str, Any]) -> dict[str, Any]:
+            calls.append(dict(context))
+            raise PromptTransportError("provider_identity_missing")
+
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = _simulation_bundle(Path(directory))
+            record = run_episode(
+                engine=engine,
+                proposal_source=rejected_identity,
+                model=ModelSpec("gpt-6.1-sol", "general_rule", provider="codex", offline=False),
+                limits=EpisodeLimits(180, 60, 1, 0),
+                seed=20261024,
+                clock=lambda: 0.0,
+                config=_simulation_config(bundle),
+                prompt="fixture prompt",
+                output_path=Path(directory) / "record.json",
+                native_context=bundle["context"],
+                trusted_activation=bundle["capability"],
+            )
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(record["accounting"]["source_attempts"], 1)
+        self.assertFalse(record["success"])
+        self.assertFalse(record["goal_reached"])
+        self.assertEqual(engine.commits, [])
+        self.assertEqual(record["decisions"][0]["commit"], None)
+        self.assertIn("provider_identity_missing", record["last_error"])
+
+
+class ExtensionAdmissionPrerequisiteTests(unittest.TestCase):
+    def test_disabled_identity_gate_blocks_before_any_transport(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = _production_bundle(Path(directory))
+            context = json.loads(json.dumps(bundle["context"]))
+            context["authority"]["identity_setting_verified"] = False
+            result = validate_native_context(
+                context,
+                model=_model(bundle["context"]),
+                config=_production_config(bundle),
+                prompt="fixture prompt",
+                source_root=bundle["source_root"],
+                now="2026-10-25T12:00:00Z",
+                trusted_activation=bundle["capability"],
+            )
+        self.assertFalse(result["ready"])
+        self.assertIn("authority_identity_setting_verified_missing", result["reasons"])
+
+    def test_stale_source_receipt_and_authority_mutation_block_admission(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = _production_bundle(Path(directory))
+            source_manifest = bundle["source_root"] / "bound" / "source_manifest.json"
+            source_manifest.write_bytes(source_manifest.read_bytes() + b"\nstale\n")
+            result = validate_native_context(
+                bundle["context"],
+                model=_model(bundle["context"]),
+                config=_production_config(bundle),
+                prompt="fixture prompt",
+                source_root=bundle["source_root"],
+                now="2026-10-25T12:00:00Z",
+                trusted_activation=bundle["capability"],
+            )
+            self.assertFalse(result["ready"])
+            self.assertTrue(any("source_manifest" in reason for reason in result["reasons"]))
+
+            context = json.loads(json.dumps(bundle["context"]))
+            context["authority"]["context_isolation_verified"] = False
+            authority_result = validate_native_context(
+                context,
+                model=_model(bundle["context"]),
+                config=_production_config(bundle),
+                prompt="fixture prompt",
+                source_root=bundle["source_root"],
+                now="2026-10-25T12:00:00Z",
+                trusted_activation=bundle["capability"],
+            )
+        self.assertFalse(authority_result["ready"])
+        self.assertIn("authority_context_isolation_verified_missing", authority_result["reasons"])
+
+    def test_removed_existing_credit_prerequisite_blocks_without_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = _existing_credit_policy_bundle(Path(directory))
+            context = json.loads(json.dumps(bundle["context"]))
+            context["authority"].pop("automatic_reload_off_verified")
+            result = validate_native_context(
+                context,
+                model=_model(bundle["context"]),
+                config=_simulation_config(bundle),
+                prompt="fixture prompt",
+                source_root=bundle["source_root"],
+                now="2026-10-25T12:00:00Z",
+                trusted_activation=bundle["capability"],
+            )
+        self.assertFalse(result["ready"])
+        self.assertTrue(
+            any(
+                reason in result["reasons"]
+                for reason in (
+                    "authority_subscription_no_additional_charge_verified_missing",
+                    "subscription_charge_unknown",
+                )
+            )
+        )
+
+
 class OfflineBoundaryTests(unittest.TestCase):
     def test_existing_offline_cli_rejects_live_without_provider_activity(self) -> None:
         output = io.StringIO()
@@ -5588,6 +6757,498 @@ class OfflineBoundaryTests(unittest.TestCase):
         payload = json.loads(output.getvalue())
         self.assertEqual(payload["failure_reason"], "provider_not_allowed_offline")
         self.assertEqual(payload["provider_process_launch_count"], 0)
+
+
+class ResponseModelIdentityObservationTests(unittest.TestCase):
+    _SELECTOR = "gpt-6-luna"
+    _SOURCE = "codex::response_model"
+    _OLD_MATCH = (
+        "2026-10-26T12:00:00Z INFO codex_core::session: "
+        "server reported model gpt-6-luna (matches requested model)"
+    )
+    _FIELDS = (
+        ("transport", "Http"),
+        ("response_sequence", "1"),
+        ("request_correlation_id", "req-7f3a"),
+        ("phase", "SseTerminal(Completed)"),
+        ("identity", "Exact"),
+        ("created_model", "Exact"),
+        ("completed_model", "Exact"),
+        ("id_binding", "Match"),
+        ("id_bound", "true"),
+    )
+    # Synthetic handoff/finish records for loopback-free unit cases (same shape as real records).
+    _SYNTH_HANDOFF = (
+        "2026-10-29T12:00:00.100000Z  INFO codex::responses_binding: "
+        "responses request transport handoff correlation_id=req-7f3a attempt=0"
+    )
+    _SYNTH_FINISH = (
+        "2026-10-29T12:00:00.200000Z  INFO codex::responses_binding: "
+        "responses request attempt finished correlation_id=req-7f3a attempt=0 "
+        "transport_handoff=true status=200 success=true"
+    )
+    # Real records from the rebuilt-CLI run on the loopback fixture (scratch capture, no provider call).
+    # The span prefix before "codex::responses_binding:" is elided; parsing uses the message tail.
+    _CAPTURED_HANDOFF = (
+        "2026-10-29T05:35:19.134142Z  INFO ...span elided... codex::responses_binding: "
+        "responses request transport handoff correlation_id=9ab8cab9-cc96-4e0f-99e8-c73fb0e19344 attempt=0"
+    )
+    _CAPTURED_FINISHED = (
+        "2026-10-29T05:35:19.144868Z  INFO ...span elided... codex::responses_binding: "
+        "responses request attempt finished correlation_id=9ab8cab9-cc96-4e0f-99e8-c73fb0e19344 "
+        "attempt=0 transport_handoff=true status=200 success=true"
+    )
+    _CAPTURED_SELECTOR = "fixture-model"
+    _CAPTURED_HEADER = (
+        "2026-10-29T05:35:19.153266Z  INFO codex::response_model: response model header observation "
+        "transport=Http response_sequence=1 request_correlation_id=9ab8cab9-cc96-4e0f-99e8-c73fb0e19344 "
+        "phase=SseTerminal(Completed) header=Absent comparison=NotCompared parse_error=false"
+    )
+    _CAPTURED_IDENTITY = (
+        "2026-10-29T05:35:19.153281Z  INFO codex::response_model: response model identity observation "
+        "transport=Http response_sequence=1 request_correlation_id=9ab8cab9-cc96-4e0f-99e8-c73fb0e19344 "
+        "phase=SseTerminal(Completed) identity=Exact created_model=Missing completed_model=Exact "
+        "id_binding=Match id_bound=true"
+    )
+    # Identity pair from the separately saved observations file (different run: id 0c581f0c..., no records).
+    _OBSERVATION_FILE_HEADER = (
+        "2026-10-29T05:35:27.702017Z  INFO codex::response_model: response model header observation "
+        "transport=Http response_sequence=1 request_correlation_id=0c581f0c-42b6-497e-8d82-3880dedb394b "
+        "phase=SseTerminal(Completed) header=Absent comparison=NotCompared parse_error=false"
+    )
+    _OBSERVATION_FILE_IDENTITY = (
+        "2026-10-29T05:35:27.702026Z  INFO codex::response_model: response model identity observation "
+        "transport=Http response_sequence=1 request_correlation_id=0c581f0c-42b6-497e-8d82-3880dedb394b "
+        "phase=SseTerminal(Completed) identity=Exact created_model=Missing completed_model=Exact "
+        "id_binding=Match id_bound=true"
+    )
+    # Normal (non-retry) reqwest trace lines from the same captured run.
+    _CAPTURED_NORMAL_TRACE_LINES = (
+        "2026-10-29T05:35:18.894438Z TRACE reqwest::retry: shouldn't retry!",
+        "2026-10-29T05:35:18.978403Z TRACE reqwest::retry: shouldn't retry!",
+        "2026-10-29T05:35:18.979733Z TRACE reqwest::retry: shouldn't retry!",
+    )
+    _OTHER_CID = "11111111-2222-3333-4444-555555555555"
+
+    @classmethod
+    def _observation(cls, **overrides: str | None) -> str:
+        values = dict(cls._FIELDS)
+        for key, value in overrides.items():
+            if value is None:
+                values.pop(key)
+            else:
+                values[key] = value
+        body = " ".join(f"{key}={value}" for key, value in values.items())
+        return (
+            f"2026-10-29T12:00:00.123456Z  INFO {cls._SOURCE}: "
+            f"response model identity observation {body}"
+        )
+
+    @staticmethod
+    def _with_field(line: str, key: str, value: str | None) -> str:
+        tokens: list[str] = []
+        replaced = False
+        for token in line.split():
+            if token.startswith(f"{key}="):
+                replaced = True
+                if value is not None:
+                    tokens.append(f"{key}={value}")
+                continue
+            tokens.append(token)
+        assert replaced, key
+        return " ".join(tokens)
+
+    @classmethod
+    def _captured_run(
+        cls, *, handoff=None, finished=None, header=None, identity=None
+    ) -> tuple[str, ...]:
+        return (
+            handoff or cls._CAPTURED_HANDOFF,
+            finished or cls._CAPTURED_FINISHED,
+            header or cls._CAPTURED_HEADER,
+            identity or cls._CAPTURED_IDENTITY,
+        )
+
+    def _parse(self, stderr: str) -> dict[str, Any]:
+        return parse_codex_provider_identity(stderr, requested_selector=self._SELECTOR)
+
+    def _parse_captured(self, *lines: str) -> dict[str, Any]:
+        return parse_codex_provider_identity(
+            "\n".join(lines) + "\n", requested_selector=self._CAPTURED_SELECTOR
+        )
+
+    def test_exact_completed_bound_single_attempt_observation_is_verified(self) -> None:
+        result = self._parse(
+            self._observation() + "\n" + self._SYNTH_HANDOFF + "\n" + self._SYNTH_FINISH + "\n"
+        )
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["provider_identity"], self._SELECTOR)
+        self.assertEqual(result["identity_source"], self._SOURCE)
+        self.assertEqual(result["request_correlation_id"], "req-7f3a")
+
+    def test_captured_positive_run_verifies_against_requested_selector(self) -> None:
+        result = self._parse_captured(*self._captured_run())
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["provider_identity"], "fixture-model")
+        self.assertEqual(result["identity_source"], "codex::response_model")
+        self.assertEqual(result["request_correlation_id"], "9ab8cab9-cc96-4e0f-99e8-c73fb0e19344")
+
+    def test_captured_positive_with_normal_trace_lines_still_verifies(self) -> None:
+        result = self._parse_captured(*self._CAPTURED_NORMAL_TRACE_LINES, *self._captured_run())
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["provider_identity"], "fixture-model")
+
+    def test_observation_file_pair_without_handoff_records_is_rejected(self) -> None:
+        result = self._parse_captured(
+            self._OBSERVATION_FILE_HEADER, self._OBSERVATION_FILE_IDENTITY
+        )
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["error"], "provider_identity_handoff_missing")
+
+    def test_created_model_omitted_is_accepted_but_other_created_values_reject(self) -> None:
+        for value in ("Conflict", "Mismatch", "Duplicate", "Invalid", "Null"):
+            with self.subTest(created_model=value):
+                line = self._with_field(self._CAPTURED_IDENTITY, "created_model", value)
+                result = self._parse_captured(*self._captured_run(identity=line))
+                self.assertEqual(result["status"], "rejected")
+                self.assertEqual(result["error"], f"provider_identity_observation_{value.lower()}")
+        result = self._parse_captured(*self._captured_run())
+        self.assertEqual(result["status"], "verified")
+
+    def test_captured_positive_mutations_reject_with_specific_codes(self) -> None:
+        h, f, hd, i = (
+            self._CAPTURED_HANDOFF,
+            self._CAPTURED_FINISHED,
+            self._CAPTURED_HEADER,
+            self._CAPTURED_IDENTITY,
+        )
+        wf = self._with_field
+        other = self._OTHER_CID
+        cases = (
+            ("duplicate-identity-line", (h, f, hd, i, i), "provider_identity_ambiguous"),
+            (
+                "two-correlation-ids",
+                (h, f, hd, wf(i, "request_correlation_id", other)),
+                "provider_identity_correlation_ambiguous",
+            ),
+            (
+                "identity-conflict",
+                (h, f, hd, wf(i, "identity", "Conflict")),
+                "provider_identity_observation_conflict",
+            ),
+            (
+                "identity-mismatch",
+                (h, f, hd, wf(i, "identity", "Mismatch")),
+                "provider_identity_observation_mismatch",
+            ),
+            (
+                "completed-missing",
+                (h, f, hd, wf(i, "completed_model", "Missing")),
+                "provider_identity_observation_missing",
+            ),
+            (
+                "completed-null",
+                (h, f, hd, wf(i, "completed_model", "Null")),
+                "provider_identity_observation_null",
+            ),
+            (
+                "completed-invalid",
+                (h, f, hd, wf(i, "completed_model", "Invalid")),
+                "provider_identity_observation_invalid",
+            ),
+            (
+                "completed-duplicate",
+                (h, f, hd, wf(i, "completed_model", "Duplicate")),
+                "provider_identity_observation_duplicate",
+            ),
+            (
+                "binding-mismatch",
+                (h, f, hd, wf(i, "id_binding", "Mismatch")),
+                "provider_identity_observation_mismatch",
+            ),
+            (
+                "binding-missing",
+                (h, f, hd, wf(i, "id_binding", "Missing")),
+                "provider_identity_observation_missing",
+            ),
+            (
+                "unbound",
+                (h, f, hd, wf(i, "id_bound", "false")),
+                "provider_identity_observation_unbound",
+            ),
+            (
+                "phase-legacy-completed",
+                (h, f, hd, wf(i, "phase", "Completed")),
+                "provider_identity_phase_not_completed",
+            ),
+            (
+                "phase-created",
+                (h, f, hd, wf(i, "phase", "SseTerminal(Created)")),
+                "provider_identity_phase_not_completed",
+            ),
+            ("header-only", (h, f, hd), "provider_identity_missing"),
+            ("handoff-missing", (f, hd, i), "provider_identity_handoff_missing"),
+            ("handoff-duplicate-same-id", (h, h, f, hd, i), "provider_identity_handoff_ambiguous"),
+            (
+                "handoff-two-distinct-ids",
+                (h, wf(h, "correlation_id", other), f, hd, i),
+                "provider_identity_handoff_ambiguous",
+            ),
+            ("finish-missing", (h, hd, i), "provider_identity_finish_missing"),
+            ("finish-duplicate", (h, f, f, hd, i), "provider_identity_finish_ambiguous"),
+            (
+                "finish-attempt-nonzero",
+                (h, wf(f, "attempt", "1"), hd, i),
+                "provider_identity_reroute",
+            ),
+            (
+                "finish-success-false",
+                (h, wf(f, "success", "false"), hd, i),
+                "provider_identity_finish_unsuccessful",
+            ),
+            (
+                "finish-status-500",
+                (h, wf(f, "status", "500"), hd, i),
+                "provider_identity_finish_status",
+            ),
+            (
+                "finish-status-199",
+                (h, wf(f, "status", "199"), hd, i),
+                "provider_identity_finish_status",
+            ),
+            (
+                "handoff-vs-finish-id",
+                (h, wf(f, "correlation_id", other), hd, i),
+                "provider_identity_handoff_mismatch",
+            ),
+            (
+                "identity-vs-handoff-id",
+                (
+                    h,
+                    f,
+                    wf(hd, "request_correlation_id", other),
+                    wf(i, "request_correlation_id", other),
+                ),
+                "provider_identity_correlation_mismatch",
+            ),
+        )
+        for name, lines, expected_error in cases:
+            with self.subTest(name=name):
+                result = self._parse_captured(*lines)
+                self.assertEqual(result["status"], "rejected")
+                self.assertIsNone(result["provider_identity"])
+                self.assertEqual(result["error"], expected_error)
+
+    def test_two_correlation_ids_across_attempt_logs_are_rejected(self) -> None:
+        cases = (
+            (
+                "two-observations",
+                self._observation(request_correlation_id="req-a")
+                + "\n"
+                + self._observation(request_correlation_id="req-b")
+                + "\n",
+            ),
+            (
+                "observation-plus-other-line",
+                self._observation()
+                + "\n2026-10-29T12:00:01Z INFO codex_core::session: request_correlation_id=req-b\n",
+            ),
+        )
+        for name, stderr in cases:
+            with self.subTest(name=name):
+                result = self._parse(stderr)
+                self.assertEqual(result["status"], "rejected")
+                self.assertIsNone(result["provider_identity"])
+                self.assertEqual(result["error"], "provider_identity_correlation_ambiguous")
+
+    def test_identity_fields_reject_each_bad_enum_with_specific_code(self) -> None:
+        for field in ("identity", "created_model", "completed_model", "id_binding"):
+            values = ("Duplicate", "Conflict", "Mismatch", "Missing", "Null", "Invalid")
+            if field == "created_model":
+                values = tuple(value for value in values if value != "Missing")
+            for value in values:
+                with self.subTest(field=field, value=value):
+                    result = self._parse(self._observation(**{field: value}) + "\n")
+                    self.assertEqual(result["status"], "rejected")
+                    self.assertIsNone(result["provider_identity"])
+                    self.assertEqual(
+                        result["error"], f"provider_identity_observation_{value.lower()}"
+                    )
+
+    def test_unexpected_identity_enum_is_unqualified_not_verified(self) -> None:
+        result = self._parse(self._observation(identity="Pending") + "\n")
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["error"], "provider_identity_observation_unqualified")
+
+    def test_non_completed_phase_is_rejected(self) -> None:
+        result = self._parse(self._observation(phase="Created") + "\n")
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["error"], "provider_identity_phase_not_completed")
+
+    def test_unbound_or_uncorrelated_observation_is_rejected(self) -> None:
+        cases = (
+            (
+                "unbound",
+                self._observation(id_bound="false") + "\n",
+                "provider_identity_observation_unbound",
+            ),
+            (
+                "correlation-missing-token",
+                self._observation(request_correlation_id="missing") + "\n",
+                "provider_identity_correlation_missing",
+            ),
+        )
+        for name, stderr, expected_error in cases:
+            with self.subTest(name=name):
+                result = self._parse(stderr)
+                self.assertEqual(result["status"], "rejected")
+                self.assertIsNone(result["provider_identity"])
+                self.assertEqual(result["error"], expected_error)
+
+    def test_malformed_observation_fields_are_rejected(self) -> None:
+        cases = (
+            ("missing-field", self._observation(id_bound=None) + "\n"),
+            ("duplicate-field", self._observation() + " identity=Exact\n"),
+            ("extra-field", self._observation() + " model=gpt-6-luna\n"),
+            (
+                "wrong-message",
+                "INFO codex::response_model: response model identity changed\n",
+            ),
+        )
+        for name, stderr in cases:
+            with self.subTest(name=name):
+                result = self._parse(stderr)
+                self.assertEqual(result["status"], "rejected")
+                self.assertIsNone(result["provider_identity"])
+                self.assertEqual(result["error"], "provider_identity_observation_malformed")
+
+    def test_absent_observation_keeps_missing_error(self) -> None:
+        result = self._parse("ordinary stderr\n")
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["error"], "provider_identity_missing")
+
+    def test_duplicate_identical_observation_is_ambiguous(self) -> None:
+        result = self._parse(self._observation() + "\n" + self._observation() + "\n")
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["error"], "provider_identity_ambiguous")
+
+    def test_reroute_or_retry_evidence_beside_observation_is_rejected(self) -> None:
+        cases = (
+            (
+                "reroute",
+                self._observation() + "\nINFO codex_core::session: server reported model gpt-6-sol "
+                "while requested model was gpt-6-luna\n",
+            ),
+            (
+                "retry-origin",
+                "INFO codex_core::session: retrying request after transport failure\n"
+                + self._observation()
+                + "\n",
+            ),
+            (
+                "nonzero-attempt",
+                "INFO codex_core::session: handoff correlation_id=req-7f3a attempt=1\n"
+                + self._observation()
+                + "\n",
+            ),
+        )
+        for name, stderr in cases:
+            with self.subTest(name=name):
+                result = self._parse(stderr)
+                self.assertEqual(result["status"], "rejected")
+                self.assertEqual(result["error"], "provider_identity_reroute")
+
+    def test_old_format_match_remains_verified_with_old_source_and_no_correlation(self) -> None:
+        result = self._parse(self._OLD_MATCH + "\n")
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["identity_source"], "codex_core::session")
+        self.assertNotIn("request_correlation_id", result)
+
+    def test_extension_runner_admits_only_exact_bound_single_attempt_observation(self) -> None:
+        cases = (
+            (
+                "exact",
+                self._observation() + "\n" + self._SYNTH_HANDOFF + "\n" + self._SYNTH_FINISH + "\n",
+                0,
+                None,
+            ),
+            (
+                "two-correlation-ids",
+                self._observation(request_correlation_id="req-a")
+                + "\n"
+                + self._observation(request_correlation_id="req-b")
+                + "\n",
+                5,
+                "provider_identity_correlation_ambiguous",
+            ),
+            (
+                "created-phase",
+                self._observation(phase="Created") + "\n",
+                5,
+                "provider_identity_phase_not_completed",
+            ),
+            (
+                "unbound",
+                self._observation(id_bound="false") + "\n",
+                5,
+                "provider_identity_observation_unbound",
+            ),
+        )
+        for name, stderr, expected_returncode, expected_error in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                bundle = _simulation_bundle(Path(directory), extension=True)
+                stdout = json.dumps(
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "type": "agent_message",
+                            "text": json.dumps(
+                                {"request_id": "fixture:identity-observation", "action": "finish"}
+                            ),
+                        },
+                    }
+                )
+
+                class IdentityTransport(_CountingTransport):
+                    def __call__(
+                        self,
+                        command: list[str],
+                        *,
+                        _stdout: str = stdout,
+                        _stderr: str = stderr,
+                        **kwargs: Any,
+                    ) -> subprocess.CompletedProcess[str]:
+                        self.calls.append({"command": list(command), **kwargs})
+                        return subprocess.CompletedProcess(command, 0, _stdout, _stderr)
+
+                transport = IdentityTransport()
+                runner = NativePromptRunner(
+                    host="codex",
+                    selector="gpt-6-luna",
+                    effort="medium",
+                    native_context=bundle["context"],
+                    trusted_activation=bundle["capability"],
+                    process_runner=transport,
+                )
+                response = runner(
+                    request_id="fixture:identity-observation",
+                    instruction="fixture prompt",
+                    user_prompt="fixture prompt",
+                    output_schema=bundle["source_root"] / "bound" / "output-schema.json",
+                    model="gpt-6-luna",
+                    timeout=1,
+                    representation=bundle["row"]["representation"],
+                )
+                self.assertEqual(response.returncode, expected_returncode)
+                if expected_error is None:
+                    self.assertEqual(response.payload["action"], "finish")
+                    self.assertTrue(response.receipt["provider_identity_verified"])
+                    self.assertEqual(response.receipt["provider_identity"], "gpt-6-luna")
+                    self.assertEqual(response.receipt["identity_source"], self._SOURCE)
+                    self.assertEqual(response.receipt["identity_transport"], "http")
+                else:
+                    self.assertEqual(response.receipt["error"], expected_error)
+                    self.assertEqual(response.payload, {})
 
 
 # Contract map:

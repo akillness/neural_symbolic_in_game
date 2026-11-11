@@ -13,7 +13,13 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from typing import Any, Protocol
 
-from nesy_game.runtime_model_swap_native import PromptTransportError
+from nesy_game.runtime_model_swap_native import (
+    EXTENSION_ACTIVATION_SCHEMA,
+    EXTENSION_CODEX_CLI_VERSION,
+    EXTENSION_CODEX_IDENTITY_SOURCE,
+    NativeActivationTrust,
+    PromptTransportError,
+)
 
 
 class EpisodeEngine(Protocol):
@@ -111,6 +117,52 @@ class EpisodePersistenceError(OSError):
         self.record = record
 
 
+def _ollama_runner_is_bound(engine: EpisodeEngine) -> bool:
+    try:
+        from nesy_game.runtime_model_swap_ollama import OllamaPromptRunner
+    except (ImportError, ModuleNotFoundError):
+        return False
+    return isinstance(getattr(engine, "prompt_runner", None), OllamaPromptRunner)
+
+
+def _ollama_transport_accounting(receipt: Mapping[str, Any]) -> dict[str, int] | None:
+    events = receipt.get("transport_events")
+    if not isinstance(events, list) or not events:
+        return None
+    counts = {"total": 0, "preflight": 0, "generation": 0, "responses": 0}
+    operations = {"version", "tags", "show", "generate"}
+    for event in events:
+        if not isinstance(event, Mapping):
+            return None
+        kind = event.get("kind")
+        operation = event.get("operation")
+        if kind not in {"preflight", "generation"} or operation not in operations:
+            return None
+        if kind == "generation" and operation != "generate":
+            return None
+        if kind == "preflight" and operation == "generate":
+            return None
+        if event.get("attempted") is not True or not isinstance(event.get("succeeded"), bool):
+            return None
+        if event.get("succeeded") is False and not isinstance(event.get("error"), str):
+            return None
+        counts["total"] += 1
+        counts[kind] += 1
+        counts["responses"] += int(event["succeeded"])
+    request_count = receipt.get("transport_request_count")
+    response_count = receipt.get("transport_response_count")
+    if (
+        not isinstance(request_count, int)
+        or isinstance(request_count, bool)
+        or request_count != counts["total"]
+        or not isinstance(response_count, int)
+        or isinstance(response_count, bool)
+        or response_count != counts["responses"]
+    ):
+        return None
+    return counts
+
+
 def run_episode(
     *,
     engine: EpisodeEngine,
@@ -126,7 +178,9 @@ def run_episode(
     provider_launcher: Callable[..., Any] | None = None,
     output_path: str | Path | None = None,
     native_context: Mapping[str, Any] | None = None,
+    ollama_local_admitted: bool = False,
     trusted_activation: Any | None = None,
+    exploratory_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     if output_path is not None and Path(output_path).exists():
         raise FileExistsError(f"output already exists: {output_path}")
@@ -158,9 +212,13 @@ def run_episode(
             "boundary": "first_host_dispatch_to_terminal_observation",
         },
     }
+    assigned_id = config.get("assignment_id")
+    assigned_ids = [assigned_id] if isinstance(assigned_id, str) and assigned_id else []
     record: dict[str, Any] = {
         "schema_version": "runtime-model-swap/1",
-        "assignment_id": config.get("assignment_id"),
+        "assignment_id": assigned_id,
+        "assigned_ids": assigned_ids,
+        "assigned_rows": [{"assignment_id": value} for value in assigned_ids],
         "scope": "bookkeeping",
         "model": asdict(model),
         "limits": asdict(limits),
@@ -197,6 +255,9 @@ def run_episode(
     }
     accounting = record["accounting"]
     native_production_admitted = False
+    ollama_production_admitted = False
+    exploratory_admitted = False
+    exploratory_authorization_row_id: str | None = None
     record["scientific"] = {"assigned": 0, "executed": 0, "eligible": False}
 
     def checked(name: str, value: Any, expected: type) -> Any:
@@ -264,6 +325,7 @@ def run_episode(
                 ("engine_runs", "engine_evidence", list),
                 ("prompt_invocations", "prompt_calls", list),
                 ("source_hashes", "source_hashes", dict),
+                ("setup_operations", "setup_operations", list),
             ):
                 try:
                     value = checked(attribute, getattr(engine, attribute, expected()), expected)
@@ -281,8 +343,18 @@ def run_episode(
                     if record["safety"]["status"] != "FAIL":
                         record["safety"]["status"] = "NOT_PASS"
         receipts = evidence.get("prompt_receipts")
+        extension_identity_required = False
+        extension_response_qualified = False
+        activation = getattr(trusted_activation, "activation", None)
+        if (
+            native_production_admitted
+            and isinstance(activation, Mapping)
+            and activation.get("schema_version") == EXTENSION_ACTIVATION_SCHEMA
+        ):
+            extension_identity_required = True
         if isinstance(receipts, list):
             actual_launches = 0
+            qualified_launches = 0
             authoritative_requests: list[int] = []
             for receipt in receipts:
                 if not isinstance(receipt, Mapping):
@@ -300,11 +372,32 @@ def run_episode(
                     and receipt.get("row_id") == trusted_activation.row_id
                 ):
                     actual_launches += 1
+                    if (
+                        extension_identity_required
+                        and receipt.get("response_qualified") is True
+                        and receipt.get("provider_identity_verified") is True
+                        and receipt.get("provider_identity") == model.model_id
+                        and receipt.get("identity_source")
+                        in {EXTENSION_CODEX_IDENTITY_SOURCE, "codex::response_model"}
+                        and receipt.get("identity_transport") == "http"
+                        and receipt.get("identity_cli_version") == EXTENSION_CODEX_CLI_VERSION
+                        and isinstance(receipt.get("outgoing_request_sha256"), str)
+                        and bool(receipt.get("outgoing_request_sha256"))
+                        and receipt.get("identity_request_hash")
+                        == receipt.get("outgoing_request_sha256")
+                    ):
+                        qualified_launches += 1
                 if admitted and receipt.get("provider_request_count_authoritative") is True:
                     count = receipt.get("provider_request_count")
                     if isinstance(count, int) and not isinstance(count, bool) and count >= 0:
                         authoritative_requests.append(count)
             evidence["provider_process_launch_count"] = actual_launches
+            if extension_identity_required:
+                extension_response_qualified = (
+                    actual_launches > 0
+                    and len(receipts) == actual_launches
+                    and qualified_launches == actual_launches
+                )
             if authoritative_requests:
                 evidence["provider_request_count"] = sum(authoritative_requests)
             else:
@@ -313,7 +406,248 @@ def run_episode(
             record["scientific"]["executed"] = (
                 1 if evidence.get("provider_process_launch_count", 0) > 0 else 0
             )
+            if extension_identity_required:
+                record["scientific"]["eligible"] = extension_response_qualified
+                evidence["response_qualification"] = {
+                    "required": True,
+                    "qualified": extension_response_qualified,
+                    "identity_source": EXTENSION_CODEX_IDENTITY_SOURCE,
+                    "identity_transport": "http",
+                    "cli_version": EXTENSION_CODEX_CLI_VERSION,
+                }
+                provenance = evidence.setdefault("provenance", {})
+                if isinstance(provenance, dict):
+                    provenance["response_qualified"] = extension_response_qualified
+                    provenance["scientific_eligible"] = extension_response_qualified
+        if exploratory_admitted and isinstance(receipts, list):
+            observed = [item for item in receipts if isinstance(item, Mapping)]
+            evidence["provider_process_launch_count"] = sum(
+                item.get("transport_kind") == "local_process"
+                and item.get("local_process_started") is True
+                for item in observed
+            )
+            evidence["provider_request_count"] = sum(
+                item.get("dispatch_started") is True for item in observed
+            )
+            evidence["provider_request_count_authoritative"] = False
+        if ollama_production_admitted:
+            observed = [
+                receipt
+                for receipt in evidence.get("prompt_receipts", [])
+                if isinstance(receipt, Mapping)
+                and _ollama_transport_accounting(receipt) is not None
+            ]
+            dispatched = [
+                receipt for receipt in observed if receipt.get("generation_dispatched") is True
+            ]
+            event_rows = [(receipt, _ollama_transport_accounting(receipt)) for receipt in observed]
+            dispatched_rows = [
+                (receipt, _ollama_transport_accounting(receipt)) for receipt in dispatched
+            ]
+            event_totals = {"preflight": 0, "generation": 0, "total": 0, "responses": 0}
+            for _receipt, counts in event_rows:
+                if counts is not None:
+                    for key in event_totals:
+                        event_totals[key] += counts[key]
+            authoritative = [
+                counts["total"]
+                for receipt, counts in event_rows
+                if receipt.get("provider_request_count_authoritative") is True
+                and counts is not None
+            ]
+            evidence["provider_request_count"] = (
+                sum(authoritative)
+                if authoritative and len(authoritative) == len(observed)
+                else None
+            )
+            evidence["provider_request_count_authoritative"] = bool(observed) and len(
+                authoritative
+            ) == len(observed)
+            evidence["provider_transport_events"] = event_totals
+            expected_config = record["config"]
+            try:
+                from nesy_game.runtime_model_swap_ollama import (
+                    receipt_digest as _ollama_receipt_digest,
+                )
+            except ImportError:
+                _ollama_receipt_digest = None
+
+            def _bound(receipt: Mapping[str, Any]) -> bool:
+                if _ollama_receipt_digest is None:
+                    return False
+                expected = {
+                    "assignment_id": record.get("assignment_id"),
+                    "row_id": record.get("assignment_id"),
+                    "config_hash": evidence["config_hash"],
+                    "manifest_sha256": expected_config.get("manifest_sha256"),
+                    "blob_sha256": expected_config.get("blob_sha256"),
+                    "model_layer_digest": expected_config.get("model_layer_digest"),
+                    "schema_sha256": expected_config.get("canonical_output_schema_sha256"),
+                    "canonical_schema_sha256": expected_config.get(
+                        "canonical_output_schema_sha256"
+                    ),
+                }
+                if any(not isinstance(value, str) for value in expected.values()):
+                    return False
+                for key, value in expected.items():
+                    if receipt.get(key) != value:
+                        return False
+                    if receipt.get(f"{key}_pre") != value or receipt.get(f"{key}_post") != value:
+                        return False
+                if receipt.get("manifest_blob_distinct") is not True:
+                    return False
+                for key in (
+                    "model",
+                    "tag_digest",
+                    "model_layer_digest",
+                    "ollama_version",
+                    "manifest_sha256",
+                    "blob_sha256",
+                    "schema_sha256",
+                    "canonical_schema_sha256",
+                ):
+                    if receipt.get(f"{key}_pre") != receipt.get(f"{key}_post"):
+                        return False
+                if (
+                    receipt.get("preflight_completed") is not True
+                    or receipt.get("postflight_completed") is not True
+                ):
+                    return False
+                try:
+                    return receipt.get("receipt_sha256") == _ollama_receipt_digest(receipt)
+                except (TypeError, ValueError):
+                    return False
+
+            qualified = bool(dispatched) and all(
+                receipt.get("status") == "verified"
+                and receipt.get("response_qualified") is True
+                and receipt.get("scientific_eligible") is True
+                and receipt.get("transport_kind") == "local_http"
+                and receipt.get("provider_request_count_authoritative") is True
+                and receipt.get("response_done") is True
+                and (counts is not None and counts["preflight"] > 0 and counts["generation"] > 0)
+                and _bound(receipt)
+                for receipt, counts in dispatched_rows
+            )
+            record["scientific"]["executed"] = 1 if dispatched else 0
+            record["scientific"]["eligible"] = qualified
+            provenance = evidence.setdefault("provenance", {})
+            if isinstance(provenance, dict):
+                provenance["response_qualified"] = qualified
+                provenance["scientific_eligible"] = qualified
+            evidence["response_qualification"] = {
+                "required": True,
+                "qualified": qualified,
+                "identity_source": "ollama_tags_manifest_binding",
+                "identity_transport": "local_http",
+            }
         return _finish(record, output_path)
+
+    if exploratory_context is not None:
+        gate = exploratory_context
+        required = {
+            "mode": "configured_selector_exploratory",
+            "ready": True,
+            "requested_selector": model.model_id,
+            "assignment_id": record.get("assignment_id"),
+            "exploratory_plan_hash": record.get("config", {}).get("exploratory_plan_hash")
+            if isinstance(record.get("config"), Mapping)
+            else None,
+            "config_hash": evidence["config_hash"],
+            "prompt_hash": evidence["prompt_hash"],
+            "max_host_dispatches": limits.max_host_calls,
+            "response_seconds": limits.response_seconds,
+            "provider_retries": 0,
+            "raw_credentials_persisted": False,
+        }
+        if model.provider != "codex" or model.offline is not False:
+            record["failure_reason"] = "exploratory_model_admission_mismatch"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        if provider_launcher is not None or not isinstance(gate, Mapping):
+            record["failure_reason"] = "exploratory_admission_invalid"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        if any(gate.get(key) != value for key, value in required.items()):
+            record["failure_reason"] = "exploratory_admission_gate_failed"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        if (
+            not isinstance(trusted_activation, NativeActivationTrust)
+            or trusted_activation.purpose != "production_native"
+            or trusted_activation.origin != "trusted_bootstrap"
+            or trusted_activation.activation.get("schema_version") != EXTENSION_ACTIVATION_SCHEMA
+        ):
+            record["failure_reason"] = "exploratory_activation_invalid"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        activation = trusted_activation.activation
+        if (
+            gate.get("activation_sha256") != trusted_activation.activation_sha256
+            or gate.get("plan_sha256") != trusted_activation.plan_sha256
+            or gate.get("row_sha256") != trusted_activation.row_sha256
+            or gate.get("row_id") != trusted_activation.row_id
+            or gate.get("assignment_id") != record.get("assignment_id")
+            or not isinstance(gate.get("authorization_row_id"), str)
+            or gate.get("authorization_row_id") != trusted_activation.row_id
+            or gate.get("activation_study_id") != activation.get("study_id")
+        ):
+            record["failure_reason"] = "exploratory_source_binding_mismatch"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        target = trusted_activation.row.get("target")
+        if (
+            not isinstance(target, Mapping)
+            or set(target) != {"family_label", "host", "selector", "effort"}
+            or not isinstance(target.get("family_label"), str)
+            or not target.get("family_label")
+            or target.get("host") != model.provider
+            or target.get("selector") != model.model_id
+            or target.get("effort") != "medium"
+            or trusted_activation.row.get("representation") != model.representation
+        ):
+            record["failure_reason"] = "exploratory_activation_target_mismatch"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        exploratory_authorization_row_id = gate["authorization_row_id"]
+        bindings = activation.get("artifact_bindings")
+        if not isinstance(bindings, Mapping) or not isinstance(
+            bindings.get("allowed_requests"), (list, tuple)
+        ):
+            record["failure_reason"] = "exploratory_request_binding_missing"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        account = gate.get("account_gate")
+        if not isinstance(account, Mapping) or any(
+            account.get(key) != value
+            for key, value in {
+                "existing_credit_consumption_authorized": True,
+                "automatic_reload_off_verified": True,
+                "native_account_match_verified": True,
+                "new_credit_purchase_authorized": False,
+                "api_key_fallback_authorized": False,
+            }.items()
+        ):
+            record["failure_reason"] = "exploratory_billing_gate_failed"
+            accounting["denominator_eligible"] = False
+            return finish(observe=False)
+        for key in ("activation_sha256", "plan_sha256", "row_sha256", "row_id"):
+            if not isinstance(gate.get(key), str) or not gate[key]:
+                record["failure_reason"] = "exploratory_source_binding_missing"
+                accounting["denominator_eligible"] = False
+                return finish(observe=False)
+        exploratory_admitted = True
+        accounting["denominator_eligible"] = False
+        evidence["exploratory_admission"] = copy.deepcopy(dict(gate))
+        evidence["provenance"] = {
+            "mode": "configured_selector_exploratory",
+            "synthetic": False,
+            "scientific_eligible": False,
+        }
+        record["scientific"] = {"assigned": 0, "executed": 0, "eligible": False}
+        if native_context is not None or ollama_local_admitted:
+            record["failure_reason"] = "exploratory_admission_conflicts_with_other_mode"
+            return finish(observe=False)
 
     if native_context is not None:
         from nesy_game.runtime_model_swap_native import validate_native_context
@@ -349,8 +683,14 @@ def run_episode(
             mode == "native" and admission.get("scientific_eligible") is True
         )
         if native_production_admitted:
+            is_ext = (
+                isinstance(trusted_activation, NativeActivationTrust)
+                and isinstance(trusted_activation.activation, Mapping)
+                and trusted_activation.activation.get("schema_version")
+                == EXTENSION_ACTIVATION_SCHEMA
+            )
             accounting["assigned"] = 1
-            record["scientific"] = {"assigned": 1, "executed": 0, "eligible": True}
+            record["scientific"] = {"assigned": 1, "executed": 0, "eligible": not is_ext}
         else:
             accounting["denominator_eligible"] = False
         if provider_launcher is not None:
@@ -358,11 +698,47 @@ def run_episode(
             accounting["denominator_eligible"] = False
             evidence["provenance"] = {"mode": "rejected", "synthetic": False}
             return finish(observe=False)
-    elif not model.offline or model.provider is not None or provider_launcher is not None:
+    elif ollama_local_admitted:
+        if model.provider != "ollama" or model.offline is not False:
+            record["failure_reason"] = "ollama_admission_mismatch"
+            accounting["denominator_eligible"] = False
+            evidence["provenance"] = {"mode": "rejected", "synthetic": False}
+            return finish(observe=False)
+        if config.get("execution_mode") != "fixed_game_godot_with_local_ollama":
+            record["failure_reason"] = "ollama_execution_mode_required"
+            accounting["denominator_eligible"] = False
+            evidence["provenance"] = {"mode": "rejected", "synthetic": False}
+            return finish(observe=False)
+        if not _ollama_runner_is_bound(engine):
+            record["failure_reason"] = "ollama_runner_binding_required"
+            accounting["denominator_eligible"] = False
+            evidence["provenance"] = {"mode": "rejected", "synthetic": False}
+            return finish(observe=False)
+        ollama_production_admitted = True
+        accounting["assigned"] = 1
+        record["scientific"] = {"assigned": 1, "executed": 0, "eligible": False}
+        evidence["provenance"] = {
+            "mode": "local_ollama",
+            "synthetic": False,
+            "scientific_eligible": False,
+        }
+    elif not exploratory_admitted and (
+        not model.offline or model.provider is not None or provider_launcher is not None
+    ):
         record["failure_reason"] = "provider_not_allowed_offline"
         evidence["provenance"] = {"mode": "rejected", "synthetic": False}
         return finish(observe=False)
     try:
+        engine._episode_assignment_id = record.get("assignment_id")
+        engine._episode_row_id = exploratory_authorization_row_id
+        engine._episode_config_hash = evidence["config_hash"]
+        evidence["admission_setup"] = {
+            "assignment_id": record.get("assignment_id"),
+            "config_hash": evidence["config_hash"],
+            "runner_type": type(getattr(engine, "prompt_runner", None)).__name__,
+            "runner_module": type(getattr(engine, "prompt_runner", None)).__module__,
+            "execution_mode": config.get("execution_mode"),
+        }
         configure = getattr(engine, "configure_runtime", None)
         if callable(configure):
             configure(
@@ -517,7 +893,7 @@ def run_episode(
                 if getattr(engine, "engine_error", None):
                     record["failure_reason"] = "engine_unavailable"
                 elif isinstance(exc, PromptTransportError) and not attempt:
-                    retry_transport = True
+                    retry_transport = not exploratory_admitted
                 elif repair_source is not None and attempt < limits.max_repairs_per_decision:
                     error = {"code": "PROPOSAL_FORMAT_ERROR", "message": row["error"]}
                     decision["validation"] = error | {"valid": False}
@@ -796,6 +1172,9 @@ class GodotEpisodeEngine:
         self._model_id = "offline-scripted"
         self._prompt = "Restore the lighthouse signal and reveal the authorized tide lead."
         self._legacy_module: Any = None
+        self._episode_assignment_id: str | None = None
+        self._episode_row_id: str | None = None
+        self._episode_config_hash: str | None = None
         self.source_hashes: dict[str, str] = {}
         self.safety_report: dict[str, Any] = {
             "status": "NO_COMMIT_OBSERVED",
@@ -1005,12 +1384,25 @@ class GodotEpisodeEngine:
         )
 
     def _observed_prompt(self, **kwargs: Any) -> Any:
+        kwargs["assignment_id"] = getattr(self, "_episode_assignment_id", self.assignment_id)
+        row_id = getattr(self, "_episode_row_id", None)
+        kwargs["row_id"] = row_id if row_id is not None else kwargs["assignment_id"]
+        kwargs["config_hash"] = getattr(self, "_episode_config_hash", None)
         kwargs["instruction"] += "\nPUBLIC_CONTEXT=" + self._context["model_input"]["rendering"]
         kwargs["timeout"] = min(kwargs["timeout"], self._limits.response_seconds, self._remaining())
         if kwargs["timeout"] <= 0:
             raise TimeoutError("episode deadline reached before host dispatch")
         effective = {
-            key: kwargs[key] for key in ("request_id", "user_prompt", "model", "instruction")
+            key: kwargs[key]
+            for key in (
+                "request_id",
+                "user_prompt",
+                "model",
+                "instruction",
+                "assignment_id",
+                "row_id",
+                "config_hash",
+            )
         }
         row: dict[str, Any] = {
             "request": effective,

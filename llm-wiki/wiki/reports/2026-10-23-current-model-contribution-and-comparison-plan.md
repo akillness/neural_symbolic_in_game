@@ -351,3 +351,167 @@ Obsidian CLI가 실행 중인 앱을 찾지 못해 기존 프로젝트 위키의
 
 공개 전달에서는 [개인 경로 가림본과 원본 해시 영수증](../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/public-projection-verification.json)을 사용한다. 원시 episode/log/input/staging 트리, 개인 prompt와 가림 전 캡처 ledger는 로컬에 보존하고 공개 대상에서 제외한다. 원본8개의 SHA-256 불변을 확인했으며 원시 자료는 수정하지 않았다. 가림본은 새 실행이나 raw replay record가 아니다. **개정 소스104파일은 `13b5c77401aefc0cb8ff3f10534d8944564e957b`로 원격 전달·read-back 확인**했다([실제 전달 영수증](../../../neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-10-24-paper-review/source-delivery-verification.json)). 변경하지 않은 전체 pre-push gate가 통과했고 unittest412개·game78개/subtest48개, deep-research14개, survey3개, 로컬 wiki lint PASS를 기록했다. 공개 파일 집합 기준 Markdown 링크116개도 통과했다. 추가로 찾은 과거 Markdown 참조3건/대상2개는 원본 미확보를 명시했으며 source recovery로 세지 않는다. 새 실모델 실험·배포·graph/index 재생성이나 G4/full G6 승격은 없다. 다음 단계는 여전히 미승인인 계정/정체성·egress/spend/launch 범위와 quest/repeat/C 허용차/분석 계약의 결정이다.
 
+### Native model metadata preflight / 무생성 모델 목록 사전점검 — 2026-10-24
+
+사용자는 **모델 목록 사전점검만 승인**했다. 기존 native 로그인으로 세 제공자를 순차 조회했고, 연구 prompt/user message·후보 추론·실험·설치·패널 변경은 하지 않았다. 이 승인은 연구 데이터 전송·비용·live-study 실행이나 계정별 목록의 공개 게시 승인으로 확대하지 않는다. 아래 결과와 새 인계 변경은 **로컬 전용·미커밋·미푸시**다. 앞선 논문 전달 커밋 `13b5c77`과 기록 커밋 `841cf80`의 원격 전달은 별개로 완료돼 있다.
+
+| 제공자 | 실제 조회 | 확인한 목록/selector | 여전히 미확인 |
+|---|---|---|---|
+| Codex | `app-server --stdio`: `initialize` → `initialized` → `model/list` (`includeHidden=true`), 빈 임시 cwd | 목록10개. `gpt-6.1-sol`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`가 보인다. `gpt-5.5*`는 이 목록에 없다. | 추론 entitlement·served revision·GPT-5.5의 전역 사용 불가 여부·비용/성능 계층 |
+| Claude | safe-mode SDK `control_request/initialize`만 전송, user message0·assistant frame0 | 초기화 목록5개. `opus` 설명은 Opus5.5, `sonnet` 설명은 Sonnet5.5다. 요청한 legacy5의 exact ID는 이 목록에 없다. | alias의 고정 provider revision·legacy ID의 실제 추론 가능성·비용/성능 |
+| Antigravity | 설치된 help로 확인한 `agy models` | 목록13개. `gemini-3.8-flash-{low,medium,high}`와 Opus5.5/Sonnet5.5 effort별 native selector가 보인다. | 특정 effort 선택·실제 추론/served revision·fallback·비용/성능 |
+
+목록 노출은 실제 추론 성공·모델 정체성의 attest나 `비최상위` 분류의 독립 근거가 아니다. 기존 roster·동결 계약·논문·게임은 바꾸지 않았으며, 원래 후보명과 관측 후보를 자동 치환하지 않는다. 다음 결정은 **원래 명칭을 유지할지, 관측 후보로 별도 패널 개정안을 만들지**다. 그 뒤에도 전체 quest/repeat/시간·호출 예산/C 허용차/분석법, 검증된 live-adapter 경로와 egress/spend/launch 승인이 필요하다.
+
+로컬 영수증: `_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/`의 `approval.json`, `codex-catalog.json`, `claude-catalog.json`, `antigravity-catalog.json`, `summary.json`. 원시 account 출력과 stderr는 Git 관리 밖의 private evidence에 보존하고, 공유용 로컬 JSON은 모델 필드만 추려 원본 SHA-256에 결속했다. 이 경로를 공개 clone에 존재한다고 가정하지 않는다. Obsidian CLI는 앱 미실행으로 exit1이어서 기존 프로젝트 위키 편집 대체 경로를 사용했다. 새 모델 실험·commit/push/배포·graph/index 갱신은 없다.
+
+### Observed panel amendment draft / 관측 후보 패널 개정안 — 2026-10-25
+
+사용자는 **`관측 후보로 개정안 작성`**을 선택했다. 이는 별도 초안 작성 승인이지 후보 채택·전체 프로토콜 동결·연구 자료 전송·비용·실행 승인이 아니다. 아래 산출물과 인계 변경은 **로컬 전용·미커밋·미푸시**다.
+
+- [교정 초안 v2](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json)는 새 GPT-6.1-SOL 기준선과 GPT-5.6 계열·Opus 5.5·Sonnet 5.5·Flash 3.8을 **다섯 family slot**으로 제안한다. GPT-5.6 variant 수와 Flash effort가 미선택이므로 최종 모델 수는 확정하지 않았다. GPT-5.5는 미확인 후보로 보존하며 원래 legacy Claude 요청도 삭제하지 않았다.
+- [한정 검증 영수증](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/panel-amendment-verification-v2.json)은 결속 출처11개·JSON문서12개·조건부 산식2개·Codex effort 매핑4개를 검사했다. 기존 결속 원본9개는 바이트 불변이며 새 연구의 후보 생성·episode는0회다.
+
+초기 검토는 **FIX**였다. Claude 호스트를 관측 사실과 배정으로 구분하지 않은 문제, Codex effort 누락과 Luna의 `ultra` 미노출, C 대비의 동일 예산 문구, 질문의 한영 대응을 v2에서 교정했다. [최초 FIX 원문](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/panel-amendment-review-v1.json)은 보존했다. 후속 판정은 **APPROVE_DRAFT**이나 resumed-result 조회가 실패해 [검토자 IRC 인계](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/panel-amendment-review-v2-irc.json)로 명시했다. 누락된 원본 도구 결과나 다중 모델·인간 검토로 위장하지 않는다.
+
+Claude 자체 CLI alias와 Antigravity의 Claude effort별 selector를 대안으로 구분하고, 모든 실제 호스트 배정은 미승인으로 남겼다. GPT-6.1-SOL·GPT-5.6-SOL/Terra에는 native 목록상 effort6종, Luna에는5종이 보이며 Luna의 `ultra` 전역 사용 불가를 뜻하지 않는다. 같은 effort 명칭이 제공자 간 같은 연산량을 보장하지 않는다.
+
+미승인인 기존 12quest×2repeat 제안을 조건부로 적용하면 GPT-5.6 한 종일 때 모델5개·cell10개·episode240개·C대비4개, 세 종일 때 모델7개·cell14개·episode336개·C대비6개다. 이 산식은 예산 승인·배정·표본수/검정력 근거가 아니며 기존288회/대비5개를 자동 상속하지 않는다. 새 Sol 기준선, 1차 예산 내 목표 달성률, 별도 필수 커밋 안전 게이트와 동일 정보 대조군의 한계는 보존한다. A/C·비최상위/비용 우위·온톨로지 존재의 인과 효과는 미입증이다.
+
+다음 인터뷰는 **GPT-5.6-SOL 한 종 대 SOL·Terra·Luna 세 종** 선택이다. 그 뒤에도 native 호스트/effort·held-out 과제·예산·C 허용차·분석법과 자료 전송/비용/실행 승인이 필요하다. 전체 검증 계약과 실제 실험은 **미완료·미실행**으로 남는다. Graphify는 기존 graph의 evidence/claim 관계만 조회했고 오래된 ID·잘린 출력 경고를 보존했으며 새 모델 자료의 근거로 쓰거나 graph/index를 재생성하지 않았다. Obsidian 앱 미실행으로 기존 프로젝트 위키 편집 대체 경로를 사용했다.
+
+### GPT-5.6 variant decision / GPT-5.6 variant 선택 — 2026-10-25
+
+사용자는 **`GPT-5.6-SOL 한 종`**을 선택했다. [설계 항목 결정 원본](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/panel-variant-decision-v1.json)은 검토 초안 v2의 SHA-256에 결속했고, JSON 파싱·저장 바이트 해시·선택값·미승인 권한 불변을 확인했다. Terra/Luna는 이 주 비교 제안에서 제외하되 관측 이력과 기존 v1/v2 초안은 수정하지 않았다.
+
+다른 제안 계열을 유지하면 새 GPT-6.1-SOL 기준선 + GPT-5.6-SOL + Opus5.5 + Sonnet5.5 + Flash3.8의 **5모델군·C대비4개**다. 전체 패널 채택이나 표본수/예산 승인은 아니며 native 호스트·정확한 정체성·effort는 여전히 미확정이다. 같은 명칭의 effort를 동일 연산량으로 간주하지 않는다. native 목록상 `ultra` 설명에 자동 작업 위임이 있어 기존 순차 실행 규칙과의 적합성도 검증 없이 가정하지 않는다.
+
+다음 인터뷰는 **Codex의 두 SOL 모델에 적용할 reasoning effort 정책**이다. 전체 실험 계약 동결·자료 전송·비용·실행 승인은 여전히 필요하며 새 후보 모델 생성/episode는0회다. 이 결정과 인계 변경은 로컬 전용·미커밋·미푸시다.
+
+### Codex SOL effort decision / Codex SOL effort 선택 — 2026-10-25
+
+사용자는 **`둘 다 medium`**을 선택했다. [한정 설계 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-sol-effort-decision-v1.json)은 새 GPT-6.1-SOL 기준선과 GPT-5.6-SOL 후보의 native reasoning effort를 각각 `medium`으로 정하는 **전향적 설계 항목**이다. 두 모델의 결속 native 목록에서 해당 값이 존재함을 확인했고, JSON 파싱·저장 해시·권한 불변을 검증했다.
+
+실제 CLI/runner 설정이나 이전 초안·variant 결정·동결 지표는 수정하지 않았다. 같은 명칭의 effort는 같은 연산량·토큰·지연·비용·품질을 뜻하지 않는다. 자료 전송·비용·생성·실행 승인과 전체 계약 동결은 모두 미완료이며 새 후보 생성/episode는0회다. 다음 인터뷰는 **Opus5.5·Sonnet5.5의 자체 Claude CLI 대 Antigravity 호스트 선택**이다. 모든 새 기록과 인계는 로컬 전용·미커밋·미푸시다.
+
+### Claude Code host decision / Claude Code 호스트 선택 — 2026-10-25
+
+사용자는 **`claude code로 정해`**라고 답했다. [한정 호스트 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/claude-code-host-decision-v1.json)은 Opus5.5·Sonnet5.5 두 후보의 제안 실행 호스트를 **Claude Code의 자체 `claude` CLI**로 선택한다. 두 후보에 대한 Antigravity 경로는 미선택이며, Gemini의 기존 Antigravity 제안 경로까지 바꾸는 결정은 아니다.
+
+관측 alias `opus`·`sonnet`을 실제 제공자 ID나 revision으로 승격하지 않았다. 정확한 selector·Claude effort·추론 권한·fallback/도구·컨텍스트 검증은 남아 있고, 두 SOL 모델의 medium 결정을 Claude 후보에 자동 적용하지 않는다. 호스트 선택값·두 alias 대응·JSON 파싱·저장 해시·미승인 권한 불변을 확인했다. 기존 초안/결정·동결 지표·실제 CLI 설정·논문·게임은 수정하지 않았으며 새 후보 생성/episode는0회다.
+
+다음 인터뷰는 **Gemini3.8 Flash의 native effort(low/medium/high)**다. 전체 계약 동결·자료 전송·비용·실행 승인은 여전히 미완료다. 새 기록과 인계는 로컬 전용·미커밋·미푸시다.
+
+### Gemini Flash effort decision / Gemini Flash effort 선택 — 2026-10-25
+
+사용자는 Gemini3.8 Flash의 native effort에 **`medium`**을 선택했다. [한정 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/flash-effort-decision-v1.json)은 관측 selector `gemini-3.8-flash-medium`을 제안 설계값으로 정한다. native 목록 대응·JSON 파싱·저장 해시·미승인 권한 불변을 확인했으며 실제 CLI 설정·이전 결정/초안·동결 지표는 바꾸지 않았다. 새 후보 생성/episode는0회이고 비용·연산량·품질 동등성의 근거가 아니다.
+
+다음 Claude effort 질문을 위해 [공식 문서 발췌](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/claude-effort-documentation-20261025.json)를 별도로 보존했다. model-config 문서는 Opus5.5·Sonnet5.5에 medium 지원을 나열하지만, env-vars 문서상 `CLAUDE_CODE_EFFORT_LEVEL`은 `--effort`보다 우선하며 `maxEffortLevel` 상한도 적용된다. 따라서 향후 실제 적용값·provider/model identity 확인이 필요하고, 이 문서 조회는 native 환경 읽기·설정 변경·추론 검증이 아니다.
+
+다음 인터뷰는 **Claude Code의 Opus5.5·Sonnet5.5 effort 정책**이다. 아직 두 모델의 effort를 승인하거나 Codex/Flash 값을 자동 상속하지 않았다. 전체 계약·C 허용차/분석·자료 전송·비용·실행 승인은 여전히 미완료다. 기록은 로컬 전용·미커밋·미푸시다.
+
+### Claude effort decision / Claude effort 선택 — 2026-10-25
+
+사용자는 Claude Code의 Opus5.5·Sonnet5.5 effort에도 **`둘 다 medium`**을 선택했다. [한정 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/claude-effort-decision-v1.json)은 공식 문서와 앞선 호스트/variant/effort 결정에 결속했다. 출처5개·JSON 파싱·저장 해시·선택값·미승인 권한 불변을 확인했다. 기존 결정/초안·동결 지표·실제 CLI 설정은 수정하지 않았으며 새 후보 생성/episode는0회다.
+
+이로써 제안5모델군의 **명목상 native effort 설계값은 모두 medium**이지만 모델별 실제 적용값·provider/model/revision·계정 권한·fallback/컨텍스트·도구 검증은 별개다. 특히 Claude 환경변수 우선순위와 effort 상한을 확인하기 전에는 실제 medium 적용을 주장하지 않는다. 같은 이름의 effort가 같은 연산량·지연·비용·품질을 뜻하지 않는다.
+
+다음 인터뷰는 **먼저 탐색적 실행 가능성 파일럿을 할지, 독립 확증 실험 설계부터 할지**다. 기존 조건당24회/12quest×2repeat는 아직 미승인 제안이며 pilot로 C 비열등성을 증명하지 않는다. 전체 프로토콜·표본/예산·C 허용차/분석·자료 전송·비용·실행 승인은 미완료이고 새 기록은 로컬 전용·미커밋·미푸시다.
+
+### Study stage decision / 연구 단계 선택 — 2026-10-25
+
+사용자는 **`파일럿 후 독립 확증`**을 선택했다. [한정 단계 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/study-stage-decision-v1.json)은 탐색적 실행 가능성 파일럿 뒤에 **별도 독립 held-out 확증 실험**을 설계하는 순서만 승인한다. 출처4개·JSON 파싱·저장 해시·단계 순서·미승인 권한 불변을 확인했다. 표본수·과제·예산·C 허용차·생성·자료 전송·비용·실행 승인은 여전히 미완료다.
+
+파일럿은 native 경로와 정체성/설정 증거, 목표·안전·제안 위반·수정·시간/비용 측정의 실행 가능성과 누락/실패를 확인한다. 파일럿 자료를 확증 효능 추정에 합치지 않고, pilot 결과에 맞춰 실용 허용차를 유리하게 바꾸지 않는다. 독립 과제·분석·다중 비교군·군집/짝 설계·검정력은 확증 결과를 보기 전에 별도로 동결한다. 파일럿만으로 C 비열등성·온톨로지 우월성이나 보편적 일관성을 입증하지 않는다.
+
+다음 인터뷰는 **파일럿의 과제 범위와 반복 수**다. 기존 12quest×2repeat/조건당24회와 제안5모델군·2표현에서의240회는 아직 승인된 표본/예산이 아니며 실제 과제 payload도 동결되지 않았다. 이전 결정/초안·동결 지표·CLI 설정·논문·게임은 수정하지 않았고 후보 생성/episode는0회다. 새 기록은 로컬 전용·미커밋·미푸시다.
+
+### Twenty-episode pilot scope / 20회 파일럿 범위 — 2026-10-25
+
+사용자는 **`20회 부터`**를 선택했다. [한정 표본 범위 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pilot-20-scope-decision-v1.json)은 **기존1퀘스트×제안5모델군×2표현(동일 정보 일반규칙/ontology-view)×cell당새실행2회=20episode**로 초기 실행 가능성 파일럿을 설계한다. cell은10개이고 과제 군집은1개다. episode20개는 API 호출20회를 뜻하지 않으며, 모델 호출·수정·재시도 한도는 아직 별도 승인 대상이다.
+
+산식·출처5개·JSON 파싱·저장 해시·미승인 권한 불변을 확인했다. 실제 배정/실행은0회이고 퀘스트 payload/독립 oracle/프롬프트·소스 해시·모델 정체성/실제 설정·순서·예산은 실행 전에 결속해야 한다. 반복은 새 상태/세션을 요구하되 provider RNG seed나 과제 간 독립성을 가정하지 않는다. 단일 과제이므로 20개 독립 퀘스트로 세거나 과제 모집단의 군집 bootstrap/신뢰구간·일반화·C 비열등성 근거로 쓰지 않는다. 독립 확증과 자료를 합치지 않으며 기존240회 제안은 채택하지 않았다.
+
+다음 인터뷰는 **episode 자원 예산 묶음**이다. 기존 미승인 제안인 episode180초·호스트 응답60초·총host invocation12회(수정/재시도 포함)·판단당논리수정2회·동시실행1을 제시하되, native 내부 요청 수·원격 취소/청구 중단·금전 한도까지 보장하는 값으로 취급하지 않는다. 실제 CLI/기존 결정·동결 지표·논문·게임은 바꾸지 않았으며 새 후보 생성0회, 로컬 전용·미커밋·미푸시다.
+
+### Pilot resource budget / 파일럿 자원 예산 — 2026-10-25
+
+사용자는 **`제안 한도 채택`**을 선택했다. [한정 예산 설계 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pilot-20-budget-decision-v1.json)은 승인된20회 파일럿에 episode180초·개별native응답대기최대60초(남은episode시간 이내)·episode당관측가능host호출12회·판단당논리수정2회·동시실행1을 결속한다. 최초시도·거부·잘못된응답·timeout·수정·transport재시도를 호출 한도에 포함하고, transport재시도가 논리수정 한도를 초기화하지 않는다. 조건부20×12=240은 episode내 관측가능host호출 산술상한일 뿐 provider내부요청·준비/사전점검·청구상한이 아니다.
+
+원본3개 해시와 저장JSON을 확인했다. 현재 `EpisodeLimits`의 오프라인 기본값은180/60/12/2지만 native실행에서의 강제 가능성을 입증하지 않는다. 현재 entrypoint에서 `rtk proxy .venv/bin/python scripts/run_runtime_model_swap.py --live --output-root "$NATIVE_REJECT_OUT"`를 새 임시경로로 실행한 결과 exit2·`provider_not_allowed_offline`·provider실행0을 반환했고 출력폴더도 생성되지 않았다. 이 검사는 live차단만 증명하며, 실제model접근·native연결·원격취소·청구중단 검증이 아니다.
+
+기존 [오프라인 구현 승인](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/offline-implementation-approval-v1.json)은 injectable `prompt_runner`의 typedadapter와 로컬engine/test 작업을 허용하지만 실제provider호출·전송·지출·연구episode실행은 허용하지 않는다. 현재 entrypoint는 synthetic callback을 주입하며 `run_episode`도 native/provider launcher를 거부한다. 따라서 이 entrypoint를20회 반복하는 것은 새 실모델 표본이 아니다. 다음은 native연결의 한정 로컬구현/검증 범위와 과제·독립oracle·소스·순서·정체성/실제설정·권한 계약을 결속하는 단계다. 이전 결정·CLI설정·runtime소스·논문·게임은 수정하지 않았고 실제배정/실행/새후보생성0회, 로컬전용·미커밋·미푸시다.
+
+### Public input and subscription policy / 공개 입력·구독 정책 — 2026-10-25
+
+사용자는 **`공개된 최소 입력만`**과 **`기존 구독 한도만`**을 선택했다. [한정 정책 결정](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pilot-input-billing-policy-decision-v1.json)은 공개 여부를 확인한 최소 퀘스트 설명·필요한 게임 상태 관측·행동/출력 스키마·조건별 동일정보 규칙/온톨로지 표현만 전송 후보로 설계한다. 계정정보·인증파일·개인위키·원본대화/캡처prompt·저장소전체·기밀/공개미확인 게임입력은 제외한다. 실제 입력의 항목·공개 출처·해시는 전송 전에 결속해야 하며 공개성을 확인할 수 없으면 중단한다.
+
+기존 native구독 한도 밖의 추가과금·결제/요금제변경·유료API우회·무단모델/호스트대체는 허용하지 않는다. **추가 청구 가능성을 배제하지 못하거나 구독한도를 확인하지 못하면 실행하지 않는다.** 이것은 실제0원측정·잔여한도확인·원격청구중단 보장이 아니다. 출처3개와 저장JSON/hash를 확인했으며 계정별billing/allowance는 아직미확인이다. 이전 무생성catalog조회·오프라인code/engine/test승인은 유지하지만 새billing조회·실제연구입력전송·생성·지출·launch권한은 부여하지 않았다. 전체실행계약은 미동결이고 배정/실행/새후보생성0회, 로컬전용·미커밋·미푸시다.
+
+### Preparation contract proposal / 통합 준비 계약 제안 — 2026-10-25
+
+정해진 설계 선택을 [통합 준비 제안v1](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pilot-native-preparation-proposal-v1.json)에 결속했다. 출처13개·제안 패널5종·오프라인 준비 수락기준8개이며 **사용자승인대기**다. 준비대상은 새GPT-6.1-SOL 기준선·GPT-5.6-SOL·ClaudeCode Opus5.5/Sonnet5.5·Antigravity Flash3.8의 명목상medium 경로다. 원래 GPT-5.5/legacyClaude5 요구는 이 목록으로 해결됐다고 보지 않고 미해결로 보존한다. 실제servedidentity·비최상위분류·동일연산량·과학적비교결과나 전체live roster활성화 승인이 아니다.
+
+제안하는 범위는 기존typed `prompt_runner` 경계를 통한 native연결 코드의 로컬구현·fixture/일회용engine검증, 공개최소입력·독립goal/safety oracle·소스해시와20행배정계획의 결속, 권한·정체성/설정·구독조건이 없거나불일치하면 provider실행전에 차단하는 경로의 검증이다. 계정/청구조회·실제연구입력전송·실모델호출·과금·실제연구배정/launch·공개/commit/push/deploy는 제외한다. 오프라인fixture의 통과를 실모델준비완료나20회실험결과로 세지 않는다.
+
+[단일별도문맥 검토](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pilot-native-preparation-review-v1.json)는 **`APPROVE_PREPARATION_PROPOSAL`**이며 차단결함0개다. 최초critic은429로 검토출력없이 실패했고, 기본runtime의 새 한정검토가 반환한 원본완료결과를 보존했다. IRC재구성·이전결과회수·다중모델검토독립성으로 포장하지 않았으며 reviewer는해시를독립재계산하지않았고 parent가제안hash를확인했다. 이 승인은 제안범위의 정합성만 뜻한다. 과제/publicity/oracle/source·native설정/맥락·구독한도·실행권한은 여전히 활성화 gate이고 실제연구배정/실행/새후보생성0회다.
+
+### Native preparation verification — 2026-10-25 UTC
+
+**상태: 로컬 준비 구현·검증 완료 / 실제 native 실험은 미승인·미실행.** 이 절은 앞선 통합 준비 제안의 사용자승인대기 상태를 갱신한다. [로컬 전용 승인](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/pilot-native-preparation-approval-v1.json)의 SHA-256은 `4a8e840befe6714c129d4edd205ac4ad65342eb417cb20f791541355b03f8c68`이다. 연구 운영자·후속 에이전트는 [최신 준비도](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/readiness-v1.json)를 기준으로 준비 검증과 실제 실행 권한을 구분한다. 검증 시각은 UTC 2026-10-25 / KST 2026-10-26이다.
+
+기존 typed `prompt_runner` 경계에 native 호스트 연결을 구현했다. 별도 신뢰 승인 루트·선택된 배정 행·정확한 요청 tuple·공개 입력·정체성/설정·격리·구독 증거를 소스에 결속한다. 만료·누락·변조·비공개 경로·실행 프로젝트 교체는 dispatch 전에 차단한다. 실제 호스트 시도·재시도·수정 요청을 분리 집계하며, 저장이나 정리 단계가 실패해도 완료된 episode 기록과 알려진 실행 사실을 보존한다. 이 구현은 실제 계정·provider 내부 요청 수·원격 과금 취소가 검증됐다는 뜻이 아니다.
+
+| 한정 검증 | 관측 결과 | 원본 근거 |
+|---|---|---|
+| 최종 회귀 | 테스트136개 + subtest201개 PASS; XML 합계337개, 오류·실패·건너뜀0개 | [실행 명령·결과061](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/061-final-focused-verification-command.json), [pytest XML071](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/071-coverage-tests.xml) |
+| Ruff·형식 | 변경4파일의 한정 검사 PASS | [명령·결과060](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/060-final-style-commands.json) |
+| 실행 가능 줄 커버리지 | 변경 런타임·native 모듈·CLI 각각92%·83%·86%; 각80% 기준 충족 | [stdlib trace 요약073](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/073-final-coverage-summary.json) |
+| 별도 문맥 정적 검토 | code-reviewer와 Python 검토 모두 한정 준비 범위 PASS | [code063](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/063-source-binding-closure-review.json), [Python064](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/064-final-python-closure-review.json) |
+| 실제 Godot 엔진 matrix | 설계 대상5종 × 표현2종의 공학 episode10개 모두 목표·안전·재생·독립 oracle·정보 동등성 PASS; 주입 호스트 시도40회 | [실행065](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/065-final-smoke-commands.json), [기록 해시067](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/067-final-record-hashes.json), [검증068](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/068-final-evidence-verification.json) |
+| 원본·보호 경계 | 최종 코드와 명명된 source20개/input5개의 manifest 결속; 보호60파일 바이트 불변 | [소스 동결062](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/062-final-source-freeze.json), [검증068](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/068-final-evidence-verification.json) |
+
+커버리지용 추가 CLI→Godot 공학 probe1개도 목표·안전·재생·기록 해시 검사를 통과했다. 이는 위10개 matrix와 별도이며 주입 시도4회, 실모델 생성0회다. `coverage.py` 부재와 최초 `trace --no-report`의 계수 미저장은 실패 이력으로 보존했고, 패키지 설치 없이 stdlib `trace`의 실제 report 생성과 pytest XML을 확인했다. 위 비율은 **세 변경 모듈의 실행 가능 줄 기준**이며 분기·전체 저장소 커버리지가 아니다.
+
+최초 검토의 FIX와 수리 중 실패 영수증을 삭제하지 않았다. 후속 검토는 현재 소스의 해당 결함 폐쇄만 승인하며 reviewer가 명령·해시 검증을 독립 실행했다는 뜻이 아니다. 두 검토는 호스트 기본 runtime의 별도 문맥 검토이며 서로 다른 제공자·모델의 독립 비교가 아니다.
+
+**20행은 계획이지 배정·실행 결과가 아니다.** [최종 계획066](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/066-final-assignment-plan.json)은 단일 과제 × 설계 대상5종 × 일반규칙/온톨로지2종 × 새 반복2회의 20행을 결속했지만, 실제 연구 배정0·실행0이다. 공학 matrix는 주입 응답을 사용했으며 대상 label을 바꾸어도 실제 모델을 호출하지 않았다. 실제 provider identity/revision·연산량·비용은 이 결과에서 확정하지 않는다.
+
+실제 활성화에는 공개 최소입력의 실제 공개성·전송 증거, native 모델 정체성/effort·맥락 격리, 기존 구독의 접근권/한도·추가청구 없음, 별도 소스 결속 활성화·최종 배정·연구 launch 권한이 필요하다. 현재 공개성은 `UNRESOLVED`, 실제 정체성·격리·구독/청구는 `UNVERIFIED`, live 활성화 권한은 false다. `medium`을 동일 연산량으로 해석하지 않는다. **모델 독립 온톨로지 효능·A 실행 일관성의 일반화·C 비최상위 후보 실용성은 여전히 미입증**이며 전체 live 프로토콜 동결·실험·논문 결과 승격을 하지 않았다.
+
+[매 질의 Jev 라우팅 규칙](../../../AGENTS.md#per-query-jev-skill-routing)은 기존 단일 규칙 위치를 유지한다. 이번 인계는 연구용 준비 상태만 갱신하며 studio lane·게임 런타임·생성 자산·품질 gate의 정책 변경이 아니다. Obsidian CLI가 앱을 찾지 못해 승인된 프로젝트 로컬 인계4곳만 직접 갱신했다. 별도 공유 vault·그래프 갱신을 완료했다고 주장하지 않으며 [fallback 근거074](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/native-preparation/evidence/074-knowledge-handoff-surface.json)를 남겼다. 실제 계정/청구 조회·실모델 실험·공개·commit·push·deploy는 수행하지 않았다.
+
+### Codex-first read-only preflight — 2026-10-26
+
+사용자는 **“codex 부터 진행하자.”**라고 지시했다. [한정 의도 기록](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/00-codex-first-intent-v1.json)은 기존 계획에서 Codex 두 selector의 일반규칙/온톨로지 × 새 반복2회, 후보8행을 추출하되 다른 native 호스트·기존 입력/비용 조건을 임의로 활성화·면제하지 않는다. 이는 확정 배정이나 전체 프로토콜 동결이 아니다.
+
+[실제 읽기 전용 사전점검](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/01-native-readonly-preflight.json)에서 Codex CLI `0.164.0`, ChatGPT OAuth 로그인, `account/read`·`account/rateLimits/read`·`model/list` 응답을 확인했다. native 목록10개에 `gpt-6.1-sol`·`gpt-5.6-sol`이 있으며 둘 다 medium 지원을 표기하지만 기본 effort는 low다. 이는 목록/설정 메타데이터이지 실제 생성 접근권·실행 effort·provider revision 증명이 아니다. 첫 로컬 RPC probe는 Python asyncio 호환성 오류로 실패했고, 호환 방식으로 재시도해 네 메서드 응답과 프로세스 종료를 확인했다. 계정 식별자·이메일·자격증명·원시 할당량 수치는 저장하지 않았다.
+
+실제 구독 사용 가능 상태와 크레딧 존재를 함께 관측했다. [공식 정책](https://help.openai.com/en/articles/12642688-using-credits-for-flexible-usage-in-chatgpt-personal-plans)은 구독 한도 뒤 크레딧 자동 사용, 선택적 자동충전, 동시 사용 시 음수 잔액 가능성을 설명한다. 확인한 turn/thread/config 표면에서 구독 포함량만 쓰는 차단을 검증하지 못했으며 자동충전 상태도 미확인이다. 따라서 기존 **“구독 한도만”** 조건의 통과나 실제 추가청구0원을 주장하지 않는다.
+
+[무인증 HTTP·바이트 검사](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/02-public-input-checks.json)에서 공개 게임 원본은 HTTP200·로컬 SHA-256 일치였으나, 준비한 입력5개는 확인한 공개 URL에서 모두404였다. 다른 공개 사본이나 공개 원본으로부터의 동등한 파생 가능성을 부정한 것은 아니지만 현재 exact-input 공개성은 여전히 `UNRESOLVED`다. 공개성 검사 대신 파일을 게시하거나 공개 여부를 자가 선언하지 않았다.
+
+[현재 gate](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/04-activation-gate-v1.json)는 **`CODEX_FIRST_PREFLIGHT_COMPLETE_ACTIVATION_BLOCKED`**다. 입력 처리와 크레딧 전환 정책의 결정을 기다리며 실제 연구 배정·실행·후보 생성0회를 유지한다. thread/turn 시작·연구 prompt 전송·계정 설정 변경·추가구매·API fallback·공개/commit/push/deploy는 없다. 별도 안전 검토 도구의429는 출력 없는 실패로 보존했고 PASS로 세지 않았다. Jev는 실행했으나 fit 기준으로 선택 스킬이 없었으며 명시 절차를 적용했다. [증거 검사](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/06-evidence-verification.json)는 JSON·식별자 제외·대상2종/medium·후보8행·종료·과학 분모0의 한정 검증이다. 기존 준비 검증은 과거 시점의 별도 상태로 보존한다.
+
+### Codex public-source reconstruction and strict credit stop — 2026-10-26
+
+사용자는 [별도 정책 결정08](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/08-policy-decision-v1.json)에서 **“공개 소스에서 재구성”·“구독 한도만 엄격히 유지”**를 선택했다. 기존 미확인 입력5개는 보내지 않으며 크레딧 사용 금지를 검증하지 못하면 실행하지 않는 조건이다. [Codex 한정 조건부 계약17](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/17-codex-conditional-contract-v1.json)은 기존 계획의 두 SOL × 표현2종 × 반복2회, 후보8행과 새 입력 해시를 결속한다. **실행 불가·미배정 계약**이며 전체 live 프로토콜 동결이나 production trust 발급이 아니다.
+
+[입력 manifest14](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/14-public-derived-input-manifest-v1.json)는 공개 commit `841cf80eb05225879491edd7792d8d752a60c944`의 무인증·바이트 검증 소스9개에서 최소 입력5개를 새로 구성한 기록이다. 새 제어 문구와 직렬화는 별도로 식별하며, **생성된 exact bytes가 이미 공개됐다는 뜻도 실제 native 공개성·전송 허가 영수증도 아니다**. 독립 oracle·종료 상태/정답 해시·소스 스냅샷·계정 자료는 모델 입력에서 제외한다. 소스 재배포 license는 `UNVERIFIED`이며 공개 접근을 재배포 허가로 간주하지 않는다.
+
+[Godot 실행11](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/11-public-engine-derivation-commands.json)에서 새 프로세스2회 모두 정규 상태기계의 관측4개·승인 커밋3개·목표 달성을 확인했고, 두 종료 상태/해시는 공개 Python 독립 기준 계산과 일치했다. **전체 3D 플레이나 모델 episode가 아닌 결정론적 데이터 추출**이다. [최종 검증20](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/20-local-verification-v1.json)의 새 계약 테스트7개가 통과했다. 두 표현을 똑같이 오염해도 독립 기준이 거부하는지, 렌더링 정보 동등성, schema 경계, 중첩 허용목록과 제어 문구 유출 방지를 검사했다. 최초4개·후속6개 통과는 검토 종결이 아니었다. [초기 FIX](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/18-review-findings-initial-v1.json)·[두 번째 FIX](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/18b-review-findings-second-v1.json)·전용 Python 검토기의 출력 없는429를 보존했고, [동일 검토자 Python 기준 대체 종결18c](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/18c-review-closure-final-v1.json)는 한정 정적 검토 PASS다. 다른 모델의 독립 실행/비교로 세지 않는다.
+
+[비용 집행점 점검16](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/16-credit-exclusion-assessment-v1.json)은 **`HARD_CREDIT_EXCLUSION_UNVERIFIED_DO_NOT_EXECUTE`**다. 공식 정책은 한도 뒤 기존 크레딧 사용을 설명하며, 로그인 방식·잔여 한도 조회·자동충전 설정·reserve/detail 조회 flag만으로 native 생성의 크레딧 금지를 입증하지 못했다. 실제 추가청구0원이나 계정 설정 변경을 주장하지 않는다.
+
+**최신 상태는 [gate21](../../../neuro-symbolic-interactive-game-research-2026/research/runtime-model-swap-20261024/codex-first-20261026/21-activation-gate-v2.json)의 `CODEX_PUBLIC_INPUTS_VERIFIED_CREDIT_GUARD_UNVERIFIED_NATIVE_BLOCKED`다.** native 실행 가능 행0·실제 연구 배정0·실행0·후보 생성0회다. 비용 조건 외에도 실제 source-bound 공개성/전송·모델/설정/격리·최종 활성화/배정/launch 허가는 발급하지 않았다. 기존 gate04·준비도·원본 결정을 고치거나 공학 검증을 A/C·모델 독립 온톨로지 효능으로 승격하지 않는다. Jev API 라우팅은 미검증 advisory로만 적용했다. Obsidian CLI 부재에 따라 승인된 프로젝트 로컬 인계4곳만 갱신했으며 공유 vault·그래프·계정 설정·구매·논문/게임 런타임·공개·commit/push/deploy 변경은 없다.
+
+
+## Native runtime comparison — 2026-10-26
+
+**Later measured checkpoint / 후속 실측 체크포인트:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison]]가 현재 native 한정 결과와 공개 근거 경로를 기록한다. 앞선 native=0·미배정·차단 문구는 당시 상태의 이력으로 보존하며 소급 수정하지 않는다. 이번8행을 과거 n=1/CLI6 개발 사례·E1/E2/E3/NPC·주입 QA·미실행 whole-game/확대 패널과 합산하지 않는다.
+
+고정 authored quest1개 × 요청 selector2종 × 표현2종 × 반복2회에서 원래 배정8행·native 실행 관측7행·system-goal 성공5/8이다. gpt-6.1-sol general_rule1/2·ontology0/2(응답 timeout2), gpt-5.6-sol 각2/2; 관측 host 호출23·repair0·unsafe commit0/16이다. 첫 직렬화 기술 실패의 executed/goal/episode/timing은 null이고 재실행하지 않았다. 이후 소스 직렬화 수정은 개정 교란이다. Fresh-engine는 VALID6/INVALID0/NOT_RUN1(row4)/NOT_OBSERVED1(row1), semantic link replay는 valid7/invalid0/unobserved1이며, row4 목표 null이나 row3 유효 재생을 목표 성공으로 바꾸지 않는다.
+
+**PUBLICATION_VALIDATION_IN_PROGRESS:** 출판 검토는 FIX 교정 중이며 현 소스의 최종 검토·그림/표/출처·한영 PDF/build 게이트 완료는 아직 아니다. native 범위 종료와 임시 launch 권한 제거는 출판 승인과 별개다. Provider identity/revision/cost·provider 요청 수·실제 크레딧/현금 소모는 미확인이다. stateless typed-intent proposer와 결정론적 planner/checker·Godot-only commit의 한정 관측이지, 모델 순위·온톨로지 효능/일반 일관성·C 비열등성·player benefit·독립 게임 제작·A/C 확증이 아니다.
+
+**Reusable lesson / 학습:** 정확한 CLI 경계를 먼저 검증하고 배정 실패·원래 ID·null을 보존한다. 재생 수행 여부와 유효성을 따로 기록한다. 동결 byte admission은 결과 중립적 무결성 조건이지 유리한 outcome의 선택 필터가 아니다. 공개 results/traces/integrity/독립 fallback 감사와 comparison 그림·표·PDF 경로 및 미완료 gate는 새 보고서를 따른다.

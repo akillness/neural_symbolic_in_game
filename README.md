@@ -40,7 +40,7 @@ The requested panel is Codex `gpt-5.6-sol`, Codex `gpt-6.1-sol`, and Antigravity
 
 ![Figure 1: the transaction pipeline — propose, parse, policy, seven checks in six families, bounded repair or unchanged fallback, commit, record, replay — with the ledger grammar band the player reads](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png)
 
-**TRACE-RPG: Source-Bound Ontology Evidence and a Bounded Codex-Assisted Integration Case in an Interactive Game.** The current local PDFs measure **17 pages in English and 17 in Korean** (2026-11-10), with the existing manuscript organization and font sizes retained. Figures 5 and 6 appear on pages 10 and 11 in both languages. This is an anonymous-review working draft, not a claim of meeting a ten-page venue limit, journal submission or acceptance. Citation-identity, context and preprint-status checks for its 58 references remain recorded separately.
+**TRACE-RPG: Source-Bound Ontology Evidence and a Bounded Codex-Assisted Integration Case in an Interactive Game.** The reviewed local PDFs measure **17 pages in English and 17 in Korean** (2026-11-11), with the existing manuscript organization and font sizes retained. Both editions preserve the same claim, equation, table and figure IDs; pagination differs. This is an anonymous-review working draft, not a claim of meeting a ten-page venue limit, journal submission or acceptance. Citation-identity, context and preprint-status checks for its 58 references remain recorded separately.
 
 **Thesis.** Fluent or schema-valid generated text does not establish that a proposed game event is executable, authorized, or consistent with canonical state. TRACE-RPG therefore treats every generated event as an untrusted transaction proposal and admits it only through a deterministic symbolic commit gate.
 
@@ -63,7 +63,7 @@ The seven checks, grouped into six state-relative families. Every failure leaves
 | Disclosure | 5 | Forbidden fact |
 | Quest | 6, 7 | Ineligible stage; stage regression |
 
-[![Contact sheet of all 17 English manuscript pages, rendered from the current 2026-11-10 PDF](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/paper-en-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
+[![Contact sheet of all 17 English manuscript pages, rendered from the reviewed 2026-11-11 PDF](neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/paper-en-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 
 ## Evidence
 
@@ -107,6 +107,10 @@ Five synthetic development fixtures × two feedback conditions × two requested 
 | `gpt-5.6-terra` | Generic | 5/5 | 4/5 | 1/5 | 1/5 | 1/5 |
 
 Luna reached 6/10 goals and Terra 1/10, descriptively. These are requested selectors, not attested served identities; actual identity, provider request count and cost are unknown. The small synthetic set is not held out, feedback information is unequal, and the nominal serial order was Luna then Terra. This is neither a human nor causal study and supports no model-superiority, ontology-efficacy or user-benefit claim. Earlier incomplete/diagnostic cohorts, the exploratory single case, the prospective pilot and NPC validated-v5 remain separate.
+
+The `unauthorized_objective` fixture contains a policy/goal conflict: the frozen policy permits no effects although the common goal needs `signal_restored`. Luna's accepted detailed response removed that forbidden effect and therefore missed the goal. This case remains in every assigned denominator. Raw CLI stdout/stderr was not retained; byte counts, hashes and event summaries remain, and the ten parsing failures have unknown content-level causes. Retained v5 event arrays place each response before its terminal completion (20/20); this retrospective ordering check is not a new model run or provider attestation.
+
+The [19-cohort historical inventory](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json) also discloses earlier prepared, failed, unfinished, v3 and v4 files. Its per-cohort counts and original-file digests are a sanitized bookkeeping projection, not pooled independent observations or provider-request counts. Raw operator records remain local; a digest alone does not make private originals publicly reproducible.
 
 Public inputs: [Luna results](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-luna/results.json) · [Terra results](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-terra/results.json) · [20 copied prompts](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/). The projections null only `metadata.codex_executable` and add the raw-file SHA-256 and omission receipt; outcomes, prompt hashes and executable hash/version remain. Raw cohorts and approvals remain local and unchanged. The common seven-file source ZIP establishes parent provenance only, not a standalone reproducer.
 
@@ -258,7 +262,7 @@ A 16-slide overview deck, in Korean, as a self-contained HTML file: [`trace-rpg-
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026
-uv sync                                              # Python 3.11+
+uv sync --extra research --extra dev                 # Python 3.11+ and test/validation dependencies
 uv run python -m pytest -q                           # unit + contract tests
 uv run python scripts/validate_project.py            # structure, schemas/bridge, SVG, evidence contracts
 uv run python scripts/validate_contribution_crosswalk.py
@@ -272,7 +276,7 @@ git archive --format=tar fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09:neuro-symbolic
 make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"
 ```
 
-- `uv sync` — installs the locked Python 3.11+ environment.
+- `uv sync --extra research --extra dev` — installs the locked Python 3.11+ research, test and validation environment used by CI.
 - `pytest` — parser, validator, repair, replay, integrity, and accounting contracts.
 - `validate_project.py` — repository structure, JSON schemas and the game bridge, SVG sources, source manifests, and the evidence/analysis contracts.
 - `validate_contribution_crosswalk.py` — C1–C5, the 58 references, and the four evidence lanes stay mutually consistent in both manuscripts.
@@ -282,6 +286,18 @@ make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"
 - `verify_like_ci.sh` — the same gate the `validate` workflow runs.
 - `generate_paired_feedback_figures.py --check` — checks the two generated SVG sources against the frozen public v5 projections without rewriting or making model calls; PNG/PDF derivatives are built by the paper pipeline.
 - `make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"` — rebuilds both PDFs and checks source-bound evidence, positive page counts and Type 3 fonts. The archived project at the explicit revision supplies the historical NPC006 source, not current-runtime authority. This archived-source check passed; the default check without an archive remains **FIX** because NPC006 does not match current source. No current-source full-CI pass is claimed.
+
+### Aside-only browser checks
+
+With an existing Aside CLI and an approved connected profile, run the original 53 browser contracts and the added fixture controls from the research-project directory:
+
+```bash
+export NSG_BROWSER_BACKEND=aside
+export NSG_ASIDE_PROFILE='your-approved-profile-id'
+uv run pytest tests/test_publication_presentation.py tests/test_ontology_evidence_map.py tests/test_signal_explainer.py -q
+```
+
+Replace the profile placeholder explicitly; do not publish profile IDs or raw browser logs. The same environment selects Aside for `./scripts/verify_like_ci.sh`; a missing or failed selected backend is not permission to use another browser. The bridge opens only task-owned tabs and loopback fixtures. Native request/pageerror callbacks remain unavailable: actual HTTP receipts and early main-world error/CSP/message observers are checked within a finite fixture observation window, not certified as general native browser monitoring. These are component/figure checks, not gameplay, model-efficacy or production-deployment evidence. No Aside installation, account change or study launch is performed by this command.
 
 Packets: offline pilot (frozen, hash-bound) in [`research/academic-pipeline/stage-04-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-04-pilot/); live screening in [`research/academic-pipeline/rq2-live-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/rq2-live-pilot/); KG simulation in [`research/simulation/kg-ontology/`](neuro-symbolic-interactive-game-research-2026/research/simulation/kg-ontology/); playable evaluation in [`game-track/godot/docs/latest/`](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/).
 

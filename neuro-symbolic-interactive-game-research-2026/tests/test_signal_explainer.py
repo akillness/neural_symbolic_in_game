@@ -335,20 +335,23 @@ def test_dashboard_consumes_real_iframe_events_and_resets_live_clock():
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
-        playwright_path = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
-        if not playwright_path:
-            pytest.skip("Playwright CLI is not installed")
-        node_root = Path(playwright_path).parent.parent
         env = os.environ.copy()
         env["SIGNAL_DASHBOARD_BASE_URL"] = f"http://127.0.0.1:{server.server_address[1]}"
-        env["NODE_PATH"] = str(node_root / "lib/node_modules")
-        browser_candidates = sorted(
-            Path.home().glob(
-                "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+        if env.get("NSG_BROWSER_BACKEND") == "aside":
+            assert shutil.which(env.get("ASIDE_BIN", "aside")), "Aside CLI is required"
+        else:
+            playwright_path = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+            if not playwright_path:
+                pytest.skip("Playwright CLI is not installed")
+            node_root = Path(playwright_path).parent.parent
+            env["NODE_PATH"] = str(node_root / "lib/node_modules")
+            browser_candidates = sorted(
+                Path.home().glob(
+                    "Library/Caches/ms-playwright/chromium-*/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+                )
             )
-        )
-        if browser_candidates:
-            env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(browser_candidates[-1])
+            if browser_candidates:
+                env["PLAYWRIGHT_EXECUTABLE_PATH"] = str(browser_candidates[-1])
         result = subprocess.run(
             ["node", str(ROOT / "tests/dashboard_signal_driver.cjs")],
             cwd=ROOT,
@@ -356,10 +359,29 @@ def test_dashboard_consumes_real_iframe_events_and_resets_live_clock():
             capture_output=True,
             text=True,
             check=False,
-            timeout=90,
+            timeout=140 if env.get("NSG_BROWSER_BACKEND") == "aside" else 90,
         )
         assert result.returncode == 0, result.stdout + result.stderr
     finally:
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
+
+
+def test_aside_signal_rejects_missing_fixture_origin_without_native_stack(monkeypatch):
+    """A missing fixture origin fails category-only instead of exposing driver paths."""
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", "/nonexistent-aside-entry-control")
+    monkeypatch.delenv("SIGNAL_DASHBOARD_BASE_URL", raising=False)
+    result = subprocess.run(
+        ["node", str(ROOT / "tests/dashboard_signal_driver.cjs")],
+        cwd=ROOT,
+        env=os.environ.copy(),
+        capture_output=True,
+        text=True,
+        timeout=10,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert result.stderr == "Aside fixture operation failed\n"

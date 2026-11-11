@@ -1,0 +1,38 @@
+{
+  "schema_version": "paper-contact-sheet/1",
+  "scope": "Presentation-only rasterization of the reviewed bilingual PDFs; not game/model/player evidence",
+  "render": {
+    "binary": "pdftoppm",
+    "dpi": 45,
+    "format": "PNG",
+    "columns": 5,
+    "cell_pixels": [
+      230,
+      320
+    ],
+    "gap_pixels": 14
+  },
+  "papers": [
+    {
+      "language": "en",
+      "pages": 17,
+      "pdf": "paper/latex/en/main.pdf",
+      "pdf_sha256": "7f3ff478c065b74d6464290d1162a4a3a255e43de80c5e96ca3eb862e00a8f34",
+      "sheet": "docs/readme/review-20261111/paper-en-pages.png",
+      "sheet_sha256": "ef0dabffa868d184c856a345aabac1a88e76dc3df2802e5b7e81e4f2599a3d01",
+      "sheet_bytes": 845679
+    },
+    {
+      "language": "ko",
+      "pages": 17,
+      "pdf": "paper/latex/ko/main.pdf",
+      "pdf_sha256": "a98f2bd1c187c73cdd343cafd301650e058c78d49c13a86d7fb637c56e5458b8",
+      "sheet": "docs/readme/review-20261111/paper-ko-pages.png",
+      "sheet_sha256": "26b235ab8ad245260b9de081c94cc47d2766c301b5c53896c527d1639e9352fb",
+      "sheet_bytes": 925556
+    }
+  ],
+  "historical_contact_sheets": "Preserved unchanged in docs/readme/prospective-20261103/",
+  "visual_inspection": "Main inspected both 17-page contact sheets; no obvious clipping/overlap at contact-sheet resolution. Full text/font/layout gates are separate.",
+  "source_note": "Regenerated after source-artwork clearance and mathematical-notation repairs; actual17-page paired PDFs, presentation-only raster evidence."
+}

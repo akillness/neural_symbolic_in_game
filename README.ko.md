@@ -40,7 +40,7 @@ Study: `prospective-pilot-20261103`. Status: **NOT_RUN/BLOCKED**; conclusion: `N
 
 ![그림 1: transaction 파이프라인 — propose, parse, policy, 여섯 계열의 일곱 검사, 한도 내 repair 또는 변경 없는 fallback, commit, record, replay — 그리고 플레이어가 읽는 ledger 문법 띠](neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png)
 
-**TRACE-RPG: 출처 결속 온톨로지 근거와 대화형 게임의 단일 Codex 통합 사례.** 현재 로컬 PDF의 실측 분량은 **영문 17쪽·국문 17쪽**(2026-11-10)이며 기존 원고 구조와 글자 크기를 유지했다. 두 언어 모두 그림 5와 6은 각각 10쪽과 11쪽에 있다. 익명 심사용 작업 초안이지 10쪽 venue 제한 충족, 학술지 제출 또는 게재 승인을 주장하지 않는다. 참고문헌 58건의 citation identity·인용 맥락·preprint 상태 검증은 별도로 기록한다.
+**TRACE-RPG: 출처 결속 온톨로지 근거와 대화형 게임의 단일 Codex 통합 사례.** 리뷰·개정한 로컬 PDF의 실측 분량은 **영문 17쪽·국문 17쪽**(2026-11-11)이며 기존 원고 구조와 글자 크기를 유지했다. 두 언어의 claim·수식·표·그림 ID는 같고 페이지 배치는 다르다. 익명 심사용 작업 초안이지 10쪽 venue 제한 충족, 학술지 제출 또는 게재 승인을 주장하지 않는다. 참고문헌 58건의 citation identity·인용 맥락·preprint 상태 검증은 별도로 기록한다.
 
 **논지.** 유창하거나 schema에 맞는 생성 텍스트는 제안된 게임 이벤트가 실행 가능하고, 승인되었으며, 정식 상태와 일관된다는 것을 보장하지 않는다. 그래서 TRACE-RPG는 생성된 모든 이벤트를 신뢰할 수 없는 transaction proposal로 취급하고, 결정론적 symbolic commit gate를 통해서만 받아들인다.
 
@@ -63,7 +63,7 @@ Study: `prospective-pilot-20261103`. Status: **NOT_RUN/BLOCKED**; conclusion: `N
 | Disclosure | 5 | 금지된 fact |
 | Quest | 6, 7 | 자격 없는 stage; stage 후퇴 |
 
-[![2026-11-10 현재 PDF에서 렌더한 한국어 원고 17쪽 전체 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/paper-ko-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
+[![2026-11-11 리뷰·개정 PDF에서 렌더한 한국어 원고 17쪽 전체 contact sheet](neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/paper-ko-pages.png)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
 
 ## 근거
 
@@ -107,6 +107,10 @@ Study: `prospective-pilot-20261103`. Status: **NOT_RUN/BLOCKED**; conclusion: `N
 | `gpt-5.6-terra` | Generic | 5/5 | 4/5 | 1/5 | 1/5 | 1/5 |
 
 관측된 목표 달성은 Luna 6/10, Terra 1/10이다. 이는 검증된 실제 응답 신원이 아닌 요청 selector이며, 실제 신원·provider 요청 횟수·비용은 알 수 없다. 작은 합성 집합은 holdout이 아니고 feedback 정보량이 다르며 명목 직렬 순서는 Luna 다음 Terra였다. 사람 대상 연구나 인과 연구가 아니며 모델 우월성·온톨로지 효능·사용자 편익을 주장하지 않는다. 앞선 미완료·diagnostic cohort, 단일 탐색 사례, 사전 지정 pilot, NPC validated-v5는 각각 별도로 유지한다.
+
+`unauthorized_objective` fixture는 정책·목표 충돌을 그대로 유지한다. 고정 정책은 어떤 효과도 허용하지 않지만 공통 목표에는 `signal_restored`가 필요하다. Luna의 상세 응답은 금지된 효과를 제거해 승인되었으나 목표에는 도달하지 못했다. 이 사례도 모든 배정 분모에 남는다. CLI stdout/stderr 원문은 보존하지 않았고 바이트 수·해시·이벤트 요약은 남아 있으며 parsing 실패 10개의 내용 수준 원인은 미상이다. 보존된 v5 이벤트 배열에서는 각 응답이 terminal completion보다 먼저 나타났다(20/20). 이 사후 순서 검사는 새 모델 실행이나 제공자 신원 검증이 아니다.
+
+[19개 코호트의 과거 이력 목록](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json)은 이전 준비·실패·미완료 및 v3·v4 파일도 공개한다. 코호트별 계수와 원본 파일 해시는 가림 처리한 기록 집계이지 합산한 독립 관측이나 제공자 요청 횟수가 아니다. 원시 운영 기록은 로컬에 보존하며 해시만으로 비공개 원본의 공개 재현이 가능해지는 것은 아니다.
 
 공개 입력: [Luna 결과](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-luna/results.json) · [Terra 결과](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-terra/results.json) · [복사한 prompt 20개](neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-v5/). projection은 `metadata.codex_executable`만 null로 바꾸고 raw 파일 SHA-256과 생략 영수증을 추가한다. 결과·prompt hash·실행 파일 hash/version은 유지한다. raw cohort와 승인은 로컬에 변경 없이 남는다. 공통 7파일 source ZIP은 상위 출처만 입증하며 독립 실행 가능한 재현본이 아니다.
 
@@ -258,7 +262,7 @@ open http://127.0.0.1:4173/dashboard/                          # game at /public
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026
-uv sync                                              # Python 3.11+
+uv sync --extra research --extra dev                 # Python 3.11+ and test/validation dependencies
 uv run python -m pytest -q                           # unit + contract tests
 uv run python scripts/validate_project.py            # structure, schemas/bridge, SVG, evidence contracts
 uv run python scripts/validate_contribution_crosswalk.py
@@ -272,7 +276,7 @@ git archive --format=tar fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09:neuro-symbolic
 make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"
 ```
 
-- `uv sync` — lock된 Python 3.11+ 환경을 설치한다.
+- `uv sync --extra research --extra dev` — CI와 같은 lock된 Python 3.11+ 연구·테스트·검증 환경을 설치한다.
 - `pytest` — parser, validator, repair, replay, 무결성, 회계 contract.
 - `validate_project.py` — 저장소 구조, JSON 스키마와 game bridge, SVG 원본, 소스 매니페스트, 증거·분석 계약.
 - `validate_contribution_crosswalk.py` — C1–C5, 참고문헌 58건, 근거 레인 네 개가 두 원고에서 서로 일관되는지.
@@ -282,6 +286,18 @@ make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"
 - `verify_like_ci.sh` — `validate` workflow가 실행하는 것과 같은 gate.
 - `generate_paired_feedback_figures.py --check` — 동결 공개 v5 projection에 대해 생성된 SVG 원본 두 개의 drift를 확인하며 파일을 다시 쓰거나 모델을 호출하지 않는다. PNG/PDF 파생본은 논문 pipeline이 빌드한다.
 - `make -C paper/latex check NPC_PAPER_EVIDENCE_ROOT="$ARCHIVED_NPC_SOURCE"` — 두 PDF를 다시 빌드하고 출처 결속 근거·양의 정수 쪽수·Type 3 font를 검사한다. 명시한 revision의 archived project는 과거 NPC006 source를 제공할 뿐 현재 runtime의 권위가 아니다. 이 archived-source 검사는 통과했지만 archive 없는 기본 검사는 NPC006과 현재 source가 달라 **FIX**로 유지된다. 현재 source의 전체 CI 통과를 주장하지 않는다.
+
+### Aside 전용 브라우저 검사
+
+기존 Aside CLI와 승인된 연결 profile이 있는 환경에서 연구 프로젝트 디렉터리 기준으로 원래 브라우저 contract 53개와 추가 fixture 대조군을 실행한다:
+
+```bash
+export NSG_BROWSER_BACKEND=aside
+export NSG_ASIDE_PROFILE='your-approved-profile-id'
+uv run pytest tests/test_publication_presentation.py tests/test_ontology_evidence_map.py tests/test_signal_explainer.py -q
+```
+
+profile 자리표시는 명시적으로 바꾸고 profile ID나 원시 브라우저 로그는 공개하지 않는다. 같은 환경값으로 `./scripts/verify_like_ci.sh`도 Aside를 선택한다. 선택한 backend의 누락·실패는 다른 브라우저를 사용할 허가가 아니다. bridge는 작업 전용 탭과 loopback fixture만 연다. native request/pageerror callback은 여전히 사용할 수 없다. 실제 HTTP 영수증과 초기 main-world error/CSP/message observer를 유한한 fixture 관측 구간 안에서 검사할 뿐, 일반 native 브라우저 감시와 동등하다고 인증하지 않는다. component·그림 검사이며 gameplay·모델 효능·프로덕션 배포의 근거가 아니다. 이 명령은 Aside 설치·계정 변경·연구 실행을 하지 않는다.
 
 패킷: 오프라인 파일럿(frozen, hash로 묶임)은 [`research/academic-pipeline/stage-04-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-04-pilot/), 라이브 스크리닝은 [`research/academic-pipeline/rq2-live-pilot/`](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/rq2-live-pilot/), KG 시뮬레이션은 [`research/simulation/kg-ontology/`](neuro-symbolic-interactive-game-research-2026/research/simulation/kg-ontology/), 플레이어블 평가는 [`game-track/godot/docs/latest/`](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/).
 

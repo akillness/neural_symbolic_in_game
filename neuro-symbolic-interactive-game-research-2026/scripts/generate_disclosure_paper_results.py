@@ -669,7 +669,7 @@ def _svg(data: dict[str, Any]) -> str:
         parts.append(f'<rect x="{x}" y="{y0}" width="{cell_w}" height="{head_h}" fill="#EAF4F8"/>')
         code, label = strata_labels[stratum_name]
         parts.append(
-            f'<text x="{x + cell_w / 2:g}" y="{y0 + 40}" class="head" text-anchor="middle"><tspan>{escape(code)}</tspan><tspan x="{x + cell_w / 2:g}" dy="{line_step}">{escape(label)}</tspan></text>'
+            f'<text x="{x + cell_w / 2:g}" y="{y0 + 42}" class="head" text-anchor="middle"><tspan>{escape(code)}</tspan><tspan x="{x + cell_w / 2:g}" dy="{line_step}">{escape(label)}</tspan></text>'
         )
     for row_index, arm in enumerate(ARMS):
         y = y0 + head_h + row_index * row_h

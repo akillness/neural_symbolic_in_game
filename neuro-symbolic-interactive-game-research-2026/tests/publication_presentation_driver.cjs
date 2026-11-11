@@ -2,10 +2,12 @@
 
 // Isolated publication artwork only: no game, transport, or model is exercised.
 const fs = require("node:fs");
-const { chromium } = require("playwright");
-const config = JSON.parse(fs.readFileSync(0, "utf8"));
+const assert = require("node:assert/strict");
+const { chromium } = process.env.NSG_BROWSER_BACKEND === "aside"
+  ? require("./aside_browser_backend.cjs") : require("playwright");
 
 async function main() {
+  const config = JSON.parse(fs.readFileSync(0, "utf8"));
   const browser = await chromium.launch({
     headless: true,
     ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH
@@ -16,6 +18,25 @@ async function main() {
     const results = [];
     for (const figure of config.figures) {
       await page.setContent(figure.svg.replace(/<\?xml[^>]*\?>/, ""));
+      if (config.bridgeControl) {
+        const input = JSON.parse('{"__proto__":{"polluted":true},"__nsgWire":"undefined","text":"</script><script>window.__nsgInjected=true</script>","nested":[null,{"constructor":"literal"}]}');
+        input.absent = undefined;
+        input.numbers = [Infinity, -Infinity, NaN];
+        const roundTrip = await page.evaluate(async (value) => {
+          await Promise.resolve();
+          window.__nsgBridgeContract = { text: value.text, protoIsOwn: Object.hasOwn(value, "__proto__"), polluted: Object.getPrototypeOf(value).polluted };
+          return value;
+        }, input);
+        assert.deepEqual(roundTrip, input, "main-world bridge changed argument/result semantics");
+        assert.equal(await page.evaluate(() => undefined), undefined);
+        assert.deepEqual(await page.evaluate(() => window.__nsgBridgeContract), {
+          text: input.text, protoIsOwn: true, polluted: undefined,
+        }, "evaluations did not share the real main world or changed object prototypes");
+        assert.equal(await page.evaluate(() => window.__nsgInjected), undefined, "encoded argument executed as markup");
+        await assert.rejects(page.evaluate(() => { throw new TypeError("NSG trusted function failure"); }), /TypeError: NSG trusted function failure/);
+        results.push({ mainWorld: true, ownProto: roundTrip.__proto__, sentinel: roundTrip.__nsgWire, text: roundTrip.text });
+        continue;
+      }
       await page.locator("svg").evaluate((svg, width) => {
         svg.style.width = `${width}px`;
         svg.style.height = "auto";
@@ -47,6 +68,17 @@ async function main() {
               sub.setAttribute("baseline-shift", "baseline");
               sub.setAttribute("font-size", "100%");
             }
+          } else if (mutation === "flattened-graph-subscript") {
+            const sub = [...svg.querySelectorAll('[baseline-shift="sub"]')]
+              .find((node) => node.previousSibling?.textContent === "G");
+            if (!sub) throw new Error("graph-state G_t glyph was not exercised");
+            sub.setAttribute("baseline-shift", "baseline");
+            sub.setAttribute("font-size", "100%");
+          } else if (mutation === "raw-graph-subscript") {
+            const base = [...svg.querySelectorAll('tspan[font-style="italic"]')]
+              .find((node) => node.firstChild?.textContent === "G");
+            if (!base) throw new Error("graph-state G_t glyph was not exercised");
+            base.textContent = "G_t";
           } else if (mutation === "raw-math-escape") {
             const text = [...labels].find((label) => label.textContent.includes("invalid:"));
             text.textContent = "invalid: \\rho";
@@ -191,4 +223,4 @@ async function main() {
     await browser.close();
   }
 }
-main().catch((error) => { console.error(error.stack || error); process.exitCode = 1; });
+main().catch((error) => { console.error(process.env.NSG_BROWSER_BACKEND === "aside" ? require("./aside_browser_backend.cjs").fixtureFailure(error) : error.stack || error); process.exitCode = 1; });

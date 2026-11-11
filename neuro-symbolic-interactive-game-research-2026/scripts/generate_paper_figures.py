@@ -32,6 +32,9 @@ PALE_GRAY = "#EEF0F2"
 # Only these authored mathematical labels use SVG typography; DTO strings stay literal.
 MATH_LABELS = {
     "external q_t": 'external <tspan font-style="italic">q<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan>',
+    "G_t and external q_t": '<tspan font-style="italic">G<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan> and external <tspan font-style="italic">q<tspan baseline-shift="sub" font-size="70%">t</tspan></tspan>',
+    "then T(c_t, a)": 'then <tspan font-style="italic">T(c<tspan baseline-shift="sub" font-size="70%">t</tspan>, a)</tspan>',
+    "valid: all v_i hold →": 'valid: all <tspan font-style="italic">v<tspan baseline-shift="sub" font-size="70%">i</tspan></tspan> hold →',
     "6 families -> E": '6 families → <tspan font-style="italic">E</tspan>',
     "invalid: rho": 'invalid: <tspan font-style="italic">ρ</tspan>',
     "invalid: rho(a,E)": 'invalid: <tspan font-style="italic">ρ(a,E)</tspan>',
@@ -257,11 +260,11 @@ def arrow_label(
         '  <g class="connector-label" data-line-clearance="shielded">',
         (
             f'    <rect class="label-shield" x="{x - width // 2}" y="{y - 44}" '
-            f'width="{width}" height="68" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>'
+            f'width="{width}" height="80" rx="2" fill="#FFFFFF" stroke="#FFFFFF"/>'
         ),
         (
             f'    <text x="{x}" y="{y}" class="arrow-label" text-anchor="middle" '
-            f'fill="{color}">{escape(value)}</text>'
+            f'fill="{color}">{MATH_LABELS.get(value, escape(value))}</text>'
         ),
         "  </g>",
     ]
@@ -549,11 +552,12 @@ def compact_architecture_svg() -> str:
         text(700, 110, "ENG1 engineering-only", css_class="legend", fill=GREEN),
     ]
     row1, row2, row3 = 140, 365, 590
-    for x, accent, title_value, body_lines, fill, tags, dashed in (
-        (20, GRAY, "PROPOSAL", ("untrusted", "model output"), PALE_GRAY, ("DESIGN",), True),
-        (362, BLUE, "PARSER", ("type-strict", "known keys"), PALE_BLUE, ("E1",), False),
+    for x, box_width, accent, title_value, body_lines, fill, tags, dashed in (
+        (20, 270, GRAY, "PROPOSAL", ("untrusted", "model output"), PALE_GRAY, ("DESIGN",), True),
+        (362, 270, BLUE, "PARSER", ("type-strict", "known keys"), PALE_BLUE, ("E1",), False),
         (
-            674,
+            662,
+            294,
             BLUE,
             "STATE + POLICY",
             ("G_t and external q_t", "encoded constraints"),
@@ -563,6 +567,7 @@ def compact_architecture_svg() -> str:
         ),
         (
             986,
+            270,
             BLUE,
             "VALIDATE",
             ("valid + check IDs", "structured errors E"),
@@ -574,7 +579,7 @@ def compact_architecture_svg() -> str:
         items += stage(
             x,
             row1,
-            270,
+            box_width,
             accent=accent,
             title_value=title_value,
             body_lines=body_lines,
@@ -618,7 +623,7 @@ def compact_architecture_svg() -> str:
             fill=PALE_GREEN,
             tags=("E1", "ENG1"),
         )
-    for x1, x2, color, marker in ((638, 668, BLUE, "blue"), (950, 980, BLUE, "blue")):
+    for x1, x2, color, marker in ((638, 656, BLUE, "blue"), (962, 980, BLUE, "blue")):
         items.append(line(x1, 240, x2, 240, color=color, marker=marker))
     items.append(line(326, 132, 326, 355, color=ORANGE, width=3, dash="11 7"))
     items += vertical_label_chip(312, 164, "TRUST", color=ORANGE, height=192)
@@ -628,7 +633,7 @@ def compact_architecture_svg() -> str:
     items.append(line(980, 465, 940, 465, color=GRAY, marker="gray"))
     items.append(path("M800 575 V578 H640 V584", color=GRAY, marker="gray"))
     items.append(path("M980 240 H960 V355 H210 V584", color=GREEN, marker="green"))
-    items += arrow_label(210, 470, "valid", color=GREEN, width=112)
+    items += arrow_label(210, 470, "valid: all v_i hold →", color=GREEN, width=300)
     items.append(line(406, 690, 444, 690, color=GREEN, marker="green"))
     items.append(line(836, 690, 874, 690, color=GREEN, marker="green"))
 
