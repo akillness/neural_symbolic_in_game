@@ -2,6 +2,13 @@
 
 Run ID: `20260813-sealed-lighthouse-cycle-3`
 
+## Current source-bound CI repair evidence — 2026-11-11
+
+Owner: **Main**. [Public derivative receipt](../qa/releases/2026-11-11-session-continuation/ci-repair-local-verification.json): **final nine repair sources, local13/13PASS, exit0**, observed11:28:09.614808–11:31:45.448703UTC. Unit1626pass/41skip/1170subtests; separate game95pass/6skip/43subtests; unfiltered affected two modules151pass/0skip/327subtests. No population pooling or inferred individual skip reasons: canonical `-q` emitted aggregate counts only. This section supersedes only current-status wording below, retaining all dated frozen84/85/nativeQA1656 and120-case115/5FIX history.
+- Source preservation:23997paths per location unchanged during the final run; selected=container, two inherited TeX raw-log differences unchanged; production source unchanged. Old48runtime bindings remain explicitly historical; the distinct current nine-source SHA-256 snapshot is in the new receipt, not inherited approval for changed tests.
+- Runtime scope: Debian12arm64 proper init + task-owned subreaper + Playwright1.65 contract facade, **not hosted Ubuntu CI/native Aside SDK/service/profile certification**. Real health/native causal probes and three expected negative controls support bounded source repairs; final Code/Python source reviews APPROVE, without independent-model/scientific promotion. Earlier failures and native4f21613PASS are retained, the latter superseded for current acceptance by nativef5052.
+- Metadata-only finalization follows the run: **no finalized18-file CI claim**, no new commit SHA; baseline `faf51e7d8ec07788385617332a09f5b53337e7d2`. Hosted CI after commit and deploy **PENDING/NOT_RUN**; require actual hosted observation after publication. All19cohorts/counts/unknown identity/provider counts/cost, G4/G6, EN17/KO17/supplements1each/citation58pairs/shared-label36pairs and manuscript/production claims unchanged. Privacy derivatives bind per-projection source-capture checksums and omit private paths/identifiers/raw content. This writer ran no browser, suite, linter, formatter, Git, network or global-memory/index operation.
+
 ## Current dedicated QA full-CI proof and metadata finalization — 2026-11-11
 
 Owner: **Main**. Status: **PASS on frozen84 local12-stage CI; metadata-only finalization afterward NOT itself a full CI rerun; commit/push PENDING**. [Allowlisted proof](../qa/releases/2026-11-11-session-continuation/dedicated-qa-full-ci-verification.json): actual one-shot run observed09:02:41–09:25:47UTC, exit0,1386.473s,12/12PASS,1launch/0retries. Unit1656passed/1optional paid-service skip+1179subtests; separate game101passed+48subtests, not summed. No JUnit requested or produced.

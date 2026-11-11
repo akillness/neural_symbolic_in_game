@@ -1,9 +1,15 @@
 {
   "schema_version": "curated-runtime-source-set/2",
   "base_commit": "dfaf74a9b2ed201eeb51a2a2cd77ad7c16b094f9",
-  "scope": "Changed executable/test/config sources plus dependency lock, over fixed public base; not full original dirty tree or model identity/launch approval",
-  "verification_status": "PASS_FROZEN84_LOCAL_12_STAGE_CI_METADATA_ONLY_FINALIZATION_NOT_RERUN",
+  "scope": "The retained 48 files/base/import observation are historical frozen84 runtime bindings, not unchanged-current-source approval. Current CI repair has a distinct nine-source snapshot referenced below; metadata finalization followed its local run.",
+  "verification_status": "PASS_LOCAL_13_GATES_FROZEN_NINE_REPAIR_SOURCES_METADATA_NOT_RERUN_HOSTED_CI_PENDING",
   "verification_status_history": [
+    {
+      "date": "2026-11-11",
+      "stage": "Historical frozen84 dedicated native QA, before later CI repair source changes",
+      "status": "PASS_FROZEN84_LOCAL_12_STAGE_CI_METADATA_ONLY_FINALIZATION_NOT_RERUN",
+      "receipt": "dedicated-qa-full-ci-verification.json"
+    },
     {
       "date": "2026-11-11",
       "stage": "Postformat matrix and separately completed nonbrowser gates, before dedicated QA CI",
@@ -17,6 +23,22 @@
     }
   ],
   "current_verification": {
+    "date": "2026-11-11",
+    "receipt": "ci-repair-local-verification.json",
+    "status": "PASS_LOCAL_13_GATES_FROZEN_NINE_REPAIR_SOURCES",
+    "publication_baseline_commit": "faf51e7d8ec07788385617332a09f5b53337e7d2",
+    "new_publication_commit": null,
+    "observed_started_at_utc": "2026-11-11T11:28:09.614808+00:00",
+    "observed_finished_at_utc": "2026-11-11T11:31:45.448703+00:00",
+    "exit_code": 0,
+    "repair_snapshot": {"file_count": 9, "reference": "ci-repair-local-verification.json#repair_snapshot", "source_capture_sha256": "6a0c821b601e1dd1cc0d8a8dfb6a72bcbbc826f29a6811d423c8830f55864ab1"},
+    "historical_48_bindings_reused_as_current_approval": false,
+    "metadata_finalization": "After the local run; no full eighteen-file CI claim or finalized-metadata full CI rerun",
+    "hosted_ci_after_commit": "PENDING_NOT_RUN",
+    "deployment": "PENDING_NOT_RUN",
+    "production_source": "UNCHANGED"
+  },
+  "historical_frozen84_verification": {
     "receipt": "dedicated-qa-full-ci-verification.json",
     "status": "PASS_LOCAL_12_STAGE_CI_EQUIVALENT",
     "observed_finished_at_utc": "2026-11-11T09:25:47.730712+00:00",
@@ -36,6 +58,7 @@
     "module_relative_to_selected_project": "src/nesy_game/__init__.py",
     "source_isolation_observed": true
   },
+  "files_scope": "HISTORICAL_48_FROZEN84_BINDINGS_UNCHANGED_AS_RECORDS_NOT_CURRENT_SOURCE_IDENTITY",
   "files": {
     ".github/workflows/validate.yml": {
       "sha256": "65c18e5197a75778de7affcb00854490edb696b0b35689a444dd5376efced6ae",

@@ -7,6 +7,10 @@ on:
 jobs:
   scaffold:
     runs-on: ubuntu-latest
+    env:
+      # Hermetic SDK contracts, not native Aside service certification.
+      NSG_BROWSER_BACKEND: aside
+      NSG_ASIDE_TEST_TRANSPORT: playwright
     defaults:
       run:
         working-directory: neuro-symbolic-interactive-game-research-2026
@@ -17,11 +21,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - uses: astral-sh/setup-uv@v6
-      - name: Install PDF inspection tools
-        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Install PDF and deployment inspection tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils rsync
       - name: Install locked environment
         run: uv sync --extra research --extra dev
+      - name: Install pinned contract browser runtime
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/nsg-browser-runtime/lib/node_modules"
+          export PLAYWRIGHT_BROWSERS_PATH="$RUNNER_TEMP/nsg-playwright-browsers"
+          printf 'NODE_PATH=%s\nPLAYWRIGHT_BROWSERS_PATH=%s\n' "$NODE_PATH" "$PLAYWRIGHT_BROWSERS_PATH" >> "$GITHUB_ENV"
+          npm install --global --prefix "$RUNNER_TEMP/nsg-browser-runtime" playwright@1.65.0
+          "$RUNNER_TEMP/nsg-browser-runtime/bin/playwright" install --with-deps chromium
+          echo "$RUNNER_TEMP/nsg-browser-runtime/bin" >> "$GITHUB_PATH"
       - name: Unit and publication regression tests
         run: uv run pytest tests -q
       - name: Ruff lint and format

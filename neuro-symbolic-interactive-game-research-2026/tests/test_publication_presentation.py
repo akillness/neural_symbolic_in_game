@@ -626,10 +626,21 @@ def test_disclosure_table_preserves_observed_rows_with_intercell_space(tmp_path,
     _assert_no_word_collisions(words)
 
 
-def test_aside_backend_kills_a_group_survivor_after_its_leader_exits(tmp_path, monkeypatch):
-    """A TERM-exiting CLI leader cannot hide its same-group, pipe-closed, TERM-ignoring child."""
+@pytest.mark.parametrize(
+    "leader_exit,guard",
+    (
+        ("deadline", "Aside call exceeded fixture CLI deadline"),
+        ("early-nonzero", "Aside exited before observation"),
+    ),
+)
+def test_aside_backend_kills_a_group_survivor_after_its_leader_exits(
+    tmp_path, monkeypatch, leader_exit, guard
+):
+    """Leader exit cannot hide a pipe-closed TERM survivor or replace the initiating failure."""
     pidfile = tmp_path / "descendant.json"
+    leaderfile = tmp_path / "leader.json"
     termfile = tmp_path / "leader-term.json"
+    secret = "SYNTHETIC_PRIVATE_PROCESS_OUTPUT_DO_NOT_PUBLISH"
     child_code = (
         "import json, os, signal, sys\n"
         "signal.signal(signal.SIGTERM, signal.SIG_IGN)\n"
@@ -644,7 +655,10 @@ def test_aside_backend_kills_a_group_survivor_after_its_leader_exits(tmp_path, m
         "assert child.stdout.readline() == b'ready\\n'\nchild.stdout.close()\n"
         f"def terminate(signum, frame):\n with open({str(termfile)!r}, 'w') as record: json.dump({{'leader':os.getpid(),'pgid':os.getpgrp()}}, record)\n os._exit(0)\n"
         "signal.signal(signal.SIGTERM, terminate)\n"
-        "sys.stdin.read()\nsignal.pause()\n",
+        f"with open({str(leaderfile)!r}, 'w') as record: json.dump({{'leader':os.getpid(),'pgid':os.getpgrp()}}, record)\n"
+        "sys.stdin.read()\n"
+        f"print({secret!r}, flush=True)\nsys.stderr.write({secret!r}+'\\n')\nsys.stderr.flush()\n"
+        + ("os._exit(7)\n" if leader_exit == "early-nonzero" else "signal.pause()\n"),
         encoding="utf-8",
     )
     executable.chmod(0o700)
@@ -652,10 +666,18 @@ def test_aside_backend_kills_a_group_survivor_after_its_leader_exits(tmp_path, m
     monkeypatch.setenv("ASIDE_BIN", str(executable))
     monkeypatch.setenv("NSG_ASIDE_GUARD_MS", "1000")
     try:
-        with pytest.raises(AssertionError, match="exceeded fixture CLI deadline"):
+        with pytest.raises(AssertionError, match=guard) as failure:
             _browser([{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}])
+        message = str(failure.value)
+        assert message.splitlines()[-1] == guard
+        assert "process-group SIGKILL cleanup; leader closure is not group absence" in message
+        assert secret not in message
         descendant = json.loads(pidfile.read_text())
-        leader = json.loads(termfile.read_text())
+        leader = json.loads(leaderfile.read_text())
+        if leader_exit == "deadline":
+            assert json.loads(termfile.read_text()) == leader
+        else:
+            assert not termfile.exists(), "early nonzero exit must precede deadline SIGTERM"
         group = descendant["pgid"]
         assert leader["leader"] == leader["pgid"] == group
         assert descendant["pid"] != leader["leader"]
@@ -762,3 +784,120 @@ def test_aside_publication_rejects_malformed_input_without_disclosing_parser_pay
     assert result.returncode == 1
     assert result.stdout == ""
     assert result.stderr == "Aside fixture operation failed\n"
+
+
+@pytest.mark.parametrize("boundary", ("missing-opt-in", "native-profile"))
+def test_cloud_sdk_contract_transport_rejects_implicit_or_native_profile_execution(
+    monkeypatch, boundary
+):
+    """The test facade cannot silently replace native Aside or open a native profile."""
+    if boundary == "missing-opt-in":
+        monkeypatch.delenv("NSG_ASIDE_TEST_TRANSPORT", raising=False)
+    else:
+        monkeypatch.setenv("NSG_ASIDE_TEST_TRANSPORT", "playwright")
+        monkeypatch.setenv("NSG_ASIDE_PROFILE", "SYNTHETIC_PRIVATE_PROFILE_DO_NOT_PUBLISH")
+    result = subprocess.run(
+        ["node", str(ROOT / "tests/aside_playwright_contract_cli.cjs")],
+        input="console.log('SYNTHETIC_WORKER_MUST_NOT_RUN');",
+        cwd=ROOT,
+        env=os.environ.copy(),
+        text=True,
+        capture_output=True,
+        timeout=10,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert result.stderr == "Cloud SDK contract transport failed\n"
+
+
+def test_explicit_aside_missing_cli_fails_in_driver_without_playwright_fallback(
+    tmp_path, monkeypatch
+):
+    """A real failed spawn remains an error even when the cloud transport is available."""
+    monkeypatch.setenv("NSG_BROWSER_BACKEND", "aside")
+    monkeypatch.setenv("ASIDE_BIN", str(tmp_path / "missing-aside-cli"))
+    result = subprocess.run(
+        ["node", str(ROOT / "tests/publication_presentation_driver.cjs")],
+        input=json.dumps(
+            {"figures": [{"svg": '<svg xmlns="http://www.w3.org/2000/svg"/>', "width": FULL_WIDTH}]}
+        ),
+        cwd=ROOT,
+        env=os.environ.copy(),
+        text=True,
+        capture_output=True,
+        timeout=10,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert result.stderr == "Aside fixture operation failed\n"
+
+
+@pytest.mark.parametrize("inherited_cli", (None, "/nonexistent-aside-session-control"))
+def test_cloud_transport_precedes_module_rendering_and_restores_session_environment(inherited_cli):
+    """Real module renders precede function fixtures; negative overrides cannot poison later renders."""
+    if os.environ.get("NSG_ASIDE_TEST_TRANSPORT") != "playwright":
+        return
+    _transport_fixture_session(
+        inherited_cli,
+        transport="playwright",
+        tests=[
+            "test_disclosure_matrix_has_single_column_readability_and_cell_clearance",
+            "test_signal_figures_have_paper_scale_padding_and_no_text_collisions",
+            "test_architecture_has_paper_scale_card_and_rotated_shield_clearance",
+            "test_aside_backend_refuses_missing_or_incomplete_browser_execution[missing-cli]",
+            "test_explicit_aside_missing_cli_fails_in_driver_without_playwright_fallback",
+            "test_aside_main_world_bridge_preserves_untrusted_json_values_and_errors",
+        ],
+    )
+
+
+@pytest.mark.parametrize("inherited_cli", (None, "/nonexistent-aside-session-control"))
+def test_without_cloud_opt_in_fixture_preserves_native_cli_environment(inherited_cli):
+    """Loading the suite without opt-in never installs a facade or changes a caller's CLI choice."""
+    _transport_fixture_session(
+        inherited_cli,
+        transport=None,
+        tests=["test_explicit_aside_missing_cli_fails_in_driver_without_playwright_fallback"],
+    )
+
+
+def _transport_fixture_session(inherited_cli, *, transport, tests):
+    env = os.environ.copy()
+    env["NSG_BROWSER_BACKEND"] = "aside"
+    env["PYTEST_ADDOPTS"] = ""
+    env.pop("ASIDE_BIN", None)
+    env.pop("NSG_ASIDE_TEST_TRANSPORT", None)
+    if inherited_cli is not None:
+        env["ASIDE_BIN"] = inherited_cli
+    if transport is not None:
+        env["NSG_ASIDE_TEST_TRANSPORT"] = transport
+    # A separate interpreter gives module fixtures a genuinely cold pytest session,
+    # and exposes environment leaks after session teardown rather than hiding them at exit.
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import os, sys, pytest\n"
+                "before = os.environ.get('ASIDE_BIN')\n"
+                "class NativeEnvironment:\n"
+                "    def pytest_runtest_call(self, item):\n"
+                "        if 'NSG_ASIDE_TEST_TRANSPORT' not in os.environ:\n"
+                "            assert os.environ.get('ASIDE_BIN') == before\n"
+                "status = pytest.main(sys.argv[1:], plugins=[NativeEnvironment()])\n"
+                "assert os.environ.get('ASIDE_BIN') == before, 'ASIDE_BIN leaked after session teardown'\n"
+                "sys.exit(status)\n"
+            ),
+            "-q",
+            *(f"tests/test_publication_presentation.py::{name}" for name in tests),
+        ],
+        cwd=ROOT,
+        env=env,
+        text=True,
+        capture_output=True,
+        timeout=240,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr

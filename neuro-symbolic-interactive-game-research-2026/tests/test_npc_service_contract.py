@@ -168,6 +168,7 @@ def running_server(
     trace_output: Path | None = None,
     interpreter: Any | None = None,
     allowed_origins: frozenset[str] | None = None,
+    request_completed: threading.Event | None = None,
 ) -> Iterator[tuple[str, ServiceState, Any]]:
     interpreter = CountingInterpreter() if interpreter is None else interpreter
     controller = GoalController(interpreter=interpreter)
@@ -181,7 +182,16 @@ def running_server(
         header_timeout=0.25,
         body_timeout=0.25,
     )
-    server = NpcServer("127.0.0.1", 0, state)
+
+    class CompletionObservedServer(NpcServer):
+        def process_request_thread(self, request: socket.socket, client_address: Any) -> None:
+            try:
+                super().process_request_thread(request, client_address)
+            finally:
+                if request_completed is not None:
+                    request_completed.set()
+
+    server = CompletionObservedServer("127.0.0.1", 0, state)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
@@ -706,7 +716,9 @@ class NpcServiceSecurityIntegrationTests(unittest.TestCase):
         boolean_revision["content_sha256"] = content_hash(boolean_revision)
         malformed.append(("boolean revision", boolean_revision, "invalid_state_revision"))
 
-        with running_server() as (base, _state, interpreter):
+        # A fully read response can precede release of the server's only connection slot.
+        request_completed = threading.Event()
+        with running_server(request_completed=request_completed) as (base, _state, interpreter):
             for name, payload, expected_error in malformed:
                 with self.subTest(name=name):
                     status, _headers, response = http_request(
@@ -715,9 +727,15 @@ class NpcServiceSecurityIntegrationTests(unittest.TestCase):
                     self.assertEqual(status, 400)
                     self.assertEqual(response["error"], expected_error)
                     self.assertEqual(interpreter.calls, [])
+                    self.assertTrue(
+                        request_completed.wait(timeout=2), "rejection worker unfinished"
+                    )
+                    request_completed.clear()
                     health_status, _health_headers, health = http_request(base, "GET", "/health")
                     self.assertEqual(health_status, 200)
                     self.assertEqual(health["status"], "ok")
+                    self.assertTrue(request_completed.wait(timeout=2), "health worker unfinished")
+                    request_completed.clear()
 
             status, _headers, response = http_request(
                 base,
@@ -728,10 +746,14 @@ class NpcServiceSecurityIntegrationTests(unittest.TestCase):
             )
             self.assertEqual(status, 400)
             self.assertEqual(response["error"], "invalid_replay_payload")
+            self.assertTrue(request_completed.wait(timeout=2), "replay worker unfinished")
+            request_completed.clear()
             health_status, _health_headers, health = http_request(base, "GET", "/health")
             self.assertEqual(health_status, 200)
             self.assertEqual(health["status"], "ok")
             self.assertEqual(interpreter.calls, [])
+            self.assertTrue(request_completed.wait(timeout=2), "health worker unfinished")
+            request_completed.clear()
 
     def test_model_target_array_is_rejected_without_health_loss(self) -> None:
         def bad_runner(**kwargs: Any) -> tuple[int, dict[str, Any]]:

@@ -33,7 +33,7 @@ def forbidden(*args, **kwargs):
     ],
 )
 def test_dispatch_classifies_failures_without_releasing_response(
-    prepared_request, monkeypatch, event, returncode, expected
+    prepared_request, monkeypatch, synthetic_sandbox, event, returncode, expected
 ):
     class Proxy:
         server_address = ("127.0.0.1", 41001)
@@ -73,7 +73,7 @@ def test_dispatch_classifies_failures_without_releasing_response(
 
 @pytest.mark.parametrize("item_error", [False, True])
 def test_unencodable_provider_message_is_unknown_but_keeps_structured_classification(
-    prepared_request, monkeypatch, item_error
+    prepared_request, monkeypatch, synthetic_sandbox, item_error
 ):
     class Proxy:
         server_address = ("127.0.0.1", 41001)
@@ -148,7 +148,7 @@ def test_unencodable_provider_message_is_unknown_but_keeps_structured_classifica
     ],
 )
 def test_usage_preserves_only_bounded_integer_token_counts(
-    prepared_request, monkeypatch, usage, expected
+    prepared_request, monkeypatch, synthetic_sandbox, usage, expected
 ):
     class Proxy:
         server_address = ("127.0.0.1", 41001)
@@ -190,7 +190,9 @@ def test_usage_preserves_only_bounded_integer_token_counts(
     assert "synthetic-secret" not in json.dumps(result)
 
 
-def test_process_launch_failure_is_sanitized_and_unknown(prepared_request, monkeypatch):
+def test_process_launch_failure_is_sanitized_and_unknown(
+    prepared_request, monkeypatch, synthetic_sandbox
+):
     class Proxy:
         server_address = ("127.0.0.1", 41001)
 

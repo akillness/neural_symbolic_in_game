@@ -5,9 +5,11 @@ import hashlib
 import io
 import json
 import os
+import signal
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from collections.abc import Iterator, Mapping
 from pathlib import Path
@@ -3821,46 +3823,67 @@ class LocalProcessBoundaryTests(unittest.TestCase):
         self,
     ) -> None:
         child_script = (
-            "import signal,time; signal.signal(signal.SIGTERM, signal.SIG_IGN); time.sleep(30)"
+            "import os,signal,sys,time; "
+            "signal.signal(signal.SIGTERM, signal.SIG_IGN); "
+            "open(sys.argv[1], 'w').write(str(os.getpid())); time.sleep(30)"
         )
         parent_script = (
             "import os,signal,subprocess,sys,time; "
             "signal.signal(signal.SIGTERM, signal.SIG_IGN); "
-            "child=subprocess.Popen([sys.executable, '-c', sys.argv[1]]); "
             "open(sys.argv[2], 'w').write(str(os.getpid())); "
-            "open(sys.argv[3], 'w').write(str(child.pid)); "
+            "subprocess.Popen([sys.executable, '-c', sys.argv[1], sys.argv[3]], "
+            "stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); "
             "time.sleep(30)"
         )
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             parent_pid = root / "parent.pid"
             child_pid = root / "child.pid"
-            with self.assertRaises(subprocess.TimeoutExpired):
-                run_host_process(
-                    [
-                        sys.executable,
-                        "-c",
-                        parent_script,
-                        child_script,
-                        str(parent_pid),
-                        str(child_pid),
-                    ],
-                    input="fixture",
-                    cwd=directory,
-                    timeout=0.1,
-                    text=True,
-                    capture_output=True,
-                    check=False,
-                )
-            pids = [int(parent_pid.read_text()), int(child_pid.read_text())]
-            for pid in pids:
-                with self.subTest(pid=pid):
-                    try:
-                        os.kill(pid, 0)
-                    except ProcessLookupError:
-                        pass
-                    else:
-                        self.fail(f"timed-out process remains alive: {pid}")
+            try:
+                with self.assertRaises(subprocess.TimeoutExpired) as raised:
+                    run_host_process(
+                        [
+                            sys.executable,
+                            "-c",
+                            parent_script,
+                            child_script,
+                            str(parent_pid),
+                            str(child_pid),
+                        ],
+                        input="fixture",
+                        cwd=directory,
+                        timeout=0.1,
+                        text=True,
+                        capture_output=True,
+                        check=False,
+                    )
+                self.assertIs(type(raised.exception), subprocess.TimeoutExpired)
+                pids = [int(parent_pid.read_text()), int(child_pid.read_text())]
+                probes = [("pid", pid, os.kill) for pid in pids]
+                probes.append(("group", pids[0], os.killpg))
+                # communicate() reaps the leader, not its adopted descendants.
+                # Observe init's reaping within the existing 1s cleanup grace;
+                # zombies still count as present until both PID and group ESRCH.
+                deadline = time.monotonic() + 1.0
+                while True:
+                    remaining = []
+                    for kind, pid, probe in probes:
+                        try:
+                            probe(pid, 0)
+                        except ProcessLookupError:
+                            continue
+                        remaining.append((kind, pid))
+                    if not remaining:
+                        self.assertLessEqual(time.monotonic(), deadline)
+                        break
+                    remaining_seconds = deadline - time.monotonic()
+                    if remaining_seconds <= 0:
+                        self.fail(f"timed-out processes or group remain present: {remaining}")
+                    time.sleep(min(0.005, remaining_seconds))
+            finally:
+                if parent_pid.exists():
+                    with contextlib.suppress(ProcessLookupError):
+                        os.killpg(int(parent_pid.read_text()), signal.SIGKILL)
 
     def test_local_python_success_returns_stdout_stderr_and_exit_code(self) -> None:
         script = "import sys; print('stdout fixture'); print('stderr fixture', file=sys.stderr); sys.exit(3)"

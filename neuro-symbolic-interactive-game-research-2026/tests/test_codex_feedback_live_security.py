@@ -24,7 +24,7 @@ def forbidden(*args, **kwargs):
 
 
 @pytest.fixture
-def fake_codex_output(monkeypatch):
+def fake_codex_output(monkeypatch, synthetic_sandbox):
     def install(events_for_home):
         class Proxy:
             server_address = ("127.0.0.1", 41001)
@@ -80,6 +80,24 @@ def startup_warning_messages(codex_home):
     }
 
 
+@pytest.mark.parametrize("platform", ["linux", "darwin"])
+def test_missing_os_sandbox_rejects_before_process_or_network(
+    prepared_request, monkeypatch, platform
+):
+    real_is_file = Path.is_file
+
+    def is_file(path):
+        return path != Path("/usr/bin/sandbox-exec") and real_is_file(path)
+
+    monkeypatch.setattr(sys, "platform", platform)
+    monkeypatch.setattr(Path, "is_file", is_file)
+    monkeypatch.setattr(adapter.subprocess, "Popen", forbidden)
+    monkeypatch.setattr(adapter, "_Proxy", forbidden)
+    monkeypatch.setattr(adapter.socket, "create_connection", forbidden)
+    with pytest.raises(RuntimeError, match="^macOS sandbox-exec required$"):
+        adapter.dispatch(**prepared_request)
+
+
 def test_forged_approval_without_reviewed_results_never_starts_process(
     prepared_request, monkeypatch, tmp_path
 ):
@@ -122,7 +140,7 @@ def test_cross_bound_approval_and_fixture_reject_before_any_process(
 
 
 def test_dispatch_excludes_parent_credentials_and_returns_only_completed_response(
-    prepared_request, monkeypatch
+    prepared_request, monkeypatch, synthetic_sandbox
 ):
     request = prepared_request
     monkeypatch.setenv("OPENAI_API_KEY", "synthetic-parent-secret")
@@ -869,7 +887,7 @@ def test_concurrent_process_cannot_claim_or_overwrite_same_cohort(
     ],
 )
 def test_failed_dispatch_preserves_bounded_evidence_without_raw_secrets(
-    prepared_request, monkeypatch, event, returncode, expected
+    prepared_request, monkeypatch, synthetic_sandbox, event, returncode, expected
 ):
     stderr = b"synthetic-stderr-secret"
     stdout = (json.dumps(event) + "\n").encode()
@@ -999,7 +1017,9 @@ def test_response_evaluation_failure_keeps_completed_dispatch_evidence(cohort, m
     assert json.loads((cohort / "status.json").read_text())["status"] == "COMPLETED_WITH_FAILURES"
 
 
-def test_broken_stdin_keeps_sanitized_stderr_and_process_outcome(prepared_request, monkeypatch):
+def test_broken_stdin_keeps_sanitized_stderr_and_process_outcome(
+    prepared_request, monkeypatch, synthetic_sandbox
+):
     class Proxy:
         server_address = ("127.0.0.1", 41001)
 

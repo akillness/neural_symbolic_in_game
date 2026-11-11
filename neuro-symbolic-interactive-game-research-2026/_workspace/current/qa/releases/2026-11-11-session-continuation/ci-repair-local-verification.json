@@ -1,0 +1,231 @@
+{
+  "schema_version": "trace-rpg-ci-repair-local-verification/1",
+  "date": "2026-11-11",
+  "status": "PASS_LOCAL_13_GATES_FROZEN_NINE_REPAIR_SOURCES",
+  "publication_baseline_commit": "faf51e7d8ec07788385617332a09f5b53337e7d2",
+  "new_publication_commit": null,
+  "privacy_derivative": {
+    "kind": "ALLOWLISTED_FACT_PROJECTION_NOT_PRIVATE_CAPTURE_BYTE_IDENTITY",
+    "source_capture_sha256": "b7a271a225bfb40c74ec4bc339ef95e11e3e69d6425e21d658bff99dd30ea82e",
+    "source_capture_created_at": "2026-11-11T11:33:23.689616+00:00",
+    "rule": "Each projection names its private source-capture checksum; public source-file checksums identify code bytes, not identities or raw payloads. Private locations and runtime identifiers in captured argv are replaced with labelled scope placeholders. No private capture is reproduced wholesale.",
+    "excluded": ["absolute host paths", "profile identifiers and profile hashes", "account identities", "ephemeral process and container identifiers", "private image and run identifiers", "raw payloads", "raw log contents", "command-payload source code"]
+  },
+  "repair_snapshot": {
+    "source_capture_sha256": "6a0c821b601e1dd1cc0d8a8dfb6a72bcbbc826f29a6811d423c8830f55864ab1",
+    "file_count": 9,
+    "original_file_hashes_verified_by_metadata_writer": true,
+    "files": [
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/conftest.py", "bytes": 4406, "sha256": "6abd5cffabe22473315e8f36334e547f40f3c5fb24aafb041b1c146287dbc85f"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/test_codex_feedback_live_security.py", "bytes": 42399, "sha256": "09af45d1f93f464b7003886021a7e28eb987c465b26f44f74fc893ae195977da"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/test_offline_boundary_regressions.py", "bytes": 17146, "sha256": "679863206f6dffa7bae1ca90b43e3fefcc311a8e8fa9d588a496d905b64a8a2d"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/test_publication_presentation.py", "bytes": 38680, "sha256": "94ff0cd82b1d8de80868a86ef98ea4d714b49b935373bdb79da0d28657d97df7"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/aside_playwright_contract_cli.cjs", "bytes": 2340, "sha256": "dfb59af9b5a6586703b661ad03ca0bc773b1860423e9f5b802be921bfff27afc"},
+      {"path": ".github/workflows/validate.yml", "bytes": 2807, "sha256": "4e791a6d331dbe9c137c81624e015ef88e4b4dc53808e67cfdf3c164415c5996"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/scripts/verify_like_ci.sh", "bytes": 5110, "sha256": "37ea649a5fce7ae4c87473c4b323e14d1c02221fc4fddbb64baabb62e0dc3233"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/test_npc_service_contract.py", "bytes": 35761, "sha256": "d7a8ac5940bf8438530e56d3e95768d328bab4f61f9a209d428f6dfaaa386fc3"},
+      {"path": "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_model_swap_native.py", "bytes": 324729, "sha256": "f5052d5b6e9736ec65ce726bbd81f9cc4424f0533f46c4494e79827c76effbd5"}
+    ]
+  },
+  "source_integrity": {
+    "source_capture_sha256": "0084b39717f57f5c6213fa1c981ab473bf6c53b4a43d54be39eafce9eb0d5839",
+    "paths_per_location": 23997,
+    "original_selected_container_each_unchanged_during_final_run": true,
+    "selected_container_byte_equivalent": true,
+    "inherited_original_selected_tex_raw_log_byte_differences": 2,
+    "inherited_differences_unchanged": true,
+    "prior_seven_repair_sources_unchanged": true,
+    "new_lifecycle_changes_vs_predecessor": 2,
+    "production_source_unchanged": true,
+    "permission_boundary": "Inherited platform permissions tracked per location; symlink target text hashed without following. This is a run-time preservation observation, not identity of the later metadata-finalized trees."
+  },
+  "runtime": {
+    "source_capture_sha256": "b7a271a225bfb40c74ec4bc339ef95e11e3e69d6425e21d658bff99dd30ea82e",
+    "os": "Debian GNU/Linux 12 bookworm",
+    "architecture": "aarch64",
+    "python": "3.11.2",
+    "node": "22.23.4",
+    "uv": "0.11.28",
+    "playwright": "1.65.0",
+    "browser": "pinned Chromium through explicit Playwright contract facade",
+    "proper_container_init": true,
+    "task_owned_subreaper": true,
+    "network_mode": "none",
+    "pytest_addopts": "",
+    "uv_offline": true,
+    "native_aside_profile_absent": true,
+    "real_services_and_providers_enabled": false,
+    "native_aside_sdk_service_profile_certification": false,
+    "hosted_ubuntu_ci_attestation": false
+  },
+  "command_projection": {
+    "source_capture_sha256": "7bab2e0ebcab3fe966b4a9b523ddb719efed9b2c05869363f4ae55d54e631048",
+    "semantics": "Captured argv, factored without reordering: common_argv_prefix + [per-command supervisor_receipt_scope, --] + per-command argv_tail. Only private locations and runtime identifiers are substituted; this is not a directly runnable command or byte-identical private command capture.",
+    "common_argv_prefix": [
+      "rtk", "bypass", "docker", "exec",
+      "--env", "UV_PROJECT_ENVIRONMENT=<PROJECT_ENV>",
+      "--env", "NSG_BROWSER_BACKEND=aside",
+      "--env", "NSG_ASIDE_TEST_TRANSPORT=playwright",
+      "--env", "NODE_PATH=<BROWSER_NODE_MODULES>",
+      "--env", "PLAYWRIGHT_BROWSERS_PATH=<PINNED_BROWSER_CACHE>",
+      "--env", "PYTEST_ADDOPTS=",
+      "--env", "PYTHONDONTWRITEBYTECODE=1",
+      "--env", "UV_OFFLINE=1",
+      "--env", "PATH=<CAPTURED_CONTAINER_PATH>",
+      "--env", "ASIDE_BIN=<INTENTIONALLY_ABSENT_ASIDE_BINARY>",
+      "--workdir", "<CONTAINER_PROJECT_ROOT>", "<TASK_OWNED_CONTAINER>",
+      "python3", "<TASK_OWNED_SUBREAPER>"
+    ],
+    "scope_labels": {
+      "PROJECT_ENV": "isolated locked Python environment",
+      "BROWSER_NODE_MODULES": "isolated pinned browser runtime modules",
+      "PINNED_BROWSER_CACHE": "isolated Chromium cache",
+      "CAPTURED_CONTAINER_PATH": "captured ordered CI-tools, browser-runtime and system executable search path",
+      "INTENTIONALLY_ABSENT_ASIDE_BINARY": "explicitly nonexistent native Aside binary location",
+      "CONTAINER_PROJECT_ROOT": "selected research project in the container",
+      "TASK_OWNED_CONTAINER": "private container identifier omitted",
+      "TASK_OWNED_SUBREAPER": "private task-owned lifecycle supervisor",
+      "SUPERVISOR_RECEIPT": "separate private lifecycle capture for the named command",
+      "HEALTH_CAUSAL_PROBE": "private causal-probe program; contents not published",
+      "NATIVE_CAUSAL_PROBE": "private process-lifecycle probe program; contents not published",
+      "HEALTH_DEPTH_CONTROL": "private depth-guard negative-control program; contents not published",
+      "LEADER_ONLY_CONTROL": "private leader-only termination control program; contents not published",
+      "LATE_ABSENCE_CONTROL": "private late-absence deadline control program; contents not published",
+      "CONTROL_RESULT": "private negative-control result capture"
+    },
+    "commands": {
+      "canonical": {
+        "source_capture_sha256": "486a37cef9a5e9a9a680d9b694ba3cc2ec7ba6d88a0bb6aae10a50b8f5c13a49",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:canonical>",
+        "argv_tail": ["./scripts/verify_like_ci.sh"],
+        "started_at": "2026-11-11T11:28:09.614808+00:00",
+        "finished_at": "2026-11-11T11:31:45.448703+00:00",
+        "exit_code": 0
+      },
+      "whole_affected_modules": {
+        "source_capture_sha256": "a561aa6ca99ff38bcd9504060333728fa03634ec7071e0d4691417ed22fd37a9",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:whole_affected_modules>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "-m", "pytest", "tests/test_npc_service_contract.py", "tests/test_runtime_model_swap_native.py", "-q"],
+        "started_at": "2026-11-11T11:27:47.486521+00:00",
+        "finished_at": "2026-11-11T11:27:58.480811+00:00",
+        "exit_code": 0
+      },
+      "health_final_named": {
+        "source_capture_sha256": "7bab2e0ebcab3fe966b4a9b523ddb719efed9b2c05869363f4ae55d54e631048",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:health_final_named>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "-m", "pytest", "-q", "tests/test_npc_service_contract.py::NpcServiceSecurityIntegrationTests::test_malformed_payloads_are_controlled_and_health_survives"],
+        "started_at": "2026-11-11T11:20:18.136689+00:00",
+        "finished_at": "2026-11-11T11:20:19.598157+00:00",
+        "exit_code": 0
+      },
+      "native_final_named": {
+        "source_capture_sha256": "7bab2e0ebcab3fe966b4a9b523ddb719efed9b2c05869363f4ae55d54e631048",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:native_final_named>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "-m", "pytest", "-q", "tests/test_runtime_model_swap_native.py::LocalProcessBoundaryTests::test_local_python_timeout_terminates_process_and_descendant_without_native_binary"],
+        "started_at": "2026-11-11T11:27:25.343345+00:00",
+        "finished_at": "2026-11-11T11:27:27.019379+00:00",
+        "exit_code": 0
+      },
+      "health_causal_probe": {
+        "source_capture_sha256": "aa6a27fd6e7436cbd35eff94a556032668c4f836930a566cfe46d30f8b4dcfd7",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:health_causal_probe>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "<HEALTH_CAUSAL_PROBE>", "<CONTAINER_PROJECT_ROOT>"],
+        "started_at": "2026-11-11T11:18:17.288215+00:00",
+        "finished_at": "2026-11-11T11:18:18.152719+00:00",
+        "exit_code": 0
+      },
+      "native_causal_probe": {
+        "source_capture_sha256": "a1a2e429ef199993c42b29487080155204e35c98bc766d4ea344fbc2ecf9a091",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:native_causal_probe>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "<NATIVE_CAUSAL_PROBE>"],
+        "started_at": "2026-11-11T11:18:18.154063+00:00",
+        "finished_at": "2026-11-11T11:18:19.734510+00:00",
+        "exit_code": 1,
+        "expected_original_red": true
+      },
+      "health_depth_negative": {
+        "source_capture_sha256": "9554adf12aa70bfde3850e883be3c4c42518397a65acd073f2659492a5fb09e5",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:health_depth_negative>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "<HEALTH_DEPTH_CONTROL>", "<CONTAINER_PROJECT_ROOT>"],
+        "started_at": "2026-11-11T11:20:21.420942+00:00",
+        "finished_at": "2026-11-11T11:20:22.257753+00:00",
+        "exit_code": 1,
+        "expected_failure": true
+      },
+      "leader_only_negative": {
+        "source_capture_sha256": "4443a05300f3831882cb21b624507d5afdee7428785ba708768bcb209e6e45ee",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:leader_only_negative>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "<LEADER_ONLY_CONTROL>"],
+        "started_at": "2026-11-11T11:27:27.019884+00:00",
+        "finished_at": "2026-11-11T11:27:29.439680+00:00",
+        "exit_code": 0,
+        "exit_semantics": "control harness success; underlying test rejected the mutation"
+      },
+      "late_absence_negative": {
+        "source_capture_sha256": "7d2c38b5c49ea48588eebfd0391a42ee0e6fdfdcce06be8b5226d89ac84293de",
+        "supervisor_receipt_scope": "<SUPERVISOR_RECEIPT:late_absence_negative>",
+        "argv_tail": ["<PROJECT_ENV>/bin/python", "<LATE_ABSENCE_CONTROL>", "<CONTAINER_PROJECT_ROOT>", "new-fail", "<CONTROL_RESULT>"],
+        "started_at": "2026-11-11T11:27:23.778315+00:00",
+        "finished_at": "2026-11-11T11:27:25.342795+00:00",
+        "exit_code": 0,
+        "exit_semantics": "control harness success; underlying test rejected late absence"
+      }
+    }
+  },
+  "canonical": {
+    "source_capture_sha256": "12a66f2c669e69077276e89062d0f49d2c7dfec8bc06e987e32bbd4e018fb5a1",
+    "command_ref": "command_projection.commands.canonical",
+    "entrypoint": "neuro-symbolic-interactive-game-research-2026/scripts/verify_like_ci.sh",
+    "exit_code": 0,
+    "gates_passed": 13,
+    "gates_failed": 0,
+    "passed_stage_labels": ["Install locked environment", "Verify pinned contract browser runtime", "Unit and publication regression tests", "Ruff lint and format", "Project integrity", "Contribution and reference crosswalk", "Editable visual and table sources", "Offline experiment smoke", "Harness structure", "Experimental game-track contracts", "Deep-research result contracts", "Survey artifact contract", "Wiki lint"],
+    "unit_publication": {"passed": 1626, "skipped": 41, "subtests_passed": 1170, "seconds": 187.47},
+    "game_track": {"passed": 95, "skipped": 6, "subtests_passed": 43, "seconds": 20.06},
+    "populations_pooled": false,
+    "no_filters": true,
+    "skip_reason_observability": "Unmodified canonical -q emitted aggregate counts only, not individual skipped node IDs or reasons. No reason attribution is inferred, no skip was added or modified by the continuation, and the gate was not narrowed.",
+    "stdout_capture_sha256": "deec0d70447eb683da7573ddbc41339c5433ea317db37ac8eadb808807b729d1",
+    "stderr_capture_sha256": "4a1b7aba45e5775a7bed27c67802e1dee032d3817120fa00379090ae7ae0b4a5",
+    "supervisor": {"source_capture_sha256": "44e5be8a530b24c8e26d497a487691b5b2b6b35cba1065b8429b3b4075711a9e", "main_exit_code": 0, "supervisor_exit_code": 0, "remaining_owned_children_count": 0}
+  },
+  "whole_affected_modules": {
+    "source_capture_sha256": "b7a271a225bfb40c74ec4bc339ef95e11e3e69d6425e21d658bff99dd30ea82e",
+    "command_ref": "command_projection.commands.whole_affected_modules",
+    "exit_code": 0, "passed": 151, "skipped": 0, "subtests_passed": 327, "seconds": 10.61,
+    "no_filtering": true,
+    "not_additional_independent_samples": true
+  },
+  "causal_and_negative_controls": {
+    "source_capture_sha256": "b7a271a225bfb40c74ec4bc339ef95e11e3e69d6425e21d658bff99dd30ea82e",
+    "health_causal_probe": {"command_ref": "command_projection.commands.health_causal_probe", "exit_code": 0, "observed": "Deep malformed POST rejected with 400; occupying the only real worker caused fresh health GET reset; actual superclass worker completion released the slot and fresh health GET returned 200; interpreter calls remained empty."},
+    "native_causal_probe": {"command_ref": "command_projection.commands.native_causal_probe", "exit_code": 1, "expected_original_red": true, "observed": "Immediate signal-zero observation found a zombie, not absence; the same owned descendant was then reaped and both recorded process and group probes returned ESRCH. No zombie-as-absence relaxation."},
+    "negative_controls": [
+      {"command_ref": "command_projection.commands.health_depth_negative", "actual_exit": 1, "expected_failure": true, "observation": "Bypassing the depth guard produced the wrong controlled rejection category and failed the unchanged assertion."},
+      {"command_ref": "command_projection.commands.leader_only_negative", "harness_exit": 0, "underlying_test_success": false, "underlying_failures": 1, "underlying_errors": 0, "observation": "A real TERM-ignoring owned descendant survived leader-only termination; the test rejected it and final cleanup verified strict process/group absence."},
+      {"command_ref": "command_projection.commands.late_absence_negative", "harness_exit": 0, "underlying_test_success": false, "observed_seconds": 1.001, "deadline_seconds": 1.0, "observation": "Real process/group absence did not bypass the monotonic deadline. The old oracle's false pass is retained; the final oracle rejects late absence."}
+    ]
+  },
+  "source_reviews": {
+    "source_capture_sha256": "b7a271a225bfb40c74ec4bc339ef95e11e3e69d6425e21d658bff99dd30ea82e",
+    "code": {"handle": "agent://LifecycleFinalCodeReview", "verdict": "APPROVE"},
+    "python": {"handle": "agent://LifecycleFinalPythonReview", "verdict": "APPROVE"},
+    "scope": "Bounded final lifecycle source review only; same-provider, no independent-model, runtime, native-SDK or scientific attestation. Execution evidence is separately bound above."
+  },
+  "history_and_limits": {
+    "source_capture_sha256": "b7a271a225bfb40c74ec4bc339ef95e11e3e69d6425e21d658bff99dd30ea82e",
+    "earlier_failed_runs_retained": true,
+    "predecessor_evidence_captures_verified_unchanged": 248,
+    "earlier_native_4f216_pass_superseded_for_current_acceptance": true,
+    "current_native_sha256": "f5052d5b6e9736ec65ce726bbd81f9cc4424f0533f46c4494e79827c76effbd5",
+    "historical_frozen84_native_qa_and_final85_selection": "Retained at their original scopes, not reused as current-source approval.",
+    "historical_120_case_matrix": {"status": "FIX", "passed": 115, "failed": 5, "cause": "UNKNOWN", "relabelled_as_pass": false},
+    "scientific_cohorts_counts_unknown_identity_cost_g4_g6_and_manuscripts": "UNCHANGED; no new scientific/model/game/real-service evidence or promotion",
+    "production": "UNCHANGED; no deployment performed",
+    "metadata_finalization": "This receipt and eight existing checkpoint updates follow the local run. The PASS binds the frozen nine executable/config/test repair sources, not the later finalized metadata. No full eighteen-file CI claim.",
+    "full_ci_on_finalized_metadata": "NOT_RUN",
+    "hosted_ci_after_commit": "PENDING_NOT_RUN",
+    "commit_push": "PENDING",
+    "deployment": "PENDING_NOT_RUN"
+  }
+}
