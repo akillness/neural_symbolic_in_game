@@ -78,7 +78,8 @@
 \maketitle
 
 \begin{abstract}
-\system{}은 생성 게임 이벤트에 외부 권한 검사, typed-error repair, unchanged fallback, 재검증, replay, complete accounting을 결합한다. 읽기 전용 한·영 ontology view는 source 선언과 공개 관측만 연결한다. Codex dashboard 한 사례($n{=}1$, independent repeats $0$)는 \texttt{gpt-6.1-sol} 선택, geometry 수리, 실패 보존, 검사 62개, Godot Web build, 실제 입력 거절·공개·재표시를 기록한다. 고정 게임 native pilot은 8 assigned/7 observed/5 system-goal successes; 첫 행은 pre-response harness JSON serialization 기술 실패로 재실행하지 않았고 \texttt{gpt-6.1-sol}/ontology 두 행은 response timeout이다. Receipts는 host invocation 23, repair 0, unsafe/commit 0/16, semantic-link replay 7 valid, fresh-engine VALID/INVALID/NOT\_RUN/NOT\_OBSERVED=6/0/1/1을 보였다. Provider identity/revision/seed/cost/request count와 inference latency는 미상이며 source 수정 confound가 있다. 이는 bounded 관측이지 A/C 확인적 평가가 아니며 ontology 일반 일관성·우월·비열등성, frontier 등급, 다중 벤더 일반화·인간 편익을 추론하지 않는다. Traceability·whole-game·repeated-cross-model 연구는 제안이다.
+\system{}은 생성 게임 이벤트에 외부 권한 검사, typed-error repair, unchanged fallback, 재검증, replay, complete accounting을 결합한다. 읽기 전용 한·영 ontology view는 source 선언과 공개 관측만 연결한다. Codex dashboard 한 사례($n{=}1$, independent repeats $0$)는 \texttt{gpt-6.1-sol} 선택, geometry 수리, 실패 보존, 검사 62개, Godot Web build, 실제 입력 거절·공개·재표시를 기록한다. 이 단일 개발 사례의 seed는 미상이다. 고정 게임 native pilot은 8 assigned/7 observed/5 system-goal successes; 첫 행은 pre-response harness JSON serialization 기술 실패로 재실행하지 않았고 \texttt{gpt-6.1-sol}/ontology 두 행은 response timeout이다. Receipts는 host invocation 23, repair 0, unsafe/commit 0/16, semantic-link replay 7 valid, fresh-engine VALID/INVALID/NOT\_RUN/NOT\_OBSERVED=6/0/1/1을 보였다. Provider identity/revision/cost/request count와 inference latency는 미상이며 source 수정 confound가 있다. 이는 bounded 관측이지 A/C 확인적 평가가 아니며 ontology 일반 일관성·우월·비열등성, frontier 등급, 다중 벤더 일반화·인간 편익을 추론하지 않는다. Traceability·whole-game·repeated-cross-model 연구는 제안이다.
+Native pilot의 seed는 20261024다. 별도의 합성 v5 개발 수집에서는 배정 20/20개에 응답을 받았고, 8/20개가 strict gate를 통과했으며 7/20개가 지정 목표에 도달했고 10/20개가 schema parsing에 실패했다. 모든 배정을 포함한 기술적 계수이며 피드백의 인과 효과나 모델 우월성을 입증하지 않는다.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -374,6 +375,7 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 본 연구의 guided semantic repair 연산자 $\rho$ \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching}는 deterministic pre-execution 오류를 사용하고, oracle-only arm은 상태를 읽는다. Frozen-case rule 일치/edit-scope 진단은 capability나 ontology 우월성 증거가 아니다.
 
 이번 native runtime pilot은 한 authored quest에서 요청된 \texttt{gpt-6.1-sol}/\texttt{gpt-5.6-sol}, \texttt{medium}, \texttt{general\_rule}/\texttt{ontology}를 condition당 2회 요청한 bounded observation이다. 모델은 typed intent만 생성하고 deterministic planner/checker와 Godot이 권위를 유지한다; source 수정 confound와 provider identity/revision/request count/cost 미상이 남는다.
+구현 교란: 첫 행은 controller-v3에서 모델 응답 전에 직렬화 오류로 실패했다. 이후 행 2--8은 모델에 보이는 입력을 바꾸지 않고 JSON 경계 한 줄을 수정한 controller-v4를 사용했으므로 selector/representation 차이를 모델에 귀속할 수 없다.
 질문 A(model/stack consistency)와 C(fresh-reference noninferiority)는 미실행이다. A는 고정 source/policy/replay의 substituted model/stack budget-bounded goal completion, C는 sealed assignment의 candidate/fresh reference 비교다. Goal completion은 safety/replay와 다른 endpoint이며, 둘 다 exact identity/revision 및 별도 safety/replay accounting이 필요하다. 현재 pilot은 답하지 않는다. 미래 제작 endpoint는 matched request/evidence부터 동결 mandatory check를 모두 통과한 첫 receipt까지의 time-to-first-all-predeclared-validation-pass이며 unfinished/timeout/fail/stage-not-reached에는 성공 시간이 없다.
 
 부록~\ref{app:runtime-identity}의 별도 신원 검증 확장은 실제 응답 모델의 증거 누락으로 중단됐으며 신원이 검증된 새 비교 결과는 얻지 못했다.
@@ -382,7 +384,7 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 \textbf{위협과 경계.} State consistency는 behavior/narrative coherence를 입증하지 않는다 \cite{S55_huang2026beyond}. Predicate/role/Godot/DISC 집합은 latent-state vector가 아니고 declaration expectation은 human gold/holdout이 아니다. Historical/활성 lane은 분모가 달라 합산하지 않는다. Provider identity/revision/request count/cost는 미상이고 source 수정 confound가 있다. 참가자·정서·이해·agency·즐거움·몰입·편익·population·safety-rate·model-ranking·상용 성능을 추론하지 않는다. Unkeyed hash는 authentication이 아니며 replay equality는 semantic correctness가 아니다. 미래 human/affect 연구에는 review, consent, 보상 고지, 최소수집·보존·삭제, opt-out, calibrated judge가 필요하다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
 \section{결론}
-\system{}은 bounded C1--C5 authorization/repair/replay/accounting과 출처 결속 한·영 observer를 결합한다. 단일 Codex 사례는 실패·acceptance 경계를 보존하며 모델 성능 근거가 아니다. Native pilot은 8 assigned/7 executed/5 system-goal successes인 bounded observation이며 A/C 확인적 평가·ontology/model 우월성 근거가 아니다. Timing·traceability·whole-game·repeated-cross-model 평가는 미래이고 historical cohort는 합산하지 않는다.
+\system{}은 bounded C1--C5 authorization/repair/replay/accounting과 출처 결속 한·영 observer를 결합한다. 단일 Codex 사례는 실패·acceptance 경계를 보존하며 모델 성능 근거가 아니다. Native pilot은 8 assigned/7 executed/5 system-goal successes인 bounded observation이며 A/C 확인적 평가·ontology/model 우월성 근거가 아니다. Time-to-first-all-predeclared-validation-pass·traceability·whole-game·repeated-cross-model 평가는 미래이고 historical cohort는 합산하지 않는다.
 
 \begingroup
 \section*{AI 사용 고지}
