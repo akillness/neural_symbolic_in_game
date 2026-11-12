@@ -371,7 +371,7 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 \section*{AI 사용 고지}
 LLM은 prose/code/test/citation check를 보조하고 hosted model candidate를 표기했다. Curated AI UI art/desk mesh는 file provenance, rendered snapshot/hash/ledger는 presentation-only다. 저자가 source를 대조하고 책임진다. NPC 입력/표는 assignment/project/protocol/schema hash와 unknown token/cost/model-revision을 보존한다.
 \section*{데이터 및 코드 가용성}
-보존된 저장소 번들은 구현·빌드 소스, 동결 packet, Godot slice, 결정론적 평가 스크립트, 기계 검증 기여·참조 주제·실험 매트릭스를 포함하며, 개발 사례 기록, 동결 공개/NPC 산출물 및 공개용 runtime 비교 투영(외부 DOI/저장소 기탁 전까지 저자 보관)을 함께 유지한다. 제안된 미측정 traceability rubric(Table~XIV), codebook 및 향후 whole-game/반복 cross-model 계획은 동반 보충자료와 source manifest에 보존하며, 과거 기록과 별도 신원 admission 자료는 합산하지 않는다.
+보존된 저장소 번들은 구현·빌드 소스, 동결 packet, Godot slice, 결정론적 평가 스크립트, 기계 검증 기여·참조 주제·실험 매트릭스를 포함하며, 개발 사례 기록, 동결 공개/NPC 산출물 및 공개용 runtime 비교 투영(외부 DOI/저장소 기탁 전까지 저자 보관)을 함께 유지한다. 부록~\ref{app:artifact-map}(표~\ref{tab:artifact-directory-map})에 각 실험·근거 레인별 폴더 경로, 주요 파일 내용 및 검증 스크립트를 정리했다. 제안된 미측정 traceability rubric(Table~XIV), codebook 및 향후 whole-game/반복 cross-model 계획은 동반 보충자료와 source manifest에 보존하며, 과거 기록과 별도 신원 admission 자료는 합산하지 않는다.
 
 \clearpage
 \bibliographystyle{IEEEtran}
@@ -382,6 +382,14 @@ LLM은 prose/code/test/citation check를 보조하고 hosted model candidate를 
 \onecolumn
 \appendices
 \section{런타임 증거 부록}\label{app:runtime-evidence}
+그림~\ref{fig:runtime-comparison}은 고정 게임 native runtime 비교(\path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json}; 표~\ref{tab:artifact-directory-map} 참조)의 사전 배정된 8개 행(단일 퀘스트 \texttt{sealed-lighthouse-v1}, seed \texttt{20261024}, $2\text{ selector}\times 2\text{ 표현}\times 2\text{ 반복}$)을 행 단위로 시각화한 근거 도표다. 표~\ref{tab:runtime-comparison-aggregate}의 집계 수치를 뒷받침하기 위해 각 행은 (i) 실제 영수증 기반 host 호출 수, (ii) 의미적 record-link 리플레이(\texttt{R}), (iii) 독립된 새 Godot 프로세스 재실행(\texttt{E})의 3단계 검증 결과를 연결한다:
+\begin{itemize}
+  \item \textbf{1행 (\texttt{gpt-6.1-sol}, \texttt{general\_rule}, r1 --- \texttt{HARNESS}):} 모델 응답 수신 전 controller-v3의 JSON 경계 직렬화 단계에서 중단된 기술 실패(\texttt{executed=null}, \texttt{host\_invocations=0}, \texttt{Goal=NR}, \texttt{Safety=NOT\_OBSERVED}, \texttt{R NR / E NOT\_OBSERVED})다. 하니스 결함을 모델 능력 실패로 오귀속하지 않으면서도 배정 분모($1/2$)에 그대로 유지하는 fail-closed 회계의 직접적 근거다.
+  \item \textbf{2행 (\texttt{gpt-6.1-sol}, \texttt{general\_rule}, r2 --- \texttt{SUCCESS}):} 모델 입력을 바꾸지 않고 JSON 경계 한 줄만 수정한 controller-v4에서 실행되어, host 호출 4회(\texttt{45.91\,s})와 안전한 상태 전이 3회(\texttt{repair=0}, \texttt{unsafe=0})로 퀘스트 목표에 도달했으며 의미적 리플레이(\texttt{R YES})와 새 엔진 재실행(\texttt{E VALID})을 모두 통과했다.
+  \item \textbf{3--4행 (\texttt{gpt-6.1-sol}, \texttt{ontology}, r1 \& r2 --- \texttt{TIMEOUT}):} 동결된 호출당 60\,s 제한을 초과해 종료되었다(\texttt{78.18\,s}, \texttt{66.52\,s}; \texttt{Goal=NO}). 특히 3행은 후속 호출이 timeout되기 전 유효한 상태 변경 1회를 commit했기 때문에, 최종 목표는 미달성(\texttt{Goal=NO})이지만 이미 commit된 전이 자체는 안전 검사(\texttt{PASS}), 의미적 리플레이(\texttt{R YES}), 새 Godot 재실행(\texttt{E VALID})을 모두 통과했다. 반면 4행은 첫 commit 이전에 timeout되어(\texttt{0} commit, \texttt{NO\_COMMIT\_OBSERVED}) 불변 로그에 대한 의미적 리플레이(\texttt{R YES})만 확인되고 엔진 재실행은 수행되지 않았다(\texttt{E NOT\_RUN}).
+  \item \textbf{5--8행 (\texttt{gpt-5.6-sol}, \texttt{general\_rule} \& \texttt{ontology}, r1 \& r2 --- \texttt{SUCCESS}):} 네 행 모두 셀별 $2/2$ 목표 달성(각 행 host 호출 4회, 안전 commit 3회, \texttt{31.95--41.09\,s}, \texttt{repair=0}, \texttt{unsafe=0})을 기록하며 안전 검사(\texttt{PASS}), 의미적 리플레이(\texttt{R YES}), 새 엔진 재실행(\texttt{E VALID})을 통과했다.
+\end{itemize}
+
 \begin{figure*}[!ht]
   \centering
   \includegraphics[width=\textwidth]{../figures/fig_runtime_comparison.pdf}
@@ -390,17 +398,21 @@ LLM은 prose/code/test/citation check를 보조하고 hosted model candidate를 
 \end{figure*}
 \clearpage
 \section{신원 검증 확장}\label{app:runtime-identity}
+본 부록은 응답 헤더의 실제 제공자 모델 식별자(\texttt{openai-model})가 결속되지 않은 실행을 비교 분모에 편입하지 않고 즉시 차단하는 fail-closed 입학 게이트 근거(\path{research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json}; 표~\ref{tab:artifact-directory-map})를 요약한다.
+
 \input{../generated/runtime_identity_extension_ko.tex}
 \clearpage
 \section{로컬 Ollama feasibility note}\label{app:runtime-ollama-feasibility}
-이 부록은 결과나 비교 연구가 아닌 제한된 기술 feasibility 관측을 기록한다. 고정 게임의 단일 episode 배정 4개를 모두 실행했으며(4/4), 네 행 모두 게임 goal에 도달하지 못했다(0/4). Pilot 행은 plan-only receipt가 기록되기 전에 실행되었고 나머지 세 plan-only receipt는 실행 전에 기록되었으므로, 네 행은 frozen 또는 prospective cohort가 아니다. 네 행은 모두 분모에 남기고 response-qualified eligibility와 성공을 분리해 보고한다.
-timeout이 아닌 21개 응답에서는 requested model과 response model 이름이 일치했다. 두 timeout receipt에는 response-model observation이 없으며, 특히 qwen2.5:0.5b \texttt{general\_rule} run에는 response-model observation이 없다. 이 receipt들은 identity 근거로 취급하지 않는다. Ollama 버전은 0.30.10이며 model manifest/blob digest는 실행 전후 일치했다. Provider identity, revision, cost, hardware, load 및 재현 가능한 timing은 없다. 설정된 loopback endpoint를 넘어서는 network 관측 주장은 하지 않는다.
+\textbf{목적 및 근거 범위.} 이 부록은 로컬 오픈웨이트 모델(Ollama \texttt{0.30.10} 루프백으로 구동한 \texttt{qwen2.5:1.5b} 및 \texttt{qwen2.5:0.5b})의 응답이 동일한 결정론적 플래너와 Godot 커밋 게이트를 통해 통제·리플레이될 수 있는지 점검한 4-에피소드 실행 근거(\path{src/nesy_game/runtime_model_swap_ollama.py} 및 \path{scripts/run_runtime_model_swap_ollama.py}; 표~\ref{tab:artifact-directory-map})를 기록한다. 배정된 4개 에피소드를 모두 실행했으나($4/4$) 퀘스트 최종 목표에는 도달하지 못했다($0/4$). 첫 pilot 행은 plan-only 영수증 작성 전에 실행되었고 2--4행은 실행 전에 기록되었으므로, 본 기록은 동결 전향 코호트가 아닌 기술적 실행 가능성(feasibility) 근거로 분류하며 응답 자격 충족(\texttt{Eligible}, $1/4$)과 목표 달성($0/4$)을 분리해 보고한다.
 
-두 representation은 동일한 public facts의 serialization이며 독립적인 의미 조건이 아니다. Language model은 public utterance의 intent만 분류했고 symbolic planner가 action을 선택했다. 따라서 이 episode들은 ontology effect, model-size effect, ranking, planning ability, efficacy, usability 또는 player benefit을 시험하지 않는다. 실패 taxonomy는 기술적 서술일 뿐이다: host-call-budget exhaustion 1회, cold-load deadline 아래 response-timeout 2회, 그리고 malformed-response receipt 4개를 보존한 repair-source error 1회다. Raw malformed response는 저장되지 않아 원인을 진단할 수 없다.
+\textbf{행별 진단 근거 해석 (표~\ref{tab:ollama-feasibility}).} 언어 모델은 동일한 공개 사실의 두 직렬화 표현(\texttt{general\_rule}, \texttt{ontology})에서 공개 발화의 의도(intent)만 분류하고 기호 플래너가 행동을 선택했다:
+\begin{itemize}
+  \item \textbf{1행 (\texttt{qwen2.5:1.5b}, \texttt{general\_rule}):} timeout 없이 수신된 12개 응답 모두 요청 모델명과 응답 모델명이 일치해 응답 자격을 충족했으나(\texttt{Receipt = 12/0/0}, \texttt{Eligible = yes}), 상태를 바꾸는 commit 없이 호출 예산을 소진했다(\texttt{실패 코드 = BUDGET}, \texttt{상태/Replay = no-change / valid}, \texttt{Engineering status = NOT\_PASS}).
+  \item \textbf{2--3행 (\texttt{qwen2.5:1.5b / ontology} 및 \texttt{qwen2.5:0.5b / general\_rule}):} \texttt{keep\_alive=0} cold loading이 포함된 30\,s 응답 제한에 걸려 종료되었다(\texttt{Receipt = 4/0/1} 및 \texttt{0/0/1}; \texttt{실패 코드 = TIMEOUT}). Timeout 영수증에는 응답 모델 관측값이 없으므로 두 행 모두 \texttt{Eligible = no}, \texttt{NOT\_PASS}로 기록된다.
+  \item \textbf{4행 (\texttt{qwen2.5:0.5b}, \texttt{ontology}):} 검증된 영수증 1건과 형식 오류 영수증 4건을 남겼다(\texttt{Receipt = 1/4/0}, \texttt{실패 코드 = REPAIR}, \texttt{Eligible = no}; 형식 오류 원문은 미보존). 그러나 수리를 거친 유효한 1개 단계가 canonical state를 1회 변경했고, 이 전이가 모델 호출 0회로 새 Godot 프로세스에서 정확히 재현(\texttt{1 change / valid})되어 최종 퀘스트 미달성($0/4$)과 별개로 커밋·리플레이 경계의 공학적 적합성(\texttt{Engineering status = PASS})을 입증했다.
+\end{itemize}
 
-1--3행은 state-changing commit이 없고 initial state hash를 유지했으며, 4행은 state-changing commit 1회가 fresh Godot process에서 valid replay되었다. Replay에는 model call이 0회였다. Record, receipt 및 request hash는 검증되었지만 adapter와 runner source bytes는 record에 contemporaneously hash-bound되지 않았다. 따라서 이 artifact는 완전 재현 가능한 기록이 아니다. 외부 공개 전 absolute local path를 정제해야 한다.
-
-로컬 전용 근거 묶음은 후속 실행 기록과 별도의 pilot 기록을 보존한다. Pilot 기록에는 episode 결과, 검증 결과, 실행 후 작성된 plan-only receipt가 포함된다.
+\textbf{출처 결속 및 재현성 한계.} Timeout이 아닌 21개 응답 전체에서 요청·응답 모델명이 일치했고 실행 전후 Ollama manifest/blob digest가 동일함을 확인했다. 에피소드 레코드·영수증·요청 해시는 모두 검증되나, 실행 당시 adapter/runner 소스 바이트 해시를 레코드에 동시 결속하지 않았고 로컬 절대 경로가 포함되어 있어 로컬 전용 근거 묶음으로만 보존한다.
 \begin{table*}[!ht]
 \caption{로컬 Ollama 고정 게임 feasibility 관측. 각 행은 하나의 배정 episode이며 receipt 수는 verified/failed/timeout 순이다. Eligibility는 모든 receipt가 response-qualified였다는 뜻이지 goal 달성을 뜻하지 않는다.}
 \label{tab:ollama-feasibility}
@@ -423,17 +435,46 @@ qwen2.5:0.5b & \texttt{ontology} & 1/1 & 1/4/0 & REPAIR & no & 1 change / valid 
 
 \section{진단·과거·차단 코호트 기록}\label{app:diagnostic-blocked}
 \subsection{별도의 신호 탐색 사례}
-탐색 영수증은 앞의 결과 및 전향 파일럿과 별개인 합성 \texttt{missing\_effect} 1건의 제안(\texttt{signal\_restored} 누락)을 기록한다. 결정적 대조는 1회 수리 후 commit·목표 도달에 성공했다. \texttt{gpt-6-luna} 조건에서 오류·힌트를 제공한 상세 신호는 commit·목표 도달로 이어졌고, \texttt{Action rejected.}만 전달한 일반 신호는 fallback되었다. 다만 정보량이 다른 단일 기술 관측이며 전체 프롬프트와 코드 버전이 미보존되어 재현 근거로 사용하지 않는다.
+단일 탐색 영수증은 본문 결과 및 전향 파일럿과 별개로 수행된 합성 \texttt{missing\_effect} 1건(공통 초기 제안에서 필수 효과 \texttt{signal\_restored} 누락)의 수리 경로를 기록한다. 결정론적 대조군은 1회 수리 후 commit 및 목표 도달에 성공했다. \texttt{gpt-6-luna} 조건에서 오류 코드·누락 효과·수리 힌트를 함께 제공한 상세 신호는 효과를 복원해 재검증 후 commit 및 목표 도달로 이어졌고, \texttt{Action rejected.}만 전달한 일반 신호는 빈 효과를 유지해 재검증 실패 후 상태 불변 fallback으로 종료되었다. 이는 그림~\ref{fig:state-signal}의 메커니즘 대비를 보여주는 정성적 탐색 사례이나, 전체 프롬프트와 실행 코드 버전 해시가 영수증에 결속되지 않아 본문 집계에서는 분리한다.
 
 \subsection{미완료 합성 개발 파일럿 및 과거 파일 계수}
-이전 합성 개발 코호트(v2 evidence·diagnostic, \texttt{gpt-5.6-luna}/\texttt{gpt-5.6-terra} 각 10개 배정)는 첫 \texttt{protocol\_error}에서 중단되거나 \texttt{IN\_PROGRESS}/pending 상태로 남아 유효 모델 응답이 0개였다(원문 오류는 자격 증명 노출 방지를 위해 미보존). 과거 파일 계수(완료/실패/pending)는 최초 파일럿 $0/7/3$, 초기 selector/native 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이며, 모두 합산하지 않는 파일 계수 기록이다.
+반복적인 하니스 개발 과정에서 실패·중단된 시도가 선택적으로 누락되지 않았음을 입증하기 위해, \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}(표~\ref{tab:artifact-directory-map})은 19개 전체 코호트의 배정·완료·실패·진행중(\texttt{IN\_PROGRESS})·대기(\texttt{PENDING}) 행 수와 로컬 원본 파일의 SHA-256 digest를 보존한다. 초기 합성 개발 파일럿(v2 evidence 및 v2 diagnostic 코호트, \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각 10개 배정)은 첫 \texttt{missing\_precondition} 배정에서 \texttt{protocol\_error}(\texttt{FAILED})로 중단되거나 \texttt{IN\_PROGRESS}/pending 상태로 남아 유효 모델 응답이 0개였다(민감 정보 노출 방지를 위해 원문 오류는 미보존). 전체 과거 파일 계수(완료/실패/pending)는 최초 파일럿 $0/7/3$(기술적·중단 시도 7건), 초기 selector/native 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이며, 표~\ref{tab:paired-feedback-v5}의 완료된 v5 수집(20행)과 합산하지 않는다.
 
 \subsection{사전 지정된 두 트랙 파일럿 (차단됨)}\label{sec:prospective-pilot}
-사전 지정 패널(Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, Antigravity \texttt{gemini-3.8-flash-medium}; 명목 medium effort)은 런타임 60단위(180\,s/episode)와 제한 개발 120단위(900\,s/assignment)를 교차하며, 예산 내 독립 검증 성공을 일차 지표로 둔다.
+사전 등록된 전향 연구(\path{research/prospective-pilot-20261103/protocol.json} 및 \path{results-v1/}; 표~\ref{tab:artifact-directory-map})는 3개 요청 패널(Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, Antigravity \texttt{gemini-3.8-flash-medium}; 명목 medium effort)에 대해 두 트랙을 정의한다: 런타임 트랙은 3개 target $\times$ 동일 정보의 2개 표현 $\times$ 10회 fresh reset(60단위, 에피소드당 180\,s)을 교차하고, 제한 개발 트랙은 3개 target $\times$ 2개 탐색 조건(최소 입력 vs.\ 공개 저장소 탐색) $\times$ 2개 표현 $\times$ 5개 과제 $\times$ 2회 fresh run(120단위, 배정당 900\,s)을 교차하며, 예산 내 독립 검증 성공을 일차 지표로, hard safety를 별도 게이트로 둔다.
 
 \input{../generated/prospective-pilot/status_ko.tex}
 
-차단 스냅샷 이후 5개 과제의 오프라인 fixture 제어 및 9303개 파일 누출 검사를 통과했으나, 이는 fixture 준비성 확인일 뿐 차단된 단위를 소급 승인하지 않는다.
+위 상태 요약과 같이, 180개 계획 단위 전체는 실제 모델 프로세스 호출 전에 9개 fail-closed 선결 조건 게이트에 의해 사전 차단(\texttt{NOT\_RUN/BLOCKED})되었다. 차단 스냅샷 이후 수행한 독립 오프라인 검사는 5개 개발 과제 모두에서 정답 변형 2개를 수락하고 결함 원본 및 그럴듯한 오답 변형을 거부했으며, 9,303개 저장소 파일에 대한 과제/코퍼스 누출 검사를 통과했다. 이 산출물은 미충족 선결 조건에서의 실행 차단과 평가 픽스처의 건전성을 입증하는 감사 근거다.
+\clearpage
+
+\section{실험 및 근거 산출물 디렉터리·파일 참조표}\label{app:artifact-map}
+본 논문의 아키텍처 보장(\textbf{C1--C5}), 활성·과거 실험 레인(\textbf{E1--E3}, \textbf{ENG1}, \textbf{NPC-ENG1/SCR1}, \textbf{NPC-DISC-1}, \textbf{DEV-CASE}) 및 부록 코호트에서 근거로 활용한 핵심 폴더와 파일의 주요 내용, 기록 필드, 검증 스크립트 대응 관계를 표~\ref{tab:artifact-directory-map}에 정리했다.
+
+\begin{table*}[!ht]
+\caption{논문 기여·실험 레인·부록 코호트별 핵심 근거 폴더 및 파일 경로, 주요 수록 내용, 검증 스크립트 참조표.}
+\label{tab:artifact-directory-map}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth} >{\raggedright\arraybackslash}p{0.31\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{0.21\textwidth}@{}}
+\toprule
+\textbf{레인 / 범위} & \textbf{폴더 및 주요 근거 파일 경로} & \textbf{주요 내용 및 핵심 기록 항목} & \textbf{검증 스크립트 및 참조} \\
+\midrule
+\textbf{C1--C5 핵심} \newline 계약 및 $\rho$ & \path{src/nesy_game/contracts.py}, \path{validator.py}, \path{repair.py}, \path{runtime.py}, \path{experiment.py}; \path{game-track/schemas/*.schema.json} & \texttt{WorldState}, \texttt{ActionPolicy}, 7개 결정론적 검사(\texttt{VALIDATOR\_CHECKS}), 반례 유도 수리 $\rho(a,E)$, 상태 판독 oracle, 의미적 리플레이·SHA-256 체인 검증기, Draft 2020-12 브리지·레코드 스키마. & \path{scripts/validate_project.py} \newline 4장, 표~\ref{tab:validators}--\ref{tab:rho-rules}, 그림~\ref{alg:commit} \\
+\textbf{E1} 오프라인 \newline 적합성 설계 & \path{research/academic-pipeline/stage-04-pilot/pilot-results.json}, \path{pilot-assignment-manifest.json}, \path{sha256-manifest.json}, \path{*.csv} & 게이트 픽스처 13개(유효 1, 음성 12), 4개 수리 arm별 12개 사례($0/12$ 거부/블라인드, $5/12$ $\rho$, $6/12$ oracle), 무결성 결함 10개, 어댑터 종단 기록 7개, 매니페스트 가드 3개, 경계 센티널 2개. & \path{scripts/run_conformance_pilot.py} \newline 5--6장, 표~\ref{tab:pilot-repair}--\ref{tab:pilot-accounting} \\
+\textbf{E2} 보관된 \newline 라이브 스크리닝 & \path{research/academic-pipeline/rq2-live-pilot/promotion-manifest.json}, \path{frozen-pilot-base/}, \path{signal-repair-v2/} & 해시 결속된 과거 JSON/JSONL 영수증 14개($5\text{ seed}\times K{=}1$ 대응 $\rho$ vs.\ 블라인드 재시도, 비커밋 상태 격리 $15/15$); 활성 주장 및 집계에서 제외된 provenance 자료. & \path{scripts/validate_contribution_crosswalk.py} \newline 5장 (Historical 전용) \\
+\textbf{E3} KG/온톨로지 \newline 링크 시뮬레이션 & \path{knowledge/ontology/trace-rpg-ontology.json}, \path{curated-relations.json}; \path{research/simulation/kg-ontology/latest/evaluation-matrix.json} & OKF 노드 43개, 참조 엣지 106개, 큐레이션 타입 엣지 24개; 엣지 은닉 질의 6개 $\times$ 고정 전략 7종(210개 점수; \texttt{S2} $P{=}R{=}1.000$, $\text{MRR}{=}0.944$, $\text{Sem@3}{=}1.000$, 온톨로지 위반 0건). & \path{scripts/run_kg_ontology_simulation.py} \newline 5장, 표~\ref{tab:kg-ontology-simulation} \\
+\textbf{ENG1} 및 \newline \textbf{DEV-CASE} & \path{game-track/godot/project.godot}, \path{docs/latest/evaluation-matrix.json}, \path{balance-archetypes.json}; \path{game-track/web/dashboard/ontology-map.json} & Godot 4.7.1 슬라이스(\texttt{sealed\_lighthouse.json}), 픽스처 4개, 코어 52/52 + 확장 4개 검사, 스모크 8/8, 아키타입 5종; 한·영 8역할 온톨로지 맵 및 $n{=}1$ Codex 대시보드 수리 기록(62/62 검사). & \path{scripts/validate_game_track.sh} \newline 6장, 표~\ref{tab:ontology-roles} \\
+\textbf{NPC-ENG1} 및 \newline \textbf{NPC-SCR1} & \path{configs/npc-goal-recovery.json}; \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/aggregate.json}, \path{*-results.jsonl} & 결정론적 \texttt{NPC-ENG1} 16례 및 \texttt{NPC-SCR1} 72행($P/R/O$ 각 24행), 사전 작성 stale-control ACK 거부 12건(\texttt{SCR-T01/T02}), epoch 내부 리플레이, 고정 커밋(\texttt{fa9fb8a}) 해시 매니페스트. & \path{scripts/validate_npc_goal_evidence.py} \newline 5--6장, 표~\ref{tab:npc-screening} \\
+\textbf{NPC-DISC-1} \newline 공개 계약 게이트 & \path{src/nesy_game/disclosure.py}; \path{research/npc-disclosure/reveal-hint-expectations-v1.json}, \path{results-signal-explainer-20261023-r5/} & 선언 유도형 \texttt{reveal\_hint} 60례(정상 48/경계 4/오류 8)의 3개 arm 비교(\texttt{general\_rule} vs.\ \texttt{ontology\_gate} $60/60$ 일치, 무검사군 위험 사례 51건) 및 규칙 변경 픽스처 2종(\texttt{RC-001/002}). & \path{scripts/generate_disclosure_paper_results.py} \newline 4.2.1절, 6장, 표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}, 그림~\ref{fig:disclosure-signals} \\
+\textbf{Native 비교} 및 \newline \textbf{신원 확장} & \path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json}; \path{codex-identity-20261026/public-results-v1/results.json} & 고정 게임 8행(목표 5/8, 직렬화 실패 1, timeout 2, host 호출 23, unsafe 0/16, 의미 리플레이 7, 새 엔진 $6/0/1/1$); 20행 계획 신원 확장 1행 중단(\texttt{IDENTITY\_UNVERIFIED}). & \path{scripts/generate_runtime_comparison_publication.py} \newline 6장, 표~\ref{tab:runtime-comparison-aggregate}, 부록~\ref{app:runtime-evidence}--\ref{app:runtime-identity} \\
+\textbf{v5 피드백 수집} \newline 및 코호트 이력 & \path{research/codex_feedback_pilot/public-v5/}; \path{paired-model-comparison-20261110-v5-source.zip}; \path{public-history-20261111/cohort-inventory.json} & 합성 픽스처 5종 $\times$ 2 selector $\times$ 상세/일반 신호 20행(게이트 통과 8, 목표 달성 7, 스키마 실패 10), 프롬프트/응답 SHA-256, 실행 소스 7개 압축본 및 19개 과거 코호트 인벤토리. & \path{tests/test_codex_feedback_publication.py} \newline 6장, 표~\ref{tab:paired-feedback-v5}, 그림~\ref{fig:state-signal}--\ref{fig:paired-feedback-flow}, 부록~\ref{app:diagnostic-blocked} \\
+\textbf{로컬 Ollama} 및 \newline \textbf{차단 전향 파일럿} & \path{src/nesy_game/runtime_model_swap_ollama.py}; \path{research/prospective-pilot-20261103/protocol.json}, \path{results-v1/collection-status.json}, \path{summary.json} & 로컬 Ollama 4에피소드(\texttt{qwen2.5:1.5b/0.5b}, 응답 적격 $1/4$, 유효 Godot 리플레이 기반 공학 \texttt{PASS} 1건); 180단위 전향 프로토콜(런타임 60/개발 120) 및 9개 선결 차단 게이트(\texttt{NOT\_RUN/BLOCKED}). & \path{scripts/run_prospective_pilot.py} \newline 부록~\ref{app:runtime-ollama-feasibility}--\ref{app:diagnostic-blocked}, 표~\ref{tab:ollama-feasibility} \\
+\textbf{교차검증} 및 \newline \textbf{시각 매니페스트} & \path{research/academic-pipeline/*-matrix.csv}, \path{stage-05-citation-verification.json}; \path{visuals/source-manifest.json}; \path{research/traceability-scoring-20261023/rubric.json} & 참고문헌 58편 주제·상태 교차표(검증 48, 프리프린트 10), 기여·실험 주장 경계 매트릭스, 147개 소스/산출물 SHA-256 매니페스트, 미측정 6차원 추적성 루브릭(\texttt{TR01--TR06}). & \path{scripts/validate_visual_assets.py} \newline 표~\ref{tab:contribution-map}, 표~\ref{tab:evidence-lanes}, 보충자료 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
 \clearpage
 
 \end{document}

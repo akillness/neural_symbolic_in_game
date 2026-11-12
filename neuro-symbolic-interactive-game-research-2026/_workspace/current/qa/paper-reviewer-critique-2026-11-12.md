@@ -61,4 +61,11 @@
    - **문체 정돈**: 국문 본문의 과도한 영문 단어 직역·병기(`~이지 ~가 아니다`)를 자연스러운 학술 국문으로 다듬되, CI 테스트가 검증하는 필수 한국어/영어 키워드(`일곱 개의 결정론적 검사`, `여섯 상태 상대 계열`, `기계 검증 기여·참조 주제·실험 매트릭스` 등)는 정확히 보존.
 4. **빌드 및 CI 검증 통과**:
    - `paper/latex`에서 영문/국문 PDF 재빌드(`make check`) 및 `Overfull` / `Missing character` / `Type 3 font` 0건 확인.
-   - `visuals/source-manifest.json` 갱신(필요 시) 및 `./scripts/verify_like_ci.sh` 관련 테스트 통과 확인.
+   - `visuals/source-manifest.json` 갱신 및 `./scripts/verify_like_ci.sh` 관련 테스트 통과 확인.
+5. **부록(Appendix A~E) 근거 설명 고도화 및 산출물 디렉터리·파일 참조표(`Table~\ref{tab:artifact-directory-map}`) 신설**:
+   - **부록 A (런타임 증거 부록)**: `fig:runtime-comparison`의 8개 배정 행을 (i) 직렬화 기술 실패(1행 `HARNESS`), (ii) 컨트롤러-v4 목표 달성(2행 `SUCCESS`), (iii) 60초 timeout 및 1회 부분 커밋 재실행 검증(3--4행 `TIMEOUT`), (iv) `gpt-5.6-sol` 목표 달성(5--8행 `SUCCESS`)의 4개 증거군으로 풀어 설명하여 도표 자체를 감사 근거로 읽을 수 있게 보강.
+   - **부록 B (신원 검증 확장)**: 응답 헤더(`openai-model`) 미결속 시 즉시 실행을 중단하는 fail-closed 입학 게이트로서의 의미를 서두에 명시.
+   - **부록 C (로컬 Ollama 실행 가능성)**: 1) 목적 및 근거 범위(응답 자격 `1/4`과 목표 달성 `0/4` 분리), 2) 행별 진단 근거 해석(특히 4행 `qwen2.5:0.5b / ontology`가 4건 형식 오류에도 유효 수리 1회를 통해 모델 호출 0회 Godot 재실행 `PASS`를 달성한 공학적 의미), 3) 출처 결속 한계로 3단 구조화.
+   - **부록 D (진단·과거·차단 코호트 기록)**: 단일 신호 탐색 사례, 19개 과거 코호트 파일 인벤토리(`cohort-inventory.json`), 사전 차단된 180단위 전향 파일럿(`NOT_RUN/BLOCKED` 및 9,303개 파일 누출 검사 통과)이 각각 어떤 감사 근거 역할을 하는지 명확히 서술.
+   - **부록 E (`app:artifact-map`, `Table~\ref{tab:artifact-directory-map}`)**: 논문 전체 기여(`C1--C5`), 실험 레인(`E1--E3`, `ENG1`, `DEV-CASE`, `NPC-ENG1/SCR1`, `NPC-DISC-1`), 런타임·피드백·부록 코호트의 **폴더 및 주요 파일 경로, 핵심 기록 필드·스키마, 자동 검증 스크립트 및 본문·부록 참조 위치**를 한눈에 확인할 수 있는 종합 참조표를 신설하고 본문(`Data and Code Availability`) 및 각 부록에서 상호 참조하도록 연결.
+
