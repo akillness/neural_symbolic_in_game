@@ -2,7 +2,7 @@
 
 ## Project
 
-- **Review revisions and bounded two-stage decomposition — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Review revisions and bounded two-stage decomposition — 2026-11-13]]. Bilingual C3/v5 revisions and requested 192 tests passed; EN19/KO18 PDFs and source/visual checks passed. **First full push gate FIX:** 2 native Aside observation failures, 11/12 gates passed; unchanged focused five-case rerun passed, cause unknown. Delivery remains pending; no unsupported TR scores or hosted-CI success is claimed.
+- **Review revisions and bounded two-stage decomposition — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Review revisions and bounded two-stage decomposition — 2026-11-13]]. **Pre-delivery checkpoint:** bilingual C3/v5 revisions, requested192 tests and EN19/KO18 PDF/source/visual checks passed. Two native Aside full-gate failures remain recorded. The existing explicit Playwright1.65.0 CI mode passed both affected modules (122 tests); whole-hook delivery and hosted CI are separate, not implied. Unsupported TR scores were not inserted.
 
 - **Paper delivery and Korean float-page fix — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Paper delivery and Korean float-page fix — 2026-11-13]]. `c7e4c4d..d7d5666` published after an unmodified local pre-push gate (12/12, from a detached worktree) and a green hosted run on the pinned runtime; a local follow-up `07870a0` (Korean Overfull fix) is verified but not recorded as delivered. Working-tree wiki lint still reports 3 pre-existing broken links, untouched. No new model call or claim.
 
