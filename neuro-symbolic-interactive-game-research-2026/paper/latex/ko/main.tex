@@ -68,7 +68,7 @@
 \renewcommand{\dbltopfraction}{0.95}
 \renewcommand{\textfraction}{0.05}
 
-\title{TRACE-RPG: 출처 결속 온톨로지 근거와 대화형 게임의 단일 Codex 통합 사례}
+\title{TRACE-RPG: 대화형 게임의 감사 가능한 제안-커밋 경계와 출처 결속 읽기 전용 온톨로지 관측}
 
 \author{정장영$^{1}$, 강신진$^{2,*}$\\
 \small $^{1}$홍익대학교 게임학과 (제1저자)\\
@@ -94,7 +94,7 @@
 
 본 연구의 기여는 범위가 명시된 proposal-to-commit 통합과 근거 계수 설계다. 수리 정보는 후보를 바꿀 수 있지만 동일한 외부 저작 제약에 대한 재검증만 상태 변경을 허가하며, 관측된 검사와 replay의 증거 한계는 서로 구분한다. C1--C5는 이 계약과 근거를 정리하며 구성 알고리즘의 발명이나 입증된 모델 우위를 주장하지 않는다.
 
-표~\ref{tab:contribution-map}은 \textbf{C1---계약}, \textbf{C2---검증/수정}, \textbf{C3---감사 연결}, \textbf{C4---배정 계수}, \textbf{C5---수정 안내}의 증거·추론 한계를 묶는다.
+표~\ref{tab:contribution-map}은 \textbf{C1---계약}, \textbf{C2---검증/수정}, \textbf{C3---무회귀 감사 바인딩}, \textbf{C4---배정 계수}, \textbf{C5---수정 안내}의 증거·추론 한계를 묶는다.
 \input{../generated/contribution_map_ko.tex}
 
 \begin{figure*}[!tbp]
@@ -190,6 +190,9 @@ Trace & 이전·다음 상태 hash, 규칙·template·case ID가 packet과 versi
 \bottomrule
 \end{tabularx}
 \end{table}
+\subsubsection{무회귀 감사 바인딩(C3)}
+여덟 역할의 읽기 전용 계약은 선언된 검사·판단·상태 효과·리플레이 근거를 출처에 결속하되, 새로운 mutation authority를 부여하지 않는다. NPC-DISC-1의 동일 동결 규칙·60개 사례에서 \texttt{general\_rule}과 \texttt{ontology\_gate}의 판단 결과는 60/60 일치했고 관측된 회귀는 0건이었다(표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}). 이 범위의 무회귀는 감사 바인딩을 추가해도 기존 결정이 유지됐다는 공학적 근거이지 온톨로지의 의미적 우월성이나 추적성 향상량이 아니다. \texttt{TR01--TR06} 루브릭은 \texttt{PROPOSED\_NOT\_VALIDATED}이며 측정 점수·추적성 비율은 없다.
+
 
 \subsection{고정 목표 NPC 통합}
 \texttt{npc-goal-recovery/1.1.0}에서 Codex는 intent 제안, Python은 public claim/plan 검사, Godot만 상태 쓰기를 맡는다. 항구 복구/승인 조석 단서 목표는 model-editable이 아니다. Write binding은 session, epoch, request, scenario, NPC, goal, version, policy/config hash, revision/state hash, deadline/budget, issued action이다. Service는 loopback \texttt{127.0.0.1:8768}, browser origin은 \texttt{localhost}/\texttt{127.0.0.1:8877}이다.
@@ -256,6 +259,7 @@ Repair는 상태를 바꾸지 않으며 소진 시 unchanged fallback을 반환�
 PQ1--PQ5는 불변성, frozen-class repair, checksum/semantic/linkage/continuity fault, second-append rollback, fail-closed assignment/adapter/manifest 계수, proposal/replay unknown-key 거부를 시험한다.
 
 Gate fixture는 13개(valid 1/negative 12), repair fixture는 12개다. 결과는 모든 arm을 \emph{guided-repairable}(오류 충분), \emph{oracle-only}(상태 필요), \emph{irreparable}(commit 불가)로 구분하며 latency/token은 accounting이지 population/detector 성능이 아니다. Packet은 fixture/assignment/schema/result/code를 결속한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
+E1의 의미적 음성 fixture 12개는 모두 후보 계약의 parsing을 통과한 뒤 의미 검사에서 거부되었다. 따라서 같은 후보에 schema 경계만 적용한다면 거부는 0/12일 것이다. 이 0/12는 저장된 후보·검사 결과와 parser 선행 순서에서 도출한 반사실적 대조이며, 별도로 실행·측정한 schema-only 절제 실험 결과가 아니다.
 
 
 \subsection{보존된 live-screening 자료}
@@ -308,9 +312,12 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 
 
 
-\subsection{새로운 v5 paired-selector 개발 수집}
-이번 새로운 v5 수집은 이전의 모든 미완료 및 diagnostic cohort와 별개다. 각 요청 selector는 합성 개발 fixture 5개를 상세 및 일반 신호 조건으로 받았다(selector당 배정 10개). 명목상 고정 직렬 순서는 Luna 다음 Terra였다. 배정 20개 모두 응답을 수신했으며 pending은 없지만 응답 수신은 과제 성공이 아니다. 표~\ref{tab:paired-feedback-v5}는 strict validator gate 통과, 독립 지정 목표 달성, schema 실패를 구분하며 각 cell의 분모는 배정된 5개 전체다.
-수집기는 각 응답을 strict parser와 결정론적 검사에 적용하고, 통과 여부와 별도로 지정 목표를 평가했다. 전체 20개 중 gate 통과는 8개, 목표 달성은 7개, schema 실패는 10개다. 이는 이 배정 집합의 기술적 계수이며 신호의 인과 효과를 뜻하지 않는다.
+\noindent\textit{과거 코호트의 범위.} v1--v4와 \texttt{codex-feedback-pilot-v2-*} diagnostic 시도는 불변 과거 기록으로 보존한다. \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}은 과거 17개와 별도 v5 2개를 합친 총 19개 Codex 피드백 코호트의 완료·실패·진행중·대기 행 및 원본 SHA-256을 보존한다. 과거 기록에는 완료된 v4 Luna도 있으므로 모두 중단된 코호트라는 뜻은 아니다. 별도 신호 탐색 사례는 현재 근거 집합에서 원본 영수증을 확인할 수 없는 과거 서술이며, 위 인벤토리는 그 사례의 출처를 입증하지 않는다. 과거 17개 코호트와 이 탐색 사례는 아래 v5 및 다른 활성 레인의 분모에서 제외한다(부록~\ref{app:diagnostic-blocked}).
+
+\subsection{별도의 합성 개발 수집(v5) 및 구문·의미 2단 분해}
+v5는 합성 fixture 다섯 종(\texttt{missing\_precondition}, \texttt{missing\_effect}, \texttt{unauthorized\_objective}, \texttt{forbidden\_disclosure}, \texttt{unsatisfied\_dependency})을 두 요청 selector와 상세/일반 신호에 교차한 별도 개발 수집이다. 명목 직렬 순서는 Luna 다음 Terra이며 selector당 배정은 10개다. 배정 20개 모두 응답을 수신했고 pending은 0개지만 응답 수신은 성공이 아니다. 표~\ref{tab:paired-feedback-v5}의 각 cell 분모는 schema 실패까지 포함한 배정 5개 전체다.
+
+\textbf{1단계: 구문·schema 경계.} 동일 strict parser는 20개 응답 중 10개를 거부했다(Luna 1/10, Terra 9/10). 소스의 strict parsing은 \texttt{execute\_with\_repair} 호출보다 앞서므로 이 실패들은 controller 실행 전에 차단된다. 실패 기록의 evaluation은 null이며 별도의 상태 전이 영수증이 없으므로 이를 독립 측정된 무변경 결과로 세지 않는다. 나머지 10개만 의미 검사로 진행했다. \textbf{2단계: 의미 경계.} 파싱된 후보 10개 중 8개가 결정론적 gate를 통과했다(Luna 상세 4/4, 일반 3/5; Terra 일반 1/1). 독립 지정 목표 달성은 전체 배정 중 7/20이다. 추가 수리 호출은 0회이며, 두 단계 계수는 이 배정 집합의 기술적 분해이지 모델 능력이나 신호의 인과 효과 추정이 아니다.
 
 \begin{table*}[!tbp]
 \caption{별도의 v5 합성 개발 수집. 모든 분모는 schema 실패를 포함한 배정 5개 전체이며 응답 수신은 과제 성공을 뜻하지 않는다.}
@@ -328,29 +335,28 @@ Disclosure $\texttt{t\_ms}$/hash/check는 engine timeline이다. Missing\,$\neq$
 \end{tabularx}
 \end{table*}
 
-동결된 수집 amendment에 따라 schema가 유효하지 않은 응답은 실패 배정이자 목표 실패로 남지만 adapter 완료가 입증되면 다음 배정의 수집을 계속한다(실제 transport·safety 실패 시 중단). Gate 통과와 목표 달성은 의도적으로 분리되어 있다: 다섯 fixture(\texttt{missing\_precondition}, \texttt{missing\_effect}, \texttt{unauthorized\_objective}, \texttt{forbidden\_disclosure}, \texttt{unsatisfied\_dependency}) 중 \texttt{unauthorized\_objective}는 동결된 \texttt{signal} policy가 어떤 효과도 허용하지 않는 반면 공통 목표는 \texttt{signal\_restored}를 요구한다. Luna 상세 응답은 금지된 효과를 제거해 policy gate를 통과했으나 충돌하는 목표에는 도달하지 못함으로써 목표 달성보다 정책 준수가 우선 강제됨을 보였다. 다섯 배정 모두 분모에 유지하며, 상세/일반 신호의 정보량 차이와 미상 메타데이터로 인해 selector 우월성·온톨로지 효능·A/C 확증을 입증하지 않는다.
+동결 amendment에 따라 schema 실패는 실패 배정·목표 실패로 남기되 adapter 완료가 입증되면 다음 배정을 수집한다(실제 transport·safety 실패 시 중단). \texttt{unauthorized\_objective}에서는 \texttt{signal} policy가 모든 효과를 금지하지만 목표는 \texttt{signal\_restored}를 요구한다. Luna 상세의 해당 한 응답은 금지 효과를 제거해 gate를 통과했으나 목표는 실패했다. 이는 Luna 상세 조건 전체의 gate 4/5·목표 3/5와 구분되는 단일 사례다. 상세/일반 신호는 정보량이 다르고 실제 serving identity·revision·seed·token usage·cost는 미상이다. 이 수집은 selector 우월성·온톨로지 효능·A/C 확증 근거가 아니다.
 
-두 selector의 공개 결과 기록은 각 사례의 결과, prompt hash, 실행 파일 hash/version을 유지하면서 로컬 실행 경로를 생략하고 원본 digest와 생략 필드를 명시한다. 동결 원본 결과와 승인 자료는 로컬에 변경 없이 보존한다. 공통 불변 출처 스냅샷은 실행된 소스 7개를 보존하지만 독립 실행 배포본은 아니다.
-이 v5 수집에서는 성공적으로 파싱된 응답 텍스트는 보존하지만 자격 증명이나 민감한 서버 데이터가 포함될 수 있어 CLI stdout/stderr 원문은 보존하지 않았으며 바이트 수, digest, 이벤트 요약은 남아 있다. 실패 배정 열 건은 null evaluation과 함께 \texttt{CandidateParseError} 및 평가 오류로 기록되어 있으므로 보존된 산출물만으로 내용 수준의 원인을 확정할 수 없다. 이 실패들은 모든 배정 분모에 그대로 포함하며 수신이나 실패만으로 제공자 신원이나 모델 자체의 무능력을 입증하지 않는다.
+\path{research/codex_feedback_pilot/public-v5/}의 selector별 \path{results.json} 공개 투영은 사례별 결과, 성공적으로 파싱된 응답 텍스트, prompt hash, 실행 파일 hash/version 및 원본 digest·생략 필드를 보존하며 로컬 실행 경로는 생략한다. CLI stdout/stderr 원문은 보존하지 않았고 바이트 수·digest·이벤트 요약만 남긴다. 동결 원본 결과·승인 자료는 변경 없이 보존하고, \path{research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip}은 실행 소스 7개를 결속한 출처 스냅샷이지 독립 실행 배포본이 아니다. Schema 실패 10건은 null evaluation과 \texttt{CandidateParseError}/평가 오류로 남으므로 보존 산출물만으로 내용 수준 원인을 확정할 수 없다.
 
-그림~\ref{fig:state-signal}은 게이트 검사 결과를 감정 추정이나 허가가 아닌 명시적 신호로 드러낸다. 상세 조건은 실패 검사와 수리 힌트를, 일반 조건은 거부만 전달한다. 두 응답에는 같은 strict parser, identity 검사와 7개 predicate를 적용한다. 이 v5 수집기는 일반적인 유한 수리 루프와 달리 추가 수리 호출이 0회다. 그림~\ref{fig:paired-feedback-flow}는 모든 배정을 응답 수신, 파싱, gate 통과, 독립 목표 달성으로 추적하며 schema 실패와 gate는 통과했으나 목표를 놓친 commit도 표시한다.
+그림~\ref{fig:state-signal}의 상세 신호는 실패 검사·수리 힌트를, 일반 신호는 거부만 전달한다. 두 조건에 같은 strict parser·identity 검사·일곱 predicate를 적용하며 신호 자체는 허가가 아니다. 그림~\ref{fig:paired-feedback-flow}는 응답 수신·파싱·gate 통과·독립 목표 달성을 구분하고 schema 실패 및 gate 통과 후 목표 실패도 보존한다.
 
 \begin{figure*}[!tbp]
 \centering
 \includegraphics[width=0.95\textwidth]{../figures/fig_state_signal.pdf}
-\caption{소스에서 유도한 v5 상태 시그널 경로. 구조화된 $(\mathrm{ok},E)$ 검사 결과는 수리를 안내하지만 상태 변경은 재검증만 승인한다. 일반 신호는 오류 상세를 생략한다. 목표는 gate 통과와 별도로 검사하며 이 그림은 저작된 메커니즘 도해이지 효능 근거가 아니다.}
+\caption{소스에서 유도한 v5 상태 시그널 경로. 구조화된 $(\mathrm{ok},E)$ 검사 결과는 수리를 안내하지만 상태 변경은 재검증만 승인한다. 일반 신호는 오류 상세를 생략한다. 목표는 gate 통과와 별도로 검사하며 이 그림은 저작된 메커니즘 도해다.}
 \label{fig:state-signal}
 \end{figure*}
 
 \begin{figure*}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{../figures/fig_paired_feedback_flow.pdf}
-\caption{표~\ref{tab:paired-feedback-v5}와 같은 영수증에서 유도한 동결 v5 수집 흐름 및 배정 20개 전체의 결과. Schema 실패 10개도 분모에 남으며 통과 후보 8개 중 목표 달성은 7개다. 초 단위 값은 실패 응답을 포함한 dispatch-to-terminal 시간이지 모델 전용 지연이 아니다. 요청 selector와 정보량이 다른 신호는 모델 우월성이나 온톨로지 효능을 입증하지 않는다.}
+\caption{표~\ref{tab:paired-feedback-v5}와 같은 영수증에서 유도한 동결 v5 수집 흐름 및 배정 20개 전체의 결과. Schema 실패 10개도 분모에 남으며 통과 후보 8개 중 목표 달성은 7개다. 초 단위 값은 실패 응답을 포함한 dispatch-to-terminal 시간이지 모델 전용 지연이 아니다.}
 \label{fig:paired-feedback-flow}
 \end{figure*}
 
 
-\noindent\textit{추가 코호트.} 미완료 v2 진단·파일 계수 기록, 단일 신호 탐색 영수증, 차단된 전향 두 트랙 파일럿 프로토콜(\texttt{NOT\_RUN/BLOCKED}, 0/180개 실행)은 부록~\ref{app:diagnostic-blocked}에 분리 보고한다.
+\noindent\textit{추가 코호트.} 미완료 v2 진단·파일 계수 기록, 원본 영수증이 현재 근거 집합에 없는 신호 탐색의 과거 귀속 서술, 차단된 전향 두 트랙 파일럿 프로토콜(\texttt{NOT\_RUN/BLOCKED}, 0/180개 실행)은 부록~\ref{app:diagnostic-blocked}에 분리 보고한다.
 
 
 \section{논의}
@@ -437,17 +443,17 @@ qwen2.5:0.5b & \texttt{ontology} & 1/1 & 1/4/0 & REPAIR & no & 1 change / valid 
 
 \section{진단·과거·차단 코호트 기록}\label{app:diagnostic-blocked}
 \subsection{별도의 신호 탐색 사례}
-단일 탐색 영수증은 본문 결과 및 전향 파일럿과 별개로 수행된 합성 \texttt{missing\_effect} 1건(공통 초기 제안에서 필수 효과 \texttt{signal\_restored} 누락)의 수리 경로를 기록한다. 결정론적 대조군은 1회 수리 후 commit 및 목표 도달에 성공했다. \texttt{gpt-6-luna} 조건에서 오류 코드·누락 효과·수리 힌트를 함께 제공한 상세 신호는 효과를 복원해 재검증 후 commit 및 목표 도달로 이어졌고, \texttt{Action rejected.}만 전달한 일반 신호는 빈 효과를 유지해 재검증 실패 후 상태 불변 fallback으로 종료되었다. 이는 그림~\ref{fig:state-signal}의 메커니즘 대비를 보여주는 정성적 탐색 사례이나, 전체 프롬프트와 실행 코드 버전 해시가 영수증에 결속되지 않아 본문 집계에서는 분리한다.
+기존 과거 서술은 본문 결과 및 전향 파일럿과 별개인 합성 \texttt{missing\_effect} 1건(공통 초기 제안에서 필수 효과 \texttt{signal\_restored} 누락)에 다음 수리 경로를 귀속한다: 결정론적 대조군은 1회 수리 후 commit 및 목표 도달에 성공했고, \texttt{gpt-6-luna} 상세 신호는 오류 코드·누락 효과·수리 힌트로 효과를 복원해 재검증 후 commit 및 목표 도달로 이어졌으며, \texttt{Action rejected.}만 전달한 일반 신호는 빈 효과를 유지해 재검증 실패 후 상태 불변 fallback으로 종료되었다. 그러나 현재 이용 가능한 근거 집합에서는 원본 영수증을 찾을 수 없어 이 귀속을 출처 검증하지 못했다. 따라서 이 문단은 검증되지 않은 과거 메커니즘 서술이지 관측 결과의 재확인이 아니며, 프롬프트·실행 코드 버전 결속도 확립되지 않아 활성 분모와 확인적 근거에서 제외한다.
 
 \subsection{미완료 합성 개발 파일럿 및 과거 파일 계수}
-반복적인 하니스 개발 과정에서 실패·중단된 시도가 선택적으로 누락되지 않았음을 입증하기 위해, \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}(표~\ref{tab:artifact-directory-map})은 19개 전체 코호트의 배정·완료·실패·진행중(\texttt{IN\_PROGRESS})·대기(\texttt{PENDING}) 행 수와 로컬 원본 파일의 SHA-256 digest를 보존한다. 초기 합성 개발 파일럿(v2 evidence 및 v2 diagnostic 코호트, \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각 10개 배정)은 첫 \texttt{missing\_precondition} 배정에서 \texttt{protocol\_error}(\texttt{FAILED})로 중단되거나 \texttt{IN\_PROGRESS}/pending 상태로 남아 유효 모델 응답이 0개였다(민감 정보 노출 방지를 위해 원문 오류는 미보존). 전체 과거 파일 계수(완료/실패/pending)는 최초 파일럿 $0/7/3$(기술적·중단 시도 7건), 초기 selector/native 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이며, 표~\ref{tab:paired-feedback-v5}의 완료된 v5 수집(20행)과 합산하지 않는다.
+반복적인 하니스 개발 과정에서 실패·중단된 시도가 선택적으로 누락되지 않았음을 입증하기 위해, \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}(표~\ref{tab:artifact-directory-map})은 총 19개 코호트(과거 17개, v5 2개)의 배정·완료·실패·진행중(\texttt{IN\_PROGRESS})·대기(\texttt{PENDING}) 행 수와 로컬 원본 파일의 SHA-256 digest를 보존한다. 초기 합성 개발 파일럿(v2 evidence 및 v2 diagnostic 코호트, \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각 10개 배정)은 첫 \texttt{missing\_precondition} 배정에서 \texttt{protocol\_error}(\texttt{FAILED})로 중단되거나 \texttt{IN\_PROGRESS}/pending 상태로 남아 유효 모델 응답이 0개였다(민감 정보 노출 방지를 위해 원문 오류는 미보존). 전체 과거 파일 계수(완료/실패/pending)는 최초 파일럿 $0/7/3$(기술적·중단 시도 7건), 초기 selector/native 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이며, 표~\ref{tab:paired-feedback-v5}의 완료된 v5 수집(20행)과 합산하지 않는다.
 
-\subsection{사전 지정된 두 트랙 파일럿 (차단됨)}\label{sec:prospective-pilot}
+\subsection{사전 등록 차단 게이트 및 누출 부재 검증}\label{sec:prospective-pilot}
 사전 등록된 전향 연구(\path{research/prospective-pilot-20261103/protocol.json} 및 \path{results-v1/}; 표~\ref{tab:artifact-directory-map})는 3개 요청 패널(Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, Antigravity \texttt{gemini-3.8-flash-medium}; 명목 medium effort)에 대해 두 트랙을 정의한다: 런타임 트랙은 3개 target $\times$ 동일 정보의 2개 표현 $\times$ 10회 fresh reset(60단위, 에피소드당 180\,s)을 교차하고, 제한 개발 트랙은 3개 target $\times$ 2개 탐색 조건(최소 입력 vs.\ 공개 저장소 탐색) $\times$ 2개 표현 $\times$ 5개 과제 $\times$ 2회 fresh run(120단위, 배정당 900\,s)을 교차하며, 예산 내 독립 검증 성공을 일차 지표로, hard safety를 별도 게이트로 둔다.
 
 \input{../generated/prospective-pilot/status_ko.tex}
 
-위 상태 요약과 같이, 180개 계획 단위 전체는 실제 모델 프로세스 호출 전에 9개 fail-closed 선결 조건 게이트에 의해 사전 차단(\texttt{NOT\_RUN/BLOCKED})되었다. 차단 스냅샷 이후 수행한 독립 오프라인 검사는 5개 개발 과제 모두에서 정답 변형 2개를 수락하고 결함 원본 및 그럴듯한 오답 변형을 거부했으며, 9,303개 저장소 파일에 대한 과제/코퍼스 누출 검사를 통과했다. 이 산출물은 미충족 선결 조건에서의 실행 차단과 평가 픽스처의 건전성을 입증하는 감사 근거다.
+위 상태 요약과 같이, 180개 계획 단위 전체는 실제 모델 프로세스 호출 전에 9개 fail-closed 선결 조건 게이트에 의해 사전 차단(\texttt{NOT\_RUN/BLOCKED}, 실행 0/180)되었다. 차단 스냅샷 이후의 독립 오프라인 검사는 5개 개발 과제 모두에서 정답 변형 2개를 수락하고 결함 원본 및 그럴듯한 오답 변형을 거부했으며, 지정된 과제/코퍼스 누출 검사는 저장소 파일 9,303개에서 통과했다. 이는 미충족 선결 조건의 실행 차단과 검사 범위 내 누출 부재·평가 픽스처 건전성의 감사 근거이지, 전향 파일럿 실행이나 모델·표현 비교 결과가 아니다.
 \clearpage
 
 \section{실험 및 근거 산출물 디렉터리·파일 참조표}\label{app:artifact-map}
@@ -471,7 +477,7 @@ qwen2.5:0.5b & \texttt{ontology} & 1/1 & 1/4/0 & REPAIR & no & 1 change / valid 
 \textbf{NPC-ENG1} 및 \newline \textbf{NPC-SCR1} & \path{configs/npc-goal-recovery.json}; \path{research/academic-pipeline/npc-goal-recovery/verified-run-006/aggregate.json}, \path{*-results.jsonl} & 결정론적 \texttt{NPC-ENG1} 16례 및 \texttt{NPC-SCR1} 72행($P/R/O$ 각 24행), 사전 작성 stale-control ACK 거부 12건(\texttt{SCR-T01/T02}), epoch 내부 리플레이, 고정 커밋(\texttt{fa9fb8a}) 해시 매니페스트. & \path{scripts/validate_npc_goal_evidence.py} \newline 5--6장, 표~\ref{tab:npc-screening} \\
 \textbf{NPC-DISC-1} \newline 공개 계약 게이트 & \path{src/nesy_game/disclosure.py}; \path{research/npc-disclosure/reveal-hint-expectations-v1.json}, \path{results-signal-explainer-20261023-r5/} & 선언 유도형 \texttt{reveal\_hint} 60례(정상 48/경계 4/오류 8)의 3개 arm 비교(\texttt{general\_rule} vs.\ \texttt{ontology\_gate} $60/60$ 일치, 무검사군 위험 사례 51건) 및 규칙 변경 픽스처 2종(\texttt{RC-001/002}). & \path{scripts/generate_disclosure_paper_results.py} \newline 4.2.1절, 6장, 표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}, 그림~\ref{fig:disclosure-signals} \\
 \textbf{Native 비교} 및 \newline \textbf{신원 확장} & \path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json}; \path{codex-identity-20261026/public-results-v1/results.json} & 고정 게임 8행(목표 5/8, 직렬화 실패 1, timeout 2, host 호출 23, unsafe 0/16, 의미 리플레이 7, 새 엔진 $6/0/1/1$); 20행 계획 신원 확장 1행 중단(\texttt{IDENTITY\_UNVERIFIED}). & \path{scripts/generate_runtime_comparison_publication.py} \newline 6장, 표~\ref{tab:runtime-comparison-aggregate}, 부록~\ref{app:runtime-evidence}--\ref{app:runtime-identity} \\
-\textbf{v5 피드백 수집} \newline 및 코호트 이력 & \path{research/codex_feedback_pilot/public-v5/}; \path{paired-model-comparison-20261110-v5-source.zip}; \path{public-history-20261111/cohort-inventory.json} & 합성 픽스처 5종 $\times$ 2 selector $\times$ 상세/일반 신호 20행(게이트 통과 8, 목표 달성 7, 스키마 실패 10), 프롬프트/응답 SHA-256, 실행 소스 7개 압축본 및 19개 과거 코호트 인벤토리. & \path{tests/test_codex_feedback_publication.py} \newline 6장, 표~\ref{tab:paired-feedback-v5}, 그림~\ref{fig:state-signal}--\ref{fig:paired-feedback-flow}, 부록~\ref{app:diagnostic-blocked} \\
+\textbf{v5 피드백 수집} \newline 및 코호트 이력 & \path{research/codex_feedback_pilot/public-v5/}; \path{paired-model-comparison-20261110-v5-source.zip}; \path{public-history-20261111/cohort-inventory.json} & 합성 픽스처 5종 $\times$ 2 selector $\times$ 상세/일반 신호 20행(게이트 통과 8, 목표 달성 7, 스키마 실패 10), 프롬프트/응답 SHA-256, 실행 소스 7개 압축본 및 총 19개 코호트 인벤토리(과거 17개, v5 2개). & \path{tests/test_codex_feedback_publication.py} \newline 6장, 표~\ref{tab:paired-feedback-v5}, 그림~\ref{fig:state-signal}--\ref{fig:paired-feedback-flow}, 부록~\ref{app:diagnostic-blocked} \\
 \textbf{로컬 Ollama} 및 \newline \textbf{차단 전향 파일럿} & \path{src/nesy_game/runtime_model_swap_ollama.py}; \path{research/prospective-pilot-20261103/protocol.json}, \path{results-v1/collection-status.json}, \path{summary.json} & 로컬 Ollama 4에피소드(\texttt{qwen2.5:1.5b/0.5b}, 응답 적격 $1/4$, 유효 Godot 리플레이 기반 공학 \texttt{PASS} 1건); 180단위 전향 프로토콜(런타임 60/개발 120) 및 9개 선결 차단 게이트(\texttt{NOT\_RUN/BLOCKED}). & \path{scripts/run_prospective_pilot.py} \newline 부록~\ref{app:runtime-ollama-feasibility}--\ref{app:diagnostic-blocked}, 표~\ref{tab:ollama-feasibility} \\
 \textbf{교차검증} 및 \newline \textbf{시각 매니페스트} & \path{research/academic-pipeline/*-matrix.csv}, \path{stage-05-citation-verification.json}; \path{visuals/source-manifest.json}; \path{research/traceability-scoring-20261023/rubric.json} & 참고문헌 58편 주제·상태 교차표(검증 48, 프리프린트 10), 기여·실험 주장 경계 매트릭스, 147개 소스/산출물 SHA-256 매니페스트, 미측정 6차원 추적성 루브릭(\texttt{TR01--TR06}). & \path{scripts/validate_visual_assets.py} \newline 표~\ref{tab:contribution-map}, 표~\ref{tab:evidence-lanes}, 보충자료 \\
 \bottomrule

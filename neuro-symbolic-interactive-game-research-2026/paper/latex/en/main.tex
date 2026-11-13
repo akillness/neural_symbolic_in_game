@@ -22,7 +22,7 @@
 \renewcommand{\dbltopfraction}{0.95}
 \renewcommand{\textfraction}{0.05}
 
-\title{TRACE-RPG: Source-Bound Ontology Evidence and a Bounded Codex-Assisted Integration Case in an Interactive Game}
+\title{TRACE-RPG: Auditable Proposal-to-Commit Boundaries and Source-Bound Read-Only Ontology Observation in Interactive Games}
 
 \author{Jangyoung Jeong$^{1}$ and Shinjin Kang$^{2,*}$\\
 \small $^{1}$Department of Game Design, Hongik University (first author)\\
@@ -50,7 +50,7 @@ game AI, interactive narrative, symbolic validation, constrained generation, rep
 
 Our contribution is a scoped proposal-to-commit integration and its evidence-accounting design: repair information can change the candidate, but only revalidation against the same authored constraints can authorize a state change; observed checks and replay have explicitly separate evidential limits. C1--C5 organize these contracts and their evidence, rather than claiming new constituent algorithms or demonstrated model advantage.
 
-Table~\ref{tab:contribution-map} scopes \textbf{C1---contracts}, \textbf{C2---validation/repair}, \textbf{C3---audit links}, \textbf{C4---assignment accounting}, and \textbf{C5---guided repair} to their evidence and inference ceilings.
+Table~\ref{tab:contribution-map} scopes \textbf{C1---contracts}, \textbf{C2---validation/repair}, \textbf{C3---zero-regression audit binding}, \textbf{C4---assignment accounting}, and \textbf{C5---guided repair} to their evidence and inference ceilings.
 \input{../generated/contribution_map_en.tex}
 
 \begin{figure*}[!tbp]
@@ -148,6 +148,9 @@ Trace & Prior and next state hashes, rule and template identifiers, and case ID 
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\subsubsection{Zero-regression audit binding (C3)}
+The eight-role contract binds source declarations, executed checks, decisions, state effects, and replay receipts without granting the read-only observer mutation authority. Under the same frozen NPC-DISC-1 rules, \texttt{general\_rule} and \texttt{ontology\_gate} agree on all 60/60 case outcomes, with zero observed expectation, state, display, or replay mismatches in either arm (Tables~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}). This is a bounded zero-regression audit binding over declaration-derived fixtures, not a held-out safety or ontology-superiority result. The proposed TR01--TR06 rubric remains \texttt{PROPOSED\_NOT\_VALIDATED}; no measured traceability score or comparative traceability gain is reported.
 
 \subsection{Fixed-goal NPC integration}
 Under \texttt{npc-goal-recovery/1.1.0}, Codex proposes intent, Python checks public claims/plans, and only Godot writes state. The fixed harbor-restoration/authorized-tide-lead goal is not model-editable. Bindings cover session, epoch, request, scenario, NPC, goal, version, policy/config hashes, revision/state hash, deadline/budget, and issued action. Service: \texttt{127.0.0.1:8768}; browser origins: \texttt{localhost}, \texttt{127.0.0.1:8877}.
@@ -256,9 +259,16 @@ Invocation six fixed inherited 660\,px mobile-table minimum width: geometry RED 
 
 
 
-\subsection{Fresh v5 paired-selector development collection}
-This fresh v5 collection is separate from all earlier incomplete and diagnostic cohorts. Each requested selector received five synthetic development fixtures under detailed and generic feedback (10 assignments each), in nominal fixed serial order Luna then Terra. All 20 assignments have a received response and none remain pending; response receipt is not task success. Table~\ref{tab:paired-feedback-v5} separates strict validator-gate acceptance, independently specified objective success, and schema failure, each over all five assigned cases per cell.
-The collector applied the strict parser and deterministic checks, then evaluated the objective separately. Of the 20 assignments, 8 passed the gate, 7 reached the objective, and 10 failed schema parsing; these descriptive counts do not identify a causal effect.
+\subsection{Separate Synthetic Development Collection (v5) and Two-Stage Decomposition}
+\noindent\textbf{Archived cohort scope.} Earlier v1--v4 collections and diagnostic \path{codex-feedback-pilot-v2-*} cohorts remain immutable history outside active v5 denominators; not all were aborted, as v4 Luna completed all ten assignments. The assignment accounting and raw-source digests in \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json} cover 19 entries: 17 archived cohorts and two v5 selector collections. This inventory excludes the separately attributed exploratory signal example. That example also remains outside active denominators, but its original receipt is unavailable in the available artifact set and its historical attribution is not source-verified here (Appendix~\ref{app:diagnostic-blocked}).
+
+The v5 collection is disjoint from those archived cohorts and uses five co-designed synthetic development fixtures, not a held-out test. Each requested selector received Detailed and Generic feedback for each fixture (10 assignments each), in nominal fixed serial order Luna then Terra. All 20 assignments received a response; receipt is not task success. Table~\ref{tab:paired-feedback-v5} reports gate acceptance, the independently specified goal, and schema failure over all five assigned cases per cell (C4), including failed outputs.
+
+\textbf{Stage 1---syntactic parser (C1).} Strict candidate parsing rejected 10/20 responses as schema-invalid (Luna 1/10; Terra 9/10), leaving ten parsed responses. The frozen evaluator parses before controller execution, so these failures are rejected before semantic validation or commit. Their records contain \texttt{CandidateParseError} and null evaluations, not observed transition receipts, independently measured zero-mutation results, or evidence of their content-level causes.
+
+\textbf{Stage 2---seven-predicate semantic gate (C2).} Of the ten parsed, identity-preserving responses, 8/10 passed the semantic gate: Luna Detailed 4/4, Luna Generic 3/5, and Terra Generic 1/1; Terra Detailed supplied no parsed response. The two rejected parsed responses both fell back with state unchanged (zero mutations). Goal evaluation is separate: 7/20 assigned responses reached \path{signal_restored}. The collector made no further repair calls (\texttt{repair\_budget=0}); failures remain in every assigned denominator (C4).
+
+Schema validity is not semantic authorization. E1's 12 semantic-negative gate fixtures passed the candidate contract; a schema-only boundary would therefore reject 0/12. This is a derived schema-only counterfactual, not a separately executed arm, measured ablation, or efficacy estimate.
 
 \begin{table*}[!tbp]
 \caption{Separate v5 synthetic development collection. Every denominator includes all five assigned cases, including schema failures; received responses do not imply successful tasks.}
@@ -276,29 +286,29 @@ The collector applied the strict parser and deterministic checks, then evaluated
 \end{tabularx}
 \end{table*}
 
-Under the frozen collection amendment, a schema-invalid response remains a failed assignment and a goal failure, but collection continues after proven adapter completion; genuine transport or safety failures still stop collection. Gate acceptance is intentionally decoupled from objective success: across the five fixtures (\path{missing_precondition}, \path{missing_effect}, \path{unauthorized_objective}, \path{forbidden_disclosure}, and \path{unsatisfied_dependency}), \path{unauthorized_objective} sets a frozen \texttt{signal} policy that permits no effects even though the common goal requires \path{signal_restored}. Luna's accepted detailed response removed the forbidden effect to satisfy the policy gate and therefore did not reach the conflicting goal, verifying policy-over-goal enforcement. All five assignments remain in each denominator. Because detailed and generic feedback carry unequal information and served model identity/revision, request count, and cost remain unknown, these counts do not establish selector superiority, ontology efficacy, or confirmation of A or C.
+The five fixtures are \path{missing_precondition}, \path{missing_effect}, \path{unauthorized_objective}, \path{forbidden_disclosure}, and \path{unsatisfied_dependency}. Under the frozen amendment, collection continues after a schema-invalid output only when adapter completion is proven; genuine transport or safety failures still stop it. In \path{unauthorized_objective}, the frozen \texttt{signal} policy permits no effects although the goal requires \path{signal_restored}. One Luna Detailed response removed the forbidden effect, passed the policy gate, and committed without reaching that goal. Table~\ref{tab:paired-feedback-v5}'s 4/5 gate and 3/5 goal counts are aggregates across five fixtures, not success rates for this single conflict case. The small, co-designed collection is descriptive: Detailed and Generic feedback carry unequal information, and served model identity/revision, provider request count, seed, and cost remain unknown. It establishes neither selector superiority nor ontology efficacy, and confirms neither A nor C.
 
-The public-safe outcome projections, held by the authors and not deposited, retain all case outcomes, prompt hashes and executable hash/version, while omitting the local executable path and disclosing the original-file digest and omitted field. Frozen raw outcomes and approvals remain local and unchanged. A common immutable source snapshot preserves seven executed source files; it is provenance evidence, not a standalone runnable distribution.
-For this v5 collection, successful parsed response text is retained, but raw CLI stdout and stderr were not retained because they could contain credentials or sensitive server data; byte counts, digests, and event summaries remain. The ten failed assignments record \texttt{CandidateParseError} as the evaluation error with null evaluations, so the retained artifacts do not establish their content-level causes. They remain in all assigned denominators; neither receipt nor failure establishes provider identity or inherent model inability.
+The public-safe outcome projections at \path{research/codex_feedback_pilot/public-v5/}, held by the authors and not deposited, retain all case outcomes, prompt hashes, and executable hash/version while omitting the local executable path and disclosing the original-file digest and omitted field. Frozen raw outcomes and approvals remain local and unchanged. The immutable \path{research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip} preserves seven executed source files; it is provenance evidence, not a standalone runnable distribution.
+Successful parsed response text is retained, but raw CLI stdout and stderr were not retained because they could contain credentials or sensitive server data; byte counts, digests, and event summaries remain. Neither receipt nor parsing failure establishes provider identity or inherent model inability.
 
-Figure~\ref{fig:state-signal} exposes the gate result as an explicit signal, not an affect estimate or permission: the detailed arm carries the failed check and repair hint, while the generic arm carries only rejection. Both responses face the same strict parser, identity check, and seven predicates. This v5 collector uses zero further repair calls, unlike the general bounded repair loop. Figure~\ref{fig:paired-feedback-flow} follows every assignment through receipt, parsing, gate acceptance and the independent goal; it also locates the schema failures and the accepted commit that missed the goal.
+Figure~\ref{fig:state-signal} exposes the gate result as an explicit signal, not an affect estimate or permission: Detailed feedback carries the failed check and repair hint, whereas Generic feedback carries only rejection. Both face the same parser, identity check, and seven predicates. Figure~\ref{fig:paired-feedback-flow} follows every assignment through receipt, parsing, gate acceptance, and the independent goal, including the accepted commit that missed the goal.
 
 \begin{figure*}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{../figures/fig_state_signal.pdf}
-\caption{Source-derived v5 state-signal path. The structured $(\mathrm{ok},E)$ check result can guide a repair, but only revalidation authorizes mutation. Generic feedback omits error details. The objective is checked separately from gate acceptance; this is an authored mechanism diagram, not efficacy evidence.}
+\caption{Source-derived v5 state-signal path. The structured $(\mathrm{ok},E)$ result supplies repair information; only revalidation authorizes mutation. Generic feedback omits error details. Goal evaluation is separate from gate acceptance.}
 \label{fig:state-signal}
 \end{figure*}
 
 \begin{figure*}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{../figures/fig_paired_feedback_flow.pdf}
-\caption{Frozen v5 collection flow and all 20 per-assignment outcomes, derived from the same receipts as Table~\ref{tab:paired-feedback-v5}. Ten schema failures remain in the denominator; eight accepted candidates yield seven goals. Seconds measure dispatch to terminal, including failed responses, not model-only latency. Requested selectors and unequal-information signals do not establish model superiority or ontology efficacy.}
+\caption{Frozen v5 collection flow and all 20 per-assignment outcomes from Table~\ref{tab:paired-feedback-v5}'s receipts. Ten schema failures remain in the denominator; eight accepted candidates yield seven goals. Seconds measure dispatch to terminal, including failed responses, not model-only latency.}
 \label{fig:paired-feedback-flow}
 \end{figure*}
 
 
-\noindent\textit{Additional cohorts.} Incomplete v2 diagnostic/bookkeeping records, a single exploratory signal receipt, and the blocked prospective two-track pilot protocol (\texttt{NOT\_RUN/BLOCKED}, 0/180 units executed) are documented separately in Appendix~\ref{app:diagnostic-blocked}.
+The prospective two-track protocol remains \texttt{NOT\_RUN/BLOCKED}, with 0/180 units executed (Appendix~\ref{app:diagnostic-blocked}); it is not a completed confirmatory pilot.
 
 
 \section{Discussion, Threats, Ethics, and Artifact Scope}
@@ -386,17 +396,18 @@ qwen2.5:0.5b & \texttt{ontology} & 1/1 & 1/4/0 & REPAIR & no & 1 change / valid 
 
 \section{Diagnostic, Historical, and Blocked Cohorts}\label{app:diagnostic-blocked}
 \subsection{Exploratory Signal Example}
-An exploratory single-case receipt records one synthetic \texttt{missing\_effect} fixture, separate from the main results and prospective pilot, where the shared initial proposal omitted the required \texttt{signal\_restored} effect. The deterministic control repaired the omission in one attempt, committed, and reached the objective. Under \texttt{gpt-6-luna}, the detailed signal (providing the error code, missing effect, and repair hint) produced a valid repair that committed and reached the objective, whereas the generic signal (\texttt{Action rejected.}) returned empty effects, failed revalidation, and fell back with state unchanged. While this illustrates the mechanism contrast modeled in Fig.~\ref{fig:state-signal}, the receipt lacks complete prompt texts, executed code hashes, and served-provider metadata, and is therefore retained only as a qualitative mechanism example.
+The following mechanism description is retained as a historical attribution, not a source-verified result: the original exploratory receipt is unavailable in the available artifact set and is not part of the 19-cohort inventory. It remains excluded from active denominators and confirmatory evidence.
+The prior historical description attributes the example to one synthetic \texttt{missing\_effect} fixture whose initial proposal omitted \texttt{signal\_restored}. It reports that a deterministic control repaired the omission in one attempt and reached the objective; under the requested \texttt{gpt-6-luna} selector, Detailed feedback reportedly yielded an accepted repair and objective success, whereas Generic feedback (\texttt{Action rejected.}) reportedly yielded empty effects, rejection, and unchanged-state fallback. These attributed outcomes illustrate the intended contrast in Fig.~\ref{fig:state-signal}; they are not independently verified observations. Complete prompt texts, executed source-version bindings, and served-provider metadata are not established in the available artifact set.
 
 \subsection{Incomplete Synthetic Development Pilots and Bookkeeping}
-To prevent selective reporting across iterative harness development, \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json} (Table~\ref{tab:artifact-directory-map}) preserves exact per-cohort assignment accounting and raw-file SHA-256 digests across all 19 historical cohorts. Earlier synthetic cohorts (the v2 evidence and v2 diagnostic cohorts for \texttt{gpt-5.6-luna} and \texttt{gpt-5.6-terra}, 10 planned assignments each) halted on their first \texttt{missing\_precondition} assignment with \texttt{protocol\_error} (\texttt{FAILED}) or remained \texttt{IN\_PROGRESS}/pending with 0 valid model responses; raw CLI error text was omitted to prevent credential leakage. Across the historical inventory, completed/failed/pending row counts are: original pilot $0/7/3$ (seven technical/interrupted attempts); four initial selector/native files $0/0/40$; initial v2 pair $0/0/20$; startup diagnostics $0/2/18$; v3 pair $0/0/20$; v4 Luna $10/0/0$ (detailed goal $4/5$, generic goal $4/5$) and Terra $0/1/9$; plus the v2 evidence ($0/1/9$ per selector) and v2 diagnostic snapshots above. None of these developmental records are pooled with the completed v5 collection in Table~\ref{tab:paired-feedback-v5}.
+To prevent selective reporting across iterative harness development, \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json} (Table~\ref{tab:artifact-directory-map}) preserves exact per-cohort assignment accounting and raw-file SHA-256 digests across 19 entries: 17 archived cohorts and two v5 selector collections. Earlier synthetic cohorts (the v2 evidence and v2 diagnostic cohorts for \texttt{gpt-5.6-luna} and \texttt{gpt-5.6-terra}, 10 planned assignments each) halted on their first \texttt{missing\_precondition} assignment with \texttt{protocol\_error} (\texttt{FAILED}) or remained \texttt{IN\_PROGRESS}/pending with 0 valid model responses; raw CLI error text was omitted to prevent credential leakage. For the 17 archived cohorts, completed/failed/pending row counts are: original pilot $0/7/3$ (seven technical/interrupted attempts); four initial selector/native files $0/0/40$; initial v2 pair $0/0/20$; startup diagnostics $0/2/18$; v3 pair $0/0/20$; v4 Luna $10/0/0$ (detailed goal $4/5$, generic goal $4/5$) and Terra $0/1/9$; plus the v2 evidence ($0/1/9$ per selector) and v2 diagnostic snapshots above. Thus, the archive is not uniformly aborted. None of these 17 archived records are pooled with the completed v5 collection in Table~\ref{tab:paired-feedback-v5}.
 
-\subsection{Prospective Two-Track Pilot (Blocked)}\label{sec:prospective-pilot}
+\subsection{Pre-Registered Fail-Closed Blocking Gate and Zero-Leakage Check}\label{sec:prospective-pilot}
 The pre-registered prospective study (\path{research/prospective-pilot-20261103/protocol.json} and \path{results-v1/}; Table~\ref{tab:artifact-directory-map}) specifies a three-selector panel (Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, and Antigravity \texttt{gemini-3.8-flash-medium}; nominal medium effort) across two tracks: a runtime track crossing 3 targets $\times$ 2 information-matched representations $\times$ 10 fresh resets (60 units, 180\,s/episode) and a bounded-development track crossing 3 targets $\times$ 2 exploration modes (minimal input vs.\ repository exploration) $\times$ 2 representations $\times$ 5 tasks $\times$ 2 fresh runs (120 units, 900\,s/assignment), with budget-bounded validated success as the primary endpoint and hard safety as a separate gate.
 
 \input{../generated/prospective-pilot/status_en.tex}
 
-As shown in the status summary above, all 180 units were blocked pre-execution by nine fail-closed admission gates before any model process was launched. Independent offline fixture controls subsequently verified that the evaluation harness accepts two correct variants and rejects the defective baseline and plausible-wrong variant across all five development tasks, and a corpus leakage audit passed over 9,303 repository files. These artifacts provide verifiable evidence of pre-collection admission gating and fixture readiness without fabricating or retroactively admitting blocked runs.
+As shown in the status summary above, all 180 units were blocked pre-execution by nine fail-closed admission gates before any model process was launched. Independent offline fixture controls subsequently verified that the evaluation harness accepts two correct variants and rejects the defective baseline and plausible-wrong variant across all five development tasks, and a corpus leakage audit passed over 9,303 repository files within its declared check scope. These artifacts provide scoped evidence of pre-collection admission gating, fixture readiness, and leakage-check conformance, not an executed pilot or model comparison; no blocked run is fabricated or retroactively admitted.
 \clearpage
 
 \section{Evidence Artifact and Directory Reference}\label{app:artifact-map}

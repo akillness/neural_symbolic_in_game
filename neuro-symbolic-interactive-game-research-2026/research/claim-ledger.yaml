@@ -19,6 +19,26 @@ claims:
     claim: TRACE-RPG treats encoded hard predicates as a pre-commit gate while narrative, affect, retrieval, and memory signals remain non-authoritative proposal context.
     evidence: [ivie-2026]
     status: proposed-contribution
+    audit_binding_scope: >-
+      C3 is an audit-binding contribution, not a measured traceability improvement:
+      the versioned world/actor/knowledge/fact/policy/quest/action/trace roles connect
+      declared rule checks, emitted decisions, observed state effects, and replay
+      records without granting proposal context canonical-state authority. In the
+      authored NPC-DISC-1 packet, general-rule and ontology gates agree on 60/60
+      outcomes under the same frozen rules, with zero recorded expectation, state,
+      display, or replay mismatches in either arm. This is bounded decision parity
+      without observed fixture regression, not ontology necessity or superiority.
+      TR01-TR06 remains PROPOSED_NOT_VALIDATED with no measured current-case score;
+      neither 360/360 nor 120/360 binding completeness is established. The canonical
+      rubric defines TR03 as decision-to-effect correspondence and TR05 as separate
+      forward/reverse requirement coverage, and prohibits a combined six-dimension
+      score. Eight role declarations are not six independently scored dimensions.
+    audit_binding_sources:
+      - game-track/web/dashboard/ontology-map.json
+      - research/npc-disclosure/results-current/comparison-summary.json
+      - research/traceability-scoring-20261023/rubric.json
+      - research/traceability-scoring-20261023/contribution-assessment.en.md
+      - research/traceability-scoring-20261023/contribution-assessment.ko.md
   - id: C-PILOT-001
     claim: In the authored Stage 4 fixtures, the loader-enforced set covered all 12 implemented error codes and observed outcomes matched 13/13 authored expectations; this is authored-oracle conformance, not an independent success rate.
     evidence:
@@ -45,6 +65,15 @@ claims:
       - research/academic-pipeline/stage-04-pilot/integrity-faults.csv
       - research/academic-pipeline/stage-04-pilot/integrity-boundaries.csv
     status: verified-designed-fixture
+    scope_note: >-
+      C3 supports inspection of named rule/check/decision/effect and replay bindings
+      within the declared integrity boundary. The separate NPC-DISC-1 comparison
+      records 60/60 equal general-rule/ontology outcomes with no observed fixture
+      regression; it does not independently score TR01-TR06 or establish that an
+      ontology improves decisions, traceability, repair, or player outcomes.
+    audit_binding_sources:
+      - research/npc-disclosure/results-current/comparison-summary.json
+      - research/traceability-scoring-20261023/rubric.json
   - id: C-PILOT-004
     claim: The seven authored adapter/accounting assignments yielded 1 commit, 1 symbolic fallback, and 5 adapter failures, and all 3 injected assignment guards rejected.
     evidence:
@@ -88,6 +117,31 @@ claims:
     claim: TRACE-RPG reduces hard violations versus LLM-only baselines.
     evidence: []
     status: TODO-RESULT
+    non_supporting_artifacts:
+      - research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-luna/results.json
+      - research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-terra/results.json
+      - research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip
+    scope_note: >-
+      The fresh v5 synthetic development collection is separate from E1 and all
+      earlier cohorts, not evidence that TRACE-RPG reduces violations in a population.
+      All 20 assignments received responses. Stage 1 strict parsing failed on 10/20
+      (Luna 1/10, Terra 9/10; CandidateParseError with null evaluation), leaving 10
+      parsed candidates. Stage 2 state-relative validation accepted 8/10 parsed
+      candidates: Luna Detailed 4/4, Luna Generic 3/5, Terra Detailed 0/0 (not
+      estimable), and Terra Generic 1/1. On the full assigned denominators, gate
+      acceptance was 8/20 and independently specified objective success was 7/20.
+      Per five assigned cases, received/gate/goal/schema-failure counts were Luna
+      Detailed 5/4/3/1, Luna Generic 5/3/3/0, Terra Detailed 5/0/0/5, and Terra
+      Generic 5/1/1/4. The unauthorized_objective fixture forbids signal effects
+      while the objective requires signal_restored; its single Luna Detailed
+      response was gate-accepted with empty effects but failed the objective.
+      The two parsed rejections record unchanged fallback states; parse failures
+      have no evaluation receipt, so their mutation outcomes are not observed
+      measurements. Provider-attested model identity/revision, seed, and cost
+      remain unknown. Raw CLI stdout/stderr were not retained; digests and byte
+      counts cannot establish content-level parse-failure causes. These are
+      descriptive pipeline counts, not causal feedback effects, model rankings,
+      new holdout evidence, or a promotion of any TODO-RESULT claim.
   - id: C-RESULT-002
     claim: Affect adaptation improves target-curve tracking without validity regression.
     evidence: []
