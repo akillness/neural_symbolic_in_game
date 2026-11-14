@@ -1,5 +1,9 @@
 # Log
 
+
+## 2026-11-14 | Overleaf project upload & academic-value visual review
+- Created Overleaf project `TRACE-RPG-2026` (`6af855f44236f200e4801bd3`) with staged root-relative paths and `kotex` compatibility (leaving tracked repo files untouched), verified 25-page XeLaTeX compilation for `main_ko.tex`, and enabled Editor link sharing.
+- Reviewed Gemini app academic-value critique (`077d4ab406a4c635`) against commits `b24e703` and `d3e68a0`: circular evaluation, over-rejection, surface sentinel boundaries, v5 strata, reference hygiene, and bilingual slop cleanup are already addressed; documented two optional framing refinements (epistemic-vs-disclosure separation and 2-tier reproducibility) in [[wiki/reports/2026-11-14-paper-academic-value-and-evidence-review]].
 ## 2026-11-13 | Reviewer reproducibility and reversible paper retirement
 - [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Reviewer reproducibility and paper-only retirement — 2026-11-13]] records EN24/KO24 source-bound captures, descriptive v5 strata, and a dedicated reached-table/source verifier. It separates deterministic retained-evidence checks from model recollection and fresh engine/browser observations.
 - Unverifiable Ollama quantitative claims were withdrawn from the active paper while prior bilingual text/hashes remain an explicitly unverified historical record. The reversible retirement preserved 816 files and 619573495 bytes outside the active project, with source/restore hashes; scientific source evidence was not deleted.
