@@ -93,6 +93,32 @@ def _rewrite_jsonl(path: Path, mutate) -> None:
     path.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
 
 
+def _install_converter_stubs(bin_dir: Path, monkeypatch) -> None:
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    rsvg = bin_dir / "rsvg-convert"
+    rsvg.write_text(
+        f"#!{sys.executable}\n"
+        "import pathlib, sys\n"
+        "fmt = sys.argv[sys.argv.index('-f') + 1]\n"
+        "out = pathlib.Path(sys.argv[sys.argv.index('-o') + 1])\n"
+        "out.write_bytes(\n"
+        "    b'\\x89PNG\\r\\n\\x1a\\n' if fmt == 'png' else b'%!PS-Adobe-3.0 EPSF-3.0\\n'\n"
+        ")\n",
+        encoding="utf-8",
+    )
+    rsvg.chmod(0o755)
+    ps2pdf = bin_dir / "ps2pdf"
+    ps2pdf.write_text(
+        f"#!{sys.executable}\n"
+        "import pathlib, sys\n"
+        "eps = pathlib.Path(sys.argv[-2]).read_bytes()\n"
+        "pathlib.Path(sys.argv[-1]).write_bytes(b'%PDF-1.4\\n' + eps)\n",
+        encoding="utf-8",
+    )
+    ps2pdf.chmod(0o755)
+    monkeypatch.setenv("PATH", f"{bin_dir}{os.pathsep}{os.environ.get('PATH', '')}")
+
+
 def test_reference_is_public_safe_and_preserves_the_input_projection():
     producer = _producer()
     data = producer.load_inputs()
@@ -159,9 +185,14 @@ def test_frozen_counts_keep_denominators_and_unsafe_mismatch_distinct():
 def test_normal_generation_preserves_reference_and_mechanism_without_retired_comparison(
     monkeypatch,
 ):
+    ET.parse(FIGURES / "fig_signal_mechanism.svg")
+    assert (FIGURES / "fig_signal_mechanism.png").read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+    assert (FIGURES / "fig_signal_mechanism.pdf").read_bytes().startswith(b"%PDF-")
     producer = _producer()
     with tempfile.TemporaryDirectory(dir=ROOT) as directory:
         output_root = Path(directory)
+        if shutil.which("rsvg-convert") is None or shutil.which("ps2pdf") is None:
+            _install_converter_stubs(output_root / "bin", monkeypatch)
         reference_path = output_root / "disclosure-reference.json"
         figures = output_root / "figures"
         monkeypatch.setattr(producer, "REFERENCE", reference_path)
@@ -184,6 +215,24 @@ def test_normal_generation_preserves_reference_and_mechanism_without_retired_com
             "fig_signal_mechanism.png",
             "fig_signal_mechanism.pdf",
         }
+
+        stub_figures = output_root / "stub-figures"
+        monkeypatch.setattr(producer, "FIGURES", stub_figures)
+        monkeypatch.setenv("PATH", "")
+        assert shutil.which("rsvg-convert") is None
+        assert shutil.which("ps2pdf") is None
+        _install_converter_stubs(output_root / "stub-bin", monkeypatch)
+        assert producer.main() == 0
+        assert (
+            (stub_figures / "fig_signal_mechanism.png")
+            .read_bytes()
+            .startswith(b"\x89PNG\r\n\x1a\n")
+        )
+        assert (stub_figures / "fig_signal_mechanism.pdf").read_bytes().startswith(b"%PDF-1.4\n")
+        assert (
+            f"source-sha256:{producer.sha(stub_figures / 'fig_signal_mechanism.svg')}".encode()
+            in (stub_figures / "fig_signal_mechanism.pdf").read_bytes()
+        )
 
 
 def test_check_mode_is_deterministic_and_read_only():
@@ -362,7 +411,16 @@ def test_dashboard_consumes_real_iframe_events_and_resets_live_clock():
         if env.get("NSG_BROWSER_BACKEND") == "aside":
             assert shutil.which(env.get("ASIDE_BIN", "aside")), "Aside CLI is required"
         else:
-            playwright_path = os.environ.get("PLAYWRIGHT_BIN") or shutil.which("playwright")
+            playwright_path = os.environ.get("PLAYWRIGHT_BIN") or next(
+                (
+                    str(Path(entry) / "playwright")
+                    for entry in os.environ.get("PATH", "").split(os.pathsep)
+                    if entry
+                    and (Path(entry) / "playwright").is_file()
+                    and (Path(entry).parent / "lib/node_modules/playwright").is_dir()
+                ),
+                None,
+            )
             if not playwright_path:
                 pytest.skip("Playwright CLI is not installed")
             node_root = Path(playwright_path).parent.parent

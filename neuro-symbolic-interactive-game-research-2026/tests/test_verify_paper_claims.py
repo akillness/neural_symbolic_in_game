@@ -79,7 +79,9 @@ def publication(verifier, tmp_path_factory):
             ".ruff_cache",
             "node_modules",
             ".godot",
+            "test_optional_real_service_modcurrent",
         ),
+        ignore_dangling_symlinks=True,
     )
     for relative in PRIVATE_REVIEW_IDENTITIES:
         (project / relative).unlink(missing_ok=True)
@@ -182,6 +184,7 @@ def _inventory(project, monkeypatch):
 def test_every_reached_table_has_an_individual_source_binding(verifier, publication, monkeypatch):
     project, _ = publication
     expected = _inventory(project, monkeypatch)
+    assert not list((project / "_workspace").rglob("test_optional_real_service_modcurrent"))
     report = _verify(verifier, publication)
     assert report["status"] == "PASS", report
     assert report["schema_version"] == "paper-claims-verification/v1"
