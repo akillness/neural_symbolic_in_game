@@ -71,7 +71,7 @@
 
 \section{제안된 traceability instrument (미측정)}
 {\raggedright
-제안 construct는 관찰 가능한 requirement/artifact/action/outcome 사이에서 복원할 수 있는 대응 관계다. correctness/hidden reasoning/developer skill/player benefit을 측정하지 않는다. 각 차원 $d$에서는 arm에 치우치지 않는 관찰자 inventory $U_d$와 각 단위 $u$의 필수 link $L_d(u)$를 동결한다. $N_d$는 $U_d$의 적용 가능한 단위 수이고 $n_d$는 그중 모든 필수 link를 검증한 단위 수다. 독립 assessor가 정확한 source/version과 모든 raw-evidence 관계·locator를 확인한 단위만 unit=1로 센다. missing/inaccessible/stale/contradicted/unverified는 이유를 기록하고 0으로 센다. Inventory가 완전하고 $N_d>0$일 때만 $n_d/N_d$를 보고한다. disagreement와 seeded-corruption control도 함께 보고하며 가중 composite는 사용하지 않는다. Inventory가 불완전하면 INDETERMINATE로 판정하고 관찰된 수와 inventory gap을 보고한다. N/A는 독립 근거로 비적용성을 확인한 경우에만 허용한다. Repair는 실제 시도 0건을 독립적으로 확인해야 하며 빈 log는 근거가 아니다. PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, MISSING을 구분하고 \texttt{stage\_not\_reached}$\neq$ PASS다.
+제안된 평가 도구(instrument)의 구성 개념은 관찰 가능한 요구사항, 산출물, 행위, 결과 사이에서 복원할 수 있는 대응 관계다. 이 도구는 정확성, 내부 추론 과정, 개발자 역량, 플레이어 효익을 측정하지 않는다. 각 차원 $d$에 대해 특정 실험 조건에 치우치지 않는 관찰자 목록(inventory) $U_d$와 각 단위 $u$의 필수 연결 $L_d(u)$를 사전에 동결한다. $N_d$는 $U_d$에 속한 적용 가능 단위 수이고, $n_d$는 그중 모든 필수 연결이 검증된 단위 수다. 독립 평가자가 정확한 원천과 버전, 모든 원시 근거 관계, 위치 식별자(locator)를 확인한 단위에만 단위 점수 1을 부여한다. 근거가 누락되었거나 접근 불가, 구버전, 상충, 미검증 상태인 경우에는 사유를 기록하고 0으로 집계한다. 목록이 완전하고 $N_d>0$일 때만 $n_d/N_d$를 보고하며, 평가자 간 불일치율과 인위적 손상 주입 대조군(seeded-corruption control) 결과도 함께 제시하되 가중 복합 점수는 산출하지 않는다. 목록이 불완전하면 INDETERMINATE로 판정하고 관측된 건수와 누락 범위를 함께 보고한다. N/A는 비적용성이 독립된 근거로 확인된 경우에만 허용한다. 수리 항목은 실제 수리 시도가 0건이었음이 독립적으로 확인된 경우에만 충족으로 인정하며, 비어 있는 로그만으로는 근거가 되지 않는다. PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, MISSING 상태는 엄격히 구분하며, \texttt{stage\_not\_reached}는 결코 PASS로 간주하지 않는다.
 \par}
 \begin{table}[t]
 \caption{출처 기반 traceability 평가 차원(미측정 제안)}

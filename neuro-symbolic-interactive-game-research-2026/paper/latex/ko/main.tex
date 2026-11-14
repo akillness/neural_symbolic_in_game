@@ -80,9 +80,9 @@
 \maketitle
 
 \begin{abstract}
-스키마에 맞는 게임 제안도 접근 불가 물체를 요구하거나 현재 공개하면 안 되는 사실을 포함할 수 있다. 본 논문은 스키마 적합성, 상태 상대 권한, 목표 달성을 구분하는 \system{}의 제안-커밋 경계를 정의한다. 모델은 구조화된 후보만 제안하고, 외부 결정론적 게이트가 행동 정책·선행조건·도달 가능성·NPC 지식·공개·단계 제약을 검사한다. 게이트는 제한된 반례 유도 수리 뒤에도 같은 행동 전 상태에서 후보를 다시 검사하며 해시 연결 기록과 의미적 리플레이로 커밋·보류의 근거를 보존한다.
+스키마에 부합하는 게임 내 행동 제안이라도 접근할 수 없는 물체를 요구하거나 현재 시점에서 공개할 수 없는 사실을 포함할 수 있다. 본 논문은 스키마 적합성, 상태 상대 권한, 목표 달성을 엄격히 구분하는 \system{}의 제안--커밋 경계를 정의한다. 생성 모델은 구조화된 후보만을 제안하고, 외부의 결정론적 게이트가 행동 정책, 선행조건, 도달 가능성, NPC 지식, 정보 공개, 퀘스트 단계 제약을 검사한다. 게이트는 제한된 반례 유도 수리 이후에도 동일한 행동 전 상태에서 후보를 재검증하며, 해시 연결 기록과 의미적 리플레이를 통해 커밋 및 보류의 근거를 보존한다.
 
-감사는 유한 그래프 32상태와 후보 13변형을 네 실행 조건에서 평가했다. 스키마 전용 조건은 최종 후보가 기준상 무효인 커밋 260/416을 허용한 반면 세 의미 검증 조건은 각각 0/416을 기록했다. 유도 수리는 최초 무효 후보 260개 중 128개를 수리하여 유효하게 커밋했고, 132/416은 보류했다. 최초 유효 사례 156/156과 정확한 구조 서명 11/11을 보존했으며, 도달 가능성의 폐쇄/BFS 비교는 32/32 일치했다. 별도 표면 센티널에서는 세 의미 검증 조건 모두 미선언 우회 표현 6/6을 통과시키고 명시된 금지 공개 6/6을 보류하여, 구조화된 권한 검사와 자연어 함의 검사의 경계를 드러냈다. 결과의 범위는 저작된 유한 사례와 구현을 분리한 기준에 한정되며 창의성·자유 언어 안전성·LLM 또는 사람의 효능을 입증하지 않는다.
+별도의 오프라인 감사는 유한 그래프 32개 상태와 후보 변형 13종을 교차해 네 실행 조건에서 평가했다. 스키마 전용 조건은 기준상 무효인 최종 후보 260/416건의 커밋을 허용한 반면, 세 의미 검증 조건은 모두 0/416건을 기록했다. 반례 유도 수리는 최초 무효 후보 260건 가운데 128건을 유효하게 수리해 커밋했고, 나머지 132/416건은 보류했다. 또한 최초 유효 사례 156/156건과 고유한 구조 서명 11/11종을 모두 보존했으며, 도달 가능성 폐쇄 연산과 너비 우선 탐색(BFS) 비교도 32/32건에서 일치했다. 별도의 표면 센티널 검사에서는 세 의미 검증 조건 모두 미선언 우회 표현 6/6건을 통과시키고 금지 사실이 명시된 후보 6/6건을 보류함으로써, 구조화된 권한 검사와 자연어 함의 검사의 경계를 드러냈다. 이 결과의 범위는 저작된 유한 사례와 구현을 분리한 기준 검사에 한정되며, 창의성, 자유 언어 안전성, 또는 언어 모델과 사람의 효능을 입증하지는 않는다.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -90,13 +90,13 @@
 \end{IEEEkeywords}
 
 \section{서론}
-게임 속 관리인이 비밀을 안다고 해서 지금 플레이어에게 말할 권한까지 생기지는 않는다. JSON 형식이 맞는 퀘스트도 잠긴 방 안의 열쇠를 요구할 수 있고, 유효한 관찰 행동은 게임 목표를 달성하지 않을 수 있다. 개연성이나 quest/entity grounding \cite{S03_weir2024ontologically,S20_ashby2023personalized}과 별도로, 게임은 현재 상태에서 허용되는 행동과 공개를 판정해야 한다.
+게임 속 관리인이 비밀을 알고 있다고 해서 지금 바로 플레이어에게 말할 권한까지 생기지는 않는다. JSON 형식에 맞는 퀘스트 제안이라도 잠긴 방 안의 열쇠를 요구할 수 있으며, 허용된 관찰 행동이라 하더라도 게임 목표를 달성하지 못할 수 있다. 서사적 개연성이나 퀘스트·개체 정합성(grounding) \cite{S03_weir2024ontologically,S20_ashby2023personalized}과는 별개로, 게임 시스템은 현재 상태에서 어떤 행동과 정보 공개가 허용되는지를 판정해야 한다.
 
-\system{}은 이 문제를 제안 권한과 상태 변경 권한의 분리로 다룬다(그림~\ref{fig:architecture}). 모델은 구조화된 후보를 제출하고 외부에서 저작한 정책을 사용하는 결정론적 게이트만 커밋을 승인한다. 오류 정보는 후보 수리를 안내하지만 권한을 추가하지 않는다. 게이트는 수리된 후보도 같은 상태에서 다시 검사하며 통과하지 못하면 상태를 바꾸지 않는다. 읽기 전용 한·영 온톨로지 관측은 어떤 선언과 규칙이 결정에 연결되는지 보여준다.
+\system{}은 이 문제를 제안 권한과 상태 변경 권한의 분리로 다룬다(그림~\ref{fig:architecture}). 생성 모델은 구조화된 후보만 제출하며, 외부에서 저작한 정책에 기반한 결정론적 게이트만이 상태 커밋을 승인한다. 검증에서 반환된 오류 정보는 후보 수리를 안내할 뿐 상태 변경 권한을 부여하지 않는다. 게이트는 수리된 후보 역시 동일한 행동 전 상태에서 다시 검사하며, 재검증을 통과하지 못하면 상태를 변경하지 않는다. 읽기 전용 한·영 온톨로지 관측 모듈은 어떤 선언과 규칙이 각 결정에 연결되는지를 가시화한다.
 
-이 논문은 스키마 적합성, 상태 상대 권한, 목표 달성을 구분하는 실행 계약과 근거 설계를 제시한다. v5의 배정 20개에서 응답 수신, 파싱 실패 10개, 게이트 통과 8개, 목표 달성 7개는 서로 다른 단계의 결과다. 동결 공개 사례의 60/60 결정 일치는 온톨로지 관측을 추가했을 때의 무회귀 근거로 한정한다. 새 결정론적 감사는 실제 스키마 전용 대조군, 구현 분리 기준, 과잉 거부와 구조 서명 보존, 자연어 표면 경계를 같은 동결 입력에서 구분한다(\ref{sec:review-boundary-audit}절).
+이 논문은 스키마 적합성, 상태 상대 권한, 목표 달성을 구분하는 실행 계약과 근거 설계를 제시한다. v5 수집의 배정 20건에서 응답 수신, 파싱 실패 10건, 게이트 통과 8건, 목표 달성 7건은 서로 다른 검증 단계의 결과다. 동결된 공개 사례의 60/60건 결정 일치는 온톨로지 관측을 추가했을 때 기존 판단에 회귀가 없었음을 보이는 근거로 한정한다. 새로운 결정론적 감사는 실제 스키마 전용 대조군, 구현을 분리한 기준 검사, 과잉 거부와 구조 서명 보존, 그리고 자연어 표면 경계를 동일한 동결 입력 위에서 구분해 평가한다(\ref{sec:review-boundary-audit}절).
 
-표~\ref{tab:contribution-map}은 \textbf{C1---계약}, \textbf{C2---검증/수정}, \textbf{C3---무회귀 감사 바인딩}, \textbf{C4---배정 계수}, \textbf{C5---수정 안내}의 증거와 추론 한계를 정리한다.
+표~\ref{tab:contribution-map}은 \textbf{C1---계약}, \textbf{C2---검증 및 수정}, \textbf{C3---무회귀 감사 바인딩}, \textbf{C4---배정 계수}, \textbf{C5---수정 안내} 각각의 근거와 추론 한계를 정리한다.
 \input{../generated/contribution_map_ko.tex}
 
 \begin{figure*}[!tbp]
@@ -114,16 +114,16 @@
 
 
 \section{관련 연구와 연구 공백}
-Grounding/개연성 연구는 quest/entity·graph quest·memory--reflection--planning·학습형 role을 다룬다. player/dialogue·role 연구는 admissibility/experience를 분리한다 \cite{S03_weir2024ontologically,S20_ashby2023personalized,S07_park2023generative,S08_shao2023character,S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized,S02_figueiredo2025scaffolded}; engagement affect는 향후 연구 대상이며 현재 구현이나 상태 변경 권한에 포함되지 않는다 \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement}. 이 논문은 출처 결속 proposal-to-commit 경로에서 상태 변경 권한, 수리 정보, replay 근거를 어떻게 구분할지 다룬다. 선행 연구에 이 구성 요소가 없다는 주장은 아니다.
+선행 정합성(grounding) 및 서사 개연성 연구는 퀘스트와 개체의 연결, 그래프 기반 퀘스트 구조, 기억--성찰--계획 아키텍처, 학습형 역할 수행을 주로 다룬다. 또한 플레이어 대화 및 역할 에이전트 연구는 행동의 허용 가능성(admissibility)과 경험적 품질을 구분하여 다룬다 \cite{S03_weir2024ontologically,S20_ashby2023personalized,S07_park2023generative,S08_shao2023character,S21_akoury2023player,S22_hochreiter2026beyond,S23_yin2026contextualized,S02_figueiredo2025scaffolded}. 반면 몰입도 및 정서(affect) 평가는 향후 연구 과제이며 현재 구현이나 상태 변경 권한에는 포함되지 않는다 \cite{S24_yannakakis2011experiencedriven,S25_melhart2020engagement,S26_wang2026engagement}. 본 논문은 출처가 결속된 제안--커밋(proposal-to-commit) 경로에서 상태 변경 권한, 수리 안내 정보, 리플레이 근거를 어떻게 분리해 구조화할지 다룬다. 이는 선행 연구에 이러한 구성 요소가 부재하다는 주장이 아니다.
 
-TextWorld/ScienceWorld, MineDojo, GVGAI, AgentBench, AgentBoard, SOTOPIA, BALROG와 자동 playtesting은 상태 기반 평가, embodied 환경, agent/game-content, 과정, 사회적 상호작용, 장기 환경을 보완한다 \cite{S11_cote2019textworld,S12_wang2022scienceworld,S13_fan2022minedojo,S14_perezliebana2019gvgai,S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog,S19_lepelletier2022playtesting}; NCP-Bench는 narrative commitment/fact consistency이지 player outcome이 아니다 \cite{S58_ma2026ncpbench}. 구조 제약·critic·affordance·trigger rule·precondition/effect·rule refinement·incremental validation·authored transformation·JSONSchemaBench \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard,S50_kambhampati2024llmmodulo,S51_ichter2023saycan,S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S42_buongiorno2024pangea,S01_vaucher2026ivie,S44_gongora2026worldstate,S57_geng2025jsonschemabench}와 비교한 우월성은 확립하지 않았으며 G-Retriever/HippoRAG/Mem0 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0}도 commit authority가 없다.
+TextWorld와 ScienceWorld, MineDojo, GVGAI, AgentBench, AgentBoard, SOTOPIA, BALROG 및 자동 플레이테스팅 연구는 상태 기반 평가, 체화 환경, 에이전트 및 게임 콘텐츠 검증, 실행 과정, 사회적 상호작용, 장기 과업 환경을 폭넓게 다룬다 \cite{S11_cote2019textworld,S12_wang2022scienceworld,S13_fan2022minedojo,S14_perezliebana2019gvgai,S15_liu2024agentbench,S16_ma2024agentboard,S17_zhou2024sotopia,S18_paglieri2025balrog,S19_lepelletier2022playtesting}. 한편 NCP-Bench는 플레이어의 최종 성과가 아니라 서사적 일관성과 사실 정합성을 평가한다 \cite{S58_ma2026ncpbench}. 본 연구는 구조 제약, 비평가(critic), 행위 가능성(affordance), 트리거 규칙, 선행조건과 효과, 규칙 정제, 점진적 검증, 저작된 상태 변환, 그리고 JSONSchemaBench에 관한 선행 기법들 \cite{S09_geng2023grammar,S10_beurerkellner2023prompting,S36_scholak2021picard,S50_kambhampati2024llmmodulo,S51_ichter2023saycan,S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S42_buongiorno2024pangea,S01_vaucher2026ivie,S44_gongora2026worldstate,S57_geng2025jsonschemabench}을 참조하나 이들에 대한 우월성을 입증한 것은 아니다. 또한 G-Retriever, HippoRAG, Mem0 같은 검색·기억 시스템 \cite{S04_he2024gretriever,S05_gutierrez2024hipporag,S06_chhikara2025mem0} 역시 맥락을 제공할 뿐 상태 변경에 대한 커밋 권한은 갖지 않는다.
 
-재현성·평가 연구는 frozen artifact·실패 보존·construct/rater/bias control·justified margin/random effects를 요구한다 \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}; 자원 회계는 에너지·탄소 보고 연구에서 동기를 얻는다 \cite{S34_henderson2020energy}. Replay와 leakage 검사는 배정 분모의 무결성을 점검하며 효능을 입증하지 않는다. replay 검사는 invalid nonfinal attempt도 포함한다 \cite{S56_feng2025agentrr,S59_sun2025bdc}. C1--C5는 enforcement·game-state management·feedback repair·replay·action interposition·precondition/effect·abort·social logic·belief-aware planning을 결합하지만 발명/최초성 주장은 아니다 \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}.
+재현성과 평가 방법론 연구는 동결된 산출물의 보존, 실패 사례의 누락 방지, 구성 타당도와 평가자 편향의 통제, 그리고 정당화된 동등성 한계 및 무선 효과(random effects) 반영을 요구하며 \cite{S31_agarwal2021precipice,S33_pineau2021reproducibility,S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement,S32_lakens2018equivalence,S35_barr2013random}, 자원 회계 보고는 에너지·탄소 배출 보고 연구에서 착안하였다 \cite{S34_henderson2020energy}. 리플레이와 데이터 누출 검사는 배정 분모의 무결성을 점검할 뿐 모델 효능을 입증하지 않으며, 리플레이 검증에는 최종 커밋에 이르지 못한 무효 시도도 포함된다 \cite{S56_feng2025agentrr,S59_sun2025bdc}. 본 논문의 기여 C1--C5는 기존에 확립된 규칙 강제, 게임 상태 관리, 피드백 기반 수리, 리플레이, 행위 중재, 선행조건과 효과 모델링, 트랜잭션 중단, 사회적 논리 및 신념 기반 계획 기법들을 결합한 것이며 \cite{S52_wang2025agentspec,S53_li2025settingdc,S54_zhou2025story2game,S45_madaan2023selfrefine,S56_feng2025agentrr,S37_riedl2003managing,S39_fikes1971strips,S40_schneider2000enforceable,S49_haerder1983transaction,S38_evans2013versu,S41_ware2021sabre}, 개별 알고리즘의 발명이나 최초 결합을 주장하지는 않는다.
 
-\noindent\textbf{기여의 위치.} 구성 알고리즘 자체의 발명이나 최초성을 기여로 삼지 않는다. 이 논문은 이들을 결합한 상태 상대 권한 계약, 출처가 결속된 수리·커밋 경로, 실패를 보존하는 계수를 제시한다. 새 스키마 전용 조건은 공유 strict parser를 실제로 적용하는 개입이며, XGrammar 실행이나 토큰 마스킹 성능 비교가 아니다. 플랫폼 통합과 화면 구현은 이 계약을 관측하는 공학 산출물로 구분한다.
+\noindent\textbf{기여의 위치.} 구성 알고리즘 자체의 발명이나 최초성을 기여로 삼지 않는다. 이 논문은 기존 기법들을 결합한 상태 상대 권한 계약, 출처가 결속된 수리·커밋 경로, 그리고 실패 사례를 누락 없이 보존하는 계수 체계를 제시한다. 새 스키마 전용 조건은 공유된 엄격 구문 분석기(strict parser)를 실제로 적용하는 대조 개입이며, XGrammar 실행이나 토큰 마스킹의 성능 비교가 아니다. 플랫폼 통합과 시각화 화면 구현 역시 이 계약을 관측하기 위한 공학적 산출물로 구분한다.
 
 \section{문제 정의와 보장 경계}
-입력 $c_t=(G_t,q_t)$는 typed game snapshot $G_t$와 외부 저작 action-policy/disclosure/quest-stage 제약 $q_t$를 구분한다. Python은 둘을 \texttt{WorldState}에 함께 담는다. locations, reachable locations, object locations, inventory, facts, NPC knowledge, quest stage가 인코딩된 상태를 기술하고 action policies와 forbidden disclosures가 이를 제약한다. \texttt{ActionPolicy}는 required preconditions, allowed/required effects, 허용된 quest-stage target을 정의한다. 이 분리는 개념적이며 Python이 두 독립 객체를 저장한다는 뜻이 아니다. Predicate는 terminal history $h_{<t}$나 log에서 \texttt{WorldState}를 복원하지 않으며 수락 전이는 $G_t$만 바꾸고 policy rotation은 제외한다. Retrieval·score·rationale·memory·future affect는 상태 변경을 승인하지 않는다.
+입력 $c_t=(G_t,q_t)$는 형식이 지정된 게임 상태 스냅샷 $G_t$와 외부에서 저작된 행동 정책·공개 제한·퀘스트 단계 제약 $q_t$를 개념적으로 구분한다. Python 구현에서는 두 요소를 모두 \texttt{WorldState} 구조에 함께 담는다. 구체적으로 장소와 도달 가능한 위치, 물체 배치, 소지품, 사실 집합, NPC의 지식, 현재 퀘스트 단계가 인코딩된 상태를 기술하고, 행동 정책과 금지된 공개 목록이 이를 제약한다. 각 \texttt{ActionPolicy}는 필수 선행조건, 허용 및 필수 효과, 그리고 허용된 퀘스트 단계 전이 대상을 정의한다. 이러한 구분은 개념적 역할의 분리일 뿐 Python이 두 개의 독립 객체를 별도로 저장한다는 뜻은 아니다. 검증 술어는 직전 이력 $h_{<t}$나 로그로부터 \texttt{WorldState}를 역산하지 않으며, 승인된 전이는 정책 교체 없이 스냅샷 $G_t$만 갱신한다. 검색 결과, 점수, 생성 근거, 기억, 또는 향후 도입할 정서 지표는 상태 변경 권한을 부여하지 않는다.
 
 \subsection{스키마, 상태 상대 권한, 목표의 구분}\label{sec:authorization-sets}
 행동 전 상태 $c_t$와 저작 정책을 고정하자. $\mathcal{S}$는 공유 strict parser의 스키마를 만족하는 후보 집합이다. $\mathcal{A}(c_t)$는 그중 모든 인코딩된 술어를 통과한 후보, $\mathcal{G}(c_t)$는 인코딩된 전이 $T$가 정의되는 후보 중 목표를 달성하는 후보, $\mathcal{H}(c_t)$는 권한과 목표를 모두 만족하는 후보로 둔다.
@@ -135,11 +135,11 @@ TextWorld/ScienceWorld, MineDojo, GVGAI, AgentBench, AgentBoard, SOTOPIA, BALROG
 \mathcal{H}(c_t)&\subseteq\mathcal{A}(c_t)\subseteq\mathcal{S}.
 \end{aligned}
 \end{equation}
-마지막 포함 관계는 첫 집합의 스키마 제한과 교집합 정의에서 바로 따르며 새로운 정리가 아니다. $\mathcal{A}(c_t)\subseteq\mathcal{G}(c_t)$도 그 역도 일반적으로 성립하지 않는다. 단계 0의 비밀 공개 후보는 스키마에는 맞아도 공개 권한을 얻지 못한다. 반대로 허용된 \texttt{observe}는 사실 \texttt{observed}만 추가하므로 유효하더라도 목표 \texttt{signal\_restored}를 달성하지 않는다. 목표 효과를 추가해도 금지 효과의 권한은 생기지 않는다. 이 관계는 인코딩된 상태·정책·전이에 조건부이며 모든 자연어 의미를 포괄하지 않는다.
+마지막 포함 관계는 첫 집합의 스키마 제한과 교집합 정의에서 바로 따르며 새로운 정리가 아니다. $\mathcal{A}(c_t)\subseteq\mathcal{G}(c_t)$도 그 역도 일반적으로 성립하지 않는다. 단계 0의 비밀 공개 후보는 스키마에는 맞아도 공개 권한을 얻지 못한다. 반대로 허용된 \texttt{observe}는 사실 \texttt{observed}만 추가하므로 유효하더라도 목표 \texttt{signal\_restored}를 달성하지 못한다. 목표 효과를 추가해도 금지 효과의 권한은 생기지 않는다. 이 집합 관계는 인코딩된 상태와 정책, 전이 정의에 조건부로 성립하며 모든 자연어 의미를 포괄하지는 않는다.
 
-NPC의 \emph{지식 보유}는 사용·공개하려는 사실을 NPC가 아는지를 가리키고 \emph{공개 권한}은 현재 퀘스트 단계와 정책이 그 사실의 공개를 허용하는지를 가리킨다. 새 감사에서 \texttt{keeper}의 지식은 단계 0/1에 걸쳐 같지만 \texttt{keeper\_secret}의 공개는 단계 0에서 금지되고 단계 1에서 허용된다. 알려진 참인 사실도 현재 공개할 수 없을 수 있다. MBTI 정렬, 말투(voice), 정서(affect), 선호·검색 점수는 별도의 연성 신호다. 이들은 하드 검증 $\mathcal{A}(c_t)$를 완화하거나 거부된 행동을 승인하지 않으며, MBTI 설문 정렬에서 NPC 말투 안정성이나 정서적 편익을 추론하지 않는다.
+NPC의 \emph{지식 보유}는 사용하거나 공개하려는 사실을 NPC가 알고 있는지를 가리키고, \emph{공개 권한}은 현재 퀘스트 단계와 정책이 그 사실의 공개를 허용하는지를 가리킨다. 새 감사에서 \texttt{keeper}의 지식은 단계 0과 1에 걸쳐 같지만, \texttt{keeper\_secret}의 공개는 단계 0에서 금지되고 단계 1에서 허용된다. 따라서 이미 알려진 참인 사실이라도 현재 단계에서는 공개할 수 없을 수 있다. MBTI 성격 정렬, 말투, 정서, 선호도 및 검색 점수는 별도의 연성 신호에 속한다. 이들은 엄격한 검증 집합 $\mathcal{A}(c_t)$를 완화하거나 거부된 행동을 승인하지 않으며, MBTI 설문 정렬만으로 NPC 말투의 안정성이나 정서적 편익을 추론할 수도 없다.
 
-비신뢰 제안 $a_t$가 엄격 parsing을 통과하면 검증기는 일곱 개의 결정론적 술어를 평가하여 \texttt{ValidationResult(valid, errors, checks\_run)}을 반환한다. 반환값은 다음과 같다.
+신뢰할 수 없는 모델의 제안 $a_t$가 엄격 구문 분석을 통과하면 검증기는 일곱 개의 결정론적 술어를 평가하여 \texttt{ValidationResult(valid, errors, checks\_run)}을 반환한다. 반환값은 다음과 같다.
 \begin{equation}
 \begin{aligned}
 V(c_t,a_t)&=(\mathrm{valid},E_t,C_{\mathrm{run}}),\\
@@ -147,7 +147,7 @@ V(c_t,a_t)&=(\mathrm{valid},E_t,C_{\mathrm{run}}),\\
 &\qquad v_{\mathrm{disc}},v_{\mathrm{elig}},v_{\mathrm{stage}})\in\{0,1\}^{7},
 \end{aligned}
 \end{equation}
-여기서 $E_t$는 구조화 오류(code, entity, reason, repair hint 포함), $C_{\mathrm{run}}$은 실행된 일곱 검사 ID 목록이며, $\mathrm{valid}\equiv\bigwedge_{i=1}^{7}(v_i=1)$은 일곱 잠재 술어 결과(policy, precondition, reachability, NPC knowledge, forbidden disclosure, stage eligibility, stage monotonicity)의 논리곱이다. 런타임 계약이 개별 Boolean 일곱 개 대신 통합 \texttt{valid} 플래그와 실행 ID 목록을 반환하므로 검사별 trace나 필드가 누락되면 통과나 실패가 아닌 미관측으로 처리한다. 다음 식은 원래 제안의 전체 transaction이 아니라 단일 현재 후보에 대한 gate다. 여기서 $a_t$는 수리로 바뀔 수 있는 현재 후보이며 $\boldsymbol{v}$는 변경되지 않은 $c_t$에 대한 해당 후보의 검사 결과다. 거부된 시도는 $c_t$를 그대로 두고 제어는 bounded repair 또는 fallback으로 이어지며, 동일 policy에 대한 재검증 통과만 상태 변경을 허가한다.
+여기서 $E_t$는 오류 코드, 대상 개체, 사유, 수리 힌트를 담은 구조화된 오류 목록이고, $C_{\mathrm{run}}$은 실행된 일곱 개 검사의 식별자 목록이다. 또한 $\mathrm{valid}\equiv\bigwedge_{i=1}^{7}(v_i=1)$은 행동 정책, 선행조건, 도달 가능성, NPC 지식, 금지 공개, 단계 적격성, 단계 단조성의 일곱 잠재 술어 결과를 모두 만족하는 논리곱을 뜻한다. 런타임 계약이 일곱 개의 개별 불리언 값 대신 통합 \texttt{valid} 플래그와 실행 검사 ID 목록을 반환하므로, 검사별 추적 기록이나 필드가 누락된 경우에는 통과나 실패가 아닌 미관측 상태로 처리한다. 다음 식은 최초 제안의 전체 트랜잭션이 아니라 현재 단일 후보에 적용되는 게이트다. 여기서 $a_t$는 수리를 거쳐 수정될 수 있는 현재 후보이며, $\boldsymbol{v}$는 변경되지 않은 $c_t$에 대해 해당 후보를 검사한 결과다. 검증에서 거부된 시도는 $c_t$를 바꾸지 않고 제한된 수리나 상태 불변 대체 경로(fallback)로 넘어가며, 동일 정책에 대한 재검증을 통과한 경우에만 상태 변경이 허용된다.
 \begin{equation}
 c_{t+1}=\begin{cases}
 T(c_t,a_t), & \bigwedge_{i=1}^{7}(v_i=1),\\
@@ -156,15 +156,15 @@ c_t, & \text{그 외.}
 \label{eq:transition}
 \end{equation}
 
-실제 경로는 제안 $\rightarrow$ 결정론적 검증 $\rightarrow$ 관측 가능한 validity·검사 ID·구조화 오류 $\rightarrow$ 선택적 bounded repair $\rightarrow$ 동일 상태에 대한 재검증 $\rightarrow$ commit 또는 상태 불변 fallback이다. 유효 후보도 적용 직전에 다시 검사하며 repair가 없거나 예산이 소진되면 상태는 불변이다. 아래 guided repair operator는 제안과 오류만 사용하지만 일반 Python repair callback에는 \texttt{WorldState}가 전달되므로 이 입력 제한을 모든 callback의 성질로 일반화하지 않는다. 통제 비교에서는 결정론적 상세 수정과 모델 기반 상세 수정에 동일 제안과 상세 오류를 제공한다. 같은 모델의 일반 오류 조건에는 일반 시그널을 제공한다. 이 설계 자체는 비교 결과를 뜻하지 않는다.
+실제 실행 경로는 후보 제안 $\rightarrow$ 결정론적 검증 $\rightarrow$ 유효성·검사 ID·구조화 오류 관측 $\rightarrow$ 선택적 제한 수리 $\rightarrow$ 동일 상태 재검증 $\rightarrow$ 커밋 또는 상태 불변 대체 경로 순으로 진행된다. 검증을 통과한 후보 역시 상태를 갱신하기 직전에 다시 검사하며, 수리기가 없거나 수리 예산이 소진되면 상태는 변경되지 않는다. 아래의 반례 유도 수리 연산자는 후보 제안과 오류 정보만 입력받지만, 일반 Python 수리 콜백에는 \texttt{WorldState}도 함께 전달되므로 이러한 입력 제한을 모든 콜백의 보편적 성질로 일반화할 수 없다. 통제된 실험 비교에서는 결정론적 상세 수리 조건과 모델 기반 상세 수리 조건에 동일한 후보 제안과 상세 오류를 제공하고, 동일 모델의 일반 오류 조건에는 간략한 일반 거부 신호만 제공한다. 다만 이 실험 설계 자체가 특정 비교 우위를 의미하지는 않는다.
 
-Fixture는 다음 불변량을 시험하며 증명은 아니다. \textbf{I1:} validation 소진/commit 전 proposal·controller 실패 불변; \textbf{I2:} callback과 $K\in\mathbb{Z}_{\geq 0}$에서 최대 $K+1$ attempt와 pre-commit 재검증(무deadline wall-clock 보장 없음); \textbf{I3:} 수락 \texttt{CandidateAction.effects}는 승인 quest-stage target을 포함해 \texttt{ActionPolicy.allowed\_effects} 안임; \textbf{I4:} 기록된 초기 스냅샷, 완전하고 순서가 보존된 전이 기록, 동결된 schema 및 결정론적 transition version이 주어지면 replay로 기록된 종단 구조화 상태를 복원할 수 있다. 이는 조건부 상태 복원이지 인증, 의미적 정확성 또는 모델 생성 과정의 재현이 아니다.
+검증 픽스처는 수학적 정리가 아니라 다음 네 가지 구현 불변량을 시험한다. \textbf{I1:} 수리 예산이 소진되거나 커밋 이전에 제안 또는 컨트롤러 단계에서 실패하더라도 상태는 변하지 않는다. \textbf{I2:} 정상 반환되는 수리 콜백과 수리 예산 $K\in\mathbb{Z}_{\geq 0}$가 주어지면 최대 $K+1$회 시도와 커밋 전 재검증으로 횟수가 제한되나, 별도 마감 시간이 없으면 실제 경과 시간(wall-clock) 내 종료까지는 보장하지 않는다. \textbf{I3:} 승인된 \texttt{CandidateAction.effects}는 인가된 퀘스트 단계 전이 대상을 포함하여 모두 \texttt{ActionPolicy.allowed\_effects} 범위 안에 머문다. \textbf{I4:} 기록된 초기 스냅샷, 누락 없이 순서가 보존된 전이 로그, 동결된 스키마, 그리고 결정론적 전이 규칙 버전이 주어지면 리플레이를 통해 기록된 최종 구조화 상태를 복원할 수 있다. 이는 조건부 상태 복원을 뜻할 뿐, 기록의 진위 인증이나 의미적 정확성, 또는 모델 생성 과정의 재현을 보장하지는 않는다.
 
-올바른 policy, 충실한 추출, deterministic version, 반환 callback, 단일 프로세스 파일 소유를 가정한다. Replay는 구조화 전이만 검사하며 repair provenance/prompt/확률 생성/미선언 자연어 함의는 검사하지 않는다.
+이러한 불변량은 정책과 상태 추출의 정확성, 결정론적 버전 고정, 콜백의 정상 반환, 그리고 단일 프로세스의 파일 소유권을 전제로 한다. 또한 리플레이는 구조화된 상태 전이만 검증하며, 수리 과정의 출처나 프롬프트, 확률적 생성 과정, 선언되지 않은 자연어 함의까지는 검사하지 않는다.
 
 \section{TRACE-RPG 아키텍처와 알고리즘}\label{sec:arch}
 \subsection{신뢰 경계와 계약}
-모델과 adapter는 제안만 한다. parser는 모호한 type/unknown key를 거부하고 policy가 precondition/effect를 정의한다. 버전을 명시한 bridge는 observation/proposal/validation/rejection/fallback/commit을 전달하며 unknown-key parity는 전체 parser 동등성·상용 portability가 아니다. Python 일곱 개의 결정론적 검사 ID는 \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity}; Godot 여섯 상태 상대 계열/DISC 일곱 rule은 일대일로 대응하지 않으며 \texttt{QUEST STAGE} display family 하나가 두 Python quest check를 포괄한다.
+모델과 어댑터는 행동을 제안할 뿐이며, 구문 분석기는 모호한 자료형이나 미정의 키를 거부하고 외부 정책이 선행조건과 효과를 정의한다. 버전이 명시된 브리지는 관측 상태, 후보 제안, 검증 결과, 거부 사유, 대체 경로, 커밋 결과를 계층 간에 전달한다. 이때 미정의 키 거부 동작의 일치가 구문 분석기 전체의 동등성이나 상용 호환성을 뜻하지는 않는다. Python 계층의 일곱 개의 결정론적 검사 식별자는 \texttt{action\_policy}, \texttt{precondition}, \texttt{object\_reachability}, \texttt{npc\_knowledge}, \texttt{forbidden\_disclosure}, \texttt{quest\_stage}, \texttt{quest\_stage\_monotonicity}다. 반면 Godot 계층의 여섯 상태 상대 계열과 일곱 개의 DISC 규칙은 이들과 일대일로 대응하지 않으며, 하나의 \texttt{QUEST STAGE} 표시 계열이 Python의 두 퀘스트 단계 검사를 함께 포괄한다.
 \begin{table}[!tbp]
 \caption{인코딩된 Validator 경계}
 \label{tab:validators}
@@ -186,8 +186,8 @@ Quest-stage monotonicity (\path{quest_stage_monotonicity}) & regressive stage & 
 \end{table}
 
 
-읽기 전용 온톨로지 역할 매핑은 선언과 동결된 기대값을 결속하며, 실시간 상태나 권한을 추론하지 않는다.
-Ontology view는 규칙을 보여주고 repair information은 수리를 안내한다. mutation authority는 이들과 별개다. 표~\ref{tab:ontology-roles}의 \texttt{reveal\_hint(actor\_id,fact\_id)}에서 view는 \texttt{tide\_marks\_hint}/stage-$2$ policy를 보이고 guided operator는 $a_t,E_t$만 읽어 predicate를 삽입할 뿐 \texttt{WorldState}를 읽지 않는다. 일곱 검사를 통과해야 $T$에 도달하며 Godot이 commit한다. 최초 공개 revision $+1$, 재표시는 불변이다.
+읽기 전용 온톨로지 역할 매핑은 원천 선언과 동결된 기대값을 연결할 뿐, 실시간 상태를 판정하거나 권한을 추론하지 않는다.
+온톨로지 뷰는 적용 규칙을 가시화하고 오류 정보는 후보 수리를 안내하지만, 실제 상태 변경 권한은 이 둘과 완전히 분리되어 있다. 표~\ref{tab:ontology-roles}의 \texttt{reveal\_hint(actor\_id,fact\_id)} 사례에서 온톨로지 뷰는 \texttt{tide\_marks\_hint}와 stage-$2$ 공개 정책을 표시하고, 반례 유도 수리 연산자는 후보 $a_t$와 오류 $E_t$만을 읽어 명명된 술어를 삽입하며 \texttt{WorldState}에는 접근하지 않는다. 일곱 개 검사를 모두 통과한 후보만 전이 $T$에 도달해 Godot 엔진이 최종 커밋을 수행하며, 최초 공개 시에는 상태 버전이 $1$ 증가하고 동일 사실의 재표시에서는 변하지 않는다.
 \begin{table}[!tbp]
 \caption{여덟 온톨로지 역할과 구체적인 출처 관계}
 \label{tab:ontology-roles}
@@ -209,20 +209,20 @@ Trace & 이전·다음 상태 hash, 규칙·template·case ID가 packet과 versi
 \end{tabularx}
 \end{table}
 \subsubsection{무회귀 감사 바인딩(C3)}
-여덟 역할의 읽기 전용 계약은 선언된 검사·판단·상태 효과·리플레이 근거를 출처에 결속하되, 새로운 mutation authority를 부여하지 않는다. NPC-DISC-1의 동일 동결 규칙·60개 사례에서 \texttt{general\_rule}과 \texttt{ontology\_gate}의 판단 결과는 60/60 일치했고 관측된 회귀는 0건이었다(표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}). 이 공학적 결과는 해당 범위에서 감사 바인딩을 추가해도 기존 결정이 유지됐음을 보여준다. 온톨로지의 의미적 우월성이나 추적성 향상량을 뜻하지는 않는다. \texttt{TR01--TR06} 루브릭은 \texttt{PROPOSED\_NOT\_VALIDATED}이며 측정 점수·추적성 비율은 없다.
+여덟 역할의 읽기 전용 계약은 선언된 검사, 판단, 상태 효과, 리플레이 근거를 출처에 결속하되, 새로운 상태 변경 권한을 부여하지 않는다. NPC-DISC-1의 동일한 동결 규칙과 60개 사례에서 \texttt{general\_rule}과 \texttt{ontology\_gate}의 판단 결과는 60/60건 모두 일치했고 관측된 회귀는 0건이었다(표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}). 이 공학적 결과는 해당 범위에서 감사 바인딩을 추가해도 기존 결정이 그대로 유지되었음을 보여줄 뿐, 온톨로지 표현의 의미적 우월성이나 추적성 향상 폭을 입증하지는 않는다. \texttt{TR01--TR06} 루브릭은 여전히 미검증 제안 상태(\texttt{PROPOSED\_NOT\_VALIDATED})이며 실측 점수나 추적성 비율은 산출하지 않았다.
 
 
 \subsection{고정 목표 NPC 통합}
-\texttt{npc-goal-recovery/1.1.0}에서 Codex는 intent 제안, Python은 public claim/plan 검사, Godot만 상태 쓰기를 맡는다. 모델은 항구 복구/승인 조석 단서 목표를 수정할 수 없다. Write binding은 session, epoch, request, scenario, NPC, goal, version, policy/config hash, revision/state hash, deadline/budget, issued action이다. Service는 loopback \texttt{127.0.0.1:8768}, browser origin은 \texttt{localhost}/\texttt{127.0.0.1:8877}이다.
+\texttt{npc-goal-recovery/1.1.0} 구성에서는 Codex가 의도(intent)를 제안하고, Python 계층이 공개 주장과 계획을 검증하며, Godot 엔진만이 상태 쓰기를 담당한다. 모델은 고정된 항구 복구 및 승인된 조석 단서 목표를 변경할 수 없다. 상태 쓰기 바인딩에는 세션, 에폭, 요청, 시나리오, NPC, 목표, 버전, 정책·설정 해시, 상태 버전·스냅샷 해시, 제한 시간·예산, 그리고 발행된 행동 정보가 포함된다. 로컬 서비스는 루프백 주소 \texttt{127.0.0.1:8768}에서 동작하며, 허용된 브라우저 출처는 \texttt{localhost}와 \texttt{127.0.0.1:8877}로 제한된다.
 \subsubsection{NPC-DISC-1 공개 계약과 권위 경계}\label{sec:disclosure-contract}
-선언 유도형 NPC-DISC-1 \texttt{reveal\_hint}의 60개 사례는 과거 \texttt{verified-run-006} 분모를 재실행·확장하지 않는다. 생성한 결과와 표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}는 strata·binding·입력-검사 매핑을 명시하고 Godot만 service binding 재검사와 상태 변경을 수행한다.
-이 60개는 유한하게 저작된 상태·정책 픽스처이며 독립적으로 표집한 NPC 대화나 플레이어 시행이 아니다. 60/60 일치는 해당 픽스처의 결정 동등성이지 모집단 효능이나 일반화 성능이 아니다.
+선언 유도형 NPC-DISC-1 \texttt{reveal\_hint}의 60개 사례는 과거 \texttt{verified-run-006} 분모를 재실행하거나 확장하지 않는다. 생성된 결과와 표~\ref{tab:disclosure-contract}--\ref{tab:disclosure-fixtures}는 층화 구조, 바인딩 정보, 그리고 입력과 검사 간의 대응 관계를 명시하며, Godot 엔진만 서비스 바인딩을 재검증한 뒤 상태를 변경한다.
+이 60개 사례는 유한하게 저작된 상태·정책 픽스처일 뿐 독립적으로 표집한 NPC 대화나 실제 플레이어 시행이 아니다. 따라서 60/60 일치는 해당 픽스처 내에서의 결정 동등성을 뜻할 뿐 모집단 효능이나 일반화 성능을 보여주지는 않는다.
 
  
 
 
 \subsection{Validate--Repair--Commit}\label{sec:repair}
-그림~\ref{alg:commit}의 무의존성 의사코드에서 repair budget은 $K\in\mathbb{Z}_{\geq 0}$이고 Record는 메모리에 추가하며 영속 쓰기는 종단 일관성 검사 뒤에 수행한다. $(\mathrm{ok},E)$는 $V$와 $\mathrm{ok}:=\bigwedge_{i=1}^{7}(v_i=1)$의 축약이며 $V(c,a).\mathrm{ok}$는 재검증이다.
+그림~\ref{alg:commit}의 의사코드는 외부 의존성 없이 수리 예산 $K\in\mathbb{Z}_{\geq 0}$하에서의 검증--수리--커밋 절차를 정의한다. 각 시도는 먼저 메모리의 기록 버퍼에 누적되고, 최종 일관성 검사를 통과한 뒤에야 영속 저장소에 기록된다. 여기서 $(\mathrm{ok},E)$는 검증기 $V$의 결과와 $\mathrm{ok}:=\bigwedge_{i=1}^{7}(v_i=1)$을 줄여 쓴 표기이며, $V(c,a).\mathrm{ok}$는 커밋 직전의 재검증을 나타낸다.
 
 \begin{figure}[!tbp]
 \footnotesize
@@ -240,12 +240,12 @@ Trace & 이전·다음 상태 hash, 규칙·template·case ID가 packet과 versi
 \label{alg:commit}
 \end{figure}
 
-Repair는 상태를 바꾸지 않는다. 예산이 소진되면 unchanged fallback을 반환한다. Typed-error 연산자(\texttt{counterexample\_guided\_repair})는 후보 $a$와 오류 $E$(유일한 상태 유래 입력)만 읽고 authoritative \texttt{WorldState}는 읽지 않는다.
+수리 단계는 상태를 변경하지 않으며, 예산이 소진되면 상태를 그대로 유지하는 대체 경로를 반환한다. 형식이 지정된 오류 기반 연산자(\texttt{counterexample\_guided\_repair})는 후보 $a$와 상태로부터 도출된 유일한 입력인 오류 $E$만 읽으며, 권한이 있는 \texttt{WorldState}에는 직접 접근하지 않는다.
 \begin{equation}
 \rho(a,E)=a\oplus\bigcup_{e\in E}\delta(e),
 \label{eq:rho}
 \end{equation}
-표~\ref{tab:rho-rules}의 $\oplus$는 결정론적 $\delta(e)$를 적용한다: 오류 entity당 한 field, 시도당 최대 $|E|$, 요구·거부 충돌 불변. 고정점은 동일 $E$ 조건이지 수렴이 아니다. 비배포 state-reading oracle은 오류 대신 상태에서 precondition/effect/두 quest-stage field를 복원하고 required object/used fact/disclosed fact 삭제로 위반을 세탁하지 않는다.
+표~\ref{tab:rho-rules}의 결합 연산 $\oplus$는 오류 개체당 한 필드에 결정론적 수정 $\delta(e)$를 적용하며, 시도당 수정 횟수는 최대 $|E|$회로 제한된다. 서로 충돌하는 요구와 거부 사유에 대해서는 필드를 바꾸지 않고 유지한다. 고정점 도달은 동일한 오류 집합 $E$가 반복될 때를 가리킬 뿐 수렴성을 보장하지 않는다. 한편 비배포용 상태 판독 오라클은 오류 대신 실제 상태에서 선행조건과 효과, 두 퀘스트 단계 필드를 복원하되, 필수 물체나 사용·공개 사실을 삭제하여 정책 위반을 은폐하지 않는다.
 
 \begin{table}[!tbp]
 \caption{유도 연산자 $\rho$의 오류 유형별 수정}
@@ -268,50 +268,50 @@ Repair는 상태를 바꾸지 않는다. 예산이 소진되면 unchanged fallba
 \end{table}
 
 \subsection{무결성, 의미적 리플레이, 계수}\label{sec:audit}
-키 없는 SHA-256 link만으로 writer identity를 확인하거나 공동 재작성을 막을 수는 없다. Replay는 prior state/candidate/validation parsing, invalid nonfinal attempt, 종단 상태 재계산·일치, JSONL continuity를 요구하며 repair는 재실행하지 않는다. Request$\longrightarrow$decision$\longrightarrow$result와 first-issued-action/exactly-one-receipt는 duplicate ID/authentication을 막지 않는다. Terminal은 commit/symbolic fallback/adapter failure/controller failure로 구분하며 마지막 유형은 state/assignment를 보존한다. Pre-execution key는 run, arm, scenario, seed, model, revision, configuration/input/prior-state hash를 결속하고 집계는 duplicate/missing/unexpected key를 거부·분리한다.
+서명 키가 없는 SHA-256 해시 연결만으로는 기록 주체의 신원을 인증하거나 공모에 의한 기록 재작성을 막을 수 없다. 의미적 리플레이는 직전 상태와 후보 및 검증 결과의 구문 분석, 최종 커밋에 이르지 못한 무효 시도, 최종 상태의 재계산과 일치 여부, 그리고 JSONL 로그의 연속성을 확인하지만 수리 생성 과정 자체를 재실행하지는 않는다. 요청--결정--결과 연결과 최초 발행 행동 및 단일 영수증 규칙 역시 식별자 중복이나 사칭을 방어하지는 못한다. 종단 결과 유형은 커밋, 기호적 대체 경로, 어댑터 실패, 컨트롤러 실패로 구분하며, 실패 유형은 완성된 제안 추적 없이도 상태와 배정 정보를 보존한다. 실행 전 키는 실행 단위, 실험 조건, 시나리오, 시드, 모델, 리비전, 그리고 설정·입력·이전 상태 해시를 하나로 결속하며, 집계 단계에서는 중복·누락·미정의 키를 거부하거나 별도로 분리한다.
 
-\noindent\textbf{재현의 두 계층.} 첫째는 보존된 구조화 입력·영수증을 이용한 스키마·의미 게이트 재검증과 결정론적 상태 리플레이다. 이 계층은 기록이 지지하는 판정과 전이를 확인하며 보존하지 않은 제공자 응답 원문이나 생성 과정까지 복원하지 않는다. 둘째는 제공자에 다시 접속해 원래 모델 응답을 재수집하는 계층이다. 여기에는 실제 제공 모델의 동일성·revision 확인, 호출 허가와 비용, 동결 프로토콜의 편입 요건이 별도로 필요하다. 이번 추가 검증에서는 제공자 원재수집을 하지 않았다. 바이트 동일성은 실제로 고정·검증한 소스와 도구체인의 해당 산출물에만 적용한다. 모든 개발 PC에서 모든 출력이 100\% 동일하다는 주장이 아니다.
+\noindent\textbf{재현의 두 계층.} 첫째는 보존된 구조화 입력과 영수증을 이용한 스키마·의미 게이트 재검증 및 결정론적 상태 리플레이다. 이 계층은 기록이 지지하는 판정과 전이를 확인하며, 보존하지 않은 제공자 응답 원문이나 생성 과정까지 복원하지는 않는다. 둘째는 제공자에 다시 접속해 원래 모델 응답을 재수집하는 계층이다. 여기에는 실제 제공 모델의 동일성과 리비전 확인, 호출 허가와 비용, 동결 프로토콜의 편입 요건이 별도로 필요하다. 이번 추가 검증에서는 제공자 응답 재수집을 수행하지 않았다. 바이트 동일성은 실제로 고정·검증한 소스와 도구체인의 해당 산출물에만 적용되며, 모든 실행 환경에서 모든 출력이 100\% 동일하다는 주장이 아니다.
 
 
 \section{실험 레인과 근거 경계}\label{sec:lanes}
 \input{../generated/evidence_lanes_ko.tex}
-세 수준의 근거는 합산하지 않는다: Level 1은 저작된 유한 사례의 메커니즘·적합성 검사(기존 E1 gate·repairability fixture와 별도 32상태·조건별 416배정 경계 감사), Level 2는 저작된 폐쇄 세계 구성 시뮬레이션(E3 graph-edge-withheld target 6개), Level 3는 과거 NPC 적합성 검사(ENG1/NPC-ENG1/NPC-SCR1)와 범위를 제한한 단일 개발 보조 관측(DEV-CASE). Level 1의 기존 E1과 새 감사는 분모가 다른 별도 코호트이며, 새 감사를 기존 단일 월드 E1의 다중 월드 결과로 재해석하지 않는다. 각 수준의 실패와 stale control을 보존한다. 이들 결과는 답하는 질문이 다르며 model/efficacy 추정치가 아니다.
+세 수준의 근거는 서로 합산하지 않는다. Level 1은 저작된 유한 사례에 대한 메커니즘·적합성 검사로, 기존 E1 게이트 및 수리 가능성 픽스처와 별도의 32개 상태·조건별 416개 배정 경계 감사를 포함한다. Level 2는 저작된 폐쇄 세계 구성 시뮬레이션(E3의 그래프 간선 은닉 목표 6개)이며, Level 3는 기존 NPC 적합성 검사(ENG1, NPC-ENG1, NPC-SCR1)와 범위를 제한한 단일 개발 보조 관측(DEV-CASE)으로 구성된다. Level 1의 기존 E1과 새 감사는 분모가 서로 다른 별개 코호트이므로, 새 감사를 기존 단일 월드 E1의 다중 월드 확장 결과로 재해석해서는 안 된다. 각 수준에서는 실패 사례와 구버전 통제군(stale control) 결과를 누락 없이 보존하며, 이들은 서로 다른 질문에 답할 뿐 모델 능력이나 효능의 추정치가 아니다.
 \subsection{\textbf{E1} 오프라인 적합성 설계}
-PQ1--PQ5는 불변성, frozen-class repair, checksum/semantic/linkage/continuity fault, second-append rollback, fail-closed assignment/adapter/manifest 계수, proposal/replay unknown-key 거부를 시험한다.
+PQ1--PQ5 검증 항목은 상태 불변성, 고정된 오류 유형의 수리, 체크섬·의미·연결·연속성 결함 탐지, 중복 추가 시의 롤백, 실패 시 차단(fail-closed) 방식의 배정·어댑터·매니페스트 회계, 그리고 제안 및 리플레이 단계에서의 미정의 키 거부를 시험한다.
 
-Gate fixture는 13개(valid 1/negative 12), repair fixture는 12개다. 모든 arm에서 사례를 \emph{guided-repairable}(오류 충분), \emph{oracle-only}(상태 필요), \emph{irreparable}(commit 불가)로 구분한다. latency/token은 accounting이지 population/detector 성능이 아니다. Packet은 fixture/assignment/schema/result/code를 결속한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
-E1의 수리 예산은 조건별로 다르다. \texttt{rejection\_only}는 $K=0$이고, \texttt{unchanged\_retry}, \texttt{guided\_repair}, 상태 판독 오라클 \texttt{structured\_repair}는 각각 $K=1$이다. 네 조건 모두를 동일한 $K=1$ 비교로 해석하지 않는다.
-E1의 의미적 음성 fixture 12개는 모두 후보 계약의 parsing을 통과한 뒤 의미 검사에서 거부되었다. 같은 후보에 schema 경계만 적용한다면 거부는 0/12일 것이다. 이 0/12는 저장된 후보·검사 결과와 parser 선행 순서에서 도출한 반사실적 대조이며, 별도로 실행·측정한 schema-only 절제 실험 결과가 아니다.
+게이트 픽스처는 13개(유효 1개, 음성 12개)이고 수리 픽스처는 12개다. 모든 실험 조건에서 사례는 오류 정보만으로 수리 가능한 \emph{guided-repairable}, 상태 판독이 필요한 \emph{oracle-only}, 커밋이 불가능한 \emph{irreparable}로 구분한다. 지연 시간과 토큰 수치는 자원 회계 점검용 상수이지 모집단 성능이나 탐지기 성능 지표가 아니다. 증거 패킷은 픽스처, 배정, 스키마, 결과, 코드를 하나로 결속한다 \cite{S33_pineau2021reproducibility,S34_henderson2020energy}.
+E1의 수리 예산은 조건별로 다르다. \texttt{rejection\_only}는 $K=0$이고, \texttt{unchanged\_retry}, \texttt{guided\_repair}, 상태 판독 오라클 \texttt{structured\_repair}는 각각 $K=1$이다. 따라서 네 조건 모두를 동일한 $K=1$ 비교로 해석해서는 안 된다.
+E1의 의미적 음성 픽스처 12개는 모두 후보 계약의 구문 분석을 통과한 뒤 의미 검사에서 거부되었다. 따라서 같은 후보에 스키마 경계만 적용했다면 거부 건수는 0/12건이었을 것이다. 이 0/12건은 저장된 후보와 검사 결과, 그리고 구문 분석기의 선행 순서에서 도출한 반사실적 대조치이며, 별도로 실행해 측정한 스키마 전용 절제 실험 결과가 아니다.
 
 \subsection{동결된 오프라인 경계 감사}\label{sec:review-boundary-audit}
-별도 감사의 기준이 되는 동결 프로토콜은 \path{research/academic-pipeline/gemini-review-20261113/protocol-v2.json}이다. 이 감사는 설계자가 작성한 유한 사례의 결정론적 전수 열거이며 모델이나 참가자를 호출하지 않는다. 방 수 $2$종(4/8), 연결 형태 $2$종(잠금 사슬/우회 분기), 두 열쇠의 시작점·목표점 배치 $4$종, 퀘스트 단계 $2$종(0/1)을 교차해 $32$상태를 구성한다. 정상 행동과 정책·선행조건·효과·물체·지식·공개·단계 경계를 다루는 $13$후보 변형을 적용하므로 조건별 배정 분모는 $32\times13=416$이다. 반복 표본이나 난수 seed를 추가하지 않는다.
+별도 감사의 기준이 되는 동결 프로토콜은 \path{research/academic-pipeline/gemini-review-20261113/protocol-v2.json}이다. 이 감사는 설계자가 작성한 유한 사례의 결정론적 전수 열거이며 모델이나 참가자를 호출하지 않는다. 방 수 $2$종(4개와 8개), 연결 형태 $2$종(잠금 사슬과 우회 분기), 두 열쇠의 시작점·목표점 배치 $4$종, 퀘스트 단계 $2$종(0과 1)을 교차해 $32$상태를 구성한다. 정상 행동과 정책·선행조건·효과·물체·지식·공개·단계 경계를 다루는 $13$종의 후보 변형을 적용하므로 조건별 배정 분모는 $32\times13=416$이다. 반복 표본이나 난수 시드는 추가하지 않는다.
 
 그래프는 \texttt{rooms}, \texttt{start}, 열쇠 요건을 가진 양방향 \texttt{edges}, 물체 \texttt{placements}를 명시한다. 시작 방은 $r_0$, 목표 방은 $r_{n-1}$이며, 사슬의 중간 방 진입과 목표 방 진입에는 각각 \texttt{key0}, \texttt{key1}이 필요하다. 우회형에는 시작 방과 중간 방 사이의 무잠금 간선을 추가한다. 지도는 시작점, 유물은 목표점에 놓인다. 방문한 방에서 얻은 열쇠는 계속 보유하고 재사용한다. 이 유한 무방향 그래프에는 소모품, 무작위 전이, 동적 간선, 용량 제한, 비가역 분기가 없다. 이 감사의 도달 가능성은 이 프로파일에 한정되며 전체 게임의 플레이 가능성을 뜻하지 않는다.
 
-네 조건은 같은 후보에 서로 다른 실행 경로를 적용한다. \texttt{schema\_only}($K=0$)는 공유 strict parser만 거쳐 의미 게이트 없이 격리된 연구 시뮬레이터에 효과·단계를 적용한다. \texttt{semantic\_rejection}($K=0$)은 의미 검증 후 수리 없이 거부한다. \texttt{unchanged\_retry}($K=1$)는 같은 후보로 다시 시도하고, \texttt{guided\_repair}($K=1$)는 기존 반례 유도 연산자 $\rho$를 사용한다. E1과 달리 새 감사에는 상태 판독 오라클 수리 조건이 없다.
+네 조건은 같은 후보에 서로 다른 실행 경로를 적용한다. \texttt{schema\_only}($K=0$)는 공유된 엄격 구문 분석기만 거쳐 의미 게이트 없이 격리된 연구 시뮬레이터에 효과와 단계를 적용한다. \texttt{semantic\_rejection}($K=0$)은 의미 검증 후 수리 없이 거부한다. \texttt{unchanged\_retry}($K=1$)는 같은 후보로 다시 시도하고, \texttt{guided\_repair}($K=1$)는 기존 반례 유도 연산자 $\rho$를 사용한다. E1과 달리 새 감사에는 상태 판독 오라클 수리 조건이 없다.
 
-\noindent\textbf{기준과 평가 시점.} 실행 경로는 별도로 구현한 단조 폐쇄로 \texttt{WorldState.reachable\_locations}를 계산하며 물체 이름이나 서술문에서 연결을 추측하지 않는다. 기준 모듈은 표준 라이브러리만 사용하여 (현재 방, 수집한 재사용 열쇠 집합)에 대한 BFS를 수행하고 기존 일반 규칙 판정식을 분리해 평가한다. 기준은 운영 검증기·런타임·수리·폐쇄 구현을 import하거나 호출하지 않는다. 최초 후보와 수리 후 최종 후보는 모두 \emph{동일한 불변 행동 전 기준 상태}에서 평가한다. 이 상태와 실행 경로의 행동 전 상태는 BFS로 산출한 도달 가능 위치만 다르다. 목표는 커밋 후 결과 상태에서 별도로 판정한다. 이 비교는 구현 분리 교차검사이며 독립·블라인드 정답이나 사람의 의미 판단은 아니다.
+\noindent\textbf{기준과 평가 시점.} 실행 경로는 별도로 구현한 단조 폐쇄 연산으로 \texttt{WorldState.reachable\_locations}를 계산하며 물체 이름이나 서술문에서 연결을 추측하지 않는다. 기준 모듈은 표준 라이브러리만 사용하여 (현재 방, 수집한 재사용 열쇠 집합)에 대한 너비 우선 탐색(BFS)을 수행하고 기존 일반 규칙 판정식을 분리해 평가한다. 기준 모듈은 운영 검증기, 런타임, 수리, 폐쇄 구현을 가져오거나 호출하지 않는다. 최초 후보와 수리 후 최종 후보는 모두 \emph{동일한 불변의 행동 전 기준 상태}에서 평가한다. 이 상태와 실행 경로의 행동 전 상태는 BFS로 산출한 도달 가능 위치만 다르다. 목표 달성 여부는 커밋 후 결과 상태에서 별도로 판정한다. 이 비교는 구현 분리를 통한 교차검사일 뿐 독립적이고 블라인드된 정답 기준이나 사람의 의미 판단은 아니다.
 
-\noindent\textbf{퍼널과 분모.} 전체 배정 $N=416$, 기준상 최초 무효 $N_I$, 최초 유효 $N_V$, 커밋 $N_C$를 구분한다. 게이트 전 위반율은 $N_I/N$이다. Repair@1은 최초 무효 중 최종 후보가 기준상 유효하게 커밋된 수를 $N_I$로 나누며 $K=0$ 대조군도 계수를 남긴다. 종단 보류와 목표 달성은 각각 전체 $N$을 분모로 한다. 비안전 커밋은 최종 후보가 기준상 무효인 커밋이며 $N$ 대비와 $N_C$ 대비를 따로 보고한다. 오거부(false rejection)는 최초 기준 유효 후보가 보류된 수/$N_V$다. 실행 실패는 보류나 유효 판정으로 바꾸지 않고 별도 실패 배정으로 남긴다.
+\noindent\textbf{퍼널과 분모.} 전체 배정 $N=416$, 기준상 최초 무효 $N_I$, 최초 유효 $N_V$, 커밋 $N_C$를 구분한다. 게이트 전 위반율은 $N_I/N$이다. Repair@1은 최초 무효 중 최종 후보가 기준상 유효하게 커밋된 수를 $N_I$로 나누며 $K=0$ 대조군도 계수를 남긴다. 종단 보류와 목표 달성은 각각 전체 $N$을 분모로 한다. 비안전 커밋은 최종 후보가 기준상 무효인 커밋이며 $N$ 대비와 $N_C$ 대비를 따로 보고한다. 오거부(false rejection)는 최초 기준 유효 후보 가운데 보류된 건수를 $N_V$로 나눈 값이다. 실행 실패는 보류나 유효 판정으로 바꾸지 않고 별도 실패 배정으로 남긴다.
 
-정확한 구조 서명 보존은 최초 기준 유효 사례의 서로 다른 서명 중 안전한 커밋에서 같은 서명이 유지된 수/최초 서로 다른 유효 서명 수로 정의하고, 사례 단위 보존도 함께 보고한다. 서명은 행동 유형, 선행조건, 효과, 필수 물체, 사용·공개 사실, 요구 단계와 단계 효과를 포함하고 ID·서술문·메타데이터·위치명·그래프 표지는 제외한다. 최초 무효 서명 수와 수리 후 유효 커밋 서명 수는 따로 센다. 이 척도는 규칙상 허용된 구조의 보존을 측정하며 어휘 다양성, 창의성, 재미는 측정하지 않는다.
+정확한 구조 서명 보존은 최초 기준 유효 사례의 서로 다른 서명 가운데 안전한 커밋에서도 동일하게 유지된 서명 수를 최초 서로 다른 유효 서명 수로 나눈 비율로 정의하고, 사례 단위 보존도 함께 보고한다. 서명은 행동 유형, 선행조건, 효과, 필수 물체, 사용·공개 사실, 요구 단계와 단계 효과를 포함하며, 식별자, 서술문, 메타데이터, 위치명, 그래프 표지는 제외한다. 최초 무효 서명 수와 수리 후 유효 커밋 서명 수는 따로 센다. 이 척도는 규칙상 허용된 구조의 보존을 측정하며 어휘 다양성, 창의성, 재미는 측정하지 않는다.
 
-\noindent\textbf{짝지은 표면 센티널.} 본 감사와 분모를 분리해 단계 0에서 비밀의 고정 우회 표현 6개(영어 3/한국어 3)를 작성한다. 각 문장을 \texttt{disclosed\_facts}가 비어 있는 후보와 비밀 ID를 명시한 후보에 짝지어 조건별 12개를 배정한다. 두 후보의 차이는 구조화된 공개 선언이며 서술문은 같다. 이 설계는 구조화 게이트의 미선언 자연어 함의 검출 범위를 점검하고 서술문 자체가 사실·단계를 직접 바꾸지 않는지도 확인한다. 자유 언어 누출의 발생률이나 렌더러 수준 안전성, NLI 검출 성능을 측정하지 않는다.
+\noindent\textbf{짝지은 표면 센티널.} 본 감사와 분모를 분리해 단계 0에서 비밀의 고정 우회 표현 6개(영어 3개, 한국어 3개)를 작성한다. 각 문장을 \texttt{disclosed\_facts}가 비어 있는 후보와 비밀 ID를 명시한 후보에 짝지어 조건별 12건을 배정한다. 두 후보의 차이는 구조화된 공개 선언뿐이며 서술문은 같다. 이 설계는 구조화 게이트의 미선언 자연어 함의 검출 범위를 점검하고 서술문 자체가 사실이나 단계를 직접 바꾸지 않는지도 확인한다. 자유 언어 누출의 발생률이나 렌더러 수준 안전성, 자연어 추론(NLI) 기반 검출 성능은 측정하지 않는다.
 
-실행 전 정확한 입력, 배정 목록, 입력·소스 해시를 새 결과 디렉터리에 동결한다. 모든 배정에 후보·검사·수리·최종 상태, 이전/이후 해시, 생성된 경우 네이티브 리플레이, 실패, 로컬 경과 시간을 남긴다. 모델 호출은 없으며 모델 revision·seed·비용은 \texttt{null}이다. 로컬 경과 시간은 LLM 지연이나 상용 성능으로 해석하지 않는다.
+실행 전 정확한 입력, 배정 목록, 입력·소스 해시를 새 결과 디렉터리에 동결한다. 모든 배정에는 후보, 검사, 수리, 최종 상태, 실행 전후 해시, 생성된 경우의 네이티브 리플레이, 실패 여부, 그리고 로컬 경과 시간을 기록한다. 모델 호출은 수행하지 않으므로 모델 리비전, 시드, 비용은 모두 \texttt{null}이다. 로컬 경과 시간은 언어 모델의 지연이나 상용 성능으로 해석하지 않는다.
 
 
 \subsection{보존된 live-screening 자료}
-보존 live-screening은 변경하지 않는 provenance/hash 자료다. 활성 표·계수·주장에서 제외하고 \texttt{gpt-6.1-sol}에 이전하지 않는다.
+보존된 라이브 스크리닝 자료는 변경하지 않는 출처 및 해시 기록에 해당한다. 이 자료는 활성 표와 집계, 본문 주장에서 제외하며 \texttt{gpt-6.1-sol}로 이전하지 않는다.
 
 \subsection{NPC-ENG1/NPC-SCR1: 88개 배정, 28개 정의}
-Stable v5는 \textbf{NPC-ENG1} engineering 배정 16개와 \textbf{NPC-SCR1} screening recipe 12개($12\times2\times3=72$; 합계 $R/P/O=40/24/24$)로 초기 구성을 만들고 identity/hash, intent/plan/role/result, negative/stale/duplicate/deadline, replay를 시험한다. P는 fallback 없는 인증 Codex OAuth를 사용하며, O는 100\% auxiliary-source(독립 gold 아님)다. \texttt{verified-run-006} 기록은 상태, 계수, 지연 및 재현 정보를 보존하며 002/003/004는 historical이다. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 C6 근거가 아닌 provenance다.
+안정화(stable) v5 모음은 \textbf{NPC-ENG1} 공학 배정 16개와 \textbf{NPC-SCR1} 스크리닝 레시피 12개($12\times2\times3=72$; 전체 합계 $R/P/O=40/24/24$)로 초기 구성을 만들고 신원·해시 결속, 의도·계획·역할·결과 처리, 음성·구버전·중복·시간 초과 사례, 그리고 리플레이를 시험한다. 여기서 P는 대체 경로 없는 인증된 Codex OAuth를 사용하며, O는 100\% 보조 출처(auxiliary-source)일 뿐 독립적인 정답 기준(gold)이 아니다. \texttt{verified-run-006} 기록은 상태, 계수, 지연 및 재현 정보를 보존하며 002/003/004는 과거 이력 자료다. ENG-X01/SCR-X01, D02/QA-001, C-RESULT, Frozen8/Frozen16, v1--v4, \texttt{native012}는 C6의 근거가 아닌 출처 기록이다.
 
 
 \subsection{\textbf{E3} KG/온톨로지 링크 제안 시뮬레이션}
-E3는 저작된 폐쇄 세계의 공학적 시뮬레이션이며 상태 변경 권한을 갖지 않는다. Graph-edge-withheld authored target 6개는 고정 strategy 7개의 채점·선택·요약에 쓰이며 untouched/external test가 아니다.
+E3는 저작된 폐쇄 세계에 대한 공학적 시뮬레이션일 뿐 상태 변경 권한을 갖지 않는다. 그래프 간선이 은닉된 6개의 저작 목표는 고정된 7가지 선택·요약 전략을 채점하고 비교하는 데 쓰이며, 미접촉(untouched) 시험이나 외부 평가 데이터셋이 아니다.
 \input{../generated/kg_ontology_simulation_ko.tex}
-생성 표는 구성 결과이며 OWL/SHACL 적합성, runtime retrieval, 의미 완전성·효능을 확립하지 않는다.
+생성된 표는 시뮬레이션 구성 결과를 보고할 뿐, OWL/SHACL 적합성이나 런타임 검색 성능, 의미적 완전성 또는 효능을 확립하지 않는다.
 \section{파일럿 결과}\label{sec:results}
 
 \input{../generated/pilot_tables_ko.tex}
@@ -320,9 +320,9 @@ E3는 저작된 폐쇄 세계의 공학적 시뮬레이션이며 상태 변경 �
 \subsection{오프라인 경계 감사의 결과 계수}\label{sec:review-boundary-results}
 \ref{sec:review-boundary-audit}절의 동결 입력을 실행한 결과, 조건별 416개씩 총 1,664개 본 배정이 모두 종단 결과를 남겼고 실행 실패는 없었다. 각 조건의 최초 기준 무효는 260/416, 유효는 156/416이었다. 스키마 전용 조건은 416개를 모두 커밋하여 최종 기준 무효 커밋 260/416을 남겼다. 의미 거부와 변경 없는 재시도는 각각 260/416을 보류하고 최종 무효 커밋은 0/416이었다. 유도 수리는 최초 무효 후보 중 128/260을 유효 후보로 수리하여 커밋했고, 132/416을 보류했으며 최종 무효 커밋은 0/416이었다. 유도 수리는 최초 무효 후보를 일괄 폐기하지 않았다.
 
-유도 수리의 유효 커밋은 284개, 목표 달성은 전체 배정 중 252/416으로 서로 달랐다. 스키마 전용 조건의 목표 달성 352/416은 권한 적합성을 뜻하지 않는다. 네 조건 모두 최초 유효 사례의 오거부는 0/156, 사례 보존은 156/156, 정확한 구조 서명 보존은 11/11이었다. 유도 수리는 최초 무효 서명 17종에서 수리 후 유효 커밋 서명 2종을 남겼다. 이 계수는 이 설계 사례의 구조 보존이며 창의성이나 언어 다양성의 보존율이 아니다. 별도 폐쇄/BFS 교차검사는 32/32 일치했다.
+유도 수리의 유효 커밋은 284개, 목표 달성은 전체 배정 중 252/416으로 서로 달랐다. 스키마 전용 조건의 목표 달성 352/416은 권한 적합성을 뜻하지 않는다. 네 조건 모두 최초 유효 사례의 오거부는 0/156, 사례 보존은 156/156, 정확한 구조 서명 보존은 11/11이었다. 유도 수리는 최초 무효 서명 17종에서 수리 후 유효 커밋 서명 2종을 남겼다. 이 계수는 이 설계 사례의 구조 보존이며 창의성이나 언어 다양성의 보존율이 아니다. 별도 폐쇄 연산과 BFS의 교차검사는 32/32 일치했다.
 
-본 배정과 구분한 조건별 12개 표면 센티널에서, 세 의미 검증 조건은 각각 미선언 우회 표현 6/6을 커밋하고 명시된 금지 공개 6/6을 보류했다. 스키마 전용 조건은 양쪽을 모두 커밋했다. 이는 구조화된 선언 검사의 알려진 범위를 드러내며 자유 언어 누출 빈도나 렌더러 안전성을 추정하지 않는다. 아래 표의 분모별 계수는 \path{research/academic-pipeline/gemini-review-20261113/results-v2/summary.json}의 관측값으로 생성했으며 기존 E1, NPC-DISC-1, v5 또는 차단된 전향 파일럿의 분모에 합산하지 않는다.
+본 배정과 구분한 조건별 12개 표면 센티널에서, 세 의미 검증 조건은 각각 미선언 우회 표현 6/6건을 커밋하고 명시된 금지 공개 6/6건을 보류했다. 스키마 전용 조건은 양쪽을 모두 커밋했다. 이는 구조화된 선언 검사의 알려진 범위를 드러내며 자유 언어 누출 빈도나 렌더러 안전성을 추정하지 않는다. 아래 표의 분모별 계수는 \path{research/academic-pipeline/gemini-review-20261113/results-v2/summary.json}의 관측값으로 생성했으며 기존 E1, NPC-DISC-1, v5 또는 차단된 전향 파일럿의 분모에 합산하지 않는다.
 본 배정 1,664개는 같은 저작 상태·후보를 네 조건에 교차한 결정론적 행렬이며 독립 확률 표본 1,664개가 아니다. 별도 표면 배정 48개도 고정 우회 표현의 짝지은 경계 검사이므로 본 배정과 합쳐 표본 크기나 통계적 일반화의 근거로 쓰지 않는다.
 \input{../generated/review_boundary_audit_ko.tex}
 
@@ -336,7 +336,7 @@ E3는 저작된 폐쇄 세계의 공학적 시뮬레이션이며 상태 변경 �
 \input{../generated/disclosure_results_ko.tex}
 \input{../generated/disclosure_tables_ko.tex}
 
-Disclosure $\texttt{t\_ms}$/hash/check는 엔진 타임라인 값이다. Missing\,$\neq$\,out-of-scope.
+공개 시점의 \texttt{t\_ms}, 해시, 검사 항목은 엔진 타임라인 값이며, 누락(missing)은 범위 외(out-of-scope)를 뜻하지 않는다.
 
 
 \begin{figure}[!b]
@@ -349,9 +349,9 @@ Disclosure $\texttt{t\_ms}$/hash/check는 엔진 타임라인 값이다. Missing
 
 
 
-\noindent\textbf{ENG1.} Godot 4.7.1은 저작된 rejection/commit을 prior/offline hash로 replay한다(no live transport). Capture는 presentation-only이며 board/hint/coach/chain prompt와 dashboard checks를 보인다. 저장된 \path{game-track/godot/docs/latest/evaluation-matrix.json}의 코어 52/52와 별도 확장 4/4는 엔진 내부 적합성 기록이지 transport, participant, narrative, usability, efficacy 근거가 아니다.
+\noindent\textbf{ENG1.} 기존 Godot 4.7.1 구현은 실시간 전송 없이 사전 동결된 오프라인 해시를 기준으로 저작된 거부 및 커밋 사례를 리플레이한다. 제시된 화면 캡처는 보드, 힌트, 코치, 연쇄 프롬프트, 대시보드 점검 항목을 보여주는 표현용 기록이다. 저장된 \path{game-track/godot/docs/latest/evaluation-matrix.json}의 코어 검사 52/52건과 별도 확장 검사 4/4건은 엔진 내부 적합성 기록일 뿐, 실시간 전송이나 참가자, 서사 품질, 사용성, 효능을 입증하는 근거가 아니다.
 
-그림~\ref{fig:engine-cutscenes}는 기존 Godot 4.7.1 네이티브 3D 장면의 \texttt{--shot} 경로에서 새로 캡처한 공학적 상태 표시 예시다. 각 장면은 따로 설정한 저작 상태의 캡처이며 연속 사용자 플레이스루가 아니다. 초기 장면(A), 금지 공개 거부(B), 기존 세 제안 핸들러를 거쳐 단계 2에 도달한 승인 단서(C), 같은 종단 상태의 조건부 저작 종료 카드(D)를 구분한다. B는 초기 상태에서 \texttt{keeper\_betrayal}만 검사하여 상태를 유지한 장면이며, 물체 획득 후의 보존 이벤트 \texttt{evt-002-fallback-secret}와 동일한 상태·후보·이벤트를 재생한 화면은 아니다. D도 관측된 플레이어 추론이나 실제 사용자 플레이의 종료가 아니다. 이 캡처는 실험 상태와 화면의 대응을 설명할 뿐 기존 배정 분모, 모델·사람 효능, 전향 파일럿 실행 또는 전송 경로 검증의 근거에 편입하지 않는다.
+그림~\ref{fig:engine-cutscenes}는 기존 Godot 4.7.1 네이티브 3D 장면의 \texttt{--shot} 경로에서 새로 캡처한 공학적 상태 표시 예시다. 각 장면은 따로 설정한 저작 상태의 캡처이며 연속된 사용자 플레이 기록이 아니다. 초기 장면(A), 금지 공개 거부(B), 기존 세 제안 핸들러를 거쳐 단계 2에 도달한 승인 단서(C), 같은 종단 상태의 조건부 저작 종료 카드(D)를 구분한다. B는 초기 상태에서 \texttt{keeper\_betrayal}만 검사하여 상태를 유지한 장면이며, 물체 획득 후의 보존 이벤트 \texttt{evt-002-fallback-secret}과 동일한 상태·후보·이벤트를 재생한 화면은 아니다. D도 관측된 플레이어 추론이나 실제 사용자 플레이의 종료가 아니다. 이 캡처는 실험 상태와 화면의 대응을 설명할 뿐 기존 배정 분모, 모델·사람 효능, 전향 파일럿 실행 또는 전송 경로 검증의 근거에 편입하지 않는다.
 
 \begin{figure*}[p]
 \centering
@@ -361,20 +361,20 @@ Disclosure $\texttt{t\_ms}$/hash/check는 엔진 타임라인 값이다. Missing
 \end{figure*}
 
 \subsection{단일 과제 Codex 개발 관측}\label{sec:development-case}
-동결 \texttt{ontology-map-20261023-01}은 읽기 전용 한·영 dashboard 한 과제($n{=}1$, independent repeats $0$)이지 NPC trial/cohort가 아니다. Native CLI 6회(initial $+$ resume 5; read-only/no-edit 1)는 한 사례다. \texttt{turn\_context.model=gpt-6.1-sol}은 런타임 선택값이지 제공자 인증이 아니며 provider identity/revision/seed/cost는 \texttt{null}, model-only latency는 미상이다. Wall-clock 5942.665\,s와 CLI 263.32\,s는 inference latency/future endpoint가 아니다.
+동결된 \texttt{ontology-map-20261023-01} 기록은 읽기 전용 한·영 대시보드 개발 과제 1건($n{=}1$, 독립 반복 $0$회)에 대한 관측이며 NPC 실험이나 코호트가 아니다. 네이티브 CLI 호출 6회(초기 실행 1회와 재개 5회, 이 중 수정 없는 읽기 전용 호출 1회 포함)는 모두 단일 개발 사례에 속한다. \texttt{turn\_context.model=gpt-6.1-sol}은 런타임 선택 설정값일 뿐 제공자 인증이 아니며, 제공자 신원·리비전·시드·비용은 모두 \texttt{null}이고 모델 자체의 지연 시간 역시 미상이다. 전체 경과 시간 5942.665\,s와 CLI 소요 시간 263.32\,s는 추론 지연이나 향후 제안할 평가 지표의 측정치가 아니다.
 
-여섯째 호출은 inherited mobile table 최소 너비 660\,px를 수리했다. 개발 사례의 \path{evidence/verification-009-mobile-complete-tests.json}과 결속된 stdout은 세 검사 파일의 2026-10-23 명령 결과로 종료 코드 0과 62/62 통과를 보존한다. 이 기록은 해당 날짜의 명령 결과다. 이번 새 실행이나 모든 개발 PC의 동일 결과를 뜻하지 않는다. 실제 입력 browser attempt 10은 통과했다. 01--08 setup/route 실패, 09 이전 gate 통과/clipping 보존. 최종 $(\text{seq},t_{\mathrm{ms}})$: stage-$0$ 거부 $(68,19468)$(hash 동일), 최초 공개 $(239,58234)$(상이), 승인 재표시 $(249,59793)$(동일). 1440$\times$900/390$\times$900, Enter, inspection/frozen-comparison 불변과 pre-navigation console/page/network 오류·warning 0을 관측했다. 동일 driver를 production dashboard에서 다시 실행한 결과는 별도로 overall \textbf{NOT\_PASS}로 기록되었다. headed 실행은 변경되지 않은 yaw guard에서 멈췄고 headless 실행은 구성 gate 7개를 통과했으나 pointer-lock page error 4개를 남겼다. 이는 당시 수용 기준으로 판정한 dated attempt-10 PASS를 뒤집지 않는다. 이 사례는 Full-game creation/Python--Godot authorization round trip/모델 결과가 아닌 제한된 통합이며 privacy/source-binding 실패와 동일 thread 수리는 추가 $n$이 아니다. Jev는 label/approval 권한 없는 \texttt{proposal\_only}다. 사례 결과 기록과 동결 계약은 관측 및 수용 기준을 각각 보존한다.
+여섯 번째 호출은 기존에 남아 있던 모바일 표의 최소 너비 660\,px 문제를 수정했다. 이 개발 사례의 \path{evidence/verification-009-mobile-complete-tests.json}과 연결된 표준 출력 기록은 세 검사 파일에 대한 2026-10-23 명령 결과로 종료 코드 0과 62/62 통과를 보존한다. 다만 이는 해당 시점에 기록된 명령 결과일 뿐, 이번 재실행이나 모든 개발 환경에서의 동일 결과를 뜻하지 않는다. 실제 브라우저 입력 검증에서는 10번째 시도가 통과했으며, 앞선 01--08번째 시도는 초기 설정이나 경로 문제로 실패했고 09번째 시도는 화면 잘림 현상을 안은 채 이전 기준의 게이트를 통과했다. 최종 관측된 $(\text{seq},t_{\mathrm{ms}})$는 stage-$0$ 거부 $(68,19468)$(해시 동일), 최초 공개 $(239,58234)$(해시 상이), 승인 재표시 $(249,59793)$(해시 동일)였다. 1440$\times$900 및 390$\times$900 해상도에서 Enter 키 입력, 검사 및 동결 비교 상태의 불변성, 탐색 전 콘솔·페이지·네트워크 오류 및 경고 0건을 확인했다. 이후 동일 드라이버를 운영 대시보드에서 재실행한 결과는 별도로 \textbf{NOT\_PASS}로 기록되었다. 유창(headed) 실행은 기존 yaw 가드에서 중단되었고 헤드리스(headless) 실행은 구성 게이트 7개를 통과했으나 포인터 잠금 페이지 오류 4건을 남겼으며, 이는 당시 수용 기준으로 판정한 10번째 시도의 통과 기록을 뒤집지 않는다. 이 사례는 전체 게임 제작이나 Python--Godot 간 인가 왕복 검증, 혹은 모델 성능 평가가 아니라 범위를 제한한 통합 관측이며, 개인정보·출처 결속 실패와 동일 스레드 내 반복 수리는 추가 표본 수 $n$을 늘리지 않는다. 또한 Jev는 라벨링이나 승인 권한이 없는 \texttt{proposal\_only} 상태이며, 사례 결과 기록과 동결 계약은 각각 관측 내용과 수용 기준을 보존한다.
 \input{../generated/runtime_comparison_results_ko.tex}
 \input{../generated/runtime_comparison_tables_ko.tex}
 
 
 
-\noindent\textit{과거 코호트의 범위.} v1--v4와 \texttt{codex-feedback-pilot-v2-*} diagnostic 시도는 불변 과거 기록으로 보존한다. \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}은 과거 17개와 별도 v5 2개를 합친 총 19개 Codex 피드백 코호트의 완료·실패·진행중·대기 행 및 원본 SHA-256을 보존한다. 과거 기록에는 완료된 v4 Luna도 있으므로 모두 중단된 코호트라는 뜻은 아니다. 별도 신호 탐색 사례는 현재 근거 집합에서 원본 영수증을 확인할 수 없는 과거 서술이며, 위 인벤토리는 그 사례의 출처를 입증하지 않는다. 과거 17개 코호트와 이 탐색 사례는 아래 v5 및 다른 활성 레인의 분모에서 제외한다(부록~\ref{app:diagnostic-blocked}).
+\noindent\textit{과거 코호트의 범위.} v1--v4와 \texttt{codex-feedback-pilot-v2-*} 진단 시도는 불변의 과거 기록으로 보존한다. \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}은 과거 17개 코호트와 별도의 v5 수집 2개를 합친 총 19개 Codex 피드백 코호트의 완료·실패·진행 중·대기 행 수 및 원본 SHA-256 해시를 보존한다. 이 가운데 완료된 v4 Luna 코호트도 포함되어 있으므로 과거 코호트 전체가 중단된 것은 아니다. 한편 별도로 언급된 신호 탐색 사례는 현재 근거 집합에서 원본 영수증을 확인할 수 없는 과거 서술이며, 위 인벤토리 역시 해당 사례의 출처를 입증하지 않는다. 과거 17개 코호트와 이 탐색 사례는 아래 v5 수집 및 다른 활성 레인의 분모에서 제외한다(부록~\ref{app:diagnostic-blocked}).
 
 \subsection{별도의 합성 개발 수집(v5) 및 구문·의미 2단 분해}
-v5는 합성 fixture 다섯 종(\texttt{missing\_precondition}, \texttt{missing\_effect}, \texttt{unauthorized\_objective}, \texttt{forbidden\_disclosure}, \texttt{unsatisfied\_dependency})을 두 요청 selector와 상세/일반 신호에 교차한 별도 개발 수집이다. 명목 직렬 순서는 Luna 다음 Terra이며 selector당 배정은 10개다. 배정 20개 모두 응답을 수신했고 pending은 0개지만 응답 수신은 성공이 아니다. 표~\ref{tab:paired-feedback-v5}의 각 cell 분모는 schema 실패까지 포함한 배정 5개 전체다.
+v5는 합성 픽스처 다섯 종(\texttt{missing\_precondition}, \texttt{missing\_effect}, \texttt{unauthorized\_objective}, \texttt{forbidden\_disclosure}, \texttt{unsatisfied\_dependency})을 두 요청 selector와 상세·일반 신호 조건에 교차한 별도의 개발 수집이다. 명목 직렬 순서는 Luna 다음에 Terra이며, selector당 10개씩 총 20개 과제를 배정했다. 배정 20건 모두 응답을 수신해 대기(pending) 건수는 0건이었지만, 응답 수신 자체가 과제 성공을 뜻하지는 않는다. 표~\ref{tab:paired-feedback-v5}의 각 셀 분모는 스키마 실패까지 포함한 배정 5건 전체다.
 
-\textbf{1단계: 구문·schema 경계.} 동일 strict parser는 20개 응답 중 10개를 거부했다(Luna 1/10, Terra 9/10). 수집기는 \texttt{execute\_with\_repair} 호출 전에 strict parsing을 수행하므로 이 실패는 controller 실행 전에 차단된다. 실패 기록의 evaluation은 null이며 별도의 상태 전이 영수증이 없으므로 이를 독립 측정된 무변경 결과로 세지 않는다. 나머지 10개만 의미 검사로 진행했다. \textbf{2단계: 의미 경계.} 파싱된 후보 10개 중 8개가 결정론적 gate를 통과했다(Luna 상세 4/4, 일반 3/5; Terra 일반 1/1). 독립 지정 목표 달성은 전체 배정 중 7/20이다. 추가 수리 호출은 0회다. 두 단계 계수는 이 배정 집합의 기술적 분해이지 모델 능력이나 신호의 인과 효과 추정이 아니다.
+\textbf{1단계: 구문·스키마 경계.} 동일한 엄격 구문 분석기는 20개 응답 중 10개를 거부했다(Luna 1/10, Terra 9/10). 수집기는 \texttt{execute\_with\_repair}를 호출하기 전에 엄격 구문 분석을 수행하므로, 이러한 실패는 컨트롤러 실행 이전에 차단된다. 실패 기록의 평가 필드는 null이며 별도의 상태 전이 영수증이 없으므로, 이를 독립적으로 측정된 무변경 결과로 세지 않는다. 나머지 10건만 의미 검사로 넘어갔다. \textbf{2단계: 의미 경계.} 파싱된 후보 10개 중 8개가 결정론적 게이트를 통과했다(Luna 상세 4/4, 일반 3/5; Terra 일반 1/1). 이와 별도로 독립 지정 목표를 달성한 사례는 전체 배정 중 7/20건이었다. 추가 수리 호출은 0회였다. 이 두 단계의 계수는 해당 배정 집합에 대한 기술적 분해일 뿐, 모델 능력이나 신호 유형의 인과적 효과를 추정하는 수치가 아니다.
 
 \begin{table*}[!tbp]
 \caption{별도의 v5 합성 개발 수집. 모든 분모는 schema 실패를 포함한 배정 5개 전체이며 응답 수신은 과제 성공을 뜻하지 않는다.}
@@ -392,15 +392,14 @@ v5는 합성 fixture 다섯 종(\texttt{missing\_precondition}, \texttt{missing\
 \end{tabularx}
 \end{table*}
 
-표~\ref{tab:paired-feedback-strata}는 같은 다섯 픽스처를 진행 허용 4종과 정책-목표 상충 통제 1종으로 나눈 \emph{사후 기술적 층화}다. 사전 등록된 새 평가변수나 별도 코호트가 아니며 표~\ref{tab:paired-feedback-v5}의 원래 분모 5와 전체 배정 20은 바꾸지 않는다. 진행 허용 목표 달성은 Luna 상세/일반 각각 3/4, Terra 상세 0/4·일반 1/4이며 파서 실패도 각 분모에 남는다. 상충 통제에서 Luna 상세는 무효과 \texttt{COMMIT}, 일반은 \texttt{HOLD}/fallback으로 각각 금지 목표의 미달성을 확인했다. Terra 두 조건의 해당 사례는 각각 파서 실패로 미평가 1/1이므로 안전 억제로 인정하지 않는다. 상충 통제의 관측된 억제는 평가 가능한 결과 중 2/2이고, 별도로 전체 상충 배정 4개 중 2개가 미평가다. 이를 4/4 억제로 보고하지 않는다. Luna 상세의 게이트 4/5와 목표 3/5는 같은 배정의 다른 판정이며, 일반 조건 대비 목표 우위를 뜻하지 않는다.
+표~\ref{tab:paired-feedback-strata}는 같은 다섯 픽스처를 진행 허용 4종과 정책--목표 상충 통제 1종으로 나눈 \emph{사후 기술적 층화}다. 이는 사전 등록된 새 평가 변수나 별도 코호트가 아니며, 표~\ref{tab:paired-feedback-v5}의 원래 셀 분모 5건과 전체 배정 20건을 바꾸지 않는다. 진행 허용 픽스처에서의 목표 달성은 Luna 상세·일반 조건 각각 3/4건, Terra 상세 0/4건, Terra 일반 1/4건이며, 구문 분석 실패 역시 각 분모에 그대로 남는다. 상충 통제 사례에서는 Luna 상세가 무효과 \texttt{COMMIT}으로, Luna 일반이 \texttt{HOLD}/대체 경로로 각각 금지된 목표의 미달성을 확인했다. 반면 Terra의 두 조건은 해당 사례가 모두 구문 분석 실패로 미평가(1/1건) 상태이므로 안전 억제로 인정하지 않는다. 따라서 상충 통제에서 관측된 억제는 평가 가능한 결과 중 2/2건이며, 전체 상충 배정 4건 중 2건이 미평가로 남으므로 이를 4/4건 억제로 보고하지 않는다. Luna 상세 조건의 게이트 통과 4/5건과 목표 달성 3/5건은 같은 배정에 대한 서로 다른 판정일 뿐, 일반 조건 대비 목표 달성 우위를 뜻하지 않는다.
 \input{../generated/paired_feedback_strata_ko.tex}
 
-동결 amendment에 따라 schema 실패는 실패 배정·목표 실패로 남기되 adapter 완료가 입증되면 다음 배정을 수집한다(실제 transport·safety 실패 시 중단). \texttt{unauthorized\_objective}에서는 \texttt{signal} policy가 모든 효과를 금지하지만 목표는 \texttt{signal\_restored}를 요구한다. Luna 상세의 해당 한 응답은 금지 효과를 제거해 gate를 통과했으나 목표는 실패했다. 이는 Luna 상세 조건 전체의 gate 4/5·목표 3/5와 구분되는 단일 사례다. 상세/일반 신호는 정보량이 다르고 실제 serving identity·revision·seed·token usage·cost는 미상이다. 이 수집은 selector 우월성·온톨로지 효능·A/C 확증 근거가 아니다.
-\texttt{unauthorized\_objective}는 정책과 목표가 상충하도록 이미 저작된 통제 사례다. 이 사례에서 금지 효과를 제거한 유효 후보의 \texttt{COMMIT}은 안전한 무효과 커밋이며, 거부 후 \texttt{HOLD}와 동일한 결과가 아니다. 효과가 비었다는 것은 영수증의 상태 식별자까지 불변이라는 뜻이 아니다. 파서 실패는 실패 배정으로 남으며 실행된 상태 전이 검사가 없으므로 안전성 성공으로 세지 않는다.
+동결된 개정 규칙(amendment)에 따라 스키마 실패는 실패 배정과 목표 실패로 남기되 어댑터 완료가 입증되면 다음 배정을 계속 수집한다(실제 전송이나 안전성 실패 시에만 중단한다). \texttt{unauthorized\_objective}는 정책과 목표가 상충하도록 미리 저작된 통제 사례로, \texttt{signal} 정책이 모든 효과를 금지하는 반면 목표는 \texttt{signal\_restored}를 요구한다. Luna 상세의 해당 단일 응답은 금지 효과를 제거해 게이트를 통과했으나 목표에는 실패했으며, 이는 거부 후 \texttt{HOLD}가 아니라 안전한 무효과 \texttt{COMMIT}에 해당한다. 다만 효과가 비었다고 해서 영수증의 상태 식별자까지 불변이라는 뜻은 아니며, 이 단일 사례는 다섯 픽스처를 합산한 Luna 상세 조건 전체(게이트 4/5건, 목표 3/5건)와도 구분해야 한다. 구문 분석 실패는 여전히 실패 배정으로 남고 실행된 상태 전이 검사가 없으므로 안전성 성공으로 인정하지 않는다. 상세 신호와 일반 신호는 정보량이 서로 다르며, 실제 서빙 신원·리비전·시드·토큰 사용량·비용은 미상이다. 따라서 이 수집은 selector 우월성이나 온톨로지 효능, 또는 질문 A와 C의 확증 근거가 아니다.
 
-\path{research/codex_feedback_pilot/public-v5/}의 selector별 \path{results.json} 공개 투영은 사례별 결과, 파싱에 성공한 응답 텍스트, prompt hash, 실행 파일 hash/version 및 원본 digest·생략 필드를 보존하며 로컬 실행 경로는 생략한다. CLI stdout/stderr 원문은 보존하지 않았고 바이트 수·digest·이벤트 요약만 남긴다. 동결 원본 결과·승인 자료는 변경 없이 보존한다. \path{research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip}은 실행 소스 7개를 결속한 출처 스냅샷이지 독립 실행 배포본이 아니다. Schema 실패 10건은 null evaluation과 \texttt{CandidateParseError}/평가 오류로 남으므로 보존 산출물만으로 내용 수준 원인을 확정할 수 없다.
+\path{research/codex_feedback_pilot/public-v5/}에 포함된 selector별 \path{results.json} 공개 투영은 사례별 결과, 구문 분석에 성공한 응답 텍스트, 프롬프트 해시, 실행 파일의 해시와 버전, 그리고 원본 다이제스트 및 생략 필드를 보존하되 로컬 실행 경로는 생략한다. CLI의 표준 출력·표준 오류 원문은 남기지 않고 바이트 수와 다이제스트, 이벤트 요약만 보존했으며, 동결된 원본 결과와 승인 자료는 수정 없이 유지한다. \path{research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip}은 실행 소스 파일 7개를 묶은 출처 스냅샷일 뿐 독립 실행 배포본이 아니다. 스키마 실패 10건은 평가 결과가 null이고 \texttt{CandidateParseError} 또는 평가 오류로만 기록되어 있으므로, 보존된 산출물만으로는 내용 수준의 구체적 실패 원인을 확정할 수 없다.
 
-그림~\ref{fig:state-signal}의 상세 신호는 실패 검사·수리 힌트를, 일반 신호는 거부만 전달한다. 두 조건에 같은 strict parser·identity 검사·일곱 predicate를 적용하며 신호 자체는 허가가 아니다. 그림~\ref{fig:paired-feedback-flow}는 응답 수신·파싱·gate 통과·독립 목표 달성을 구분하고 schema 실패 및 gate 통과 후 목표 실패도 보존한다.
+그림~\ref{fig:state-signal}에서 상세 신호는 실패한 검사 항목과 수리 힌트를 전달하고, 일반 신호는 거부 여부만 전달한다. 두 조건 모두 동일한 엄격 구문 분석기, 신원 검사, 그리고 일곱 개의 검증 술어를 거치며, 신호 자체는 상태 변경 허가를 부여하지 않는다. 그림~\ref{fig:paired-feedback-flow}는 응답 수신, 구문 분석, 게이트 통과, 그리고 독립 목표 달성을 구분하여 나타내며, 스키마 실패와 게이트 통과 후 목표에 실패한 사례도 누락 없이 보존한다.
 
 \begin{figure*}[p]
 \centering
@@ -417,41 +416,40 @@ v5는 합성 fixture 다섯 종(\texttt{missing\_precondition}, \texttt{missing\
 \end{figure*}
 
 
-\noindent\textit{추가 코호트.} 미완료 v2 진단·파일 계수 기록, 원본 영수증이 현재 근거 집합에 없는 신호 탐색의 과거 귀속 서술, 차단된 전향 두 트랙 파일럿 프로토콜(\texttt{NOT\_RUN/BLOCKED}, 0/180개 실행)은 부록~\ref{app:diagnostic-blocked}에 분리 보고한다.
+\noindent\textit{추가 코호트.} 미완료 v2 진단·파일 계수 기록, 원본 영수증이 현재 근거 집합에 없는 신호 탐색의 과거 귀속 서술, 그리고 차단된 전향 이원 트랙 파일럿 프로토콜(\texttt{NOT\_RUN/BLOCKED}, 실행 0/180건)은 부록~\ref{app:diagnostic-blocked}에 분리하여 보고한다.
 
 
 \section{논의}
-Guided semantic repair 연산자 $\rho$ \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching}는 deterministic pre-execution 오류를 사용하고, oracle-only arm은 상태를 읽는다. Frozen-case rule 일치와 edit-scope 진단은 capability나 ontology 우월성의 증거가 아니다.
+반례 유도 의미 수리 연산자 $\rho$ \cite{S45_madaan2023selfrefine,S48_shinn2023reflexion,S46_chen2023selfdebug,S47_solarlezama2006sketching}는 실행 전 결정론적(deterministic pre-execution) 오류 정보만을 입력으로 사용하는 반면, 오라클 전용(oracle-only) 조건은 실제 상태를 직접 판독한다. 동결된 사례에서의 규칙 일치와 편집 범위 진단은 모델 역량(capability)이나 온톨로지(ontology) 우월성의 증거가 아니다.
 
 새 감사는 스키마 전용 실행과 의미 게이트의 차이, 최초 위반과 제한 수리의 복구, 유효 구조의 정확한 보존을 같은 설계 사례에서 분리한다. 기준 구현을 별도로 두어 게이트 자체의 통과 여부를 그대로 정답으로 재사용하지 않지만, 정책과 판정 의미는 공유하므로 독립적인 의미적 정답을 확보한 것은 아니다. 구조화된 유효 커밋, 목표 달성, 자유 언어의 적절성은 서로 다른 평가 대상이다.
 
-이번 native runtime pilot은 한 authored quest에서 \texttt{gpt-6.1-sol}/\texttt{gpt-5.6-sol}, \texttt{medium}, \texttt{general\_rule}/\texttt{ontology}를 condition당 2회 요청한 bounded observation이다. 모델은 typed intent만 생성하고 deterministic planner/checker와 Godot이 권위를 유지한다. source 수정 confound가 있으며 provider identity/revision/request count/cost는 미상이다.
-구현 교란: 첫 행은 controller-v3에서 모델 응답 전에 직렬화 오류로 실패했다. 이후 행 2--8은 모델에 보이는 입력을 바꾸지 않고 JSON 경계 한 줄을 수정한 controller-v4를 사용했으므로 selector/representation 차이를 모델에 귀속할 수 없다.
-질문 A(model/stack consistency)와 C(fresh-reference noninferiority)는 미실행이다. A는 고정 source/policy/replay의 substituted model/stack budget-bounded goal completion, C는 sealed assignment의 candidate/fresh reference 비교다. Goal completion은 safety/replay와 다른 endpoint이며, 둘 다 exact identity/revision 및 별도 safety/replay accounting이 필요하다. 현재 pilot으로는 해당 질문에 답할 수 없다. 미래 제작 endpoint는 matched request/evidence부터 동결 mandatory check를 모두 통과한 첫 receipt까지의 time-to-first-all-predeclared-validation-pass이며 unfinished/timeout/fail/stage-not-reached에는 성공 시간이 없다.
-제안된 endpoint의 단위는 연속 task-clock 초다.
+네이티브 런타임 파일럿은 저작된 단일 퀘스트에서 \texttt{gpt-6.1-sol}과 \texttt{gpt-5.6-sol}, 추론 강도 \texttt{medium}, 그리고 \texttt{general\_rule}과 \texttt{ontology} 표현을 조건당 2회씩 요청한 제한된 관측이다. 이 구성에서 모델은 형식이 지정된 의도만 생성하며, 결정론적 계획·검증기와 Godot 엔진이 상태 권위를 유지한다. 다만 실행 도중 소스 수정에 따른 교란 요인이 존재하며, 제공자 신원, 리비전, 요청 횟수, 비용은 알 수 없다.
+구체적인 구현 교란으로, 1행은 controller-v3 환경에서 모델 응답을 받기 전에 직렬화 오류로 실패했다. 이후 2--8행은 모델에 전달되는 입력을 바꾸지 않은 채 JSON 경계 처리 한 줄을 수정한 controller-v4에서 실행되었으므로, 조건이나 표현 방식에 따른 차이를 모델의 성질로 귀속할 수 없다.
+연구 질문 A(모델 및 스택 교체 시의 일관성)와 C(신규 참조 모델 대비 비열등성)는 아직 실행하지 않았다. A는 고정된 소스와 정책, 리플레이 조건 아래에서 모델이나 실행 스택을 교체했을 때의 예산 내 목표 달성을 평가하고, C는 봉인된 배정에서 후보와 신규 참조 모델의 성능을 비교한다. 목표 달성은 안전성 및 리플레이 무결성과 별개의 평가 지표이며, 두 질문 모두 정확한 모델 신원·리비전 정보와 별도의 안전성·리플레이 회계를 요구하므로 현재 파일럿만으로는 답할 수 없다. 향후 본 연구에서 제안하는 완료 지표는 정합된 요청과 근거가 주어졌을 때 사전에 동결한 모든 필수 검사를 통과한 첫 영수증이 기록되기까지의 소요 시간(time-to-first-all-predeclared-validation-pass)이며, 미완료, 시간 초과, 실패, 또는 단계 미도달 실행에는 성공 시간을 부여하지 않는다. 이 지표의 단위는 연속적인 과업 시계(task-clock) 초다.
 \texttt{TR01--TR06}은 향후 추적성 평가를 위한 루브릭이며 실제 채점은 미실행이다. 온톨로지 역할 수, 선언 검사 수, 60/60 규칙 일치 또는 새 감사의 구조 서명 계수를 TR 점수로 환산하지 않는다.
 
 부록~\ref{app:runtime-identity}의 별도 신원 검증 확장은 실제 응답 모델의 증거 누락으로 중단됐으며 신원이 검증된 새 비교 결과는 얻지 못했다.
 
 \subsection{타당성 위협, 윤리 및 산출물 범위}
-\textbf{위협과 경계.} State consistency는 behavioral consistency를 입증하지 않는다 \cite{S55_huang2026beyond}. narrative coherence도 입증하지 않는다. Predicate/role/Godot/DISC 집합은 latent-state vector가 아니고 declaration expectation은 human gold/holdout이 아니다. Historical/활성 lane은 분모가 달라 합산하지 않는다. Provider identity/revision/request count/cost는 미상이고 source 수정 confound가 있다. 참가자·정서·이해·agency·즐거움·몰입·편익·population·safety-rate·model-ranking·상용 성능을 추론하지 않는다. Unkeyed hash는 authentication이 아니며 replay equality는 semantic correctness가 아니다. 미래 human/affect 연구에는 윤리 심의(ethics review), consent, 최소수집·보존·삭제, opt-out이 이 연구의 설계 요건이다. 보상 고지와 calibrated judge는 선행 평가 연구에서 동기를 얻는다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
+\textbf{위협과 경계.} 상태 일관성이 곧 행동 일관성이나 서사적 응집성을 입증하지는 않는다 \cite{S55_huang2026beyond}. 검증 술어와 온톨로지 역할, Godot 표시 계열, 그리고 DISC 규칙 집합은 잠재 상태 벡터가 아니며, 선언 기반 기대값 역시 사람의 정답 기준(gold)이나 홀드아웃 평가 집합이 아니다. 과거 레인과 활성 레인은 분모가 다르므로 합산하지 않는다. 또한 제공자 신원, 리비전, 요청 횟수, 비용이 확인되지 않았고 소스 수정 교란도 존재한다. 본 자료로부터는 참가자 반응, 정서, 이해도, 주도성(agency), 즐거움, 몰입, 편익, 모집단 안전율, 모델 순위, 또는 상용 성능을 추론하지 않는다. 키 없는 해시는 신원 인증이 아니며, 리플레이 동등성이 곧 의미적 정확성을 뜻하지도 않는다. 향후 사람 대상 실험 및 정서 연구에서는 연구 윤리 심의, 사전 동의, 데이터 최소 수집과 보존·삭제 절차, 그리고 참여 철회(opt-out) 보장을 설계 요건으로 삼는다. 보상 고지와 보정된 평가자(calibrated judge) 설계는 선행 평가 방법론 연구에 근거한다 \cite{S27_vanderlee2019best,S28_karpinska2021perils,S29_zheng2023judging,S30_chen2024judgement}.
 
-v5의 배정 20개와 네이티브 파일럿의 배정 8개는 각각 저작된 과제를 입력부터 종단 결과까지 연결한 end-to-end 파이프라인 적합성 관측이다. 이 작은 목적 표집 결과로 모델·표현·신호의 우월성, 인간 효능 또는 통계적 일반화를 추론하지 않는다. NPC-DISC-1의 60개 유한 상태 픽스처 및 새 감사의 상태 교차 행렬과도 모집단이나 독립 표본의 의미가 다르며, 이들 분모를 합산하지 않는다.
+v5의 배정 20개와 네이티브 파일럿의 배정 8개는 각각 저작된 과제를 입력부터 종단 결과까지 연결한 종단 간(end-to-end) 파이프라인 적합성 관측이다. 이 작은 목적 표집 결과로 모델·표현·신호의 우월성, 인간 효능 또는 통계적 일반화를 추론하지 않는다. NPC-DISC-1의 60개 유한 상태 픽스처 및 새 감사의 상태 교차 행렬과도 모집단이나 독립 표본의 의미가 다르며, 이들 분모를 합산하지 않는다.
 
 구조화된 사실 ID의 검사는 서술문의 모든 함의를 검사하지 않는다. \texttt{disclosed\_facts}가 비어 있어도 문장이 비밀을 우회 표현할 수 있다. 짝지은 센티널은 이 선언 경계를 관측하는 작성 사례이지 모델이 생성한 누출의 빈도 표본이 아니다. 서술문을 상태 변경 입력에서 제외하는 것은 상태 무결성을 보호하지만 플레이어에게 보이는 비밀 누출까지 방지하지는 않는다. 검증된 사실만 통제 템플릿으로 표면화하는 출력 경로와 자유 문장 출력 경로는 구분해야 하며, 본 감사는 새 NLI 탐지기나 렌더러 안전성의 근거를 제공하지 않는다.
 
-폐쇄/BFS의 일치는 재사용 열쇠를 가진 유한 그래프에 대한 구현 교차검사다. 사람이 검토한 퀘스트 품질, 동적 세계의 플레이 가능성, 구조의 창의적 가치로 일반화하지 않는다. 새 감사에서도 다중 모델·사람의 효능 자료는 수집하지 않았다. 차단된 전향 파일럿은 \texttt{NOT\_RUN/BLOCKED}, 실행 0/180을 유지하며, \texttt{C-RESULT}와 \texttt{TODO-RESULT}의 미측정 상태를 대체하지 않는다. 모델 신원·과금·격리·프로토콜의 동결 편입 게이트는 오프라인 감사의 완료와 별개로 충족되어야 한다.
+폐쇄 연산과 BFS의 일치는 재사용 열쇠를 가진 유한 그래프에 대한 구현 교차검사다. 사람이 검토한 퀘스트 품질, 동적 세계의 플레이 가능성, 구조의 창의적 가치로 일반화하지 않는다. 새 감사에서도 다중 모델·사람의 효능 자료는 수집하지 않았다. 차단된 전향 파일럿은 \texttt{NOT\_RUN/BLOCKED}, 실행 0/180을 유지하며, \texttt{C-RESULT}와 \texttt{TODO-RESULT}의 미측정 상태를 대체하지 않는다. 모델 신원·과금·격리·프로토콜의 동결 편입 게이트는 오프라인 감사의 완료와 별개로 충족되어야 한다.
 
 \section{결론}
-\system{}은 스키마 적합성, 상태 상대 권한, 목표 달성을 분리하고 제안·수리·커밋·리플레이의 근거를 결속한다. v5의 파싱 실패 10/20, 게이트 통과 8/20, 목표 달성 7/20은 이 구분의 관측 사례다. 네이티브 파일럿의 배정 8개/실행 7개/목표 달성 5건은 별도 한정 관측으로 유지한다. 동결 오프라인 감사는 네 실행 조건, 행동 전 구현 분리 기준, 분모별 퍼널, 구조 서명과 표면 센티널의 경계를 명시한다. 이 결과의 다음 검증 대상은 독립적인 다중 모델·사람 평가이며, TR 채점·전체 게임·확인적 A/C 평가와 차단된 전향 0/180은 미실행으로 남는다.
+\system{}은 스키마 적합성, 상태 상대 권한, 목표 달성을 분리하고 제안·수리·커밋·리플레이의 근거를 결속한다. v5의 파싱 실패 10/20건, 게이트 통과 8/20건, 목표 달성 7/20건은 이 구분의 관측 사례다. 네이티브 파일럿의 배정 8건, 실행 7건, 목표 달성 5건은 별도의 한정 관측으로 유지한다. 동결된 오프라인 감사는 네 실행 조건, 행동 전 상태에서 구현을 분리한 기준 검사, 분모별 퍼널, 그리고 구조 서명 보존과 표면 센티널의 경계를 명시한다. 향후 검증 과제는 독립적인 다중 모델 및 사람 평가이며, TR 채점, 전체 게임 평가, 확인적 A와 C 평가 및 차단된 전향 연구 0/180건은 미실행 상태로 남는다.
 
 \begingroup
 \section*{AI 사용 고지}
-LLM은 prose/code/test/citation check를 보조했다. hosted model candidate는 별도로 표기했다. Curated AI UI art/desk mesh는 file provenance, rendered snapshot/hash/ledger는 presentation-only다. 저자는 source를 대조하고 내용에 책임진다. NPC 입력/표는 assignment/project/protocol/schema hash와 unknown token/cost/model-revision을 보존한다.
+대형 언어 모델은 원고 문안, 코드, 테스트 및 참고문헌 점검을 보조하는 데 사용했으며, 외부 호스팅 모델 후보는 별도로 표기했다. 선별된 AI 생성 UI 아트워크와 책상 3D 메시는 파일 출처를 유지하며, 렌더링된 스냅샷, 해시, 원장 표시는 모두 표현용 시각화 자료에 해당한다. 저자들은 모든 원천 자료를 직접 대조·검증했으며 원고의 최종 내용에 책임을 진다. NPC 입력과 결과 표에는 배정, 프로젝트, 프로토콜, 스키마의 해시와 함께 미확인 상태인 토큰 수, 비용, 모델 리비전 필드를 그대로 보존하였다.
 \section*{데이터 및 코드 가용성}
-보존된 저장소 번들은 구현·빌드 소스, 동결 packet, Godot slice, 결정론적 평가 스크립트, 기계 검증 기여·참조 주제·실험 매트릭스를 포함한다. 개발 사례 기록, 동결 공개/NPC 산출물 및 공개용 runtime 비교 투영(외부 DOI/저장소 기탁 전까지 저자 보관)을 함께 유지한다. 부록~\ref{app:artifact-map}(표~\ref{tab:artifact-directory-map})에 각 실험·근거 레인별 폴더 경로, 주요 파일 내용 및 검증 스크립트를 정리했다. 제안된 미측정 traceability rubric, codebook 및 향후 whole-game/반복 cross-model 계획은 동반 보충자료와 source manifest에 보존한다. 과거 기록과 별도 신원 admission 자료는 합산하지 않는다.
+보존된 저장소 번들은 구현 및 빌드 소스, 동결된 패킷, Godot 게임 슬라이스, 결정론적 평가 스크립트, 그리고 기계 검증 기여·참조 주제·실험 매트릭스를 포함한다. 개발 사례 기록, 동결된 공개·NPC 산출물, 및 외부 DOI나 저장소 기탁 전까지 저자가 보관하는 공개용 런타임 비교 투영도 함께 유지한다. 부록~\ref{app:artifact-map}(표~\ref{tab:artifact-directory-map})에는 각 실험·근거 레인별 폴더 경로, 주요 파일 내용 및 검증 스크립트를 정리했다. 미측정 상태인 추적성 루브릭 제안안과 코드북, 향후 전체 게임 및 반복 교차 모델 평가 계획은 동반 보충자료와 출처 매니페스트에 보존하며, 과거 기록과 별도 신원 검증 편입 자료는 본문 통계에 합산하지 않는다.
 
-공개 검토본은 \path{research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json}과 \path{research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json}을 제공하며 비공개 검토 대화 URL은 공개하지 않는다. 공개 투영을 검증할 때는 \path{python -B scripts/verify_paper_claims.py --public-source-projection}을 명시한다. 이 모드는 공개 파생본과 나머지 동결 근거의 해시 결속을 검사하지만 비공개 검토 원문 바이트를 독립적으로 재검증하지 않는다. 기본 strict 원문 검증은 별도로 유지하며 공개 모드로 자동 대체하지 않는다. 두 JSON은 검토 입력의 공개 파생본이지 새 실험 결과가 아니다.
+공개 검토본은 \path{research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json}과 \path{research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json}을 제공하며 비공개 검토 대화 URL은 공개하지 않는다. 공개 투영을 검증할 때는 \path{python -B scripts/verify_paper_claims.py --public-source-projection} 실행을 명시한다. 이 모드는 공개 파생본과 나머지 동결 근거의 해시 결속을 검사할 뿐 비공개 검토 원문 바이트를 독립적으로 재검증하지 않는다. 기본 엄격 원문 검증 경로는 별도로 유지하며 공개 모드로 자동 대체하지 않는다. 두 JSON 파일은 검토 입력의 공개 파생본이지 새로운 실험 결과가 아니다.
 
 \clearpage
 \bibliographystyle{IEEEtran}
@@ -462,12 +460,12 @@ LLM은 prose/code/test/citation check를 보조했다. hosted model candidate는
 \onecolumn
 \appendices
 \section{런타임 증거 부록}\label{app:runtime-evidence}
-그림~\ref{fig:runtime-comparison}은 고정 게임 native runtime 비교(\path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json}; 표~\ref{tab:artifact-directory-map} 참조)의 사전 배정된 8개 행(단일 퀘스트 \texttt{sealed-lighthouse-v1}, seed \texttt{20261024}, $2\text{ selector}\times 2\text{ 표현}\times 2\text{ 반복}$)을 행별로 보여준다. 표~\ref{tab:runtime-comparison-aggregate}의 집계 수치를 뒷받침하기 위해 각 행은 (i) 실제 영수증 기반 host 호출 수, (ii) 의미적 record-link 리플레이(\texttt{R}), (iii) 독립된 새 Godot 프로세스 재실행(\texttt{E})의 3단계 검증 결과를 연결한다:
+그림~\ref{fig:runtime-comparison}은 고정 게임 네이티브 런타임 비교(\path{research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json}; 표~\ref{tab:artifact-directory-map} 참조)의 사전 배정된 8개 행(단일 퀘스트 \texttt{sealed-lighthouse-v1}, 시드 \texttt{20261024}, $2\text{ selector}\times 2\text{ 표현}\times 2\text{ 반복}$)을 행별로 보여준다. 표~\ref{tab:runtime-comparison-aggregate}의 집계 수치를 뒷받침하기 위해 각 행은 (i) 실제 영수증 기반 호스트 호출 수, (ii) 의미적 기록 연결 리플레이(\texttt{R}), (iii) 독립된 새 Godot 프로세스 재실행(\texttt{E})의 3단계 검증 결과를 연결한다:
 \begin{itemize}
-  \item \textbf{1행 (\texttt{gpt-6.1-sol}, \texttt{general\_rule}, r1 --- \texttt{HARNESS}):} 모델 응답 수신 전 controller-v3의 JSON 경계 직렬화 단계에서 중단된 기술 실패(\texttt{executed=null}, \texttt{host\_invocations=0}, \texttt{Goal=NR}, \texttt{Safety=NOT\_OBSERVED}, \texttt{R NR / E NOT\_OBSERVED})다. 하니스 결함을 모델 능력 실패로 오귀속하지 않으면서도 배정 분모($1/2$)에 그대로 유지하는 fail-closed 회계의 근거다.
-  \item \textbf{2행 (\texttt{gpt-6.1-sol}, \texttt{general\_rule}, r2 --- \texttt{SUCCESS}):} 모델 입력을 바꾸지 않고 JSON 경계 한 줄만 수정한 controller-v4에서 실행되어 host 호출 4회(\texttt{45.91\,s})와 안전한 상태 전이 3회(\texttt{repair=0}, \texttt{unsafe=0})로 퀘스트 목표에 도달했으며 의미적 리플레이(\texttt{R YES})와 새 엔진 재실행(\texttt{E VALID})을 모두 통과했다.
-  \item \textbf{3--4행 (\texttt{gpt-6.1-sol}, \texttt{ontology}, r1 \& r2 --- \texttt{TIMEOUT}):} 동결된 호출당 60\,s 제한을 초과해 종료되었다(\texttt{78.18\,s}, \texttt{66.52\,s}; \texttt{Goal=NO}). 3행은 후속 호출이 timeout되기 전 유효한 상태 변경 1회를 commit했기 때문에 최종 목표는 미달성(\texttt{Goal=NO})이지만 이미 commit된 전이 자체는 안전 검사(\texttt{PASS}), 의미적 리플레이(\texttt{R YES}), 새 Godot 재실행(\texttt{E VALID})을 모두 통과했다. 반면 4행은 첫 commit 이전에 timeout되어(\texttt{0} commit, \texttt{NO\_COMMIT\_OBSERVED}) 불변 로그에 대한 의미적 리플레이(\texttt{R YES})만 확인되고 엔진 재실행은 수행되지 않았다(\texttt{E NOT\_RUN}).
-  \item \textbf{5--8행 (\texttt{gpt-5.6-sol}, \texttt{general\_rule} \& \texttt{ontology}, r1 \& r2 --- \texttt{SUCCESS}):} 네 행 모두 셀별 $2/2$ 목표 달성(각 행 host 호출 4회, 안전 commit 3회, \texttt{31.95--41.09\,s}, \texttt{repair=0}, \texttt{unsafe=0})을 기록하며 안전 검사(\texttt{PASS}), 의미적 리플레이(\texttt{R YES}), 새 엔진 재실행(\texttt{E VALID})을 통과했다.
+  \item \textbf{1행 (\texttt{gpt-6.1-sol}, \texttt{general\_rule}, r1 --- \texttt{HARNESS}):} 모델 응답 수신 전 controller-v3의 JSON 경계 직렬화 단계에서 중단된 기술적 실패(\texttt{executed=null}, \texttt{host\_invocations=0}, \texttt{Goal=NR}, \texttt{Safety=NOT\_OBSERVED}, \texttt{R NR / E NOT\_OBSERVED})다. 하니스 결함을 모델 능력 실패로 오인해 귀속하지 않으면서도 배정 분모($1/2$)에 그대로 유지하는 실패 차단(fail-closed) 회계의 근거다.
+  \item \textbf{2행 (\texttt{gpt-6.1-sol}, \texttt{general\_rule}, r2 --- \texttt{SUCCESS}):} 모델 입력을 바꾸지 않고 JSON 경계 한 줄만 수정한 controller-v4에서 실행되어 호스트 호출 4회(\texttt{45.91\,s})와 안전한 상태 전이 3회(\texttt{repair=0}, \texttt{unsafe=0})로 퀘스트 목표에 도달했으며 의미적 리플레이(\texttt{R YES})와 새 엔진 재실행(\texttt{E VALID})을 모두 통과했다.
+  \item \textbf{3--4행 (\texttt{gpt-6.1-sol}, \texttt{ontology}, r1 \& r2 --- \texttt{TIMEOUT}):} 동결된 호출당 60\,s 제한을 초과해 종료되었다(\texttt{78.18\,s}, \texttt{66.52\,s}; \texttt{Goal=NO}). 3행은 후속 호출이 시간 초과로 중단되기 전에 유효한 상태 변경 1회를 커밋했기 때문에 최종 목표는 미달성(\texttt{Goal=NO})이지만 이미 커밋된 전이 자체는 안전 검사(\texttt{PASS}), 의미적 리플레이(\texttt{R YES}), 새 Godot 재실행(\texttt{E VALID})을 모두 통과했다. 반면 4행은 첫 커밋 이전에 시간 초과가 발생하여(\texttt{0} commit, \texttt{NO\_COMMIT\_OBSERVED}) 불변 로그에 대한 의미적 리플레이(\texttt{R YES})만 확인되고 엔진 재실행은 수행되지 않았다(\texttt{E NOT\_RUN}).
+  \item \textbf{5--8행 (\texttt{gpt-5.6-sol}, \texttt{general\_rule} \& \texttt{ontology}, r1 \& r2 --- \texttt{SUCCESS}):} 네 행 모두 셀별 $2/2$ 목표 달성(각 행 호스트 호출 4회, 안전 커밋 3회, \texttt{31.95--41.09\,s}, \texttt{repair=0}, \texttt{unsafe=0})을 기록하며 안전 검사(\texttt{PASS}), 의미적 리플레이(\texttt{R YES}), 새 엔진 재실행(\texttt{E VALID})을 통과했다.
 \end{itemize}
 
 \begin{figure*}[!ht]
@@ -478,27 +476,27 @@ LLM은 prose/code/test/citation check를 보조했다. hosted model candidate는
 \end{figure*}
 \clearpage
 \section{신원 검증 확장}\label{app:runtime-identity}
-본 부록은 응답 헤더의 실제 제공자 모델 식별자(\texttt{openai-model})가 결속되지 않은 실행을 비교 분모에 편입하지 않고 즉시 차단하는 fail-closed 편입 게이트 근거(\path{research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json}; 표~\ref{tab:artifact-directory-map})를 요약한다.
+본 부록은 응답 헤더의 실제 제공자 모델 식별자(\texttt{openai-model})가 결속되지 않은 실행을 비교 분모에 편입하지 않고 즉시 차단하는 실패 차단형(fail-closed) 편입 게이트 근거(\path{research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json}; 표~\ref{tab:artifact-directory-map})를 요약한다.
 
 \input{../generated/runtime_identity_extension_ko.tex}
 \clearpage
 \section{로컬 Ollama 과거 귀속의 근거 한계}\label{app:runtime-ollama-feasibility}
-로컬 Ollama에 관한 과거 원고의 정량 관측·자격·리플레이·공학적 통과 주장은 원본 에피소드와 영수증 묶음을 확보하지 못해 현행 정량 근거에서 철회했다. 철회 전 문구와 해시는 \path{research/maintenance/ollama-unverified-history-20261113.json}에 미검증 역사 귀속으로 보존한다. 이 JSON은 원자료나 검증 결과가 아니다. 원고 서술을 반복해도 실험 증거가 되지는 않는다. 대체 영수증을 만들거나 새 모델 응답을 수집하지 않았다. 아래 전향 파일럿의 실제 차단 상태와도 별개의 기록이다.
+로컬 Ollama에 관한 과거 원고의 정량 관측·자격·리플레이·공학적 통과 주장은 원본 에피소드와 영수증 묶음을 확보하지 못해 현행 정량 근거에서 철회했다. 철회 전 문구와 해시는 \path{research/maintenance/ollama-unverified-history-20261113.json}에 미검증 역사 귀속으로 보존한다. 이 JSON 파일은 원자료나 검증 결과가 아니며, 원고 서술을 반복해도 실험 증거가 되지는 않는다. 대체 영수증을 만들거나 새 모델 응답을 수집하지 않았으며, 아래 전향 파일럿의 실제 차단 상태와도 별개의 기록이다.
 \clearpage
 
 \section{진단·과거·차단 코호트 기록}\label{app:diagnostic-blocked}
 \subsection{별도의 신호 탐색 사례}
-기존 서술은 본문 결과 및 전향 파일럿과 별개인 합성 \texttt{missing\_effect} 1건(공통 초기 제안에서 필수 효과 \texttt{signal\_restored} 누락)에 다음 수리 경로를 귀속한다: 결정론적 대조군은 1회 수리 후 commit 및 목표 도달에 성공했고, \texttt{gpt-6-luna} 상세 신호는 오류 코드·누락 효과·수리 힌트로 효과를 복원해 재검증 후 commit 및 목표 도달로 이어졌으며, \texttt{Action rejected.}만 전달한 일반 신호는 빈 효과를 유지해 재검증 실패 후 상태 불변 fallback으로 종료되었다. 그러나 현재 이용 가능한 근거 집합에서는 원본 영수증을 찾을 수 없어 이 귀속을 출처 검증하지 못했다. 이 문단은 검증되지 않은 과거 메커니즘 서술이지 관측 결과의 재확인이 아니며, 프롬프트·실행 코드 버전 결속도 확립되지 않아 활성 분모와 확인적 근거에서 제외한다.
+기존 서술은 본문 결과 및 전향 파일럿과 별개인 합성 \texttt{missing\_effect} 1건(공통 초기 제안에서 필수 효과 \texttt{signal\_restored} 누락)에 대해 다음 수리 경로를 귀속한다. 결정론적 대조군은 1회 수리 후 커밋과 목표 도달에 성공했고, \texttt{gpt-6-luna} 상세 신호는 오류 코드·누락 효과·수리 힌트로 효과를 복원해 재검증 후 커밋과 목표 도달로 이어졌으며, \texttt{Action rejected.}만 전달한 일반 신호는 빈 효과를 유지해 재검증 실패 후 상태 불변 대체 경로로 종료되었다. 그러나 현재 이용 가능한 근거 집합에서는 원본 영수증을 찾을 수 없어 이 귀속을 출처 검증하지 못했다. 이 문단은 검증되지 않은 과거 메커니즘 서술일 뿐 관측 결과의 재확인이 아니며, 프롬프트와 실행 코드의 버전 결속도 확립되지 않아 활성 분모와 확인적 근거에서 제외한다.
 
 \subsection{미완료 합성 개발 파일럿 및 과거 파일 계수}
-하니스 개발 중 실패·중단된 시도가 선택적으로 누락되지 않았는지 확인하도록 \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}(표~\ref{tab:artifact-directory-map})은 총 19개 코호트(과거 17개, v5 2개)의 배정·완료·실패·진행중(\texttt{IN\_PROGRESS})·대기(\texttt{PENDING}) 행 수와 로컬 원본 파일의 SHA-256 digest를 보존한다. 초기 합성 개발 파일럿(v2 evidence 및 v2 diagnostic 코호트, \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각 10개 배정)은 첫 \texttt{missing\_precondition} 배정에서 \texttt{protocol\_error}(\texttt{FAILED})로 중단되거나 \texttt{IN\_PROGRESS}/pending 상태로 남아 유효 모델 응답이 0개였다(민감 정보 노출 방지를 위해 원문 오류는 미보존). 전체 과거 파일 계수(완료/실패/pending)는 최초 파일럿 $0/7/3$(기술적·중단 시도 7건), 초기 selector/native 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, startup diagnostic $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이며, 표~\ref{tab:paired-feedback-v5}의 완료된 v5 수집(20행)과 합산하지 않는다.
+하니스 개발 중 실패하거나 중단된 시도가 선택적으로 누락되지 않았는지 확인하기 위해 \path{research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json}(표~\ref{tab:artifact-directory-map})은 총 19개 코호트(과거 17개, v5 2개)의 배정·완료·실패·진행 중(\texttt{IN\_PROGRESS})·대기(\texttt{PENDING}) 행 수와 로컬 원본 파일의 SHA-256 다이제스트를 보존한다. 초기 합성 개발 파일럿(v2 evidence 및 v2 diagnostic 코호트, \texttt{gpt-5.6-luna}와 \texttt{gpt-5.6-terra} 각 10개 배정)은 첫 \texttt{missing\_precondition} 배정에서 \texttt{protocol\_error}(\texttt{FAILED})로 중단되거나 \texttt{IN\_PROGRESS} 및 대기 상태로 남아 유효 모델 응답이 0건이었다(민감 정보 노출 방지를 위해 원문 오류는 미보존). 전체 과거 파일 계수(완료·실패·대기)는 최초 파일럿 $0/7/3$(기술적·중단 시도 7건), 초기 selector 및 네이티브 파일 4개 $0/0/40$, 초기 v2 쌍 $0/0/20$, 시작 진단(startup diagnostic) $0/2/18$, v3 쌍 $0/0/20$, v4 Luna $10/0/0$(상세 목표 $4/5$, 일반 목표 $4/5$), Terra $0/1/9$이며, 표~\ref{tab:paired-feedback-v5}의 완료된 v5 수집(20행)과는 합산하지 않는다.
 
 \subsection{사전 등록 차단 게이트 및 누출 부재 검증}\label{sec:prospective-pilot}
-사전 등록된 전향 연구(\path{research/prospective-pilot-20261103/protocol-v1.json} 및 \path{results-v1/}; 표~\ref{tab:artifact-directory-map})는 3개 요청 패널(Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, Antigravity \texttt{gemini-3.8-flash-medium}; 명목 medium effort)에 대해 두 트랙을 정의한다. 런타임 트랙은 3개 target $\times$ 동일 정보의 2개 표현 $\times$ 10회 fresh reset(60단위, 에피소드당 180\,s)을 교차하고, 제한 개발 트랙은 3개 target $\times$ 2개 탐색 조건(최소 입력 vs.\ 공개 저장소 탐색) $\times$ 2개 표현 $\times$ 5개 과제 $\times$ 2회 fresh run(120단위, 배정당 900\,s)을 교차하며, 예산 내 독립 검증 성공을 일차 지표로, hard safety를 별도 게이트로 둔다.
+사전 등록된 전향 연구(\path{research/prospective-pilot-20261103/protocol-v1.json} 및 \path{results-v1/}; 표~\ref{tab:artifact-directory-map})는 세 요청 패널(Codex \texttt{gpt-5.6-sol}, Codex \texttt{gpt-6.1-sol}, Antigravity \texttt{gemini-3.8-flash-medium}; 명목 medium effort)에 대해 두 트랙을 정의한다. 런타임 트랙은 3개 대상 모델 $\times$ 동일 정보의 2개 표현 $\times$ 10회 초기화 재실행(60단위, 에피소드당 180\,s)을 교차하고, 제한 개발 트랙은 3개 대상 모델 $\times$ 2개 탐색 조건(최소 입력 대 공개 저장소 탐색) $\times$ 2개 표현 $\times$ 5개 과제 $\times$ 2회 초기화 실행(120단위, 배정당 900\,s)을 교차하며, 예산 내 독립 검증 성공을 일차 지표로, 엄격한 안전성을 별도 게이트로 둔다.
 
 \input{../generated/prospective-pilot/status_ko.tex}
 
-180개 계획 단위 전체를 실제 모델 프로세스 호출 전에 9개 fail-closed 선결 조건 게이트가 차단했다(\texttt{NOT\_RUN/BLOCKED}, 실행 0/180). 차단 스냅샷 이후의 독립 오프라인 검사는 5개 개발 과제 모두에서 정답 변형 2개를 수락하고 결함 원본 및 그럴듯한 오답 변형을 거부했으며, 지정된 과제/코퍼스 누출 검사는 저장소 파일 9,303개에서 통과했다. 이는 미충족 선결 조건의 실행 차단과 검사 범위 내 누출 부재·평가 픽스처 건전성의 감사 근거이지, 전향 파일럿 실행이나 모델·표현 비교 결과가 아니다.
+180개 계획 단위 전체는 실제 모델 프로세스 호출 전에 9개의 실패 차단(fail-closed) 선결 조건 게이트에 의해 차단되었다(\texttt{NOT\_RUN/BLOCKED}, 실행 0/180건). 차단 스냅샷 이후의 독립 오프라인 검사는 5개 개발 과제 모두에서 정답 변형 2개를 수락하고 결함 원본 및 그럴듯한 오답 변형을 거부했으며, 지정된 과제·코퍼스 누출 검사는 저장소 파일 9,303개에서 통과했다. 이는 미충족 선결 조건에 따른 실행 차단과 검사 범위 내 누출 부재 및 평가 픽스처 건전성의 감사 근거일 뿐, 전향 파일럿의 실행이나 모델·표현 비교 결과가 아니다.
 \clearpage
 
 \section{실험 및 근거 산출물 디렉터리·파일 참조표}\label{app:artifact-map}
