@@ -46,7 +46,7 @@ claims:
       - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
     status: verified-designed-fixture
   - id: C-PILOT-002
-    claim: Across the 12 authored initially-invalid repair cases at matched budget K=1, rejection-only committed 0/12 and unchanged retry committed 0/12, while counterexample-guided repair committed 5/12 and the state-reading policy-restore oracle committed 6/12; every non-committing arm left the prior state hash unchanged.
+    claim: Across the 12 authored initially-invalid repair cases, rejection-only at budget K=0 committed 0/12; at matched repair budget K=1, unchanged retry committed 0/12, counterexample-guided repair committed 5/12, and the state-reading policy-restore oracle committed 6/12; every non-committing arm left the prior state hash unchanged.
     evidence:
       - research/academic-pipeline/stage-04-pilot/pilot-results.json
       - research/academic-pipeline/stage-04-pilot/repair-arms.csv
@@ -88,6 +88,43 @@ claims:
       - research/academic-pipeline/stage-04-pilot/sha256-manifest.json
     status: verified-designed-fixture
     reconciliation_note: "2026-10-14 bounded refresh confirms the tracked Stage-04 manifest remains authoritative at 121 = 85 executed + 36 aggregate; pilot-assignment-manifest.json and sha256-manifest.json are hash-bound and unchanged. Later 64 = 43 + 21 prose/material-passport counts are retained only as a separate historical recapture claim and do not replace this ledger evidence."
+  - id: C-PILOT-009
+    claim: >-
+      In the frozen designer-authored deterministic offline boundary audit, 32
+      finite graph/state combinations and 13 candidate variants yielded 416
+      assignments per arm (1664 main assignments). Schema-only at K=0 committed
+      260/416 reference-invalid candidates; semantic rejection at K=0, unchanged
+      retry at K=1, and guided repair at K=1 each committed 0/416 reference-invalid
+      candidates. Guided repair recovered 128/260 initially invalid candidates,
+      held 132/416 assignments, and achieved the separately evaluated objective
+      in 252/416 assignments. Every arm retained 156/156 initially valid cases
+      and their 11/11 exact structural signatures; the distinct monotone closure
+      and location/inventory BFS agreed for 32/32 graph/state combinations. In
+      48 separately denominated surface assignments (12 per arm), each semantic
+      arm committed all 6/6 undeclared narrative sentinels and held all 6/6 paired
+      explicit forbidden-fact declarations.
+    evidence:
+      - research/academic-pipeline/gemini-review-20261113/results-v2/summary.json
+      - research/academic-pipeline/gemini-review-20261113/results-v2/rows.jsonl
+      - research/academic-pipeline/gemini-review-20261113/results-v2/surface_rows.jsonl
+      - research/academic-pipeline/gemini-review-20261113/results-v2/assignment_inventory.json
+      - research/academic-pipeline/gemini-review-20261113/results-v2/input_hashes.json
+      - research/academic-pipeline/gemini-review-20261113/results-v2/source_hashes.json
+      - research/academic-pipeline/gemini-review-20261113/results-v2/protocol.json
+      - research/academic-pipeline/gemini-review-20261113/results-v2/review_boundary_audit_en.tex
+      - research/academic-pipeline/gemini-review-20261113/results-v2/review_boundary_audit_ko.tex
+    status: verified-designed-fixture
+    scope_note: >-
+      Initial and repaired final candidates are evaluated against the same
+      immutable reference pre-action state; objective attainment is evaluated
+      separately on the resulting state. The extracted ordinary-rule predicate
+      and BFS are implementation-separated from production, not independent or
+      blinded ground truth. Structural-signature retention is not creativity or
+      linguistic diversity. Authored surface sentinels expose a structured-fact
+      coverage boundary, not natural-language leakage prevalence or renderer
+      safety. No model or human efficacy, full-game playability, or prospective
+      pilot completion is established; existing cohorts, C-RESULT TODO-RESULT
+      statuses, and the blocked prospective 0/180 remain unchanged.
   - id: C-GAME-DESIGN-001
     claim: The approved Sealed Lighthouse protocol separates a structured-state/text primary track from a frozen-image VLM/UI secondary track, with image generation prohibited during experiment execution.
     evidence:

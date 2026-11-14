@@ -1,0 +1,506 @@
+{
+  "asset_boundary": {
+    "candidate_generated_concepts_loaded": false,
+    "curated_generated_ui_assets_may_appear": true,
+    "disclosure": "Refusal portrait and ledger/end-card seals use existing curated UI art. These are actual rendered game images containing disclosed curated AI-authored art, not the art-free primary diagnostic capture track. Public-safe also allows the curated player GLB and evidence desk prop; no assets were generated or collected.",
+    "public_safe": true
+  },
+  "captured_at_utc": "2026-11-13T15:14:53.155831+00:00",
+  "captures": [
+    {
+      "authored_execution": "Initial scenario state; no canonical action.",
+      "beat": "initial_context",
+      "bytes": 330730,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "engineering_working_capture_only": true,
+      "file": "native3d/arrival.png",
+      "height": 720,
+      "mapping_kind": "same_initial_canonical_state",
+      "observed_render_event": {
+        "event_id": "godot-4.7.1-20261113t151426z-paper-native3d-v1:shot-saved:arrival",
+        "event_type": "SHOT-SAVED",
+        "payload": {
+          "engineering_only": true,
+          "height": 720,
+          "not_evidence_for": [
+            "G4",
+            "usability",
+            "immersion",
+            "affect",
+            "efficacy"
+          ],
+          "path": "<repo-root>/_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261113t151426z-paper-native3d-v1/native3d/arrival.png",
+          "stage": "arrival",
+          "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "width": 1280,
+          "written": true
+        }
+      },
+      "observed_ui": "Dark offshore lighthouse, initial lead to Captain Mira, empty three-link case chain, stage 0 and 0 entries/holds.",
+      "pixel_stats": {
+        "max_luma": 1.0,
+        "mean_luma": 0.267748,
+        "min_luma": 0.01934,
+        "opaque_fraction": 1.0,
+        "unique_colors": 9880
+      },
+      "related_fixture_event": {
+        "commit": {
+          "applied": false,
+          "operation": null
+        },
+        "delivery_index": 0,
+        "event_id": "evt-000-observe",
+        "event_type": "observation",
+        "sequence": 0,
+        "turn": 0,
+        "validation": {
+          "codes": [],
+          "status": "not_applicable"
+        },
+        "world_state_hash": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+        "world_state_hash_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c"
+      },
+      "related_fixture_event_id": "evt-000-observe",
+      "related_fixture_state_matches_captured_after_state": true,
+      "sha256": "381ade4db31d68dd971f2bc1d11adf619d5dd24b94492430c6561aa09f1d91f4",
+      "sidecar": "native3d/arrival.shot.json",
+      "stage": "arrival",
+      "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "visual_inspection": {
+        "method": "Decoded original PNG with read image tool",
+        "note": "No retouch or text insertion.",
+        "result": "actual_3d_game_scene_and_hud_visible"
+      },
+      "width": 1280
+    },
+    {
+      "authored_execution": "Existing _prepare_screenshot_stage(refusal) calls machine.validate_disclosure([keeper_betrayal]) and asserts unchanged state.",
+      "beat": "denied_disclosure_state_unchanged",
+      "bytes": 481240,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "engineering_working_capture_only": true,
+      "file": "native3d/refusal.png",
+      "height": 720,
+      "mapping_kind": "related_disclosure_boundary_only_different_fixture_state_and_candidate",
+      "mapping_limit": "This shot rejects only keeper_betrayal at initial state f488d9c4\u2026; the canonical fixture fallback occurs after acquire_object at state 19b474dc\u2026 and evaluates a candidate with both FORBIDDEN_DISCLOSURE and STAGE_GATED_DISCLOSURE. It is not an event-log replay or exact fixture state/event capture.",
+      "observed_render_event": {
+        "event_id": "godot-4.7.1-20261113t151426z-paper-native3d-v1:shot-saved:refusal",
+        "event_type": "SHOT-SAVED",
+        "payload": {
+          "engineering_only": true,
+          "height": 720,
+          "not_evidence_for": [
+            "G4",
+            "usability",
+            "immersion",
+            "affect",
+            "efficacy"
+          ],
+          "path": "<repo-root>/_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261113t151426z-paper-native3d-v1/native3d/refusal.png",
+          "stage": "refusal",
+          "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "width": 1280,
+          "written": true
+        }
+      },
+      "observed_ui": "Request disclosure of the sealed fact; HELD, DISCLOSURE and state unchanged; initial case chain retained.",
+      "pixel_stats": {
+        "max_luma": 0.901705,
+        "mean_luma": 0.256425,
+        "min_luma": 0.018821,
+        "opaque_fraction": 1.0,
+        "unique_colors": 26239
+      },
+      "related_fixture_event": {
+        "commit": {
+          "applied": false,
+          "operation": null
+        },
+        "delivery_index": 9,
+        "event_id": "evt-002-fallback-secret",
+        "event_type": "fallback",
+        "sequence": 9,
+        "turn": 2,
+        "validation": {
+          "codes": [
+            "FORBIDDEN_DISCLOSURE",
+            "STAGE_GATED_DISCLOSURE"
+          ],
+          "status": "invalid"
+        },
+        "world_state_hash": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+        "world_state_hash_before": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498"
+      },
+      "related_fixture_event_id": "evt-002-fallback-secret",
+      "related_fixture_state_matches_captured_after_state": false,
+      "sha256": "34ab2b20eb56222560d917546c71f97d61fa7f3f92b057a4ea3bf7d35253c9f5",
+      "sidecar": "native3d/refusal.shot.json",
+      "stage": "refusal",
+      "state_sha256_after": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "visual_inspection": {
+        "method": "Decoded original PNG with read image tool",
+        "note": "Existing dense ledger clips some lower explanatory text; salient HELD/COMMIT and stage/chain remain visible. No retouch or text insertion.",
+        "result": "actual_3d_game_scene_and_hud_visible"
+      },
+      "width": 1280
+    },
+    {
+      "authored_execution": "Existing _prepare_screenshot_stage calls _propose_acquire(), _propose_install(), _propose_tide_hint(); writer commits all three operations.",
+      "beat": "authorized_hint_committed",
+      "bytes": 375315,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "engineering_working_capture_only": true,
+      "file": "native3d/authorized_hint.png",
+      "height": 720,
+      "mapping_kind": "same_terminal_canonical_state_after_existing_proposal_handlers",
+      "observed_render_event": {
+        "event_id": "godot-4.7.1-20261113t151426z-paper-native3d-v1:shot-saved:authorized_hint",
+        "event_type": "SHOT-SAVED",
+        "payload": {
+          "engineering_only": true,
+          "height": 720,
+          "not_evidence_for": [
+            "G4",
+            "usability",
+            "immersion",
+            "affect",
+            "efficacy"
+          ],
+          "path": "<repo-root>/_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261113t151426z-paper-native3d-v1/native3d/authorized_hint.png",
+          "stage": "authorized_hint",
+          "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "width": 1280,
+          "written": true
+        }
+      },
+      "observed_ui": "Stage 2; LENS, MOUNT, LEAD filled; authorized hint COMMIT and tide-marks lead recorded, three entries and zero holds.",
+      "pixel_stats": {
+        "max_luma": 1.0,
+        "mean_luma": 0.344807,
+        "min_luma": 0.022413,
+        "opaque_fraction": 1.0,
+        "unique_colors": 14762
+      },
+      "related_fixture_event": {
+        "commit": {
+          "applied": true,
+          "operation": "reveal_hint"
+        },
+        "delivery_index": 17,
+        "event_id": "evt-005-commit-hint",
+        "event_type": "commit",
+        "sequence": 17,
+        "turn": 5,
+        "validation": {
+          "codes": [],
+          "status": "valid"
+        },
+        "world_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "world_state_hash_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      },
+      "related_fixture_event_id": "evt-005-commit-hint",
+      "related_fixture_state_matches_captured_after_state": true,
+      "sha256": "ef7b5d2ac230303d77f08c54a784f8261ec1ff82c910dec731fd895ab4124e00",
+      "sidecar": "native3d/authorized_hint.shot.json",
+      "stage": "authorized_hint",
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "visual_inspection": {
+        "method": "Decoded original PNG with read image tool",
+        "note": "Existing dense ledger clips some lower explanatory text; salient HELD/COMMIT and stage/chain remain visible. No retouch or text insertion.",
+        "result": "actual_3d_game_scene_and_hud_visible"
+      },
+      "width": 1280
+    },
+    {
+      "authored_execution": "Same three proposal handlers, then existing pure deduction_is_supported(machine.state, DEDUCTION_CHAIN) condition sets presentation confirmation and shows live end-card page builder.",
+      "beat": "authored_closing_end_card",
+      "bytes": 406731,
+      "capture_method": "godot --scene res://scenes/main_3d.tscn --windowed --resolution 1280x720 --single-window --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --fixed-fps 30 --disable-vsync -- --shot <path> --shot-stage <stage> --public-safe (disposable staged copy; native display; get_viewport().get_texture().get_image())",
+      "engineering_working_capture_only": true,
+      "file": "native3d/ending.png",
+      "height": 720,
+      "mapping_kind": "same_terminal_canonical_state_plus_authored_presentation_only_end_card",
+      "mapping_limit": "Not an observed human deduction or user playthrough. Screenshot stage presents the closing end card and does not call _finish_episode(); the headless fixture has no separate ending event.",
+      "observed_render_event": {
+        "event_id": "godot-4.7.1-20261113t151426z-paper-native3d-v1:shot-saved:ending",
+        "event_type": "SHOT-SAVED",
+        "payload": {
+          "engineering_only": true,
+          "height": 720,
+          "not_evidence_for": [
+            "G4",
+            "usability",
+            "immersion",
+            "affect",
+            "efficacy"
+          ],
+          "path": "<repo-root>/_workspace/current/engineering/tech-verification/evidence/godot-4.7.1-20261113t151426z-paper-native3d-v1/native3d/ending.png",
+          "stage": "ending",
+          "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+          "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+          "width": 1280,
+          "written": true
+        }
+      },
+      "observed_ui": "CASE COMPLETE; lighthouse remains sealed; low-tide marks point to next route; contribution entries and conditional deduction confirmation.",
+      "pixel_stats": {
+        "max_luma": 0.96659,
+        "mean_luma": 0.315475,
+        "min_luma": 0.099862,
+        "opaque_fraction": 1.0,
+        "unique_colors": 9321
+      },
+      "related_fixture_event": {
+        "commit": {
+          "applied": true,
+          "operation": "reveal_hint"
+        },
+        "delivery_index": 17,
+        "event_id": "evt-005-commit-hint",
+        "event_type": "commit",
+        "sequence": 17,
+        "turn": 5,
+        "validation": {
+          "codes": [],
+          "status": "valid"
+        },
+        "world_state_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+        "world_state_hash_before": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900"
+      },
+      "related_fixture_event_id": "evt-005-commit-hint",
+      "related_fixture_state_matches_captured_after_state": true,
+      "sha256": "986bb850e064bc615e66262e29c318b103c1547928bc8336a3989aac1ac3e7fc",
+      "sidecar": "native3d/ending.shot.json",
+      "stage": "ending",
+      "state_sha256_after": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "state_sha256_before": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "visual_inspection": {
+        "method": "Decoded original PNG with read image tool",
+        "note": "No retouch or text insertion.",
+        "result": "actual_3d_game_scene_and_hud_visible"
+      },
+      "width": 1280
+    }
+  ],
+  "claim_scope": "authored_native_3d_game_scene_render_and_state_correspondence_only",
+  "classification": "engine-working-capture; illustration only; separately archived fresh set, not promoted to the retained experimental-game-render-capture schema",
+  "completed_at_utc": "2026-11-13T15:17:49.464543+00:00",
+  "engine": {
+    "display_server_name": null,
+    "display_server_note": "Existing SHOT-SAVED payload does not export DisplayServer.get_name(); native windowed non-headless argv and successful viewport image capture are retained, without inventing a server-name observation.",
+    "executable": "/opt/homebrew/bin/godot",
+    "executable_sha256": "ecc8da2d60100102cfca6e833d3860d7436b46ae062fa072ce89a6c95d664a3f",
+    "name": "Godot",
+    "native_shots_headless": false,
+    "observed_render_header": "OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M2 Pro",
+    "rendering_driver_requested": "opengl3",
+    "rendering_method_requested": "gl_compatibility",
+    "version": "4.7.1.stable.official.a13da4feb"
+  },
+  "evidence_set_id": "godot-4.7.1-20261113t151426z-paper-native3d-v1",
+  "execution": {
+    "all_process_returncodes_zero": true,
+    "capture_helper": "scripts.run_playable_evaluation._capture_screenshots",
+    "current_pointer_updated": false,
+    "godot_output_checked_by": "scripts.run_playable_evaluation._run_godot, preserving only exact SANDBOXED_MACOS_HOST_ERROR allowlist",
+    "old_capture_overwrites": false,
+    "process_capture_metadata": "process-capture-metadata.json",
+    "process_count": 6,
+    "scope": "Only staged import, one fresh authored canonical fixture and four existing --shot routes; no full evaluation suite, models, providers, web browser, builds or network request commands."
+  },
+  "figure_label": "fig:engine-cutscenes",
+  "fixture_run": {
+    "episode_id": "sealed-lighthouse-episode-001",
+    "events": "sealed-lighthouse-canonical-v1/events.jsonl",
+    "fixture_id": "sealed-lighthouse-canonical-v1",
+    "run_id": "godot-headless-canonical-v1",
+    "scenario_id": "sealed-lighthouse-v1",
+    "seed": 23,
+    "state_mapping_limitation": "Native shots use existing authored stage preparation, not event-log replay. Related fixture events are stated per capture and the refusal state/candidate mismatch is explicit.",
+    "summary": "sealed-lighthouse-canonical-v1/summary.json",
+    "telemetry_limitation": "Fresh headless summary reports frame_budget_passed=false; no overall performance or gate PASS is claimed."
+  },
+  "host": {
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python_version": "3.10.5"
+  },
+  "limitations": [
+    "No whole capture_godot_evidence CLI run: its renderer is a 2D diagnostic panel and its current-pointer update is outside this assignment.",
+    "Ending is a built-in conditional authored end-card screenshot, not observed human goal resolution or completion of the live player interaction flow.",
+    "No PNG was retouched, relabelled as an exact frozen-event replay, or substituted with mock UI.",
+    "Dense existing ledger text clips at the bottom on two shots; the image bytes are retained unchanged."
+  ],
+  "not_evidence_for": [
+    "G4",
+    "G6",
+    "usability",
+    "immersion",
+    "affect",
+    "player benefit",
+    "model efficacy",
+    "human playthrough",
+    "prospective pilot",
+    "independent statistical sample",
+    "core Python-to-Godot authorization transport",
+    "cross-device pixel determinism",
+    "frame performance"
+  ],
+  "packet_files_before_provenance": [
+    {
+      "bytes": 330730,
+      "file": "native3d/arrival.png",
+      "sha256": "381ade4db31d68dd971f2bc1d11adf619d5dd24b94492430c6561aa09f1d91f4"
+    },
+    {
+      "bytes": 845,
+      "file": "native3d/arrival.shot.json",
+      "sha256": "9d1d31776699066241caef53077f55175fdaf0543a469a613c12ee28012ef1aa"
+    },
+    {
+      "bytes": 375315,
+      "file": "native3d/authorized_hint.png",
+      "sha256": "ef7b5d2ac230303d77f08c54a784f8261ec1ff82c910dec731fd895ab4124e00"
+    },
+    {
+      "bytes": 853,
+      "file": "native3d/authorized_hint.shot.json",
+      "sha256": "88fdd06eb1329d681e7140f3821886bf1fe68bd8473b35594bdd1cab0cf021db"
+    },
+    {
+      "bytes": 406731,
+      "file": "native3d/ending.png",
+      "sha256": "986bb850e064bc615e66262e29c318b103c1547928bc8336a3989aac1ac3e7fc"
+    },
+    {
+      "bytes": 844,
+      "file": "native3d/ending.shot.json",
+      "sha256": "81ff73f7c2f1098bc6dc44d79e1c55ff3c10405645e9ca72df460714cdd654e8"
+    },
+    {
+      "bytes": 481240,
+      "file": "native3d/refusal.png",
+      "sha256": "34ab2b20eb56222560d917546c71f97d61fa7f3f92b057a4ea3bf7d35253c9f5"
+    },
+    {
+      "bytes": 845,
+      "file": "native3d/refusal.shot.json",
+      "sha256": "a21086201ecaced138cf91b74ec1cf429502a007ce63d04a767915a63a3ac624"
+    },
+    {
+      "bytes": 476,
+      "file": "process-logs/canonical-fixture.log",
+      "sha256": "91f7f1de9c613f49b725c42da64fdcc6980aa3998746e5d71225cb128dea8a31"
+    },
+    {
+      "bytes": 753,
+      "file": "process-logs/capture-arrival.log",
+      "sha256": "a20cfb074598d982a8fa256bc7c3bae7162282468505bb0bc225dab3f62c5959"
+    },
+    {
+      "bytes": 769,
+      "file": "process-logs/capture-authorized_hint.log",
+      "sha256": "a4505aa4ff078a7892bebc1823cb3bec30cee24208f3581628ef34f89bd70c10"
+    },
+    {
+      "bytes": 751,
+      "file": "process-logs/capture-ending.log",
+      "sha256": "06f104a3080b5a32539d5818d68194988f14dcb56e7734dcf57236263adcce34"
+    },
+    {
+      "bytes": 753,
+      "file": "process-logs/capture-refusal.log",
+      "sha256": "18f45b82f149597a3643b610e8b978cdc6fb05e91c0d663d6884a43e452ea66e"
+    },
+    {
+      "bytes": 10401,
+      "file": "process-logs/import.log",
+      "sha256": "9d9dccb279b8ba14dce4d6e3678e0ea282eaf52aac170101abf93764a4673049"
+    },
+    {
+      "bytes": 21642,
+      "file": "sealed-lighthouse-canonical-v1/events.jsonl",
+      "sha256": "8307765a1fa566b01be5eebd30263366e98843c27870dd1f271297e5ef8c7693"
+    },
+    {
+      "bytes": 1426,
+      "file": "sealed-lighthouse-canonical-v1/save.json",
+      "sha256": "c5e05e7e378d6eea95d74990f18151ba796b069f656bbab7569dbb17c66ca200"
+    },
+    {
+      "bytes": 2512,
+      "file": "sealed-lighthouse-canonical-v1/summary.json",
+      "sha256": "42000da37bdb633b0c71db4fd8b110134ef8cc44d7e7d10355b017a50869a3e6"
+    }
+  ],
+  "publication_projection": {
+    "classification": "PUBLIC_PATH_RELOCATED_DERIVATIVE_NOT_RAW_CAPTURE_PROVENANCE",
+    "original": {
+      "bytes": 23410,
+      "sha256": "83a5fb90765f071c6baccaea651640398f8118991f550c261b0810135942811c"
+    },
+    "originals_preserved_outside_repository": true,
+    "packet_file_hash_scope": "packet_files_before_provenance identifies current public file bytes; original identities for every original packet file remain in the projection receipt.",
+    "projection_id": "godot-4.7.1-20261113t151426z-paper-native3d-v1-public-path-projection-v1",
+    "receipt": "public-path-projection-v1.json",
+    "scope": "Only local path prefixes relocated; original image bytes, source byte hashes, capture identities, state hashes, event payload values other than relocated path, seeds, timing, public engine attribution and outcome limitations are unchanged."
+  },
+  "schema_version": "1.0.0",
+  "source": {
+    "additional_source_files": [
+      {
+        "bytes": 19921,
+        "file": "scripts/capture_godot_evidence.py",
+        "sha256": "90ef696dfbc86015ea3f5560d4b093f2528eac16944c59ab8005cc98cc857461"
+      },
+      {
+        "bytes": 39512,
+        "file": "scripts/run_playable_evaluation.py",
+        "sha256": "7a8b8e29cf9f3c247e046a19df517c75dc51fac01b026194f9a34b69baeb5fd0"
+      },
+      {
+        "bytes": 6063,
+        "file": "scripts/png_contract.py",
+        "sha256": "9a8af3c41b7c0128bc11f43922a1b766fb4bd35bef09197ec28a2c497e92f969"
+      },
+      {
+        "bytes": 859,
+        "file": "data/fixtures/experimental-game-canonical.json",
+        "sha256": "c1749c8d9c9e141382f6da68be843d6802c83c862f8ff7d9994cc52d530bb460"
+      },
+      {
+        "bytes": 32405,
+        "file": "CLAUDE.md",
+        "sha256": "d44c31ba058fffb12cd294872d6bed63d53e47070ef5fc276e49b75ad4a90a46"
+      }
+    ],
+    "canonical_project": "game-track/godot",
+    "canonical_project_sha256_after": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "canonical_project_sha256_before": "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd",
+    "canonical_project_unchanged": true,
+    "canonical_staged_source_file_count": 188,
+    "canonical_staged_source_files_unchanged_after_capture": true,
+    "runner": "res://scripts/game3d/game_3d.gd",
+    "scene": "res://scenes/main_3d.tscn",
+    "seed": {
+      "director_lightning_rng": 6606,
+      "director_seed_source": "game-track/godot/scripts/game3d/narrative_director.gd:275",
+      "fixture": 23,
+      "fixture_seed_does_not_control_native_shot_visuals": true,
+      "native_shot_command_has_seed_argument": false,
+      "other_presentation_seeds": "Authored fixed CPUParticles3D seeds in source-files-bound world_builder.gd; no portable pixel-equivalence assertion."
+    },
+    "source_files": "source-files.json",
+    "source_files_fingerprint_sha256": "2866f4a48aef0dd3a2a1c4f4eb615bb4938acc0da1ec4dc2dafc6f8e88f6f581",
+    "stage_dispatch_source_lines": "4240-4332",
+    "staged_project": "<disposable-godot-project>"
+  },
+  "status": "OBSERVED_NATIVE_3D_ENGINEERING_DISPLAY_CAPTURE"
+}

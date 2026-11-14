@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import importlib.util
 import io
@@ -40,9 +41,9 @@ LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/figures/fig_architecture.svg",
     "paper/latex/figures/fig_state_signal.svg",
     "paper/latex/figures/fig_paired_feedback_flow.svg",
-    "paper/latex/figures/fig_npc_screening.svg",
-    "research/directions/figures/fig_consensus_gate_lanes.svg",
-    "research/directions/figures/fig_cost_validity_pareto_concept.svg",
+    "paper/latex/generated/paired_feedback_strata.json",
+    "paper/latex/generated/paired_feedback_strata_en.tex",
+    "paper/latex/generated/paired_feedback_strata_ko.tex",
     "paper/latex/figures/fig_runtime_comparison.svg",
     "paper/latex/generated/runtime_comparison_results_en.tex",
     "paper/latex/generated/runtime_comparison_results_ko.tex",
@@ -56,6 +57,8 @@ LIGHTWEIGHT_OUTPUTS = (
     "paper/latex/generated/contribution_map_ko.tex",
     "paper/latex/generated/evidence_lanes_en.tex",
     "paper/latex/generated/evidence_lanes_ko.tex",
+    "paper/latex/generated/review_boundary_audit_en.tex",
+    "paper/latex/generated/review_boundary_audit_ko.tex",
     "paper/latex/generated/npc_tables_en.tex",
     "paper/latex/generated/npc_results_en.tex",
     "paper/latex/generated/npc_results_ko.tex",
@@ -280,6 +283,7 @@ class Validator:
             self.check(bool(asset.get("rendered")), f"{asset_id}: no rendered artifact")
             rendered_paths = [record["path"] for record in asset.get("rendered", [])]
             editable_paths = [record["path"] for record in asset.get("editable_sources", [])]
+            capture_montages: set[str] = set()
             for relative in editable_paths:
                 if relative.endswith(".svg"):
                     self._validate_svg(
@@ -287,6 +291,12 @@ class Validator:
                         paper=relative.startswith("paper/latex/"),
                         kind=asset.get("kind"),
                     )
+                    if asset.get(
+                        "kind"
+                    ) == "engine-capture-montage" and self._validate_capture_montage(
+                        ROOT / relative, asset
+                    ):
+                        capture_montages.add(relative)
             for relative in rendered_paths:
                 path = ROOT / relative
                 if relative.endswith(".pdf"):
@@ -294,7 +304,12 @@ class Validator:
                     sibling = str(Path(relative).with_suffix(".svg"))
                     self.check(sibling in editable_paths, f"{relative}: no adjacent SVG source")
                     if pdfinfo and pdfimages and pdffonts:
-                        self._validate_vector_pdf(ROOT / sibling, path)
+                        if sibling in capture_montages:
+                            self._validate_vector_pdf(
+                                ROOT / sibling, path, allow_bound_capture=True
+                            )
+                        else:
+                            self._validate_vector_pdf(ROOT / sibling, path)
                 elif relative.endswith(".png"):
                     self.check(
                         path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"),
@@ -313,6 +328,90 @@ class Validator:
                     )
                     referenced = any(Path(item).name in text for item in rendered_paths)
                     self.check(referenced, f"{asset_id}: {used_by} does not reference its artifact")
+
+    def _validate_capture_montage(self, svg: Path, asset: dict[str, Any]) -> bool:
+        """Bind the four unretouched embedded PNGs to their source receipts."""
+        error_count = len(self.errors)
+        relative = svg.relative_to(ROOT)
+        prefix = f"{relative}: capture montage"
+        self.check(
+            asset.get("id") == "paper-engine-cutscenes"
+            and asset.get("kind") == "engine-capture-montage",
+            f"{prefix} has an undeclared asset identity",
+        )
+        data_sources = asset.get("data_sources", [])
+        if not isinstance(data_sources, list):
+            self.errors.append(f"{prefix} data_sources must be a list of source receipts")
+            return False
+        sources = [
+            record
+            for record in data_sources
+            if isinstance(record, dict)
+            and isinstance(record.get("path"), str)
+            and record["path"].endswith(".png")
+        ]
+        self.check(
+            len(sources) == 4 and len({record["path"] for record in sources}) == 4,
+            f"{prefix} requires four distinct PNG source receipts",
+        )
+        valid_receipts = all(
+            type(record.get("bytes")) is int
+            and record["bytes"] > 0
+            and isinstance(record.get("sha256"), str)
+            and re.fullmatch(r"[0-9a-f]{64}", record["sha256"])
+            for record in sources
+        )
+        self.check(valid_receipts, f"{prefix} has malformed PNG source receipts")
+        if not valid_receipts:
+            return False
+        for record in sources:
+            try:
+                source_bytes = (ROOT / record["path"]).read_bytes()
+            except OSError as exc:
+                self.errors.append(f"{prefix} original PNG is unavailable: {record['path']}: {exc}")
+                continue
+            self.check(
+                len(source_bytes) == record["bytes"]
+                and hashlib.sha256(source_bytes).hexdigest() == record["sha256"],
+                f"{prefix} original PNG bytes differ from their source receipt: {record['path']}",
+            )
+        expected = sorted((record["bytes"], record["sha256"]) for record in sources)
+        try:
+            root = ET.parse(svg).getroot()
+        except (OSError, ET.ParseError) as exc:
+            self.errors.append(f"{prefix} cannot read SVG: {exc}")
+            return False
+        images = [element for element in root.iter() if self._local_name(element.tag) == "image"]
+        self.check(len(images) == 4, f"{prefix} requires four embedded source images")
+        observed: list[tuple[int, str]] = []
+        for image in images:
+            href = image.attrib.get(
+                "href", image.attrib.get("{http://www.w3.org/1999/xlink}href", "")
+            )
+            if not href.startswith("data:image/png;base64,"):
+                self.errors.append(f"{prefix} image must embed the original PNG bytes")
+                continue
+            try:
+                payload = base64.b64decode(
+                    href.removeprefix("data:image/png;base64,"), validate=True
+                )
+            except ValueError as exc:
+                self.errors.append(f"{prefix} image has invalid base64: {exc}")
+                continue
+            self.check(payload.startswith(b"\x89PNG\r\n\x1a\n"), f"{prefix} image is not a PNG")
+            self.check(
+                len(payload) >= 24
+                and payload[8:16] == b"\x00\x00\x00\rIHDR"
+                and int.from_bytes(payload[16:20], "big") == 1280
+                and int.from_bytes(payload[20:24], "big") == 720,
+                f"{prefix} original image must be a 1280x720 PNG",
+            )
+            observed.append((len(payload), hashlib.sha256(payload).hexdigest()))
+        self.check(
+            sorted(observed) == expected,
+            f"{prefix} embedded PNG bytes do not match the four source receipts",
+        )
+        return len(self.errors) == error_count
 
     def _validate_svg(self, path: Path, *, paper: bool, kind: str | None = None) -> None:
         relative = path.relative_to(ROOT)
@@ -422,7 +521,7 @@ class Validator:
                     bool(connectors) or any(visible_data_mark(element) for element in data_marks),
                     f"{relative}: chart requires visible data marks or connectors",
                 )
-            else:
+            elif kind != "engine-capture-montage":
                 self.check(bool(connectors), f"{relative}: connector paths are not classed")
 
         if path.name == "balance-archetypes.svg":
@@ -689,7 +788,9 @@ class Validator:
                         f"{relative}: text boxes overlap: {left_value!r} / {right_value!r}"
                     )
 
-    def _validate_vector_pdf(self, svg: Path, pdf: Path) -> None:
+    def _validate_vector_pdf(
+        self, svg: Path, pdf: Path, *, allow_bound_capture: bool = False
+    ) -> None:
         relative = pdf.relative_to(ROOT)
         image_listing = subprocess.run(
             ["pdfimages", "-list", str(pdf)],
@@ -700,7 +801,22 @@ class Validator:
         image_rows = [
             line for line in image_listing.splitlines() if re.match(r"^\s*\d+\s+\d+\s+", line)
         ]
-        self.check(not image_rows, f"{relative}: contains raster image objects instead of vectors")
+        if allow_bound_capture:
+            objects = [line.split() for line in image_rows]
+            primary = [row for row in objects if len(row) >= 5 and row[2] == "image"]
+            masks = [row for row in objects if len(row) >= 5 and row[2] == "smask"]
+            self.check(
+                len(primary) == 4
+                and len(masks) in {0, 4}
+                and len(primary) + len(masks) == len(objects)
+                and all(row[3:5] == ["1280", "720"] for row in primary + masks),
+                f"{relative}: capture montage requires four 1280x720 image objects "
+                "with zero or four matching soft masks and no other raster objects",
+            )
+        else:
+            self.check(
+                not image_rows, f"{relative}: contains raster image objects instead of vectors"
+            )
 
         font_listing = subprocess.run(
             ["pdffonts", str(pdf)],
@@ -1199,7 +1315,6 @@ class Validator:
         commands = (
             [sys.executable, "scripts/generate_paper_figures.py"],
             [sys.executable, "scripts/generate_paired_feedback_figures.py"],
-            [sys.executable, "scripts/generate_direction_figures.py"],
             [sys.executable, "scripts/generate_paper_results.py"],
             [sys.executable, "scripts/generate_runtime_comparison_publication.py"],
             [
@@ -1304,6 +1419,7 @@ class Validator:
                 "research/academic-pipeline/contribution-evidence-matrix.csv",
                 "research/academic-pipeline/experiment-evidence-matrix.csv",
                 "research/claim-ledger.yaml",
+                *self._manifest_generator_paths(manifest, "scripts/generate_paper_results.py"),
                 "game-track/godot/docs/latest/balance-archetypes.json",
                 *NPC_REGENERATION_SUPPORT,
                 *self._manifest_generator_paths(manifest, "scripts/generate_npc_paper_results.py"),

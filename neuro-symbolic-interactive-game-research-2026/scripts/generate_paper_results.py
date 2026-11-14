@@ -101,21 +101,21 @@ LANE_ROWS = {
         "en": (
             "Engineering-only Godot/Web",
             "engine-local policy mirror, no participants",
-            "4 fixtures; 52 checks; 8 smoke; 5 archetypes",
+            "4 fixtures; 52 checks; 8 defined smoke predicates; 5 archetypes",
             "authored fixture paths",
             "engineering-only conformance",
         ),
         "ko": (
             "Engineering-only Godot/Web",
             "엔진 로컬 policy mirror, 참여자 없음",
-            "fixture 4; check 52; smoke 8; archetype 5",
+            "fixture 4; check 52; 정의된 smoke 술어 8; archetype 5",
             "작성 fixture 경로",
             "엔진 로컬 engineering-only 적합성",
         ),
         "tokens": (
             "4 authored fixtures",
             "52 combined",
-            "8 production smoke",
+            "8 defined production smoke predicates",
             "5 balance archetypes",
         ),
     },
@@ -461,16 +461,18 @@ def _lane_table(korean: bool) -> str:
         name, design, unit, comparison, ceiling = spec["ko" if korean else "en"]
         body.append(rf"{lane_id} & {name}: {design} & {unit} & {comparison} & {ceiling} \\")
     if korean:
-        caption = "실험 레인 요약: 설계, 단위, 비교, 추론 상한(실험 매트릭스에서 생성)"
+        caption = "기존 보존 실험 레인 요약: 설계, 단위, 비교, 추론 상한(실험 매트릭스에서 생성)"
         head = r"\textbf{레인} & \textbf{설계} & \textbf{단위 / 예산} & \textbf{비교} & \textbf{상한} \\"
         note = (
+            r"이 표는 기존 E1/E3/ENG1 패킷을 요약한다. 신규 그래프 감사의 arm당 416건과 별도 표면 sentinel의 arm당 12건은 절~\ref{sec:review-boundary-results}에서 독립 분모로 보고한다. "
             r"E1, E3, ENG1은 서로 대체할 수 없으며 분모가 다르다. 역사적 E2 receipt는 활성 생성에서 제외된다. "
             r"어떤 활성 레인도 모집단 효능, 모델 순위, 플레이어 경험, 런타임 검색 효익, 상용 엔진 성능을 확립하지 않는다."
         )
     else:
-        caption = "Evidence Lanes at a Glance: Design, Unit, Comparison, and Ceiling (Generated from the Experiment Matrix)"
+        caption = "Retained Earlier Evidence Lanes: Design, Unit, Comparison, and Ceiling (Generated from the Experiment Matrix)"
         head = r"\textbf{Lane} & \textbf{Design} & \textbf{Unit / budget} & \textbf{Comparison} & \textbf{Ceiling} \\"
         note = (
+            r"This table summarizes the retained earlier E1/E3/ENG1 packets. The new graph audit (416 assignments per arm) and separate surface sentinels (12 per arm) have their own denominators in Sec.~\ref{sec:review-boundary-results}. "
             r"Active lanes are non-interchangeable with different denominators; the historical E2 receipts are excluded from active generation and ENG1 is engineering-only. "
             r"No active lane establishes population efficacy, model ranking, player experience, retrieval benefit, or commercial-engine performance."
         )
@@ -861,6 +863,93 @@ def _live_tables(packet: dict[str, Any], korean: bool) -> str:
     )
 
 
+def _review_boundary_publication(source: str, korean: bool) -> str:
+    """Apply reversible layout without rewriting frozen audit text or counts."""
+    caption_prefix = r"\caption{"
+    structure = tuple(
+        caption_prefix if line.startswith(caption_prefix) else line
+        for line in source.splitlines()
+        if line.startswith((r"\begin{", r"\end{", caption_prefix, r"\label{"))
+    )
+    if structure != (
+        r"\begin{table*}[t]",
+        r"\begin{tabular}{lrrrrrrrr}",
+        r"\end{tabular}",
+        caption_prefix,
+        r"\end{table*}",
+        r"\begin{table*}[t]",
+        r"\begin{tabular}{lrrrrr}",
+        r"\end{tabular}",
+        caption_prefix,
+        r"\end{table*}",
+        r"\begin{tabular}{lrrrr}",
+        r"\end{tabular}",
+    ):
+        raise ValueError("frozen review-boundary table structure is absent or ambiguous")
+
+    table_end = "\\end{table*}\n"
+    surface_start = "\\begin{tabular}{lrrrr}\n"
+    surface_end = "\\end{tabular}\n"
+    if (
+        source.count(table_end) != 2
+        or source.count(surface_start) != 1
+        or source.count(surface_end) != 3
+    ):
+        raise ValueError("frozen review-boundary table delimiters are absent or ambiguous")
+    funnel, retention, surface = source.split(table_end)
+    arraystretch = "\\renewcommand{\\arraystretch}{1.20}\n"
+    styled_tables = []
+    for table in (funnel, retention):
+        if table.count("\\hline\n") != 3 or table.count("\\scriptsize\n") != 1:
+            raise ValueError("frozen review-boundary table rules are absent or ambiguous")
+        for rule in (r"\toprule", r"\midrule", r"\bottomrule"):
+            table = table.replace("\\hline\n", rule + "\n", 1)
+        styled_tables.append(table.replace("\\scriptsize\n", "\\scriptsize\n" + arraystretch, 1))
+    funnel, retention = styled_tables
+    surface_header = surface.partition(surface_start)[2].partition("\n")[0] + "\n"
+    if not surface_header.rstrip("\n").endswith(r" \\") or surface.count(surface_header) != 1:
+        raise ValueError("frozen review-boundary surface header is absent or ambiguous")
+    caption = (
+        "설계자가 작성한 표면 센티널. 별도 배정이며 자연어 누출 빈도나 렌더러 안전성의 증거가 아니다."
+        if korean
+        else "Designer-authored surface sentinels; separate assignments, not natural-language "
+        "leakage prevalence or renderer safety evidence."
+    )
+    surface = (
+        surface.replace(
+            surface_start,
+            "\\begin{table*}[t]\n\\centering\n\\scriptsize\n"
+            + arraystretch
+            + surface_start
+            + "\\toprule\n",
+            1,
+        )
+        .replace(
+            surface_header,
+            surface_header + "\\midrule\n",
+            1,
+        )
+        .replace(
+            surface_end,
+            "\\bottomrule\n"
+            + surface_end
+            + f"\\caption{{{caption}}}\n"
+            + "\\label{tab:review-surface-sentinels}\n"
+            + table_end,
+            1,
+        )
+    )
+    return (
+        funnel
+        + "\\label{tab:review-boundary-funnel}\n"
+        + table_end
+        + retention
+        + "\\label{tab:review-structural-retention}\n"
+        + table_end
+        + surface
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate active bilingual publication fragments")
     parser.add_argument(
@@ -873,6 +962,7 @@ def main() -> None:
     if data.get("inference") != "none; raw designed-fixture counts only":
         raise ValueError("pilot result scope is not the expected descriptive-only contract")
     OUT.mkdir(parents=True, exist_ok=True)
+    review_outputs = ROOT / "research/academic-pipeline/gemini-review-20261113/results-v2"
     for language, korean in (("en", False), ("ko", True)):
         (OUT / f"pilot_results_{language}.tex").write_text(
             _result_text(data, korean), encoding="utf-8"
@@ -882,9 +972,18 @@ def main() -> None:
             _contribution_map(korean), encoding="utf-8"
         )
         (OUT / f"evidence_lanes_{language}.tex").write_text(_lane_table(korean), encoding="utf-8")
+        (OUT / f"review_boundary_audit_{language}.tex").write_text(
+            _review_boundary_publication(
+                (review_outputs / f"review_boundary_audit_{language}.tex").read_text(
+                    encoding="utf-8"
+                ),
+                korean,
+            ),
+            encoding="utf-8",
+        )
     print(
         "generated active bilingual offline inputs from "
-        f"{RESULTS_PATH.relative_to(ROOT)} and structured publication matrices"
+        f"{RESULTS_PATH.relative_to(ROOT)}, structured publication matrices, and frozen review-boundary fragments"
     )
     if args.historical_live:
         live_packet = _load_live_packet()

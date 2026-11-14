@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\caption{Post-hoc descriptive partition of the unchanged five-fixture v5 assignments; not preregistered, not an independent cohort, and not a replacement endpoint. Terra controls are unassessed after parser failure.}
+\label{tab:paired-feedback-strata}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}llcc>{\raggedright\arraybackslash}X@{}}
+\toprule
+Requested selector & Signal & Original goal /5 & Authorized goal /4 & Control handling /1 \\
+\midrule
+gpt-5.6-luna & detailed & 3/5 & 3/4 & forbidden goal suppressed 1/1; COMMIT (no effects; state ID changed) \\
+gpt-5.6-luna & generic & 3/5 & 3/4 & forbidden goal suppressed 1/1; HOLD (fallback; state unchanged) \\
+gpt-5.6-terra & detailed & 0/5 & 0/4 & unassessed 1/1 (schema unknown) \\
+gpt-5.6-terra & generic & 1/5 & 1/4 & unassessed 1/1 (schema unknown) \\
+\bottomrule
+\end{tabularx}
+\end{table*}

@@ -31,7 +31,7 @@ are the pilot denominator; no population p-values are reported.
 Canonical artifacts:
 
 - `research/academic-pipeline/stage-02.5-integrity-gate.md`
-- `research/academic-pipeline/stage-03-ieee-outline.md`
+- Historical Stage 3 outline (2026-08-12): `stage-03-ieee-outline.md`; retired from the active tree on 2026-11-13. Original-path/archive mapping: [retirement receipt](../../../neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json).
 - `research/academic-pipeline/material-passport.json`
 
 Next gate: explicit user approval of the Stage 3 scope and outline before pilot implementation and

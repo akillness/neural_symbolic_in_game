@@ -1,0 +1,57 @@
+{
+  "schema_version": "public-source-projection-v1",
+  "artifact_classification": "publication-derivative",
+  "projection": {
+    "source_format": "json",
+    "allowed_semantic_operations": [
+      {
+        "op": "remove",
+        "path": "/url"
+      }
+    ],
+    "all_other_json_fields": "UNCHANGED",
+    "scope": "Only the two original reviewer-source identities in mappings are projected. No other file or manifest commitment is replaced or reauthorized."
+  },
+  "original_commitments": {
+    "input_manifest": {
+      "path": "results-v2/input_hashes.json",
+      "sha256": "6e6db5fd76e2f30acee88deb8d2b4cfc0eabbc7415c9d2718427f989d777525a",
+      "bytes": 649
+    },
+    "source_manifest": {
+      "path": "results-v2/source_hashes.json",
+      "sha256": "098bc6e3f678b79a8db1a0195efac90ff22ac31a31b7dafe0b12de62bbda135f",
+      "bytes": 2204
+    }
+  },
+  "public_derivative": {
+    "path": "reviewer-source.public.json",
+    "sha256": "278182062607a58b6d55e6d4c062f9651469d14001345710335fc2bc25a3079e",
+    "bytes": 20262
+  },
+  "mappings": [
+    {
+      "original": {
+        "path": "reviewer-source.json",
+        "sha256": "09e18301e2fc537af0666b444ac3aadee6a0c6f3dc8e2e0f1c5b3bd8b3ac4ea6",
+        "bytes": 20336
+      },
+      "public_path": "reviewer-source.public.json"
+    },
+    {
+      "original": {
+        "path": "results-v2/reviewer-source.json",
+        "sha256": "09e18301e2fc537af0666b444ac3aadee6a0c6f3dc8e2e0f1c5b3bd8b3ac4ea6",
+        "bytes": 20336
+      },
+      "public_path": "reviewer-source.public.json"
+    }
+  ],
+  "verification_scope": {
+    "public_verification": "Pinned public derivative bytes and unchanged retained manifest commitments only; the derivative is not the original raw source.",
+    "private_original_archive_reverification": "NOT_PERFORMED_BY_PUBLIC_COMMAND",
+    "custodian_private_comparison": "The custodian observed byte equality of both original source copies, verified their existing commitment, and compared the derivative with the original JSON object after removing exactly its top-level /url member. This private comparison is not independently repeatable from the public derivative.",
+    "limitation": "Public readers cannot recompute the SHA-256 of either withheld original source from the public derivative or this receipt. Original commitments remain historical commitments, not public re-verification of private bytes.",
+    "publication_boundary": "Both mapped original source files remain local and are excluded from the separate public export. This receipt does not authorize release of private backups or enclosing repository history."
+  }
+}

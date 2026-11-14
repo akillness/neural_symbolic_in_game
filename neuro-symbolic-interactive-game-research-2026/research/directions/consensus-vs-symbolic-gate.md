@@ -82,9 +82,7 @@ claim_scope: 설계 제안 문서 — 어떤 실험 결과도 주장하지 않�
 (gpt-5.4, 2,994 ms). C1은 동일 프로바이더의 N-표본 호출로, C3는 표본 → 채널 검증 경로
 재사용으로 구현 가능하다. 단, 확증 실행은 SL-DEV-001이 아닌 동결 템플릿 모집단에서 한다.
 
-![세 검증 체제](figures/fig_consensus_gate_lanes.svg)
-
-![비용-유효성 개념 스케치](figures/fig_cost_validity_pareto_concept.svg)
+두 개념 SVG는 논문 미사용 자산으로 은퇴했다. 원본과 보관 위치는 [2026-11-13 은퇴 영수증](../maintenance/paper-legacy-retirement-20261113.json)을 따른다.
 
 ## 4. 근거 문헌 (딥리서치 검증 결과, 2026-08-14)
 

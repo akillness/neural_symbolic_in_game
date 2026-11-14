@@ -24,9 +24,9 @@
 \setcounter{table}{13}
 
 \section{Proposed traceability instrument (not measured)}
-Traceability tests recover requirement/artifact/action/outcome correspondence, not correctness, hidden reasoning, developer skill, or player benefit. For each dimension $d$, freeze the arm-neutral observer inventory $U_d$ and required links $L_d(u)$ for each unit $u$. Let $N_d$ count applicable units in $U_d$ and $n_d$ count those whose required links are all verified. Independent assessors award 1 only for exact source/version, all raw-evidence relations, and locator; otherwise 0 with missing/inaccessible/stale/contradicted/unverified reasons. Report $n_d/N_d$ only for a complete inventory and $N_d>0$, alongside disagreement and seeded-corruption controls; no weighted composites. An incomplete inventory is INDETERMINATE, with observed counts and the inventory gap reported. N/A requires independent evidence of non-applicability; for repairs, independently verified zero actual repair attempts qualifies, but an empty log does not. Distinguish PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, and MISSING; \texttt{stage\_not\_reached} never passes.
+The proposed instrument assesses requirement/artifact/action/outcome correspondence, not correctness, hidden reasoning, developer skill, or player benefit. For each dimension $d$, freeze an arm-neutral inventory $U_d$ and the required links $L_d(u)$ for each unit $u$. Let $N_d$ count applicable units in $U_d$, and $n_d$ count units with every required link verified. Independent assessors award 1 only when exact source/version, raw-evidence relations, and locator are verified; otherwise they award 0 and record missing, inaccessible, stale, contradicted, or unverified evidence. Report $n_d/N_d$ only with a complete inventory and $N_d>0$, alongside disagreement and seeded-corruption controls; do not form weighted composites. Mark incomplete inventories INDETERMINATE and report observed counts and the gap. N/A requires independent evidence of non-applicability. Independently verified zero actual repair attempts can qualify a repair item, but an empty log cannot. Keep PASS, FAIL, NOT\_RUN, STAGE\_NOT\_REACHED, OUT\_OF\_SCOPE, and MISSING distinct; \texttt{stage\_not\_reached} never passes.
 \begin{table}[t]
-\caption{Proposed source-derived traceability dimensions (unmeasured)}
+\caption{Proposed, unmeasured source-derived traceability dimensions}
 \label{tab:traceability-rubric}
 \centering
 \footnotesize
@@ -43,7 +43,7 @@ TR05 & forward requirement $\rightarrow$ artifact $\rightarrow$ verification and
 TR06 & non-author independent exercise of declared audit/replay target & exercised targets / declared targets \\
 \bottomrule
 \end{tabularx}
-\par\vspace{2pt}\noindent\parbox{0.96\columnwidth}{\footnotesize Proposed and unmeasured; codebooks/source rationale: Data and Code Availability. No score was collected or validated.}
+\par\vspace{2pt}\noindent\parbox{0.96\columnwidth}{\footnotesize The instrument is proposed and unmeasured; no score was collected or validated. Data and Code Availability identifies the codebooks and source rationale.}
 \end{table}
 
 \end{document}

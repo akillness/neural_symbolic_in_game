@@ -122,7 +122,7 @@ def test_aside_backend_refuses_missing_or_incomplete_browser_execution(
 
 @pytest.fixture(scope="module")
 def rendered_signals():
-    names = ("fig_signal_mechanism", "fig_signal_comparison")
+    names = ("fig_signal_mechanism",)
     results = _browser(
         [{"svg": (FIGURES / f"{name}.svg").read_text(), "width": FULL_WIDTH} for name in names]
     )
@@ -318,7 +318,7 @@ def test_disclosure_numeric_oracle_rejects_swapped_pairs_and_erased_missingness(
     assert _disclosure_value_violations(figure)
 
 
-@pytest.mark.parametrize("name", ("fig_signal_mechanism", "fig_signal_comparison"))
+@pytest.mark.parametrize("name", ("fig_signal_mechanism",))
 def test_signal_figures_have_paper_scale_padding_and_no_text_collisions(rendered_signals, name):
     """Every visible label fits its card/canvas and remains >=9pt at final placement."""
     assert not (problems := _geometry_violations(rendered_signals[name])), problems
@@ -449,50 +449,6 @@ def test_architecture_notation_rejects_flattened_or_rewritten_labels(mutation, v
         assert _architecture_notation_violations(figure) == ["G_t subscript"]
 
 
-def test_comparison_visible_rows_preserve_frozen_trace_counts(rendered_signals):
-    """Reflow must not transpose arms/strata or turn absent checks into passing zeroes."""
-    trace = (
-        ROOT / "research/npc-disclosure/results-signal-explainer-20261023-r5/disclosure-trace.jsonl"
-    )
-    rows = [json.loads(line) for line in trace.read_text().splitlines() if line.strip()]
-    figure = rendered_signals["fig_signal_comparison"]
-    expected = []
-    for arm, label in (
-        ("unchecked_isolated", "UNCHECKED"),
-        ("general_rule", "GENERAL"),
-        ("ontology_gate", "ONTOLOGY"),
-    ):
-        for prefix, name in (("N", "Normal"), ("B", "Boundary"), ("M", "Malformed")):
-            selected = [row for row in rows if row["arm"] == arm and row["stratum"] == prefix]
-            allows = sum(row["observed"]["allowed"] for row in selected)
-            unsafe = sum(
-                (not row["expected"]["allowed"] and row["observed"]["allowed"])
-                or (row["expected"]["state_effect"] == "redisplay_no_mutation" and row["mutated"])
-                for row in selected
-            )
-            checks = [check["outcome"] for row in selected for check in row.get("checks", [])]
-            expected.append(
-                (
-                    label,
-                    f"{name}  n={len(selected)}",
-                    f"{allows} / {len(selected) - allows}",
-                    str(unsafe),
-                    str(sum(bool(row["mismatch"]) for row in selected)),
-                    f"{checks.count('pass')} / {checks.count('fail')}" if checks else "unreported",
-                )
-            )
-    actual = []
-    for label in figure["texts"]:
-        if label["text"] not in {"UNCHECKED", "GENERAL", "ONTOLOGY"}:
-            continue
-        baseline = label["bottom"]
-        same_row = [text for text in figure["texts"] if abs(text["bottom"] - baseline) < 1]
-        actual.append(
-            tuple(text["text"] for text in sorted(same_row, key=lambda text: text["left"]))
-        )
-    assert actual == expected
-
-
 def _compile_excerpt(tmp_path, language, content):
     # XeLaTeX preserves operator Unicode mappings; pdfLaTeX's CM big operators
     # may extract as V/[ despite looking correct, so it is not a glyph oracle.
@@ -537,17 +493,18 @@ def _compile_excerpt(tmp_path, language, content):
 
 @pytest.mark.parametrize("language", ("en", "ko"))
 def test_equations_render_real_operators_and_not_escaped_latex(tmp_path, language):
-    """Validator, transition, and repair equations retain math glyphs/subscript layout."""
+    """Validator, transition, authorization-set, and repair equations retain math glyphs/subscript layout."""
     source = (ROOT / f"paper/latex/{language}/main.tex").read_text()
     equations = re.findall(r"\\begin\{equation\}.*?\\end\{equation\}", source, re.DOTALL)
-    assert len(equations) == 3, "Review the independent math oracle when equations change"
+    assert len(equations) == 4, "Review the independent math oracle when equations change"
     words = _compile_excerpt(tmp_path, language, "\n".join(equations))
     rendered = " ".join(word["text"] for word in words)
-    for operator in ("∈", "∧", "⊕", "∪", "ρ", "δ"):
+    for operator in ("∈", "∧", "⊕", "∪", "∩", "⊆", "Goal", "ρ", "δ"):
         assert operator in rendered, (operator, rendered)
-    assert not re.search(r"\\(?:rho|delta|bigcup|bigwedge|mathrm|text|in|oplus)|\$", rendered), (
-        rendered
-    )
+    assert not re.search(
+        r"\\(?:rho|delta|bigcup|bigwedge|mathrm|text|in|oplus|mathcal|operatorname|cap|subseteq)|\$",
+        rendered,
+    ), rendered
     # A subscript must be smaller and lower, not printed as raw c_t/a_t source.
     c = next(word for word in words if word["text"].strip("(),") == "c")
     assert any(

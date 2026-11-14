@@ -1,0 +1,42 @@
+% Generated exclusively from this directory's observed audit rows.
+\begin{table*}[t]
+\centering
+\scriptsize
+\begin{tabular}{lrrrrrrrr}
+\hline
+Arm & Assigned & Initial invalid & Recovered & Hold & Unsafe commit & False rejection & Goal & Failed \\
+\hline
+schema\_only & 416 & 260/416 & 0/260 & 0/416 & 260/416 & 0/156 & 352/416 & 0 \\
+semantic\_rejection & 416 & 260/416 & 0/260 & 260/416 & 0/416 & 0/156 & 124/416 & 0 \\
+unchanged\_retry & 416 & 260/416 & 0/260 & 260/416 & 0/416 & 0/156 & 124/416 & 0 \\
+guided\_repair & 416 & 260/416 & 128/260 & 132/416 & 0/416 & 0/156 & 252/416 & 0 \\
+\hline
+\end{tabular}
+\caption{Deterministic offline boundary audit. Recovery uses initially invalid cases; false rejection uses initially valid cases. Goal attainment is separate from rule validity.}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\begin{tabular}{lrrrrr}
+\hline
+Arm & Valid signatures retained & Cases retained & Invalid signatures & Repaired signatures & Unsafe/commits \\
+\hline
+schema\_only & 11/11 & 156/156 & 17 & 0 & 260/416 \\
+semantic\_rejection & 11/11 & 156/156 & 17 & 0 & 0/156 \\
+unchanged\_retry & 11/11 & 156/156 & 17 & 0 & 0/156 \\
+guided\_repair & 11/11 & 156/156 & 17 & 2 & 0/284 \\
+\hline
+\end{tabular}
+\caption{Exact encoded signatures only; neither creativity nor linguistic diversity is measured.}
+\end{table*}
+
+Reachability implementation crosscheck: 32/32. 
+\begin{tabular}{lrrrr}
+Arm & Separate surface assignments & Undeclared commits & Declared holds & Failed \\
+schema\_only & 12 & 6/6 & 0/6 & 0 \\
+semantic\_rejection & 12 & 6/6 & 6/6 & 0 \\
+unchanged\_retry & 12 & 6/6 & 6/6 & 0 \\
+guided\_repair & 12 & 6/6 & 6/6 & 0 \\
+\end{tabular}
+Surface sentences are designer-authored sentinels, not natural-language leakage prevalence or renderer safety evidence. Model and human efficacy remain unmeasured.

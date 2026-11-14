@@ -13,7 +13,6 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776ab)](neuro-symbolic-interactive-game-research-2026/pyproject.toml)
 [![Evidence 52/52 + 4/4 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%2B%204%2F4%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
-[![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
 ![Current-source ending still captured on 2026-11-03: the investigator's contribution and validator receipt; engineering presentation, not a model result](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-ending.png)
 
@@ -229,38 +228,34 @@ open http://127.0.0.1:4173/dashboard/                          # game at /public
 
 The boundary is one-directional: the embedded game mirrors typed events through `window.parent.postMessage`; the page has no command channel back into the game and receives no sealed fact IDs. The fresh route recorded 3 commits and 1 hold. Its `STAGE_GATED_DISCLOSURE` hold preserved the initial state hash; the capture manifest retains the actual state/event bindings. These observations concern the current local route, not a newly deployed service or model performance.
 
-## Slides
+## Retired overview material
 
-A 16-slide overview deck, in Korean, as a self-contained HTML file: [`trace-rpg-overview.ko.html`](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html) (arrows or space to navigate, `?` for help). English captions below; the deck follows the same flow as this README.
-
-<table>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-01.jpg" alt="Slide 1"><br><sub>01 · Title</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-02.jpg" alt="Slide 2"><br><sub>02 · The problem: fluent text ≠ valid event (six failure kinds)</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-03.jpg" alt="Slide 3"><br><sub>03 · The bank-counter analogy</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-04.jpg" alt="Slide 4"><br><sub>04 · Pipeline: propose → parse → policy → 7 checks / 6 families → repair or fallback → commit → record → replay</sub></td>
-  </tr>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-05.jpg" alt="Slide 5"><br><sub>05 · Six state-relative families, seven checks, with game examples</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-06.jpg" alt="Slide 6"><br><sub>06 · Guided repair: the ρ loop and the four arms</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-07.jpg" alt="Slide 7"><br><sub>07 · SHA-256 receipt chain and semantic replay</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-08.jpg" alt="Slide 8"><br><sub>08 · Contributions C1–C5</sub></td>
-  </tr>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-09.jpg" alt="Slide 9"><br><sub>09 · Evidence lanes E1 / E2 / E3 / ENG1 and their ceilings</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-10.jpg" alt="Slide 10"><br><sub>10 · Offline repair-arm bar chart</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-11.jpg" alt="Slide 11"><br><sub>11 · Live screening table and KG numbers</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-12.jpg" alt="Slide 12"><br><sub>12 · Game episode loop and the authority boundary</sub></td>
-  </tr>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-13.jpg" alt="Slide 13"><br><sub>13 · The HELD screen as rule learning</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-14.jpg" alt="Slide 14"><br><sub>14 · Contribution readout: CONTRIBUTION / UNLOCKED / CASE CHAIN and the two-part receipt</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-15.jpg" alt="Slide 15"><br><sub>15 · What the evidence says vs. does not say</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-16.jpg" alt="Slide 16"><br><sub>16 · Next steps and a three-line summary</sub></td>
-  </tr>
-</table>
+The earlier 16-slide Korean overview (`trace-rpg-overview.ko.html` and its thumbnails) and superseded README image exports were retired on 2026-11-13. The [retirement receipt](neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json) records original paths, hashes and restoration locations. Current material remains in the paper/game galleries above and the [English paper](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf) / [Korean paper](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf).
 
 ## Reproduce
+
+### Focused reviewer verification
+
+From the research-project directory, use the prepared locked environment for the read-only paper-claim entrypoint:
+
+```bash
+cd neuro-symbolic-interactive-game-research-2026
+.venv/bin/python scripts/verify_paper_claims.py
+```
+
+This mode is for checking existing paper evidence without starting ports, calling an LLM, running new experiments or rebuilding artifacts. Missing dependencies or the receipt-matching historical NPC006 source are blocking prerequisites, not permission to skip checks or substitute current source. The command documents usage, not a PASS result; it is not the full strict CI gate.
+
+For the approved public review packet, explicitly opt in from the same project directory:
+
+```bash
+python -B scripts/verify_paper_claims.py --public-source-projection
+```
+
+This checks the [public source derivative](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json), its [projection receipt](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json) and frozen outcomes. It does not reverify the two withheld private original review files or perform fresh engine, browser or provider runs. The default command remains strict: missing original review bytes produce `BLOCKED` (exit 2), never an automatic public-projection fallback. Public-mode success is not strict original-byte verification or a full CI PASS.
+
+### Full strict verification
+
+`./scripts/verify_like_ci.sh` is the separate full gate below. It requires the pinned runtime, Godot 4.7.1 and the PDF toolchain; it can install locked dependencies, build artifacts and exercise engine/browser fixtures. The explicit Playwright contract transport requires preprovisioned Playwright 1.65.0 with its matching Chromium, `NODE_PATH` and `PLAYWRIGHT_BROWSERS_PATH`; it is not an automatic fallback from native Aside. Missing prerequisites must be resolved before claiming a full-gate PASS.
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026

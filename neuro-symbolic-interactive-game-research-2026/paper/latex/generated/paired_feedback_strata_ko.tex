@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\caption{변경하지 않은 v5 배정 5개를 사후 기술적으로 분할한 표. 사전등록 분석이나 독립 코호트가 아니며 대체 평가변수가 아니다. Terra 대조군은 파싱 실패 후 미평가이다.}
+\label{tab:paired-feedback-strata}
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}llcc>{\raggedright\arraybackslash}X@{}}
+\toprule
+요청 selector & 신호 & 원래 목표 /5 & 허가된 목표 /4 & 대조군 처리 /1 \\
+\midrule
+gpt-5.6-luna & 상세 & 3/5 & 3/4 & 금지 목표 억제 1/1; COMMIT (no effects; state ID changed) \\
+gpt-5.6-luna & 일반 & 3/5 & 3/4 & 금지 목표 억제 1/1; HOLD (fallback; state unchanged) \\
+gpt-5.6-terra & 상세 & 0/5 & 0/4 & 미평가 1/1 (schema unknown) \\
+gpt-5.6-terra & 일반 & 1/5 & 1/4 & 미평가 1/1 (schema unknown) \\
+\bottomrule
+\end{tabularx}
+\end{table*}

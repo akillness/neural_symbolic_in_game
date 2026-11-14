@@ -42,6 +42,13 @@ FLOW_SVG = FIGURES / "fig_paired_feedback_flow.svg"
 GENERIC_MESSAGE = "Action rejected."
 OBJECTIVE_FACT = "signal_restored"
 SCHEMA_FAILURE = "CandidateParseError"
+AUTHORIZED_FIXTURES = (
+    "missing_precondition",
+    "missing_effect",
+    "forbidden_disclosure",
+    "unsatisfied_dependency",
+)
+CONFLICT_FIXTURE = "unauthorized_objective"
 
 # Outcome classes: letter, long label, fill, stroke.
 OUTCOMES = {
@@ -155,6 +162,12 @@ def _check_detailed_signal(case_id: str, signal: dict[str, Any]) -> tuple[str, t
     return error["code"], tuple(checks)
 
 
+def _row_digest(row: dict[str, Any]) -> str:
+    return hashlib.sha256(
+        json.dumps(row, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+
+
 def _load_cohorts(cohort_root: Path) -> dict[str, Any]:
     cells: dict[tuple[str, str], dict[str, Any]] = {}
     fixtures: list[str] | None = None
@@ -163,6 +176,9 @@ def _load_cohorts(cohort_root: Path) -> dict[str, Any]:
     pair_inputs: dict[str, str] = {}
     prompts: dict[tuple[str, str], str] = {}
     sources: dict[str, str] = {}
+    retained_rows: list[dict[str, Any]] = []
+    retained_metadata: dict[str, Any] = {}
+    row_receipts: dict[str, Any] = {}
     for selector in SELECTORS:
         results_path = cohort_root / f"{COHORT_PREFIX}{selector}" / "results.json"
         doc, digest = read_json(results_path)
@@ -298,6 +314,20 @@ def _load_cohorts(cohort_root: Path) -> dict[str, Any]:
             require(summary["objective_reached"] == counts["goal"], "summary objective drift")
             require(summary["pending"] == 0, "pending assignments remain")
             cells[(selector, condition)] = {"counts": counts, "outcomes": outcomes}
+        retained_metadata[selector] = metadata
+        row_receipts[str(results_path.relative_to(ROOT))] = {
+            "sha256": digest,
+            "rows": {f"/cases/{i}": _row_digest(row) for i, row in enumerate(rows)},
+        }
+        retained_rows.extend(
+            {
+                **row,
+                "selector": selector,
+                "source": str(results_path.relative_to(ROOT)),
+                "pointer": f"/cases/{index}",
+            }
+            for index, row in enumerate(rows)
+        )
     require(
         fixtures is not None and len(fixtures) == 5, f"expected five fixtures, found {fixtures}"
     )
@@ -312,6 +342,9 @@ def _load_cohorts(cohort_root: Path) -> dict[str, Any]:
         "checks": list(EXPECTED_CHECKS),
         "totals": totals,
         "sources": sources,
+        "rows": retained_rows,
+        "metadata": retained_metadata,
+        "row_receipts": row_receipts,
     }
 
 
@@ -321,6 +354,341 @@ def load_cohorts(cohort_root: Path | None = None) -> dict[str, Any]:
         return _load_cohorts(COHORT_ROOT if cohort_root is None else cohort_root)
     except (KeyError, TypeError, AttributeError, IndexError) as exc:
         raise ValueError(f"malformed results input: {type(exc).__name__}: {exc}") from exc
+
+
+def describe_v5_strata(cohorts: dict[str, Any]) -> dict[str, Any]:
+    """Describe retained assignments without IO, replay, or changing frozen endpoints."""
+    try:
+        return _describe_v5_strata(cohorts)
+    except (KeyError, TypeError, AttributeError, IndexError) as exc:
+        raise ValueError(f"malformed v5 strata evidence: {type(exc).__name__}: {exc}") from exc
+
+
+def _describe_v5_strata(cohorts: dict[str, Any]) -> dict[str, Any]:
+    raw_rows = cohorts["rows"]
+    require(isinstance(raw_rows, list) and len(raw_rows) == 20, "expected 20 retained rows")
+    fixture_ids = {*AUTHORIZED_FIXTURES, CONFLICT_FIXTURE}
+    expected = {(s, c, f) for s in SELECTORS for c in CONDITIONS for f in fixture_ids}
+    keys = [(r["selector"], r["condition"], r["case_id"]) for r in raw_rows]
+    require(
+        len(set(keys)) == 20 and set(keys) == expected, "missing, duplicate or unknown assignment"
+    )
+    sources = mapping(cohorts["sources"], "strata sources")
+    require(len(sources) == 2, "expected two source receipts")
+    require(
+        all(
+            isinstance(d, str) and len(d) == 64 and set(d) <= set("0123456789abcdef")
+            for d in sources.values()
+        ),
+        "malformed source digest",
+    )
+    pairs: dict[str, Any] = {}
+    rows = []
+    for raw in raw_rows:
+        selector, condition, case_id = raw["selector"], raw["condition"], raw["case_id"]
+        source = raw["source"]
+        require(
+            source in sources and source.endswith(f"{COHORT_PREFIX}{selector}/results.json"),
+            f"{case_id}: missing source receipt",
+        )
+        pointer = raw["pointer"]
+        require(pointer in {f"/cases/{i}" for i in range(10)}, f"{case_id}: bad source pointer")
+        receipt = cohorts["row_receipts"][source]
+        require(receipt["sha256"] == sources[source], f"{case_id}: source digest mismatch")
+        retained = {k: v for k, v in raw.items() if k not in {"selector", "source", "pointer"}}
+        require(
+            _row_digest(retained) == receipt["rows"][pointer],
+            f"{case_id}: retained row/source pointer mismatch",
+        )
+        state = mapping(raw["initial_state"], f"{case_id}: initial state")
+        proposal = mapping(raw["shared_proposal"], f"{case_id}: proposal")
+        pair = [state, proposal]
+        require(pairs.setdefault(case_id, pair) == pair, f"{case_id}: paired input drift")
+        allowed = state["action_policies"]["signal"]["allowed_effects"]
+        conflict = case_id == CONFLICT_FIXTURE
+        require(
+            isinstance(allowed, list)
+            and (allowed == [] if conflict else OBJECTIVE_FACT in allowed),
+            f"{case_id}: stratum policy contradiction",
+        )
+        require(
+            isinstance(state["facts"], list) and OBJECTIVE_FACT not in state["facts"],
+            f"{case_id}: initial goal already present",
+        )
+        # Reconstruct the archived prompt bytes, not live collector code; no prompt-file IO.
+        payload = {
+            "state": state,
+            "candidate": proposal,
+            "validator_feedback": raw["input_signal"],
+            "objective": "commit with signal_restored in final facts",
+        }
+        prompt = (
+            "Repair this fictional game action. Return only one JSON object with exactly the same candidate fields, no markdown. "
+            "Keep action_id, actor_id and action_type unchanged. Do not use tools or network.\n"
+            + json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            + "\n"
+        )
+        require(
+            hashlib.sha256(prompt.encode("utf-8")).hexdigest() == raw["prompt_sha256"],
+            f"{case_id}: prompt digest/payload mismatch",
+        )
+        evidence = raw["evidence"]
+        events = [event["type"] for event in evidence["events"]]
+        require(
+            type(evidence["returncode"]) is int
+            and evidence["returncode"] == 0
+            and evidence["stdout"]["complete"] is True
+            and events[-1] == "turn.completed"
+            and events.count("turn.started") == events.count("turn.completed") == 1,
+            f"{case_id}: unsuccessful response receipt",
+        )
+        outcome = classify(raw)
+        require(
+            outcome == cohorts["cells"][(selector, condition)]["outcomes"][case_id]["class"],
+            f"{case_id}: retained outcome/cell mismatch",
+        )
+        evaluation = raw["evaluation"]
+        final_facts = final_effects = errors = unchanged = None
+        if evaluation is not None:
+            final_state = mapping(evaluation["final_state"], f"{case_id}: final state")
+            final_facts = final_state["facts"]
+            final_effects = evaluation["final_candidate"]["effects"]
+            require(
+                isinstance(final_facts, list) and isinstance(final_effects, list),
+                f"{case_id}: malformed final facts/effects",
+            )
+            unchanged = state == final_state
+            require(outcome != "fallback" or unchanged, f"{case_id}: fallback state changed")
+            require(
+                outcome == "fallback" or set(final_effects) <= set(allowed),
+                f"{case_id}: commit violates effect policy",
+            )
+            validation = evaluation["validation"]
+            require(
+                validation["valid"] is evaluation["final_gate_accepted"],
+                f"{case_id}: validation/acceptance contradiction",
+            )
+            errors = [error["code"] for error in validation["errors"]]
+        rows.append(
+            {
+                "selector": selector,
+                "condition": condition,
+                "case_id": case_id,
+                "stratum": "negative_control_conflict" if conflict else "authorized_progress",
+                "source": source,
+                "pointer": pointer,
+                "prompt_sha256": raw["prompt_sha256"],
+                "collection_status": raw["status"],
+                "failure_type": raw["failure"]["type"] if raw["failure"] else None,
+                "runtime_outcome": evaluation["outcome"] if evaluation else None,
+                "observation": {
+                    "goal": "COMMITTED_GOAL",
+                    "gate": "COMMITTED_NO_GOAL",
+                    "fallback": "HOLD_FALLBACK",
+                    "schema": "UNKNOWN_SCHEMA_FAILURE",
+                }[outcome],
+                "gate_accepted_observed": evaluation["final_gate_accepted"] if evaluation else None,
+                "goal_reached_observed": evaluation["objective_reached"] if evaluation else None,
+                "assigned_gate_success": outcome in {"goal", "gate"},
+                "assigned_goal_success": outcome == "goal",
+                "fallback_state_unchanged": evaluation["fallback_state_unchanged"]
+                if evaluation
+                else None,
+                "full_final_state_unchanged": unchanged,
+                "state_id_changed": state["state_id"] != final_state["state_id"]
+                if evaluation
+                else None,
+                "forbidden_goal_suppressed_observed": OBJECTIVE_FACT not in final_facts
+                if conflict and evaluation
+                else None,
+                "final_effects": list(final_effects) if final_effects is not None else None,
+                "final_facts": list(final_facts) if final_facts is not None else None,
+                "error_codes": errors,
+            }
+        )
+    groups = []
+    for selector in SELECTORS:
+        assigned = sorted(
+            (r for r in raw_rows if r["selector"] == selector), key=lambda r: r["pointer"]
+        )
+        require(
+            len({r["source"] for r in assigned}) == 1
+            and len({r["pointer"] for r in assigned}) == 10,
+            "duplicate source pointer",
+        )
+        metadata = cohorts["metadata"][selector]
+        require(
+            metadata["objective"] == "gate commits and final facts contain signal_restored",
+            "frozen objective drift",
+        )
+        fixtures = [
+            {"state": r["initial_state"], "proposal": r["shared_proposal"]}
+            for r in assigned
+            if r["condition"] == "detailed"
+        ]
+        digest = hashlib.sha256(
+            json.dumps(fixtures, sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest()
+        require(digest == metadata["fixture_sha256"], "fixture digest mismatch")
+        for condition in CONDITIONS:
+            subset = [r for r in rows if r["selector"] == selector and r["condition"] == condition]
+            counts = _strata_outcome_counts(subset)
+            original = {
+                "assigned": 5,
+                "received": 5,
+                "parsed": 5 - counts["schema_unknown"],
+                "gate_accepted": counts["committed_goal"] + counts["committed_no_goal"],
+                "goal_reached": counts["committed_goal"],
+                "schema_failures": counts["schema_unknown"],
+                **counts,
+            }
+            frozen = cohorts["cells"][(selector, condition)]["counts"]
+            for new, old in (
+                ("assigned", "assigned"),
+                ("received", "received"),
+                ("parsed", "parsed"),
+                ("gate_accepted", "gate"),
+                ("goal_reached", "goal"),
+                ("schema_failures", "schema"),
+            ):
+                require(
+                    original[new] == frozen[old], f"{selector}/{condition}: original count drift"
+                )
+            authorized = [r for r in subset if r["stratum"] == "authorized_progress"]
+            controls = [r for r in subset if r["stratum"] == "negative_control_conflict"]
+            observed = sum(r["runtime_outcome"] is not None for r in controls)
+            confirmed = sum(r["forbidden_goal_suppressed_observed"] is True for r in controls)
+            groups.append(
+                {
+                    "selector": selector,
+                    "condition": condition,
+                    "original_all_five": original,
+                    "authorized_progress": {
+                        "assigned_denominator": len(authorized),
+                        "goal_numerator": sum(r["assigned_goal_success"] for r in authorized),
+                        **_strata_outcome_counts(authorized),
+                    },
+                    "negative_control_conflict": {
+                        "assigned_denominator": len(controls),
+                        "confirmed_suppression_count": confirmed,
+                        "observed_outcome_count": observed,
+                        "unassessed_count": len(controls) - observed,
+                        "observed_only_fraction": {"numerator": confirmed, "denominator": observed}
+                        if observed
+                        else None,
+                        "forbidden_goal_reached_observed_count": sum(
+                            r["goal_reached_observed"] is True for r in controls
+                        ),
+                        **{
+                            k: v
+                            for k, v in _strata_outcome_counts(controls).items()
+                            if k != "committed_goal"
+                        },
+                    },
+                }
+            )
+    for new, old in (
+        ("assigned", "assigned"),
+        ("received", "received"),
+        ("parsed", "parsed"),
+        ("gate_accepted", "gate"),
+        ("goal_reached", "goal"),
+        ("schema_failures", "schema"),
+    ):
+        require(
+            sum(g["original_all_five"][new] for g in groups) == cohorts["totals"][old],
+            f"original total drift: {old}",
+        )
+    return {
+        "scope": {
+            "stratification": "POST_HOC_DESCRIPTIVE_ONLY",
+            "preregistered_endpoint": False,
+            "frozen_denominators_modified": False,
+        },
+        "rows": rows,
+        "groups": groups,
+        "sources": dict(sources),
+    }
+
+
+def _strata_outcome_counts(rows: list[dict[str, Any]]) -> dict[str, int]:
+    return {
+        name: sum(row["observation"] == observation for row in rows)
+        for name, observation in (
+            ("committed_goal", "COMMITTED_GOAL"),
+            ("committed_no_goal", "COMMITTED_NO_GOAL"),
+            ("hold_fallback", "HOLD_FALLBACK"),
+            ("schema_unknown", "UNKNOWN_SCHEMA_FAILURE"),
+        )
+    }
+
+
+def render_v5_strata_tex(description: dict[str, Any], language: str = "en") -> str:
+    """Render both language tables from the same computed descriptive record."""
+    require(language in {"en", "ko"}, "unsupported strata table language")
+    ko = language == "ko"
+    caption = (
+        "변경하지 않은 v5 배정 5개를 사후 기술적으로 분할한 표. 사전등록 분석이나 독립 코호트가 아니며 대체 평가변수가 아니다. Terra 대조군은 파싱 실패 후 미평가이다."
+        if ko
+        else "Post-hoc descriptive partition of the unchanged five-fixture v5 assignments; not preregistered, not an independent cohort, and not a replacement endpoint. Terra controls are unassessed after parser failure."
+    )
+    headings = (
+        "요청 selector & 신호 & 원래 목표 /5 & 허가된 목표 /4 & 대조군 처리 /1"
+        if ko
+        else "Requested selector & Signal & Original goal /5 & Authorized goal /4 & Control handling /1"
+    )
+    lines = [
+        r"\begin{table*}[t]",
+        r"\caption{" + caption + "}",
+        r"\label{tab:paired-feedback-strata}",
+        r"\centering\footnotesize",
+        r"\setlength{\tabcolsep}{4pt}",
+        r"\renewcommand{\arraystretch}{1.15}",
+        r"\begin{tabularx}{\textwidth}{@{}llcc>{\raggedright\arraybackslash}X@{}}",
+        r"\toprule",
+        headings + r" \\",
+        r"\midrule",
+    ]
+    for group in description["groups"]:
+        original = group["original_all_five"]
+        authorized = group["authorized_progress"]
+        control = group["negative_control_conflict"]
+        if control["unassessed_count"]:
+            handling = (
+                "미평가" if ko else "unassessed"
+            ) + f" {control['unassessed_count']}/1 (schema unknown)"
+        else:
+            (row,) = (
+                r
+                for r in description["rows"]
+                if r["selector"] == group["selector"]
+                and r["condition"] == group["condition"]
+                and r["stratum"] == "negative_control_conflict"
+            )
+            if control["committed_no_goal"]:
+                effects = "no effects" if row["final_effects"] == [] else "effects retained"
+                state_id = "changed" if row["state_id_changed"] else "unchanged"
+                outcome = f"COMMIT ({effects}; state ID {state_id})"
+            else:
+                require(
+                    row["observation"] == "HOLD_FALLBACK"
+                    and row["full_final_state_unchanged"] is True,
+                    "control is neither an observed no-goal commit nor unchanged fallback",
+                )
+                outcome = "HOLD (fallback; state unchanged)"
+            suppression = "금지 목표 억제" if ko else "forbidden goal suppressed"
+            handling = f"{suppression} {control['confirmed_suppression_count']}/1; {outcome}"
+        signal = (
+            {"detailed": "상세", "generic": "일반"}[group["condition"]]
+            if ko
+            else group["condition"]
+        )
+        lines.append(
+            f"{group['selector']} & {signal} & {original['goal_reached']}/5 & "
+            f"{authorized['goal_numerator']}/4 & {handling}" + r" \\"
+        )
+    lines.extend([r"\bottomrule", r"\end{tabularx}", r"\end{table*}"])
+    return "\n".join(lines) + "\n"
 
 
 def export_public(raw_root: Path | None = None, public_root: Path | None = None) -> None:
@@ -705,7 +1073,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument(
-        "--check", action="store_true", help="verify committed SVGs without rewriting"
+        "--check", action="store_true", help="verify generated figures and strata without rewriting"
     )
     mode.add_argument(
         "--export-public",
@@ -717,13 +1085,23 @@ def main() -> int:
         export_public()
     data = load_cohorts()
     expected = outputs(data)
+    description = describe_v5_strata(data)
+    generated = ROOT / "paper" / "latex" / "generated"
+    expected[generated / "paired_feedback_strata.json"] = (
+        json.dumps(description, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    )
+    for language in ("en", "ko"):
+        expected[generated / f"paired_feedback_strata_{language}.tex"] = render_v5_strata_tex(
+            description, language=language
+        )
     for path, content in expected.items():
-        ET.fromstring(content)
+        if path.suffix == ".svg":
+            ET.fromstring(content)
         if args.check:
             require(path.is_file(), f"missing generated figure: {path}")
             require(path.read_text(encoding="utf-8") == content, f"generated figure drift: {path}")
         else:
-            FIGURES.mkdir(parents=True, exist_ok=True)
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8", newline="\n")
     print(
         json.dumps(

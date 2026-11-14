@@ -13,7 +13,6 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "visuals" / "source-manifest.json"
 
 PAPER_FIGURE_GENERATOR = "scripts/generate_paper_figures.py"
-DIRECTION_GENERATOR = "scripts/generate_direction_figures.py"
 PAPER_TABLE_GENERATOR = "scripts/generate_paper_results.py"
 NPC_TABLE_GENERATOR = "scripts/generate_npc_paper_results.py"
 DISCLOSURE_GENERATOR = "scripts/generate_disclosure_paper_results.py"
@@ -24,6 +23,7 @@ PAIRED_FEEDBACK_DATA = tuple(
     f"research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-{model}/results.json"
     for model in ("luna", "terra")
 ) + ("research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip",)
+PAIRED_FEEDBACK_STRATA = "paper/latex/generated/paired_feedback_strata.json"
 RUNTIME_COMPARISON_DATA = (
     "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
 )
@@ -72,6 +72,24 @@ EVIDENCE_ROOT = (
 )
 # Frozen working captures for fig:playable-readout (illustration only; numbering is LaTeX-owned).
 PLAYABLE_READOUT_SET = "paper/latex/captures/playable-readout-20261014-r2"
+ENGINE_CUTSCENES_ROOT = (
+    "_workspace/current/engineering/tech-verification/evidence/"
+    "godot-4.7.1-20261113t151426z-paper-native3d-v1"
+)
+ENGINE_CUTSCENES_DATA = tuple(
+    f"{ENGINE_CUTSCENES_ROOT}/{name}.json"
+    for name in (
+        "provenance",
+        "source-files",
+        "process-capture-metadata",
+        "capture-verification",
+        "public-path-projection-v1",
+    )
+) + tuple(
+    f"{ENGINE_CUTSCENES_ROOT}/native3d/{stage}.{suffix}"
+    for stage in ("arrival", "refusal", "authorized_hint", "ending")
+    for suffix in ("png", "shot.json")
+)
 
 
 def receipt(relative_path: str) -> dict[str, Any]:
@@ -98,7 +116,6 @@ def visual_asset(
     data: tuple[str, ...] = (),
     used_by: tuple[str, ...] = (),
     publication_role: str | None = None,
-    represented_by: dict[str, str] | None = None,
     anchors: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     return {
@@ -110,7 +127,6 @@ def visual_asset(
         "data_sources": receipts(data),
         "used_by": list(used_by),
         **({"publication_role": publication_role} if publication_role else {}),
-        **({"represented_by": represented_by} if represented_by else {}),
         **({"anchors": list(anchors)} if anchors else {}),
     }
 
@@ -139,7 +155,6 @@ def table_source(
 
 def build_manifest() -> dict[str, Any]:
     paper_usage = ("paper/latex/en/main.tex", "paper/latex/ko/main.tex")
-    direction_note = ("research/directions/consensus-vs-symbolic-gate.md",)
 
     paper_assets = []
     for stem, asset_id, kind, data in (("fig_architecture", "paper-architecture", "diagram", ()),):
@@ -152,10 +167,8 @@ def build_manifest() -> dict[str, Any]:
                 editable=(f"{base}.svg",),
                 generator=PAPER_FIGURE_GENERATOR,
                 data=data,
-                used_by=paper_usage if stem == "fig_architecture" else (),
-                publication_role="current-figure"
-                if stem == "fig_architecture"
-                else "retained-optional",
+                used_by=paper_usage,
+                publication_role="current-figure",
             )
         )
     for stem, kind, anchor in (
@@ -192,30 +205,9 @@ def build_manifest() -> dict[str, Any]:
             anchors=("fig:runtime-comparison",),
         )
     )
-    paper_assets.append(
-        visual_asset(
-            "paper-npc-screening",
-            "chart",
-            rendered=(
-                "paper/latex/figures/fig_npc_screening.pdf",
-                "paper/latex/figures/fig_npc_screening.png",
-            ),
-            editable=("paper/latex/figures/fig_npc_screening.svg",),
-            generator=NPC_TABLE_GENERATOR,
-            data=(
-                "game-track/godot/project.godot",
-                "configs/npc-goal-recovery.json",
-                "game-track/schemas/npc-goal-recovery.schema.json",
-                "research/academic-pipeline/npc-goal-recovery/verified-run-006/aggregate.json",
-                "research/academic-pipeline/npc-goal-recovery/verified-run-006/screening-assignment-manifest.json",
-            ),
-            publication_role="retained-optional",
-        )
-    )
-    for stem, asset_id, generator, active in (
-        ("fig_disclosure_signals", "paper-disclosure-signals", DISCLOSURE_GENERATOR, True),
-        ("fig_signal_mechanism", "paper-signal-mechanism", SIGNAL_GENERATOR, True),
-        ("fig_signal_comparison", "paper-signal-comparison", SIGNAL_GENERATOR, False),
+    for stem, asset_id, generator in (
+        ("fig_disclosure_signals", "paper-disclosure-signals", DISCLOSURE_GENERATOR),
+        ("fig_signal_mechanism", "paper-signal-mechanism", SIGNAL_GENERATOR),
     ):
         base = f"paper/latex/figures/{stem}"
         paper_assets.append(
@@ -231,34 +223,28 @@ def build_manifest() -> dict[str, Any]:
                     if stem == "fig_signal_mechanism"
                     else ()
                 ),
-                used_by=paper_usage if active else (),
-                publication_role="current-figure" if active else "retained-optional",
-                represented_by=None
-                if active
-                else {
-                    "table_source_id": "disclosure-paper-tables",
-                    "anchor": "tab:disclosure-arms",
-                },
+                used_by=paper_usage,
+                publication_role="current-figure",
             )
         )
+    paper_assets.append(
+        visual_asset(
+            "paper-engine-cutscenes",
+            "engine-capture-montage",
+            rendered=(
+                "paper/latex/figures/fig_engine_cutscenes.pdf",
+                "paper/latex/figures/fig_engine_cutscenes.png",
+            ),
+            editable=("paper/latex/figures/fig_engine_cutscenes.svg",),
+            generator="paper/latex/Makefile",
+            data=ENGINE_CUTSCENES_DATA,
+            used_by=paper_usage,
+            publication_role="current-figure",
+            anchors=("fig:engine-cutscenes",),
+        )
+    )
 
     adjacent_assets = [
-        visual_asset(
-            "direction-consensus-gate-lanes",
-            "diagram",
-            rendered=("research/directions/figures/fig_consensus_gate_lanes.svg",),
-            editable=("research/directions/figures/fig_consensus_gate_lanes.svg",),
-            generator=DIRECTION_GENERATOR,
-            used_by=direction_note,
-        ),
-        visual_asset(
-            "direction-cost-validity-pareto",
-            "diagram",
-            rendered=("research/directions/figures/fig_cost_validity_pareto_concept.svg",),
-            editable=("research/directions/figures/fig_cost_validity_pareto_concept.svg",),
-            generator=DIRECTION_GENERATOR,
-            used_by=direction_note,
-        ),
         visual_asset(
             "kg-ontology-evaluation-matrix",
             "table-chart",
@@ -283,6 +269,7 @@ def build_manifest() -> dict[str, Any]:
     ]
 
     pilot_dir = "research/academic-pipeline/stage-04-pilot"
+    review_dir = "research/academic-pipeline/gemini-review-20261113/results-v2"
     table_sources = [
         table_source(
             "current-paper-hand-authored-tables",
@@ -303,6 +290,49 @@ def build_manifest() -> dict[str, Any]:
             data=PAIRED_FEEDBACK_DATA,
             rendered_in=("paper-en", "paper-ko"),
             anchors=("tab:paired-feedback-v5",),
+        ),
+        table_source(
+            "paired-feedback-strata",
+            layouts=(
+                "paper/latex/generated/paired_feedback_strata_en.tex",
+                "paper/latex/generated/paired_feedback_strata_ko.tex",
+            ),
+            generator=PAIRED_FEEDBACK_GENERATOR,
+            data=(*PAIRED_FEEDBACK_DATA, PAIRED_FEEDBACK_STRATA),
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:paired-feedback-strata",),
+        ),
+        table_source(
+            "paper-artifact-directory-map",
+            layouts=paper_usage,
+            generator=None,
+            data=(
+                f"{pilot_dir}/pilot-results.json",
+                f"{pilot_dir}/pilot-assignment-manifest.json",
+                f"{pilot_dir}/sha256-manifest.json",
+                f"{review_dir}/summary.json",
+                "knowledge/ontology/trace-rpg-ontology.json",
+                "knowledge/ontology/curated-relations.json",
+                "research/simulation/kg-ontology/latest/evaluation-matrix.json",
+                "game-track/godot/docs/latest/evaluation-matrix.json",
+                "game-track/godot/docs/latest/balance-archetypes.json",
+                "game-track/web/dashboard/ontology-map.json",
+                "research/academic-pipeline/npc-goal-recovery/verified-run-006/aggregate.json",
+                *DISCLOSURE_DATA,
+                *RUNTIME_IDENTITY_EXTENSION_DATA,
+                *PAIRED_FEEDBACK_DATA,
+                "research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json",
+                "research/prospective-pilot-20261103/protocol-v1.json",
+                "research/prospective-pilot-20261103/results-v1/collection-status.json",
+                "research/prospective-pilot-20261103/results-v1/summary.json",
+                "research/academic-pipeline/contribution-evidence-matrix.csv",
+                "research/academic-pipeline/experiment-evidence-matrix.csv",
+                "research/academic-pipeline/stage-05-citation-verification.json",
+                "research/traceability-scoring-20261023/rubric.json",
+            ),
+            readable=("research/maintenance/ollama-unverified-history-20261113.json",),
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:artifact-directory-map",),
         ),
         table_source(
             "traceability-supplement-table",
@@ -384,6 +414,33 @@ def build_manifest() -> dict[str, Any]:
             data=(f"{pilot_dir}/pilot-results.json",),
             rendered_in=("paper-en", "paper-ko"),
             anchors=("tab:pilot-repair", "tab:pilot-accounting"),
+        ),
+        table_source(
+            "review-boundary-audit-paper-tables",
+            layouts=(
+                "paper/latex/generated/review_boundary_audit_en.tex",
+                "paper/latex/generated/review_boundary_audit_ko.tex",
+            ),
+            generator=PAPER_TABLE_GENERATOR,
+            data=(
+                f"{review_dir}/review_boundary_audit_en.tex",
+                f"{review_dir}/review_boundary_audit_ko.tex",
+                f"{review_dir}/summary.json",
+                f"{review_dir}/rows.jsonl",
+                f"{review_dir}/surface_rows.jsonl",
+                f"{review_dir}/assignment_inventory.json",
+                f"{review_dir}/input_hashes.json",
+                f"{review_dir}/source_hashes.json",
+                f"{review_dir}/protocol.json",
+                "research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json",
+                "research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json",
+            ),
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=(
+                "tab:review-boundary-funnel",
+                "tab:review-structural-retention",
+                "tab:review-surface-sentinels",
+            ),
         ),
         table_source(
             "contribution-and-lane-paper-tables",

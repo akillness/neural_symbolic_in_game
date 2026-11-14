@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from review_reference import generic_accepts
 from run_local_signal_comparison import fixtures as development_fixtures
 
 from nesy_game.contracts import ActionPolicy, CandidateAction, WorldState
@@ -82,36 +83,6 @@ def fixtures():
     return dev + [
         ("held_out", state, candidate, valid, goal) for (state, candidate), valid, goal in scenarios
     ]
-
-
-def generic_accepts(state, candidate):
-    """Independent rule checker over precisely the same information as the gate."""
-    policy = state.action_policies.get(candidate.action_type)
-    if policy is None:
-        return False
-    if not policy.required_preconditions <= candidate.preconditions:
-        return False
-    if not policy.required_effects <= candidate.effects <= policy.allowed_effects:
-        return False
-    if candidate.quest_stage_effect is not None and (
-        candidate.quest_stage_effect not in policy.allowed_quest_stage_effects
-        or candidate.quest_stage_effect < state.quest_stage
-    ):
-        return False
-    if not candidate.preconditions <= state.facts:
-        return False
-    if any(
-        obj not in state.inventory
-        and state.object_locations.get(obj) not in state.reachable_locations
-        for obj in candidate.required_objects
-    ):
-        return False
-    known = state.npc_knowledge.get(candidate.actor_id, frozenset())
-    if not candidate.used_facts <= known or not candidate.disclosed_facts <= known:
-        return False
-    if candidate.disclosed_facts & state.forbidden_disclosures.get(candidate.actor_id, frozenset()):
-        return False
-    return candidate.required_quest_stage <= state.quest_stage
 
 
 def run_case(split, state, candidate, expected_valid=None, expected_objective=None):
@@ -221,6 +192,7 @@ def main():
     paths = [
         Path(__file__),
         ROOT / "scripts/run_local_signal_comparison.py",
+        ROOT / "scripts/review_reference.py",
         ROOT / "src/nesy_game/runtime.py",
         ROOT / "src/nesy_game/validator.py",
         ROOT / "src/nesy_game/contracts.py",

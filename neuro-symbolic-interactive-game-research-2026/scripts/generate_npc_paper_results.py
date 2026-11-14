@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate additive bilingual NPC evidence fragments and an editable SVG figure.
+"""Generate additive bilingual NPC evidence fragments.
 
 This generator consumes only the new NPC-GOAL-RECOVERY packet. Legacy E1/E2/E3/ENG1
 fragments are deliberately not read or rewritten here.
@@ -12,7 +12,6 @@ import hashlib
 import json
 import sys
 from collections import Counter
-from html import escape
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +28,6 @@ CONFIG = ROOT / "configs/npc-goal-recovery.json"
 GAME_CONFIG = ROOT / "game-track/godot/project.godot"
 SCHEMA = ROOT / "game-track/schemas/npc-goal-recovery.schema.json"
 OUT = ROOT / "paper/latex/generated"
-FIGURES = ROOT / "paper/latex/figures"
 PROJECT_CONFIG_SHA256 = "2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd"
 NPC_CONFIG_SHA256 = "d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098"
 ARMS = ("P", "R", "O")
@@ -519,63 +517,9 @@ def _tables(packet: dict[str, Any], korean: bool) -> str:
     )
 
 
-def _svg(packet: dict[str, Any]) -> str:
-    arms = packet["aggregate"]["arms"]
-    # Keep the source aspect stable through the repository's rsvg-convert → EPS →
-    # ps2pdf pipeline: 1100×468 SVG pixels become 825×351 PDF points without
-    # independent rounding changing the aspect ratio.
-    width, height = 1100, 468
-    parts = [
-        '<?xml version="1.0" encoding="UTF-8"?>',
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="svg-title svg-desc">',
-        '<title id="svg-title">NPC-SCR1 fixed-case trace outcomes</title>',
-        '<desc id="svg-desc">Observed completed traces and retained assigned failures for 24 rows per arm in authored fixed cases, including Codex-backed P. These descriptive counts are not estimates of recovery efficacy. O is a protocol-declared auxiliary; actual model-family matching is unverified.</desc>',
-        "<style>text{font-family:Helvetica,Arial,sans-serif;fill:#202124}.title{font-size:32px;font-weight:700}.label{font-size:30px;font-weight:700}.body{font-size:28px}.note{font-size:28px;fill:#5F6368}.connector{fill:none}</style>",
-        f'<rect width="{width}" height="{height}" fill="white"/>',
-        '<text x="40" y="48" class="title">NPC-SCR1 | FIXED-CASE TRACE OUTCOMES</text>',
-        '<text x="40" y="90" class="note">P: Codex intent | R: authored rules | O: protocol auxiliary (family unverified)</text>',
-        '<rect x="145" y="115" width="25" height="22" fill="#0072B2"/>',
-        '<text x="183" y="135" class="note">Completed trace</text>',
-        '<rect x="470" y="115" width="25" height="22" fill="#D55E00"/>',
-        '<text x="508" y="135" class="note">Assigned failure (retained)</text>',
-    ]
-    goal_counts = []
-    for index, arm in enumerate(ARMS):
-        summary = arms[arm]
-        assigned = summary["n"]
-        completed = summary["completed_n"]
-        failed = summary["assigned_failure_n"]
-        _require(type(assigned) is int and assigned == 24, f"invalid assigned count: {arm}")
-        _require(type(completed) is int and type(failed) is int, f"unmeasured trace count: {arm}")
-        _require(
-            completed >= 0 and failed >= 0 and completed + failed == assigned,
-            f"incomplete trace accounting: {arm}",
-        )
-        y = 165 + index * 65
-        completed_width = 540 * completed / assigned
-        failed_width = 540 * failed / assigned
-        parts += [
-            f'<text x="70" y="{y + 28}" class="label">{arm}</text>',
-            f'<rect class="bar completed" x="145" y="{y}" width="{completed_width:g}" height="34" fill="#0072B2"/>',
-            f'<rect class="bar assigned-failure" x="{145 + completed_width:g}" y="{y}" width="{failed_width:g}" height="34" fill="#D55E00"/>',
-            f'<line class="connector" x1="685" y1="{y + 17}" x2="705" y2="{y + 17}" stroke="#C9CDD1" stroke-width="2"/>',
-            f'<text x="715" y="{y + 28}" class="body">{completed} complete / {failed} failed</text>',
-        ]
-        reached = summary.get("goal_reached_n")
-        goal_counts.append(f"{arm}: {reached}/{assigned}" if type(reached) is int else f"{arm}: NA")
-    goal_text = escape("Goal reached, fixed cases only | " + " | ".join(goal_counts))
-    parts += [
-        f'<text x="40" y="389" class="note">{goal_text}</text>',
-        '<text x="40" y="427" class="note">Independent-source rows: 0. No efficacy, superiority, or generalization claim.</text>',
-        "</svg>",
-    ]
-    return "\n".join(parts) + "\n"
-
-
 def main(evidence_root: Path = ROOT) -> None:
     packet = _load_packet(evidence_root)
     OUT.mkdir(parents=True, exist_ok=True)
-    FIGURES.mkdir(parents=True, exist_ok=True)
     (OUT / "npc_validation_reports.json").write_text(
         json.dumps(packet["validation_reports"], ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -587,11 +531,9 @@ def main(evidence_root: Path = ROOT) -> None:
         (OUT / f"npc_tables_{language}.tex").write_text(
             _tables(packet, korean), encoding="utf-8", newline="\n"
         )
-    target = FIGURES / "fig_npc_screening.svg"
-    target.write_text(_svg(packet), encoding="utf-8", newline="\n")
     context = packet["validation_context"]
     print(
-        f"generated NPC paper fragments and {target.relative_to(ROOT)} from "
+        "generated NPC paper fragments from "
         f"{PACKET.relative_to(ROOT)}; "
         + "validation_mode={} packet_scope={}".format(context["mode"], context["packet_scope"])
     )

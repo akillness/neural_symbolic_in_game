@@ -36,7 +36,7 @@
 
 ## 2. 현재 구현과 새 설계의 차이
 
-현재 근거의 소유 문서는 `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/submission-optimization-2026-10-14.md`이다.
+이 설계 당시(2026-10-14) 근거의 소유 문서는 `submission-optimization-2026-10-14.md`였다. 이 문서는 2026-11-13 활성 트리에서 은퇴했으며 원본 경로와 보관 위치는 [은퇴 영수증](../../../neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json)을 따른다.
 
 - `src/nesy_game/experiment.py`의 `run_experiment_case`는 제안 한 번 뒤 같은 prior state에서 `execute_with_repair`를 수행한다. 다음 게임 관측으로 목표 계획을 바꾸는 NPC 에피소드 루프가 아니다.
 - `src/nesy_game/repair.py`의 `rho(a,E)`는 후보와 typed 오류만 읽는 국소 수리다. 변경된 세계를 읽는 재계획기나 NPC 기억으로 취급하지 않는다.
@@ -239,7 +239,7 @@ Ontology: NPC·Player·GameWorld·AgentMemory·ValidationGate·Proposal은 Round
 
 ## 12. 읽은 근거와 검토 경계
 
-- 현행 계약: `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/submission-optimization-2026-10-14.md`.
+- 당시 계약(2026-10-14): `submission-optimization-2026-10-14.md`; 2026-11-13 은퇴. 원본 경로와 보관 위치는 [은퇴 영수증](../../../neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json)을 따른다.
 - 현행 코드 흐름과 구현 여부의 근거는 §2 참조; 초기 실행 경로 조사에서 확인한 `src/nesy_game/codex_adapter.py`도 읽은 근거로 보존한다. 새 설계를 현재 구현으로 전용하지 않음.
 - 지식 근거: `llm-wiki/wiki/concepts/trace-rpg-controller.md`, 현재 프로젝트 graph의 제어기/원래 연구 계획 관계. 그래프는 조회만 했으며 새 설계를 반영해 재생성하지 않았다.
 - [LLM-Modulo (2024)](https://proceedings.mlr.press/v235/kambhampati24a.html): 외부 verifier와 모델의 역할 분리 선례.

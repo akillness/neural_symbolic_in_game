@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+import base64
 import copy
+import hashlib
 import io
 import json
 import os
 import re
+import struct
 import subprocess
 import sys
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 import zipfile
+import zlib
 from pathlib import Path
 from unittest.mock import patch
 
@@ -18,6 +22,511 @@ ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import validate_visual_assets as visual_validator
+
+
+class BoundCaptureMontageTests(unittest.TestCase):
+    def _fixture(self, root, *, dimensions=(1280, 720), non_png=False):
+        def png_chunk(kind, payload):
+            checksum = zlib.crc32(kind + payload) & 0xFFFFFFFF
+            return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", checksum)
+
+        def write_receipt(relative, payload):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
+            return {
+                "path": relative,
+                "bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }
+
+        captures = []
+        images = []
+        width, height = dimensions
+        for index in range(4):
+            payload = (
+                b"\x89PNG\r\n\x1a\n"
+                + png_chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0))
+                + png_chunk(
+                    b"IDAT",
+                    zlib.compress((b"\x00" + bytes([index * 60, 0, 0, 255]) * width) * height),
+                )
+                + png_chunk(b"IEND", b"")
+            )
+            if non_png:
+                payload = f"not a PNG capture {index}".encode()
+            captures.append(write_receipt(f"captures/panel-{index}.png", payload))
+            encoded = base64.b64encode(payload).decode("ascii")
+            images.append(
+                f'<image x="{index * 100}" y="0" width="100" height="56.25" '
+                f'href="data:image/png;base64,{encoded}"/>'
+            )
+        svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 400 100">'
+            "<title>Bound captures</title><desc>Four immutable engine panels</desc>"
+            "<style>.label { font-size: 28px; }</style>" + "".join(images) + "</svg>"
+        )
+        source = write_receipt("paper/latex/figures/fig_engine_cutscenes.svg", svg.encode())
+        rendered = write_receipt("paper/latex/figures/fig_engine_cutscenes.pdf", b"%PDF fixture\n")
+        generator = write_receipt(
+            "scripts/generate_engine_cutscene_figure.py", b"fixture generator\n"
+        )
+        return {
+            "id": "paper-engine-cutscenes",
+            "kind": "engine-capture-montage",
+            "editable_sources": [source],
+            "rendered": [rendered],
+            "generator": generator,
+            "data_sources": captures,
+            "used_by": [],
+        }
+
+    def _validate(self, root, asset, *, pdf_mutation=None):
+        svg = root / asset["editable_sources"][0]["path"]
+
+        def pdf_tool(command, **kwargs):
+            if command[0] == "pdfimages":
+                images = [("image", 1280, 720)] * 4
+                if pdf_mutation == "flattened":
+                    images = [("image", 1600, 400)]
+                elif pdf_mutation == "extra-image":
+                    images.append(("image", 1280, 720))
+                elif pdf_mutation == "missing-image":
+                    images.pop()
+                elif pdf_mutation == "wrong-pdf-dimensions":
+                    images[0] = ("image", 1279, 720)
+                elif pdf_mutation in {
+                    "alpha-masks",
+                    "partial-mask",
+                    "wrong-mask-dimensions",
+                    "extra-mask",
+                }:
+                    count = {"partial-mask": 1, "extra-mask": 5}.get(pdf_mutation, 4)
+                    images.extend([("smask", 1280, 720)] * count)
+                    if pdf_mutation == "wrong-mask-dimensions":
+                        images[-1] = ("smask", 1280, 719)
+                elif pdf_mutation == "unsupported-image-type":
+                    images.append(("mask", 1280, 720))
+                output = "".join(
+                    f"1 {index} {kind} {width} {height} rgb 3 8 image no {index + 1} 0 72 72 1B 100%\n"
+                    for index, (kind, width, height) in enumerate(images)
+                )
+            elif command[0] == "pdffonts":
+                output = "Helvetica Type 3" if pdf_mutation == "font" else "Helvetica Type 1"
+            elif command[0] == "pdfinfo":
+                digest = (
+                    "0" * 64
+                    if pdf_mutation == "source"
+                    else hashlib.sha256(svg.read_bytes()).hexdigest()
+                )
+                size = "100 x 100" if pdf_mutation == "aspect" else "400 x 100"
+                output = f"Title: source-sha256:{digest}\nPage size: {size} pts\n"
+            else:
+                raise AssertionError(f"Unexpected external PDF tool: {command}")
+            return subprocess.CompletedProcess(command, 0, stdout=output, stderr="")
+
+        validator = visual_validator.Validator(require_pdf_tools=True, check_regeneration=False)
+        with (
+            patch.object(visual_validator, "ROOT", root),
+            patch.object(visual_validator.shutil, "which", return_value="/fixture/pdf-tool"),
+            patch.object(visual_validator.subprocess, "run", side_effect=pdf_tool),
+        ):
+            validator._validate_receipts({"visual_assets": [asset]})
+            validator._validate_visual_assets({"visual_assets": [asset]})
+        return validator
+
+    def test_only_byte_bound_four_panel_capture_montage_admits_pdf_images(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            asset = self._fixture(root)
+            self.assertEqual(self._validate(root, asset).errors, [])
+            for kind in ("chart", "diagram"):
+                with self.subTest(kind=kind):
+                    asset["kind"] = kind
+                    errors = self._validate(root, asset).errors
+                    self.assertTrue(
+                        any(
+                            "contains raster image objects instead of vectors" in error
+                            for error in errors
+                        ),
+                        errors,
+                    )
+
+    def test_capture_missing_digest_and_embedded_image_corruption_fail_closed(self):
+        for mutation in (
+            "missing-source",
+            "changed-source",
+            "missing-receipt",
+            "duplicate-receipt",
+            "changed-image",
+            "duplicate-image",
+            "missing-image",
+            "external-image",
+            "invalid-base64",
+            "wrong-asset-id",
+            "none-data-sources",
+            "mapping-data-sources",
+            "invalid-data-source-entry",
+        ):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                asset = self._fixture(root)
+                path = root / asset["data_sources"][0]["path"]
+                svg = root / asset["editable_sources"][0]["path"]
+                if mutation == "missing-source":
+                    path.unlink()
+                    expected = "manifest receipt is missing"
+                elif mutation == "changed-source":
+                    payload = path.read_bytes()
+                    path.write_bytes(payload[:-1] + bytes([payload[-1] ^ 1]))
+                    expected = "SHA-256 drift"
+                else:
+                    expected = "capture montage"
+                    if mutation == "none-data-sources":
+                        asset["data_sources"] = None
+                    elif mutation == "mapping-data-sources":
+                        asset["data_sources"] = {"unexpected": "container"}
+                    elif mutation == "invalid-data-source-entry":
+                        asset["data_sources"] = [None]
+                    elif mutation == "missing-receipt":
+                        asset["data_sources"].pop()
+                    elif mutation == "duplicate-receipt":
+                        asset["data_sources"][1] = copy.deepcopy(asset["data_sources"][0])
+                    elif mutation == "wrong-asset-id":
+                        asset["id"] = "unapproved-raster-figure"
+                    else:
+                        tree = ET.parse(svg)
+                        images = tree.getroot().findall("{http://www.w3.org/2000/svg}image")
+                        if mutation == "missing-image":
+                            tree.getroot().remove(images[0])
+                        elif mutation == "duplicate-image":
+                            images[1].set("href", images[0].attrib["href"])
+                        elif mutation == "external-image":
+                            images[0].set("href", "file:///unbound.png")
+                        elif mutation == "invalid-base64":
+                            images[0].set("href", "data:image/png;base64,%%%")
+                        else:
+                            payload = path.read_bytes()
+                            changed = payload[:-1] + bytes([payload[-1] ^ 1])
+                            images[0].set(
+                                "href",
+                                "data:image/png;base64,"
+                                + base64.b64encode(changed).decode("ascii"),
+                            )
+                        tree.write(svg, encoding="utf-8")
+                        payload = svg.read_bytes()
+                        asset["editable_sources"][0].update(
+                            bytes=len(payload), sha256=hashlib.sha256(payload).hexdigest()
+                        )
+                validator = self._validate(root, asset)
+                self.assertTrue(
+                    any(expected in error for error in validator.errors), validator.errors
+                )
+                self.assertTrue(
+                    any(
+                        "contains raster image objects instead of vectors" in error
+                        for error in validator.errors
+                    ),
+                    "An unbound capture must not receive the PDF raster exception: "
+                    + repr(validator.errors),
+                )
+                with self.assertRaises(SystemExit):
+                    validator._finish()
+
+    def test_capture_rejects_receipted_wrong_source_kind_or_intrinsic_dimensions(self):
+        for dimensions, non_png in (
+            ((1, 1), False),
+            ((1279, 720), False),
+            ((1280, 719), False),
+            ((1280, 720), True),
+        ):
+            with (
+                self.subTest(dimensions=dimensions, non_png=non_png),
+                tempfile.TemporaryDirectory() as directory,
+            ):
+                root = Path(directory)
+                asset = self._fixture(root, dimensions=dimensions, non_png=non_png)
+                validator = self._validate(root, asset)
+                self.assertTrue(
+                    any("capture montage" in error for error in validator.errors), validator.errors
+                )
+                self.assertTrue(
+                    any(
+                        "contains raster image objects instead of vectors" in error
+                        for error in validator.errors
+                    ),
+                    validator.errors,
+                )
+                with self.assertRaises(SystemExit):
+                    validator._finish()
+
+    def test_capture_pdf_admits_exact_four_panels_with_or_without_four_alpha_masks(self):
+        for mutation in (None, "alpha-masks"):
+            with self.subTest(pdf_images=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                validator = self._validate(root, self._fixture(root), pdf_mutation=mutation)
+                self.assertEqual(validator.errors, [])
+
+    def test_capture_pdf_rejects_flattened_extra_missing_or_wrong_size_image_objects(self):
+        for mutation in (
+            "flattened",
+            "extra-image",
+            "missing-image",
+            "wrong-pdf-dimensions",
+            "partial-mask",
+            "extra-mask",
+            "wrong-mask-dimensions",
+            "unsupported-image-type",
+        ):
+            with self.subTest(pdf_images=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                validator = self._validate(root, self._fixture(root), pdf_mutation=mutation)
+                self.assertTrue(
+                    any("capture montage" in error for error in validator.errors), validator.errors
+                )
+                with self.assertRaises(SystemExit):
+                    validator._finish()
+
+    def test_capture_exception_preserves_pdf_source_font_and_aspect_checks(self):
+        for mutation, expected in (
+            ("source", "embedded SVG source hash is stale"),
+            ("font", "Type 3 fallback font"),
+            ("aspect", "PDF/SVG aspect ratios differ"),
+        ):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                validator = self._validate(root, self._fixture(root), pdf_mutation=mutation)
+                self.assertTrue(
+                    any(expected in error for error in validator.errors), validator.errors
+                )
+                with self.assertRaises(SystemExit):
+                    validator._finish()
+
+
+class PublicCaptureProjectionTests(unittest.TestCase):
+    def test_public_projection_binds_all_files_without_rewriting_original_capture_pixels(self):
+        import update_visual_source_manifest as manifest_builder
+
+        relative_root = (
+            "_workspace/current/engineering/tech-verification/evidence/"
+            "godot-4.7.1-20261113t151426z-paper-native3d-v1"
+        )
+        public_root = ROOT / relative_root
+        projection_path = public_root / "public-path-projection-v1.json"
+        projection = json.loads(projection_path.read_text(encoding="utf-8"))
+        records = {record["file"]: record for record in projection["files"]}
+        self.assertEqual(len(records), len(projection["files"]), "duplicate projection file paths")
+        self.assertEqual(
+            set(records),
+            {
+                str(path.relative_to(public_root))
+                for path in public_root.rglob("*")
+                if path.is_file() and path != projection_path
+            },
+        )
+        derivative_paths = {
+            "process-capture-metadata.json",
+            "provenance.json",
+            "process-logs/canonical-fixture.log",
+            "process-logs/capture-arrival.log",
+            "process-logs/capture-authorized_hint.log",
+            "process-logs/capture-ending.log",
+            "process-logs/capture-refusal.log",
+        }
+        self.assertEqual(
+            {
+                name
+                for name, record in records.items()
+                if record["classification"] == "public-path-relocated-derivative"
+            },
+            derivative_paths,
+        )
+        unchanged = set(records) - derivative_paths
+        self.assertEqual((len(records), len(derivative_paths), len(unchanged)), (21, 7, 14))
+        self.assertEqual(projection["counts"]["original_files"], len(records))
+        self.assertEqual(projection["counts"]["transformed_existing_files"], len(derivative_paths))
+        self.assertEqual(projection["counts"]["unchanged_original_files"], len(unchanged))
+        for name, record in records.items():
+            with self.subTest(public_file=name):
+                path = (public_root / name).resolve()
+                self.assertTrue(
+                    path.is_relative_to(public_root.resolve()), "not a public capture path"
+                )
+                payload = path.read_bytes()
+                self.assertEqual(
+                    record["public"],
+                    {"bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()},
+                )
+                if name in unchanged:
+                    self.assertEqual(record["classification"], "unchanged-original-bytes")
+                    self.assertEqual(record["original"], record["public"])
+                else:
+                    self.assertNotEqual(record["original"]["sha256"], record["public"]["sha256"])
+        png_identities = {
+            "arrival": (330730, "381ade4db31d68dd971f2bc1d11adf619d5dd24b94492430c6561aa09f1d91f4"),
+            "authorized_hint": (
+                375315,
+                "ef7b5d2ac230303d77f08c54a784f8261ec1ff82c910dec731fd895ab4124e00",
+            ),
+            "ending": (406731, "986bb850e064bc615e66262e29c318b103c1547928bc8336a3989aac1ac3e7fc"),
+            "refusal": (481240, "34ab2b20eb56222560d917546c71f97d61fa7f3f92b057a4ea3bf7d35253c9f5"),
+        }
+        for stage, (byte_count, digest) in png_identities.items():
+            with self.subTest(original_png=stage):
+                expected = {"bytes": byte_count, "sha256": digest}
+                self.assertEqual(records[f"native3d/{stage}.png"]["original"], expected)
+                self.assertEqual(projection["validation"]["png_identity"][stage], expected)
+        asset = next(
+            item
+            for item in manifest_builder.build_manifest()["visual_assets"]
+            if item["id"] == "paper-engine-cutscenes"
+        )
+        registered = {record["path"]: record for record in asset["data_sources"]}
+        for name in (
+            "public-path-projection-v1.json",
+            *(f"native3d/{stage}.png" for stage in png_identities),
+        ):
+            with self.subTest(manifest_receipt=name):
+                payload = (public_root / name).read_bytes()
+                relative = f"{relative_root}/{name}"
+                self.assertEqual(
+                    registered[relative],
+                    {
+                        "path": relative,
+                        "bytes": len(payload),
+                        "sha256": hashlib.sha256(payload).hexdigest(),
+                    },
+                )
+
+
+class PaperRetirementManifestTests(unittest.TestCase):
+    def test_manifest_keeps_active_figures_tables_and_evidence_without_retired_presentations(self):
+        import update_visual_source_manifest as manifest_builder
+
+        manifest = manifest_builder.build_manifest()
+        assets = {asset["id"]: asset for asset in manifest["visual_assets"]}
+        expected_figures = {
+            "paper-architecture": "fig_architecture",
+            "paper-signal-mechanism": "fig_signal_mechanism",
+            "paper-disclosure-signals": "fig_disclosure_signals",
+            "state-signal": "fig_state_signal",
+            "paired-feedback-flow": "fig_paired_feedback_flow",
+            "paper-runtime-comparison": "fig_runtime_comparison",
+            "paper-engine-cutscenes": "fig_engine_cutscenes",
+        }
+        for asset_id, stem in expected_figures.items():
+            with self.subTest(figure=stem):
+                asset = assets[asset_id]
+                self.assertEqual(asset["publication_role"], "current-figure")
+                self.assertEqual(
+                    set(asset["used_by"]), {"paper/latex/en/main.tex", "paper/latex/ko/main.tex"}
+                )
+                self.assertEqual(
+                    {record["path"] for record in asset["rendered"] + asset["editable_sources"]},
+                    {f"paper/latex/figures/{stem}.{suffix}" for suffix in ("svg", "png", "pdf")},
+                )
+        self.assertTrue(
+            {
+                "current-paper-hand-authored-tables",
+                "paired-feedback-v5",
+                "traceability-supplement-table",
+                "disclosure-paper-tables",
+                "runtime-comparison-results-en",
+                "runtime-comparison-results-ko",
+                "runtime-comparison-tables-en",
+                "runtime-comparison-tables-ko",
+                "runtime-identity-extension-en",
+                "runtime-identity-extension-ko",
+                "offline-pilot-paper-tables",
+                "review-boundary-audit-paper-tables",
+                "contribution-and-lane-paper-tables",
+                "npc-goal-recovery-paper-tables",
+                "kg-ontology-paper-fragments",
+                "stage-04-conformance-table-bundle",
+            }
+            <= {source["id"] for source in manifest["table_sources"]},
+        )
+        receipts = list(
+            visual_validator.Validator(
+                require_pdf_tools=False, check_regeneration=False
+            )._iter_receipts(manifest)
+        )
+        paths = {record["path"] for record in receipts}
+        npc_root = "research/academic-pipeline/npc-goal-recovery/verified-run-006"
+        signal_root = "research/npc-disclosure/results-signal-explainer-20261023-r5"
+        required_data = {
+            *(
+                f"{npc_root}/{name}"
+                for name in (
+                    "aggregate.json",
+                    "screening-assignment-manifest.json",
+                    "engineering-results.jsonl",
+                    "screening-results.jsonl",
+                    "replay-results.json",
+                    "sha256-manifest.json",
+                )
+            ),
+            *(
+                f"{signal_root}/{name}"
+                for name in (
+                    "disclosure-trace.jsonl",
+                    "comparison-summary.json",
+                    "factual-summary.json",
+                    "metadata.json",
+                )
+            ),
+            "research/npc-disclosure/reveal-hint-expectations-v1.json",
+            "research/npc-disclosure/reveal-hint-expectations-v1.sha256",
+            "research/simulation/kg-ontology/latest/evaluation-matrix.json",
+            "research/simulation/kg-ontology/latest/strategy-trials.tsv",
+            "game-track/godot/docs/latest/balance-archetypes.json",
+            "research/runtime-model-swap-20261024/codex-live-20261026/public-results-v1/results.json",
+            "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json",
+            *(
+                f"research/codex_feedback_pilot/public-v5/paired-model-comparison-20261110-v5-gpt-5.6-{model}/results.json"
+                for model in ("luna", "terra")
+            ),
+            "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip",
+        }
+        self.assertTrue(required_data <= paths, sorted(required_data - paths))
+        for record in receipts:
+            with self.subTest(receipt=record["path"]):
+                payload = (ROOT / record["path"]).read_bytes()
+                self.assertEqual(record["bytes"], len(payload))
+                self.assertEqual(record["sha256"], hashlib.sha256(payload).hexdigest())
+        self.assertEqual(
+            set(assets),
+            set(expected_figures) | {"kg-ontology-evaluation-matrix", "game-balance-archetypes"},
+        )
+
+    def test_active_asset_missing_and_same_size_digest_drift_remain_hard_errors(self):
+        import update_visual_source_manifest as manifest_builder
+
+        manifest = manifest_builder.build_manifest()
+        record = next(
+            asset for asset in manifest["visual_assets"] if asset["id"] == "paper-signal-mechanism"
+        )["editable_sources"][0]
+        payload = (ROOT / record["path"]).read_bytes()
+        for mutation, expected in (
+            ("missing", f"manifest receipt is missing: {record['path']}"),
+            ("digest", f"SHA-256 drift: {record['path']}"),
+        ):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                path = root / record["path"]
+                if mutation == "digest":
+                    path.parent.mkdir(parents=True)
+                    path.write_bytes(bytes([payload[0] ^ 1]) + payload[1:])
+                validator = visual_validator.Validator(
+                    require_pdf_tools=False, check_regeneration=False
+                )
+                with patch.object(visual_validator, "ROOT", root):
+                    validator._validate_receipts(
+                        {"visual_assets": [{"editable_sources": [record]}]}
+                    )
+                self.assertEqual(validator.errors, [expected])
+                with self.assertRaisesRegex(SystemExit, "failed with 1 error"):
+                    validator._finish()
 
 
 class VisualAssetValidatorTests(unittest.TestCase):
@@ -281,6 +790,7 @@ class HistoricalRegenerationTests(unittest.TestCase):
             for relative in (
                 "scripts/generate_npc_paper_results.py",
                 "scripts/generate_paired_feedback_figures.py",
+                "scripts/generate_paper_results.py",
                 "research/academic-pipeline/stage-04-pilot",
                 "research/academic-pipeline/rq2-live-pilot",
                 "research/academic-pipeline/contribution-evidence-matrix.csv",
@@ -347,6 +857,7 @@ class HistoricalRegenerationTests(unittest.TestCase):
             for relative in (
                 "scripts/generate_npc_paper_results.py",
                 "scripts/generate_paired_feedback_figures.py",
+                "scripts/generate_paper_results.py",
                 "research/academic-pipeline/stage-04-pilot",
                 "research/academic-pipeline/rq2-live-pilot",
                 "research/academic-pipeline/contribution-evidence-matrix.csv",
@@ -1081,9 +1592,7 @@ class PublicationLinkTests(unittest.TestCase):
             ),
         )
 
-    def test_retained_optional_figure_does_not_require_inclusion_but_current_figure_requires_each_owner(
-        self,
-    ) -> None:
+    def test_current_figure_requires_inclusion_by_each_owner(self) -> None:
         manifest = {
             "visual_assets": [
                 {
@@ -1093,24 +1602,6 @@ class PublicationLinkTests(unittest.TestCase):
                     "editable_sources": [{"path": "paper/latex/figures/current.svg"}],
                     "rendered": [{"path": "paper/latex/figures/current.pdf"}],
                 },
-                {
-                    "id": "optional-comparison",
-                    "publication_role": "retained-optional",
-                    "used_by": [],
-                    "editable_sources": [{"path": "paper/latex/figures/comparison.svg"}],
-                    "rendered": [{"path": "paper/latex/figures/comparison.pdf"}],
-                    "represented_by": {
-                        "table_source_id": "disclosure-tables",
-                        "anchor": "tab:disclosure-arms",
-                    },
-                },
-            ],
-            "table_sources": [
-                {
-                    "id": "disclosure-tables",
-                    "anchors": ["tab:disclosure-arms"],
-                    "rendered_in": ["paper-en", "paper-ko"],
-                }
             ],
         }
         for paper in self.papers:

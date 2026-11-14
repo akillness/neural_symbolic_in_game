@@ -675,90 +675,6 @@ def mechanism_svg() -> str:
     return "\n".join(parts) + "\n"
 
 
-def comparison_svg(data: dict[str, Any]) -> str:
-    width, height = 1280, 1362
-    parts = svg_header(
-        width,
-        height,
-        "TRACE-RPG frozen comparison",
-        "Independent 60-case by 3-arm comparison with normal, boundary and malformed strata. Unsafe and semantic mismatch are separate categorical counts; sparse check cells remain unreported.",
-        "fig:signal-comparison",
-    )
-    parts += [
-        svg_text(24, 48, "FROZEN INDEPENDENT", "title"),
-        svg_text(24, 92, "COMPARISON | 60 INPUTS × 3 ARMS", "title"),
-        svg_text(24, 136, "Unsafe ≠ semantic mismatch | no time trend", "subtitle"),
-        svg_text(24, 178, "A/D: allow / deny", "small"),
-        svg_text(600, 178, "Checks P/F: recorded pass / fail only", "small"),
-    ]
-    labels = {
-        "unchecked_isolated": ("UNCHECKED", "#FBECEC"),
-        "general_rule": ("GENERAL", "#E8F5EF"),
-        "ontology_gate": ("ONTOLOGY", "#EAF4FA"),
-    }
-    # One row per arm/stratum gives every value a real padded table cell.
-    x0, table_y, header_h, row_h = 24, 208, 76, 68
-    widths = (220, 244, 164, 160, 176, 268)
-    headings = ("Arm", "Input cases", "A/D", "Unsafe", "Mismatch", "Checks P/F")
-    cursor = x0
-    for cell_w, heading in zip(widths, headings):
-        parts.append(svg_box(cursor, table_y, cell_w, header_h, "#F4F5F6"))
-        parts.append(svg_text(cursor + cell_w / 2, table_y + 48, heading, "label", "middle"))
-        cursor += cell_w
-    for arm_index, arm in enumerate(ARMS):
-        for stratum_index, (_, name) in enumerate(STRATA):
-            cell = data["frozen_comparison"]["cells"][arm][name]
-            check_label = (
-                f"{cell['checks']['pass']} / {cell['checks']['fail']}"
-                if cell["checks"]["report_status"] == "reported"
-                else "unreported"
-            )
-            values = (
-                labels[arm][0],
-                f"{name.capitalize()}  n={cell['n']}",
-                f"{cell['outcome']['allowed']} / {cell['outcome']['denied']}",
-                str(cell["unsafe"]),
-                str(cell["mismatch"]),
-                check_label,
-            )
-            y = table_y + header_h + (arm_index * 3 + stratum_index) * row_h
-            cursor = x0
-            for cell_w, value in zip(widths, values):
-                parts.append(svg_box(cursor, y, cell_w, row_h, labels[arm][1]))
-                parts.append(svg_text(cursor + cell_w / 2, y + 44, value, "cell", "middle"))
-                cursor += cell_w
-    chart_y = 928
-    parts += [
-        svg_box(24, chart_y, 1232, 288, "#F7F7F5"),
-        svg_text(52, chart_y + 50, "UNSAFE VS SEMANTIC MISMATCH", "head"),
-        svg_text(52, chart_y + 94, "Case counts; horizontal scale 0 to 60", "small"),
-        svg_text(764, chart_y + 94, "Red = unsafe   Blue = mismatch", "small"),
-    ]
-    for index, arm in enumerate(ARMS):
-        group_x, track_w = 52 + index * 400, 306
-        parts.append(svg_text(group_x, chart_y + 140, labels[arm][0].capitalize(), "label"))
-        for series, (metric, color) in enumerate((("unsafe", "#B54747"), ("mismatch", "#0072B2"))):
-            value = sum(data["frozen_comparison"]["cells"][arm][name][metric] for _, name in STRATA)
-            bar_y = chart_y + 166 + series * 40
-            bar_w = int(track_w * value / 60)
-            parts.append(svg_box(group_x, bar_y, track_w, 20, "#FFFFFF"))
-            if value:
-                parts.append(
-                    svg_box(group_x, bar_y, bar_w, 20, color, color, class_name="data-mark")
-                )
-            parts.append(svg_text(group_x + track_w + 12, bar_y + 20, str(value), "small"))
-        for tick in (0, 30, 60):
-            tx = group_x + track_w * tick / 60
-            parts.append(svg_text(int(tx), chart_y + 266, str(tick), "small", "middle"))
-    parts += [
-        svg_text(24, 1258, "General = ontology: 60 equal cases", "note"),
-        svg_text(24, 1298, "General / ontology / unchecked:", "note"),
-        svg_text(24, 1338, "unsafe = 0 / 0 / 51; mismatch = 0 / 0 / 60", "note"),
-        "</svg>",
-    ]
-    return "\n".join(parts) + "\n"
-
-
 def convert(svg_path: Path, stem: str) -> None:
     rsvg = shutil.which("rsvg-convert")
     ps2pdf = shutil.which("ps2pdf")
@@ -797,7 +713,6 @@ def outputs(data: dict[str, Any]) -> dict[Path, str]:
     return {
         REFERENCE: json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         FIGURES / "fig_signal_mechanism.svg": mechanism_svg(),
-        FIGURES / "fig_signal_comparison.svg": comparison_svg(data),
     }
 
 
@@ -838,7 +753,6 @@ def main() -> int:
         if path.suffix == ".svg":
             ET.parse(path)
     convert(FIGURES / "fig_signal_mechanism.svg", "fig_signal_mechanism")
-    convert(FIGURES / "fig_signal_comparison.svg", "fig_signal_comparison")
     print(
         json.dumps(
             {
@@ -853,8 +767,6 @@ def main() -> int:
                         *expected,
                         FIGURES / "fig_signal_mechanism.png",
                         FIGURES / "fig_signal_mechanism.pdf",
-                        FIGURES / "fig_signal_comparison.png",
-                        FIGURES / "fig_signal_comparison.pdf",
                     )
                 ],
             },

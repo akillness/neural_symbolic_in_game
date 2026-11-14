@@ -1,0 +1,85 @@
+{
+  "schema_version": "trace-rpg-review-boundary-audit/v1",
+  "study_id": "gemini-review-boundary-audit-20261113",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "review_source": "reviewer-source.json",
+  "scope": "New deterministic, designer-authored offline research audit. Not a language-model performance study, a human study, a claim of gameplay generalization, or execution of the blocked 180-unit prospective pilot.",
+  "questions": [
+    "Does an actually executed strict-schema-only arm admit schema-valid proposals that violate separately implemented encoded-rule checks?",
+    "What are the pre-gate invalid, bounded repair recovery, terminal hold, unsafe commit and false rejection counts against an implementation-separate reference?",
+    "Do a monotone graph closure and exhaustive location/inventory BFS agree on reachable rooms over the frozen reusable-key graph family?",
+    "Which valid structural signatures survive gating, and how many signatures result from bounded repair?",
+    "Do authored undeclared narrative paraphrases pass structured checks while the corresponding explicit forbidden fact declaration is rejected?"
+  ],
+  "graph_design": {
+    "room_counts": [4, 8],
+    "topologies": ["locked_chain", "bypass_branch"],
+    "key_placement_patterns": [["start", "start"], ["start", "goal"], ["goal", "start"], ["goal", "goal"]],
+    "quest_stages": [0, 1],
+    "state_count": 32,
+    "room_ids": "r0 through r(n-1); start r0; goal r(n-1)",
+    "edges": "Bidirectional chain. The edge entering r(n//2) requires key0 and the edge entering the goal requires key1, in both directions. bypass_branch additionally has an unlocked bidirectional edge r0 <-> r(n//2).",
+    "placements": "key0 and key1 follow the frozen placement pattern; map is at the start; relic is at the goal.",
+    "assumptions": "Finite undirected graph; keys persist, are reusable and picked up at visited rooms; no consumption, random transitions, dynamic edges, capacity limits or irreversible branching. No claim beyond this profile.",
+    "production_input": "A separately coded monotone closure derives WorldState.reachable_locations; it is not inferred from entity names or generated prose.",
+    "reference": "A separate standard-library BFS over (current room, collected keys) computes reachable rooms. The reference module must not import the production validator, runtime, repairer or closure.",
+    "oracle_validity": "Reuse the existing independently coded generic_accepts from scripts/run_fixed_oracle_comparison.py, with the BFS-derived reachable set. Recompute reference validity for each final repaired candidate; do not reuse initial labels. This is implementation separation, not blinded human annotation."
+  },
+  "state_and_policy": {
+    "facts": ["ready", "harbor_open", "keeper_secret"],
+    "actor": "keeper",
+    "known_facts": ["harbor_open", "keeper_secret"],
+    "disclosure": "keeper_secret is forbidden at quest stage 0 and permitted at stage 1; knowledge is identical at both stages.",
+    "signal_policy": "Required preconditions {ready}; required effects {signal_restored}; allowed effects {signal_restored, beacon_lit}; allowed stage effects {current stage, current stage+1}.",
+    "observe_policy": "No required precondition/effect; only observed is an allowed effect; no stage effects.",
+    "objective": "A committed final state contains signal_restored. An accepted observe action can be valid without achieving that objective."
+  },
+  "candidate_variants": [
+    "valid_signal",
+    "valid_observe",
+    "valid_public_fact",
+    "valid_start_object",
+    "required_relic",
+    "omit_policy_precondition",
+    "omit_policy_effect",
+    "unauthorized_effect",
+    "declared_secret",
+    "unknown_knowledge",
+    "future_stage",
+    "unknown_object",
+    "extra_unsatisfied_precondition"
+  ],
+  "assignment_count_per_arm": 416,
+  "arms": [
+    {"id": "schema_only", "repair_budget": 0, "decision": "Strict shared candidate parser only; explicitly no semantic gate. Apply encoded effects/stage in the isolated research simulator if parsed."},
+    {"id": "semantic_rejection", "repair_budget": 0, "decision": "Existing execute_with_repair with no repairs."},
+    {"id": "unchanged_retry", "repair_budget": 1, "decision": "Existing execute_with_repair with an unchanged-candidate callback."},
+    {"id": "guided_repair", "repair_budget": 1, "decision": "Existing execute_with_repair and counterexample_guided_repair. No state-reading oracle repair arm is added."}
+  ],
+  "metrics": {
+    "pre_gate_invalid": "Reference-invalid initial proposals / all assigned units; not the production gate's own error rate.",
+    "repair_success_at_1": "Initially reference-invalid units ending with a reference-valid committed final candidate / initially reference-invalid units, per arm; report counts even for K=0 controls.",
+    "terminal_hold": "Fallback/hold outcomes / all assigned units; failures remain separate assigned failures and never disappear.",
+    "unsafe_commit": "Committed final candidates that fail reference validity / all assigned units; additionally report among commits with its distinct denominator.",
+    "false_rejection": "Reference-valid initial proposals ending in hold / reference-valid initial proposals. Report failed assignments separately; no creativity inference.",
+    "goal": "Committed final-state objective / all assigned units, separate from reference validity and gate acceptance.",
+    "valid_structural_retention": "Number of distinct structural signatures among initially reference-valid cases that retain their exact signature in a safe commit / distinct signatures among initially reference-valid cases. Also report case-level preservation. Structural signatures include action type, preconditions, effects, required objects, used/disclosed facts, required stage and stage effect; exclude IDs, narrative, metadata, location names and graph labels.",
+    "repair_signature_counts": "Report distinct initially invalid signatures and distinct reference-valid committed repaired signatures separately, not as a natural-language or creativity diversity score.",
+    "graph_agreement": "Closure/BFS agreement per graph-state assignment, with mismatches retained. This is an implementation crosscheck, not independent human gameplay validation.",
+    "latency": "Record measured local per-assignment wall-clock latency; no LLM latency or practical-performance claim."
+  },
+  "surface_sentinels": {
+    "separate_denominator": true,
+    "design": "Six fixed designer-authored narrative paraphrases (three English and three Korean) of keeper_secret, each paired with disclosed_facts empty versus {keeper_secret}, in a stage-0 canonical graph state. Freeze all twelve inputs before execution.",
+    "units_per_arm": 12,
+    "interpretation": "Known structured-field coverage boundary only. No NLI detector, blind semantic annotation, natural-language leakage rate or renderer-level safety claim. Audit that narrative text does not directly mutate facts or stage."
+  },
+  "reproducibility": {
+    "enumeration": "Deterministic complete enumeration of the declared factors; no stochastic replicates, seed null/not applicable.",
+    "freeze": "Write exact input cases, input/source hashes and assignment inventory before computing outcomes. Every prescribed arm/case pair must receive an outcome or explicit failure.",
+    "trace": "Keep proposal, schema/validation evidence, repair attempts, final candidate, commit/hold/failure, before/after state hashes, native replay where produced, source hashes, actual local latency, model_called false, model_revision null, seed null and cost_usd null.",
+    "data_safety": "Write only to a new empty results directory. Never overwrite old cohorts, raw sources, existing prospective protocol/status, or C-RESULT TODO-RESULT placeholders.",
+    "tests": "An independent Tester authors focused tests before runner implementation, including a self-locked key, an unlocked bypass, false rejection denominator, final-candidate re-evaluation, distinct structural signatures, schema-only actual bypass, surface sentinel distinction and assigned failure retention."
+  },
+  "publication_rule": "Only observed values may enter new bilingual table fragments. Preserve all existing claim/table/figure IDs; add a bounded offline-audit subsection. Review suggestions about old Paper A/B source drafts are reconciled against current TRACE-RPG and immutable drafts are not edited. Multi-model and human efficacy results remain unmeasured unless independently admitted and actually executed; this study cannot fill those placeholders."
+}

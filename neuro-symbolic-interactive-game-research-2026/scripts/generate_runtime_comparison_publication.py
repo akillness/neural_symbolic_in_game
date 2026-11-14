@@ -1133,7 +1133,6 @@ def render_identity_fragment(data: Mapping[str, Any], korean: bool = False) -> s
     paragraphs.append(timing_text)
     out = [
         "\n\n".join(paragraphs),
-        r"\setcounter{table}{14}",
         r"\begin{table}[!ht]",
         r"\centering",
         r"\setlength{\tabcolsep}{4pt}",

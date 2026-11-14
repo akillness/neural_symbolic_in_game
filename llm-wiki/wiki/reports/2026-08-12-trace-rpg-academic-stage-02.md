@@ -18,7 +18,7 @@ performance. Such claims remain TODO until their declared studies run.
 
 Canonical packet:
 
-- `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-01-research-packet.md`
+- Historical Stage 1 packet (2026-08-12): `stage-01-research-packet.md`; retired from the active tree on 2026-11-13. Original-path/archive mapping: [retirement receipt](../../../neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json).
 - `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/stage-02-source-shortlist.md`
 - `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/material-passport.json`
 

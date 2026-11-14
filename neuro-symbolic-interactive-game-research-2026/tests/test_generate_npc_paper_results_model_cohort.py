@@ -72,7 +72,7 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
             figures_dir = temporary_root / "figures"
             with (
                 patch.object(generator, "OUT", output_dir),
-                patch.object(generator, "FIGURES", figures_dir),
+                patch.object(generator, "FIGURES", figures_dir, create=True),
                 self.assertRaisesRegex(
                     ValueError, rf"missing NPC evidence root: {missing_root.resolve()}"
                 ),
@@ -92,12 +92,34 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
             figures_dir = output_root / "figures"
             with (
                 patch.object(generator, "OUT", output_dir),
-                patch.object(generator, "FIGURES", figures_dir),
+                patch.object(generator, "FIGURES", figures_dir, create=True),
             ):
                 generator.main(self.historical_root)
 
             reports = json.loads(
                 (output_dir / "npc_validation_reports.json").read_text(encoding="utf-8")
+            )
+            for language in ("en", "ko"):
+                for kind in ("results", "tables"):
+                    filename = f"npc_{kind}_{language}.tex"
+                    self.assertEqual(
+                        (output_dir / filename).read_bytes(),
+                        (ROOT / "paper/latex/generated" / filename).read_bytes(),
+                    )
+            self.assertEqual(
+                {path.name for path in output_dir.iterdir()},
+                {
+                    "npc_validation_reports.json",
+                    "npc_results_en.tex",
+                    "npc_results_ko.tex",
+                    "npc_tables_en.tex",
+                    "npc_tables_ko.tex",
+                },
+            )
+            self.assertEqual(
+                list(figures_dir.glob("fig_npc_screening.*")),
+                [],
+                "table generation must not recreate the retired optional screening figure",
             )
 
         for packet_id, outcome in expected_outcomes.items():
@@ -142,7 +164,9 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
             for index, source_root in enumerate((self.historical_root, relocated_root)):
                 with (
                     patch.object(generator, "OUT", output_root / str(index) / "generated"),
-                    patch.object(generator, "FIGURES", output_root / str(index) / "figures"),
+                    patch.object(
+                        generator, "FIGURES", output_root / str(index) / "figures", create=True
+                    ),
                 ):
                     generator.main(source_root)
                     reports.append(
@@ -195,7 +219,7 @@ class GenerateNpcPaperResultsModelCohortTests(unittest.TestCase):
                 output_root = Path(output_directory)
                 with (
                     patch.object(generator, "OUT", output_root / "generated"),
-                    patch.object(generator, "FIGURES", output_root / "figures"),
+                    patch.object(generator, "FIGURES", output_root / "figures", create=True),
                     self.assertRaisesRegex(ValueError, "(?i)(hash|sha|mismatch|drift)"),
                 ):
                     generator.main(relocated_root)

@@ -13,6 +13,7 @@ import shutil
 import socketserver
 import subprocess
 import sys
+import tempfile
 import threading
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -155,13 +156,34 @@ def test_frozen_counts_keep_denominators_and_unsafe_mismatch_distinct():
         assert sparse[stratum]["checks"] == {"pass": 0, "fail": 0, "report_status": "unreported"}
 
 
-def test_generated_figures_are_parseable_and_nonempty():
-    for stem in ("fig_signal_mechanism", "fig_signal_comparison"):
-        svg = FIGURES / f"{stem}.svg"
-        ET.parse(svg)
-        assert svg.stat().st_size > 0
-        assert (FIGURES / f"{stem}.png").stat().st_size > 0
-        assert (FIGURES / f"{stem}.pdf").stat().st_size > 0
+def test_normal_generation_preserves_reference_and_mechanism_without_retired_comparison(
+    monkeypatch,
+):
+    producer = _producer()
+    with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+        output_root = Path(directory)
+        reference_path = output_root / "disclosure-reference.json"
+        figures = output_root / "figures"
+        monkeypatch.setattr(producer, "REFERENCE", reference_path)
+        monkeypatch.setattr(producer, "FIGURES", figures)
+        monkeypatch.setattr(sys, "argv", [str(SCRIPT)])
+
+        assert producer.main() == 0
+
+        assert json.loads(reference_path.read_text(encoding="utf-8")) == json.loads(
+            REFERENCE.read_text(encoding="utf-8")
+        )
+        assert (figures / "fig_signal_mechanism.svg").read_bytes() == (
+            FIGURES / "fig_signal_mechanism.svg"
+        ).read_bytes()
+        ET.parse(figures / "fig_signal_mechanism.svg")
+        assert (figures / "fig_signal_mechanism.png").read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+        assert (figures / "fig_signal_mechanism.pdf").read_bytes().startswith(b"%PDF-")
+        assert {path.name for path in figures.iterdir()} == {
+            "fig_signal_mechanism.svg",
+            "fig_signal_mechanism.png",
+            "fig_signal_mechanism.pdf",
+        }
 
 
 def test_check_mode_is_deterministic_and_read_only():

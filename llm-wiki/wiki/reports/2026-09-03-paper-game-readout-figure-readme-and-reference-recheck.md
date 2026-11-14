@@ -49,7 +49,7 @@ Status: **ENGINEERING/EDITORIAL PASS ONLY; NO HUMAN OR MODEL RESULT; C-RESULT-00
 - 배지(validate 워크플로, EN/KO PDF, Vercel 플레이, Godot 4.7.1, Python 3.11+, 증거 52/52·8/8·5/5,
   last-commit, 슬라이드), 골든패스 GIF, 그림 1, 논문 페이지 시트(`docs/readme/paper-*-pages.jpg`),
   캡처 4장, 모바일 2장, 대시보드 GIF + 스틸 4장(`docs/readme/dashboard/`), 밸런스 SVG, KG SVG,
-  한국어 덱 16장(`docs/readme/slides/ko-*.jpg`, `docs/slides/trace-rpg-overview.ko.html` 추적).
+  한국어 덱 16장(당시 썸네일 `ko-01.jpg`–`ko-16.jpg`, HTML 파일명 `trace-rpg-overview.ko.html`). HTML 덱·썸네일 16장·대체된 README 이미지 내보내기 파일은 2026-11-13 은퇴했다. 위 목록은 2026-09-03 관측 이력이며, 원본 경로·해시·복원 위치는 [은퇴 영수증](../../../neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json)을 따른다.
 - 라이선스 파일이 없어 라이선스 배지는 넣지 않았다("to be announced").
 
 ## Receipts

@@ -1,8 +1,8 @@
 # TRACE-RPG paper and experiment optimization — 2026-10-14 (D-075)
 
-Status: evidence-bounded bilingual revision; local technical verification record is maintained in the canonical project report below. A journal decision, anonymous reviewer archive, human study, model ranking and population efficacy are not claimed.
+Status: historical evidence-bounded bilingual revision; its dated local technical verification record is preserved in the retired report identified below. A journal decision, anonymous reviewer archive, human study, model ranking and population efficacy are not claimed.
 
-Canonical report: `neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/submission-optimization-2026-10-14.md`.
+Historical report (2026-10-14): `submission-optimization-2026-10-14.md`; retired from the active tree on 2026-11-13. Original-path/archive mapping: [retirement receipt](../../../neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json).
 
 - Current title: *TRACE-RPG: Auditable Neuro-Symbolic Commit Gates for Interactive Game Worlds*. EN/KO remain synchronized in claim scope, numeric denominators and figure/table/equation IDs. The paper distinguishes typed-error repair from the state-reading oracle and unkeyed content-integrity checks from authenticity.
 - Citation baseline: 58 records, 48 VERIFIED identities and 10 PREPRINT records; 22 prior Semantic Scholar rate limits remain disclosed. Three bounded primary-record additions cover 2025 JSONSchemaBench, 2026 NCP-Bench and 2025 benchmark-contamination mitigation. Primary URLs, revisions, retrieval date, missing licenses and unresolved venue metadata are in the source ledger/captures; no preprint is promoted by an acceptance comment alone.

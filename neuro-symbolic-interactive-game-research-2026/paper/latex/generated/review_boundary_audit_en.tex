@@ -1,0 +1,56 @@
+% Generated exclusively from this directory's observed audit rows.
+\begin{table*}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Arm & Assigned & Initial invalid & Recovered & Hold & Unsafe commit & False rejection & Goal & Failed \\
+\midrule
+schema\_only & 416 & 260/416 & 0/260 & 0/416 & 260/416 & 0/156 & 352/416 & 0 \\
+semantic\_rejection & 416 & 260/416 & 0/260 & 260/416 & 0/416 & 0/156 & 124/416 & 0 \\
+unchanged\_retry & 416 & 260/416 & 0/260 & 260/416 & 0/416 & 0/156 & 124/416 & 0 \\
+guided\_repair & 416 & 260/416 & 128/260 & 132/416 & 0/416 & 0/156 & 252/416 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Deterministic offline boundary audit. Recovery uses initially invalid cases; false rejection uses initially valid cases. Goal attainment is separate from rule validity.}
+\label{tab:review-boundary-funnel}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabular}{lrrrrr}
+\toprule
+Arm & Valid signatures retained & Cases retained & Invalid signatures & Repaired signatures & Unsafe/commits \\
+\midrule
+schema\_only & 11/11 & 156/156 & 17 & 0 & 260/416 \\
+semantic\_rejection & 11/11 & 156/156 & 17 & 0 & 0/156 \\
+unchanged\_retry & 11/11 & 156/156 & 17 & 0 & 0/156 \\
+guided\_repair & 11/11 & 156/156 & 17 & 2 & 0/284 \\
+\bottomrule
+\end{tabular}
+\caption{Exact encoded signatures only; neither creativity nor linguistic diversity is measured.}
+\label{tab:review-structural-retention}
+\end{table*}
+
+Reachability implementation crosscheck: 32/32. 
+\begin{table*}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabular}{lrrrr}
+\toprule
+Arm & Separate surface assignments & Undeclared commits & Declared holds & Failed \\
+\midrule
+schema\_only & 12 & 6/6 & 0/6 & 0 \\
+semantic\_rejection & 12 & 6/6 & 6/6 & 0 \\
+unchanged\_retry & 12 & 6/6 & 6/6 & 0 \\
+guided\_repair & 12 & 6/6 & 6/6 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Designer-authored surface sentinels; separate assignments, not natural-language leakage prevalence or renderer safety evidence.}
+\label{tab:review-surface-sentinels}
+\end{table*}
+Surface sentences are designer-authored sentinels, not natural-language leakage prevalence or renderer safety evidence. Model and human efficacy remain unmeasured.

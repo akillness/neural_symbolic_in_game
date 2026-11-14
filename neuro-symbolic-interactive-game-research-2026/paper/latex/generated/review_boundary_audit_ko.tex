@@ -1,0 +1,56 @@
+% Generated exclusively from this directory's observed audit rows.
+\begin{table*}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+실행군 & 배정 & 초기 무효 & 수리 복구 & 보류 & 비안전 반영 & 과잉 차단 & 목표 & 실패 \\
+\midrule
+schema\_only & 416 & 260/416 & 0/260 & 0/416 & 260/416 & 0/156 & 352/416 & 0 \\
+semantic\_rejection & 416 & 260/416 & 0/260 & 260/416 & 0/416 & 0/156 & 124/416 & 0 \\
+unchanged\_retry & 416 & 260/416 & 0/260 & 260/416 & 0/416 & 0/156 & 124/416 & 0 \\
+guided\_repair & 416 & 260/416 & 128/260 & 132/416 & 0/416 & 0/156 & 252/416 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{결정론적 오프라인 경계 감사. 수리는 초기 무효, 과잉 차단은 초기 유효를 분모로 사용한다. 목표 달성은 규칙 적합성과 별개이다.}
+\label{tab:review-boundary-funnel}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabular}{lrrrrr}
+\toprule
+실행군 & 유효 구조 보존 & 사례 보존 & 초기 무효 구조 & 수리 후 구조 & 비안전/반영 \\
+\midrule
+schema\_only & 11/11 & 156/156 & 17 & 0 & 260/416 \\
+semantic\_rejection & 11/11 & 156/156 & 17 & 0 & 0/156 \\
+unchanged\_retry & 11/11 & 156/156 & 17 & 0 & 0/156 \\
+guided\_repair & 11/11 & 156/156 & 17 & 2 & 0/284 \\
+\bottomrule
+\end{tabular}
+\caption{정확한 구조 서명만 비교하며 창의성이나 언어 다양성은 측정하지 않는다.}
+\label{tab:review-structural-retention}
+\end{table*}
+
+도달성 구현 교차검사: 32/32. 
+\begin{table*}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabular}{lrrrr}
+\toprule
+실행군 & 별도 표면 배정 & 무선언 반영 & 선언 보류 & 실패 \\
+\midrule
+schema\_only & 12 & 6/6 & 0/6 & 0 \\
+semantic\_rejection & 12 & 6/6 & 6/6 & 0 \\
+unchanged\_retry & 12 & 6/6 & 6/6 & 0 \\
+guided\_repair & 12 & 6/6 & 6/6 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{설계자가 작성한 표면 센티널. 별도 배정이며 자연어 누출 빈도나 렌더러 안전성의 증거가 아니다.}
+\label{tab:review-surface-sentinels}
+\end{table*}
+표면 문장은 설계자가 작성한 센티널이며 자연어 누출 빈도나 렌더러 안전성의 증거가 아니다. 모델·인간 효능은 측정하지 않았다.

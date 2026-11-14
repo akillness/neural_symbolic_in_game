@@ -2,6 +2,8 @@
 
 ## Project
 
+- **Reviewer reproducibility and paper-only retirement — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Reviewer reproducibility and paper-only retirement — 2026-11-13]]. Current EN24/KO24 manuscripts include source-bound Godot captures and descriptive v5 strata. The dedicated Layer-A verifier inventories reached tables and checks their retained sources; it does not recollect models or certify fresh engine/browser behavior. Unverifiable Ollama quantitative claims are withdrawn, with their prior text preserved separately. Publication and hosted-CI evidence must be checked separately from these source-level observations.
+
 - **Review revisions and bounded two-stage decomposition — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Review revisions and bounded two-stage decomposition — 2026-11-13]]. **Pre-delivery checkpoint:** bilingual C3/v5 revisions, requested192 tests and EN19/KO18 PDF/source/visual checks passed. Two native Aside full-gate failures remain recorded. The existing explicit Playwright1.65.0 CI mode passed both affected modules (122 tests); whole-hook delivery and hosted CI are separate, not implied. Unsupported TR scores were not inserted.
 
 - **Paper delivery and Korean float-page fix — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Paper delivery and Korean float-page fix — 2026-11-13]]. `c7e4c4d..d7d5666` published after an unmodified local pre-push gate (12/12, from a detached worktree) and a green hosted run on the pinned runtime; a local follow-up `07870a0` (Korean Overfull fix) is verified but not recorded as delivered. Working-tree wiki lint still reports 3 pre-existing broken links, untouched. No new model call or claim.

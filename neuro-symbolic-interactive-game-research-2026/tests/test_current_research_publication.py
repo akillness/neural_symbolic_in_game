@@ -35,6 +35,8 @@ ACTIVE_OUTPUTS = {
     "contribution_map_ko.tex",
     "evidence_lanes_en.tex",
     "evidence_lanes_ko.tex",
+    "review_boundary_audit_en.tex",
+    "review_boundary_audit_ko.tex",
 }
 RETIRED_MARKERS = (
     "live_pilot",
@@ -57,6 +59,10 @@ FROZEN_LEGACY_GENERATED_BASENAMES = (
     "runtime_comparison_results",
     "runtime_comparison_tables",
 )
+APPROVED_BODY_GENERATED_BASENAMES = (
+    "review_boundary_audit",
+    "paired_feedback_strata",
+)
 
 
 def _assert_bilingual_main_sources_retain_frozen_inputs(root: Path) -> None:
@@ -70,18 +76,39 @@ def _assert_bilingual_main_sources_retain_frozen_inputs(root: Path) -> None:
         expected_legacy_names = {
             f"{basename}_{language}.tex" for basename in FROZEN_LEGACY_GENERATED_BASENAMES
         }
+        expected_new_names = {
+            f"{basename}_{language}.tex" for basename in APPROVED_BODY_GENERATED_BASENAMES
+        }
         identity_name = f"runtime_identity_extension_{language}.tex"
         assert {
             path.name
             for path in generated_dir.iterdir()
             if path.suffix == ".tex" and path.name.endswith(f"_{language}.tex")
-        } == expected_legacy_names | {identity_name}
+        } == expected_legacy_names | expected_new_names | {identity_name}
         for basename in FROZEN_LEGACY_GENERATED_BASENAMES:
             path = generated_dir / f"{basename}_{language}.tex"
             assert path.is_file()
             input_line = rf"\input{{../generated/{path.name}}}"
             assert source.count(input_line) == 1
             assert source.index(input_line) < appendix_index
+
+        for basename in APPROVED_BODY_GENERATED_BASENAMES:
+            path = generated_dir / f"{basename}_{language}.tex"
+            assert path.is_file()
+            input_line = rf"\input{{../generated/{path.name}}}"
+            assert source.count(input_line) == 1
+            assert source.index(input_line) < appendix_index
+
+        audit_input = rf"\input{{../generated/review_boundary_audit_{language}.tex}}"
+        strata_input = rf"\input{{../generated/paired_feedback_strata_{language}.tex}}"
+        original_pilot = rf"\input{{../generated/pilot_results_{language}.tex}}"
+        assert (
+            source.index(original_pilot)
+            < source.index(r"\label{sec:review-boundary-results}")
+            < source.index(audit_input)
+            < source.index(rf"\input{{../generated/runtime_comparison_results_{language}.tex}}")
+        )
+        assert source.index(r"\label{tab:paired-feedback-v5}") < source.index(strata_input)
 
         identity_path = generated_dir / identity_name
         assert identity_path.is_file()
@@ -464,10 +491,21 @@ def test_bilingual_main_sources_retain_legacy_generated_inputs_and_place_identit
     _assert_bilingual_main_sources_retain_frozen_inputs(ROOT)
 
 
+@pytest.mark.parametrize(
+    "victim_name",
+    [
+        "contribution_map_en.tex",
+        "review_boundary_audit_en.tex",
+        "review_boundary_audit_ko.tex",
+        "paired_feedback_strata_en.tex",
+        "paired_feedback_strata_ko.tex",
+    ],
+)
 def test_missing_legacy_fragment_and_main_input_fails_frozen_inventory_guard(
     tmp_path: Path,
+    victim_name: str,
 ) -> None:
-    """Removing a legacy fragment together with its include cannot evade the explicit guard."""
+    """Removing a frozen or approved new fragment and include cannot evade the exact guard."""
     fixture_root = tmp_path / "fixture"
     shutil.copytree(ROOT / "paper/latex/generated", fixture_root / "paper/latex/generated")
     for language in ("en", "ko"):
@@ -475,9 +513,10 @@ def test_missing_legacy_fragment_and_main_input_fails_frozen_inventory_guard(
         source_dir.mkdir(parents=True)
         shutil.copy(ROOT / f"paper/latex/{language}/main.tex", source_dir / "main.tex")
 
-    victim = fixture_root / "paper/latex/generated/contribution_map_en.tex"
+    victim = fixture_root / "paper/latex/generated" / victim_name
     victim.unlink()
-    main_path = fixture_root / "paper/latex/en/main.tex"
+    language = victim_name.removesuffix(".tex").rsplit("_", 1)[1]
+    main_path = fixture_root / f"paper/latex/{language}/main.tex"
     source = main_path.read_text(encoding="utf-8")
     victim_input = rf"\input{{../generated/{victim.name}}}"
     assert source.count(victim_input) == 1

@@ -13,7 +13,6 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776ab)](neuro-symbolic-interactive-game-research-2026/pyproject.toml)
 [![Evidence 52/52 + 4/4 · 8/8 · 5/5](https://img.shields.io/badge/Evidence-52%2F52%20%2B%204%2F4%20%C2%B7%208%2F8%20%C2%B7%205%2F5-blue)](neuro-symbolic-interactive-game-research-2026/game-track/godot/docs/latest/evaluation-matrix.md)
 [![last commit](https://img.shields.io/github/last-commit/akillness/neural_symbolic_in_game)](https://github.com/akillness/neural_symbolic_in_game/commits/main)
-[![Slides (KO)](https://img.shields.io/badge/Slides-KO-orange)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)
 
 ![2026-11-03 현재 source에서 캡처한 ending: 수사관의 기여와 validator 영수증. 모델 결과가 아닌 엔지니어링 화면 근거](neuro-symbolic-interactive-game-research-2026/docs/readme/prospective-20261103/native-ending.png)
 
@@ -229,38 +228,34 @@ open http://127.0.0.1:4173/dashboard/                          # game at /public
 
 경계는 한 방향이다. 내장된 게임은 `window.parent.postMessage`로 typed event를 미러링하며 페이지에는 게임 명령 채널이 없고 봉인된 fact ID도 전달받지 않는다. 새 경로는 commit 3회와 hold 1회를 기록했다. `STAGE_GATED_DISCLOSURE` hold는 초기 상태 hash를 보존했고 실제 state/event 결속은 캡처 manifest에 남겼다. 이는 현재 로컬 경로의 관측이지 새 배포 서비스나 모델 성능의 근거가 아니다.
 
-## 슬라이드
+## 은퇴한 개요 자료
 
-16장짜리 한국어 개요 덱을 단일 HTML 파일로 제공한다: [`trace-rpg-overview.ko.html`](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-overview.ko.html)(화살표나 스페이스로 이동, `?`로 도움말). 덱은 이 README와 같은 흐름을 따른다.
-
-<table>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-01.jpg" alt="슬라이드 1"><br><sub>01 · 제목</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-02.jpg" alt="슬라이드 2"><br><sub>02 · 문제: 유창한 텍스트 ≠ valid한 이벤트(여섯 가지 실패 유형)</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-03.jpg" alt="슬라이드 3"><br><sub>03 · 은행 창구 비유</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-04.jpg" alt="슬라이드 4"><br><sub>04 · 파이프라인: propose → parse → policy → 7 검사 / 6 계열 → repair 또는 fallback → commit → record → replay</sub></td>
-  </tr>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-05.jpg" alt="슬라이드 5"><br><sub>05 · 여섯 상태 상대 계열, 일곱 검사, 게임 예시</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-06.jpg" alt="슬라이드 6"><br><sub>06 · Guided repair: ρ 루프와 네 개의 arm</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-07.jpg" alt="슬라이드 7"><br><sub>07 · SHA-256 영수증 체인과 의미 replay</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-08.jpg" alt="슬라이드 8"><br><sub>08 · 기여 C1–C5</sub></td>
-  </tr>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-09.jpg" alt="슬라이드 9"><br><sub>09 · 근거 레인 E1 / E2 / E3 / ENG1과 상한</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-10.jpg" alt="슬라이드 10"><br><sub>10 · 오프라인 repair-arm 막대 그래프</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-11.jpg" alt="슬라이드 11"><br><sub>11 · 라이브 스크리닝 표와 KG 숫자</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-12.jpg" alt="슬라이드 12"><br><sub>12 · 게임 에피소드 루프와 권위 경계</sub></td>
-  </tr>
-  <tr>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-13.jpg" alt="슬라이드 13"><br><sub>13 · 규칙 학습으로서의 HELD 화면</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-14.jpg" alt="슬라이드 14"><br><sub>14 · 기여 readout: CONTRIBUTION / UNLOCKED / CASE CHAIN과 두 부분 영수증</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-15.jpg" alt="슬라이드 15"><br><sub>15 · 근거가 말하는 것과 말하지 않는 것</sub></td>
-    <td><img src="neuro-symbolic-interactive-game-research-2026/docs/readme/slides/ko-16.jpg" alt="슬라이드 16"><br><sub>16 · 다음 단계와 세 줄 요약</sub></td>
-  </tr>
-</table>
+과거 한국어 개요 덱 16장(`trace-rpg-overview.ko.html`과 썸네일) 및 대체된 README 이미지 내보내기 파일은 2026-11-13 은퇴했다. [은퇴 영수증](neuro-symbolic-interactive-game-research-2026/research/maintenance/paper-legacy-retirement-20261113.json)은 원본 경로·해시·복원 위치를 기록한다. 현재 자료는 위 논문·게임 갤러리와 [영문 논문](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf) / [국문 논문](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)을 따른다.
 
 ## 재현
+
+### 심사용 한정 검증
+
+연구 프로젝트 디렉터리에서 준비된 lock 환경으로 읽기 전용 논문 주장 검증 진입점을 실행한다:
+
+```bash
+cd neuro-symbolic-interactive-game-research-2026
+.venv/bin/python scripts/verify_paper_claims.py
+```
+
+이 모드는 포트를 열거나 LLM을 호출하거나 새 실험을 수행하거나 산출물을 다시 빌드하지 않고 기존 논문 근거를 검사한다. 의존성이나 영수증과 일치하는 과거 NPC006 source가 없으면 선행 조건 차단이며, 검사를 건너뛰거나 현재 source로 대체할 허가가 아니다. 이 명령은 사용법이지 PASS 결과가 아니며 전체 strict CI gate를 대신하지 않는다.
+
+승인된 공개 review packet은 같은 프로젝트 디렉터리에서 명시적으로 선택한다:
+
+```bash
+python -B scripts/verify_paper_claims.py --public-source-projection
+```
+
+이 모드는 [공개 source 파생본](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json), [projection 영수증](neuro-symbolic-interactive-game-research-2026/research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json)과 동결 outcome을 검사한다. 배포하지 않는 비공개 원본 review 파일 두 개를 재검증하거나 새 엔진·브라우저·제공자 실행을 수행하지 않는다. 기본 명령은 strict 모드를 유지하며 원본 review 바이트가 없으면 `BLOCKED`(exit 2)로 끝나고 공개 projection으로 자동 대체하지 않는다. 공개 모드 통과는 원본 바이트의 strict 검증이나 전체 CI PASS가 아니다.
+
+### 전체 strict 검증
+
+아래 `./scripts/verify_like_ci.sh`는 별도의 전체 gate다. 고정된 runtime, Godot 4.7.1과 PDF 도구 체인이 필요하며, lock된 의존성 설치·산출물 빌드·엔진 및 브라우저 fixture 실행을 수행할 수 있다. 명시적 Playwright contract transport에는 사전 준비된 Playwright 1.65.0과 그에 맞는 Chromium, `NODE_PATH`, `PLAYWRIGHT_BROWSERS_PATH`가 필요하며 native Aside 실패 시 자동 대체 경로가 아니다. 선행 조건을 해결하기 전에는 전체 gate PASS를 주장하지 않는다.
 
 ```bash
 cd neuro-symbolic-interactive-game-research-2026

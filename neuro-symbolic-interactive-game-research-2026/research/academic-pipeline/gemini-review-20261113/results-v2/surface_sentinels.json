@@ -1,0 +1,1490 @@
+[
+  {
+    "candidate": {
+      "action_id": "surface-1-en-surface_undeclared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "The keeper secretly extinguished the beacon.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-1-en-surface_undeclared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "en",
+    "pair_id": "surface-1",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_undeclared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-1-en-surface_declared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [
+        "keeper_secret"
+      ],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "The keeper secretly extinguished the beacon.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-1-en-surface_declared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "en",
+    "pair_id": "surface-1",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_declared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-2-en-surface_undeclared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "It was the lighthouse guardian who quietly put out its light.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-2-en-surface_undeclared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "en",
+    "pair_id": "surface-2",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_undeclared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-2-en-surface_declared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [
+        "keeper_secret"
+      ],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "It was the lighthouse guardian who quietly put out its light.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-2-en-surface_declared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "en",
+    "pair_id": "surface-2",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_declared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-3-en-surface_undeclared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "Behind the darkness was the keeper's hidden act of sabotage.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-3-en-surface_undeclared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "en",
+    "pair_id": "surface-3",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_undeclared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-3-en-surface_declared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [
+        "keeper_secret"
+      ],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "Behind the darkness was the keeper's hidden act of sabotage.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-3-en-surface_declared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "en",
+    "pair_id": "surface-3",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_declared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-4-ko-surface_undeclared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "등대지기가 몰래 신호등을 껐다.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-4-ko-surface_undeclared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "ko",
+    "pair_id": "surface-4",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_undeclared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-4-ko-surface_declared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [
+        "keeper_secret"
+      ],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "등대지기가 몰래 신호등을 껐다.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-4-ko-surface_declared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "ko",
+    "pair_id": "surface-4",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_declared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-5-ko-surface_undeclared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "불빛을 남몰래 없앤 사람은 등대의 수호자였다.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-5-ko-surface_undeclared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "ko",
+    "pair_id": "surface-5",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_undeclared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-5-ko-surface_declared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [
+        "keeper_secret"
+      ],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "불빛을 남몰래 없앤 사람은 등대의 수호자였다.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-5-ko-surface_declared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "ko",
+    "pair_id": "surface-5",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_declared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-6-ko-surface_undeclared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "등대가 어두워진 뒤에는 지기의 숨겨진 방해가 있었다.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-6-ko-surface_undeclared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "ko",
+    "pair_id": "surface-6",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_undeclared"
+  },
+  {
+    "candidate": {
+      "action_id": "surface-6-ko-surface_declared",
+      "action_type": "OBSERVE",
+      "actor_id": "keeper",
+      "disclosed_facts": [
+        "keeper_secret"
+      ],
+      "effects": [
+        "observed"
+      ],
+      "metadata": {},
+      "narrative_text": "등대가 어두워진 뒤에는 지기의 숨겨진 방해가 있었다.",
+      "preconditions": [],
+      "quest_stage_effect": null,
+      "required_objects": [],
+      "required_quest_stage": 0,
+      "used_facts": []
+    },
+    "case_id": "surface-6-ko-surface_declared",
+    "graph": {
+      "edges": [
+        {
+          "requires_keys": [],
+          "source": "r0",
+          "target": "r1"
+        },
+        {
+          "requires_keys": [
+            "key0"
+          ],
+          "source": "r1",
+          "target": "r2"
+        },
+        {
+          "requires_keys": [
+            "key1"
+          ],
+          "source": "r2",
+          "target": "r3"
+        }
+      ],
+      "placements": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "rooms": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "start": "r0"
+    },
+    "language": "ko",
+    "pair_id": "surface-6",
+    "state": {
+      "action_policies": {
+        "OBSERVE": {
+          "allowed_effects": [
+            "observed"
+          ],
+          "allowed_quest_stage_effects": [],
+          "required_effects": [],
+          "required_preconditions": []
+        },
+        "SIGNAL": {
+          "allowed_effects": [
+            "beacon_lit",
+            "signal_restored"
+          ],
+          "allowed_quest_stage_effects": [
+            0,
+            1
+          ],
+          "required_effects": [
+            "signal_restored"
+          ],
+          "required_preconditions": [
+            "ready"
+          ]
+        }
+      },
+      "facts": [
+        "harbor_open",
+        "keeper_secret",
+        "ready"
+      ],
+      "forbidden_disclosures": {
+        "keeper": [
+          "keeper_secret"
+        ]
+      },
+      "inventory": [],
+      "locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "npc_knowledge": {
+        "keeper": [
+          "harbor_open",
+          "keeper_secret"
+        ]
+      },
+      "object_locations": {
+        "key0": "r0",
+        "key1": "r0",
+        "map": "r0",
+        "relic": "r3"
+      },
+      "quest_stage": 0,
+      "reachable_locations": [
+        "r0",
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "state_id": "surface-canonical-q0"
+    },
+    "variant": "surface_declared"
+  }
+]

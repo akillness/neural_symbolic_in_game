@@ -43,6 +43,8 @@ class GeneratePaperResultsTests(unittest.TestCase):
                     "contribution_map_ko.tex",
                     "evidence_lanes_en.tex",
                     "evidence_lanes_ko.tex",
+                    "review_boundary_audit_en.tex",
+                    "review_boundary_audit_ko.tex",
                 },
             )
             contribution_map = (output / "contribution_map_en.tex").read_text(encoding="utf-8")
@@ -57,6 +59,18 @@ class GeneratePaperResultsTests(unittest.TestCase):
             self.assertIn(
                 r"\allowbreak{}", (output / "pilot_results_en.tex").read_text(encoding="utf-8")
             )
+            for suffix in ("en", "ko"):
+                review_audit = (output / f"review_boundary_audit_{suffix}.tex").read_text(
+                    encoding="utf-8"
+                )
+                for label in (
+                    "tab:review-boundary-funnel",
+                    "tab:review-structural-retention",
+                    "tab:review-surface-sentinels",
+                ):
+                    self.assertIn(rf"\label{{{label}}}", review_audit)
+                for rule in (r"\toprule", r"\midrule", r"\bottomrule"):
+                    self.assertIn(rule, review_audit)
 
     def test_historical_live_generation_remains_explicit_and_claim_bound(self) -> None:
         packet = generator._load_live_packet()
