@@ -2,9 +2,7 @@
   "audit_burden": {
     "access_failures": 0,
     "human_assessor_minutes_per_unit": null,
-    "ms_per_unit": 0.8583,
-    "note": "Burden is a reporting quantity, not a traceability score.",
-    "total_runtime_seconds": 8.7328,
+    "note": "Deterministic unit-evaluation accounting only; volatile wall-clock runtime floats are omitted so audit outputs are byte-reproducible.",
     "total_units_evaluated": 10175
   },
   "audit_id": "traceability-seeded-control-audit-v1",
@@ -348,6 +346,12 @@
             "req_id": "REPRO_trace_retention"
           }
         ],
+        "reverse_scope": {
+          "co_hashed_sibling_modules_excluded": 10,
+          "direct_evidence_files_scored": 10,
+          "note": "TR05_reverse scores the 10/10 direct-evidence files supporting gemini-review-20261113; the remaining 10 sibling modules under src/nesy_game/*.py (co-hashed via package glob for other studies and never invoked by run_gemini_review_evaluation.py) are excluded from the TR05_reverse denominator and disclosed separately.",
+          "total_paths_in_source_hashes_json": 20
+        },
         "reverse_units": [
           {
             "applicable": true,
@@ -1922,7 +1926,20 @@
       "source_dir": "research/academic-pipeline/stage-04-pilot"
     }
   },
+  "environment": {
+    "arch": "arm64",
+    "os": "Darwin",
+    "python_major_minor": "3.11"
+  },
   "frozen_integrity_preflight": {
+    "public_source_projection": {
+      "original_commitment_sha256": "09e18301e2fc537af0666b444ac3aadee6a0c6f3dc8e2e0f1c5b3bd8b3ac4ea6",
+      "public_derivative_path": "research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json",
+      "public_derivative_sha256": "278182062607a58b6d55e6d4c062f9651469d14001345710335fc2bc25a3079e",
+      "receipt_path": "research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json",
+      "receipt_sha256": "7c2c4acd22bd811729fcd2645039bae5ebf99313a74ff2de28338a7458475232"
+    },
+    "public_source_projection_verified": true,
     "v2_core_rows": 1664,
     "v2_input_hashes_matched": 7,
     "v2_input_hashes_total": 7,
@@ -1937,7 +1954,8 @@
   "nonclaims": [
     "Human inter-rater reliability (Krippendorff alpha) is UNDEFINED; this script executes deterministic rubric checks and seeded controls only.",
     "Frozen denominators (SL-PLAY-EVAL-001 52/52, SL-BALANCE-PROBE-001 5/5, C-RESULT-* TODO-RESULT) and frozen artifacts were not modified.",
-    "Seeded control sensitivity verifies deterministic rubric-detector behavior on known synthetic fault injections, not prospective human assessor agreement or development-comparison-20261023 execution.",
+    "Seeded control sensitivity verifies deterministic rubric-detector behavior on known synthetic fault injections across TR01-TR04 (4,656 applicable + 1,584 inapplicable controls), not prospective human assessor agreement or development-comparison-20261023 execution.",
+    "TR05 reverse evaluates the 10/10 direct-evidence files supporting gemini-review-20261113 while excluding 10 co-hashed sibling modules under src/nesy_game/*.py captured by package globbing.",
     "Traceability completeness (TR01-TR05) does not imply task success, semantic correctness, or safety (e.g., failed repairs in unchanged_retry score 1 on TR04 while remaining HOLD/FAIL)."
   ],
   "reliability": {
@@ -1948,7 +1966,30 @@
   },
   "rubric_id": "traceability-scoring-rubric-20261023",
   "rubric_status": "PROPOSED_NOT_VALIDATED",
-  "schema_version": "1.0",
+  "schema_version": "1.1",
+  "scope_notes": {
+    "tr01_tr04_corruption_scope": {
+      "applicable_valid_controls": 4656,
+      "candidate_control_pairs": 6240,
+      "clean_native_pool_units": 1248,
+      "corruption_operators": 5,
+      "inapplicable_controls_retained_separately": 1584,
+      "malformed_controls": 0,
+      "note": "Synthetic fault injection targets row-level TR01-TR04 trace links across 1,248 clean native units x 5 corruption operators = 6,240 candidate controls: 4,656 applicable controls (all 4,656 detected) and 1,584 structurally inapplicable controls retained separately (728 single-attempt units under swap_attempt_id + 856 units without a failed repair attempt under omit_failed_repair). Study-level TR05 requirement/artifact links are evaluated separately.",
+      "target_dimensions": [
+        "TR01",
+        "TR02",
+        "TR03",
+        "TR04"
+      ]
+    },
+    "tr05_reverse_scope": {
+      "co_hashed_sibling_modules_excluded": 10,
+      "direct_evidence_files_scored": 10,
+      "note": "TR05_reverse scores the 10/10 direct-evidence files supporting gemini-review-20261113; the remaining 10 sibling modules under src/nesy_game/*.py (co-hashed via package glob for other studies and never invoked by run_gemini_review_evaluation.py) are excluded from the TR05_reverse denominator and disclosed separately.",
+      "total_paths_in_source_hashes_json": 20
+    }
+  },
   "seeded_control_summary": {
     "by_corruption_type": {
       "bind_old_artifact_revision": {
@@ -2188,6 +2229,7 @@
         "invariance_preservation_rate": 1.0
       }
     },
+    "candidate_corruption_controls_total": 6240,
     "clean_baseline_failures": 0,
     "clean_control_units": 3744,
     "clean_native_pool_size": 1248,
@@ -2199,5 +2241,23 @@
     "overall_false_alarm_rate": 0.0,
     "overall_invariance_preservation_rate": 1.0,
     "seeded_valid_corruptions": 4656
+  },
+  "source_hashes": {
+    "research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json": "7c2c4acd22bd811729fcd2645039bae5ebf99313a74ff2de28338a7458475232",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/assignment_inventory.json": "875422141f3c4a022083b905203cb4ecb1953712bf014b471cf8a930124ebbb4",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/cases.json": "6aac953e905bb967daa3de100538738e97e9008480af67821f92f7b81985ac06",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/input_hashes.json": "6e6db5fd76e2f30acee88deb8d2b4cfc0eabbc7415c9d2718427f989d777525a",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/protocol.json": "15cb686d1a959aabb9de743d83359355154f903413d805ff675150e2ba897b9e",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/review-response.json": "c3eb35abe2f849e4ec96e69392cd1b769b3ac37535ff420b697357cb146aee1d",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/rows.jsonl": "bb32a68931016bc0b23fde3210c9f6f9a87768a87fd334ae6fad638fa4705d89",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/source_hashes.json": "098bc6e3f678b79a8db1a0195efac90ff22ac31a31b7dafe0b12de62bbda135f",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/summary.json": "caa253cc55506d5235b23907500fddcd0d5edec0aad4b86b8f02934725f97334",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/surface_rows.jsonl": "f25fdb767bd50e67d255be4369fddb6777a3eea51bb89a15aa11d52992f82ab1",
+    "research/academic-pipeline/gemini-review-20261113/results-v2/surface_sentinels.json": "ff6a1058f661af3beef3504638213ed48bdd9d73a93152c67b22c880b6ad7e85",
+    "research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json": "278182062607a58b6d55e6d4c062f9651469d14001345710335fc2bc25a3079e",
+    "research/academic-pipeline/stage-04-pilot/pilot-assignment-manifest.json": "64308191b933d0ceaad1d15689c48d2a6ea22c0f6b03ee19b9c571defa414d48",
+    "research/academic-pipeline/stage-04-pilot/pilot-results.json": "e02359968e2a53bb0387ffe800c9dfc5809dc13a3329e808b74160cdc6887e64",
+    "research/traceability-scoring-20261023/rubric.json": "d8434f7b7495b2bfa040b6e0ddf7ec93e2b45a29d203afa9a47a1ad391e00cbf",
+    "scripts/run_traceability_seeded_audit.py": "7a063478466e8fe634771b2847bb72673b82164abdd790e270390bf917ac3eb0"
   }
 }

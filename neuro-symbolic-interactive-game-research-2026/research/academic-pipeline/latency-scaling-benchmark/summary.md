@@ -1,77 +1,84 @@
 # Latency & Scaling Benchmark Summary (0-LLM-Call)
 
-- **Timestamp (UTC)**: 2026-11-16T13:38:45Z
-- **Platform**: macOS-26.6.2-arm64-arm-64bit-Mach-O (arm64)
-- **Python**: 3.14.6
-- **CPU count**: 12
-- **LLM calls**: 0 (purely deterministic symbolic runtime)
+- **Host (coarse)**: `Darwin` (`arm64`)
+- **LLM calls**: `0` (`model_called = false`; purely deterministic symbolic runtime)
+- **Active constraint arity cap (`active_constraint_arity_cap`)**: `100` (per-action `k_req = max(2, min(N // 5, 100))` saturates at `100` for `N >= 500`, so `N in {500, 1000, 2000}` measures ambient store-size scaling at fixed active constraint arity `100`)
 
 ## (a) Validator `V(c_t, a_t)` Latency Across Fact/Rule Scales
 
-| Case | Facts/Rules (`N`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |
-|---|---:|---:|---:|---:|---:|---:|
-| valid_pass | 10 | 0 | 0.0017 | 0.0019 | 0.0022 | 200 |
-| multi_error_fail | 10 | 10 | 0.0063 | 0.0065 | 0.0071 | 200 |
-| valid_pass | 100 | 0 | 0.0021 | 0.0022 | 0.0024 | 200 |
-| multi_error_fail | 100 | 36 | 0.0180 | 0.0185 | 0.0211 | 200 |
-| valid_pass | 500 | 0 | 0.0041 | 0.0043 | 0.0200 | 200 |
-| multi_error_fail | 500 | 156 | 0.0729 | 0.0837 | 0.1170 | 200 |
-| valid_pass | 1000 | 0 | 0.0040 | 0.0049 | 0.0114 | 200 |
-| multi_error_fail | 1000 | 156 | 0.0742 | 0.0831 | 0.1351 | 200 |
-| valid_pass | 2000 | 0 | 0.0040 | 0.0055 | 0.0403 | 200 |
-| multi_error_fail | 2000 | 156 | 0.0723 | 0.0797 | 0.1290 | 200 |
+> Note: Active per-action constraint arity caps at `active_constraint_arity_cap = 100` (`N >= 500` isolates store-size scaling across `N` facts, policies, objects, and NPC knowledge entries).
+
+| Case | Facts/Rules (`N`) | Active Arity (`k_req`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| valid_pass | 10 | 2 | 0 | 0.0016 | 0.0017 | 0.0045 | 200 |
+| multi_error_fail | 10 | 2 | 10 | 0.0056 | 0.0058 | 0.0073 | 200 |
+| valid_pass | 100 | 20 | 0 | 0.0020 | 0.0021 | 0.0024 | 200 |
+| multi_error_fail | 100 | 20 | 36 | 0.0170 | 0.0175 | 0.0398 | 200 |
+| valid_pass | 500 | 100 | 0 | 0.0037 | 0.0043 | 0.0048 | 200 |
+| multi_error_fail | 500 | 100 | 156 | 0.0680 | 0.0732 | 0.0990 | 200 |
+| valid_pass | 1000 | 100 | 0 | 0.0038 | 0.0039 | 0.0040 | 200 |
+| multi_error_fail | 1000 | 100 | 156 | 0.0662 | 0.0715 | 0.1221 | 200 |
+| valid_pass | 2000 | 100 | 0 | 0.0039 | 0.0042 | 0.0062 | 200 |
+| multi_error_fail | 2000 | 100 | 156 | 0.0671 | 0.0751 | 0.1068 | 200 |
 
 ## (b) Counterexample-Guided Repair `rho` Latency Across Fact/Rule Scales
 
-| Case | Facts/Rules (`N`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |
-|---|---:|---:|---:|---:|---:|---:|
-| repairable_converges | 10 | 5 | 0.0073 | 0.0091 | 0.0096 | 200 |
-| mixed_repairable_irreparable | 10 | 10 | 0.0078 | 0.0097 | 0.0583 | 200 |
-| repairable_converges | 100 | 23 | 0.0108 | 0.0113 | 0.0312 | 200 |
-| mixed_repairable_irreparable | 100 | 36 | 0.0121 | 0.0128 | 0.0155 | 200 |
-| repairable_converges | 500 | 103 | 0.0257 | 0.0278 | 0.0800 | 200 |
-| mixed_repairable_irreparable | 500 | 156 | 0.0307 | 0.0406 | 0.1613 | 200 |
-| repairable_converges | 1000 | 103 | 0.0260 | 0.0265 | 0.0299 | 200 |
-| mixed_repairable_irreparable | 1000 | 156 | 0.0309 | 0.0323 | 0.0801 | 200 |
-| repairable_converges | 2000 | 103 | 0.0250 | 0.0277 | 0.0308 | 200 |
-| mixed_repairable_irreparable | 2000 | 156 | 0.0303 | 0.0328 | 0.0886 | 200 |
+> Note: For `N >= 500`, active per-action constraint arity stays fixed at `100` (`103` repairable errors / `156` mixed errors), measuring store-size scaling.
+
+| Case | Facts/Rules (`N`) | Active Arity (`k_req`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| repairable_converges | 10 | 2 | 5 | 0.0068 | 0.0082 | 0.0232 | 200 |
+| mixed_repairable_irreparable | 10 | 2 | 10 | 0.0070 | 0.0088 | 0.0248 | 200 |
+| repairable_converges | 100 | 20 | 23 | 0.0109 | 0.0125 | 0.0395 | 200 |
+| mixed_repairable_irreparable | 100 | 20 | 36 | 0.0123 | 0.0140 | 0.0158 | 200 |
+| repairable_converges | 500 | 100 | 103 | 0.0282 | 0.0284 | 0.0305 | 200 |
+| mixed_repairable_irreparable | 500 | 100 | 156 | 0.0345 | 0.0395 | 0.0903 | 200 |
+| repairable_converges | 1000 | 100 | 103 | 0.0295 | 0.0337 | 0.0524 | 200 |
+| mixed_repairable_irreparable | 1000 | 100 | 156 | 0.0351 | 0.0377 | 0.0448 | 200 |
+| repairable_converges | 2000 | 100 | 103 | 0.0285 | 0.0317 | 0.0611 | 200 |
+| mixed_repairable_irreparable | 2000 | 100 | 156 | 0.0352 | 0.0389 | 0.0685 | 200 |
 
 ## (c) Reachability (Closure vs State-Space BFS) Across Room Scales
 
 | Algorithm | Topology | Rooms | Edges | Reachable | p50 (ms) | p95 (ms) | max (ms) | Iterations |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| `production_reachable_locations` | locked_chain | 4 | 3 | 3 | 0.0066 | 0.0067 | 0.0070 | 200 |
-| `reference_reachable_locations` | locked_chain | 4 | 3 | 3 | 0.0068 | 0.0075 | 0.0089 | 200 |
-| `production_reachable_locations` | bypass_branch | 4 | 4 | 3 | 0.0077 | 0.0079 | 0.0082 | 200 |
-| `reference_reachable_locations` | bypass_branch | 4 | 4 | 3 | 0.0082 | 0.0085 | 0.0114 | 200 |
-| `production_reachable_locations` | locked_chain | 16 | 15 | 15 | 0.0198 | 0.0241 | 0.0678 | 200 |
-| `reference_reachable_locations` | locked_chain | 16 | 15 | 15 | 0.0252 | 0.0279 | 0.0712 | 200 |
-| `production_reachable_locations` | bypass_branch | 16 | 16 | 15 | 0.0211 | 0.0244 | 0.0630 | 200 |
-| `reference_reachable_locations` | bypass_branch | 16 | 16 | 15 | 0.0266 | 0.0294 | 0.0751 | 200 |
-| `production_reachable_locations` | locked_chain | 64 | 63 | 63 | 0.0737 | 0.0784 | 0.1523 | 200 |
-| `reference_reachable_locations` | locked_chain | 64 | 63 | 63 | 0.1032 | 0.1757 | 0.6130 | 200 |
-| `production_reachable_locations` | bypass_branch | 64 | 64 | 63 | 0.0751 | 0.0804 | 0.1093 | 200 |
-| `reference_reachable_locations` | bypass_branch | 64 | 64 | 63 | 0.1036 | 0.1130 | 0.4179 | 200 |
-| `production_reachable_locations` | locked_chain | 256 | 255 | 255 | 0.2945 | 0.3708 | 0.6654 | 100 |
-| `reference_reachable_locations` | locked_chain | 256 | 255 | 255 | 0.5380 | 1.5124 | 2.1596 | 100 |
-| `production_reachable_locations` | bypass_branch | 256 | 256 | 255 | 0.2958 | 0.4533 | 1.7457 | 100 |
-| `reference_reachable_locations` | bypass_branch | 256 | 256 | 255 | 0.4168 | 0.4764 | 0.5292 | 100 |
+| `production_reachable_locations` | locked_chain | 4 | 3 | 3 | 0.0057 | 0.0060 | 0.0080 | 200 |
+| `reference_reachable_locations` | locked_chain | 4 | 3 | 3 | 0.0060 | 0.0061 | 0.0078 | 200 |
+| `production_reachable_locations` | bypass_branch | 4 | 4 | 3 | 0.0067 | 0.0073 | 0.0087 | 200 |
+| `reference_reachable_locations` | bypass_branch | 4 | 4 | 3 | 0.0073 | 0.0075 | 0.0377 | 200 |
+| `production_reachable_locations` | locked_chain | 16 | 15 | 15 | 0.0183 | 0.0187 | 0.0189 | 200 |
+| `reference_reachable_locations` | locked_chain | 16 | 15 | 15 | 0.0220 | 0.0224 | 0.0259 | 200 |
+| `production_reachable_locations` | bypass_branch | 16 | 16 | 15 | 0.0189 | 0.0225 | 0.0470 | 200 |
+| `reference_reachable_locations` | bypass_branch | 16 | 16 | 15 | 0.0230 | 0.0288 | 0.0539 | 200 |
+| `production_reachable_locations` | locked_chain | 64 | 63 | 63 | 0.0694 | 0.0786 | 0.8700 | 200 |
+| `reference_reachable_locations` | locked_chain | 64 | 63 | 63 | 0.0882 | 0.0931 | 0.1407 | 200 |
+| `production_reachable_locations` | bypass_branch | 64 | 64 | 63 | 0.0685 | 0.0725 | 0.1902 | 200 |
+| `reference_reachable_locations` | bypass_branch | 64 | 64 | 63 | 0.0914 | 0.0982 | 0.1347 | 200 |
+| `production_reachable_locations` | locked_chain | 256 | 255 | 255 | 0.2659 | 0.3121 | 0.3734 | 100 |
+| `reference_reachable_locations` | locked_chain | 256 | 255 | 255 | 0.4005 | 0.4493 | 2.4238 | 100 |
+| `production_reachable_locations` | bypass_branch | 256 | 256 | 255 | 0.2737 | 0.3153 | 0.3558 | 100 |
+| `reference_reachable_locations` | bypass_branch | 256 | 256 | 255 | 0.3986 | 0.4775 | 1.8595 | 100 |
+
+### `R = 256` Topology Pair Summary (Both Topologies Explicitly Reported)
+
+- **`locked_chain` (`R=256`, `255` edges, `255` reachable)**: closure `p50=0.2659 ms`, `p95=0.3121 ms`, `max=0.3734 ms` vs. state-space BFS `p50=0.4005 ms`, `p95=0.4493 ms`, `max=2.4238 ms`.
+- **`bypass_branch` (`R=256`, `256` edges, `255` reachable)**: closure `p50=0.2737 ms`, `p95=0.3153 ms`, `max=0.3558 ms` vs. state-space BFS `p50=0.3986 ms`, `p95=0.4775 ms`, `max=1.8595 ms`.
 
 ## (d) SHA-256 Verification & JSONL Replay Across Scales
 
 | Component | Scale (`N` or `L`) | Payload/File Bytes | p50 (ms) | p95 (ms) | max (ms) | Iterations |
 |---|---|---:|---:|---:|---:|---:|
-| `sha256_verify_record` | N=10 | 6769 | 0.0540 | 0.0583 | 0.0675 | 200 |
-| `replay_trace_record` | N=10 | 6769 | 0.6243 | 0.7326 | 0.8438 | 200 |
-| `sha256_verify_record` | N=100 | 47629 | 0.3616 | 0.4190 | 0.8669 | 200 |
-| `replay_trace_record` | N=100 | 47629 | 4.9370 | 5.3115 | 12.0628 | 200 |
-| `sha256_verify_record` | N=500 | 231695 | 1.6651 | 1.8147 | 2.7538 | 200 |
-| `replay_trace_record` | N=500 | 231695 | 24.2245 | 28.1614 | 56.0030 | 200 |
-| `sha256_verify_record` | N=1000 | 436661 | 3.3403 | 3.7553 | 9.7346 | 100 |
-| `replay_trace_record` | N=1000 | 436661 | 45.8534 | 57.8320 | 63.2439 | 100 |
-| `sha256_verify_record` | N=2000 | 860981 | 6.4743 | 7.0760 | 14.9712 | 100 |
-| `replay_trace_record` | N=2000 | 860981 | 86.7584 | 98.4529 | 111.7940 | 100 |
-| `replay_trace_jsonl` | L=1 steps (N=100) | 50527 | 7.3035 | 7.5498 | 13.5388 | 50 |
-| `replay_trace_jsonl` | L=10 steps (N=100) | 508294 | 72.3633 | 82.2943 | 86.8739 | 50 |
-| `replay_trace_jsonl` | L=50 steps (N=100) | 2572214 | 365.9220 | 379.7224 | 382.4888 | 20 |
-| `replay_trace_jsonl` | L=100 steps (N=100) | 5219614 | 757.0580 | 822.0731 | 853.3910 | 20 |
+| `sha256_verify_record` | N=10 | 6769 | 0.0592 | 0.0625 | 0.0675 | 200 |
+| `replay_trace_record` | N=10 | 6769 | 0.6397 | 0.7206 | 0.7915 | 200 |
+| `sha256_verify_record` | N=100 | 47629 | 0.3757 | 0.4542 | 0.4828 | 200 |
+| `replay_trace_record` | N=100 | 47629 | 5.0170 | 5.4699 | 14.1451 | 200 |
+| `sha256_verify_record` | N=500 | 231695 | 1.7193 | 1.9252 | 2.1285 | 200 |
+| `replay_trace_record` | N=500 | 231695 | 24.3764 | 28.1398 | 34.2030 | 200 |
+| `sha256_verify_record` | N=1000 | 436661 | 3.2973 | 3.6217 | 3.8163 | 100 |
+| `replay_trace_record` | N=1000 | 436661 | 45.6001 | 51.9540 | 56.7184 | 100 |
+| `sha256_verify_record` | N=2000 | 860981 | 6.4297 | 7.0108 | 7.9953 | 100 |
+| `replay_trace_record` | N=2000 | 860981 | 87.1763 | 97.0171 | 117.7224 | 100 |
+| `replay_trace_jsonl` | L=1 steps (N=100) | 50527 | 7.7487 | 9.2266 | 17.3907 | 50 |
+| `replay_trace_jsonl` | L=10 steps (N=100) | 508294 | 79.9940 | 120.5777 | 148.0779 | 50 |
+| `replay_trace_jsonl` | L=50 steps (N=100) | 2572214 | 396.5853 | 412.4689 | 424.9918 | 20 |
+| `replay_trace_jsonl` | L=100 steps (N=100) | 5219614 | 817.2787 | 881.0375 | 896.9510 | 20 |

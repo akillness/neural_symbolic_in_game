@@ -3,8 +3,8 @@
 ## Project
 
 
-- **Extended 0-LLM-call engineering audits (A1–A4, B) — 2026-11-16:** [[wiki/reports/2026-11-16-extended-zero-llm-engineering-audits]]. Executed five independent-denominator 0-LLM-call audits (multi-error $K\in\{0..3\}$ convergence, $N\le 2000$ / $R\le 256$ latency scaling, `TR01–TR05` seeded corruption, headless Godot `9/9` refusal + 1,600-tick soak, and 88-case EN/KO semantic-escape 2nd-stage filtering) and integrated `tab:extended-audits` into `ko/main.tex` and `en/main.tex`.
-- **Overleaf upload & academic-value visual review — 2026-11-14:** [[wiki/reports/2026-11-14-paper-academic-value-and-evidence-review]]. Created Overleaf project `TRACE-RPG-2026` (`https://www.overleaf.com/project/6af855f44236f200e4801bd3`) with bilingual LaTeX sources (`main_ko.tex` 25p XeLaTeX verified; `main_en.tex` included) and Editor share link; synthesized paper claims, empirical evidence across independent denominators, contributions C1–C5, and explicit limits against Gemini academic review and commits `b24e703`/`d3e68a0`.
+- **Extended 0-LLM-call engineering audits (A1–A4, B) — 2026-11-16:** [[wiki/reports/2026-11-16-extended-zero-llm-engineering-audits]]. Executed and Layer-A-bound five independent-denominator 0-LLM-call audits (multi-error $K\in\{0..3\}$ convergence + 128 unit guards, $N\le 2000$ [arity $\le 100$ above $N=500$] / $R\le 256$ dual-topology scaling, automated `TR01–TR04` seeded faults + `TR05` direct-file audit [human/prospective `TR01–TR06` still `PROPOSED_NOT_VALIDATED`], headless Godot `9/9` declared refusal + 1,600-tick soak, and leakage-free LOO 88-case EN/KO `keeper_secret` escape filtering) across `en/main.tex`, `ko/main.tex`, `scripts/verify_paper_claims.py`, and `visuals/source-manifest.json`.
+- **Overleaf upload & academic-value visual review — 2026-11-14:** [[wiki/reports/2026-11-14-paper-academic-value-and-evidence-review]]. Created Overleaf project `TRACE-RPG-2026` with bilingual LaTeX sources (`main_ko.tex` 25p XeLaTeX verified; `main_en.tex` included; Editor share link `<REDACTED-OVERLEAF-EDITOR-SHARE-LINK>`); synthesized paper claims, empirical evidence across independent denominators, contributions C1–C5, and explicit limits against the public Gemini review record (`research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json`) and commits `b24e703`/`d3e68a0`.
 - **Reviewer reproducibility and paper-only retirement — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Reviewer reproducibility and paper-only retirement — 2026-11-13]]. Current EN24/KO24 manuscripts include source-bound Godot captures and descriptive v5 strata. The dedicated Layer-A verifier inventories reached tables and checks their retained sources; it does not recollect models or certify fresh engine/browser behavior. Unverifiable Ollama quantitative claims are withdrawn, with their prior text preserved separately. Publication and hosted-CI evidence must be checked separately from these source-level observations.
 
 - **Review revisions and bounded two-stage decomposition — 2026-11-13:** [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Review revisions and bounded two-stage decomposition — 2026-11-13]]. **Pre-delivery checkpoint:** bilingual C3/v5 revisions, requested192 tests and EN19/KO18 PDF/source/visual checks passed. Two native Aside full-gate failures remain recorded. The existing explicit Playwright1.65.0 CI mode passed both affected modules (122 tests); whole-hook delivery and hosted CI are separate, not implied. Unsupported TR scores were not inserted.
@@ -344,9 +344,9 @@
 
 - (capture unavailable in checkout: `wiki/queries/2026-10-23-225814-system-instructions`) - ## System Instructions
 
-- (Private source note retained locally; excluded from publication: `wiki/sources/2026-10-24-154756-system-instructions`) - ## System Instructions
+- (capture unavailable in checkout: `wiki/sources/2026-10-24-154756-system-instructions`) - ## System Instructions
 
-- (Private query note retained locally; excluded from publication: `wiki/queries/2026-10-24-154756-system-instructions`) - ## System Instructions
+- (capture unavailable in checkout: `wiki/queries/2026-10-24-154756-system-instructions`) - ## System Instructions
 
 ## Native runtime comparison — 2026-10-26
 

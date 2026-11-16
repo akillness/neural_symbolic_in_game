@@ -1,9 +1,9 @@
 # TRACE-RPG 논문 학술적 가치 리뷰, 실근거 시각 요약 및 Overleaf 공유 기록 (2026-11-14)
 
 - **대상 원고:** `neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex`, `en/main.tex` (커밋 `b24e703`, `d3e68a0` 기준)
-- **Overleaf 프로젝트:** `TRACE-RPG-2026` (`https://www.overleaf.com/project/6af855f44236f200e4801bd3`)
-- **공유 링크 (Editor):** `https://www.overleaf.com/project/6af855f44236f200e4801bd3/share#beabd785b936df282746eeb8cf522113666a5218ad3c1ec5`
-- **참조 외부 검토:** Gemini 앱 대화 `"논문 학술적 가치 검토"` (`https://gemini.google.com/u/3/app/077d4ab406a4c635`)
+- **Overleaf 프로젝트:** `TRACE-RPG-2026` (비공개 프로젝트 URL 가림)
+- **공유 링크 (Editor):** `<REDACTED-OVERLEAF-EDITOR-SHARE-LINK>`
+- **참조 외부 검토:** 공개 정제 검토 기록 (`research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json`)
 
 ## 1. 논문 핵심 구조 시각화 (주장 · 기여 · 실근거 · 한계)
 

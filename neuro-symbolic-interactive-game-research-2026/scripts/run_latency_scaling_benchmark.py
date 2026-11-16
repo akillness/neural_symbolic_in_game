@@ -15,8 +15,8 @@ Zero LLM calls are made. No frozen artifacts are modified.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
-import os
 import platform
 import statistics
 import sys
@@ -49,6 +49,7 @@ DEFAULT_OUTPUT_DIR = ROOT / "research/academic-pipeline/latency-scaling-benchmar
 ROOM_SCALES = (4, 16, 64, 256)
 TOPOLOGIES = ("locked_chain", "bypass_branch")
 FACT_RULE_SCALES = (10, 100, 500, 1000, 2000)
+ACTIVE_CONSTRAINT_ARITY_CAP = 100
 EPISODE_LENGTHS = (1, 10, 50, 100)
 
 
@@ -104,7 +105,7 @@ def _build_scaled_state_and_candidates(
     # Place target_unreachable_obj in an unreachable room
     object_locations["unreachable_obj"] = f"r{room_count - 1}"
 
-    k_req = max(2, min(scale_n // 5, 100))
+    k_req = max(2, min(scale_n // 5, ACTIVE_CONSTRAINT_ARITY_CAP))
     req_pre = frozenset(f"fact_{i}" for i in range(k_req))
     req_eff = frozenset(f"eff_{i}" for i in range(k_req))
     allow_eff = req_eff | frozenset(f"opt_eff_{i}" for i in range(k_req))
@@ -165,10 +166,10 @@ def _build_scaled_state_and_candidates(
     )
 
     # Multi-error candidate that exercises repairable + irreparable error paths
-    omitted_pre = frozenset(list(req_pre)[: k_req // 2])
+    omitted_pre = frozenset(sorted(req_pre)[: k_req // 2])
     unsatisfied_pre = frozenset(f"missing_fact_{i}" for i in range(max(1, k_req // 4)))
     unauthorized_eff = frozenset(f"illegal_eff_{i}" for i in range(max(1, k_req // 4)))
-    omitted_eff = frozenset(list(req_eff)[: k_req // 2])
+    omitted_eff = frozenset(sorted(req_eff)[: k_req // 2])
 
     invalid_candidate = CandidateAction(
         action_id=f"act_invalid_n{scale_n}",
@@ -193,7 +194,8 @@ def benchmark_validator(warmup: int, iterations: int) -> list[dict[str, Any]]:
         state, valid_cand, invalid_cand = _build_scaled_state_and_candidates(scale_n)
 
         res_valid = validate_candidate(state, valid_cand)
-        assert res_valid.valid, f"expected valid candidate at N={scale_n}, got {res_valid.errors}"
+        if not res_valid.valid:
+            raise ValueError(f"Expected valid candidate at N={scale_n}, got {res_valid.errors}")
         stats_valid = _benchmark(
             lambda s=state, c=valid_cand: validate_candidate(s, c),
             warmup=warmup,
@@ -210,7 +212,8 @@ def benchmark_validator(warmup: int, iterations: int) -> list[dict[str, Any]]:
         )
 
         res_invalid = validate_candidate(state, invalid_cand)
-        assert not res_invalid.valid
+        if res_invalid.valid:
+            raise ValueError(f"Expected invalid candidate at N={scale_n}")
         stats_invalid = _benchmark(
             lambda s=state, c=invalid_cand: validate_candidate(s, c),
             warmup=warmup,
@@ -252,7 +255,8 @@ def benchmark_repair(warmup: int, iterations: int) -> list[dict[str, Any]]:
             metadata={"scale": scale_n},
         )
         val_repairable = validate_candidate(state, repairable_cand)
-        assert not val_repairable.valid
+        if val_repairable.valid:
+            raise ValueError(f"Expected repairable candidate to start invalid at N={scale_n}")
         stats_rep = _benchmark(
             lambda s=state, c=repairable_cand, v=val_repairable: counterexample_guided_repair(
                 s, c, v, 1
@@ -261,9 +265,11 @@ def benchmark_repair(warmup: int, iterations: int) -> list[dict[str, Any]]:
             iterations=iterations,
         )
         repaired = counterexample_guided_repair(state, repairable_cand, val_repairable, 1)
-        assert validate_candidate(state, repaired).valid, (
-            "expected repairable candidate to converge"
-        )
+        repaired_val = validate_candidate(state, repaired)
+        if not repaired_val.valid:
+            raise ValueError(
+                f"Expected repairable candidate to converge at N={scale_n}, got {repaired_val.errors}"
+            )
         rows.append(
             {
                 "component": "counterexample_guided_repair",
@@ -303,7 +309,8 @@ def benchmark_reachability(warmup: int, iterations: int) -> list[dict[str, Any]]
             graph = _graph(room_count, topology, ("start", "goal"))
             prod_set = production_reachable_locations(graph)
             ref_set = reference_reachable_locations(graph)
-            assert prod_set == ref_set, f"reachability mismatch at {room_count} {topology}"
+            if prod_set != ref_set:
+                raise ValueError(f"Reachability mismatch at {room_count} {topology}")
 
             # Fewer iterations only if 256-room BFS is slow; otherwise keep consistent
             iters = iterations if room_count <= 64 else min(iterations, 100)
@@ -358,11 +365,13 @@ def benchmark_verification_and_replay(warmup: int, iterations: int) -> list[dict
             repair_budget=1,
             trace_context={"benchmark": "latency_scaling", "scale": scale_n},
         )
-        assert outcome.status == "commit"
+        if outcome.status != "commit":
+            raise ValueError(f"Expected commit at N={scale_n}, got {outcome.status}")
         record = to_jsonable(outcome)
         payload_bytes = len(json.dumps(record, ensure_ascii=False, sort_keys=True).encode("utf-8"))
 
-        assert verify_trace_record(record)
+        if not verify_trace_record(record):
+            raise ValueError(f"SHA-256 verification failed at N={scale_n}")
         iters = iterations if scale_n <= 500 else min(iterations, 100)
         wup = min(warmup, iters // 2)
 
@@ -381,7 +390,8 @@ def benchmark_verification_and_replay(warmup: int, iterations: int) -> list[dict
         )
 
         replayed_state = replay_trace_record(record)
-        assert replayed_state == outcome.state
+        if replayed_state != outcome.state:
+            raise ValueError(f"Replay state mismatch at N={scale_n}")
         stats_replay = _benchmark(
             lambda r=record: replay_trace_record(r),
             warmup=wup,
@@ -447,7 +457,8 @@ def benchmark_verification_and_replay(warmup: int, iterations: int) -> list[dict
                     repair_budget=1,
                     trace_context={"step": step},
                 )
-                assert outcome.status == "commit"
+                if outcome.status != "commit":
+                    raise ValueError(f"Expected commit at step={step}, got {outcome.status}")
                 write_trace_jsonl(jsonl_path, outcome)
                 cur_state = outcome.state
 
@@ -455,7 +466,8 @@ def benchmark_verification_and_replay(warmup: int, iterations: int) -> list[dict
             ep_iters = 50 if ep_len <= 10 else 20
             ep_warmup = 5
             final_state = replay_trace_jsonl(jsonl_path, initial_state=base_state)
-            assert final_state == cur_state
+            if final_state != cur_state:
+                raise ValueError(f"Episode JSONL replay mismatch at ep_len={ep_len}")
 
             stats_ep = _benchmark(
                 lambda p=jsonl_path, init=base_state: replay_trace_jsonl(p, initial_state=init),
@@ -477,23 +489,29 @@ def benchmark_verification_and_replay(warmup: int, iterations: int) -> list[dict
 
 def render_summary_md(results: dict[str, Any]) -> str:
     env = results["environment"]
+    cfg = results["config"]
     lines: list[str] = [
         "# Latency & Scaling Benchmark Summary (0-LLM-Call)",
         "",
-        f"- **Timestamp (UTC)**: {results['timestamp_utc']}",
-        f"- **Platform**: {env['platform']} ({env['machine']})",
-        f"- **Python**: {env['python_version']}",
-        f"- **CPU count**: {env['cpu_count']}",
-        "- **LLM calls**: 0 (purely deterministic symbolic runtime)",
+        f"- **Host (coarse)**: `{env['os']}` (`{env['arch']}`)",
+        "- **LLM calls**: `0` (`model_called = false`; purely deterministic symbolic runtime)",
+        (
+            f"- **Active constraint arity cap (`active_constraint_arity_cap`)**: `{cfg['active_constraint_arity_cap']}` "
+            "(per-action `k_req = max(2, min(N // 5, 100))` saturates at `100` for `N >= 500`, so `N in {500, 1000, 2000}` "
+            "measures ambient store-size scaling at fixed active constraint arity `100`)"
+        ),
         "",
         "## (a) Validator `V(c_t, a_t)` Latency Across Fact/Rule Scales",
         "",
-        "| Case | Facts/Rules (`N`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "> Note: Active per-action constraint arity caps at `active_constraint_arity_cap = 100` (`N >= 500` isolates store-size scaling across `N` facts, policies, objects, and NPC knowledge entries).",
+        "",
+        "| Case | Facts/Rules (`N`) | Active Arity (`k_req`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for r in results["benchmarks"]["validator"]:
+        k_req = max(2, min(r["facts_rules_count"] // 5, cfg["active_constraint_arity_cap"]))
         lines.append(
-            f"| {r['case']} | {r['facts_rules_count']} | {r['error_count']} | "
+            f"| {r['case']} | {r['facts_rules_count']} | {k_req} | {r['error_count']} | "
             f"{r['p50_ms']:.4f} | {r['p95_ms']:.4f} | {r['max_ms']:.4f} | {r['iterations']} |"
         )
 
@@ -502,13 +520,16 @@ def render_summary_md(results: dict[str, Any]) -> str:
             "",
             "## (b) Counterexample-Guided Repair `rho` Latency Across Fact/Rule Scales",
             "",
-            "| Case | Facts/Rules (`N`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |",
-            "|---|---:|---:|---:|---:|---:|---:|",
+            "> Note: For `N >= 500`, active per-action constraint arity stays fixed at `100` (`103` repairable errors / `156` mixed errors), measuring store-size scaling.",
+            "",
+            "| Case | Facts/Rules (`N`) | Active Arity (`k_req`) | Errors | p50 (ms) | p95 (ms) | max (ms) | Iterations |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for r in results["benchmarks"]["repair"]:
+        k_req = max(2, min(r["facts_rules_count"] // 5, cfg["active_constraint_arity_cap"]))
         lines.append(
-            f"| {r['case']} | {r['facts_rules_count']} | {r['error_count']} | "
+            f"| {r['case']} | {r['facts_rules_count']} | {k_req} | {r['error_count']} | "
             f"{r['p50_ms']:.4f} | {r['p95_ms']:.4f} | {r['max_ms']:.4f} | {r['iterations']} |"
         )
 
@@ -526,6 +547,32 @@ def render_summary_md(results: dict[str, Any]) -> str:
             f"| `{r['algorithm']}` | {r['topology']} | {r['room_count']} | {r['edge_count']} | "
             f"{r['reachable_count']} | {r['p50_ms']:.4f} | {r['p95_ms']:.4f} | {r['max_ms']:.4f} | {r['iterations']} |"
         )
+    r256_rows = {
+        (r["topology"], r["algorithm"]): r
+        for r in results["benchmarks"]["reachability"]
+        if r["room_count"] == 256
+    }
+    lc_prod = r256_rows[("locked_chain", "production_reachable_locations")]
+    lc_bfs = r256_rows[("locked_chain", "reference_reachable_locations")]
+    bb_prod = r256_rows[("bypass_branch", "production_reachable_locations")]
+    bb_bfs = r256_rows[("bypass_branch", "reference_reachable_locations")]
+    lines.extend(
+        [
+            "",
+            "### `R = 256` Topology Pair Summary (Both Topologies Explicitly Reported)",
+            "",
+            (
+                f"- **`locked_chain` (`R=256`, `{lc_prod['edge_count']}` edges, `{lc_prod['reachable_count']}` reachable)**: "
+                f"closure `p50={lc_prod['p50_ms']:.4f} ms`, `p95={lc_prod['p95_ms']:.4f} ms`, `max={lc_prod['max_ms']:.4f} ms` "
+                f"vs. state-space BFS `p50={lc_bfs['p50_ms']:.4f} ms`, `p95={lc_bfs['p95_ms']:.4f} ms`, `max={lc_bfs['max_ms']:.4f} ms`."
+            ),
+            (
+                f"- **`bypass_branch` (`R=256`, `{bb_prod['edge_count']}` edges, `{bb_prod['reachable_count']}` reachable)**: "
+                f"closure `p50={bb_prod['p50_ms']:.4f} ms`, `p95={bb_prod['p95_ms']:.4f} ms`, `max={bb_prod['max_ms']:.4f} ms` "
+                f"vs. state-space BFS `p50={bb_bfs['p50_ms']:.4f} ms`, `p95={bb_bfs['p95_ms']:.4f} ms`, `max={bb_bfs['max_ms']:.4f} ms`."
+            ),
+        ]
+    )
 
     lines.extend(
         [
@@ -556,25 +603,46 @@ def run_all(output_dir: Path, warmup: int, iterations: int) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
     t_start = time.perf_counter()
 
+    source_paths = sorted(
+        {
+            Path(__file__).resolve(),
+            ROOT / "src/nesy_game/contracts.py",
+            ROOT / "src/nesy_game/validator.py",
+            ROOT / "src/nesy_game/repair.py",
+            ROOT / "src/nesy_game/runtime.py",
+            ROOT / "scripts/review_reference.py",
+            ROOT / "scripts/run_gemini_review_evaluation.py",
+        }
+    )
+    source_hashes = {
+        str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in source_paths
+    }
+
     results: dict[str, Any] = {
         "benchmark_id": "latency-scaling-benchmark",
-        "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "model_called": False,
         "llm_calls": 0,
         "environment": {
-            "platform": platform.platform(),
-            "machine": platform.machine(),
-            "python_version": platform.python_version(),
-            "cpu_count": os.cpu_count(),
+            "os": platform.system(),
+            "arch": platform.machine(),
         },
         "config": {
             "room_scales": list(ROOM_SCALES),
             "topologies": list(TOPOLOGIES),
             "fact_rule_scales": list(FACT_RULE_SCALES),
+            "active_constraint_arity_cap": ACTIVE_CONSTRAINT_ARITY_CAP,
+            "scaling_regime_note": (
+                "Active per-action constraint arity k_req = max(2, min(N // 5, 100)) caps at 100 "
+                "for N >= 500; N in {500, 1000, 2000} measures ambient store-size scaling "
+                "(facts, policies, objects, NPC knowledge) at fixed active constraint arity 100."
+            ),
             "episode_lengths": list(EPISODE_LENGTHS),
             "default_warmup": warmup,
             "default_iterations": iterations,
             "percentile_method": "linear_interpolation_r7",
         },
+        "source_hashes": source_hashes,
         "benchmarks": {
             "validator": benchmark_validator(warmup, iterations),
             "repair": benchmark_repair(warmup, iterations),

@@ -46,6 +46,33 @@ AUDIT_INPUT_SHA256 = "6e6db5fd76e2f30acee88deb8d2b4cfc0eabbc7415c9d2718427f989d7
 NPC_REVISION = "fa9fb8a2c2249e35eddc7d4e0951c15a7b4bea09"
 TABLE_PATTERN = re.compile(r"\\begin\s*\{(table\*?)\}(.*?)\\end\s*\{\1\}", re.DOTALL)
 LABEL_PATTERN = re.compile(r"\\label\s*\{(tab:[^{}]+)\}")
+EXTENDED_AUDIT_SPECS = (
+    (
+        "a1",
+        "research/academic-pipeline/multi-error-repair-audit/results.json",
+        "scripts/run_multi_error_repair_audit.py",
+    ),
+    (
+        "a2",
+        "research/academic-pipeline/latency-scaling-benchmark/results.json",
+        "scripts/run_latency_scaling_benchmark.py",
+    ),
+    (
+        "a3",
+        "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+        "scripts/run_traceability_seeded_audit.py",
+    ),
+    (
+        "a4",
+        "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+        "scripts/run_soak_and_refusal_probe.py",
+    ),
+    (
+        "b",
+        "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+        "scripts/run_semantic_escape_filter_audit.py",
+    ),
+)
 
 
 def _require(condition: bool, detail: str) -> None:
@@ -1493,6 +1520,492 @@ class _Verifier:
         )
         return "verbatim historical attribution integrity and actual current-table withdrawal checked; no original receipt or quantitative result is credited"
 
+    def extended_audits(self):
+        private_review_paths = {
+            "research/academic-pipeline/gemini-review-20261113/reviewer-source.json",
+            "research/academic-pipeline/gemini-review-20261113/results-v2/reviewer-source.json",
+        }
+
+        def _check_safe_file(relative: str) -> Path:
+            target = self.root / relative
+            _require(
+                not any(
+                    parent.is_symlink()
+                    for parent in (target, *target.parents)
+                    if parent.is_relative_to(self.root)
+                ),
+                f"extended-audit dependency symlink is not accepted: {relative}",
+            )
+            _require(
+                target.is_file() and target.resolve().is_relative_to(self.root),
+                f"extended-audit dependency missing or escapes selected root: {relative}",
+            )
+            return target
+
+        def _verify_hash(relative: str, expected_sha: str, label: str) -> None:
+            _require(
+                isinstance(relative, str)
+                and isinstance(expected_sha, str)
+                and bool(re.fullmatch(r"[0-9a-f]{64}", expected_sha)),
+                f"malformed source_hashes entry in {label}: {relative!r}",
+            )
+            if self.public_source_projection and relative in private_review_paths:
+                inputs = _json(_check_safe_file(f"{AUDIT}/input_hashes.json"))
+                sources = _json(_check_safe_file(f"{AUDIT}/source_hashes.json"))
+                self.public_review_source(inputs, sources)
+                withheld = {
+                    item["path"]: item["sha256"]
+                    for item in self.report["public_source_projection"]["withheld_originals"]
+                }
+                _require(
+                    withheld.get(relative) == expected_sha,
+                    f"{label} private reviewer-source commitment drift: {relative}",
+                )
+                return
+            target = _check_safe_file(relative)
+            _require(
+                _sha(target.read_bytes()) == expected_sha,
+                f"{label} source_hashes digest mismatch: {relative}",
+            )
+
+        loaded: dict[str, Any] = {}
+        for key, results_rel, runner_rel in EXTENDED_AUDIT_SPECS:
+            _check_safe_file(runner_rel)
+            doc = _json(_check_safe_file(results_rel))
+            _require(
+                type(doc.get("llm_calls")) is int
+                and doc["llm_calls"] == 0
+                and doc.get("model_called") is False,
+                f"extended audit {key} violated zero-LLM-call contract",
+            )
+            source_hashes = doc.get("source_hashes")
+            _require(
+                isinstance(source_hashes, dict) and runner_rel in source_hashes,
+                f"extended audit {key} missing runner binding in source_hashes",
+            )
+            for rel, expected_sha in source_hashes.items():
+                _verify_hash(rel, expected_sha, f"extended-audit:{key}")
+            loaded[key] = doc
+
+        a1 = loaded["a1"]
+        _require(
+            a1["budgets"] == [0, 1, 2, 3]
+            and type(a1["cases_per_budget"]) is int
+            and a1["cases_per_budget"] == 352
+            and a1["total_end_to_end_runs"] == a1["cases_per_budget"] * len(a1["budgets"]) == 1408
+            and a1["unsafe_commits_total"] == 0
+            and a1["false_rejections_total"] == 0
+            and a1["native_replay_equal_total"] == 1408,
+            "A1 top-level budget/denominator/safety invariants drifted",
+        )
+        for budget in ("0", "1", "2", "3"):
+            summary = a1["by_budget"][budget]
+            overall = summary["overall"]
+            families = summary["by_family"]
+            rows = a1["rows_by_budget"][budget]
+            _require(
+                len(rows) == a1["cases_per_budget"]
+                and families["repairable_multi"]["assigned"] == 96
+                and families["mixed_partial_clear"]["assigned"] == 160
+                and families["conflict_pair"]["assigned"] == 96
+                and sum(fam["assigned"] for fam in families.values()) == a1["cases_per_budget"],
+                f"A1 family denominator partition drift at K={budget}",
+            )
+            _require(
+                sum(bool(row["safe_commit"]) for row in rows)
+                == overall["safe_commits"]
+                == overall["committed"]
+                and sum(row["status"] == "HOLD" for row in rows) == overall["held"]
+                and overall["committed"] + overall["held"] == a1["cases_per_budget"]
+                and overall["unsafe_commits"] == 0,
+                f"A1 row-to-summary accounting drift at K={budget}",
+            )
+        k0 = a1["by_budget"]["0"]["overall"]
+        k1 = a1["by_budget"]["1"]
+        k3 = a1["by_budget"]["3"]
+        _require(
+            k0["safe_commits"] == 0
+            and all(a1["by_budget"][b]["overall"]["safe_commits"] == 124 for b in ("1", "2", "3"))
+            and k1["by_family"]["repairable_multi"]["committed"] == 96
+            and k1["by_family"]["mixed_partial_clear"]["committed"] == 28
+            and k1["by_family"]["mixed_partial_clear"]["held"] == 132
+            and k1["by_family"]["mixed_partial_clear"]["partial_clear_hold_count"] == 132
+            and all(
+                a1["by_budget"][b]["by_family"]["conflict_pair"]["committed"] == 0
+                for b in ("0", "1", "2", "3")
+            )
+            and k3["by_family"]["conflict_pair"]["observed_period_2_count"] == 96,
+            "A1 family convergence/partial-clear/oscillation invariants drifted",
+        )
+        guard = a1["simultaneous_conflict_guard"]
+        _require(
+            guard["scope"] == "direct_same_pass_unit_battery_separate_from_352_end_to_end_cases"
+            and guard["assigned"] == 128
+            and guard["fixed_point_by_step_1_count"] == 128
+            and guard["ready_preserved_count"] == 128
+            and sum(v["assigned"] for v in guard["by_variant"].values()) == 128
+            and sum(v["fixed_point_by_step_1_count"] for v in guard["by_variant"].values()) == 128,
+            "A1 simultaneous conflict guard invariants drifted",
+        )
+
+        a2 = loaded["a2"]
+        cfg = a2["config"]
+        _require(
+            cfg["fact_rule_scales"] == [10, 100, 500, 1000, 2000]
+            and cfg["room_scales"] == [4, 16, 64, 256]
+            and cfg["topologies"] == ["locked_chain", "bypass_branch"]
+            and cfg["active_constraint_arity_cap"] == 100
+            and cfg["episode_lengths"] == [1, 10, 50, 100],
+            "A2 scaling configuration drifted",
+        )
+        bench = a2["benchmarks"]
+        for group in ("validator", "repair", "reachability", "verification_and_replay"):
+            _require(bool(bench.get(group)), f"A2 missing benchmark group {group}")
+            for entry in bench[group]:
+                _require(
+                    0.0 < entry["min_ms"] <= entry["p50_ms"] <= entry["p95_ms"] <= entry["max_ms"]
+                    and entry["min_ms"] <= entry["mean_ms"] <= entry["max_ms"],
+                    f"A2 non-monotonic latency quantiles in {group}: {entry}",
+                )
+
+        def _pick_one(rows_list: list[dict[str, Any]], **predicates: Any) -> dict[str, Any]:
+            matched = [
+                item
+                for item in rows_list
+                if all(item.get(field) == value for field, value in predicates.items())
+            ]
+            _require(len(matched) == 1, f"A2 benchmark lookup ambiguous/missing: {predicates}")
+            return matched[0]
+
+        v_valid_2000 = _pick_one(bench["validator"], facts_rules_count=2000, case="valid_pass")
+        v_fail_2000 = _pick_one(bench["validator"], facts_rules_count=2000, case="multi_error_fail")
+        rho_mixed_2000 = _pick_one(
+            bench["repair"], facts_rules_count=2000, case="mixed_repairable_irreparable"
+        )
+        rho_rep_2000 = _pick_one(
+            bench["repair"], facts_rules_count=2000, case="repairable_converges"
+        )
+        reach_lc_closure = _pick_one(
+            bench["reachability"],
+            room_count=256,
+            topology="locked_chain",
+            component="reachability_closure",
+        )
+        reach_lc_bfs = _pick_one(
+            bench["reachability"],
+            room_count=256,
+            topology="locked_chain",
+            component="reachability_bfs",
+        )
+        reach_bb_closure = _pick_one(
+            bench["reachability"],
+            room_count=256,
+            topology="bypass_branch",
+            component="reachability_closure",
+        )
+        reach_bb_bfs = _pick_one(
+            bench["reachability"],
+            room_count=256,
+            topology="bypass_branch",
+            component="reachability_bfs",
+        )
+        sha_2000 = _pick_one(
+            bench["verification_and_replay"],
+            component="sha256_verify_record",
+            facts_rules_count=2000,
+        )
+        replay_100 = _pick_one(
+            bench["verification_and_replay"],
+            component="replay_trace_jsonl",
+            facts_rules_count=100,
+            episode_length=100,
+        )
+
+        a3 = loaded["a3"]
+        _require(
+            a3["rubric_status"] == "PROPOSED_NOT_VALIDATED"
+            and a3["reliability"]["human_assessors"] == 0
+            and a3["reliability"]["krippendorff_alpha"] == "UNDEFINED",
+            "A3 rubric/reliability boundary drifted",
+        )
+        v2_inputs = _json(_check_safe_file(f"{AUDIT}/input_hashes.json"))
+        v2_sources = _json(_check_safe_file(f"{AUDIT}/source_hashes.json"))
+        for name, digest in v2_inputs.items():
+            _verify_hash(f"{AUDIT}/{name}", digest, "extended-audit:a3:v2_input_hashes")
+        for rel, digest in v2_sources.items():
+            _verify_hash(rel, digest, "extended-audit:a3:v2_source_hashes")
+        preflight = a3["frozen_integrity_preflight"]
+        _require(
+            preflight["v2_input_hashes_matched"]
+            == preflight["v2_input_hashes_total"]
+            == len(v2_inputs)
+            and preflight["v2_source_hashes_matched"]
+            == preflight["v2_source_hashes_total"]
+            == len(v2_sources),
+            "A3 frozen_integrity_preflight counts drifted",
+        )
+        seeded = a3["seeded_control_summary"]
+        scope_tr14 = a3["scope_notes"]["tr01_tr04_corruption_scope"]
+        _require(
+            seeded["clean_native_pool_size"] == scope_tr14["clean_native_pool_units"] == 1248
+            and scope_tr14["corruption_operators"] == 5
+            and seeded["candidate_corruption_controls_total"]
+            == scope_tr14["candidate_control_pairs"]
+            == 1248 * 5
+            == 6240
+            and seeded["seeded_valid_corruptions"]
+            == seeded["detected_valid_corruptions"]
+            == scope_tr14["applicable_valid_controls"]
+            == 4656
+            and seeded["inapplicable_controls_retained_separately"]
+            == scope_tr14["inapplicable_controls_retained_separately"]
+            == 1584
+            and seeded["malformed_controls_retained_separately"]
+            == scope_tr14["malformed_controls"]
+            == 0
+            and 4656 + 1584 == 6240
+            and sum(
+                item["seeded_valid_corruptions"] for item in seeded["by_corruption_type"].values()
+            )
+            == 4656
+            and sum(
+                item["detected_valid_corruptions"] for item in seeded["by_corruption_type"].values()
+            )
+            == 4656
+            and sum(
+                item["inapplicable_controls_retained_separately"]
+                for item in seeded["by_corruption_type"].values()
+            )
+            == 1584
+            and seeded["clean_control_units"] == 1248 * 3 == 3744
+            and seeded["false_alarms"] == 0
+            and sum(item["clean_control_units"] for item in seeded["by_invariance_type"].values())
+            == 3744
+            and sum(item["false_alarms"] for item in seeded["by_invariance_type"].values()) == 0,
+            "A3 seeded corruption/invariance control accounting drifted",
+        )
+        tr05 = a3["baseline_frozen_trace_scores"]["cohort_1_gemini_review_v2"]["TR05"]
+        tr05_rev_scope = a3["scope_notes"]["tr05_reverse_scope"]
+        _require(
+            tr05["TR05_forward"]["complete_chain_numerator"]
+            == tr05["TR05_forward"]["complete_chain_denominator"]
+            == len(tr05["forward_units"])
+            == sum(unit["complete_chain"] for unit in tr05["forward_units"])
+            == 12
+            and tr05["TR05_reverse"]["complete_chain_numerator"]
+            == tr05["TR05_reverse"]["complete_chain_denominator"]
+            == tr05_rev_scope["direct_evidence_files_scored"]
+            == 10
+            and tr05_rev_scope["co_hashed_sibling_modules_excluded"]
+            == tr05["co_hashed_sibling_modules_disclosed_separately"]["count"]
+            == 10
+            and tr05_rev_scope["direct_evidence_files_scored"]
+            + tr05_rev_scope["co_hashed_sibling_modules_excluded"]
+            == tr05_rev_scope["total_paths_in_source_hashes_json"]
+            == len(v2_sources),
+            "A3 TR05 forward/reverse direct-file accounting drifted",
+        )
+
+        a4 = loaded["a4"]
+        refusal = a4["refusal_code_coverage"]
+        soak = a4["soak"]
+        _require(
+            a4["passed"] is True
+            and a4["failures"] == []
+            and a4["execution_status"] == "OBSERVED_ENGINE_RUN"
+            and a4["engineering_only"] is True
+            and refusal["exercised_count"] == refusal["implemented_count"] == 9
+            and set(refusal["exercised_codes"]) == set(refusal["implemented_codes"])
+            and {"OBJECT_NOT_REACHABLE", "QUEST_STAGE_PRECONDITION"}.issubset(
+                refusal["exercised_codes"]
+            )
+            and refusal["missing_codes"] == []
+            and refusal["isolated_cases"]
+            == refusal["total_cases"]
+            == refusal["trace_consistent_cases"]
+            == len(refusal["cases"])
+            == 11
+            and all(
+                case["passed"] is True
+                and case["accepted"] is False
+                and case["mutated"] is False
+                and case["state_isolated"] is True
+                and case["trace_consistent"] is True
+                and case["pre_state_sha256"] == case["post_state_sha256"]
+                for case in refusal["cases"]
+            ),
+            "A4 refusal coverage/isolation invariants drifted",
+        )
+        _require(
+            soak["episodes_completed"] == 200
+            and soak["cycle_length"] == 8
+            and soak["ticks_executed"] == soak["episodes_completed"] * soak["cycle_length"] == 1600
+            and soak["warmup_ticks"] == 64
+            and soak["steady_state_ticks"] == soak["ticks_executed"] - soak["warmup_ticks"] == 1536
+            and soak["counts"]["trace_consistent"] == soak["counts"]["trace_checks"] == 1600
+            and soak["counts"]["refusals_state_isolated"] == soak["counts"]["refusals"] == 800
+            and soak["timing_ms"]["step_commit_steady_state"]["count"] == 1536
+            and soak["memory"]["godot_monitors"]["object_count_steady_state_delta"] == 0
+            and soak["memory"]["godot_monitors"]["orphan_node_count"]["max"] == 0,
+            "A4 soak timing/memory/leak invariants drifted",
+        )
+
+        b_doc = loaded["b"]
+        corpus = b_doc["corpus"]
+        _require(
+            corpus["total_cases"] == 88
+            and corpus["frozen_surface_sentinels"] == 12
+            and corpus["expanded_cases"] == 76
+            and corpus["frozen_surface_sentinels"] + corpus["expanded_cases"] == 88
+            and corpus["language_counts"] == {"en": 44, "ko": 44}
+            and corpus["strata_counts"]
+            == {
+                "benign_in_policy": 36,
+                "explicit_violation": 16,
+                "undeclared_paraphrase": 36,
+            }
+            and sum(corpus["strata_counts"].values()) == 88
+            and b_doc["tfidf_calibration"]["eval_text_overlap_count"] == 0
+            and b_doc["tfidf_calibration"]["loo_idf_isolation"] is True
+            and b_doc["tfidf_calibration"]["positive_prototypes"] == 14
+            and b_doc["tfidf_calibration"]["negative_prototypes"] == 14
+            and b_doc["tfidf_calibration"]["loo_in_fold_prototypes"] == 27
+            and b_doc["scope_limitations"]["single_secret_id"] == "keeper_secret",
+            "B corpus/LOO/scope invariants drifted",
+        )
+        b_gates = {}
+        for gid in (
+            "baseline_structured_id",
+            "structured_id_plus_alias_pattern",
+            "structured_id_plus_tfidf_cosine",
+        ):
+            gate = b_doc["gates"][gid]
+            gate_rows = b_doc["rows_by_gate"][gid]
+            counts = gate["counts"]
+            _require(len(gate_rows) == 88, f"B row count drift for {gid}")
+            tp_undeclared = sum(
+                row["stratum"] == "undeclared_paraphrase" and bool(row["rejected"])
+                for row in gate_rows
+            )
+            tp_explicit = sum(
+                row["stratum"] == "explicit_violation" and bool(row["rejected"])
+                for row in gate_rows
+            )
+            fp_benign = sum(
+                row["stratum"] == "benign_in_policy" and bool(row["rejected"]) for row in gate_rows
+            )
+            tn_benign = sum(
+                row["stratum"] == "benign_in_policy" and not bool(row["rejected"])
+                for row in gate_rows
+            )
+            _require(
+                tp_undeclared == counts["tp_undeclared"]
+                and tp_explicit == counts["tp_explicit"] == 16
+                and fp_benign == counts["fp_benign"]
+                and tn_benign == counts["tn_benign"]
+                and counts["undeclared_paraphrases"] == 36
+                and counts["benign_in_policy"] == 36
+                and abs(gate["metrics"]["undeclared_escape_recall"] - tp_undeclared / 36) < 1e-12
+                and abs(gate["metrics"]["false_rejection_rate"] - fp_benign / 36) < 1e-12,
+                f"B confusion-matrix/metric drift for {gid}",
+            )
+            b_gates[gid] = {
+                "tp_undeclared": tp_undeclared,
+                "undeclared_total": counts["undeclared_paraphrases"],
+                "recall_pct": f"{gate['metrics']['undeclared_escape_recall'] * 100:.1f}",
+                "fp_benign": fp_benign,
+                "benign_total": counts["benign_in_policy"],
+                "frr_pct": f"{gate['metrics']['false_rejection_rate'] * 100:.1f}",
+                "warm_p95": f"{gate['latency_ms']['warm_p95_ms']:.4f}",
+            }
+        imp_meta = b_doc["scope_limitations"]["implicit_metaphorical_recall"]
+        hard_neg = b_doc["scope_limitations"]["hard_negative_lexical_benign_frr"]
+        _require(
+            imp_meta["structured_id_plus_alias_pattern"]["caught"] == 0
+            and imp_meta["structured_id_plus_alias_pattern"]["total"] == 10
+            and imp_meta["structured_id_plus_tfidf_cosine"]["caught"] == 9
+            and imp_meta["structured_id_plus_tfidf_cosine"]["total"] == 10
+            and hard_neg["structured_id_plus_alias_pattern"]["false_rejections"] == 4
+            and hard_neg["structured_id_plus_alias_pattern"]["total"] == 18
+            and hard_neg["structured_id_plus_tfidf_cosine"]["false_rejections"] == 8
+            and hard_neg["structured_id_plus_tfidf_cosine"]["total"] == 18,
+            "B subcategory limitation counts drifted",
+        )
+
+        self.values["extended_audits"] = {
+            "a1_max_k": a1["budgets"][-1],
+            "a1_per_budget": a1["cases_per_budget"],
+            "a1_runs": a1["total_end_to_end_runs"],
+            "a1_runs_comma": f"{a1['total_end_to_end_runs']:,}",
+            "a1_rep_assigned": k1["by_family"]["repairable_multi"]["assigned"],
+            "a1_mix_assigned": k1["by_family"]["mixed_partial_clear"]["assigned"],
+            "a1_conf_assigned": k1["by_family"]["conflict_pair"]["assigned"],
+            "a1_guard": guard["assigned"],
+            "a1_guard_freeze": guard["fixed_point_by_step_1_count"],
+            "a1_k0_safe": k0["safe_commits"],
+            "a1_k1_safe": k1["overall"]["safe_commits"],
+            "a1_k1_pct": f"{k1['overall']['recovery_rate'] * 100:.2f}",
+            "a1_unsafe": a1["unsafe_commits_total"],
+            "a1_rep_k1": k1["by_family"]["repairable_multi"]["committed"],
+            "a1_mix_k1": k1["by_family"]["mixed_partial_clear"]["committed"],
+            "a1_mix_held": k1["by_family"]["mixed_partial_clear"]["held"],
+            "a1_mix_partial": k1["by_family"]["mixed_partial_clear"]["partial_clear_hold_count"],
+            "a1_conf_commits": k3["by_family"]["conflict_pair"]["committed"],
+            "a1_conf_p2": k3["by_family"]["conflict_pair"]["observed_period_2_count"],
+            "a2_min_n": cfg["fact_rule_scales"][0],
+            "a2_max_n": cfg["fact_rule_scales"][-1],
+            "a2_arity_cap": cfg["active_constraint_arity_cap"],
+            "a2_cap_threshold": 500,
+            "a2_min_r": cfg["room_scales"][0],
+            "a2_max_r": cfg["room_scales"][-1],
+            "a2_v_valid": f"{v_valid_2000['p95_ms']:.4f}",
+            "a2_v_fail": f"{v_fail_2000['p95_ms']:.4f}",
+            "a2_rho_mixed": f"{rho_mixed_2000['p95_ms']:.4f}",
+            "a2_rho_rep": f"{rho_rep_2000['p95_ms']:.4f}",
+            "a2_lc_closure": f"{reach_lc_closure['p95_ms']:.4f}",
+            "a2_lc_bfs": f"{reach_lc_bfs['p95_ms']:.4f}",
+            "a2_bb_closure": f"{reach_bb_closure['p95_ms']:.4f}",
+            "a2_bb_bfs": f"{reach_bb_bfs['p95_ms']:.4f}",
+            "a2_sha": f"{sha_2000['p95_ms']:.4f}",
+            "a2_replay_n": replay_100["facts_rules_count"],
+            "a2_replay_l": replay_100["episode_length"],
+            "a2_replay": f"{replay_100['p95_ms']:.4f}",
+            "a3_base_comma": f"{seeded['clean_native_pool_size']:,}",
+            "a3_corrupt_comma": f"{seeded['seeded_valid_corruptions']:,}",
+            "a3_detected_comma": f"{seeded['detected_valid_corruptions']:,}",
+            "a3_sens_pct": f"{seeded['overall_detector_sensitivity'] * 100:.2f}",
+            "a3_na_comma": f"{seeded['inapplicable_controls_retained_separately']:,}",
+            "a3_inv_comma": f"{seeded['clean_control_units']:,}",
+            "a3_fa": seeded["false_alarms"],
+            "a3_far_pct": f"{seeded['overall_false_alarm_rate'] * 100:.2f}",
+            "a3_fwd_num": tr05["TR05_forward"]["complete_chain_numerator"],
+            "a3_fwd_den": tr05["TR05_forward"]["complete_chain_denominator"],
+            "a3_rev_num": tr05["TR05_reverse"]["complete_chain_numerator"],
+            "a3_rev_den": tr05["TR05_reverse"]["complete_chain_denominator"],
+            "a3_excluded": tr05_rev_scope["co_hashed_sibling_modules_excluded"],
+            "a3_alpha": a3["reliability"]["krippendorff_alpha"],
+            "a3_assessors": a3["reliability"]["human_assessors"],
+            "a4_refusal_cases": refusal["total_cases"],
+            "a4_isolated": refusal["isolated_cases"],
+            "a4_codes_ex": refusal["exercised_count"],
+            "a4_codes_imp": refusal["implemented_count"],
+            "a4_codes_pct": round(refusal["exercised_count"] / refusal["implemented_count"] * 100),
+            "a4_ticks_comma": f"{soak['ticks_executed']:,}",
+            "a4_trace_ok_comma": f"{soak['counts']['trace_consistent']:,}",
+            "a4_episodes": soak["episodes_completed"],
+            "a4_step_p95": f"{soak['timing_ms']['step_commit_steady_state']['p95']:.3f}",
+            "a4_mem_delta": soak["memory"]["godot_static_memory_bytes"]["steady_state_delta_bytes"],
+            "a4_leaks": soak["memory"]["godot_monitors"]["object_count_steady_state_delta"]
+            + soak["memory"]["godot_monitors"]["orphan_node_count"]["max"],
+            "b_total": corpus["total_cases"],
+            "b_en": corpus["language_counts"]["en"],
+            "b_ko": corpus["language_counts"]["ko"],
+            "b_sentinels": corpus["frozen_surface_sentinels"],
+            "b_secret": b_doc["scope_limitations"]["single_secret_id"],
+            "b_gates": b_gates,
+        }
+        return "five 0-LLM-call extended audits (A1-A4, B), source_hashes, and internal denominator invariants verified"
+
     def artifact_sources(self):
         required = (
             "pilot",
@@ -1502,6 +2015,7 @@ class _Verifier:
             "npc",
             "kg",
             "v5",
+            "extended_audits",
             "preserved-statuses",
             "contribution-crosswalk",
             "withdrawn-ollama-attribution",
@@ -1990,6 +2504,25 @@ class _Verifier:
             }
         )
         facts.update(zip(("dev_year", "dev_month", "dev_day"), facts["dev_date"].split("-")))
+        ext = self.values["extended_audits"]
+        facts.update(
+            a1_runs_comma=ext["a1_runs_comma"],
+            a1_max_k=ext["a1_max_k"],
+            a1_k1_safe=ext["a1_k1_safe"],
+            a1_per_budget=ext["a1_per_budget"],
+            a1_guard=ext["a1_guard"],
+            a2_max_n=ext["a2_max_n"],
+            a2_arity_cap=ext["a2_arity_cap"],
+            a2_max_r=ext["a2_max_r"],
+            a3_corrupt_comma=ext["a3_corrupt_comma"],
+            a3_na_comma=ext["a3_na_comma"],
+            a3_inv_comma=ext["a3_inv_comma"],
+            a3_fwd=ext["a3_fwd_num"],
+            a3_rev=ext["a3_rev_num"],
+            a4_codes=ext["a4_codes_ex"],
+            a4_ticks_comma=ext["a4_ticks_comma"],
+            b_total=ext["b_total"],
+        )
         self.values["artifact_map"] = facts
         return "keyed artifact-map fields derived from validated source families, dated DEV receipt, engine matrix, historical inventory and blocked protocol; static smoke definitions are not executed results"
 
@@ -2053,7 +2586,19 @@ class _Verifier:
                     "label": "Boundary \\newline Audit",
                     "paths": [
                         (
-                            "research/academic-pipeline/gemini-review-20261113/results-v2/",
+                            "research/academic-pipeline/gemini-review-20261113/protocol-v2.json",
+                            "research/academic-pipeline/gemini-review-20261113/protocol-v2.json",
+                        ),
+                        (
+                            "reviewer-source.public.json",
+                            "research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json",
+                        ),
+                        (
+                            "public-source-projection-v1.json",
+                            "research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json",
+                        ),
+                        (
+                            "results-v2/",
                             "research/academic-pipeline/gemini-review-20261113/results-v2/",
                         ),
                         (
@@ -2083,7 +2628,8 @@ class _Verifier:
                     ],
                     "cell": "@audit_main_comma@ main assignments and @audit_surface@ "
                     "separately denominated surface assignments; bounded authored "
-                    "finite-graph audit, frozen inventory, and input/source hashes.",
+                    "finite-graph audit, public source-projection packets, frozen "
+                    "inventory, and input/source hashes.",
                     "verifier": "scripts/run_gemini_review_evaluation.py \\newline "
                     "tests/test_gemini_review_publication.py \\newline "
                     "Secs.~\\ref{sec:review-boundary-audit}, "
@@ -2319,6 +2865,52 @@ class _Verifier:
                     "App.~\\ref{app:runtime-ollama-feasibility}--\\ref{app:diagnostic-blocked}",
                     "verifier_paths": ["scripts/run_prospective_pilot.py"],
                 },
+                "extended_audits": {
+                    "label": "Extended \\newline Audits",
+                    "paths": [
+                        (
+                            "research/academic-pipeline/multi-error-repair-audit/results.json",
+                            "research/academic-pipeline/multi-error-repair-audit/results.json",
+                        ),
+                        (
+                            "latency-scaling-benchmark/results.json",
+                            "research/academic-pipeline/latency-scaling-benchmark/results.json",
+                        ),
+                        (
+                            "semantic-escape-filter-audit/results.json",
+                            "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+                        ),
+                        (
+                            "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+                            "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+                        ),
+                        (
+                            "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+                            "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+                        ),
+                    ],
+                    "cell": "Five 0-LLM-call deterministic/engine audits: A1 @a1_runs_comma@ "
+                    "multi-error runs ($K{\\in}\\{0..@a1_max_k@\\}$, @a1_k1_safe@/@a1_per_budget@ "
+                    "safe commits at $K{\\ge}1$, +@a1_guard@ unit guards); A2 scaling to "
+                    "$N{=}@a2_max_n@$ (arity ${\\le}@a2_arity_cap@$), $R{=}@a2_max_r@$; A3 "
+                    "@a3_corrupt_comma@/@a3_corrupt_comma@ TR01--TR04 faults (+@a3_na_comma@ N/A), "
+                    "0/@a3_inv_comma@ false alarms, TR05 @a3_fwd@/@a3_fwd@ \\& @a3_rev@/@a3_rev@; "
+                    "A4 @a4_codes@/@a4_codes@ Godot refusals, @a4_ticks_comma@-tick soak; B "
+                    "@b_total@-case EN/KO escape filter.",
+                    "verifier": "scripts/run_multi_error_repair_audit.py; "
+                    "scripts/run_latency_scaling_benchmark.py; "
+                    "scripts/run_traceability_seeded_audit.py; "
+                    "scripts/run_soak_and_refusal_probe.py; "
+                    "scripts/run_semantic_escape_filter_audit.py \\newline "
+                    "Sec.~\\ref{sec:extended-audits}, Table~\\ref{tab:extended-audits}",
+                    "verifier_paths": [
+                        "scripts/run_multi_error_repair_audit.py",
+                        "scripts/run_latency_scaling_benchmark.py",
+                        "scripts/run_traceability_seeded_audit.py",
+                        "scripts/run_soak_and_refusal_probe.py",
+                        "scripts/run_semantic_escape_filter_audit.py",
+                    ],
+                },
                 "crosswalk": {
                     "label": "Crosswalk \\& \\newline Manifests",
                     "paths": [
@@ -2338,8 +2930,9 @@ class _Verifier:
                     ],
                     "cell": "@references@-reference topic/status crosswalk (@verified@ verified, "
                     "@preprint@ preprint), C1--C5 \\& E1--ENG1 claim-boundary matrices, "
-                    "visual/table SHA-256 source manifest, and @dimensions@-dimension "
-                    "traceability rubric (TR01--TR06).",
+                    "visual/table SHA-256 source manifest, and @dimensions@-dimension proposed "
+                    "traceability rubric (TR01--TR06; PROPOSED_NOT_VALIDATED for "
+                    "human/prospective scoring).",
                     "verifier": "scripts/validate_visual_assets.py \\newline "
                     "Table~\\ref{tab:contribution-map}, "
                     "Table~\\ref{tab:evidence-lanes}, Supplement",
@@ -2394,7 +2987,19 @@ class _Verifier:
                     "label": "신규 한정 \\newline 오프라인 감사",
                     "paths": [
                         (
-                            "research/academic-pipeline/gemini-review-20261113/results-v2/",
+                            "research/academic-pipeline/gemini-review-20261113/protocol-v2.json",
+                            "research/academic-pipeline/gemini-review-20261113/protocol-v2.json",
+                        ),
+                        (
+                            "reviewer-source.public.json",
+                            "research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json",
+                        ),
+                        (
+                            "public-source-projection-v1.json",
+                            "research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json",
+                        ),
+                        (
+                            "results-v2/",
                             "research/academic-pipeline/gemini-review-20261113/results-v2/",
                         ),
                         (
@@ -2423,7 +3028,7 @@ class _Verifier:
                         ),
                     ],
                     "cell": "본 배정 @audit_main_comma@개와 별도 표면 배정 @audit_surface@개를 구분한 저작된 "
-                    "유한 감사. 동결 입력·배정 목록·입력/소스 해시와 행별 결과를 보존하며 모델·사람 효능 자료가 아니다.",
+                    "유한 감사. 공개 투영 파생본·동결 프로토콜·배정 목록·입력/소스 해시와 행별 결과를 보존하며 모델·사람 효능 자료가 아니다.",
                     "verifier": "scripts/run_gemini_review_evaluation.py \\newline "
                     "tests/test_gemini_review_publication.py \\newline "
                     "\\ref{sec:review-boundary-audit}--\\ref{sec:review-boundary-results}절",
@@ -2497,6 +3102,10 @@ class _Verifier:
                         (
                             "research/development-cases/ontology-map-20261023-01/contract.json",
                             "research/development-cases/ontology-map-20261023-01/contract.json",
+                        ),
+                        (
+                            "research/development-cases/ontology-map-20261023-01/result.json",
+                            "research/development-cases/ontology-map-20261023-01/result.json",
                         ),
                         (
                             "research/development-cases/ontology-map-20261023-01/evidence/verification-009-mobile-complete-tests.json",
@@ -2637,6 +3246,50 @@ class _Verifier:
                     "부록~\\ref{app:runtime-ollama-feasibility}--\\ref{app:diagnostic-blocked}",
                     "verifier_paths": ["scripts/run_prospective_pilot.py"],
                 },
+                "extended_audits": {
+                    "label": "확장 공학 감사 \\newline (A1--A4, B)",
+                    "paths": [
+                        (
+                            "research/academic-pipeline/multi-error-repair-audit/results.json",
+                            "research/academic-pipeline/multi-error-repair-audit/results.json",
+                        ),
+                        (
+                            "latency-scaling-benchmark/results.json",
+                            "research/academic-pipeline/latency-scaling-benchmark/results.json",
+                        ),
+                        (
+                            "semantic-escape-filter-audit/results.json",
+                            "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+                        ),
+                        (
+                            "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+                            "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+                        ),
+                        (
+                            "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+                            "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+                        ),
+                    ],
+                    "cell": "5종 0-LLM-call 결정론·엔진 감사: A1 다중 오류 @a1_runs_comma@회($K{\\in}\\{0..@a1_max_k@\\}$, "
+                    "$K{\\ge}1$ 안전 커밋 @a1_k1_safe@/@a1_per_budget@, 별도 가드 @a1_guard@); A2 "
+                    "$N{=}@a2_max_n@$(arity ${\\le}@a2_arity_cap@$), $R{=}@a2_max_r@$ 확장성; A3 "
+                    "TR01--TR04 결함 @a3_corrupt_comma@/@a3_corrupt_comma@(+비적용 @a3_na_comma@), "
+                    "오경보 0/@a3_inv_comma@, TR05 @a3_fwd@/@a3_fwd@·@a3_rev@/@a3_rev@; A4 Godot 거부 "
+                    "@a4_codes@/@a4_codes@ 및 @a4_ticks_comma@틱 소크; B 한·영 우회 필터 @b_total@례.",
+                    "verifier": "scripts/run_multi_error_repair_audit.py; "
+                    "scripts/run_latency_scaling_benchmark.py; "
+                    "scripts/run_traceability_seeded_audit.py; "
+                    "scripts/run_soak_and_refusal_probe.py; "
+                    "scripts/run_semantic_escape_filter_audit.py \\newline "
+                    "\\ref{sec:extended-audits}절, 표~\\ref{tab:extended-audits}",
+                    "verifier_paths": [
+                        "scripts/run_multi_error_repair_audit.py",
+                        "scripts/run_latency_scaling_benchmark.py",
+                        "scripts/run_traceability_seeded_audit.py",
+                        "scripts/run_soak_and_refusal_probe.py",
+                        "scripts/run_semantic_escape_filter_audit.py",
+                    ],
+                },
                 "crosswalk": {
                     "label": "교차검증 및 \\newline 시각 매니페스트",
                     "paths": [
@@ -2655,8 +3308,8 @@ class _Verifier:
                         ),
                     ],
                     "cell": "참고문헌 @references@편 주제·상태 교차표(검증 @verified@, 프리프린트 @preprint@), "
-                    "기여·실험 주장 경계 매트릭스, 시각·표 산출물의 SHA-256 매니페스트, 미측정 @dimensions@차원 추적성 "
-                    "루브릭(TR01--TR06).",
+                    "기여·실험 주장 경계 매트릭스, 시각·표 산출물의 SHA-256 매니페스트, 인간·전향 채점 미실행 "
+                    "@dimensions@차원 제안 추적성 루브릭(TR01--TR06; PROPOSED_NOT_VALIDATED).",
                     "verifier": "scripts/validate_visual_assets.py \\newline "
                     "표~\\ref{tab:contribution-map}, 표~\\ref{tab:evidence-lanes}, "
                     "보충자료",
@@ -3055,12 +3708,84 @@ class _Verifier:
         if anchor == "tab:artifact-directory-map":
             return self.artifact_map(table)
         if anchor == "tab:extended-audits":
-            _require(len(rows) == 5, "expected 5 rows in tab:extended-audits")
-            return (
-                "extended-audits",
-                "extended_audits",
-                {"row_count": len(rows), "measured": True},
+            _require(
+                self.family.get("extended_audits") == "PASS",
+                "tab:extended-audits lacks validated extended_audits source facts",
             )
+            ext = self.values["extended_audits"]
+            bg = ext["b_gates"]
+            b_base = bg["baseline_structured_id"]
+            b_alias = bg["structured_id_plus_alias_pattern"]
+            b_tfidf = bg["structured_id_plus_tfidf_cosine"]
+            expected = (
+                [
+                    [
+                        f"A1 다중 오류 수렴 ($K{{\\in}}\\{{0..{ext['a1_max_k']}\\}}$)",
+                        f"{ext['a1_per_budget']}건/예산 (${ext['a1_rep_assigned']}{{+}}{ext['a1_mix_assigned']}{{+}}{ext['a1_conf_assigned']}$; 총 {ext['a1_runs_comma']}회); 별도 {ext['a1_guard']} 가드",
+                        f"안전 커밋: $K{{=}}0$ {ext['a1_k0_safe']}/{ext['a1_per_budget']}, $K{{\\ge}}1$ {ext['a1_k1_safe']}/{ext['a1_per_budget']} ({ext['a1_k1_pct']}\\%, 비안전 {ext['a1_unsafe']}/{ext['a1_runs_comma']}); repairable_multi {ext['a1_rep_k1']}/{ext['a1_rep_assigned']} $K{{=}}1$ 복구; mixed_partial_clear {ext['a1_mix_k1']}/{ext['a1_mix_assigned']} $K{{=}}1$ 복구, {ext['a1_mix_held']}/{ext['a1_mix_assigned']} 보류 (보류 중 {ext['a1_mix_partial']}/{ext['a1_mix_held']} 부분 소거); conflict_pair 커밋 {ext['a1_conf_commits']}/{ext['a1_conf_assigned']} ($K{{=}}{ext['a1_max_k']}$ 궤적 주기-2 진동 {ext['a1_conf_p2']}/{ext['a1_conf_assigned']}) vs.\\ 별도 동시 패스 충돌 가드 {ext['a1_guard_freeze']}/{ext['a1_guard']} 동결",
+                    ],
+                    [
+                        "A2 지연·확장성 벤치마크",
+                        f"$N{{\\in}}[{ext['a2_min_n']},{ext['a2_max_n']}]$ 사실 ($N{{=}}{ext['a2_cap_threshold']}$ 초과 arity ${{\\le}}{ext['a2_arity_cap']}$), $R{{\\in}}[{ext['a2_min_r']},{ext['a2_max_r']}]$ 방",
+                        f"$N{{=}}{ext['a2_max_n']}$ 시 검증기 $V$ p95 {ext['a2_v_valid']}\\,ms (유효) / {ext['a2_v_fail']}\\,ms (다중 오류), $\\rho$ p95 {ext['a2_rho_mixed']}\\,ms (혼합) / {ext['a2_rho_rep']}\\,ms (수리 가능); $R{{=}}{ext['a2_max_r']}$ 클로저 / BFS p95: locked_chain {ext['a2_lc_closure']} / {ext['a2_lc_bfs']}\\,ms, bypass_branch {ext['a2_bb_closure']} / {ext['a2_bb_bfs']}\\,ms; SHA-256 검증 ($N{{=}}{ext['a2_max_n']}$) p95 {ext['a2_sha']}\\,ms; JSONL 리플레이 ($N{{=}}{ext['a2_replay_n']}, L{{=}}{ext['a2_replay_l']}$) p95 {ext['a2_replay']}\\,ms",
+                    ],
+                    [
+                        "A3 TR01--TR04 결함 및 TR05 감사",
+                        f"적용 {ext['a3_corrupt_comma']} (+비적용 {ext['a3_na_comma']}) / 불변 {ext['a3_inv_comma']} ({ext['a3_base_comma']} 기준)",
+                        f"TR01--TR04 시드 결함 민감도 {ext['a3_detected_comma']}/{ext['a3_corrupt_comma']} ({ext['a3_sens_pct']}\\%, +비적용 대조군 {ext['a3_na_comma']}); 불변 대조군 오경보 {ext['a3_fa']}/{ext['a3_inv_comma']} ({ext['a3_far_pct']}\\%); TR05 순방향 {ext['a3_fwd_num']}/{ext['a3_fwd_den']}, 역방향 직접 근거 파일 {ext['a3_rev_num']}/{ext['a3_rev_den']} (패키지 공해시 형제 모듈 {ext['a3_excluded']}개 제외); Krippendorff $\\alpha$ {ext['a3_alpha']} (인간 평가자 {ext['a3_assessors']}명)",
+                    ],
+                    [
+                        "A4 Godot 거부·소크 프로브",
+                        f"{ext['a4_refusal_cases']}건 거부 + {ext['a4_ticks_comma']}틱 ({ext['a4_episodes']} 에피소드)",
+                        f"선언 연산 거부 코드 {ext['a4_codes_ex']}/{ext['a4_codes_imp']} ({ext['a4_codes_pct']}\\%) 실측(OBJECT_NOT_REACHABLE, QUEST_STAGE_PRECONDITION 포함); 상태 격리 {ext['a4_isolated']}/{ext['a4_refusal_cases']}, 추적 일치 {ext['a4_trace_ok_comma']}/{ext['a4_ticks_comma']}; 정상 상태 step_commit p95 {ext['a4_step_p95']}\\,ms, 정상 상태 정적 메모리 델타 ${ext['a4_mem_delta']}$\\,B, 객체/고아 노드 누수 {ext['a4_leaks']}",
+                    ],
+                    [
+                        "B 자연어 우회 2차 필터",
+                        f"{ext['b_total']}건 (EN {ext['b_en']}, KO {ext['b_ko']}; {ext['b_sentinels']} 센티널 포함; {ext['b_secret']})",
+                        f"미선언 우회 탐지율 / 정상 오거부율 / 예열(warm) p95: 기준(ID 전용) {b_base['recall_pct']}\\% ({b_base['tp_undeclared']}/{b_base['undeclared_total']}) / {b_base['frr_pct']}\\% ({b_base['fp_benign']}/{b_base['benign_total']}) / {b_base['warm_p95']}\\,ms; 별칭·패턴 {b_alias['recall_pct']}\\% ({b_alias['tp_undeclared']}/{b_alias['undeclared_total']}) / {b_alias['frr_pct']}\\% ({b_alias['fp_benign']}/{b_alias['benign_total']}) / {b_alias['warm_p95']}\\,ms; LOO TF-IDF/코사인 {b_tfidf['recall_pct']}\\% ({b_tfidf['tp_undeclared']}/{b_tfidf['undeclared_total']}) / {b_tfidf['frr_pct']}\\% ({b_tfidf['fp_benign']}/{b_tfidf['benign_total']}) / {b_tfidf['warm_p95']}\\,ms",
+                    ],
+                ]
+                if korean
+                else [
+                    [
+                        f"A1 Multi-Error Convergence ($K{{\\in}}\\{{0..{ext['a1_max_k']}\\}}$)",
+                        f"{ext['a1_per_budget']} cases/budget (${ext['a1_rep_assigned']}{{+}}{ext['a1_mix_assigned']}{{+}}{ext['a1_conf_assigned']}$; {ext['a1_runs_comma']} runs); sep.\\ {ext['a1_guard']} guards",
+                        f"Safe commits: $K{{=}}0$ {ext['a1_k0_safe']}/{ext['a1_per_budget']}, $K{{\\ge}}1$ {ext['a1_k1_safe']}/{ext['a1_per_budget']} ({ext['a1_k1_pct']}\\%, unsafe {ext['a1_unsafe']}/{ext['a1_runs_comma']}); repairable_multi {ext['a1_rep_k1']}/{ext['a1_rep_assigned']} recover at $K{{=}}1$; mixed_partial_clear {ext['a1_mix_k1']}/{ext['a1_mix_assigned']} recover at $K{{=}}1$, {ext['a1_mix_held']}/{ext['a1_mix_assigned']} held ({ext['a1_mix_partial']}/{ext['a1_mix_held']} partial-clear); conflict_pair {ext['a1_conf_commits']}/{ext['a1_conf_assigned']} commits ({ext['a1_conf_p2']}/{ext['a1_conf_assigned']} trajectory period-2 oscillation at $K{{=}}{ext['a1_max_k']}$) vs.\\ separate {ext['a1_guard_freeze']}/{ext['a1_guard']} same-pass conflict-guard freeze",
+                    ],
+                    [
+                        "A2 Latency \\& Scaling Benchmark",
+                        f"$N{{\\in}}[{ext['a2_min_n']},{ext['a2_max_n']}]$ facts (arity ${{\\le}}{ext['a2_arity_cap']}$ above $N{{=}}{ext['a2_cap_threshold']}$), $R{{\\in}}[{ext['a2_min_r']},{ext['a2_max_r']}]$ rooms",
+                        f"At $N{{=}}{ext['a2_max_n']}$, validator $V$ p95 {ext['a2_v_valid']}\\,ms (valid) / {ext['a2_v_fail']}\\,ms (multi-error), $\\rho$ p95 {ext['a2_rho_mixed']}\\,ms (mixed) / {ext['a2_rho_rep']}\\,ms (repairable); at $R{{=}}{ext['a2_max_r']}$, closure / BFS p95: locked_chain {ext['a2_lc_closure']} / {ext['a2_lc_bfs']}\\,ms, bypass_branch {ext['a2_bb_closure']} / {ext['a2_bb_bfs']}\\,ms; SHA-256 verify ($N{{=}}{ext['a2_max_n']}$) p95 {ext['a2_sha']}\\,ms; JSONL replay ($N{{=}}{ext['a2_replay_n']}, L{{=}}{ext['a2_replay_l']}$) p95 {ext['a2_replay']}\\,ms",
+                    ],
+                    [
+                        "A3 TR01--TR04 Faults \\& TR05 Audit",
+                        f"{ext['a3_corrupt_comma']} applicable (+{ext['a3_na_comma']} N/A) / {ext['a3_inv_comma']} invariance ({ext['a3_base_comma']} base)",
+                        f"TR01--TR04 seeded-fault sensitivity {ext['a3_detected_comma']}/{ext['a3_corrupt_comma']} ({ext['a3_sens_pct']}\\%, +{ext['a3_na_comma']} inapplicable controls); invariance false alarms {ext['a3_fa']}/{ext['a3_inv_comma']} ({ext['a3_far_pct']}\\%); TR05 forward {ext['a3_fwd_num']}/{ext['a3_fwd_den']}, reverse {ext['a3_rev_num']}/{ext['a3_rev_den']} direct-evidence files ({ext['a3_excluded']} co-hashed sibling modules excluded); Krippendorff $\\alpha$ {ext['a3_alpha']} ({ext['a3_assessors']} human assessors)",
+                    ],
+                    [
+                        "A4 Godot Refusal \\& Soak Probe",
+                        f"{ext['a4_refusal_cases']} refusals + {ext['a4_ticks_comma']} ticks ({ext['a4_episodes']} episodes)",
+                        f"Declared operation refusal codes {ext['a4_codes_ex']}/{ext['a4_codes_imp']} ({ext['a4_codes_pct']}\\%) exercised (incl.\\ OBJECT_NOT_REACHABLE, QUEST_STAGE_PRECONDITION); isolation {ext['a4_isolated']}/{ext['a4_refusal_cases']}, trace consistency {ext['a4_trace_ok_comma']}/{ext['a4_ticks_comma']}; steady-state step_commit p95 {ext['a4_step_p95']}\\,ms, steady-state static memory delta ${ext['a4_mem_delta']}$\\,B, object/orphan leaks {ext['a4_leaks']}",
+                    ],
+                    [
+                        "B Semantic Escape 2nd-Stage Filter",
+                        f"{ext['b_total']} cases ({ext['b_en']} EN, {ext['b_ko']} KO; incl.\\ {ext['b_sentinels']} sentinels; {ext['b_secret']})",
+                        f"Undeclared escape recall / benign FRR / warm p95: Baseline (ID-only) {b_base['recall_pct']}\\% ({b_base['tp_undeclared']}/{b_base['undeclared_total']}) / {b_base['frr_pct']}\\% ({b_base['fp_benign']}/{b_base['benign_total']}) / {b_base['warm_p95']}\\,ms; Alias/Pattern {b_alias['recall_pct']}\\% ({b_alias['tp_undeclared']}/{b_alias['undeclared_total']}) / {b_alias['frr_pct']}\\% ({b_alias['fp_benign']}/{b_alias['benign_total']}) / {b_alias['warm_p95']}\\,ms; LOO TF-IDF/Cosine {b_tfidf['recall_pct']}\\% ({b_tfidf['tp_undeclared']}/{b_tfidf['undeclared_total']}) / {b_tfidf['frr_pct']}\\% ({b_tfidf['fp_benign']}/{b_tfidf['benign_total']}) / {b_tfidf['warm_p95']}\\,ms",
+                    ],
+                ]
+            )
+            _require(
+                rows == expected,
+                f"tab:extended-audits cell mismatch ({'ko' if korean else 'en'}): expected {expected!r}, observed {rows!r}",
+            )
+            receipt_paths = [path for _, path, _ in EXTENDED_AUDIT_SPECS] + [
+                runner for _, _, runner in EXTENDED_AUDIT_SPECS
+            ]
+            table["source_receipts"] = [
+                {"path": rel, "sha256": _sha((self.root / rel).read_bytes())}
+                for rel in receipt_paths
+            ]
+            return "extended_audits", "empirical_source", expected
         raise ValueError(f"no semantic adapter for reached manual table {anchor}")
 
     def bind(self, manifest):
@@ -3160,7 +3885,10 @@ class _Verifier:
     def _bind_manual(self, table):
         family, kind, expected = self.manual(table)
         table.update(adapter_id=family, binding_kind=kind, expected=expected)
-        if table["anchor"] == "tab:artifact-directory-map" and self.public_source_projection:
+        if (
+            table["anchor"] in {"tab:artifact-directory-map", "tab:extended-audits"}
+            and self.public_source_projection
+        ):
             table["source_verification_mode"] = self.report["source_verification_mode"]
             table["private_original_reverification"] = "NOT_PERFORMED_BY_THIS_COMMAND"
             return "typed source fields; audit reviewer-source is an explicit public derivative with original commitments only, not private-original reverification"
@@ -3188,6 +3916,8 @@ def _snapshot(
         "knowledge/ontology",
         "game-track/godot/scripts",
         "game-track/godot/data",
+        "game-track/godot/scenes",
+        "game-track/godot/docs/soak-and-refusal-probe-v1",
         "game-track/schemas",
     )
     folders += (
@@ -3345,7 +4075,16 @@ def verify(
                 checker.check(name.removeprefix("_"), validate)
             checker.check("preserved-statuses", checker.statuses)
             checker.check("withdrawn-ollama-attribution", checker.withdrawal)
-            for name in ("pilot", "audit", "runtime", "disclosure", "npc", "kg", "v5"):
+            for name in (
+                "pilot",
+                "audit",
+                "runtime",
+                "disclosure",
+                "npc",
+                "kg",
+                "v5",
+                "extended_audits",
+            ):
                 checker.check(name, getattr(checker, name))
             crosswalk = checker.module("validate_contribution_crosswalk")
 

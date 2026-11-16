@@ -1,9 +1,11 @@
 # Multi-Error & Conflict-Pair Repair Convergence Audit
 
 - **Study ID**: `multi-error-repair-audit-20261116`
-- **Model calls**: `False` (0 LLM calls; deterministic offline audit)
+- **Host (coarse)**: `Darwin` (`arm64`)
+- **Model calls**: `False` (`llm_calls = 0`; deterministic offline audit)
 - **Base graph/state combinations**: `32` (from `run_gemini_review_evaluation.py`)
-- **End-to-end variants**: `11` across 3 families -> `352` cases per budget `K in {0, 1, 2, 3}` (`1408` total runs)
+- **End-to-end variants**: `11` across 3 families -> `352` assigned cases per budget `K in {0, 1, 2, 3}` (`96 + 160 + 96 = 352`; `1408` total runs)
+- **Separate same-pass conflict-guard unit battery**: `128` assigned (`4` variants x `32` states; `128/128` preserve `ready` and reach fixed point at step 1)
 - **Graph closure vs BFS agreement**: `32/32`
 - **Native trace replay equality**: `1408/1408`
 - **Unsafe commits across all runs**: `0/1408`
@@ -19,20 +21,27 @@
 
 ## 2. Breakdown by Fixture Family Across K in {0, 1, 2, 3}
 
-| Family | K | Assigned | Committed | Recovery | Held | Partial-Clear Holds | Obs. Traj Fixed-Pt | Terminal Fixed-Pt | Obs. Period-2 | Term. Period-2 | Incr. Recovered | Error Reduction |
+### Explicit Assigned Denominators by Family & Battery
+
+- **`repairable_multi`** (`96` assigned = `3` variants x `32` states): `0/96` safe commits at `K=0`, `96/96` safe commits at `K>=1` (`0/96` held at `K>=1`).
+- **`mixed_partial_clear`** (`160` assigned = `5` variants x `32` states): `28/160` safe commits at `K>=1`, `132/160` held, and `132/132` (`100.00%`) of holds are partial-clear holds.
+- **`conflict_pair`** (`96` assigned = `3` variants x `32` states): `0/96` safe commits across all `K`, `96/96` held; trajectory period-2 oscillation `0/96` at `K=1`, `64/96` at `K=2`, `96/96` at `K=3`; terminal lookahead period-2 oscillation `96/96` at `K>=1`.
+- **Separate `simultaneous_conflict_guard` unit battery** (`128` assigned = `4` variants x `32` states, distinct from the `352` end-to-end denominator): `128/128` preserve conflicting entity `ready` and reach fixed point at step 1.
+
+| Family | K | Assigned | Safe Commits | Recovery | Held | Partial-Clear Holds (of Holds) | Obs. Traj Fixed-Pt | Terminal Fixed-Pt | Traj. Period-2 | Term. Lookahead Period-2 | Incr. Recovered | Error Reduction |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `repairable_multi` | 0 | 96 | 0 | 0.00% | 96 | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 | 0/96 | — | 0/320 (0.00%) |
-| `repairable_multi` | 1 | 96 | 96 | 100.00% | 0 | 0/0 (N/A) | 96/96 (100.00%) | 96/96 (100.00%) | 0/96 | 0/96 | 96/96 | 320/320 (100.00%) |
-| `repairable_multi` | 2 | 96 | 96 | 100.00% | 0 | 0/0 (N/A) | 96/96 (100.00%) | 96/96 (100.00%) | 0/96 | 0/96 | 0/0 | 320/320 (100.00%) |
-| `repairable_multi` | 3 | 96 | 96 | 100.00% | 0 | 0/0 (N/A) | 96/96 (100.00%) | 96/96 (100.00%) | 0/96 | 0/96 | 0/0 | 320/320 (100.00%) |
-| `mixed_partial_clear` | 0 | 160 | 0 | 0.00% | 160 | 0/160 (0.00%) | 0/160 (0.00%) | 0/160 (0.00%) | 0/160 | 0/160 | — | 0/468 (0.00%) |
-| `mixed_partial_clear` | 1 | 160 | 28 | 17.50% | 132 | 132/132 (100.00%) | 28/160 (17.50%) | 160/160 (100.00%) | 0/160 | 0/160 | 28/160 | 320/468 (68.38%) |
-| `mixed_partial_clear` | 2 | 160 | 28 | 17.50% | 132 | 132/132 (100.00%) | 160/160 (100.00%) | 160/160 (100.00%) | 0/160 | 0/160 | 0/132 | 320/468 (68.38%) |
-| `mixed_partial_clear` | 3 | 160 | 28 | 17.50% | 132 | 132/132 (100.00%) | 160/160 (100.00%) | 160/160 (100.00%) | 0/160 | 0/160 | 0/132 | 320/468 (68.38%) |
-| `conflict_pair` | 0 | 96 | 0 | 0.00% | 96 | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 | 0/96 | — | 0/128 (0.00%) |
-| `conflict_pair` | 1 | 96 | 0 | 0.00% | 96 | 32/96 (33.33%) | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 | 96/96 | 0/96 | 32/128 (25.00%) |
-| `conflict_pair` | 2 | 96 | 0 | 0.00% | 96 | 32/96 (33.33%) | 0/96 (0.00%) | 0/96 (0.00%) | 64/96 | 96/96 | 0/96 | 32/128 (25.00%) |
-| `conflict_pair` | 3 | 96 | 0 | 0.00% | 96 | 32/96 (33.33%) | 0/96 (0.00%) | 0/96 (0.00%) | 96/96 | 96/96 | 0/96 | 32/128 (25.00%) |
+| `repairable_multi` | 0 | 96 | 0/96 | 0.00% | 96/96 | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 | 0/96 | — | 0/320 (0.00%) |
+| `repairable_multi` | 1 | 96 | 96/96 | 100.00% | 0/96 | 0/0 (N/A) | 96/96 (100.00%) | 96/96 (100.00%) | 0/96 | 0/96 | 96/96 | 320/320 (100.00%) |
+| `repairable_multi` | 2 | 96 | 96/96 | 100.00% | 0/96 | 0/0 (N/A) | 96/96 (100.00%) | 96/96 (100.00%) | 0/96 | 0/96 | 0/0 | 320/320 (100.00%) |
+| `repairable_multi` | 3 | 96 | 96/96 | 100.00% | 0/96 | 0/0 (N/A) | 96/96 (100.00%) | 96/96 (100.00%) | 0/96 | 0/96 | 0/0 | 320/320 (100.00%) |
+| `mixed_partial_clear` | 0 | 160 | 0/160 | 0.00% | 160/160 | 0/160 (0.00%) | 0/160 (0.00%) | 0/160 (0.00%) | 0/160 | 0/160 | — | 0/468 (0.00%) |
+| `mixed_partial_clear` | 1 | 160 | 28/160 | 17.50% | 132/160 | 132/132 (100.00%) | 28/160 (17.50%) | 160/160 (100.00%) | 0/160 | 0/160 | 28/160 | 320/468 (68.38%) |
+| `mixed_partial_clear` | 2 | 160 | 28/160 | 17.50% | 132/160 | 132/132 (100.00%) | 160/160 (100.00%) | 160/160 (100.00%) | 0/160 | 0/160 | 0/132 | 320/468 (68.38%) |
+| `mixed_partial_clear` | 3 | 160 | 28/160 | 17.50% | 132/160 | 132/132 (100.00%) | 160/160 (100.00%) | 160/160 (100.00%) | 0/160 | 0/160 | 0/132 | 320/468 (68.38%) |
+| `conflict_pair` | 0 | 96 | 0/96 | 0.00% | 96/96 | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 | 0/96 | — | 0/128 (0.00%) |
+| `conflict_pair` | 1 | 96 | 0/96 | 0.00% | 96/96 | 32/96 (33.33%) | 0/96 (0.00%) | 0/96 (0.00%) | 0/96 | 96/96 | 0/96 | 32/128 (25.00%) |
+| `conflict_pair` | 2 | 96 | 0/96 | 0.00% | 96/96 | 32/96 (33.33%) | 0/96 (0.00%) | 0/96 (0.00%) | 64/96 | 96/96 | 0/96 | 32/128 (25.00%) |
+| `conflict_pair` | 3 | 96 | 0/96 | 0.00% | 96/96 | 32/96 (33.33%) | 0/96 (0.00%) | 0/96 (0.00%) | 96/96 | 96/96 | 0/96 | 32/128 (25.00%) |
 
 ## 3. Per-Variant Results at K=1 and K=3 (Highlighting Incremental K=1->2->3 Stability)
 

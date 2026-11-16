@@ -26,8 +26,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import platform
 import sys
-import time
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from copy import deepcopy
@@ -61,7 +61,6 @@ from scripts.run_gemini_review_evaluation import (
     _state,
     _world_state,
     production_reachable_locations,
-    structural_signature,
 )
 
 DEFAULT_OUTPUT_DIR = ROOT / "research/academic-pipeline/multi-error-repair-audit"
@@ -158,20 +157,6 @@ SIMULTANEOUS_GUARD_VARIANTS: tuple[dict[str, Any], ...] = (
         "description": "Same-pass conflict on 'ready' (omitted) + POLICY_EFFECT_VIOLATION(treasure_spawned)",
     },
 )
-
-
-def _json(value: Any) -> str:
-    return json.dumps(
-        to_jsonable(value),
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-
-
-def _hash(value: Any) -> str:
-    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
 
 
 def _load_base_states() -> list[dict[str, Any]]:
@@ -302,17 +287,12 @@ def build_cases() -> list[dict[str, Any]]:
     return cases
 
 
-def _error_pairs(validation_errors: Sequence[Any]) -> list[tuple[str, str]]:
-    return [(err.code, err.entity) for err in validation_errors]
-
-
 def _classify_trace_convergence(
     state: WorldState,
     outcome: Any,
     budget: int,
 ) -> dict[str, Any]:
     candidates = [attempt.candidate for attempt in outcome.trace]
-    signatures = [structural_signature(to_jsonable(cand)) for cand in candidates]
 
     observed_trajectory_fixed_point = False
     fixed_point_attempt: int | None = None
@@ -362,7 +342,6 @@ def _classify_trace_convergence(
             terminal_in_period_2 = True
 
     return {
-        "candidate_signatures": signatures,
         "observed_trajectory_fixed_point": observed_trajectory_fixed_point,
         "fixed_point_attempt": fixed_point_attempt,
         "terminal_is_fixed_point": terminal_is_fixed_point,
@@ -372,7 +351,6 @@ def _classify_trace_convergence(
 
 
 def run_case_at_budget(case: Mapping[str, Any], budget: int) -> dict[str, Any]:
-    started = time.perf_counter()
     candidate = parse_candidate_mapping(case["candidate"], allow_defaults=False)
     state = _world_state(case["state"])
 
@@ -414,7 +392,6 @@ def run_case_at_budget(case: Mapping[str, Any], budget: int) -> dict[str, Any]:
 
     partial_clear_hold = status == "HOLD" and len(final_errors) < len(initial_errors)
     convergence = _classify_trace_convergence(state, outcome, budget)
-    latency_ms = (time.perf_counter() - started) * 1000.0
 
     return {
         "case_id": case["case_id"],
@@ -439,10 +416,32 @@ def run_case_at_budget(case: Mapping[str, Any], budget: int) -> dict[str, Any]:
         "initial_irreparable_count": initial_irreparable_count,
         "final_irreparable_count": final_irreparable_count,
         "partial_clear_hold": partial_clear_hold,
-        "per_attempt_error_counts": [len(step.validation.errors) for step in outcome.trace],
-        "per_attempt_error_pairs": [_error_pairs(step.validation.errors) for step in outcome.trace],
         **convergence,
-        "latency_ms": latency_ms,
+    }
+
+
+def _compact_row(row: Mapping[str, Any]) -> dict[str, Any]:
+    if row["observed_period_2"]:
+        oscillation = "observed_period_2"
+    elif row["terminal_in_period_2"]:
+        oscillation = "terminal_period_2"
+    else:
+        oscillation = "none"
+    return {
+        "case_id": row["case_id"],
+        "family": row["family"],
+        "variant": row["variant"],
+        "budget": row["budget"],
+        "status": row["status"],
+        "safe_commit": row["status"] == "COMMITTED" and row["reference_final_valid"] is True,
+        "attempts_executed": row["attempts_executed"],
+        "converged_at": row["fixed_point_attempt"],
+        "terminal_is_fixed_point": row["terminal_is_fixed_point"],
+        "partial_clear_hold": row["partial_clear_hold"],
+        "oscillation": oscillation,
+        "initial_error_codes": row["initial_error_codes"],
+        "error_codes": row["final_error_codes"],
+        "errors_cleared": row["errors_cleared"],
     }
 
 
@@ -644,6 +643,7 @@ def run_simultaneous_conflict_guard_audit(
         }
 
     return {
+        "scope": "direct_same_pass_unit_battery_separate_from_352_end_to_end_cases",
         "assigned": len(rows),
         "ready_preserved_count": sum(r["ready_preserved"] for r in rows),
         "ready_preserved_rate": sum(r["ready_preserved"] for r in rows) / len(rows),
@@ -660,13 +660,21 @@ def _fmt_pct(value: float | None) -> str:
 
 
 def build_summary_markdown(results: Mapping[str, Any]) -> str:
+    env = results["environment"]
+    fb = results["family_breakdown"]
+    guard = results["simultaneous_conflict_guard"]
+    rep_fb = fb["repairable_multi"]
+    mix_fb = fb["mixed_partial_clear"]
+    conf_fb = fb["conflict_pair"]
     lines: list[str] = [
         "# Multi-Error & Conflict-Pair Repair Convergence Audit",
         "",
         f"- **Study ID**: `{results['study_id']}`",
-        f"- **Model calls**: `{results['model_called']}` (0 LLM calls; deterministic offline audit)",
+        f"- **Host (coarse)**: `{env['os']}` (`{env['arch']}`)",
+        f"- **Model calls**: `{results['model_called']}` (`llm_calls = {results['llm_calls']}`; deterministic offline audit)",
         f"- **Base graph/state combinations**: `{results['base_state_count']}` (from `run_gemini_review_evaluation.py`)",
-        f"- **End-to-end variants**: `{len(VARIANT_SPECS)}` across 3 families -> `{results['cases_per_budget']}` cases per budget `K in {{0, 1, 2, 3}}` (`{results['total_end_to_end_runs']}` total runs)",
+        f"- **End-to-end variants**: `{len(VARIANT_SPECS)}` across 3 families -> `{results['cases_per_budget']}` assigned cases per budget `K in {{0, 1, 2, 3}}` (`96 + 160 + 96 = 352`; `{results['total_end_to_end_runs']}` total runs)",
+        f"- **Separate same-pass conflict-guard unit battery**: `{guard['assigned']}` assigned (`4` variants x `32` states; `{guard['ready_preserved_count']}/{guard['assigned']}` preserve `ready` and reach fixed point at step 1)",
         f"- **Graph closure vs BFS agreement**: `{results['graph_agreement_count']}/{results['base_state_count']}`",
         f"- **Native trace replay equality**: `{results['native_replay_equal_total']}/{results['total_end_to_end_runs']}`",
         f"- **Unsafe commits across all runs**: `{results['unsafe_commits_total']}/{results['total_end_to_end_runs']}`",
@@ -703,7 +711,33 @@ def build_summary_markdown(results: Mapping[str, Any]) -> str:
             "",
             "## 2. Breakdown by Fixture Family Across K in {0, 1, 2, 3}",
             "",
-            "| Family | K | Assigned | Committed | Recovery | Held | Partial-Clear Holds | Obs. Traj Fixed-Pt | Terminal Fixed-Pt | Obs. Period-2 | Term. Period-2 | Incr. Recovered | Error Reduction |",
+            "### Explicit Assigned Denominators by Family & Battery",
+            "",
+            (
+                f"- **`repairable_multi`** (`{rep_fb['assigned']}` assigned = `{rep_fb['variant_count']}` variants x `32` states): "
+                f"`{rep_fb['by_budget']['0']['safe_commits']}/{rep_fb['assigned']}` safe commits at `K=0`, "
+                f"`{rep_fb['by_budget']['1']['safe_commits']}/{rep_fb['assigned']}` safe commits at `K>=1` (`0/{rep_fb['assigned']}` held at `K>=1`)."
+            ),
+            (
+                f"- **`mixed_partial_clear`** (`{mix_fb['assigned']}` assigned = `{mix_fb['variant_count']}` variants x `32` states): "
+                f"`{mix_fb['by_budget']['1']['safe_commits']}/{mix_fb['assigned']}` safe commits at `K>=1`, "
+                f"`{mix_fb['by_budget']['1']['held']}/{mix_fb['assigned']}` held, and "
+                f"`{mix_fb['by_budget']['1']['partial_clear_hold_of_holds']}` (`100.00%`) of holds are partial-clear holds."
+            ),
+            (
+                f"- **`conflict_pair`** (`{conf_fb['assigned']}` assigned = `{conf_fb['variant_count']}` variants x `32` states): "
+                f"`{conf_fb['by_budget']['1']['safe_commits']}/{conf_fb['assigned']}` safe commits across all `K`, `{conf_fb['by_budget']['1']['held']}/{conf_fb['assigned']}` held; "
+                f"trajectory period-2 oscillation `{conf_fb['by_budget']['1']['trajectory_period_2_oscillation_ratio']}` at `K=1`, "
+                f"`{conf_fb['by_budget']['2']['trajectory_period_2_oscillation_ratio']}` at `K=2`, "
+                f"`{conf_fb['by_budget']['3']['trajectory_period_2_oscillation_ratio']}` at `K=3`; "
+                f"terminal lookahead period-2 oscillation `{conf_fb['by_budget']['1']['terminal_lookahead_period_2_ratio']}` at `K>=1`."
+            ),
+            (
+                f"- **Separate `simultaneous_conflict_guard` unit battery** (`{guard['assigned']}` assigned = `4` variants x `32` states, distinct from the `352` end-to-end denominator): "
+                f"`{guard['ready_preserved_count']}/{guard['assigned']}` preserve conflicting entity `ready` and reach fixed point at step 1."
+            ),
+            "",
+            "| Family | K | Assigned | Safe Commits | Recovery | Held | Partial-Clear Holds (of Holds) | Obs. Traj Fixed-Pt | Terminal Fixed-Pt | Traj. Period-2 | Term. Lookahead Period-2 | Incr. Recovered | Error Reduction |",
             "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
@@ -716,8 +750,8 @@ def build_summary_markdown(results: Mapping[str, Any]) -> str:
                 else f"{s['incremental_recovered_from_prev_k']}/{s['incremental_eligible_from_prev_k']}"
             )
             lines.append(
-                f"| `{family}` | {k} | {s['assigned']} | {s['committed']} | {_fmt_pct(s['recovery_rate'])} | "
-                f"{s['held']} | {s['partial_clear_hold_count']}/{s['held']} ({_fmt_pct(s['partial_clear_hold_rate_among_holds'])}) | "
+                f"| `{family}` | {k} | {s['assigned']} | {s['safe_commits']}/{s['assigned']} | {_fmt_pct(s['recovery_rate'])} | "
+                f"{s['held']}/{s['assigned']} | {s['partial_clear_hold_count']}/{s['held']} ({_fmt_pct(s['partial_clear_hold_rate_among_holds'])}) | "
                 f"{s['observed_trajectory_fixed_point_count']}/{s['assigned']} ({_fmt_pct(s['observed_trajectory_fixed_point_rate'])}) | "
                 f"{s['terminal_fixed_point_count']}/{s['assigned']} ({_fmt_pct(s['terminal_fixed_point_rate'])}) | "
                 f"{s['observed_period_2_count']}/{s['assigned']} | "
@@ -750,7 +784,6 @@ def build_summary_markdown(results: Mapping[str, Any]) -> str:
             f"{s3['total_errors_cleared']}/{s3['total_initial_errors']} |"
         )
 
-    guard = results["simultaneous_conflict_guard"]
     lines.extend(
         [
             "",
@@ -882,10 +915,56 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
         if row["variant"] == VARIANT_SPECS[0]["variant"]
     )
 
+    family_breakdown: dict[str, Any] = {}
+    for family in ("repairable_multi", "mixed_partial_clear", "conflict_pair"):
+        fam_variants = [s["variant"] for s in VARIANT_SPECS if s["family"] == family]
+        k0 = by_budget_summary["0"]["by_family"][family]
+        per_budget: dict[str, Any] = {}
+        for b in BUDGETS:
+            sb = by_budget_summary[str(b)]["by_family"][family]
+            per_budget[str(b)] = {
+                "assigned": sb["assigned"],
+                "safe_commits": sb["safe_commits"],
+                "safe_commits_ratio": f"{sb['safe_commits']}/{sb['assigned']}",
+                "held": sb["held"],
+                "held_ratio": f"{sb['held']}/{sb['assigned']}",
+                "partial_clear_hold_count": sb["partial_clear_hold_count"],
+                "partial_clear_hold_of_holds": f"{sb['partial_clear_hold_count']}/{sb['held']}",
+                "observed_trajectory_fixed_point_count": sb[
+                    "observed_trajectory_fixed_point_count"
+                ],
+                "terminal_fixed_point_count": sb["terminal_fixed_point_count"],
+                "trajectory_period_2_oscillation_count": sb["observed_period_2_count"],
+                "trajectory_period_2_oscillation_ratio": (
+                    f"{sb['observed_period_2_count']}/{sb['assigned']}"
+                ),
+                "terminal_lookahead_period_2_count": sb["terminal_in_period_2_count"],
+                "terminal_lookahead_period_2_ratio": (
+                    f"{sb['terminal_in_period_2_count']}/{sb['assigned']}"
+                ),
+                "errors_cleared": sb["total_errors_cleared"],
+                "initial_errors": sb["total_initial_errors"],
+            }
+        family_breakdown[family] = {
+            "assigned": k0["assigned"],
+            "variant_count": len(fam_variants),
+            "variants": fam_variants,
+            "by_budget": per_budget,
+        }
+
+    compact_rows_by_budget = {
+        str(b): [_compact_row(row) for row in rows_by_budget[b]] for b in BUDGETS
+    }
+
     results: dict[str, Any] = {
-        "schema_version": "trace-rpg-multi-error-repair-audit/v1",
+        "schema_version": "trace-rpg-multi-error-repair-audit/v2",
         "study_id": "multi-error-repair-audit-20261116",
         "model_called": False,
+        "llm_calls": 0,
+        "environment": {
+            "os": platform.system(),
+            "arch": platform.machine(),
+        },
         "base_state_count": len(base_states),
         "variant_count": len(VARIANT_SPECS),
         "cases_per_budget": len(cases),
@@ -902,9 +981,10 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
         ),
         "source_hashes": source_hashes,
         "variant_specs": list(VARIANT_SPECS),
+        "family_breakdown": family_breakdown,
         "by_budget": by_budget_summary,
         "simultaneous_conflict_guard": guard_summary,
-        "rows_by_budget": {str(b): rows_by_budget[b] for b in BUDGETS},
+        "rows_by_budget": compact_rows_by_budget,
     }
 
     output_dir.mkdir(parents=True, exist_ok=True)

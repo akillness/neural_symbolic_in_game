@@ -21,6 +21,7 @@ import argparse
 import hashlib
 import json
 import math
+import platform
 import re
 import sys
 import time
@@ -30,8 +31,6 @@ from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-
-import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -50,6 +49,12 @@ from scripts.run_gemini_review_evaluation import (
 
 DEFAULT_OUTPUT_DIR = ROOT / "research/academic-pipeline/semantic-escape-filter-audit"
 WARM_REPEATS = 25
+SOURCE_HASH_PATHS = (
+    "scripts/run_semantic_escape_filter_audit.py",
+    "scripts/run_gemini_review_evaluation.py",
+    "src/nesy_game/contracts.py",
+    "src/nesy_game/validator.py",
+)
 
 
 def _canonical_json(value: Any) -> str:
@@ -609,14 +614,66 @@ def _extract_features(text: str) -> Counter[str]:
     return feats
 
 
+def _build_vocab_and_idf(
+    train_feats: Sequence[Counter[str]],
+) -> tuple[dict[str, int], tuple[float, ...]]:
+    df: Counter[str] = Counter()
+    for feats in train_feats:
+        for term in feats:
+            df[term] += 1
+    vocab = {term: idx for idx, term in enumerate(sorted(df.keys()))}
+    n_docs = len(train_feats)
+    idf = tuple(
+        math.log((1.0 + n_docs) / (1.0 + df[term])) + 1.0
+        for term, _ in sorted(vocab.items(), key=lambda kv: kv[1])
+    )
+    return vocab, idf
+
+
+def _encode_with_vocab(
+    feats: Counter[str],
+    vocab: Mapping[str, int],
+    idf: Sequence[float],
+) -> dict[int, float]:
+    raw: dict[int, float] = {}
+    for term in sorted(feats):
+        idx = vocab.get(term)
+        if idx is not None:
+            raw[idx] = (1.0 + math.log(feats[term])) * idf[idx]
+    norm = math.sqrt(sum(w * w for w in raw.values()))
+    if norm > 0.0:
+        return {idx: w / norm for idx, w in raw.items()}
+    return raw
+
+
+def _sparse_dot(u: Mapping[int, float], v: Mapping[int, float]) -> float:
+    if len(u) > len(v):
+        u, v = v, u
+    return sum(val * v[idx] for idx, val in u.items() if idx in v)
+
+
+def _top_k_mean_cosine(
+    prototypes: Sequence[Mapping[int, float]],
+    vec: Mapping[int, float],
+    top_k: int,
+) -> float:
+    if not prototypes or top_k <= 0:
+        return 0.0
+    sims = sorted((_sparse_dot(proto, vec) for proto in prototypes), reverse=True)[:top_k]
+    return sum(sims) / len(sims) if sims else 0.0
+
+
 @dataclass
 class TfidfCosineFilter:
     vocab: dict[str, int]
-    idf: np.ndarray
-    pos_matrix: np.ndarray
-    neg_matrix: np.ndarray
+    idf: tuple[float, ...]
+    pos_vectors: tuple[dict[int, float], ...]
+    neg_vectors: tuple[dict[int, float], ...]
     threshold: float
     top_k: int = 3
+    loo_youden_j: float = 0.0
+    loo_min_pos_margin: float = 0.0
+    loo_max_neg_margin: float = 0.0
 
     @classmethod
     def fit(
@@ -626,50 +683,36 @@ class TfidfCosineFilter:
         *,
         top_k: int = 3,
     ) -> TfidfCosineFilter:
-        docs = list(positives) + list(negatives)
-        doc_feats = [_extract_features(doc) for doc in docs]
-        df: Counter[str] = Counter()
-        for feats in doc_feats:
-            for term in feats:
-                df[term] += 1
+        pos_feats = [_extract_features(doc) for doc in positives]
+        neg_feats = [_extract_features(doc) for doc in negatives]
 
-        vocab = {term: idx for idx, term in enumerate(sorted(df.keys()))}
-        n_docs = len(docs)
-        idf = np.zeros(len(vocab), dtype=np.float64)
-        for term, idx in vocab.items():
-            idf[idx] = math.log((1.0 + n_docs) / (1.0 + df[term])) + 1.0
-
-        def _encode(feats: Counter[str]) -> np.ndarray:
-            vec = np.zeros(len(vocab), dtype=np.float64)
-            for term, tf in feats.items():
-                idx = vocab.get(term)
-                if idx is not None:
-                    vec[idx] = (1.0 + math.log(tf)) * idf[idx]
-            norm = float(np.linalg.norm(vec))
-            if norm > 0.0:
-                vec /= norm
-            return vec
-
-        pos_matrix = np.vstack([_encode(f) for f in doc_feats[: len(positives)]])
-        neg_matrix = np.vstack([_encode(f) for f in doc_feats[len(positives) :]])
-
-        # Leave-one-out calibration strictly on the disjoint prototype set to pick threshold.
+        # Leakage-free Leave-One-Out calibration: inside each fold, compute vocab and idf
+        # strictly from the 27 in-fold training prototypes (excluding held-out prototype).
         loo_pos_scores: list[float] = []
-        for i in range(len(positives)):
-            others = np.delete(pos_matrix, i, axis=0)
-            p_sims = np.sort(others @ pos_matrix[i])[::-1][:top_k]
-            n_sims = np.sort(neg_matrix @ pos_matrix[i])[::-1][:top_k]
-            loo_pos_scores.append(float(np.mean(p_sims) - np.mean(n_sims)))
+        for i in range(len(pos_feats)):
+            in_fold_pos = [pos_feats[k] for k in range(len(pos_feats)) if k != i]
+            in_fold_neg = list(neg_feats)
+            fold_vocab, fold_idf = _build_vocab_and_idf(in_fold_pos + in_fold_neg)
+            fold_pos_vecs = tuple(_encode_with_vocab(f, fold_vocab, fold_idf) for f in in_fold_pos)
+            fold_neg_vecs = tuple(_encode_with_vocab(f, fold_vocab, fold_idf) for f in in_fold_neg)
+            held_vec = _encode_with_vocab(pos_feats[i], fold_vocab, fold_idf)
+            p_mean = _top_k_mean_cosine(fold_pos_vecs, held_vec, top_k)
+            n_mean = _top_k_mean_cosine(fold_neg_vecs, held_vec, top_k)
+            loo_pos_scores.append(float(p_mean - n_mean))
 
         loo_neg_scores: list[float] = []
-        for j in range(len(negatives)):
-            others = np.delete(neg_matrix, j, axis=0)
-            p_sims = np.sort(pos_matrix @ neg_matrix[j])[::-1][:top_k]
-            n_sims = np.sort(others @ neg_matrix[j])[::-1][:top_k]
-            loo_neg_scores.append(float(np.mean(p_sims) - np.mean(n_sims)))
+        for j in range(len(neg_feats)):
+            in_fold_pos = list(pos_feats)
+            in_fold_neg = [neg_feats[k] for k in range(len(neg_feats)) if k != j]
+            fold_vocab, fold_idf = _build_vocab_and_idf(in_fold_pos + in_fold_neg)
+            fold_pos_vecs = tuple(_encode_with_vocab(f, fold_vocab, fold_idf) for f in in_fold_pos)
+            fold_neg_vecs = tuple(_encode_with_vocab(f, fold_vocab, fold_idf) for f in in_fold_neg)
+            held_vec = _encode_with_vocab(neg_feats[j], fold_vocab, fold_idf)
+            p_mean = _top_k_mean_cosine(fold_pos_vecs, held_vec, top_k)
+            n_mean = _top_k_mean_cosine(fold_neg_vecs, held_vec, top_k)
+            loo_neg_scores.append(float(p_mean - n_mean))
 
-        # Choose midpoint between highest LOO negative margin and lowest LOO positive margin,
-        # falling back to max F1 / Youden J midpoint on calibration LOO scores.
+        # Choose Youden-J optimal midpoint threshold on strictly out-of-fold LOO margins.
         candidate_thresholds = sorted(set(loo_pos_scores + loo_neg_scores))
         best_threshold = 0.0
         best_j = -1.0
@@ -682,33 +725,30 @@ class TfidfCosineFilter:
                 best_j = j_stat
                 best_threshold = float(t)
 
+        # Fit deployment vocabulary/IDF on all 28 prototypes with the LOO-selected threshold.
+        vocab, idf = _build_vocab_and_idf(pos_feats + neg_feats)
+        pos_vectors = tuple(_encode_with_vocab(f, vocab, idf) for f in pos_feats)
+        neg_vectors = tuple(_encode_with_vocab(f, vocab, idf) for f in neg_feats)
+
         return cls(
             vocab=vocab,
             idf=idf,
-            pos_matrix=pos_matrix,
-            neg_matrix=neg_matrix,
+            pos_vectors=pos_vectors,
+            neg_vectors=neg_vectors,
             threshold=best_threshold,
             top_k=top_k,
+            loo_youden_j=float(best_j),
+            loo_min_pos_margin=float(min(loo_pos_scores)),
+            loo_max_neg_margin=float(max(loo_neg_scores)),
         )
 
-    def _vectorize(self, text: str) -> np.ndarray:
-        feats = _extract_features(text)
-        vec = np.zeros(len(self.vocab), dtype=np.float64)
-        for term, tf in feats.items():
-            idx = self.vocab.get(term)
-            if idx is not None:
-                vec[idx] = (1.0 + math.log(tf)) * self.idf[idx]
-        norm = float(np.linalg.norm(vec))
-        if norm > 0.0:
-            vec /= norm
-        return vec
+    def _vectorize(self, text: str) -> dict[int, float]:
+        return _encode_with_vocab(_extract_features(text), self.vocab, self.idf)
 
     def score(self, text: str) -> dict[str, float]:
         vec = self._vectorize(text)
-        pos_sims = np.sort(self.pos_matrix @ vec)[::-1][: self.top_k]
-        neg_sims = np.sort(self.neg_matrix @ vec)[::-1][: self.top_k]
-        pos_score = float(np.mean(pos_sims)) if len(pos_sims) else 0.0
-        neg_score = float(np.mean(neg_sims)) if len(neg_sims) else 0.0
+        pos_score = _top_k_mean_cosine(self.pos_vectors, vec, self.top_k)
+        neg_score = _top_k_mean_cosine(self.neg_vectors, vec, self.top_k)
         margin = pos_score - neg_score
         return {
             "pos_top_k_cosine": pos_score,
@@ -740,7 +780,7 @@ class TfidfCosineFilter:
 def _eval_gate_single(
     case: Mapping[str, Any],
     stage2: Callable[[WorldState, CandidateAction], tuple[bool, Any]] | None,
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], float, float | None]:
     started = time.perf_counter()
     state = _world_state(case["state"])
     candidate = parse_candidate_mapping(case["candidate"], allow_defaults=False)
@@ -751,15 +791,18 @@ def _eval_gate_single(
     stage2_executed = False
     stage2_flagged = False
     stage2_detail: Any = None
+    stage2_elapsed_ms: float | None = None
 
     if not rejected and stage2 is not None:
         stage2_executed = True
+        s2_started = time.perf_counter()
         stage2_flagged, stage2_detail = stage2(state, candidate)
+        stage2_elapsed_ms = (time.perf_counter() - s2_started) * 1000.0
         if stage2_flagged:
             rejected = True
 
     elapsed_ms = (time.perf_counter() - started) * 1000.0
-    return {
+    row = {
         "case_id": case["case_id"],
         "stratum": case["stratum"],
         "subcategory": case["subcategory"],
@@ -772,14 +815,17 @@ def _eval_gate_single(
         "stage2_executed": stage2_executed,
         "stage2_flagged": stage2_flagged,
         "stage2_detail": stage2_detail,
-        "latency_ms": elapsed_ms,
     }
+    return row, elapsed_ms, stage2_elapsed_ms
 
 
 def _summarize_gate(
     gate_id: str,
     rows: Sequence[Mapping[str, Any]],
+    single_latencies_ms: Sequence[float],
     warm_latencies_ms: Sequence[float],
+    stage2_only_warm_latencies_ms: Sequence[float],
+    stage2_e2e_warm_latencies_ms: Sequence[float],
 ) -> dict[str, Any]:
     explicit = [r for r in rows if r["stratum"] == "explicit_violation"]
     undeclared = [r for r in rows if r["stratum"] == "undeclared_paraphrase"]
@@ -842,7 +888,18 @@ def _summarize_gate(
         if r["source"] == "frozen_surface_sentinel" and r["stratum"] == "explicit_violation"
     ]
 
-    single_lats = [float(r["latency_ms"]) for r in rows]
+    warm_p95_val = round(_percentile(warm_latencies_ms, 95.0), 6)
+    s2_warm_p95_val = (
+        round(_percentile(stage2_only_warm_latencies_ms, 95.0), 6)
+        if stage2_only_warm_latencies_ms
+        else None
+    )
+    s2_e2e_warm_p95_val = (
+        round(_percentile(stage2_e2e_warm_latencies_ms, 95.0), 6)
+        if stage2_e2e_warm_latencies_ms
+        else None
+    )
+
     return {
         "gate_id": gate_id,
         "counts": {
@@ -873,16 +930,38 @@ def _summarize_gate(
             "undeclared_total": len(frozen_undec),
         },
         "latency_ms": {
-            "single_pass_mean": sum(single_lats) / len(single_lats),
-            "single_pass_p50": _percentile(single_lats, 50.0),
-            "single_pass_p95": _percentile(single_lats, 95.0),
-            "single_pass_max": max(single_lats),
+            "single_pass_mean": round(sum(single_latencies_ms) / len(single_latencies_ms), 6),
+            "single_pass_p50": round(_percentile(single_latencies_ms, 50.0), 6),
+            "single_pass_p95": round(_percentile(single_latencies_ms, 95.0), 6),
+            "single_pass_max": round(max(single_latencies_ms), 6),
             "warm_repeats": WARM_REPEATS,
             "warm_n": len(warm_latencies_ms),
-            "warm_mean": sum(warm_latencies_ms) / len(warm_latencies_ms),
-            "warm_p50": _percentile(warm_latencies_ms, 50.0),
-            "warm_p95": _percentile(warm_latencies_ms, 95.0),
-            "warm_p99": _percentile(warm_latencies_ms, 99.0),
+            "warm_mean": round(sum(warm_latencies_ms) / len(warm_latencies_ms), 6),
+            "warm_p50": round(_percentile(warm_latencies_ms, 50.0), 6),
+            "warm_p95": warm_p95_val,
+            "warm_p95_ms": warm_p95_val,
+            "warm_p99": round(_percentile(warm_latencies_ms, 99.0), 6),
+            "stage2_only_warm_n": len(stage2_only_warm_latencies_ms),
+            "stage2_only_warm_mean_ms": (
+                round(
+                    sum(stage2_only_warm_latencies_ms) / len(stage2_only_warm_latencies_ms),
+                    6,
+                )
+                if stage2_only_warm_latencies_ms
+                else None
+            ),
+            "stage2_only_warm_p50_ms": (
+                round(_percentile(stage2_only_warm_latencies_ms, 50.0), 6)
+                if stage2_only_warm_latencies_ms
+                else None
+            ),
+            "stage2_only_warm_p95_ms": s2_warm_p95_val,
+            "stage2_only_warm_p99_ms": (
+                round(_percentile(stage2_only_warm_latencies_ms, 99.0), 6)
+                if stage2_only_warm_latencies_ms
+                else None
+            ),
+            "stage2_executed_e2e_warm_p95_ms": s2_e2e_warm_p95_val,
         },
         "by_subcategory": subcategories,
         "by_language": languages,
@@ -896,6 +975,65 @@ def _summarize_gate(
             for r in benign
             if r["rejected"]
         ],
+    }
+
+
+def _build_scope_limitations(gate_summaries: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+    implicit_recall: dict[str, dict[str, Any]] = {}
+    hard_neg_frr: dict[str, dict[str, Any]] = {}
+    latency_breakdown: dict[str, dict[str, Any]] = {}
+    for gate_id, g in gate_summaries.items():
+        imp = g["by_subcategory"]["implicit_metaphorical"]
+        hneg = g["by_subcategory"]["hard_negative_lexical"]
+        sben = g["by_subcategory"]["standard_benign"]
+        lat = g["latency_ms"]
+        implicit_recall[gate_id] = {
+            "caught": imp["rejected"],
+            "total": imp["count"],
+            "recall": imp["reject_rate"],
+        }
+        hard_neg_frr[gate_id] = {
+            "false_rejections": hneg["rejected"],
+            "total": hneg["count"],
+            "frr": hneg["reject_rate"],
+            "standard_benign_false_rejections": sben["rejected"],
+            "standard_benign_total": sben["count"],
+            "standard_benign_frr": sben["reject_rate"],
+        }
+        latency_breakdown[gate_id] = {
+            "warm_p95_ms": lat["warm_p95_ms"],
+            "stage2_only_warm_p95_ms": lat["stage2_only_warm_p95_ms"],
+            "stage2_executed_e2e_warm_p95_ms": lat["stage2_executed_e2e_warm_p95_ms"],
+            "warm_n": lat["warm_n"],
+            "stage2_only_warm_n": lat["stage2_only_warm_n"],
+        }
+    return {
+        "single_secret_id": "keeper_secret",
+        "single_secret_scope_note": (
+            "All 88 evaluation cases test surface leakage of a single forbidden fact ID "
+            "('keeper_secret') in the Sealed Lighthouse harbor scenario; multi-secret "
+            "inventories, multi-actor asymmetric disclosure tables, and dynamic cross-turn "
+            "secret accumulation are not evaluated here."
+        ),
+        "co_authored_calibration_evaluation_note": (
+            "Although the 28 TF-IDF calibration prototypes (14 positive, 14 negative) have "
+            "zero exact text overlap with the 88 evaluation cases and vocabulary/IDF weights "
+            "are computed strictly inside each 27-prototype Leave-One-Out fold before "
+            "deployment refitting, both the calibration prototypes and the 76 expanded EN/KO "
+            "evaluation utterances were co-authored within the same study rather than "
+            "collected from independent external red-teamers or live LLM generations."
+        ),
+        "implicit_metaphorical_recall": implicit_recall,
+        "hard_negative_lexical_benign_frr": hard_neg_frr,
+        "latency_summary_ms": {
+            "note": (
+                "Overall warm_p95_ms spans all 88 cases x 25 repeats (2,200 runs), including "
+                "16 explicit-violation cases rejected at Stage 1 without invoking Stage 2; "
+                "stage2_only_warm_p95_ms isolates pure Stage-2 filter execution across the "
+                "72 Stage-1-passing cases x 25 repeats (1,800 runs)."
+            ),
+            "by_gate": latency_breakdown,
+        },
     }
 
 
@@ -933,21 +1071,53 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
         for warmup_case in corpus[:3]:
             _eval_gate_single(warmup_case, stage2)
 
-        rows = [_eval_gate_single(case, stage2) for case in corpus]
+        rows: list[dict[str, Any]] = []
+        single_lats: list[float] = []
+        for case in corpus:
+            row, elapsed_ms, _ = _eval_gate_single(case, stage2)
+            rows.append(row)
+            single_lats.append(elapsed_ms)
+
         warm_lats: list[float] = []
+        stage2_only_warm_lats: list[float] = []
+        stage2_e2e_warm_lats: list[float] = []
         for _ in range(WARM_REPEATS):
             for case in corpus:
-                warm_lats.append(_eval_gate_single(case, stage2)["latency_ms"])
+                _, elapsed_ms, s2_ms = _eval_gate_single(case, stage2)
+                warm_lats.append(elapsed_ms)
+                if s2_ms is not None:
+                    stage2_only_warm_lats.append(s2_ms)
+                    stage2_e2e_warm_lats.append(elapsed_ms)
 
-        summary = _summarize_gate(gate_id, rows, warm_lats)
+        summary = _summarize_gate(
+            gate_id,
+            rows,
+            single_lats,
+            warm_lats,
+            stage2_only_warm_lats,
+            stage2_e2e_warm_lats,
+        )
         summary["label"] = label
         gate_summaries[gate_id] = summary
         gate_rows[gate_id] = rows
 
+    source_hashes = {
+        rel_path: hashlib.sha256((ROOT / rel_path).read_bytes()).hexdigest()
+        for rel_path in SOURCE_HASH_PATHS
+    }
+    scope_limitations = _build_scope_limitations(gate_summaries)
+
     results = {
-        "schema_version": "trace-rpg-semantic-escape-filter-audit/v1",
+        "schema_version": "trace-rpg-semantic-escape-filter-audit/v2",
         "study_id": "semantic-escape-filter-audit-20261116",
+        "llm_calls": 0,
         "model_called": False,
+        "environment": {
+            "os": platform.system(),
+            "arch": platform.machine(),
+            "python_major_minor": f"{sys.version_info.major}.{sys.version_info.minor}",
+        },
+        "source_hashes": source_hashes,
         "corpus": {
             "total_cases": len(corpus),
             "frozen_surface_sentinels": sum(
@@ -967,11 +1137,17 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
         "tfidf_calibration": {
             "positive_prototypes": len(CALIBRATION_POSITIVES),
             "negative_prototypes": len(CALIBRATION_NEGATIVES),
+            "loo_idf_isolation": True,
+            "loo_in_fold_prototypes": len(CALIBRATION_POSITIVES) + len(CALIBRATION_NEGATIVES) - 1,
+            "loo_youden_j": round(tfidf_filter.loo_youden_j, 6),
+            "loo_min_positive_margin": round(tfidf_filter.loo_min_pos_margin, 6),
+            "loo_max_negative_margin": round(tfidf_filter.loo_max_neg_margin, 6),
             "vocab_size": len(tfidf_filter.vocab),
             "top_k": tfidf_filter.top_k,
             "calibrated_threshold": tfidf_filter.threshold,
             "eval_text_overlap_count": len(overlap),
         },
+        "scope_limitations": scope_limitations,
         "gates": gate_summaries,
         "rows_by_gate": gate_rows,
     }
@@ -991,11 +1167,14 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
 def render_summary_md(results: Mapping[str, Any]) -> str:
     corpus = results["corpus"]
     calib = results["tfidf_calibration"]
+    env = results["environment"]
+    lim = results["scope_limitations"]
     lines = [
         "# Semantic Escape Filter Audit (TRACE-RPG)",
         "",
         f"- **Study ID**: `{results['study_id']}`",
-        f"- **LLM Calls**: `0` (`model_called: {results['model_called']}`)",
+        f"- **LLM Calls**: `{results['llm_calls']}` (`model_called: {results['model_called']}`)",
+        f"- **Environment**: `{env['os']}/{env['arch']}` (Python `{env['python_major_minor']}`, `{len(results['source_hashes'])}` source hashes bound)",
         (
             f"- **Corpus**: `{corpus['total_cases']}` cases "
             f"(`{corpus['frozen_surface_sentinels']}` frozen surface sentinels + "
@@ -1009,14 +1188,16 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
         ),
         (
             f"- **TF-IDF Classifier Calibration**: `{calib['positive_prototypes']}` positive / "
-            f"`{calib['negative_prototypes']}` negative disjoint prototypes, "
-            f"`{calib['vocab_size']}` vocab features, LOO-calibrated margin threshold "
-            f"`{calib['calibrated_threshold']:.6f}`, overlap `{calib['eval_text_overlap_count']}`"
+            f"`{calib['negative_prototypes']}` negative prototypes (`loo_idf_isolation={calib['loo_idf_isolation']}`, "
+            f"`{calib['loo_in_fold_prototypes']}` in-fold prototypes/fold), "
+            f"`{calib['vocab_size']}` deployment vocab features, LOO-calibrated margin threshold "
+            f"`{calib['calibrated_threshold']:.6f}` (`Youden J={calib['loo_youden_j']:.4f}`), "
+            f"exact eval overlap `{calib['eval_text_overlap_count']}`"
         ),
         "",
         "## Gate Comparison",
         "",
-        "| Gate Configuration | Undeclared Escape Recall | Overall Violation Recall | Explicit Recall | False Rejection Rate (Benign) | Precision | F1 | p95 Latency (single, ms) | p95 Latency (warm, ms) |",
+        "| Gate Configuration | Undeclared Escape Recall | Overall Violation Recall | Explicit Recall | False Rejection Rate (Benign) | Precision | F1 | Overall Warm p95 (ms) | Stage-2 Only Warm p95 (ms) |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for gate_id in (
@@ -1028,6 +1209,11 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
         m = g["metrics"]
         c = g["counts"]
         lat = g["latency_ms"]
+        s2_str = (
+            f"{lat['stage2_only_warm_p95_ms']:.4f}"
+            if lat["stage2_only_warm_p95_ms"] is not None
+            else "N/A"
+        )
         lines.append(
             f"| {g['label']} | "
             f"{m['undeclared_escape_recall'] * 100:.1f}% ({c['tp_undeclared']}/{c['undeclared_paraphrases']}) | "
@@ -1035,7 +1221,7 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
             f"{m['explicit_violation_recall'] * 100:.1f}% ({c['tp_explicit']}/{c['explicit_violations']}) | "
             f"{m['false_rejection_rate'] * 100:.1f}% ({c['fp_benign']}/{c['benign_in_policy']}) | "
             f"{m['precision'] * 100:.1f}% | {m['f1'] * 100:.1f}% | "
-            f"{lat['single_pass_p95']:.4f} | {lat['warm_p95']:.4f} |"
+            f"{lat['warm_p95_ms']:.4f} | {s2_str} |"
         )
 
     lines.extend(
@@ -1097,6 +1283,47 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
             f"{ko['false_rejection_rate'] * 100:.1f}% |"
         )
 
+    imp_alias = lim["implicit_metaphorical_recall"]["structured_id_plus_alias_pattern"]
+    imp_tfidf = lim["implicit_metaphorical_recall"]["structured_id_plus_tfidf_cosine"]
+    hneg_alias = lim["hard_negative_lexical_benign_frr"]["structured_id_plus_alias_pattern"]
+    hneg_tfidf = lim["hard_negative_lexical_benign_frr"]["structured_id_plus_tfidf_cosine"]
+    lat_alias = lim["latency_summary_ms"]["by_gate"]["structured_id_plus_alias_pattern"]
+    lat_tfidf = lim["latency_summary_ms"]["by_gate"]["structured_id_plus_tfidf_cosine"]
+
+    lines.extend(
+        [
+            "",
+            "## Scope Limitations & Methodological Caveats",
+            "",
+            f'- **Single Forbidden Fact ID (`single_secret_id: "{lim["single_secret_id"]}"`):** {lim["single_secret_scope_note"]}',
+            f"- **Co-Authored Calibration & Evaluation Utterances:** {lim['co_authored_calibration_evaluation_note']}",
+            (
+                f"- **`implicit_metaphorical` Subcategory Recall (`n={imp_tfidf['total']}`):** "
+                f"Alias/Pattern catches `{imp_alias['caught']}/{imp_alias['total']}` (`{imp_alias['recall'] * 100:.1f}%`) "
+                f"and LOO TF-IDF/Cosine catches `{imp_tfidf['caught']}/{imp_tfidf['total']}` (`{imp_tfidf['recall'] * 100:.1f}%`), "
+                "confirming that pragmatic/metaphorical leaks without shared lexical anchors still partially evade surface lexical filters."
+            ),
+            (
+                f"- **`hard_negative_lexical` & Benign FRR (`n={hneg_tfidf['total']}` hard negatives, `n={hneg_tfidf['standard_benign_total']}` standard benign):** "
+                f"Alias/Pattern false rejections are confined to lexically overlapping hard negatives "
+                f"(`{hneg_alias['false_rejections']}/{hneg_alias['total']}` = `{hneg_alias['frr'] * 100:.1f}%`; "
+                f"`standard_benign` `{hneg_alias['standard_benign_false_rejections']}/{hneg_alias['standard_benign_total']}` = `{hneg_alias['standard_benign_frr'] * 100:.1f}%`), "
+                f"whereas strictly leakage-free 27-prototype LOO TF-IDF calibration (`threshold={calib['calibrated_threshold']:.6f}`, `Youden J={calib['loo_youden_j']:.4f}`) "
+                f"yields `{hneg_tfidf['false_rejections']}/{hneg_tfidf['total']}` (`{hneg_tfidf['frr'] * 100:.1f}%`) on `hard_negative_lexical` and "
+                f"`{hneg_tfidf['standard_benign_false_rejections']}/{hneg_tfidf['standard_benign_total']}` (`{hneg_tfidf['standard_benign_frr'] * 100:.1f}%`) on `standard_benign` "
+                "(showing high sensitivity of tiny-prototype bag-of-ngrams LOO thresholds once self-IDF leakage is removed)."
+            ),
+            (
+                f"- **Stage-2-Only vs Overall Warm Latency (`WARM_REPEATS={WARM_REPEATS}`):** "
+                f"Overall `warm_p95_ms` (`{lat_alias['warm_p95_ms']:.4f} ms` Alias/Pattern, `{lat_tfidf['warm_p95_ms']:.4f} ms` TF-IDF) "
+                f"includes `16/88` Stage-1-rejected cases that short-circuit before Stage 2; "
+                f"`stage2_only_warm_p95_ms` across the `{lat_tfidf['stage2_only_warm_n']}` Stage-2 invocations is "
+                f"`{lat_alias['stage2_only_warm_p95_ms']:.4f} ms` (Alias/Pattern) and `{lat_tfidf['stage2_only_warm_p95_ms']:.4f} ms` (TF-IDF), "
+                f"with end-to-end Stage-2-executed warm p95 `{lat_alias['stage2_executed_e2e_warm_p95_ms']:.4f} ms` and `{lat_tfidf['stage2_executed_e2e_warm_p95_ms']:.4f} ms`."
+            ),
+        ]
+    )
+
     lines.extend(["", "## Error Analysis (Remaining Escapes & False Rejections)", ""])
     for gate_id in (
         "structured_id_plus_alias_pattern",
@@ -1135,7 +1362,12 @@ def main() -> int:
             "overall_recall": round(g["metrics"]["overall_recall"], 4),
             "false_rejection_rate": round(g["metrics"]["false_rejection_rate"], 4),
             "single_pass_p95_ms": round(g["latency_ms"]["single_pass_p95"], 4),
-            "warm_p95_ms": round(g["latency_ms"]["warm_p95"], 4),
+            "warm_p95_ms": round(g["latency_ms"]["warm_p95_ms"], 4),
+            "stage2_only_warm_p95_ms": (
+                round(g["latency_ms"]["stage2_only_warm_p95_ms"], 4)
+                if g["latency_ms"]["stage2_only_warm_p95_ms"] is not None
+                else None
+            ),
         }
         for gate_id, g in results["gates"].items()
     }

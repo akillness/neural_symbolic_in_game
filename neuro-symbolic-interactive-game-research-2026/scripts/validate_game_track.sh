@@ -23,6 +23,7 @@ uv run ruff check \
   scripts/project_experimental_bridge.py \
   scripts/run_playable_evaluation.py \
   scripts/run_balance_archetypes.py \
+  scripts/run_soak_and_refusal_probe.py \
   scripts/validate_game_studio.py \
   scripts/validate_concept_assets.py \
   scripts/validate_motion_assets.py \
@@ -40,6 +41,7 @@ uv run ruff format --check \
   scripts/project_experimental_bridge.py \
   scripts/run_playable_evaluation.py \
   scripts/run_balance_archetypes.py \
+  scripts/run_soak_and_refusal_probe.py \
   scripts/validate_game_studio.py \
   scripts/validate_concept_assets.py \
   scripts/validate_motion_assets.py \

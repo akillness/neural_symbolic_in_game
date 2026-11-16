@@ -2,17 +2,17 @@
 
 
 ## 2026-11-16 | Extended 0-LLM-Call Engineering Audits (A1–A4, B) & Paper Integration
-- Executed five independent-denominator 0-LLM-call audits via parallel subagents without altering frozen denominators (`416/arm`, `12/arm`, E1, Disclosure, v5, Native, `SL-PLAY-EVAL-001` 52/52, `SL-BALANCE-PROBE-001` 5/5):
-  - **A1 (`multi-error-repair-audit`)**: 352 cases/budget (`K in {0,1,2,3}`, 1,408 runs). Safe commits: `K=0` 0/352, `K>=1` 124/352 (35.23%, unsafe 0/1,408); `repairable_multi` 96/96 converge at `K=1`; `mixed_partial_clear` 132/132 partial-clear holds; `conflict_pair` cross-attempt 96/96 period-2 oscillation vs. same-pass conflict guard 128/128 immediate freeze.
-  - **A2 (`latency-scaling-benchmark`)**: At `N=2000` facts/rules, validator `V` p95 `0.0055 ms` (valid) / `0.0797 ms` (multi-error), `rho` p95 `0.0328 ms`; at `R=256` rooms, reachability p95 `0.3708 ms` (closure) / `1.5124 ms` (BFS); SHA-256 verify p95 `7.08 ms`, `L=100` JSONL replay p95 `822.07 ms`.
-  - **A3 (`seeded-control-audit-v1`)**: `TR01–TR05` seeded corruption sensitivity `4656/4656` (100.00%), invariance false-alarm rate `0/3744` (0.00%), `TR05` forward `12/12`, reverse `10/10`; human Krippendorff alpha remains `UNDEFINED`.
-  - **A4 (`soak-and-refusal-probe-v1`)**: Headless Godot 4.7.1-stable exercised `9/9` (100%) implemented refusal codes (including `OBJECT_NOT_REACHABLE` and `QUEST_STAGE_PRECONDITION`), state isolation `11/11`, trace consistency `1600/1600`, `step_commit` p95 `1.108 ms`, static memory delta `-268 B`, `0` object/orphan leaks.
-  - **B (`semantic-escape-filter-audit`)**: 88-case EN/KO corpus (incl. 12 frozen sentinels): undeclared escape recall / benign FRR / warm p95 — Baseline (ID-only) `0.0% (0/36)` / `0.0%` / `0.0338 ms`; Alias/Pattern `61.1% (22/36)` / `11.1% (4/36)` / `0.0728 ms`; Local TF-IDF/Cosine `80.6% (29/36)` / `5.6% (2/36)` / `0.2259 ms`.
-- Integrated independent-denominator summary (`\subsection{...}\label{sec:extended-audits}`, Table `tab:extended-audits`) into `neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex` and `en/main.tex`.
+- [[wiki/reports/2026-11-16-extended-zero-llm-engineering-audits]]: Executed five independent-denominator 0-LLM-call audits via parallel subagents without altering frozen denominators (`416/arm`, `12/arm`, E1, Disclosure, v5, Native, `SL-PLAY-EVAL-001` 52/52, `SL-BALANCE-PROBE-001` 5/5):
+  - **A1 (`multi-error-repair-audit`)**: 352 cases/budget (`96+160+96`, `K in {0,1,2,3}`, 1,408 runs) + separate 128 guards. Safe commits: `K=0` 0/352, `K>=1` 124/352 (35.23%, unsafe 0/1,408); `repairable_multi` 96/96 recover at `K=1`; `mixed_partial_clear` 28/160 recover at `K=1`, 132/160 held (132/132 partial-clear); `conflict_pair` 0/96 commits (96/96 trajectory period-2 oscillation at `K=3`) vs. separate 128/128 same-pass conflict-guard freeze.
+  - **A2 (`latency-scaling-benchmark`)**: `N in [10,2000]` facts (`arity <= 100` above `N=500`), `R in [4,256]` rooms. At `N=2000`, validator `V` p95 `0.0042 ms` (valid) / `0.0751 ms` (multi-error), `rho` p95 `0.0389 ms` (mixed) / `0.0317 ms` (repairable); at `R=256`, closure / BFS p95: `locked_chain` `0.3121` / `0.4493 ms`, `bypass_branch` `0.3153` / `0.4775 ms`; SHA-256 verify (`N=2000`) p95 `7.0108 ms`; JSONL replay (`N=100, L=100`) p95 `881.0375 ms`.
+  - **A3 (`seeded-control-audit-v1`)**: `TR01–TR04` seeded-fault sensitivity `4656/4656` (100.00%, `+1584` inapplicable controls); invariance false alarms `0/3744` (0.00%); `TR05` forward `12/12`, reverse `10/10` direct-evidence files (`10` co-hashed sibling modules excluded); human Krippendorff alpha remains `UNDEFINED` (`PROPOSED_NOT_VALIDATED`).
+  - **A4 (`soak-and-refusal-probe-v1`)**: Headless Godot 4.7.1-stable exercised `9/9` (100%) declared operation refusal codes (including `OBJECT_NOT_REACHABLE` and `QUEST_STAGE_PRECONDITION`), isolation `11/11`, trace consistency `1600/1600`, steady-state `step_commit` p95 `0.708 ms`, steady-state static memory delta `-268 B`, `0` object/orphan leaks.
+  - **B (`semantic-escape-filter-audit`)**: 88-case EN/KO corpus (`keeper_secret`, incl. 12 frozen sentinels): undeclared escape recall / benign FRR / warm p95 — Baseline (ID-only) `0.0% (0/36)` / `0.0% (0/36)` / `0.0319 ms`; Alias/Pattern `61.1% (22/36)` / `11.1% (4/36)` / `0.0407 ms`; LOO TF-IDF/Cosine `97.2% (35/36)` / `58.3% (21/36)` / `0.7049 ms`.
+- Integrated independent-denominator summary (`\subsection{...}\label{sec:extended-audits}`, Table `tab:extended-audits`, `tab:artifact-directory-map`), cell-by-cell Layer-A verification (`verify_paper_claims.py`), pdfLaTeX/XeLaTeX clean builds, and 57 unit/artifact tests (`tests/test_extended_engineering_audits.py`).
 
 ## 2026-11-14 | Overleaf project upload & academic-value visual review
-- Created Overleaf project `TRACE-RPG-2026` (`6af855f44236f200e4801bd3`) with staged root-relative paths and `kotex` compatibility (leaving tracked repo files untouched), verified 25-page XeLaTeX compilation for `main_ko.tex`, and enabled Editor link sharing.
-- Reviewed Gemini app academic-value critique (`077d4ab406a4c635`) against commits `b24e703` and `d3e68a0`: circular evaluation, over-rejection, surface sentinel boundaries, v5 strata, reference hygiene, and bilingual slop cleanup are already addressed; documented two optional framing refinements (epistemic-vs-disclosure separation and 2-tier reproducibility) in [[wiki/reports/2026-11-14-paper-academic-value-and-evidence-review]].
+- Created Overleaf project `TRACE-RPG-2026` with staged root-relative paths and `kotex` compatibility (leaving tracked repo files untouched), verified 25-page XeLaTeX compilation for `main_ko.tex`, and redacted the Editor capability share link (`<REDACTED-OVERLEAF-EDITOR-SHARE-LINK>`).
+- Reviewed the public Gemini academic-value critique record (`research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json`) against commits `b24e703` and `d3e68a0`: circular evaluation, over-rejection, surface sentinel boundaries, v5 strata, reference hygiene, and bilingual slop cleanup are already addressed; documented two optional framing refinements (epistemic-vs-disclosure separation and 2-tier reproducibility) in [[wiki/reports/2026-11-14-paper-academic-value-and-evidence-review]].
 ## 2026-11-13 | Reviewer reproducibility and reversible paper retirement
 - [[wiki/reports/2026-10-26-fixed-game-native-runtime-comparison#Reviewer reproducibility and paper-only retirement — 2026-11-13]] records EN24/KO24 source-bound captures, descriptive v5 strata, and a dedicated reached-table/source verifier. It separates deterministic retained-evidence checks from model recollection and fresh engine/browser observations.
 - Unverifiable Ollama quantitative claims were withdrawn from the active paper while prior bilingual text/hashes remain an explicitly unverified historical record. The reversible retirement preserved 816 files and 619573495 bytes outside the active project, with source/restore hashes; scientific source evidence was not deleted.
@@ -828,9 +828,9 @@
 - Query note: (capture unavailable in checkout: `wiki/queries/2026-10-23-225814-system-instructions`)
 
 ## [2026-10-24 15:47:56] query | ## System Instructions
-- Raw capture retained privately, excluded from publication: `raw/sources/prompts/2026/10/24/154756-01a16e98-bad-system-instructions`
-- Source note retained privately, excluded from publication: `wiki/sources/2026-10-24-154756-system-instructions`
-- Query note retained privately, excluded from publication: `wiki/queries/2026-10-24-154756-system-instructions`
+- Raw capture: (capture unavailable in checkout: `raw/sources/prompts/2026/10/24/154756-01a16e98-bad-system-instructions`)
+- Source note: (capture unavailable in checkout: `wiki/sources/2026-10-24-154756-system-instructions`)
+- Query note: (capture unavailable in checkout: `wiki/queries/2026-10-24-154756-system-instructions`)
 
 ## Native preparation verification — 2026-10-25 UTC
 

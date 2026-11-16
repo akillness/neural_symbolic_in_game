@@ -2,14 +2,15 @@
 
 - **Rubric:** `traceability-scoring-rubric-20261023` (`status=PROPOSED_NOT_VALIDATED`)
 - **LLM Calls:** `0` (`model_called=False`)
+- **Environment:** `Darwin/arm64` (Python `3.11`, `16` source hashes bound)
 - **Human Inter-Rater Reliability (`krippendorff_alpha`):** **`UNDEFINED`** (`NOT_ESTIMABLE` — zero human assessors; automated deterministic scorer only)
-- **Frozen Input/Source Preflight:** inventory `1664+48/1712` (`complete=True`), `input_hashes` `7/7`, `source_hashes` `20/20`
+- **Frozen Input/Source Preflight (Fail-Closed):** inventory `1664+48/1712` (`complete=True`), `input_hashes` `7/7`, `source_hashes` `20/20`, `public_source_projection_verified=True`
 
 ## 1. Seeded Corruption Sensitivity & Invariance False-Alarm Rates
 
-- **Clean native baseline pool:** `1248` units (`semantic_rejection` + `unchanged_retry` + `guided_repair`, baseline failures=`0`)
+- **Clean native baseline pool:** `1,248` units (`semantic_rejection` + `unchanged_retry` + `guided_repair`, baseline failures=`0`)
+- **`TR01-TR04` corruption control scope:** `6,240` candidate controls (`1,248` units × `5` operators) = **`4,656` applicable controls** + **`1,584` structurally inapplicable controls** retained separately (`728` single-attempt units under `swap_attempt_id` + `856` units without a failed repair attempt under `omit_failed_repair`; `malformed=0`). Study-level `TR05` requirement/artifact links are evaluated separately below.
 - **Overall detector sensitivity (`detected_valid_corruptions / seeded_valid_corruptions`):** **`4656/4656`** (`100.00%`)
-- **Inapplicable controls retained separately:** `1584` (`malformed=0`)
 - **Overall invariance false-alarm rate (`false_alarms / clean_control_units`):** **`0/3744`** (`0.00%`, invariance preservation=`100.00%`)
 
 ### Seeded Corruption Controls (5 types)
@@ -55,7 +56,7 @@
 ### Cohort 1: `TR05` Bidirectional Requirement Coverage (Separate Views)
 
 - **`TR05_forward` (`n_05F / N_05F`):** `12/12 (100.0%)` (predeclared `protocol.json` requirements -> implementing artifacts -> verified evidence)
-- **`TR05_reverse` (`n_05R / N_05R`):** `10/10 (100.0%)` (in-scope hashed artifacts -> justified `gemini-review-20261113` requirements; `10` co-hashed sibling modules in `source_hashes.json` disclosed separately)
+- **`TR05_reverse` (`n_05R / N_05R`):** `10/10 (100.0%)` across the `10` direct-evidence files supporting `gemini-review-20261113` (out of `20` paths in `source_hashes.json`; `10` co-hashed sibling modules under `src/nesy_game/*.py` are excluded from the denominator and disclosed separately)
 
 ### Cohort 2: `stage-04-pilot/pilot-results.json` (`n=63` `outcome_record` rows)
 
@@ -68,11 +69,12 @@
 | `repair_arms` | `guided_repair` | 12 | 12/12 (100.0%) | 12/12 (100.0%) | 12/12 (100.0%) | 12/12 (100.0%) |
 | `repair_arms` | `structured_repair` | 12 | 12/12 (100.0%) | 12/12 (100.0%) | 12/12 (100.0%) | 12/12 (100.0%) |
 
-## 3. Audit Burden & Non-Claims
+## 3. Deterministic Evaluation Accounting & Non-Claims
 
-- **Runtime wall-clock:** `8.7328s` across `10175` total unit evaluations (`0.8583 ms/unit`, `access_failures=0`).
+- **Deterministic unit evaluations:** `10,175` (`access_failures=0`; volatile wall-clock runtime omitted for reproducibility).
 - **Non-claims:**
   - Human inter-rater reliability (Krippendorff alpha) is UNDEFINED; this script executes deterministic rubric checks and seeded controls only.
   - Frozen denominators (SL-PLAY-EVAL-001 52/52, SL-BALANCE-PROBE-001 5/5, C-RESULT-* TODO-RESULT) and frozen artifacts were not modified.
-  - Seeded control sensitivity verifies deterministic rubric-detector behavior on known synthetic fault injections, not prospective human assessor agreement or development-comparison-20261023 execution.
+  - Seeded control sensitivity verifies deterministic rubric-detector behavior on known synthetic fault injections across TR01-TR04 (4,656 applicable + 1,584 inapplicable controls), not prospective human assessor agreement or development-comparison-20261023 execution.
+  - TR05 reverse evaluates the 10/10 direct-evidence files supporting gemini-review-20261113 while excluding 10 co-hashed sibling modules under src/nesy_game/*.py captured by package globbing.
   - Traceability completeness (TR01-TR05) does not imply task success, semantic correctness, or safety (e.g., failed repairs in unchanged_retry score 1 on TR04 while remaining HOLD/FAIL).

@@ -1041,3 +1041,105 @@ def test_public_review_derivative_tampering_is_rejected_after_manifest_refresh(
     _assert_fail(report)
     check = next(row for row in report["checks"] if row["id"] == "public-source-projection")
     assert check["status"] == "FAIL", check
+
+
+@pytest.mark.parametrize(
+    ("language", "old_token", "new_token"),
+    [
+        (
+            "en",
+            r"Safe commits: $K{=}0$ 0/352, $K{\ge}1$ 124/352",
+            r"Safe commits: $K{=}0$ 0/352, $K{\ge}1$ 125/352",
+        ),
+        (
+            "en",
+            r"Alias/Pattern 61.1\% (22/36)",
+            r"Alias/Pattern 63.9\% (23/36)",
+        ),
+        (
+            "ko",
+            r"안전 커밋: $K{=}0$ 0/352, $K{\ge}1$ 124/352",
+            r"안전 커밋: $K{=}0$ 0/352, $K{\ge}1$ 125/352",
+        ),
+        (
+            "ko",
+            r"별칭·패턴 61.1\% (22/36)",
+            r"별칭·패턴 63.9\% (23/36)",
+        ),
+    ],
+    ids=["en-a1-safe-commits", "en-b-alias-recall", "ko-a1-safe-commits", "ko-b-alias-recall"],
+)
+def test_extended_audits_table_numeric_drift_fails_after_manifest_refresh(
+    verifier, publication, change, monkeypatch, language, old_token, new_token
+):
+    project, _ = publication
+    change(
+        f"paper/latex/{language}/main.tex",
+        lambda text: _replace_once(text, old_token, new_token),
+    )
+    _refresh_manifest(project, change, monkeypatch)
+    report = _verify(verifier, publication)
+    _assert_fail(report, "tab:extended-audits")
+    ext_tables = {
+        table["surface_id"]: table["status"]
+        for table in report["tables"]
+        if table["anchor"] == "tab:extended-audits"
+    }
+    assert ext_tables[f"paper-{language}"] == "FAIL", ext_tables
+
+
+@pytest.mark.parametrize(
+    ("case_id", "results_rel", "tamper"),
+    [
+        (
+            "a1-llm-calls-nonzero",
+            "research/academic-pipeline/multi-error-repair-audit/results.json",
+            lambda doc: doc.__setitem__("llm_calls", 1),
+        ),
+        (
+            "a2-arity-cap-drift",
+            "research/academic-pipeline/latency-scaling-benchmark/results.json",
+            lambda doc: doc["config"].__setitem__("active_constraint_arity_cap", 200),
+        ),
+        (
+            "a3-invariance-false-alarm",
+            "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+            lambda doc: doc["seeded_control_summary"].__setitem__("false_alarms", 1),
+        ),
+        (
+            "a4-orphan-leak-metric",
+            "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+            lambda doc: doc["soak"]["memory"]["godot_monitors"]["orphan_node_count"].__setitem__(
+                "max", 1
+            ),
+        ),
+        (
+            "b-model-called-true",
+            "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+            lambda doc: doc.__setitem__("model_called", True),
+        ),
+        (
+            "b-warm-p95-cell-metric-drift",
+            "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+            lambda doc: doc["gates"]["structured_id_plus_alias_pattern"]["latency_ms"].__setitem__(
+                "warm_p95_ms", 0.9999
+            ),
+        ),
+    ],
+    ids=lambda item: item if isinstance(item, str) and "-" in item and "/" not in item else "",
+)
+def test_extended_audits_results_json_metric_or_llm_call_tampering_fails_verify(
+    verifier, publication, change, monkeypatch, case_id, results_rel, tamper
+):
+    del case_id
+    project, _ = publication
+
+    def alter_results(text):
+        payload = json.loads(text)
+        tamper(payload)
+        return json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+
+    change(results_rel, alter_results)
+    _refresh_manifest(project, change, monkeypatch)
+    report = _verify(verifier, publication)
+    _assert_fail(report, "tab:extended-audits")

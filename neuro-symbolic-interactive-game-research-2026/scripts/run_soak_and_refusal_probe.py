@@ -14,7 +14,10 @@ evidence directory.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import platform
+import sys
 import tempfile
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -43,6 +46,15 @@ except ModuleNotFoundError:  # Direct `python scripts/...` execution.
 
 PROBE_ID = "SL-SOAK-REFUSAL-PROBE-001"
 DEFAULT_OUTPUT_DIR = GODOT_PROJECT / "docs" / "soak-and-refusal-probe-v1"
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_HASH_PATHS = (
+    "scripts/run_soak_and_refusal_probe.py",
+    "game-track/godot/scenes/soak_and_refusal_probe.tscn",
+    "game-track/godot/scripts/soak_and_refusal_probe_runner.gd",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd",
+    "game-track/godot/data/sealed_lighthouse.json",
+)
+ALLOWED_COARSE_OS = frozenset({"macOS", "Linux", "Windows", "FreeBSD", "OpenBSD", "NetBSD"})
 EXPECTED_CODES = (
     "FORBIDDEN_DISCLOSURE",
     "MISSING_REQUIRED_OBJECT",
@@ -111,6 +123,24 @@ def validate_probe_report(report: Mapping[str, Any], *, expected_ticks: int) -> 
             raise ValueError(f"soak did not exercise {code}")
 
 
+def _fmt_rss_sample_kib(value: Any) -> str:
+    if value is None or int(value) < 0:
+        return "NR"
+    return f"{int(value)} KiB"
+
+
+def _fmt_rss_delta_kib(value: Any, *, unit_sep: str = " ") -> str:
+    if value is None:
+        return "NR"
+    return f"{int(value)}{unit_sep}KiB"
+
+
+def _fmt_rss_delta_mib(value: Any) -> str:
+    if value is None:
+        return "NR"
+    return f"{float(value):.3f} MiB"
+
+
 def render_summary_markdown(report: Mapping[str, Any]) -> str:
     refusal = report["refusal_code_coverage"]
     soak = report["soak"]
@@ -127,6 +157,8 @@ def render_summary_markdown(report: Mapping[str, Any]) -> str:
         f"- **Probe ID**: `{report['probe_id']}`",
         f"- **Status**: **{'PASS' if report['passed'] else 'FAIL'}** (`{report['execution_status']}`)",
         f"- **Engine**: Godot `{report['engine']['version']}` (`display_server={report['engine']['display_server']}`, `os={report['engine']['os']}`)",
+        f"- **LLM Calls**: `{report['llm_calls']}` (`model_called={report['model_called']}`)",
+        f"- **Environment**: `{report['environment']['os']}/{report['environment']['arch']}` (Python `{report['environment']['python_major_minor']}`, `{len(report['source_hashes'])}` source hashes bound)",
         f"- **Canonical Terminal SHA-256**: `{report['canonical_terminal_sha256']}`",
         "",
         "> Claim boundary: Headless Godot engine conformance, refusal-code coverage, and deterministic step/commit timing + memory stability soak only. Not evidence for human gameplay, G3/G4/G7, usability, immersion, or LLM efficacy.",
@@ -189,7 +221,7 @@ def render_summary_markdown(report: Mapping[str, Any]) -> str:
             "",
             "### Memory & Object Stability",
             "",
-            f"- **OS Resident Set Size (`ps -o rss=`)**: pre-refusal `{rss['pre_refusal_battery']} KiB` -> pre-soak `{rss['pre_soak']} KiB` -> post-soak `{rss['post_soak']} KiB` (`soak_delta={rss['soak_delta_kib']} KiB` / `{rss['soak_delta_mib']:.3f} MiB`)",
+            f"- **OS Resident Set Size (`ps -o rss=`)**: pre-refusal `{_fmt_rss_sample_kib(rss.get('pre_refusal_battery'))}` -> pre-soak `{_fmt_rss_sample_kib(rss.get('pre_soak'))}` -> post-soak `{_fmt_rss_sample_kib(rss.get('post_soak'))}` (`soak_delta={_fmt_rss_delta_kib(rss.get('soak_delta_kib'))}` / `{_fmt_rss_delta_mib(rss.get('soak_delta_mib'))}`)",
             f"- **Godot Static Memory (all ticks)**: initial `{static_mem['all_ticks']['initial']:,} B`, min `{static_mem['all_ticks']['min']:,} B`, max `{static_mem['all_ticks']['max']:,} B`, final `{static_mem['all_ticks']['final']:,} B`, peak `{static_mem['peak_reported_bytes']:,} B`",
             f"- **Godot Static Memory (steady-state post-warmup)**: initial `{static_mem['steady_state']['initial']:,} B` -> final `{static_mem['steady_state']['final']:,} B` (`delta={static_mem['steady_state_delta_bytes']:+,} B`)",
             f"- **Godot Object / Node / Orphan Monitors**: objects steady-state `{monitors['object_count_steady_state']['initial']}` -> `{monitors['object_count_steady_state']['final']}` (`delta={monitors['object_count_steady_state_delta']:+d}`), nodes `{monitors['node_count']['min']}..{monitors['node_count']['max']}`, orphan nodes `{monitors['orphan_node_count']['min']}..{monitors['orphan_node_count']['max']}`",
@@ -264,6 +296,19 @@ def run_probe(*, godot: str, output_dir: Path, ticks: int) -> dict[str, Any]:
     if not isinstance(report, dict):
         raise TypeError("probe output must be a JSON object")
     validate_probe_report(report, expected_ticks=ticks)
+    raw_os = str(report["engine"].get("os", ""))
+    report["engine"]["os"] = raw_os if raw_os in ALLOWED_COARSE_OS else platform.system()
+    report["llm_calls"] = 0
+    report["model_called"] = False
+    report["environment"] = {
+        "os": platform.system(),
+        "arch": platform.machine(),
+        "python_major_minor": f"{sys.version_info.major}.{sys.version_info.minor}",
+    }
+    report["source_hashes"] = {
+        rel_path: hashlib.sha256((ROOT / rel_path).read_bytes()).hexdigest()
+        for rel_path in SOURCE_HASH_PATHS
+    }
     json_bytes = (json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode(
         "utf-8"
     )
@@ -298,12 +343,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     refusal = report["refusal_code_coverage"]
     timing = report["soak"]["timing_ms"]
     rss = report["soak"]["memory"]["resident_rss_kib"]
+    rss_delta_str = _fmt_rss_delta_kib(rss.get("soak_delta_kib"), unit_sep="")
     print(
         f"{PROBE_ID} PASS: refusal={refusal['exercised_count']}/{refusal['implemented_count']}, "
         f"ticks={report['soak']['ticks_executed']}, "
         f"step_commit_p95={timing['step_commit_steady_state']['p95']:.3f}ms, "
         f"frame_wall_p95={timing['frame_wall_steady_state']['p95']:.3f}ms, "
-        f"rss_delta={rss['soak_delta_kib']}KiB, Godot {version}; output={output_dir}"
+        f"rss_delta={rss_delta_str}, Godot {version}; output={output_dir}"
     )
     return 0
 

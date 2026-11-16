@@ -1,12 +1,10 @@
 {
   "benchmark_id": "latency-scaling-benchmark",
-  "timestamp_utc": "2026-11-16T13:38:45Z",
+  "model_called": false,
   "llm_calls": 0,
   "environment": {
-    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
-    "machine": "arm64",
-    "python_version": "3.14.6",
-    "cpu_count": 12
+    "os": "Darwin",
+    "arch": "arm64"
   },
   "config": {
     "room_scales": [
@@ -26,6 +24,8 @@
       1000,
       2000
     ],
+    "active_constraint_arity_cap": 100,
+    "scaling_regime_note": "Active per-action constraint arity k_req = max(2, min(N // 5, 100)) caps at 100 for N >= 500; N in {500, 1000, 2000} measures ambient store-size scaling (facts, policies, objects, NPC knowledge) at fixed active constraint arity 100.",
     "episode_lengths": [
       1,
       10,
@@ -36,6 +36,15 @@
     "default_iterations": 200,
     "percentile_method": "linear_interpolation_r7"
   },
+  "source_hashes": {
+    "scripts/review_reference.py": "fa7b2346bd2ed765f38b60543b4759c8eacf975c1bca2976ac6cf5c2ce1b0223",
+    "scripts/run_gemini_review_evaluation.py": "23619724bc24782e170c620f0bbe256f6cd4c85e4b01a0cad1f6b121536939ff",
+    "scripts/run_latency_scaling_benchmark.py": "932f2433fad4f7cd5a4a443c69db1e20fb438e89335ebbb51420239553568933",
+    "src/nesy_game/contracts.py": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce",
+    "src/nesy_game/repair.py": "2f711ee9e3f12da05680e6994d01326fc7e381d6a1880da5dbc7026ed5e362f6",
+    "src/nesy_game/runtime.py": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4",
+    "src/nesy_game/validator.py": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6"
+  },
   "benchmarks": {
     "validator": [
       {
@@ -45,11 +54,11 @@
         "error_count": 0,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.001583,
-        "p50_ms": 0.001708,
-        "p95_ms": 0.001875,
-        "max_ms": 0.002167,
-        "mean_ms": 0.001731
+        "min_ms": 0.001458,
+        "p50_ms": 0.001583,
+        "p95_ms": 0.001708,
+        "max_ms": 0.0045,
+        "mean_ms": 0.001624
       },
       {
         "component": "validator",
@@ -58,11 +67,11 @@
         "error_count": 10,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.006125,
-        "p50_ms": 0.006333,
-        "p95_ms": 0.006544,
-        "max_ms": 0.007083,
-        "mean_ms": 0.006353
+        "min_ms": 0.005333,
+        "p50_ms": 0.005583,
+        "p95_ms": 0.005791,
+        "max_ms": 0.007291,
+        "mean_ms": 0.005592
       },
       {
         "component": "validator",
@@ -71,11 +80,11 @@
         "error_count": 0,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.002041,
-        "p50_ms": 0.002125,
-        "p95_ms": 0.002209,
-        "max_ms": 0.002417,
-        "mean_ms": 0.002136
+        "min_ms": 0.001916,
+        "p50_ms": 0.002,
+        "p95_ms": 0.002125,
+        "max_ms": 0.002375,
+        "mean_ms": 0.00202
       },
       {
         "component": "validator",
@@ -84,11 +93,11 @@
         "error_count": 36,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.017166,
-        "p50_ms": 0.017959,
-        "p95_ms": 0.018458,
-        "max_ms": 0.021083,
-        "mean_ms": 0.017932
+        "min_ms": 0.016042,
+        "p50_ms": 0.016959,
+        "p95_ms": 0.017541,
+        "max_ms": 0.039833,
+        "mean_ms": 0.01715
       },
       {
         "component": "validator",
@@ -97,11 +106,11 @@
         "error_count": 0,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.003792,
-        "p50_ms": 0.004083,
-        "p95_ms": 0.004256,
-        "max_ms": 0.019958,
-        "mean_ms": 0.004192
+        "min_ms": 0.0035,
+        "p50_ms": 0.003666,
+        "p95_ms": 0.004296,
+        "max_ms": 0.004834,
+        "mean_ms": 0.00371
       },
       {
         "component": "validator",
@@ -110,11 +119,11 @@
         "error_count": 156,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.071,
-        "p50_ms": 0.072917,
-        "p95_ms": 0.083662,
-        "max_ms": 0.117,
-        "mean_ms": 0.075209
+        "min_ms": 0.067,
+        "p50_ms": 0.067958,
+        "p95_ms": 0.073219,
+        "max_ms": 0.099041,
+        "mean_ms": 0.069145
       },
       {
         "component": "validator",
@@ -123,11 +132,11 @@
         "error_count": 0,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.003833,
-        "p50_ms": 0.004,
-        "p95_ms": 0.004919,
-        "max_ms": 0.011417,
-        "mean_ms": 0.004127
+        "min_ms": 0.003708,
+        "p50_ms": 0.003792,
+        "p95_ms": 0.003877,
+        "max_ms": 0.003958,
+        "mean_ms": 0.003799
       },
       {
         "component": "validator",
@@ -136,11 +145,11 @@
         "error_count": 156,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.071375,
-        "p50_ms": 0.074167,
-        "p95_ms": 0.083111,
-        "max_ms": 0.135125,
-        "mean_ms": 0.075546
+        "min_ms": 0.065542,
+        "p50_ms": 0.066167,
+        "p95_ms": 0.071546,
+        "max_ms": 0.122125,
+        "mean_ms": 0.067497
       },
       {
         "component": "validator",
@@ -149,11 +158,11 @@
         "error_count": 0,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.003709,
-        "p50_ms": 0.003958,
-        "p95_ms": 0.005545,
-        "max_ms": 0.04025,
-        "mean_ms": 0.004479
+        "min_ms": 0.00375,
+        "p50_ms": 0.003917,
+        "p95_ms": 0.00421,
+        "max_ms": 0.006166,
+        "mean_ms": 0.003976
       },
       {
         "component": "validator",
@@ -162,11 +171,11 @@
         "error_count": 156,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.071292,
-        "p50_ms": 0.072334,
-        "p95_ms": 0.079737,
-        "max_ms": 0.129,
-        "mean_ms": 0.073963
+        "min_ms": 0.066125,
+        "p50_ms": 0.067084,
+        "p95_ms": 0.075106,
+        "max_ms": 0.106792,
+        "mean_ms": 0.068912
       }
     ],
     "repair": [
@@ -179,11 +188,11 @@
         "candidate_effects": 2,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.007041,
-        "p50_ms": 0.007292,
-        "p95_ms": 0.009131,
-        "max_ms": 0.009625,
-        "mean_ms": 0.007476
+        "min_ms": 0.0065,
+        "p50_ms": 0.006833,
+        "p95_ms": 0.008176,
+        "max_ms": 0.023167,
+        "mean_ms": 0.007074
       },
       {
         "component": "counterexample_guided_repair",
@@ -194,11 +203,11 @@
         "candidate_effects": 2,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.007458,
-        "p50_ms": 0.007792,
-        "p95_ms": 0.009667,
-        "max_ms": 0.05825,
-        "mean_ms": 0.008209
+        "min_ms": 0.006792,
+        "p50_ms": 0.006959,
+        "p95_ms": 0.00884,
+        "max_ms": 0.024834,
+        "mean_ms": 0.007326
       },
       {
         "component": "counterexample_guided_repair",
@@ -209,11 +218,11 @@
         "candidate_effects": 11,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.0105,
-        "p50_ms": 0.010792,
-        "p95_ms": 0.011298,
-        "max_ms": 0.03125,
-        "mean_ms": 0.010986
+        "min_ms": 0.010666,
+        "p50_ms": 0.010895,
+        "p95_ms": 0.012512,
+        "max_ms": 0.0395,
+        "mean_ms": 0.011213
       },
       {
         "component": "counterexample_guided_repair",
@@ -224,11 +233,11 @@
         "candidate_effects": 15,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.011458,
-        "p50_ms": 0.012063,
-        "p95_ms": 0.012833,
-        "max_ms": 0.015541,
-        "mean_ms": 0.012189
+        "min_ms": 0.012042,
+        "p50_ms": 0.012291,
+        "p95_ms": 0.014004,
+        "max_ms": 0.015792,
+        "mean_ms": 0.012435
       },
       {
         "component": "counterexample_guided_repair",
@@ -239,11 +248,11 @@
         "candidate_effects": 51,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.024541,
-        "p50_ms": 0.025709,
-        "p95_ms": 0.027762,
-        "max_ms": 0.08,
-        "mean_ms": 0.026411
+        "min_ms": 0.027916,
+        "p50_ms": 0.028208,
+        "p95_ms": 0.028417,
+        "max_ms": 0.030541,
+        "mean_ms": 0.028229
       },
       {
         "component": "counterexample_guided_repair",
@@ -254,11 +263,11 @@
         "candidate_effects": 75,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.029208,
-        "p50_ms": 0.030708,
-        "p95_ms": 0.040611,
-        "max_ms": 0.161292,
-        "mean_ms": 0.033158
+        "min_ms": 0.034084,
+        "p50_ms": 0.034542,
+        "p95_ms": 0.039504,
+        "max_ms": 0.090334,
+        "mean_ms": 0.035733
       },
       {
         "component": "counterexample_guided_repair",
@@ -269,11 +278,11 @@
         "candidate_effects": 51,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.025334,
-        "p50_ms": 0.025958,
-        "p95_ms": 0.026545,
-        "max_ms": 0.029917,
-        "mean_ms": 0.026006
+        "min_ms": 0.028167,
+        "p50_ms": 0.029479,
+        "p95_ms": 0.033681,
+        "max_ms": 0.052375,
+        "mean_ms": 0.02993
       },
       {
         "component": "counterexample_guided_repair",
@@ -284,11 +293,11 @@
         "candidate_effects": 75,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.029209,
-        "p50_ms": 0.030875,
-        "p95_ms": 0.032343,
-        "max_ms": 0.080083,
-        "mean_ms": 0.031239
+        "min_ms": 0.034458,
+        "p50_ms": 0.035125,
+        "p95_ms": 0.037708,
+        "max_ms": 0.044833,
+        "mean_ms": 0.035689
       },
       {
         "component": "counterexample_guided_repair",
@@ -299,11 +308,11 @@
         "candidate_effects": 51,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.024333,
-        "p50_ms": 0.025,
-        "p95_ms": 0.027711,
-        "max_ms": 0.030834,
-        "mean_ms": 0.025399
+        "min_ms": 0.027916,
+        "p50_ms": 0.028542,
+        "p95_ms": 0.031669,
+        "max_ms": 0.061125,
+        "mean_ms": 0.029086
       },
       {
         "component": "counterexample_guided_repair",
@@ -314,11 +323,11 @@
         "candidate_effects": 75,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.029292,
-        "p50_ms": 0.030333,
-        "p95_ms": 0.032752,
-        "max_ms": 0.088625,
-        "mean_ms": 0.030955
+        "min_ms": 0.034709,
+        "p50_ms": 0.035167,
+        "p95_ms": 0.038881,
+        "max_ms": 0.068458,
+        "mean_ms": 0.035986
       }
     ],
     "reachability": [
@@ -331,11 +340,11 @@
         "reachable_count": 3,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.006375,
-        "p50_ms": 0.006583,
-        "p95_ms": 0.00675,
-        "max_ms": 0.006958,
-        "mean_ms": 0.006595
+        "min_ms": 0.005583,
+        "p50_ms": 0.00575,
+        "p95_ms": 0.006044,
+        "max_ms": 0.008,
+        "mean_ms": 0.005813
       },
       {
         "component": "reachability_bfs",
@@ -346,11 +355,11 @@
         "reachable_count": 3,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.006583,
-        "p50_ms": 0.006833,
-        "p95_ms": 0.007466,
-        "max_ms": 0.008917,
-        "mean_ms": 0.006909
+        "min_ms": 0.005834,
+        "p50_ms": 0.006,
+        "p95_ms": 0.006127,
+        "max_ms": 0.007791,
+        "mean_ms": 0.006014
       },
       {
         "component": "reachability_closure",
@@ -361,11 +370,11 @@
         "reachable_count": 3,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.0075,
-        "p50_ms": 0.007709,
-        "p95_ms": 0.007875,
-        "max_ms": 0.008208,
-        "mean_ms": 0.007726
+        "min_ms": 0.006541,
+        "p50_ms": 0.006709,
+        "p95_ms": 0.007348,
+        "max_ms": 0.008708,
+        "mean_ms": 0.006823
       },
       {
         "component": "reachability_bfs",
@@ -376,11 +385,11 @@
         "reachable_count": 3,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.008,
-        "p50_ms": 0.008167,
-        "p95_ms": 0.008459,
-        "max_ms": 0.011375,
-        "mean_ms": 0.008222
+        "min_ms": 0.007083,
+        "p50_ms": 0.007333,
+        "p95_ms": 0.007459,
+        "max_ms": 0.037666,
+        "mean_ms": 0.007533
       },
       {
         "component": "reachability_closure",
@@ -391,11 +400,11 @@
         "reachable_count": 15,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.019292,
-        "p50_ms": 0.01975,
-        "p95_ms": 0.024089,
-        "max_ms": 0.06775,
-        "mean_ms": 0.020665
+        "min_ms": 0.017875,
+        "p50_ms": 0.018292,
+        "p95_ms": 0.018667,
+        "max_ms": 0.018916,
+        "mean_ms": 0.018315
       },
       {
         "component": "reachability_bfs",
@@ -406,11 +415,11 @@
         "reachable_count": 15,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.024292,
-        "p50_ms": 0.025208,
-        "p95_ms": 0.027892,
-        "max_ms": 0.07125,
-        "mean_ms": 0.025603
+        "min_ms": 0.021625,
+        "p50_ms": 0.022041,
+        "p95_ms": 0.022375,
+        "max_ms": 0.025875,
+        "mean_ms": 0.022052
       },
       {
         "component": "reachability_closure",
@@ -421,11 +430,11 @@
         "reachable_count": 15,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.020417,
-        "p50_ms": 0.021146,
-        "p95_ms": 0.024431,
-        "max_ms": 0.063041,
-        "mean_ms": 0.021717
+        "min_ms": 0.01825,
+        "p50_ms": 0.018917,
+        "p95_ms": 0.022461,
+        "max_ms": 0.046958,
+        "mean_ms": 0.019412
       },
       {
         "component": "reachability_bfs",
@@ -436,11 +445,11 @@
         "reachable_count": 15,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.0255,
-        "p50_ms": 0.026645,
-        "p95_ms": 0.029424,
-        "max_ms": 0.075125,
-        "mean_ms": 0.027112
+        "min_ms": 0.0225,
+        "p50_ms": 0.023041,
+        "p95_ms": 0.028807,
+        "max_ms": 0.053917,
+        "mean_ms": 0.024106
       },
       {
         "component": "reachability_closure",
@@ -451,11 +460,11 @@
         "reachable_count": 63,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.070833,
-        "p50_ms": 0.073687,
-        "p95_ms": 0.078396,
-        "max_ms": 0.152291,
-        "mean_ms": 0.074339
+        "min_ms": 0.065667,
+        "p50_ms": 0.069375,
+        "p95_ms": 0.078606,
+        "max_ms": 0.869958,
+        "mean_ms": 0.074612
       },
       {
         "component": "reachability_bfs",
@@ -466,11 +475,11 @@
         "reachable_count": 63,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.100709,
-        "p50_ms": 0.103188,
-        "p95_ms": 0.175686,
-        "max_ms": 0.612958,
-        "mean_ms": 0.116647
+        "min_ms": 0.084792,
+        "p50_ms": 0.088208,
+        "p95_ms": 0.093065,
+        "max_ms": 0.140708,
+        "mean_ms": 0.088973
       },
       {
         "component": "reachability_closure",
@@ -481,11 +490,11 @@
         "reachable_count": 63,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.072,
-        "p50_ms": 0.075124,
-        "p95_ms": 0.080381,
-        "max_ms": 0.109333,
-        "mean_ms": 0.075656
+        "min_ms": 0.066833,
+        "p50_ms": 0.0685,
+        "p95_ms": 0.072517,
+        "max_ms": 0.190166,
+        "mean_ms": 0.070313
       },
       {
         "component": "reachability_bfs",
@@ -496,11 +505,11 @@
         "reachable_count": 63,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.098541,
-        "p50_ms": 0.103563,
-        "p95_ms": 0.113046,
-        "max_ms": 0.417916,
-        "mean_ms": 0.107361
+        "min_ms": 0.087542,
+        "p50_ms": 0.091438,
+        "p95_ms": 0.098204,
+        "max_ms": 0.134708,
+        "mean_ms": 0.092459
       },
       {
         "component": "reachability_closure",
@@ -511,11 +520,11 @@
         "reachable_count": 255,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 0.274792,
-        "p50_ms": 0.294501,
-        "p95_ms": 0.370815,
-        "max_ms": 0.665417,
-        "mean_ms": 0.311056
+        "min_ms": 0.259291,
+        "p50_ms": 0.265917,
+        "p95_ms": 0.31215,
+        "max_ms": 0.373375,
+        "mean_ms": 0.27245
       },
       {
         "component": "reachability_bfs",
@@ -526,11 +535,11 @@
         "reachable_count": 255,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 0.406333,
-        "p50_ms": 0.538042,
-        "p95_ms": 1.512398,
-        "max_ms": 2.159583,
-        "mean_ms": 0.742102
+        "min_ms": 0.38075,
+        "p50_ms": 0.400521,
+        "p95_ms": 0.449341,
+        "max_ms": 2.42375,
+        "mean_ms": 0.42407
       },
       {
         "component": "reachability_closure",
@@ -541,11 +550,11 @@
         "reachable_count": 255,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 0.279708,
-        "p50_ms": 0.295833,
-        "p95_ms": 0.453263,
-        "max_ms": 1.745666,
-        "mean_ms": 0.334391
+        "min_ms": 0.260125,
+        "p50_ms": 0.273729,
+        "p95_ms": 0.315298,
+        "max_ms": 0.355833,
+        "mean_ms": 0.27758
       },
       {
         "component": "reachability_bfs",
@@ -556,11 +565,11 @@
         "reachable_count": 255,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 0.398625,
-        "p50_ms": 0.416771,
-        "p95_ms": 0.476422,
-        "max_ms": 0.52925,
-        "mean_ms": 0.42224
+        "min_ms": 0.381458,
+        "p50_ms": 0.398625,
+        "p95_ms": 0.477498,
+        "max_ms": 1.8595,
+        "mean_ms": 0.422668
       }
     ],
     "verification_and_replay": [
@@ -570,11 +579,11 @@
         "record_bytes": 6769,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.05275,
-        "p50_ms": 0.054041,
-        "p95_ms": 0.058309,
-        "max_ms": 0.067458,
-        "mean_ms": 0.054713
+        "min_ms": 0.05575,
+        "p50_ms": 0.05925,
+        "p95_ms": 0.0625,
+        "max_ms": 0.067541,
+        "mean_ms": 0.05901
       },
       {
         "component": "replay_trace_record",
@@ -582,11 +591,11 @@
         "record_bytes": 6769,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.592042,
-        "p50_ms": 0.624333,
-        "p95_ms": 0.732636,
-        "max_ms": 0.843792,
-        "mean_ms": 0.637872
+        "min_ms": 0.602083,
+        "p50_ms": 0.639729,
+        "p95_ms": 0.720569,
+        "max_ms": 0.791542,
+        "mean_ms": 0.64851
       },
       {
         "component": "sha256_verify_record",
@@ -594,11 +603,11 @@
         "record_bytes": 47629,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 0.340208,
-        "p50_ms": 0.361584,
-        "p95_ms": 0.418969,
-        "max_ms": 0.866917,
-        "mean_ms": 0.36775
+        "min_ms": 0.354333,
+        "p50_ms": 0.375667,
+        "p95_ms": 0.454175,
+        "max_ms": 0.482834,
+        "mean_ms": 0.383771
       },
       {
         "component": "replay_trace_record",
@@ -606,11 +615,11 @@
         "record_bytes": 47629,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 4.603625,
-        "p50_ms": 4.936958,
-        "p95_ms": 5.311547,
-        "max_ms": 12.062792,
-        "mean_ms": 5.040347
+        "min_ms": 4.759375,
+        "p50_ms": 5.016958,
+        "p95_ms": 5.469885,
+        "max_ms": 14.145125,
+        "mean_ms": 5.140692
       },
       {
         "component": "sha256_verify_record",
@@ -618,11 +627,11 @@
         "record_bytes": 231695,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 1.578375,
-        "p50_ms": 1.665062,
-        "p95_ms": 1.814746,
-        "max_ms": 2.753833,
-        "mean_ms": 1.692132
+        "min_ms": 1.639958,
+        "p50_ms": 1.71927,
+        "p95_ms": 1.925155,
+        "max_ms": 2.128458,
+        "mean_ms": 1.747075
       },
       {
         "component": "replay_trace_record",
@@ -630,11 +639,11 @@
         "record_bytes": 231695,
         "iterations": 200,
         "warmup": 20,
-        "min_ms": 22.996,
-        "p50_ms": 24.224458,
-        "p95_ms": 28.161435,
-        "max_ms": 56.003,
-        "mean_ms": 25.07454
+        "min_ms": 22.545625,
+        "p50_ms": 24.376354,
+        "p95_ms": 28.139837,
+        "max_ms": 34.202958,
+        "mean_ms": 24.697415
       },
       {
         "component": "sha256_verify_record",
@@ -642,11 +651,11 @@
         "record_bytes": 436661,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 3.097708,
-        "p50_ms": 3.34025,
-        "p95_ms": 3.755318,
-        "max_ms": 9.734583,
-        "mean_ms": 3.464817
+        "min_ms": 3.1345,
+        "p50_ms": 3.297313,
+        "p95_ms": 3.621725,
+        "max_ms": 3.81625,
+        "mean_ms": 3.337944
       },
       {
         "component": "replay_trace_record",
@@ -654,11 +663,11 @@
         "record_bytes": 436661,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 42.680709,
-        "p50_ms": 45.853354,
-        "p95_ms": 57.831968,
-        "max_ms": 63.243917,
-        "mean_ms": 47.63527
+        "min_ms": 41.92125,
+        "p50_ms": 45.600083,
+        "p95_ms": 51.954005,
+        "max_ms": 56.718375,
+        "mean_ms": 46.59534
       },
       {
         "component": "sha256_verify_record",
@@ -666,11 +675,11 @@
         "record_bytes": 860981,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 6.151375,
-        "p50_ms": 6.47427,
-        "p95_ms": 7.075983,
-        "max_ms": 14.971166,
-        "mean_ms": 6.603606
+        "min_ms": 6.234667,
+        "p50_ms": 6.429688,
+        "p95_ms": 7.010796,
+        "max_ms": 7.995292,
+        "mean_ms": 6.49138
       },
       {
         "component": "replay_trace_record",
@@ -678,11 +687,11 @@
         "record_bytes": 860981,
         "iterations": 100,
         "warmup": 20,
-        "min_ms": 84.487083,
-        "p50_ms": 86.758417,
-        "p95_ms": 98.452865,
-        "max_ms": 111.793958,
-        "mean_ms": 89.072392
+        "min_ms": 81.111792,
+        "p50_ms": 87.176271,
+        "p95_ms": 97.017105,
+        "max_ms": 117.722417,
+        "mean_ms": 88.475875
       },
       {
         "component": "replay_trace_jsonl",
@@ -691,11 +700,11 @@
         "file_bytes": 50527,
         "iterations": 50,
         "warmup": 5,
-        "min_ms": 6.931458,
-        "p50_ms": 7.303459,
-        "p95_ms": 7.549814,
-        "max_ms": 13.538791,
-        "mean_ms": 7.409362
+        "min_ms": 7.137459,
+        "p50_ms": 7.748709,
+        "p95_ms": 9.226623,
+        "max_ms": 17.390709,
+        "mean_ms": 8.137901
       },
       {
         "component": "replay_trace_jsonl",
@@ -704,11 +713,11 @@
         "file_bytes": 508294,
         "iterations": 50,
         "warmup": 5,
-        "min_ms": 71.166667,
-        "p50_ms": 72.363313,
-        "p95_ms": 82.294331,
-        "max_ms": 86.873916,
-        "mean_ms": 73.505738
+        "min_ms": 71.628167,
+        "p50_ms": 79.994,
+        "p95_ms": 120.577681,
+        "max_ms": 148.077875,
+        "mean_ms": 85.768747
       },
       {
         "component": "replay_trace_jsonl",
@@ -717,11 +726,11 @@
         "file_bytes": 2572214,
         "iterations": 20,
         "warmup": 5,
-        "min_ms": 361.259166,
-        "p50_ms": 365.921958,
-        "p95_ms": 379.722431,
-        "max_ms": 382.488792,
-        "mean_ms": 368.352115
+        "min_ms": 385.306125,
+        "p50_ms": 396.585312,
+        "p95_ms": 412.468892,
+        "max_ms": 424.991792,
+        "mean_ms": 397.758881
       },
       {
         "component": "replay_trace_jsonl",
@@ -730,13 +739,13 @@
         "file_bytes": 5219614,
         "iterations": 20,
         "warmup": 5,
-        "min_ms": 736.56175,
-        "p50_ms": 757.057959,
-        "p95_ms": 822.073104,
-        "max_ms": 853.391041,
-        "mean_ms": 765.998765
+        "min_ms": 800.344667,
+        "p50_ms": 817.27873,
+        "p95_ms": 881.037508,
+        "max_ms": 896.950958,
+        "mean_ms": 828.183998
       }
     ]
   },
-  "total_benchmark_wall_seconds": 61.0687
+  "total_benchmark_wall_seconds": 63.8827
 }

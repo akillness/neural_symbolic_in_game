@@ -9,8 +9,15 @@
     "version": "4.7.1-stable (official)"
   },
   "engineering_only": true,
+  "environment": {
+    "arch": "arm64",
+    "os": "Darwin",
+    "python_major_minor": "3.11"
+  },
   "execution_status": "OBSERVED_ENGINE_RUN",
   "failures": [],
+  "llm_calls": 0,
+  "model_called": false,
   "passed": true,
   "probe_id": "SL-SOAK-REFUSAL-PROBE-001",
   "refusal_code_coverage": {
@@ -64,7 +71,7 @@
         },
         "case_id": "unexercised-02a-quest-stage-precondition-stage0",
         "expected_code": "QUEST_STAGE_PRECONDITION",
-        "latency_ms": 0.016,
+        "latency_ms": 0.012,
         "mechanism": "hash-verified load_state_if_hash_matches with carried signal_lens and quest.stage=0",
         "mutated": false,
         "observed_codes": [
@@ -84,7 +91,7 @@
         },
         "case_id": "unexercised-02b-quest-stage-precondition-stage-neg1",
         "expected_code": "QUEST_STAGE_PRECONDITION",
-        "latency_ms": 0.011,
+        "latency_ms": 0.013,
         "mechanism": "hash-verified load_state_if_hash_matches with carried signal_lens and quest.stage=-1",
         "mutated": false,
         "observed_codes": [
@@ -104,7 +111,7 @@
         },
         "case_id": "core-03-missing-required-object",
         "expected_code": "MISSING_REQUIRED_OBJECT",
-        "latency_ms": 0.017,
+        "latency_ms": 0.012,
         "mechanism": "install_lens before acquire_object",
         "mutated": false,
         "observed_codes": [
@@ -185,7 +192,7 @@
         },
         "case_id": "core-07-unknown-actor",
         "expected_code": "UNKNOWN_ACTOR",
-        "latency_ms": 0.072,
+        "latency_ms": 0.071,
         "mechanism": "undeclared actor_id",
         "mutated": false,
         "observed_codes": [
@@ -206,7 +213,7 @@
         },
         "case_id": "core-08-npc-does-not-know-fact",
         "expected_code": "NPC_DOES_NOT_KNOW_FACT",
-        "latency_ms": 0.072,
+        "latency_ms": 0.07,
         "mechanism": "fact absent from captain_mira knowledge list",
         "mutated": false,
         "observed_codes": [
@@ -226,7 +233,7 @@
         },
         "case_id": "core-09-object-not-present",
         "expected_code": "OBJECT_NOT_PRESENT",
-        "latency_ms": 0.011,
+        "latency_ms": 0.013,
         "mechanism": "acquire_object after signal_lens already acquired",
         "mutated": false,
         "observed_codes": [
@@ -392,11 +399,11 @@
         "steady_state_delta_bytes": -268
       },
       "resident_rss_kib": {
-        "post_soak": 76064,
-        "pre_refusal_battery": 117808,
-        "pre_soak": 118288,
-        "soak_delta_kib": -42224,
-        "soak_delta_mib": -41.234
+        "post_soak": 74992,
+        "pre_refusal_battery": 117792,
+        "pre_soak": 118176,
+        "soak_delta_kib": -43184,
+        "soak_delta_mib": -42.172
       }
     },
     "steady_state_ticks": 1536,
@@ -404,69 +411,76 @@
     "timing_ms": {
       "commit_only_operations": {
         "count": 600,
-        "max": 7.671,
-        "mean": 0.433,
-        "min": 0.082,
-        "p50": 0.337,
-        "p95": 0.986,
-        "p99": 1.507
+        "max": 1.988,
+        "mean": 0.256,
+        "min": 0.081,
+        "p50": 0.176,
+        "p95": 0.666,
+        "p99": 1.251
       },
       "frame_wall_all_ticks": {
         "count": 1600,
-        "max": 12.314,
-        "mean": 6.888,
-        "min": 0.341,
-        "p50": 6.869,
-        "p95": 8.174,
-        "p99": 8.522
+        "max": 15.32,
+        "mean": 6.889,
+        "min": 0.191,
+        "p50": 6.876,
+        "p95": 8.291,
+        "p99": 8.557
       },
       "frame_wall_steady_state": {
         "count": 1536,
-        "max": 12.314,
-        "mean": 6.899,
-        "min": 3.896,
-        "p50": 6.868,
-        "p95": 8.176,
-        "p99": 8.539
+        "max": 15.32,
+        "mean": 6.901,
+        "min": 0.334,
+        "p50": 6.877,
+        "p95": 8.298,
+        "p99": 8.557
       },
       "headless_frame_delta_all_ticks": {
         "count": 1600,
-        "max": 133.333,
-        "mean": 6.974,
-        "min": 0.117,
+        "max": 150.0,
+        "mean": 6.982,
+        "min": 0.026,
         "p50": 6.944,
         "p95": 6.944,
-        "p99": 7.344
+        "p99": 7.288
       },
       "headless_frame_delta_steady_state": {
         "count": 1536,
-        "max": 7.854,
+        "max": 7.756,
         "mean": 6.904,
-        "min": 6.343,
+        "min": 6.665,
         "p50": 6.944,
         "p95": 6.944,
-        "p99": 7.08
+        "p99": 7.144
       },
       "step_commit_all_ticks": {
         "count": 1600,
-        "max": 8.019,
-        "mean": 0.474,
+        "max": 3.784,
+        "mean": 0.272,
         "min": 0.081,
-        "p50": 0.379,
-        "p95": 1.099,
-        "p99": 1.507
+        "p50": 0.207,
+        "p95": 0.692,
+        "p99": 1.161
       },
       "step_commit_steady_state": {
         "count": 1536,
-        "max": 8.019,
-        "mean": 0.486,
+        "max": 3.784,
+        "mean": 0.274,
         "min": 0.081,
-        "p50": 0.406,
-        "p95": 1.108,
-        "p99": 1.512
+        "p50": 0.208,
+        "p95": 0.708,
+        "p99": 1.199
       }
     },
-    "total_soak_elapsed_ms": 11020.559,
+    "total_soak_elapsed_ms": 11022.2,
     "warmup_ticks": 64
+  },
+  "source_hashes": {
+    "game-track/godot/data/sealed_lighthouse.json": "f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9",
+    "game-track/godot/scenes/soak_and_refusal_probe.tscn": "c0860daf98e16d33b7b3a9e8d4faa43d06c750a7c0aa366b35a610cc5f2135e9",
+    "game-track/godot/scripts/sealed_lighthouse_machine.gd": "5d5cffb4335378e7130dae8a994908111757a33a2ed46f0a4066f6674e4dd8b7",
+    "game-track/godot/scripts/soak_and_refusal_probe_runner.gd": "65c56918211d1e58decc2962f27b33faccfb42a6be57879dabb64958b36f6064",
+    "scripts/run_soak_and_refusal_probe.py": "79bef3d42824dfe89385ed9b3dd5d2ced22d41351ece43bc77ae69eacdc38814"
   }
 }

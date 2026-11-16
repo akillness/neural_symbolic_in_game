@@ -50,6 +50,20 @@ DISCLOSURE_DATA = (
 KG_GENERATOR = "src/nesy_game/kg_ontology_simulation.py"
 BALANCE_GENERATOR = "scripts/run_balance_archetypes.py"
 CONFORMANCE_GENERATOR = "scripts/run_conformance_pilot.py"
+EXTENDED_AUDIT_RESULTS = (
+    "research/academic-pipeline/multi-error-repair-audit/results.json",
+    "research/academic-pipeline/latency-scaling-benchmark/results.json",
+    "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+    "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+    "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+)
+EXTENDED_AUDIT_RUNNERS = (
+    "scripts/run_multi_error_repair_audit.py",
+    "scripts/run_latency_scaling_benchmark.py",
+    "scripts/run_traceability_seeded_audit.py",
+    "scripts/run_soak_and_refusal_probe.py",
+    "scripts/run_semantic_escape_filter_audit.py",
+)
 
 CONFORMANCE_TABLE_STEMS = (
     "accounting-guards",
@@ -310,6 +324,9 @@ def build_manifest() -> dict[str, Any]:
                 f"{pilot_dir}/pilot-results.json",
                 f"{pilot_dir}/pilot-assignment-manifest.json",
                 f"{pilot_dir}/sha256-manifest.json",
+                "research/academic-pipeline/gemini-review-20261113/protocol-v2.json",
+                "research/academic-pipeline/gemini-review-20261113/reviewer-source.public.json",
+                "research/academic-pipeline/gemini-review-20261113/public-source-projection-v1.json",
                 f"{review_dir}/summary.json",
                 "knowledge/ontology/trace-rpg-ontology.json",
                 "knowledge/ontology/curated-relations.json",
@@ -329,6 +346,8 @@ def build_manifest() -> dict[str, Any]:
                 "research/academic-pipeline/experiment-evidence-matrix.csv",
                 "research/academic-pipeline/stage-05-citation-verification.json",
                 "research/traceability-scoring-20261023/rubric.json",
+                *EXTENDED_AUDIT_RESULTS,
+                *EXTENDED_AUDIT_RUNNERS,
             ),
             readable=("research/maintenance/ollama-unverified-history-20261113.json",),
             rendered_in=("paper-en", "paper-ko"),
@@ -351,13 +370,7 @@ def build_manifest() -> dict[str, Any]:
             "extended-engineering-audits-table",
             layouts=paper_usage,
             generator=None,
-            data=(
-                "research/academic-pipeline/multi-error-repair-audit/results.json",
-                "research/academic-pipeline/latency-scaling-benchmark/results.json",
-                "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
-                "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
-                "research/academic-pipeline/semantic-escape-filter-audit/results.json",
-            ),
+            data=(*EXTENDED_AUDIT_RESULTS, *EXTENDED_AUDIT_RUNNERS),
             rendered_in=("paper-en", "paper-ko"),
             anchors=("tab:extended-audits",),
         ),
