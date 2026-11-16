@@ -348,6 +348,20 @@ def build_manifest() -> dict[str, Any]:
             anchors=("tab:traceability-rubric",),
         ),
         table_source(
+            "extended-engineering-audits-table",
+            layouts=paper_usage,
+            generator=None,
+            data=(
+                "research/academic-pipeline/multi-error-repair-audit/results.json",
+                "research/academic-pipeline/latency-scaling-benchmark/results.json",
+                "research/traceability-scoring-20261023/seeded-control-audit-v1/results.json",
+                "game-track/godot/docs/soak-and-refusal-probe-v1/results.json",
+                "research/academic-pipeline/semantic-escape-filter-audit/results.json",
+            ),
+            rendered_in=("paper-en", "paper-ko"),
+            anchors=("tab:extended-audits",),
+        ),
+        table_source(
             "disclosure-paper-tables",
             layouts=(
                 "paper/latex/generated/disclosure_tables_en.tex",
