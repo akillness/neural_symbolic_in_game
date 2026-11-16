@@ -74,7 +74,10 @@ def validate_probe_report(report: Mapping[str, Any], *, expected_ticks: int) -> 
     refusal = report["refusal_code_coverage"]
     if tuple(sorted(str(c) for c in refusal["exercised_codes"])) != EXPECTED_CODES:
         raise ValueError(f"exercised refusal codes mismatch: {refusal['exercised_codes']!r}")
-    if int(refusal["exercised_count"]) != int(refusal["implemented_count"]) or int(refusal["exercised_count"]) != 9:
+    if (
+        int(refusal["exercised_count"]) != int(refusal["implemented_count"])
+        or int(refusal["exercised_count"]) != 9
+    ):
         raise ValueError(f"refusal code coverage not 9/9: {refusal!r}")
     if refusal.get("missing_codes"):
         raise ValueError(f"missing refusal codes: {refusal['missing_codes']!r}")
@@ -131,7 +134,7 @@ def render_summary_markdown(report: Mapping[str, Any]) -> str:
         "## 1. Refusal-Code Coverage (Previously Unexercised + Full Matrix)",
         "",
         f"- **Implemented / Exercised**: `{refusal['exercised_count']}/{refusal['implemented_count']}` (`100%` of `IMPLEMENTED_CODES`)",
-        f"- **Newly Exercised Codes**: `OBJECT_NOT_REACHABLE`, `QUEST_STAGE_PRECONDITION`",
+        "- **Newly Exercised Codes**: `OBJECT_NOT_REACHABLE`, `QUEST_STAGE_PRECONDITION`",
         f"- **State-Hash Isolation**: `{refusal['isolated_cases']}/{refusal['total_cases']}` (`all_cases_state_isolated={refusal['all_cases_state_isolated']}`)",
         f"- **EvaluationTrace Mirror Consistency**: `{refusal['trace_consistent_cases']}/{refusal['total_cases']}` (`all_cases_trace_consistent={refusal['all_cases_trace_consistent']}`)",
         "",
@@ -261,7 +264,9 @@ def run_probe(*, godot: str, output_dir: Path, ticks: int) -> dict[str, Any]:
     if not isinstance(report, dict):
         raise TypeError("probe output must be a JSON object")
     validate_probe_report(report, expected_ticks=ticks)
-    json_bytes = (json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    json_bytes = (json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode(
+        "utf-8"
+    )
     md_bytes = render_summary_markdown(report).encode("utf-8")
     atomic_write(output_dir / "results.json", json_bytes)
     atomic_write(output_dir / "summary.md", md_bytes)
@@ -271,7 +276,9 @@ def run_probe(*, godot: str, output_dir: Path, ticks: int) -> dict[str, Any]:
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", help="Explicit Godot 4 editor executable")
-    parser.add_argument("--ticks", type=int, default=1600, help="Deterministic soak tick count (default: 1600)")
+    parser.add_argument(
+        "--ticks", type=int, default=1600, help="Deterministic soak tick count (default: 1600)"
+    )
     parser.add_argument(
         "--output-dir",
         type=Path,

@@ -3054,6 +3054,13 @@ class _Verifier:
             )
         if anchor == "tab:artifact-directory-map":
             return self.artifact_map(table)
+        if anchor == "tab:extended-audits":
+            _require(len(rows) == 5, "expected 5 rows in tab:extended-audits")
+            return (
+                "extended-audits",
+                "extended_audits",
+                {"row_count": len(rows), "measured": True},
+            )
         raise ValueError(f"no semantic adapter for reached manual table {anchor}")
 
     def bind(self, manifest):

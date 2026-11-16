@@ -15,15 +15,15 @@ Zero LLM calls are made. No frozen artifacts are modified.
 from __future__ import annotations
 
 import argparse
-from collections.abc import Callable, Sequence
 import json
 import os
-from pathlib import Path
 import platform
 import statistics
 import sys
 import tempfile
 import time
+from collections.abc import Callable, Sequence
+from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,9 +100,7 @@ def _build_scaled_state_and_candidates(
     reachable = frozenset(f"r{i}" for i in range(room_count // 2))
     facts = frozenset(f"fact_{i}" for i in range(scale_n))
     inventory = frozenset(f"item_{i}" for i in range(max(2, scale_n // 10)))
-    object_locations = {
-        f"obj_{i}": f"r{i % room_count}" for i in range(scale_n)
-    }
+    object_locations = {f"obj_{i}": f"r{i % room_count}" for i in range(scale_n)}
     # Place target_unreachable_obj in an unreachable room
     object_locations["unreachable_obj"] = f"r{room_count - 1}"
 
@@ -263,7 +261,9 @@ def benchmark_repair(warmup: int, iterations: int) -> list[dict[str, Any]]:
             iterations=iterations,
         )
         repaired = counterexample_guided_repair(state, repairable_cand, val_repairable, 1)
-        assert validate_candidate(state, repaired).valid, "expected repairable candidate to converge"
+        assert validate_candidate(state, repaired).valid, (
+            "expected repairable candidate to converge"
+        )
         rows.append(
             {
                 "component": "counterexample_guided_repair",
@@ -484,7 +484,7 @@ def render_summary_md(results: dict[str, Any]) -> str:
         f"- **Platform**: {env['platform']} ({env['machine']})",
         f"- **Python**: {env['python_version']}",
         f"- **CPU count**: {env['cpu_count']}",
-        f"- **LLM calls**: 0 (purely deterministic symbolic runtime)",
+        "- **LLM calls**: 0 (purely deterministic symbolic runtime)",
         "",
         "## (a) Validator `V(c_t, a_t)` Latency Across Fact/Rule Scales",
         "",

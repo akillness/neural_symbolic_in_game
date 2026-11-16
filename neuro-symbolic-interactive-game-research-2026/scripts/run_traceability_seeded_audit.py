@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: BLE001, SIM102
 """Deterministic TR01-TR05 traceability scoring and seeded-control audit (0 LLM calls).
 
 Evaluates frozen TRACE-RPG trace artifacts strictly under
@@ -26,7 +27,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from nesy_game.contracts import ActionPolicy, CandidateAction, WorldState, parse_candidate_mapping
+from nesy_game.contracts import ActionPolicy, WorldState, parse_candidate_mapping
 from nesy_game.repair import counterexample_guided_repair
 from nesy_game.runtime import (
     _apply_valid,
@@ -167,11 +168,7 @@ def _summarize_dimension(
     applicable_units = [u for u in unit_scores if u["applicable"]]
     n_d = sum(1 for u in applicable_units if u["complete_chain"] == 1)
     cap_n_d = len(applicable_units)
-    l_d = sum(
-        u["links"][link]["score"]
-        for u in applicable_units
-        for link in link_names
-    )
+    l_d = sum(u["links"][link]["score"] for u in applicable_units for link in link_names)
     m_d = cap_n_d * len(link_names)
 
     reason_counts: Counter[str] = Counter()
@@ -247,11 +244,12 @@ def score_v2_row(
     tr01_links: dict[str, Any] = {}
 
     # 1. task_run_attempt
-    inv_key = (case_id, arm, cohort)
     attempt_seq_ok = (
         isinstance(attempts, list)
         and len(attempts) >= 1
-        and all(isinstance(a, Mapping) and a.get("attempt") == idx for idx, a in enumerate(attempts))
+        and all(
+            isinstance(a, Mapping) and a.get("attempt") == idx for idx, a in enumerate(attempts)
+        )
         and repair_attempt_count == len(attempts) - 1
     )
     if (case_id, arm, cohort) not in frozen_inventory_keys:
@@ -268,7 +266,8 @@ def score_v2_row(
             or tc.get("case_id") != case_id
             or tc.get("arm") != arm
             or tc.get("study_id") != protocol["study_id"]
-            or native_outcome.get("attempts") != (len(native_trace) - 1 if isinstance(native_trace, list) else -1)
+            or native_outcome.get("attempts")
+            != (len(native_trace) - 1 if isinstance(native_trace, list) else -1)
             or not isinstance(native_trace, list)
             or any(
                 not isinstance(entry, Mapping) or entry.get("attempt") != idx
@@ -276,7 +275,8 @@ def score_v2_row(
             )
         ):
             tr01_links["task_run_attempt"] = _link_fail(
-                "contradicted", "native_outcome trace_context or attempt index contradicts assignment"
+                "contradicted",
+                "native_outcome trace_context or attempt index contradicts assignment",
             )
         else:
             tr01_links["task_run_attempt"] = _link_pass()
@@ -291,7 +291,9 @@ def score_v2_row(
             "stale" if row.get("input_hash") else "missing",
             "input_hash does not match frozen case digest",
         )
-    elif not isinstance(row_source_hashes, Mapping) or set(row_source_hashes) != set(frozen_source_hashes):
+    elif not isinstance(row_source_hashes, Mapping) or set(row_source_hashes) != set(
+        frozen_source_hashes
+    ):
         tr01_links["artifact_revision_or_digest"] = _link_fail(
             "missing" if not row_source_hashes else "stale",
             "source_hashes key set differs from frozen source_hashes.json",
@@ -352,7 +354,11 @@ def score_v2_row(
     # 5. source_locator
     if not row_locator:
         tr01_links["source_locator"] = _link_fail("missing", "row locator absent")
-    elif native_outcome is None or not isinstance(native_outcome, Mapping) or not native_outcome.get("trace_hash"):
+    elif (
+        native_outcome is None
+        or not isinstance(native_outcome, Mapping)
+        or not native_outcome.get("trace_hash")
+    ):
         tr01_links["source_locator"] = _link_fail(
             "missing", "native_outcome trace_hash locator absent"
         )
@@ -396,7 +402,9 @@ def score_v2_row(
     # 2. applicable_rule_or_requirement_version
     if (
         not isinstance(row_source_hashes, Mapping)
-        or any(row_source_hashes.get(k) != frozen_source_hashes.get(k) for k in CORE_RULE_SOURCE_KEYS)
+        or any(
+            row_source_hashes.get(k) != frozen_source_hashes.get(k) for k in CORE_RULE_SOURCE_KEYS
+        )
         or frozen_case is None
         or init_state.get("action_policies") != frozen_case["state"]["action_policies"]
     ):
@@ -414,7 +422,10 @@ def score_v2_row(
             "unverified",
             "semantic_validation=NOT_EXECUTED (schema-only bypass)",
         )
-    elif not isinstance(validation, Mapping) or tuple(validation.get("checks_run", ())) != VALIDATOR_CHECKS:
+    elif (
+        not isinstance(validation, Mapping)
+        or tuple(validation.get("checks_run", ())) != VALIDATOR_CHECKS
+    ):
         tr02_links["actual_evaluated_check_and_result"] = _link_fail(
             "missing" if not isinstance(validation, Mapping) else "contradicted",
             "checks_run does not match full VALIDATOR_CHECKS",
@@ -455,7 +466,9 @@ def score_v2_row(
             "unverified", "decision emitted without semantic gate execution"
         )
     elif status not in ("COMMITTED", "HOLD") or not isinstance(val_valid, bool):
-        tr02_links["emitted_decision"] = _link_fail("missing", "missing valid decision or validation flag")
+        tr02_links["emitted_decision"] = _link_fail(
+            "missing", "missing valid decision or validation flag"
+        )
     elif (status == "COMMITTED" and not val_valid) or (status == "HOLD" and val_valid):
         tr02_links["emitted_decision"] = _link_fail(
             "contradicted", f"status={status} contradicts validation.valid={val_valid}"
@@ -545,7 +558,9 @@ def score_v2_row(
             "missing", "missing initial or final state"
         )
     elif status == "HOLD":
-        if final_state == init_state and row.get("after_state_hash") == row.get("before_state_hash"):
+        if final_state == init_state and row.get("after_state_hash") == row.get(
+            "before_state_hash"
+        ):
             tr03_links["denied_or_noop_outcome_when_applicable"] = _link_pass()
         else:
             tr03_links["denied_or_noop_outcome_when_applicable"] = _link_fail(
@@ -577,7 +592,10 @@ def score_v2_row(
         )
 
     # 5. source_locator
-    if tr03_links["before_after_evidence"]["score"] == 1 and tr01_links["source_locator"]["score"] == 1:
+    if (
+        tr03_links["before_after_evidence"]["score"] == 1
+        and tr01_links["source_locator"]["score"] == 1
+    ):
         tr03_links["source_locator"] = _link_pass()
     else:
         tr03_links["source_locator"] = _link_fail(
@@ -591,7 +609,9 @@ def score_v2_row(
     # Reconciled applicability: actual multi-attempt repair OR protocol
     # requires repair (repair_budget > 0 and initial_validation invalid).
     # ------------------------------------------------------------------
-    init_valid = initial_validation.get("valid") if isinstance(initial_validation, Mapping) else None
+    init_valid = (
+        initial_validation.get("valid") if isinstance(initial_validation, Mapping) else None
+    )
     has_multiple_attempts = isinstance(attempts, list) and len(attempts) > 1
     has_positive_repair_count = isinstance(repair_attempt_count, int) and repair_attempt_count > 0
     protocol_expects_repair = (
@@ -619,9 +639,15 @@ def score_v2_row(
             )
 
         # 2. corrective_change_package
-        if not isinstance(attempts, list) or len(attempts) < 2 or not isinstance(repair_attempt_count, int) or repair_attempt_count < 1:
+        if (
+            not isinstance(attempts, list)
+            or len(attempts) < 2
+            or not isinstance(repair_attempt_count, int)
+            or repair_attempt_count < 1
+        ):
             tr04_links["corrective_change_package"] = _link_fail(
-                "missing", "repair attempt omitted from trace log despite repair_budget>0 and initial failure"
+                "missing",
+                "repair attempt omitted from trace log despite repair_budget>0 and initial failure",
             )
         elif not isinstance(native_outcome, Mapping) or len(native_outcome.get("trace", [])) < 2:
             tr04_links["corrective_change_package"] = _link_fail(
@@ -675,7 +701,10 @@ def score_v2_row(
             tr04_links["observed_result_or_unresolved_state"] = _link_fail(
                 "missing", "post-repair outcome missing due to omitted repair attempt"
             )
-        elif tr03_links["observed_state_or_artifact_outcome"]["score"] == 1 and tr02_links["emitted_decision"]["score"] == 1:
+        elif (
+            tr03_links["observed_state_or_artifact_outcome"]["score"] == 1
+            and tr02_links["emitted_decision"]["score"] == 1
+        ):
             tr04_links["observed_result_or_unresolved_state"] = _link_pass()
         else:
             tr04_links["observed_result_or_unresolved_state"] = _link_fail(
@@ -686,7 +715,8 @@ def score_v2_row(
         if (
             tr01_links["source_locator"]["score"] == 1
             and isinstance(row_source_hashes, Mapping)
-            and row_source_hashes.get("src/nesy_game/repair.py") == frozen_source_hashes.get("src/nesy_game/repair.py")
+            and row_source_hashes.get("src/nesy_game/repair.py")
+            == frozen_source_hashes.get("src/nesy_game/repair.py")
         ):
             tr04_links["source_locator"] = _link_pass()
         else:
@@ -703,13 +733,19 @@ def score_v2_row(
         "case_id": case_id,
         "arm": arm,
         "cohort": cohort,
-        "outcome_status": "PASS" if status == "COMMITTED" else ("FAIL" if status == "HOLD" else "MISSING"),
+        "outcome_status": "PASS"
+        if status == "COMMITTED"
+        else ("FAIL" if status == "HOLD" else "MISSING"),
         "raw_status": status,
         "repair_attempt_count": repair_attempt_count,
         "TR01": {"applicable": True, "complete_chain": tr01_complete, "links": tr01_links},
         "TR02": {"applicable": True, "complete_chain": tr02_complete, "links": tr02_links},
         "TR03": {"applicable": True, "complete_chain": tr03_complete, "links": tr03_links},
-        "TR04": {"applicable": tr04_applicable, "complete_chain": tr04_complete, "links": tr04_links},
+        "TR04": {
+            "applicable": tr04_applicable,
+            "complete_chain": tr04_complete,
+            "links": tr04_links,
+        },
     }
 
 
@@ -736,7 +772,11 @@ def score_tr05_v2(
         {
             "req_id": "Q2_bounded_repair_and_rates",
             "predeclared": protocol["questions"][1],
-            "artifacts": ["src/nesy_game/runtime.py", "src/nesy_game/repair.py", "scripts/review_reference.py"],
+            "artifacts": [
+                "src/nesy_game/runtime.py",
+                "src/nesy_game/repair.py",
+                "scripts/review_reference.py",
+            ],
             "verified": all(
                 summary["core"][arm]["assigned"] == 416
                 and summary["core"][arm]["initial_reference_unknown"] == 0
@@ -773,21 +813,36 @@ def score_tr05_v2(
             "req_id": "ARM_schema_only",
             "predeclared": protocol["arms"][0]["decision"],
             "artifacts": ["scripts/run_gemini_review_evaluation.py"],
-            "verified": sum(1 for r in core_rows if r["arm"] == "schema_only" and r["semantic_gate_executed"] is False) == 416,
+            "verified": sum(
+                1
+                for r in core_rows
+                if r["arm"] == "schema_only" and r["semantic_gate_executed"] is False
+            )
+            == 416,
             "locator": "protocol.json:arms[0]; rows.jsonl[arm=schema_only]",
         },
         {
             "req_id": "ARM_semantic_rejection",
             "predeclared": protocol["arms"][1]["decision"],
             "artifacts": ["src/nesy_game/runtime.py", "src/nesy_game/validator.py"],
-            "verified": sum(1 for r in core_rows if r["arm"] == "semantic_rejection" and r["native_replay_equal"] is True) == 416,
+            "verified": sum(
+                1
+                for r in core_rows
+                if r["arm"] == "semantic_rejection" and r["native_replay_equal"] is True
+            )
+            == 416,
             "locator": "protocol.json:arms[1]; rows.jsonl[arm=semantic_rejection]",
         },
         {
             "req_id": "ARM_unchanged_retry",
             "predeclared": protocol["arms"][2]["decision"],
             "artifacts": ["src/nesy_game/runtime.py"],
-            "verified": sum(1 for r in core_rows if r["arm"] == "unchanged_retry" and r["repair_attempt_count"] == 1) == 260
+            "verified": sum(
+                1
+                for r in core_rows
+                if r["arm"] == "unchanged_retry" and r["repair_attempt_count"] == 1
+            )
+            == 260
             and summary["core"]["unchanged_retry"]["repair_successes"] == 0,
             "locator": "protocol.json:arms[2]; rows.jsonl[arm=unchanged_retry]",
         },
@@ -795,7 +850,12 @@ def score_tr05_v2(
             "req_id": "ARM_guided_repair",
             "predeclared": protocol["arms"][3]["decision"],
             "artifacts": ["src/nesy_game/runtime.py", "src/nesy_game/repair.py"],
-            "verified": sum(1 for r in core_rows if r["arm"] == "guided_repair" and r["repair_attempt_count"] == 1) == 260
+            "verified": sum(
+                1
+                for r in core_rows
+                if r["arm"] == "guided_repair" and r["repair_attempt_count"] == 1
+            )
+            == 260
             and summary["core"]["guided_repair"]["repair_successes"] == 128,
             "locator": "protocol.json:arms[3]; rows.jsonl[arm=guided_repair]",
         },
@@ -804,11 +864,15 @@ def score_tr05_v2(
             "predeclared": protocol["state_and_policy"]["disclosure"],
             "artifacts": ["src/nesy_game/validator.py", "src/nesy_game/contracts.py"],
             "verified": any(
-                r["variant"] == "declared_secret" and r["arm"] == "semantic_rejection" and r["status"] == "HOLD"
+                r["variant"] == "declared_secret"
+                and r["arm"] == "semantic_rejection"
+                and r["status"] == "HOLD"
                 for r in core_rows
             )
             and any(
-                r["variant"] == "valid_public_fact" and r["arm"] == "semantic_rejection" and r["status"] == "COMMITTED"
+                r["variant"] == "valid_public_fact"
+                and r["arm"] == "semantic_rejection"
+                and r["status"] == "COMMITTED"
                 for r in core_rows
             ),
             "locator": "protocol.json:state_and_policy.disclosure; rows.jsonl",
@@ -828,7 +892,12 @@ def score_tr05_v2(
             "predeclared": protocol["reproducibility"]["trace"],
             "artifacts": ["src/nesy_game/runtime.py", "scripts/run_gemini_review_evaluation.py"],
             "verified": len(core_rows) == 1664
-            and all(r.get("model_called") is False and r.get("seed") is None and r.get("cost_usd") is None for r in core_rows),
+            and all(
+                r.get("model_called") is False
+                and r.get("seed") is None
+                and r.get("cost_usd") is None
+                for r in core_rows
+            ),
             "locator": "protocol.json:reproducibility.trace; rows.jsonl",
         },
     ]
@@ -836,14 +905,24 @@ def score_tr05_v2(
     forward_units: list[dict[str, Any]] = []
     for spec in forward_specs:
         art_ok = all(
-            art in source_hashes and (ROOT / art).exists() and _sha256_file(ROOT / art) == source_hashes[art]
+            art in source_hashes
+            and (ROOT / art).exists()
+            and _sha256_file(ROOT / art) == source_hashes[art]
             for art in spec["artifacts"]
         )
         links = {
-            "predeclared_requirement": _link_pass() if spec["predeclared"] else _link_fail("missing", "missing requirement text"),
-            "implementing_artifact": _link_pass() if art_ok else _link_fail("stale", "implementing artifact missing or hash mismatch"),
-            "relevant_verification_evidence": _link_pass() if spec["verified"] else _link_fail("contradicted", "verification check failed"),
-            "source_locator": _link_pass() if spec["locator"] else _link_fail("missing", "locator missing"),
+            "predeclared_requirement": _link_pass()
+            if spec["predeclared"]
+            else _link_fail("missing", "missing requirement text"),
+            "implementing_artifact": _link_pass()
+            if art_ok
+            else _link_fail("stale", "implementing artifact missing or hash mismatch"),
+            "relevant_verification_evidence": _link_pass()
+            if spec["verified"]
+            else _link_fail("contradicted", "verification check failed"),
+            "source_locator": _link_pass()
+            if spec["locator"]
+            else _link_fail("missing", "locator missing"),
         }
         forward_units.append(
             {
@@ -872,11 +951,21 @@ def score_tr05_v2(
     reverse_units: list[dict[str, Any]] = []
     for path_str, justification in in_scope_artifact_justifications.items():
         disk_path = ROOT / path_str
-        hash_ok = path_str in source_hashes and disk_path.exists() and _sha256_file(disk_path) == source_hashes[path_str]
+        hash_ok = (
+            path_str in source_hashes
+            and disk_path.exists()
+            and _sha256_file(disk_path) == source_hashes[path_str]
+        )
         links = {
-            "in_scope_change": _link_pass() if hash_ok else _link_fail("stale", f"hash mismatch for {path_str}"),
-            "justified_requirement": _link_pass() if justification else _link_fail("missing", "missing requirement mapping"),
-            "source_locator": _link_pass() if path_str in source_hashes else _link_fail("missing", "absent from source_hashes.json"),
+            "in_scope_change": _link_pass()
+            if hash_ok
+            else _link_fail("stale", f"hash mismatch for {path_str}"),
+            "justified_requirement": _link_pass()
+            if justification
+            else _link_fail("missing", "missing requirement mapping"),
+            "source_locator": _link_pass()
+            if path_str in source_hashes
+            else _link_fail("missing", "absent from source_hashes.json"),
         }
         reverse_units.append(
             {
@@ -905,7 +994,9 @@ def score_stage04_pilot() -> dict[str, Any]:
     """Score TR01-TR05 on stage-04-pilot outcome_record rows separately from results-v2."""
 
     pilot = json.loads((PILOT_DIR / "pilot-results.json").read_text(encoding="utf-8"))
-    manifest = json.loads((PILOT_DIR / "pilot-assignment-manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads(
+        (PILOT_DIR / "pilot-assignment-manifest.json").read_text(encoding="utf-8")
+    )
     expected_prov = manifest["expected_provenance_by_key"]
 
     section_results: dict[str, Any] = {}
@@ -921,7 +1012,9 @@ def score_stage04_pilot() -> dict[str, Any]:
 
             # TR01
             tr01_links = {
-                "task_run_attempt": _link_pass() if prov is not None else _link_fail("missing", "absent from pilot-assignment-manifest"),
+                "task_run_attempt": _link_pass()
+                if prov is not None
+                else _link_fail("missing", "absent from pilot-assignment-manifest"),
                 "artifact_revision_or_digest": (
                     _link_pass()
                     if prov is not None
@@ -932,14 +1025,18 @@ def score_stage04_pilot() -> dict[str, Any]:
                     else _link_fail("contradicted", "manifest provenance or trace_hash mismatch")
                 ),
                 "producing_or_using_activity": (
-                    _link_pass() if prov is not None and prov.get("row_class") == "executed" else _link_fail("unverified", "not marked executed")
+                    _link_pass()
+                    if prov is not None and prov.get("row_class") == "executed"
+                    else _link_fail("unverified", "not marked executed")
                 ),
                 "responsible_actor": (
                     _link_pass()
                     if isinstance(rec, Mapping) and bool(rec.get("candidate", {}).get("actor_id"))
                     else _link_fail("missing", "actor_id missing")
                 ),
-                "source_locator": _link_pass() if isinstance(rec, Mapping) and bool(rec.get("trace_hash")) else _link_fail("missing", "trace_hash locator missing"),
+                "source_locator": _link_pass()
+                if isinstance(rec, Mapping) and bool(rec.get("trace_hash"))
+                else _link_fail("missing", "trace_hash locator missing"),
             }
 
             # TR02
@@ -948,19 +1045,38 @@ def score_stage04_pilot() -> dict[str, Any]:
                 try:
                     ws = _world_state_from_dict(rec["prior_state"])
                     tr02_ok_val = all(
-                        to_jsonable(validate_candidate(ws, parse_candidate_mapping(entry["candidate"], allow_defaults=False)))
+                        to_jsonable(
+                            validate_candidate(
+                                ws,
+                                parse_candidate_mapping(entry["candidate"], allow_defaults=False),
+                            )
+                        )
                         == entry["validation"]
                         for entry in rec["trace"]
                     )
                 except Exception:
                     tr02_ok_val = False
-            expected_status = "commit" if isinstance(rec, Mapping) and rec["validation"]["valid"] else "fallback"
+            expected_status = (
+                "commit" if isinstance(rec, Mapping) and rec["validation"]["valid"] else "fallback"
+            )
             tr02_links = {
-                "input_or_request": _link_pass() if isinstance(rec, Mapping) and prov is not None and row.get("input_hash") == prov["input_hash"] else _link_fail("contradicted", "input mismatch"),
-                "applicable_rule_or_requirement_version": _link_pass() if prov is not None and row.get("config_hash") == prov["config_hash"] else _link_fail("stale", "config_hash mismatch"),
-                "actual_evaluated_check_and_result": _link_pass() if tr02_ok_val else _link_fail("contradicted", "validate_candidate mismatch"),
-                "emitted_decision": _link_pass() if isinstance(rec, Mapping) and rec.get("status") == expected_status else _link_fail("contradicted", "status vs validation mismatch"),
-                "source_locator": _link_pass() if isinstance(rec, Mapping) and bool(rec.get("trace_hash")) else _link_fail("missing", "trace_hash missing"),
+                "input_or_request": _link_pass()
+                if isinstance(rec, Mapping)
+                and prov is not None
+                and row.get("input_hash") == prov["input_hash"]
+                else _link_fail("contradicted", "input mismatch"),
+                "applicable_rule_or_requirement_version": _link_pass()
+                if prov is not None and row.get("config_hash") == prov["config_hash"]
+                else _link_fail("stale", "config_hash mismatch"),
+                "actual_evaluated_check_and_result": _link_pass()
+                if tr02_ok_val
+                else _link_fail("contradicted", "validate_candidate mismatch"),
+                "emitted_decision": _link_pass()
+                if isinstance(rec, Mapping) and rec.get("status") == expected_status
+                else _link_fail("contradicted", "status vs validation mismatch"),
+                "source_locator": _link_pass()
+                if isinstance(rec, Mapping) and bool(rec.get("trace_hash"))
+                else _link_fail("missing", "trace_hash missing"),
             }
 
             # TR03
@@ -981,37 +1097,73 @@ def score_stage04_pilot() -> dict[str, Any]:
             )
             tr03_links = {
                 "decision": tr02_links["emitted_decision"],
-                "observed_state_or_artifact_outcome": _link_pass() if replay_ok else _link_fail("contradicted", "replay mismatch"),
-                "before_after_evidence": _link_pass() if replay_ok else _link_fail("contradicted", "before/after state hash mismatch"),
-                "denied_or_noop_outcome_when_applicable": _link_pass() if noop_ok else _link_fail("contradicted", "fallback/commit polarity mismatch"),
-                "source_locator": _link_pass() if replay_ok else _link_fail("missing", "replay locator incomplete"),
+                "observed_state_or_artifact_outcome": _link_pass()
+                if replay_ok
+                else _link_fail("contradicted", "replay mismatch"),
+                "before_after_evidence": _link_pass()
+                if replay_ok
+                else _link_fail("contradicted", "before/after state hash mismatch"),
+                "denied_or_noop_outcome_when_applicable": _link_pass()
+                if noop_ok
+                else _link_fail("contradicted", "fallback/commit polarity mismatch"),
+                "source_locator": _link_pass()
+                if replay_ok
+                else _link_fail("missing", "replay locator incomplete"),
             }
 
             # TR04
             budget = row.get("repair_budget", 0)
             init_valid = isinstance(rec, Mapping) and rec["trace"][0]["validation"]["valid"]
-            tr04_applicable = (isinstance(rec, Mapping) and rec["attempts"] > 0) or (budget > 0 and not init_valid)
+            tr04_applicable = (isinstance(rec, Mapping) and rec["attempts"] > 0) or (
+                budget > 0 and not init_valid
+            )
             tr04_links: dict[str, Any] = {}
             if tr04_applicable:
-                has_two = isinstance(rec, Mapping) and len(rec["trace"]) >= 2 and rec["attempts"] >= 1
+                has_two = (
+                    isinstance(rec, Mapping) and len(rec["trace"]) >= 2 and rec["attempts"] >= 1
+                )
                 tr04_links = {
-                    "triggering_failure_or_unmet_requirement": _link_pass() if not init_valid else _link_fail("contradicted", "initial valid"),
-                    "corrective_change_package": _link_pass() if has_two else _link_fail("missing", "missing repair attempt"),
-                    "exact_revalidation_execution": _link_pass() if (has_two and tr02_ok_val) else _link_fail("contradicted", "revalidation mismatch"),
-                    "observed_result_or_unresolved_state": _link_pass() if (has_two and replay_ok) else _link_fail("contradicted", "post-repair state mismatch"),
-                    "source_locator": _link_pass() if (has_two and bool(rec.get("trace_hash"))) else _link_fail("missing", "repair locator missing"),
+                    "triggering_failure_or_unmet_requirement": _link_pass()
+                    if not init_valid
+                    else _link_fail("contradicted", "initial valid"),
+                    "corrective_change_package": _link_pass()
+                    if has_two
+                    else _link_fail("missing", "missing repair attempt"),
+                    "exact_revalidation_execution": _link_pass()
+                    if (has_two and tr02_ok_val)
+                    else _link_fail("contradicted", "revalidation mismatch"),
+                    "observed_result_or_unresolved_state": _link_pass()
+                    if (has_two and replay_ok)
+                    else _link_fail("contradicted", "post-repair state mismatch"),
+                    "source_locator": _link_pass()
+                    if (has_two and bool(rec.get("trace_hash")))
+                    else _link_fail("missing", "repair locator missing"),
                 }
 
             unit = {
                 "unit_id": manifest_key,
                 "arm_id": arm_id,
                 "outcome_status": "PASS" if row.get("final_status") == "commit" else "FAIL",
-                "TR01": {"applicable": True, "complete_chain": int(all(v["score"] == 1 for v in tr01_links.values())), "links": tr01_links},
-                "TR02": {"applicable": True, "complete_chain": int(all(v["score"] == 1 for v in tr02_links.values())), "links": tr02_links},
-                "TR03": {"applicable": True, "complete_chain": int(all(v["score"] == 1 for v in tr03_links.values())), "links": tr03_links},
+                "TR01": {
+                    "applicable": True,
+                    "complete_chain": int(all(v["score"] == 1 for v in tr01_links.values())),
+                    "links": tr01_links,
+                },
+                "TR02": {
+                    "applicable": True,
+                    "complete_chain": int(all(v["score"] == 1 for v in tr02_links.values())),
+                    "links": tr02_links,
+                },
+                "TR03": {
+                    "applicable": True,
+                    "complete_chain": int(all(v["score"] == 1 for v in tr03_links.values())),
+                    "links": tr03_links,
+                },
                 "TR04": {
                     "applicable": tr04_applicable,
-                    "complete_chain": int(all(v["score"] == 1 for v in tr04_links.values())) if tr04_applicable else None,
+                    "complete_chain": int(all(v["score"] == 1 for v in tr04_links.values()))
+                    if tr04_applicable
+                    else None,
                     "links": tr04_links,
                 },
             }
@@ -1052,6 +1204,7 @@ def score_stage04_pilot() -> dict[str, Any]:
 # Seeded corruptions (5) & Invariance controls (3)
 # ------------------------------------------------------------------
 
+
 def _reverse_dict_keys(obj: Any) -> Any:
     if isinstance(obj, dict):
         return {k: _reverse_dict_keys(obj[k]) for k in reversed(list(obj.keys()))}
@@ -1080,7 +1233,11 @@ def _apply_seeded_corruption(
     if corruption_kind == "swap_attempt_id":
         no = mutated.get("native_outcome")
         attempts = mutated.get("attempts")
-        if not isinstance(no, dict) or not isinstance(no.get("trace"), list) or len(no["trace"]) < 2:
+        if (
+            not isinstance(no, dict)
+            or not isinstance(no.get("trace"), list)
+            or len(no["trace"]) < 2
+        ):
             return "inapplicable", None, "single-attempt row has no pair of attempt IDs to swap"
         # Swap attempt 0 and 1 identifiers in both trace and attempts, AND recompute trace_hash
         # to prove detection does not rely solely on checksum mismatch.
@@ -1100,7 +1257,9 @@ def _apply_seeded_corruption(
         sh = mutated.get("source_hashes")
         if not isinstance(sh, dict) or "src/nesy_game/validator.py" not in sh:
             return "malformed", None, "missing source_hashes validator entry"
-        sh["src/nesy_game/validator.py"] = hashlib.sha256(b"stale-validator-revision-v0").hexdigest()
+        sh["src/nesy_game/validator.py"] = hashlib.sha256(
+            b"stale-validator-revision-v0"
+        ).hexdigest()
         return "valid", mutated, "bound stale validator.py digest in source_hashes"
 
     if corruption_kind == "reverse_decision_or_status":
@@ -1117,7 +1276,11 @@ def _apply_seeded_corruption(
             return "malformed", None, f"unexpected status {mutated.get('status')!r}"
         # Recompute trace_hash so detection proves semantic/replay checking, not mere hash drift.
         no["trace_hash"] = _recompute_trace_hash(no)
-        return "valid", mutated, "reversed status & native_outcome.status with recomputed trace_hash"
+        return (
+            "valid",
+            mutated,
+            "reversed status & native_outcome.status with recomputed trace_hash",
+        )
 
     if corruption_kind == "omit_failed_repair":
         no = mutated.get("native_outcome")
@@ -1153,7 +1316,9 @@ def _apply_invariance_control(row: Mapping[str, Any], control_kind: str) -> dict
             "color": "#22aa88",
             "rdf_hint": "prov:Activity",
         }
-        mutated["explanatory_prose"] = "Irrelevant decorative annotation excluded from rubric links."
+        mutated["explanatory_prose"] = (
+            "Irrelevant decorative annotation excluded from rubric links."
+        )
         return mutated
 
     if control_kind == "semantics_preserving_format_change":
@@ -1273,10 +1438,18 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
         return {
             "unit_count": len(units),
             "decision_scope": "game_action_decisions_only (coding_decisions=0)",
-            "outcomes_independent_of_traceability": dict(Counter(u["outcome_status"] for u in units)),
-            "TR01": _summarize_dimension([u["TR01"] for u in units], TR01_LINKS, inventory_complete=inventory_complete),
-            "TR02": _summarize_dimension([u["TR02"] for u in units], TR02_LINKS, inventory_complete=inventory_complete),
-            "TR03": _summarize_dimension([u["TR03"] for u in units], TR03_LINKS, inventory_complete=inventory_complete),
+            "outcomes_independent_of_traceability": dict(
+                Counter(u["outcome_status"] for u in units)
+            ),
+            "TR01": _summarize_dimension(
+                [u["TR01"] for u in units], TR01_LINKS, inventory_complete=inventory_complete
+            ),
+            "TR02": _summarize_dimension(
+                [u["TR02"] for u in units], TR02_LINKS, inventory_complete=inventory_complete
+            ),
+            "TR03": _summarize_dimension(
+                [u["TR03"] for u in units], TR03_LINKS, inventory_complete=inventory_complete
+            ),
             "TR04": _summarize_dimension(
                 [u["TR04"] for u in units],
                 TR04_LINKS,
@@ -1291,7 +1464,9 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
 
     v2_core_summary = {arm: _arm_summary(units) for arm, units in scored_core_by_arm.items()}
     v2_surface_summary = {arm: _arm_summary(units) for arm, units in scored_surface_by_arm.items()}
-    v2_tr05 = score_tr05_v2(protocol, summary_v2, source_hashes, input_hashes, core_rows, surface_rows)
+    v2_tr05 = score_tr05_v2(
+        protocol, summary_v2, source_hashes, input_hashes, core_rows, surface_rows
+    )
 
     # ------------------------------------------------------------------
     # 2. Secondary frozen cohort: stage-04-pilot/pilot-results.json
@@ -1306,12 +1481,18 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
     clean_baseline_failures = 0
     for r in clean_native_rows:
         base = baseline_by_key[(r["case_id"], r["arm"], r["cohort"])]
-        if base["TR01"]["complete_chain"] != 1 or base["TR02"]["complete_chain"] != 1 or base["TR03"]["complete_chain"] != 1:
+        if (
+            base["TR01"]["complete_chain"] != 1
+            or base["TR02"]["complete_chain"] != 1
+            or base["TR03"]["complete_chain"] != 1
+        ):
             clean_baseline_failures += 1
         if base["TR04"]["applicable"] and base["TR04"]["complete_chain"] != 1:
             clean_baseline_failures += 1
     if clean_baseline_failures != 0:
-        raise RuntimeError(f"Expected 0 clean baseline failures, observed {clean_baseline_failures}")
+        raise RuntimeError(
+            f"Expected 0 clean baseline failures, observed {clean_baseline_failures}"
+        )
 
     corruption_kinds = tuple(rubric["controls"]["seeded_corruptions"])
     invariance_kinds = tuple(rubric["controls"]["invariance_controls"])
@@ -1423,7 +1604,9 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
             "clean_control_units": unit_count,
             "false_alarms": false_alarms,
             "false_alarm_rate": (false_alarms / unit_count) if unit_count else None,
-            "invariance_preservation_rate": ((unit_count - false_alarms) / unit_count) if unit_count else None,
+            "invariance_preservation_rate": ((unit_count - false_alarms) / unit_count)
+            if unit_count
+            else None,
             "by_arm": by_arm_counts_inv,
         }
 
@@ -1531,7 +1714,9 @@ def _fmt_ratio(dim: Mapping[str, Any]) -> str:
     if dim["coverage_status"] == "N/A":
         return "N/A (0/0)"
     if dim["coverage_status"] == "INDETERMINATE":
-        return f"INDETERMINATE ({dim['complete_chain_numerator']}/{dim['complete_chain_denominator']})"
+        return (
+            f"INDETERMINATE ({dim['complete_chain_numerator']}/{dim['complete_chain_denominator']})"
+        )
     pct = 100.0 * dim["complete_chain_rate"]
     return f"{dim['complete_chain_numerator']}/{dim['complete_chain_denominator']} ({pct:.1f}%)"
 
@@ -1564,20 +1749,26 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
         "|---|---:|---:|---:|---|---|",
     ]
     for c_kind, info in sc["by_corruption_type"].items():
-        sens = f"{100.0 * info['detection_rate_sensitivity']:.1f}%" if info["detection_rate_sensitivity"] is not None else "N/A"
+        sens = (
+            f"{100.0 * info['detection_rate_sensitivity']:.1f}%"
+            if info["detection_rate_sensitivity"] is not None
+            else "N/A"
+        )
         dims = ", ".join(f"{k}:{v}" for k, v in info["triggered_dimensions"].items())
         reasons = ", ".join(f"{k}:{v}" for k, v in info["triggered_missingness_reasons"].items())
         lines.append(
             f"| `{c_kind}` | {info['detected_valid_corruptions']}/{info['seeded_valid_corruptions']} | {sens} | {info['inapplicable_controls_retained_separately']} | {dims} | {reasons} |"
         )
 
-    lines.extend([
-        "",
-        "### Invariance Controls (3 types)",
-        "",
-        "| Invariance Control | False Alarms / Clean Units | False-Alarm Rate | Invariance Preserved |",
-        "|---|---:|---:|---:|",
-    ])
+    lines.extend(
+        [
+            "",
+            "### Invariance Controls (3 types)",
+            "",
+            "| Invariance Control | False Alarms / Clean Units | False-Alarm Rate | Invariance Preserved |",
+            "|---|---:|---:|---:|",
+        ]
+    )
     for inv_kind, info in sc["by_invariance_type"].items():
         far = f"{100.0 * info['false_alarm_rate']:.1f}%"
         pres = f"{100.0 * info['invariance_preservation_rate']:.1f}%"
@@ -1585,30 +1776,34 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
             f"| `{inv_kind}` | {info['false_alarms']}/{info['clean_control_units']} | {far} | {pres} |"
         )
 
-    lines.extend([
-        "",
-        "## 2. Baseline `TR01-TR05` Complete-Chain Scores (Frozen Artifacts)",
-        "",
-        "> Per `rubric.json`: `TR01-TR05`, forward/reverse `TR05`, outcomes, and cohorts are never averaged or collapsed.",
-        "",
-        "### Cohort 1: `gemini-review-20261113/results-v2` — Core (`n=1,664` across 4 arms)",
-        "",
-        "| Arm | Units | Outcomes (`PASS/FAIL`) | TR01 | TR02 | TR03 | TR04 |",
-        "|---|---:|---|---|---|---|---|",
-    ])
+    lines.extend(
+        [
+            "",
+            "## 2. Baseline `TR01-TR05` Complete-Chain Scores (Frozen Artifacts)",
+            "",
+            "> Per `rubric.json`: `TR01-TR05`, forward/reverse `TR05`, outcomes, and cohorts are never averaged or collapsed.",
+            "",
+            "### Cohort 1: `gemini-review-20261113/results-v2` — Core (`n=1,664` across 4 arms)",
+            "",
+            "| Arm | Units | Outcomes (`PASS/FAIL`) | TR01 | TR02 | TR03 | TR04 |",
+            "|---|---:|---|---|---|---|---|",
+        ]
+    )
     for arm, info in v2["core_by_arm"].items():
         out_str = f"{info['outcomes_independent_of_traceability'].get('PASS', 0)}/{info['outcomes_independent_of_traceability'].get('FAIL', 0)}"
         lines.append(
             f"| `{arm}` | {info['unit_count']} | {out_str} | {_fmt_ratio(info['TR01'])} | {_fmt_ratio(info['TR02'])} | {_fmt_ratio(info['TR03'])} | {_fmt_ratio(info['TR04'])} |"
         )
 
-    lines.extend([
-        "",
-        "### Cohort 1: `gemini-review-20261113/results-v2` — Surface Sentinels (`n=48` across 4 arms)",
-        "",
-        "| Arm | Units | Outcomes (`PASS/FAIL`) | TR01 | TR02 | TR03 | TR04 |",
-        "|---|---:|---|---|---|---|---|",
-    ])
+    lines.extend(
+        [
+            "",
+            "### Cohort 1: `gemini-review-20261113/results-v2` — Surface Sentinels (`n=48` across 4 arms)",
+            "",
+            "| Arm | Units | Outcomes (`PASS/FAIL`) | TR01 | TR02 | TR03 | TR04 |",
+            "|---|---:|---|---|---|---|---|",
+        ]
+    )
     for arm, info in v2["surface_by_arm"].items():
         out_str = f"{info['outcomes_independent_of_traceability'].get('PASS', 0)}/{info['outcomes_independent_of_traceability'].get('FAIL', 0)}"
         lines.append(
@@ -1617,31 +1812,35 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
 
     tr05_f = v2["TR05"]["TR05_forward"]
     tr05_r = v2["TR05"]["TR05_reverse"]
-    lines.extend([
-        "",
-        "### Cohort 1: `TR05` Bidirectional Requirement Coverage (Separate Views)",
-        "",
-        f"- **`TR05_forward` (`n_05F / N_05F`):** `{_fmt_ratio(tr05_f)}` (predeclared `protocol.json` requirements -> implementing artifacts -> verified evidence)",
-        f"- **`TR05_reverse` (`n_05R / N_05R`):** `{_fmt_ratio(tr05_r)}` (in-scope hashed artifacts -> justified `gemini-review-20261113` requirements; `{v2['TR05']['co_hashed_sibling_modules_disclosed_separately']['count']}` co-hashed sibling modules in `source_hashes.json` disclosed separately)",
-        "",
-        "### Cohort 2: `stage-04-pilot/pilot-results.json` (`n=63` `outcome_record` rows)",
-        "",
-        "| Section | Arm | Units | TR01 | TR02 | TR03 | TR04 |",
-        "|---|---|---:|---|---|---|---|",
-    ])
+    lines.extend(
+        [
+            "",
+            "### Cohort 1: `TR05` Bidirectional Requirement Coverage (Separate Views)",
+            "",
+            f"- **`TR05_forward` (`n_05F / N_05F`):** `{_fmt_ratio(tr05_f)}` (predeclared `protocol.json` requirements -> implementing artifacts -> verified evidence)",
+            f"- **`TR05_reverse` (`n_05R / N_05R`):** `{_fmt_ratio(tr05_r)}` (in-scope hashed artifacts -> justified `gemini-review-20261113` requirements; `{v2['TR05']['co_hashed_sibling_modules_disclosed_separately']['count']}` co-hashed sibling modules in `source_hashes.json` disclosed separately)",
+            "",
+            "### Cohort 2: `stage-04-pilot/pilot-results.json` (`n=63` `outcome_record` rows)",
+            "",
+            "| Section | Arm | Units | TR01 | TR02 | TR03 | TR04 |",
+            "|---|---|---:|---|---|---|---|",
+        ]
+    )
     for sec, sec_info in pilot["sections_scored"].items():
         for arm, info in sec_info["by_arm"].items():
             lines.append(
                 f"| `{sec}` | `{arm}` | {info['unit_count']} | {_fmt_ratio(info['TR01'])} | {_fmt_ratio(info['TR02'])} | {_fmt_ratio(info['TR03'])} | {_fmt_ratio(info['TR04'])} |"
             )
 
-    lines.extend([
-        "",
-        "## 3. Audit Burden & Non-Claims",
-        "",
-        f"- **Runtime wall-clock:** `{burden['total_runtime_seconds']}s` across `{burden['total_units_evaluated']}` total unit evaluations (`{burden['ms_per_unit']} ms/unit`, `access_failures={burden['access_failures']}`).",
-        "- **Non-claims:**",
-    ])
+    lines.extend(
+        [
+            "",
+            "## 3. Audit Burden & Non-Claims",
+            "",
+            f"- **Runtime wall-clock:** `{burden['total_runtime_seconds']}s` across `{burden['total_units_evaluated']}` total unit evaluations (`{burden['ms_per_unit']} ms/unit`, `access_failures={burden['access_failures']}`).",
+            "- **Non-claims:**",
+        ]
+    )
     for nc in results["nonclaims"]:
         lines.append(f"  - {nc}")
     lines.append("")
@@ -1668,7 +1867,9 @@ def main() -> None:
                 "seeded_valid_corruptions": sc["seeded_valid_corruptions"],
                 "detected_valid_corruptions": sc["detected_valid_corruptions"],
                 "overall_detector_sensitivity": sc["overall_detector_sensitivity"],
-                "inapplicable_controls_retained_separately": sc["inapplicable_controls_retained_separately"],
+                "inapplicable_controls_retained_separately": sc[
+                    "inapplicable_controls_retained_separately"
+                ],
                 "clean_control_units": sc["clean_control_units"],
                 "false_alarms": sc["false_alarms"],
                 "overall_false_alarm_rate": sc["overall_false_alarm_rate"],

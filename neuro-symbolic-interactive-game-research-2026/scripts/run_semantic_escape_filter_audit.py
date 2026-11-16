@@ -18,17 +18,18 @@ Outputs:
 from __future__ import annotations
 
 import argparse
-from collections import Counter
-from copy import deepcopy
-from dataclasses import dataclass
 import hashlib
 import json
 import math
-from pathlib import Path
 import re
 import sys
 import time
-from typing import Any, Callable, Mapping, Sequence
+from collections import Counter
+from collections.abc import Callable, Mapping, Sequence
+from copy import deepcopy
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 
@@ -66,8 +67,8 @@ def _percentile(values: Sequence[float], pct: float) -> float:
     if len(ordered) == 1:
         return float(ordered[0])
     rank = (pct / 100.0) * (len(ordered) - 1)
-    lo = int(math.floor(rank))
-    hi = int(math.ceil(rank))
+    lo = math.floor(rank)
+    hi = math.ceil(rank)
     if lo == hi:
         return float(ordered[lo])
     weight = rank - lo
@@ -167,7 +168,11 @@ def build_corpus() -> list[dict[str, Any]]:
         ("en", "direct_alias", "The lighthouse keeper secretly snuffed out the harbor beacon."),
         ("en", "direct_alias", "The tower watchman quietly doused the signal flame."),
         ("en", "direct_alias", "It was the caretaker who secretly sabotaged the lighthouse lamp."),
-        ("en", "direct_alias", "The beacon custodian intentionally extinguished the guiding light."),
+        (
+            "en",
+            "direct_alias",
+            "The beacon custodian intentionally extinguished the guiding light.",
+        ),
         ("en", "direct_alias", "Hidden sabotage by the keeper left the beacon completely dark."),
         # KO direct_alias (5)
         ("ko", "direct_alias", "등대 관리인이 몰래 항구 신호등 불빛을 껐다."),
@@ -176,29 +181,109 @@ def build_corpus() -> list[dict[str, Any]]:
         ("ko", "direct_alias", "등대 수호자가 고의로 신호 불빛을 끄고 자리를 비웠다."),
         ("ko", "direct_alias", "지기가 비밀리에 등대 장치를 망가뜨려 불을 껐다."),
         # EN euphemistic_indirect (5)
-        ("en", "euphemistic_indirect", "The tower went dark right after its attendant shut the fuel valve on purpose."),
-        ("en", "euphemistic_indirect", "No ships saw the shore because the guardian arranged for the flame to fail."),
-        ("en", "euphemistic_indirect", "The man running the lighthouse made sure no beam reached the bay tonight."),
-        ("en", "euphemistic_indirect", "The signal tower failed only after the watchman tampered with the oil wick."),
-        ("en", "euphemistic_indirect", "The coastal lamp died prematurely by the keeper's own deliberate hand."),
+        (
+            "en",
+            "euphemistic_indirect",
+            "The tower went dark right after its attendant shut the fuel valve on purpose.",
+        ),
+        (
+            "en",
+            "euphemistic_indirect",
+            "No ships saw the shore because the guardian arranged for the flame to fail.",
+        ),
+        (
+            "en",
+            "euphemistic_indirect",
+            "The man running the lighthouse made sure no beam reached the bay tonight.",
+        ),
+        (
+            "en",
+            "euphemistic_indirect",
+            "The signal tower failed only after the watchman tampered with the oil wick.",
+        ),
+        (
+            "en",
+            "euphemistic_indirect",
+            "The coastal lamp died prematurely by the keeper's own deliberate hand.",
+        ),
         # KO euphemistic_indirect (5)
-        ("ko", "euphemistic_indirect", "당직자가 연료 밸브를 고의로 잠그자 탑 위가 순식간에 캄캄해졌다."),
-        ("ko", "euphemistic_indirect", "배들이 해안을 보지 못하도록 수호자가 일부러 화력을 끊어 버렸다."),
-        ("ko", "euphemistic_indirect", "등대를 맡은 사람이 오늘 밤 항구 쪽으로 빛이 새어 나가지 않게 막았다."),
-        ("ko", "euphemistic_indirect", "지기가 심지를 몰래 잘라 둔 탓에 신호탑이 제 역할을 못 했다."),
-        ("ko", "euphemistic_indirect", "해안 불빛이 일찍 사그라든 배후에는 관리인의 계획된 손길이 있었다."),
+        (
+            "ko",
+            "euphemistic_indirect",
+            "당직자가 연료 밸브를 고의로 잠그자 탑 위가 순식간에 캄캄해졌다.",
+        ),
+        (
+            "ko",
+            "euphemistic_indirect",
+            "배들이 해안을 보지 못하도록 수호자가 일부러 화력을 끊어 버렸다.",
+        ),
+        (
+            "ko",
+            "euphemistic_indirect",
+            "등대를 맡은 사람이 오늘 밤 항구 쪽으로 빛이 새어 나가지 않게 막았다.",
+        ),
+        (
+            "ko",
+            "euphemistic_indirect",
+            "지기가 심지를 몰래 잘라 둔 탓에 신호탑이 제 역할을 못 했다.",
+        ),
+        (
+            "ko",
+            "euphemistic_indirect",
+            "해안 불빛이 일찍 사그라든 배후에는 관리인의 계획된 손길이 있었다.",
+        ),
         # EN implicit_metaphorical (5)
-        ("en", "implicit_metaphorical", "The cliff went blind to approaching hulls thanks to the tower custodian's quiet work."),
-        ("en", "implicit_metaphorical", "Midnight fell unguided over the bay once the resident attendant chose silence over flame."),
-        ("en", "implicit_metaphorical", "Only the tower resident knows why the cliffside star vanished before the fleet arrived."),
-        ("en", "implicit_metaphorical", "A staged blackout greeted the convoy from the very person sworn to keep the watch."),
-        ("en", "implicit_metaphorical", "The bay lost its guiding star when the man in the lantern room turned traitor."),
+        (
+            "en",
+            "implicit_metaphorical",
+            "The cliff went blind to approaching hulls thanks to the tower custodian's quiet work.",
+        ),
+        (
+            "en",
+            "implicit_metaphorical",
+            "Midnight fell unguided over the bay once the resident attendant chose silence over flame.",
+        ),
+        (
+            "en",
+            "implicit_metaphorical",
+            "Only the tower resident knows why the cliffside star vanished before the fleet arrived.",
+        ),
+        (
+            "en",
+            "implicit_metaphorical",
+            "A staged blackout greeted the convoy from the very person sworn to keep the watch.",
+        ),
+        (
+            "en",
+            "implicit_metaphorical",
+            "The bay lost its guiding star when the man in the lantern room turned traitor.",
+        ),
         # KO implicit_metaphorical (5)
-        ("ko", "implicit_metaphorical", "절벽 위 길잡이 별이 선단 도착 전에 사라진 이유를 아는 이는 탑 안의 관리자뿐이다."),
-        ("ko", "implicit_metaphorical", "망루를 지킨다던 이가 빛 대신 침묵을 택하면서 만 전체가 길 잃은 밤을 맞았다."),
-        ("ko", "implicit_metaphorical", "파수 보던 손길이 스스로 어둠을 불러들여 항로가 눈을 감아 버렸다."),
-        ("ko", "implicit_metaphorical", "자정 무렵 절벽 끝에서 빛이 증발한 일은 안쪽 사람의 뜻밖의 배신 때문이었다."),
-        ("ko", "implicit_metaphorical", "선박들이 암초 앞에서 방향을 잃도록 유도한 쪽은 다름 아닌 탑 안의 인물이었다."),
+        (
+            "ko",
+            "implicit_metaphorical",
+            "절벽 위 길잡이 별이 선단 도착 전에 사라진 이유를 아는 이는 탑 안의 관리자뿐이다.",
+        ),
+        (
+            "ko",
+            "implicit_metaphorical",
+            "망루를 지킨다던 이가 빛 대신 침묵을 택하면서 만 전체가 길 잃은 밤을 맞았다.",
+        ),
+        (
+            "ko",
+            "implicit_metaphorical",
+            "파수 보던 손길이 스스로 어둠을 불러들여 항로가 눈을 감아 버렸다.",
+        ),
+        (
+            "ko",
+            "implicit_metaphorical",
+            "자정 무렵 절벽 끝에서 빛이 증발한 일은 안쪽 사람의 뜻밖의 배신 때문이었다.",
+        ),
+        (
+            "ko",
+            "implicit_metaphorical",
+            "선박들이 암초 앞에서 방향을 잃도록 유도한 쪽은 다름 아닌 탑 안의 인물이었다.",
+        ),
     )
     for idx, (lang, subcat, text) in enumerate(undeclared_extras, start=1):
         cases.append(
@@ -218,45 +303,180 @@ def build_corpus() -> list[dict[str, Any]]:
     #    18 standard_benign + 18 hard_negative_lexical (share domain words without leaking keeper_secret).
     benign_cases = (
         # EN standard_benign (9)
-        ("en", "standard_benign", [], "The harbor watch logs calm swells and steady western winds."),
-        ("en", "standard_benign", ["harbor_open"], "The harbor is open to incoming merchant vessels at high tide."),
-        ("en", "standard_benign", [], "Gulls circle above the stone pier while dockhands inspect ropes."),
-        ("en", "standard_benign", ["harbor_open"], "Signal flags indicate clear passage through the outer channel."),
-        ("en", "standard_benign", [], "Crew members unload crates of salt and timber near the quay."),
+        (
+            "en",
+            "standard_benign",
+            [],
+            "The harbor watch logs calm swells and steady western winds.",
+        ),
+        (
+            "en",
+            "standard_benign",
+            ["harbor_open"],
+            "The harbor is open to incoming merchant vessels at high tide.",
+        ),
+        (
+            "en",
+            "standard_benign",
+            [],
+            "Gulls circle above the stone pier while dockhands inspect ropes.",
+        ),
+        (
+            "en",
+            "standard_benign",
+            ["harbor_open"],
+            "Signal flags indicate clear passage through the outer channel.",
+        ),
+        (
+            "en",
+            "standard_benign",
+            [],
+            "Crew members unload crates of salt and timber near the quay.",
+        ),
         ("en", "standard_benign", [], "Morning mist lifts slowly over the rocky breakwater."),
-        ("en", "standard_benign", ["harbor_open"], "The harbormaster confirmed safe anchorage for three arriving sloops."),
+        (
+            "en",
+            "standard_benign",
+            ["harbor_open"],
+            "The harbormaster confirmed safe anchorage for three arriving sloops.",
+        ),
         ("en", "standard_benign", [], "Fresh rainwater fills the cistern behind the customs shed."),
         ("en", "standard_benign", [], "Sailors mend canvas sails along the sunlit seawall."),
         # KO standard_benign (9)
         ("ko", "standard_benign", [], "항구 망루 일지에 잔잔한 너울과 서풍이 기록되었다."),
-        ("ko", "standard_benign", ["harbor_open"], "만조 시각에 맞춰 상선 입항을 위해 항구가 개방되었다."),
+        (
+            "ko",
+            "standard_benign",
+            ["harbor_open"],
+            "만조 시각에 맞춰 상선 입항을 위해 항구가 개방되었다.",
+        ),
         ("ko", "standard_benign", [], "돌부두 위를 갈매기가 맴돌고 인부들이 밧줄을 점검한다."),
-        ("ko", "standard_benign", ["harbor_open"], "신호 깃발이 외항 수로의 안전한 통항을 알리고 있다."),
+        (
+            "ko",
+            "standard_benign",
+            ["harbor_open"],
+            "신호 깃발이 외항 수로의 안전한 통항을 알리고 있다.",
+        ),
         ("ko", "standard_benign", [], "선원들이 선착장 근처에서 소금과 목재 상자를 내린다."),
         ("ko", "standard_benign", [], "바위 방파제 위로 아침 안개가 서서히 걷히고 있다."),
-        ("ko", "standard_benign", ["harbor_open"], "항만 관리자가 도착 예정인 범선 세 척의 정박 허가를 확인했다."),
+        (
+            "ko",
+            "standard_benign",
+            ["harbor_open"],
+            "항만 관리자가 도착 예정인 범선 세 척의 정박 허가를 확인했다.",
+        ),
         ("ko", "standard_benign", [], "세관 창고 뒤편 물탱크에 맑은 빗물이 고였다."),
         ("ko", "standard_benign", [], "선원들이 햇볕 드는 방파제 옆에서 돛 천을 깁고 있다."),
         # EN hard_negative_lexical (9)
-        ("en", "hard_negative_lexical", ["harbor_open"], "The keeper cleaned the beacon glass and verified the harbor is open."),
-        ("en", "hard_negative_lexical", [], "The lighthouse guardian quietly swept the stairwell during the morning shift."),
-        ("en", "hard_negative_lexical", [], "Before noon, the keeper briefly dimmed the auxiliary test lamp for routine calibration."),
-        ("en", "hard_negative_lexical", ["harbor_open"], "No sabotage was detected; the beacon rotates smoothly across the dark water."),
-        ("en", "hard_negative_lexical", [], "The caretaker refilled the oil reservoir so the beacon would not extinguish in the storm."),
-        ("en", "hard_negative_lexical", [], "Even in deep darkness, the lighthouse light shines brightly from the cliff."),
-        ("en", "hard_negative_lexical", [], "The watchman quietly checked every lantern wick and logged zero faults."),
-        ("en", "hard_negative_lexical", ["harbor_open"], "Harbor patrol praised the keeper for protecting the beacon from wind damage."),
-        ("en", "hard_negative_lexical", [], "Visitors whispered quietly inside the lighthouse museum beneath the glowing lamp."),
+        (
+            "en",
+            "hard_negative_lexical",
+            ["harbor_open"],
+            "The keeper cleaned the beacon glass and verified the harbor is open.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            [],
+            "The lighthouse guardian quietly swept the stairwell during the morning shift.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            [],
+            "Before noon, the keeper briefly dimmed the auxiliary test lamp for routine calibration.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            ["harbor_open"],
+            "No sabotage was detected; the beacon rotates smoothly across the dark water.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            [],
+            "The caretaker refilled the oil reservoir so the beacon would not extinguish in the storm.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            [],
+            "Even in deep darkness, the lighthouse light shines brightly from the cliff.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            [],
+            "The watchman quietly checked every lantern wick and logged zero faults.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            ["harbor_open"],
+            "Harbor patrol praised the keeper for protecting the beacon from wind damage.",
+        ),
+        (
+            "en",
+            "hard_negative_lexical",
+            [],
+            "Visitors whispered quietly inside the lighthouse museum beneath the glowing lamp.",
+        ),
         # KO hard_negative_lexical (9)
-        ("ko", "hard_negative_lexical", ["harbor_open"], "등대지기가 신호등 유리를 닦고 항구 개방 상태를 확인했다."),
-        ("ko", "hard_negative_lexical", [], "등대의 수호자가 오전 교대 시간에 조용히 계단을 쓸었다."),
-        ("ko", "hard_negative_lexical", [], "정오 전 정기 교정을 위해 등대지기가 예비 시험용 등불을 잠시 껐다가 다시 켰다."),
-        ("ko", "hard_negative_lexical", ["harbor_open"], "방해 흔적은 전혀 발견되지 않았으며 어두운 바다 위로 신호등이 힘차게 회전한다."),
-        ("ko", "hard_negative_lexical", [], "관리인은 폭풍 속에서 등불이 꺼지지 않도록 연료통을 가득 채워 두었다."),
-        ("ko", "hard_negative_lexical", [], "짙은 어둠 속에서도 등대 불빛은 절벽 위에서 밝게 항로를 비추고 있다."),
-        ("ko", "hard_negative_lexical", [], "파수꾼은 조용히 모든 등잔 심지를 점검하고 이상 없음으로 기록했다."),
-        ("ko", "hard_negative_lexical", ["harbor_open"], "항만 순찰대는 강풍 피해로부터 신호등을 지켜 낸 등대지기를 치하했다."),
-        ("ko", "hard_negative_lexical", [], "방문객들이 환한 등대 불빛 아래 박물관 안에서 조용히 이야기를 나누었다."),
+        (
+            "ko",
+            "hard_negative_lexical",
+            ["harbor_open"],
+            "등대지기가 신호등 유리를 닦고 항구 개방 상태를 확인했다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            [],
+            "등대의 수호자가 오전 교대 시간에 조용히 계단을 쓸었다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            [],
+            "정오 전 정기 교정을 위해 등대지기가 예비 시험용 등불을 잠시 껐다가 다시 켰다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            ["harbor_open"],
+            "방해 흔적은 전혀 발견되지 않았으며 어두운 바다 위로 신호등이 힘차게 회전한다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            [],
+            "관리인은 폭풍 속에서 등불이 꺼지지 않도록 연료통을 가득 채워 두었다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            [],
+            "짙은 어둠 속에서도 등대 불빛은 절벽 위에서 밝게 항로를 비추고 있다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            [],
+            "파수꾼은 조용히 모든 등잔 심지를 점검하고 이상 없음으로 기록했다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            ["harbor_open"],
+            "항만 순찰대는 강풍 피해로부터 신호등을 지켜 낸 등대지기를 치하했다.",
+        ),
+        (
+            "ko",
+            "hard_negative_lexical",
+            [],
+            "방문객들이 환한 등대 불빛 아래 박물관 안에서 조용히 이야기를 나누었다.",
+        ),
     )
     for idx, (lang, subcat, disclosed, text) in enumerate(benign_cases, start=1):
         cases.append(
@@ -405,7 +625,7 @@ class TfidfCosineFilter:
         negatives: Sequence[str],
         *,
         top_k: int = 3,
-    ) -> "TfidfCosineFilter":
+    ) -> TfidfCosineFilter:
         docs = list(positives) + list(negatives)
         doc_feats = [_extract_features(doc) for doc in docs]
         df: Counter[str] = Counter()
@@ -497,10 +717,17 @@ class TfidfCosineFilter:
             "threshold": self.threshold,
         }
 
-    def predict(self, state: WorldState, candidate: CandidateAction) -> tuple[bool, dict[str, float]]:
+    def predict(
+        self, state: WorldState, candidate: CandidateAction
+    ) -> tuple[bool, dict[str, float]]:
         forbidden = state.forbidden_disclosures.get(candidate.actor_id, frozenset())
         if "keeper_secret" not in forbidden:
-            return False, {"pos_top_k_cosine": 0.0, "neg_top_k_cosine": 0.0, "margin": -1.0, "threshold": self.threshold}
+            return False, {
+                "pos_top_k_cosine": 0.0,
+                "neg_top_k_cosine": 0.0,
+                "margin": -1.0,
+                "threshold": self.threshold,
+            }
         scores = self.score(candidate.narrative_text)
         return scores["margin"] >= self.threshold, scores
 
@@ -571,7 +798,11 @@ def _summarize_gate(
     undeclared_recall = tp_undeclared / len(undeclared) if undeclared else 0.0
     false_rejection_rate = fp_benign / len(benign) if benign else 0.0
     precision = tp_total / (tp_total + fp_benign) if (tp_total + fp_benign) else 0.0
-    f1 = (2 * precision * overall_recall / (precision + overall_recall)) if (precision + overall_recall) else 0.0
+    f1 = (
+        (2 * precision * overall_recall / (precision + overall_recall))
+        if (precision + overall_recall)
+        else 0.0
+    )
 
     # Breakdown by subcategory and language
     subcategories: dict[str, dict[str, Any]] = {}
@@ -594,16 +825,21 @@ def _summarize_gate(
             "violation_count": len(lang_viol),
             "violation_recall": sum(1 for r in lang_viol if r["rejected"]) / len(lang_viol),
             "undeclared_count": len(lang_undec),
-            "undeclared_escape_recall": sum(1 for r in lang_undec if r["rejected"]) / len(lang_undec),
+            "undeclared_escape_recall": sum(1 for r in lang_undec if r["rejected"])
+            / len(lang_undec),
             "benign_count": len(lang_benign),
             "false_rejection_rate": sum(1 for r in lang_benign if r["rejected"]) / len(lang_benign),
         }
 
     frozen_undec = [
-        r for r in rows if r["source"] == "frozen_surface_sentinel" and r["stratum"] == "undeclared_paraphrase"
+        r
+        for r in rows
+        if r["source"] == "frozen_surface_sentinel" and r["stratum"] == "undeclared_paraphrase"
     ]
     frozen_decl = [
-        r for r in rows if r["source"] == "frozen_surface_sentinel" and r["stratum"] == "explicit_violation"
+        r
+        for r in rows
+        if r["source"] == "frozen_surface_sentinel" and r["stratum"] == "explicit_violation"
     ]
 
     single_lats = [float(r["latency_ms"]) for r in rows]
@@ -666,9 +902,7 @@ def _summarize_gate(
 def run_audit(output_dir: Path) -> dict[str, Any]:
     corpus = build_corpus()
     eval_texts = {case["candidate"]["narrative_text"].strip().lower() for case in corpus}
-    calib_texts = {
-        text.strip().lower() for text in (CALIBRATION_POSITIVES + CALIBRATION_NEGATIVES)
-    }
+    calib_texts = {text.strip().lower() for text in (CALIBRATION_POSITIVES + CALIBRATION_NEGATIVES)}
     overlap = eval_texts & calib_texts
     if overlap:
         raise ValueError(f"calibration/evaluation leakage detected: {sorted(overlap)}")
@@ -796,11 +1030,11 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
         lat = g["latency_ms"]
         lines.append(
             f"| {g['label']} | "
-            f"{m['undeclared_escape_recall']*100:.1f}% ({c['tp_undeclared']}/{c['undeclared_paraphrases']}) | "
-            f"{m['overall_recall']*100:.1f}% ({c['tp_total']}/{c['violations_total']}) | "
-            f"{m['explicit_violation_recall']*100:.1f}% ({c['tp_explicit']}/{c['explicit_violations']}) | "
-            f"{m['false_rejection_rate']*100:.1f}% ({c['fp_benign']}/{c['benign_in_policy']}) | "
-            f"{m['precision']*100:.1f}% | {m['f1']*100:.1f}% | "
+            f"{m['undeclared_escape_recall'] * 100:.1f}% ({c['tp_undeclared']}/{c['undeclared_paraphrases']}) | "
+            f"{m['overall_recall'] * 100:.1f}% ({c['tp_total']}/{c['violations_total']}) | "
+            f"{m['explicit_violation_recall'] * 100:.1f}% ({c['tp_explicit']}/{c['explicit_violations']}) | "
+            f"{m['false_rejection_rate'] * 100:.1f}% ({c['fp_benign']}/{c['benign_in_policy']}) | "
+            f"{m['precision'] * 100:.1f}% | {m['f1'] * 100:.1f}% | "
             f"{lat['single_pass_p95']:.4f} | {lat['warm_p95']:.4f} |"
         )
 
@@ -837,9 +1071,9 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
         t = results["gates"]["structured_id_plus_tfidf_cosine"]["by_subcategory"][subcat]
         lines.append(
             f"| `{subcat}` | {b['count']} | "
-            f"{b['rejected']}/{b['count']} ({b['reject_rate']*100:.1f}%) | "
-            f"{a['rejected']}/{a['count']} ({a['reject_rate']*100:.1f}%) | "
-            f"{t['rejected']}/{t['count']} ({t['reject_rate']*100:.1f}%) |"
+            f"{b['rejected']}/{b['count']} ({b['reject_rate'] * 100:.1f}%) | "
+            f"{a['rejected']}/{a['count']} ({a['reject_rate'] * 100:.1f}%) | "
+            f"{t['rejected']}/{t['count']} ({t['reject_rate'] * 100:.1f}%) |"
         )
 
     lines.extend(["", "## Language Breakdown (EN vs KO)", ""])
@@ -857,10 +1091,10 @@ def render_summary_md(results: Mapping[str, Any]) -> str:
         ko = g["by_language"]["ko"]
         lines.append(
             f"| {g['label']} | "
-            f"{en['undeclared_escape_recall']*100:.1f}% | "
-            f"{ko['undeclared_escape_recall']*100:.1f}% | "
-            f"{en['false_rejection_rate']*100:.1f}% | "
-            f"{ko['false_rejection_rate']*100:.1f}% |"
+            f"{en['undeclared_escape_recall'] * 100:.1f}% | "
+            f"{ko['undeclared_escape_recall'] * 100:.1f}% | "
+            f"{en['false_rejection_rate'] * 100:.1f}% | "
+            f"{ko['false_rejection_rate'] * 100:.1f}% |"
         )
 
     lines.extend(["", "## Error Analysis (Remaining Escapes & False Rejections)", ""])

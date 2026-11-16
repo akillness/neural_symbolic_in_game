@@ -40,22 +40,22 @@ sys.path.insert(0, str(ROOT / "src"))
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from nesy_game.contracts import (  # noqa: E402
+from nesy_game.contracts import (
     CandidateAction,
     ValidationError,
     ValidationResult,
     WorldState,
     parse_candidate_mapping,
 )
-from nesy_game.repair import (  # noqa: E402
+from nesy_game.repair import (
     GUIDED_IRREPARABLE_CODES,
     GUIDED_REPAIRABLE_CODES,
     counterexample_guided_repair,
 )
-from nesy_game.runtime import execute_with_repair, replay_trace_record, to_jsonable  # noqa: E402
-from nesy_game.validator import validate_candidate  # noqa: E402
-from scripts.review_reference import generic_accepts, reference_reachable_locations  # noqa: E402
-from scripts.run_gemini_review_evaluation import (  # noqa: E402
+from nesy_game.runtime import execute_with_repair, replay_trace_record, to_jsonable
+from nesy_game.validator import validate_candidate
+from scripts.review_reference import generic_accepts, reference_reachable_locations
+from scripts.run_gemini_review_evaluation import (
     PROTOCOL_PATH,
     _graph,
     _state,
@@ -491,9 +491,7 @@ def summarize_slice(
                 if row["status"] == "COMMITTED" and row["reference_final_valid"] is True:
                     incremental_recovered += 1
 
-    attempt_hist = Counter(
-        row["attempts_executed"] for row in rows if row["status"] == "COMMITTED"
-    )
+    attempt_hist = Counter(row["attempts_executed"] for row in rows if row["status"] == "COMMITTED")
 
     return {
         "assigned": assigned,
@@ -509,7 +507,9 @@ def summarize_slice(
         "hold_rate": held / assigned if assigned else None,
         "partial_clear_hold_count": partial_clear_holds,
         "partial_clear_hold_rate_among_holds": partial_clear_holds / held if held else None,
-        "partial_clear_hold_rate_among_assigned": partial_clear_holds / assigned if assigned else None,
+        "partial_clear_hold_rate_among_assigned": partial_clear_holds / assigned
+        if assigned
+        else None,
         "observed_trajectory_fixed_point_count": traj_fixed_points,
         "observed_trajectory_fixed_point_rate": traj_fixed_points / assigned if assigned else None,
         "terminal_fixed_point_count": terminal_fixed_points,
@@ -521,9 +521,15 @@ def summarize_slice(
         "total_initial_errors": total_initial_errors,
         "total_final_errors": total_final_errors,
         "total_errors_cleared": total_errors_cleared,
-        "error_reduction_rate": total_errors_cleared / total_initial_errors if total_initial_errors else None,
-        "incremental_recovered_from_prev_k": incremental_recovered if prev_rows_by_case is not None else None,
-        "incremental_eligible_from_prev_k": incremental_eligible if prev_rows_by_case is not None else None,
+        "error_reduction_rate": total_errors_cleared / total_initial_errors
+        if total_initial_errors
+        else None,
+        "incremental_recovered_from_prev_k": incremental_recovered
+        if prev_rows_by_case is not None
+        else None,
+        "incremental_eligible_from_prev_k": incremental_eligible
+        if prev_rows_by_case is not None
+        else None,
         "incremental_recovery_rate_among_prev_holds": (
             incremental_recovered / incremental_eligible
             if prev_rows_by_case is not None and incremental_eligible
@@ -535,7 +541,9 @@ def summarize_slice(
     }
 
 
-def run_simultaneous_conflict_guard_audit(base_states: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def run_simultaneous_conflict_guard_audit(
+    base_states: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
     """Audit counterexample_guided_repair when both POLICY_PRECONDITION_OMISSION
     and UNSATISFIED_PRECONDITION name 'ready' in the SAME ValidationResult.
     """
@@ -630,7 +638,8 @@ def run_simultaneous_conflict_guard_audit(base_states: Sequence[Mapping[str, Any
             "fixed_point_by_step_1_rate": sum(r["fixed_point_by_step_1"] for r in vrows) / n,
             "c0_eq_c1_count": sum(r["c0_eq_c1"] for r in vrows),
             "post_step1_real_error_codes_distinct": [
-                list(codes) for codes in sorted({tuple(r["post_step1_real_error_codes"]) for r in vrows})
+                list(codes)
+                for codes in sorted({tuple(r["post_step1_real_error_codes"]) for r in vrows})
             ],
         }
 
@@ -889,8 +898,7 @@ def run_audit(output_dir: Path) -> dict[str, Any]:
             for row in all_rows
         ),
         "false_rejections_total": sum(
-            row["status"] == "HOLD" and row["reference_initial_valid"] is True
-            for row in all_rows
+            row["status"] == "HOLD" and row["reference_initial_valid"] is True for row in all_rows
         ),
         "source_hashes": source_hashes,
         "variant_specs": list(VARIANT_SPECS),
@@ -927,9 +935,7 @@ def main() -> None:
         "total_end_to_end_runs": results["total_end_to_end_runs"],
         "unsafe_commits_total": results["unsafe_commits_total"],
         "native_replay_equal_total": results["native_replay_equal_total"],
-        "by_budget_overall": {
-            k: results["by_budget"][k]["overall"] for k in map(str, BUDGETS)
-        },
+        "by_budget_overall": {k: results["by_budget"][k]["overall"] for k in map(str, BUDGETS)},
         "simultaneous_conflict_guard": {
             key: results["simultaneous_conflict_guard"][key]
             for key in (
