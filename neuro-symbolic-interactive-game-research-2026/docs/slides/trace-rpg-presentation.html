@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TRACE-RPG — Research Presentation (16:9 PPTX HTML)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+:root {
+  --stage-bg: #111318;
+  --paper: #FAF9F5;
+  --paper-alt: #F2EFE7;
+  --cover-bg: #0E1726;
+  --ink: #141821;
+  --muted: #525866;
+  --border: #DDD8CE;
+  --navy: #1D3B66;
+  --red: #C43B28;
+  --green: #18684B;
+  --amber: #9E5E10;
+  --deck-scale: 1;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--stage-bg); color: var(--ink); font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; -webkit-font-smoothing: antialiased; }
+html[data-lang="ko"] .en { display: none !important; }
+html[data-lang="en"] .ko { display: none !important; }
+.deck-topbar { height: 44px; background: #181B22; border-bottom: 1px solid #2A2F3A; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; color: #E5E7EB; font-size: 13px; user-select: none; z-index: 30; position: relative; }
+.topbar-left, .topbar-right { display: flex; align-items: center; gap: 8px; }
+.brand-pill { background: var(--navy); color: #FFF; font-weight: 700; font-size: 11px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; }
+.topbar-title { font-weight: 600; color: #D1D5DB; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 44vw; }
+.tb-btn { background: #242934; color: #E5E7EB; border: 1px solid #363D4C; border-radius: 5px; padding: 4px 10px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s; font-family: inherit; }
+.tb-btn:hover { background: #313847; }
+.tb-btn.active { background: var(--navy); border-color: #3B66A3; color: #FFF; }
+.slide-counter { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: #9CA3AF; min-width: 62px; text-align: center; }
+.stage-wrap { width: 100vw; height: calc(100dvh - 48px); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.slide-viewport { width: 1280px; height: 720px; transform: scale(var(--deck-scale)); transform-origin: center center; position: relative; box-shadow: 0 24px 64px rgba(0,0,0,0.55); border-radius: 4px; overflow: hidden; background: var(--paper); flex-shrink: 0; }
+.slide { width: 1280px; height: 720px; position: absolute; inset: 0; display: none; flex-direction: column; justify-content: space-between; padding: 34px 48px 24px; background: var(--paper); overflow: hidden; }
+.slide.active { display: flex; }
+.slide.cover { background: linear-gradient(135deg, #0E1726 0%, #162844 65%, #1D3557 100%); color: #F8FAFC; padding: 52px 64px 34px; }
+.slide-hdr { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 18px; flex-shrink: 0; }
+.eyebrow { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--navy); }
+.hdr-badges { display: flex; gap: 6px; align-items: center; }
+.badge { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; background: var(--paper-alt); border: 1px solid var(--border); color: var(--ink); }
+.badge.pass { background: #E6F4EE; border-color: #A7D7C5; color: var(--green); }
+.badge.warn { background: #FDF2E4; border-color: #ECC896; color: var(--amber); }
+.badge.danger { background: #FCECE9; border-color: #F1B5AA; color: var(--red); }
+.slide-h2 { font-size: 27px; font-weight: 800; line-height: 1.24; letter-spacing: -0.02em; margin-top: 4px; color: var(--ink); }
+.slide-body { flex: 1 1 0; min-height: 0; display: grid; gap: 18px; overflow: hidden; }
+.cols-2 { grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(0, 1fr); }
+.cols-5-7 { grid-template-columns: 5fr 7fr; grid-auto-rows: minmax(0, 1fr); }
+.cols-7-5 { grid-template-columns: 7fr 5fr; grid-auto-rows: minmax(0, 1fr); }
+.cols-3 { grid-template-columns: repeat(3, 1fr); grid-auto-rows: minmax(0, 1fr); }
+.card { background: #FFFFFF; border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; min-height: 0; overflow: hidden; }
+.card.subtle { background: var(--paper-alt); }
+.card.accent-navy { border-top: 4px solid var(--navy); }
+.card.accent-green { border-top: 4px solid var(--green); }
+.card.accent-red { border-top: 4px solid var(--red); }
+.card.accent-amber { border-top: 4px solid var(--amber); }
+.card-h3 { font-size: 16px; font-weight: 800; color: var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; }
+.bul { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 14.2px; line-height: 1.45; color: #222733; }
+.bul li { position: relative; padding-left: 15px; }
+.bul li::before { content: "▪"; position: absolute; left: 0; top: 0; color: var(--navy); font-weight: 700; }
+.bul.danger li::before { color: var(--red); }
+.bul.pass li::before { color: var(--green); }
+code, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.9em; background: rgba(29,59,102,0.08); padding: 1px 5px; border-radius: 3px; font-variant-numeric: tabular-nums; }
+.eq-box { background: #131A26; color: #F8FAFC; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13.5px; line-height: 1.55; padding: 12px 16px; border-radius: 6px; border-left: 4px solid #60A5FA; flex-shrink: 0; }
+.fig-frame { background: #FFF; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; min-height: 0; overflow: hidden; }
+.fig-frame img, .fig-frame svg { flex: 1 1 0; min-height: 0; width: 100%; object-fit: contain; display: block; }
+.fig-cap { font-size: 11.5px; color: var(--muted); line-height: 1.35; flex-shrink: 0; border-top: 1px solid #ECE8DF; padding-top: 5px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0; }
+.kpi { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16); border-radius: 6px; padding: 14px 16px; }
+.slide:not(.cover) .kpi { background: #FFF; border-color: var(--border); padding: 10px 14px; }
+.kpi-val { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; color: #93C5FD; }
+.slide:not(.cover) .kpi-val { font-size: 20px; color: var(--navy); }
+.kpi-val.green { color: var(--green) !important; }
+.kpi-val.red { color: var(--red) !important; }
+.kpi-lbl { font-size: 12px; margin-top: 3px; color: #CBD5E1; line-height: 1.3; }
+.slide:not(.cover) .kpi-lbl { color: var(--muted); }
+table. ppt-tbl { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.ppt-tbl { width: 100%; border-collapse: collapse; font-size: 12.8px; font-variant-numeric: tabular-nums; }
+.ppt-tbl th { background: #EDEAE1; color: var(--ink); font-weight: 700; text-align: left; padding: 7px 9px; border-bottom: 2px solid var(--ink); }
+.ppt-tbl td { padding: 6.5px 9px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.35; }
+.ppt-tbl tr.hl td { background: #EAF5F0; font-weight: 600; }
+.ppt-tbl tr.bad td { background: #FDF0EE; }
+.callout { background: #EDF3FA; border-left: 4px solid var(--navy); padding: 9px 13px; font-size: 13.2px; line-height: 1.4; border-radius: 0 5px 5px 0; flex-shrink: 0; }
+.callout.warn { background: #FDF4E7; border-left-color: var(--amber); }
+.slide-ftr { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 12px; font-size: 11.5px; color: var(--muted); font-family: "JetBrains Mono", ui-monospace, monospace; flex-shrink: 0; }
+.cover .slide-ftr { border-top-color: rgba(255,255,255,0.18); color: #94A3B8; }
+.progress-bar { height: 4px; background: #1F2430; width: 100%; position: fixed; bottom: 0; left: 0; z-index: 35; }
+.progress-fill { height: 100%; background: #3B82F6; width: 7.14%; transition: width 0.2s ease; }
+.notes-drawer { position: fixed; right: 16px; bottom: 16px; width: min(440px, 92vw); max-height: 36dvh; background: #181C24; color: #E5E7EB; border: 1px solid #374151; border-radius: 8px; padding: 14px 16px; font-size: 13px; line-height: 1.5; box-shadow: 0 16px 40px rgba(0,0,0,0.6); z-index: 45; display: none; overflow-y: auto; }
+.notes-drawer.open { display: block; }
+.grid-modal { position: fixed; inset: 44px 0 4px 0; background: rgba(13,16,23,0.96); z-index: 40; display: none; padding: 24px; overflow-y: auto; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; align-content: start; }
+.grid-modal.open { display: grid; }
+.grid-item { background: #1E2430; border: 1px solid #343D4E; border-radius: 6px; padding: 12px 14px; color: #E5E7EB; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+.grid-item.current { border-color: #60A5FA; background: #233048; }
+.grid-num { font-family: "JetBrains Mono", monospace; font-size: 11px; color: #93C5FD; font-weight: 700; }
+.grid-ttl { font-size: 13.5px; font-weight: 700; line-height: 1.35; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+@media print {
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { width: 1280px; height: auto; overflow: visible !important; background: #FFF; }
+  .deck-topbar, .progress-bar, .notes-drawer, .grid-modal { display: none !important; }
+  .stage-wrap { width: 1280px; height: auto; display: block; overflow: visible !important; }
+  .slide-viewport { width: 1280px; height: auto; transform: none !important; box-shadow: none; border-radius: 0; overflow: visible !important; }
+  .slide { position: relative !important; display: flex !important; width: 1280px !important; height: 720px !important; page-break-after: always; break-after: page; }
+  .slide:last-child { page-break-after: auto !important; break-after: auto !important; }
+}
+</style>
+</head>
+<body>
+  <header class="deck-topbar">
+    <div class="topbar-left">
+      <span class="brand-pill">TRACE-RPG</span>
+      <span class="topbar-title"><span class="ko">대화형 게임의 감사 가능한 제안–커밋 경계와 읽기 전용 온톨로지 관측</span><span class="en">Auditable Proposal-to-Commit Boundaries &amp; Read-Only Ontology Observation</span></span>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn" id="prevBtn" title="Previous (←)">◀</button>
+      <span class="slide-counter" id="slideCounter">01 / 14</span>
+      <button class="tb-btn" id="nextBtn" title="Next (→)">▶</button>
+      <button class="tb-btn" id="langBtn" title="Toggle Language (L)">KO / EN</button>
+      <button class="tb-btn" id="gridBtn" title="Slide Sorter (G)">Grid</button>
+      <button class="tb-btn" id="notesBtn" title="Speaker Notes (N)">Notes</button>
+      <button class="tb-btn" id="fullBtn" title="Fullscreen (F)">Full</button>
+      <button class="tb-btn" id="printBtn" title="Print / Save 16:9 PDF (P)">PDF</button>
+    </div>
+  </header>
+  <main class="stage-wrap" id="stageWrap">
+    <div class="slide-viewport" id="slideViewport">
+      <section class="slide cover active" data-index="0">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="brand-pill" style="background:#2563EB;font-size:12px;padding:5px 12px;">TRACE-RPG · RESEARCH PRESENTATION (16:9)</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#93C5FD;">EN 25p (pdfLaTeX) · KO 25p (XeLaTeX) · Overleaf Synced</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;max-width:1100px;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.08em;color:#93C5FD;text-transform:uppercase;">
+              <span class="ko">신경–기호 하이브리드 게임 아키텍처 및 출처 결속 감사 연구</span>
+              <span class="en">Neuro-Symbolic Interactive Game Architecture &amp; Source-Bound Audit Study</span>
+            </p>
+            <h1 style="font-size:38px;font-weight:800;line-height:1.22;letter-spacing:-0.02em;color:#FFFFFF;">
+              <span class="ko">TRACE-RPG: 대화형 게임의 감사 가능한 제안–커밋 경계와<br>출처 결속 읽기 전용 온톨로지 관측</span>
+              <span class="en">TRACE-RPG: Auditable Proposal-to-Commit Boundaries and<br>Source-Bound Read-Only Ontology Observation in Interactive Games</span>
+            </h1>
+            <p style="font-size:16.5px;line-height:1.5;color:#CBD5E1;max-width:980px;">
+              <span class="ko">생성 모델은 구조화된 후보만 제안하고, 외부 7-술어 결정론적 게이트만이 상태 커밋을 승인한다.<br>제1저자 <strong>정장영¹</strong> · 교신저자 <strong>강신진²*</strong> (홍익대학교 게임학과)</span>
+              <span class="en">Generative models propose structured candidates only; an external 7-predicate deterministic gate holds exclusive commit authority.<br><strong>Jangyoung Jeong¹</strong> (First Author) · <strong>Shinjin Kang²*</strong> (Corresponding Author, Dept. of Game Design, Hongik University)</span>
+            </p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="kpi-row">
+              <div class="kpi"><div class="kpi-val">0 / 416 · 0 / 1,408</div><div class="kpi-lbl"><span class="ko">의미 게이트 비안전 커밋 (스키마 전용 260/416 차단)</span><span class="en">Unsafe commits under semantic gates (vs. 260/416 schema-only)</span></div></div>
+              <div class="kpi"><div class="kpi-val">128 / 260</div><div class="kpi-lbl"><span class="ko">반례 유도 수리 ρ 적법 복구 (과잉 거부 0/156)</span><span class="en">Valid recoveries via guided repair ρ (0/156 over-rejection)</span></div></div>
+              <div class="kpi"><div class="kpi-val">&lt; 0.08 ms</div><div class="kpi-lbl"><span class="ko">N=2,000 인메모리 검증·수리 p95 지연시간</span><span class="en">In-memory validator &amp; repair p95 latency at N=2,000</span></div></div>
+              <div class="kpi"><div class="kpi-val">21 / 21 · 194</div><div class="kpi-lbl"><span class="ko">Layer-A 한·영 도달 표 전수 결속 및 SHA-256 영수증</span><span class="en">Layer-A reached tables bound &amp; SHA-256 receipts verified</span></div></div>
+            </div>
+            <div class="slide-ftr">
+              <span>Repository: github.com/akillness/neural_symbolic_in_game (main @ 1cd6afa)</span>
+              <span>Keys: ←/→ Slide · L KO/EN · G Grid · N Notes · F Fullscreen · P Print PDF · 01 / 14</span>
+            </div>
+          </div>
+        </section>
+<section class="slide" data-index="1">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">01 · PROBLEM FORMULATION</span><span class="en">01 · PROBLEM FORMULATION</span></span>
+        <div class="hdr-badges"><span class="badge">Sec. 3.1</span><span class="badge pass">C1 Contract</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">스키마 적합성(𝒮) ≠ 상태 상대 권한(𝒜) ≠ 목표 달성(𝒢)</span><span class="en">Schema Validity (𝒮) ≠ State-Relative Authorization (𝒜) ≠ Goal Attainment (𝒢)</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="eq-box">
+                𝒜(c_t) = &#123; a ∈ 𝒮 : V(c_t, a).valid &#125;, &nbsp; 𝒢(c_t) = &#123; a ∈ 𝒮 : Goal(T(c_t, a)) &#125;<br>
+                ℋ(c_t) = 𝒜(c_t) ∩ 𝒢(c_t) ⊆ 𝒜(c_t) ⊆ 𝒮 &nbsp;&nbsp; (𝒜(c_t) ⊈ 𝒢(c_t), &nbsp; 𝒢(c_t) ⊈ 𝒜(c_t))
+              </div>
+              <div class="card accent-red" style="flex:1;">
+                <div class="card-h3"><span class="ko">왜 기존 스키마·사실 정합성만으로 부족한가?</span><span class="en">Why Schema &amp; Factual Grounding Alone Fail</span></div>
+                <ul class="bul danger">
+                  <li><span class="ko"><strong>지식 보유 ≠ 공개 권한:</strong> 관리인(<code>keeper</code>)이 참인 비밀(<code>keeper_secret</code>)을 알고 있어도 퀘스트 <code>stage 0</code>에서는 발화가 금지되며 <code>stage 1</code>에서만 허용됨.</span><span class="en"><strong>Epistemic Knowledge ≠ Disclosure Authority:</strong> Even when <code>keeper</code> knows a true fact (<code>keeper_secret</code>), stage 0 forbids disclosure while stage 1 authorizes it.</span></li>
+                  <li><span class="ko"><strong>스키마 통과 ≠ 물리·상태 접근성:</strong> JSON 형식이 완벽해도 현재 잠긴 방 너머의 물체를 요구하거나 단계 역행을 유발할 수 있음.</span><span class="en"><strong>Schema Fit ≠ Reachability:</strong> A schema-valid JSON proposal can still request an unreachable object behind a locked room or regress quest stages.</span></li>
+                  <li><span class="ko"><strong>권한 통과 ≠ 목표 달성:</strong> 허용된 <code>observe</code>는 <code>observed</code> 사실만 추가하므로 적법(<code>a ∈ 𝒜</code>)하지만 목표 <code>signal_restored</code>(<code>𝒢</code>)는 달성하지 못함.</span><span class="en"><strong>Authorized ≠ Goal-Achieving:</strong> An admissible <code>observe</code> action adds <code>observed</code> legally (<code>a ∈ 𝒜</code>) without achieving <code>signal_restored</code> (<code>𝒢</code>).</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="fig-frame">
+              <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                <rect x="14" y="14" width="392" height="312" rx="14" fill="#F4F1EA" stroke="#141821" stroke-width="2"/>
+                <text x="28" y="38" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#141821">𝒮 : Strict-Parser Schema-Valid Proposals</text>
+                <ellipse cx="165" cy="185" rx="122" ry="102" fill="rgba(29,59,102,0.13)" stroke="#1D3B66" stroke-width="2.5"/>
+                <ellipse cx="258" cy="185" rx="118" ry="102" fill="rgba(196,59,40,0.11)" stroke="#C43B28" stroke-width="2.5" stroke-dasharray="6 4"/>
+                <path d="M 211 98 A 118 102 0 0 0 211 272 A 122 102 0 0 0 211 98 Z" fill="rgba(24,104,75,0.28)" stroke="#18684B" stroke-width="2.5"/>
+                <text x="72" y="148" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#1D3B66">𝒜(c_t)</text>
+                <text x="58" y="168" font-family="sans-serif" font-size="11.5" fill="#1D3B66">Authorized</text>
+                <text x="58" y="186" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#334155">e.g. observe</text>
+                <text x="58" y="202" font-family="sans-serif" font-size="10.5" fill="#334155">(valid, no goal)</text>
+                <text x="186" y="176" font-family="JetBrains Mono, monospace" font-size="14" font-weight="800" fill="#18684B">ℋ(c_t)</text>
+                <text x="176" y="195" font-family="sans-serif" font-size="11" font-weight="700" fill="#18684B">𝒜 ∩ 𝒢</text>
+                <text x="172" y="211" font-family="sans-serif" font-size="10.5" fill="#18684B">Safe + Goal</text>
+                <text x="292" y="148" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#C43B28">𝒢(c_t) \ 𝒜</text>
+                <text x="282" y="168" font-family="sans-serif" font-size="11.5" fill="#C43B28">Unauthorized</text>
+                <text x="282" y="186" font-family="sans-serif" font-size="10.5" fill="#7F1D1D">Goal reached via</text>
+                <text x="282" y="202" font-family="sans-serif" font-size="10.5" fill="#7F1D1D">policy violation</text>
+                <rect x="28" y="294" width="364" height="22" rx="4" fill="#FFF" stroke="#DDD8CE"/>
+                <text x="38" y="309" font-family="JetBrains Mono, monospace" font-size="10.8" fill="#141821">Soft signals (MBTI, style, affect) NEVER expand 𝒜(c_t)</text>
+              </svg>
+              <div class="fig-cap"><span class="ko">스키마 전용 실행에서 목표 달성 352/416건 중 260건이 무효 커밋인 이유를 설명하는 집합 경계</span><span class="en">Set boundary explaining why 352/416 schema-only goal hits include 260/416 invalid commits</span></div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>paper/latex/{ko,en}/main.tex · Eq. (1) · 02 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="2">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">02 · SYSTEM ARCHITECTURE (C1, C2)</span><span class="en">02 · SYSTEM ARCHITECTURE (C1, C2)</span></span>
+        <div class="hdr-badges"><span class="badge pass">C1 · C2</span><span class="badge">Eq. (2)–(3)</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">신뢰할 수 없는 제안기 vs. 7-술어 결정론적 커밋 게이트</span><span class="en">Untrusted Proposer vs. 7-Predicate Deterministic Commit Gate</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div class="fig-frame">
+              <img src="../../paper/latex/figures/fig_architecture.png" alt="TRACE-RPG Architecture Pipeline"/>
+              <div class="fig-cap"><span class="ko">그림 1: 제안 → 엄격 파싱 → 7개 술어 검증 → 제한 수리 ρ(재검증 필수) 또는 상태 불변 보류 → 커밋·해시 기록·리플레이</span><span class="en">Fig. 1: Propose → strict parse → 7 checks → bounded ρ repair (revalidated) or unchanged hold → commit, hash receipt &amp; replay</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;min-height:0;">
+              <div class="eq-box" style="font-size:12.5px;">
+                V(c_t, a_t) = (valid, E_t, C_run), &nbsp; v ∈ &#123;0,1&#125;^7<br>
+                c_&#123;t+1&#125; = T(c_t, a_t) if ∧_&#123;i=1..7&#125;(v_i = 1) else c_t
+              </div>
+              <div class="card accent-navy" style="flex:1;padding:12px 14px;">
+                <div class="card-h3"><span class="ko">6개 상태 상대 계열 · 7개 결정론적 검사</span><span class="en">7 Deterministic Checks in 6 State-Relative Families</span></div>
+                <table class="ppt-tbl">
+                  <thead><tr><th>#</th><th><span class="ko">계열 / 술어</span><span class="en">Family / Check</span></th><th><span class="ko">차단 대상</span><span class="en">Rejects</span></th></tr></thead>
+                  <tbody>
+                    <tr><td><code>v1</code></td><td>Action Policy</td><td><span class="ko">미등록 행동·허용 외 효과</span><span class="en">Unknown action / disallowed effect</span></td></tr>
+                    <tr><td><code>v2</code></td><td>Precondition</td><td><span class="ko">선행 사실·조건 미충족</span><span class="en">Unsatisfied state precondition</span></td></tr>
+                    <tr><td><code>v3</code></td><td>Reachability</td><td><span class="ko">잠긴 방·비도달 물체 참조</span><span class="en">Unreachable room or object</span></td></tr>
+                    <tr><td><code>v4</code></td><td>NPC Knowledge</td><td><span class="ko">NPC 미보유 사실 인용</span><span class="en">Fact unknown to acting NPC</span></td></tr>
+                    <tr><td><code>v5</code></td><td>Disclosure</td><td><span class="ko">현 단계 금지 비밀 발화</span><span class="en">Stage-forbidden secret disclosure</span></td></tr>
+                    <tr><td><code>v6,7</code></td><td>Quest Stage</td><td><span class="ko">부적격 전이·단계 역행</span><span class="en">Ineligible stage / stage regression</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>src/nesy_game/{contracts,validator,repair,runtime}.py · 03 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="3">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">03 · SOURCE-BOUND ONTOLOGY & REPRODUCIBILITY (C3)</span><span class="en">03 · SOURCE-BOUND ONTOLOGY & REPRODUCIBILITY (C3)</span></span>
+        <div class="hdr-badges"><span class="badge pass">NPC-DISC-1 60/60</span><span class="badge">2-Tier Audit</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">출처 결속 8-역할 읽기 전용 온톨로지와 2계층 재현성</span><span class="en">Source-Bound 8-Role Read-Only Ontology &amp; Two-Tier Reproducibility</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div class="fig-frame">
+              <img src="../../paper/latex/figures/fig_signal_mechanism.png" alt="8-Role Ontology Mechanism"/>
+              <div class="fig-cap"><span class="ko">그림 2: World, Actor, Knowledge, Fact, Policy, Quest, Action, Trace 8역할이 선언 필드를 검사·결정에 읽기 전용으로 결속</span><span class="en">Fig. 2: Eight roles bind declared source fields to checks and observed decisions without write authority</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="card accent-green">
+                <div class="card-h3"><span class="ko">무회귀 출처 관측 (NPC-DISC-1 · E3)</span><span class="en">Non-Regression Observation (NPC-DISC-1 · E3)</span></div>
+                <ul class="bul pass">
+                  <li><span class="ko"><strong>쓰기 권한 0:</strong> 온톨로지 뷰는 정식 상태를 직접 수정하거나 거부된 행동을 승인하지 않음.</span><span class="en"><strong>Zero Write Authority:</strong> Ontology view never mutates canonical state or overrides gate holds.</span></li>
+                  <li><span class="ko"><strong>NPC-DISC-1 (60건):</strong> <code>general_rule</code> 대 <code>ontology_gate</code> 결정 <strong>60/60 일치</strong>(무검사군 위험 51건 대비 무회귀 입증).</span><span class="en"><strong>NPC-DISC-1 (60 cases):</strong> <strong>60/60 parity</strong> between <code>general_rule</code> and <code>ontology_gate</code> (vs. 51 unguarded risks).</span></li>
+                  <li><span class="ko"><strong>E3 시뮬레이션:</strong> 폐쇄 세계 노드 43·참조 엣지 106·타입 엣지 24, 210개 점수에서 온톨로지 위반 <strong>0건</strong>.</span><span class="en"><strong>E3 Simulation:</strong> 43 nodes, 106 ref edges, 24 typed edges; <strong>0 ontology violations</strong> across 210 scores.</span></li>
+                </ul>
+              </div>
+              <div class="card accent-navy" style="flex:1;">
+                <div class="card-h3"><span class="ko">2계층 재현성 구조 (Two-Tier Reproducibility)</span><span class="en">Two-Tier Reproducibility Architecture</span></div>
+                <ul class="bul">
+                  <li><span class="ko"><strong>Tier 1 (0-LLM 결정론 계층):</strong> 검증기 <code>V</code>, 수리 연산자 <code>ρ</code>, 도달성, 엔진 리플레이를 API 호출 없이 즉시 재실행 검증.</span><span class="en"><strong>Tier 1 (0-LLM Deterministic):</strong> Validator <code>V</code>, repair <code>ρ</code>, reachability &amp; engine replay re-verified offline with zero model calls.</span></li>
+                  <li><span class="ko"><strong>Tier 2 (동결 영수증 감사 계층):</strong> 확률적 제안기의 응답·파싱 실패·보류를 SHA-256 체인으로 전수 보존해 사후 감사.</span><span class="en"><strong>Tier 2 (Frozen Receipt Audit):</strong> Stochastic proposer outputs, parse failures &amp; holds preserved via SHA-256 chains.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>src/nesy_game/disclosure.py · NPC-DISC-1 · E3 · 04 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="4">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">04 · CORE OFFLINE BOUNDARY AUDIT (1,664 MAIN + 48 SENTINEL)</span><span class="en">04 · CORE OFFLINE BOUNDARY AUDIT (1,664 MAIN + 48 SENTINEL)</span></span>
+        <div class="hdr-badges"><span class="badge danger">schema_only 260/416 unsafe</span><span class="badge pass">guided_repair 0/416 unsafe</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">스키마 전용 무효 커밋 260/416 차단 및 유도 수리 ρ의 128/260 적법 복구</span><span class="en">Blocking 260/416 Schema-Only Invalid Commits &amp; Recovering 128/260 via Guided Repair ρ</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div class="card accent-navy" style="justify-content:space-between;">
+              <div class="card-h3"><span class="ko">32개 상태 × 13종 변형 = 조건당 416건 (초기 유효 156 · 초기 무효 260)</span><span class="en">32 States × 13 Variants = 416/Arm (156 Initially Valid · 260 Invalid)</span></div>
+              <table class="ppt-tbl">
+                <thead>
+                  <tr>
+                    <th><span class="ko">실행 조건 (Arm)</span><span class="en">Execution Arm</span></th>
+                    <th><span class="ko">수리 복구</span><span class="en">Repaired</span></th>
+                    <th><span class="ko">보류(Hold)</span><span class="en">Held</span></th>
+                    <th><span class="ko">비안전 커밋</span><span class="en">Unsafe</span></th>
+                    <th><span class="ko">과잉 차단</span><span class="en">Over-Rej.</span></th>
+                    <th><span class="ko">목표 달성</span><span class="en">Goals</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bad"><td><code>schema_only</code> (K=0)</td><td>0 / 260</td><td>0 / 416</td><td><strong>260 / 416</strong></td><td>0 / 156</td><td>352 / 416*</td></tr>
+                  <tr><td><code>semantic_rejection</code> (K=0)</td><td>0 / 260</td><td>260 / 416</td><td><strong>0 / 416</strong></td><td>0 / 156</td><td>124 / 416</td></tr>
+                  <tr><td><code>unchanged_retry</code> (K=1)</td><td>0 / 260</td><td>260 / 416</td><td><strong>0 / 416</strong></td><td>0 / 156</td><td>124 / 416</td></tr>
+                  <tr class="hl"><td><code>guided_repair</code> (ρ, K=1)</td><td><strong>128 / 260</strong></td><td>132 / 416</td><td><strong>0 / 416</strong></td><td><strong>0 / 156</strong></td><td><strong>252 / 416</strong></td></tr>
+                </tbody>
+              </table>
+              <div class="callout">
+                <span class="ko">*<code>schema_only</code>의 목표 352/416은 무효 커밋 260건이 섞인 수치로 권한 적합성을 뜻하지 않음. <code>guided_repair</code>는 총 <strong>284/416</strong> 적법 커밋 중 <strong>252/416</strong> 목표 달성(단순 거부 대비 +128건 복구).</span>
+                <span class="en">*<code>schema_only</code>'s 352/416 goals include 260 unauthorized commits. <code>guided_repair</code> yields <strong>284/416</strong> valid commits and <strong>252/416</strong> authorized goals (+128 recovered vs. rejection).</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="fig-frame" style="flex:1;">
+                <svg viewBox="0 0 445 220" xmlns="http://www.w3.org/2000/svg">
+                  <text x="12" y="22" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="700" fill="#141821">Final Outcome Composition per Arm (n = 416)</text>
+                  <g font-family="JetBrains Mono, monospace" font-size="11">
+                    <text x="12" y="58" fill="#141821">schema_only</text>
+                    <rect x="135" y="44" width="93" height="20" fill="#18684B"/><rect x="228" y="44" width="156" height="20" fill="#C43B28"/>
+                    <text x="142" y="58" fill="#FFF">156 valid</text><text x="236" y="58" fill="#FFF">260 UNSAFE</text>
+
+                    <text x="12" y="98" fill="#141821">semantic_rej</text>
+                    <rect x="135" y="84" width="93" height="20" fill="#18684B"/><rect x="228" y="84" width="156" height="20" fill="#94A3B8"/>
+                    <text x="142" y="98" fill="#FFF">156 valid</text><text x="236" y="98" fill="#FFF">260 held (safe)</text>
+
+                    <text x="12" y="138" fill="#141821">unchanged_ret</text>
+                    <rect x="135" y="124" width="93" height="20" fill="#18684B"/><rect x="228" y="124" width="156" height="20" fill="#94A3B8"/>
+                    <text x="142" y="138" fill="#FFF">156 valid</text><text x="236" y="138" fill="#FFF">260 held (safe)</text>
+
+                    <text x="12" y="178" font-weight="700" fill="#18684B">guided_repair</text>
+                    <rect x="135" y="164" width="93" height="20" fill="#18684B"/><rect x="228" y="164" width="77" height="20" fill="#2563EB"/><rect x="305" y="164" width="79" height="20" fill="#94A3B8"/>
+                    <text x="142" y="178" fill="#FFF">156</text><text x="234" y="178" fill="#FFF">+128 ρ</text><text x="312" y="178" fill="#FFF">132 hold</text>
+                  </g>
+                  <text x="12" y="208" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#525866">Valid signatures kept: 11/11 · Reachability closure == BFS: 32/32</text>
+                </svg>
+              </div>
+              <div class="card subtle" style="padding:12px 15px;">
+                <ul class="bul pass" style="font-size:13px;gap:5px;">
+                  <li><span class="ko"><strong>과잉 거부 0건:</strong> 최초 유효 사례 <code>156/156</code> 및 구조 서명 <code>11/11</code> 전수 보존.</span><span class="en"><strong>Zero Over-Rejection:</strong> Preserves <code>156/156</code> valid cases &amp; <code>11/11</code> structural signatures.</span></li>
+                  <li><span class="ko"><strong>독립 기준 검증:</strong> 게이트 자기참조 없이 분리된 참조 검사기와 대조 완료.</span><span class="en"><strong>Reference Cross-Check:</strong> Verified against separated reference oracle (non-circular).</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>tab:review-boundary-funnel · gemini-review-20261113/results-v2 · 05 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="5">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">05 · TWO-STAGE DECOMPOSITION & ACCOUNTING (v5, C4)</span><span class="en">05 · TWO-STAGE DECOMPOSITION & ACCOUNTING (v5, C4)</span></span>
+        <div class="hdr-badges"><span class="badge pass">C4 Harness</span><span class="badge">20 Assigned · 0 Pending</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">구문 파싱 실패와 의미 게이트·목표 달성을 혼합하지 않는 배정 완전 계수</span><span class="en">Separating Syntax Parse Failures, Gate Admissibility &amp; Goal Attainment Without Omission</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div class="fig-frame">
+              <img src="../../paper/latex/figures/fig_paired_feedback_flow.png" alt="v5 Paired Feedback Flow"/>
+              <div class="fig-cap"><span class="ko">그림 5: 배정 20건 전수 흐름 — 응답 수신 20/20 → 스키마 실패 10/20 분모 유지 → 게이트 통과 8/20 → 목표 달성 7/20</span><span class="en">Fig. 5: Full 20-assignment flow — 20/20 received → 10/20 schema fails kept in denominator → 8/20 gate pass → 7/20 goals</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:11px;min-height:0;">
+              <div class="card accent-navy" style="padding:12px 14px;">
+                <div class="card-h3"><span class="ko">표: v5 합성 수집 (셀 분모 = 스키마 실패 포함 5건)</span><span class="en">v5 Synthetic Collection (Cell Denominator = All 5 Assigned)</span></div>
+                <table class="ppt-tbl">
+                  <thead><tr><th>Selector / Signal</th><th>Recv</th><th>Gate</th><th>Goal</th><th>Schema Fail</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>luna</code> · detailed</td><td>5/5</td><td>4/5</td><td>3/5</td><td>1/5</td></tr>
+                    <tr><td><code>luna</code> · generic</td><td>5/5</td><td>3/5</td><td>3/5</td><td>0/5</td></tr>
+                    <tr><td><code>terra</code> · detailed</td><td>5/5</td><td>0/5</td><td>0/5</td><td>5/5</td></tr>
+                    <tr><td><code>terra</code> · generic</td><td>5/5</td><td>1/5</td><td>1/5</td><td>4/5</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card accent-amber" style="flex:1;padding:12px 14px;">
+                <div class="card-h3"><span class="ko">사후 층화 및 정직한 실패 회계 원칙</span><span class="en">Post-Hoc Strata &amp; Honest Failure Accounting</span></div>
+                <ul class="bul" style="font-size:13.2px;gap:6px;">
+                  <li><span class="ko"><strong>파싱 실패 ≠ 안전 성공:</strong> 상충 통제(<code>unauthorized_objective</code>) 4건 중 평가 가능한 억제는 Luna <strong>2/2건</strong>(무효과 COMMIT 1, HOLD 1)뿐이며, Terra 파싱 실패 2건은 미평가로 분리(4/4로 부풀리지 않음).</span><span class="en"><strong>Parse Failure ≠ Safety Success:</strong> On conflict control (<code>unauthorized_objective</code>), evaluable suppression is <strong>2/2</strong> (Luna); Terra's 2 parse fails stay unevaluated, never counted as 4/4.</span></li>
+                  <li><span class="ko"><strong>19개 코호트 전수 보존:</strong> 과거 17개 + v5 2개 코호트의 완료·실패·대기 행 수와 SHA-256을 인벤토리에 전수 기록.</span><span class="en"><strong>All 19 Cohorts Retained:</strong> Historical 17 + v5 2 cohorts logged with exact SHA-256 digests.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>tab:paired-feedback-v5 · public-v5 · cohort-inventory.json · 06 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="6">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">06 · GODOT 4.7.1 ENGINE CONFORMANCE (ENG1) & DEV-CASE</span><span class="en">06 · GODOT 4.7.1 ENGINE CONFORMANCE (ENG1) & DEV-CASE</span></span>
+        <div class="hdr-badges"><span class="badge pass">ENG1 52/52 + 4/4</span><span class="badge">Archetypes 5/5</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">The Sealed Lighthouse 엔진 적합성(52/52 + 4/4)과 단일 통합 관측(n=1)</span><span class="en">The Sealed Lighthouse Engine Conformance (52/52 + 4/4) &amp; Single Integration Case (n=1)</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div class="fig-frame">
+              <img src="../../paper/latex/figures/fig_engine_cutscenes.png" alt="Godot 4.7.1 Native Viewport Captures"/>
+              <div class="fig-cap"><span class="ko">그림 4: Godot 4.7.1 네이티브 3D 장면 — (A) 초기 단계 0, (B) 금지 공개 거부·상태 유지, (C) 단계 2 승인 단서, (D) 종단 상태 카드</span><span class="en">Fig. 4: Godot 4.7.1 native 3D scenes — (A) initial stage 0, (B) forbidden disclosure held, (C) stage-2 clue, (D) terminal card</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="card accent-green">
+                <div class="card-h3"><span class="ko">E1 &amp; ENG1 결정론적 적합성 계수</span><span class="en">E1 &amp; ENG1 Deterministic Conformance Counts</span></div>
+                <ul class="bul pass" style="font-size:13.4px;">
+                  <li><span class="ko"><strong>E1 오프라인 픽스처:</strong> 게이트 <code>13/13</code> 일치, 수리 arm당 12례(거부/블라인드 <code>0/12</code>, ρ <code>5/12</code>, oracle <code>6/12</code>), 무결성 결함 <code>10</code>, 어댑터 <code>7</code>, 가드 <code>3</code>.</span><span class="en"><strong>E1 Offline Fixtures:</strong> Gate <code>13/13</code>, repair 12/arm (<code>0/12</code> reject/blind, <code>5/12</code> ρ, <code>6/12</code> oracle), <code>10</code> faults, <code>7</code> adapters, <code>3</code> guards.</span></li>
+                  <li><span class="ko"><strong>ENG1 Godot 4.7.1:</strong> 픽스처 <code>4/4</code>, 코어 검사 <strong>52/52</strong>, 확장 검사 <strong>4/4</strong>, 밸런스 아키타입 <strong>5/5</strong> 단일 종단 해시 일치.</span><span class="en"><strong>ENG1 Godot 4.7.1:</strong> Fixtures <code>4/4</code>, core checks <strong>52/52</strong>, extension <strong>4/4</strong>, balance archetypes <strong>5/5</strong>.</span></li>
+                </ul>
+              </div>
+              <div class="card subtle" style="flex:1;">
+                <div class="card-h3"><span class="ko">DEV-CASE 단일 대시보드 과제 관측 (n=1, 반복 0)</span><span class="en">DEV-CASE Bounded Dashboard Observation (n=1, 0 Replications)</span></div>
+                <ul class="bul" style="font-size:13.2px;">
+                  <li><span class="ko"><code>ontology-map-20261023-01</code>: 모바일 기하·맵·신호 검사 <strong>62/62건</strong>(2026-10-23 보존 영수증) 및 10번째 브라우저 시도 통과 기록.</span><span class="en"><code>ontology-map-20261023-01</code>: <strong>62/62</strong> archived mobile/map/signal checks &amp; 10th browser attempt pass receipt.</span></li>
+                  <li><span class="ko">후속 운영 대시보드 재실행의 <code>NOT_PASS</code>(headed yaw 중단, headless 포인터 잠금 오류 4건)까지 숨김 없이 병기.</span><span class="en">Subsequent live rerun <code>NOT_PASS</code> (headed yaw stop; 4 headless pointer-lock errors) transparently disclosed alongside receipt.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>game-track/godot/docs/latest · ontology-map-20261023-01 · 07 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="7">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">07 · EXTENDED AUDIT A1 (0 LLM CALLS · INDEPENDENT DENOMINATOR)</span><span class="en">07 · EXTENDED AUDIT A1 (0 LLM CALLS · INDEPENDENT DENOMINATOR)</span></span>
+        <div class="hdr-badges"><span class="badge pass">Unsafe 0 / 1,408</span><span class="badge">352 / Budget + 128 Guards</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">다중 오류 동시 발생과 수리 예산 K∈{0..3} 수렴·충돌 경계</span><span class="en">Multi-Error Co-Occurrence &amp; Repair Budget K∈{0..3} Convergence Boundaries</span></h2>
+    </div>
+    
+          <div class="slide-body cols-2">
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="kpi-row" style="grid-template-columns:repeat(2,1fr);">
+                <div class="kpi"><div class="kpi-val green">0 / 1,408</div><div class="kpi-lbl"><span class="ko">전체 예산 K∈&#123;0..3&#125; 비안전 커밋</span><span class="en">Unsafe commits across all K∈&#123;0..3&#125;</span></div></div>
+                <div class="kpi"><div class="kpi-val">124 / 352</div><div class="kpi-lbl"><span class="ko">K≥1 안전 커밋 (35.23% · K=0은 0/352)</span><span class="en">K≥1 safe commits (35.23% · K=0 is 0/352)</span></div></div>
+              </div>
+              <div class="card accent-navy" style="flex:1;">
+                <div class="card-h3"><span class="ko">세 하위 코호트(96 + 160 + 96 = 352) 수렴 분석</span><span class="en">Three Disjoint Families (96 + 160 + 96 = 352)</span></div>
+                <table class="ppt-tbl">
+                  <thead><tr><th>Family</th><th>Assigned</th><th>K=1 Safe</th><th>Behavior &amp; Boundary</th></tr></thead>
+                  <tbody>
+                    <tr class="hl"><td><code>repairable_multi</code></td><td>96</td><td><strong>96 / 96</strong></td><td><span class="ko">K=1 단 1회로 100% 수렴 (K=2,3 동일)</span><span class="en">100% converge at K=1 (K=2,3 unchanged)</span></td></tr>
+                    <tr><td><code>mixed_partial_clear</code></td><td>160</td><td>28 / 160</td><td><span class="ko">132/160 보류 (보류 중 <strong>132/132</strong> 부분 소거 후 고정점)</span><span class="en">132/160 held (<strong>132/132</strong> partial-clear fixed point)</span></td></tr>
+                    <tr class="bad"><td><code>conflict_pair</code></td><td>96</td><td>0 / 96</td><td><span class="ko">교차 시도 K=3 궤적 주기-2 진동 <strong>96/96</strong> (커밋 0)</span><span class="en">Cross-attempt K=3 period-2 cycle <strong>96/96</strong> (0 commits)</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="card accent-green">
+                <div class="card-h3"><span class="ko">별도 동시 패스 충돌 가드 배터리 (128건)</span><span class="en">Separate Simultaneous Conflict-Guard Battery (128 Cases)</span></div>
+                <ul class="bul pass" style="font-size:13.5px;">
+                  <li><span class="ko">동일 엔티티(<code>ready</code>)가 <code>POLICY_PRECONDITION_OMISSION</code>과 <code>UNSATISFIED_PRECONDITION</code>에 동시 등장할 때, 같은 패스 충돌 가드가 추가 편집을 억제하여 <strong>128/128 (100%)</strong> 즉시 Step-1 고정점으로 동결(비안전 커밋 0건).</span><span class="en">When the same entity (<code>ready</code>) collides across omission and unsatisfied preconditions in one pass, the conflict guard suppresses oscillation and freezes <strong>128/128 (100%)</strong> at Step 1.</span></li>
+                  <li><span class="ko"><strong>네이티브 리플레이 일치:</strong> 1,408회 실행 전체(<code>1,408/1,408</code>)에서 시맨틱 리플레이 동일성 확인.</span><span class="en"><strong>Replay Parity:</strong> <code>1,408/1,408</code> native semantic replay equality verified.</span></li>
+                </ul>
+              </div>
+              <div class="callout warn" style="flex:1;display:flex;align-items:center;">
+                <span class="ko"><strong>설계 함의:</strong> 예산 K를 1에서 3으로 늘려도 상충 제약이 있는 경우 안전 커밋률은 오르지 않으며(35.23% 고정), 대신 충돌 가드가 진동을 1회 만에 차단합니다.</span>
+                <span class="en"><strong>Design Takeaway:</strong> Raising budget K from 1 to 3 does not inflate safe commits (locked at 35.23%); the conflict guard halts oscillation in 1 step.</span>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>scripts/run_multi_error_repair_audit.py · multi-error-repair-audit/results.json · 08 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="8">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">08 · EXTENDED AUDIT A2 (0 LLM CALLS · LATENCY & SCALING)</span><span class="en">08 · EXTENDED AUDIT A2 (0 LLM CALLS · LATENCY & SCALING)</span></span>
+        <div class="hdr-badges"><span class="badge pass">V p95 0.0042 ms</span><span class="badge">N ≤ 2,000 · R ≤ 256</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">그래프 규모 확장에 따른 서브밀리초 인메모리 게이트 vs. 디스크·해싱 비용</span><span class="en">Sub-Millisecond In-Memory Gate Scaling vs. SHA-256 &amp; JSONL Replay Overhead</span></h2>
+    </div>
+    
+          <div class="slide-body cols-7-5">
+            <div class="card accent-navy" style="justify-content:space-between;">
+              <div class="card-h3"><span class="ko">규모별 p95 지연시간 실측 (Python 3.11 인메모리 · N&gt;500 시 활성 arity≤100)</span><span class="en">Measured p95 Latency Across Scales (In-Memory Python · arity≤100 above N=500)</span></div>
+              <table class="ppt-tbl">
+                <thead><tr><th><span class="ko">컴포넌트 / 조건</span><span class="en">Component / Condition</span></th><th><span class="ko">규모</span><span class="en">Scale</span></th><th>p95 (ms)</th><th><span class="ko">계층 구분</span><span class="en">Tier</span></th></tr></thead>
+                <tbody>
+                  <tr class="hl"><td>Validator <code>V</code> (valid candidate)</td><td><code>N = 2,000</code></td><td><strong>0.0042 ms</strong></td><td><span class="ko">인메모리 게이트</span><span class="en">In-memory gate</span></td></tr>
+                  <tr class="hl"><td>Validator <code>V</code> (multi-error)</td><td><code>N = 2,000</code></td><td><strong>0.0751 ms</strong></td><td><span class="ko">인메모리 게이트</span><span class="en">In-memory gate</span></td></tr>
+                  <tr class="hl"><td>Repair <code>ρ</code> (mixed / repairable)</td><td><code>N = 2,000</code></td><td><strong>0.0389 / 0.0317 ms</strong></td><td><span class="ko">인메모리 수리</span><span class="en">In-memory repair</span></td></tr>
+                  <tr><td>Reachability Closure / BFS (<code>locked_chain</code>)</td><td><code>R = 256</code></td><td><strong>0.3121 / 0.4493 ms</strong></td><td><span class="ko">그래프 도달성</span><span class="en">Graph reachability</span></td></tr>
+                  <tr><td>Reachability Closure / BFS (<code>bypass_branch</code>)</td><td><code>R = 256</code></td><td><strong>0.3153 / 0.4775 ms</strong></td><td><span class="ko">그래프 도달성</span><span class="en">Graph reachability</span></td></tr>
+                  <tr><td>SHA-256 Record Verification</td><td><code>N = 2,000</code></td><td><strong>7.0108 ms</strong></td><td><span class="ko">전체 해시 검증</span><span class="en">Full-record hash</span></td></tr>
+                  <tr><td>JSONL Disk Episode Replay</td><td><code>N=100, L=100</code></td><td><strong>881.0375 ms</strong></td><td><span class="ko">디스크 I/O 리플레이</span><span class="en">Disk I/O replay</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="fig-frame" style="flex:1;">
+                <svg viewBox="0 0 445 220" xmlns="http://www.w3.org/2000/svg">
+                  <text x="12" y="22" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="700" fill="#141821">In-Memory Latency Budget vs. 16.6ms (60 FPS Frame)</text>
+                  <g font-family="JetBrains Mono, monospace" font-size="10.5">
+                    <text x="12" y="54" fill="#141821">V (valid, N=2k)</text>
+                    <rect x="165" y="42" width="4" height="16" fill="#18684B"/><text x="176" y="54" fill="#18684B">0.0042 ms</text>
+                    <text x="12" y="84" fill="#141821">ρ (mixed, N=2k)</text>
+                    <rect x="165" y="72" width="14" height="16" fill="#2563EB"/><text x="186" y="84" fill="#1D3B66">0.0389 ms</text>
+                    <text x="12" y="114" fill="#141821">V (multi, N=2k)</text>
+                    <rect x="165" y="102" width="26" height="16" fill="#1D3B66"/><text x="198" y="114" fill="#1D3B66">0.0751 ms</text>
+                    <text x="12" y="144" fill="#141821">Closure (R=256)</text>
+                    <rect x="165" y="132" width="108" height="16" fill="#0F766E"/><text x="280" y="144" fill="#0F766E">0.3121 ms</text>
+                    <text x="12" y="174" fill="#141821">BFS (R=256)</text>
+                    <rect x="165" y="162" width="162" height="16" fill="#9E5E10"/><text x="334" y="174" fill="#9E5E10">0.4775 ms</text>
+                  </g>
+                  <line x1="165" y1="192" x2="385" y2="192" stroke="#DDD8CE"/>
+                  <text x="12" y="208" font-family="JetBrains Mono, monospace" font-size="10.2" fill="#525866">Note: 1.0 ms = 6% of a 16.6 ms 60 FPS frame budget</text>
+                </svg>
+              </div>
+              <div class="callout" style="font-size:12.6px;">
+                <span class="ko"><strong>경계 명시:</strong> 서브밀리초는 인메모리 게이트·수리·도달성에 한정되며, 영수증 SHA-256(7.0 ms)과 100턴 JSONL 디스크 리플레이(881 ms)는 사후 감사 경로로 분리됩니다.</span>
+                <span class="en"><strong>Scope Clarity:</strong> Sub-ms budgets apply to in-memory validation/repair/closure; SHA-256 verification (7.0 ms) &amp; 100-turn JSONL replay (881 ms) run offline.</span>
+              </div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>scripts/run_latency_scaling_benchmark.py · latency-scaling-benchmark/results.json · 09 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="9">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">09 · EXTENDED AUDITS A3 & A4 (0 LLM CALLS)</span><span class="en">09 · EXTENDED AUDITS A3 & A4 (0 LLM CALLS)</span></span>
+        <div class="hdr-badges"><span class="badge pass">A3 4,656/4,656</span><span class="badge pass">A4 9/9 · 1,600/1,600</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">감사 원장 변조 민감도(A3) 및 Godot 4.7.1 1,600틱 무누수 소크(A4)</span><span class="en">Audit Ledger Tamper Sensitivity (A3) &amp; Godot 4.7.1 1,600-Tick Leak-Free Soak (A4)</span></h2>
+    </div>
+    
+          <div class="slide-body cols-2">
+            <div class="card accent-navy">
+              <div class="card-h3"><span>Audit A3 · <code>TR01–TR04</code> 시드 결함 &amp; <code>TR05</code> 점검</span><span class="badge">1,248 Base</span></div>
+              <div class="kpi-row" style="grid-template-columns:1fr 1fr;">
+                <div class="kpi"><div class="kpi-val green">4,656 / 4,656</div><div class="kpi-lbl"><span class="ko">시드 변조 탐지 민감도 (100.00%)</span><span class="en">Seeded-fault sensitivity (100.00%)</span></div></div>
+                <div class="kpi"><div class="kpi-val green">0 / 3,744</div><div class="kpi-lbl"><span class="ko">형식 불변 대조군 오경보 (0.00%)</span><span class="en">Invariance false-alarm rate (0.00%)</span></div></div>
+              </div>
+              <ul class="bul" style="font-size:13.4px;margin-top:4px;">
+                <li><span class="ko"><strong>5종 변조 연산자:</strong> 영수증 제거, 시도 ID 교차, 구버전 해시 바인딩, 상태 판정 반전, 실패 수리 누락을 1,248 기준 레코드에 적용(+비적용 대조군 1,584건 분리 검증).</span><span class="en"><strong>5 Corruption Operators:</strong> Tested receipt removal, attempt swap, stale revision, decision flip &amp; omitted repair (+1,584 inapplicable controls separated).</span></li>
+                <li><span class="ko"><strong>TR05 출처 양방향 검증:</strong> 순방향 <strong>12/12</strong>, 역방향 직접 근거 파일 <strong>10/10</strong> 일치(패키지 공해시 형제 모듈 10개 제외; <code>--public-source-projection</code> 동일).</span><span class="en"><strong>TR05 Bidir Check:</strong> Forward <strong>12/12</strong>, reverse direct-evidence <strong>10/10</strong> (10 co-hashed siblings excluded; clean-CI projection parity).</span></li>
+                <li><span class="ko"><strong>정직한 경계:</strong> 인간 평가자 0명이므로 Krippendorff <code>α = UNDEFINED</code> 유지(전향 <code>TR01–TR06</code> 인간 채점과 분리).</span><span class="en"><strong>Honest Boundary:</strong> Krippendorff <code>α = UNDEFINED</code> (0 human assessors; distinct from unexecuted <code>TR01–TR06</code> rubric).</span></li>
+              </ul>
+            </div>
+            <div class="card accent-green">
+              <div class="card-h3"><span>Audit A4 · Godot 4.7.1 Headless 거부·소크 프로브</span><span class="badge pass">0 Leaks</span></div>
+              <div class="kpi-row" style="grid-template-columns:1fr 1fr;">
+                <div class="kpi"><div class="kpi-val green">9 / 9 (100%)</div><div class="kpi-lbl"><span class="ko">선언 연산 거부 코드 실측</span><span class="en">Declared op refusal codes exercised</span></div></div>
+                <div class="kpi"><div class="kpi-val">0.708 ms</div><div class="kpi-lbl"><span class="ko">정상 상태 step_commit p95</span><span class="en">Steady-state step_commit p95</span></div></div>
+              </div>
+              <ul class="bul pass" style="font-size:13.4px;margin-top:4px;">
+                <li><span class="ko"><strong>신규 미실행 코드 2종 실측:</strong> 기존 미실행이던 <code>OBJECT_NOT_REACHABLE</code>와 <code>QUEST_STAGE_PRECONDITION</code> 포함 9/9종 모두 엔진 거부 및 상태 격리 <strong>11/11건</strong> 확인.</span><span class="en"><strong>Newly Exercised Codes:</strong> Covers <code>OBJECT_NOT_REACHABLE</code> &amp; <code>QUEST_STAGE_PRECONDITION</code> (9/9 codes); <strong>11/11</strong> state isolation.</span></li>
+                <li><span class="ko"><strong>1,600틱(200 에피소드) 소크:</strong> 전수 추적 일치 <strong>1,600/1,600</strong>, 정상 상태 정적 메모리 델타 <strong>−268 B</strong>, 객체·고아 노드 누수 <strong>0건</strong>.</span><span class="en"><strong>1,600-Tick Soak (200 Episodes):</strong> <strong>1,600/1,600</strong> trace consistency, <strong>−268 B</strong> steady-state memory delta, <strong>0</strong> object/orphan leaks.</span></li>
+              </ul>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>seeded-control-audit-v1/results.json · soak-and-refusal-probe-v1/results.json · 10 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="10">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">10 · SURFACE SENTINEL (12/ARM) & EXTENDED AUDIT B (88 CASES)</span><span class="en">10 · SURFACE SENTINEL (12/ARM) & EXTENDED AUDIT B (88 CASES)</span></span>
+        <div class="hdr-badges"><span class="badge warn">Sentinel 6/6 escape</span><span class="badge danger">LOO TF-IDF 58.3% FRR</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">자연어 우회 경계와 사후 어휘 필터의 탐지율–오거부율 딜레마</span><span class="en">Natural-Language Escape Boundary &amp; Post-Filter Recall–FRR Dilemma</span></h2>
+    </div>
+    
+          <div class="slide-body cols-5-7">
+            <div style="display:flex;flex-direction:column;gap:12px;min-height:0;">
+              <div class="card accent-amber">
+                <div class="card-h3"><span class="ko">짝지은 표면 센티널 (조건당 12건 · 총 48건)</span><span class="en">Paired Surface Sentinels (12/Arm · 48 Total)</span></div>
+                <ul class="bul" style="font-size:13.2px;">
+                  <li><span class="ko"><strong>명시 금지(<code>disclosed_facts=[secret]</code>):</strong> 세 의미 게이트 모두 <strong>6/6 보류</strong> (스키마 전용 0/6).</span><span class="en"><strong>Declared Forbidden:</strong> All 3 gated arms hold <strong>6/6</strong> (schema-only 0/6).</span></li>
+                  <li><span class="ko"><strong>미선언 우회(<code>disclosed_facts=[]</code>):</strong> 동일 서술문에서 세 의미 게이트 모두 <strong>6/6 통과</strong> — 구조화 필드 게이트가 자연어 함의까지 검사하지 않음을 정직하게 입증.</span><span class="en"><strong>Undeclared Paraphrase:</strong> All 3 gated arms admit <strong>6/6</strong> — transparently bounding structured-field gating vs. NLI.</span></li>
+                </ul>
+              </div>
+              <div class="card accent-red" style="flex:1;">
+                <div class="card-h3"><span class="ko">Audit B (88건: EN 44 · KO 44 · <code>keeper_secret</code>) 핵심 결론</span><span class="en">Audit B (88 Cases: EN 44 · KO 44 · <code>keeper_secret</code>) Takeaway</span></div>
+                <ul class="bul danger" style="font-size:13px;">
+                  <li><span class="ko"><strong>별칭·패턴 필터:</strong> 은유 우회(<code>implicit_metaphorical</code>) <strong>0/10</strong> 포착.</span><span class="en"><strong>Alias/Pattern Filter:</strong> Catches <strong>0/10</strong> implicit metaphorical leaks.</span></li>
+                  <li><span class="ko"><strong>누출 없는 LOO TF-IDF:</strong> 은유 <strong>9/10</strong>을 잡지만 어휘 인접 정상 문장 8/18(전체 정상 <strong>21/36 = 58.3%</strong>)을 오거부!</span><span class="en"><strong>Leakage-Free LOO TF-IDF:</strong> Catches <strong>9/10</strong> metaphors at <strong>58.3% (21/36)</strong> benign false-rejection!</span></li>
+                  <li><span class="ko">→ <strong>결론:</strong> 안전 필수 비밀은 자유 텍스트 후처리 대신 <strong>구조화 선언 + 통제 템플릿 렌더링</strong>으로 격리해야 함.</span><span class="en">→ <strong>Conclusion:</strong> Safety-critical secrets require structured declarations + controlled templates, not open-prose post-filters.</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="fig-frame">
+              <svg viewBox="0 0 540 310" xmlns="http://www.w3.org/2000/svg">
+                <text x="14" y="24" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#141821">Audit B (88 EN/KO Cases): Escape Recall vs. Benign FRR</text>
+                <g font-family="JetBrains Mono, monospace" font-size="11">
+                  <!-- Legend -->
+                  <rect x="16" y="38" width="12" height="12" fill="#1D3B66"/><text x="33" y="48" fill="#141821">Undeclared Escape Recall (n=36)</text>
+                  <rect x="260" y="38" width="12" height="12" fill="#C43B28"/><text x="277" y="48" fill="#141821">Benign False Rejection (n=36)</text>
+
+                  <!-- Baseline -->
+                  <text x="16" y="96" font-weight="700" fill="#141821">1. Baseline (ID-only)</text>
+                  <text x="16" y="112" font-size="10" fill="#525866">warm p95: 0.0319 ms</text>
+                  <rect x="175" y="82" width="3" height="16" fill="#1D3B66"/><text x="184" y="94" fill="#1D3B66">0.0% (0/36)</text>
+                  <rect x="175" y="102" width="3" height="16" fill="#C43B28"/><text x="184" y="114" fill="#C43B28">0.0% (0/36)</text>
+
+                  <!-- Alias/Pattern -->
+                  <text x="16" y="162" font-weight="700" fill="#141821">2. Alias / Pattern</text>
+                  <text x="16" y="178" font-size="10" fill="#525866">warm p95: 0.0407 ms</text>
+                  <rect x="175" y="148" width="159" height="16" fill="#1D3B66"/><text x="340" y="160" fill="#1D3B66">61.1% (22/36)</text>
+                  <rect x="175" y="168" width="29" height="16" fill="#C43B28"/><text x="210" y="180" fill="#C43B28">11.1% (4/36)</text>
+
+                  <!-- LOO TF-IDF -->
+                  <text x="16" y="228" font-weight="700" fill="#141821">3. LOO TF-IDF/Cosine</text>
+                  <text x="16" y="244" font-size="10" fill="#525866">warm p95: 0.7049 ms</text>
+                  <rect x="175" y="214" width="245" height="16" fill="#18684B"/><text x="426" y="226" fill="#18684B" font-weight="700">97.2% (35/36)</text>
+                  <rect x="175" y="234" width="152" height="16" fill="#C43B28"/><text x="333" y="246" fill="#C43B28" font-weight="700">58.3% (21/36)</text>
+                </g>
+                <rect x="14" y="268" width="512" height="30" rx="4" fill="#F4F1EA" stroke="#DDD8CE"/>
+                <text x="24" y="287" font-family="JetBrains Mono, monospace" font-size="10.2" fill="#141821">Scope: single secret (keeper_secret) · Explicit leaks caught: 16/16</text>
+              </svg>
+              <div class="fig-cap"><span class="ko">폴드 내 자기 IDF 누출을 제거한 LOO 검증에서 높은 우회 탐지율(97.2%)과 정상 발화 오거부율(58.3%) 간 구조적 상충 확인</span><span class="en">Leakage-free out-of-fold LOO reveals severe tradeoff: 97.2% recall triggers 58.3% false rejections on benign utterances</span></div>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>tab:review-surface-sentinels · semantic-escape-filter-audit/results.json · 11 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="11">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">11 · CONTRIBUTION CROSSWALK & NON-POOLED EVIDENCE</span><span class="en">11 · CONTRIBUTION CROSSWALK & NON-POOLED EVIDENCE</span></span>
+        <div class="hdr-badges"><span class="badge">58 Refs (48 Verified, 10 Preprints)</span><span class="badge pass">Crosswalk PASS</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">5대 기여(C1–C5) · 58편 선행연구 · 독립 분모 근거 매핑</span><span class="en">Contributions C1–C5 · 58 References · Non-Pooled Evidence Lanes</span></h2>
+    </div>
+    
+          <div class="slide-body" style="grid-template-rows:1fr auto;gap:12px;">
+            <div class="card accent-navy" style="padding:12px 16px;">
+              <table class="ppt-tbl">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th><span class="ko">핵심 기여</span><span class="en">Contribution</span></th>
+                    <th><span class="ko">선행 주제 (문헌 수)</span><span class="en">Topics (Refs)</span></th>
+                    <th><span class="ko">뒷받침 근거 레인 (독립 분모)</span><span class="en">Supporting Evidence Lanes (Independent Denominators)</span></th>
+                    <th><span class="ko">추론 상한</span><span class="en">Inference Ceiling</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>C1</strong></td><td><span class="ko">신뢰경계 계약</span><span class="en">Trust-boundary contract</span></td><td>T1, T2, T3 (17)</td><td>E1 (13), ENG1 (52+4), 416/arm (1,664), A4 (9/9)</td><td><span class="ko">인코딩 필드 계약 적합성</span><span class="en">Encoded-field contract conformance</span></td></tr>
+                  <tr><td><strong>C2</strong></td><td><span class="ko">검증–수리–커밋 컨트롤러</span><span class="en">Validate–repair–commit</span></td><td>T1, T8 (14)</td><td>E1, ENG1, A1 (352/budget + 128), A2 (p95 &lt;0.08ms), A4 (1,600t)</td><td><span class="ko">동결 사례 메커니즘 동작</span><span class="en">Mechanism behavior on frozen cases</span></td></tr>
+                  <tr><td><strong>C3</strong></td><td><span class="ko">출처 결속 감사·온톨로지</span><span class="en">Audit-linked ontology</span></td><td>T4, T7, T8 (6)</td><td>NPC-DISC-1 (60/60), E3 (43n/210s), A3 (4,656/4,656), Layer-A (194)</td><td><span class="ko">무결성·무회귀·재생</span><span class="en">Integrity, non-regression &amp; replay</span></td></tr>
+                  <tr><td><strong>C4</strong></td><td><span class="ko">배정 완전 계수 하니스</span><span class="en">Assignment-complete harness</span></td><td>T1, T4, T6, T7 (20)</td><td>E1, v5 (20/20, 10 parse fail, 8 gate, 7 goal), 19 cohorts</td><td><span class="ko">설계 사례 누락 없는 집계</span><span class="en">Exact designed-case accounting</span></td></tr>
+                  <tr><td><strong>C5</strong></td><td><span class="ko">반례 유도 연산자 ρ</span><span class="en">Guided repair operator ρ</span></td><td>T1, T8, T9 (8)</td><td>E1 (5/12 ρ), 416/arm (128/260), A1 (96/96 K=1, 132 hold)</td><td><span class="ko">동결 오프라인 수리가능성</span><span class="en">Frozen offline repairability class</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="callout warn">
+              <span class="ko"><strong>보존 및 철회 경계 (Transparency):</strong> 과거 17개+v5 2개 코호트를 전부 인벤토리에 남기며, 원본 영수증이 소실된 과거 Ollama 정량 주장(<code>app:runtime-ollama-feasibility</code>) 및 E2 라이브 스크리닝(14개)은 본문 효능 주장과 활성 분모에서 명시적으로 철회·제외합니다.</span>
+              <span class="en"><strong>Retention &amp; Withdrawal Boundary:</strong> All 19 cohorts remain inventoried; unverified historical Ollama quantitative claims (<code>app:runtime-ollama-feasibility</code>) and historical E2 receipts (14) are explicitly withdrawn from active claims.</span>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>tab:contribution-map · tab:evidence-lanes · tab:artifact-directory-map · 12 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="12">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">12 · SCIENTIFIC DISCIPLINE & INFERENCE CEILING</span><span class="en">12 · SCIENTIFIC DISCIPLINE & INFERENCE CEILING</span></span>
+        <div class="hdr-badges"><span class="badge pass">Strict Evidence Scope</span><span class="badge danger">Zero Overclaiming</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">무엇을 주장하고, 무엇을 명시적으로 주장하지 않는가?</span><span class="en">What TRACE-RPG Claims vs. What It Explicitly Refuses to Claim</span></h2>
+    </div>
+    
+          <div class="slide-body cols-2">
+            <div class="card accent-green">
+              <div class="card-h3"><span class="ko">✔ 논문이 입증·주장하는 바 (Grounded Claims)</span><span class="en">✔ Verified &amp; Claimed Guarantees</span></div>
+              <ul class="bul pass" style="font-size:13.8px;">
+                <li><span class="ko"><strong>결정론적 권한 분리:</strong> 인코딩된 위반 커밋을 <code>0/416</code>·<code>0/1,408</code>로 차단하고, 유효 사례(<code>156/156</code>)와 구조 서명(<code>11/11</code>)을 무손실 보존함.</span><span class="en"><strong>Authority Separation:</strong> Blocks encoded violations (<code>0/416</code>, <code>0/1,408</code>) while preserving valid cases (<code>156/156</code>) &amp; signatures (<code>11/11</code>).</span></li>
+                <li><span class="ko"><strong>비파괴 수리 경계:</strong> 상태 미열람 <code>ρ</code>로 <code>128/260</code>(A1 <code>96/96</code>) 복구, 충돌 시 상태 불변 보류 및 가드 <code>128/128</code> 진동 억제.</span><span class="en"><strong>Safe Repair Bound:</strong> Blind-state <code>ρ</code> recovers <code>128/260</code> (A1 <code>96/96</code>) and freezes safely on conflicts (<code>128/128</code>).</span></li>
+                <li><span class="ko"><strong>무회귀 출처 관측:</strong> 읽기 전용 온톨로지 도입 시 <code>60/60</code> 무회귀, 변조 탐지 <code>4,656/4,656</code>, Godot <code>1,600</code>틱 무누수.</span><span class="en"><strong>Non-Regressive Observation:</strong> <code>60/60</code> parity with read-only ontology, <code>4,656/4,656</code> tamper detection, <code>0</code> Godot leaks.</span></li>
+                <li><span class="ko"><strong>서브밀리초 오버헤드 &amp; 한계 규명:</strong> 인메모리 <code>&lt;0.08 ms</code>(N=2k), 사후 어휘 필터의 <code>58.3%</code> 오거부 상충 실증.</span><span class="en"><strong>Sub-ms Overhead &amp; Bound Proof:</strong> In-memory <code>&lt;0.08 ms</code> (N=2k) and empirical <code>58.3%</code> benign FRR proof on open-prose filters.</span></li>
+              </ul>
+            </div>
+            <div class="card accent-red">
+              <div class="card-h3"><span class="ko">✘ 명시적 비주장 경계 (Explicit Non-Claims)</span><span class="en">✘ Explicit Non-Claims (Not Established)</span></div>
+              <ul class="bul danger" style="font-size:13.8px;">
+                <li><span class="ko"><strong>LLM 세대·모델 우열 미주장:</strong> Native 8건(<code>controller-v3→v4</code> 교란, 신원 미확인)과 v5 20건(리비전 미상)으로 모델 순위를 매기지 않음.</span><span class="en"><strong>No LLM Rankings:</strong> Native 8 rows (<code>v3→v4</code> confound, unverified identity) &amp; v5 20 rows never rank models.</span></li>
+                <li><span class="ko"><strong>온톨로지 프롬프트 생성 우월성 미주장:</strong> 프롬프트에 온톨로지를 넣었을 때 목표 달성률이 오른다는 효능을 주장하지 않음.</span><span class="en"><strong>No Ontology Prompt Efficacy:</strong> Does not claim ontology prompts improve generative goal completion rates.</span></li>
+                <li><span class="ko"><strong>인간 플레이어 효능·TR 인간 신뢰도 미주장:</strong> 재미·몰입·정서(affect)·<code>TR01–TR06</code> 인간 평점(<code>α = UNDEFINED</code>)은 미실행 상태.</span><span class="en"><strong>No Human Efficacy / Inter-Rater Score:</strong> Fun, affect, and human <code>TR01–TR06</code> scoring (<code>α = UNDEFINED</code>) remain unexecuted.</span></li>
+                <li><span class="ko"><strong>자유 자연어 완벽 차단 미주장:</strong> 미선언 패러프레이즈는 구조화 선언+통제 템플릿의 소관이며, 자유 언어 NLI 안전성을 보장하지 않음.</span><span class="en"><strong>No Open-Prose NLI Guarantee:</strong> Undeclared paraphrases are handled by structured templates, not claimed solved by free-text gating.</span></li>
+              </ul>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>Sec. 7 Discussion, Threats to Validity & Artifact Scope · 13 / 14</span>
+    </div>
+    
+        </section>
+<section class="slide" data-index="13">
+          
+    <div>
+      <div class="slide-hdr">
+        <span class="eyebrow"><span class="ko">13 · REPRODUCIBILITY GATES & CONFIRMATORY ROADMAP</span><span class="en">13 · REPRODUCIBILITY GATES & CONFIRMATORY ROADMAP</span></span>
+        <div class="hdr-badges"><span class="badge pass">All Local CI Gates PASS</span><span class="badge warn">Prospective 0/180 Blocked</span></div>
+      </div>
+      <h2 class="slide-h2"><span class="ko">자동 검증 게이트 전수 통과 및 후속 확증 연구 로드맵</span><span class="en">All Automated Reproducibility Gates Passed &amp; Confirmatory Roadmap</span></h2>
+    </div>
+    
+          <div class="slide-body cols-2">
+            <div class="card accent-green">
+              <div class="card-h3"><span class="ko">완료된 논문·코드·CI 검증 게이트 (Commit 1cd6afa)</span><span class="en">Completed Paper, Code &amp; CI Gates (Commit 1cd6afa)</span></div>
+              <ul class="bul pass" style="font-size:13.5px;">
+                <li><span class="ko"><strong>Layer-A 논문 검증:</strong> <code>verify_paper_claims.py --public-source-projection</code> 통과 (EN <code>21/21</code>, KO <code>21/21</code>, 보충 <code>1/1</code>, <code>194</code> SHA-256 영수증 전 셀 대조).</span><span class="en"><strong>Layer-A Claim Verifier:</strong> EN <code>21/21</code>, KO <code>21/21</code>, supplement <code>1/1</code> tables + <code>194</code> SHA-256 receipts verified cell-by-cell.</span></li>
+                <li><span class="ko"><strong>자동 회귀 테스트:</strong> 신규 <code>57</code>건(확장 감사) + <code>85</code>건(클레임·변조 음성 대조) + <code>129</code>건(출판·LaTeX·Godot) = <strong>271+ 테스트 통과</strong>.</span><span class="en"><strong>Regression Suites:</strong> <code>57</code> extended-audit + <code>85</code> claim-mutation + <code>129</code> publication/LaTeX/Godot = <strong>271+ tests passed</strong>.</span></li>
+                <li><span class="ko"><strong>빌드 &amp; 정적 검증:</strong> EN 25p(<code>pdflatex</code>)·KO 25p(<code>xelatex</code>) Overfull/에러 0건, <code>ruff</code> 162파일, <code>lint_wiki.py</code> 83페이지 클린 통과.</span><span class="en"><strong>Builds &amp; Static Gates:</strong> EN 25p (<code>pdflatex</code>) &amp; KO 25p (<code>xelatex</code>) 0 errors/Overfull, <code>ruff</code> (162 files) &amp; <code>lint_wiki.py</code> (83 pages) PASS.</span></li>
+              </ul>
+            </div>
+            <div class="card accent-navy">
+              <div class="card-h3"><span class="ko">후속 확증 연구 트랙 (Un-executed Next Steps)</span><span class="en">Next Confirmatory Research Tracks (Planned)</span></div>
+              <ul class="bul" style="font-size:13.5px;">
+                <li><span class="ko"><strong>1. 무교란 다중 모델 비교 (질문 A &amp; C):</strong> 사전 등록된 <code>prospective-pilot-20261103</code> (Runtime <code>60</code> + Dev <code>120</code> = <code>180</code>단위, 현재 9개 선결 게이트에 의해 <code>0/180 NOT_RUN/BLOCKED</code>)의 신원·크레딧 게이트 해소 후 실행.</span><span class="en"><strong>1. Confirmatory Multi-Model Runs (Q A &amp; C):</strong> Pre-registered 180-unit protocol (Runtime <code>60</code> + Dev <code>120</code>, currently <code>0/180 NOT_RUN/BLOCKED</code> across 9 gates) once identity &amp; isolation pass.</span></li>
+                <li><span class="ko"><strong>2. 블라인드 다중 평가자 TR01–TR06 채점:</strong> 2인 이상 독립 평가자 채점으로 Krippendorff α 산출.</span><span class="en"><strong>2. Blinded Multi-Rater TR01–TR06:</strong> Multi-assessor scoring to establish Krippendorff α beyond <code>UNDEFINED</code>.</span></li>
+                <li><span class="ko"><strong>3. IRB 기반 인간 플레이어 연구 (<code>SL-HYP-001</code>):</strong> 원장 가독성, 규칙 학습 및 체감 지연 수용성 검증.</span><span class="en"><strong>3. IRB Human Player Study (<code>SL-HYP-001</code>):</strong> Controlled evaluation of ledger readability, rule learning, and perceived latency.</span></li>
+              </ul>
+            </div>
+          </div>
+          
+    <div class="slide-ftr">
+      <span>TRACE-RPG · Hongik Univ. Game Design · Commit 1cd6afa</span>
+      <span>verify_paper_claims.py · prospective-pilot-20261103 · SL-HYP-001 · 14 / 14</span>
+    </div>
+    
+        </section>
+    </div>
+  </main>
+  <aside class="notes-drawer" id="notesDrawer">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#93C5FD;font-weight:700;margin-bottom:6px;">SPEAKER NOTES (Press N to close)</div>
+    <div id="notesBody"></div>
+  </aside>
+  <section class="grid-modal" id="gridModal" aria-label="Slide Sorter"></section>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <script>
+(function() {
+  const TITLES = ["01 · 표지 / Cover", "02 · 문제 정의와 집합 분리 / Problem & Authorization Sets", "03 · 제안–커밋 아키텍처 / Proposal-to-Commit Pipeline", "04 · 읽기 전용 온톨로지 & 2계층 재현성 / Ontology & Reproducibility", "05 · 핵심 오프라인 경계 감사 (416/군) / Offline Boundary Audit", "06 · 배정 완전 계수 (v5, 20건) / Assignment-Complete Accounting", "07 · Godot 엔진 적합성 및 통합 관측 / Engine Conformance & Dev Case", "08 · 확장 감사 A1: 다중 오류 수렴 / Extended Audit A1", "09 · 확장 감사 A2: 지연·확장성 / Extended Audit A2", "10 · 확장 감사 A3 & A4: 추적성 변조 및 Godot 소크 / Audits A3 & A4", "11 · 자연어 우회 경계와 사후 필터 한계 / Surface Sentinel & Audit B", "12 · 기여–참고문헌–근거 매핑 / Contribution & Evidence Crosswalk", "13 · 주장하는 바 vs. 명시적 비주장 / Claims vs. Explicit Non-Claims", "14 · 검증 완료 및 향후 로드맵 / Verification Gates & Roadmap"];
+  const NOTES = ["발표 개요: 제안 권한과 커밋 권한의 물리적 분리, 독립 분모 근거, 2계층 재현성을 요약합니다.", "핵심 논지: JSON 스키마 통과나 사실 일치만으로는 현재 상태에서의 실행·발화 권한과 목표 달성을 보장할 수 없습니다.", "아키텍처(C1, C2): 모든 생성 제안은 엄격 파서와 7개 결정론적 검사를 통과해야만 상태를 갱신하며, 실패 시 이전 상태를 보존합니다.", "C3 기여: 8역할 온톨로지는 상태 변경 권한 없이 근거만 연결하며(60/60 무회귀), 재현성을 0-LLM 계층과 영수증 감사 계층으로 분리합니다.", "핵심 결과(C1, C5): 스키마 전용의 무효 커밋 260/416을 0/416으로 차단하면서, 반례 유도 수리 ρ가 무효 후보 중 128/260을 적법 복구합니다.", "C4 기여: 응답 수신, 구문 파싱 실패(10/20), 의미 게이트 통과(8/10), 목표 달성(7/20)을 누락이나 부풀림 없이 분리 계수합니다.", "ENG1 및 DEV-CASE: Godot 4.7.1 플레이어블 슬라이스(52/52 + 4/4 + 5/5)와 단일 대시보드 통합 사례(n=1, 62/62)를 검증합니다.", "확장 감사 A1(0 LLM calls): 352건/예산(총 1,408회)에서 비안전 커밋 0/1,408건을 유지하며 다중 오류 수렴과 상충 진동 경계를 실측했습니다.", "확장 감사 A2: 인메모리 Python 검증기·수리 연산자·도달성 폐쇄는 N=2,000, R=256에서도 모두 1ms 미만(서브밀리초)입니다.", "확장 감사 A3·A4: 원장 시드 변조 4,656/4,656(100%) 탐지·오경보 0건, Godot 4.7.1 헤드리스 선언 거부 9/9(100%) 및 1,600틱 무누수 소크를 확인했습니다.", "표면 센티널(12/군)과 Audit B(88건): 누출 없는 LOO TF-IDF는 97.2% 탐지 시 정상 발화 58.3%를 오거부합니다. 구조화 선언과 통제 템플릿이 필수인 이유입니다.", "5대 기여(C1–C5)는 58편 선행연구 주제(T1–T9)와 독립 분모 근거 레인에 일대일로 결속됩니다. 서로 다른 분모는 절대 합산하지 않습니다.", "가장 중요한 학술적 방어선: 이 논문은 데이터가 입증한 계약·차단·무회귀·오버헤드만 주장하며, 모델 우열·온톨로지 프롬프트 효능·인간 몰입도는 주장하지 않습니다.", "최종 요약: Layer-A(21/21 표, 194 영수증), 271+ 테스트, 한·영 25쪽 클린 빌드가 완료되었으며 향후 전향 파일럿(0/180)과 인간 평가가 예정되어 있습니다."];
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+
+  const counterEl = document.getElementById('slideCounter');
+  const progressEl = document.getElementById('progressFill');
+  const notesBody = document.getElementById('notesBody');
+  const notesDrawer = document.getElementById('notesDrawer');
+  const gridModal = document.getElementById('gridModal');
+  const langBtn = document.getElementById('langBtn');
+  const viewportEl = document.getElementById('slideViewport');
+  const stageEl = document.getElementById('stageWrap');
+
+  function updateScale() {
+    const vw = stageEl.clientWidth || window.innerWidth;
+    const vh = stageEl.clientHeight || (window.innerHeight - 48);
+    const padX = vw < 768 ? 16 : 40;
+    const padY = vh < 600 ? 12 : 28;
+    const scale = Math.min((vw - padX) / 1280, (vh - padY) / 720, 1.45);
+    document.documentElement.style.setProperty('--deck-scale', String(Math.max(scale, 0.2)));
+  }
+
+  function renderGrid() {
+    gridModal.innerHTML = TITLES.map((t, i) => `
+      <div class="grid-item ${i === current ? 'current' : ''}" data-idx="${i}">
+        <span class="grid-num">SLIDE ${String(i + 1).padStart(2, '0')} / ${total}</span>
+        <span class="grid-ttl">${t}</span>
+      </div>
+    `).join('');
+    gridModal.querySelectorAll('.grid-item').forEach((el) => {
+      el.addEventListener('click', () => {
+        goTo(Number(el.dataset.idx));
+        gridModal.classList.remove('open');
+      });
+    });
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(total - 1, idx));
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    counterEl.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+    progressEl.style.width = `${((current + 1) / total) * 100}%`;
+    notesBody.textContent = NOTES[current];
+    if (gridModal.classList.contains('open')) renderGrid();
+    history.replaceState(null, '', `#slide-${current + 1}`);
+  }
+
+  function toggleLang() {
+    const next = document.documentElement.getAttribute('data-lang') === 'ko' ? 'en' : 'ko';
+    document.documentElement.setAttribute('data-lang', next);
+    langBtn.textContent = next === 'ko' ? 'KO / EN' : 'EN / KO';
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  langBtn.addEventListener('click', toggleLang);
+  document.getElementById('gridBtn').addEventListener('click', () => {
+    gridModal.classList.toggle('open');
+    if (gridModal.classList.contains('open')) renderGrid();
+  });
+  document.getElementById('notesBtn').addEventListener('click', () => notesDrawer.classList.toggle('open'));
+  document.getElementById('fullBtn').addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+    else if (e.key.toLowerCase() === 'g') { gridModal.classList.toggle('open'); if (gridModal.classList.contains('open')) renderGrid(); }
+    else if (e.key.toLowerCase() === 'n') { notesDrawer.classList.toggle('open'); }
+    else if (e.key.toLowerCase() === 'l') { toggleLang(); }
+    else if (e.key.toLowerCase() === 'f') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+    else if (e.key.toLowerCase() === 'p') { window.print(); }
+    else if (e.key === 'Escape') { gridModal.classList.remove('open'); notesDrawer.classList.remove('open'); }
+  });
+
+  let touchStartX = 0;
+  stageEl.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  stageEl.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 45) goTo(dx < 0 ? current + 1 : current - 1);
+  }, { passive: true });
+
+  window.addEventListener('resize', updateScale);
+  const hashMatch = location.hash.match(/^#slide-(\d+)$/);
+  if (hashMatch) current = Math.max(0, Math.min(total - 1, Number(hashMatch[1]) - 1));
+  updateScale();
+  goTo(current);
+})();
+</script>
+</body>
+</html>

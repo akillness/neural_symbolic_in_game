@@ -7,6 +7,7 @@
 [![validate](https://github.com/akillness/neural_symbolic_in_game/actions/workflows/validate.yml/badge.svg)](https://github.com/akillness/neural_symbolic_in_game/actions/workflows/validate.yml)
 [![Paper · EN PDF](https://img.shields.io/badge/Paper-EN%20PDF-b31b1b)](neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf)
 [![Paper · KO PDF](https://img.shields.io/badge/Paper-KO%20PDF-b31b1b)](neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf)
+[![Slides · 16:9 HTML](https://img.shields.io/badge/Slides-16%3A9%20HTML-0f172a)](neuro-symbolic-interactive-game-research-2026/docs/slides/trace-rpg-presentation.html)
 [![Live dashboard](https://img.shields.io/badge/Live-dashboard%20%2B%20game-2ea44f)](https://sealed-lighthouse-trace-rpg.vercel.app)
 [![Play in browser](https://img.shields.io/badge/Play-game%20only-1f6feb)](https://sealed-lighthouse-trace-rpg.vercel.app/public/)
 [![Godot 4.7.1](https://img.shields.io/badge/Godot-4.7.1-478cbf)](neuro-symbolic-interactive-game-research-2026/game-track/godot/README.ko.md)
