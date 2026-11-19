@@ -1,0 +1,152 @@
+{
+  "release_id": "2026-11-19-phase6-venue-bundles",
+  "overleaf_cli_or_api_available": false,
+  "overleaf_delivery_mode": "standalone-verified-overleaf-zips",
+  "phase5_green_venues_preserved": [
+    "aiide",
+    "ieee-cog",
+    "fdg",
+    "aamas"
+  ],
+  "phase6_upgraded_venues": {
+    "elsevier-kbs-ec": {
+      "phase5_status": "YELLOW",
+      "phase6_status": "GREEN",
+      "scope": "Systems & Formal-KR Q1 archival paper (N=0 human evaluation honestly disclosed)",
+      "blockers_resolved": [
+        "P18 live external KR solvers (Clingo 5.8.3 ASP, Z3 5.4.1.0 SMT, RDFLib 7.6.0 + OWLRL 7.6.2 OWL 2 RL) with 0/120 & 1,080/1,080 exact equivalence",
+        "P18B large-scale KB benchmark (R<=256, d<=10, 3 topologies, 1,080 instances) with empirical Z3 R>=128 and OWL 2 RL cubic frame-budget cliffs",
+        "Expanded to 12p archival journal length (~8.5p body, errs=0, type3=0, overfull=0, anon_leaks=0)"
+      ],
+      "remaining_honest_disclosures": [
+        "TR01-TR06 human raters remain N=0 (AWAITING_HUMAN_RATERS); prospective-pilot remains 0/180 (NOT_RUN/BLOCKED)"
+      ],
+      "overleaf_zip": "elsevier-kbs-ec-overleaf.zip",
+      "zip_bytes": 1422697,
+      "zip_sha256": "e3859cb7f9cbb275478a65ecdfb95c0a3bf7e78fa598c1d6c653cd5aecd2a538",
+      "zip_files": 22,
+      "tmp_compile_verification": {
+        "main": {
+          "pages": 12,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0
+        },
+        "main_anon": {
+          "pages": 12,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0,
+          "anon_leaks": 0
+        },
+        "main_ko": {
+          "pages": 11,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0
+        }
+      }
+    },
+    "ieee-tog": {
+      "phase5_status": "YELLOW",
+      "phase6_status": "GREEN",
+      "scope": "Game-Engine Systems & Runtime-Verification archival paper (N=0 human playtesting honestly disclosed)",
+      "blockers_resolved": [
+        "P19A authentic headless Godot 4.7.1 across all 5 worlds (120/120 cross-runtime parity, 0 divergences, 5/5 world episodes SHA-256 matched)",
+        "P19B 5,000-tick 5-tier large-scale Godot 4.7.1 soak (R<=128, A<=16, d<=8; 0 unsafe commits, 0 leaks, max tick 0.074ms = 0.44% of 60Hz budget)",
+        "Cross-engine 60/120Hz frame-budget analysis vs Python/Clingo/Z3/OWL 2 RL + expanded to 9p IEEEtran archival length"
+      ],
+      "remaining_honest_disclosures": [
+        "TR01-TR06 human playtesting remains N=0 (AWAITING_HUMAN_RATERS); prospective-pilot remains 0/180 (NOT_RUN/BLOCKED)"
+      ],
+      "overleaf_zip": "ieee-tog-overleaf.zip",
+      "zip_bytes": 1415624,
+      "zip_sha256": "9d103cc51324703726f6c70148a8cdf47ff67e7f75352214bc2b5b51bf940c1f",
+      "zip_files": 22,
+      "tmp_compile_verification": {
+        "main": {
+          "pages": 9,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0
+        },
+        "main_anon": {
+          "pages": 9,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0,
+          "anon_leaks": 0
+        },
+        "main_ko": {
+          "pages": 8,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0
+        }
+      }
+    },
+    "neurips-db": {
+      "phase5_status": "YELLOW",
+      "phase6_status": "YELLOW_TECHNICAL_READY_HUMAN_GOLD_OPEN",
+      "scope": "Datasets & Benchmarks Track (all technical/scale/Godot packaging blockers resolved; zero-inflation note on N=0 human gold labels & single-vendor P15-P17 traces)",
+      "blockers_resolved": [
+        "P20 1,200-case 6-domain x 5-stratum x EN/KO adversarial escape benchmark (anti-shortcut Jaccard 0.0630, 5 LODO baselines up to 97.17% acc / 1.25% S4 FRR, Cochran Q=871.39)",
+        "P18 1,080-instance R<=256 multi-solver KR scaling benchmark + P19 5-world + 5,000-tick Godot 4.7.1 runtime benchmark",
+        "Supplement v6 bundles 4 anonymized executable Godot 4.7.1 scripts verified live via `reproduce_benchmark.py --with-godot` (0 PII leaks, Croissant v6 30/30)",
+        "7p main body strictly within <=9p NeurIPS D&B cap, exact D&B footer, errs=0, type3=0, overfull=0, anon_leaks=0"
+      ],
+      "remaining_honest_disclosures": [
+        "TR01-TR06 human gold labels remain N=0 (AWAITING_HUMAN_RATERS); prospective-pilot remains 0/180 (NOT_RUN/BLOCKED)",
+        "P15-P17 direct HTTPS API traces remain single-vendor (Anthropic), supplemented by vendor-agnostic deterministic/multi-solver/multi-runtime P18-P20"
+      ],
+      "supplement_zip": "neurips-db-supplemental-benchmark.zip",
+      "supplement_bytes": 368528,
+      "supplement_sha256": "8655f7cf2e9b318672ac184b4d25a844dd7a98e4dfb87faeaafb43f635ff5243",
+      "overleaf_zip": "neurips-db-overleaf.zip",
+      "zip_bytes": 1419709,
+      "zip_sha256": "bd13f1b5250535377d980adbfd59c93ed13d88a03e4a72dacf8aa508daf8e1d2",
+      "zip_files": 23,
+      "tmp_compile_verification": {
+        "main": {
+          "pages": 14,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0
+        },
+        "main_anon": {
+          "pages": 14,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0,
+          "anon_leaks": 0
+        },
+        "main_ko": {
+          "pages": 12,
+          "type3": 0,
+          "errs": 0,
+          "overfull": 0
+        }
+      }
+    }
+  },
+  "jev_advisory_check": {
+    "profile": "jeo",
+    "backend": "local",
+    "model": "qev-0.8b-text-Q8_0",
+    "tier": "local_calibrated",
+    "status": "NON_SCIENTIFIC_ADVISORY_ONLY",
+    "quality_grade": "excellent",
+    "quality_confidence": 0.9581,
+    "failure_category": "none",
+    "failure_confidence": 0.8509
+  },
+  "truthfulness_gates": {
+    "tr_human_eval_n": 0,
+    "tr_human_eval_status": "AWAITING_HUMAN_RATERS",
+    "prospective_pilot_20261103_status": "0/180 NOT_RUN/BLOCKED",
+    "src_nesy_game_untouched": true,
+    "game_track_godot_untouched": true,
+    "pyproject_and_uv_lock_untouched": true,
+    "references_bib_untouched": true
+  }
+}

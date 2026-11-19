@@ -1,0 +1,81 @@
+\section{벤치마크 스위트 구성, 큐레이션 및 유지보수}\label{sec:db-composition}
+\system{}는 동결된 핵심부(\texttt{src/nesy\_game/*.py}, 20/20 SHA-256 불변)와 \texttt{nesy\_game.multihop}을 기반으로 구성된 무네트워크 완전 재현 벤치마크 스위트이다. Gebru 등~\cite{gebru2021datasheets}의 \texttt{DATASHEET\_v6.md} 및 ML Commons Croissant~1.0~\cite{akhtar2024croissant}(\texttt{croissant\_trace\_rpg\_benchmark\_v6.json}) 메타데이터 체계를 따르며, v6 아카이브(Supplement v6, \texttt{DATASHEET\_v6.md}, Croissant v6, \texttt{reproduce\_benchmark.py --with-godot} 포함 익명화된 실행 가능 Godot~4.7.1 스크립트; PII·기밀 유출 0건)는 결정론, 솔버, 엔진, API 트랙 전반의 검증된 \texttt{FileObject} 자산을 \textbf{MIT}(검증 하네스, 엔진 실행기, 오라클 코드) 및 \textbf{CC BY 4.0}(트레이스, 구조화 퀘스트 명세, 평가 영수증) 이중 라이선스로 색인한다. 웹 크롤링이나 사용자 유래 텍스트는 일체 포함되지 않는다.
+
+\begin{table}[!tbp]
+\caption{결정론, 솔버, 엔진 재생 및 API 코호트 전반의 벤치마크 스위트 구성 (Croissant~1.0 v6)}
+\label{tab:phase6-db-comp}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.28\columnwidth}c>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{스위트 파티션} & \textbf{규모} & \textbf{스키마, 데이터 출처 및 격리 규칙} \\
+\midrule
+결정론 유한 그래프 & 1,664 + 48 & 32개 그래프 설정 $\times$ 13후보 $\times$ 4실험군 + 표면 센티널; BFS 오라클. \\
+확장 감사 (\textbf{A1}--\textbf{A4}, \textbf{B}) & 1,408 + 1,600t & 다중 오류 $K{\le}3$, $N{\le}2000$ 스케일링, 4,656 결함, Godot 장기 실행, 88 한/영 B. \\
+Datalog 깊이 스케일링 (\textbf{P9}) & 480건 & 절차적 $R{\in}\{8..64\}\times d{\in}\{1..5\}$ DAG; 상향 고정점 + BFS. \\
+다중 스케일 KR 코퍼스 (\textbf{P18}) & 1,080건 & $R{\in}\{8..256\}, d{\in}\{1..10\}$, 3개 위상; Clingo~5.8.3, Z3~5.4.1.0, OWL~2~RL. \\
+Godot~4.7.1 런타임 장기 실행 (\textbf{P19}) & 120 + 5,000t & 5개 월드 $\times$ 24행동 패리티(120/120) + 5,000틱 5계층 다중 스케일 장기 실행. \\
+이중언어 탈출 스위트 (\textbf{P20}) & 1,200건 & 6개 도메인 $\times$ 5계층 S1--S5 $\times$ 한/영 $\times$ 20건; SHA-256 \texttt{1af8be38...}. \\
+5단계 폐루프 MAS (\textbf{P15}) & 105회 & 3개 Claude~5.5 계층 $\times$ 5개 월드 $\times$ 7개 독립 실험군; \texttt{output\_config}. \\
+5단계 API 요인+Godot (\textbf{P16}) & 60 + 21회 & 공인 API(\texttt{temp} 생략) + Godot~4.7.1; 0/180 \texttt{20261103}과 비합산. \\
+5단계 통합 탈출 (\textbf{P17}) & 540평가 & 180건 한/영 $\times$ 3개 Claude~5.5 계층; 결정론 단축평가 0건. \\
+4단계 교차 모델군 (\textbf{P11}--\textbf{P14}) & 30 / 90 / 42 / 720 & 비시드 CLI (Sonnet~5.5, GPT-OSS~120B, Gemini~4~Hydrogen/3.8~Flash). \\
+격리 보류 / 미실행 코호트 & \texttt{N=0} / 0/180 & 블라인드 \texttt{TR01--TR06}(\texttt{AWAITING\_HUMAN\_RATERS}) 및 미실행 \texttt{20261103} 제외. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{큐레이션, 인증 및 유지보수.} 결정론적 과제는 심볼릭 퀘스트 상태 기계(${\le}8$개 방, ${\le}3$명 행위자)와 한/영 발화가 결합된 $R{\le}256, d{\le}10$ 절차적 다중 스케일 DAG에서 유도된다. 직접 HTTPS 5단계 트레이스는 엄격한 구조화 JSON 스키마 하에 \texttt{served\_model}, SHA-256 해시된 메시지/요청 ID, 토큰 수 및 HTTP 지연시간을 기록하며(Claude~5.5에서 폐기된 \texttt{temperature} 생략), 모든 파싱/HTTP 실패는 전체 분모에 보존된다. 5단계 실시간 API 트레이스(\textbf{P15}--\textbf{P17})는 단일 벤더(Claude~5.5) 기반임을 투명하게 공개하며, 이는 다중 모델군 CLI 트레이스(\textbf{P11}--\textbf{P14}) 및 벤더 독립적 심볼릭/엔진 정답(\textbf{P9}, \textbf{P18}, \textbf{P19}, \textbf{P20})과 상호 보완적으로 배치된다. 특히 블라인드 36개 항목 패킷 \texttt{TR01--TR06}($N{=}0$ 인간 골드 라벨; 상태 \texttt{AWAITING\_HUMAN\_RATERS})과 과거 미실행 파일럿 \texttt{20261103}($0/180$; 상태 \texttt{NOT\_RUN/BLOCKED})은 자동화 리더보드에서 엄격히 격리되어 가짜 인간 라벨 생성을 원천 차단한다. 오프라인 재현성은 \texttt{python3 reproduce\_benchmark.py}($<5$초) 및 실행 가능 Godot~4.7.1 스크립트(\texttt{--with-godot})로 검증된다.
+
+\section{재현 가능한 벤치마크 리더보드}\label{sec:eval}
+\subsection{교차 트랙 차단, 다중 스케일 KR 및 Godot~4.7.1 장기 실행}\label{sec:phase4-compact}
+기준선 게이트, 외부 안전 비교군(\textbf{Safe-RL Action Masking}~\cite{alshiekh2018shield}, \textbf{NeMo-style Colang Output Rails}~\cite{rebedea2023nemo}), 다중 스케일 KR 솔버(\textbf{Clingo~5.8.3}~\cite{gebser2019clingo}, \textbf{Z3~5.4.1.0}~\cite{demoura2008z3}, \textbf{OWL~2~RL}~\cite{motik2012owl2profiles}), Godot~4.7.1 엔진 재생 및 신경망 모델을 통합 재실행 검증 트랙에서 평가한다(표~\ref{tab:phase4-compact}).
+
+\begin{table}[!tbp]
+\caption{교차 트랙 벤치마크 리더보드: 결정론 (\textbf{P9}), 다중 스케일 KR (\textbf{P18}), Godot 장기 실행 (\textbf{P19}), 공인 API (\textbf{P15}--\textbf{P17}) 및 3모델군 CLI (\textbf{P11}--\textbf{P14})}
+\label{tab:phase4-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.28\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{벤치마크 트랙} & \textbf{측정 리더보드 결과 (95\% Wilson CI; $Q$ / McNemar $p$)} \\
+\midrule
+경계 및 감사 (0-LLM) & 시맨틱 게이트 비인가 \textbf{0/416}건 (스키마 260/416); $\rho$ 수리 128/260건; Godot \textbf{A4} 1,600/1,600틱, p95 0.708\,ms; \textbf{P1} 120건 \textbf{100\%} 대 50.83\%. \\
+\textbf{P9} Datalog 깊이 (480) & \texttt{flat\_1hop}: 46.67\% (256누출); \texttt{2hop}: 60.00\% (192); \texttt{nesy\_game.multihop}: 중앙값 $\le$7.12\,$\mu$s에서 \textbf{100.0\% [99.2, 100]} ($Q{=}1100.19$). \\
+\textbf{P18} 다중 스케일 KR (1,080) & $R{\in}\{8..256\}, d{\in}\{1..10\}$, 3개 위상: \texttt{nesy\_game}(p50 0.032\,ms, 100\% 60\,Hz), Clingo~5.8.3~\cite{gebser2019clingo}(p50 1.268\,ms, 100\% 60\,Hz), Z3~5.4.1.0~\cite{demoura2008z3}(p50 7.885\,ms, 68.43\% 60\,Hz; $R{=}128$에서 11.67\%, $R{=}256$에서 0\% 절벽) 전반 \textbf{1080/1080 (100\%)} 완전 동치; 165/165건 공인 OWL~2~RL~\cite{motik2012owl2profiles}(120 P18A + 45 계층화 P18B, $R{=}64$에서 114.5$\to$19,696\,ms, $R{\ge}128$에서 $>20$초 3차 절벽) 대 \texttt{flat\_1hop} 50.0\%, \texttt{bounded\_2hop} 58.33\%; Cochran's $Q{=}1948.24$ ($p < 10^{-300}$). \\
+\textbf{P19} Godot~4.7.1 장기 실행 & \textbf{120/120} 5개 월드 패리티(발산 0건, p50 5.0\,$\mu$s, p95 8.0\,$\mu$s) + 5,000틱 5계층 장기 실행($R{\in}\{8..128\}$, 3,750 커밋, 1,250 $\rho$수리, 1,875 차단 누출, 비인가/누출 \textbf{0건}, 최대 틱 0.074\,ms, 100\% 60/120\,Hz); Supplement v6에 실행 가능 스크립트 수록. \\
+\textbf{P15} 폐루프 MAS (105) & 독립 5턴 궤적 (\textbf{105/105} 재실행): Safe-RL 대리~\cite{alshiekh2018shield} 0/15 목표, 16/61 비인가; NeMo 대리~\cite{rebedea2023nemo} 1/15, 15/61; flat 12/15, 4/66; \texttt{multihop\_k0} 13/15, \textbf{15/15} 무누출, \textbf{0/69}; \texttt{rho\_k2} 14/15 (정리~2에 따라 $\rho_{\mathrm{rep}}{=}0$), \textbf{15/15} 무누출, \textbf{0/68}; \textbf{하이브리드} \textbf{15/15 (100\%)}, 15/15 무누출, \textbf{0/63} ($Q_{\mathrm{goal}}{=}68.71$). \\
+\textbf{P16} API 요인+Godot (81) & \textbf{P16A}: \texttt{general\_rule} 0/30 목표, 22/30 무누출, 9 비인가 대 \texttt{ontology\_multihop} \textbf{30/30} 무누출 ($p{=}0.0078$), 11/30 목표 (Opus 8/10), \textbf{0} 비인가. \textbf{P16B}: \textbf{21/21} Godot 재실행, \textbf{0/21} 누출, 13/15 5개 월드 + \textbf{6/6} \texttt{SealedLighthouse} 해시 일치. \\
+\textbf{P17} 통합 탈출 (540) & 단축평가 0건, $\kappa{=}\mathbf{0.8813}$: \texttt{haiku} 29/36 명시 / \textbf{70/72} 의역 / 0\% FRR / $F_1{=}\mathbf{0.957}$; \texttt{sonnet} 19/36 / 70/72 / $0.904$; \texttt{opus} 25/36 / 68/72 / $0.925$ (1단계 \texttt{id\_only} 36/36). \\
+\textbf{P11}--\textbf{P14} 3모델군 CLI & GPT-OSS~120B + Hydrogen~4 + Sonnet: \textbf{P11} \textbf{30/30} 무누출, \textbf{0/79} 비인가 ($Q{=}118.93$); \textbf{P12} 27개 결함 $\rho_{K=2}$ \textbf{27/27} (0토큰) 대 블라인드/인지 LLM 26/27 (530k--542k 토큰, $p{=}1.0$); \textbf{P13} \textbf{42/42} Godot 재실행; \textbf{P14} $\kappa{=}\mathbf{0.9367}$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{이중언어 적대적 탈출 벤치마크 (\textbf{P20})}\label{sec:phase6-p20}
+적대적 우회 상황에서의 언어적 강건성을 평가하고 표면적 어휘 암기를 방지하기 위해, \textbf{P20}은 6개 도메인 $\times$ 5계층(S1--S5) $\times$ 한/영 $\times$ 20건으로 구성된 1,200건 벤치마크를 평가한다(코퍼스 SHA-256 \texttt{1af8be38...}; 표~\ref{tab:p20-escape}). 도메인 간 평균 어휘 자카드 유사도는 정확히 \textbf{0.0630}으로 측정되어, 어휘 지름길이 원천 차단됨을 실증한다.
+
+\begin{table}[!tbp]
+\caption{P20 1,200건 이중언어 적대적 탈출 벤치마크 (6개 도메인, S1--S5 계층, 평균 도메인 자카드 0.0630, Cochran's $Q = 871.39$, $p = 2.63\times 10^{-187}$)}
+\label{tab:p20-escape}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.32\columnwidth}*{8}{>{\centering\arraybackslash}X}@{}}
+\toprule
+\textbf{방어 기법 / 기준선} & \textbf{정확도} & \textbf{재현율} & \textbf{정밀도} & \textbf{$F_1$} & \textbf{오거부율} & \textbf{S4 오거부} & \textbf{영문 정확} & \textbf{한글 정확} \\
+\midrule
+\texttt{stage1\_id\_only} & 60.00\% & 33.33\% & \textbf{100.0\%} & 50.00\% & \textbf{0.00\%} & \textbf{0.00\%} & 60.00\% & 60.00\% \\
+\texttt{keyword\_rule\_naive} & 62.67\% & 87.92\% & 63.68\% & 73.86\% & 75.21\% & 98.33\% & 61.17\% & 64.17\% \\
+\texttt{stage1\_plus\_neg\_hybrid} & 73.67\% & 56.11\% & \textbf{100.0\%} & 71.89\% & \textbf{0.00\%} & \textbf{0.00\%} & 75.33\% & 72.00\% \\
+\texttt{bm25\_lexical\_lodo} & 96.75\% & 96.67\% & \textbf{97.89\%} & 97.27\% & 3.12\% & 2.08\% & \textbf{97.33\%} & 96.17\% \\
+\texttt{tfidf\_char\_word\_lodo} & \textbf{97.17\%} & \textbf{98.47\%} & 96.86\% & \textbf{97.66\%} & 4.79\% & 1.25\% & 96.50\% & \textbf{97.83\%} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+통계적 검정 결과는 기법 간 뚜렷한 격차를 확증한다: Cochran's $Q = 871.39$ ($N=1,200, k=5, \mathrm{df}=4, p = 2.63\times 10^{-187}$), 도메인 분리(LODO) 기준선 대 결정론적 규칙 간 McNemar 검정 $p < 10^{-50}$. 특히 단순 키워드 규칙은 부정 제약 조건에서 치명적으로 실패(S4 계층 오거부율 98.33\%)하는 반면, 문자/단어 LODO 모델은 97\% 이상의 높은 정확도와 균형 잡힌 한·영 언어적 패리티(영문 96.50\%, 한글 97.83\%)를 유지한다.
+
+종합적으로 \textbf{P9}, \textbf{P18}--\textbf{P20}, 그리고 \textbf{P15}--\textbf{P17}은 다계층 뉴로-심볼릭 검증의 필수성을 입증한다: Safe-RL 마스킹~\cite{alshiekh2018shield}과 NeMo 레일~\cite{rebedea2023nemo}은 다중 홉 도달성에서 14/15회 실패하고(\textbf{P15}), 외부 범용 솔버(\textbf{P18})는 대규모 환경에서 극심한 연산 절벽(Z3의 경우 $R{\ge}128$, OWL~2~RL의 경우 $R{\ge}64$)에 직면하는 반면 \texttt{nesy\_game.multihop}은 중앙값 0.032\,ms로 100\% 60\,Hz/120\,Hz를 준수한다. 또한 Godot~4.7.1 장기 실행(\textbf{P19})은 5,000틱 무누출 안정성을 증명하며, 이중언어 탈출 벤치마크(\textbf{P20})는 표면 어휘 필터링을 넘어선 다중 홉 시맨틱 분류의 당위성을 확증한다.

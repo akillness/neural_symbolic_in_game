@@ -49,10 +49,14 @@ DATA_FILES = (
     "phase5_attested_closed_loop_mas_results.json",
     "phase5_attested_claude_api_prospective_results.json",
     "phase5_attested_unified_escape_results.json",
+    "phase6_kr_external_solvers_results.json",
+    "phase6_godot_large_scale_runtime_results.json",
+    "phase6_large_bilingual_escape_results.json",
     "DATASHEET.md",
     "DATASHEET_v3.md",
     "DATASHEET_v4.md",
     "DATASHEET_v5.md",
+    "DATASHEET_v6.md",
     "croissant_trace_rpg_benchmark_v2.json",
 )
 
@@ -80,22 +84,26 @@ CORE_SCRIPTS = (
     "review_reference.py",
 )
 
+GODOT_PROJECT_CFG = 'config_version=5\n\n[application]\nconfig/name="trace_rpg_phase6_bench"\n'
+
 FORBIDDEN_ANON_RE = re.compile(
     r"Jangyoung|Jeong|Shinjin|Kang|Hongik|akillness|정장영|강신진|홍익|127\.0\.0\.1|"
     r"\x6b\x61\x72\x61\x6d3824|\uad6c\ub85c\uac00\uc774|\bwrkspc\x5f|\bsk\x2dant\x2d|"
-    r"max\x2dpromo\x2ddev|/(?:Users|home)/[^/\s]+",
+    r"max\x2dpromo\x2ddev|/(?:Users|home)/[^/\s]+|/opt/homebrew",
     re.IGNORECASE,
 )
 
-README_TEXT = """# TRACE-RPG Supplemental Benchmark Package (Double-Anonymous Review)
+README_TEXT = """# TRACE-RPG Supplemental Benchmark Package (Double-Anonymous Review, v6)
 
-This self-contained archive provides the reproducible TRACE-RPG benchmark artifacts (Phase 1–5),
+This self-contained archive provides the reproducible TRACE-RPG benchmark artifacts (Phase 1–6),
 pure-Python deterministic verifier core (`src/nesy_game/` + `src/nesy_game/multihop/`), Gebru et al.
-datasheets (`data/DATASHEET.md`, `data/DATASHEET_v3.md`, `data/DATASHEET_v4.md`, `data/DATASHEET_v5.md`),
-Croissant 1.0 v2 (12/12), archive-local Croissant 1.0 v3 (17/17), archive-local Croissant 1.0 v4 (22/22),
-and archive-local Croissant 1.0 v5 (`data/croissant_trace_rpg_benchmark_v5.json`, 26/26 SHA-256 digests
-with `data/...` contentUrls), `CHECKSUMS.sha256`, confound-free Phase-4 CLI + Godot 4.7.1 receipts,
-and attested Anthropic Messages API Phase-5 receipts (`P15`–`P17`).
+datasheets (`data/DATASHEET.md`, `DATASHEET_v3.md`, `DATASHEET_v4.md`, `DATASHEET_v5.md`, `DATASHEET_v6.md`),
+Croissant 1.0 v2 (`12/12`), v3 (`17/17`), v4 (`22/22`), v5 (`26/26`), and archive-local Croissant 1.0 v6
+(`data/croissant_trace_rpg_benchmark_v6.json`, `30/30` SHA-256 digests with `data/...` contentUrls),
+`CHECKSUMS.sha256`, executable anonymized Godot 4.7.1 benchmark scripts (`godot/`), confound-free
+Phase-4 CLI + Godot 4.7.1 receipts, attested Anthropic Messages API Phase-5 receipts (`P15`–`P17`),
+and Phase-6 industrial external KR solver (`P18`), authentic multi-world/large-scale Godot 4.7.1 (`P19`),
+and 1,200-case 6-domain bilingual adversarial escape (`P20`) receipts.
 
 ## Quick Verification (Zero External Dependencies, Python 3.10+)
 
@@ -103,9 +111,15 @@ and attested Anthropic Messages API Phase-5 receipts (`P15`–`P17`).
 python3 reproduce_benchmark.py
 ```
 
-Running `reproduce_benchmark.py` performs six standalone checks without network calls or API keys:
-1. **`CHECKSUMS.sha256` & Croissant 1.0 v2–v5 SHA-256 Verification:** Verifies all file checksums plus
-   12/12 (v2), 17/17 (v3), 22/22 (v4), and 26/26 (v5) digests inside `data/`.
+Optional live Godot 4.7+ execution (requires `godot` on `PATH`):
+
+```bash
+python3 reproduce_benchmark.py --with-godot
+```
+
+Running `reproduce_benchmark.py` performs seven standalone checks without network calls or API keys:
+1. **`CHECKSUMS.sha256` & Croissant 1.0 v2–v6 SHA-256 Verification:** Verifies all file checksums plus
+   `12/12` (v2), `17/17` (v3), `22/22` (v4), `26/26` (v5), and `30/30` (v6) digests inside `data/`.
 2. **Core `nesy_game.multihop` Closure & External Shielding Baselines:** Verifies semi-naive
    transitive Datalog closure, multi-hop leak detection, Safe-RL action masking, and NeMo-style
    Colang output rails inside `src/nesy_game/multihop/`.
@@ -114,16 +128,17 @@ Running `reproduce_benchmark.py` performs six standalone checks without network 
    - Phase-2 120-case 5-world multi-hop closure, 30-episode 3-role 5-arm shielding, and 180-case escape;
    - Phase-3 480-case procedural Datalog scaling (`R in {8,16,32,64} x d in {1..5}`, Cochran's `Q = 1100.19`).
 4. **Confound-Free Phase-4 Receipts (`P11`–`P14`):** Verifies schema, counts, and invariants across
-   `P11` (30 3-family unguided MAS ep), `P12` (`84/90` + 27-fault candidate-inclusive `(a,E)` repair),
-   `P13` (42 unguided Godot 4.7.1 replays), and `P14` (720 3-family 4-model EN/KO escape evaluations).
-5. **Attested Direct-API Phase-5 Receipts (`P15`–`P17`):** Verifies `P15` (105 independent closed-loop
-   5-turn episodes across 7 arms & 3 attested Claude 5.5 tiers, `15/15` replay checks per arm),
-   `P16` (60 factorial `general_rule` vs. `ontology_multihop` episodes + 21 live API->Godot 4.7.1 replays
-   incl. `6/6` `SealedLighthouseMachine` `EXACT_TERMINAL_HASH`), and `P17` (540 unified-prompt EN/KO escape calls).
-6. **Human Packet Integrity:** Confirms `data/tr_human_eval_packet.json` preserves
+   `P11`–`P14`.
+5. **Attested Direct-API Phase-5 Receipts (`P15`–`P17`):** Verifies `P15` (`105` episodes), `P16` (`60`
+   factorial + `21` Godot replays), and `P17` (`540` unified-prompt EN/KO escape calls).
+6. **Phase-6 External Solvers, Large-Scale Godot, & 1,200-Case Escape (`P18`–`P20`):** Verifies `P18`
+   (`120` 5-world + `1,080` `R<=256` Clingo/Z3/OWL 2 RL equivalence & cliffs), `P19` (`120/120` 5-world
+   Godot 4.7.1 parity + `5,000`-tick 5-tier soak, `0` unsafe/leaks), `P20` (`1,200`-case 6-domain EN/KO
+   escape benchmark, Jaccard `0.0630`, `Q = 871.39`), and optional `--with-godot` live re-execution of
+   `godot/godot_phase6_multiworld_bench.gd`.
+7. **Human Packet Integrity:** Confirms `data/tr_human_eval_packet.json` preserves
    `AWAITING_HUMAN_RATERS`, `raters_completed == 0`, `krippendorff_alpha is None`, and zero synthetic labels.
 """
-
 LICENSE_TEXT = """Dual License for TRACE-RPG Supplemental Benchmark Archive
 =======================================================
 
@@ -147,17 +162,22 @@ LICENSE_TEXT = """Dual License for TRACE-RPG Supplemental Benchmark Archive
 """
 
 REPRODUCE_SCRIPT = '''#!/usr/bin/env python3
-"""Standalone zero-network verifier for the TRACE-RPG NeurIPS D&B supplement."""
+"""Standalone zero-network verifier for the TRACE-RPG NeurIPS D&B supplement (v6)."""
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import shutil
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 DATA_DIR = HERE / "data"
+GODOT_DIR = HERE / "godot"
 sys.path.insert(0, str(HERE / "src"))
 sys.path.insert(0, str(HERE / "scripts"))
 sys.path.insert(0, str(HERE))
@@ -216,7 +236,74 @@ def _verify_checksums_file(path: Path) -> int:
     return len(lines)
 
 
-def main() -> int:
+def _run_live_godot_verification() -> dict[str, object]:
+    godot_bin = shutil.which("godot")
+    if not godot_bin:
+        raise RuntimeError(
+            "godot executable not found on PATH; install Godot 4.7+ and ensure `godot` is on PATH"
+        )
+    with tempfile.TemporaryDirectory(prefix="trace_rpg_repro_godot_") as tmp:
+        tmp_path = Path(tmp)
+        for fname in (
+            "project.godot",
+            "sealed_lighthouse_machine.gd",
+            "godot_phase6_multiworld_bench.gd",
+            "phase6_benchmark_payload.json",
+        ):
+            shutil.copy2(GODOT_DIR / fname, tmp_path / fname)
+        in_json = tmp_path / "phase6_benchmark_payload.json"
+        out_json = tmp_path / "result.json"
+        proc = subprocess.run(
+            [
+                godot_bin,
+                "--headless",
+                "--path",
+                str(tmp_path),
+                "-s",
+                "res://godot_phase6_multiworld_bench.gd",
+                "--",
+                str(in_json),
+                str(out_json),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=180,
+            check=False,
+        )
+        if proc.returncode != 0 or not out_json.is_file():
+            raise RuntimeError(f"Godot execution failed (rc={proc.returncode}): {proc.stderr[:400]}")
+        res = json.loads(out_json.read_text(encoding="utf-8"))
+    p19a = res["p19a"]
+    p19b = res["p19b"]
+    p19a_cases = int(p19a["cases_count"])
+    p19b_tiers = p19b["tiers"]
+    assert p19a_cases == 120, f"expected 120 P19A cases, got {p19a_cases}"
+    assert len(p19b_tiers) == 5, f"expected 5 P19B tiers, got {len(p19b_tiers)}"
+    total_ticks = int(p19b["total_ticks"])
+    total_unsafe = sum(int(t["unsafe_commits"]) for t in p19b_tiers.values())
+    total_leaks = sum(int(t["leaks_committed"]) for t in p19b_tiers.values())
+    assert total_ticks == 5000, f"expected 5000 soak ticks, got {total_ticks}"
+    assert total_unsafe == 0, f"unexpected unsafe commits: {total_unsafe}"
+    assert total_leaks == 0, f"unexpected leaks committed: {total_leaks}"
+    return {
+        "executed": True,
+        "p19a_cases": p19a_cases,
+        "p19b_tiers": len(p19b_tiers),
+        "p19b_total_ticks": total_ticks,
+        "p19b_unsafe_commits": total_unsafe,
+        "p19b_leaks_committed": total_leaks,
+    }
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Verify TRACE-RPG NeurIPS D&B supplemental package.")
+    parser.add_argument(
+        "--with-godot",
+        action="store_true",
+        help="Also execute bundled godot/godot_phase6_multiworld_bench.gd via `godot` on PATH.",
+    )
+    args = parser.parse_args(argv)
+
     checksum_count = _verify_checksums_file(HERE / "CHECKSUMS.sha256")
     v2_count = _verify_croissant(DATA_DIR / "croissant_trace_rpg_benchmark_v2.json", 12)
     v3_count = _verify_croissant(
@@ -227,6 +314,9 @@ def main() -> int:
     )
     v5_count = _verify_croissant(
         DATA_DIR / "croissant_trace_rpg_benchmark_v5.json", 26, check_content_url=True
+    )
+    v6_count = _verify_croissant(
+        DATA_DIR / "croissant_trace_rpg_benchmark_v6.json", 30, check_content_url=True
     )
 
     from nesy_game.contracts import CandidateAction
@@ -386,12 +476,41 @@ def main() -> int:
     assert p17_doc["total_live_api_evaluations"] == 540
     assert p17_doc["deterministic_shortcircuit_count"] == 0
 
+    p18_doc = json.loads(
+        (DATA_DIR / "phase6_kr_external_solvers_results.json").read_text(encoding="utf-8")
+    )
+    p19_doc = json.loads(
+        (DATA_DIR / "phase6_godot_large_scale_runtime_results.json").read_text(encoding="utf-8")
+    )
+    p20_doc = json.loads(
+        (DATA_DIR / "phase6_large_bilingual_escape_results.json").read_text(encoding="utf-8")
+    )
+    assert p18_doc["p18a_5world_equivalence"]["n_cases"] == 120
+    assert p18_doc["p18b_large_scale_kb"]["n_instances"] == 1080
+    assert p18_doc["p18b_large_scale_kb"]["solvers"]["nesy_game_multihop"]["correct"] == 1080
+    assert p18_doc["p18b_large_scale_kb"]["solvers"]["clingo_asp"]["correct"] == 1080
+    assert p18_doc["p18b_large_scale_kb"]["solvers"]["z3_smt"]["correct"] == 1080
+    assert p18_doc["p18b_large_scale_kb"]["solvers"]["owl2_rl"]["correct"] == 45
+    assert p19_doc["p19a_5world_cross_runtime_parity"]["cases_total"] == 120
+    assert p19_doc["p19a_5world_cross_runtime_parity"]["python_godot_divergences"] == 0
+    assert p19_doc["p19b_large_scale_soak"]["total_ticks"] == 5000
+    assert p19_doc["p19b_large_scale_soak"]["total_unsafe_commits"] == 0
+    assert p19_doc["p19b_large_scale_soak"]["total_leaks_committed"] == 0
+    assert p20_doc["corpus_summary"]["total_cases"] == 1200
+    assert (GODOT_DIR / "project.godot").is_file()
+    assert (GODOT_DIR / "sealed_lighthouse_machine.gd").is_file()
+    assert (GODOT_DIR / "godot_phase6_multiworld_bench.gd").is_file()
+    assert (GODOT_DIR / "phase6_benchmark_payload.json").is_file()
+
+    godot_live = _run_live_godot_verification() if args.with_godot else {"executed": False}
+
     summary = {
         "checksums_sha256_verified": f"{checksum_count}/{checksum_count}",
         "croissant_v2_sha256_verified": f"{v2_count}/{v2_count}",
         "croissant_v3_sha256_verified": f"{v3_count}/{v3_count}",
         "croissant_v4_sha256_verified": f"{v4_count}/{v4_count}",
         "croissant_v5_sha256_verified": f"{v5_count}/{v5_count}",
+        "croissant_v6_sha256_verified": f"{v6_count}/{v6_count}",
         "core_nesy_game_multihop_verified": True,
         "phase1_multihop_48": {
             "flat_1hop_rule": mh1_live["flat_1hop_rule"]["accuracy"],
@@ -480,6 +599,26 @@ def main() -> int:
             "fleiss_kappa": p17_doc["three_tier_agreement_540"]["fleiss_kappa"],
             "alpha": p17_doc["three_tier_agreement_540"]["krippendorff_alpha_nominal"],
         },
+        "phase6_p18_external_kr_1080": {
+            "p18a_cases": p18_doc["p18a_5world_equivalence"]["n_cases"],
+            "p18b_cases": p18_doc["p18b_large_scale_kb"]["n_instances"],
+            "clingo_correct": p18_doc["p18b_large_scale_kb"]["solvers"]["clingo_asp"]["correct"],
+            "z3_correct": p18_doc["p18b_large_scale_kb"]["solvers"]["z3_smt"]["correct"],
+            "owl2_rl_certified": p18_doc["p18b_large_scale_kb"]["solvers"]["owl2_rl"]["correct"],
+        },
+        "phase6_p19_godot_5000": {
+            "p19a_cases": p19_doc["p19a_5world_cross_runtime_parity"]["cases_total"],
+            "p19a_divergences": p19_doc["p19a_5world_cross_runtime_parity"]["python_godot_divergences"],
+            "p19b_ticks": p19_doc["p19b_large_scale_soak"]["total_ticks"],
+            "p19b_unsafe": p19_doc["p19b_large_scale_soak"]["total_unsafe_commits"],
+            "p19b_leaks": p19_doc["p19b_large_scale_soak"]["total_leaks_committed"],
+            "live_godot_verification": godot_live,
+        },
+        "phase6_p20_bilingual_escape_1200": {
+            "total_cases": p20_doc["corpus_summary"]["total_cases"],
+            "tfidf_lodo_acc": p20_doc["deterministic_baselines"]["tfidf_char_word_lodo"]["accuracy"],
+            "bm25_lodo_acc": p20_doc["deterministic_baselines"]["bm25_lexical_lodo"]["accuracy"],
+        },
         "tr_human_eval_status": tr_pkt["status"],
         "status": "PASS",
     }
@@ -535,12 +674,41 @@ def build_neurips_supplement(out_zip: Path = DEFAULT_OUT_ZIP) -> dict[str, Any]:
     proto_rel = "research/academic-pipeline/gemini-review-20261113/protocol-v2.json"
     entries.append((proto_rel, (ROOT / proto_rel).read_bytes()))
 
-    # Embed archive-local Croissant v3 (17/17), v4 (22/22), and v5 (26/26) rewriting contentUrl -> "data/<name>"
+    # Bundle executable anonymized Godot 4.7.1 scripts + deterministic P19A/P19B payload
+    import sys as _sys
+
+    if str(ROOT / "scripts") not in _sys.path:
+        _sys.path.insert(0, str(ROOT / "scripts"))
+    from venue_phase6_godot_lib import build_godot_benchmark_payload
+
+    godot_payload, _ = build_godot_benchmark_payload()
+    entries.append(("godot/project.godot", GODOT_PROJECT_CFG.encode("utf-8")))
+    entries.append(
+        (
+            "godot/sealed_lighthouse_machine.gd",
+            (ROOT / "game-track/godot/scripts/sealed_lighthouse_machine.gd").read_bytes(),
+        )
+    )
+    entries.append(
+        (
+            "godot/godot_phase6_multiworld_bench.gd",
+            (ROOT / "scripts/godot_phase6_multiworld_bench.gd").read_bytes(),
+        )
+    )
+    entries.append(
+        (
+            "godot/phase6_benchmark_payload.json",
+            (json.dumps(godot_payload, ensure_ascii=False, sort_keys=True) + "\n").encode("utf-8"),
+        )
+    )
+
+    # Embed archive-local Croissant v3 (17/17), v4 (22/22), v5 (26/26), and v6 (30/30)
     embedded_dists: list[tuple[str, list[dict[str, Any]]]] = []
     for label, cro_name, expected_len in (
         ("v3", "croissant_trace_rpg_benchmark_v3.json", 17),
         ("v4", "croissant_trace_rpg_benchmark_v4.json", 22),
         ("v5", "croissant_trace_rpg_benchmark_v5.json", 26),
+        ("v6", "croissant_trace_rpg_benchmark_v6.json", 30),
     ):
         raw_cro = (SUPP_DIR / cro_name).read_text(encoding="utf-8")
         cro_obj = json.loads(raw_cro)
@@ -557,7 +725,7 @@ def build_neurips_supplement(out_zip: Path = DEFAULT_OUT_ZIP) -> dict[str, Any]:
         )
         embedded_dists.append((label, dist_list))
 
-    # Verify Croissant v2 (12/12), v3 (17/17), and v4 (22/22) hashes match data/ bytes inside zip
+    # Verify Croissant v2..v6 hashes match data/ bytes inside zip
     entry_map = dict(entries)
     croissant_v2 = json.loads(
         entry_map["data/croissant_trace_rpg_benchmark_v2.json"].decode("utf-8")
@@ -600,6 +768,7 @@ def build_neurips_supplement(out_zip: Path = DEFAULT_OUT_ZIP) -> dict[str, Any]:
     dist_v3 = embedded_dists[0][1]
     dist_v4 = embedded_dists[1][1]
     dist_v5 = embedded_dists[2][1]
+    dist_v6 = embedded_dists[3][1]
     return {
         "path": str(out_zip),
         "bytes": len(archive_bytes),
@@ -610,6 +779,8 @@ def build_neurips_supplement(out_zip: Path = DEFAULT_OUT_ZIP) -> dict[str, Any]:
         "croissant_v3_verified": f"{len(dist_v3)}/{len(dist_v3)}",
         "croissant_v4_verified": f"{len(dist_v4)}/{len(dist_v4)}",
         "croissant_v5_verified": f"{len(dist_v5)}/{len(dist_v5)}",
+        "croissant_v6_verified": f"{len(dist_v6)}/{len(dist_v6)}",
+        "godot_executable_scripts_bundled": 4,
         "anon_pii_leaks": 0,
     }
 

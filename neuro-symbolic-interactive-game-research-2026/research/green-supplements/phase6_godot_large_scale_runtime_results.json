@@ -1,0 +1,227 @@
+{
+  "benchmark_id": "phase6_p19_godot_large_scale_runtime",
+  "schema_version": "1.0.0",
+  "engine": {
+    "binary_name": "godot",
+    "version": "4.7.1.stable.official.a13da4feb",
+    "execution_mode": "headless_ephemeral_project",
+    "game_track_godot_modified": false,
+    "sealed_lighthouse_machine_gd_sha256": "5d5cffb4335378e7130dae8a994908111757a33a2ed46f0a4066f6674e4dd8b7"
+  },
+  "human_evaluation_status": "AWAITING_HUMAN_RATERS",
+  "human_raters_completed": 0,
+  "p19a_5world_cross_runtime_parity": {
+    "cases_total": 120,
+    "python_godot_divergences": 0,
+    "godot_oracle_divergences": 0,
+    "fresh_process_case_divergences": 0,
+    "parity_rate": 1.0,
+    "p50_us": 5.0,
+    "p95_us": 8.0,
+    "per_world_case_parity": {
+      "sealed-lighthouse-v1": {
+        "total": 24,
+        "matched": 24
+      },
+      "sunken-archive-v1": {
+        "total": 24,
+        "matched": 24
+      },
+      "clockwork-observatory-v1": {
+        "total": 24,
+        "matched": 24
+      },
+      "ivory-citadel-v1": {
+        "total": 24,
+        "matched": 24
+      },
+      "glass-foundry-v1": {
+        "total": 24,
+        "matched": 24
+      }
+    },
+    "world_episodes_total": 5,
+    "world_episodes_fresh_process_hash_matches": 5,
+    "world_episodes": {
+      "clockwork-observatory-v1": {
+        "actions_count": 8,
+        "commits": 4,
+        "rho_repairs": 1,
+        "blocked_leaks": 3,
+        "unsafe_commits": 0,
+        "leaks_committed": 0,
+        "terminal_state_sha256": "67d6a367ccc38200b41ca6925cf8133a697befe6716d5e7b61c7692b2ffc7d2b",
+        "fresh_process_hash_match": true
+      },
+      "glass-foundry-v1": {
+        "actions_count": 8,
+        "commits": 4,
+        "rho_repairs": 1,
+        "blocked_leaks": 3,
+        "unsafe_commits": 0,
+        "leaks_committed": 0,
+        "terminal_state_sha256": "38adbafde1a5bb2602b267e1ceae60f99cf598e55f8353c3ed99fd09ac766061",
+        "fresh_process_hash_match": true
+      },
+      "ivory-citadel-v1": {
+        "actions_count": 8,
+        "commits": 4,
+        "rho_repairs": 1,
+        "blocked_leaks": 3,
+        "unsafe_commits": 0,
+        "leaks_committed": 0,
+        "terminal_state_sha256": "3d51f9d81705d10bc9a4f8217204525d4725a2032f2e11216ce723fba42a9b9a",
+        "fresh_process_hash_match": true
+      },
+      "sealed-lighthouse-v1": {
+        "actions_count": 8,
+        "commits": 6,
+        "rho_repairs": 2,
+        "blocked_leaks": 2,
+        "unsafe_commits": 0,
+        "leaks_committed": 0,
+        "terminal_state_sha256": "e53ac9e68ccfdcf4bd1aeaabbfe03e67d36036902b2e6e7f4bd29eee492c2435",
+        "fresh_process_hash_match": true
+      },
+      "sunken-archive-v1": {
+        "actions_count": 8,
+        "commits": 4,
+        "rho_repairs": 1,
+        "blocked_leaks": 3,
+        "unsafe_commits": 0,
+        "leaks_committed": 0,
+        "terminal_state_sha256": "534d3b15fc5346e32c43d1090c88f954275bbd13b2690c1d8bbe43e9dae9c2c2",
+        "fresh_process_hash_match": true
+      }
+    }
+  },
+  "p19b_large_scale_soak": {
+    "tiers_total": 5,
+    "tiers_fresh_process_hash_matches": 5,
+    "total_ticks": 5000,
+    "total_commits": 3750,
+    "total_rho_repairs": 1250,
+    "total_blocked_leaks": 1875,
+    "total_unsafe_commits": 0,
+    "total_leaks_committed": 0,
+    "budget_60hz_ms": 16.667,
+    "budget_120hz_ms": 8.333,
+    "tiers": {
+      "tier_r8_a3_d2": {
+        "actors": 3,
+        "blocked_leaks": 375,
+        "budget_120hz_pass_rate": 1.0,
+        "budget_60hz_pass_rate": 1.0,
+        "commits": 750,
+        "depth": 2,
+        "leaks_committed": 0,
+        "max_ms": 0.023,
+        "mean_ms": 0.012859,
+        "p50_ms": 0.011,
+        "p95_ms": 0.022,
+        "p99_ms": 0.022,
+        "rho_repairs": 250,
+        "rooms": 8,
+        "terminal_state_sha256": "59306b9301a53ee5da4d2d19c3572d77483f58268672bcf63765092499ee8879",
+        "ticks": 1000,
+        "total_time_ms": 16.52,
+        "unsafe_commits": 0,
+        "fresh_process_hash_match": true,
+        "run2_p50_ms": 0.011,
+        "run2_p95_ms": 0.022
+      },
+      "tier_r16_a4_d3": {
+        "actors": 4,
+        "blocked_leaks": 375,
+        "budget_120hz_pass_rate": 1.0,
+        "budget_60hz_pass_rate": 1.0,
+        "commits": 750,
+        "depth": 3,
+        "leaks_committed": 0,
+        "max_ms": 0.027,
+        "mean_ms": 0.014083,
+        "p50_ms": 0.012,
+        "p95_ms": 0.024,
+        "p99_ms": 0.024,
+        "rho_repairs": 250,
+        "rooms": 16,
+        "terminal_state_sha256": "c8684bfbe50aa99ce7d1eb57fdb0a19e38b491f68e62afd33054ee45b4609b87",
+        "ticks": 1000,
+        "total_time_ms": 17.909,
+        "unsafe_commits": 0,
+        "fresh_process_hash_match": true,
+        "run2_p50_ms": 0.012,
+        "run2_p95_ms": 0.024
+      },
+      "tier_r32_a8_d5": {
+        "actors": 8,
+        "blocked_leaks": 375,
+        "budget_120hz_pass_rate": 1.0,
+        "budget_60hz_pass_rate": 1.0,
+        "commits": 750,
+        "depth": 5,
+        "leaks_committed": 0,
+        "max_ms": 0.037,
+        "mean_ms": 0.015496,
+        "p50_ms": 0.013,
+        "p95_ms": 0.027,
+        "p99_ms": 0.027,
+        "rho_repairs": 250,
+        "rooms": 32,
+        "terminal_state_sha256": "edc035fdf84f077c00f9d2176653e4b1a8c65ed39bd1e8b2d967cd1e8384662a",
+        "ticks": 1000,
+        "total_time_ms": 19.578,
+        "unsafe_commits": 0,
+        "fresh_process_hash_match": true,
+        "run2_p50_ms": 0.013,
+        "run2_p95_ms": 0.027
+      },
+      "tier_r64_a12_d6": {
+        "actors": 12,
+        "blocked_leaks": 375,
+        "budget_120hz_pass_rate": 1.0,
+        "budget_60hz_pass_rate": 1.0,
+        "commits": 750,
+        "depth": 6,
+        "leaks_committed": 0,
+        "max_ms": 0.059,
+        "mean_ms": 0.016798,
+        "p50_ms": 0.014,
+        "p95_ms": 0.029,
+        "p99_ms": 0.03,
+        "rho_repairs": 250,
+        "rooms": 64,
+        "terminal_state_sha256": "fc86d6d06c87708321cd30952df7f3fbeb8765e327ff1b8c9b95a42055679d53",
+        "ticks": 1000,
+        "total_time_ms": 21.192,
+        "unsafe_commits": 0,
+        "fresh_process_hash_match": true,
+        "run2_p50_ms": 0.014,
+        "run2_p95_ms": 0.029
+      },
+      "tier_r128_a16_d8": {
+        "actors": 16,
+        "blocked_leaks": 375,
+        "budget_120hz_pass_rate": 1.0,
+        "budget_60hz_pass_rate": 1.0,
+        "commits": 750,
+        "depth": 8,
+        "leaks_committed": 0,
+        "max_ms": 0.074,
+        "mean_ms": 0.018833,
+        "p50_ms": 0.017,
+        "p95_ms": 0.033,
+        "p99_ms": 0.035,
+        "rho_repairs": 250,
+        "rooms": 128,
+        "terminal_state_sha256": "9458e914a46c72310c49667bff855dd96c2679f5dedb9a922891560a9caf7b5f",
+        "ticks": 1000,
+        "total_time_ms": 23.718,
+        "unsafe_commits": 0,
+        "fresh_process_hash_match": true,
+        "run2_p50_ms": 0.017,
+        "run2_p95_ms": 0.033
+      }
+    }
+  }
+}

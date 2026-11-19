@@ -35,7 +35,7 @@
 \fi
 
 \begin{abstract}
-Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. \system{} decouples generative proposal authority from deterministic commit authority through a seven-predicate gate, bottom-up transitive Datalog closure (\texttt{nesy\_game.multihop}), state-blind counterexample repair $\rho(a,E)$, and SHA-256 hash-chained semantic replay (Theorems~1--4, \textbf{I1--I4}). Beyond 1,664 finite-graph checks and 480 procedural Datalog scaling tests ($R{\le}64, d{\le}5$: 100.0\% vs.\ 46.67\% flat and 60.00\% 2-hop at $\le$7.12\,$\mu$s, $Q{=}1100.19$), we report attested direct HTTPS Anthropic Claude~5.5 API evaluations across Haiku~5.5, Sonnet~5.5, and Opus~5.5 (\texttt{output\_config.json\_schema}, \texttt{temperature} omitted as deprecated on 5.5) alongside cross-family GPT-OSS~120B and Gemini~4~Hydrogen trials: across 105 independent 5-turn closed-loop multi-agent episodes (\textbf{P15}: 105/105 0-LLM replays exact), only \texttt{nesy\_game.multihop} holds \textbf{15/15 (100.0\%)} zero-leak safety and \textbf{0} unsafe commits (with $\rho_{\mathrm{repairs}}{=}0$ across 28 state-dependent Theorem-2 rejections and \textbf{15/15} safe goals via hybrid $\rho{+}\text{LLM}_{K=1}$ vs.\ Safe-RL proxy 0/15 and NeMo proxy 1/15, $p{\le}1.22{\times}10^{-4}$); 60 prospective factorial episodes (\textbf{P16A}) separate \texttt{ontology\_multihop} (30/30 zero-leak, 22 live $\rho$ repairs, 11/30 goals, 0 unsafe) from \texttt{general\_rule} (22/30 zero-leak, 9 unsafe, $p{=}0.00781$); 21 headless Godot~4.7.1 episodes (\textbf{P16B}) attain 21/21 exact replays and 6/6 \texttt{SealedLighthouse} terminal hashes; $(a,E)$-matched repair (\textbf{P12}) ties LLM accuracy (27/27 vs.\ 26/27, $p{=}1.0$) while removing 530k--542k tokens; and 540 unified EN/KO escape checks (\textbf{P17}, $\kappa{=}0.8813$, 0\% FRR) confirm Stage-1 + Stage-2 complementarity alongside \texttt{DATASHEET\_v5.md}, Croissant~1.0 v5 (26/26), and quarantined \texttt{TR01--TR06} ($N{=}0$).
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. \system{} decouples generative proposal authority from deterministic commit authority through a seven-predicate gate, bottom-up transitive Datalog closure (\texttt{nesy\_game.multihop}), state-blind counterexample repair $\rho(a,E)$, and SHA-256 hash-chained semantic replay (Theorems~1--4, \textbf{I1--I4}). Across 1,080 procedural graph instances ($R\le 256, d\le 10$) and four external Knowledge Representation engines, we formally encode and verify multi-engine equivalence (\textbf{P18A}, \textbf{P18B}: 0/120 mismatches across Clingo ASP, Z3 SMT, and OWL~2~RL; Cochran's $Q{=}1948.24$), isolating asymptotic frame-budget cliffs in Z3 at $R\ge 128$ (60\,Hz pass collapses to 11.67\%) and OWL~2~RL cubic materialization ($>$20\,s), whereas \texttt{nesy\_game} scales at $\le$0.354\,ms (100\% 60/120\,Hz). We report attested direct HTTPS Anthropic Claude~5.5 API evaluations across Haiku~5.5, Sonnet~5.5, and Opus~5.5 (\texttt{output\_config.json\_schema}, deprecated \texttt{temperature} omitted) alongside cross-family GPT-OSS~120B and Gemini~4~Hydrogen trials: across 105 independent 5-turn closed-loop episodes (\textbf{P15}: 105/105 0-LLM replays exact), only \texttt{nesy\_game.multihop} holds \textbf{15/15 (100.0\%)} zero-leak safety and \textbf{0} unsafe commits (with $\rho_{\mathrm{repairs}}{=}0$ across 18 Theorem-2 rejections and \textbf{15/15} safe goals via hybrid $\rho{+}\text{LLM}_{K=1}$ vs.\ Safe-RL proxy 0/15 and NeMo proxy 1/15, $p{\le}1.22{\times}10^{-4}$); 60 prospective factorial episodes (\textbf{P16A}) separate \texttt{ontology\_multihop} (30/30 zero-leak, 22 live $\rho$ repairs, 11/30 goals, 0 unsafe) from \texttt{general\_rule} (22/30 zero-leak, 9 unsafe, $p{=}0.00781$); authentic Godot~4.7.1 execution (\textbf{P16B}, \textbf{P13}, \textbf{P19}) attains 120/120 multi-world parity, 6/6 \texttt{SealedLighthouse} terminal hashes, and 5,000-tick soak stability (0 unsafe, max 0.074\,ms); $(a,E)$-matched repair (\textbf{P12}) ties LLM accuracy (27/27 vs.\ 26/27, $p{=}1.0$) while removing 530k--542k tokens; and a 1,200-case bilingual benchmark (\textbf{P20}, $Q{=}871.39$) alongside 540 live escape checks (\textbf{P17}, $\kappa{=}0.8813$, 0\% FRR) confirms Stage-1 + Stage-2 complementarity, indexed via Croissant~1.0 v5 (26/26) and quarantined \texttt{TR01--TR06} ($N{=}0$).
 \end{abstract}
 
 \begin{keyword}
@@ -46,11 +46,11 @@ neuro-symbolic AI \sep knowledge-based runtime verification \sep ontology closur
 
 \section*{Highlights}
 \begin{itemize}
-\item Datalog closure in nesy\_game.multihop hits 100\% across R<=64, d<=5 at <=7.12us.
-\item Attested 105-ep closed-loop MAS cuts unsafe turns to 0 vs Safe-RL/NeMo (16/15).
-\item Attested 60-ep factorial proves ontology\_multihop 30/30 zero-leak vs 22/30 rule.
-\item 21 API + 42 CLI Godot 4.7.1 eps hit 100\% 0-LLM replay and 6/6 exact hashes.
-\item 540 unified EN/KO escape checks reach 0\% FRR (kappa=0.881); Croissant v5 26/26.
+\item Datalog in nesy\_game hits 100\% across $R\le 256$ at $\le$0.35\,ms.
+\item ASP/SMT reach 100\% parity; Z3 ($R\ge 128$) \& OWL 2 RL hit cliffs.
+\item 105-ep closed-loop MAS cuts unsafe turns to 0 vs Safe-RL/NeMo.
+\item Godot 4.7.1 5,000-tick soak holds 100\% 60/120\,Hz frame compliance.
+\item 1,200-case bilingual benchmark confirms 0\% FRR ($\kappa{=}0.881$).
 \end{itemize}
 
 \section{Introduction}
@@ -64,7 +64,7 @@ neuro-symbolic AI \sep knowledge-based runtime verification \sep ontology closur
 \end{figure*}
 
 \input{../_shared/sec_problem_arch_phase5}
-\input{../_shared/sec_eval_kbs_phase5}
+\input{../_shared/sec_eval_kbs_phase6}
 \input{../_shared/sec_conclusion_phase5}
 
 \FloatBarrier

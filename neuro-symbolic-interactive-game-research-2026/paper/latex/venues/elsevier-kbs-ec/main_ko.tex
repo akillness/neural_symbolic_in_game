@@ -27,7 +27,7 @@
 \affiliation[2]{organization={홍익대학교},country={대한민국}}
 
 \begin{abstract}
-스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. \system{}는 핵심 패키지 \texttt{nesy\_game.multihop}의 상향 이행적 Datalog 폐쇄·7술어 게이트·상태 비참조 수리 $\rho(a,E)$·SHA-256 해시 연쇄 리플레이로 제안·커밋 권한을 분리한다(정리 1--4, \textbf{I1--I4}). 1,664건 유한 그래프 감사와 480건 $R{\le}64, d{\le}5$ Datalog 오라클 검증($\le$7.12\,$\mu$s, 100.0\% 대 1홉 46.67\%·2홉 60.00\%, $Q{=}1100.19$)을 토대로, 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·\texttt{output\_config.json\_schema}) 및 3모델군 CLI 평가를 보고한다: 105회 독립 폐루프 5턴 다중 에이전트(\textbf{P15}: 105/105 리플레이 일치)에서 \system{}만 \textbf{15/15} 무누출·\textbf{0} 위험(정리~2 상태 의존 거부 28건에서 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증, 하이브리드 \textbf{15/15} 목표 vs.\ Safe-RL 0/15·NeMo 1/15)을 지켰고, 60회 요인 실험(\textbf{P16A})에서 \texttt{ontology\_multihop}은 30/30 무누출·22건 $\rho$ 수리·11/30 목표로 \texttt{general\_rule}(22/30·0/30, $p{=}0.00781$)을 상회했으며, Godot~4.7.1 21+42에피소드 100\% 리플레이 및 제품 6/6 해시 일치, $(a,E)$ 27/27(0토큰), 540회 통합 우회($\kappa{=}0.8813$, 0\% FRR), \texttt{DATASHEET\_v5.md}, Croissant~1.0 v5(26/26), 격리된 \texttt{TR01--TR06}($N{=}0$)을 제시한다.
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. \system{}는 핵심 패키지 \texttt{nesy\_game.multihop}의 상향 이행적 Datalog 폐쇄·7술어 게이트·상태 비참조 수리 $\rho(a,E)$·SHA-256 해시 연쇄 리플레이로 제안·커밋 권한을 분리한다(정리 1--4, \textbf{I1--I4}). 1,080건 절차적 그래프 인스턴스($R\le 256, d\le 10$) 및 4개 외부 지식 표현(KR) 엔진 전역에서 다중 해석기 동등성을 형식화하고 검증하여(\textbf{P18A}, \textbf{P18B}: Clingo ASP, Z3 SMT, OWL~2~RL 간 0/120 불일치, 코크란 $Q{=}1948.24$), Z3의 $R\ge 128$ 한정자 절벽(60\,Hz 준수율 11.67\% 급락)과 OWL~2~RL의 삼차 구체화 폭발($>$20초)을 격리한 반면 \texttt{nesy\_game}은 $\le$0.354\,ms로 60/120\,Hz 프레임을 100\% 유지함을 입증하였다. 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·\texttt{output\_config.json\_schema}) 및 3모델군 CLI 평가를 보고한다: 105회 독립 폐루프 5턴 다중 에이전트(\textbf{P15}: 105/105 리플레이 일치)에서 \system{}만 \textbf{15/15} 무누출·\textbf{0} 위험(정리~2 상태 의존 거부 18건에서 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증, 하이브리드 \textbf{15/15} 목표 vs.\ Safe-RL 0/15·NeMo 1/15)을 지켰고, 60회 요인 실험(\textbf{P16A})에서 \texttt{ontology\_multihop}은 30/30 무누출·22건 $\rho$ 수리·11/30 목표로 \texttt{general\_rule}(22/30·0/30, $p{=}0.00781$)을 상회했으며, 네이티브 Godot~4.7.1 엔진(\textbf{P16B}, \textbf{P13}, \textbf{P19}) 120/120 다중 월드 패리티, 6/6 제품 해시 일치, 5,000틱 장기 무위험 실행(최대 0.074\,ms), $(a,E)$ 27/27(0토큰), 1,200건 한·영 LODO 벤치마크(\textbf{P20}, $Q{=}871.39$) 및 540회 통합 우회($\kappa{=}0.8813$, 0\% FRR), Croissant~v5(26/26), 격리된 \texttt{TR01--TR06}($N{=}0$)을 제시한다.
 \end{abstract}
 
 \begin{keyword}
@@ -38,11 +38,11 @@
 
 \section*{핵심 요약 (Highlights)}
 \begin{itemize}
-\item 핵심 \texttt{nesy\_game.multihop} 480건 Datalog ($R{\le}64, d{\le}5$) 100.0\% ($\le$7.12\,$\mu$s).
-\item 인증 API 105에피소드 폐루프 위험 0건 (Safe-RL 16/61 · NeMo 15/61 대조).
-\item 60회 요인 실험 \texttt{ontology\_multihop} 무누출 30/30 · 0위험 대 규칙 9위험.
-\item Godot~4.7.1 API 21회+CLI 42회 100\% 0-LLM 재실행 및 제품 6/6 해시 일치.
-\item 540회 통합 한·영 우회 0\% FRR ($\kappa{=}0.8813$), Croissant~v5 26/26 무네트워크 재현.
+\item nesy\_game Datalog 폐쇄는 $R\le 256$에서 100\% 및 $\le$0.35\,ms 달성.
+\item ASP·SMT 100\% 일치 검증; Z3 및 OWL 2 RL 지연 절벽 실증.
+\item 인증 105회 폐루프 위험 턴 0건 달성 (Safe-RL 16건·NeMo 15건 대조).
+\item Godot 4.7.1 5,000틱 장기 실행 100\% 60/120\,Hz 프레임 준수.
+\item 1,200건 한·영 우회 벤치마크 0\% FRR 달성 ($\kappa{=}0.881$).
 \end{itemize}
 
 \section{서론}
@@ -56,7 +56,7 @@
 \end{figure*}
 
 \input{../_shared/ko/sec_problem_arch_phase5_ko}
-\input{../_shared/ko/sec_eval_kbs_phase5_ko}
+\input{../_shared/ko/sec_eval_kbs_phase6_ko}
 \input{../_shared/ko/sec_conclusion_phase5_ko}
 
 \FloatBarrier

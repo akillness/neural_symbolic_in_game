@@ -29,7 +29,7 @@
 \maketitle
 
 \begin{abstract}
-스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. 본 논문은 \texttt{nesy\_game.multihop}에 통합된 형식 정리 1--4, Gebru 등 \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0 v2--v5~\cite{akhtar2024croissant}(12/12·17/17·22/22·\textbf{26/26} SHA-256, 55파일 아카이브)와 함께 \system{} 벤치마크 스위트를 제시한다: 1,664건 유한 그래프, 480건 $R{\le}64, d{\le}5$ 상향 Datalog(\textbf{P9}: 100.0\%, $\le$7.12\,$\mu$s, $Q{=}1100.19$), 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·구조화 출력) 스위트---\textbf{P15} 105회 독립 5턴 폐루프(15/15 무누출, 0 위험, 정리~2 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증, \textbf{15/15} 하이브리드 목표 대 Safe-RL 0/15~\cite{alshiekh2018shield}·NeMo 1/15~\cite{rebedea2023nemo}), \textbf{P16} 60회 요인+21회 Godot~4.7.1(\texttt{ontology\_multihop} 30/30·22건 $\rho$수리 대 규칙 22/30, 21/21 재실행, 6/6 해시 일치), \textbf{P17} 540회 통합 우회($\kappa{=}0.8813$, 0\% FRR), 교차 3모델군 CLI(\textbf{P11}--\textbf{P14}: $(a,E)$ 27/27 0토큰, 42/42 Godot, $\kappa{=}0.9367$), 격리된 \texttt{TR01--TR06}($N{=}0$)을 보고한다.
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. 본 논문은 \texttt{nesy\_game.multihop}에 통합된 형식 정리 1--4, Gebru 등 \texttt{DATASHEET\_v6.md}~\cite{gebru2021datasheets}, Croissant~1.0 v6~\cite{akhtar2024croissant} 메타데이터(Supplement v6, 검증된 SHA-256 자산, MIT/CC BY 4.0)와 함께 \system{} 벤치마크 스위트를 제시한다: 1,664건 유한 그래프, 480건 Datalog 깊이 스케일링(\textbf{P9}: 100.0\%, $\le$7.12\,$\mu$s, $Q{=}1100.19$), 1,080건 다중 스케일 KR 벤치마크(\textbf{P18}: $R{\le}256, d{\le}10$, \texttt{nesy\_game}, Clingo~5.8.3~\cite{gebser2019clingo}, Z3~5.4.1.0~\cite{demoura2008z3}, 165/165건 공인 OWL~2~RL~\cite{motik2012owl2profiles} 전반 100\% 동치 및 3차 절벽 실증, $Q{=}1948.24$), Godot~4.7.1 런타임 장기 실행(\textbf{P19}: 120/120 5개 월드 패리티, 5,000틱 5계층 장기 실행 무누출/비인가 0건), 1,200건 6개 도메인 이중언어 적대적 탈출 벤치마크(\textbf{P20}: 도메인 자카드 0.0630 지름길 차단, TF-IDF 97.17\% / BM25 96.75\% LODO 대 단순 키워드 62.67\% 및 S4 오거부율 98.33\%, Cochran's $Q{=}871.39$, $p=2.63\times 10^{-187}$), 직접 HTTPS Claude~5.5 API 스위트(\textbf{P15} 105회 폐루프 MAS 15/15 하이브리드 목표 대 Safe-RL 0/15~\cite{alshiekh2018shield}·NeMo 1/15~\cite{rebedea2023nemo}; \textbf{P16} 60회 요인+21회 Godot 에피소드; \textbf{P17} 540회 탈출 $\kappa{=}0.8813$), 교차 3모델군 CLI(\textbf{P11}--\textbf{P14}), 격리된 블라인드 인간 평가(\texttt{TR01--TR06}, $N{=}0$, \texttt{AWAITING\_HUMAN\_RATERS}) 및 미실행 파일럿(0/180, \texttt{NOT\_RUN/BLOCKED})을 투명하게 보고한다.
 \end{abstract}
 
 \section{서론}
@@ -43,7 +43,7 @@
 \end{figure}
 
 \input{../_shared/ko/sec_problem_arch_phase5_ko}
-\input{../_shared/ko/sec_neurips_db_body_phase5_ko}
+\input{../_shared/ko/sec_neurips_db_body_phase6_ko}
 \input{../_shared/ko/sec_conclusion_phase5_ko}
 
 \FloatBarrier
@@ -53,15 +53,15 @@
 \clearpage
 \section*{NeurIPS 논문 체크리스트 (한글 요약)}
 \begin{enumerate}
-\item {\bf Claims:} \answerYes{} 결정론적 수치, 5단계 직접 API(\textbf{P15}--\textbf{P17}), 4단계 3모델군 분모(파싱 실패 보존), Safe-RL~\cite{alshiekh2018shield}·NeMo~\cite{rebedea2023nemo} 기준선 및 미실행 코호트(0/180, 인간 $N{=}0$)가 JSON 영수증과 정합하다.
-\item {\bf Limitations:} \answerYes{} Claude~5.5 \texttt{temperature} 생략, CLI 비고정 시드, 파싱 실패 보존, 0/180 미실행 파일럿, 유한 심볼릭 범위, $N{=}0$ 인간 평가가 결론 절에 명시된다.
+\item {\bf Claims:} \answerYes{} 결정론적 수치, 다중 스케일 KR 동치(\textbf{P18}), Godot~4.7.1 장기 실행(\textbf{P19}), 이중언어 탈출 벤치마크(\textbf{P20}), 5단계 직접 API(\textbf{P15}--\textbf{P17}), 4단계 3모델군 분모(파싱 실패 보존), Safe-RL~\cite{alshiekh2018shield}·NeMo~\cite{rebedea2023nemo} 기준선 및 미실행 코호트(0/180, 인간 $N{=}0$)가 Supplement v6 영수증과 정합하다.
+\item {\bf Limitations:} \answerYes{} Claude~5.5 \texttt{temperature} 생략, CLI 비고정 시드, 단일 벤더 API 범위, 파싱 실패 보존, 0/180 미실행 파일럿, 유한 심볼릭 범위, $N{=}0$ 인간 평가가 결론 절에 명시된다.
 \item {\bf Theory assumptions and proofs:} \answerYes{} \ref{sec:formal-proofs}절에서 조건부 전제와 불변식 \textbf{I1--I4}에 대한 정리 1--4 및 증명을 제시한다.
-\item {\bf Experimental result reproducibility:} \answerYes{} \texttt{nesy\_game.multihop}, Datalog 오라클 파라미터, \texttt{output\_config.json\_schema}, $(a,E)$ 수리 및 통합 우회 프롬프트가 \ref{sec:arch}--\ref{sec:eval}절에 명시된다.
-\item {\bf Open access to data and code:} \answerYes{} 독립 보조 아카이브(\texttt{neurips-db-supplemental-benchmark.zip}, 55파일, \texttt{CHECKSUMS.sha256} 54/54, PII 0건)에 1--5단계 전량 JSON, \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5(12/12·17/17·22/22·26/26 SHA-256), 무네트워크 \texttt{reproduce\_benchmark.py}를 포함한다.
-\item {\bf Experimental setting/details:} \answerYes{} 그래프 규모, Safe-RL/NeMo 정의, Claude~5.5 계층별 API 설정, $K\in\{0,1,2\}$, 한·영 3도메인 분할이 \ref{sec:db-composition}--\ref{sec:eval}절에 명시된다.
-\item {\bf Experiment statistical significance:} \answerYes{} \ref{sec:phase4-compact}절과 표~\ref{tab:phase4-compact}에서 95\% Wilson CI, Cochran's $Q$($Q{=}1100.19, 68.71, 71.65, 118.93, 281.23$), 양측 McNemar $p$-값, 540/720회 Fleiss $\kappa{=}0.8813, 0.9367$을 보고한다.
-\item {\bf Experiments compute resources:} \answerYes{} \textbf{A2}·\textbf{A4}·\textbf{P9}($\le$7.12\,$\mu$s) 지연 및 API·CLI 토큰(\textbf{P15} 1.05M, \textbf{P16} 843k, \textbf{P17} 359k, \textbf{P12} 530k/542k 대 0)·Godot 실행 시간을 보고한다.
-\item {\bf Code of ethics / Broader impacts / Safeguards / Licenses / New assets / Human subjects / IRB:} \answerYes{} (\texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5, MIT/CC-BY-4.0, 격리된 \texttt{TR01--TR06}), \answerNA{} (고위험 가중치 미배포, 인간 피험자 $N{=}0$ 미수행).
+\item {\bf Experimental result reproducibility:} \answerYes{} \texttt{nesy\_game.multihop}, $R{\le}256, d{\le}10$ KR 오라클 파라미터, Godot~4.7.1 장기 실행 하네스, \texttt{output\_config.json\_schema}, $(a,E)$ 수리 및 P20 LODO 탈출 기준선이 \ref{sec:arch}--\ref{sec:eval}절에 명시된다.
+\item {\bf Open access to data and code:} \answerYes{} 독립 보조 아카이브(Supplement v6, \texttt{DATASHEET\_v6.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v6, \texttt{reproduce\_benchmark.py --with-godot} 포함 익명 실행 가능 Godot~4.7.1 스크립트; PII 0건)에 1--6단계 전량 영수증, MIT/CC-BY-4.0 라이선스, 무네트워크 \texttt{reproduce\_benchmark.py}를 포함한다.
+\item {\bf Experimental setting/details:} \answerYes{} 그래프 규모, $R{\le}256, d{\le}10$ KR 파라미터, Safe-RL/NeMo 정의, Claude~5.5 계층별 API 설정, $K\in\{0,1,2\}$, 6개 도메인 S1--S5 한·영 분할이 \ref{sec:db-composition}--\ref{sec:eval}절에 명시된다.
+\item {\bf Experiment statistical significance:} \answerYes{} \ref{sec:phase4-compact}--\ref{sec:phase6-p20}절과 표~\ref{tab:phase4-compact}--\ref{tab:p20-escape}에서 95\% Wilson CI, Cochran's $Q$($Q{=}871.39, 1948.24, 1100.19, 68.71, 118.93, 281.23$), 양측 McNemar $p$-값($p < 10^{-50}$), Fleiss $\kappa{=}0.8813, 0.9367$을 보고한다.
+\item {\bf Experiments compute resources:} \answerYes{} \textbf{A2}·\textbf{A4}·\textbf{P9}·\textbf{P18}($\le$7.12\,$\mu$s 및 $R{=}256$에서 0.032\,ms 대 Z3 7.885\,ms / OWL 19.7\,s), Godot~4.7.1 최대 틱 0.074\,ms(\textbf{P19}), API·CLI 토큰 및 실행 시간을 보고한다.
+\item {\bf Code of ethics / Broader impacts / Safeguards / Licenses / New assets / Human subjects / IRB:} \answerYes{} (\texttt{DATASHEET\_v6.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v6, MIT/CC-BY-4.0, 격리된 \texttt{TR01--TR06}), \answerNA{} (고위험 가중치 미배포, 인간 피험자 $N{=}0$ 미수행).
 \end{enumerate}
 
 \end{document}

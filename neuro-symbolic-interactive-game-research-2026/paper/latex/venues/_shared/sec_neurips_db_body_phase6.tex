@@ -1,0 +1,81 @@
+\section{Benchmark Suite Composition, Curation, and Maintenance}\label{sec:db-composition}
+\system{} is packaged as a standalone, zero-network-reproducible benchmark suite built around the frozen core (\texttt{src/nesy\_game/*.py}, 20/20 SHA-256 hashes unchanged) and \texttt{nesy\_game.multihop}. Following Gebru et al.~\cite{gebru2021datasheets} (\texttt{DATASHEET\_v6.md}) and ML Commons Croissant~1.0~\cite{akhtar2024croissant} (\texttt{croissant\_trace\_rpg\_benchmark\_v6.json}), the v6 archival bundle (refer to Supplement v6, \texttt{DATASHEET\_v6.md}, Croissant v6, and anonymized executable Godot~4.7.1 scripts with \texttt{reproduce\_benchmark.py --with-godot}; zero PII/IP/secret leaks) indexes verified \texttt{FileObject} artifacts across deterministic, solver, engine, and API tracks under dual \textbf{MIT} (verification harnesses, engine runners, and oracle code) and \textbf{CC BY 4.0} (traces, structured quest specs, and evaluation receipts) licenses. No web scraping or user-sourced text appears anywhere in the benchmark.
+
+\begin{table}[!tbp]
+\caption{Benchmark Suite Composition Across Determinism, Solvers, Engine Replay, and API Cohorts (Croissant~1.0 v6)}
+\label{tab:phase6-db-comp}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.28\columnwidth}c>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Suite Partition} & \textbf{Size} & \textbf{Schema, Provenance, and Isolation Rule} \\
+\midrule
+Deterministic Finite-Graph & 1,664 + 48 & 32 graph configs $\times$ 13 candidates $\times$ 4 arms + surface sentinels; BFS oracle. \\
+Extended Audits (\textbf{A1}--\textbf{A4}, \textbf{B}) & 1,408 + 1,600t & Multi-error $K{\le}3$, $N{\le}2000$ scaling, 4,656 faults, Godot soak, 88 EN/KO B. \\
+Datalog Depth Scaling (\textbf{P9}) & 480 cases & Procedural $R{\in}\{8..64\}\times d{\in}\{1..5\}$ DAGs; bottom-up fixpoint + BFS. \\
+Multi-Scale KR Corpus (\textbf{P18}) & 1,080 inst & $R{\in}\{8..256\}, d{\in}\{1..10\}$, 3 topologies; Clingo~5.8.3, Z3~5.4.1.0, OWL~2~RL. \\
+Godot~4.7.1 Runtime Soak (\textbf{P19}) & 120 + 5,000t & 5 worlds $\times$ 24 actions parity (120/120) + 5,000-tick 5-tier multi-scale soak. \\
+Bilingual Escape Suite (\textbf{P20}) & 1,200 cases & 6 domains $\times$ 5 strata S1--S5 $\times$ EN/KO $\times$ 20 cases; SHA-256 \texttt{1af8be38...}. \\
+Phase-5 Closed-Loop MAS (\textbf{P15}) & 105 ep & 3 Claude~5.5 tiers $\times$ 5 worlds $\times$ 7 independent arms; \texttt{output\_config}. \\
+Phase-5 API Factorial+Godot (\textbf{P16}) & 60 + 21 ep & Attested API (no \texttt{temp}) + Godot~4.7.1; non-pooled w/ 0/180 \texttt{20261103}. \\
+Phase-5 Unified Escape (\textbf{P17}) & 540 evals & 180 EN/KO cases $\times$ 3 Claude~5.5 tiers; 0 deterministic short-circuits. \\
+Phase-4 Cross-Family (\textbf{P11}--\textbf{P14}) & 30 / 90 / 42 / 720 & Unseeded CLI (Sonnet~5.5, GPT-OSS~120B, Gemini~4~Hydrogen/3.8~Flash). \\
+Held-Out / Unrun Cohorts & \texttt{N=0} / 0/180 & Blinded \texttt{TR01--TR06} (\texttt{AWAITING\_HUMAN\_RATERS}) \& unrun \texttt{20261103} excluded. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Curation, attestation, and maintenance.} Deterministic tasks derive from symbolic quest state machines (${\le}8$ rooms, ${\le}3$ actors) and procedural $R{\le}256, d{\le}10$ multi-scale DAGs paired with EN/KO utterances. Direct HTTPS Phase-5 traces log \texttt{served\_model}, SHA-256-hashed message/request IDs, token counts, and HTTP latency under strict structured-JSON schemas (\texttt{temperature} omitted where deprecated on Claude~5.5); every parse/HTTP failure stays in full denominators. We disclose that Phase-5 live API trajectories (\textbf{P15}--\textbf{P17}) reflect a single provider family (Claude~5.5), which we contextualize against multi-family CLI traces (\textbf{P11}--\textbf{P14}) and vendor-agnostic symbolic/engine ground truth (\textbf{P9}, \textbf{P18}, \textbf{P19}, \textbf{P20}). Crucially, the blinded 36-item packet \texttt{TR01--TR06} ($N{=}0$ human gold labels; status \texttt{AWAITING\_HUMAN\_RATERS}) and historical unrun prospective pilot \texttt{20261103} ($0/180$; status \texttt{NOT\_RUN/BLOCKED}) are strictly quarantined from automated leaderboards, ensuring zero pseudo-human or fabricated ratings. Offline reproducibility is verified via \texttt{python3 reproduce\_benchmark.py} ($<5$\,s) and executable Godot~4.7.1 scripts via \texttt{--with-godot}.
+
+\section{Reproducible Benchmark Leaderboards}\label{sec:eval}
+\subsection{Cross-Track Shielding, Multi-Scale KR, and Godot~4.7.1 Soak}\label{sec:phase4-compact}
+We evaluate all baseline gates, external safety comparators (\textbf{Safe-RL Action Masking}~\cite{alshiekh2018shield} and \textbf{NeMo-style Colang Output Rails}~\cite{rebedea2023nemo}), multi-scale KR solvers (\textbf{Clingo~5.8.3}~\cite{gebser2019clingo}, \textbf{Z3~5.4.1.0}~\cite{demoura2008z3}, and \textbf{OWL~2~RL}~\cite{motik2012owl2profiles}), Godot~4.7.1 engine replay, and neural models on unified replay-verified tracks (Table~\ref{tab:phase4-compact}).
+
+\begin{table}[!tbp]
+\caption{Cross-Track Benchmark Leaderboard: Deterministic (\textbf{P9}), Multi-Scale KR (\textbf{P18}), Godot Soak (\textbf{P19}), Attested API (\textbf{P15}--\textbf{P17}), and 3-Family CLI (\textbf{P11}--\textbf{P14})}
+\label{tab:phase4-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.28\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Benchmark Track} & \textbf{Measured Leaderboard Result (95\% Wilson CI; $Q$ / McNemar $p$)} \\
+\midrule
+Boundary \& Audits (0-LLM) & Semantic gates \textbf{0/416} unsafe (vs.\ schema 260/416); $\rho$ 128/260 repairs; Godot \textbf{A4} 1,600/1,600 ticks, p95 0.708\,ms; \textbf{P1} 120-case \textbf{100\%} vs.\ 50.83\%. \\
+\textbf{P9} Datalog Depth (480) & \texttt{flat\_1hop}: 46.67\% (256 leaks); \texttt{2hop}: 60.00\% (192); \texttt{nesy\_game.multihop}: \textbf{100.0\% [99.2, 100]} at $\le$7.12\,$\mu$s median ($Q{=}1100.19$). \\
+\textbf{P18} Multi-Scale KR (1,080) & $R{\in}\{8..256\}, d{\in}\{1..10\}$, 3 topologies: \textbf{1080/1080 (100\%)} exact equivalence for \texttt{nesy\_game} (p50 0.032\,ms, 100\% 60\,Hz), Clingo~5.8.3~\cite{gebser2019clingo} (p50 1.268\,ms, 100\% 60\,Hz), Z3~5.4.1.0~\cite{demoura2008z3} (p50 7.885\,ms, 68.43\% 60\,Hz; cliff 11.67\% at $R{=}128$, 0\% at $R{=}256$); 165/165 certified OWL~2~RL~\cite{motik2012owl2profiles} (120 P18A + 45 stratified P18B, cubic cliff 114.5$\to$19,696\,ms at $R{=}64$, $>20$\,s at $R{\ge}128$) vs.\ \texttt{flat\_1hop} 50.0\%, \texttt{bounded\_2hop} 58.33\%; Cochran's $Q{=}1948.24$ ($p < 10^{-300}$). \\
+\textbf{P19} Godot~4.7.1 Soak & \textbf{120/120} 5-world parity (0 divergences, p50 5.0\,$\mu$s, p95 8.0\,$\mu$s) + 5,000-tick 5-tier soak ($R{\in}\{8..128\}$, 3,750 commits, 1,250 $\rho$-repairs, 1,875 blocked leaks, \textbf{0} unsafe/leaks, max tick 0.074\,ms, 100\% 60/120\,Hz); executable scripts in Supplement v6. \\
+\textbf{P15} Closed-Loop MAS (105) & Independent 5-turn trajectories (\textbf{105/105} replays): Safe-RL proxy~\cite{alshiekh2018shield} 0/15 goals, 16/61 unsafe; NeMo proxy~\cite{rebedea2023nemo} 1/15, 15/61; flat 12/15, 4/66; \texttt{multihop\_k0} 13/15, \textbf{15/15} zl, \textbf{0/69}; \texttt{rho\_k2} 14/15 ($\rho_{\mathrm{rep}}{=}0$ per Thm.~2), \textbf{15/15} zl, \textbf{0/68}; \textbf{hybrid} \textbf{15/15 (100\%)}, 15/15 zl, \textbf{0/63} ($Q_{\mathrm{goal}}{=}68.71$). \\
+\textbf{P16} API Factorial+Godot (81) & \textbf{P16A}: \texttt{general\_rule} 0/30 goals, 22/30 zl, 9 unsafe vs.\ \texttt{ontology\_multihop} \textbf{30/30} zl ($p{=}0.0078$), 11/30 goals (Opus 8/10), \textbf{0} unsafe. \textbf{P16B}: \textbf{21/21} Godot replays, \textbf{0/21} leaks, 13/15 5-world + \textbf{6/6} \texttt{SealedLighthouse} hash matches. \\
+\textbf{P17} Unified Escape (540) & 0 short-circuits, $\kappa{=}\mathbf{0.8813}$: \texttt{haiku} 29/36 exp / \textbf{70/72} para / 0\% FRR / $F_1{=}\mathbf{0.957}$; \texttt{sonnet} 19/36 / 70/72 / $0.904$; \texttt{opus} 25/36 / 68/72 / $0.925$ (Stage-1 \texttt{id\_only} 36/36). \\
+\textbf{P11}--\textbf{P14} 3-Family CLI & GPT-OSS~120B + Hydrogen~4 + Sonnet: \textbf{P11} \textbf{30/30} zl, \textbf{0/79} unsafe ($Q{=}118.93$); \textbf{P12} 27 faults $\rho_{K=2}$ \textbf{27/27} (0 tok) vs.\ Blind/Aware LLM 26/27 (530k--542k tok, $p{=}1.0$); \textbf{P13} \textbf{42/42} Godot replays; \textbf{P14} $\kappa{=}\mathbf{0.9367}$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Bilingual Adversarial Escape Benchmark (\textbf{P20})}\label{sec:phase6-p20}
+To evaluate linguistic robustness under adversarial evasion and prevent superficial lexical memorization, \textbf{P20} evaluates 1,200 curated cases across 6 domains $\times$ 5 strata (S1--S5) $\times$ EN/KO $\times$ 20 cases (corpus SHA-256 \texttt{1af8be38...}; Table~\ref{tab:p20-escape}). Anti-shortcut validation proves that mean pairwise domain vocabulary Jaccard similarity is strictly \textbf{0.0630}, establishing domain vocabulary independence.
+
+\begin{table}[!tbp]
+\caption{P20 1,200-Case Bilingual Adversarial Escape Benchmark (6 Domains, S1--S5 Strata, Mean Domain Jaccard 0.0630, Cochran's $Q = 871.39$, $p = 2.63\times 10^{-187}$)}
+\label{tab:p20-escape}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.32\columnwidth}*{8}{>{\centering\arraybackslash}X}@{}}
+\toprule
+\textbf{Defense / Baseline} & \textbf{Acc} & \textbf{Rec} & \textbf{Prec} & \textbf{$F_1$} & \textbf{FRR} & \textbf{S4 FRR} & \textbf{EN Acc} & \textbf{KO Acc} \\
+\midrule
+\texttt{stage1\_id\_only} & 60.00\% & 33.33\% & \textbf{100.0\%} & 50.00\% & \textbf{0.00\%} & \textbf{0.00\%} & 60.00\% & 60.00\% \\
+\texttt{keyword\_rule\_naive} & 62.67\% & 87.92\% & 63.68\% & 73.86\% & 75.21\% & 98.33\% & 61.17\% & 64.17\% \\
+\texttt{stage1\_plus\_neg\_hybrid} & 73.67\% & 56.11\% & \textbf{100.0\%} & 71.89\% & \textbf{0.00\%} & \textbf{0.00\%} & 75.33\% & 72.00\% \\
+\texttt{bm25\_lexical\_lodo} & 96.75\% & 96.67\% & \textbf{97.89\%} & 97.27\% & 3.12\% & 2.08\% & \textbf{97.33\%} & 96.17\% \\
+\texttt{tfidf\_char\_word\_lodo} & \textbf{97.17\%} & \textbf{98.47\%} & 96.86\% & \textbf{97.66\%} & 4.79\% & 1.25\% & 96.50\% & \textbf{97.83\%} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Statistical testing confirms substantial separation across methods: Cochran's $Q = 871.39$ ($N=1,200, k=5, \mathrm{df}=4, p = 2.63\times 10^{-187}$), and exact McNemar test yields $p < 10^{-50}$ for Leave-One-Domain-Out (LODO) baselines over deterministic keyword rules. Crucially, naive keyword rules collapse under negated constraints (Strata S4 False Rejection Rate reaches 98.33\%), whereas character/word LODO models maintain $>97\%$ accuracy and balanced bilingual parity (EN 96.50\%, KO 97.83\%).
+
+Together, \textbf{P9}, \textbf{P18}--\textbf{P20}, and \textbf{P15}--\textbf{P17} demonstrate the necessity of multi-tier neuro-symbolic verification: Safe-RL masking~\cite{alshiekh2018shield} and NeMo rails~\cite{rebedea2023nemo} fail multi-hop reachability in 14/15 episodes (\textbf{P15}); external solvers (\textbf{P18}) hit severe computational cliffs ($R{\ge}128$ for Z3, $R{\ge}64$ for OWL~2~RL) where \texttt{nesy\_game.multihop} sustains 0.032\,ms median latency and 100\% 60\,Hz/120\,Hz compliance; Godot~4.7.1 soak (\textbf{P19}) demonstrates zero-leak stability across 5,000 game ticks; and bilingual escape benchmarking (\textbf{P20}) establishes that robust natural language gating requires multi-hop semantic classification rather than superficial lexical filtering.
