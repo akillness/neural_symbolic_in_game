@@ -1,0 +1,20 @@
+{
+  "verdict": "ITERATE accepted as implementation conditions, not a native SDK repair",
+  "scope": "Aside-only controlled local dashboard/iframe fixture; stronger fixture observation, not general native browser monitoring",
+  "native_capability_status": "request and pageerror callbacks unavailable by real negative controls; must remain disclosed",
+  "requirements": [
+    "Record actual methods before handling/rejecting every fixture request, including POST501 and route substitutions. Require non-vacuous identified document/iframe/JSON GET receipts; prevent caches/service-worker bypass.",
+    "Use complete fail-closed fixture CSP for resources/scripts/frames/workers/base/form/connect and redirects, with narrowly authorized early instrumentation. Unexpected frames/navigation/popups/instrumentation loss fail. Both negative-control origins must be test-owned loopback.",
+    "Keep original GET-only, pageErrors-empty and parent-outgoing-empty assertions intact. Add separate zero-CSP-violations guard. Never invent non-GET requests/errors for blocked attempts.",
+    "Install ErrorEvent, unhandledrejection, securitypolicyviolation and parent-message observation in both documents before production code, with readiness attestations and explicit event-collection barrier. Expected caught malformed/missing-map errors remain successful recovery cases.",
+    "Use unchanged production HTML/JS/CSS apart from declared fixture instrumentation/CSP and existing substitutions. All original modes/viewports retained; only new task-owned Aside tabs touched."
+  ],
+  "negative_controls": [
+    "Actual same-origin POST must be logged and fail the original GET-only assertion, not just timeout.",
+    "Off-origin fetch POST and form attempt to second owned loopback origin must be blocked and fail separate CSP guard, not pretended HTTP observations.",
+    "Real uncaught async exception and unhandled rejection in both top document and iframe must reach original pageErrors assertion.",
+    "Actual parent→iframe message must reach original outgoing assertion; extension self-messages remain separately classified.",
+    "Missing observer/readiness/delivery or changed/extra document must fail closed."
+  ],
+  "acceptance": "Independent code/security review plus real Aside negative-control receipts and unchanged53 positive/mutation cases; no PASS while any control or original case fails."
+}

@@ -1,0 +1,63 @@
+\documentclass[letterpaper]{article}
+\ifdefined\ANONBUILD
+\usepackage[submission]{aaai2026}
+\else
+\usepackage{aaai2026}
+\nocopyright
+\fi
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\usepackage{placeins}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\input{../_shared/macros}
+
+\setcounter{secnumdepth}{1}
+
+\title{TRACE-RPG: Auditable Proposal-to-Commit Boundaries for Narrative Mediation and Game State Authorization}
+\author{
+  Jangyoung Jeong\textsuperscript{\rm 1},
+  Shinjin Kang\textsuperscript{\rm 2}\thanks{Corresponding author.}
+}
+\affiliations{
+  \textsuperscript{\rm 1}Department of Game Design, Hongik University\\
+  \textsuperscript{\rm 2}Hongik University
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. \system{} separates proposal authority from commit authority at a deterministic seven-predicate gate backed by Theorems~1--4 for invariants \textbf{I1--I4}. Across 1,664 finite-graph cases, semantic gating eliminated 260/416 schema-only unsafe commits (0/156 false rejections; 128/260 guided repairs), and a 48-case multi-hop closure suite breaks 60/60 single-hop parity (\texttt{ontology\_}\allowbreak\texttt{multihop\_}\allowbreak\texttt{gate} 48/48 vs.\ flat 20/48). Across 24 live Antigravity CLI Gemini episodes over three quests, zero unsafe commits occurred (70 schema-unsafe turns blocked, 24/24 strict replay, CLI revisions unattested), while Stage-2 EN/KO escape verification reaches 97.2\% paraphrase recall at 0.0\% benign false rejection alongside extended zero-LLM audits and a blinded \texttt{TR01--TR06} human-eval packet (\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS}).
+\end{abstract}
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_core}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback before revalidated commit and replay.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/sec_problem_arch}
+\input{../_shared/sec_eval_compact}
+\input{../_shared/sec_discussion_conclusion}
+
+\FloatBarrier
+\bibliography{../../references}
+
+\end{document}

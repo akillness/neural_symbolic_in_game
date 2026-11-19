@@ -1,0 +1,188 @@
+{
+  "gate_policy": "Release standalone Overleaf .zip ONLY when post-supplement grade >= GREEN (GREEN or PURPLE). After strict zero-inflation Phase-5 Subagent A + B audits, 4 GREEN bundles are released (aiide, ieee-cog, fdg untouched; aamas newly promoted GREEN and packaged) and 3 YELLOW venues (neurips-db, elsevier-kbs-ec, ieee-tog) remain HELD with zero Overleaf .zip emission.",
+  "overleaf_cli_or_api_available": false,
+  "venue_grades": {
+    "aiide": {
+      "before": "RED",
+      "phase1_after": "GREEN",
+      "phase2_after": "GREEN",
+      "phase3_after": "GREEN",
+      "phase4_after": "GREEN",
+      "phase5_after": "GREEN",
+      "release_overleaf": true,
+      "reason": "Retains Phase-1 GREEN without regression: strict aaai2026 7p fit (body ~5p, refs p6-7), 0 Type3, 0 overfull, 0 rerun warnings, 0 PII leaks, Theorems 1-4, 1,664-case boundary audit, 48-case multi-hop, 24 Gemini eps, 88-case Stage-2 escape, and honest non-human/0-of-180 API scope."
+    },
+    "ieee-cog": {
+      "before": "RED",
+      "phase1_after": "GREEN",
+      "phase2_after": "GREEN",
+      "phase3_after": "GREEN",
+      "phase4_after": "GREEN",
+      "phase5_after": "GREEN",
+      "release_overleaf": true,
+      "reason": "Retains Phase-1 GREEN without regression: clean IEEEtran conference 7p EN / 6p KO / 7p anon (<=8p limit), 0 Type3, 0 overfull, 0 warnings, 0 PII leaks, Godot 4.7.1 soak + deterministic audits + live Gemini episodes + Stage-2 escape fit IEEE CoG technical track bar."
+    },
+    "fdg": {
+      "before": "RED",
+      "phase1_after": "YELLOW",
+      "phase2_after": "GREEN",
+      "phase3_after": "GREEN",
+      "phase4_after": "GREEN",
+      "phase5_after": "GREEN",
+      "release_overleaf": true,
+      "reason": "Retains Phase-2 GREEN without regression: 9p acmart inside 7-10p limit, 0 FloatBarrier bleed, 0 acmart \\Description warnings, 0 PII leaks, 16 live Gemini->Godot 4.7.1 closed-loop episodes (16/16 replays), 5-world 120-case closure, and 180-case escape with Croissant v2 (12/12)."
+    },
+    "aamas": {
+      "before": "RED",
+      "phase1_after": "YELLOW",
+      "phase2_after": "YELLOW",
+      "phase3_after": "YELLOW",
+      "phase4_after": "YELLOW",
+      "phase5_after": "GREEN",
+      "release_overleaf": true,
+      "reason": "PROMOTED YELLOW -> GREEN (strict zero-inflation Phase-5 Subagent A + B audit): Resolves Phase-4 P11 counterfactual blocker via P15 (105 truly independent 5-turn closed-loop trajectories across attested Claude Haiku/Sonnet/Opus 5.5, 105/105 0-LLM replays exact, 15/15 zero-leak and 0 unsafe vs Safe-RL proxy 0/15 and NeMo proxy 1/15, 15/15 hybrid goals, accurately reporting Theorem-2 rho_repairs=0 on state-dependent rejections + live rho in P16A [22] & P12 [27/27]), P11 cross-family MAS, P9 (480/480 <=7.12us), P16B (21/21 Godot replays), P17 (540 EN/KO escape, kappa=0.8813), DOI-verified venue_extra.bib citations, cohesive Phase-5 intro/eval, and clean 7p acmart (body <=8p, 0 overfull hbox, 0 leaks)."
+    },
+    "neurips-db": {
+      "before": "RED",
+      "phase1_after": "YELLOW",
+      "phase2_after": "YELLOW",
+      "phase3_after": "YELLOW",
+      "phase4_after": "YELLOW",
+      "phase5_after": "YELLOW",
+      "release_overleaf": false,
+      "reason": "HOLD (strict zero-inflation Phase-5 Subagent B audit): Technical/anonymity hygiene is spotless (14p EN/anon, 6p body <=9p cap, exact D&B footer, DATASHEET_v5.md, Croissant v5 26/26, 55-file 318,348B zip passes 54/54 CHECKSUMS & offline reproduce_benchmark.py with 0 raw/split-literal identity leaks, cited Gebru/Akhtar/Alshiekh/Rebedea via venue_extra.bib, P15 rho_repairs=0 accurately stated), yet D&B bar still holds for micro synthetic scale (5 handcrafted <=8-room scenarios + 180 author-written escape strings), N=0 human gold labels (TR01-TR06 AWAITING_HUMAN_RATERS), single-vendor P15-P17 API benchmarks, and Godot engine scripts absent from executable zip suite."
+    },
+    "elsevier-kbs-ec": {
+      "before": "RED",
+      "phase1_after": "YELLOW",
+      "phase2_after": "YELLOW",
+      "phase3_after": "YELLOW",
+      "phase4_after": "YELLOW",
+      "phase5_after": "YELLOW",
+      "release_overleaf": false,
+      "reason": "HOLD (strict zero-inflation Phase-5 Subagent B audit): Spotless 10p elsarticle build (0 overfull hbox, 0 leaks, Highlights <=80 chars <=85 cap, full P15 & P16A per-tier/per-world & P17 EN/KO/domain tables, Fig. 4 context, P15 rho_repairs=0 and 4/66 turn vs 3/15 ep fixes, Gebru/Akhtar/Safe-RL/NeMo citations), yet Q1 KBS bar still holds for missing established external KR/ASP/OWL/SMT reasoner baselines (Clingo, OWL 2 RL/HermiT, Z3), small <=8-room synthetic KB scale, ~6.7p body archival depth, and N=0 human/expert validation."
+    },
+    "ieee-tog": {
+      "before": "YELLOW",
+      "phase1_after": "YELLOW",
+      "phase2_after": "YELLOW",
+      "phase3_after": "YELLOW",
+      "phase4_after": "YELLOW",
+      "phase5_after": "YELLOW",
+      "release_overleaf": false,
+      "reason": "HOLD (strict zero-inflation Phase-5 Subagent B audit): Spotless 8p EN / 7p anon / 7p KO IEEEtran journal (0 overfull, 0 leaks) with dedicated Godot 4.7.1 engine-runtime evaluation (A4 soak p95 0.708ms < 16.6ms 60Hz budget + Table IV 21 API & 42 CLI Godot replays, 6/6 SealedLighthouse terminal hashes, 0/63 leaks, P15 rho_repairs=0 accuracy), yet flagship ToG archival bar still holds for N=0 human playtesting/player-experience evaluation (TR01-TR06 AWAITING_HUMAN_RATERS), narrow 2-room 3-operation SealedLighthouseMachine micro-quest scope, and ~5.5p archival length."
+    }
+  },
+  "released_bundles": {
+    "aiide": {
+      "zip_file": "aiide-overleaf.zip",
+      "size_bytes": 1424004,
+      "sha256": "a79cee02e6808962a0a1a7e747516f39ecd7c03b12c3b7a4510bb865e27a64d2",
+      "grade": "GREEN",
+      "tmp_compile_verify": {
+        "main.tex": {
+          "pages": 7,
+          "overfull": 0,
+          "errs": 0
+        },
+        "main_anon.tex": {
+          "pages": 7,
+          "overfull": 0,
+          "errs": 0
+        }
+      }
+    },
+    "ieee-cog": {
+      "zip_file": "ieee-cog-overleaf.zip",
+      "size_bytes": 1413983,
+      "sha256": "6c711666640750cbeb3b09fcb4b02e77b84941994cdf712aaacb88b0eac2db1e",
+      "grade": "GREEN",
+      "tmp_compile_verify": {
+        "main.tex": {
+          "pages": 7,
+          "overfull": 0,
+          "errs": 0
+        },
+        "main_anon.tex": {
+          "pages": 7,
+          "overfull": 0,
+          "errs": 0
+        }
+      }
+    },
+    "fdg": {
+      "zip_file": "fdg-overleaf.zip",
+      "size_bytes": 1428429,
+      "sha256": "3490d32fb5dd76b186c1ea0bbc022addcd4e603c10452dfaa990d9cf812173f5",
+      "grade": "GREEN",
+      "tmp_compile_verify": {
+        "main.tex": {
+          "pages": 9,
+          "type3": 0,
+          "overfull": 0,
+          "errs": 0
+        },
+        "main_anon.tex": {
+          "pages": 9,
+          "type3": 0,
+          "overfull": 0,
+          "errs": 0
+        }
+      }
+    },
+    "aamas": {
+      "zip_file": "aamas-overleaf.zip",
+      "size_bytes": 1407875,
+      "sha256": "3a553e18a883358e7f59ed8878aeedd6744810682bfa07d541c50a900434e7f4",
+      "grade": "GREEN",
+      "tmp_compile_verify": {
+        "main.tex": {
+          "pages": 7,
+          "type3": 0,
+          "overfull": 0,
+          "errs": 0
+        },
+        "main_anon.tex": {
+          "pages": 7,
+          "type3": 0,
+          "overfull": 0,
+          "errs": 0,
+          "anon_leaks": 0
+        },
+        "main_ko.tex": {
+          "pages": 6,
+          "type3": 0,
+          "overfull": 0,
+          "errs": 0
+        }
+      }
+    }
+  },
+  "held_venues": [
+    "neurips-db",
+    "elsevier-kbs-ec",
+    "ieee-tog"
+  ],
+  "phase2_upgraded_at": "2026-11-19",
+  "phase3_audited_at": "2026-11-19",
+  "phase4_audited_at": "2026-11-19",
+  "phase5_audited_at": "2026-11-19",
+  "jev_advisory_review": {
+    "profile": "agy",
+    "backend": "local",
+    "model": "qev-0.8b-text-Q8_0",
+    "tier": "local_calibrated",
+    "review_type": "evaluation",
+    "verdict": "proposal_only",
+    "evaluation_verdict": "pass",
+    "evaluation_score": 0.9566,
+    "quality_grade": "excellent",
+    "review_receipt_v2": "65222d5b9d16edf8e853de972233587582c39b051ffe50d4409fecbfcabbf87e",
+    "evaluation_receipt_v2": "8e41604d1c20046b467851791774d3090e4d8b9587148e4222da18becbc14a86",
+    "phase4_review_receipt_v2": "b57e116c05d202597aafbf14bf22316f9044ad44476a76106dc75105f1f2ce26",
+    "scientific_evidence_status": "NON_SCIENTIFIC_ADVISORY_ONLY"
+  },
+  "offline_staging_notes": {
+    "neurips_db_supplemental_zip": "_workspace/current/qa/neurips-db-supplemental-benchmark.zip (v5: 318,348 bytes, 55 files, sha256=e650216be06b55f4d62e6dc69ba3f03b8de895070baf078fde107e302c24d476, DATASHEET_v5.md sha256=9a7058c17fe5bb9ee19c71bb161d1499807c0792154165d3f851500ee25b37ee, CHECKSUMS.sha256 54/54, Croissant v2 12/12 & v3 17/17 & v4 22/22 & v5 26/26 PASS, reproduce_benchmark.py PASS in /tmp, 0 raw or split-literal identity/PII/secret leaks; staged separately without Overleaf bundle while neurips-db stays YELLOW)"
+  }
+}

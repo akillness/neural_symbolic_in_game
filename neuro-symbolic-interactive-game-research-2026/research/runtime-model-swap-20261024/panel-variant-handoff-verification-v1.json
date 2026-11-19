@@ -1,0 +1,42 @@
+{
+  "schema_version": "runtime-panel-variant-handoff-verification/1",
+  "status": "PASS_LOCAL_PARTIAL_DECISION_ONLY",
+  "decision_ref": "research/runtime-model-swap-20261024/panel-variant-decision-v1.json",
+  "decision_sha256": "2b1d44e06f5227528b62359e7be3fd5b9e45d1700ef2516715fd50e87f9e84bd",
+  "decision_json_parse_and_persisted_hash": "PASS",
+  "selected_variant": "gpt-5.6-sol",
+  "variant_count": 1,
+  "full_study_authority_flags_all_false": true,
+  "command": "rtk proxy .venv/bin/python scripts/lint_wiki.py ../llm-wiki --format json",
+  "cwd": "<PROJECT_ROOT>",
+  "observed_report": {
+    "vault_root": "<REPOSITORY_ROOT>/llm-wiki",
+    "missing_paths": [],
+    "page_count": 82,
+    "broken_links": [],
+    "orphan_pages": []
+  },
+  "new_markdown_decision_links_checked": 2,
+  "source_draft_not_modified": true,
+  "new_study_generation_requests": 0,
+  "new_study_episodes": 0,
+  "pending_tasks": [
+    {
+      "task": "실모델 비교의 검증 계약 확정",
+      "status": "UNRESOLVED_REQUIRES_REMAINING_INTERVIEW_DECISIONS"
+    },
+    {
+      "task": "승인 범위의 실제 실험과 분석 수행",
+      "status": "NOT_EXECUTED_FULL_PROTOCOL_AND_EGRESS_SPEND_LAUNCH_NOT_AUTHORIZED"
+    }
+  ],
+  "not_established": [
+    "Whole roster adoption",
+    "Native host and reasoning effort policy",
+    "Full protocol and sample size",
+    "Model identity/capability/cost claims",
+    "A/C efficacy or noninferiority",
+    "Live generation or publication permission"
+  ],
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

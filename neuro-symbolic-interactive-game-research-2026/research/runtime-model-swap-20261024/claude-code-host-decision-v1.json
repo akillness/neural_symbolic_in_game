@@ -1,0 +1,102 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-claude-code-host-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T07:36:12.579Z",
+  "status": "CLAUDE_CODE_HOST_DESIGN_APPROVED_NOT_FULL_PROTOCOL_NOT_EXECUTED",
+  "user_verbatim_decision": "claude code로 정해",
+  "approval_context": "Answer to the host-choice question for both Claude Opus 5.5 and Sonnet 5.5; host design only, not native launch or full study approval.",
+  "approved_design_dimension": {
+    "selected_host": "Claude Code",
+    "native_cli_executable_observed": "claude",
+    "slots": [
+      {
+        "slot_id": "C-OPUS55",
+        "family_label": "Claude Opus 5.5",
+        "catalog_alias_observed": "opus",
+        "host_design_choice_approved": true,
+        "exact_native_selector_for_assignment": null,
+        "selected_effort": null,
+        "provider_returned_model": null,
+        "served_revision": null
+      },
+      {
+        "slot_id": "C-SONNET55",
+        "family_label": "Claude Sonnet 5.5",
+        "catalog_alias_observed": "sonnet",
+        "host_design_choice_approved": true,
+        "exact_native_selector_for_assignment": null,
+        "selected_effort": null,
+        "provider_returned_model": null,
+        "served_revision": null
+      }
+    ],
+    "antigravity_route_for_these_claude_slots": "NOT_SELECTED",
+    "actual_assignment_manifest_created": false
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json",
+      "sha256": "27b052fb3af156c999eafad7bb7d3ac611fbea6d7caeb86a3e7952bc5c1e3b4e"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/panel-variant-decision-v1.json",
+      "sha256": "2b1d44e06f5227528b62359e7be3fd5b9e45d1700ef2516715fd50e87f9e84bd"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/codex-sol-effort-decision-v1.json",
+      "sha256": "913f752f00e0e739e4091c4387a2eb53a24a16788cc8aca3d90e90c229874a30"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/claude-catalog.json",
+      "sha256": "2ca1b499e46f0d6f52eb3adc5339e7b0d09eb8b08e5f01b99074991fb8d1c7ae"
+    }
+  ],
+  "identity_and_fallback_policy": {
+    "catalog_alias_is_not_served_identity_attestation": true,
+    "inference_entitlement_verified": false,
+    "served_revision_verified": false,
+    "tool_context_parity_verified": false,
+    "fallback_containment_verified": false,
+    "unavailable_policy": "Block before assignment and return an amendment for approval. Do not silently switch to Antigravity, a direct API, a different model or new credentials.",
+    "host_choice_is_not_a_capability_cost_or_model_equivalence_result": true
+  },
+  "preservation": {
+    "previous_proposals_or_decisions_modified": false,
+    "approved_endpoint_modified": false,
+    "papers_or_game_modified": false,
+    "native_cli_configuration_changed": false,
+    "full_roster_adopted": false
+  },
+  "authority": {
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "live_launch_authorized": false
+  },
+  "remaining_blockers": [
+    "Gemini Flash 3.8 native effort selector",
+    "Claude model-specific effort policy and exact native selector/identity capture",
+    "Independent held-out quest/split/oracle/prompt/game/ontology/authorship manifests and hashes",
+    "Episode/aggregate call, repair, deadline and billing limits",
+    "C practical margin/floor and pilot/confirmatory analysis",
+    "Verified native adapter/process containment, context/tool parity and fallback policy",
+    "Separate research-context egress, billing/enforceability, spend and source-bound live launch approval"
+  ],
+  "next_interview": {
+    "topic": "Gemini Flash 3.8 native effort",
+    "observed_options": [
+      "gemini-3.8-flash-low",
+      "gemini-3.8-flash-medium",
+      "gemini-3.8-flash-high"
+    ],
+    "proposed_default": "gemini-3.8-flash-medium",
+    "status": "PROPOSAL_NOT_APPROVED",
+    "equal_effort_label_does_not_establish_equal_compute": true
+  },
+  "new_candidate_generation_requests": 0,
+  "new_study_episodes": 0,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "This closes only the two Claude host design choices against the reviewed draft. Earlier immutable proposals and partial decisions remain unchanged; no runtime configuration or execution authority is implied."
+}

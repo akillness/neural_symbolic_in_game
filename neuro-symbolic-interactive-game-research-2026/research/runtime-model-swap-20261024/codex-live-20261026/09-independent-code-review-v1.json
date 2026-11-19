@@ -1,0 +1,156 @@
+{
+  "verdict": "PASS",
+  "scope_statement": "PASS is limited to the requested read-only code/spec review. It is not native experiment admission, evidence of provider execution, or a measured scientific outcome.",
+  "severity_summary": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 0,
+    "status": "APPROVE"
+  },
+  "findings": [],
+  "evidence": [
+    {
+      "area": "Strict default and exact financial authorization",
+      "assessment": "The new policy does not weaken the default. `_billing_authorized` defaults callers to `included_only`, which still requires the legacy charge field to be exactly `True`. `existing_credits_no_new_purchase` is the only alternate value and requires the legacy no-additional-charge field to be exactly `False`, existing-credit permission, auto-reload OFF, and native-account equality to be exactly `True`, and purchase/API fallback permissions to be exactly `False`. Missing fields, integers, and truthy strings do not pass identity checks.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:64-80",
+        "src/nesy_game/runtime_model_swap_native.py:244-247",
+        "src/nesy_game/runtime_model_swap_native.py:1055-1058"
+      ]
+    },
+    {
+      "area": "Host and row confinement",
+      "assessment": "The credit policy is rejected by the pinned activation loader unless the selected row host is `codex`, and context validation independently rejects it for another host. The frozen 20-row plan shape remains exact; the only Codex rows in that validated lattice are the two approved selectors × two representations × two repeats, yielding the approved eight rows. A trusted row also overrides and checks the runner identity.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:248-322",
+        "src/nesy_game/runtime_model_swap_native.py:879-883",
+        "src/nesy_game/runtime_model_swap_native.py:937-990",
+        "tests/test_runtime_model_swap_native.py:2198-2263"
+      ]
+    },
+    {
+      "area": "Policy agreement and evidence binding",
+      "assessment": "Activation policy/permissions, context authority, subscription wrapper, and the independently pinned subscription body are checked separately. The body is read from the confined source root, its bytes must match the descriptor digest, the descriptor digest must match the activation evidence pin, and the body must match study, assignment, model, representation, manifests, authority, and exact billing policy fields. Rebinding a tampered file therefore does not bypass the activation pin or semantic policy checks.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:652-768",
+        "src/nesy_game/runtime_model_swap_native.py:937-943",
+        "src/nesy_game/runtime_model_swap_native.py:1055-1058",
+        "src/nesy_game/runtime_model_swap_native.py:1104-1108",
+        "tests/test_runtime_model_swap_native.py:2072-2196"
+      ]
+    },
+    {
+      "area": "Unknown cost remains unknown",
+      "assessment": "Runtime receipts initialize actual cost and estimated cost as `None`, use `cost_source: unknown`, and carry the selected billing policy. The existing-credit policy is explicitly not treated as zero cost or included-only usage. Only a numeric provider estimate is recorded as an estimate; it is not promoted to invoice cost.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:72",
+        "src/nesy_game/runtime_model_swap_native.py:1295-1331",
+        "src/nesy_game/runtime_model_swap_native.py:1480-1486",
+        "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/protocol.json:1"
+      ]
+    },
+    {
+      "area": "Public-byte tuple confinement and call budget",
+      "assessment": "The loader accepts at most 48 sorted, unique, exact three-digest tuples and pins their canonical digest. Before dispatch, the runner hashes the exact instruction bytes, user-prompt bytes, and output-schema bytes and requires the resulting tuple to be in the frozen activation. Increasing the possible tuple lattice to four pre-goal states × twelve request IDs does not increase execution calls: the episode budget remains 12 and is checked before each call, while the actual request IDs advance only from the bounded engine.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:148-168",
+        "src/nesy_game/runtime_model_swap_native.py:1630-1658",
+        "src/nesy_game/runtime_model_swap.py:33-46",
+        "src/nesy_game/runtime_model_swap.py:389-390",
+        "src/nesy_game/runtime_model_swap.py:442-469",
+        "src/nesy_game/runtime_model_swap.py:536-539",
+        "src/nesy_game/runtime_model_swap.py:1129-1141"
+      ]
+    },
+    {
+      "area": "Codex command confinement",
+      "assessment": "Codex retains the full feature-disable list and config/rule isolation flags, adds the supported `--skip-git-repo-check`, and is launched from a newly created temporary directory rather than the project. Tests separately assert the flag, imported disable pairs, and cwd confinement.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:1333-1370",
+        "src/nesy_game/runtime_model_swap_native.py:1689-1711",
+        "tests/test_runtime_model_swap_native.py:2310-2318",
+        "tests/test_runtime_model_swap_native.py:2430-2456"
+      ]
+    },
+    {
+      "area": "Tests exercise the intended branch",
+      "assessment": "The positive credit-policy fixture loads a pinned Codex row and reaches `ready=True` with the legacy charge key explicitly false. Negative cases mutate one policy field at a time across activation, authority, subscription wrapper, and on-disk body; body mutations are deliberately rehashed and repinned so rejection exercises semantic policy validation rather than only a stale digest. Included-only remains covered as an admissible baseline and as a rejection when mislabeled. Pre-dispatch assertions verify zero transport calls.",
+      "references": [
+        "tests/test_runtime_model_swap_native.py:1915-2028",
+        "tests/test_runtime_model_swap_native.py:2072-2196",
+        "tests/test_runtime_model_swap_native.py:2198-2263"
+      ]
+    },
+    {
+      "area": "Publicity semantics",
+      "assessment": "The protocol and both representation manifests define `verified_public` as live-user-approved, publicly releasable, source-derived bytes plus newly authored control serialization. They explicitly state that the exact payload was not previously hosted and that hashes/files do not create human authority. This matches the retained eight-row grant described in the assignment without claiming prior exact-byte publication.",
+      "references": [
+        "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/protocol.json:1",
+        "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-input-manifest.json:1",
+        "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-input-manifest.json:1"
+      ]
+    },
+    {
+      "area": "Python correctness",
+      "assessment": "The new helper is total over arbitrary input, uses `Mapping` guards and exact Boolean identity, rejects unknown policies, preserves immutable activation snapshots, and introduces no new exception swallowing, implicit coercion, mutable default, or unbounded I/O path. No Python-specific blocker was found in the bounded change.",
+      "references": [
+        "src/nesy_game/runtime_model_swap_native.py:64-80",
+        "src/nesy_game/runtime_model_swap_native.py:329-369"
+      ]
+    }
+  ],
+  "test_evidence_review": {
+    "observed": "The preserved `08-native-contract-final.xml` reports 323 test cases with zero errors, failures, or skips, consistent with the stated 92 tests plus 231 subtests.",
+    "qualification": "No tests, commands, formatters, linters, provider calls, or account/network calls were run in this review, as required. The XML and test fixtures are code-regression evidence only; they are not provider evidence or human authority."
+  },
+  "remaining_operational_prerequisites": [
+    {
+      "priority": 1,
+      "requirement": "Issue externally pinned, production-native capabilities only for the eight approved Codex row IDs, using the current source/input manifests, exact 48-tuple representation-specific allowlists, output schema, oracle, and all evidence-body digests. Do not reuse a test-simulation capability."
+    },
+    {
+      "priority": 2,
+      "requirement": "Materialize source-bound activation, authority, subscription-wrapper, and on-disk evidence bodies with the reviewed exact policy values. Preserve the external trust-root/source-root separation and expiry checks."
+    },
+    {
+      "priority": 3,
+      "requirement": "Carry forward the observed native/browser account equality and auto-reload-OFF state without changing account settings. If those observations are stale at launch, fail closed and repeat only the already authorized read-only verification; do not purchase credits, enable reload, switch to API keys, or change accounts."
+    },
+    {
+      "priority": 4,
+      "requirement": "Execute exactly the eight approved rows serially with concurrency 1, medium effort, one quest, two repeats per cell, and the existing 12-call/2-repair/60-second/180-second limits. Reject extra rows, replacement models, outcome-dependent retries, and post-observation prompt edits."
+    },
+    {
+      "priority": 5,
+      "requirement": "Keep actual credit debit and invoice cost unknown unless directly exposed by the provider. Do not infer zero cost from the policy, the OFF observation, or missing telemetry."
+    },
+    {
+      "priority": 6,
+      "requirement": "Native study generations, executed assignments, and parsed native responses remain zero. Admission artifacts and this PASS must not be reported as experiment results."
+    }
+  ],
+  "assumptions_and_limits": [
+    {
+      "kind": "Observed limit",
+      "text": "The request-lattice envelopes and manifests were inspected, but hashes were not independently recomputed because commands were prohibited. Capability issuance must perform the existing byte/hash binding checks."
+    },
+    {
+      "kind": "Observed limit",
+      "text": "The account/reload record is a read-only observation, not a provider-signed spending cap or guarantee against later account changes."
+    },
+    {
+      "kind": "Not an assumption",
+      "text": "No raw user authorization text is reproduced here; the review relies on the assignment's statement that the retained grant is real and compares its bounded semantics to the protocol."
+    }
+  ],
+  "review_summary": "APPROVE — zero review findings. The bounded repair preserves fail-closed billing semantics and exact-byte/host/call constraints. Operational capability issuance and native execution remain pending.",
+  "self_evaluation": {
+    "accuracy": "4/5 — every code claim is line-grounded; hash recomputation and live execution were intentionally unavailable under the no-command/no-provider constraint.",
+    "completeness": "5/5 — covered helper, loader, context/body binding, receipt metadata, command/cwd, tests, request lattice, publicity semantics, and operational prerequisites.",
+    "clarity": "4/5 — evidence is separated by risk area, though the binding chain necessarily remains dense.",
+    "actionability": "5/5 — the result gives a binary verdict and a prioritized admission checklist without prescribing code edits.",
+    "conciseness": "4/5 — detail is proportionate to a load-bearing financial-policy review, but the evidence section is necessarily extensive.",
+    "overall": "4.4/5"
+  }
+}

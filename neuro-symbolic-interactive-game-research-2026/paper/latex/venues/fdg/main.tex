@@ -1,0 +1,72 @@
+\ifdefined\ANONBUILD
+\documentclass[sigconf,anonymous,review]{acmart}
+\else
+\documentclass[sigconf,review]{acmart}
+\fi
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{tabularx}
+\input{../_shared/macros}
+
+\setcopyright{none}
+\acmConference[FDG '27]{Foundations of Digital Games}{2027}{\ifanonymoussubmission Anonymous Submission\else Seoul, Republic of Korea\fi}
+
+\begin{document}
+
+\title{TRACE-RPG: Auditable Proposal-to-Commit Boundaries and Deterministic Engine Verification for Interactive Games}
+
+\author{Jangyoung Jeong}
+\affiliation{\institution{Department of Game Design, Hongik University}\city{Seoul}\country{Republic of Korea}}
+\author{Shinjin Kang}
+\authornote{Corresponding author.}
+\affiliation{\institution{Hongik University}\city{Seoul}\country{Republic of Korea}}
+
+\begin{abstract}
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. \system{} separates proposal authority from commit authority via a deterministic seven-predicate gate, counterexample-guided repair $\rho$, and hash-linked replay integrated with Godot~4.7.1, formalized by Theorems~1--4. Across 1,664 finite-graph cases, semantic gating eliminated 260/416 unsafe commits (0/156 false rejections; 128/260 repairs); across five quest worlds (120 closure cases), \texttt{multihop\_}\allowbreak\texttt{ontology\_}\allowbreak\texttt{gate} achieves 100.0\% accuracy vs.\ 50.83\% flat rules ($p{<}10^{-16}$). Across 16 live Gemini-to-headless Godot~4.7.1 closed-loop episodes (+ 16 fresh 0-LLM replays), 0/16 secret leaks occurred with 16/16 replay parity (\texttt{gemini-4-}\allowbreak\texttt{hydrogen-\allowbreak medium} 8/8 \texttt{EXACT\_}\allowbreak\texttt{TERMINAL\_}\allowbreak\texttt{HASH}; \texttt{gemini-3.8-}\allowbreak\texttt{flash-\allowbreak medium} 5/8, 4 parse failures retained, plus one safe actor-ID refusal). Together with 30-episode 5-arm shielding (66.7\% vs.\ 33.3\% safe goals, $p{=}0.00195$), 60 live 5-world shielding tasks (12/12 zero-token $\rho$ vs.\ 2/12 LLM self-repair), 268 EN/KO escape checks (97.2--100.0\% recall, 0/72 FRR), and a concrete \texttt{TR01--TR06} packet (\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS}), these results establish reproducible engine-verified boundaries.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10010147.10010178.10010187</concept_id>
+       <concept_desc>Computing methodologies~Knowledge representation and reasoning</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10011007.10011074.10011099</concept_id>
+       <concept_desc>Software and its engineering~Software verification and validation</concept_desc>
+       <concept_significance>300</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computing methodologies~Knowledge representation and reasoning}
+\ccsdesc[300]{Software and its engineering~Software verification and validation}
+
+\keywords{game AI, interactive narrative, neuro-symbolic systems, Godot, deterministic verification}
+
+\maketitle
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_core}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback before revalidated commit and replay.}
+  \Description{Architecture diagram showing proposal submission, seven-predicate deterministic validation, bounded repair, revalidation, and commit ledger.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/sec_problem_arch}
+\input{../_shared/sec_eval_full}
+\input{../_shared/sec_eval_phase2_venue}
+\input{../_shared/sec_discussion_conclusion_phase2}
+
+\FloatBarrier
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../../references}
+
+\end{document}

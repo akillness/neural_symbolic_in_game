@@ -1,0 +1,131 @@
+{
+  "schema": "multiagent-3role-epistemic/v1",
+  "episodes_per_arm": 30,
+  "total_arm_episodes": 150,
+  "turns_per_arm": 90,
+  "arms": {
+    "schema_only": {
+      "episodes": 30,
+      "turns": 90,
+      "safe_goal_episodes": 3,
+      "safe_goal_rate": 0.1,
+      "safe_goal_ci95": [
+        0.0346,
+        0.2562
+      ],
+      "zero_leak_episodes": 3,
+      "unsafe_turns": 68,
+      "unsafe_turn_rate": 0.7556,
+      "unsafe_turn_ci95": [
+        0.6575,
+        0.8327
+      ],
+      "repaired_steps": 0,
+      "benign_false_rejections": "0/5"
+    },
+    "affordance_mask_only": {
+      "episodes": 30,
+      "turns": 90,
+      "safe_goal_episodes": 3,
+      "safe_goal_rate": 0.1,
+      "safe_goal_ci95": [
+        0.0346,
+        0.2562
+      ],
+      "zero_leak_episodes": 5,
+      "unsafe_turns": 35,
+      "unsafe_turn_rate": 0.3889,
+      "unsafe_turn_ci95": [
+        0.2947,
+        0.4922
+      ],
+      "repaired_steps": 0,
+      "benign_false_rejections": "0/5"
+    },
+    "flat_shield_k0": {
+      "episodes": 30,
+      "turns": 90,
+      "safe_goal_episodes": 5,
+      "safe_goal_rate": 0.1667,
+      "safe_goal_ci95": [
+        0.0734,
+        0.3356
+      ],
+      "zero_leak_episodes": 20,
+      "unsafe_turns": 15,
+      "unsafe_turn_rate": 0.1667,
+      "unsafe_turn_ci95": [
+        0.1037,
+        0.2569
+      ],
+      "repaired_steps": 0,
+      "benign_false_rejections": "0/5"
+    },
+    "multihop_shield_k0": {
+      "episodes": 30,
+      "turns": 90,
+      "safe_goal_episodes": 10,
+      "safe_goal_rate": 0.3333,
+      "safe_goal_ci95": [
+        0.1923,
+        0.5122
+      ],
+      "zero_leak_episodes": 30,
+      "unsafe_turns": 0,
+      "unsafe_turn_rate": 0.0,
+      "unsafe_turn_ci95": [
+        0.0,
+        0.0409
+      ],
+      "repaired_steps": 0,
+      "benign_false_rejections": "0/5"
+    },
+    "trace_rpg_multihop_rho_k2": {
+      "episodes": 30,
+      "turns": 90,
+      "safe_goal_episodes": 20,
+      "safe_goal_rate": 0.6667,
+      "safe_goal_ci95": [
+        0.4878,
+        0.8077
+      ],
+      "zero_leak_episodes": 30,
+      "unsafe_turns": 0,
+      "unsafe_turn_rate": 0.0,
+      "unsafe_turn_ci95": [
+        0.0,
+        0.0409
+      ],
+      "repaired_steps": 20,
+      "benign_false_rejections": "0/5"
+    }
+  },
+  "mcnemar_zero_leak": {
+    "trace_rpg_vs_flat_shield": {
+      "a_only_correct": 10,
+      "b_only_correct": 0,
+      "discordant": 10,
+      "p_value": 0.00195312
+    },
+    "trace_rpg_vs_affordance_mask": {
+      "a_only_correct": 25,
+      "b_only_correct": 0,
+      "discordant": 25,
+      "p_value": 6e-08
+    }
+  },
+  "mcnemar_safe_goal": {
+    "trace_rpg_rho_k2_vs_multihop_k0": {
+      "a_only_correct": 10,
+      "b_only_correct": 0,
+      "discordant": 10,
+      "p_value": 0.00195312
+    },
+    "trace_rpg_rho_k2_vs_flat_k0": {
+      "a_only_correct": 15,
+      "b_only_correct": 0,
+      "discordant": 15,
+      "p_value": 6.104e-05
+    }
+  }
+}

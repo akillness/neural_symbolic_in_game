@@ -1,0 +1,47 @@
+{
+  "schema_version": "runtime-codex-identity-review-closure/1",
+  "reviewer": "IdentityPublicationReview",
+  "standards_closure_verdict": "PASS",
+  "source_delivery": "Actual terminal IRC reply recovered after resume succeeded but job/subagent await lookup returned no match; this JSON records that reply, not an independently reproduced tool result",
+  "review_scope": "delta-only read review of the two prior MEDIUM findings and the module docstring nit",
+  "findings": [
+    {
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "subject": "Nested public metadata closed-schema and value constraints",
+      "evidence": [
+        "scripts/generate_runtime_comparison_publication.py:46-94,785-846,885",
+        "tests/test_runtime_comparison_publication.py:847-1048"
+      ],
+      "reviewer_observation": "Fixed metadata, provenance and timing are closed, with hash, canonical UTC, version, visibility, count and strict type checks; regressions cover nested private fields, all public mappings, malformed/missing keys, hashes, timestamps, URLs, booleans and counts"
+    },
+    {
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "subject": "Paired deletion of a legacy generated fragment and its input",
+      "evidence": [
+        "tests/test_current_research_publication.py:47-104",
+        "tests/test_current_research_publication.py:467-489"
+      ],
+      "reviewer_observation": "Eleven legacy basenames and the sole identity exception are frozen with exact placement; a temporary paired file/input deletion is required to fail"
+    },
+    {
+      "severity": "LOW",
+      "status": "CLOSED",
+      "subject": "Module and CLI description of both separate input modes",
+      "evidence": ["scripts/generate_runtime_comparison_publication.py:1-6"]
+    }
+  ],
+  "remaining_issues": [],
+  "limitations": {
+    "reviewer_commands_tests_builds_or_edits": false,
+    "raw_private_files_read": false,
+    "main_test_and_pdf_reports_independently_reproduced": false,
+    "cross_model_reviewer_independence_attested": false,
+    "model_identity": "UNVERIFIED",
+    "model_comparison": "UNVERIFIED",
+    "actual_runtime_outcome": "NOT_PASSED",
+    "safety_pass_established": false
+  },
+  "initial_fix_record": "review-standards-initial.json"
+}

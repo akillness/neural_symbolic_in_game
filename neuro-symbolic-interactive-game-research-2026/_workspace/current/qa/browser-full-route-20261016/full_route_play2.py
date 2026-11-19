@@ -1,5 +1,10 @@
 """Real-browser full-route playability check v2 (local build only)."""
-import http.server, functools, threading, re, json, time
+import functools
+import http.server
+import re
+import threading
+import time
+
 from playwright.sync_api import sync_playwright
 
 WEB = "/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/game-track/web"

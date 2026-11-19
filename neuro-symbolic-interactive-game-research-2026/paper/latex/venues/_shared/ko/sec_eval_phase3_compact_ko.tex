@@ -1,0 +1,21 @@
+\subsection{3단계 다중 모델군 실딩·5월드 Godot~4.7.1·Datalog 스케일링 및 3검증기 우회 평가}\label{sec:phase3-compact}
+2단계 5월드 기반(\textbf{P1}: 120건 100.0\% 대 50.83\%; \textbf{P2}: 3역할 66.7\% 대 33.3\%, 위험 0/90; \textbf{P3}: 16회 Godot 재실행 일치; \textbf{P4}: $\rho$ 12/12 대 후보 비참조 LLM 2/12; \textbf{P5}: 한·영 Flash 97.2\%·Hydrogen 100.0\%)에 더해, 3단계에서는 Anthropic \texttt{claude-\allowbreak sonnet-\allowbreak 5-\allowbreak 5-\allowbreak medium}, 개방형 \texttt{gpt-\allowbreak oss-\allowbreak 120b-\allowbreak medium}, Google \texttt{gemini-\allowbreak 4-\allowbreak hydrogen-\allowbreak medium}·\texttt{gemini-\allowbreak 3.8-\allowbreak flash-\allowbreak medium}을 평가하고 \texttt{DATASHEET\_v3.md} 및 Croissant~1.0 v3(17/17 SHA-256)을 구축하였다(표~\ref{tab:phase3-compact}). 30에피소드 고정 턴 라이브 3에이전트 협상(\textbf{P6}; 88/90턴 파싱, GPT-OSS PF 2)에서 다중 홉 실드는 30/30 무누출(평면 14/30, $p{=}3.05{\times}10^{-5}$; Cochran's $Q{=}84.63$)을 유지하며 $\rho_{K=2}$로 안전 마일스톤을 23.33\%에서 \textbf{53.33\%}(16/30, $p{=}0.00391$, 위험 0/88)로 높였다(단 GPT-OSS는 9턴 모두 자리표시자 \texttt{action\_type} 오류로 0커밋·0누출). 90개 5월드 라이브 과제(\textbf{P7}; \textbf{87/90 = 96.7\%} 파싱, PF 3)에서 $\rho_{K=2}$는 0 추가 토큰·0/87 위험으로 노이즈 \textbf{30/30}을 수리한 반면($Q{=}191.28, p{=}2.81{\times}10^{-40}$), 실패 후보 $a$를 뺀 무상태 LLM 재생성($K{=}1$)은 1/30(1,717,068토큰)에 그쳐 동등 비교가 아님을 명시한다. 180건 한·영 2계열 3모델 우회(\textbf{P8}; 540회, GPT-OSS 429 비합성)는 Fleiss $\kappa{=}\mathbf{0.9614}$, $\alpha_{\mathrm{nom}}{=}\mathbf{0.9614}$($Q{=}2.80, p{=}0.2466$; Claude $F_1{=}0.9863$·FRR 4.17\%, Hydrogen 1.000, Flash 0.9907)를 기록했다. 480건 Datalog 스케일링($R{\le}64, d{\le}5$, \textbf{P9})에서 \texttt{multihop\_}\allowbreak\texttt{ontology\_}\allowbreak\texttt{gate}는 $R$에 무관한 $O(d)$ 중앙값 6.46--7.12\,$\mu$s로 \textbf{100.0\%}(480/480, 오라클 불일치 0)를 기록하였다($Q{=}1100.19$). 50에피소드 5월드 Godot~4.7.1 폐루프(\textbf{P10})는 \textbf{50/50} 0-LLM 재실행 일치와 \textbf{0/50} 누출을 달성했으며, 코호트A(맹검 30회, 1/30)는 정리~2 거부를, 프롬프트 유도 코호트B(지식·목표행동·초기생략 지시 제공 20회)는 \textbf{20/20} 목표와 10/10 $\rho$ 수리를 확인하였다.
+
+\begin{table}[!tbp]
+\caption{3단계 다중 모델군, 5월드 Godot~4.7.1, Datalog 스케일링 및 3검증기 우회 요약}
+\label{tab:phase3-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{3단계 트랙} & \textbf{결과 요약 (95\% Wilson CI; Cochran's $Q$ / McNemar $p$)} \\
+\midrule
+\textbf{P6} 라이브 3역할(30) & 무누출: 평면 14/30 대 다중 홉 \textbf{30/30}; 마일스톤 $\rho$ \textbf{16/30} 대 7/30; GPT-OSS 1턴 교착 0커밋. \\
+\textbf{P7} 다중모델(90) & 87/90 파싱(96.7\%): 평면 27/87 위험 대 $\rho$ \textbf{0/87} + 노이즈 \textbf{30/30} ($Q{=}191.28$; 무후보 LLM 1/30). \\
+\textbf{P8} 우회(540회) & 2계열 3모델: $\kappa{=}\mathbf{0.9614}$, $\alpha{=}\mathbf{0.9614}$; Claude $F_1{=}0.986$, Flash $0.991$, Hydrogen \textbf{1.000}. \\
+\textbf{P9} Datalog(480) & $R{\le}64,d{\le}5$: 평면 46.7\%, 2홉 60.0\%, 다중 홉 \textbf{100.0\%} ($O(d)\le$7.12\,$\mu$s; $Q{=}1100.19$). \\
+\textbf{P10} Godot~4.7.1(50) & \textbf{50/50} 0-LLM 재실행, \textbf{0/50} 누출: 코호트A 30/30(1/30); 유도 코호트B \textbf{20/20}+10/10 $\rho$. \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,406 @@
+{
+  "schema_version": "selected-publication-ci-attempt/v1",
+  "status": "FIX",
+  "command": "rtk proxy bash scripts/verify_like_ci.sh",
+  "input_tree": "e521065cf770c988eb9bdf139495e1b7c8ed9951",
+  "selected_files": 83,
+  "source_inputs_unchanged_after_run": true,
+  "exit_code": 1,
+  "wall_seconds": 1340.51,
+  "unit_result": {
+    "passed": 1636,
+    "failed": 1,
+    "skipped": 1,
+    "subtests_passed": 1179,
+    "seconds": 1197.62,
+    "failed_case": "tests/test_ontology_evidence_map.py::test_aside_rejected_source_does_not_discard_concurrent_observations[error-final fixture pageErrors guard rejected]",
+    "expected_guard": "final fixture pageErrors guard rejected",
+    "actual_failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: 1 !== 0 at tests/aside_browser_backend.cjs:174:187",
+    "diagnosis_from_source": "popupControls newTabs===0 probe assertion failed before the intended concurrent-error control; precise cause unestablished",
+    "skip": "tests/test_npc_play_loop.py:274: optional paid real-service mode; set NPC_PLAY_LOOP_REAL_SERVICE=1 explicitly"
+  },
+  "lint_failure": {
+    "rule": "F841",
+    "path": "tests/test_publication_presentation.py",
+    "line": 655,
+    "message": "Local variable failure is assigned to but never used"
+  },
+  "passed_stages": [
+    "Install locked environment",
+    "Project integrity",
+    "Contribution and reference crosswalk",
+    "Editable visual and table sources",
+    "Offline experiment smoke",
+    "Harness structure",
+    "Experimental game-track contracts",
+    "Deep-research result contracts",
+    "Survey artifact contract",
+    "Wiki lint"
+  ],
+  "failed_stages": [
+    "Unit and publication regression tests",
+    "Ruff lint and format"
+  ],
+  "game_track": {
+    "passed": 101,
+    "subtests_passed": 48,
+    "seconds": 132.49
+  },
+  "visuals": {
+    "source_artifact_receipts": 147,
+    "svg_assets": 12,
+    "double_regenerated_sources": 24
+  },
+  "deep_research_records_valid": 14,
+  "survey_artifacts": 3,
+  "wiki_pages": 81,
+  "preceding_cancelled_invocation": {
+    "status": "CANCELLED_NOT_ACCEPTANCE_EVIDENCE",
+    "reason": "Main supplied a misspelled PYTHONPATH in the first post-format invocation; stopped the job and rebuilt launch arguments from the resolved selected_project path. No CI success inferred.",
+    "source_tree": "e521065cf770c988eb9bdf139495e1b7c8ed9951",
+    "job": "bg_1"
+  },
+  "capture_policy": "Exact observed failure excerpt and stage/test summaries transcribed from completed bg_2 output; this is not a raw stdout or JUnit file. Raw task-local driver receipts are retained privately.",
+  "browser_backend": "aside",
+  "claim_limit": "Not a full CI PASS, not native SDK repair, not scientific efficacy or Git delivery.",
+  "input_file_receipts": {
+    ".github/workflows/validate.yml": {
+      "sha256": "65c18e5197a75778de7affcb00854490edb696b0b35689a444dd5376efced6ae",
+      "bytes": 1946
+    },
+    ".gitignore": {
+      "sha256": "3888677e13bec4231c5cd1995421ff208366d7d1842c8697bf5958217c0d82e0",
+      "bytes": 4535
+    },
+    "README.ko.md": {
+      "sha256": "40a97a8efaaf8415792af1fc9b7d440184c8110195c48723c3b4ce98a16fc83f",
+      "bytes": 39687
+    },
+    "README.md": {
+      "sha256": "d6a70964886c123abe4d25c3ff4fde986c7f62d94e223d58f4aed689e2f7ee33",
+      "bytes": 37547
+    },
+    "llm-wiki/index.md": {
+      "sha256": "34ab887ae6683dca4824358f291ba58c073dbf678b9c293ac984148f330a8653",
+      "bytes": 53136
+    },
+    "llm-wiki/log.md": {
+      "sha256": "5732eefc6265892b2f71b5465fe8131e6869dc14ccb8f9f9654c47fc136960f1",
+      "bytes": 159125
+    },
+    "llm-wiki/wiki/projects/trace-rpg-paper-2026.md": {
+      "sha256": "35006fc78d345e2ba20ad3d4721df1f47284c1a355cbf7f1e1d23d49e1d595f6",
+      "bytes": 18747
+    },
+    "llm-wiki/wiki/reports/2026-10-23-current-model-contribution-and-comparison-plan.md": {
+      "sha256": "5478f3cf09856e965f8a78f310aad4d4152169bf2cadc5d0ac3cb22705b4476b",
+      "bytes": 95345
+    },
+    "llm-wiki/wiki/reports/2026-10-26-fixed-game-native-runtime-comparison.md": {
+      "sha256": "607d97fa4f3bc1d117f6e7b56a72ec5fa48e542c3b36d75ca30dac5e9b470380",
+      "bytes": 105907
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/decision-log.md": {
+      "sha256": "807bba29bb7ac852bd25218e900e4708b6a085085120ddf2fd662a3f81c68ff5",
+      "bytes": 64449
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/production/task-manifest.md": {
+      "sha256": "73186d0ae054641a001b02f778afb73633f95cbdd061172ccf5844162a625a62",
+      "bytes": 90507
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/aside-browser-preclosure.json": {
+      "sha256": "ce9f495dcc6bca7e75c2c8dbb391079f63a8e851de0688e5fb6c916d3dfbd93d",
+      "bytes": 1460
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/aside-browser-verification.json": {
+      "sha256": "bfc3251ddbd3c2db07d7605ab332523a02d6fdda231304a5617cf3b790e4759f",
+      "bytes": 20230
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/paired-paper-verification.json": {
+      "sha256": "dca318adf837f5596ebd897c35863e04f7b5eccb132f23d434b411d331ad322b",
+      "bytes": 3502
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/privacy-selection.json": {
+      "sha256": "c2fb1c546bfc8241af72dbd38ba11b1fbb975b73643233253c334dd8fc82bd66",
+      "bytes": 663
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/review-summary.json": {
+      "sha256": "6c49ba874d9023de9b8dec3c0c8b188f97490f5bfb220358ac6548814d47223e",
+      "bytes": 13409
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/runtime-source-set.json": {
+      "sha256": "0f9b70a93f0eff8799223947eaeb27d1bd1169992b63b9542bbcf6569f02a851",
+      "bytes": 10309
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/source-integrity.json": {
+      "sha256": "8924fd6404d63d53e72bcfb929aaef6ac365da60a99754a483af549d681e7617",
+      "bytes": 467
+    },
+    "neuro-symbolic-interactive-game-research-2026/_workspace/current/qa/releases/2026-11-11-session-continuation/v5-terminal-order.json": {
+      "sha256": "a5f72c86f203a70eeb19dbc12f970393640779395758eb1f8537d17dc254ecf7",
+      "bytes": 7335
+    },
+    "neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/manifest.json": {
+      "sha256": "cbec6f41d7a9fc2780a64c35c3f8c716d167e8c12b93fd1614644af92215212b",
+      "bytes": 1498
+    },
+    "neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/paper-en-pages.png": {
+      "sha256": "ef0dabffa868d184c856a345aabac1a88e76dc3df2802e5b7e81e4f2599a3d01",
+      "bytes": 845679
+    },
+    "neuro-symbolic-interactive-game-research-2026/docs/readme/review-20261111/paper-ko-pages.png": {
+      "sha256": "26b235ab8ad245260b9de081c94cc47d2766c301b5c53896c527d1639e9352fb",
+      "bytes": 925556
+    },
+    "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/dashboard.css": {
+      "sha256": "d0f3977150af526ea9ff04307d21dfba680c479d4b8d15e567cdd789eff758e3",
+      "bytes": 22455
+    },
+    "neuro-symbolic-interactive-game-research-2026/game-track/web/dashboard/index.html": {
+      "sha256": "4bf6d773178401ec57b32da68df73035d4dc673f6b786230f61086bdc24bfe34",
+      "bytes": 11615
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.pdf": {
+      "sha256": "7f3ff478c065b74d6464290d1162a4a3a255e43de80c5e96ca3eb862e00a8f34",
+      "bytes": 1443118
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex": {
+      "sha256": "b8c7e6b18cb7156317b2eec2cd7341eff4eb5ffc2b11021eba413066dc5034cb",
+      "bytes": 45069
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/en/traceability-supplement.pdf": {
+      "sha256": "781d97814349893ddbe4ed0cbce6d1a84de6009ac4d751b3533df16f7c748558",
+      "bytes": 72740
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.pdf": {
+      "sha256": "c5c73e7e08171d605ff6bf5c41e9e5b9ef8fc1f8b8ffe7a7dc2b53bb9fc6693e",
+      "bytes": 120380
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.png": {
+      "sha256": "663c7b7114afba75eeaf2cbd44ac67315d07bf49a456b72dfdfcee1c43378fdf",
+      "bytes": 199868
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_architecture.svg": {
+      "sha256": "679c63e3762815056893be42944a018075df3024a748bd46640b02bf08758149",
+      "bytes": 11076
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_disclosure_signals.pdf": {
+      "sha256": "2fdaf3be11e38b28d598a7b0d40fccf4428cfd5402ccb5c4bf7a34dc3f9480f5",
+      "bytes": 92256
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_disclosure_signals.png": {
+      "sha256": "6e0229ebf346182dc8e8d98340afa8ce8bfe94b157c8d5f79a1ca2fa2e8e4b6b",
+      "bytes": 124400
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/figures/fig_disclosure_signals.svg": {
+      "sha256": "7394065bdb69388928e7767c309a367da085bca0f01c1e6e8992cbce403c20c8",
+      "bytes": 6110
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/generated/disclosure_results_en.tex": {
+      "sha256": "771f39bf0edbaf0e60df5cb287994e1f7951bef433b7f5e78860574c5c801842",
+      "bytes": 3748
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.pdf": {
+      "sha256": "a98f2bd1c187c73cdd343cafd301650e058c78d49c13a86d7fb637c56e5458b8",
+      "bytes": 1399975
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex": {
+      "sha256": "4d0e04af02e7ca69d8fc6bed1c7d3356d34c0b27389a1776b00afcbea7295c3e",
+      "bytes": 49728
+    },
+    "neuro-symbolic-interactive-game-research-2026/paper/latex/ko/traceability-supplement.pdf": {
+      "sha256": "229869f46abfa90acaea3ac7d4b1628083ea9cdb64bead0e953954324d59e0c6",
+      "bytes": 64072
+    },
+    "neuro-symbolic-interactive-game-research-2026/pyproject.toml": {
+      "sha256": "2cc6bccb1d67c1e717ac0e4d4c50f3d424aa072d103d27299a12c039ca11eddf",
+      "bytes": 1155
+    },
+    "neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/public-history-20261111/cohort-inventory.json": {
+      "sha256": "88d77a8c20887f2cf18df5fb4de9cfcc24ce193d78d4d7e9cb0b179e333990e2",
+      "bytes": 15385
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/blind_reassessment.py": {
+      "sha256": "543b16a55c545f0db3deec62b3f2502bf46221d69a03aec6c502d6d160b4047a",
+      "bytes": 11975
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/codex_feedback_live_adapter.py": {
+      "sha256": "970b527ca4f15b06628e45ec88d4bd688c85649eda3871cc5b1e6e2cc1c33c79",
+      "bytes": 28644
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/codex_feedback_pilot.py": {
+      "sha256": "1597920aa151ec502c1e319e6f63587add3d32e663d7e96e04d3cdf4880db2f3",
+      "bytes": 20861
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/codex_isolation_wrapper.py": {
+      "sha256": "bb0f58bc67451112383b799116f5141549f53eaf4d818ba8a963e0c3ab2d4ebb",
+      "bytes": 51807
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/generate_disclosure_paper_results.py": {
+      "sha256": "0ed3975935a52622a1f8e5b82b472b07b5ffd0aee193d7b4d792f01f399028f5",
+      "bytes": 47388
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/generate_paper_figures.py": {
+      "sha256": "2a7cf4614964e5652e0eefdc377ba826d29d47a161b34f814bc64b8363387e09",
+      "bytes": 21915
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_equal_information_feedback.py": {
+      "sha256": "7005adc854f60fd63a196b083f9e8d79a73e7358c385c973dba5349f24beff61",
+      "bytes": 8475
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_fixed_oracle_comparison.py": {
+      "sha256": "03c863d863330522bdac289b52914c023b75b7e8b76ba94c388004f331c4291f",
+      "bytes": 10845
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_fixed_proposal_comparison.py": {
+      "sha256": "4ba8ff949cf71b625d9fe283288e18c6dd173e020b9acd55d2f82ed2b51d8d49",
+      "bytes": 4373
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_local_signal_comparison.py": {
+      "sha256": "7540bb5ee3743dcecd701d5bf2942d8204c94cec6ba2f9ad33d3a8f11f1f935c",
+      "bytes": 6182
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_representation_consumers.py": {
+      "sha256": "bf26a4ab71bb40d37986faf7a4b18701e462c7c712ae50cf5a7a190f0cd8d397",
+      "bytes": 12075
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_runtime_model_swap_codex_exploratory.py": {
+      "sha256": "735723b29ce687129309c0e77cee5d4e64f56e04c5c88dca842a6b643b7af54c",
+      "bytes": 54480
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_runtime_model_swap_native.py": {
+      "sha256": "2de08089522c5a39b3b6973b4abc460802ba13329b1ccc271321c4a94256f871",
+      "bytes": 33793
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/run_runtime_model_swap_ollama.py": {
+      "sha256": "8d6daaa0c76cb1f652f0231dbc4996c19625afa7515d7adf2f1a263626b38edc",
+      "bytes": 13041
+    },
+    "neuro-symbolic-interactive-game-research-2026/scripts/verify_like_ci.sh": {
+      "sha256": "c3828cbdb40ab58fc14fdfbc0a38afb8a8210c078bcbcd30babefd9c0229b29e",
+      "bytes": 2778
+    },
+    "neuro-symbolic-interactive-game-research-2026/src/nesy_game/codex_extension_no_tools_models.json": {
+      "sha256": "7ebc473ef97b40fe3dba3d824524ecf808d41d3f93ced39b83c9cc14345afaf5",
+      "bytes": 224666
+    },
+    "neuro-symbolic-interactive-game-research-2026/src/nesy_game/codex_extension_no_tools_models.json.license": {
+      "sha256": "724a84ee5834c1086672c840096f4d8854e1ff6a656809d4fba1f8125955cb3b",
+      "bytes": 835
+    },
+    "neuro-symbolic-interactive-game-research-2026/src/nesy_game/codex_extension_no_tools_models.json.provenance.json": {
+      "sha256": "b2e22cadebeb84a524d962f3ae9b9adbc70f107012c34760d10bb29ef5ed9ef9",
+      "bytes": 992
+    },
+    "neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap.py": {
+      "sha256": "cdb842f9f915de6c43cbaaee0f9e13244cf6c8fcffc1a135c350e2eca1082c7c",
+      "bytes": 78034
+    },
+    "neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_native.py": {
+      "sha256": "b796a7c7cd7f7dcaae65bd7285ad3956cf960c95c27ecb2eb12048fe586bd999",
+      "bytes": 102857
+    },
+    "neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_ollama.py": {
+      "sha256": "6e96f029dd30ea7bf30bab3535ee091a56f079b2701cb8c9e7fb3efb04a041ee",
+      "bytes": 30799
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/aside_browser_backend.cjs": {
+      "sha256": "d492e90e8a56c0de66d92d3afa57c0b845c42369a5449caaf6e592766a4b32d5",
+      "bytes": 44220
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/conftest.py": {
+      "sha256": "a7cbeaad33174973426d6c02468e77a1cf2bfe4ce6b5a113f1a196d676049a57",
+      "bytes": 2785
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/dashboard_signal_driver.cjs": {
+      "sha256": "8e86fdaf15146dc617e566a6ec520bac7bd04a549dd2db2605183dfa5881fb51",
+      "bytes": 14910
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/ontology_evidence_map_driver.cjs": {
+      "sha256": "54b2a8a292a9a3e448a77347668580d80740cb4e21ed53042332158c39e0edd1",
+      "bytes": 23563
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/publication_presentation_driver.cjs": {
+      "sha256": "ead0516a4ed88fa6932f44c78933cce5675ce38f1ce86eba1c4cdcedcd72d5cf",
+      "bytes": 13728
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_blind_reassessment.py": {
+      "sha256": "10212e11b5dd710b56e79f6191adc2c26397114b516f7df8302fa4e3551799ee",
+      "bytes": 12606
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_codex_feedback_live_security.py": {
+      "sha256": "79ef6a2f2a2ae7f65e78b8edce3e8868a2a7eb6c756c5d5cd2468d40059167ac",
+      "bytes": 41601
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_codex_feedback_pilot.py": {
+      "sha256": "91219ad6f92b450e3a4a760585e96dc0ae2cce2de4c4685b54221e4c993cfa73",
+      "bytes": 33963
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_codex_feedback_publication.py": {
+      "sha256": "321fff183ee8d432a20558f5d8d165097c0598e9cdde183a225a609b34982997",
+      "bytes": 14465
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_codex_isolation_wrapper.py": {
+      "sha256": "70dea5854f95e9793ceeae36cd3261cea9a3e45d3ca18e7b34d0760d3add86b3",
+      "bytes": 17129
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_equal_information_feedback.py": {
+      "sha256": "de40b6509e8080025030cd5beb68d8b98d4ba3109afe8c5263a683b5af1a2865",
+      "bytes": 13486
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_fixed_proposal_comparison.py": {
+      "sha256": "1c3afbc264fa962bd1070a83e76682edada088b278e5ea1218a15b492e708a1d",
+      "bytes": 4289
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_godot_experimental_game.py": {
+      "sha256": "c82a82e00aa38e75364d6e90cb91d3b0577bf6248a5f77c54403c20bc89f4e09",
+      "bytes": 39054
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_local_signal_comparison.py": {
+      "sha256": "68fa7584b6844e53bd358a5014bbb068fda9dd86b897e62e0a3a9557c5d7f2c6",
+      "bytes": 8973
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_offline_boundary_regressions.py": {
+      "sha256": "161a159aab9ee2c3c2ced19333e395a08825f5d8939be8e3654a9eda9d12320d",
+      "bytes": 17064
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_ontology_evidence_map.py": {
+      "sha256": "8b0e0cf277ce088a3525f3c24f030c710cf662b49295721fbb1021208c0dc9e2",
+      "bytes": 16264
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_publication_presentation.py": {
+      "sha256": "532169c13a77947c334d63f72b749b1117e2601d5bb2ba7e5631bc71a5e7ca34",
+      "bytes": 28353
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_representation_consumers.py": {
+      "sha256": "99f327a4d12537d4961ba0ee3a4b4ecf5a8ce01084137f4c0a4683bfae061c20",
+      "bytes": 17713
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_model_swap_codex_exploratory.py": {
+      "sha256": "c006e2e6eee270ab324452936461e71efcacbbeefb4fdd3f510bb6e1243c4bc8",
+      "bytes": 45346
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_model_swap_native.py": {
+      "sha256": "66ac49c5e2c35e517725c2f06ca16feec6bfa34eb1b1b5b6ae344b585dfca9d9",
+      "bytes": 323378
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_model_swap_ollama.py": {
+      "sha256": "b22ff6b0a64698d62e94fd604f41441c6575072f9baf3b8c32c9326f82761461",
+      "bytes": 35592
+    },
+    "neuro-symbolic-interactive-game-research-2026/tests/test_signal_explainer.py": {
+      "sha256": "295f77fdd0b75169ce42ea81226f7b135fbf72ee6cd47e24788bf261f76f76f9",
+      "bytes": 13398
+    },
+    "neuro-symbolic-interactive-game-research-2026/visuals/source-manifest.json": {
+      "sha256": "37d2bd08cabab8e88a40a39e91d0ba20dcdfac24ac6e9530ac743a96fbca133c",
+      "bytes": 55875
+    }
+  },
+  "private_input_archive": {
+    "positive_selection_files": 83,
+    "all_input_bytes_verified": true,
+    "sha256": "02930ac7bb2f6702a0ba6a499eef1b7a375a24d8e71b7cb126e529ae762dbe4c",
+    "publication": "Archive remains private; no raw/operator tree exported"
+  }
+}

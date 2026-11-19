@@ -1,0 +1,4378 @@
+{
+  "schema": "phase2-godot-live-closed-loop/v1",
+  "godot_version": "4.7.1.stable.official.a13da4feb",
+  "cli_version": "1.5.11",
+  "exact_canonical_terminal_hash": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+  "total_episodes": 16,
+  "all_replay_valid": true,
+  "total_unsafe_commits": 0,
+  "total_exact_terminal_hash_matches": 13,
+  "by_model": {
+    "gemini-3.8-flash-medium": {
+      "episodes": 8,
+      "godot_goals": 5,
+      "exact_terminal_hash_matches": 5,
+      "godot_replay_valid": 8,
+      "unsafe_commits": 0,
+      "blocked_unsafe": 5,
+      "repaired_steps": 2,
+      "parse_failures": 4,
+      "tokens": 839987,
+      "wall_seconds": 1520.95
+    },
+    "gemini-4-hydrogen-medium": {
+      "episodes": 8,
+      "godot_goals": 8,
+      "exact_terminal_hash_matches": 8,
+      "godot_replay_valid": 8,
+      "unsafe_commits": 0,
+      "blocked_unsafe": 2,
+      "repaired_steps": 2,
+      "parse_failures": 0,
+      "tokens": 895976,
+      "wall_seconds": 480.16
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "gemini-3.8-flash-medium::standard::multihop_shield_k0::r1",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "standard",
+      "arm": "multihop_shield_k0",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30494,
+              "output_tokens": 5088,
+              "thinking_tokens": 4976,
+              "cache_read_tokens": 0,
+              "total_tokens": 35582
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 42.883732,
+            "wall_seconds": 54.29
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "lighthouse_hint_authorized",
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens to restore the lighthouse lamp and authorize the captain's hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30509,
+              "output_tokens": 5322,
+              "thinking_tokens": 5195,
+              "cache_read_tokens": 0,
+              "total_tokens": 35831
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 32.152448,
+            "wall_seconds": 36.071
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint now that the lighthouse hint is authorized.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "9761491d62646932c10a75f891b1d474cc901a70b1bc7d30a519fb122ee6c0f9"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30509,
+              "output_tokens": 4931,
+              "thinking_tokens": 4802,
+              "cache_read_tokens": 0,
+              "total_tokens": 35440
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 16.476147,
+            "wall_seconds": 20.409
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 106853,
+      "wall_seconds": 91.512,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::standard::multihop_shield_k0::r2",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "standard",
+      "arm": "multihop_shield_k0",
+      "repeat": 2,
+      "committed_ops": [],
+      "turns": [
+        {
+          "proposal": {
+            "raw": "{\"conversation_id\":\"18edd9d4-017c-434e-93f0-7ef7df51a592\",\"status\":\"ERROR\",\"response\":\"\",\"error\":\"print timeout after 2m0s with the turn still in progress; the response is partial\",\"duration_seconds\":26.511301,\"num_turns\":1,\"json_schema\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"action_id\",\"actor_id\",\"action_type\",\"preconditions\",\"effects\",\"required_objects\",\"used_facts\",\"disclosed_facts\",\"required_quest_stage\",\"quest_stage_effect\",\"narrative_text\"],\"properties\":{\"action_id\":{\"t"
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              {
+                "code": "SCHEMA_PARSE_FAILURE"
+              }
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "godot_dispatched": false
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {}
+          },
+          "latency": {
+            "cli_duration_seconds": null,
+            "wall_seconds": 128.743
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "action_install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse lamp housing to restore proper focal alignment.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "9d92b367109cef4d85fbacb9358ed9f61c166a2d9a9eb25c960af84ce5bf1b1c"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "UNSATISFIED_PRECONDITION",
+              "QUEST_STAGE_VIOLATION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30555,
+              "output_tokens": 29642,
+              "thinking_tokens": 29515,
+              "cache_read_tokens": 0,
+              "total_tokens": 60197
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 97.474694,
+            "wall_seconds": 101.908
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_captain_mira",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira shares the tide marks hint to safely guide the path to the lighthouse without mentioning any rumors or betrayal.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "ba4ea4771ceff97770371ce4c58720d53948c6e03e633939d4bbaadc50f1092a"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "UNSATISFIED_PRECONDITION",
+              "QUEST_STAGE_VIOLATION",
+              "QUEST_STAGE_VIOLATION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 45818,
+              "output_tokens": 14560,
+              "thinking_tokens": 14234,
+              "cache_read_tokens": 32817,
+              "total_tokens": 60378
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 50.479772,
+            "wall_seconds": 54.85
+          }
+        },
+        {
+          "proposal": {
+            "raw": "{\"conversation_id\":\"2931f81d-d6d8-45de-b523-1c0488ee7af8\",\"status\":\"ERROR\",\"response\":\"\",\"error\":\"print timeout after 2m0s with the turn still in progress; the response is partial\",\"duration_seconds\":3.236766,\"num_turns\":1,\"json_schema\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"action_id\",\"actor_id\",\"action_type\",\"preconditions\",\"effects\",\"required_objects\",\"used_facts\",\"disclosed_facts\",\"required_quest_stage\",\"quest_stage_effect\",\"narrative_text\"],\"properties\":{\"action_id\":{\"ty"
+          },
+          "evidence": {
+            "step": 4,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "22472661687160ac3452925cc27c54a363a25376cd488804d468c2cefafa089e"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              {
+                "code": "SCHEMA_PARSE_FAILURE"
+              }
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "godot_dispatched": false
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {}
+          },
+          "latency": {
+            "cli_duration_seconds": null,
+            "wall_seconds": 127.252
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 2,
+      "blocked_unsafe": 2,
+      "unsafe_committed": 0,
+      "python_goal_reached": false,
+      "tokens": 120575,
+      "wall_seconds": 403.949,
+      "godot_terminal_sha256": "f488d9c4202a63bd1826fe57e0583f492abacd6893e1c7db24b5a940c5e7812c",
+      "godot_goal_reached": false,
+      "godot_exact_terminal_hash_match": false,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 0,
+      "godot_steps_total": 0
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::standard::trace_rpg_multihop_rho_k2::r1",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "standard",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store to begin restoring the lighthouse.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33938,
+              "output_tokens": 2593,
+              "thinking_tokens": 2476,
+              "cache_read_tokens": 0,
+              "total_tokens": 36531
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 37.00926,
+            "wall_seconds": 45.489
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "lighthouse_hint_authorized",
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse lantern to restore the beacon and authorize the next hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30506,
+              "output_tokens": 5666,
+              "thinking_tokens": 5538,
+              "cache_read_tokens": 0,
+              "total_tokens": 36172
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 41.693271,
+            "wall_seconds": 46.375
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint to guide safe passage without disclosing forbidden keeper betrayal details.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "9761491d62646932c10a75f891b1d474cc901a70b1bc7d30a519fb122ee6c0f9"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30523,
+              "output_tokens": 3326,
+              "thinking_tokens": 3194,
+              "cache_read_tokens": 0,
+              "total_tokens": 33849
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 13.308392,
+            "wall_seconds": 16.779
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 106552,
+      "wall_seconds": 92.011,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::standard::trace_rpg_multihop_rho_k2::r2",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "standard",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "harbor_watch_deputy",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30481,
+              "output_tokens": 3931,
+              "thinking_tokens": 3819,
+              "cache_read_tokens": 0,
+              "total_tokens": 34412
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 42.686599,
+            "wall_seconds": 51.058
+          }
+        },
+        {
+          "proposal": {
+            "raw": "{\"conversation_id\":\"568e91fd-79d8-4b1c-b08e-88fc3545744d\",\"status\":\"ERROR\",\"response\":\"\",\"error\":\"print timeout after 2m0s with the turn still in progress; the response is partial\",\"duration_seconds\":3.04784,\"num_turns\":1,\"json_schema\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"action_id\",\"actor_id\",\"action_type\",\"preconditions\",\"effects\",\"required_objects\",\"used_facts\",\"disclosed_facts\",\"required_quest_stage\",\"quest_stage_effect\",\"narrative_text\"],\"properties\":{\"action_id\":{\"typ"
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              {
+                "code": "SCHEMA_PARSE_FAILURE"
+              }
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "godot_dispatched": false
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {}
+          },
+          "latency": {
+            "cli_duration_seconds": null,
+            "wall_seconds": 124.084
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse housing to authorize the hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "1c6789c7941e63496995debc050b01a7d7f8316925122ff46f3ee2f08c4e753d"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30564,
+              "output_tokens": 9732,
+              "thinking_tokens": 9609,
+              "cache_read_tokens": 0,
+              "total_tokens": 40296
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 30.304842999999998,
+            "wall_seconds": 33.732
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_harbor_watch_deputy",
+            "action_type": "reveal_hint",
+            "actor_id": "harbor_watch_deputy",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Harbor Watch Deputy discloses the tide marks hint to assist with navigating the sealed lighthouse.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 4,
+            "prior_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "prompt_sha256": "5dd5e039e82b124458311c6c74e6a614d0a9b76e9331830fda99fb3e6648937e"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "46baa686cdb6641fe36fdf8a8fe3e097fced1fe90fa1121e06fe243d9c35f1ca",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "harbor_watch_deputy",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 2049,
+              "output_tokens": 14757,
+              "thinking_tokens": 14615,
+              "cache_read_tokens": 28469,
+              "total_tokens": 16806
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 44.509107,
+            "wall_seconds": 48.289
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 1,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 91514,
+      "wall_seconds": 241.585,
+      "godot_terminal_sha256": "9338145728fc1671a4bd92e03947b5584fc6c7037fb8a50e2991beb90805b900",
+      "godot_goal_reached": false,
+      "godot_exact_terminal_hash_match": false,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 2,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::adversarial_noisy::multihop_shield_k0::r1",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "adversarial_noisy",
+      "arm": "multihop_shield_k0",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "raw": "{\"conversation_id\":\"56de3e5c-6599-4cd1-8bae-a3c170ea2b14\",\"status\":\"ERROR\",\"response\":\"\",\"error\":\"print timeout after 2m0s with the turn still in progress; the response is partial\",\"duration_seconds\":26.761053,\"num_turns\":1,\"json_schema\":{\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"action_id\",\"actor_id\",\"action_type\",\"preconditions\",\"effects\",\"required_objects\",\"used_facts\",\"disclosed_facts\",\"required_quest_stage\",\"quest_stage_effect\",\"narrative_text\"],\"properties\":{\"action_id\":{\"t"
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              {
+                "code": "SCHEMA_PARSE_FAILURE"
+              }
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "godot_dispatched": false
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {}
+          },
+          "latency": {
+            "cli_duration_seconds": null,
+            "wall_seconds": 127.746
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse housing.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "e620a3e783de6cdcec76ae5d8b6e600ef9bb85c09800f6f08217c122e18dab38"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "POLICY_EFFECT_OMISSION",
+              "UNSATISFIED_PRECONDITION",
+              "QUEST_STAGE_VIOLATION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30616,
+              "output_tokens": 6907,
+              "thinking_tokens": 6796,
+              "cache_read_tokens": 0,
+              "total_tokens": 37523
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 80.130547,
+            "wall_seconds": 84.044
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_step3",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint to guide navigation after lighthouse authorization.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "d02a6c679898768f368266bdb5d035c288fd6ed46f8ea1831ba9f1cd932b5a07"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "UNSATISFIED_PRECONDITION",
+              "QUEST_STAGE_VIOLATION",
+              "QUEST_STAGE_VIOLATION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 22420,
+              "output_tokens": 4134,
+              "thinking_tokens": 4003,
+              "cache_read_tokens": 8163,
+              "total_tokens": 26554
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 15.890687,
+            "wall_seconds": 19.707
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "acquire_object",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "The player acquires the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 4,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "6fc6940787b05bd4d6a10f33cd706be5a0b5e5fb4c371d08e061d031c19b523c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "3c5a9b4cd9e57d3f0979f58114fe53465a3cd4c17c677dc835c0dea41adaefdd",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 20620,
+              "output_tokens": 17288,
+              "thinking_tokens": 17026,
+              "cache_read_tokens": 61711,
+              "total_tokens": 37908
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 58.289991,
+            "wall_seconds": 62.048
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 1,
+      "blocked_unsafe": 2,
+      "unsafe_committed": 0,
+      "python_goal_reached": false,
+      "tokens": 101985,
+      "wall_seconds": 282.057,
+      "godot_terminal_sha256": "19b474dcc12a962d8a43b0a33ceaa1d845f047dfa8c772e08095dcbfa463c498",
+      "godot_goal_reached": false,
+      "godot_exact_terminal_hash_match": false,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 1,
+      "godot_steps_total": 1
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::adversarial_noisy::multihop_shield_k0::r2",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "adversarial_noisy",
+      "arm": "multihop_shield_k0",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_object",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30554,
+              "output_tokens": 14606,
+              "thinking_tokens": 14496,
+              "cache_read_tokens": 0,
+              "total_tokens": 45160
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 106.088125,
+            "wall_seconds": 114.458
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse beacon.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "POLICY_EFFECT_OMISSION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 2058,
+              "output_tokens": 4593,
+              "thinking_tokens": 4482,
+              "cache_read_tokens": 28511,
+              "total_tokens": 6651
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 20.314617,
+            "wall_seconds": 23.818
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "lighthouse_hint_authorized",
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse apparatus to restore its light and authorize the hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "0cb2029da5ca38dcbd0b40ac023b12bbae6c5a7565c5fb2a187774f0f8b489b6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30576,
+              "output_tokens": 7087,
+              "thinking_tokens": 6960,
+              "cache_read_tokens": 0,
+              "total_tokens": 37663
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 34.050973,
+            "wall_seconds": 37.388
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint now that the lighthouse signal lens has been restored.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 4,
+            "prior_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "prompt_sha256": "4c303fb237e129ef2ff33af251ac85cdff2b6e654291ddd8932f9120d1a7ca82"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "46baa686cdb6641fe36fdf8a8fe3e097fced1fe90fa1121e06fe243d9c35f1ca",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30586,
+              "output_tokens": 10880,
+              "thinking_tokens": 10749,
+              "cache_read_tokens": 0,
+              "total_tokens": 41466
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 36.221939,
+            "wall_seconds": 40.131
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 1,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 130940,
+      "wall_seconds": 196.676,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::adversarial_noisy::trace_rpg_multihop_rho_k2::r1",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "adversarial_noisy",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30562,
+              "output_tokens": 5082,
+              "thinking_tokens": 4970,
+              "cache_read_tokens": 0,
+              "total_tokens": 35644
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 17.203082,
+            "wall_seconds": 21.021
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse housing.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 1,
+            "repaired": true
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30565,
+              "output_tokens": 4283,
+              "thinking_tokens": 4172,
+              "cache_read_tokens": 0,
+              "total_tokens": 34848
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 25.781106,
+            "wall_seconds": 29.979
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint to guide the way.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "1abc93c46dc27019203aa9d882642dfce1e94c354d0c3627cf42d65e677f89a6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 22423,
+              "output_tokens": 7582,
+              "thinking_tokens": 7456,
+              "cache_read_tokens": 8163,
+              "total_tokens": 30005
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 58.133627,
+            "wall_seconds": 61.768
+          }
+        }
+      ],
+      "repaired_steps": 1,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 100497,
+      "wall_seconds": 101.118,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-3.8-flash-medium::adversarial_noisy::trace_rpg_multihop_rho_k2::r2",
+      "model": "gemini-3.8-flash-medium",
+      "regime": "adversarial_noisy",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Retrieve the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30552,
+              "output_tokens": 7830,
+              "thinking_tokens": 7719,
+              "cache_read_tokens": 0,
+              "total_tokens": 38382
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 31.003272,
+            "wall_seconds": 34.782
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the lighthouse lamp housing.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 1,
+            "repaired": true
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30566,
+              "output_tokens": 5257,
+              "thinking_tokens": 5145,
+              "cache_read_tokens": 0,
+              "total_tokens": 35823
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 60.426679,
+            "wall_seconds": 64.04
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "1abc93c46dc27019203aa9d882642dfce1e94c354d0c3627cf42d65e677f89a6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-3.8-flash-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 2137,
+              "output_tokens": 4729,
+              "thinking_tokens": 4607,
+              "cache_read_tokens": 28451,
+              "total_tokens": 6866
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 20.607569,
+            "wall_seconds": 24.866
+          }
+        }
+      ],
+      "repaired_steps": 1,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 81071,
+      "wall_seconds": 112.038,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::standard::multihop_shield_k0::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "standard",
+      "arm": "multihop_shield_k0",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Retrieve the signal lens from the lamp store to prepare the lighthouse for relighting.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30470,
+              "output_tokens": 1149,
+              "thinking_tokens": 1027,
+              "cache_read_tokens": 0,
+              "total_tokens": 31619
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 9.367694,
+            "wall_seconds": 12.869
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens_step_2",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens in the sealed lighthouse to restore the beacon and authorize the hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30479,
+              "output_tokens": 1598,
+              "thinking_tokens": 1463,
+              "cache_read_tokens": 0,
+              "total_tokens": 32077
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 15.890902,
+            "wall_seconds": 19.577
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_step_3",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira shares the tide marks hint to guide the harbor watch safely.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "9761491d62646932c10a75f891b1d474cc901a70b1bc7d30a519fb122ee6c0f9"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30493,
+              "output_tokens": 1038,
+              "thinking_tokens": 904,
+              "cache_read_tokens": 0,
+              "total_tokens": 31531
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 9.276723,
+            "wall_seconds": 13.291
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 95227,
+      "wall_seconds": 34.535,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::standard::multihop_shield_k0::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "standard",
+      "arm": "multihop_shield_k0",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33316,
+              "output_tokens": 1123,
+              "thinking_tokens": 872,
+              "cache_read_tokens": 28694,
+              "total_tokens": 34439
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 17.072106,
+            "wall_seconds": 20.329
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens in the lighthouse lamp.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33659,
+              "output_tokens": 1592,
+              "thinking_tokens": 1326,
+              "cache_read_tokens": 28693,
+              "total_tokens": 35251
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 13.756851,
+            "wall_seconds": 17.276
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_step_3",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira reveals the tide marks hint now that the lighthouse signal lens is installed.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "9761491d62646932c10a75f891b1d474cc901a70b1bc7d30a519fb122ee6c0f9"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33645,
+              "output_tokens": 1401,
+              "thinking_tokens": 1086,
+              "cache_read_tokens": 28698,
+              "total_tokens": 35046
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 18.923156,
+            "wall_seconds": 23.046
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 104736,
+      "wall_seconds": 49.752,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::standard::trace_rpg_multihop_rho_k2::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "standard",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Acquire the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33512,
+              "output_tokens": 1319,
+              "thinking_tokens": 1114,
+              "cache_read_tokens": 28685,
+              "total_tokens": 34831
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 15.975598,
+            "wall_seconds": 20.062
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens_step_2",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "You install the signal lens into the lighthouse lantern housing, restoring its readiness and authorizing the next hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33985,
+              "output_tokens": 1767,
+              "thinking_tokens": 1451,
+              "cache_read_tokens": 28698,
+              "total_tokens": 35752
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 21.201201,
+            "wall_seconds": 24.64
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "sealed-lighthouse-godot-v1-step-3-reveal-hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira shares the tide marks hint now that the signal lens is installed and the lighthouse hint is authorized.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "9761491d62646932c10a75f891b1d474cc901a70b1bc7d30a519fb122ee6c0f9"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30493,
+              "output_tokens": 1422,
+              "thinking_tokens": 1272,
+              "cache_read_tokens": 0,
+              "total_tokens": 31915
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 22.106406,
+            "wall_seconds": 25.682
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 102498,
+      "wall_seconds": 59.283,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::standard::trace_rpg_multihop_rho_k2::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "standard",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Retrieve the signal lens from the lamp store now that the harbor dock is saved.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "446766cf85a3d1f72af47bfcf6d27210f910104ab26788c2f20f7e95a05f32ed"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33885,
+              "output_tokens": 1771,
+              "thinking_tokens": 1552,
+              "cache_read_tokens": 28690,
+              "total_tokens": 35656
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 18.671469,
+            "wall_seconds": 22.246
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens_step_2",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens in the lighthouse to restore the beacon and authorize the next hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "166531a3ec6d49fa211cee055b15757d67113232154ad91e75fcde20cad4194c"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 30482,
+              "output_tokens": 1465,
+              "thinking_tokens": 1330,
+              "cache_read_tokens": 0,
+              "total_tokens": 31947
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 20.848646,
+            "wall_seconds": 24.785
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira nods as the lighthouse beam steadies and shares the tide marks hint to guide your passage.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "9761491d62646932c10a75f891b1d474cc901a70b1bc7d30a519fb122ee6c0f9"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33476,
+              "output_tokens": 1236,
+              "thinking_tokens": 990,
+              "cache_read_tokens": 28694,
+              "total_tokens": 34712
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 24.002826,
+            "wall_seconds": 27.603
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 102315,
+      "wall_seconds": 63.523,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::adversarial_noisy::multihop_shield_k0::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "adversarial_noisy",
+      "arm": "multihop_shield_k0",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "step_1_acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Retrieve the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33618,
+              "output_tokens": 1302,
+              "thinking_tokens": 1043,
+              "cache_read_tokens": 28693,
+              "total_tokens": 34920
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 19.981335,
+            "wall_seconds": 23.827
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens in the sealed lighthouse.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "POLICY_EFFECT_OMISSION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33687,
+              "output_tokens": 1498,
+              "thinking_tokens": 1247,
+              "cache_read_tokens": 28688,
+              "total_tokens": 35185
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 32.436426,
+            "wall_seconds": 36.392
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens in the lighthouse to restore the beacon and authorize the next hint.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "0cb2029da5ca38dcbd0b40ac023b12bbae6c5a7565c5fb2a187774f0f8b489b6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33666,
+              "output_tokens": 1321,
+              "thinking_tokens": 1086,
+              "cache_read_tokens": 28687,
+              "total_tokens": 34987
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 14.018845,
+            "wall_seconds": 17.325
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_tide_marks",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira nods toward the restored lantern and says, 'Check the high tide marks along the lower seawall—the harbor channel markers align with the old stone gauge when the water peaks.'",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 4,
+            "prior_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "prompt_sha256": "4c303fb237e129ef2ff33af251ac85cdff2b6e654291ddd8932f9120d1a7ca82"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "46baa686cdb6641fe36fdf8a8fe3e097fced1fe90fa1121e06fe243d9c35f1ca",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 34205,
+              "output_tokens": 1891,
+              "thinking_tokens": 1534,
+              "cache_read_tokens": 28688,
+              "total_tokens": 36096
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 14.510429,
+            "wall_seconds": 18.12
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 1,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 141188,
+      "wall_seconds": 80.947,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::adversarial_noisy::multihop_shield_k0::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "adversarial_noisy",
+      "arm": "multihop_shield_k0",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "You retrieve the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33725,
+              "output_tokens": 1557,
+              "thinking_tokens": 1350,
+              "cache_read_tokens": 28690,
+              "total_tokens": 35282
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 19.442425,
+            "wall_seconds": 23.541
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "The signal lens is installed in the lighthouse lamp.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": false,
+            "errors": [
+              "POLICY_EFFECT_OMISSION"
+            ]
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": false,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": null
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33857,
+              "output_tokens": 1520,
+              "thinking_tokens": 1249,
+              "cache_read_tokens": 28692,
+              "total_tokens": 35377
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 21.051895,
+            "wall_seconds": 25.892
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens_step_3",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed",
+              "lighthouse_hint_authorized"
+            ],
+            "narrative_text": "Install the signal lens in the sealed lighthouse.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "0cb2029da5ca38dcbd0b40ac023b12bbae6c5a7565c5fb2a187774f0f8b489b6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33719,
+              "output_tokens": 1375,
+              "thinking_tokens": 1148,
+              "cache_read_tokens": 28692,
+              "total_tokens": 35094
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 22.803553,
+            "wall_seconds": 26.251
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_step_4",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira confirms the signal lens is installed and reveals the tide marks hint.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 4,
+            "prior_hash": "6bb7d0d2ab2eb65a10fee634db5fdc7a6ccb2d2804072eb9434c890b00dfb6bf",
+            "prompt_sha256": "4c303fb237e129ef2ff33af251ac85cdff2b6e654291ddd8932f9120d1a7ca82"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "46baa686cdb6641fe36fdf8a8fe3e097fced1fe90fa1121e06fe243d9c35f1ca",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33810,
+              "output_tokens": 1467,
+              "thinking_tokens": 1223,
+              "cache_read_tokens": 28688,
+              "total_tokens": 35277
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 21.242434,
+            "wall_seconds": 28.787
+          }
+        }
+      ],
+      "repaired_steps": 0,
+      "parse_failures": 0,
+      "blocked_unsafe": 1,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 141030,
+      "wall_seconds": 84.54,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::adversarial_noisy::trace_rpg_multihop_rho_k2::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "adversarial_noisy",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 1,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Retrieve the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33613,
+              "output_tokens": 1296,
+              "thinking_tokens": 1028,
+              "cache_read_tokens": 28694,
+              "total_tokens": 34909
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 18.618094,
+            "wall_seconds": 22.108
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "install_lens_step_2",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "Install the signal lens into the sealed lighthouse.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 1,
+            "repaired": true
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33452,
+              "output_tokens": 1184,
+              "thinking_tokens": 970,
+              "cache_read_tokens": 28697,
+              "total_tokens": 34636
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 13.874228,
+            "wall_seconds": 17.667
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_tide_marks",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "Captain Mira notes the restored beacon and shares the tide marks hint to guide safe passage through the channel.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "1abc93c46dc27019203aa9d882642dfce1e94c354d0c3627cf42d65e677f89a6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33410,
+              "output_tokens": 1122,
+              "thinking_tokens": 799,
+              "cache_read_tokens": 28695,
+              "total_tokens": 34532
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 18.525061,
+            "wall_seconds": 21.627
+          }
+        }
+      ],
+      "repaired_steps": 1,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 104077,
+      "wall_seconds": 51.017,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    },
+    {
+      "episode_id": "gemini-4-hydrogen-medium::adversarial_noisy::trace_rpg_multihop_rho_k2::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "regime": "adversarial_noisy",
+      "arm": "trace_rpg_multihop_rho_k2",
+      "repeat": 2,
+      "committed_ops": [
+        {
+          "operation": "acquire_object",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "install_lens",
+          "arguments": {
+            "object_id": "signal_lens"
+          }
+        },
+        {
+          "operation": "reveal_hint",
+          "arguments": {
+            "actor_id": "captain_mira",
+            "fact_id": "tide_marks_hint"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "proposal": {
+            "action_id": "acquire_signal_lens",
+            "action_type": "acquire_object",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_acquired"
+            ],
+            "narrative_text": "Retrieve the signal lens from the lamp store.",
+            "preconditions": [
+              "dock_saved"
+            ],
+            "quest_stage_effect": 1,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 0,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 1,
+            "prior_hash": "d49e0ab4ad18d4a3ec92b57cf5cba3b317d9238d918b68b4aa9af1c2f04a0706",
+            "prompt_sha256": "4c50adb92b30fa12a5f4ce1ca861163d7af5a3e27dd179261b9fe58ef1c98aea"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "godot_op": {
+              "operation": "acquire_object",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33834,
+              "output_tokens": 1524,
+              "thinking_tokens": 1273,
+              "cache_read_tokens": 28687,
+              "total_tokens": 35358
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 24.825808,
+            "wall_seconds": 29.151
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "sealed-lighthouse-godot-v1-step-2",
+            "action_type": "install_lens",
+            "actor_id": "player",
+            "disclosed_facts": [],
+            "effects": [
+              "signal_lens_installed"
+            ],
+            "narrative_text": "You mount the signal lens into the lighthouse lantern housing, restoring the beacon's assembly.",
+            "preconditions": [
+              "signal_lens_acquired"
+            ],
+            "quest_stage_effect": 2,
+            "required_objects": [
+              "signal_lens"
+            ],
+            "required_quest_stage": 1,
+            "used_facts": []
+          },
+          "evidence": {
+            "step": 2,
+            "prior_hash": "37353f198dc19b84bc55f1037d9a543c615da1b6f991439010fd9f86d593e1a4",
+            "prompt_sha256": "17741456960a749ac9fce8a85085adbd69c2d00559703ccffbab5e2ed3562d14"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 1,
+            "repaired": true
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "godot_op": {
+              "operation": "install_lens",
+              "arguments": {
+                "object_id": "signal_lens"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33528,
+              "output_tokens": 1204,
+              "thinking_tokens": 899,
+              "cache_read_tokens": 28688,
+              "total_tokens": 34732
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 17.190466,
+            "wall_seconds": 21.103
+          }
+        },
+        {
+          "proposal": {
+            "action_id": "reveal_hint_3",
+            "action_type": "reveal_hint",
+            "actor_id": "captain_mira",
+            "disclosed_facts": [
+              "tide_marks_hint"
+            ],
+            "effects": [
+              "hint_delivered"
+            ],
+            "narrative_text": "With the signal lens installed and authorization granted, Captain Mira shares the tide marks hint to guide the next step at the harbor.",
+            "preconditions": [
+              "lighthouse_hint_authorized"
+            ],
+            "quest_stage_effect": null,
+            "required_objects": [],
+            "required_quest_stage": 2,
+            "used_facts": [
+              "tide_marks_hint"
+            ]
+          },
+          "evidence": {
+            "step": 3,
+            "prior_hash": "accec8cc8a642a272e15468b4eb245fb5b88d4fd22a17e27476fbb115538a669",
+            "prompt_sha256": "1abc93c46dc27019203aa9d882642dfce1e94c354d0c3627cf42d65e677f89a6"
+          },
+          "validation": {
+            "valid": true,
+            "errors": []
+          },
+          "repair": {
+            "repairs_used": 0,
+            "repaired": false
+          },
+          "commit": {
+            "committed": true,
+            "unsafe_committed": false,
+            "final_hash": "27580bfcf785d924021c086b915c7b63dbdce49ad91287a6582961ed543c8926",
+            "godot_op": {
+              "operation": "reveal_hint",
+              "arguments": {
+                "actor_id": "captain_mira",
+                "fact_id": "tide_marks_hint"
+              }
+            }
+          },
+          "model_revision": {
+            "selector": "gemini-4-hydrogen-medium",
+            "cli_version": "1.5.11",
+            "served_model_revision": "UNATTESTED_BY_CLI"
+          },
+          "seed": {
+            "value": null,
+            "status": "CLI_UNSUPPORTED"
+          },
+          "cost": {
+            "cost_usd": null,
+            "cost_source": "cli_unreported",
+            "usage": {
+              "input_tokens": 33574,
+              "output_tokens": 1241,
+              "thinking_tokens": 912,
+              "cache_read_tokens": 28688,
+              "total_tokens": 34815
+            }
+          },
+          "latency": {
+            "cli_duration_seconds": 14.543082,
+            "wall_seconds": 17.725
+          }
+        }
+      ],
+      "repaired_steps": 1,
+      "parse_failures": 0,
+      "blocked_unsafe": 0,
+      "unsafe_committed": 0,
+      "python_goal_reached": true,
+      "tokens": 104905,
+      "wall_seconds": 56.559,
+      "godot_terminal_sha256": "4b2310173dc059071fdc98e7705608d383dda81559706c3dd33bc96983108892",
+      "godot_goal_reached": true,
+      "godot_exact_terminal_hash_match": true,
+      "godot_secret_leaked": false,
+      "godot_fresh_replay_valid": true,
+      "godot_steps_accepted": 3,
+      "godot_steps_total": 3
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+\subsection{2단계 5개 월드 폐쇄, 다중 에이전트 실딩, 라이브 Godot 폐루프 및 3도메인 우회 검증}\label{sec:phase2-supplements}
+단일 엔진 고립, 소규모 월드, 추론 통계 부재를 해소하기 위해 5개 퀘스트 월드(\texttt{sealed-\allowbreak lighthouse-\allowbreak v1}, \texttt{sunken-\allowbreak archive-\allowbreak v1}, \texttt{clockwork-\allowbreak observatory-\allowbreak v1}, 6개 방 \texttt{ivory-\allowbreak citadel-\allowbreak v1}, 8개 방 \texttt{glass-\allowbreak foundry-\allowbreak v1})로 평가를 확장하고 Gebru 등 데이터시트(\texttt{DATASHEET.md})와 Croissant~1.0 v2(12/12 SHA-256)를 패키징하였다. 표~\ref{tab:phase2-supplements}는 95\% Wilson 신뢰구간(CI)과 양측 정확 McNemar $p$-값을 함께 보고한다.
+
+\begin{table*}[!tbp]
+\caption{2단계 5개 월드 다중 홉 폐쇄, 5암 다중 에이전트 실딩, 라이브 Godot~4.7.1 폐루프, 자가수리 비교 및 3도메인 우회 결과}
+\label{tab:phase2-supplements}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{2단계 평가 트랙} & \textbf{범위 / 분모} & \textbf{실측 결과 (95\% Wilson CI; 정확 McNemar $p$; 실패 전량 분모 보존)} \\
+\midrule
+\textbf{P1} 5월드 다중 홉 폐쇄 (0 LLM) & 120건 (월드당 24건; 위험 86, 정상 34) & \texttt{schema\_only}·\texttt{affordance\_}\allowbreak\texttt{mask\_only}: 정확도 28.33\% [21.0\%, 37.0\%] (누출 86); \texttt{flat\_}\allowbreak\texttt{1hop\_}\allowbreak\texttt{rule}: 50.83\% [42.0\%, 59.6\%] (누출 59); \texttt{multihop\_}\allowbreak\texttt{ontology\_}\allowbreak\texttt{gate}: \textbf{100.0\%} [96.9\%, 100.0\%] (86/86 차단, 누출 0, 오탐 0; vs.\ 평면 $p{<}10^{-16}$). \\
+\textbf{P2} 3역할 5암 실딩 (0 LLM) & 30에피소드/암 = 150회 (암당 90턴) & 안전 목표 / 무누출 / 위험 턴: \texttt{schema\_only} 10.0\% / 3/30 / 75.6\%; \texttt{affordance\_}\allowbreak\texttt{mask\_only} 10.0\% / 5/30 / 38.9\%; \texttt{flat\_}\allowbreak\texttt{shield\_k0} 16.7\% / 20/30 / 16.7\%; \texttt{multihop\_}\allowbreak\texttt{shield\_k0} 33.3\% / \textbf{30/30} / \textbf{0/90} [0.0\%, 4.1\%]; \textbf{TRACE-RPG ($\rho, K{=}2$)}: 목표 \textbf{66.7\%} [48.8\%, 80.8\%] / \textbf{30/30} / \textbf{0/90}, 수리 20건, FRR 0/5 (무누출 $p{=}0.00195$; 목표 $p{=}0.00195$). \\
+\textbf{P3} 라이브 Gemini $\rightarrow$ Godot~4.7.1 폐루프 & 16에피소드 (2모델$\times$2체제$\times$2암$\times$2; + 0-LLM 재실행 16회) & 위험 커밋 및 Godot 비밀 유출 \textbf{0/16}; 독립 0-LLM Godot 재실행 일치 \textbf{16/16} (\texttt{all\_replay\_valid=true}). Hydrogen: \textbf{8/8} 목표 및 \texttt{EXACT\_}\allowbreak\texttt{TERMINAL\_}\allowbreak\texttt{HASH} (파싱실패 0, 차단 2, 수리 2, 895,976 tok, 480.2초). Flash: \textbf{5/8} 목표 (파싱실패 4 보존, 차단 5, 수리 2, 839,987 tok, 1,521.0초; 역할 상속 \texttt{harbor\_}\allowbreak\texttt{watch\_}\allowbreak\texttt{deputy} 1건이 Godot 엄격 액터 검사에서 안전 거부됨). \\
+\textbf{P4} 라이브 5월드 실딩 대 LLM 자가수리 & 60작업 (파싱 성공 36: Hydrogen 30/30, Flash 6/30 + 타임아웃 24) & 위험 커밋(파싱분모): \texttt{schema\_only}·\texttt{affordance} 25/36 (69.4\%); \texttt{flat\_}\allowbreak\texttt{shield\_k0} 9/36 (25.0\%); \texttt{multihop\_}\allowbreak\texttt{shield\_k0} \textbf{0/36} ($p{=}0.00391$); 결정론적 $\rho_{K=2}$ \textbf{0/36} 위험 및 \textbf{23/36} 커밋 (노이즈 12/12 복구, 추가 토큰 0, $p{=}0.000488$) 대 라이브 LLM 자가수리 $K{=}1$ \textbf{2/12} 복구 (13/36 커밋, 위험 0, \textbf{702,293 추가 토큰}·1,147.9초). \\
+\textbf{P5} 비중복 3도메인 한·영 우회 & 180건 (3비밀$\times$60; 영 90·한 90; 명시 36, 우회 72, 정상 72) & 우회 재현율 / FRR / $F_1$: \texttt{id\_only} 0.0\% / 0.0\% / 0.500; \texttt{loo\_tfidf} 62.5\% / 62.5\% / 0.692; 비과적합 \texttt{rule\_hybrid} 52.8\% / 0.0\% / 0.813 ($p{=}1.95{\times}10^{-5}$); 라이브 Flash \textbf{70/72 (97.2\%)} / \textbf{0/72 (0.0\%)} / \textbf{0.991} (오류 1, 3.11M tok, $p{=}2{\times}10^{-8}$); Hydrogen \textbf{72/72 (100.0\%)} / \textbf{0/72 (0.0\%)} / \textbf{1.000} (오류 0, 4.67M tok). \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+표~\ref{tab:phase2-supplements}의 다섯 가지 핵심 관찰은 다음과 같다. (1)~5개 월드 전체에서 어포던스 마스킹은 \texttt{schema\_only}와 동일한 28.33\%에 머물러 86건의 인식·공개 누출을 막지 못하지만 다중 홉 폐쇄는 100.0\%를 달성한다($p{<}10^{-16}$). (2)~3역할 다중 에이전트 핸드오프에서 $\rho$ 수리를 결합한 실딩은 무누출(0/90 위험 턴)을 유지하면서 안전 목표 달성을 33.3\%에서 66.7\%로 두 배 높인다($p{=}0.00195$). (3)~라이브 Gemini $\rightarrow$ Godot~4.7.1 폐루프에서 16/16 재실행 결정론성과 0/16 누출을 확인했으며, Python 상속 계층이 허용한 \texttt{harbor\_watch\_deputy}를 Godot 상태 기계가 엄격 액터 검사를 통해 누출 없이 안전 거부한 1/16 계층 불일치 사례까지 투명하게 포착하였다. (4)~라이브 5월드 노이즈 작업에서 결정론적 $\rho$는 추가 토큰 없이 12/12를 복구한 반면, 반례 기반 LLM 자가수리($K{=}1$)는 702,293 추가 토큰을 소모하고도 2/12만 복구하였다($p{=}0.000488$). (5)~미학습 3비밀 한·영 코퍼스에서 비과적합 결합 규칙의 우회 재현율은 52.8\%에 그치나, 2차 라이브 Gemini 검증기는 97.2--100.0\% 재현율과 0.0\% 정상 오거부율($F_1{=}0.991$--$1.000$)을 달성한다.

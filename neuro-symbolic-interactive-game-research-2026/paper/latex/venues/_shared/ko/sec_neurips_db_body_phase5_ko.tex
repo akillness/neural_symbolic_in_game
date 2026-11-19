@@ -1,0 +1,52 @@
+\section{벤치마크 스위트 구성, 정제 및 유지관리}\label{sec:db-composition}
+\system{}는 동결된 핵심 패키지(\texttt{src/nesy\_game/*.py}, 20/20 SHA-256 불변) 및 \texttt{nesy\_game.multihop}을 중심으로 네트워크 없이 완전 재현 가능한 독립 벤치마크로 구축되었다. Gebru 등~\cite{gebru2021datasheets} 데이터시트(\texttt{DATASHEET\_v5.md})와 ML Commons Croissant~1.0~\cite{akhtar2024croissant}(\texttt{croissant\_trace\_rpg\_benchmark\_v5.json}) 표준에 따라 v5 보조 아카이브(\texttt{neurips-db-supplemental-benchmark.zip}, 55파일, \texttt{CHECKSUMS.sha256} 54/54 검증, PII/IP/비밀 누출 0건)는 \textbf{26개 SHA-256 검증 \texttt{FileObject}}를 \textbf{MIT}(검증 하니스·오라클 코드) 및 \textbf{CC BY 4.0}(트레이스·구조화 퀘스트 사양·실험 영수증) 이중 라이선스로 색인하며 웹 스크래핑이나 개인정보는 0건이다.
+
+\begin{table}[!tbp]
+\caption{벤치마크 스위트 구성 및 격리 규칙 (Croissant~1.0 v5: 26/26 FileObject)}
+\label{tab:phase5-db-comp}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.27\columnwidth}c>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{데이터셋 분할} & \textbf{규모} & \textbf{스키마, 출처 및 격리 규칙} \\
+\midrule
+결정론적 유한 그래프 & 1,664 + 48 & 32 그래프 $\times$ 13 후보 $\times$ 4 암 + 표면 센티넬; BFS 오라클. \\
+확장 공학 감사(\textbf{A1}--\textbf{A4}, \textbf{B}) & 1,408 + 1,600t & 다중 오류 $K{\le}3$, $N{\le}2000$ 지연, 4,656 결함, Godot 장기, B 88건. \\
+Datalog 깊이 스케일(\textbf{P9}) & 480건 & 절차적 $R{\in}\{8..64\}\times d{\in}\{1..5\}$; 상향 고정점 + BFS. \\
+5단계 폐루프 MAS(\textbf{P15}) & 105에피소드 & 3 Claude~5.5 계층 $\times$ 5월드 $\times$ 7 독립 암; \texttt{output\_config}. \\
+5단계 API 요인+Godot(\textbf{P16}) & 60 + 21 & 직접 API(\texttt{temp} 생략) + Godot~4.7.1; 0/180 \texttt{20261103} 비혼합. \\
+5단계 통합 우회(\textbf{P17}) & 540회 & 한·영 180건 $\times$ 3 Claude~5.5 계층; 결정론적 단축평가 0건. \\
+4단계 3모델군 CLI(\textbf{P11}--\textbf{P14}) & 30 / 90 / 42 / 720 & 비고정 시드 CLI (Sonnet~5.5, GPT-OSS~120B, Gemini~4). \\
+미실행 보류 템플릿 & $N{=}0$ / 0/180 & 블라인드 \texttt{TR01--TR06}(\texttt{AWAITING\_HUMAN\_RATERS})·\texttt{20261103} 분리. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{정제, 인증 및 유지관리.} 결정론적 과제는 심볼릭 퀘스트 상태 머신($\le$8방, $\le$3역할)과 $R{\le}64, d{\le}5$ Datalog 그래프에서 파생되며, 5단계 직접 HTTPS 영수증은 \texttt{served\_model}, SHA-256 해시 ID, 토큰 수, 지연시간을 기록한다(Claude~5.5 API 규격상 deprecated \texttt{temperature} 생략; 파싱 실패 전량 보존). 블라인드 \texttt{TR01--TR06}($N{=}0$)과 \texttt{prospective-pilot-20261103}(0/180)은 리더보드 수치와 엄격히 분리한다. 독립 실행 \texttt{python3 reproduce\_benchmark.py}는 54건 체크섬, 26건 Croissant 해시, 정리 1--4를 오프라인 5초 이내에 재검증한다.
+
+\section{재현 가능한 벤치마크 리더보드}\label{sec:eval}
+\subsection{트랙 통합 실딩, 수리, Godot 및 우회 검증 결과}\label{sec:phase4-compact}
+모든 기준선 게이트, 외부 비교군(\textbf{Safe-RL Action Masking}~\cite{alshiekh2018shield}, \textbf{NeMo 스타일 Colang 레일}~\cite{rebedea2023nemo}), 신경망 계층을 리플레이 검증 트랙에서 평가한다(표~\ref{tab:phase4-compact}).
+
+\begin{table}[!tbp]
+\caption{트랙 통합 리더보드: 결정론(\textbf{P9}), 인증 API(\textbf{P15}--\textbf{P17}), 3모델군 CLI(\textbf{P11}--\textbf{P14})}
+\label{tab:phase4-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.27\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{벤치마크 트랙} & \textbf{실측 리더보드 결과 (95\% Wilson CI; $Q$ / McNemar $p$)} \\
+\midrule
+권한 경계 및 감사 (0-LLM) & 의미 게이트 \textbf{0/416} 위험(스키마 260/416), $\rho$ 128/260 수리; Godot \textbf{A4} 1,600틱 p95 0.708\,ms; \textbf{P1} 120건 \textbf{100\%} 대 50.83\%. \\
+\textbf{P9} Datalog 스케일링 (480) & \texttt{flat\_1hop}: 46.67\% (누출 256); \texttt{2hop}: 60.00\% (192); \texttt{nesy\_game.multihop}: \textbf{100.0\% [99.2, 100]} $\le$7.12\,$\mu$s ($Q{=}1100.19$). \\
+\textbf{P15} 폐루프 MAS (105) & 독립 5턴 궤적(\textbf{105/105} 리플레이): Safe-RL 프록시~\cite{alshiekh2018shield} 목표 0/15, 위험 16/61; NeMo 프록시~\cite{rebedea2023nemo} 1/15, 15/61; 평면 12/15, 4/66; \texttt{multihop\_k0} 13/15, \textbf{15/15} 무누출, 0/69; \texttt{rho\_k2} 14/15 ($\rho_{\mathrm{rep}}{=}0$, 정리~2), \textbf{15/15}, 0/68; \textbf{하이브리드} \textbf{15/15 (100\%)}, 15/15 무누출, \textbf{0/63} ($Q_{\mathrm{goal}}{=}68.71$). \\
+\textbf{P16} API 요인+Godot (81) & \textbf{P16A}: \texttt{general\_rule} 0/30 목표·9 위험 대 \texttt{ontology\_multihop} \textbf{30/30} 무누출($p{=}0.0078$)·11/30 목표(Opus 8/10)·\textbf{0} 위험. \textbf{P16B}: \textbf{21/21} Godot 리플레이·\textbf{0/21} 유출·제품 \textbf{6/6} 해시 일치. \\
+\textbf{P17} 통합 우회 (540) & 단축 0건, $\kappa{=}\mathbf{0.8813}$: \texttt{haiku} 29/36 명시 / \textbf{70/72} 우회 / 0\% FRR / $F_1{=}\mathbf{0.957}$; \texttt{sonnet} 19/36 / 70/72 / $0.904$; \texttt{opus} 25/36 / 68/72 / $0.925$. \\
+\textbf{P11}--\textbf{P14} 3모델군 CLI & GPT-OSS~120B + Hydrogen~4 + Sonnet: \textbf{P11} \textbf{30/30} 무누출·\textbf{0/79} 위험($Q{=}118.93$); \textbf{P12} 27결함 $\rho_{K=2}$ \textbf{27/27} 대 LLM 26/27(530k--542k토큰, $p{=}1.0$); \textbf{P13} \textbf{42/42} Godot; \textbf{P14} $\kappa{=}\mathbf{0.9367}$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{P9}와 \textbf{P15}--\textbf{P17}은 안전한 에이전트 게임 벤치마크에 심볼릭 폐쇄와 의미 텍스트 검사가 모두 필요함을 보인다: Safe-RL~\cite{alshiekh2018shield}과 NeMo 레일~\cite{rebedea2023nemo}은 다중 홉 연쇄에서 14/15 실패하며(\textbf{P15}), 평면 규칙은 Sonnet·Opus에서 9건 누출을 허용했고(\textbf{P16A}), $\rho_{K=2}$는 27결함당 500k+ 토큰을 제거하며(\textbf{P12}), 통합 Claude~5.5 Stage-2조차 문맥 속 명시적 ID를 놓쳐(19--29/36, \textbf{P17}) Stage-1과의 상호 보완성이 입증된다.

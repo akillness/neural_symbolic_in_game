@@ -1,0 +1,68 @@
+{
+  "schema_version": "runtime-codex-identity-extension-protocol-draft/1",
+  "artifact_id": "runtime-model-swap-20261024-codex-identity-20261026-protocol-draft-v1",
+  "status": "DRAFT_SOURCE_ADMISSION_PENDING_NOT_A_LAUNCH_CONTRACT",
+  "purpose": "Prepare a separate source-bound identity-required extension without changing the immutable original eight-row cohort.",
+  "prior_cohort": {
+    "ref": "research/runtime-model-swap-20261024/codex-live-20261026",
+    "rows": 8,
+    "immutable": true,
+    "reused_or_rewritten": false
+  },
+  "extension_design": {
+    "quest_id": "sealed-lighthouse-v1",
+    "targets": [
+      {"host": "codex", "selector": "gpt-6-luna", "effort": "medium"},
+      {"host": "codex", "selector": "gpt-6-sol", "effort": "medium"},
+      {"host": "codex", "selector": "gpt-5.6-luna", "effort": "medium"},
+      {"host": "codex", "selector": "gpt-5.6-sol", "effort": "medium"},
+      {"host": "codex", "selector": "gpt-5.6-terra", "effort": "medium"}
+    ],
+    "representations": ["general_rule", "ontology"],
+    "fresh_repeats_per_target_representation": 2,
+    "planned_episode_count": 20,
+    "order_rule": "target-major, representation general_rule then ontology, repeat 1 then 2",
+    "seed": 20261024
+  },
+  "episode_limits": {
+    "episode_wall_seconds": 180,
+    "per_response_seconds": 60,
+    "maximum_observable_host_invocations_per_episode": 12,
+    "maximum_logical_repairs_per_decision": 2,
+    "concurrency": 1,
+    "host_invocation_semantics": "Initial attempt, malformed response, refusal, timeout, corrective request, and transport retry each count; provider-internal calls remain unknown unless authoritatively exposed."
+  },
+  "identity_admission": {
+    "required_source": "codex_core::session",
+    "required_positive_message_template": "server reported model <requested selector> (matches requested model)",
+    "required_cli_version": "0.164.0",
+    "request_max_retries": 0,
+    "stream_max_retries": 0,
+    "missing_identity": "reject",
+    "mismatch": "reject",
+    "reroute": "reject",
+    "ambiguous_or_duplicate_match": "reject",
+    "model_substitution": false,
+    "identity_is_scoped_per_response": true
+  },
+  "credit_and_authority": {
+    "policy": "existing_credits_no_new_purchase",
+    "allowed_only_for": "this twenty-episode extension after independent admission",
+    "automatic_reload_must_be_off": true,
+    "api_key_fallback_permitted": false,
+    "account_setting_changes": false,
+    "draft_does_not_authorize_generation": true,
+    "main_must_verify_current_account_reload_and_source_receipts": true
+  },
+  "observed_catalog_boundary": {
+    "gpt_6_terra": "unsupported_in_observed_catalogs; do not substitute gpt-6.1",
+    "five_extension_targets": "advertised selectors only; served identity not yet observed"
+  },
+  "scientific": {
+    "assigned": 0,
+    "executed": 0,
+    "generation_requests": 0,
+    "eligible": false
+  },
+  "disclosure": "LOCAL_DRAFT_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

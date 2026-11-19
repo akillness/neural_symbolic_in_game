@@ -1,0 +1,8 @@
+\FloatBarrier
+\section{타당성 위협, 한계 및 결론}\label{sec:conclusion}
+\textbf{한계와 타당성 위협.} 다중 홉 보강으로 평가 세계를 1개에서 3개 퀘스트로 확장하고 60/60 평면 규칙 동률을 돌파했으며(\texttt{ontology\_}\allowbreak\texttt{multihop\_}\allowbreak\texttt{gate} 100.0\% 대 \texttt{flat\_}\allowbreak\texttt{1hop\_}\allowbreak\texttt{rule} 41.7\%, 48건), 2차 Gemini 검증기가 Audit~\textbf{B} 오거부율(FRR)을 58.3\%에서 0.0\%로 낮췄음에도 네 가지 경계가 남는다. 첫째, 라이브 Antigravity CLI Gemini 실험($n{=}24$ 다중 퀘스트, $n{=}88{\times}2$ Audit~B)은 제공자 리비전·시드 미인증과 타임아웃 11건(에피소드 2, Audit~B Hydrogen 9)을 분모에 그대로 유지하며, 비공개 모델 성능 우위가 아닌 래퍼 안전성을 입증한다. 둘째, 사전 등록 180단위 다중 모델 프로토콜은 인증된 API 키 부재로 \texttt{0/180}(\texttt{NOT\_RUN/BLOCKED}) 상태다. 셋째, 3개 퀘스트 월드(\texttt{sealed-}\allowbreak\texttt{lighthouse-}\allowbreak\texttt{v1}, \texttt{sunken-}\allowbreak\texttt{archive-}\allowbreak\texttt{v1}, \texttt{clockwork-}\allowbreak\texttt{observatory-}\allowbreak\texttt{v1})는 대규모 상용 엔진이 아닌 소형 상태 기계다. 넷째, 인간 평가($N{=}0$)는 미실행 상태다: \texttt{TR01--TR06} 36항목 블라인드 패킷은 해시 검증 상태로 구축되었으나 \texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS}(합성 라벨 0건)이므로 사용성·몰입감·Krippendorff~$\alpha$는 후속 인간 평가가 필요하다.
+
+\textbf{결론.} \system{}는 7술어 검증기, 반례 유도 수리 $\rho(a,E)$, 해시 연결 의미 리플레이, 읽기 전용 8역할 온톨로지 관측을 통해 제안 권한과 커밋 권한을 분리한다. 조건부 정리 1--4가 불변식 \textbf{I1--I4}를 증명하고, 다중 홉 폐쇄가 평면 규칙 누출 28/48건을 제거하며, 24개 라이브 Gemini 에피소드 및 2차 우회 검증이 위험 커밋 0/129건, 위험 턴 70건 차단, 엄격 리플레이 24/24건, FRR 0.0\%(우회 재현율 97.2\%)을 입증해 향후 인증된 180단위·인간 평가의 토대를 완성한다.
+
+\section*{윤리 및 아티팩트 공개}
+초고·코드·테스트 작성에 대규모 언어 모델의 보조를 받았으며 모든 주장, 인용, 정리 1--4 및 결정론적·라이브 산출물(Croissant~1.0 메타데이터 포함)은 저자가 검증하였고 인간 라벨은 일절 합성하지 않았다. 저장소 주소: \RepoURL.

@@ -73,6 +73,36 @@ EXTENDED_AUDIT_SPECS = (
         "scripts/run_semantic_escape_filter_audit.py",
     ),
 )
+GREEN_SUPPLEMENT_PATHS = (
+    "research/green-supplements/multihop_ontology_results.json",
+    "research/green-supplements/audit_b_calibrated_results.json",
+    "research/green-supplements/multiquest_live_results.json",
+    "research/green-supplements/audit_b_live_results.json",
+    "research/green-supplements/tr_human_eval_packet.json",
+    "research/green-supplements/croissant_trace_rpg_benchmark.json",
+    "research/green-supplements/croissant_trace_rpg_benchmark_v2.json",
+    "research/green-supplements/croissant_trace_rpg_benchmark_v3.json",
+    "research/green-supplements/phase2_multihop_5world_results.json",
+    "research/green-supplements/phase2_multiagent_epistemic_results.json",
+    "research/green-supplements/phase2_godot_live_closed_loop_results.json",
+    "research/green-supplements/phase2_live_shield_and_multihop_results.json",
+    "research/green-supplements/phase2_multisecret_escape_results.json",
+    "research/green-supplements/phase3_procedural_multihop_scaling_results.json",
+    "research/green-supplements/phase3_multiworld_godot_closed_loop_results.json",
+    "research/green-supplements/phase3_live_multiagent_3family_results.json",
+    "research/green-supplements/phase3_crossfamily_shield_90_results.json",
+    "research/green-supplements/phase3_crossfamily_multisecret_escape_results.json",
+    "research/green-supplements/DATASHEET.md",
+    "research/green-supplements/DATASHEET_v3.md",
+    "scripts/green_supplements_lib.py",
+    "scripts/run_green_supplements.py",
+    "scripts/compute_tr_alpha.py",
+    "scripts/venue_phase2_lib.py",
+    "scripts/run_venue_phase2_supplements.py",
+    "scripts/venue_phase3_lib.py",
+    "scripts/run_venue_phase3_supplements.py",
+    "scripts/build_neurips_supplement.py",
+)
 
 
 def _require(condition: bool, detail: str) -> None:
@@ -2006,6 +2036,232 @@ class _Verifier:
         }
         return "five 0-LLM-call extended audits (A1-A4, B), source_hashes, and internal denominator invariants verified"
 
+    def green_supplements(self):
+        def _safe_file(relative: str) -> Path:
+            target = self.root / relative
+            _require(
+                not any(
+                    parent.is_symlink()
+                    for parent in (target, *target.parents)
+                    if parent.is_relative_to(self.root)
+                ),
+                f"green-supplement dependency symlink is not accepted: {relative}",
+            )
+            _require(
+                target.is_file() and target.resolve().is_relative_to(self.root),
+                f"green-supplement dependency missing or escapes selected root: {relative}",
+            )
+            return target
+
+        for rel in GREEN_SUPPLEMENT_PATHS:
+            _safe_file(rel)
+
+        mh = _json(_safe_file("research/green-supplements/multihop_ontology_results.json"))
+        inv = mh.get("invariants", {})
+        flat = mh.get("flat_1hop_rule", {})
+        onto = mh.get("ontology_multihop_gate", {})
+        _require(
+            inv.get("i1_to_i4_pass") is True
+            and inv.get("scenarios_verified") == 3
+            and mh.get("total_cases") == 48
+            and sum(mh.get("strata_counts", {}).values()) == 48
+            and flat.get("total") == 48
+            and onto.get("total") == 48
+            and onto.get("unsafe_leaks_fn") == 0
+            and onto.get("false_blocks_fp") == 0
+            and onto.get("accuracy") == 1.0
+            and mh.get("unsafe_leak_reduction") == flat.get("unsafe_leaks_fn"),
+            "multihop ontology invariants drifted",
+        )
+
+        cal = _json(_safe_file("research/green-supplements/audit_b_calibrated_results.json"))
+        _require(
+            cal.get("total_cases") == 88
+            and cal.get("explicit_detected") == "16/16"
+            and str(cal.get("paraphrase_detected", "")).endswith("/36")
+            and str(cal.get("benign_false_rejections", "")).endswith("/36"),
+            "calibrated Audit B invariants drifted",
+        )
+
+        mq = _json(_safe_file("research/green-supplements/multiquest_live_results.json"))
+        eps = mq.get("episodes", [])
+        _require(
+            mq.get("total_episodes") == 24
+            and len(eps) == 24
+            and mq.get("replay_valid_all") is True
+            and all((ep.get("replay") or {}).get("replay_valid") is True for ep in eps)
+            and all(ep.get("unsafe_committed") == 0 for ep in eps),
+            "multiquest live replay/safety invariants drifted",
+        )
+        by_m = mq.get("by_model", {})
+        for model in ("gemini-3.8-flash-medium", "gemini-4-hydrogen-medium"):
+            sub = [ep for ep in eps if ep.get("model_selector") == model]
+            rec = by_m.get(model, {})
+            _require(
+                len(sub) == rec.get("episodes") == 12
+                and sum(bool(ep.get("goal_reached")) for ep in sub) == rec.get("goals_reached")
+                and sum(ep.get("committed_steps", 0) for ep in sub) == rec.get("committed_steps")
+                and sum(ep.get("turns_taken", 0) for ep in sub) == rec.get("total_turns")
+                and sum(ep.get("parse_failures", 0) for ep in sub) == rec.get("parse_failures")
+                and sum(ep.get("unsafe_if_schema_only", 0) for ep in sub)
+                == rec.get("unsafe_if_schema_only")
+                and rec.get("unsafe_committed") == 0
+                and sum(ep.get("total_tokens", 0) for ep in sub) == rec.get("total_tokens"),
+                f"multiquest summary mismatch for {model}",
+            )
+
+        abl = _json(_safe_file("research/green-supplements/audit_b_live_results.json"))
+        _require(
+            abl.get("total_corpus_cases") == 88
+            and set(abl.get("models", []))
+            == {"gemini-3.8-flash-medium", "gemini-4-hydrogen-medium"},
+            "live Audit B metadata drifted",
+        )
+        ab_m = abl.get("by_model", {})
+        per_case = abl.get("per_case", {})
+        for model in ("gemini-3.8-flash-medium", "gemini-4-hydrogen-medium"):
+            rec = ab_m.get(model, {})
+            cases = per_case.get(model, {})
+            _require(
+                len(cases) == 88
+                and rec.get("total_cases") == 88
+                and rec.get("explicit_detected") == "16/16"
+                and sum(1 for v in cases.values() if v.get("source") == "live_llm_error")
+                == rec.get("parse_errors"),
+                f"live Audit B summary mismatch for {model}",
+            )
+
+        tr = _json(_safe_file("research/green-supplements/tr_human_eval_packet.json"))
+        _require(
+            tr.get("status") == "AWAITING_HUMAN_RATERS"
+            and len(tr.get("items", [])) == 36
+            and tr.get("raters_completed") == 0
+            and tr.get("krippendorff_alpha") is None
+            and all(not item.get("rater_labels") for item in tr["items"]),
+            "TR01-TR06 human packet integrity/status drifted",
+        )
+
+        cr = _json(_safe_file("research/green-supplements/croissant_trace_rpg_benchmark.json"))
+        dist = cr.get("distribution", [])
+        _require(
+            cr.get("@context") == "http://mlcommons.org/croissant/1.0"
+            and cr.get("@type") == "sc:Dataset"
+            and len(dist) >= 5,
+            "Croissant metadata schema drifted",
+        )
+        for item in dist:
+            fpath = _safe_file(f"research/green-supplements/{item['name']}")
+            _require(
+                _sha(fpath.read_bytes()) == item.get("sha256"),
+                f"Croissant SHA-256 mismatch for {item['name']}",
+            )
+
+        for cro_path, expected_n, label in (
+            (
+                "research/green-supplements/croissant_trace_rpg_benchmark_v2.json",
+                12,
+                "Croissant v2",
+            ),
+            (
+                "research/green-supplements/croissant_trace_rpg_benchmark_v3.json",
+                17,
+                "Croissant v3",
+            ),
+            (
+                "research/green-supplements/croissant_trace_rpg_benchmark_v4.json",
+                22,
+                "Croissant v4",
+            ),
+            (
+                "research/green-supplements/croissant_trace_rpg_benchmark_v5.json",
+                26,
+                "Croissant v5",
+            ),
+        ):
+            cr_n = _json(_safe_file(cro_path))
+            dist_n = cr_n.get("distribution", [])
+            _require(
+                cr_n.get("@context") == "http://mlcommons.org/croissant/1.0"
+                and cr_n.get("@type") == "sc:Dataset"
+                and len(dist_n) == expected_n,
+                f"{label} metadata schema drifted",
+            )
+            for item in dist_n:
+                fpath = _safe_file(f"research/green-supplements/{item['name']}")
+                _require(
+                    _sha(fpath.read_bytes()) == item.get("sha256"),
+                    f"{label} SHA-256 mismatch for {item['name']}",
+                )
+
+        g38 = by_m["gemini-3.8-flash-medium"]
+        g4h = by_m["gemini-4-hydrogen-medium"]
+        ab38 = ab_m["gemini-3.8-flash-medium"]
+        ab4h = ab_m["gemini-4-hydrogen-medium"]
+        strata = mh["strata_counts"]
+        self.values["green_supplements"] = {
+            "mh_total": mh["total_cases"],
+            "mh_1hop": strata["direct_1hop"],
+            "mh_deriv": strata["transitive_fact_derivation"],
+            "mh_role": strata["role_inheritance"],
+            "mh_flat_acc": f"{flat['accuracy'] * 100:.2f}",
+            "mh_flat_tp": flat["violations_caught_tp"],
+            "mh_flat_tn": flat["safe_allowed_tn"],
+            "mh_flat_fn": flat["unsafe_leaks_fn"],
+            "mh_flat_fp": flat["false_blocks_fp"],
+            "mh_onto_acc": f"{onto['accuracy'] * 100:.2f}",
+            "mh_onto_tp": onto["violations_caught_tp"],
+            "mh_onto_tn": onto["safe_allowed_tn"],
+            "mh_onto_fn": onto["unsafe_leaks_fn"],
+            "mh_onto_fp": onto["false_blocks_fp"],
+            "mh_red": mh["unsafe_leak_reduction"],
+            "mh_worlds": inv["scenarios_verified"],
+            "mq_eps": mq["total_episodes"],
+            "g38_goals": g38["goals_reached"],
+            "g38_eps": g38["episodes"],
+            "g38_commits": g38["committed_steps"],
+            "g38_turns": g38["total_turns"],
+            "g38_pf": g38["parse_failures"],
+            "g38_blocked": g38["unsafe_if_schema_only"],
+            "g38_unsafe": g38["unsafe_committed"],
+            "g38_tok": f"{g38['total_tokens']:,}",
+            "g38_dur": f"{g38['total_duration_seconds']:,.2f}",
+            "g4h_goals": g4h["goals_reached"],
+            "g4h_eps": g4h["episodes"],
+            "g4h_commits": g4h["committed_steps"],
+            "g4h_turns": g4h["total_turns"],
+            "g4h_pf": g4h["parse_failures"],
+            "g4h_blocked": g4h["unsafe_if_schema_only"],
+            "g4h_unsafe": g4h["unsafe_committed"],
+            "g4h_tok": f"{g4h['total_tokens']:,}",
+            "g4h_dur": f"{g4h['total_duration_seconds']:,.2f}",
+            "cal_exp": cal["explicit_detected"],
+            "cal_exp_pct": f"{cal['explicit_recall'] * 100:.1f}",
+            "cal_para": cal["paraphrase_detected"],
+            "cal_para_pct": f"{cal['paraphrase_recall'] * 100:.1f}",
+            "cal_frr": cal["benign_false_rejections"],
+            "cal_frr_pct": f"{cal['benign_frr'] * 100:.1f}",
+            "cal_f1": f"{cal['f1']:.3f}",
+            "ab38_exp": ab38["explicit_detected"],
+            "ab38_para": ab38["paraphrase_detected"],
+            "ab38_para_pct": f"{ab38['paraphrase_recall'] * 100:.1f}",
+            "ab38_frr": ab38["benign_false_rejections"],
+            "ab38_frr_pct": f"{ab38['benign_frr'] * 100:.1f}",
+            "ab38_f1": f"{ab38['f1']:.3f}",
+            "ab38_pe": ab38["parse_errors"],
+            "ab38_tok": f"{ab38['total_tokens']:,}",
+            "ab4h_exp": ab4h["explicit_detected"],
+            "ab4h_para": ab4h["paraphrase_detected"],
+            "ab4h_para_pct": f"{ab4h['paraphrase_recall'] * 100:.1f}",
+            "ab4h_frr": ab4h["benign_false_rejections"],
+            "ab4h_frr_pct": f"{ab4h['benign_frr'] * 100:.1f}",
+            "ab4h_f1": f"{ab4h['f1']:.3f}",
+            "ab4h_pe": ab4h["parse_errors"],
+            "ab4h_tok": f"{ab4h['total_tokens']:,}",
+            "tr_items": len(tr["items"]),
+            "cr_files": len(dist),
+        }
+        return "additive green supplements (multihop, 24 live multiquest, 88x2 live Audit B, TR01-TR06 packet, Croissant SHA-256) verified"
+
     def artifact_sources(self):
         required = (
             "pilot",
@@ -3786,6 +4042,68 @@ class _Verifier:
                 for rel in receipt_paths
             ]
             return "extended_audits", "empirical_source", expected
+        if anchor == "tab:green-supplements":
+            _require(
+                self.family.get("green_supplements") == "PASS",
+                "tab:green-supplements lacks validated green_supplements source facts",
+            )
+            gs = self.values["green_supplements"]
+            expected = (
+                [
+                    [
+                        "G1 다중 홉 온톨로지 폐쇄",
+                        f"결정론적 {gs['mh_total']}건 (1홉 {gs['mh_1hop']}, 사실파생 {gs['mh_deriv']}, 역할상속 {gs['mh_role']}; 0 LLM)",
+                        f"평면 1홉 규칙 정확도 {gs['mh_flat_acc']}\\% (위반 탐지 {gs['mh_flat_tp']}/{gs['mh_total']}, 정상 {gs['mh_flat_tn']}/{gs['mh_total']}, 위험 유출 {gs['mh_flat_fn']}건, FP {gs['mh_flat_fp']}) vs.\\ 다중 홉 ontology_multihop_gate 정확도 {gs['mh_onto_acc']}\\% (탐지 {gs['mh_onto_tp']}/{gs['mh_onto_tp']}, 정상 {gs['mh_onto_tn']}/{gs['mh_onto_tn']}, 위험 유출 {gs['mh_onto_fn']}건, FP {gs['mh_onto_fp']}; {gs['mh_red']}/{gs['mh_total']} 유출 감소); 불변식 I1--I4 {gs['mh_worlds']}개 월드 검증",
+                    ],
+                    [
+                        "G2 다중 퀘스트 라이브 Gemini",
+                        f"{gs['mq_eps']}에피소드 (2모델 $\\times$ 3퀘스트 $\\times$ 2표현 $\\times$ 2반복; $K{{\\in}}\\{{0..2\\}}$)",
+                        f"gemini-3.8-flash-medium: 목표 {gs['g38_goals']}/{gs['g38_eps']}, 커밋 {gs['g38_commits']}/{gs['g38_turns']}, 파싱실패 {gs['g38_pf']}, 스키마단독 위험 차단 {gs['g38_blocked']}, 위험 커밋 {gs['g38_unsafe']}, {gs['g38_tok']} 토큰, {gs['g38_dur']}\\,s; gemini-4-hydrogen-medium: 목표 {gs['g4h_goals']}/{gs['g4h_eps']}, 커밋 {gs['g4h_commits']}/{gs['g4h_turns']}, 타임아웃 {gs['g4h_pf']}, 스키마단독 위험 차단 {gs['g4h_blocked']}(주로 NPC_KNOWLEDGE_VIOLATION), 위험 커밋 {gs['g4h_unsafe']}, {gs['g4h_tok']} 토큰, {gs['g4h_dur']}\\,s; 엄격 리플레이 {gs['mq_eps']}/{gs['mq_eps']} 유효; 리비전·시드 CLI 미인증",
+                    ],
+                    [
+                        "G3 2차 우회 검증기",
+                        "88건 (영 44, 한 44; 명시 16, 미선언 우회 36, 정상 36)",
+                        f"보정 결합 규칙(0 LLM): 명시 {gs['cal_exp']}({gs['cal_exp_pct']}\\%), 우회 {gs['cal_para']}({gs['cal_para_pct']}\\%), 정상 오거부율(FRR) {gs['cal_frr']}({gs['cal_frr_pct']}\\%), F1 {gs['cal_f1']}; gemini-3.8-flash-medium(라이브): 명시 {gs['ab38_exp']}, 우회 {gs['ab38_para']}({gs['ab38_para_pct']}\\%), FRR {gs['ab38_frr']}({gs['ab38_frr_pct']}\\%), F1 {gs['ab38_f1']}(파싱오류 {gs['ab38_pe']}, {gs['ab38_tok']} 토큰); gemini-4-hydrogen-medium(라이브): 명시 {gs['ab4h_exp']}, 우회 {gs['ab4h_para']}({gs['ab4h_para_pct']}\\%), FRR {gs['ab4h_frr']}({gs['ab4h_frr_pct']}\\%), F1 {gs['ab4h_f1']}(타임아웃 {gs['ab4h_pe']}건 분모 보존, {gs['ab4h_tok']} 토큰)",
+                    ],
+                    [
+                        "G4 블라인드 TR01--TR06 및 Croissant",
+                        f"{gs['tr_items']}항목 블라인드 패킷(차원당 6건) + {gs['cr_files']}개 JSON SHA-256",
+                        f"트레이스 결속 패킷(AWAITING_HUMAN_RATERS, 인간 평가자 0명, Krippendorff $\\alpha$ null, 합성 라벨 0건); Croissant~1.0 매니페스트 {gs['cr_files']}/{gs['cr_files']} SHA-256 다이제스트 일치",
+                    ],
+                ]
+                if korean
+                else [
+                    [
+                        "G1 Multi-Hop Ontology Closure",
+                        f"{gs['mh_total']} deterministic cases ({gs['mh_1hop']} 1-hop, {gs['mh_deriv']} fact-deriv., {gs['mh_role']} role-inherit.; 0 LLM)",
+                        f"Flat 1-hop rule accuracy {gs['mh_flat_acc']}\\% ({gs['mh_flat_tp']}/{gs['mh_total']} violations caught, {gs['mh_flat_tn']}/{gs['mh_total']} safe, {gs['mh_flat_fn']} unsafe leaks, {gs['mh_flat_fp']} FP) vs.\\ multi-hop ontology_multihop_gate accuracy {gs['mh_onto_acc']}\\% ({gs['mh_onto_tp']}/{gs['mh_onto_tp']} caught, {gs['mh_onto_tn']}/{gs['mh_onto_tn']} safe, {gs['mh_onto_fn']} unsafe leaks, {gs['mh_onto_fp']} FP; {gs['mh_red']}/{gs['mh_total']} leak reduction); invariants I1--I4 verified {gs['mh_worlds']}/{gs['mh_worlds']} worlds",
+                    ],
+                    [
+                        "G2 Multi-Quest Live Gemini Loop",
+                        f"{gs['mq_eps']} episodes (2 models $\\times$ 3 quests $\\times$ 2 reprs $\\times$ 2 repeats; $K{{\\in}}\\{{0..2\\}}$)",
+                        f"gemini-3.8-flash-medium: {gs['g38_goals']}/{gs['g38_eps']} goals, {gs['g38_commits']}/{gs['g38_turns']} commits, {gs['g38_pf']} parse failures, {gs['g38_blocked']} schema-only unsafe blocked, {gs['g38_unsafe']} unsafe commits, {gs['g38_tok']} tok., {gs['g38_dur']}\\,s; gemini-4-hydrogen-medium: {gs['g4h_goals']}/{gs['g4h_eps']} goals, {gs['g4h_commits']}/{gs['g4h_turns']} commits, {gs['g4h_pf']} timeouts, {gs['g4h_blocked']} schema-only unsafe blocked (predom.\\ NPC_KNOWLEDGE_VIOLATION), {gs['g4h_unsafe']} unsafe commits, {gs['g4h_tok']} tok., {gs['g4h_dur']}\\,s; strict replay {gs['mq_eps']}/{gs['mq_eps']} valid; provider revision/seed CLI-unattested",
+                    ],
+                    [
+                        "G3 Stage-2 Escape Verifiers",
+                        "88 cases (44 EN, 44 KO; 16 explicit, 36 undecl.\\ para., 36 benign)",
+                        f"Calibrated conjunction (0 LLM): explicit {gs['cal_exp']} ({gs['cal_exp_pct']}\\%), para.\\ {gs['cal_para']} ({gs['cal_para_pct']}\\%), benign FRR {gs['cal_frr']} ({gs['cal_frr_pct']}\\%), F1 {gs['cal_f1']}; gemini-3.8-flash-medium (live): explicit {gs['ab38_exp']}, para.\\ {gs['ab38_para']} ({gs['ab38_para_pct']}\\%), FRR {gs['ab38_frr']} ({gs['ab38_frr_pct']}\\%), F1 {gs['ab38_f1']} ({gs['ab38_pe']} parse err., {gs['ab38_tok']} tok.); gemini-4-hydrogen-medium (live): explicit {gs['ab4h_exp']}, para.\\ {gs['ab4h_para']} ({gs['ab4h_para_pct']}\\%), FRR {gs['ab4h_frr']} ({gs['ab4h_frr_pct']}\\%), F1 {gs['ab4h_f1']} ({gs['ab4h_pe']} timeouts retained, {gs['ab4h_tok']} tok.)",
+                    ],
+                    [
+                        "G4 Blinded TR01--TR06 \\& Croissant",
+                        f"{gs['tr_items']} blinded items (6/dim across 3 worlds) + {gs['cr_files']} JSON dist.\\ SHA-256s",
+                        f"Trace-bound concrete packet (AWAITING_HUMAN_RATERS, 0 human raters, Krippendorff $\\alpha$ null, zero synthetic labels); Croissant~1.0 dataset manifest matches all {gs['cr_files']}/{gs['cr_files']} SHA-256 artifact digests",
+                    ],
+                ]
+            )
+            _require(
+                rows == expected,
+                f"tab:green-supplements cell mismatch ({'ko' if korean else 'en'}): expected {expected!r}, observed {rows!r}",
+            )
+            table["source_receipts"] = [
+                {"path": rel, "sha256": _sha((self.root / rel).read_bytes())}
+                for rel in GREEN_SUPPLEMENT_PATHS
+            ]
+            return "green_supplements", "empirical_source", expected
         raise ValueError(f"no semantic adapter for reached manual table {anchor}")
 
     def bind(self, manifest):
@@ -3886,7 +4204,8 @@ class _Verifier:
         family, kind, expected = self.manual(table)
         table.update(adapter_id=family, binding_kind=kind, expected=expected)
         if (
-            table["anchor"] in {"tab:artifact-directory-map", "tab:extended-audits"}
+            table["anchor"]
+            in {"tab:artifact-directory-map", "tab:extended-audits", "tab:green-supplements"}
             and self.public_source_projection
         ):
             table["source_verification_mode"] = self.report["source_verification_mode"]
@@ -3913,6 +4232,7 @@ def _snapshot(
         "research/codex_feedback_pilot/public-v5",
         "research/traceability-scoring-20261023",
         "research/prospective-pilot-20261103",
+        "research/green-supplements",
         "knowledge/ontology",
         "game-track/godot/scripts",
         "game-track/godot/data",
@@ -4084,6 +4404,7 @@ def verify(
                 "kg",
                 "v5",
                 "extended_audits",
+                "green_supplements",
             ):
                 checker.check(name, getattr(checker, name))
             crosswalk = checker.module("validate_contribution_crosswalk")

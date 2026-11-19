@@ -1,6 +1,7 @@
 import hashlib
 import json
 
+
 def check(api):
     c, runtime = api["contracts"], api["runtime"]
     state = c.WorldState("public-replay", frozenset({"dock"}), frozenset({"dock"}), {},

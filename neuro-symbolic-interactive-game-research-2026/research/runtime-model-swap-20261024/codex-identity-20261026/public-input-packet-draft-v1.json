@@ -1,0 +1,41 @@
+{
+  "schema_version": "runtime-codex-identity-public-input-packet-draft/1",
+  "artifact_id": "runtime-model-swap-20261024-codex-identity-20261026-public-input-packet-draft-v1",
+  "status": "DRAFT_REUSE_EXISTING_PUBLIC_V1_INPUTS_SOURCE_ADMISSION_PENDING",
+  "source_kind": "existing canonical public packet references; no new model input bytes authored",
+  "prior_packet_ref": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1",
+  "quest_id": "sealed-lighthouse-v1",
+  "shared_public_inputs": [
+    {"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/prompt.txt","role":"public_prompt","sha256":"751825ad535d93b12206fd36925ee53b5d4348cfd425ea51daddbc6ba05e99e2"},
+    {"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/quest.json","role":"public_quest","sha256":"c0531cac9027e32de5a20a43d9e93306d24c3ea765ba6c7152354c83de48c4a1"},
+    {"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/runtime-output.schema.json","role":"output_schema","sha256":"525d2cae69c1ae1071834c61bf1bb39bced7871f22f61adfaed03ae98fac97a4"}
+  ],
+  "representations": {
+    "general_rule": {
+      "observation_frames":{"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-observation-frames.json","sha256":"c41b74aa67b9c59b5a88108765ad09cf50b85dd916bedf73fde3901f111c0357"},
+      "approved_request_bytes":{"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-approved-request-bytes.json","sha256":"13b30cd7832b1b7a5f1e928e057a8ef142e36e893e0d96c4597b861446f4570f"},
+      "input_manifest":{"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/general_rule-input-manifest.json","sha256":null,"sha256_status":"recompute_on_freeze"}
+    },
+    "ontology": {
+      "observation_frames":{"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-observation-frames.json","sha256":"752ddaca31c69b3d26382b1b17e168852c0abed3d2914c1d3c7dad8290dde127"},
+      "approved_request_bytes":{"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-approved-request-bytes.json","sha256":"b2d9043aa310ff13923c00cdaa4788ac5398653481bd27930b76ec0e2aabb257"},
+      "input_manifest":{"path":"research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/ontology-input-manifest.json","sha256":null,"sha256_status":"recompute_on_freeze"}
+    }
+  },
+  "transmission_contract": {
+    "allowlisted_model_inputs_only": true,
+    "source_manifests_excluded": true,
+    "independent_oracle_excluded": true,
+    "terminal_expected_hash_excluded": true,
+    "account_auth_operator_material_excluded": true,
+    "raw_conversation_excluded": true,
+    "native_transmission_authorized_by_this_artifact": false,
+    "model_calls": 0
+  },
+  "source_binding": {
+    "input_hashes_frozen": false,
+    "native_controller_hashes_frozen": false,
+    "main_freeze_required": true
+  },
+  "disclosure": "LOCAL_DRAFT_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

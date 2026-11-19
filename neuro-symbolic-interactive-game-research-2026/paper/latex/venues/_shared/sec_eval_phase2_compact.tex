@@ -1,0 +1,21 @@
+\subsection{Phase-2 Five-World Shielding, Godot~4.7.1 Closed Loop, Self-Repair, and 3-Domain Escape}\label{sec:phase2-compact}
+Beyond the 3-world baseline, we add \texttt{ivory-\allowbreak citadel-\allowbreak v1} (6 rooms, 3 actors) and \texttt{glass-\allowbreak foundry-\allowbreak v1} (8 rooms, 3 actors) with exact 95\% Wilson CIs, two-sided exact McNemar tests, \texttt{DATASHEET.md}, and Croissant~1.0 v2 (12/12 SHA-256s; Table~\ref{tab:phase2-compact}). Across 120 5-world closure cases (\textbf{P1}), \texttt{schema\_only} and \texttt{affordance\_}\allowbreak\texttt{mask\_only} score 28.33\% [21.0\%, 37.0\%] (86 leaks) and \texttt{flat\_}\allowbreak\texttt{1hop\_}\allowbreak\texttt{rule} 50.83\%, whereas \texttt{multihop\_}\allowbreak\texttt{ontology\_}\allowbreak\texttt{gate} achieves \textbf{100.0\%} [96.9\%, 100.0\%] ($p{<}10^{-16}$). Across 30 3-role episodes/arm (150 runs, \textbf{P2}), multihop shielding eliminates all 90 unsafe turns (0/90 vs.\ 15/90 flat, $p{=}0.00195$) while $\rho_{K=2}$ doubles safe goals from 33.3\% to \textbf{66.7\%} [48.8\%, 80.8\%] ($p{=}0.00195$, 0/5 FRR). Over 16 live Gemini $\rightarrow$ Godot~4.7.1 closed-loop episodes (\textbf{P3}), 0/16 unsafe commits occur and 16/16 fresh 0-LLM Godot replays match (\texttt{gemini-4-}\allowbreak\texttt{hydrogen-\allowbreak medium} 8/8 \texttt{EXACT\_}\allowbreak\texttt{TERMINAL\_}\allowbreak\texttt{HASH}, 0 pf; \texttt{gemini-3.8-}\allowbreak\texttt{flash-\allowbreak medium} 5/8, 4 pf retained, plus 1 honest role-inheritance vs.\ strict Godot actor refusal without leak). Over 60 live 5-world tasks (\textbf{P4}; 36/60 parsed, 24 Flash timeouts retained), deterministic $\rho$ safely recovers 12/12 noisy failures (23/36 commits, 0/36 unsafe, $p{=}0.000488$) at 0 extra tokens vs.\ 2/12 for live LLM self-repair $K{=}1$ (702,293 extra tokens, 0 unsafe). On 180 unseen 3-secret EN/KO cases (\textbf{P5}), non-overfit \texttt{rule\_hybrid} scores 52.8\% para / 0.0\% FRR / $F_1{=}0.813$, while live Stage-2 Flash reaches 97.2\% / 0/72 FRR ($F_1{=}0.991$, $p{=}2{\times}10^{-8}$) and Hydrogen reaches \textbf{100.0\%} (72/72) / 0/72 FRR ($F_1{=}1.000$).
+
+\begin{table}[!tbp]
+\caption{Phase-2 Five-World, Multi-Agent, Live Godot~4.7.1, Self-Repair, and 3-Domain Escape Summary}
+\label{tab:phase2-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Phase-2 Track} & \textbf{Result (95\% Wilson CI; Exact McNemar $p$)} \\
+\midrule
+\textbf{P1} 5-World (120) & \texttt{affordance\_mask\_only} 28.3\%, \texttt{flat\_1hop\_rule} 50.8\% vs.\ \texttt{multihop\_ontology\_gate} \textbf{100.0\%} [96.9\%, 100.0\%] (0/86 leaks, $p{<}10^{-16}$). \\
+\textbf{P2} 3-Role (30 ep$\times$5) & Goals: \texttt{flat} 16.7\%, \texttt{multihop} 33.3\%, \textbf{TRACE-RPG ($\rho$)} \textbf{66.7\%} [48.8\%, 80.8\%] ($p{=}0.00195$); unsafe turns \textbf{0/90} ($p{=}0.00195$). \\
+\textbf{P3} Live Godot~4.7.1 & \textbf{0/16} leaks, \textbf{16/16} 0-LLM replays valid; Hydrogen \textbf{8/8} exact hash; Flash \textbf{5/8} (4 pf, 1 safe actor-ID refusal). \\
+\textbf{P4} Live 5-World (60) & 36/60 parsed (24 timeouts kept): \texttt{flat} 9/36 unsafe vs.\ multihop \textbf{0/36} ($p{=}0.00391$); $\rho$ \textbf{12/12} noisy (0 tok) vs.\ LLM $K{=}1$ 2/12 (702k tok). \\
+\textbf{P5} 3-Secret Escape (180) & Para / FRR / $F_1$: \texttt{loo\_tfidf} 62.5\% / 62.5\% / 0.692; \texttt{rule\_hybrid} 52.8\% / 0\% / 0.813; Flash 97.2\% / 0\% / 0.991; Hydrogen \textbf{100\% / 0\% / 1.000}. \\
+\bottomrule
+\end{tabularx}
+\end{table}

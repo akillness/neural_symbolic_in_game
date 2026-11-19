@@ -1,0 +1,74 @@
+{
+  "schema_version": "bounded-aside-candidate-review/v1",
+  "status": "FIX_SOURCE_PRIVACY_REVIEW_BLOCKED",
+  "source_sha256": {
+    "tests/aside_browser_backend.cjs": "4ed3f7a0c75cbdb7fc31d69faae8639f4f15f702c103a3354044b493018289a6",
+    "tests/publication_presentation_driver.cjs": "ead0516a4ed88fa6932f44c78933cce5675ce38f1ce86eba1c4cdcedcd72d5cf",
+    "tests/ontology_evidence_map_driver.cjs": "54b2a8a292a9a3e448a77347668580d80740cb4e21ed53042332158c39e0edd1",
+    "tests/dashboard_signal_driver.cjs": "8e86fdaf15146dc617e566a6ec520bac7bd04a549dd2db2605183dfa5881fb51",
+    "tests/test_publication_presentation.py": "1660bf6a8ecb4f048474c33b5e6759cace5a8279bb191aff6ecdd68e30db8586",
+    "tests/test_ontology_evidence_map.py": "6ab9db03175763a4bda6a57d8c5ad7fdcffe9c80382824cf71690b2c7ef08543",
+    "tests/test_signal_explainer.py": "295f77fdd0b75169ce42ea81226f7b135fbf72ee6cd47e24788bf261f76f76f9"
+  },
+  "source_retention": {
+    "files": 7,
+    "all_hashes_verified": true,
+    "scope": "Private source-only archive; no raw diagnostics copied"
+  },
+  "focused_observation": "23 passed275.163s; zero skipped",
+  "matrix": {
+    "total": 82,
+    "passed": 80,
+    "failed": 2,
+    "skipped": 0,
+    "exit_code": 1,
+    "seconds": 831.755,
+    "failed_cases": [
+      "test_isolated_component_map_and_existing_observer_contracts[unsafe-evidence-ref-1440]",
+      "test_aside_partial_collector_failure_cannot_be_laundered_as_a_source_error"
+    ],
+    "observed_safe_guard": "Unexpected fixture auxiliary target; intended assertions not reached",
+    "one_safe_phase_observation": {
+      "phase": "open",
+      "unknownCount": 1,
+      "mainPresent": true,
+      "staleOwnedCount": 0
+    },
+    "cause": "UNKNOWN; no target identity or attribution inferred",
+    "junit_sha256": "08baac876fee8055b76ff172f19fd668e0316f6247f23577a912969715f93ee6",
+    "checksum_scope": "Observed retained runtime bytes, not a claim that later diagnostic minimization preserves original bytes"
+  },
+  "source_reviews": [
+    {
+      "reviewer": "FinalCiV2Code",
+      "verdict": "WARNING — one HIGH privacy acceptance blocker; ownership, readiness, cleanup and failure-propagation paths are statically consistent within the frozen scope",
+      "private_original_sha256": "d8256556cadf39158f195b1aff1c7bbb34f1608eb75c574bbb422cf283fa9c1b",
+      "blocking_count": 1
+    },
+    {
+      "reviewer": "FinalCiV2Security",
+      "verdict": "BLOCKING_FINDINGS_STATIC_REVIEW_ONLY",
+      "private_original_sha256": "7167f374c566ae6de878da6a8b5bb589205cfd239f2bd74c5a638569a52a442c",
+      "blocking_count": 2
+    },
+    {
+      "reviewer": "FinalCiV2Typescript",
+      "verdict": "BLOCK",
+      "private_original_sha256": "c9a93a5d3b72719c623364d435063177984a2457522bca179d63ccbd23f746ff",
+      "blocking_count": 1
+    },
+    {
+      "reviewer": "FinalCiV2Python",
+      "verdict": "BLOCK_SOURCE_PRIVACY; static review only, not runtime, CI, publication, or scientific approval",
+      "private_original_sha256": "f2287ffda4067e6144e0be7bcbeda12a31f40cbe608f03014968a028366c7147",
+      "blocking_count": 2
+    }
+  ],
+  "blockers": [
+    "Regex-matching raw native guard errors can still enter emitted probe controls",
+    "Nested/raw observer and JSON/assertion failure payloads bypass categorical output minimization"
+  ],
+  "ownership_scope": "All four review lanes found ownership/readiness/close structure repaired within static scope; not runtime or full CI approval",
+  "historical_ci_cause": "UNKNOWN",
+  "next_source_status": "Repair owner will close remaining output boundaries after current unchanged matrix completes"
+}

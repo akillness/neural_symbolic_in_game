@@ -1,0 +1,69 @@
+\documentclass[sigconf,review]{acmart}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{tabularx}
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\setcopyright{none}
+\acmConference[AAMAS '27]{International Conference on Autonomous Agents and Multiagent Systems (Korean Companion)}{2027}{Seoul, Republic of Korea}
+
+\begin{document}
+
+\title{TRACE-RPG: 에이전트 게임을 위한 액션 실딩 제안--커밋 경계와 반례 유도 수리}
+
+\author{정장영}
+\affiliation{\institution{홍익대학교 게임학과}\city{서울}\country{대한민국}}
+\author{강신진}
+\authornote{교신저자.}
+\affiliation{\institution{홍익대학교}\city{서울}\country{대한민국}}
+
+\begin{abstract}
+대화형 환경의 자율 LLM 에이전트는 스키마에 부합하지만 도달성·인식·공개 제약을 위반하는 제안을 생성할 수 있다. \system{}는 제안--커밋 경계에서 결정론적 7술어 액션 실드, \texttt{nesy\_game.multihop} 이행적 Datalog 폐쇄, 상태 비참조 수리 $\rho(a,E)$를 통합 적용한다(정리 1--4). 1,664건 유한 그래프 감사(260/416 $\rightarrow$ 0/416) 및 480건 $R{\le}64, d{\le}5$ Datalog 오라클($\le$7.12\,$\mu$s, 100.0\% 대 1홉 46.67\%·2홉 60.00\%, $Q{=}1100.19$)에 이어, 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·구조화 디코딩) 기반 \textbf{105개 독립 폐루프 5턴 다중 에이전트 에피소드}(\textbf{P15}: 105/105 0-LLM 리플레이)에서 통제 Safe-RL 프록시(목표 0/15, 위험 16/61)와 NeMo 스타일 프록시(1/15, 15/61)는 다중 홉 누출을 놓친 반면 \system{}는 전 암 \textbf{15/15 (100\%)} 무누출·\textbf{0} 위험 커밋(정리~2 상태 의존 거부 28건에서 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증, \texttt{rho\_k2} 14/15·하이브리드 \textbf{15/15} 목표; $Q_{\mathrm{goal}}{=}68.71, p{\le}1.22{\times}10^{-4}$)을 달성하였다. 아울러 인증 요인 실험(\textbf{P16A}: 60에피소드, \texttt{ontology\_multihop} 30/30 무누출·22 $\rho$수리·11/30 목표 대 \texttt{general\_rule} 22/30·0/30), Godot~4.7.1 21에피소드(\textbf{P16B}: 21/21 재실행, 6/6 제품 해시 일치), 3모델군 CLI(\textbf{P11}--\textbf{P13}: 30/30 무누출·0/79 위험, $(a,E)$ 27/27 0토큰), 통합 540회 우회 검증(\textbf{P17}: $\kappa{=}0.8813$, 0\% FRR)을 보고한다.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10010147.10010178.10010219.10010221</concept_id>
+       <concept_desc>Computing methodologies~Intelligent agents</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10010147.10010178.10010187</concept_id>
+       <concept_desc>Computing methodologies~Knowledge representation and reasoning</concept_desc>
+       <concept_significance>300</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computing methodologies~Intelligent agents}
+\ccsdesc[300]{Computing methodologies~Knowledge representation and reasoning}
+
+\keywords{액션 실딩, 뉴로심볼릭 에이전트, 반례 유도 수리, 인식론적 정보 공개}
+
+\maketitle
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_phase5_ko}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 실딩하며, 오류는 $\rho$ 수리 또는 상태 불변 fallback으로 이어진 뒤 재검증을 거쳐 커밋된다.}
+  \Description{제안 제출, 7술어 결정론적 실딩, 제한적 수리, 재검증 및 커밋 원장을 보여주는 아키텍처 다이어그램.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/ko/sec_problem_arch_phase5_ko}
+\input{../_shared/ko/sec_eval_aamas_phase5_ko}
+\input{../_shared/ko/sec_conclusion_phase5_ko}
+
+\FloatBarrier
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../../references,../_shared/venue_extra}
+
+\end{document}

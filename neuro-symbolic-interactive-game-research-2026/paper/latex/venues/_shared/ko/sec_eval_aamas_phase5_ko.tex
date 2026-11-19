@@ -1,0 +1,72 @@
+\section{실험 평가}\label{sec:eval}
+평가는 비혼합 2계층으로 구성된다: (i)~유한 그래프·Godot~4.7.1 장기 실행·상향 Datalog 오라클을 포괄하는 0-LLM 결정론적 검증 계층과, (ii)~직접 HTTPS Anthropic Claude~5.5 API 인증 실험(\textbf{P15}--\textbf{P17}: Haiku~5.5·Sonnet~5.5·Opus~5.5 전 계층 총 2.25M 토큰, Claude~5.5 API 규격상 deprecated \texttt{temperature} 생략 후 \texttt{output\_config.json\_schema} 적용) 및 3개 모델군 CLI 평가(\textbf{P11}--\textbf{P14}, 파싱 실패 전량 분모 보존)로 이루어진 라이브 계층이다. 미실행 코호트(\texttt{20261103} 예비 0/180 및 인간 \texttt{TR01--TR06} $N{=}0$)는 엄격히 분리한다.
+
+\subsection{결정론적 권한 경계 및 $R{\le}64, d{\le}5$ Datalog 스케일링}
+1,664건 유한 그래프 권한 감사(조건당 416건$\times$4 + 표면 센티넬 48건)에서 \texttt{schema\_only}는 기준상 무효 제안 260/416건을 커밋한 반면 모든 의미 게이트는 \textbf{0/416} 위험 커밋, 0/156 오거부, 32/32 폐쇄--BFS 일치를 기록했고, $\rho$ 수리는 128/260건을 복구해 목표 달성을 124/416에서 \textbf{252/416}으로 높였다. 확장 0-LLM 감사는 다중 오류 수렴(\textbf{A1}: 위험 0/1,408, 충돌 가드 128/128), 서브밀리초 지연(\textbf{A2}: $N{=}2000$ p95 0.0042--0.0751\,ms, $R{=}256$ 폐쇄 0.312--0.478\,ms), 시드 추적성(\textbf{A3}: 4,656/4,656), Godot~4.7.1 장기 안정성(\textbf{A4}: 거부 코드 9/9, 1,600/1,600틱 일관성, p95 0.708\,ms, 메모리 변화 $-268$\,B)을 입증했다. 단일 홉 60건 동률 이후 5월드 다중 홉 폐쇄(\textbf{P1}: 120건)에서 \texttt{ontology\_\allowbreak multihop}는 \textbf{100.0\%}로 평면 1홉(50.83\%, $p{<}10^{-16}$)을 압도하였다. 표~\ref{tab:phase5-aamas-datalog}의 Datalog 스케일링(\textbf{P9}: $R{\in}\{8..64\}\times d{\in}\{1..5\}$ 480건)에서도 \texttt{nesy\_game.multihop}만 \textbf{480/480 (100.0\%)}를 $R$-불변 $O(d)$ $\le$7.12\,$\mu$s 중앙값으로 달성하였다($Q{=}1100.19$).
+
+\begin{table}[!tbp]
+\caption{절차적 Datalog 스케일링 벤치마크 (\textbf{P9}: $R{\le}64, d{\le}5$ 480건, 0-LLM)}
+\label{tab:phase5-aamas-datalog}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}lcccc@{}}
+\toprule
+\textbf{게이트 구성} & \textbf{정확도 (480)} & \textbf{누출} & \textbf{중앙값 ($\mu$s)} & \textbf{p95 ($\mu$s)} \\
+\midrule
+\texttt{schema\_only} / \texttt{affordance} & 16.67\% (80) & 400 & --- & --- \\
+\texttt{flat\_1hop\_gate} & 46.67\% (224) & 256 & 0.87--1.57 & 1.37--2.18 \\
+\texttt{bounded\_2hop\_gate} & 60.00\% (288) & 192 & 1.88--2.58 & 2.66--3.91 \\
+\texttt{nesy\_game.multihop} & \textbf{100.0\% (480)} & \textbf{0} & \textbf{6.46--7.12} & 9.83--11.42 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{독립 폐루프 7-암 다중 에이전트 실딩 (\textbf{P15} 및 \textbf{P11})}\label{sec:phase5-mas}
+반사실적 재채점을 배제하기 위해 \textbf{P15}는 3개 인증 Claude~5.5 계층(\texttt{claude-haiku-5-5}, \texttt{claude-sonnet-5-5}, \texttt{claude-opus-5-5})$\times$5월드$\times$7개 독립 암의 \textbf{105개 독립 폐루프 5턴 에피소드}(총 1,048,803토큰; 표~\ref{tab:phase5-aamas-mas})를 수행하고 전량 \textbf{105/105} 0-LLM 리플레이를 검증하였다. 통제된 Safe-RL 프록시~\cite{alshiekh2018shield}(목표 0/15, 무누출 1/15, 위험 턴 16/61)와 NeMo 프록시~\cite{rebedea2023nemo}(1/15, 1/15, 15/61)는 다중 홉 누출을 놓쳤고, 평면 1홉도 3/15에피소드 4/66턴(\texttt{ivory-citadel-v1} 1에피소드 2턴·\texttt{glass-foundry-v1} 2에피소드 2턴)을 누출하였다. 반면 \texttt{nesy\_game.multihop} 전 암은 전 계층·월드 \textbf{15/15 (100.0\%)} 무누출·\textbf{0} 위험 커밋을 지켰으며, \texttt{trace\_rpg\_multihop\_rho\_k2}의 차단 18건은 전부 정리~2 상태 의존 위반이므로 $\rho_{\mathrm{repairs}}{=}0$으로 무세탁 불변식을 실증했고(14/15 대 13/15는 독립 1턴 표본 차이), $\rho$+LLM$_{K=1}$ 하이브리드가 20회 안전 재선정으로 전 계층 \textbf{15/15 (100.0\%)} 안전 목표를 달성하였다($Q_{\mathrm{goal}}{=}68.71, p{\le}1.22{\times}10^{-4}$). 교차 3모델군 CLI(\textbf{P11}: 30에피소드, 79/90 파싱)에서도 \system{}만 \textbf{30/30} 무누출·\textbf{0/79} 위험을 유지하였다(Safe-RL 37/79, NeMo 43/79, $Q{=}118.93$).
+
+\begin{table}[!tbp]
+\caption{인증 독립 폐루프 7-암 다중 에이전트 평가 (\textbf{P15}: 105에피소드, 105/105 0-LLM 리플레이 일치)}
+\label{tab:phase5-aamas-mas}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}Xcccccc@{}}
+\toprule
+\textbf{실험 암 (15에피소드)} & \textbf{목표} & \textbf{무누출} & \textbf{위험턴} & \textbf{차단} & \textbf{$\rho$/재선정} & \textbf{토큰} \\
+\midrule
+\texttt{schema\_only} & 2/15 & 2/15 & 16/59 & 0 & 0/0 & 133k \\
+\texttt{safe\_rl\_mask}~\cite{alshiekh2018shield} & 0/15 & 1/15 & 16/61 & 2 & 0/0 & 139k \\
+\texttt{nemo\_colang}~\cite{rebedea2023nemo} & 1/15 & 1/15 & 15/61 & 1 & 0/0 & 137k \\
+\texttt{flat\_1hop} & 12/15 & 12/15 & 4/66 & 15 & 0/0 & 146k \\
+\texttt{multihop\_k0} & 13/15 & \textbf{15/15} & \textbf{0/69} & 22 & 0/0 & 153k \\
+\texttt{trace\_rpg ($\rho_{K=2}$)} & 14/15 & \textbf{15/15} & \textbf{0/68} & 18 & 0/0 & 151k \\
+\texttt{hybrid ($\rho$+LLM$_{K=1}$)} & \textbf{15/15} & \textbf{15/15} & \textbf{0/63} & 2 & 0/20 & 190k \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{전향적 요인 실험(\textbf{P16}), 동등 수리 비교(\textbf{P12}) 및 우회 검증(\textbf{P17})}
+인증 API 전향적 요인 실험(\textbf{P16A}: 60에피소드, 673,869토큰, 동결된 0/180 파일럿과 비혼합)에서 \texttt{general\_rule}은 Sonnet(4)·Opus(5)에서 위험 커밋 9건(무누출 22/30, 목표 0/30)을 범한 반면, \texttt{ontology\_multihop}은 \textbf{30/30 (100.0\%)} 무누출($p{=}0.00781$), \textbf{0} 위험 커밋, 22건 수리(Haiku 18, Sonnet 4), 목표 11/30(Opus 8/10, Sonnet 3/10, Haiku 0/10; $p{=}9.77{\times}10^{-4}$)을 달성하였다. Godot~4.7.1 연계 21에피소드(\textbf{P16B}: 5월드 15 + \texttt{SealedLighthouseMachine} 6, 169,071토큰)에서도 \textbf{21/21} 0-LLM 재실행 일치, \textbf{0/21} 유출, 5월드 13/15 목표(Haiku 5/5), 제품 \textbf{6/6 (100\%)} \texttt{EXACT\_\allowbreak TERMINAL\_\allowbreak HASH}를 확인해 3모델군 CLI Godot(\textbf{P13}: 42/42 재실행, 0/42 유출)과 일관된다. 한편 \textbf{P12}(84/90 파싱, $Q{=}281.23$)에서 $(a,E)$를 동등 제공한 27건 수리는 $\rho_{K=2}$(\textbf{27/27}, 0토큰)와 Blind/Aware LLM($K{=}2$, 각 26/27, 530k--542k토큰, $p{=}1.0$)이 정확도 동률을 이루어, $\rho$의 본질적 기여가 0토큰·비세탁성(및 LLM의 52/55 안전 대안 재선정)임을 입증한다.
+
+마지막으로 표~\ref{tab:phase5-aamas-escape}의 통합 단일 프롬프트 한·영 우회 감사(\textbf{P17}: 180건$\times$3 Claude 계층 = \textbf{540회} 라이브 평가, 결정론적 단축 평가 0건, 359,030토큰, Fleiss $\kappa{=}0.8813, Q{=}9.5$)에서 세 계층은 \textbf{0/72 (0.0\%) 오탐률}과 94.44--97.22\% 패러프레이즈 재현율을 달성하였다. 특히 명시적 토큰(\texttt{keeper\_secret} 등)을 Haiku(29/36)·Opus(25/36)·Sonnet(19/36)이 간과하므로, Stage-1 심볼릭 검사(36/36)와 Stage-2 신경망 검증(94.4--97.2\%)이 필수 상보 관계임을 증명한다(3모델군 720회 \textbf{P14}: $\kappa{=}0.9367$, GPT-OSS $F_1{=}0.9714$).
+
+\begin{table}[!tbp]
+\caption{통합 단일 프롬프트 한·영 우회 검증 (\textbf{P17}: 180건$\times$3계층 = 540회, 단축평가 0건)}
+\label{tab:phase5-aamas-escape}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}lccccc@{}}
+\toprule
+\textbf{검증기 (3도메인)} & \textbf{명시(36)} & \textbf{우회(72)} & \textbf{FRR(72)} & \textbf{$F_1$} & \textbf{EN/KO $F_1$} \\
+\midrule
+\texttt{id\_only} (1차 규칙) & \textbf{36/36} & 0/72 & 0/72 & 0.500 & --- \\
+\texttt{loo\_tfidf} & \textbf{36/36} & 45/72 & 45/72 & 0.692 & --- \\
+\texttt{rule\_hybrid} & \textbf{36/36} & 38/72 & 0/72 & 0.813 & --- \\
+\texttt{claude-haiku-5-5} & 29/36 & \textbf{70/72} & \textbf{0/72} & \textbf{0.957} & .952/.962 \\
+\texttt{claude-sonnet-5-5} & 19/36 & \textbf{70/72} & \textbf{0/72} & 0.904 & .920/.887 \\
+\texttt{claude-opus-5-5} & 25/36 & 68/72 & \textbf{0/72} & 0.925 & .941/.909 \\
+\bottomrule
+\end{tabularx}
+\end{table}

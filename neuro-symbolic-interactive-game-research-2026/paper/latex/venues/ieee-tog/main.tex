@@ -1,0 +1,66 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/macros}
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.02}
+\AtBeginDocument{%
+  \setcounter{dbltopnumber}{1}%
+  \renewcommand{\topfraction}{0.92}%
+  \renewcommand{\dbltopfraction}{0.92}%
+  \renewcommand{\textfraction}{0.05}%
+  \renewcommand{\floatpagefraction}{0.88}%
+  \renewcommand{\dblfloatpagefraction}{0.88}%
+}
+
+\title{TRACE-RPG: Auditable Proposal-to-Commit Engine Boundaries and Ontology Verification for Agentic Game Systems}
+
+\ifanonymoussubmission
+\author{Anonymous Author(s)\\
+\small Submitted for Double-Anonymous Peer Review (IEEE Transactions on Games)}
+\else
+\author{Jangyoung Jeong$^{1}$ and Shinjin Kang$^{2,*}$\\
+\small $^{1}$Department of Game Design, Hongik University (first author)\\
+\small $^{2}$Professor, Hongik University\\
+\small $^{*}$Corresponding author}
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. Addressing game-engine runtime verification while explicitly scoping human player-experience studies as future work ($N{=}0$), \system{} integrates a seven-predicate gate, bottom-up transitive Datalog closure (\texttt{nesy\_game.multihop}), state-blind counterexample repair $\rho(a,E)$, and SHA-256 hash-chained semantic replay prior to engine mutation (Theorems~1--4, \textbf{I1--I4}). Beyond 1,664 finite-graph audits, headless Godot~4.7.1 soak instrumentation (1,600 ticks, \texttt{step\_commit} p95 0.708\,ms), and 480 $R{\le}64, d{\le}5$ Datalog scaling cases (100.0\% at $\le$7.12\,$\mu$s vs.\ 46.67\% flat and 60.00\% 2-hop, $Q{=}1100.19$), attested direct HTTPS Anthropic Claude~5.5 API suites across Haiku, Sonnet, and Opus~5.5 (omitting deprecated \texttt{temperature}; \texttt{output\_config.json\_schema}) plus 3-family CLI tracks confirm: \textbf{15/15 (100\%)} zero-leak and \textbf{0} unsafe commits across 105 independent 5-turn closed-loop trajectories (\textbf{P15}: confirming Theorem~2 no-op safety with $\rho_{\mathrm{repairs}}{=}0$ on 28 state-dependent rejections and \textbf{15/15} hybrid safe goals vs.\ Safe-RL proxy 0/15 and NeMo proxy 1/15, $p{\le}1.22{\times}10^{-4}$); 60 factorial episodes (\textbf{P16A}: \texttt{ontology\_multihop} 30/30 zero-leak, 22 live $\rho$ repairs, and 11/30 goals vs.\ 22/30 rule); \textbf{21/21} attested + \textbf{42/42} CLI Godot~4.7.1 replays with \textbf{6/6} production \texttt{SealedLighthouseMachine} terminal hash matches and 0/63 leaks (\textbf{P16B}, \textbf{P13}); $(a,E)$ repair parity at 0 extra tokens (\textbf{P12}); and 540 unified EN/KO escape checks (\textbf{P17}: $\kappa{=}0.8813$, 0\% FRR).
+\end{abstract}
+
+\begin{IEEEkeywords}
+game engine verification, neuro-symbolic systems, action shielding, counterexample repair, deterministic replay
+\end{IEEEkeywords}
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_phase5}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.64\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback. Passing candidates undergo revalidation, commit, recording, and replay.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/sec_problem_arch_phase5}
+\input{../_shared/sec_eval_tog_phase5}
+\input{../_shared/sec_conclusion_phase5}
+
+\FloatBarrier
+\bibliographystyle{IEEEtran}
+\bibliography{../../references,../_shared/venue_extra}
+
+\end{document}

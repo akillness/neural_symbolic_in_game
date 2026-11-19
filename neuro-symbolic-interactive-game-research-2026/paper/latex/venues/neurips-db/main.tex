@@ -1,0 +1,126 @@
+\documentclass{article}
+\PassOptionsToPackage{numbers,compress}{natbib}
+\ifdefined\ANONBUILD
+\usepackage{neurips_2025}
+\makeatletter
+\renewcommand{\@noticestring}{Submitted to the NeurIPS Datasets and Benchmarks Track. Do not distribute.}
+\makeatother
+\else
+\usepackage[preprint]{neurips_2025}
+\fi
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/macros}
+
+\title{TRACE-RPG: A Reproducible Benchmark and Deterministic Audit Suite for Proposal-to-Commit Game Authorization}
+
+\author{
+  Jangyoung Jeong \\
+  Department of Game Design, Hongik University \\
+  \And
+  Shinjin Kang\thanks{Corresponding author.} \\
+  Hongik University \\
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. We present \system{}, a reproducible benchmark and deterministic audit suite consolidated in \texttt{nesy\_game.multihop} with Theorems~1--4, Gebru et al.\ \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, and Croissant~1.0 v2--v5~\cite{akhtar2024croissant} metadata (12/12, 17/17, 22/22, and \textbf{26/26} SHA-256 digests in a 55-file archive): 1,664 finite-graph checks, 480 Datalog-certified scaling cases ($R{\le}64, d{\le}5$, \textbf{P9}: 100.0\% at $\le$7.12\,$\mu$s vs.\ 46.67\% flat and 60.00\% 2-hop, $Q{=}1100.19$), attested direct HTTPS Anthropic Claude~5.5 API suites across Haiku, Sonnet, and Opus~5.5 (omitting deprecated \texttt{temperature}; \textbf{P15} 105 independent 5-turn closed-loop MAS trajectories with \textbf{15/15} zero-leak, \textbf{0} unsafe commits, $\rho_{\mathrm{repairs}}{=}0$ under Theorem~2 on 28 state-dependent rejections, and \textbf{15/15} hybrid goals vs.\ Safe-RL 0/15~\cite{alshiekh2018shield} and NeMo 1/15~\cite{rebedea2023nemo}; \textbf{P16} 60 factorial + 21 Godot~4.7.1 episodes with \texttt{ontology\_multihop} 30/30 zero-leak and 22 $\rho$ repairs vs.\ 22/30 rule, 21/21 replays, 6/6 terminal hashes; \textbf{P17} 540 unified-prompt EN/KO escape checks, $\kappa{=}0.8813$, 0\% FRR), cross-family 3-family CLI tracks (\textbf{P11}--\textbf{P14}: $(a,E)$ 27/27 vs.\ 26/27 at 0 extra tokens, 42/42 Godot replays, $\kappa{=}0.9367$), and quarantined \texttt{TR01--TR06} (\texttt{AWAITING\_HUMAN\_RATERS}, $N{=}0$).
+\end{abstract}
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_phase5}
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback before revalidated commit and replay.}
+  \label{fig:architecture}
+\end{figure}
+
+\input{../_shared/sec_problem_arch_phase5}
+\input{../_shared/sec_neurips_db_body_phase5}
+\input{../_shared/sec_conclusion_phase5}
+
+\FloatBarrier
+\bibliographystyle{plainnat}
+\bibliography{../../references,../_shared/venue_extra}
+
+\clearpage
+\section*{NeurIPS Paper Checklist}
+\begin{enumerate}
+\item {\bf Claims}
+    \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: All deterministic counts, attested Phase-5 direct Anthropic API tracks (\textbf{P15}--\textbf{P17}, retaining all parse/API counts), confound-free Phase-4 3-family denominators (\textbf{P11}--\textbf{P14}), external Safe-RL~\cite{alshiekh2018shield} / NeMo~\cite{rebedea2023nemo} comparators, and unexecuted cohorts (0/180 \texttt{20261103}; $N{=}0$ human raters) match JSON receipts in \texttt{research/green-supplements/}.
+\item {\bf Limitations}
+    \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Claude~5.5 omitted \texttt{temperature} (\texttt{output\_config.json\_schema}), unseeded CLI revisions/seeds (\textbf{P11}--\textbf{P14}), retained parse failures, historical 0/180 unexecuted pilot, finite symbolic world scope, and $N{=}0$ human evaluation (\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS}) are detailed in Sec.~\ref{sec:conclusion}.
+\item {\bf Theory assumptions and proofs}
+    \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Sec.~\ref{sec:formal-proofs} states exact preconditions ($c_t$, finite $K\in\mathbb{Z}_{\geq 0}$, strict \texttt{parse\_}\allowbreak\texttt{candidate\_}\allowbreak\texttt{mapping}, returning callbacks) and proves Theorems~1--4 for invariants \textbf{I1--I4}.
+\item {\bf Experimental result reproducibility}
+    \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Deterministic \texttt{nesy\_game.multihop} verifier modules, $R{\le}64, d{\le}5$ Datalog oracle parameters, direct HTTPS \texttt{output\_config.json\_schema} schemas, $(a,E)$ repair prompts, and unified escape prompts are disclosed in Secs.~\ref{sec:arch}--\ref{sec:eval}.
+\item {\bf Open access to data and code}
+    \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: \ifanonymoussubmission The self-contained OpenReview/double-anonymous supplemental archive (\texttt{neurips-db-supplemental-benchmark.zip}, 55 files, \texttt{CHECKSUMS.sha256} 54/54 verified, 0~PII/secret leaks) packages all Phase-1--5 JSON receipts, \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5 (12/12, 17/17, 22/22, and 26/26 SHA-256 digests), MIT/CC-BY-4.0 \texttt{LICENSE}, core \texttt{nesy\_game.multihop}, and zero-network \texttt{reproduce\_benchmark.py} passing in $<5$\,s.\else Repository, \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5 (26/26 SHA-256 digests), and standalone \texttt{reproduce\_benchmark.py} are available at \RepoURL\ and in the 55-file supplemental benchmark archive.\fi
+\item {\bf Experimental setting/details}
+    \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer, etc.) necessary to understand the results?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Graph dimensions, 5-world strata, $R{\le}64, d{\le}5$ Datalog parameters, Safe-RL/NeMo definitions, Haiku/Sonnet/Opus~5.5 direct API settings (omitted deprecated \texttt{temperature}), $K\in\{0,1,2\}$ repair budgets, and 3-domain EN/KO splits are specified in Secs.~\ref{sec:db-composition}--\ref{sec:eval}.
+\item {\bf Experiment statistical significance}
+    \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Sec.~\ref{sec:phase4-compact} and Table~\ref{tab:phase4-compact} report 95\% Wilson CIs, Cochran's $Q$ ($Q{=}1100.19$ for \textbf{P9}; $Q_{\mathrm{goal}}{=}68.71$, $Q_{\mathrm{zl}}{=}71.65$ for \textbf{P15}; $Q{=}118.93, 281.23$ for \textbf{P11}--\textbf{P12}), exact two-sided McNemar $p$-values (\textbf{P15} $p{\le}1.22{\times}10^{-4}$; \textbf{P16A} $p{=}0.00781, 9.77{\times}10^{-4}$; \textbf{P12} $p{=}1.0$), and Fleiss' $\kappa{=}0.8813$ (\textbf{P17}) / $0.9367$ (\textbf{P14}).
+\item {\bf Experiments compute resources}
+    \item[] Question: For each experiment, does the paper provide the computer resources (type of compute workers, memory, time of execution, etc.) required to reproduce the experiments?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Audits \textbf{A2}/\textbf{A4}/\textbf{P9} report CPU latencies ($\le$7.12\,$\mu$s p50 at $R{=}64$), and live API/CLI traces record full tokens and latencies (\textbf{P15} 1.05M tok; \textbf{P16A} 674k tok; \textbf{P16B} 169k tok + Godot ms vs.\ API s; \textbf{P17} 359k tok; \textbf{P12} 530k/542k tok vs.\ 0 for $\rho$).
+\item {\bf Code of ethics}
+    \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Sec.~\ref{sec:conclusion} covers AI-usage disclosure, zero fabricated human labels, and safety boundaries.
+\item {\bf Broader impacts}
+    \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Sec.~\ref{sec:conclusion} highlights premature-disclosure and false-rejection boundaries in interactive AI systems.
+\item {\bf Safeguards}
+    \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse?
+    \item[] Answer: \answerNA{}
+    \item[] Justification: No high-risk foundation model weights or scraped personal datasets are released.
+\item {\bf Licenses for existing assets}
+    \item[] Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Godot~4.7.1, Datasheets~\cite{gebru2021datasheets}, Croissant~\cite{akhtar2024croissant}, Safe-RL~\cite{alshiekh2018shield}, NeMo~\cite{rebedea2023nemo}, and benchmarks are cited cleanly.
+\item {\bf New assets}
+    \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Gebru et al.~\cite{gebru2021datasheets} \texttt{DATASHEET\_v5.md}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5 (\texttt{26/26} SHA-256 digests), MIT/CC-BY-4.0 \texttt{LICENSE}, \texttt{reproduce\_benchmark.py}, and quarantined \texttt{TR01--TR06} (\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS}) are bundled in the 55-file archive.
+\item {\bf Crowdsourcing and research with human subjects}
+    \item[] Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)?
+    \item[] Answer: \answerNA{}
+    \item[] Justification: No human-subject or crowdsourcing experiments ($N{=}0$) were performed.
+\item {\bf Institutional Review Board (IRB) Approvals}
+    \item[] Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained?
+    \item[] Answer: \answerNA{}
+    \item[] Justification: No human-subject data was collected.
+\end{enumerate}
+
+\end{document}

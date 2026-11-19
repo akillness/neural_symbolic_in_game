@@ -1,0 +1,15 @@
+# TRACE-RPG Benchmark Datasheet (v3 — Phase 3 Cross-Family & Multi-World Release)
+
+Following Gebru et al. ("Datasheets for Datasets"), this v3 datasheet extends the Phase-2 dataset release (`DATASHEET.md`) while keeping v1 (`6/6`) and v2 (`12/12`) artifacts untouched.
+
+## 1. Phase-3 Additions (P6–P10)
+1. **P6 Autonomous 3-Agent Epistemic Negotiation (`phase3_live_multiagent_3family_results.json`)**: `30` live episodes (`3` model families: `claude-sonnet-5-5-medium`, `gpt-oss-120b-medium`, `gemini-4-hydrogen-medium` x `5` worlds x `2` repeats; `Custodian`, live `Inquisitor`, and `Subordinate` roles) across `5` shielding arms (`150` arm-episodes) + Cochran's $Q$ / exact McNemar $p$-values.
+2. **P7 Cross-Family 90-Task 5-World Shielding (`phase3_crossfamily_shield_90_results.json`)**: `90` live tasks across `claude-sonnet-5-5-medium`, `gpt-oss-120b-medium`, and `gemini-4-hydrogen-medium` contrasting deterministic `rho` against live $K=1$ LLM self-repair.
+3. **P8 Cross-Family 3-Domain Bilingual Escape (`phase3_crossfamily_multisecret_escape_results.json`)**: `180` disjoint EN/KO items evaluated across `3` neural verifiers (`claude-sonnet-5-5`, `gemini-4-hydrogen-medium`, `gemini-3.8-flash-medium`; `540` matrix evaluations + `domain_calibrated_rule_hybrid` 4-verifier comparison; `gpt-oss-120b-medium` transparently recorded as HTTP 429 quota-exhausted on `agy`), reporting exact Wilson CIs, Cochran's $Q$, Fleiss' $\kappa$, and automated inter-verifier Krippendorff's $\alpha$ (clearly separated from `N=0` human `TR01-TR06`).
+4. **P9 Procedural Deep-Chain Datalog Scaling (`phase3_procedural_multihop_scaling_results.json`)**: `480` deterministic cases spanning $R \in \{8,16,32,64\}$ rooms x closure depth $d \in \{1..5\}$, certified 100% by an independent bottom-up Datalog semi-naive fixpoint + BFS oracle with microsecond latencies.
+5. **P10 Multi-World Live <-> Godot 4.7.1 Closed Loop (`phase3_multiworld_godot_closed_loop_results.json`)**: `50` step-by-step live closed-loop episodes across all `5` compiled Godot 4.7.1 quest worlds + `50` independent fresh-process 0-LLM deterministic Godot replays (`CanonicalState.sha256`), combining Cohort A (`30` 3-family epistemic-blindspot stress episodes) and Cohort B (`20` `npc_knowledge`-informed cross-family episodes with noisy shorthand `rho` repair).
+
+## 2. Preserved Provenance & Boundaries
+- **Frozen Co-Hashed Core Unchanged**: `src/nesy_game/*.py` (15 hashes), `game-track/godot/`, `C-RESULT-001..005`, `0/180` prospective protocol (`NOT_RUN/BLOCKED`), and `N=0` human evaluation (`TR01-TR06` `AWAITING_HUMAN_RATERS`, 0 synthetic labels) remain completely untouched.
+- **CLI Provenance**: Antigravity CLI `--sandbox` `--json-schema` and Claude Code CLI `claude -p --json-schema` record tokens, latencies, quota status (`gpt-oss-120b-medium` HTTP 429 on `agy` after `P6`/`P7`/`P10-A`), and failures transparently (`served_model_revision: UNATTESTED_BY_CLI`, `seed: CLI_UNSUPPORTED`).
+- **License**: Verification code MIT; datasets, traces, and datasheets CC BY 4.0.

@@ -1,0 +1,181 @@
+{
+  "@context": "http://mlcommons.org/croissant/1.0",
+  "@type": "sc:Dataset",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "TRACE-RPG Neuro-Symbolic Proposal-to-Commit & Multi-Quest Benchmark",
+  "description": "Deterministic and live-LLM auditable proposal-to-commit game authorization traces, multi-hop epistemic disclosure benchmarks, bilingual semantic-escape corpus, and blinded TR01-TR06 human evaluation protocol packet.",
+  "version": "1.0.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "multihop_ontology_results.json",
+      "name": "multihop_ontology_results.json",
+      "description": "48-case deterministic multi-hop epistemic and disclosure closure benchmark.",
+      "contentUrl": "research/green-supplements/multihop_ontology_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "654 B",
+      "sha256": "39eadfa23926a8b1755f1a4ea8a426dae5b917549c72e7c9b8755e1229570d68"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_b_calibrated_results.json",
+      "name": "audit_b_calibrated_results.json",
+      "description": "88-case bilingual (EN/KO) zero-LLM conjunction escape-filter benchmark.",
+      "contentUrl": "research/green-supplements/audit_b_calibrated_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "310 B",
+      "sha256": "bf69a8e20f39af9df43a7f5bf7c4c4b6fab5cbece1823aa9743c50525fca7481"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "multiquest_live_results.json",
+      "name": "multiquest_live_results.json",
+      "description": "Live Gemini 3.8 Flash & Gemini 4 Hydrogen multi-quest Validate-Repair-Commit traces.",
+      "contentUrl": "research/green-supplements/multiquest_live_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "961677 B",
+      "sha256": "5b1f58a87bd08420ac5ed77120ae939f26ab82599f835e4fcc46f6496a13013f"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_b_live_results.json",
+      "name": "audit_b_live_results.json",
+      "description": "88-case Stage-2 bilingual escape verification results for live Gemini models.",
+      "contentUrl": "research/green-supplements/audit_b_live_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "382846 B",
+      "sha256": "6b8e262eaac43fa4691f376410aa97c1ace818fc039750702c9ade678a27477e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "tr_human_eval_packet.json",
+      "name": "tr_human_eval_packet.json",
+      "description": "36-item blinded TR01-TR06 human traceability packet (AWAITING_HUMAN_RATERS).",
+      "contentUrl": "research/green-supplements/tr_human_eval_packet.json",
+      "encodingFormat": "application/json",
+      "contentSize": "79418 B",
+      "sha256": "1c4f60b6cd6bdc5e6205a045bc91ee371db1dd6a044ca7e04c06b68df8baaacc"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_b_jev_results.json",
+      "name": "audit_b_jev_results.json",
+      "description": "Sanitized advisory-only local SystemOne qev-0.8b baseline (non-scientific tier).",
+      "contentUrl": "research/green-supplements/audit_b_jev_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "496 B",
+      "sha256": "302e5781f632f6e8d19bd7e2ddac375f5a9a1e638e598c8b843727d8fd1fe00d"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "multihop_ontology_benchmark",
+      "description": "48 deterministic authorization cases crossing 1-hop, fact-derivation, and role-inheritance.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "case_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "stratum",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "unsafe_leaks_fn",
+          "dataType": "sc:Integer"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "multiquest_live_episodes",
+      "description": "24 multi-quest Validate-Repair-Commit episodes across 3 worlds, 2 representations, and 2 Gemini models.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "episode_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "model_selector",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "quest_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "goal_reached",
+          "dataType": "sc:Boolean"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "unsafe_committed",
+          "dataType": "sc:Integer"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "audit_b_bilingual_escape",
+      "description": "88 EN/KO cases evaluating Stage-2 undeclared secret-disclosure verifiers.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "case_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "stratum",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "language",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "leak",
+          "dataType": "sc:Boolean"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tr_human_eval_packet",
+      "description": "36 blinded trace items across TR01-TR06 awaiting >=2 independent human raters.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "item_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "rubric_code",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "quest_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "committed",
+          "dataType": "sc:Boolean"
+        }
+      ]
+    }
+  ]
+}

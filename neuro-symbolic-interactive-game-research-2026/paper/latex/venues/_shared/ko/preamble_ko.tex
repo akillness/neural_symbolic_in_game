@@ -1,0 +1,46 @@
+\usepackage{iftex}
+\ifXeTeX
+  \makeatletter
+  \@ifpackageloaded{fontspec}{}{\usepackage{fontspec}}
+  \makeatother
+  \usepackage{xeCJK}
+  \xeCJKsetup{CJKspace=true}
+  \defaultfontfeatures{Ligatures=TeX}
+  \IfFontExistsTF{TeX Gyre Termes}{%
+    \setmainfont{TeX Gyre Termes}%
+  }{%
+    \IfFontExistsTF{Times New Roman}{%
+      \setmainfont{Times New Roman}%
+    }{%
+      \setmainfont{STIX Two Text}%
+    }%
+  }
+  \IfFontExistsTF{NanumBarunGothicOTF}{%
+    \setCJKmainfont[
+      ItalicFont={NanumBarunGothicOTF},
+      SmallCapsFont={NanumBarunGothicOTF}
+    ]{NanumBarunGothicOTF}%
+    \setCJKsansfont{NanumBarunGothicOTF}%
+    \setCJKmonofont{NanumBarunGothicOTF}%
+  }{%
+    \IfFontExistsTF{Noto Sans CJK KR}{%
+      \setCJKmainfont[
+        ItalicFont={Noto Sans CJK KR},
+        SmallCapsFont={Noto Sans CJK KR}
+      ]{Noto Sans CJK KR}%
+      \setCJKsansfont{Noto Sans CJK KR}%
+      \setCJKmonofont{Noto Sans CJK KR}%
+    }{%
+      \setCJKmainfont[
+        Scale=0.92,
+        ItalicFont={Apple SD Gothic Neo},
+        SmallCapsFont={Apple SD Gothic Neo}
+      ]{Apple SD Gothic Neo}%
+      \setCJKsansfont[Scale=0.92]{Apple SD Gothic Neo}%
+      \setCJKmonofont[Scale=0.92]{Apple SD Gothic Neo}%
+    }%
+  }
+  \xeCJKDeclareCharClass{Default}{"00B7}
+\else
+  \usepackage{kotex}
+\fi

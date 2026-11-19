@@ -1,0 +1,30 @@
+{
+  "invariants": {
+    "scenarios_verified": 3,
+    "i1_to_i4_pass": true
+  },
+  "schema": "multihop-ontology-benchmark/v1",
+  "total_cases": 48,
+  "strata_counts": {
+    "direct_1hop": 16,
+    "transitive_fact_derivation": 16,
+    "role_inheritance": 16
+  },
+  "flat_1hop_rule": {
+    "total": 48,
+    "accuracy": 0.4167,
+    "violations_caught_tp": 9,
+    "safe_allowed_tn": 11,
+    "unsafe_leaks_fn": 28,
+    "false_blocks_fp": 0
+  },
+  "ontology_multihop_gate": {
+    "total": 48,
+    "accuracy": 1.0,
+    "violations_caught_tp": 37,
+    "safe_allowed_tn": 11,
+    "unsafe_leaks_fn": 0,
+    "false_blocks_fp": 0
+  },
+  "unsafe_leak_reduction": 28
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-pilot-20-scope-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T10:01:51.603Z",
+  "status": "TWENTY_EPISODE_SINGLE_TASK_SCOPE_APPROVED_PROTOCOL_AND_LAUNCH_PENDING",
+  "user_verbatim_decision": "20회 부터",
+  "approval_context": "Select the initial single-task feasibility-pilot design: one existing quest x five proposed model families x two representation conditions x two fresh repeats. This is not budget, research-data egress, inference, spend or launch authorization.",
+  "approved_design_dimension": {
+    "pilot_kind": "single_existing_quest_feasibility_pilot",
+    "quest_count": 1,
+    "quest_selection": "Existing offline-verified fixed-game quest; exact payload/oracle/source manifest still must be frozen before assignment.",
+    "proposed_model_family_count": 5,
+    "representation_conditions": [
+      "information_matched_general_rule",
+      "ontology_view"
+    ],
+    "representation_condition_count": 2,
+    "fresh_repeats_per_model_representation_cell": 2,
+    "planned_model_representation_cells": 10,
+    "planned_episode_count": 20,
+    "episode_not_api_call": true,
+    "statistical_quest_cluster_count": 1,
+    "world_state_and_session_reset_required_for_each_episode": true,
+    "provider_rng_seed_or_stochastic_independence_not_assumed": true
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json",
+      "sha256": "27b052fb3af156c999eafad7bb7d3ac611fbea6d7caeb86a3e7952bc5c1e3b4e"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/study-stage-decision-v1.json",
+      "sha256": "5063be08c96602d11be3e70eef39d1e259808dff4e3210f2e746ac5549aa4551"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/claude-effort-decision-v1.json",
+      "sha256": "2936ac5c9ca71dba02fe6d438482d582fe6fc80b69168a82d917c89e1d4b5f0c"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/endpoint-amendment-v1.json",
+      "sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "sha256": "4daac0e159bd974bfa56da88ce4870e3c44f3c29d854403ede5ff216b3ccb759"
+    }
+  ],
+  "scope_limits": {
+    "single_task_only": true,
+    "multiple_quest_generalization_established": false,
+    "powered_C_noninferiority_established": false,
+    "ontology_superiority_or_universal_consistency_established": false,
+    "quest_population_cluster_bootstrap_or_CI_from_one_cluster_allowed": false,
+    "reporting": "Retain per-cell assigned counts and full episode/decision traces. Any conditional interval needs explicit valid assumptions; do not treat the 20 observations as 20 independent quests or provider model calls.",
+    "historical_single_development_case_pooled": false,
+    "pilot_data_pooled_into_confirmatory_efficacy_estimate": false,
+    "larger_12_quest_240_episode_proposal_approved": false
+  },
+  "representation_boundary": "Both proposed conditions retain the same independent hard validator/task oracle and semantic facts; this compares proposer exposure, not whole-system ontology presence.",
+  "unfrozen_execution_parameters": {
+    "quest_payload_and_independent_oracle_manifest": null,
+    "exact_native_selectors_and_effective_settings_receipts": null,
+    "prompt_game_ontology_and_authorship_hashes": null,
+    "assignment_manifest_and_order_seed": null,
+    "episode_wall_deadline_seconds": null,
+    "per_host_response_deadline_seconds": null,
+    "max_total_host_invocations_per_episode": null,
+    "max_logical_repairs_per_decision": null,
+    "monetary_cap_and_enforceability": null,
+    "internal_provider_request_count": null
+  },
+  "preservation": {
+    "previous_proposals_or_decisions_modified": false,
+    "approved_endpoint_modified": false,
+    "papers_or_game_modified": false,
+    "native_cli_configuration_changed": false,
+    "actual_assignments_created": false,
+    "whole_roster_adopted": false
+  },
+  "authority": {
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "pilot_launch_authorized": false,
+    "confirmatory_launch_authorized": false
+  },
+  "next_interview": {
+    "topic": "Coherent episode resource-budget packet",
+    "proposal_source": "pre-run-decision-proposal-v1.json",
+    "episode_wall_seconds_proposed": 180,
+    "per_host_response_deadline_seconds_proposed": 60,
+    "max_total_host_invocations_per_episode_proposed": 12,
+    "max_logical_repairs_per_decision_proposed": 2,
+    "concurrency_required": 1,
+    "status": "PROPOSAL_NOT_APPROVED_OR_MECHANICALLY_VERIFIED_FOR_LIVE_NATIVE_USE",
+    "host_invocation_semantics": "Every initial attempt, malformed response, refusal, timeout, corrective request and transport retry counts. Native/provider-internal model requests remain unknown unless authoritatively exposed.",
+    "remote_cancellation_or_billing_stop_guaranteed": false
+  },
+  "new_candidate_generation_requests": 0,
+  "new_study_assigned_episodes": 0,
+  "new_study_executed_episodes": 0,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "Only the 20-episode single-task scope is approved. All other unfrozen parameters and stage launch permissions remain blocking; earlier immutable decisions/endpoint are not rewritten."
+}

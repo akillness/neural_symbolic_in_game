@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="1.247" timestamp="2026-10-26T19:19:05.891705+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap_native.NativeHostContractTests" name="test_child_environment_is_scratch_only_and_fixture_mode_never_links_auth" time="0.006"><failure message="AssertionError: False is not true : ('HOME', PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmptdskel9b/original-home'), PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/runtime-native-mh9uq9w3'))">tests/test_runtime_model_swap_native.py:2829: in test_child_environment_is_scratch_only_and_fixture_mode_never_links_auth
+    result = runner(
+src/nesy_game/runtime_model_swap_native.py:1707: in __call__
+    completed = transport(
+tests/test_runtime_model_swap_native.py:2792: in transport
+    self.assertTrue(path == scratch or scratch in path.parents, (key, path, scratch))
+E   AssertionError: False is not true : ('HOME', PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmptdskel9b/original-home'), PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/runtime-native-mh9uq9w3'))</failure></testcase><testcase classname="tests.test_runtime_model_swap_native.NativeHostContractTests" name="test_source_bound_real_transport_links_dummy_auth_persists_refresh_and_uses_codex_overrides" time="0.012"><failure message="AssertionError: False is not true : ('HOME', PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmpcom6hfr8/original-home'), PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/runtime-native-7vl4jux3'))">tests/test_runtime_model_swap_native.py:2924: in test_source_bound_real_transport_links_dummy_auth_persists_refresh_and_uses_codex_overrides
+    response = runner(
+src/nesy_game/runtime_model_swap_native.py:1707: in __call__
+    completed = transport(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1124: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1128: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1189: in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap_native.py:2875: in run_host_spy
+    self.assertTrue(path == scratch or scratch in path.parents, (key, path, scratch))
+E   AssertionError: False is not true : ('HOME', PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmpcom6hfr8/original-home'), PosixPath('/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/runtime-native-7vl4jux3'))</failure></testcase><testcase classname="tests.test_runtime_model_swap_native.NativeHostContractTests" name="test_source_bound_real_transport_missing_auth_fails_before_transport" time="0.033"><failure message="AssertionError: 0 == 0">tests/test_runtime_model_swap_native.py:2986: in test_source_bound_real_transport_missing_auth_fails_before_transport
+    self.assertNotEqual(response.returncode, 0)
+E   AssertionError: 0 == 0</failure></testcase></testsuite></testsuites>

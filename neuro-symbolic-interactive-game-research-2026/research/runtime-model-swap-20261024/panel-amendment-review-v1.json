@@ -1,0 +1,140 @@
+{
+  "verdict": "FIX",
+  "mode": "THOROUGH (no escalation; escalation threshold of 1 CRITICAL or 3+ MAJOR not met — 0 CRITICAL, 2 MAJOR)",
+  "scope_reviewed": "research/runtime-model-swap-20261024/panel-amendment-proposal-v1.json only, against its 9 bound sources. No full-study audit, no execution, no edits, no index/graph rebuild, no formatters/linters/test suites.",
+  "overall_assessment": "Provenance, permission, preservation, identity-discipline and arithmetic all pass cleanly — all 9 source-binding hashes verify byte-exact, all conditional arithmetic is internally consistent, and no result/tier/cost claim is promoted. Two MAJOR defects remain, both in the artifact's own stated job of enumerating the open decision space: an undisclosed native-host pre-commitment for the two Claude slots, and an omitted reasoning-effort dimension for the two Codex slots that also hides a variant asymmetry inside the exact question being put to the user. Both are fixable by field additions; neither requires re-derivation.",
+  "passed_checks": [
+    {
+      "check": "Source-binding integrity",
+      "result": "PASS",
+      "evidence": "All 9 sha256 values in source_bindings (lines 19-56) recomputed and matched exactly: pre-run cd4c5b90, endpoint 9282cd8b, offline-approval 314c0163, verification-final 4daac0e1, approval c498f094, summary 45b769f8, codex-catalog e45921c7, claude-catalog 2ca1b499, antigravity-catalog d9437d89."
+    },
+    {
+      "check": "Original GPT-5.5 and legacy Claude requests preserved",
+      "result": "PASS",
+      "evidence": "Amendment lines 153-171 retain `gpt 5.5`, `opus 5`, `sonnect 5` verbatim — including the original `sonnect` misspelling — matching pre-run-decision-proposal-v1.json lines 50, 105, 132. gpt 5.5 is DEFERRED_UNVERIFIED with `global_unavailability_established: false` and `silently_replaced: false` (lines 156-159), consistent with summary.json `gpt_5_5_catalog_entries: []`. Legacy Claude entries marked PRESERVED_ORIGINAL_REQUEST_NOT_EQUIVALENT_TO_*_ALIAS with `legacy_inference_access_verified: false`. Honors pre-run `candidate_unavailable_policy` (line 185): blocked, amended for approval, no silent replacement."
+    },
+    {
+      "check": "Alias descriptions not converted into provider-returned identity",
+      "result": "PASS",
+      "evidence": "Lines 114-117 and 128-131 quote claude-catalog.json descriptions exactly (`Opus 5.5 · Best for everyday, complex tasks`, `Sonnet 5.5 · Efficient for routine tasks`) under `catalog_alias_observed` / `catalog_description_observed`, while holding `exact_native_selector_for_assignment: null` and `canonical_provider_model_id: null`. shared_unverified_fields (lines 65-75) keeps provider_returned_model, served_revision, capability_tier and billed_cost_usd null with entitlement/fallback/parity flags false. Line 190 states catalog aliases are never provider identity attestations."
+    },
+    {
+      "check": "All permissions remain draft-only",
+      "result": "PASS",
+      "evidence": "Lines 11-17: draft_creation_authorized true; revised_roster_adopted, full_protocol_frozen, research_context_egress_authorized, candidate_generation_authorized, spend_authorized, live_launch_authorized all false. status line 6 DRAFT_ONLY_NOT_ADOPTED_NOT_FROZEN_NOT_EXECUTED. launch_gate lines 245-249 authorized false, fail_closed true, concurrency 1. Lines 242-243 record zero generation requests and zero episodes. Consistent with approval.json prohibited list and `approved_full_study: false`."
+    },
+    {
+      "check": "Fresh matched reference survives",
+      "result": "PASS",
+      "evidence": "REF-SOL61 role `fresh_reference` with `requires_new_matched_episodes: true` (lines 79, 85); method_boundary `fresh_reference_required: true` (line 175). baseline_preservation line 63 sets `old_288_episode_and_five_contrast_proposals_automatically_inherited: false`; lines 61-62 carry forward `prior_development_panel_activated: false` and `prior_single_development_case_pooled: false` from frozen endpoint-amendment lines 23-24, preserving the exclusion of the historical n=1 development case."
+    },
+    {
+      "check": "Frozen goal/safety separation survives",
+      "result": "PASS",
+      "evidence": "Primary and safety are bound as separate pointers: line 173-174 `primary_endpoint_ref` + `primary_endpoint_id: budget_bounded_goal_completion_rate`; line 182 `mandatory_safety_gate_ref`. Line 183 `no_commits_is_not_positive_safety_evidence: true` faithfully reproduces frozen aggregation rule at endpoint-amendment line 98 (`Zero commits is NO_COMMIT_OBSERVED, not positive safety-performance evidence`). Line 189 `pilot_does_not_establish_noninferiority: true` matches frozen line 117."
+    },
+    {
+      "check": "Conditional planning arithmetic (1 vs 3 GPT-5.6 variants, 4 vs 6 C contrasts)",
+      "result": "PASS — internally consistent, correctly labelled non-binding",
+      "evidence": "General formula (lines 196-203) verified: models 4+k (1 reference + k GPT-5.6 + Opus + Sonnet + Flash); cells (4+k)x2 = 8+2k; episodes 24x(8+2k) = 48(4+k); contrasts 3+k (models minus reference). k=1 (lines 204-211): 5 models, 10 cells, 240 episodes, 2880 host ceiling (240x12), 4 contrasts — all correct. k=3 (lines 212-219): 7 models, 14 cells, 336 episodes, 4032 host ceiling (336x12), 6 contrasts — all correct. The 4-vs-6 C contrast delta is arithmetically sound. Inputs traced to pre-run lines 200 (12 quests), 201 (2 repeats), 232 (12 host cap); structure cross-checks against the old 6-model/12-cell/288-episode/5-contrast design (pre-run lines 203-205, 225) and old 3456 ceiling (288x12, pre-run line 212). Status line 194 ILLUSTRATIVE_ONLY_NOT_APPROVED_ASSIGNMENTS_BUDGET_OR_POWER; line 195 explicitly marks inputs as unapproved proposals, correct because pre-run status is PENDING_USER_APPROVAL. Line 221 assignment_manifest_created false, line 222 provider_internal_request_ceiling null, line 224 forbids inheriting the five-comparison family."
+    },
+    {
+      "check": "No result / low-tier / cost claim promoted",
+      "result": "PASS",
+      "evidence": "capability_tier null, non_top_classification_verified false, billed_cost_usd null, cost_advantage_verified false (lines 71-74). Line 104 rationale explicitly disclaims `evidence of equal architecture, compute, lower capability or price`. Line 149 `effort_labels_do_not_establish_cross_provider_compute_parity: true`. Line 223 monetary cap UNVERIFIED with no inherited USD allowance. Line 191 limits the offline receipt to injected-response engineering, not live adapter or efficacy. Line 244 excludes jev routing from study observations."
+    },
+    {
+      "check": "Bilingual slot labels",
+      "result": "PASS for model slots",
+      "evidence": "All five slots carry matched label_ko/label_en pairs (lines 80-81, 91-92, 111-112, 125-126, 139-140) with no semantic drift between languages. See MINOR finding 4 for the one non-slot bilingual gap."
+    }
+  ],
+  "critical_findings": [],
+  "major_findings": [
+    {
+      "id": "A",
+      "title": "Native host for the two Claude slots is pre-committed without disclosing the observed alternative host listing",
+      "confidence": "HIGH",
+      "evidence": "Amendment lines 113 and 127 assert `\"native_host\": \"Claude\"` for C-OPUS55 and C-SONNET55. But bound source summary.json (antigravity block) records `opus_5_5_selectors: [claude-opus-5-5-low, -medium, -high]` and `sonnet_5_5_selectors: [claude-sonnet-5-5-low, -medium, -high]`, and antigravity-catalog.json independently lists all six selectors with display names `Claude Opus 5.5 (Low/Medium/High)` and `Claude Sonnet 5.5 (Low/Medium/High)`. The original roster left this open: pre-run-decision-proposal-v1.json lines 118 and 145 both hold `\"native_executable_or_transport\": null` for `opus 5` and `sonnect 5`.",
+      "why_this_matters": "Line 190 scopes all claims to `explicitly approved native-stack comparisons only`, which makes the host part of the compared unit, not an implementation detail. The same nominal model family is observable on two hosts, and on Antigravity it carries an explicit effort tier that the Claude alias does not. Pinning one host silently introduces a design degree of freedom into an artifact whose declared purpose is to enumerate open decisions. Line 229 then reads `Exact Claude selection and identity/fallback capture`, which already presupposes the host rather than leaving it open.",
+      "fix": "Add to both C-OPUS55 and C-SONNET55: `alternative_host_listing_observed: [\"claude-opus-5-5-low|medium|high\"]` (and the sonnet equivalent) with `source_receipt` pointing at antigravity-catalog.json, plus `native_host_selection_status: \"PROPOSAL_REQUIRES_USER_DECISION\"`. Amend line 229 to read `Host assignment (Claude alias versus Antigravity effort-tiered selector) and exact Claude selection and identity/fallback capture`.",
+      "realist_check": "Realistic worst case is a host-confounded panel frozen without review of the alternative; contained in reporting by the line 190 native-stack disclaimer and detectable at selector-binding time. Nothing frozen, no spend, no data. Correctly MAJOR, not CRITICAL."
+    },
+    {
+      "id": "B",
+      "title": "Reasoning-effort omitted for both Codex slots, and the GPT-5.6 variant asymmetry is undisclosed inside the question being asked of the user",
+      "confidence": "HIGH on the catalog facts (read directly from bound source); MEDIUM on residual severity after the line 228 mitigation",
+      "evidence": "codex-catalog.json exposes `supported_reasoning_efforts` per model. gpt-6.1-sol, gpt-5.6-sol and gpt-5.6-terra each support six levels (low, medium, high, xhigh, max, ultra). gpt-5.6-luna supports only five — it has no `ultra`. The amendment's REF-SOL61 slot (lines 77-87) and C-GPT56 slot (lines 88-107) carry no effort field at all, while C-FLASH38 carries three dedicated effort fields (lines 147-149). Line 102 presents `alternative_all_three: true` and lines 236-241 put a binary one-versus-three question to the user. Grep across pre-run-decision-proposal-v1.json, endpoint-amendment-v1.json and approval.json returns no match for effort/reasoning/xhigh/ultra — this amendment is the first artifact to encounter the dimension, so the omission is newly introduced, not inherited.",
+      "why_this_matters": "Two distinct consequences. First, the reference arm is `requires_new_matched_episodes: true` on a `budget_bounded_goal_completion_rate` endpoint, yet effort — which drives both completion and budget consumption — is not listed as a matching dimension, leaving `fresh matched` undefined on a load-bearing axis. Second, the user is being asked to choose `all three` without being told the three are not effort-symmetric: any effort policy that fixes or matches at `ultra` is unsatisfiable for gpt-5.6-luna. That is a latent infeasibility inside the option currently on the table. The amendment demonstrably recognises effort as a design variable — it built three fields for it on the Gemini slot — so the omission is asymmetric rather than uniform.",
+      "fix": "(1) Add `supported_reasoning_efforts_observed` and `selected_effort: null` to REF-SOL61 and C-GPT56, sourced to codex-catalog.json. (2) Add to C-GPT56.selection_proposal an explicit note: `variant_effort_support_is_not_symmetric: gpt-5.6-luna does not list ultra; gpt-5.6-sol and gpt-5.6-terra do`. (3) Add `effort` to the reference matching dimensions alongside `requires_new_matched_episodes`. (4) Surface the asymmetry in next_interview so the one-versus-three choice is made on complete information.",
+      "partial_mitigation_acknowledged": "Line 228 does list `provider-specific effort/context policy` as a remaining blocking decision, which generically covers Codex effort. That mitigation does not cover the undisclosed Luna/ultra asymmetry, the missing per-slot effort records that a future freeze would bind to, or the reference matching gap.",
+      "realist_check": "Realistic worst case is a re-amendment after a user picks `all three` and the effort policy proves unsatisfiable for Luna, or arms running at unstated/unequal effort corrupting the budget-bounded primary. Mitigated by line 228, by the absence of any freeze, and by binding-time detection for Luna; the reference-matching gap is the element most likely to survive undetected. Correctly MAJOR, not CRITICAL — no data, no spend, no freeze."
+    }
+  ],
+  "minor_findings": [
+    {
+      "id": "C",
+      "title": "C_contrast restatement drops the budget-parity clause present in the frozen comparator",
+      "confidence": "MEDIUM on severity, HIGH on the textual fact",
+      "evidence": "Amendment line 184: `Candidate ontology-view completion minus fresh matched GPT-6.1-SOL ontology-view completion.` Frozen endpoint-amendment-v1.json line 108 comparator: `Fresh Sol episodes on the same frozen game, tasks, representation and budgets; not the historical n=1 game-development case.` Pre-run line 218 likewise carried `under the same fixed task/budgets`.",
+      "why_this_matters": "The amendment restates the primary contrast in full prose and omits `and budgets`. Line 251 asserts the proposal `does not amend or supersede any frozen contract`, so a restatement that is narrower than the frozen source is self-inconsistent on the one dimension the endpoint is named for.",
+      "mitigations": "Substantially mitigated: line 173 pins primary_endpoint_ref to the frozen pointer; line 174 names `budget_bounded_goal_completion_rate` so budget-bounding is in the id; `fresh matched` echoes the frozen estimand at line 107; `ontology-view` on both sides fixes representation; line 180 requires same game/validator/oracle/semantic information; line 62 preserves the historical-case exclusion. Budgets is the single unrestated element.",
+      "fix": "Restore the clause: `... ontology-view completion on the same frozen game, tasks, representation and budgets.`"
+    },
+    {
+      "id": "D",
+      "title": "next_interview breaks the bilingual parity the slot labels maintain",
+      "confidence": "HIGH",
+      "evidence": "Line 237 provides `question_ko` with no `question_en` counterpart, while all five model slots carry matched label_ko/label_en pairs.",
+      "why_this_matters": "The decision actually being put to the user is the one field without bilingual parity. (The Korean-only `user_verbatim_decision` at line 9 and `scope_as_presented` at line 10 are correctly Korean-only — they are verbatim user records and must not be translated.)",
+      "fix": "Add `question_en` mirroring line 237, and fold in the Finding B asymmetry disclosure."
+    }
+  ],
+  "whats_missing": [
+    {
+      "item": "Observed-but-excluded Claude catalog entry is not recorded",
+      "detail": "claude-catalog.json lists `claude-fable-5-1[1m]` described as `Fable 5.1 · Most capable for your hardest and longest-running tasks` — a non-rostered entry described as above the Opus 5.5 line. Excluding it is correct under the user's stated scope (line 10 names Opus 5.5 / Sonnet 5.5 only), so this is not a scope violation. But the amendment nowhere records that the observed catalog contained a higher-described non-rostered model. Recording it would strengthen, not weaken, the `non_top_classification_verified: false` posture, and pre-empts a later misreading that the roster was tier-selected."
+    },
+    {
+      "item": "No per-slot verification state",
+      "detail": "shared_unverified_fields (lines 65-75) holds one global block for entitlement, served identity, parity and cost. All values are currently null/false so nothing is misstated today, but the schema cannot express a partially-verified roster — the first slot to acquire a receipt will have no place to record it without either mutating the shared block or silently implying the state applies to all slots."
+    },
+    {
+      "item": "Heterogeneous not-yet-chosen encoding across slots",
+      "detail": "Each slot expresses 'not yet selected' differently: `selected_for_assignment: false` (REF-SOL61), `selected_variants: null` (C-GPT56), `replacement_adopted: false` (C-OPUS55/C-SONNET55), `selected_effort_selector: null` (C-FLASH38). Semantically correct everywhere; mechanically awkward for any downstream completeness check over the roster."
+    }
+  ],
+  "multi_perspective_notes": {
+    "executor": "With this draft alone an executor could not bind a single selector: both Claude slots lack an exact selector and now also lack a disclosed host; both Codex slots lack an effort value the catalog requires. That is appropriate for a draft, but Findings A and B mean the executor would have to re-open decisions the draft appears to have already closed.",
+    "stakeholder": "The artifact answers the stated question — a separate panel amendment preserving existing contracts — and refuses every adjacent authorization. The one stakeholder-facing weakness is that the single question it escalates (one SOL versus all three) is posed without the variant asymmetry that bears directly on the answer.",
+    "skeptic": "Strongest argument against this draft is not fabrication — provenance is unusually tight, with 9/9 hashes verified — but selective rigour: the same effort dimension that received three dedicated fields on the Gemini slot received none on the two Codex slots, and host was left null in the source roster but filled in silently here. Both omissions happen to reduce the apparent size of the open decision space."
+  },
+  "verdict_justification": "FIX rather than APPROVE_DRAFT. Pre-commitment predictions targeted identity leakage, request-dropping, arithmetic error, permission creep, and result/cost promotion — all five were investigated and all five came back clean, which is a genuine strength of this artifact. The two MAJOR findings landed instead on the decision-space disclosure that the predictions did not anticipate. They are blocking for this artifact specifically because its declared function is to enumerate open choices and put one of them to the user: Finding B degrades the exact question at lines 236-241, and Finding A closes a choice the source roster had left open. Neither requires re-derivation — both are additive field corrections plus one wording amendment to line 229, and the MINOR items are one restored clause and one added translation. Remained in THOROUGH mode throughout; escalation threshold (1 CRITICAL or 3+ MAJOR) was not met. Realist Check was applied to both MAJOR findings and neither was recalibrated — each was already rated below CRITICAL on the grounds that nothing is frozen, no spend or data exists, and detection is likely at binding time; the line 228 partial mitigation for Finding B is stated explicitly rather than suppressed.",
+  "explicitly_unapproved_and_unverified": [
+    "Account-specific inference entitlement — UNVERIFIED (inference_entitlement_verified false; claude/codex/antigravity catalogs each record inference_access_verified false, inference_requests_sent 0; approval.json: model list is not inference access or served-revision proof)",
+    "Live model adapter — UNVERIFIED (line 191: existing final receipt covers injected-response offline engineering only, not a live adapter or research efficacy)",
+    "Full protocol freeze — NOT FROZEN (full_protocol_frozen false; endpoint-amendment line 184 parent_study_protocol_status INCOMPLETE_NOT_FROZEN_NOT_AUTHORIZED; protocol_complete false)",
+    "C practical margin and absolute success floor — NOT SET (C_practical_margin_percentage_points null, C_absolute_success_floor null, confirmatory_sample_size null, confirmatory_analysis_plan null; frozen noninferiority block holds margin/alpha/power/interval/multiplicity/cluster policy all null)",
+    "Billing and monetary cap enforceability — UNVERIFIED (billed_cost_usd null, cost_advantage_verified false, line 223 UNVERIFIED with no inherited development-study USD allowance)",
+    "Research-context egress — NOT AUTHORIZED (research_context_egress_authorized false; disclosure line 7 LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED, no publication approval for account-scoped catalog data)",
+    "Candidate generation and spend — NOT AUTHORIZED (candidate_generation_authorized false, spend_authorized false; observed generation requests 0, observed episodes 0)",
+    "Live launch — NOT AUTHORIZED (live_launch_authorized false; launch_gate authorized false, fail_closed true, any required unfrozen field blocks launch)",
+    "Revised roster adoption — NOT ADOPTED (revised_roster_adopted false; adoption requires separate explicit approval bound to this artifact hash per line 251)",
+    "Served model identity, revision, fallback containment, tool/context parity, capability tier and non-top classification — ALL UNVERIFIED (lines 67-72)"
+  ],
+  "open_questions_unscored": [
+    "Whether `native_host` on a slot is intended as an assignment-binding field or merely as a record of which CLI surfaced the alias. If the latter, Finding A reduces to a naming/disclosure clarification rather than a pre-commitment — but line 229's wording currently reads as binding, so the field's intent should be stated explicitly either way.",
+    "Whether a future effort policy intends to match effort across providers at all, or to fix one effort per host and treat cross-host effort as explicitly non-comparable (line 149 hints at the latter). This changes whether the Luna/ultra asymmetry is a hard infeasibility or merely a documentation gap.",
+    "Whether `claude-fable-5-1[1m]` was considered and excluded on scope grounds, or simply not surfaced to the user. Not a defect either way under the stated scope; recording the disposition would close the question."
+  ],
+  "boundaries_respected": [
+    "Read-only throughout — no file created, modified, or deleted.",
+    "No execution, no generation, no provider contact, no credential access.",
+    "No index, graph, or cache rebuild.",
+    "No formatters, linters, or project-wide test suites run.",
+    "No source publication; findings quote only artifacts already local to the repository.",
+    "No agents spawned; single serial reviewer.",
+    "Scope held to the panel draft, its 9 bound sources, and the conditional arithmetic — no full-study audit and no expansion of approval scope."
+  ]
+}

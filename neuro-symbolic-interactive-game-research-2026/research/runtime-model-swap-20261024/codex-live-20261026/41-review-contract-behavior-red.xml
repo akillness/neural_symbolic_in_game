@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="12" skipped="0" tests="37" time="0.202" timestamp="2026-10-26T22:02:43.095799+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_bilingual_fragments_preserve_the_same_aggregate_values" time="0.001"><failure message="AssertionError: '3/4/0/1' not found in '\\subsection{Fixed-game native runtime comparison}\nThis public packet retains 8 assigned rows for one authored quest (\\texttt{sealed-lighthouse-v1}), with seed 20261024 and two repeats per selector/representation cell. System-endpoint successes are 4/8; observed native executions are 7. Host invocations are summed from actual receipts (25), and observed repairs sum to 2. Committed transitions total 6, of which unsafe are 2; semantic replay valid/invalid/NR is 3/4/1, while fresh-engine reexecution valid/invalid/NR is 3/4/1. Observed elapsed duration is n=7; 28.14/25.00 seconds (mean/median), and observed preparation duration is n=7; 2.43/2.00 seconds; unobserved values are NR, not zero.\n\nThe first row is retained as a harness JSON-serialization technical failure and is not attributed to GPT-6.1 capability. At least 1 GPT-6.1 ontology row(s) retain a response-timeout failure under the frozen 60-second bound. Models provide typed-intent proposals; the deterministic Python planner/checker and Godot commit retain authority. The table is therefore a technical observation for one quest, not an efficacy, superiority, noninferiority, general ontology-consistency, or player-benefit claim. Semantic record-link replay is not fresh-engine reexecution. Provider identity/revision/cost and provider-request counts remain NR outside the public observation boundary.\n'">tests/test_runtime_comparison_publication.py:498: in test_bilingual_fragments_preserve_the_same_aggregate_values
+    self.assertIn(value, en_results)
+E   AssertionError: '3/4/0/1' not found in '\\subsection{Fixed-game native runtime comparison}\nThis public packet retains 8 assigned rows for one authored quest (\\texttt{sealed-lighthouse-v1}), with seed 20261024 and two repeats per selector/representation cell. System-endpoint successes are 4/8; observed native executions are 7. Host invocations are summed from actual receipts (25), and observed repairs sum to 2. Committed transitions total 6, of which unsafe are 2; semantic replay valid/invalid/NR is 3/4/1, while fresh-engine reexecution valid/invalid/NR is 3/4/1. Observed elapsed duration is n=7; 28.14/25.00 seconds (mean/median), and observed preparation duration is n=7; 2.43/2.00 seconds; unobserved values are NR, not zero.\n\nThe first row is retained as a harness JSON-serialization technical failure and is not attributed to GPT-6.1 capability. At least 1 GPT-6.1 ontology row(s) retain a response-timeout failure under the frozen 60-second bound. Models provide typed-intent proposals; the deterministic Python planner/checker and Godot commit retain authority. The table is therefore a technical observation for one quest, not an efficacy, superiority, noninferiority, general ontology-consistency, or player-benefit claim. Semantic record-link replay is not fresh-engine reexecution. Provider identity/revision/cost and provider-request counts remain NR outside the public observation boundary.\n'</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_complete_eight_row_packet_is_accepted_and_aggregated_from_rows" time="0.001"><failure message="ValueError: row 1 fields drifted">tests/test_runtime_comparison_publication.py:310: in test_complete_eight_row_packet_is_accepted_and_aggregated_from_rows
+    loaded = publication.load_public_results(self._write_packet(Path(directory), packet))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts/generate_runtime_comparison_publication.py:292: in load_public_results
+    _validate_row(row, index)
+scripts/generate_runtime_comparison_publication.py:148: in _validate_row
+    _require(set(row) == set(ROW_FIELDS), f"row {index + 1} fields drifted")
+scripts/generate_runtime_comparison_publication.py:90: in _require
+    raise ValueError(message)
+E   ValueError: row 1 fields drifted</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_engine_disposition_is_four_way_and_bool_consistency_is_enforced" time="0.000"><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:638: in test_engine_disposition_is_four_way_and_bool_consistency_is_enforced
+    publication.validate_public_results(adverse)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_frozen_actual_packet_preserves_observed_accounting_and_engine_dispositions" time="0.001"><failure message="ValueError: row 1 fields drifted">tests/test_runtime_comparison_publication.py:583: in test_frozen_actual_packet_preserves_observed_accounting_and_engine_dispositions
+    data = publication.load_public_results(publication.RESULTS_PATH)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts/generate_runtime_comparison_publication.py:292: in load_public_results
+    _validate_row(row, index)
+scripts/generate_runtime_comparison_publication.py:148: in _validate_row
+    _require(set(row) == set(ROW_FIELDS), f"row {index + 1} fields drifted")
+scripts/generate_runtime_comparison_publication.py:90: in _require
+    raise ValueError(message)
+E   ValueError: row 1 fields drifted</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_frozen_digest_rejects_timeout_and_aggregate_mutations" time="0.011"><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:615: in test_frozen_digest_rejects_timeout_and_aggregate_mutations
+    publication.validate_public_results(mutation)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:615: in test_frozen_digest_rejects_timeout_and_aggregate_mutations
+    publication.validate_public_results(mutation)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_generic_validator_rejects_failure_goal_values_and_observed_provider_requests" time="0.015"><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:627: in test_generic_validator_rejects_failure_goal_values_and_observed_provider_requests
+    publication.validate_public_results(mutation)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:627: in test_generic_validator_rejects_failure_goal_values_and_observed_provider_requests
+    publication.validate_public_results(mutation)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:627: in test_generic_validator_rejects_failure_goal_values_and_observed_provider_requests
+    publication.validate_public_results(mutation)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure><failure message="AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'">tests/test_runtime_comparison_publication.py:631: in test_generic_validator_rejects_failure_goal_values_and_observed_provider_requests
+    publication.validate_public_results(provider_mutation)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'generate_runtime_comparison_publication' has no attribute 'validate_public_results'</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_host_call_limit_and_count_bounds_are_enforced" time="0.002" /><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_missing_duplicate_drifted_and_incomplete_packets_fail_closed" time="0.003" /><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_missing_input_fails_before_creating_any_publication_outputs" time="0.001" /><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_primary_success_requires_execution_goal_and_in_budget_elapsed" time="0.003"><failure message="ValueError: row 1 fields drifted">tests/test_runtime_comparison_publication.py:464: in test_primary_success_requires_execution_goal_and_in_budget_elapsed
+    loaded = publication.load_public_results(
+scripts/generate_runtime_comparison_publication.py:292: in load_public_results
+    _validate_row(row, index)
+scripts/generate_runtime_comparison_publication.py:148: in _validate_row
+    _require(set(row) == set(ROW_FIELDS), f"row {index + 1} fields drifted")
+scripts/generate_runtime_comparison_publication.py:90: in _require
+    raise ValueError(message)
+E   ValueError: row 1 fields drifted</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_retained_failure_timeout_and_null_observations_are_reportable" time="0.001"><failure message="ValueError: row 1 fields drifted">tests/test_runtime_comparison_publication.py:337: in test_retained_failure_timeout_and_null_observations_are_reportable
+    loaded = publication.load_public_results(self._write_packet(Path(directory), packet))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts/generate_runtime_comparison_publication.py:292: in load_public_results
+    _validate_row(row, index)
+scripts/generate_runtime_comparison_publication.py:148: in _validate_row
+    _require(set(row) == set(ROW_FIELDS), f"row {index + 1} fields drifted")
+scripts/generate_runtime_comparison_publication.py:90: in _require
+    raise ValueError(message)
+E   ValueError: row 1 fields drifted</failure></testcase><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_svg_is_valid_explicitly_labelled_and_contains_all_eight_rows" time="0.001" /><testcase classname="tests.test_runtime_comparison_publication.RuntimeComparisonPublicationTests" name="test_type_time_and_contradiction_boundaries_are_rejected" time="0.003" /></testsuite></testsuites>

@@ -1,0 +1,362 @@
+{
+  "schema_version": "runtime-model-panel-amendment-proposal/1",
+  "artifact_id": "runtime-model-swap-20261024-panel-amendment-proposal-v2",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T01:50:50.179Z",
+  "status": "DRAFT_ONLY_NOT_ADOPTED_NOT_FROZEN_NOT_EXECUTED",
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED; no publication approval for account-scoped catalog data",
+  "approval": {
+    "user_verbatim_decision": "관측 후보로 개정안 작성",
+    "scope_as_presented": "현재 목록의 GPT-5.6 계열·Opus 5.5·Sonnet 5.5·Gemini 3.8 Flash를 대상으로 별도 패널 개정안을 작성합니다. GPT-5.5는 미확인 후보로 분리하고 기존 계약은 보존합니다. 세부 variant·effort·예산·C 허용차는 아직 동결하지 않습니다.",
+    "draft_creation_authorized": true,
+    "revised_roster_adopted": false,
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "live_launch_authorized": false
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json",
+      "sha256": "cd4c5b90df3818bfbcaf83ea10b7978be1487e5846f3b954e9453892f790a7e6"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/endpoint-amendment-v1.json",
+      "sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+      "sha256": "314c016325b2da7ad45419f3f208914df98537304710658a3b4bb420659bb169"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-runtime-model-swap-offline/verification-final.json",
+      "sha256": "4daac0e159bd974bfa56da88ce4870e3c44f3c29d854403ede5ff216b3ccb759"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/approval.json",
+      "sha256": "c498f094545719c361c266e85bf658af67ffb83793d0dc734d7ca3cc46c94255"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/summary.json",
+      "sha256": "45b769f8f0e8bd692197fd809ea192b6aea725ddbfd689112271b0ff38060b2f"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/codex-catalog.json",
+      "sha256": "e45921c7202ec77625290ec0a86ec106cf0b4bbe57dd62a49ac7b2b5bf44447c"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/claude-catalog.json",
+      "sha256": "2ca1b499e46f0d6f52eb3adc5339e7b0d09eb8b08e5f01b99074991fb8d1c7ae"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/antigravity-catalog.json",
+      "sha256": "d9437d89fa40910af6ac52a4ad04aae24e3d8820edaab1d79e36665125329252"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v1.json",
+      "sha256": "dafa102ac605ff9e9742551b98343338c978375e70125558afff71e17886d53c"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-review-v1.json",
+      "sha256": "e4b6b08e0accec253e21ecaeaa85c04be6db2addb7ec9f0d18a4760a7be69151"
+    }
+  ],
+  "baseline_preservation": {
+    "original_pre_run_proposal": "pre-run-decision-proposal-v1.json",
+    "approved_endpoint": "endpoint-amendment-v1.json",
+    "original_files_modified": false,
+    "prior_development_panel_activated": false,
+    "prior_single_development_case_pooled": false,
+    "old_288_episode_and_five_contrast_proposals_automatically_inherited": false
+  },
+  "shared_unverified_fields": {
+    "inference_entitlement_verified": false,
+    "provider_returned_model": null,
+    "served_revision": null,
+    "fallback_containment_verified": false,
+    "tool_context_parity_verified": false,
+    "capability_tier": null,
+    "non_top_classification_verified": false,
+    "billed_cost_usd": null,
+    "cost_advantage_verified": false
+  },
+  "proposed_model_slots": [
+    {
+      "slot_id": "REF-SOL61",
+      "role": "fresh_reference",
+      "label_ko": "새 GPT-6.1-SOL 기준선",
+      "label_en": "Fresh GPT-6.1-SOL reference",
+      "catalog_selector_observed": "gpt-6.1-sol",
+      "selected_for_assignment": false,
+      "requires_new_matched_episodes": true,
+      "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/codex-catalog.json",
+      "catalog_host_observed": "Codex",
+      "native_host_proposed": "Codex",
+      "native_host_for_assignment": null,
+      "native_host_selection_status": "PROPOSAL_REQUIRES_USER_DECISION",
+      "assignment_selection_status": "NOT_ADOPTED_NOT_ASSIGNED",
+      "supported_reasoning_efforts_observed": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max",
+        "ultra"
+      ],
+      "selected_effort": null,
+      "matching_dimensions_required": [
+        "same frozen game and task",
+        "same representation and semantic information",
+        "same episode wall, host-call and repair budgets",
+        "prespecified native reasoning-effort/context/tool policy; same effort label is not measured equal compute"
+      ]
+    },
+    {
+      "slot_id": "C-GPT56",
+      "role": "candidate_family_pending_variant_choice",
+      "label_ko": "GPT-5.6 계열",
+      "label_en": "GPT-5.6 family",
+      "catalog_selectors_observed": [
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna"
+      ],
+      "selected_variants": null,
+      "selection_proposal": {
+        "preferred_single_variant": "gpt-5.6-sol",
+        "alternative_all_three": true,
+        "status": "PROPOSAL_REQUIRES_USER_DECISION",
+        "rationale": "Match the named SOL variant for a narrower comparison; this is a protocol choice, not evidence of equal architecture, compute, lower capability or price.",
+        "variant_effort_support_is_not_symmetric": "The inspected catalog lists ultra for GPT-5.6-SOL and Terra, but not Luna. This catalog observation does not establish global API unavailability.",
+        "all_three_requires": "Choose a catalog-supported common effort level for the Codex reference/candidate comparison or explicitly approve a different, effort-confounded estimand; never silently fall back."
+      },
+      "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/codex-catalog.json",
+      "catalog_host_observed": "Codex",
+      "native_host_proposed": "Codex",
+      "native_host_for_assignment": null,
+      "native_host_selection_status": "PROPOSAL_REQUIRES_USER_DECISION",
+      "assignment_selection_status": "NOT_ADOPTED_NOT_ASSIGNED",
+      "supported_reasoning_efforts_observed": {
+        "gpt-5.6-sol": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ],
+        "gpt-5.6-terra": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ],
+        "gpt-5.6-luna": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      "selected_effort": null
+    },
+    {
+      "slot_id": "C-OPUS55",
+      "role": "candidate",
+      "label_ko": "Claude Opus 5.5",
+      "label_en": "Claude Opus 5.5",
+      "catalog_alias_observed": "opus",
+      "catalog_description_observed": "Opus 5.5 · Best for everyday, complex tasks",
+      "exact_native_selector_for_assignment": null,
+      "canonical_provider_model_id": null,
+      "legacy_requested_label": "opus 5",
+      "replacement_adopted": false,
+      "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/claude-catalog.json",
+      "catalog_host_observed": "Claude",
+      "native_host_proposed": "Claude",
+      "native_host_for_assignment": null,
+      "native_host_selection_status": "PROPOSAL_REQUIRES_USER_DECISION",
+      "assignment_selection_status": "NOT_ADOPTED_NOT_ASSIGNED",
+      "alternative_host_listing_observed": {
+        "host": "Antigravity",
+        "catalog_selectors_observed": [
+          "claude-opus-5-5-low",
+          "claude-opus-5-5-medium",
+          "claude-opus-5-5-high"
+        ],
+        "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/antigravity-catalog.json"
+      },
+      "native_host_proposal_rationale": "Propose the named provider own CLI as the starting route; the observed Antigravity listing remains a separate open host choice, not evidence of identical context, effort, fallback, model identity or cost.",
+      "selected_effort": null
+    },
+    {
+      "slot_id": "C-SONNET55",
+      "role": "candidate",
+      "label_ko": "Claude Sonnet 5.5",
+      "label_en": "Claude Sonnet 5.5",
+      "catalog_alias_observed": "sonnet",
+      "catalog_description_observed": "Sonnet 5.5 · Efficient for routine tasks",
+      "exact_native_selector_for_assignment": null,
+      "canonical_provider_model_id": null,
+      "legacy_requested_label": "sonnect 5",
+      "replacement_adopted": false,
+      "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/claude-catalog.json",
+      "catalog_host_observed": "Claude",
+      "native_host_proposed": "Claude",
+      "native_host_for_assignment": null,
+      "native_host_selection_status": "PROPOSAL_REQUIRES_USER_DECISION",
+      "assignment_selection_status": "NOT_ADOPTED_NOT_ASSIGNED",
+      "alternative_host_listing_observed": {
+        "host": "Antigravity",
+        "catalog_selectors_observed": [
+          "claude-sonnet-5-5-low",
+          "claude-sonnet-5-5-medium",
+          "claude-sonnet-5-5-high"
+        ],
+        "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/antigravity-catalog.json"
+      },
+      "native_host_proposal_rationale": "Propose the named provider own CLI as the starting route; the observed Antigravity listing remains a separate open host choice, not evidence of identical context, effort, fallback, model identity or cost.",
+      "selected_effort": null
+    },
+    {
+      "slot_id": "C-FLASH38",
+      "role": "candidate_family_pending_effort_choice",
+      "label_ko": "Gemini 3.8 Flash",
+      "label_en": "Gemini 3.8 Flash",
+      "catalog_selectors_observed": [
+        "gemini-3.8-flash-low",
+        "gemini-3.8-flash-medium",
+        "gemini-3.8-flash-high"
+      ],
+      "selected_effort_selector": null,
+      "one_effort_per_primary_panel_proposed": true,
+      "effort_labels_do_not_establish_cross_provider_compute_parity": true,
+      "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/antigravity-catalog.json",
+      "catalog_host_observed": "Antigravity",
+      "native_host_proposed": "Antigravity",
+      "native_host_for_assignment": null,
+      "native_host_selection_status": "PROPOSAL_REQUIRES_USER_DECISION",
+      "assignment_selection_status": "NOT_ADOPTED_NOT_ASSIGNED"
+    }
+  ],
+  "unresolved_original_requests": [
+    {
+      "requested_label": "gpt 5.5",
+      "status": "DEFERRED_UNVERIFIED_NOT_IN_REVISED_ACTIVE_DRAFT",
+      "reason": "Not seen in the inspected native Codex catalog; no inference access check occurred.",
+      "global_unavailability_established": false,
+      "silently_replaced": false
+    },
+    {
+      "requested_label": "opus 5",
+      "status": "PRESERVED_ORIGINAL_REQUEST_NOT_EQUIVALENT_TO_OPUS55_ALIAS",
+      "legacy_inference_access_verified": false
+    },
+    {
+      "requested_label": "sonnect 5",
+      "status": "PRESERVED_ORIGINAL_REQUEST_NOT_EQUIVALENT_TO_SONNET55_ALIAS",
+      "legacy_inference_access_verified": false
+    }
+  ],
+  "method_boundary": {
+    "primary_endpoint_ref": "endpoint-amendment-v1.json#/approved_endpoints/primary",
+    "primary_endpoint_id": "budget_bounded_goal_completion_rate",
+    "fresh_reference_required": true,
+    "representations_proposed": [
+      "information_matched_general_rule",
+      "ontology_view"
+    ],
+    "same_game_validator_task_oracle_and_semantic_information_required": true,
+    "representation_effect_scope": "Proposer exposure to an ontology view versus information-matched general rules; common ontology-derived workflow remains in both conditions. Not a whole-system ontology-presence ablation.",
+    "mandatory_safety_gate_ref": "endpoint-amendment-v1.json#/approved_endpoints/mandatory_safety_gate",
+    "no_commits_is_not_positive_safety_evidence": true,
+    "C_contrast": "Candidate ontology-view completion minus fresh matched GPT-6.1-SOL ontology-view completion on the same frozen game, tasks, representation and budgets, with a prespecified native effort/context/tool policy.",
+    "C_practical_margin_percentage_points": null,
+    "C_absolute_success_floor": null,
+    "confirmatory_sample_size": null,
+    "confirmatory_analysis_plan": null,
+    "pilot_does_not_establish_noninferiority": true,
+    "transport_claim_scope": "Without validated model/context/tool/fallback parity, explicitly approved native-stack comparisons only, not isolated model effects. Catalog aliases are never provider identity attestations.",
+    "engine_readiness": "Existing final receipt verifies injected-response offline engineering only, not a live model adapter or research efficacy."
+  },
+  "conditional_planning_arithmetic": {
+    "status": "ILLUSTRATIVE_ONLY_NOT_APPROVED_ASSIGNMENTS_BUDGET_OR_POWER",
+    "source_of_12_quests_2_repeats_12_host_cap": "pre-run-decision-proposal-v1.json; these are unapproved proposals, not inherited approvals",
+    "general_formula": {
+      "gpt_5_6_variant_count": "k",
+      "total_models_including_reference": "4+k",
+      "representations": 2,
+      "episodes_per_cell_if_12_quests_and_2_repeats": 24,
+      "total_episodes": "48*(4+k)",
+      "C_candidate_contrasts": "3+k"
+    },
+    "single_gpt_variant": {
+      "gpt_variants": 1,
+      "total_models_including_reference": 5,
+      "cells": 10,
+      "episodes": 240,
+      "host_invocation_arithmetic_ceiling_if_12_per_episode": 2880,
+      "C_candidate_contrasts": 4
+    },
+    "all_three_gpt_variants": {
+      "gpt_variants": 3,
+      "total_models_including_reference": 7,
+      "cells": 14,
+      "episodes": 336,
+      "host_invocation_arithmetic_ceiling_if_12_per_episode": 4032,
+      "C_candidate_contrasts": 6
+    },
+    "one_flash_effort_assumed": true,
+    "assignment_manifest_created": false,
+    "provider_internal_request_ceiling": null,
+    "monetary_cap_enforceability": "UNVERIFIED; no old development-study USD allowance inherited",
+    "multiplicity": "The revised active C contrast family must be declared after roster selection; do not inherit the original five-comparison family."
+  },
+  "remaining_blocking_decisions": [
+    "GPT-5.6 single variant versus all three, source-bound exact selection, and Codex reference/candidate effort policy; Luna does not list ultra in the observed catalog",
+    "One Gemini Flash effort selector and provider-specific effort/context policy",
+    "Claude host assignment (own CLI alias versus Antigravity effort-tiered selector), exact selection and identity/fallback capture; explicit native-stack scope if pure-model parity is unavailable",
+    "Independent held-out quest/split/oracle/prompt/game/ontology/authorship manifests and hashes",
+    "Pilot versus separately powered confirmatory stage, repetitions, paired/cluster-aware analysis and multiplicity family",
+    "Explicit host-call/repair/wall deadlines and verified native process/late-result handling",
+    "Human-selected C margin and absolute practical floor before confirmatory data",
+    "Separate research-context egress, billing/enforceability and source-bound live-launch permission"
+  ],
+  "next_interview": {
+    "question_ko": "GPT-5.6은 SOL 한 종만 포함할까요, SOL·Terra·Luna 세 종을 모두 포함할까요? 관측 목록에서 Luna에는 ultra가 없어, 세 종을 포함하면 공통 effort 설정도 별도로 정해야 합니다. 같은 effort 명칭이 같은 연산량을 보장하지는 않습니다.",
+    "preferred_proposal": "one_sol_variant",
+    "decision_recorded": false,
+    "decision_authorizes_generation": false,
+    "question_en": "Include only GPT-5.6-SOL, or all three GPT-5.6 variants (SOL, Terra and Luna)? The observed Luna catalog entry does not list ultra, so including all three also requires a separate common-effort decision. Identical effort labels do not guarantee equal compute."
+  },
+  "observed_new_study_candidate_generation_requests": 0,
+  "observed_new_study_episodes": 0,
+  "jev_routing_is_not_a_study_observation": true,
+  "launch_gate": {
+    "authorized": false,
+    "fail_closed": true,
+    "concurrency": 1,
+    "any_required_unfrozen_field_blocks_launch": true
+  },
+  "append_only_rule": "This proposal does not amend or supersede any frozen contract. Adoption needs a separate explicit approval bound to this artifact hash. Revisions get new versioned artifacts.",
+  "revision_of": {
+    "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v1.json",
+    "sha256": "dafa102ac605ff9e9742551b98343338c978375e70125558afff71e17886d53c",
+    "review_path": "research/runtime-model-swap-20261024/panel-amendment-review-v1.json",
+    "review_sha256": "e4b6b08e0accec253e21ecaeaa85c04be6db2addb7ec9f0d18a4760a7be69151",
+    "initial_review_verdict": "FIX"
+  },
+  "revision_scope": "Add explicit host-choice and reasoning-effort evidence; restore same-budget comparator wording and bilingual interview question. Draft permission only; no new adoption, freeze or launch authority.",
+  "shared_unverified_fields_apply_to": "Every slot without exception in this draft. Any future slot-specific verification requires a new source-bound version and per-slot receipts; never promote the whole roster from one slot.",
+  "nonrequested_catalog_entries_excluded_by_scope": [
+    {
+      "catalog_selector_observed": "claude-fable-5-1[1m]",
+      "source_receipt": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/claude-catalog.json",
+      "reason": "Not in the user-requested model families. Catalog marketing descriptions are not verified rankings and do not establish non-top classification of the selected families."
+    }
+  ]
+}

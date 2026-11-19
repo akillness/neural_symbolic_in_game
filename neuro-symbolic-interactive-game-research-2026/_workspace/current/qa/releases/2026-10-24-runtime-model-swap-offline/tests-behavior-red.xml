@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="21" time="0.426" timestamp="2026-10-25T01:56:10.138148+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_assigned_manifest_rows_in_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_unknown_identity_and_failures_in_original_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_authoritative_error_drives_bounded_repair_and_finishes_whole_goal" time="0.001"><failure message="AssertionError: False is not true">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_authoritative_error_drives_bounded_repair_and_finishes_whole_goal&gt;
+
+    def test_authoritative_error_drives_bounded_repair_and_finishes_whole_goal(self) -&gt; None:
+        engine = LighthouseEngine()
+        source = SequenceSource(
+            [proposal("install_lens"), proposal("move_to_lighthouse"), proposal("install_lens")]
+        )
+        seen: list[tuple[dict[str, Any], dict[str, Any], int]] = []
+    
+        def repair(context: dict[str, Any], error: dict[str, Any], attempt: int) -&gt; dict[str, Any]:
+            seen.append((copy.deepcopy(context), copy.deepcopy(error), attempt))
+            return proposal("collect_lens")
+    
+        record = run_offline(source, engine, repair_source=repair)
+    
+&gt;       self.assertTrue(record["success"])
+E       AssertionError: False is not true
+
+tests/test_runtime_model_swap.py:246: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_exhausted_source_is_explicit_failure_not_free_eof" time="0.001"><failure message="AssertionError: 'episode_incomplete' != 'proposal_source_error'&#10;- episode_incomplete&#10;+ proposal_source_error">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_exhausted_source_is_explicit_failure_not_free_eof&gt;
+
+    def test_exhausted_source_is_explicit_failure_not_free_eof(self) -&gt; None:
+        source = SequenceSource([])
+        record = run_offline(
+            source,
+            limits=EpisodeLimits(30.0, 5.0, 4, 0),
+        )
+    
+        self.assertFalse(record["success"])
+&gt;       self.assertEqual(record["failure_reason"], "proposal_source_error")
+E       AssertionError: 'episode_incomplete' != 'proposal_source_error'
+E       - episode_incomplete
+E       + proposal_source_error
+
+tests/test_runtime_model_swap.py:342: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_existing_output_collision_fails_closed_without_overwrite" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_first_call_timeout_is_counted_and_traced_without_exception" time="0.000"><failure message="IndexError: list index out of range">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests.test_first_call_timeout_is_counted_and_traced_without_exception.&lt;locals&gt;.FirstCallTimeout object at 0x10afb0a10&gt;
+context = {'state': {'location': 'dock', 'inventory': [], 'facts': {'lens_reachable': True}, 'signal_restored': False}, 'model_i...'lens_in_inventory', 'location=lighthouse']}, 'constraints': ['canonical_state_only', 'goal_observed_by_engine'], ...}}
+
+    def __call__(self, context: dict[str, Any]) -&gt; dict[str, Any]:
+        self.calls += 1
+        clock.advance(6.0)
+&gt;       raise TimeoutError("first response timed out")
+E       TimeoutError: first response timed out
+
+tests/test_runtime_model_swap.py:308: TimeoutError
+
+During handling of the above exception, another exception occurred:
+
+self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_first_call_timeout_is_counted_and_traced_without_exception&gt;
+
+    def test_first_call_timeout_is_counted_and_traced_without_exception(self) -&gt; None:
+        clock = FakeClock()
+    
+        class FirstCallTimeout:
+            def __init__(self) -&gt; None:
+                self.calls = 0
+    
+            def __call__(self, context: dict[str, Any]) -&gt; dict[str, Any]:
+                self.calls += 1
+                clock.advance(6.0)
+                raise TimeoutError("first response timed out")
+    
+        source = FirstCallTimeout()
+        engine = LighthouseEngine()
+&gt;       record = run_episode(
+            engine=engine,
+            proposal_source=source,
+            model=MODEL,
+            limits=EpisodeLimits(30.0, 5.0, 4, 0),
+            seed=20261024,
+            clock=clock,
+            config={"goal": "signal_restored", "fixture": "offline-lighthouse-v1"},
+            prompt="Restore the lighthouse signal by carrying and installing the lens.",
+        )
+
+tests/test_runtime_model_swap.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+engine = &lt;test_runtime_model_swap.LighthouseEngine object at 0x10afb0d10&gt;
+proposal_source = &lt;test_runtime_model_swap.RuntimeModelSwapTests.test_first_call_timeout_is_counted_and_traced_without_exception.&lt;locals&gt;.FirstCallTimeout object at 0x10afb0a10&gt;
+model = ModelSpec(model_id='offline-synthetic-model', representation='general_rule', provider=None, revision=None, offline=True)
+limits = EpisodeLimits(wall_seconds=30.0, response_seconds=5.0, max_host_calls=4, max_repairs_per_decision=0)
+seed = 20261024
+clock = &lt;test_runtime_model_swap.FakeClock object at 0x10afb0c10&gt;
+config = {'goal': 'signal_restored', 'fixture': 'offline-lighthouse-v1'}
+prompt = 'Restore the lighthouse signal by carrying and installing the lens.'
+repair_source = None, provider_launcher = None, output_path = None
+
+    def run_episode(
+        *,
+        engine: EpisodeEngine,
+        proposal_source: Callable[[dict[str, Any]], dict[str, Any]],
+        model: ModelSpec,
+        limits: EpisodeLimits,
+        seed: int,
+        clock: Callable[[], float],
+        config: Mapping[str, Any],
+        prompt: str,
+        repair_source: Callable[[dict[str, Any], dict[str, Any], int], dict[str, Any]] | None = None,
+        provider_launcher: Callable[..., Any] | None = None,
+        output_path: str | Path | None = None,
+    ) -&gt; dict[str, Any]:
+        if output_path is not None:
+            destination = Path(output_path)
+            if destination.exists():
+                raise FileExistsError(f"output already exists: {destination}")
+        started = float(clock())
+        initial = _safe_state(engine)
+        evidence: dict[str, Any] = {
+            "mode": "offline" if model.offline and model.provider is None and provider_launcher is None else "provider",
+            "synthetic": bool(model.offline and model.provider is None and provider_launcher is None),
+            "provenance": {"mode": "offline", "synthetic": True},
+            "seed": seed,
+            "model_id": model.model_id,
+            "representation": model.representation,
+            "provider_identity": None,
+            "provider_revision": None,
+            "cost_usd": None,
+            "provider_request_count": None,
+            "provider_process_launch_count": 0,
+            "prompt_hash": _hash(prompt),
+            "config_hash": _hash(dict(config)),
+            "request_hash": None,
+            "raw_proposals": [],
+            "validation": [],
+            "repair": [],
+            "commit": [],
+            "time": {"started": started, "ended": None},
+            "calls": [],
+        }
+        record: dict[str, Any] = {
+            "schema_version": "runtime-model-swap/1",
+            "seed": seed,
+            "model": {"model_id": model.model_id, "representation": model.representation, "provider": model.provider, "revision": model.revision, "offline": model.offline},
+            "config": copy.deepcopy(dict(config)),
+            "prompt": prompt,
+            "initial_state": initial,
+            "final_state": copy.deepcopy(initial),
+            "decisions": [],
+            "accounting": {
+                "host_calls": 0,
+                "failed_calls": 0,
+                "timeout_calls": 0,
+                    "repair_calls": 0,
+                "successful_repairs": 0,
+                "initial_proposal_failures": 0,
+                "wall_expired": False,
+                "denominator_eligible": True,
+            },
+            "failure_reason": None,
+            "last_error": None,
+            "evidence": evidence,
+            "semantic_replay": {"valid": False, "checks": []},
+            "status": "failure",
+            "success": False,
+            "goal_reached": False,
+            "failure_reason": None,
+        }
+        if (not model.offline) or model.provider is not None or provider_launcher is not None:
+            record["failure_reason"] = "provider_not_allowed_offline"
+            evidence["mode"] = "rejected"
+            evidence["synthetic"] = False
+            evidence["provenance"] = {"mode": "rejected", "synthetic": False}
+            evidence["time"]["ended"] = float(clock())
+            return _finish(record, output_path)
+        if engine.objective_reached():
+            record["failure_reason"] = "initial_goal_reached"
+            evidence["time"]["ended"] = float(clock())
+            return _finish(record, output_path)
+    
+        while True:
+            elapsed = float(clock()) - started
+            if elapsed &gt;= limits.wall_seconds:
+                record["accounting"]["wall_expired"] = True
+                record["failure_reason"] = "wall_budget_exhausted"
+                break
+            if record["accounting"]["host_calls"] &gt;= limits.max_host_calls:
+                record["failure_reason"] = "host_call_budget_exhausted"
+                break
+            state = _safe_state(engine)
+            semantic = {
+                "state": state,
+                "legal_actions": copy.deepcopy(engine.legal_actions()),
+                "preconditions": copy.deepcopy(engine.preconditions()),
+                "constraints": copy.deepcopy(engine.constraints()),
+                "objective": engine.objective(),
+            }
+            model_input = dict(semantic)
+            model_input["representation"] = model.representation
+            model_input["rendering"] = _render(model_input, model.representation)
+            context = {"state": state, "model_input": model_input}
+            evidence["request_hash"] = _hash({"seed": seed, "config": config, "prompt": prompt, "context": context})
+            decision: dict[str, Any] = {"state": state, "raw_proposals": [], "validation": None, "repair": None, "commit": None}
+            evidence["repair"].append({"attempt": 0, "proposal": None})
+            accepted: dict[str, Any] | None = None
+            error: dict[str, Any] = {"code": "unknown", "message": ""}
+            for attempt in range(limits.max_repairs_per_decision + 1):
+                if record["accounting"]["host_calls"] &gt;= limits.max_host_calls:
+                    record["failure_reason"] = "host_call_budget_exhausted"
+                    break
+                call_started = float(clock())
+                record["accounting"]["host_calls"] += 1
+                kind = "proposal" if attempt == 0 else "repair"
+                try:
+                    if attempt == 0:
+                        proposal = proposal_source(copy.deepcopy(context))
+                        evidence["raw_proposals"].append(copy.deepcopy(proposal))
+                    else:
+                        record["accounting"]["repair_calls"] += 1
+                        proposal = repair_source(copy.deepcopy(context), copy.deepcopy(error), attempt) if repair_source else None
+                        evidence["repair"][-1] = {"attempt": attempt, "proposal": copy.deepcopy(proposal)}
+                    duration = float(clock()) - call_started
+                    evidence["calls"].append({"kind": kind, "attempt": attempt, "duration_seconds": duration, "failed": False})
+                    if duration &gt; limits.response_seconds:
+                        raise TimeoutError("response timed out")
+                    if not isinstance(proposal, dict):
+                        raise ValueError("proposal_must_be_object")
+                except TimeoutError as exc:
+                    record["accounting"]["failed_calls"] += 1
+                    record["accounting"]["timeout_calls"] += 1
+&gt;                   evidence["calls"][-1]["failed"] = True
+                    ^^^^^^^^^^^^^^^^^^^^^
+E                   IndexError: list index out of range
+
+src/nesy_game/runtime_model_swap.py:194: IndexError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_reached_after_wall_expiry_is_not_credited" time="0.001"><failure message="AssertionError: 35046.593992291 != 5.0">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_goal_reached_after_wall_expiry_is_not_credited&gt;
+
+    def test_goal_reached_after_wall_expiry_is_not_credited(self) -&gt; None:
+        clock = FakeClock()
+        source = SequenceSource(
+            [
+                (proposal("collect_lens"), 1.0),
+                (proposal("move_to_lighthouse"), 1.0),
+                (proposal("install_lens"), 3.0),
+            ],
+            clock=clock,
+        )
+        engine = LighthouseEngine()
+    
+        record = run_offline(
+            source,
+            engine,
+            limits=EpisodeLimits(4.0, 5.0, 12, 0),
+            clock=clock,
+        )
+    
+        self.assertFalse(record["success"])
+        self.assertEqual(record["failure_reason"], "wall_budget_exhausted")
+        self.assertGreaterEqual(clock.now, 4.0)
+        self.assertFalse(record["goal_reached"])
+        self.assertEqual(record["accounting"]["wall_expired"], True)
+&gt;       self.assertEqual(record["evidence"]["time"]["ended"], clock.now)
+E       AssertionError: 35046.593992291 != 5.0
+
+tests/test_runtime_model_swap.py:394: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_hard_invalid_proposal_cannot_mutate_canonical_state" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_host_budget_counts_failed_and_timeout_calls_in_original_denominator" time="0.000"><failure message="AssertionError: 1 != 2">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_host_budget_counts_failed_and_timeout_calls_in_original_denominator&gt;
+
+    def test_host_budget_counts_failed_and_timeout_calls_in_original_denominator(self) -&gt; None:
+        clock = FakeClock()
+        source = SequenceSource([RuntimeError("provider failed"), TimeoutError("response timed out")])
+    
+        record = run_offline(
+            source,
+            limits=EpisodeLimits(30.0, 5.0, 2, 0),
+            clock=clock,
+        )
+    
+        self.assertFalse(record["success"])
+        self.assertEqual(record["failure_reason"], "host_call_budget_exhausted")
+        self.assertEqual(source.calls, 2)
+        self.assertEqual(record["accounting"]["host_calls"], 2)
+        self.assertEqual(record["accounting"]["failed_calls"], 2)
+        self.assertEqual(record["accounting"]["denominator_eligible"], True)
+&gt;       self.assertEqual(len(record["evidence"]["calls"]), 2)
+E       AssertionError: 1 != 2
+
+tests/test_runtime_model_swap.py:294: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_initially_won_episode_is_not_a_success" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_live_provider_is_fail_closed_before_launcher_or_model_call" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_model_self_report_does_not_substitute_for_engine_observed_goal" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_offline_evidence_retains_unknown_provider_fields_and_semantic_trace" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_representation_swap_is_lossless_except_rendering" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_response_timeout_is_classified_and_does_not_commit_proposal" time="0.000"><failure message="AssertionError: 35046.608826125 != 6.0">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_response_timeout_is_classified_and_does_not_commit_proposal&gt;
+
+    def test_response_timeout_is_classified_and_does_not_commit_proposal(self) -&gt; None:
+        clock = FakeClock()
+        source = SequenceSource([(proposal("collect_lens"), 6.0)], clock=clock)
+        engine = LighthouseEngine()
+    
+        record = run_offline(
+            source,
+            engine,
+            limits=EpisodeLimits(30.0, 5.0, 12, 0),
+            clock=clock,
+        )
+    
+        self.assertFalse(record["success"])
+        self.assertEqual(record["failure_reason"], "response_timeout")
+        self.assertEqual(engine.commit_calls, [])
+        self.assertEqual(record["accounting"]["timeout_calls"], 1)
+        self.assertEqual(record["accounting"]["host_calls"], 1)
+&gt;       self.assertEqual(record["evidence"]["time"]["ended"], clock.now)
+E       AssertionError: 35046.608826125 != 6.0
+
+tests/test_runtime_model_swap.py:368: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_semantic_replay_rejects_rehashed_tampered_transition" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_three_decisions_preserve_canonical_state_and_credit_engine_goal_only" time="0.001" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_preserves_engine_receipt_fields" time="0.001"><failure message="TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_adapter_preserves_engine_receipt_fields&gt;
+
+    def test_adapter_preserves_engine_receipt_fields(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = FakeEngineTransport(root)
+    
+            def scripted_prompt(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                return 0, _valid_typed_intent(kwargs["request_id"])
+    
+&gt;           engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=scripted_prompt,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="SEAM-002",
+            )
+E           TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'
+
+tests/test_runtime_model_swap_godot.py:133: TypeError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output" time="0.000"><failure message="TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output&gt;
+
+    def test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = FakeEngineTransport(root)
+            prompt_calls: list[dict[str, Any]] = []
+    
+            def malformed_prompt(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                prompt_calls.append(kwargs)
+                return 0, {
+                    "request_id": kwargs["request_id"],
+                    "typed_intent": {"label": "NOT_A_CANONICAL_LABEL", "claims": [], "target": None},
+                }
+    
+&gt;           engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=malformed_prompt,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="SEAM-001",
+            )
+E           TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'
+
+tests/test_runtime_model_swap_godot.py:90: TypeError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_engine_unavailable_is_an_assigned_failure_record" time="0.000"><failure message="TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_engine_unavailable_is_an_assigned_failure_record&gt;
+
+    def test_engine_unavailable_is_an_assigned_failure_record(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport_calls: list[dict[str, Any]] = []
+    
+            def unavailable_runner(**kwargs: Any) -&gt; dict[str, Any]:
+                transport_calls.append(kwargs)
+                return {"status": "unavailable", "error": "godot_binary_unavailable", "mode": kwargs["mode"]}
+    
+&gt;           engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **_: (0, _valid_typed_intent("request")),
+                engine_runner=unavailable_runner,
+                godot_binary="/missing/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="GODOT-UNAVAILABLE-001",
+            )
+E           TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'
+
+tests/test_runtime_model_swap_godot.py:160: TypeError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineIntegrationTests" name="test_two_real_experiment_cycles_bind_setup_and_reject_tampered_state_ref" time="0.246"><failure message="TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineIntegrationTests testMethod=test_two_real_experiment_cycles_bind_setup_and_reject_tampered_state_ref&gt;
+
+    def test_two_real_experiment_cycles_bind_setup_and_reject_tampered_state_ref(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            project = root / "project"
+            stage_project(GODOT_PROJECT, project)
+            outputs = root / "outputs"
+            receipts: list[dict[str, Any]] = []
+            experiment_payloads: list[dict[str, Any]] = []
+            prompt_calls: list[dict[str, Any]] = []
+    
+            def stable_engine_runner(**kwargs: Any) -&gt; dict[str, Any]:
+                if kwargs["mode"] == "experiment":
+                    experiment_payloads.append(
+                        json.loads(Path(kwargs["input_path"]).read_text(encoding="utf-8"))
+                    )
+                receipt = run_godot(**kwargs)
+                receipts.append(receipt)
+                return receipt
+    
+            def scripted_prompt(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                prompt_calls.append(kwargs)
+                return 0, _valid_typed_intent(kwargs["request_id"])
+    
+&gt;           engine = GodotEpisodeEngine(
+                project=project,
+                output_root=outputs,
+                prompt_runner=scripted_prompt,
+                engine_runner=stable_engine_runner,
+                godot_binary=GODOT_BINARY,
+                fixture_ref=FIXTURE_REF,
+                assignment_id="GODOT-REAL-001",
+            )
+E           TypeError: GodotEpisodeEngine.__init__() got an unexpected keyword argument 'prompt_runner'
+
+tests/test_runtime_model_swap_godot.py:212: TypeError</failure></testcase></testsuite></testsuites>

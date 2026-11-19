@@ -1,0 +1,52 @@
+\section{Benchmark Suite Composition, Curation, and Maintenance}\label{sec:db-composition}
+\system{} is packaged as a standalone, zero-network-reproducible benchmark suite built around the frozen core (\texttt{src/nesy\_game/*.py}, 20/20 SHA-256 hashes unchanged) and \texttt{nesy\_game.multihop}. Following Gebru et al.~\cite{gebru2021datasheets} (\texttt{DATASHEET\_v5.md}) and ML Commons Croissant~1.0~\cite{akhtar2024croissant} (\texttt{croissant\_trace\_rpg\_benchmark\_v5.json}), the v5 archival bundle (\texttt{neurips-db-supplemental-benchmark.zip}, 55 files, \texttt{CHECKSUMS.sha256} 54/54 verified, zero PII/IP/secret leaks) indexes \textbf{26 SHA-256-verified \texttt{FileObject} artifacts} (v2: 12, v3: 17, v4: 22, v5: 26) under dual \textbf{MIT} (verification harnesses and oracle code) and \textbf{CC BY 4.0} (traces, structured quest specs, and evaluation receipts) licenses. No web scraping or user-sourced text appears anywhere in the benchmark.
+
+\begin{table}[!tbp]
+\caption{Benchmark Suite Composition Across Determinism, Engine Replay, and Attested API Cohorts (Croissant~1.0 v5: 26/26 FileObjects)}
+\label{tab:phase5-db-comp}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.27\columnwidth}c>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Suite Partition} & \textbf{Size} & \textbf{Schema, Provenance, and Isolation Rule} \\
+\midrule
+Deterministic Finite-Graph & 1,664 + 48 & 32 graph configs $\times$ 13 candidates $\times$ 4 arms + surface sentinels; BFS oracle. \\
+Extended Audits (\textbf{A1}--\textbf{A4}, \textbf{B}) & 1,408 + 1,600t & Multi-error $K{\le}3$, $N{\le}2000$ scaling, 4,656 faults, Godot soak, 88 EN/KO B. \\
+Datalog Depth Scaling (\textbf{P9}) & 480 cases & Procedural $R{\in}\{8..64\}\times d{\in}\{1..5\}$ DAGs; bottom-up fixpoint + BFS. \\
+Phase-5 Closed-Loop MAS (\textbf{P15}) & 105 ep & 3 Claude~5.5 tiers $\times$ 5 worlds $\times$ 7 independent arms; \texttt{output\_config}. \\
+Phase-5 API Factorial+Godot (\textbf{P16}) & 60 + 21 ep & Attested API (no \texttt{temp}) + Godot~4.7.1; non-pooled w/ 0/180 \texttt{20261103}. \\
+Phase-5 Unified Escape (\textbf{P17}) & 540 evals & 180 EN/KO cases $\times$ 3 Claude~5.5 tiers; 0 deterministic short-circuits. \\
+Phase-4 Cross-Family (\textbf{P11}--\textbf{P14}) & 30 / 90 / 42 / 720 & Unseeded CLI (Sonnet~5.5, GPT-OSS~120B, Gemini~4~Hydrogen/3.8~Flash). \\
+Held-Out / Unrun Templates & \texttt{N=0} / 0/180 & Blinded \texttt{TR01--TR06} (\texttt{AWAITING\_HUMAN\_RATERS}) \& frozen \texttt{20261103} excluded. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Curation, attestation, and maintenance.} Deterministic tasks derive from symbolic quest state machines (${\le}8$ rooms, ${\le}3$ actors) and procedural $R{\le}64, d{\le}5$ Datalog graphs paired with EN/KO utterances. Direct HTTPS Phase-5 traces log \texttt{served\_model}, SHA-256-hashed message/request IDs, token counts, and HTTP latency under strict structured-JSON schemas (\texttt{temperature} omitted where deprecated on Claude~5.5); every parse/HTTP failure stays in full denominators. Crucially, the blinded 36-item packet \texttt{TR01--TR06} (\texttt{N=0}) and historical unrun \texttt{prospective-pilot-20261103} (\texttt{0/180}) are strictly quarantined from machine leaderboards. Standalone \texttt{python3 reproduce\_benchmark.py} re-verifies all 54 checksums, 26 Croissant digests, Theorem~1--4 properties, and Datalog scaling offline in $<5$\,s.
+
+\section{Reproducible Benchmark Leaderboards}\label{sec:eval}
+\subsection{Cross-Track Shielding, Repair, Godot, and Escape Results}\label{sec:phase4-compact}
+We evaluate all baseline gates, external comparators (\textbf{Safe-RL Action Masking}~\cite{alshiekh2018shield} and \textbf{NeMo-style Colang Output Rails}~\cite{rebedea2023nemo}), and neural models on unified replay-verified tracks (Table~\ref{tab:phase4-compact}).
+
+\begin{table}[!tbp]
+\caption{Cross-Track Benchmark Leaderboard: Deterministic (\textbf{P9}), Attested Claude~5.5 API (\textbf{P15}--\textbf{P17}), and 3-Family CLI (\textbf{P11}--\textbf{P14})}
+\label{tab:phase4-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.27\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Benchmark Track} & \textbf{Measured Leaderboard Result (95\% Wilson CI; $Q$ / McNemar $p$)} \\
+\midrule
+Boundary \& Audits (0-LLM) & Semantic gates \textbf{0/416} unsafe (vs.\ schema 260/416); $\rho$ 128/260 repairs; Godot \textbf{A4} 1,600/1,600 ticks, p95 0.708\,ms; \textbf{P1} 120-case \textbf{100\%} vs.\ 50.83\%. \\
+\textbf{P9} Datalog Scaling (480) & \texttt{flat\_1hop}: 46.67\% (256 leaks); \texttt{2hop}: 60.00\% (192); \texttt{nesy\_game.multihop}: \textbf{100.0\% [99.2, 100]} at $\le$7.12\,$\mu$s median ($Q{=}1100.19$). \\
+\textbf{P15} Closed-Loop MAS (105) & Independent 5-turn trajectories (\textbf{105/105} replays): Safe-RL proxy~\cite{alshiekh2018shield} 0/15 goals, 16/61 unsafe; NeMo proxy~\cite{rebedea2023nemo} 1/15, 15/61; flat 12/15, 4/66; \texttt{multihop\_k0} 13/15, \textbf{15/15} zl, \textbf{0/69}; \texttt{rho\_k2} 14/15 ($\rho_{\mathrm{rep}}{=}0$ per Thm.~2), \textbf{15/15} zl, \textbf{0/68}; \textbf{hybrid} \textbf{15/15 (100\%)}, 15/15 zl, \textbf{0/63} ($Q_{\mathrm{goal}}{=}68.71$). \\
+\textbf{P16} API Factorial+Godot (81) & \textbf{P16A}: \texttt{general\_rule} 0/30 goals, 22/30 zl, 9 unsafe vs.\ \texttt{ontology\_multihop} \textbf{30/30} zl ($p{=}0.0078$), 11/30 goals (Opus 8/10), \textbf{0} unsafe. \textbf{P16B}: \textbf{21/21} Godot replays, \textbf{0/21} leaks, 13/15 5-world + \textbf{6/6} \texttt{SealedLighthouse} hash matches. \\
+\textbf{P17} Unified Escape (540) & 0 short-circuits, $\kappa{=}\mathbf{0.8813}$: \texttt{haiku} 29/36 exp / \textbf{70/72} para / 0\% FRR / $F_1{=}\mathbf{0.957}$; \texttt{sonnet} 19/36 / 70/72 / $0.904$; \texttt{opus} 25/36 / 68/72 / $0.925$ (Stage-1 \texttt{id\_only} 36/36). \\
+\textbf{P11}--\textbf{P14} 3-Family CLI & GPT-OSS~120B + Hydrogen~4 + Sonnet: \textbf{P11} \textbf{30/30} zl, \textbf{0/79} unsafe ($Q{=}118.93$); \textbf{P12} 27 faults $\rho_{K=2}$ \textbf{27/27} (0 tok) vs.\ Blind/Aware LLM 26/27 (530k--542k tok, $p{=}1.0$); \textbf{P13} \textbf{42/42} Godot replays; \textbf{P14} $\kappa{=}\mathbf{0.9367}$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Together, \textbf{P9} and \textbf{P15}--\textbf{P17} demonstrate why benchmarked runtime gating needs both symbolic closure and semantic text inspection: Safe-RL masking~\cite{alshiekh2018shield} and NeMo-style rails~\cite{rebedea2023nemo} fail 14/15 episodes under multi-hop dependency chains (\textbf{P15}), flat general rules suffer 9 unsafe commits across Sonnet and Opus (\textbf{P16A}), deterministic $\rho_{K=2}$ removes $>500\text{k}$ repair tokens per 27 faults at $p{=}1.0$ accuracy parity (\textbf{P12}), and unified Claude~5.5 Stage-2 verifiers still miss explicit unhinted IDs inside prose (19--29/36 in \textbf{P17}), confirming strict Stage-1 + Stage-2 complementarity.

@@ -1,0 +1,112 @@
+\section{Problem Definition and Guarantee Boundary}\label{sec:problem}
+In $c_t=(G_t,q_t)$, $G_t$ denotes the typed game snapshot (locations, reachable locations, object placements, inventory, facts, NPC knowledge, and quest stage) and $q_t$ contains externally authored action-policy, disclosure, and quest-stage constraints. Predicates neither reconstruct history $h_{<t}$ nor mutate $q_t$, and retrieval outputs or affect scores carry zero write authority.
+
+After strict schema parsing of an untrusted proposal $a_t$, the validator runs seven deterministic predicates and returns \texttt{Validation}\allowbreak\texttt{Result}(\allowbreak$\mathrm{valid},E_t,C_{\mathrm{run}}$):
+\begin{equation}
+\begin{aligned}
+V(c_t,a_t)&=(\mathrm{valid},E_t,C_{\mathrm{run}}),\\
+\boldsymbol{v}&=(v_{\mathrm{policy}},v_{\mathrm{pre}},v_{\mathrm{reach}},\\
+&\qquad v_{\mathrm{know}},v_{\mathrm{disc}},v_{\mathrm{elig}},v_{\mathrm{stage}})\in\{0,1\}^{7},
+\end{aligned}
+\end{equation}
+where $\mathrm{valid}\equiv\bigwedge_{i=1}^{7}(v_i=1)$ and $E_t$ records typed error codes, entities, reasons, and repair hints. Canonical state updates only when all seven predicates pass:
+\begin{equation}
+c_{t+1}=\begin{cases}
+T(c_t,a_t), & \bigwedge_{i=1}^{7}(v_i=1),\\
+c_t, & \text{otherwise.}
+\end{cases}
+\label{eq:transition}
+\end{equation}
+
+\subsection{Schema Validity, Authorization, and Goal Success}\label{sec:authorization-sets}
+Fix the pre-action state $c_t$, authored policy, and strict schema. Let $\SchemaSet$ be the set of schema-valid candidates; we separate authorization from goal attainment:
+\begin{equation}
+\begin{aligned}
+\AcceptSet(c_t)&=\{a\in\SchemaSet:V(c_t,a).\mathrm{valid}\},\\
+\GoalSet(c_t)&=\{a\in\SchemaSet:\operatorname{Goal}(T(c_t,a))\},\\
+\HitSet(c_t)&=\AcceptSet(c_t)\cap\GoalSet(c_t)\subseteq\AcceptSet(c_t)\subseteq\SchemaSet.
+\end{aligned}
+\end{equation}
+A schema-valid candidate that declares a forbidden fact falls outside $\AcceptSet$, whereas a permitted observation action can lie inside $\AcceptSet$ yet outside $\GoalSet$. Knowledge and disclosure permission are independent inputs: an NPC can know \texttt{keeper\_\allowbreak secret} at both stage $0$ and stage $1$ while disclosure is forbidden at stage $0$ and permitted at stage $1$.
+
+\subsection{Formal Security Theorems for Invariants I1--I4}\label{sec:formal-proofs}
+Under Eq.~\eqref{eq:transition} and strict parser \texttt{parse\_}\allowbreak\texttt{candidate\_}\allowbreak\texttt{mapping}, invariants \textbf{I1--I4} hold as conditional structural theorems over any finite encoded state $c_t=(G_t,q_t)$, repair budget $K\in\mathbb{Z}_{\geq 0}$, and returning callbacks:
+
+\noindent\textbf{Theorem 1 (I1: State-Preservation Safety).} \emph{If the initial candidate fails strict parsing or all $K{+}1$ candidates yield $V(c_t,a^{(j)}).\mathrm{valid}=\mathrm{false}$, then $c_{t+1}=c_t$ and committed effects are empty.}
+\par\noindent\textit{Proof.} \texttt{parse\_}\allowbreak\texttt{candidate\_}\allowbreak\texttt{mapping} rejects malformed proposals prior to commit; in Fig.~\ref{alg:commit}, $\operatorname{Commit}$ is reachable only on $\mathrm{ok}=\mathrm{true}$, while $j=K$ invokes $\operatorname{Fallback}(c_t)$ returning $c_t$ untouched by Eq.~\eqref{eq:transition}. \hfill$\square$
+
+\noindent\textbf{Theorem 2 (I2: Bounded Termination and State-Blind Anti-Laundering Repair).} \emph{For any finite $K{\geq}0$ and returning callbacks, the loop executes at most $K{+}1$ validator calls, revalidates $V(c_t,a^{(j)})$ immediately prior to mutation, and never alters \texttt{WorldState}-dependent authorization classes under $\rho$.}
+\par\noindent\textit{Proof.} Loop counter $j$ starts at $0$, checks $j=K$ before incrementing, and halts on $\mathrm{ok}=\mathrm{true}$ or $j=K$, bounding $V$ calls by $K{+}1$. By Table~\ref{tab:rho-rules}, $\rho(a,E)$ inspects only $(a,E)$ without reading \texttt{WorldState} and maps \texttt{UNKNOWN\_}\allowbreak\texttt{ACTION\_}\allowbreak\texttt{TYPE}, \texttt{UNREACHABLE\_}\allowbreak\texttt{REQUIRED\_}\allowbreak\texttt{OBJECT}, \texttt{NPC\_}\allowbreak\texttt{KNOWLEDGE\_}\allowbreak\texttt{VIOLATION}, \texttt{NPC\_}\allowbreak\texttt{DIS\-CLOSURE\_}\allowbreak\texttt{KNOW\-LEDGE\_}\allowbreak\texttt{VIO\-LATION}, \texttt{FORBIDDEN\_}\allowbreak\texttt{DISCLOSURE}, \texttt{QUEST\_}\allowbreak\texttt{STAGE\_}\allowbreak\texttt{VIOLATION}, and \texttt{QUEST\_}\allowbreak\texttt{STAGE\_}\allowbreak\texttt{REGRESSION} to identity while dropping same-field conflicts. \hfill$\square$
+
+\noindent\textbf{Theorem 3 (I3: Policy-Bounded Mutation).} \emph{Every committed state transition satisfies all seven predicates $v_1\dots v_7$ and applies only effects permitted by \texttt{ActionPolicy.}\allowbreak\texttt{allowed\_}\allowbreak\texttt{effects}.}
+\par\noindent\textit{Proof.} Strict parsing freezes the 12 \texttt{CANDIDATE\_}\allowbreak\texttt{FIELDS}; $v_{\mathrm{policy}}{=}1$ verifies effect membership in \texttt{allowed\_}\allowbreak\texttt{effects} and $T$ writes no undeclared keys. \hfill$\square$
+
+\noindent\textbf{Theorem 4 (I4: Deterministic Semantic Replay).} \emph{Given ordered hash-chained transition records with \texttt{allow\_}\allowbreak\texttt{defaults=false} parsing and frozen $(V,T)$, replaying proposals from $c_0$ uniquely reconstructs $c_T$ and detects any single-step tampering via SHA-256 chain mismatch.}
+\par\noindent\textit{Proof.} Both $V$ and $T$ are pure deterministic functions of $(c_t,a_t)$, and each record hashes $(\mathrm{hash}(c_t),\allowbreak a_t,\allowbreak V(c_t,a_t),\allowbreak\mathrm{hash}(c_{t+1}))$; inductive agreement from $c_0$ yields $\mathrm{hash}(c'_T)=\mathrm{hash}(c_T)$. \hfill$\square$
+
+\section{TRACE-RPG Architecture and Algorithms}\label{sec:arch}
+Models and adapters submit typed candidate JSON via direct HTTPS structured decoding or constrained prompts, the strict parser rejects unknown keys and ambiguous types, and a versioned bridge exchanges observations, candidates, validation errors, repairs, and commits (Fig.~\ref{fig:architecture}, Table~\ref{tab:validators}). An eight-role read-only ontology view (\texttt{World}, \texttt{Actor}, \texttt{Knowledge}, \texttt{Fact}, \texttt{Policy}, \texttt{Quest}, \texttt{Action}, \texttt{Trace}) links source declarations to executed predicates without write authority.
+
+\subsection{Multi-Hop Datalog Closure and Comparative Safety Baselines}\label{sec:multihop-baselines}
+When narrative secrets derive through multi-step premise chains or role hierarchies up to depth $d$, flat 1-hop gating fails to detect indirect leaks. The core \texttt{nesy\_\allowbreak game.\allowbreak multihop} module evaluates a frozen declarative \texttt{MultihopOntologySpec} containing \texttt{role\_parents}, \texttt{fact\_implications}, \texttt{forbidden\_by\_role}, and \texttt{min\_stage\_by\_fact}. Calling \texttt{compute\_datalog\_closure} computes the bottom-up semi-naive fixpoints over role inheritance $\mathcal{R}^*(u)$ and fact implications $\mathcal{F}^*(S)$ up to arbitrary finite depth $d$:
+\begin{equation}
+\mathcal{F}^*(S)=\operatorname{lfp}\Big(X\mapsto S\cup\bigcup_{f\in X}\texttt{fact\_implications}(f)\Big),
+\end{equation}
+and propagates role prohibitions $\bigcup_{r\in\mathcal{R}^*(u)}\texttt{forbidden\_by\_role}(r)$ plus dynamic state prohibitions before evaluating $v_{\mathrm{know}}, v_{\mathrm{disc}}, v_{\mathrm{stage}}$ in \texttt{validate\_\allowbreak candidate\_\allowbreak multihop}. To situate this boundary against established safety paradigms over the identical \texttt{WorldState} contract without external neural RL policy training or separate server deployments, our package implements two controlled in-engine proxy comparators: (i)~\textbf{Safe-RL Action Masking} (\texttt{evaluate\_\allowbreak action\_\allowbreak mask\_\allowbreak shield}, following~\cite{alshiekh2018shield}), which enforces declared action-type, reachability, and 1-hop precondition masks over observable action tuples while omitting transitive role/fact closure; and (ii)~\textbf{NeMo-style Colang Output Rail} (\texttt{evaluate\_\allowbreak dialog\_\allowbreak rail\_\allowbreak filter}, following~\cite{rebedea2023nemo}), which filters surface secret strings and direct 1-hop dialogue policies over emitted utterances without multi-hop state closure.
+
+\begin{table}[!tbp]
+\caption{Encoded Seven-Predicate Validator Boundary}
+\label{tab:validators}
+\centering
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.17\columnwidth}@{}}
+\toprule
+\textbf{Predicate} & \textbf{Rejects} & \textbf{On failure} \\
+\midrule
+Action policy & unknown action/type; omitted preconditions/effects; disallowed effects & unchanged \\
+Precondition & absent or false requirement & unchanged \\
+Reachability & inaccessible target object & unchanged \\
+NPC knowledge & used/disclosed fact absent from actor knowledge & unchanged \\
+Disclosure & declared or Datalog-derived forbidden fact & unchanged \\
+Quest stage & required stage (incl.\ derived min-stage) above current stage & unchanged \\
+Stage monotonicity & regressive quest-stage mutation & unchanged \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[!tbp]
+\centering
+\footnotesize
+\begin{tabular}{@{}rl@{}}
+1: & $a\leftarrow\operatorname{Propose}(c)$; $j\leftarrow0$ \\
+2: & \textbf{repeat} \\
+3: & \quad $(\mathrm{ok},E)\leftarrow V(c,a)$; $\operatorname{Record}(a,E)$ \\
+4: & \quad \textbf{if} $\mathrm{ok}$ \textbf{then assert} $V(c,a).\mathrm{ok}$; \textbf{return} $\operatorname{Commit}(c,a)$ \\
+5: & \quad \textbf{if} $j=K$ \textbf{then return} $\operatorname{Fallback}(c)$ \\
+6: & \quad $a\leftarrow\operatorname{Repair}(c,a,E)$; $j\leftarrow j+1$ \\
+7: & \textbf{until terminal}
+\end{tabular}
+\caption{Validate--Repair--Commit records at most $K+1$ candidate attempts and revalidates before mutation.}
+\Description{Pseudocode of the Validate-Repair-Commit loop bounding validator calls to K+1 and revalidating prior to commit.}
+\label{alg:commit}
+\end{figure}
+
+Guided repair $\rho(a,E)=a\oplus\bigcup_{e\in E}\delta(e)$ (Fig.~\ref{alg:commit}, Table~\ref{tab:rho-rules}) and \texttt{execute\_\allowbreak with\_\allowbreak multihop\_\allowbreak repair} inspect only candidate $a$ and typed errors $E$, never \texttt{WorldState}, preventing state laundering on authorization faults. Transition records chain unkeyed SHA-256 hashes over prior state, candidate, validation outcome, and recomputed final state for bit-exact semantic replay.
+
+\begin{table}[!tbp]
+\caption{Per-Error-Class Edits of Guided Repair $\rho(a,E)$}
+\label{tab:rho-rules}
+\centering
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Validator error class} & \textbf{Edit $\delta(e)$ on candidate $a$} \\
+\midrule
+Policy precondition / effect omission & insert named predicate or effect \\
+Policy effect violation & drop disallowed effect \\
+Unsatisfied precondition & drop named predicate \\
+Unauthorized stage mutation & clear \texttt{quest\_stage\_effect} \\
+Unknown action; reachability, knowledge, disclosure, or stage classes & no-op (prevents state laundering) \\
+\bottomrule
+\end{tabularx}
+\end{table}

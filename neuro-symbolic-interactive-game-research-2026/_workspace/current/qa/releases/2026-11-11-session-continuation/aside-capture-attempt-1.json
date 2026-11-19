@@ -1,0 +1,49 @@
+{
+  "schema_version": "aside-capture-attempt/1",
+  "backend": "Aside",
+  "cli_version": "1.26.1107.24",
+  "profile_connected": true,
+  "target": "local public dashboard ontology evidence component",
+  "scope": "Read-only engineering presentation, not actual gameplay or research efficacy",
+  "snapshots_observed": [
+    "Frozen lane N=48 B=4 M=8",
+    "Eight bilingual role declarations with missing/unreported observed evidence",
+    "Seven Python checks, six Godot families and seven DISC rules remain separate"
+  ],
+  "captures": [
+    {
+      "path": "_workspace/current/qa/releases/2026-11-11-session-continuation/nsg-ontology-desktop.png",
+      "sha256": "8fac7f3c939c8d94f8928826a67cc35eb4e758d6eba4db9896f6f0070010cbcd",
+      "bytes": 78977,
+      "pixels": [
+        2772,
+        962
+      ],
+      "viewport_css_pixels": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-11-11-session-continuation/nsg-ontology-mobile.png",
+      "sha256": "2129e2b89b3665b80f34c8a508d3deaacc44cacebe2edaaf4314452e9639aa1e",
+      "bytes": 173218,
+      "pixels": [
+        720,
+        1688
+      ],
+      "viewport_css_pixels": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  ],
+  "capture_verdict": "FIX; locator screenshots are not accepted visual-pass evidence",
+  "capture_limits": [
+    "Desktop locator image showed an earlier section rather than the scoped ontology panel",
+    "Mobile locator capture was viewport-limited and exposed a possibly malformed caption; layout root cause is not established",
+    "First mobile screenshot failed because target was offscreen; a scroll-based retry returned pixels but did not establish correct complete capture"
+  ],
+  "separate_runtime_limit": "Selected public tree has no game export at embedded public/index.html (404 observed); no gameplay PASS",
+  "concurrency_note": "Aside profile reserved for the test-author lane after observed tab-tracking collision; Main paused concurrent browser use"
+}

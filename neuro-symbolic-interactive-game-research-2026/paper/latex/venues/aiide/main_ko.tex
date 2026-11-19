@@ -1,0 +1,61 @@
+\documentclass[letterpaper]{article}
+\usepackage{aaai2026}
+\nocopyright
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\usepackage{placeins}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\setcounter{secnumdepth}{1}
+
+\title{TRACE-RPG: 서사 중재와 게임 상태 권한 부여를 위한 감사 가능한 제안--커밋 경계}
+\author{
+  정장영\textsuperscript{\rm 1},
+  강신진\textsuperscript{\rm 2}\thanks{교신저자.}
+}
+\affiliations{
+  \textsuperscript{\rm 1}홍익대학교 게임학과\\
+  \textsuperscript{\rm 2}홍익대학교
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+스키마에 부합하는 게임 내 행동 제안이라도 접근할 수 없는 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. \system{}는 형식 정리 1--4로 뒷받침된 결정론적 7술어 게이트에서 제안 권한과 커밋 권한을 분리한다. 1,664건 유한 그래프 감사에서 의미 게이트는 스키마 전용 대조군의 위험 커밋 260/416건을 0/416건으로 차단했고(오탐 0/156, 수리 128/260), 48건 다중 홉 폐쇄에서 60/60 동률을 돌파했다(\texttt{ontology\_}\allowbreak\texttt{multihop\_}\allowbreak\texttt{gate} 48/48 대 평면 20/48). 3개 퀘스트 24에피소드 라이브 Gemini 평가에서 위험 커밋 0/129건과 리플레이 24/24건을 달성했고(70턴 차단, 리비전 미인증), 2차 한·영 우회 검증기는 97.2\% 재현율·0.0\% 오거부를 기록하며 \texttt{TR01--TR06} 인간 평가 패킷(\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS})을 구축했다.
+\end{abstract}
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_core_ko}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 게이팅하며, 오류는 $\rho$ 수리 또는 상태 불변 fallback으로 이어진 뒤 재검증을 거쳐 커밋된다.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/ko/sec_problem_arch_ko}
+\input{../_shared/ko/sec_eval_compact_ko}
+\input{../_shared/ko/sec_discussion_conclusion_ko}
+
+\FloatBarrier
+\bibliography{../../references}
+
+\end{document}

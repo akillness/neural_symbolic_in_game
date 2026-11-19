@@ -1,0 +1,61 @@
+{
+  "findings": [
+    {
+      "evidence": "The validator closes only the top-level object, rows, unknowns, counters, and scope. It never validates the shape or contents of provenance, diagnosis, or unsupported_request; failure and timing are checked only for selected keys and accept arbitrary extras. The private-field regression test mutates only the top level and a row. A concrete payload such as fixture['diagnosis']['operator_email']='private' therefore passes validate_identity_results unchanged, despite the test's stated contract that private fields stay out. The currently reviewed packet is clean, and the pinned digest protects the current on-disk bytes, so this is a validation-boundary defect rather than evidence of a present disclosure.",
+      "file_line": [
+        "scripts/generate_runtime_comparison_publication.py:735-754",
+        "scripts/generate_runtime_comparison_publication.py:906-944",
+        "tests/test_runtime_comparison_publication.py:805-858"
+      ],
+      "required_fix": "Define exact allowed keys and value constraints for every nested public object, especially provenance, diagnosis, unsupported_request, failure, and timing; add nested operator/account/private-field rejection cases.",
+      "severity": "MEDIUM",
+      "title": "Nested public-packet objects are not closed-schema validated, so the claimed private-field gate is incomplete"
+    },
+    {
+      "evidence": "The test derives its expected legacy set at runtime with generated_dir.glob('*_{language}.tex') and then checks only files still present. Deleting a legacy generated fragment and its matching main.tex input removes it from the loop, so the test passes even though the contract requires every legacy input to remain exactly once before appendices. Its checks correctly constrain files that remain, and correctly place the identity input, but cannot detect paired deletion.",
+      "file_line": [
+        "tests/test_current_research_publication.py:403-438"
+      ],
+      "required_fix": "Use an explicit frozen set of legacy generated fragment names, assert each exists, and assert each corresponding input occurs exactly once before appendices; keep the identity fragment as the sole explicit post-bibliography/post-figure Appendix B exception.",
+      "severity": "MEDIUM",
+      "title": "Appendix-placement regression does not actually freeze retention of legacy generated inputs"
+    }
+  ],
+  "heuristic_nits": [
+    {
+      "evidence": "The module and argparse description still say the renderer accepts only the frozen eight-row packet, although the same CLI now supports the separate identity extension. This is documentation drift, not a behavioral failure.",
+      "file_line": "scripts/generate_runtime_comparison_publication.py:1-6",
+      "severity": "LOW"
+    }
+  ],
+  "limitations": {
+    "actualRuntimeOutcome": "NOT_PASSED",
+    "evidenceBoundary": "Only the declared slice and four allowed public packet files were read. Forbidden native-results-v1 and source-snapshot-v1 material was not read. Raw record-hash validity and the original-results digest were not independently recomputed.",
+    "execution": "Read-only review. No shell commands, tests, formatters, linters, builds, hash calculations, or native/model/account actions were run; reported 214 tests plus 325 subtests, Ruff PASS, and PDF properties were not independently reproduced.",
+    "modelComparison": "UNVERIFIED",
+    "modelIdentity": "UNVERIFIED",
+    "releaseBoundary": "This review does not establish a full-paper release gate, safety PASS, or a successful runtime result."
+  },
+  "reviewedScope": {
+    "code": [
+      "scripts/generate_runtime_comparison_publication.py: identity constants; validate_identity_results; load_identity_results; render_identity_fragment; write_identity_fragments; CLI branch",
+      "paper/latex/Makefile: generated target identity command"
+    ],
+    "confirmedFromRead": "Current packet and renderer keep 20 planned rows as ten selector-by-representation cells; retain 1 assigned/1 executed/1 native process/0 identity-qualified/19 unattempted, two blocked repair requests, zero commits, NO_COMMIT_OBSERVED, and NOT_RUN replay; preserve the original eight-row SHA and unpooled status; keep identity/revision/cost unknown; distinguish hash-valid from engineering-rejected; and place one language-specific identity fragment after bibliography, the original runtime figure, and the Appendix B label. The legacy CLI control flow remains default/original unless --identity-extension is selected.",
+    "manuscripts": [
+      "paper/latex/en/main.tex: identity introduction and Appendix B input",
+      "paper/latex/ko/main.tex: identity introduction and Appendix B input"
+    ],
+    "publicPacket": [
+      "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/results.json",
+      "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/traces.jsonl",
+      "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/execution-audit.json",
+      "research/runtime-model-swap-20261024/codex-identity-20261026/public-results-v1/operational-closure.json"
+    ],
+    "tests": [
+      "tests/test_runtime_comparison_publication.py: IdentityAdmissionPublicationTests",
+      "tests/test_current_research_publication.py: explicit Appendix B placement test"
+    ]
+  },
+  "standards_verdict": "FIX"
+}

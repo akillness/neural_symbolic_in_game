@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.327" timestamp="2026-10-26T21:01:36.568621+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap_native.NativeProductionBootstrapTests" name="test_cli_native_materializes_frozen_allowed_requests_before_episode_hashing" time="0.010"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmp8vpcvj07/outputs/episode.json'">tests/test_runtime_model_swap_native.py:5374: in test_cli_native_materializes_frozen_allowed_requests_before_episode_hashing
+    episode = json.loads(episode_path.read_text(encoding="utf-8"))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py:1044: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmp8vpcvj07/outputs/episode.json'</failure></testcase></testsuite></testsuites>

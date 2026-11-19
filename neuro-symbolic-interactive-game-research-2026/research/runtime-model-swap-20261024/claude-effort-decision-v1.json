@@ -1,0 +1,95 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-claude-effort-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T09:18:15.104Z",
+  "status": "CLAUDE_COMMON_MEDIUM_DESIGN_APPROVED_NOT_FULL_PROTOCOL_NOT_EXECUTED",
+  "user_verbatim_decision": "둘 다 medium",
+  "approval_context": "Answer to the Claude Code Opus5.5/Sonnet5.5 effort-policy question; prospective design only, with model-specific support and native override/cap checks required before any actual session.",
+  "approved_design_dimension": {
+    "host": "Claude Code",
+    "selected_effort_by_slot": {
+      "C-OPUS55": "medium",
+      "C-SONNET55": "medium"
+    },
+    "catalog_aliases_observed": {
+      "C-OPUS55": "opus",
+      "C-SONNET55": "sonnet"
+    },
+    "exact_native_selectors_for_assignment": {
+      "C-OPUS55": null,
+      "C-SONNET55": null
+    },
+    "configuration_state": "PROSPECTIVE_DESIGN_ONLY_NOT_APPLIED_TO_CLI_OR_RUNNER"
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json",
+      "sha256": "27b052fb3af156c999eafad7bb7d3ac611fbea6d7caeb86a3e7952bc5c1e3b4e"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/claude-code-host-decision-v1.json",
+      "sha256": "32430d799cd89f50f722cda7d1d0b658fa126b60a89ef916ec7a4ac617714cf6"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/codex-sol-effort-decision-v1.json",
+      "sha256": "913f752f00e0e739e4091c4387a2eb53a24a16788cc8aca3d90e90c229874a30"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/flash-effort-decision-v1.json",
+      "sha256": "c9a63ee4ba60e7e0623c0c17990cb7905ed9cbe78f3914bf053b13f8e835d76b"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/claude-effort-documentation-20261025.json",
+      "sha256": "8894c669b89e7eb9e0418fdec675d76f55b91c54f44cdbde75d2a8d82d86751b"
+    }
+  ],
+  "evidence_scope": {
+    "official_documentation_lists_medium_for_both_versions": true,
+    "actual_alias_resolution_and_served_identity_verified": false,
+    "effective_native_medium_verified": false,
+    "environment_override_and_effort_cap_preflight_required": true,
+    "existing_environment_or_global_settings_modified": false,
+    "identical_effort_label_establishes_equal_compute_cost_latency_or_quality": false,
+    "native_provider_request_count": null
+  },
+  "activation_requirements": [
+    "Resolve and retain exact requested/native/provider identities without treating catalog aliases as attestations.",
+    "Inspect only approved nonsecret effective configuration; environment effort overrides --effort and a maxEffortLevel cap still applies. Do not expose credentials or modify global settings.",
+    "Verify and retain effective medium for each actual session; unresolved or mismatched effective values block assignment and require an amendment, not silent fallback.",
+    "Retain the serial-worker, observable host-budget, deadline/process containment and independent commit/goal/safety gates."
+  ],
+  "preservation": {
+    "previous_proposals_or_decisions_modified": false,
+    "approved_endpoint_modified": false,
+    "papers_or_game_modified": false,
+    "native_cli_configuration_changed": false,
+    "assignment_manifest_created": false,
+    "whole_roster_adopted": false
+  },
+  "authority": {
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "live_launch_authorized": false
+  },
+  "remaining_blockers": [
+    "Pilot versus independent powered confirmatory stage and prospective analysis",
+    "Independent held-out quest/split/oracle/prompt/game/ontology/authorship manifests and hashes",
+    "Episode and aggregate call/repair/deadline/billing limits",
+    "C practical margin/floor before confirmatory data",
+    "Exact selectors, served/effective settings, fallback/context/tool parity and source-bound live adapter/process containment",
+    "Separate research-context egress, billing/enforceability, spend and source-bound live launch approval"
+  ],
+  "next_interview": {
+    "topic": "Exploratory feasibility pilot before independent confirmatory study versus direct confirmatory-design planning",
+    "proposed_default": "pilot_before_independent_confirmatory",
+    "status": "PROPOSAL_NOT_APPROVED",
+    "pilot_does_not_prove_C_noninferiority": true
+  },
+  "new_candidate_generation_requests": 0,
+  "new_study_episodes": 0,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "This closes only the two Claude medium design settings. Older decisions, reviewed drafts and approved endpoint remain immutable. No live configuration, study freeze, egress, spend or launch is authorized."
+}

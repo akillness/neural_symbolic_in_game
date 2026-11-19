@@ -1,0 +1,50 @@
+{
+  "status": "pending",
+  "updated_at": "2026-11-10T05:45:01.957204+00:00",
+  "pilot": {
+    "label": "개발용 파일럿: 동일 합성 사례의 상세·일반 오류 비교",
+    "run_id": "codex-feedback-pilot-20261110",
+    "scope_note": "기존 무효 fixture를 이용한 개발용 실험이며 새로운 확증 holdout이 아닙니다. 인간 평가는 수행하지 않았습니다.",
+    "privacy_note": "실제 호출 시 호스트 스킬 설명의 외부 전송 여부는 미확인입니다. 격리는 검증되지 않았으며, 검증 전 추가 실제 모델 호출은 차단된 상태입니다.",
+    "status_path": "neuro-symbolic-interactive-game-research-2026/research/codex_feedback_pilot/codex-feedback-pilot-20261110/status.json"
+  },
+  "tasks": [
+    {
+      "id": "diagnostic_runtime_observation",
+      "label": "진단 실행자 관측 (보고 시점)",
+      "status": "blocked",
+      "detail": "담당자 보고: Terra는 실패 1건 후 중단, 9건 대기. Luna의 첫 행은 기록상 진행 중이나 runner 프로세스를 찾지 못해 실제 진행 여부와 결과는 미확인입니다. 성공 또는 실패로 추정하지 않으며 재호출하지 않습니다. 코호트 기록의 진행 중 표시는 실제 프로세스 생존을 뜻하지 않습니다."
+    },
+    {
+      "id": "offline_implementation",
+      "label": "새 오프라인 연구: 두 게임·보류 평가사례와 비교군 구현",
+      "status": "pending",
+      "detail": "고정 제안 오프라인 시연에서 합성 5건을 실행했습니다. 일반 규칙 비교군은 미구현이며 보류 평가사례와 두 게임 비교는 미완료입니다. 두 번째 게임 TextWorld는 문서상 후보 조사만 했고 설치·연동하지 않았습니다."
+    },
+    {
+      "id": "offline_evidence",
+      "label": "새 오프라인 연구: 독립 정답표·시그널·실패 보존 검토",
+      "status": "pending",
+      "detail": "독립 정적 대체 리뷰는 완료됐으나 독립 정답표는 부재합니다. 상세·일반 시그널, 실패 보존 및 안전성·오거부·목표 달성 분리의 연구 수준 검증은 완료되지 않았습니다."
+    },
+    {
+      "id": "offline_validation",
+      "label": "새 오프라인 연구: 고정 제안 평가와 게임 수행 분리 검증",
+      "status": "pending",
+      "detail": "신규 테스트 3개가 통과했습니다. 이는 합성 시연 검증이며 보류 사례 평가 또는 실제 복수모델 본실험의 증거가 아닙니다. 인간 검토와 실제 복수모델 본실험은 실행하지 않았습니다."
+    },
+    {
+      "id": "calls",
+      "label": "과거 1사례 탐색: 상세·일반 신호 Codex 요청",
+      "status": "completed",
+      "detail": "두 조건 각각 Codex 프로세스 1회 종료"
+    },
+    {
+      "id": "verify",
+      "label": "과거 1사례 탐색: 결정적 대조 및 재검증",
+      "status": "completed",
+      "detail": "과거 합성 사례 1건의 기록입니다. 새 연구 또는 모집단에 대한 결과가 아닙니다."
+    }
+  ],
+  "receipt_path": "neuro-symbolic-interactive-game-research-2026/research/signal-exploratory-20261110T023502Z-cbf0c3b7/receipt.json"
+}

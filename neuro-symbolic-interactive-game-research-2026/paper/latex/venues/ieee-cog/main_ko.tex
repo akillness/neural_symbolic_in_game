@@ -1,0 +1,52 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.10}
+
+\title{TRACE-RPG: 안전한 생성형 게임 행동을 위한 감사 가능한 제안--커밋 경계}
+
+\author{\IEEEauthorblockN{정장영$^{1}$, 강신진$^{2,*}$}
+\IEEEauthorblockA{$^{1}$홍익대학교 게임학과 \quad $^{2}$홍익대학교 ($^{*}$교신저자)}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. \system{}는 결정론적 7술어 게이트, 반례 유도 수리, 해시 연결 리플레이로 제안과 커밋 권한을 분리한다(정리 1--4). 1,664건 유한 그래프 감사에서 위험 커밋 260/416 $\rightarrow$ 0/416(오탐 0/156, 수리 128/260)을 달성했고, 48건 다중 홉 폐쇄에서 60/60 단일 홉 동률을 넘어섰다(48/48 대 20/48). 확장 0-LLM 감사, 3개 퀘스트 24개 라이브 Gemini 에피소드(위험 0/129, 70턴 차단, 리플레이 24/24, CLI 리비전 미인증), 2차 한·영 우회 검증(재현율 97.2\%, FRR 0.0\%), \texttt{TR01--TR06} 인간 평가 패킷(\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS})으로 실용 안전 경계를 제시한다.
+\end{abstract}
+
+\begin{IEEEkeywords}
+게임 인공지능, 뉴로심볼릭 검증, 인터랙티브 내러티브, 안전 게이팅
+\end{IEEEkeywords}
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_core_ko}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.68\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 게이팅하며, 오류는 $\rho$ 수리 또는 상태 불변 fallback으로 이어진 뒤 재검증을 거쳐 커밋된다.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/ko/sec_problem_arch_ko}
+\input{../_shared/ko/sec_eval_compact_ko}
+\input{../_shared/ko/sec_discussion_conclusion_ko}
+
+\FloatBarrier
+\bibliographystyle{IEEEtran}
+\bibliography{../../references}
+
+\end{document}

@@ -1,0 +1,88 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-pilot-input-billing-policy-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T10:36:10.385Z",
+  "status": "PUBLIC_MINIMAL_INPUT_AND_SUBSCRIPTION_ONLY_POLICIES_APPROVED_ACTIVATION_PENDING",
+  "user_verbatim_decisions": {
+    "pilot20_research_input_policy": "공개된 최소 입력만",
+    "pilot20_billing_policy": "기존 구독 한도만"
+  },
+  "approval_context": "The two questions explicitly defined design policies only, not actual research transmission, generation, payment or study start. Input manifest/hashes and actual privacy/billing enforcement must still be established before activation.",
+  "approved_design_dimension": {
+    "research_input_policy": {
+      "publicly_verified_minimal_research_input_only": true,
+      "allowed_candidate_categories": [
+        "Publicly verified quest description",
+        "Publicly verified necessary current game-state observations",
+        "Action/output schema",
+        "Condition-specific information-matched rules or ontology representation"
+      ],
+      "excluded_categories": [
+        "Account information or identifiers",
+        "Credentials or authentication files",
+        "Personal wiki contents",
+        "Raw conversations or captured prompts",
+        "Whole repository or unrelated files",
+        "Confidential or unverified-public game material"
+      ],
+      "source_publicity_and_exact_payload_manifest_required": true,
+      "unverified_or_nonpublic_input_policy": "BLOCK_AND_REQUEST_SEPARATE_DECISION",
+      "model_tool_access_to_unrelated_local_files_authorized": false
+    },
+    "billing_policy": {
+      "existing_native_subscription_allowances_only": true,
+      "new_or_additional_usage_billing_authorized": false,
+      "purchases_or_plan_changes_authorized": false,
+      "paid_api_fallback_authorized": false,
+      "silent_model_or_host_substitution_authorized": false,
+      "if_additional_charge_exposure_cannot_be_excluded": "DO_NOT_EXECUTE",
+      "if_subscription_allowance_cannot_be_verified": "DO_NOT_EXECUTE",
+      "verified_account_billing_policy": null,
+      "verified_remaining_allowance": null,
+      "verified_cost_usd": null,
+      "internal_request_and_remote_billing_stop_guarantees": false,
+      "not_equivalent_to_measured_zero_cost": true
+    }
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/pilot-20-budget-decision-v1.json",
+      "sha256": "46b062105ec97f04639533e3bf2795b28f5728cc7e2f81eb028fd2122ab00b28"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/pilot-20-scope-decision-v1.json",
+      "sha256": "75b8f141d6fc96b158fe511ba36f9f65f700234096c9d2c87780b7a7a1bd6efa"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+      "sha256": "314c016325b2da7ad45419f3f208914df98537304710658a3b4bb420659bb169"
+    }
+  ],
+  "authority": {
+    "new_account_or_billing_lookup_authorized": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "pilot_launch_authorized": false,
+    "confirmatory_launch_authorized": false,
+    "full_protocol_frozen": false
+  },
+  "preserved_existing_authority": {
+    "previous_metadata_only_catalog_permission_unchanged": true,
+    "approved_offline_code_fixture_engine_test_work_unchanged": true,
+    "prior_immutable_artifacts_and_frozen_endpoint_unchanged": true
+  },
+  "remaining_native_gates": [
+    "Source-bound exact minimal input/publicity manifest and independent oracle/assignment plan",
+    "Native adapter and effective-configuration/fallback/context enforcement evidence",
+    "Authorized verifiable subscription-only billing and allowance evidence, otherwise block",
+    "Final source-bound activation and explicit user launch permission"
+  ],
+  "new_candidate_generation_requests": 0,
+  "new_study_assigned_episodes": 0,
+  "new_study_executed_episodes": 0,
+  "native_configuration_or_runtime_source_changed": false,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "Do not reinterpret design-policy approval as transmission, account lookup, generation, financial or launch permission. Preserve all earlier decisions."
+}

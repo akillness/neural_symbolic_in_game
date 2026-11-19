@@ -1,0 +1,129 @@
+{
+  "schema_version": "runtime-pilot-resource-design-verification/1",
+  "status": "PASS_RESOURCE_DESIGN_AND_OFFLINE_REFUSAL_ONLY",
+  "decision_ref": "research/runtime-model-swap-20261024/pilot-20-budget-decision-v1.json",
+  "decision_sha256": "46b062105ec97f04639533e3bf2795b28f5728cc7e2f81eb028fd2122ab00b28",
+  "decision_json_and_persisted_bytes": "PASS",
+  "source_bindings_verified": 3,
+  "approved_design": {
+    "episode_seconds": 180,
+    "response_seconds": 60,
+    "observable_host_invocations_per_episode": 12,
+    "logical_repairs_per_decision": 2,
+    "concurrency": 1
+  },
+  "conditional_episode_host_invocation_ceiling": 240,
+  "study_authority_flags_all_false": true,
+  "native_admission_probe": {
+    "command": "rtk proxy .venv/bin/python scripts/run_runtime_model_swap.py --live --output-root \"$NATIVE_REJECT_OUT\"",
+    "exit_code": 2,
+    "stdout": {
+      "failure_reason": "provider_not_allowed_offline",
+      "provider_process_launch_count": 0,
+      "status": "rejected"
+    },
+    "output_root_created": false,
+    "interpretation": "Expected refusal before provider execution; not an actual native-model or full-episode test."
+  },
+  "readiness_evidence_bindings": [
+    {
+      "path": "src/nesy_game/runtime_model_swap.py",
+      "sha256": "127b3ccad6b9aa164ad2f54dd50c7b0668678e5dd304a8ee0207f34dc1f48ff1"
+    },
+    {
+      "path": "scripts/run_runtime_model_swap.py",
+      "sha256": "0d00845926529b1d89040813e08c7ae6aa2fe8d63471f0ed699aa2cdc6e2779b"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+      "sha256": "314c016325b2da7ad45419f3f208914df98537304710658a3b4bb420659bb169"
+    }
+  ],
+  "source_evidence": [
+    {
+      "path": "src/nesy_game/runtime_model_swap.py",
+      "lines": "29-33",
+      "fact": "Offline EpisodeLimits defaults match the selected resource design."
+    },
+    {
+      "path": "src/nesy_game/runtime_model_swap.py",
+      "lines": "269-272",
+      "fact": "The target run_episode rejects non-offline models, provider fields and provider launchers."
+    },
+    {
+      "path": "scripts/run_runtime_model_swap.py",
+      "lines": "35-46",
+      "fact": "The current CLI refuses --live before output-root creation."
+    },
+    {
+      "path": "scripts/run_runtime_model_swap.py",
+      "lines": "74-101",
+      "fact": "The target offline script injects scripted_prompt and an offline-synthetic-model, not the proposed five real model families."
+    },
+    {
+      "path": "src/nesy_game/runtime_model_swap.py",
+      "lines": "915-947",
+      "fact": "Injected prompt callbacks have observed request/output/timing evidence and remaining-time clamping; this alone does not establish native subprocess preemption or remote cancellation."
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/offline-implementation-approval-v1.json",
+      "lines": "14-21,38-60",
+      "fact": "Existing typed-adapter/local-engine/test authority is preserved; actual provider calls, research egress, spend and study launch require separate permission."
+    }
+  ],
+  "retrieval_note": "The focused zvec search timed out; bounded native-Grep and direct cited source ranges resolved this inspection. No index mutation was requested.",
+  "verification_wrapper_note": "The first wrapper falsely rejected the successful lint capture because it required an explicit details.exitCode=0; this tool omits zero on success. The same original clean JSON capture was then parsed and checked, without rerunning or weakening the lint command.",
+  "wiki_check": {
+    "command": "rtk proxy .venv/bin/python scripts/lint_wiki.py ../llm-wiki --format json",
+    "tool_error": false,
+    "reported_exit_code": null,
+    "report": {
+      "vault_root": "<REPOSITORY_ROOT>/llm-wiki",
+      "missing_paths": [],
+      "page_count": 82,
+      "broken_links": [],
+      "orphan_pages": []
+    },
+    "additional_relative_markdown_targets_checked": 3
+  },
+  "not_established": [
+    "Native 180/60/12/2 enforcement or process-tree/remote cancellation",
+    "Actual provider internal request count or monetary accounting cap",
+    "Exact served identities/effective settings or tool/fallback/context parity",
+    "Complete source-bound pilot protocol and actual 20-episode launch",
+    "Scientific ontology superiority, cross-quest inference or C noninferiority"
+  ],
+  "new_study_assigned_episodes": 0,
+  "new_study_executed_episodes": 0,
+  "new_candidate_generation_requests": 0,
+  "runtime_source_modified": false,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "User-selected values, three source digests, persisted bytes and actual negative CLI receipt agree.",
+      "improvement": "Native enforcement and served identity evidence remain absent."
+    },
+    "completeness": {
+      "score": 4,
+      "evidence": "Budget dimension and current-entrypoint readiness inspection are complete; full study is not represented as complete.",
+      "improvement": "Bind the remaining native/source/protocol/permission gates before execution."
+    },
+    "clarity": {
+      "score": 4,
+      "evidence": "Design approval is separated from enforcement, internal provider requests, scientific episodes and launch.",
+      "improvement": "Keep the next human decision to one coherent privacy/billing policy."
+    },
+    "actionability": {
+      "score": 4,
+      "evidence": "Exact source anchors, command/exit/stdout and retained offline permissions identify the next work boundary.",
+      "improvement": "Bind privacy/billing choices before native activation."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "Existing handoff surfaces were updated; no new Markdown page or unrelated suite was added.",
+      "improvement": "Do not repeat the historical roster in the reply."
+    },
+    "overall": 4
+  }
+}

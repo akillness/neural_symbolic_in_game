@@ -1,0 +1,61 @@
+{
+  "schema_version": "runtime-flash-effort-decision-verification/1",
+  "status": "PASS_PARTIAL_DESIGN_AND_LOCAL_HANDOFF_ONLY",
+  "decision_ref": "research/runtime-model-swap-20261024/flash-effort-decision-v1.json",
+  "decision_sha256": "c9a63ee4ba60e7e0623c0c17990cb7905ed9cbe78f3914bf053b13f8e835d76b",
+  "selected_native_selector": "gemini-3.8-flash-medium",
+  "catalog_support_mappings_verified": 1,
+  "source_bindings_verified": 3,
+  "decision_json_and_persisted_hash": "PASS",
+  "official_claude_effort_documentation": {
+    "path": "research/runtime-model-swap-20261024/claude-effort-documentation-20261025.json",
+    "sha256": "8894c669b89e7eb9e0418fdec675d76f55b91c54f44cdbde75d2a8d82d86751b",
+    "json_and_persisted_hash": "PASS",
+    "scope": "Official excerpts only; no native environment/identity/effective-effort verification"
+  },
+  "command": "rtk proxy .venv/bin/python scripts/lint_wiki.py ../llm-wiki --format json",
+  "cwd": "<PROJECT_ROOT>",
+  "observed_report": {
+    "vault_root": "<REPOSITORY_ROOT>/llm-wiki",
+    "missing_paths": [],
+    "page_count": 82,
+    "broken_links": [],
+    "orphan_pages": []
+  },
+  "new_markdown_links_checked": 4,
+  "actual_cli_configuration_changes": 0,
+  "new_candidate_generation_requests": 0,
+  "new_study_episodes": 0,
+  "claude_effort_approved": false,
+  "full_study_protocol": "UNRESOLVED_NOT_FROZEN",
+  "live_study_authorized": false,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "Exact native selector, persisted hashes and 3 source bindings checked; official Claude support remains documentation-only.",
+      "improvement": "Verify served identity and effective effort before any live assignment."
+    },
+    "completeness": {
+      "score": 4,
+      "evidence": "Current host/Flash choices are recorded; full protocol and launch remain explicitly unresolved.",
+      "improvement": "Continue only the remaining human design and permission gates."
+    },
+    "clarity": {
+      "score": 4,
+      "evidence": "Requested design effort is separated from actual CLI settings and effective runtime values.",
+      "improvement": "Keep the user reply to the selected setting and one next question."
+    },
+    "actionability": {
+      "score": 4,
+      "evidence": "Immutable decision and documentation records plus four local handoff links exist.",
+      "improvement": "Bind the next user choice rather than silently inheriting medium."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "Detailed provenance is in JSON; the human-facing answer need not repeat the full catalog or study plan.",
+      "improvement": "Use the canonical report rather than another prose document."
+    },
+    "overall": 4
+  }
+}

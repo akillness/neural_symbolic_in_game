@@ -1,0 +1,91 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-pilot-20-budget-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T10:12:37.436Z",
+  "status": "PILOT_RESOURCE_DESIGN_APPROVED_NATIVE_ENFORCEMENT_AND_LAUNCH_PENDING",
+  "user_verbatim_decision": "제안 한도 채택",
+  "approval_context": "The user selected the proposed 180/60/12/2/1 resource-design packet for the existing approved 20-episode feasibility-pilot scope. The question explicitly excluded proof of enforcement, research egress, spend, candidate generation and launch.",
+  "approved_design_dimension": {
+    "episode_wall_deadline_seconds": 180,
+    "per_host_response_deadline_seconds": 60,
+    "response_deadline_must_not_exceed_episode_remaining_time": true,
+    "max_total_observable_host_invocations_per_episode": 12,
+    "max_logical_repairs_per_decision": 2,
+    "concurrency": 1,
+    "host_invocation_semantics": "Count every initial host attempt, malformed response, refusal, timeout, corrective request and transport retry. Native/provider-internal model requests remain unknown unless authoritatively exposed.",
+    "transport_retries_do_not_replenish_logical_repair_budget": true
+  },
+  "conditional_arithmetic": {
+    "planned_episodes": 20,
+    "max_observable_episode_host_invocations": 240,
+    "formula": "20 episodes * 12 observable host invocations per episode = at most 240 observable episode host invocations if these caps are enforced.",
+    "not_a_provider_request_or_total_lifecycle_or_spend_cap": true,
+    "preflight_setup_and_billing_outside_this_arithmetic": true
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/pilot-20-scope-decision-v1.json",
+      "sha256": "75b8f141d6fc96b158fe511ba36f9f65f700234096c9d2c87780b7a7a1bd6efa"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json",
+      "sha256": "cd4c5b90df3818bfbcaf83ea10b7978be1487e5846f3b954e9453892f790a7e6"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/endpoint-amendment-v1.json",
+      "sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199"
+    }
+  ],
+  "enforcement_boundary": {
+    "existing_offline_defaults_match_selected_design": true,
+    "native_subprocess_deadline_or_process_tree_cancellation_verified": false,
+    "native_episode_host_call_and_repair_accounting_verified": false,
+    "remote_cancellation_or_billing_stop_guaranteed": false,
+    "provider_internal_request_count": null,
+    "monetary_cap": null,
+    "monetary_cap_enforceability": "UNRESOLVED",
+    "native_runtime_enforcement": "NOT_VERIFIED_BY_DESIGN_APPROVAL",
+    "negative_admission_probe": {
+      "command": "rtk proxy .venv/bin/python scripts/run_runtime_model_swap.py --live --output-root \"$NATIVE_REJECT_OUT\"",
+      "output_path_policy": "New disposable local temporary path; no output directory was created by the rejected command.",
+      "exit_code": 2,
+      "observed": {
+        "failure_reason": "provider_not_allowed_offline",
+        "provider_process_launch_count": 0,
+        "status": "rejected"
+      },
+      "establishes": "Current offline CLI rejects live mode before any provider launch or output-root creation.",
+      "does_not_establish": "Any native provider adapter, generation entitlement, remote cancellation, cost or live budget enforcement."
+    }
+  },
+  "preservation": {
+    "previous_proposals_or_decisions_modified": false,
+    "approved_endpoint_modified": false,
+    "papers_or_game_modified": false,
+    "runtime_source_modified": false,
+    "native_cli_configuration_changed": false,
+    "actual_assignments_created": false,
+    "whole_roster_adopted": false
+  },
+  "authority": {
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "pilot_launch_authorized": false,
+    "confirmatory_launch_authorized": false
+  },
+  "remaining_gates": [
+    "Bound frozen quest/prompt/game/ontology/source and independent goal/safety oracle evidence",
+    "Assignment order/seed and prospective pilot reporting contract",
+    "Native proposal adapters and their scoped offline verification approval",
+    "Native identity/effective settings/fallback/tool-context and accounting evidence",
+    "Explicit research-data transmission, billing/accounting acknowledgement and launch authorization"
+  ],
+  "new_candidate_generation_requests": 0,
+  "new_study_assigned_episodes": 0,
+  "new_study_executed_episodes": 0,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "This approves only the 20-episode pilot resource-design dimension. Do not rewrite earlier immutable decisions or reinterpret this as enforcement proof or launch permission."
+}

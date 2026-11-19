@@ -1,0 +1,74 @@
+\documentclass[final,5p,times,twocolumn]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/macros}
+
+\ifanonymoussubmission
+\journal{Knowledge-Based Systems (Double-Anonymous Review)}
+\else
+\journal{Knowledge-Based Systems}
+\fi
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{TRACE-RPG: Auditable Proposal-to-Commit Boundaries and Read-Only Ontology Observation in Interactive Games}
+
+\ifanonymoussubmission
+\author{Anonymous Author(s)}
+\affiliation{organization={Anonymous Institution (Double-Anonymous Review)}}
+\else
+\author[1]{Jangyoung Jeong}
+\author[2]{Shinjin Kang\corref{cor1}}
+\cortext[cor1]{Corresponding author.}
+\affiliation[1]{organization={Department of Game Design, Hongik University},country={Republic of Korea}}
+\affiliation[2]{organization={Hongik University},country={Republic of Korea}}
+\fi
+
+\begin{abstract}
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. \system{} decouples generative proposal authority from deterministic commit authority through a seven-predicate gate, bottom-up transitive Datalog closure (\texttt{nesy\_game.multihop}), state-blind counterexample repair $\rho(a,E)$, and SHA-256 hash-chained semantic replay (Theorems~1--4, \textbf{I1--I4}). Beyond 1,664 finite-graph checks and 480 procedural Datalog scaling tests ($R{\le}64, d{\le}5$: 100.0\% vs.\ 46.67\% flat and 60.00\% 2-hop at $\le$7.12\,$\mu$s, $Q{=}1100.19$), we report attested direct HTTPS Anthropic Claude~5.5 API evaluations across Haiku~5.5, Sonnet~5.5, and Opus~5.5 (\texttt{output\_config.json\_schema}, \texttt{temperature} omitted as deprecated on 5.5) alongside cross-family GPT-OSS~120B and Gemini~4~Hydrogen trials: across 105 independent 5-turn closed-loop multi-agent episodes (\textbf{P15}: 105/105 0-LLM replays exact), only \texttt{nesy\_game.multihop} holds \textbf{15/15 (100.0\%)} zero-leak safety and \textbf{0} unsafe commits (with $\rho_{\mathrm{repairs}}{=}0$ across 28 state-dependent Theorem-2 rejections and \textbf{15/15} safe goals via hybrid $\rho{+}\text{LLM}_{K=1}$ vs.\ Safe-RL proxy 0/15 and NeMo proxy 1/15, $p{\le}1.22{\times}10^{-4}$); 60 prospective factorial episodes (\textbf{P16A}) separate \texttt{ontology\_multihop} (30/30 zero-leak, 22 live $\rho$ repairs, 11/30 goals, 0 unsafe) from \texttt{general\_rule} (22/30 zero-leak, 9 unsafe, $p{=}0.00781$); 21 headless Godot~4.7.1 episodes (\textbf{P16B}) attain 21/21 exact replays and 6/6 \texttt{SealedLighthouse} terminal hashes; $(a,E)$-matched repair (\textbf{P12}) ties LLM accuracy (27/27 vs.\ 26/27, $p{=}1.0$) while removing 530k--542k tokens; and 540 unified EN/KO escape checks (\textbf{P17}, $\kappa{=}0.8813$, 0\% FRR) confirm Stage-1 + Stage-2 complementarity alongside \texttt{DATASHEET\_v5.md}, Croissant~1.0 v5 (26/26), and quarantined \texttt{TR01--TR06} ($N{=}0$).
+\end{abstract}
+
+\begin{keyword}
+neuro-symbolic AI \sep knowledge-based runtime verification \sep ontology closure \sep action shielding \sep counterexample repair
+\end{keyword}
+
+\end{frontmatter}
+
+\section*{Highlights}
+\begin{itemize}
+\item Datalog closure in nesy\_game.multihop hits 100\% across R<=64, d<=5 at <=7.12us.
+\item Attested 105-ep closed-loop MAS cuts unsafe turns to 0 vs Safe-RL/NeMo (16/15).
+\item Attested 60-ep factorial proves ontology\_multihop 30/30 zero-leak vs 22/30 rule.
+\item 21 API + 42 CLI Godot 4.7.1 eps hit 100\% 0-LLM replay and 6/6 exact hashes.
+\item 540 unified EN/KO escape checks reach 0\% FRR (kappa=0.881); Croissant v5 26/26.
+\end{itemize}
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_phase5}
+
+\begin{figure*}[!tbp]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback before revalidated commit and replay.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/sec_problem_arch_phase5}
+\input{../_shared/sec_eval_kbs_phase5}
+\input{../_shared/sec_conclusion_phase5}
+
+\FloatBarrier
+\bibliographystyle{elsarticle-num}
+\bibliography{../../references,../_shared/venue_extra}
+
+\end{document}

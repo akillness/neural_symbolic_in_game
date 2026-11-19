@@ -1,0 +1,33 @@
+{
+  "schema_version": "runtime-study-stage-decision-verification/1",
+  "status": "PASS_STAGE_ORDER_AND_LOCAL_HANDOFF_ONLY",
+  "decision_ref": "research/runtime-model-swap-20261024/study-stage-decision-v1.json",
+  "decision_sha256": "5063be08c96602d11be3e70eef39d1e259808dff4e3210f2e746ac5549aa4551",
+  "decision_json_and_persisted_hash": "PASS",
+  "source_bindings_verified": 4,
+  "approved_stage_order": [
+    "exploratory_feasibility_pilot",
+    "separate_independent_confirmatory_study"
+  ],
+  "pilot_confirmation_pooling_allowed": false,
+  "sample_budget_and_margin_approved": false,
+  "actual_cli_configuration_changes": 0,
+  "full_study_authority_flags_all_false": true,
+  "command": "rtk proxy .venv/bin/python scripts/lint_wiki.py ../llm-wiki --format json",
+  "cwd": "<PROJECT_ROOT>",
+  "observed_report": {
+    "vault_root": "<REPOSITORY_ROOT>/llm-wiki",
+    "missing_paths": [],
+    "page_count": 82,
+    "broken_links": [],
+    "orphan_pages": []
+  },
+  "new_markdown_links_checked": 2,
+  "new_candidate_generation_requests": 0,
+  "new_study_episodes": 0,
+  "full_study_contract": "UNRESOLVED_NOT_FROZEN",
+  "pilot_launch": "NOT_AUTHORIZED",
+  "confirmatory_launch": "NOT_AUTHORIZED",
+  "next_interview": "Pilot task coverage and repeat count",
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

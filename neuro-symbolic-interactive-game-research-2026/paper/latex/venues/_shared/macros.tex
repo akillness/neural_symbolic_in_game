@@ -1,0 +1,16 @@
+\newif\ifanonymoussubmission
+\ifdefined\ANONBUILD
+  \anonymoussubmissiontrue
+\else
+  \anonymoussubmissionfalse
+\fi
+
+\newcommand{\system}{TRACE-RPG}
+\newcommand{\Valid}{\mathrm{valid}}
+\newcommand{\AcceptSet}{\mathcal{A}}
+\newcommand{\GoalSet}{\mathcal{G}}
+\newcommand{\HitSet}{\mathcal{H}}
+\newcommand{\SchemaSet}{\mathcal{S}}
+\newcommand{\RepoURL}{\ifanonymoussubmission [Anonymous Repository URL withheld for double-anonymous review]\else \url{https://github.com/akillness/neural_symbolic_in_game}\fi}
+\AtBeginDocument{\emergencystretch=2.5em}
+\providecommand{\Description}[2][]{}

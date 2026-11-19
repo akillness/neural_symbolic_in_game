@@ -1,0 +1,70 @@
+\documentclass[sigconf,review]{acmart}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{tabularx}
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\setcopyright{none}
+\acmConference[FDG '27]{Foundations of Digital Games (Korean Companion)}{2027}{Seoul, Republic of Korea}
+
+\begin{document}
+
+\title{TRACE-RPG: 대화형 게임을 위한 감사 가능한 제안--커밋 경계와 결정론적 엔진 검증}
+
+\author{정장영}
+\affiliation{\institution{홍익대학교 게임학과}\city{서울}\country{대한민국}}
+\author{강신진}
+\authornote{교신저자.}
+\affiliation{\institution{홍익대학교}\city{서울}\country{대한민국}}
+
+\begin{abstract}
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체 요구, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. \system{}는 Godot~4.7.1과 통합된 결정론적 7술어 게이트, 반례 유도 수리 $\rho$, 해시 연결 리플레이로 제안·커밋 권한을 분리한다(정리 1--4). 1,664건 유한 그래프 감사에서 위험 커밋 260/416 $\rightarrow$ 0/416(수리 128/260), 5개 퀘스트 월드 120건 다중 홉 폐쇄에서 100.0\% 대 평면 50.83\%($p{<}10^{-16}$)를 달성하였다. 특히 16개 라이브 Gemini $\rightarrow$ 헤드리스 Godot~4.7.1 폐루프 에피소드(+ 0-LLM 독립 재실행 16회)에서 위험 커밋·비밀 유출 0/16과 16/16 재실행 일치를 기록했으며(Hydrogen 8/8 \texttt{EXACT\_}\allowbreak\texttt{TERMINAL\_}\allowbreak\texttt{HASH}; Flash 5/8, 파싱실패 4 보존 및 엄격 액터 ID 안전 거부 1건), 30에피소드 5암 실딩(66.7\% 대 33.3\%, $p{=}0.00195$), 60작업 라이브 비교($\rho$ 12/12 대 LLM 자가수리 2/12), 268건 한·영 우회 검증(재현율 97.2--100.0\%, FRR 0/72)과 \texttt{TR01--TR06} 패킷(\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS})을 보고한다.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10010147.10010178.10010187</concept_id>
+       <concept_desc>Computing methodologies~Knowledge representation and reasoning</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10011007.10011074.10011099</concept_id>
+       <concept_desc>Software and its engineering~Software verification and validation</concept_desc>
+       <concept_significance>300</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computing methodologies~Knowledge representation and reasoning}
+\ccsdesc[300]{Software and its engineering~Software verification and validation}
+
+\keywords{게임 인공지능, 인터랙티브 내러티브, 뉴로심볼릭 시스템, Godot, 결정론적 검증}
+
+\maketitle
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_core_ko}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 게이팅하며, 오류는 $\rho$ 수리 또는 상태 불변 fallback으로 이어진 뒤 재검증을 거쳐 커밋된다.}
+  \Description{제안 제출, 7술어 결정론적 검증, 제한적 수리, 재검증 및 커밋 원장을 보여주는 아키텍처 다이어그램.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/ko/sec_problem_arch_ko}
+\input{../_shared/ko/sec_eval_full_ko}
+\input{../_shared/ko/sec_eval_phase2_venue_ko}
+\input{../_shared/ko/sec_discussion_conclusion_phase2_ko}
+
+\FloatBarrier
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../../references}
+
+\end{document}

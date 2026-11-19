@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="21" time="16.621" timestamp="2026-10-25T02:37:28.666462+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_assigned_manifest_rows_in_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_unknown_identity_and_failures_in_original_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_authoritative_error_drives_bounded_repair_and_finishes_whole_goal" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_exhausted_source_is_explicit_failure_not_free_eof" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_existing_output_collision_fails_closed_without_overwrite" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_first_call_timeout_is_counted_and_traced_without_exception" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_reached_after_wall_expiry_is_not_credited" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_hard_invalid_proposal_cannot_mutate_canonical_state" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_host_budget_counts_failed_and_timeout_calls_in_original_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_initially_won_episode_is_not_a_success" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_live_provider_is_fail_closed_before_launcher_or_model_call" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_model_self_report_does_not_substitute_for_engine_observed_goal" time="0.001"><failure message="AssertionError: 'proposal_source_error' != 'episode_incomplete'&#10;- proposal_source_error&#10;+ episode_incomplete">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_model_self_report_does_not_substitute_for_engine_observed_goal&gt;
+
+    def test_model_self_report_does_not_substitute_for_engine_observed_goal(self) -&gt; None:
+        engine = LighthouseEngine()
+        source = SequenceSource([proposal("collect_lens", goal_reached=True)])
+    
+        record = run_offline(source, engine)
+    
+        self.assertFalse(record["success"])
+        self.assertFalse(record["goal_reached"])
+&gt;       self.assertEqual(record["failure_reason"], "episode_incomplete")
+E       AssertionError: 'proposal_source_error' != 'episode_incomplete'
+E       - proposal_source_error
+E       + episode_incomplete
+
+tests/test_runtime_model_swap.py:275: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_offline_evidence_retains_unknown_provider_fields_and_semantic_trace" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_representation_swap_is_lossless_except_rendering" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_response_timeout_is_classified_and_does_not_commit_proposal" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_semantic_replay_rejects_rehashed_tampered_transition" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_three_decisions_preserve_canonical_state_and_credit_engine_goal_only" time="0.001" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_preserves_engine_receipt_fields" time="0.001"><failure message="ValueError: controller_decision_required">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_adapter_preserves_engine_receipt_fields&gt;
+
+    def test_adapter_preserves_engine_receipt_fields(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = FakeEngineTransport(root)
+    
+            def scripted_prompt(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                return 0, _valid_typed_intent(kwargs["request_id"])
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=scripted_prompt,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="SEAM-002",
+            )
+&gt;           engine.commit({"action": "acquire_object"})
+
+tests/test_runtime_model_swap_godot.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;nesy_game.runtime_model_swap.GodotEpisodeEngine object at 0x10b7fa150&gt;
+proposal = {'action': 'acquire_object'}
+
+    def commit(self, proposal: dict[str, Any]) -&gt; dict[str, Any]:
+        validation = self.validate(proposal)
+        if not validation["valid"]:
+&gt;           raise ValueError(validation["message"])
+E           ValueError: controller_decision_required
+
+src/nesy_game/runtime_model_swap.py:612: ValueError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output" time="0.002"><failure message="AssertionError: 0 != 1">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output&gt;
+
+    def test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = FakeEngineTransport(root)
+            prompt_calls: list[dict[str, Any]] = []
+    
+            def malformed_prompt(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                prompt_calls.append(kwargs)
+                return 0, {
+                    "request_id": kwargs["request_id"],
+                    "typed_intent": {"label": "NOT_A_CANONICAL_LABEL", "claims": [], "target": None},
+                }
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=malformed_prompt,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="SEAM-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(30.0, 5.0, 4, 0),
+                seed=20261024,
+                clock=lambda: 0.0,
+                config={"assignment_id": "SEAM-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+        self.assertFalse(record["success"])
+&gt;       self.assertEqual(record["accounting"]["host_calls"], 1)
+E       AssertionError: 0 != 1
+
+tests/test_runtime_model_swap_godot.py:111: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_engine_unavailable_is_an_assigned_failure_record" time="0.001" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineIntegrationTests" name="test_two_real_experiment_cycles_bind_setup_and_reject_tampered_state_ref" time="16.485" /></testsuite></testsuites>

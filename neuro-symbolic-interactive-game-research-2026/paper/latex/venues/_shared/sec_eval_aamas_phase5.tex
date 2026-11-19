@@ -1,0 +1,72 @@
+\section{Evaluation}\label{sec:eval}
+We structure evaluation into two strictly non-pooled layers: (i)~zero-LLM-call deterministic verification across finite graphs, Godot~4.7.1 soak instrumentation, and bottom-up Datalog scaling, and (ii)~live neural evaluations combining attested direct HTTPS Anthropic Claude~5.5 API experiments (\textbf{P15}--\textbf{P17}; $2.25\text{M}$ total tokens across Haiku~5.5, Sonnet~5.5, and Opus~5.5 with \texttt{output\_config.json\_schema} and \texttt{temperature} omitted because Claude~5.5 rejects it as deprecated) with cross-family open/closed-weight CLI experiments (\textbf{P11}--\textbf{P14}) retaining every parse failure in full denominators. Historical unexecuted cohorts (0/180 prospective API pilot \texttt{20261103}, $N{=}0$ human \texttt{TR01--TR06}) are kept strictly separate.
+
+\subsection{Deterministic Boundary Audits and $R{\le}64, d{\le}5$ Datalog Scaling}
+Across 1,664 finite-graph authorization cases (416/arm$\times$4, plus 48 surface sentinels), \texttt{schema\_only} committed 260/416 reference-invalid proposals, whereas every semantic-gate arm recorded \textbf{0/416} unsafe commits, 0/156 false rejections, and 32/32 closure--BFS agreement; $\rho$ repaired 128/260 faults, lifting goal attainment from 124/416 to \textbf{252/416}. Extended zero-LLM audits verify bounded multi-error convergence (\textbf{A1}: 0/1,408 unsafe commits; 128/128 conflict-guard freezes), sub-millisecond validation latency (\textbf{A2}: $N{=}2000$ p95 0.0042--0.0751\,ms; $R{=}256$ closure 0.312--0.478\,ms), seeded fault traceability (\textbf{A3}: 4,656/4,656), and Godot~4.7.1 soak stability (\textbf{A4}: 9/9 refusal codes, 1,600/1,600 consistent ticks, p95 0.708\,ms, $-268$\,B static memory delta). While 60 single-hop checks confirmed parity between flat and ontology gates, five-world multi-hop closure (\textbf{P1}, 120 cases) separated \texttt{ontology\_\allowbreak multihop} (\textbf{100.0\%}) from \texttt{flat\_1hop} (50.83\%, $p{<}10^{-16}$). Table~\ref{tab:phase5-aamas-datalog} summarizes the procedural Datalog oracle sweep (\textbf{P9}, 480 cases across $R\in\{8,16,32,64\} \times d\in\{1..5\}$): \texttt{nesy\_game.multihop} matches the bottom-up fixpoint oracle on \textbf{480/480} cases at $R$-invariant $O(d)$ $\le$7.12\,$\mu$s median latency, whereas 1-hop and 2-hop gates fail at $d{\ge}2$ and $d{\ge}3$ ($Q{=}1100.19, p{=}6.88{\times}10^{-237}$).
+
+\begin{table}[!tbp]
+\caption{Procedural Datalog Scaling Benchmark (\textbf{P9}: 480 Cases Across $R{\le}64, d{\le}5$, 0 LLM Calls)}
+\label{tab:phase5-aamas-datalog}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}lcccc@{}}
+\toprule
+\textbf{Gate Variant} & \textbf{Acc.\ (480)} & \textbf{Leaks} & \textbf{Med.\ ($\mu$s)} & \textbf{p95 ($\mu$s)} \\
+\midrule
+\texttt{schema\_only} / \texttt{affordance} & 16.67\% (80) & 400 & --- & --- \\
+\texttt{flat\_1hop\_gate} & 46.67\% (224) & 256 & 0.87--1.57 & 1.37--2.18 \\
+\texttt{bounded\_2hop\_gate} & 60.00\% (288) & 192 & 1.88--2.58 & 2.66--3.91 \\
+\texttt{nesy\_game.multihop} & \textbf{100.0\% (480)} & \textbf{0} & \textbf{6.46--7.12} & 9.83--11.42 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Independent Closed-Loop 7-Arm Shielding (\textbf{P15} \& \textbf{P11})}\label{sec:phase5-mas}
+To test agent trajectories without replay counterfactuals, \textbf{P15} executes \textbf{105 genuinely independent closed-loop 5-turn episodes} across all three attested Claude~5.5 tiers (\texttt{claude-haiku-5-5}, \texttt{claude-sonnet-5-5}, \texttt{claude-opus-5-5}) $\times$ five quest worlds $\times$ seven independent arms (1,048,803 total tokens; Table~\ref{tab:phase5-aamas-mas}). Every episode produces its own live LLM trajectory and undergoes fresh 0-LLM trace replay verification (\textbf{105/105} valid). Controlled Safe-RL proxy masking~\cite{alshiekh2018shield} (0/15 safe goals, 1/15 zero-leak, 16/61 unsafe turns) and NeMo-style proxy rails~\cite{rebedea2023nemo} (1/15, 1/15, 15/61) miss multi-hop leaks, and flat 1-hop gating still leaks 4/66 turns across 3/15 episodes in \texttt{ivory-citadel-v1} (2 turns in 1/3 ep) and \texttt{glass-foundry-v1} (2 turns in 2/3 ep). Conversely, \texttt{nesy\_game.multihop} holds \textbf{15/15 (100.0\%)} zero-leak and \textbf{0} unsafe commits across all models and worlds. Crucially, in \texttt{trace\_rpg\_multihop\_rho\_k2}, all 18 blocked proposals are Theorem-2 state-dependent epistemic/stage violations mapped by $\rho$ to identity (\texttt{rho\_repairs=0}; the 14/15 [93.33\%] vs.\ 13/15 difference from \texttt{multihop\_k0} reflects independent Turn-1 sampling on \texttt{haiku::ivory-citadel-v1} rather than $\rho$ edits), whereas coupling the shield with bounded $K{=}1$ LLM re-targeting (\texttt{hybrid}) resolves deadlocks via 20 Theorem-2 safe re-targets to hit \textbf{15/15 (100.0\% [79.61\%, 100.0\%])} safe goals across Haiku, Sonnet, and Opus ($Q_{\mathrm{goal}}{=}68.71, p{=}7.50{\times}10^{-13}$; $Q_{\mathrm{zl}}{=}71.65, p{=}1.87{\times}10^{-13}$; McNemar vs.\ Safe-RL/NeMo $p{\le}1.22{\times}10^{-4}$). Complementary 3-family CLI negotiation (\textbf{P11}; 30 episodes crossing Claude~Sonnet~5.5, open-weight GPT-OSS~120B, and Gemini~4~Hydrogen, 79/90 parsed turns, 11 GPT-OSS PF kept) confirms cross-vendor generalization: \system{} sustains \textbf{30/30} zero-leak, 16/30 (53.3\%) milestones, and \textbf{0/79} unsafe turns vs.\ Safe-RL (37/79, $p{=}9.5{\times}10^{-7}$), NeMo (43/79, $p{=}1.2{\times}10^{-7}$), and flat 1-hop (29/79, $Q{=}118.93$).
+
+\begin{table}[!tbp]
+\caption{Attested Independent Closed-Loop 7-Arm Multi-Agent Evaluation (\textbf{P15}: 105 Episodes, 3 Claude~5.5 Tiers $\times$ 5 Worlds; 105/105 0-LLM Replays Exact)}
+\label{tab:phase5-aamas-mas}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}Xcccccc@{}}
+\toprule
+\textbf{Arm (15 ep/arm)} & \textbf{Goal} & \textbf{ZL} & \textbf{Unsafe} & \textbf{Blk} & \textbf{$\rho$/Ret} & \textbf{Tokens} \\
+\midrule
+\texttt{schema\_only} & 2/15 & 2/15 & 16/59 & 0 & 0/0 & 133k \\
+\texttt{safe\_rl\_mask}~\cite{alshiekh2018shield} & 0/15 & 1/15 & 16/61 & 2 & 0/0 & 139k \\
+\texttt{nemo\_colang}~\cite{rebedea2023nemo} & 1/15 & 1/15 & 15/61 & 1 & 0/0 & 137k \\
+\texttt{flat\_1hop} & 12/15 & 12/15 & 4/66 & 15 & 0/0 & 146k \\
+\texttt{multihop\_k0} & 13/15 & \textbf{15/15} & \textbf{0/69} & 22 & 0/0 & 153k \\
+\texttt{trace\_rpg ($\rho_{K=2}$)} & 14/15 & \textbf{15/15} & \textbf{0/68} & 18 & 0/0 & 151k \\
+\texttt{hybrid ($\rho$+LLM$_{K=1}$)} & \textbf{15/15} & \textbf{15/15} & \textbf{0/63} & 2 & 0/20 & 190k \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Attested Prospective Factorial (\textbf{P16}), Fair Repair (\textbf{P12}), and Escape (\textbf{P17})}
+In attested commercial prospective evaluation (\textbf{P16A}: 60 factorial multi-turn episodes crossing \texttt{general\_rule} vs.\ \texttt{ontology\_multihop} $\times$ 3 tiers $\times$ 5 worlds, 673,869 tokens, strictly non-pooled with historical 0/180), \texttt{general\_rule} suffered 9 unsafe commits across Sonnet (4) and Opus (5) in \texttt{ivory-citadel-v1} and \texttt{glass-foundry-v1}, yielding 22/30 (73.33\%) zero-leak and 0/30 (0.0\%) safe goals; \texttt{ontology\_multihop} achieved \textbf{30/30 (100.0\%)} zero-leak (McNemar $p{=}0.00781$), \textbf{0} unsafe commits, 22 repairs (Haiku 18, Sonnet 4), and \textbf{11/30 (36.67\%)} safe goals (Opus 8/10, Sonnet 3/10, Haiku 0/10; $p{=}9.77{\times}10^{-4}$). Across 21 attested Godot~4.7.1 closed-loop episodes (\textbf{P16B}: 15 5-world + 6 production \texttt{SealedLighthouseMachine}, 169,071 tokens), models achieved \textbf{21/21} bit-exact 0-LLM replays, \textbf{0/21} unsafe leaks, 13/15 5-world goals (Haiku 5/5, Sonnet 4/5, Opus 4/5; Godot 251.6--1009.8\,ms vs.\ API 10.6--40.9\,s), and \textbf{6/6 (100.0\%)} production \texttt{EXACT\_\allowbreak TERMINAL\_\allowbreak HASH} matches (\texttt{4b231017...}), complementing 3-family CLI Godot~4.7.1 execution (\textbf{P13}: 42/42 replays, 23/30 + 9/12 goals, 0/42 leaks). Meanwhile, on 90 5-world tasks (\textbf{P12}: 84/90 parsed, $Q{=}281.23$), passing both candidate $a$ and counterexample $E$ cleanly resolves prior repair confounds: on 27 matched policy+stage faults, deterministic $\rho_{K=2}$ hits \textbf{27/27 (100.0\%)} at 0 extra tokens vs.\ matched State-Blind and State-Aware LLM ($K{=}2$, both 26/27 = 96.3\% at 530k--542k tokens / $>$508\,s, $p{=}1.0$), isolating zero-token latency elimination and Theorem~2 non-laundering fallback (complemented by 52/55 safe LLM re-targets on natural rejections).
+
+Finally, Table~\ref{tab:phase5-aamas-escape} evaluates Stage-2 semantic escape under a single unified identical prompt across all 180 EN/KO items $\times$ 3 attested Claude~5.5 tiers (\textbf{P17}: \textbf{540} fresh API evaluations, 0 deterministic short-circuits, 359,030 tokens; Fleiss' $\kappa{=}0.8813$, $\alpha{=}0.8815$, $Q{=}9.5, p{=}0.00865$). Unlike surface regex/ID matching (100\% explicit recall, 0\% paraphrases) or LOO TF-IDF (62.5\% FRR), Claude~5.5 tiers achieve 94.44--97.22\% paraphrase recall at \textbf{0/72 (0.0\%) FRR} and 1.000 precision ($p{\le}0.0094$ for Haiku/Opus vs.\ calibrated rule hybrid). Crucially, inspecting explicit items reveals Haiku (29/36), Opus (25/36), and Sonnet (19/36) miss raw ID tokens like \texttt{keeper\_secret} inside benign prose---proving that Stage-1 symbolic field gating (36/36 explicit) and Stage-2 neural inspection (94.4--97.2\% paraphrase) are strictly complementary (alongside 3-family 4-model \textbf{P14}: 720 evals, $\kappa{=}0.9367$, open-weight \texttt{gpt-oss} $F_1{=}0.9714$).
+
+\begin{table}[!tbp]
+\caption{Unified-Prompt Bilingual Escape Detection (\textbf{P17}: 540 Fresh Attested Evals Across 180 EN/KO Cases, 0 Short-Circuits)}
+\label{tab:phase5-aamas-escape}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}lcccccc@{}}
+\toprule
+\textbf{Verifier (3 Domains)} & \textbf{Exp.\ (36)} & \textbf{Para.\ (72)} & \textbf{FRR (72)} & \textbf{$F_1$} & \textbf{EN/KO $F_1$} \\
+\midrule
+\texttt{id\_only} (Stage-1 token) & \textbf{36/36} & 0/72 & 0/72 & 0.500 & --- \\
+\texttt{loo\_tfidf} & \textbf{36/36} & 45/72 & 45/72 & 0.692 & --- \\
+\texttt{rule\_hybrid} & \textbf{36/36} & 38/72 & 0/72 & 0.813 & --- \\
+\texttt{claude-haiku-5-5} & 29/36 & \textbf{70/72} & \textbf{0/72} & \textbf{0.957} & .952/.962 \\
+\texttt{claude-sonnet-5-5} & 19/36 & \textbf{70/72} & \textbf{0/72} & 0.904 & .920/.887 \\
+\texttt{claude-opus-5-5} & 25/36 & 68/72 & \textbf{0/72} & 0.925 & .941/.909 \\
+\bottomrule
+\end{tabularx}
+\end{table}

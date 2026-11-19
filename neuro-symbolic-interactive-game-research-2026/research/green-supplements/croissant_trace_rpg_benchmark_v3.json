@@ -1,0 +1,208 @@
+{
+  "@context": "http://mlcommons.org/croissant/1.0",
+  "@type": "sc:Dataset",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "TRACE-RPG Neuro-Symbolic Game Verification Benchmark v3 (Cross-Family & 5-World Godot)",
+  "description": "Complete Phase-1..3 suite: 480 Datalog-certified R<=64 d<=5 scaling, 3-family (Claude/GPT-OSS/Gemini) live 3-agent negotiation, 5-world Godot 4.7.1 closed-loop, 90-task shielding, 180-case bilingual escape with Fleiss kappa/alpha, TR01-TR06 packet, and Datasheet v3.",
+  "version": "3.0.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "multihop_ontology_results.json",
+      "name": "multihop_ontology_results.json",
+      "description": "48-case Phase-1 multi-hop closure benchmark",
+      "contentUrl": "research/green-supplements/multihop_ontology_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "654 B",
+      "sha256": "39eadfa23926a8b1755f1a4ea8a426dae5b917549c72e7c9b8755e1229570d68"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_b_calibrated_results.json",
+      "name": "audit_b_calibrated_results.json",
+      "description": "88-case Phase-1 Audit B deterministic rule-hybrid",
+      "contentUrl": "research/green-supplements/audit_b_calibrated_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "310 B",
+      "sha256": "bf69a8e20f39af9df43a7f5bf7c4c4b6fab5cbece1823aa9743c50525fca7481"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "multiquest_live_results.json",
+      "name": "multiquest_live_results.json",
+      "description": "24 live Phase-1 Gemini episodes across 3 quests",
+      "contentUrl": "research/green-supplements/multiquest_live_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "961677 B",
+      "sha256": "5b1f58a87bd08420ac5ed77120ae939f26ab82599f835e4fcc46f6496a13013f"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_b_live_results.json",
+      "name": "audit_b_live_results.json",
+      "description": "88-case Phase-1 Audit B live Stage-2 Gemini verification",
+      "contentUrl": "research/green-supplements/audit_b_live_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "382846 B",
+      "sha256": "6b8e262eaac43fa4691f376410aa97c1ace818fc039750702c9ade678a27477e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "tr_human_eval_packet.json",
+      "name": "tr_human_eval_packet.json",
+      "description": "36 blinded TR01-TR06 trace items (AWAITING_HUMAN_RATERS)",
+      "contentUrl": "research/green-supplements/tr_human_eval_packet.json",
+      "encodingFormat": "application/json",
+      "contentSize": "79418 B",
+      "sha256": "1c4f60b6cd6bdc5e6205a045bc91ee371db1dd6a044ca7e04c06b68df8baaacc"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_b_jev_results.json",
+      "name": "audit_b_jev_results.json",
+      "description": "88-case local 0.8B exploratory advisory baseline (non-scientific)",
+      "contentUrl": "research/green-supplements/audit_b_jev_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "496 B",
+      "sha256": "302e5781f632f6e8d19bd7e2ddac375f5a9a1e638e598c8b843727d8fd1fe00d"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase2_multihop_5world_results.json",
+      "name": "phase2_multihop_5world_results.json",
+      "description": "120-case 5-world Phase-2 multi-hop closure",
+      "contentUrl": "research/green-supplements/phase2_multihop_5world_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "50106 B",
+      "sha256": "033ea13bc3f5f0ffb32f2d84ed105b6578524bbb31309d4f5a08e57ca6cc4c02"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase2_multiagent_epistemic_results.json",
+      "name": "phase2_multiagent_epistemic_results.json",
+      "description": "30-episode x 5-arm scripted Phase-2 benchmark",
+      "contentUrl": "research/green-supplements/phase2_multiagent_epistemic_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "2934 B",
+      "sha256": "4afbaffe9cfa8c0ef8c8f44ba53bf4bbc98e447e759e0da832aaa5f020dd0293"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase2_godot_live_closed_loop_results.json",
+      "name": "phase2_godot_live_closed_loop_results.json",
+      "description": "16 live Gemini -> Godot 4.7.1 Phase-2 episodes",
+      "contentUrl": "research/green-supplements/phase2_godot_live_closed_loop_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "140073 B",
+      "sha256": "2c09150f2971716f2bf86bf7b9d245d4fe885f2e77b6bcf30aa07368dfdc2a9b"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase2_live_shield_and_multihop_results.json",
+      "name": "phase2_live_shield_and_multihop_results.json",
+      "description": "60 live Phase-2 5-world shielding tasks",
+      "contentUrl": "research/green-supplements/phase2_live_shield_and_multihop_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "75058 B",
+      "sha256": "a27c4b529a85298d32be10c439ea24533aa98385c1823ac7297536e5fe1e352f"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase2_multisecret_escape_results.json",
+      "name": "phase2_multisecret_escape_results.json",
+      "description": "180-case Phase-2 3-domain bilingual escape",
+      "contentUrl": "research/green-supplements/phase2_multisecret_escape_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "9615 B",
+      "sha256": "4c97fc5de3e022da62bb5f0387775c25ddd2e253dc76397a2bdc5a047880e390"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase3_procedural_multihop_scaling_results.json",
+      "name": "phase3_procedural_multihop_scaling_results.json",
+      "description": "480-case P9 Datalog-certified R<=64 x d<=5 scaling",
+      "contentUrl": "research/green-supplements/phase3_procedural_multihop_scaling_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "11900 B",
+      "sha256": "8d2fd06e05fbb66106c9c4876abc6e40a48e4125b45d96b3d584a3e1e7816483"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase3_multiworld_godot_closed_loop_results.json",
+      "name": "phase3_multiworld_godot_closed_loop_results.json",
+      "description": "50 live (30 blindspot + 20 informed) 5-world Godot 4.7.1 closed-loop episodes",
+      "contentUrl": "research/green-supplements/phase3_multiworld_godot_closed_loop_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "126793 B",
+      "sha256": "d89dd8c0c005ad20b5fe74d4f43c446bd8f38a30844a41dc8b3652cf3e057add"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase3_live_multiagent_3family_results.json",
+      "name": "phase3_live_multiagent_3family_results.json",
+      "description": "30 autonomous live 3-agent 3-family negotiation episodes",
+      "contentUrl": "research/green-supplements/phase3_live_multiagent_3family_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "45043 B",
+      "sha256": "d464ff18fcb9386531140fb2cb8a0d90cc813ace14b7a4ca5cd00979fdd48546"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase3_crossfamily_shield_90_results.json",
+      "name": "phase3_crossfamily_shield_90_results.json",
+      "description": "90 live 3-family 5-world shielding & self-repair tasks",
+      "contentUrl": "research/green-supplements/phase3_crossfamily_shield_90_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "135792 B",
+      "sha256": "9abe998d229f3bc8c654f40f55faa8b743725068614de055468bd8b98fff0289"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "phase3_crossfamily_multisecret_escape_results.json",
+      "name": "phase3_crossfamily_multisecret_escape_results.json",
+      "description": "540-eval 3-verifier x 180 EN/KO escape + kappa/alpha",
+      "contentUrl": "research/green-supplements/phase3_crossfamily_multisecret_escape_results.json",
+      "encodingFormat": "application/json",
+      "contentSize": "12723 B",
+      "sha256": "9e814ff60e231b7a831c6d2d07f02175b10402eaf7b90db3b33f8f3e6a2eb975"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "DATASHEET_v3.md",
+      "name": "DATASHEET_v3.md",
+      "description": "Gebru et al. v3 datasheet documenting Phase-1..3 receipts and boundaries",
+      "contentUrl": "research/green-supplements/DATASHEET_v3.md",
+      "encodingFormat": "text/markdown",
+      "contentSize": "3046 B",
+      "sha256": "f8ab956c8bc65805f4578f1a9188eb76fe0a35afee94b6b5eb26e291039cbca3"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "p9_procedural_datalog_480",
+      "description": "480 cases across R in {8,16,32,64} x depth d in {1..5}"
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "p6_live_multiagent_30ep",
+      "description": "30 live 3-family autonomous 3-role episodes x 5 arms"
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "p7_crossfamily_shield_90",
+      "description": "90 live 3-family tasks comparing rho vs LLM self-repair"
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "p8_crossfamily_escape_540",
+      "description": "3-verifier (Claude/Hydrogen/Flash) x 180 EN/KO escape with Fleiss kappa & alpha"
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "p10_5world_godot_50ep",
+      "description": "50 live (30 Cohort A blindspot + 20 Cohort B informed) 5-world Godot 4.7.1 episodes"
+    }
+  ]
+}

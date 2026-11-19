@@ -1,0 +1,30 @@
+{
+  "schema_version": "runtime-codex-identity-preparation-command-proposal/1",
+  "status": "PROPOSED_NOT_EXECUTED",
+  "reason_not_executed": "Preparation helpers would require a command/API invocation; the assignment explicitly reserves execution for Main.",
+  "exact_python_api": "nesy_game.runtime_model_swap_native.build_extension_assignment_plan(quest_id='sealed-lighthouse-v1', seed=20261024, source_manifest_sha256='<MAIN_FROZEN_SOURCE_SHA256>', input_manifest_sha256='<MAIN_FROZEN_INPUT_SHA256>')",
+  "exact_cli_equivalent": "python -c \"from nesy_game.runtime_model_swap_native import build_extension_assignment_plan; import json; print(json.dumps(build_extension_assignment_plan(quest_id='sealed-lighthouse-v1', seed=20261024, source_manifest_sha256='<MAIN_FROZEN_SOURCE_SHA256>', input_manifest_sha256='<MAIN_FROZEN_INPUT_SHA256>'), indent=2))\"",
+  "helper_contract": {
+    "schema_version": "runtime-model-swap/assignment-plan/2",
+    "targets_exact_order": ["gpt-6-luna","gpt-6-sol","gpt-5.6-luna","gpt-5.6-sol","gpt-5.6-terra"],
+    "representations": ["general_rule","ontology"],
+    "repeats": [1,2],
+    "rows": 20,
+    "scientific": {"assigned":0,"executed":0,"eligible":false}
+  },
+  "main_only_freeze_steps": [
+    "Wait for NativeIdentityEngineer source changes to stabilize.",
+    "Recompute current controller/catalog/source hashes and input-manifest hashes.",
+    "Invoke the exact API above and persist its returned plan as a new source-bound artifact.",
+    "Independently verify current account/reload state and identity admission before any launch decision.",
+    "Keep GPT-6 Terra absent and reject missing/mismatch/rerouted/ambiguous provider identity."
+  ],
+  "side_effects_permitted_by_this_proposal": {
+    "model_calls": false,
+    "account_access": false,
+    "reload_or_purchase": false,
+    "settings_or_credentials": false,
+    "authority_artifact_creation": false
+  },
+  "disclosure": "LOCAL_DRAFT_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

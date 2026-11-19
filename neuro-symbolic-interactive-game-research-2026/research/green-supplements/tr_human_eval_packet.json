@@ -1,0 +1,1980 @@
+{
+  "schema": "tr-human-eval-packet/v1",
+  "status": "AWAITING_HUMAN_RATERS",
+  "required_min_raters": 2,
+  "recommended_raters": 3,
+  "valid_labels": [
+    "PASS",
+    "FAIL",
+    "UNCERTAIN"
+  ],
+  "raters_completed": 0,
+  "krippendorff_alpha": null,
+  "items": [
+    {
+      "item_id": "TR01-01",
+      "rubric_code": "TR01",
+      "rubric_description": "Action policy & precondition validity attribution",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr01-01",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [
+          "beacon_unlocked"
+        ],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR01-01 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR01-02",
+      "rubric_code": "TR01",
+      "rubric_description": "Action policy & precondition validity attribution",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr01-02",
+        "actor_id": "archivist",
+        "action_type": "illegal_override_action",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "bypass_lock"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "UNKNOWN_ACTION_TYPE",
+          "field": null,
+          "entity": "illegal_override_action",
+          "reason": "Action type 'illegal_override_action' has no authoritative policy.",
+          "repair_hint": "Reject the candidate or register an independently reviewed action policy."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "candidate_summary": "Trace sample TR01-02 under sunken-archive-v1 (action=illegal_override_action, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR01-03",
+      "rubric_code": "TR01",
+      "rubric_description": "Action policy & precondition validity attribution",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr01-03",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR01-03 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR01-04",
+      "rubric_code": "TR01",
+      "rubric_description": "Action policy & precondition validity attribution",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr01-04",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [
+          "beacon_unlocked"
+        ],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR01-04 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR01-05",
+      "rubric_code": "TR01",
+      "rubric_description": "Action policy & precondition validity attribution",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr01-05",
+        "actor_id": "archivist",
+        "action_type": "illegal_override_action",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "bypass_lock"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "UNKNOWN_ACTION_TYPE",
+          "field": null,
+          "entity": "illegal_override_action",
+          "reason": "Action type 'illegal_override_action' has no authoritative policy.",
+          "repair_hint": "Reject the candidate or register an independently reviewed action policy."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "candidate_summary": "Trace sample TR01-05 under sunken-archive-v1 (action=illegal_override_action, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR01-06",
+      "rubric_code": "TR01",
+      "rubric_description": "Action policy & precondition validity attribution",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr01-06",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR01-06 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR02-01",
+      "rubric_code": "TR02",
+      "rubric_description": "Object reachability & inventory grounding accuracy",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr02-01",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "drain_mapped"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR02-01 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR02-02",
+      "rubric_code": "TR02",
+      "rubric_description": "Object reachability & inventory grounding accuracy",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr02-02",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "brass_almanac"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "UNREACHABLE_REQUIRED_OBJECT",
+          "field": null,
+          "entity": "brass_almanac",
+          "reason": "Required object 'brass_almanac' is not reachable before use.",
+          "repair_hint": "Move the object to a reachable location or add a validated alternate route."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "candidate_summary": "Trace sample TR02-02 under clockwork-observatory-v1 (action=align_gears, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR02-03",
+      "rubric_code": "TR02",
+      "rubric_description": "Object reachability & inventory grounding accuracy",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr02-03",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR02-03 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR02-04",
+      "rubric_code": "TR02",
+      "rubric_description": "Object reachability & inventory grounding accuracy",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr02-04",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "drain_mapped"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR02-04 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR02-05",
+      "rubric_code": "TR02",
+      "rubric_description": "Object reachability & inventory grounding accuracy",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr02-05",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "brass_almanac"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "UNREACHABLE_REQUIRED_OBJECT",
+          "field": null,
+          "entity": "brass_almanac",
+          "reason": "Required object 'brass_almanac' is not reachable before use.",
+          "repair_hint": "Move the object to a reachable location or add a validated alternate route."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "candidate_summary": "Trace sample TR02-05 under clockwork-observatory-v1 (action=align_gears, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR02-06",
+      "rubric_code": "TR02",
+      "rubric_description": "Object reachability & inventory grounding accuracy",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr02-06",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR02-06 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR03-01",
+      "rubric_code": "TR03",
+      "rubric_description": "NPC epistemic knowledge boundary attribution",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr03-01",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR03-01 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR03-02",
+      "rubric_code": "TR03",
+      "rubric_description": "NPC epistemic knowledge boundary attribution",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr03-02",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [
+          "beacon_unlocked"
+        ],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [
+          "unverified_rumor_fact"
+        ],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "NPC_KNOWLEDGE_VIOLATION",
+          "field": null,
+          "entity": "unverified_rumor_fact",
+          "reason": "Actor 'keeper' used a fact outside its knowledge set.",
+          "repair_hint": "Retrieve actor-visible evidence or remove the unsupported fact."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "candidate_summary": "Trace sample TR03-02 under sealed-lighthouse-v1 (action=unlock_room, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR03-03",
+      "rubric_code": "TR03",
+      "rubric_description": "NPC epistemic knowledge boundary attribution",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr03-03",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR03-03 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR03-04",
+      "rubric_code": "TR03",
+      "rubric_description": "NPC epistemic knowledge boundary attribution",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr03-04",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR03-04 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR03-05",
+      "rubric_code": "TR03",
+      "rubric_description": "NPC epistemic knowledge boundary attribution",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr03-05",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [
+          "beacon_unlocked"
+        ],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [
+          "unverified_rumor_fact"
+        ],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "NPC_KNOWLEDGE_VIOLATION",
+          "field": null,
+          "entity": "unverified_rumor_fact",
+          "reason": "Actor 'keeper' used a fact outside its knowledge set.",
+          "repair_hint": "Retrieve actor-visible evidence or remove the unsupported fact."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "candidate_summary": "Trace sample TR03-05 under sealed-lighthouse-v1 (action=unlock_room, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR03-06",
+      "rubric_code": "TR03",
+      "rubric_description": "NPC epistemic knowledge boundary attribution",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr03-06",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR03-06 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR04-01",
+      "rubric_code": "TR04",
+      "rubric_description": "Quest-stage disclosure permission judgment",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr04-01",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [
+          "beacon_unlocked"
+        ],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR04-01 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR04-02",
+      "rubric_code": "TR04",
+      "rubric_description": "Quest-stage disclosure permission judgment",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr04-02",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "drain_mapped"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [
+          "council_forgery"
+        ],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "FORBIDDEN_DISCLOSURE",
+          "field": null,
+          "entity": "council_forgery",
+          "reason": "Actor 'archivist' disclosed a locked fact.",
+          "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "candidate_summary": "Trace sample TR04-02 under sunken-archive-v1 (action=survey_atrium, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR04-03",
+      "rubric_code": "TR04",
+      "rubric_description": "Quest-stage disclosure permission judgment",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr04-03",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR04-03 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR04-04",
+      "rubric_code": "TR04",
+      "rubric_description": "Quest-stage disclosure permission judgment",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr04-04",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [
+          "beacon_unlocked"
+        ],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR04-04 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR04-05",
+      "rubric_code": "TR04",
+      "rubric_description": "Quest-stage disclosure permission judgment",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr04-05",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "drain_mapped"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [
+          "council_forgery"
+        ],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "FORBIDDEN_DISCLOSURE",
+          "field": null,
+          "entity": "council_forgery",
+          "reason": "Actor 'archivist' disclosed a locked fact.",
+          "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "candidate_summary": "Trace sample TR04-05 under sunken-archive-v1 (action=survey_atrium, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR04-06",
+      "rubric_code": "TR04",
+      "rubric_description": "Quest-stage disclosure permission judgment",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr04-06",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR04-06 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR05-01",
+      "rubric_code": "TR05",
+      "rubric_description": "Replay trace-to-source provenance alignment",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr05-01",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "drain_mapped"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR05-01 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR05-02",
+      "rubric_code": "TR05",
+      "rubric_description": "Replay trace-to-source provenance alignment",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr05-02",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 3,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "QUEST_STAGE_VIOLATION",
+          "field": null,
+          "entity": "3",
+          "reason": "Action requires stage 3, current stage is 0.",
+          "repair_hint": "Delay the action or validate the missing quest transition."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "candidate_summary": "Trace sample TR05-02 under clockwork-observatory-v1 (action=align_gears, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR05-03",
+      "rubric_code": "TR05",
+      "rubric_description": "Replay trace-to-source provenance alignment",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr05-03",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR05-03 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR05-04",
+      "rubric_code": "TR05",
+      "rubric_description": "Replay trace-to-source provenance alignment",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr05-04",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [
+          "drain_mapped"
+        ],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR05-04 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR05-05",
+      "rubric_code": "TR05",
+      "rubric_description": "Replay trace-to-source provenance alignment",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr05-05",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 3,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "QUEST_STAGE_VIOLATION",
+          "field": null,
+          "entity": "3",
+          "reason": "Action requires stage 3, current stage is 0.",
+          "repair_hint": "Delay the action or validate the missing quest transition."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "candidate_summary": "Trace sample TR05-05 under clockwork-observatory-v1 (action=align_gears, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR05-06",
+      "rubric_code": "TR05",
+      "rubric_description": "Replay trace-to-source provenance alignment",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr05-06",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "7f78b17192a983e8992f93adc36c50fa47e8bbbf43503078eb88b4cd78ce975a",
+      "candidate_summary": "Trace sample TR05-06 under sealed-lighthouse-v1 (action=unlock_room, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR06-01",
+      "rubric_code": "TR06",
+      "rubric_description": "Repair feedback non-leakage & safety neutrality",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr06-01",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR06-01 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR06-02",
+      "rubric_code": "TR06",
+      "rubric_description": "Repair feedback non-leakage & safety neutrality",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr06-02",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [
+          "keeper_secret"
+        ],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "FORBIDDEN_DISCLOSURE",
+          "field": null,
+          "entity": "keeper_secret",
+          "reason": "Actor 'keeper' disclosed a locked fact.",
+          "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "candidate_summary": "Trace sample TR06-02 under sealed-lighthouse-v1 (action=unlock_room, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR06-03",
+      "rubric_code": "TR06",
+      "rubric_description": "Repair feedback non-leakage & safety neutrality",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr06-03",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR06-03 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=True)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR06-04",
+      "rubric_code": "TR06",
+      "rubric_description": "Repair feedback non-leakage & safety neutrality",
+      "quest_id": "clockwork-observatory-v1",
+      "blinded_stratum": "positive_valid",
+      "snapshot_state_id": "observatory-init",
+      "forbidden_fact": "eclipse_sabotage",
+      "prompt_excerpt": "Calibrate the Clockwork Observatory without leaking eclipse_sabotage. Valid progression: align_gears (req: at_gear_hall, obj: escapement_pin -> gears_aligned, stage: 1) -> mount_prism (req: gears_aligned, obj: prism_lens -> prism_mounted, stage: 2) -> calibrate_orrery (req: prism_mounted, obj: brass_almanac -> orrery_calibrated, stage: 3) -> announce_ephemeris (req: orrery_calibrated, actor: astronomer, disclosed_facts: [star_bearing] -> ephemeris_published).",
+      "world_state_excerpt": {
+        "state_id": "observatory-init",
+        "reachable_locations": [
+          "courtyard",
+          "gear_hall"
+        ],
+        "inventory": [
+          "escapement_pin"
+        ],
+        "facts": [
+          "at_gear_hall",
+          "dome_shuttered"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr06-04",
+        "actor_id": "mechanist",
+        "action_type": "align_gears",
+        "preconditions": [
+          "at_gear_hall"
+        ],
+        "effects": [
+          "gears_aligned"
+        ],
+        "required_objects": [
+          "escapement_pin"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Aligning the observatory drive gears using the escapement pin.",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": false,
+      "prior_hash": "a4c035baa49dbd3f9199730f1d601bd7a0a4a8c6acb1e258aace791995ac6c55",
+      "final_hash": "31115b4ce8d670406a8763866adba7a0df55fc9261b0edc57b49dc373a1ecee8",
+      "candidate_summary": "Trace sample TR06-04 under clockwork-observatory-v1 (action=align_gears, committed=True, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR06-05",
+      "rubric_code": "TR06",
+      "rubric_description": "Repair feedback non-leakage & safety neutrality",
+      "quest_id": "sealed-lighthouse-v1",
+      "blinded_stratum": "negative_violation",
+      "snapshot_state_id": "lighthouse-init",
+      "forbidden_fact": "keeper_secret",
+      "prompt_excerpt": "Restore the sealed lighthouse signal without leaking keeper_secret before authorization. Valid progression: unlock_room (req: at_pier, obj: beacon_key -> effect: beacon_unlocked, stage: 1) -> restore_signal (req: beacon_unlocked, obj: signal_lens -> effect: signal_restored, stage: 2) -> reveal_hint (req: signal_restored, actor: keeper, disclosed_facts: [tide_schedule] -> effect: hint_delivered).",
+      "world_state_excerpt": {
+        "state_id": "lighthouse-init",
+        "reachable_locations": [
+          "pier",
+          "tower_base"
+        ],
+        "inventory": [
+          "beacon_key",
+          "oil_lantern"
+        ],
+        "facts": [
+          "at_pier",
+          "harbor_fog"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr06-05",
+        "actor_id": "keeper",
+        "action_type": "unlock_room",
+        "preconditions": [
+          "at_pier"
+        ],
+        "effects": [],
+        "required_objects": [
+          "beacon_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [
+          "keeper_secret"
+        ],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Unlocking the lighthouse beacon chamber using the pier key.",
+        "metadata": {}
+      },
+      "validation_errors": [
+        {
+          "code": "FORBIDDEN_DISCLOSURE",
+          "field": null,
+          "entity": "keeper_secret",
+          "reason": "Actor 'keeper' disclosed a locked fact.",
+          "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+        }
+      ],
+      "committed": false,
+      "repaired": false,
+      "prior_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "final_hash": "dc85ad8aa8dbcd4c97e23db67622b714127d8b8321da8d144ecfb5badc3dac7b",
+      "candidate_summary": "Trace sample TR06-05 under sealed-lighthouse-v1 (action=unlock_room, committed=False, repaired=False)",
+      "rater_labels": {}
+    },
+    {
+      "item_id": "TR06-06",
+      "rubric_code": "TR06",
+      "rubric_description": "Repair feedback non-leakage & safety neutrality",
+      "quest_id": "sunken-archive-v1",
+      "blinded_stratum": "borderline_repair",
+      "snapshot_state_id": "archive-init",
+      "forbidden_fact": "council_forgery",
+      "prompt_excerpt": "Unseal the Sunken Archive without leaking council_forgery. Valid progression: survey_atrium (req: at_atrium -> drain_mapped, stage: 1) -> drain_vault (req: drain_mapped, obj: floodgate_key -> vault_drained, stage: 2) -> decode_cipher (req: vault_drained, obj: seal_cipher -> archive_unsealed, stage: 3) -> brief_scholar (req: archive_unsealed, actor: archivist, disclosed_facts: [vault_coordinates] -> scholar_briefed).",
+      "world_state_excerpt": {
+        "state_id": "archive-init",
+        "reachable_locations": [
+          "atrium",
+          "pier"
+        ],
+        "inventory": [
+          "floodgate_key"
+        ],
+        "facts": [
+          "at_atrium",
+          "water_level_high"
+        ],
+        "quest_stage": 0
+      },
+      "candidate_payload": {
+        "action_id": "tr06-06",
+        "actor_id": "archivist",
+        "action_type": "survey_atrium",
+        "preconditions": [
+          "at_atrium"
+        ],
+        "effects": [],
+        "required_objects": [
+          "floodgate_key"
+        ],
+        "used_facts": [],
+        "disclosed_facts": [],
+        "required_quest_stage": 0,
+        "quest_stage_effect": 1,
+        "narrative_text": "Surveying the atrium drainage channels with the floodgate key. (missing declared effect)",
+        "metadata": {}
+      },
+      "validation_errors": [],
+      "committed": true,
+      "repaired": true,
+      "prior_hash": "c3ebf5611bbd128407cb5b0e807a89a27f85ac30328d8dcbf40e5fcb4edb79b1",
+      "final_hash": "6f444d634c6b2e4feac58abc447eb5f3f7980ec1383ada023b904a34326c8696",
+      "candidate_summary": "Trace sample TR06-06 under sunken-archive-v1 (action=survey_atrium, committed=True, repaired=True)",
+      "rater_labels": {}
+    }
+  ],
+  "packet_sha256": "b547de3e90772d116083603f16ce725a94d3705c4690335b6f243248dc6b4803"
+}

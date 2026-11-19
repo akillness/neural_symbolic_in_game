@@ -1,0 +1,61 @@
+<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    :root {
+      --lumi-ink: light-dark(#000000, #e0e0e0);
+      --lumi-muted: light-dark(#5f6368, #9aa0a6);
+      --lumi-dim: light-dark(#f2f0f0, #242528);
+      --lumi-container: light-dark(#e8e6e6, #2d2f33);
+      --lumi-outline: light-dark(#727676, #9a9b9c);
+      --lumi-accent-bg: light-dark(#dcf1ff, #192967);
+      --lumi-primary: light-dark(#3186ff, #9dd2ff);
+      --lumi-sans: 'Google Sans Flex', var(--font-family, 'Google Sans', sans-serif);
+      --lumi-mono: 'Google Sans Code', ui-monospace, monospace;
+    }
+    text { font-weight: 400; stroke: none; }
+    .t-l1 { font-family: var(--lumi-sans); font-size: 15px; fill: var(--lumi-ink); }
+    .t-l2 { font-family: var(--lumi-mono); font-size: 13px; font-style: italic; fill: var(--lumi-ink); }
+    .t-l4 { font-family: var(--lumi-sans); font-size: 13px; fill: var(--lumi-muted); }
+    .node-step { fill: var(--lumi-dim); stroke: none; }
+    .node-focal { fill: var(--lumi-accent-bg); stroke: var(--lumi-primary); stroke-width: 1.25; }
+    .node-store { fill: var(--lumi-container); stroke: var(--lumi-outline); stroke-width: 1; }
+    .edge-seg { fill: none; stroke: var(--lumi-ink); stroke-width: 1.3; stroke-linecap: round; stroke-dasharray: 0 4; }
+    .edge-arrow { fill: none; stroke: var(--lumi-ink); stroke-width: 1.3; stroke-linecap: round; stroke-dasharray: 0 4; marker-end: url(#lumi-caret); }
+  </style>
+  <defs>
+    <marker id="lumi-caret" viewBox="0 0 10 10" refX="7.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 3 1.2 L 7.5 5 L 3 8.8" fill="none" stroke="var(--lumi-ink)" stroke-width: 1.3; stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect class="node-step" x="16" y="24" width="164" height="76" rx="38"/>
+  <text class="t-l1" x="98" y="52" text-anchor="middle" dominant-baseline="central">제안기 (LLM)</text>
+  <text class="t-l4" x="98" y="74" text-anchor="middle" dominant-baseline="central">12-필드 후보만 제출</text>
+
+  <line class="edge-arrow" x1="188" y1="62" x2="228" y2="62"/>
+
+  <rect class="node-focal" x="236" y="24" width="168" height="76" rx="38"/>
+  <text class="t-l1" x="320" y="52" text-anchor="middle" dominant-baseline="central">기호 커밋 게이트 V</text>
+  <text class="t-l4" x="320" y="74" text-anchor="middle" dominant-baseline="central">구문 + 7대 의미 규칙</text>
+
+  <line class="edge-seg" x1="412" y1="62" x2="420" y2="62"/>
+  <rect data-role="edge-pill" x="428" y="52" width="52" height="20" rx="10" fill="var(--lumi-dim)"/>
+  <text class="t-l2" x="454" y="62" text-anchor="middle" dominant-baseline="central">Valid</text>
+  <line class="edge-arrow" x1="488" y1="62" x2="496" y2="62"/>
+
+  <rect class="node-store" x="504" y="24" width="160" height="76" rx="38"/>
+  <text class="t-l1" x="584" y="52" text-anchor="middle" dominant-baseline="central">정준 상태 커밋</text>
+  <text class="t-l4" x="584" y="74" text-anchor="middle" dominant-baseline="central">해시 영수증 · Godot</text>
+
+  <line class="edge-arrow" x1="320" y1="108" x2="320" y2="140"/>
+
+  <rect class="node-step" x="236" y="148" width="168" height="72" rx="36"/>
+  <text class="t-l1" x="320" y="174" text-anchor="middle" dominant-baseline="central">반례 수리 연산자 ρ</text>
+  <text class="t-l4" x="320" y="196" text-anchor="middle" dominant-baseline="central">오류 E 기반 최소 교정</text>
+
+  <path class="edge-arrow" d="M 228 184 L 114 184 Q 98 184 98 168 L 98 108"/>
+  <line class="edge-arrow" x1="412" y1="184" x2="496" y2="184"/>
+
+  <rect class="node-store" x="504" y="148" width="160" height="72" rx="36"/>
+  <text class="t-l1" x="584" y="174" text-anchor="middle" dominant-baseline="central">안전 보류 (Hold)</text>
+  <text class="t-l4" x="584" y="196" text-anchor="middle" dominant-baseline="central">기존 월드 상태 보존</text>
+</svg>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.138" timestamp="2026-10-25T03:56:34.711871+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_counter_only_prompt_telemetry_preserves_initial_source_failure_row" time="0.001"><failure message="AttributeError: 'CounterOnlyEngine' object has no attribute 'prompt_calls'">tests/test_runtime_model_swap.py:1090: in __call__
+    raise ValueError("bad offline response")
+E   ValueError: bad offline response
+
+During handling of the above exception, another exception occurred:
+tests/test_runtime_model_swap.py:1097: in test_counter_only_prompt_telemetry_preserves_initial_source_failure_row
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:414: in run_episode
+    call.get("timed_out") for call in engine.prompt_calls[before_count:]
+                                      ^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'CounterOnlyEngine' object has no attribute 'prompt_calls'</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_counter_only_prompt_telemetry_preserves_repair_source_failure_row" time="0.001"><failure message="AttributeError: 'CounterOnlyEngine' object has no attribute 'prompt_calls'">tests/test_runtime_model_swap.py:1145: in __call__
+    raise ValueError("bad offline response")
+E   ValueError: bad offline response
+
+During handling of the above exception, another exception occurred:
+tests/test_runtime_model_swap.py:1152: in test_counter_only_prompt_telemetry_preserves_repair_source_failure_row
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:414: in run_episode
+    call.get("timed_out") for call in engine.prompt_calls[before_count:]
+                                      ^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'CounterOnlyEngine' object has no attribute 'prompt_calls'</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,67 @@
+\documentclass{article}
+\PassOptionsToPackage{numbers,compress}{natbib}
+\usepackage[preprint]{neurips_2025}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\title{TRACE-RPG: 제안--커밋 게임 권한 검증을 위한 재현 가능한 벤치마크와 결정론적 감사 스위트}
+
+\author{
+  정장영 \\
+  홍익대학교 게임학과 \\
+  \And
+  강신진\thanks{교신저자.} \\
+  홍익대학교 \\
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. 본 논문은 \texttt{nesy\_game.multihop}에 통합된 형식 정리 1--4, Gebru 등 \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0 v2--v5~\cite{akhtar2024croissant}(12/12·17/17·22/22·\textbf{26/26} SHA-256, 55파일 아카이브)와 함께 \system{} 벤치마크 스위트를 제시한다: 1,664건 유한 그래프, 480건 $R{\le}64, d{\le}5$ 상향 Datalog(\textbf{P9}: 100.0\%, $\le$7.12\,$\mu$s, $Q{=}1100.19$), 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·구조화 출력) 스위트---\textbf{P15} 105회 독립 5턴 폐루프(15/15 무누출, 0 위험, 정리~2 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증, \textbf{15/15} 하이브리드 목표 대 Safe-RL 0/15~\cite{alshiekh2018shield}·NeMo 1/15~\cite{rebedea2023nemo}), \textbf{P16} 60회 요인+21회 Godot~4.7.1(\texttt{ontology\_multihop} 30/30·22건 $\rho$수리 대 규칙 22/30, 21/21 재실행, 6/6 해시 일치), \textbf{P17} 540회 통합 우회($\kappa{=}0.8813$, 0\% FRR), 교차 3모델군 CLI(\textbf{P11}--\textbf{P14}: $(a,E)$ 27/27 0토큰, 42/42 Godot, $\kappa{=}0.9367$), 격리된 \texttt{TR01--TR06}($N{=}0$)을 보고한다.
+\end{abstract}
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_phase5_ko}
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 게이팅하며, 오류는 $\rho$ 수리 또는 상태 불변 fallback으로 이어진 뒤 재검증을 거쳐 커밋된다.}
+  \label{fig:architecture}
+\end{figure}
+
+\input{../_shared/ko/sec_problem_arch_phase5_ko}
+\input{../_shared/ko/sec_neurips_db_body_phase5_ko}
+\input{../_shared/ko/sec_conclusion_phase5_ko}
+
+\FloatBarrier
+\bibliographystyle{plainnat}
+\bibliography{../../references,../_shared/venue_extra}
+
+\clearpage
+\section*{NeurIPS 논문 체크리스트 (한글 요약)}
+\begin{enumerate}
+\item {\bf Claims:} \answerYes{} 결정론적 수치, 5단계 직접 API(\textbf{P15}--\textbf{P17}), 4단계 3모델군 분모(파싱 실패 보존), Safe-RL~\cite{alshiekh2018shield}·NeMo~\cite{rebedea2023nemo} 기준선 및 미실행 코호트(0/180, 인간 $N{=}0$)가 JSON 영수증과 정합하다.
+\item {\bf Limitations:} \answerYes{} Claude~5.5 \texttt{temperature} 생략, CLI 비고정 시드, 파싱 실패 보존, 0/180 미실행 파일럿, 유한 심볼릭 범위, $N{=}0$ 인간 평가가 결론 절에 명시된다.
+\item {\bf Theory assumptions and proofs:} \answerYes{} \ref{sec:formal-proofs}절에서 조건부 전제와 불변식 \textbf{I1--I4}에 대한 정리 1--4 및 증명을 제시한다.
+\item {\bf Experimental result reproducibility:} \answerYes{} \texttt{nesy\_game.multihop}, Datalog 오라클 파라미터, \texttt{output\_config.json\_schema}, $(a,E)$ 수리 및 통합 우회 프롬프트가 \ref{sec:arch}--\ref{sec:eval}절에 명시된다.
+\item {\bf Open access to data and code:} \answerYes{} 독립 보조 아카이브(\texttt{neurips-db-supplemental-benchmark.zip}, 55파일, \texttt{CHECKSUMS.sha256} 54/54, PII 0건)에 1--5단계 전량 JSON, \texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5(12/12·17/17·22/22·26/26 SHA-256), 무네트워크 \texttt{reproduce\_benchmark.py}를 포함한다.
+\item {\bf Experimental setting/details:} \answerYes{} 그래프 규모, Safe-RL/NeMo 정의, Claude~5.5 계층별 API 설정, $K\in\{0,1,2\}$, 한·영 3도메인 분할이 \ref{sec:db-composition}--\ref{sec:eval}절에 명시된다.
+\item {\bf Experiment statistical significance:} \answerYes{} \ref{sec:phase4-compact}절과 표~\ref{tab:phase4-compact}에서 95\% Wilson CI, Cochran's $Q$($Q{=}1100.19, 68.71, 71.65, 118.93, 281.23$), 양측 McNemar $p$-값, 540/720회 Fleiss $\kappa{=}0.8813, 0.9367$을 보고한다.
+\item {\bf Experiments compute resources:} \answerYes{} \textbf{A2}·\textbf{A4}·\textbf{P9}($\le$7.12\,$\mu$s) 지연 및 API·CLI 토큰(\textbf{P15} 1.05M, \textbf{P16} 843k, \textbf{P17} 359k, \textbf{P12} 530k/542k 대 0)·Godot 실행 시간을 보고한다.
+\item {\bf Code of ethics / Broader impacts / Safeguards / Licenses / New assets / Human subjects / IRB:} \answerYes{} (\texttt{DATASHEET\_v5.md}~\cite{gebru2021datasheets}, Croissant~1.0~\cite{akhtar2024croissant} v2--v5, MIT/CC-BY-4.0, 격리된 \texttt{TR01--TR06}), \answerNA{} (고위험 가중치 미배포, 인간 피험자 $N{=}0$ 미수행).
+\end{enumerate}
+
+\end{document}

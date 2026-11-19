@@ -1,0 +1,76 @@
+{
+  "schema_version": "runtime-panel-draft-mechanical-verification/1",
+  "status": "PASS_DRAFT_ARTIFACT_ONLY",
+  "proposal_path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json",
+  "proposal_sha256": "27b052fb3af156c999eafad7bb7d3ac611fbea6d7caeb86a3e7952bc5c1e3b4e",
+  "source_bindings_verified": 11,
+  "json_documents_parsed": 12,
+  "original_source_files_unchanged": 9,
+  "conditional_scenarios_verified": 2,
+  "C_contrasts": [
+    4,
+    6
+  ],
+  "effort_source_mappings_verified": 4,
+  "assigned_slots": 0,
+  "new_study_generation_requests": 0,
+  "new_study_episodes": 0,
+  "launch_authorized": false,
+  "independent_revision_review": {
+    "verdict": "APPROVE_DRAFT",
+    "receipt": "research/runtime-model-swap-20261024/panel-amendment-review-v2-irc.json",
+    "provenance": "REVIEWER_IRC_HANDOFF_AFTER_RESUMED_RESULT_LOOKUP_FAILURE",
+    "original_resumed_tool_result_available": false
+  },
+  "not_established": [
+    "Full study freeze",
+    "Inference access or live adapter",
+    "Capability or non-top tier",
+    "C noninferiority or cost advantage",
+    "Egress, billing or live launch authorization"
+  ],
+  "verification_tool": {
+    "tool": "functions.eval",
+    "language": "js",
+    "executed_cell_title": "Checking the draft artifact and preserved source identities",
+    "scope": "Exact source/proposal SHA-256 and JSON parsing; conditional model/cell/episode/call/contrast arithmetic; catalog effort arrays; authority and zero-execution invariants. No runtime or study execution."
+  },
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "self_evaluation": {
+    "summary": "The current authorized draft is complete; full-study contract and generation remain unresolved, not silently completed.",
+    "scores": {
+      "accuracy": {
+        "score": 4,
+        "evidence": "11 bound-source hashes, 12 JSON documents, 2 arithmetic scenarios and 4 catalog effort mappings passed; A-D closure is a labeled reviewer IRC handoff, not an available resumed-tool original.",
+        "improvement": "Recover the original resumed result if the host lifecycle is repaired; do not promote the IRC projection."
+      },
+      "completeness": {
+        "score": 4,
+        "evidence": "The requested separate observed-candidate draft preserves original requests and endpoint bytes; variant, effort, host and launch choices intentionally remain open.",
+        "improvement": "Resolve those choices through the continuing interview before claiming a full frozen study."
+      },
+      "clarity": {
+        "score": 4,
+        "evidence": "Observed catalog host, proposed host and null assignment host are separated; bilingual questions share the Luna/ultra caveat.",
+        "improvement": "Present only the next material choice in the human-facing response."
+      },
+      "actionability": {
+        "score": 4,
+        "evidence": "v2 and its SHA sidecar are concrete local artifacts, with one next GPT-5.6 variant decision and fail-closed launch fields.",
+        "improvement": "Bind later user choices to the reviewed artifact hash rather than editing this proposal."
+      },
+      "conciseness": {
+        "score": 4,
+        "evidence": "One focused v2 preserves the initial FIX without rewriting sources; detailed catalogs and review findings remain in linked artifacts.",
+        "improvement": "Keep the final reply shorter than the machine-readable provenance packet."
+      }
+    },
+    "overall": 4,
+    "priority_improvements": [
+      "Settle variant and native effort/host choices before full protocol freeze.",
+      "Retain separate billing/egress/launch permission and identity gates.",
+      "Do not present a recovered IRC review as the missing original tool result."
+    ],
+    "self_check": "The user should see a completed draft and an explicit next design choice, never a claim that the experiment has run."
+  }
+}

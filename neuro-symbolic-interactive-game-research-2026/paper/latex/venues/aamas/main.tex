@@ -1,0 +1,71 @@
+\ifdefined\ANONBUILD
+\documentclass[sigconf,anonymous,review]{acmart}
+\else
+\documentclass[sigconf,review]{acmart}
+\fi
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{tabularx}
+\input{../_shared/macros}
+
+\setcopyright{none}
+\acmConference[AAMAS '27]{International Conference on Autonomous Agents and Multiagent Systems}{2027}{\ifanonymoussubmission Anonymous Submission\else Seoul, Republic of Korea\fi}
+
+\begin{document}
+
+\title{TRACE-RPG: Action-Shielding Proposal-to-Commit Boundaries and Counterexample Repair for Agentic Games}
+
+\author{Jangyoung Jeong}
+\affiliation{\institution{Department of Game Design, Hongik University}\city{Seoul}\country{Republic of Korea}}
+\author{Shinjin Kang}
+\authornote{Corresponding author.}
+\affiliation{\institution{Hongik University}\city{Seoul}\country{Republic of Korea}}
+
+\begin{abstract}
+Autonomous LLM agents in interactive environments can produce schema-valid proposals that violate reachability, epistemic, or disclosure constraints. \system{} integrates a deterministic seven-predicate action shield, bottom-up transitive Datalog closure (\texttt{nesy\_game.multihop}), and state-blind counterexample repair $\rho(a,E)$ at the proposal-to-commit boundary (Theorems~1--4). Beyond 1,664 finite-graph boundary checks (260/416 $\rightarrow$ 0/416 unsafe) and 480 $R{\le}64, d{\le}5$ Datalog scaling checks (100.0\% at $\le$7.12\,$\mu$s median latency vs.\ 46.67\% flat and 60.00\% 2-hop, $Q{=}1100.19$), we evaluate \textbf{105 independent 5-turn closed-loop multi-agent episodes} (\textbf{P15}) using direct HTTPS Anthropic Claude~5.5 structured outputs across Haiku~5.5, Sonnet~5.5, and Opus~5.5 (omitting \texttt{temperature} where deprecated on Claude~5.5; \textbf{105/105} fresh 0-LLM trace replays exact): controlled Safe-RL proxy masking (0/15 safe goals, 1/15 zero-leak, 16/61 unsafe turns) and NeMo-style Colang proxy rails (1/15, 1/15, 15/61) miss multi-hop leaks, whereas \system{} achieves \textbf{15/15 (100.0\%)} zero-leak and \textbf{0} unsafe commits across every multihop arm (confirming Theorem~2 no-op safety with $\rho_{\mathrm{repairs}}{=}0$ on 28 state-dependent rejections across 14/15 \texttt{rho\_k2} and 13/15 \texttt{multihop\_k0}, and reaching \textbf{15/15 (100.0\%)} safe goals via $\rho{+}\text{LLM}_{K=1}$; $Q_{\mathrm{goal}}{=}68.71$, McNemar $p{\le}1.22{\times}10^{-4}$). Attested API factorial runs (\textbf{P16A}: 60 episodes, \texttt{ontology\_multihop} 30/30 zero-leak, 22 $\rho$ repairs, and 11/30 goals vs.\ \texttt{general\_rule} 22/30 and 0/30, $p{=}0.00781$), Godot~4.7.1 executions (\textbf{P16B}: 21/21 exact replays, 6/6 \texttt{SealedLighthouse} terminal hashes), cross-family CLI trials (\textbf{P11}--\textbf{P13}: GPT-OSS~120B + Hydrogen~4, 0/79 and 0/84 unsafe, $(a,E)$ repair 27/27 vs.\ 26/27 at 0 extra tokens), and 540 unified EN/KO escape checks (\textbf{P17}: $\kappa{=}0.8813$, 0\% FRR) establish reproducible multi-agent safety.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10010147.10010178.10010219.10010221</concept_id>
+       <concept_desc>Computing methodologies~Intelligent agents</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10010147.10010178.10010187</concept_id>
+       <concept_desc>Computing methodologies~Knowledge representation and reasoning</concept_desc>
+       <concept_significance>300</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computing methodologies~Intelligent agents}
+\ccsdesc[300]{Computing methodologies~Knowledge representation and reasoning}
+
+\keywords{action shielding, neuro-symbolic agents, counterexample-guided repair, epistemic disclosure}
+
+\maketitle
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_phase5}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ shield proposals; errors feed bounded $\rho$ or unchanged fallback before revalidated commit and replay.}
+  \Description{Architecture diagram showing proposal submission, seven-predicate deterministic shielding, bounded repair, revalidation, and commit ledger.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/sec_problem_arch_phase5}
+\input{../_shared/sec_eval_aamas_phase5}
+\input{../_shared/sec_conclusion_phase5}
+
+\FloatBarrier
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../../references,../_shared/venue_extra}
+
+\end{document}

@@ -1,0 +1,23 @@
+\subsection{핵심 다중 홉 통합 및 교란 제거 4단계 평가}\label{sec:phase4-compact}
+1--3단계 기반(\textbf{P9}: 480건 $R{\le}64, d{\le}5$ 상향 Datalog 오라클 100.0\%, $O(d)$ $\le$7.12\,$\mu$s 대 1홉 46.67\%·2홉 60.00\%, $Q{=}1100.19$)을 토대로, 4단계에서는 다중 홉 검증기를 핵심 서브패키지 \texttt{nesy\_game.multihop}에 통합(동결 \texttt{src/nesy\_game/*.py} 해시 20/20 유지)하고 외부 \textbf{Safe-RL Action Masking}·\textbf{NeMo 스타일 출력 레일} 기준선과 함께 3단계 프로토콜 교란을 완전 제거한 \textbf{P11}--\textbf{P14}를 \texttt{DATASHEET\_v4.md}·Croissant~1.0 v4(22/22)로 검증하였다(표~\ref{tab:phase4-compact}).
+
+비유도 3모델군 협상(\textbf{P11}; 30에피소드, 79/90 파싱, 교란 0)에서 동적 스키마가 GPT-OSS 1턴 교착을 해소(12커밋, 4마일스톤, 2 $\rho$ 수리)한 가운데 \system{}는 \textbf{30/30} 무누출·\textbf{16/30(53.3\%)} 안전 마일스톤(${\ge}2$ 커밋)·\textbf{0/79} 위험을 지켜 Safe-RL(9/30·37/79, $p{=}9.5{\times}10^{-7}$), NeMo(6/30·43/79, $p{=}1.2{\times}10^{-7}$), 평면(11/30·29/79, $p{=}3.81{\times}10^{-6}$)을 능가하였다($Q{=}118.93$). 90개 과제(\textbf{P12}; 84/90 파싱)에서는 \system{}만이 0/84 위험을 기록했고(Safe-RL 54/84, NeMo 55/84, 평면 32/84; $Q{=}281.23$), 실패 후보 $a$와 반례 $E$를 동일 제공한 27건 수리 비교에서 \textbf{$\rho_{K=2}$ 27/27(0토큰)} 대 \textbf{상태 비참조·참조 LLM $K{=}2$ 각 26/27(96.3\%, 530k·542k토큰 / $>$508\,s, $p{=}1.0$)}이 관찰되어 $\rho$의 본질적 이점이 토큰·지연 제거와 정리~2 보장에 있음이 밝혀졌다(자연 거부 55건은 LLM $K{=}2$가 52/55 안전 재선정). 비유도 Godot~4.7.1 폐루프(\textbf{P13}, 42에피소드)는 \textbf{42/42} 0-LLM 재실행 일치·\textbf{0/42} 유출 및 Claude·Hydrogen \textbf{14/14(100\%)}·GPT-OSS 4/14 목표(\texttt{SealedLighthouse} \texttt{EXACT\_TERMINAL\_HASH} 9/12 포함)를 달성했고, 3계열 4모델 720회 우회 검증(\textbf{P14})은 Fleiss $\kappa{=}\mathbf{0.9367}$을 기록하였다.
+
+\begin{table}[!tbp]
+\caption{4단계 핵심 \texttt{nesy\_game.multihop} 및 교란 제거 3모델군 요약 (\textbf{P9}, \textbf{P11}--\textbf{P14})}
+\label{tab:phase4-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.24\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{4단계 트랙} & \textbf{실측 결과 (95\% Wilson CI; Cochran's $Q$ / McNemar $p$)} \\
+\midrule
+\textbf{P9} 핵심 Datalog (480) & $R{\le}64, d{\le}5$: \texttt{flat} 46.7\%, \texttt{2hop} 60.0\%, \texttt{multihop} \textbf{100.0\%}, 오라클 불일치 0, $\le$7.12\,$\mu$s ($Q{=}1100.19$). \\
+\textbf{P11} 비유도 MAS (30) & \textbf{30/30} 무누출, \textbf{16/30} 마일스톤, \textbf{0/79} 위험 (Safe-RL 37/79, NeMo 43/79; $Q{=}118.93$); \texttt{gpt-oss} 12커밋. \\
+\textbf{P12} $(a,E)$ 수리 (84/90) & 위험: Safe-RL 54/84, NeMo 55/84 대 \system{} \textbf{0/84}. 27건 결함: $\rho$ \textbf{27/27}(0토큰) 대 Blind/Aware LLM 26/27(530k/542k). \\
+\textbf{P13} 비유도 Godot (42) & \textbf{42/42} 0-LLM 재실행, \textbf{0/42} 유출: 5월드 23/30 + 제품 \texttt{SealedLighthouse} 9/12(Claude/Hydrogen 14/14). \\
+\textbf{P14} 3계열 우회 (720) & 3계열 4모델 Fleiss $\kappa{=}\mathbf{0.9367}$ ($\kappa_3{=}\mathbf{0.9309}$); GPT-OSS 66/72·0\% FRR·$F_1{=}0.9714$. \\
+\bottomrule
+\end{tabularx}
+\end{table}

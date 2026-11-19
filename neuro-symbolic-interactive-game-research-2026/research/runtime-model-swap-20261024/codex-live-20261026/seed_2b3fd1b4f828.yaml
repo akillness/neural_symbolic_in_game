@@ -1,0 +1,43 @@
+goal: 비교실험진행해서 이미지로 직접비교 테이블 등 추가하자. 영문버전도 함껭 ㅓㅂ데이트후 깃퓟
+task_type: code
+brownfield_context:
+  project_type: brownfield
+  context_references: []
+  existing_patterns: []
+  existing_dependencies: []
+constraints:
+- 한도 초과 시 기존 크레딧이 차감될 가능성을 승인합니다. 추가 구매·API 전환은 금지하며, 자동충전이 꺼져 있는지 확인한 뒤에만 실행합니다.
+  이 확인에 필요한 읽기 전용 비용 설정 조회도 승인합니다.
+- 8행에 한해 보유 크레딧 사용 허용
+acceptance_criteria:
+- description: 비교실험진행해서 이미지로 직접비교 테이블 등 추가하자.
+  semantic_ac_key: ac_520bff185957e8e4
+- description: 영문버전도 함껭 ㅓㅂ데이트후 깃퓟
+  semantic_ac_key: ac_816d5d26840f2ba8
+- description: 8행에 한해 보유 크레딧 사용 허용
+  semantic_ac_key: ac_3bac9ee17b8d1798
+ontology_schema:
+  name: SessionSettledContract
+  description: Requirements the session already settled, crystallized without an interview.
+    Every entry is verbatim host-supplied material — no LLM composed any part of this
+    Seed.
+  fields: []
+evaluation_principles:
+- name: settled_requirements
+  description: Evaluate only the session-settled requirements.
+  weight: 1.0
+exit_conditions:
+- name: settled_requirements_met
+  description: All session-settled requirements are satisfied.
+  criteria: Every listed acceptance criterion passes.
+metadata:
+  seed_id: seed_2b3fd1b4f828
+  version: 1.0.0
+  created_at: '2026-10-26T09:15:28.645137Z'
+  ambiguity_score: 0.2
+  interview_id: session-context
+  parent_seed_id: null
+  generation_mode: normal
+  degraded: false
+  unresolved_slots: []
+  recovery_reason: null

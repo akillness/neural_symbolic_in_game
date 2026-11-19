@@ -1,0 +1,84 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-panel-variant-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T02:19:47.894Z",
+  "status": "SINGLE_VARIANT_DESIGN_DECISION_APPROVED_NOT_FULL_PROTOCOL_NOT_EXECUTED",
+  "user_verbatim_decision": "GPT-5.6-SOL 한 종",
+  "approval_question_scope": "This selects a design dimension only; no experiment, spend or full panel adoption is authorized.",
+  "approved_design_dimension": {
+    "slot_id": "C-GPT56",
+    "selected_catalog_selector": "gpt-5.6-sol",
+    "gpt_5_6_variant_count": 1,
+    "terra_or_luna_in_primary_draft": false,
+    "effort_selected": null,
+    "host_assignment_approved": false
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json",
+      "sha256": "27b052fb3af156c999eafad7bb7d3ac611fbea6d7caeb86a3e7952bc5c1e3b4e"
+    },
+    {
+      "path": "_workspace/current/qa/releases/2026-10-24-model-metadata-preflight/codex-catalog.json",
+      "sha256": "e45921c7202ec77625290ec0a86ec106cf0b4bbe57dd62a49ac7b2b5bf44447c"
+    }
+  ],
+  "proposal_preservation": {
+    "source_draft_modified": false,
+    "original_pre_run_proposal_modified": false,
+    "approved_endpoint_modified": false,
+    "full_revised_roster_adopted": false
+  },
+  "conditional_active_draft_shape": {
+    "status": "CONDITIONAL_PROPOSAL_NOT_APPROVED_ASSIGNMENTS_BUDGET_OR_POWER",
+    "reference": "gpt-6.1-sol; fresh matched episodes still required",
+    "candidate_families": [
+      "gpt-5.6-sol",
+      "Claude Opus 5.5; exact host/selector/identity unresolved",
+      "Claude Sonnet 5.5; exact host/selector/identity unresolved",
+      "Gemini 3.8 Flash; effort/identity unresolved"
+    ],
+    "proposed_models_including_reference_if_other_slots_retained": 5,
+    "proposed_C_candidate_contrasts_if_other_slots_retained": 4,
+    "proposed_cells_if_two_representations_retained": 10,
+    "unapproved_12_quest_2_repeat_episode_arithmetic": 240,
+    "final_assignments_created": false
+  },
+  "authority": {
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "live_launch_authorized": false
+  },
+  "next_design_decision": {
+    "topic": "Prespecified Codex reference/candidate reasoning effort policy",
+    "reference_selector": "gpt-6.1-sol",
+    "candidate_selector": "gpt-5.6-sol",
+    "catalog_common_efforts": [
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max",
+      "ultra"
+    ],
+    "selected_effort": null,
+    "ultra_catalog_description": "Maximum reasoning with automatic task delegation",
+    "ultra_requires_additional_serial_execution_and_containment_review": true,
+    "identical_effort_labels_do_not_establish_equal_compute": true
+  },
+  "remaining_blockers": [
+    "Native host/effort/context policy and identity/fallback capture",
+    "Flash effort selector",
+    "Independent held-out manifests and source/prompt/oracle/game/ontology hashes",
+    "Episode and aggregate budgets/repairs/deadlines",
+    "C margin/floor and prospective pilot/confirmatory analysis",
+    "Separate egress, billing/enforceability, spend and source-bound launch approval"
+  ],
+  "new_candidate_generation_requests": 0,
+  "new_study_episodes": 0,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "This binds only the user-selected GPT-5.6 variant dimension to the reviewed draft. All other unapproved fields remain open; subsequent revisions require new versioned decision artifacts."
+}

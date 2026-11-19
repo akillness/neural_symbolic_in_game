@@ -1,0 +1,66 @@
+{
+  "schema_version": "runtime-pilot-scope-verification/1",
+  "status": "PASS_SAMPLE_SCOPE_AND_LOCAL_HANDOFF_ONLY",
+  "decision_ref": "research/runtime-model-swap-20261024/pilot-20-scope-decision-v1.json",
+  "decision_sha256": "75b8f141d6fc96b158fe511ba36f9f65f700234096c9d2c87780b7a7a1bd6efa",
+  "decision_json_and_persisted_hash": "PASS",
+  "source_bindings_verified": 5,
+  "arithmetic": {
+    "quest_count": 1,
+    "model_families": 5,
+    "representations": 2,
+    "fresh_repeats": 2,
+    "planned_cells": 10,
+    "planned_episodes": 20,
+    "quest_clusters": 1
+  },
+  "episode_count_is_not_api_call_count": true,
+  "quest_population_cluster_inference_allowed": false,
+  "full_study_authority_flags_all_false": true,
+  "command": "rtk proxy .venv/bin/python scripts/lint_wiki.py ../llm-wiki --format json",
+  "cwd": "<PROJECT_ROOT>",
+  "observed_report": {
+    "vault_root": "<REPOSITORY_ROOT>/llm-wiki",
+    "missing_paths": [],
+    "page_count": 82,
+    "broken_links": [],
+    "orphan_pages": []
+  },
+  "new_markdown_links_checked": 2,
+  "new_candidate_generation_requests": 0,
+  "actual_assigned_episodes": 0,
+  "actual_executed_episodes": 0,
+  "full_protocol": "UNRESOLVED_NOT_FROZEN",
+  "pilot_launch": "NOT_AUTHORIZED",
+  "confirmatory_launch": "NOT_AUTHORIZED",
+  "next_interview": "Episode resource-budget packet; not spend/egress/launch approval",
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "Exact 1x5x2x2 arithmetic, 5 source digests, persisted JSON/hash and zero-execution flags verified.",
+      "improvement": "Bind concrete payload/oracle/source and identity/effective-setting receipts before assignment."
+    },
+    "completeness": {
+      "score": 4,
+      "evidence": "The requested 20-first scope is recorded without pretending the remaining contract or execution is complete.",
+      "improvement": "Resolve the coherent resource and activation/permission gates next."
+    },
+    "clarity": {
+      "score": 4,
+      "evidence": "20 episodes, 10 cells and 1 quest cluster are separated from API calls and independent quests.",
+      "improvement": "Keep the human reply to the confirmed scope and one budget question."
+    },
+    "actionability": {
+      "score": 4,
+      "evidence": "Immutable decision/hash and local report/task links exist; proposed budget fields are explicit but unapproved.",
+      "improvement": "Bind any next budget choice to this exact scope hash."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "No extra prose document or unrelated test suite was added; existing handoff surfaces were updated.",
+      "improvement": "Avoid repeating the complete model catalog in the reply."
+    },
+    "overall": 4
+  }
+}

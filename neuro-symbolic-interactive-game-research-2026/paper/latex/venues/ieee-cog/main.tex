@@ -1,0 +1,55 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/macros}
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.10}
+
+\title{TRACE-RPG: Auditable Proposal-to-Commit Boundaries for Safe Generative Game Actions}
+
+\ifanonymoussubmission
+\author{\IEEEauthorblockN{Anonymous Author(s)}
+\IEEEauthorblockA{Double-Anonymous Submission (IEEE Conference on Games)}}
+\else
+\author{\IEEEauthorblockN{Jangyoung Jeong$^{1}$ and Shinjin Kang$^{2,*}$}
+\IEEEauthorblockA{$^{1}$Department of Game Design, Hongik University \quad $^{2}$Hongik University ($^{*}$Corresponding author)}}
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Generated game events can satisfy a syntactic schema and cite known facts while requesting inaccessible objects, unauthorized state transitions, or premature secret disclosure. \system{} separates proposal authority from commit authority via a deterministic seven-predicate gate, guided repair, and hash-linked replay (Theorems~1--4). Across 1,664 finite-graph cases, semantic gating eliminated 260/416 unsafe commits (0/156 false rejections; 128/260 repairs), while a 48-case multi-hop closure suite breaks 60/60 single-hop parity (48/48 ontology vs.\ 20/48 flat). Extended zero-LLM audits, 24 live Gemini episodes across three quest worlds (0/129 unsafe commits, 70 blocked turns, 24/24 strict replay, CLI revisions unattested), Stage-2 EN/KO escape checks (97.2\% recall, 0.0\% FRR), and a blinded \texttt{TR01--TR06} human-eval packet (\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS}) establish practical safety boundaries.
+\end{abstract}
+
+\begin{IEEEkeywords}
+game AI, neuro-symbolic verification, interactive narrative, safety gating
+\end{IEEEkeywords}
+
+\section{Introduction}
+\input{../_shared/sec_intro_gap_core}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.68\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{Policy and state $c_t$ gate proposals; errors feed bounded $\rho$ or unchanged fallback before revalidated commit and replay.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/sec_problem_arch}
+\input{../_shared/sec_eval_compact}
+\input{../_shared/sec_discussion_conclusion}
+
+\FloatBarrier
+\bibliographystyle{IEEEtran}
+\bibliography{../../references}
+
+\end{document}

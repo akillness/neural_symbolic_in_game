@@ -1,0 +1,314 @@
+{
+  "artifact_type": "independent_agent_cases_evaluation",
+  "cases": [
+    {
+      "conditions_agree": true,
+      "conversion": {
+        "status": "completed"
+      },
+      "expected_rule_violations": [],
+      "expected_valid": true,
+      "generic_rules": {
+        "accepted": true,
+        "matches_expected": true,
+        "status": "completed"
+      },
+      "id": "fresh-v2-01",
+      "validator": {
+        "accepted": true,
+        "matches_expected": true,
+        "result": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [],
+          "valid": true
+        },
+        "status": "completed"
+      }
+    },
+    {
+      "conditions_agree": true,
+      "conversion": {
+        "status": "completed"
+      },
+      "expected_rule_violations": [
+        "precondition"
+      ],
+      "expected_valid": false,
+      "generic_rules": {
+        "accepted": false,
+        "matches_expected": true,
+        "status": "completed"
+      },
+      "id": "fresh-v2-02",
+      "validator": {
+        "accepted": false,
+        "matches_expected": true,
+        "result": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "UNSATISFIED_PRECONDITION",
+              "entity": "cabinet_unlocked",
+              "reason": "Required predicate 'cabinet_unlocked' is false in state shop-cabinet.",
+              "repair_hint": "Remove the dependency or establish the predicate in an earlier valid action."
+            }
+          ],
+          "valid": false
+        },
+        "status": "completed"
+      }
+    },
+    {
+      "conditions_agree": true,
+      "conversion": {
+        "status": "completed"
+      },
+      "expected_rule_violations": [
+        "object_reachability"
+      ],
+      "expected_valid": false,
+      "generic_rules": {
+        "accepted": false,
+        "matches_expected": true,
+        "status": "completed"
+      },
+      "id": "fresh-v2-03",
+      "validator": {
+        "accepted": false,
+        "matches_expected": true,
+        "result": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "UNREACHABLE_REQUIRED_OBJECT",
+              "entity": "lantern",
+              "reason": "Required object 'lantern' is not reachable before use.",
+              "repair_hint": "Move the object to a reachable location or add a validated alternate route."
+            }
+          ],
+          "valid": false
+        },
+        "status": "completed"
+      }
+    },
+    {
+      "conditions_agree": true,
+      "conversion": {
+        "status": "completed"
+      },
+      "expected_rule_violations": [
+        "npc_knowledge",
+        "forbidden_disclosure"
+      ],
+      "expected_valid": false,
+      "generic_rules": {
+        "accepted": false,
+        "matches_expected": true,
+        "status": "completed"
+      },
+      "id": "fresh-v2-04",
+      "validator": {
+        "accepted": false,
+        "matches_expected": true,
+        "result": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "NPC_DISCLOSURE_KNOWLEDGE_VIOLATION",
+              "entity": "vault_location",
+              "reason": "Actor 'herald' disclosed a fact outside its knowledge set.",
+              "repair_hint": "Remove the disclosure or establish an actor-visible evidence event first."
+            },
+            {
+              "code": "FORBIDDEN_DISCLOSURE",
+              "entity": "vault_location",
+              "reason": "Actor 'herald' disclosed a locked fact.",
+              "repair_hint": "Withhold the fact until its symbolic release condition is satisfied."
+            }
+          ],
+          "valid": false
+        },
+        "status": "completed"
+      }
+    },
+    {
+      "conditions_agree": true,
+      "conversion": {
+        "status": "completed"
+      },
+      "expected_rule_violations": [
+        "action_policy",
+        "quest_stage"
+      ],
+      "expected_valid": false,
+      "generic_rules": {
+        "accepted": false,
+        "matches_expected": true,
+        "status": "completed"
+      },
+      "id": "fresh-v2-05",
+      "validator": {
+        "accepted": false,
+        "matches_expected": true,
+        "result": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "UNKNOWN_ACTION_TYPE",
+              "entity": "claim_reward",
+              "reason": "Action type 'claim_reward' has no authoritative policy.",
+              "repair_hint": "Reject the candidate or register an independently reviewed action policy."
+            },
+            {
+              "code": "QUEST_STAGE_VIOLATION",
+              "entity": "3",
+              "reason": "Action requires stage 3, current stage is 1.",
+              "repair_hint": "Delay the action or validate the missing quest transition."
+            }
+          ],
+          "valid": false
+        },
+        "status": "completed"
+      }
+    },
+    {
+      "conditions_agree": true,
+      "conversion": {
+        "status": "completed"
+      },
+      "expected_rule_violations": [
+        "quest_stage_monotonicity"
+      ],
+      "expected_valid": false,
+      "generic_rules": {
+        "accepted": false,
+        "matches_expected": true,
+        "status": "completed"
+      },
+      "id": "fresh-v2-06",
+      "validator": {
+        "accepted": false,
+        "matches_expected": true,
+        "result": {
+          "checks_run": [
+            "action_policy",
+            "precondition",
+            "object_reachability",
+            "npc_knowledge",
+            "forbidden_disclosure",
+            "quest_stage",
+            "quest_stage_monotonicity"
+          ],
+          "errors": [
+            {
+              "code": "QUEST_STAGE_REGRESSION",
+              "entity": "2",
+              "reason": "Action would regress quest stage from 4 to 2.",
+              "repair_hint": "Keep the stage monotonic or encode an explicit rollback event and policy."
+            }
+          ],
+          "valid": false
+        },
+        "status": "completed"
+      }
+    }
+  ],
+  "execution": {
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-c",
+      "import sys; exec(sys.argv[1])",
+      "import sys,json,hashlib,traceback,platform\nfrom pathlib import Path\nroot=Path(\"neuro-symbolic-interactive-game-research-2026\").resolve()\np=root/\"research/codex_feedback_pilot/independent-agent-cases-v2-20261110.json\"\nexpected_hash=\"9f5b6401467a2c9a8329659b9999bb86d5a8231cced62d1e9dbaa6326d174ef7\"\ndef sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()\nbefore=sha(p)\nif before != expected_hash: raise RuntimeError(\"Frozen input hash mismatch before evaluation\")\nraw=p.read_bytes()\nif hashlib.sha256(raw).hexdigest()!=before: raise RuntimeError(\"Input changed during read\")\ndata=json.loads(raw)\nsys.path[:0]=[str(root/\"src\"),str(root/\"scripts\")]\nfrom nesy_game.contracts import ActionPolicy,WorldState,CandidateAction\nfrom nesy_game.validator import validate_candidate\nfrom nesy_game.runtime import to_jsonable\nfrom run_fixed_oracle_comparison import generic_accepts\nsources={str(Path(m.__file__).resolve().relative_to(root)):sha(Path(m.__file__).resolve()) for m in list(sys.modules.values()) if getattr(m,\"__file__\",None) and Path(m.__file__).resolve().is_relative_to(root) and Path(m.__file__).suffix==\".py\"}\nrows=[]\ndef err(e): return {\"type\":type(e).__name__,\"message\":str(e)}\nfor c in data[\"cases\"]:\n r={\"id\":c[\"id\"],\"expected_valid\": {\"valid\":True,\"invalid\":False}.get(c.get(\"expected\")),\"expected_rule_violations\":c.get(\"expected_rule_violations\",[]),\"conversion\":{\"status\":\"unknown\"},\"generic_rules\":{\"status\":\"unknown\",\"accepted\":None},\"validator\":{\"status\":\"unknown\",\"accepted\":None,\"result\":None},\"conditions_agree\":None}\n try:\n  s=dict(c[\"WorldState\"]); s[\"action_policies\"]={k:ActionPolicy(**v) for k,v in s[\"action_policies\"].items()}; state=WorldState(**s); candidate=CandidateAction(**c[\"CandidateAction\"]); r[\"conversion\"]={\"status\":\"completed\"}\n except Exception as e:\n  r[\"conversion\"]={\"status\":\"error\",\"error\":err(e)}\n else:\n  try:\n   value=generic_accepts(state,candidate)\n   if type(value) is not bool: raise TypeError(\"generic_accepts did not return bool\")\n   r[\"generic_rules\"]={\"status\":\"completed\",\"accepted\":value,\"matches_expected\":None if r[\"expected_valid\"] is None else value==r[\"expected_valid\"]}\n  except Exception as e: r[\"generic_rules\"]={\"status\":\"error\",\"accepted\":None,\"error\":err(e)}\n  try:\n   value=validate_candidate(state,candidate); result=to_jsonable(value)\n   if type(value.valid) is not bool: raise TypeError(\"validator valid is not bool\")\n   r[\"validator\"]={\"status\":\"completed\",\"accepted\":value.valid,\"result\":result,\"matches_expected\":None if r[\"expected_valid\"] is None else value.valid==r[\"expected_valid\"]}\n  except Exception as e: r[\"validator\"]={\"status\":\"error\",\"accepted\":None,\"result\":None,\"error\":err(e)}\n  if r[\"generic_rules\"][\"accepted\"] is not None and r[\"validator\"][\"accepted\"] is not None: r[\"conditions_agree\"]=r[\"generic_rules\"][\"accepted\"]==r[\"validator\"][\"accepted\"]\n rows.append(r)\nafter=sha(p)\nsource_after={name:sha(root/name) for name in sources}\nsummary={\"cases\":len(rows),\"generic_completed\":sum(r[\"generic_rules\"][\"status\"]==\"completed\" for r in rows),\"validator_completed\":sum(r[\"validator\"][\"status\"]==\"completed\" for r in rows),\"comparable\":sum(r[\"conditions_agree\"] is not None for r in rows),\"conditions_agree\":sum(r[\"conditions_agree\"] is True for r in rows),\"conditions_disagree\":sum(r[\"conditions_agree\"] is False for r in rows),\"generic_matches_expected\":sum(r[\"generic_rules\"].get(\"matches_expected\") is True for r in rows),\"validator_matches_expected\":sum(r[\"validator\"].get(\"matches_expected\") is True for r in rows)}\nout={\"artifact_type\":\"independent_agent_cases_evaluation\",\"execution\":{\"argv\":[sys.executable,\"-c\",\"import sys; exec(sys.argv[1])\",sys.argv[1]],\"python\":platform.python_version(),\"cwd\":str(Path.cwd()),\"model_calls\":0},\"input\":{\"path\":str(p.relative_to(root)),\"sha256_expected\":expected_hash,\"sha256_before\":before,\"sha256_after\":after,\"unchanged\":before==after},\"source_sha256_before\":sources,\"source_sha256_after\":source_after,\"sources_unchanged\":sources==source_after,\"limitations\":[\"Six designer-authored model-agent cases are neither independent human gold nor an external population.\",\"Designer saw seven validator predicate names and one paper quest-stage row; not fully blinded.\",\"Both checkers and expected judgments may be wrong; this is not a performance or generalization estimate.\",\"Generic checker returns only a boolean; it does not report individual rule violations.\",\"Offline direct validation only, no repair, game execution, real model, authentication or external calls.\"],\"summary\":summary,\"cases\":rows}\nprint(json.dumps(out,ensure_ascii=False,indent=2,sort_keys=True))\n"
+    ],
+    "cwd": "/Users/jangyoung/orca/neural_symbolic_in_game",
+    "model_calls": 0,
+    "python": "3.14.6"
+  },
+  "input": {
+    "path": "research/codex_feedback_pilot/independent-agent-cases-v2-20261110.json",
+    "sha256_after": "9f5b6401467a2c9a8329659b9999bb86d5a8231cced62d1e9dbaa6326d174ef7",
+    "sha256_before": "9f5b6401467a2c9a8329659b9999bb86d5a8231cced62d1e9dbaa6326d174ef7",
+    "sha256_expected": "9f5b6401467a2c9a8329659b9999bb86d5a8231cced62d1e9dbaa6326d174ef7",
+    "unchanged": true
+  },
+  "limitations": [
+    "Six designer-authored model-agent cases are neither independent human gold nor an external population.",
+    "Designer saw seven validator predicate names and one paper quest-stage row; not fully blinded.",
+    "Both checkers and expected judgments may be wrong; this is not a performance or generalization estimate.",
+    "Generic checker returns only a boolean; it does not report individual rule violations.",
+    "Offline direct validation only, no repair, game execution, real model, authentication or external calls."
+  ],
+  "source_sha256_after": {
+    "scripts/run_fixed_oracle_comparison.py": "3a1064c9f326651b3b82721289501628c756679bae71379209a49973839963c2",
+    "scripts/run_local_signal_comparison.py": "b1492464092d8c16ca65697a8bf0e5c76c4e60ea6ac67513c3921b697e8f0288",
+    "src/nesy_game/__init__.py": "e8d199f1faa6a8bc2b2c2ebebd349808e00c3bde2bd70b0110932860b1f35776",
+    "src/nesy_game/contracts.py": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce",
+    "src/nesy_game/experiment.py": "ea1681247acb41112237a32ccd86783d742fe0483fb548ae900e5cda86533198",
+    "src/nesy_game/metrics.py": "a5a39dc1ae9bab268f8384d89de3468594b93137b86f30668a91a3175eec8e04",
+    "src/nesy_game/repair.py": "2f711ee9e3f12da05680e6994d01326fc7e381d6a1880da5dbc7026ed5e362f6",
+    "src/nesy_game/runtime.py": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4",
+    "src/nesy_game/validator.py": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6"
+  },
+  "source_sha256_before": {
+    "scripts/run_fixed_oracle_comparison.py": "3a1064c9f326651b3b82721289501628c756679bae71379209a49973839963c2",
+    "scripts/run_local_signal_comparison.py": "b1492464092d8c16ca65697a8bf0e5c76c4e60ea6ac67513c3921b697e8f0288",
+    "src/nesy_game/__init__.py": "e8d199f1faa6a8bc2b2c2ebebd349808e00c3bde2bd70b0110932860b1f35776",
+    "src/nesy_game/contracts.py": "80e2b8c1c3c1360f11db48b3c93f404e20a258acdf8d62492ee0f5f8958eb7ce",
+    "src/nesy_game/experiment.py": "ea1681247acb41112237a32ccd86783d742fe0483fb548ae900e5cda86533198",
+    "src/nesy_game/metrics.py": "a5a39dc1ae9bab268f8384d89de3468594b93137b86f30668a91a3175eec8e04",
+    "src/nesy_game/repair.py": "2f711ee9e3f12da05680e6994d01326fc7e381d6a1880da5dbc7026ed5e362f6",
+    "src/nesy_game/runtime.py": "c620dee17655e723e948bbcd699a5c91d87afdbc4e05d1acb64bcd918d9c63a4",
+    "src/nesy_game/validator.py": "1039783e0695cd3fa864463f984bbd34b2d44357b89d12ae80000bb308d91be6"
+  },
+  "sources_unchanged": true,
+  "summary": {
+    "cases": 6,
+    "comparable": 6,
+    "conditions_agree": 6,
+    "conditions_disagree": 0,
+    "generic_completed": 6,
+    "generic_matches_expected": 6,
+    "validator_completed": 6,
+    "validator_matches_expected": 6
+  }
+}

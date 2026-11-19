@@ -1,0 +1,39 @@
+{
+  "schema_version": "bounded-aside-candidate-review/v1",
+  "status": "FIX_REJECTED_CANDIDATE",
+  "source_sha256": {
+    "tests/aside_browser_backend.cjs": "fdf06a6e535434408da5a9315d57f8929531e4a3f1af7887410b4129dc620fb9",
+    "tests/publication_presentation_driver.cjs": "ead0516a4ed88fa6932f44c78933cce5675ce38f1ce86eba1c4cdcedcd72d5cf",
+    "tests/ontology_evidence_map_driver.cjs": "54b2a8a292a9a3e448a77347668580d80740cb4e21ed53042332158c39e0edd1",
+    "tests/dashboard_signal_driver.cjs": "8e86fdaf15146dc617e566a6ec520bac7bd04a549dd2db2605183dfa5881fb51",
+    "tests/test_publication_presentation.py": "187c0a3e3e87b0f99c31c0cabdf3b77a5f00dad23ea4ff5206e98e2ee4df6aae",
+    "tests/test_ontology_evidence_map.py": "4916aa60843734d161a65a477f943f83a2e2baa9a57f0997db84f9c296d9d37c",
+    "tests/test_signal_explainer.py": "295f77fdd0b75169ce42ea81226f7b135fbf72ee6cd47e24788bf261f76f76f9"
+  },
+  "runtime": {
+    "total": 73,
+    "passed": 70,
+    "failed": 3,
+    "skipped": 0,
+    "exit_code": 1,
+    "seconds": 808.985,
+    "failed_cases": [
+      "test_isolated_component_map_and_existing_observer_contracts[unsafe-text-390]",
+      "test_isolated_component_map_and_existing_observer_contracts[wrong-hash-1440]",
+      "test_isolated_component_map_and_existing_observer_contracts[missing-translation-1440]"
+    ],
+    "junit_sha256": "c37227f09c447901decefbcc5c4a53a10c3037e7fe0483bc96b584916ab0c575",
+    "raw_sha256": "127797c36e54fd8c155ade6d32bb861c0941d7aeec4cb063ebbab84826f5b4f0",
+    "unsafe_text_native_error": "Opaque native failure retained only as length98/hash in safe summaries, not printed here"
+  },
+  "review_status": "Code/security/TypeScript blockers prevent acceptance independently of runtime failure; Python source-only approval is not runtime approval",
+  "historical_ci_cause": "UNKNOWN; controlled reconstruction proves invariant gaps, not the historical offending target or SDK lag",
+  "privacy": "Later task-owned diagnostic artifacts may be explicitly minimized; available pre/post hashes and missing prehashes must be recorded. No actual target/profile IDs, nonce values, unrelated titles/URLs or raw native errors are published.",
+  "source_retention": {
+    "files": 7,
+    "all_hashes_verified": true,
+    "backend_recovery": "Exact bytes recovered from owner retained edits/snapshots; reconstructed SHA256 matches freeze",
+    "scope": "Private source-only retention, no diagnostic inventory copied"
+  },
+  "checksum_scope": "Raw/JUnit checksums reflect bytes observed at rejected-run recording. Any later diagnostic minimization has an explicit ledger and is not claimed byte-identical."
+}

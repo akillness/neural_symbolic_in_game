@@ -1,0 +1,652 @@
+{
+  "assessment": "Separate agent assessed stripped state and proposal plus project rule documents; source expected labels and comparison outcomes were not supplied. Case, state and action identifiers exposed descriptive labels, so this was not a fully blinded assessment.",
+  "comparison": {
+    "resolved_disagreements": 0,
+    "resolved_matching": 10,
+    "scope": "Comparison against same-designer expected labels; not validation of the expected labels or generalization.",
+    "unknown": 1
+  },
+  "input": [
+    {
+      "case_id": "missing_precondition",
+      "proposal": {
+        "action_id": "missing_precondition",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": [
+              "authorized"
+            ]
+          }
+        },
+        "facts": [
+          "authorized"
+        ],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "missing_precondition"
+      }
+    },
+    {
+      "case_id": "missing_effect",
+      "proposal": {
+        "action_id": "missing_effect",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [
+              "signal_restored"
+            ],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "missing_effect"
+      }
+    },
+    {
+      "case_id": "unauthorized_objective",
+      "proposal": {
+        "action_id": "unauthorized_objective",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "unauthorized_objective"
+      }
+    },
+    {
+      "case_id": "forbidden_disclosure",
+      "proposal": {
+        "action_id": "forbidden_disclosure",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [
+          "secret"
+        ],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "forbidden_disclosure"
+      }
+    },
+    {
+      "case_id": "unsatisfied_dependency",
+      "proposal": {
+        "action_id": "unsatisfied_dependency",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [
+          "permission"
+        ],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {
+          "captain": []
+        },
+        "inventory": [],
+        "locations": [
+          "harbor"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "unsatisfied_dependency"
+      }
+    },
+    {
+      "case_id": "held_valid_goal",
+      "proposal": {
+        "action_id": "held_valid_goal",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [
+              1
+            ],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {},
+        "inventory": [],
+        "locations": [
+          "harbor",
+          "tower"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "held_valid_goal"
+      }
+    },
+    {
+      "case_id": "held_valid_no_goal",
+      "proposal": {
+        "action_id": "held_valid_no_goal",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [
+              1
+            ],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {},
+        "inventory": [],
+        "locations": [
+          "harbor",
+          "tower"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "held_valid_no_goal"
+      }
+    },
+    {
+      "case_id": "held_unknown_knowledge",
+      "proposal": {
+        "action_id": "held_unknown_knowledge",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": [
+          "unknown"
+        ]
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [
+              1
+            ],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {},
+        "inventory": [],
+        "locations": [
+          "harbor",
+          "tower"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "held_unknown_knowledge"
+      }
+    },
+    {
+      "case_id": "held_unreachable_object",
+      "proposal": {
+        "action_id": "held_unreachable_object",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [
+          "key"
+        ],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [
+              1
+            ],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {},
+        "inventory": [],
+        "locations": [
+          "harbor",
+          "tower"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "held_unreachable_object"
+      }
+    },
+    {
+      "case_id": "held_future_stage",
+      "proposal": {
+        "action_id": "held_future_stage",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": null,
+        "required_objects": [],
+        "required_quest_stage": 1,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [
+              1
+            ],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {},
+        "inventory": [],
+        "locations": [
+          "harbor",
+          "tower"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "held_future_stage"
+      }
+    },
+    {
+      "case_id": "held_allowed_stage",
+      "proposal": {
+        "action_id": "held_allowed_stage",
+        "action_type": "signal",
+        "actor_id": "captain",
+        "disclosed_facts": [],
+        "effects": [
+          "signal_restored"
+        ],
+        "metadata": {},
+        "narrative_text": "",
+        "preconditions": [],
+        "quest_stage_effect": 1,
+        "required_objects": [],
+        "required_quest_stage": 0,
+        "used_facts": []
+      },
+      "state": {
+        "action_policies": {
+          "signal": {
+            "allowed_effects": [
+              "signal_restored"
+            ],
+            "allowed_quest_stage_effects": [
+              1
+            ],
+            "required_effects": [],
+            "required_preconditions": []
+          }
+        },
+        "facts": [],
+        "forbidden_disclosures": {},
+        "inventory": [],
+        "locations": [
+          "harbor",
+          "tower"
+        ],
+        "npc_knowledge": {
+          "captain": [
+            "secret"
+          ]
+        },
+        "object_locations": {},
+        "quest_stage": 0,
+        "reachable_locations": [
+          "harbor"
+        ],
+        "state_id": "held_allowed_stage"
+      }
+    }
+  ],
+  "input_sha256": "478f549e3f26d5a04ff07b507ca881c8446e44f4464462f0e2131c45f924ec4b",
+  "judgments": [
+    {
+      "case_id": "missing_precondition",
+      "objective": false,
+      "reason": "정책 필수 전제 authorized가 후보에 선언되지 않음",
+      "valid": false
+    },
+    {
+      "case_id": "missing_effect",
+      "objective": false,
+      "reason": "정책 필수 효과 signal_restored 누락",
+      "valid": false
+    },
+    {
+      "case_id": "unauthorized_objective",
+      "objective": false,
+      "reason": "signal_restored가 허용 효과에 없음",
+      "valid": false
+    },
+    {
+      "case_id": "forbidden_disclosure",
+      "objective": false,
+      "reason": "captain이 금지된 secret을 공개",
+      "valid": false
+    },
+    {
+      "case_id": "unsatisfied_dependency",
+      "objective": false,
+      "reason": "후보 전제 permission이 현재 사실에 없음",
+      "valid": false
+    },
+    {
+      "case_id": "held_valid_goal",
+      "objective": true,
+      "reason": "효과가 허용되고 나머지 제약 위반 없음",
+      "valid": true
+    },
+    {
+      "case_id": "held_valid_no_goal",
+      "objective": false,
+      "reason": "제약 위반 없으나 효과에 목표 사실이 없음",
+      "valid": true
+    },
+    {
+      "case_id": "held_unknown_knowledge",
+      "objective": false,
+      "reason": "사용 사실 unknown이 captain의 지식에 없음",
+      "valid": false
+    },
+    {
+      "case_id": "held_unreachable_object",
+      "objective": null,
+      "reason": "key가 소지품과 객체 위치 맵에 없으나 문서상 미등록 객체에 대한 닫힌 세계 해석이 명시되지 않음",
+      "valid": null
+    },
+    {
+      "case_id": "held_future_stage",
+      "objective": false,
+      "reason": "현재 단계 0이 요구 단계 1보다 낮음",
+      "valid": false
+    },
+    {
+      "case_id": "held_allowed_stage",
+      "objective": true,
+      "reason": "목표 효과와 0에서 1로의 단계 전이가 허용되며 나머지 제약 위반 없음",
+      "valid": true
+    }
+  ],
+  "limitations": [
+    "Agent assessment, not human gold or independent implementation.",
+    "Previously executed cases are not a fresh held-out dataset.",
+    "Missing object location remains unknown to the assessor; no silent imputation."
+  ],
+  "schema_version": "blind-agent-assessment/1"
+}

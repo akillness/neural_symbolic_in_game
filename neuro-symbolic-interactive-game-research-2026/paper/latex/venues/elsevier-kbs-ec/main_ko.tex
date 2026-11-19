@@ -1,0 +1,66 @@
+\documentclass[final,5p,times,twocolumn]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\journal{Knowledge-Based Systems (Korean Companion)}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{TRACE-RPG: 대화형 게임의 감사 가능한 제안--커밋 경계와 읽기 전용 온톨로지 관측}
+
+\author[1]{정장영}
+\author[2]{강신진\corref{cor1}}
+\cortext[cor1]{교신저자.}
+\affiliation[1]{organization={홍익대학교 게임학과},country={대한민국}}
+\affiliation[2]{organization={홍익대학교},country={대한민국}}
+
+\begin{abstract}
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체, 비인가 전이, 조기 비밀 공개를 포함할 수 있다. \system{}는 핵심 패키지 \texttt{nesy\_game.multihop}의 상향 이행적 Datalog 폐쇄·7술어 게이트·상태 비참조 수리 $\rho(a,E)$·SHA-256 해시 연쇄 리플레이로 제안·커밋 권한을 분리한다(정리 1--4, \textbf{I1--I4}). 1,664건 유한 그래프 감사와 480건 $R{\le}64, d{\le}5$ Datalog 오라클 검증($\le$7.12\,$\mu$s, 100.0\% 대 1홉 46.67\%·2홉 60.00\%, $Q{=}1100.19$)을 토대로, 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·\texttt{output\_config.json\_schema}) 및 3모델군 CLI 평가를 보고한다: 105회 독립 폐루프 5턴 다중 에이전트(\textbf{P15}: 105/105 리플레이 일치)에서 \system{}만 \textbf{15/15} 무누출·\textbf{0} 위험(정리~2 상태 의존 거부 28건에서 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증, 하이브리드 \textbf{15/15} 목표 vs.\ Safe-RL 0/15·NeMo 1/15)을 지켰고, 60회 요인 실험(\textbf{P16A})에서 \texttt{ontology\_multihop}은 30/30 무누출·22건 $\rho$ 수리·11/30 목표로 \texttt{general\_rule}(22/30·0/30, $p{=}0.00781$)을 상회했으며, Godot~4.7.1 21+42에피소드 100\% 리플레이 및 제품 6/6 해시 일치, $(a,E)$ 27/27(0토큰), 540회 통합 우회($\kappa{=}0.8813$, 0\% FRR), \texttt{DATASHEET\_v5.md}, Croissant~1.0 v5(26/26), 격리된 \texttt{TR01--TR06}($N{=}0$)을 제시한다.
+\end{abstract}
+
+\begin{keyword}
+뉴로심볼릭 AI \sep 지식 기반 런타임 검증 \sep 온톨로지 폐쇄 \sep 액션 실딩 \sep 반례 수리
+\end{keyword}
+
+\end{frontmatter}
+
+\section*{핵심 요약 (Highlights)}
+\begin{itemize}
+\item 핵심 \texttt{nesy\_game.multihop} 480건 Datalog ($R{\le}64, d{\le}5$) 100.0\% ($\le$7.12\,$\mu$s).
+\item 인증 API 105에피소드 폐루프 위험 0건 (Safe-RL 16/61 · NeMo 15/61 대조).
+\item 60회 요인 실험 \texttt{ontology\_multihop} 무누출 30/30 · 0위험 대 규칙 9위험.
+\item Godot~4.7.1 API 21회+CLI 42회 100\% 0-LLM 재실행 및 제품 6/6 해시 일치.
+\item 540회 통합 한·영 우회 0\% FRR ($\kappa{=}0.8813$), Croissant~v5 26/26 무네트워크 재현.
+\end{itemize}
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_phase5_ko}
+
+\begin{figure*}[!tbp]
+  \centering
+  \includegraphics[width=0.72\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 게이팅하며, 오류는 $\rho$ 수리 또는 상태 불변 fallback으로 이어진 뒤 재검증을 거쳐 커밋된다.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/ko/sec_problem_arch_phase5_ko}
+\input{../_shared/ko/sec_eval_kbs_phase5_ko}
+\input{../_shared/ko/sec_conclusion_phase5_ko}
+
+\FloatBarrier
+\bibliographystyle{elsarticle-num}
+\bibliography{../../references,../_shared/venue_extra}
+
+\end{document}

@@ -1,0 +1,2594 @@
+{
+  "schema": "phase2-live-shield-and-multihop/v1",
+  "cli_version": "1.5.11",
+  "total_tasks": 60,
+  "parse_failures": 24,
+  "tokens_initial_total": 1576305,
+  "wall_initial_total": 3863.17,
+  "arms": {
+    "schema_only": {
+      "tasks_parsed": 36,
+      "commits": 36,
+      "repaired_steps": 0,
+      "unsafe_commits": 25,
+      "unsafe_rate": 0.6944,
+      "unsafe_ci95": [
+        0.5314,
+        0.82
+      ],
+      "probe_unsafe_leaks": 13,
+      "noisy_policy_safe_commits": 12,
+      "safe_handoff_commits": 11
+    },
+    "affordance_mask_only": {
+      "tasks_parsed": 36,
+      "commits": 36,
+      "repaired_steps": 0,
+      "unsafe_commits": 25,
+      "unsafe_rate": 0.6944,
+      "unsafe_ci95": [
+        0.5314,
+        0.82
+      ],
+      "probe_unsafe_leaks": 13,
+      "noisy_policy_safe_commits": 12,
+      "safe_handoff_commits": 11
+    },
+    "flat_shield_k0": {
+      "tasks_parsed": 36,
+      "commits": 20,
+      "repaired_steps": 0,
+      "unsafe_commits": 9,
+      "unsafe_rate": 0.25,
+      "unsafe_ci95": [
+        0.1375,
+        0.4107
+      ],
+      "probe_unsafe_leaks": 9,
+      "noisy_policy_safe_commits": 0,
+      "safe_handoff_commits": 11
+    },
+    "multihop_shield_k0": {
+      "tasks_parsed": 36,
+      "commits": 11,
+      "repaired_steps": 0,
+      "unsafe_commits": 0,
+      "unsafe_rate": 0.0,
+      "unsafe_ci95": [
+        0.0,
+        0.0964
+      ],
+      "probe_unsafe_leaks": 0,
+      "noisy_policy_safe_commits": 0,
+      "safe_handoff_commits": 11
+    },
+    "trace_rpg_multihop_rho_k2": {
+      "tasks_parsed": 36,
+      "commits": 23,
+      "repaired_steps": 12,
+      "unsafe_commits": 0,
+      "unsafe_rate": 0.0,
+      "unsafe_ci95": [
+        0.0,
+        0.0964
+      ],
+      "probe_unsafe_leaks": 0,
+      "noisy_policy_safe_commits": 12,
+      "safe_handoff_commits": 11
+    }
+  },
+  "llm_self_repair_k1": {
+    "tasks_evaluated": 36,
+    "self_repair_attempted": 25,
+    "total_commits": 13,
+    "noisy_policy_safe_commits": 2,
+    "unsafe_commits": 0,
+    "extra_tokens": 702293,
+    "extra_wall_seconds": 1147.86
+  },
+  "mcnemar_live": {
+    "probe_multihop_vs_flat_safety": {
+      "a_only_correct": 9,
+      "b_only_correct": 0,
+      "discordant": 9,
+      "p_value": 0.00390625
+    },
+    "noisy_rho_k2_vs_k0_recovery": {
+      "a_only_correct": 12,
+      "b_only_correct": 0,
+      "discordant": 12,
+      "p_value": 0.00048828
+    }
+  },
+  "records": [
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sealed-lighthouse-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 46737,
+      "wall_initial": 46.64,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 123.825,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": false,
+        "errors": [
+          "returncode_3:[agy] print timeout after 2m0s with turn in progress; returning partial output\nerror: print timeout after 2m0s with the turn still in progress; the response is partial\nAGY_ERROR: {\"short_error\":\"print"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sealed-lighthouse-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 49681,
+      "wall_initial": 53.417,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 123.662,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": false,
+        "errors": [
+          "returncode_3:[agy] print timeout after 2m0s with turn in progress; returning partial output\nerror: print timeout after 2m0s with the turn still in progress; the response is partial\nAGY_ERROR: {\"short_error\":\"print"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sealed-lighthouse-v1::noisy_policy_repair::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 79303,
+      "wall_initial": 83.460853,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sealed-lighthouse-v1::noisy_policy_repair::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 96389,
+      "wall_initial": 93.721,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 123.59,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": false,
+        "errors": [
+          "returncode_3:[agy] print timeout after 2m0s with turn in progress; returning partial output\nerror: print timeout after 2m0s with the turn still in progress; the response is partial\nAGY_ERROR: {\"short_error\":\"print"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sealed-lighthouse-v1::safe_handoff::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 125.84,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sealed-lighthouse-v1::safe_handoff::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 77429,
+      "wall_initial": 96.344934,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sunken-archive-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 31902,
+      "wall_initial": 31.582,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 123.585,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": false,
+        "errors": [
+          "returncode_3:[agy] print timeout after 2m0s with turn in progress; returning partial output\nerror: print timeout after 2m0s with the turn still in progress; the response is partial\nAGY_ERROR: {\"short_error\":\"print"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sunken-archive-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.62,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sunken-archive-v1::noisy_policy_repair::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 106026,
+      "wall_initial": 105.718,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 123.926,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": false,
+        "errors": [
+          "returncode_3:[agy] print timeout after 2m0s with turn in progress; returning partial output\nerror: print timeout after 2m0s with the turn still in progress; the response is partial\nAGY_ERROR: {\"short_error\":\"print"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sunken-archive-v1::noisy_policy_repair::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.538,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sunken-archive-v1::safe_handoff::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.648,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::sunken-archive-v1::safe_handoff::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.798,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::clockwork-observatory-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.878,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::clockwork-observatory-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.438,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::clockwork-observatory-v1::noisy_policy_repair::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.828,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::clockwork-observatory-v1::noisy_policy_repair::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 124.12,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::clockwork-observatory-v1::safe_handoff::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.839,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::clockwork-observatory-v1::safe_handoff::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.951,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::ivory-citadel-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.625,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::ivory-citadel-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.672,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::ivory-citadel-v1::noisy_policy_repair::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.488,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::ivory-citadel-v1::noisy_policy_repair::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.545,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::ivory-citadel-v1::safe_handoff::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 124.154,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::ivory-citadel-v1::safe_handoff::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 90328,
+      "wall_initial": 80.332,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::glass-foundry-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.619,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::glass-foundry-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.331,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::glass-foundry-v1::noisy_policy_repair::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.222,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::glass-foundry-v1::noisy_policy_repair::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.271,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::glass-foundry-v1::safe_handoff::r1",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.272,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-3.8-flash-medium::glass-foundry-v1::safe_handoff::r2",
+      "model": "gemini-3.8-flash-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": false,
+      "tokens_initial": 0,
+      "wall_initial": 123.99,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sealed-lighthouse-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 31312,
+      "wall_initial": 8.482,
+      "tokens_self_repair_extra": 35735,
+      "wall_self_repair_extra": 21.245,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sealed-lighthouse-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 31192,
+      "wall_initial": 8.391,
+      "tokens_self_repair_extra": 33291,
+      "wall_self_repair_extra": 16.513,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sealed-lighthouse-v1::noisy_policy_repair::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 32891,
+      "wall_initial": 15.337,
+      "tokens_self_repair_extra": 32695,
+      "wall_self_repair_extra": 16.605,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sealed-lighthouse-v1::noisy_policy_repair::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 33038,
+      "wall_initial": 13.198,
+      "tokens_self_repair_extra": 35243,
+      "wall_self_repair_extra": 18.545,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sealed-lighthouse-v1::safe_handoff::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 36347,
+      "wall_initial": 15.297,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sealed-lighthouse-v1::safe_handoff::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sealed-lighthouse-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 31224,
+      "wall_initial": 9.862,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sunken-archive-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 31332,
+      "wall_initial": 11.227,
+      "tokens_self_repair_extra": 35829,
+      "wall_self_repair_extra": 30.661,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sunken-archive-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 31263,
+      "wall_initial": 11.046,
+      "tokens_self_repair_extra": 36370,
+      "wall_self_repair_extra": 28.784,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sunken-archive-v1::noisy_policy_repair::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 38637,
+      "wall_initial": 27.944,
+      "tokens_self_repair_extra": 35830,
+      "wall_self_repair_extra": 26.226,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sunken-archive-v1::noisy_policy_repair::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 33589,
+      "wall_initial": 20.685,
+      "tokens_self_repair_extra": 35228,
+      "wall_self_repair_extra": 52.804,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sunken-archive-v1::safe_handoff::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 36183,
+      "wall_initial": 20.669,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::sunken-archive-v1::safe_handoff::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "sunken-archive-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 35914,
+      "wall_initial": 31.724,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::clockwork-observatory-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 34411,
+      "wall_initial": 25.583,
+      "tokens_self_repair_extra": 35444,
+      "wall_self_repair_extra": 32.467,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "NPC_KNOWLEDGE_VIOLATION",
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::clockwork-observatory-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 33777,
+      "wall_initial": 17.626,
+      "tokens_self_repair_extra": 35292,
+      "wall_self_repair_extra": 27.403,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::clockwork-observatory-v1::noisy_policy_repair::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 33543,
+      "wall_initial": 31.127,
+      "tokens_self_repair_extra": 34395,
+      "wall_self_repair_extra": 21.842,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::clockwork-observatory-v1::noisy_policy_repair::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 33612,
+      "wall_initial": 30.284,
+      "tokens_self_repair_extra": 35201,
+      "wall_self_repair_extra": 33.356,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::clockwork-observatory-v1::safe_handoff::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 30945,
+      "wall_initial": 16.574,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::clockwork-observatory-v1::safe_handoff::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "clockwork-observatory-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 35759,
+      "wall_initial": 17.809,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::ivory-citadel-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 31612,
+      "wall_initial": 13.289,
+      "tokens_self_repair_extra": 34992,
+      "wall_self_repair_extra": 30.514,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::ivory-citadel-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 31633,
+      "wall_initial": 16.267,
+      "tokens_self_repair_extra": 35251,
+      "wall_self_repair_extra": 21.359,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::ivory-citadel-v1::noisy_policy_repair::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 30835,
+      "wall_initial": 23.592,
+      "tokens_self_repair_extra": 35807,
+      "wall_self_repair_extra": 26.556,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::ivory-citadel-v1::noisy_policy_repair::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 30773,
+      "wall_initial": 18.486,
+      "tokens_self_repair_extra": 34608,
+      "wall_self_repair_extra": 31.483,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": []
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::ivory-citadel-v1::safe_handoff::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 31061,
+      "wall_initial": 17.654,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::ivory-citadel-v1::safe_handoff::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "ivory-citadel-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 39753,
+      "wall_initial": 29.288,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::glass-foundry-v1::subordinate_multihop_probe::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 31664,
+      "wall_initial": 15.633,
+      "tokens_self_repair_extra": 35882,
+      "wall_self_repair_extra": 24.103,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION",
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::glass-foundry-v1::subordinate_multihop_probe::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "subordinate_multihop_probe",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 31433,
+      "wall_initial": 12.972,
+      "tokens_self_repair_extra": 34552,
+      "wall_self_repair_extra": 27.44,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "FORBIDDEN_DISCLOSURE"
+          ]
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::glass-foundry-v1::noisy_policy_repair::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 30841,
+      "wall_initial": 9.614,
+      "tokens_self_repair_extra": 34700,
+      "wall_self_repair_extra": 26.814,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": []
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::glass-foundry-v1::noisy_policy_repair::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "noisy_policy_repair",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 30932,
+      "wall_initial": 16.742,
+      "tokens_self_repair_extra": 35948,
+      "wall_self_repair_extra": 14.548,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": true,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "multihop_shield_k0": {
+          "committed": false,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": [
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_EFFECT_OMISSION",
+            "POLICY_QUEST_STAGE_EFFECT_VIOLATION"
+          ]
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": true,
+          "repairs_used": 1,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": true,
+        "committed": false,
+        "unsafe_committed": false,
+        "parse_ok": true,
+        "errors": [
+          "NPC_KNOWLEDGE_VIOLATION",
+          "NPC_KNOWLEDGE_VIOLATION"
+        ]
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::glass-foundry-v1::safe_handoff::r1",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "safe_handoff",
+      "repeat": 1,
+      "parse_ok": true,
+      "tokens_initial": 36213,
+      "wall_initial": 17.511,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    },
+    {
+      "task_id": "p2_shield::gemini-4-hydrogen-medium::glass-foundry-v1::safe_handoff::r2",
+      "model": "gemini-4-hydrogen-medium",
+      "quest_id": "glass-foundry-v1",
+      "task_type": "safe_handoff",
+      "repeat": 2,
+      "parse_ok": true,
+      "tokens_initial": 36791,
+      "wall_initial": 25.358,
+      "tokens_self_repair_extra": 0,
+      "wall_self_repair_extra": 0.0,
+      "arms": {
+        "schema_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "affordance_mask_only": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "flat_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "multihop_shield_k0": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        },
+        "trace_rpg_multihop_rho_k2": {
+          "committed": true,
+          "repaired": false,
+          "repairs_used": 0,
+          "unsafe_committed": false,
+          "errors": []
+        }
+      },
+      "llm_self_repair_k1": {
+        "attempted": false,
+        "committed": true,
+        "unsafe_committed": false,
+        "parse_ok": true
+      }
+    }
+  ]
+}

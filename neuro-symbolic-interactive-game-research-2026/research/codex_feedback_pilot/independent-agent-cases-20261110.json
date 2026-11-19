@@ -1,0 +1,61 @@
+{
+  "artifact_type": "independent_agent_cases",
+  "created_at_utc": "2026-11-10T07:21:00Z",
+  "author": {"type": "model_agent", "model": null, "role": "independent scenario designer"},
+  "human_gold": false,
+  "purpose": "Prospective draft of independent cases; not a measured validation result or evidence of causal effect.",
+  "rule_sources": ["llm-wiki/wiki/concepts/trace-rpg-controller.md", "llm-wiki/wiki/concepts/hard-validity-soft-adaptation.md"],
+  "rule_source_limit": "The specified concept sources name seven predicates and say all must pass, but do not define their exact input fields, semantics, or valid action catalog. WorldState and CandidateAction below are explicit conceptual records, not asserted to conform to the implementation's serialization contract.",
+  "blindness": {"existing_cases_read": false, "existing_results_read": false, "validator_implementation_opened": false, "existing_comparator_opened": false, "accidental_exposure": "A discovery search returned a validator.py preview containing its module description, import, seven predicate names, and a truncated function declaration. The validator implementation body was not opened. A subsequent documentation search displayed one paper-table row for quest-stage monotonicity before the two concept sources were specified. Neither source established full predicate semantics. This is not a fully blind design."},
+  "evaluation_notice": "No case has been executed. Expected decisions and rationales are included in the same file and would be visible to any judge receiving it; use a separate blinded view for independent judging. No actual human annotations or model calls were made.",
+  "cases": [
+    {
+      "id": "fresh-01",
+      "WorldState": {"facts": ["courier_at_gate", "gate_open"], "reachable_objects": ["parcel"], "npc_knowledge": {"courier": ["parcel_destination"]}, "current_quest_stage": 2, "policy": {"allowed_actions": ["inspect"], "forbidden_disclosures": [], "allowed_stage_transitions": []}},
+      "CandidateAction": {"action": "inspect", "actor": "courier", "object": "parcel", "requires": ["courier_at_gate", "gate_open"], "discloses": [], "effects": [], "quest_stage_after": 2},
+      "expected": "unknown",
+      "hypothesis_if_conventional_semantics": "valid",
+      "rationale": "The listed requirements are present, parcel is explicitly reachable, no disclosure or stage change is proposed, and inspect is listed as allowed. Exact contract requirements and all seven predicate definitions are not available in the authorized sources, so validity is not established."
+    },
+    {
+      "id": "fresh-02",
+      "WorldState": {"facts": ["apothecary_at_shop", "cabinet_locked"], "reachable_objects": ["cabinet"], "npc_knowledge": {"apothecary": []}, "current_quest_stage": 1, "policy": {"allowed_actions": ["open"], "forbidden_disclosures": [], "allowed_stage_transitions": []}},
+      "CandidateAction": {"action": "open", "actor": "apothecary", "object": "cabinet", "requires": ["cabinet_unlocked"], "discloses": [], "effects": ["cabinet_open"], "quest_stage_after": 1},
+      "expected": "unknown",
+      "hypothesis_if_conventional_semantics": "invalid",
+      "rationale": "cabinet_unlocked is required but absent from the listed facts, while cabinet_locked is present. This is a prospective precondition counterexample, not a verified result under the unspecified formal encoding."
+    },
+    {
+      "id": "fresh-03",
+      "WorldState": {"facts": ["scout_at_riverbank"], "reachable_objects": ["rope"], "npc_knowledge": {"scout": []}, "current_quest_stage": 1, "policy": {"allowed_actions": ["take"], "forbidden_disclosures": [], "allowed_stage_transitions": []}},
+      "CandidateAction": {"action": "take", "actor": "scout", "object": "lantern_on_far_bank", "requires": ["scout_at_riverbank"], "discloses": [], "effects": ["scout_has_lantern"], "quest_stage_after": 1},
+      "expected": "unknown",
+      "hypothesis_if_conventional_semantics": "invalid",
+      "rationale": "The target lantern is not in the explicitly listed reachable-object set; only the rope is. Whether that representation is complete and tested by the actual predicate is not specified."
+    },
+    {
+      "id": "fresh-04",
+      "WorldState": {"facts": ["herald_at_square"], "reachable_objects": [], "npc_knowledge": {"herald": ["festival_date"]}, "current_quest_stage": 1, "policy": {"allowed_actions": ["announce"], "forbidden_disclosures": ["hidden_vault_location"], "allowed_stage_transitions": []}},
+      "CandidateAction": {"action": "announce", "actor": "herald", "object": null, "requires": ["herald_at_square"], "discloses": ["hidden_vault_location"], "effects": [], "quest_stage_after": 1},
+      "expected": "unknown",
+      "hypothesis_if_conventional_semantics": "invalid",
+      "rationale": "The disclosed vault location is explicitly forbidden and not included in the herald's listed knowledge. These are candidate disclosure and knowledge violations; their actual encoding and scope remain unspecified."
+    },
+    {
+      "id": "fresh-05",
+      "WorldState": {"facts": ["artisan_at_forge"], "reachable_objects": ["anvil"], "npc_knowledge": {"artisan": []}, "current_quest_stage": 1, "policy": {"allowed_actions": ["inspect"], "forbidden_disclosures": [], "allowed_stage_transitions": [{"from": 1, "to": 2}]}},
+      "CandidateAction": {"action": "claim_reward", "actor": "artisan", "object": "anvil", "requires": ["artisan_at_forge"], "required_quest_stage": 3, "discloses": [], "effects": ["reward_claimed"], "quest_stage_after": 1},
+      "expected": "unknown",
+      "hypothesis_if_conventional_semantics": "invalid",
+      "rationale": "claim_reward is not in the listed allowed actions and the candidate states a required stage of 3 while the current stage is 1. The names action_policy and quest_stage suggest relevant checks, but their authoritative details are absent."
+    },
+    {
+      "id": "fresh-06",
+      "WorldState": {"facts": ["archivist_at_desk"], "reachable_objects": ["ledger"], "npc_knowledge": {"archivist": []}, "current_quest_stage": 4, "policy": {"allowed_actions": ["inspect"], "forbidden_disclosures": [], "allowed_stage_transitions": []}},
+      "CandidateAction": {"action": "inspect", "actor": "archivist", "object": "ledger", "requires": ["archivist_at_desk"], "discloses": [], "effects": [], "quest_stage_after": 2},
+      "expected": "unknown",
+      "hypothesis_if_conventional_semantics": "invalid",
+      "rationale": "The proposed stage decreases from 4 to 2, contrary to ordinary monotonicity. The specified concept sources do not define how stage updates are represented or checked, so the formal expectation remains unknown."
+    }
+  ]
+}

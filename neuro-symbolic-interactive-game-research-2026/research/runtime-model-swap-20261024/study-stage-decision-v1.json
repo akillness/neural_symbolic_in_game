@@ -1,0 +1,100 @@
+{
+  "schema_version": "runtime-panel-design-dimension-decision/1",
+  "artifact_id": "runtime-model-swap-20261024-study-stage-decision-v1",
+  "study_id": "runtime-model-swap-20261024",
+  "created_at": "2026-10-25T09:28:21.920Z",
+  "status": "PILOT_THEN_INDEPENDENT_CONFIRMATION_DIRECTION_APPROVED_PARAMETERS_OPEN_NOT_EXECUTED",
+  "user_verbatim_decision": "파일럿 후 독립 확증",
+  "approval_context": "Research stage order only; sample size, tasks, budgets, margins, research-context transmission, generation, spend and launch are not authorized by this choice.",
+  "approved_design_dimension": {
+    "stage_order": [
+      "exploratory_feasibility_pilot",
+      "separate_independent_confirmatory_study"
+    ],
+    "pilot_role": [
+      "Check native-path feasibility and retained identity/configuration evidence",
+      "Check goal/safety/first-proposal/repair/time/cost measurement coverage",
+      "Describe failures and nuisance variation for a prospective independent confirmatory design"
+    ],
+    "pilot_is_confirmatory": false,
+    "pilot_proves_C_noninferiority_or_ontology_superiority": false,
+    "confirmatory_data_independent_of_pilot": true,
+    "pilot_data_pooled_into_confirmatory_efficacy_estimate": false,
+    "pilot_failures_or_missingness_erased": false
+  },
+  "source_bindings": [
+    {
+      "path": "research/runtime-model-swap-20261024/panel-amendment-proposal-v2.json",
+      "sha256": "27b052fb3af156c999eafad7bb7d3ac611fbea6d7caeb86a3e7952bc5c1e3b4e"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/endpoint-amendment-v1.json",
+      "sha256": "9282cd8bb50d244af5306f43c14dc19ea252b29d66b07cda28ec45c686213199"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/pre-run-decision-proposal-v1.json",
+      "sha256": "cd4c5b90df3818bfbcaf83ea10b7978be1487e5846f3b954e9453892f790a7e6"
+    },
+    {
+      "path": "research/runtime-model-swap-20261024/claude-effort-decision-v1.json",
+      "sha256": "2936ac5c9ca71dba02fe6d438482d582fe6fc80b69168a82d917c89e1d4b5f0c"
+    }
+  ],
+  "endpoint_preservation": {
+    "primary_ref": "endpoint-amendment-v1.json#/approved_endpoints/primary",
+    "mandatory_safety_ref": "endpoint-amendment-v1.json#/approved_endpoints/mandatory_safety_gate",
+    "historical_single_development_case_pooled": false,
+    "old_development_panel_activated": false,
+    "approved_endpoint_modified": false
+  },
+  "still_unapproved_parameters": {
+    "pilot_quest_payload_manifest": null,
+    "pilot_independent_goal_and_safety_oracle_manifest": null,
+    "pilot_task_coverage_and_repeats": null,
+    "pilot_episodes_per_cell": null,
+    "pilot_total_assignments": null,
+    "episode_and_aggregate_budgets": null,
+    "randomization_and_cluster_policy": null,
+    "C_practical_margin_and_absolute_floor": null,
+    "confirmatory_sample_size_and_power_plan": null,
+    "full_native_preflight_and_live_adapter_contract": null
+  },
+  "prior_proposals_not_inherited": {
+    "old_12_quest_2_repeat_24_per_cell_values_approved": false,
+    "old_288_episode_count_approved": false,
+    "conditional_240_episode_arithmetic_approved": false,
+    "old_practical_margin_floor_alpha_power_values_approved": false
+  },
+  "confirmatory_guardrails": [
+    "Freeze an independent held-out confirmation packet and analysis before observing confirmatory outcomes.",
+    "Choose practical C margin and absolute floor from human use-case acceptability, not to fit the observed pilot candidate gap.",
+    "Use pilot nuisance information for prospective pairing/quest-cluster-aware power planning; do not present old independent-Bernoulli illustrations as powered designs.",
+    "Declare the actual comparison family after final roster adoption; do not inherit the old five-contrast family.",
+    "Preserve assigned denominators, missing data, safety stops and failures. Zero assigned episodes is not an estimated success rate.",
+    "Reassess identity/configuration/source drift and obtain separate source-bound activation permission before each authorized study stage."
+  ],
+  "preservation": {
+    "previous_proposals_or_decisions_modified": false,
+    "papers_or_game_modified": false,
+    "native_cli_configuration_changed": false,
+    "assignment_manifest_created": false,
+    "whole_roster_adopted": false
+  },
+  "authority": {
+    "full_protocol_frozen": false,
+    "research_context_egress_authorized": false,
+    "candidate_generation_authorized": false,
+    "spend_authorized": false,
+    "pilot_launch_authorized": false,
+    "confirmatory_launch_authorized": false
+  },
+  "next_interview": {
+    "topic": "Pilot task coverage and repeat count",
+    "existing_12_quest_2_repeat_design_status": "UNAPPROVED_PROPOSAL_WITH_PAYLOADS_NOT_YET_FROZEN",
+    "no_fake_or_placeholder_quests_allowed": true
+  },
+  "new_candidate_generation_requests": 0,
+  "new_study_episodes": 0,
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED",
+  "append_only_rule": "Only stage order is approved here. Earlier immutable decisions/proposals and endpoint remain unchanged. Pilot and confirmation each need completed contracts and explicit launch authority."
+}

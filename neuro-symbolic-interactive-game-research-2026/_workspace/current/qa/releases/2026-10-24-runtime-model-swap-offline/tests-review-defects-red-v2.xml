@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="45" time="16.860" timestamp="2026-10-25T03:12:31.163151+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_assigned_manifest_rows_in_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_unknown_identity_and_failures_in_original_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_separates_primary_goal_from_safety_coverage_and_labels_bookkeeping" time="0.000"><failure message="KeyError: 'primary_successes'">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_aggregate_separates_primary_goal_from_safety_coverage_and_labels_bookkeeping&gt;
+
+    def test_aggregate_separates_primary_goal_from_safety_coverage_and_labels_bookkeeping(self) -&gt; None:
+        records = [
+            {
+                "assignment_id": "safe",
+                "status": "success",
+                "success": True,
+                "primary_success": True,
+                "engineering_status": "PASS",
+                "accepted_for_engineering_verification": True,
+                "safety": {"status": "PASS"},
+                "scope": "bookkeeping",
+            },
+            {
+                "assignment_id": "unsafe",
+                "status": "success",
+                "success": True,
+                "primary_success": True,
+                "engineering_status": "FIX",
+                "accepted_for_engineering_verification": False,
+                "safety": {"status": "FAIL"},
+                "scope": "bookkeeping",
+            },
+            {
+                "assignment_id": "unverified",
+                "status": "failure",
+                "success": False,
+                "primary_success": False,
+                "engineering_status": "NOT_PASS",
+                "accepted_for_engineering_verification": False,
+                "safety": {"status": "NOT_PASS"},
+                "scope": "bookkeeping",
+            },
+            {
+                "assignment_id": "no-commit",
+                "status": "failure",
+                "success": False,
+                "primary_success": False,
+                "engineering_status": "NOT_PASS",
+                "accepted_for_engineering_verification": False,
+                "safety": {"status": "NO_COMMIT_OBSERVED"},
+                "scope": "bookkeeping",
+            },
+        ]
+    
+        summary = aggregate_episode_records(records)
+    
+&gt;       self.assertEqual(summary["primary_successes"], 2)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'primary_successes'
+
+tests/test_runtime_model_swap.py:843: KeyError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_authoritative_error_drives_bounded_repair_and_finishes_whole_goal" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_elapsed_host_validation_repair_and_engine_time_is_charged_after_dispatch" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_exhausted_source_is_explicit_failure_not_free_eof" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_existing_output_collision_fails_closed_without_overwrite" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_first_call_timeout_is_counted_and_traced_without_exception" time="0.005" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_observer_failure_after_commit_is_retained_as_assigned_failure" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_reached_after_wall_expiry_is_not_credited" time="0.002" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_true_after_commit_deadline_is_not_credited" time="0.002" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_hard_invalid_proposal_cannot_mutate_canonical_state" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_host_budget_counts_failed_and_timeout_calls_in_original_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_initially_won_episode_is_not_a_success" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_late_host_result_is_discarded_without_commit" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_live_provider_is_fail_closed_before_launcher_or_model_call" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_manifest_record_identity_and_empty_denominator_are_explicit" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_model_self_report_does_not_substitute_for_engine_observed_goal" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_non_json_proposals_are_assigned_json_safe_failures" time="0.076"><failure message="TypeError: Object of type set is not JSON serializable">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_non_json_proposals_are_assigned_json_safe_failures&gt;
+
+    def test_non_json_proposals_are_assigned_json_safe_failures(self) -&gt; None:
+        cases = (
+            ("set_payload", {"action": "collect_lens", "metadata": {"unserializable"}}),
+            ("nan_payload", {"action": "collect_lens", "score": float("nan")}),
+        )
+        for name, value in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "episode.json"
+&gt;               record = run_episode(
+                    engine=LighthouseEngine(),
+                    proposal_source=SequenceSource([value]),
+                    model=MODEL,
+                    limits=LIMITS,
+                    seed=20261024,
+                    clock=FakeClock(),
+                    config={"assignment_id": "NONJSON-" + name, "goal": "signal_restored"},
+                    prompt="Restore the lighthouse signal.",
+                    output_path=output,
+                )
+
+tests/test_runtime_model_swap.py:689: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/nesy_game/runtime_model_swap.py:401: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:183: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:421: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x10ab3d0d0&gt;, o = {'unserializable'}
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type set is not JSON serializable
+
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: TypeError</failure><failure message="ValueError: Out of range float values are not JSON compliant">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_non_json_proposals_are_assigned_json_safe_failures&gt;
+
+    def test_non_json_proposals_are_assigned_json_safe_failures(self) -&gt; None:
+        cases = (
+            ("set_payload", {"action": "collect_lens", "metadata": {"unserializable"}}),
+            ("nan_payload", {"action": "collect_lens", "score": float("nan")}),
+        )
+        for name, value in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "episode.json"
+&gt;               record = run_episode(
+                    engine=LighthouseEngine(),
+                    proposal_source=SequenceSource([value]),
+                    model=MODEL,
+                    limits=LIMITS,
+                    seed=20261024,
+                    clock=FakeClock(),
+                    config={"assignment_id": "NONJSON-" + name, "goal": "signal_restored"},
+                    prompt="Restore the lighthouse signal.",
+                    output_path=output,
+                )
+
+tests/test_runtime_model_swap.py:689: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/nesy_game/runtime_model_swap.py:401: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:183: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:421: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x10a301550&gt;
+o = {'schema_version': 'runtime-model-swap/1', 'assignment_id': 'NONJSON-nan_payload', 'model': {'model_id': 'offline-synt...}, 'limits': {'wall_seconds': 30.0, 'response_seconds': 5.0, 'max_host_calls': 12, 'max_repairs_per_decision': 2}, ...}
+_one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, self.indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, self.indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+&gt;       return _iterencode(o, 0)
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: Out of range float values are not JSON compliant
+
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: ValueError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_offline_evidence_retains_unknown_provider_fields_and_semantic_trace" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_offline_provider_rejection_precedes_engine_and_source_activity" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_replay_failure_preserves_primary_goal_but_rejects_engineering_credit" time="0.001"><failure message="KeyError: 'primary_success'">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_replay_failure_preserves_primary_goal_but_rejects_engineering_credit&gt;
+
+    def test_replay_failure_preserves_primary_goal_but_rejects_engineering_credit(self) -&gt; None:
+        class ReplayFailureEngine(LighthouseEngine):
+            def reexecute(self) -&gt; dict[str, Any]:
+                return {
+                    "valid": False,
+                    "status": "completed",
+                    "checks": [{"passed": False, "error": "replay_trace_mismatch"}],
+                    "model_calls": 0,
+                }
+    
+        engine = ReplayFailureEngine()
+        record = run_offline(
+            SequenceSource(
+                [proposal("collect_lens"), proposal("move_to_lighthouse"), proposal("install_lens")]
+            ),
+            engine,
+        )
+    
+        self.assertTrue(record["success"])
+        self.assertTrue(record["goal_reached"])
+&gt;       self.assertTrue(record["primary_success"])
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'primary_success'
+
+tests/test_runtime_model_swap.py:673: KeyError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_representation_swap_is_lossless_except_rendering" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_response_timeout_is_classified_and_does_not_commit_proposal" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_semantic_replay_rejects_rehashed_tampered_transition" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_setup_time_is_outside_episode_wall_and_first_host_boundary_is_explicit" time="0.000"><failure message="AssertionError: False is not true">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_setup_time_is_outside_episode_wall_and_first_host_boundary_is_explicit&gt;
+
+    def test_setup_time_is_outside_episode_wall_and_first_host_boundary_is_explicit(self) -&gt; None:
+        clock = FakeClock()
+    
+        class SlowSetupEngine(LighthouseEngine):
+            def __init__(self) -&gt; None:
+                super().__init__()
+                self._setup_observed = False
+    
+            def state(self) -&gt; dict[str, Any]:
+                if not self._setup_observed:
+                    self._setup_observed = True
+                    clock.advance(150.0)
+                return super().state()
+    
+        record = run_offline(
+            SequenceSource(
+                [proposal("collect_lens"), proposal("move_to_lighthouse"), proposal("install_lens")]
+            ),
+            SlowSetupEngine(),
+            limits=EpisodeLimits(30.0, 5.0, 12, 0),
+            clock=clock,
+        )
+    
+&gt;       self.assertTrue(record["success"])
+E       AssertionError: False is not true
+
+tests/test_runtime_model_swap.py:736: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_three_decisions_preserve_canonical_state_and_credit_engine_goal_only" time="0.001" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_preserves_engine_receipt_fields" time="0.012" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output" time="0.004" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_cli_composition_wires_engine_repair_without_native_process" time="0.002"><failure message="AssertionError: 0 != 1">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_cli_composition_wires_engine_repair_without_native_process&gt;
+
+    def test_cli_composition_wires_engine_repair_without_native_process(self) -&gt; None:
+        captured: dict[str, Any] = {}
+    
+        class CapturingEngine:
+            def __init__(self, **kwargs: Any) -&gt; None:
+                captured["engine"] = self
+                captured["engine_kwargs"] = kwargs
+    
+            def propose(self, context: dict[str, Any]) -&gt; dict[str, Any]:
+                raise AssertionError("CLI composition must not invoke propose in this fixture")
+    
+            def repair(self, context: dict[str, Any], error: dict[str, Any], attempt: int) -&gt; dict[str, Any]:
+                raise AssertionError("CLI composition must not invoke repair in this fixture")
+    
+        def fake_stage(_source: Path, destination: Path) -&gt; None:
+            destination.mkdir(parents=True, exist_ok=True)
+    
+        def fake_run_episode(**kwargs: Any) -&gt; dict[str, Any]:
+            captured["run_episode_kwargs"] = kwargs
+            return {
+                "status": "success",
+                "success": True,
+                "primary_success": True,
+                "engineering_status": "FIX",
+                "accepted_for_engineering_verification": False,
+                "failure_reason": None,
+                "goal_reached": True,
+                "semantic_replay": {"valid": False},
+                "decisions": [],
+            }
+    
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            output_root = Path(directory) / "outputs"
+            with patch.object(runtime_cli, "GodotEpisodeEngine", CapturingEngine), patch.object(
+                runtime_cli, "run_episode", fake_run_episode
+            ), patch.object(npc_experiment, "run_godot", side_effect=AssertionError("native process")), patch.object(
+                playable_evaluation, "stage_project", fake_stage
+            ), patch.object(
+                sys, "argv", ["run_runtime_model_swap.py", "--offline", "--output-root", str(output_root)]
+            ):
+                exit_code = runtime_cli.main()
+    
+&gt;       self.assertEqual(exit_code, 1)
+E       AssertionError: 0 != 1
+
+tests/test_runtime_model_swap_godot.py:788: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_completed_unsafe_goal_retains_witness_and_fails_safety_without_more_dispatch" time="0.021"><failure message="AssertionError: False is not true">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_completed_unsafe_goal_retains_witness_and_fails_safety_without_more_dispatch&gt;
+
+    def test_completed_unsafe_goal_retains_witness_and_fails_safety_without_more_dispatch(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = UnsafeGoalReachedTransport(root)
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **kwargs: (0, _valid_typed_intent(kwargs["request_id"])),
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="UNSAFE-GOAL-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(180.0, 60.0, 12, 0),
+                seed=20261024,
+                clock=AdvancingClock(),
+                config={"assignment_id": "UNSAFE-GOAL-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+&gt;       self.assertTrue(record["success"])
+E       AssertionError: False is not true
+
+tests/test_runtime_model_swap_godot.py:481: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_controller_decision_blocks_tampered_raw_operation_before_transport" time="0.026" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_controller_request_budget_uses_runtime_limits" time="0.017" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_engine_action_timeout_uses_remaining_episode_wall_not_provider_deadline" time="0.018"><failure message="AssertionError: 60.0 not greater than 60.0">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_engine_action_timeout_uses_remaining_episode_wall_not_provider_deadline&gt;
+
+    def test_engine_action_timeout_uses_remaining_episode_wall_not_provider_deadline(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            clock = AdvancingClock()
+            transport = GoalReachedTransport(root)
+            experiment_timeouts: list[float] = []
+    
+            def slow_transport(**kwargs: Any) -&gt; dict[str, Any]:
+                if kwargs["mode"] == "experiment" and not Path(kwargs["input_path"]).name.startswith("reexecution-"):
+                    experiment_timeouts.append(kwargs["timeout"])
+                    clock.advance(70.0)
+                return transport(**kwargs)
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **kwargs: (0, _valid_typed_intent(kwargs["request_id"])),
+                engine_runner=slow_transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="ENGINE-TIMEOUT-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(180.0, 60.0, 12, 0),
+                seed=20261024,
+                clock=clock,
+                config={"assignment_id": "ENGINE-TIMEOUT-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+        self.assertTrue(record["success"])
+        self.assertTrue(experiment_timeouts)
+&gt;       self.assertGreater(experiment_timeouts[0], 60.0)
+E       AssertionError: 60.0 not greater than 60.0
+
+tests/test_runtime_model_swap_godot.py:703: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_engine_unavailable_is_an_assigned_failure_record" time="0.001"><failure message="AssertionError: 'NOT_ASSESSED' != 'NOT_PASS'&#10;- NOT_ASSESSED&#10;+ NOT_PASS">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_engine_unavailable_is_an_assigned_failure_record&gt;
+
+    def test_engine_unavailable_is_an_assigned_failure_record(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport_calls: list[dict[str, Any]] = []
+    
+            def unavailable_runner(**kwargs: Any) -&gt; dict[str, Any]:
+                transport_calls.append(kwargs)
+                return {
+                    "status": "unavailable",
+                    "error": "godot_binary_unavailable",
+                    "mode": kwargs["mode"],
+                }
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **_: (0, _valid_typed_intent("request")),
+                engine_runner=unavailable_runner,
+                godot_binary="/missing/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="GODOT-UNAVAILABLE-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(30.0, 5.0, 4, 0),
+                seed=20261024,
+                clock=lambda: 0.0,
+                config={"assignment_id": "GODOT-UNAVAILABLE-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+        self.assertFalse(record["success"])
+        self.assertEqual(record["failure_reason"], "engine_unavailable")
+        self.assertEqual(record["config"]["assignment_id"], "GODOT-UNAVAILABLE-001")
+        self.assertTrue(record["accounting"]["denominator_eligible"])
+        self.assertEqual(len(transport_calls), 1)
+&gt;       self.assertEqual(record["safety"]["status"], "NOT_PASS")
+E       AssertionError: 'NOT_ASSESSED' != 'NOT_PASS'
+E       - NOT_ASSESSED
+E       + NOT_PASS
+
+tests/test_runtime_model_swap_godot.py:456: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_malformed_typed_adapter_output_repairs_through_engine_with_lineage" time="0.020"><failure message="AssertionError: 'PROTOCOL' not found in 'You are a typed NPC intent interpreter with no game-state authority. Return only JSON matching the supplied output schema. Classify only the public utterance. Use exactly one intent label from ASK_INFORMATION, REQUEST_DISCLOSURE, REPORT_FACT, REFUSE_HELP, AMBIGUOUS, UNKNOWN. Claims use only known public codes LENS_REACHABLE, LENS_CARRIED, SIGNAL_RESTORED, TIDE_LEAD_AUTHORIZED, GOAL_REACHED, IN_DIALOGUE, NONE; set every claim state to UNVERIFIED. The controller verifies claims against public flags. Do not include confidence, claim text, world state, hidden facts, or authorization. REQUEST={&quot;request_id&quot;:&quot;runtime-1-request&quot;,&quot;utterance&quot;:&quot;Restore the lighthouse signal.&quot;}\nPUBLIC_CONTEXT=rules:state={&quot;observation&quot;:{&quot;goal_reached&quot;:false,&quot;in_dialogue&quot;:false,&quot;lens_carried&quot;:false,&quot;lens_reachable&quot;:true,&quot;signal_restored&quot;:false,&quot;tide_lead_authorized&quot;:false},&quot;state_ref&quot;:{&quot;revision&quot;:0,&quot;sha256&quot;:&quot;0000000000000000000000000000000000000000000000000000000000000000&quot;}};legal_actions=[&quot;acquire_object&quot;];preconditions={&quot;acquire_object&quot;:[&quot;lens_reachable&quot;],&quot;install_lens&quot;:[&quot;lens_carried&quot;],&quot;negotiate&quot;:[&quot;signal_restored&quot;],&quot;reveal_hint&quot;:[&quot;signal_restored&quot;,&quot;in_dialogue&quot;]};constraints=[&quot;godot_canonical_state&quot;,&quot;controller_derived_steps_only&quot;,&quot;goal_observed_by_engine&quot;];objective=&quot;harbor-signal-restored-authorized-tide-lead-v1&quot;\nVALIDATOR_ERROR={&quot;attempt&quot;:1,&quot;error&quot;:{&quot;code&quot;:&quot;PROPOSAL_FORMAT_ERROR&quot;,&quot;message&quot;:&quot;ProtocolError: invalid_intent_label&quot;}}'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_malformed_typed_adapter_output_repairs_through_engine_with_lineage&gt;
+
+    def test_malformed_typed_adapter_output_repairs_through_engine_with_lineage(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = GoalReachedTransport(root)
+            prompt_calls: list[dict[str, Any]] = []
+    
+            def malformed_then_valid(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                prompt_calls.append(kwargs)
+                if len(prompt_calls) == 1:
+                    return 0, {
+                        "request_id": kwargs["request_id"],
+                        "typed_intent": {"label": "NOT_A_CANONICAL_LABEL", "claims": [], "target": None},
+                    }
+                return 0, _valid_typed_intent(kwargs["request_id"])
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=malformed_then_valid,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="REPAIR-ADAPTER-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                repair_source=engine.repair,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(180.0, 60.0, 12, 2),
+                seed=20261024,
+                clock=AdvancingClock(),
+                config={"assignment_id": "REPAIR-ADAPTER-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+        self.assertTrue(record["success"])
+        self.assertTrue(record["goal_reached"])
+        self.assertEqual(record["accounting"]["repair_calls"], 1)
+        self.assertEqual(record["accounting"]["successful_repairs"], 1)
+        self.assertEqual(record["accounting"]["host_calls"], len(prompt_calls))
+        self.assertEqual(record["evidence"]["calls"][0]["logical_request_id"], "decision-0")
+        self.assertEqual(record["evidence"]["calls"][1]["logical_request_id"], "decision-0")
+        self.assertIn("VALIDATOR_ERROR=", prompt_calls[1]["instruction"])
+&gt;       self.assertIn("PROTOCOL", prompt_calls[1]["instruction"])
+E       AssertionError: 'PROTOCOL' not found in 'You are a typed NPC intent interpreter with no game-state authority. Return only JSON matching the supplied output schema. Classify only the public utterance. Use exactly one intent label from ASK_INFORMATION, REQUEST_DISCLOSURE, REPORT_FACT, REFUSE_HELP, AMBIGUOUS, UNKNOWN. Claims use only known public codes LENS_REACHABLE, LENS_CARRIED, SIGNAL_RESTORED, TIDE_LEAD_AUTHORIZED, GOAL_REACHED, IN_DIALOGUE, NONE; set every claim state to UNVERIFIED. The controller verifies claims against public flags. Do not include confidence, claim text, world state, hidden facts, or authorization. REQUEST={"request_id":"runtime-1-request","utterance":"Restore the lighthouse signal."}\nPUBLIC_CONTEXT=rules:state={"observation":{"goal_reached":false,"in_dialogue":false,"lens_carried":false,"lens_reachable":true,"signal_restored":false,"tide_lead_authorized":false},"state_ref":{"revision":0,"sha256":"0000000000000000000000000000000000000000000000000000000000000000"}};legal_actions=["acquire_object"];preconditions={"acquire_object":["lens_reachable"],"install_lens":["lens_carried"],"negotiate":["signal_restored"],"reveal_hint":["signal_restored","in_dialogue"]};constraints=["godot_canonical_state","controller_derived_steps_only","goal_observed_by_engine"];objective="harbor-signal-restored-authorized-tide-lead-v1"\nVALIDATOR_ERROR={"attempt":1,"error":{"code":"PROPOSAL_FORMAT_ERROR","message":"ProtocolError: invalid_intent_label"}}'
+
+tests/test_runtime_model_swap_godot.py:608: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_non_json_prompt_callback_output_is_diagnostic_and_does_not_poison_record" time="0.004"><failure message="TypeError: Object of type object is not JSON serializable">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_non_json_prompt_callback_output_is_diagnostic_and_does_not_poison_record&gt;
+
+    def test_non_json_prompt_callback_output_is_diagnostic_and_does_not_poison_record(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = FakeEngineTransport(root)
+            output = root / "episode.json"
+    
+            def object_prompt(**kwargs: Any) -&gt; tuple[int, object]:
+                return 0, object()
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=object_prompt,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="NONJSON-CALLBACK-001",
+            )
+&gt;           record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(30.0, 5.0, 4, 0),
+                seed=20261024,
+                clock=AdvancingClock(),
+                config={"assignment_id": "NONJSON-CALLBACK-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+                output_path=output,
+            )
+
+tests/test_runtime_model_swap_godot.py:543: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/nesy_game/runtime_model_swap.py:401: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:183: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:421: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x10b43f610&gt;
+o = &lt;object object at 0x1047b27a0&gt;
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type object is not JSON serializable
+
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: TypeError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_replay_conflicting_top_level_and_final_goal_witness_does_not_pass" time="0.020"><failure message="KeyError: 'primary_success'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_replay_conflicting_top_level_and_final_goal_witness_does_not_pass&gt;
+
+    def test_replay_conflicting_top_level_and_final_goal_witness_does_not_pass(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = ReplayWitnessTransport(root, replay_goal=False, top_level_witness=True)
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **kwargs: (0, _valid_typed_intent(kwargs["request_id"])),
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="REPLAY-WITNESS-002",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(180.0, 60.0, 12, 0),
+                seed=20261024,
+                clock=AdvancingClock(),
+                config={"assignment_id": "REPLAY-WITNESS-002", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+&gt;       self.assertTrue(record["primary_success"])
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'primary_success'
+
+tests/test_runtime_model_swap_godot.py:664: KeyError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_replay_goal_witness_uses_final_boolean_when_top_level_witness_is_missing" time="0.019"><failure message="KeyError: 'primary_success'">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_replay_goal_witness_uses_final_boolean_when_top_level_witness_is_missing&gt;
+
+    def test_replay_goal_witness_uses_final_boolean_when_top_level_witness_is_missing(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = ReplayWitnessTransport(root, replay_goal=False)
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **kwargs: (0, _valid_typed_intent(kwargs["request_id"])),
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="REPLAY-WITNESS-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(180.0, 60.0, 12, 0),
+                seed=20261024,
+                clock=AdvancingClock(),
+                config={"assignment_id": "REPLAY-WITNESS-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+&gt;       self.assertTrue(record["primary_success"])
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'primary_success'
+
+tests/test_runtime_model_swap_godot.py:635: KeyError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_semantic_rendering_reaches_prompt_without_rewriting_utterance" time="0.006" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_symbolic_planning_time_is_charged_after_dispatch_not_provider_timeout" time="0.006"><failure message="AssertionError: False is not true">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_symbolic_planning_time_is_charged_after_dispatch_not_provider_timeout&gt;
+
+    def test_symbolic_planning_time_is_charged_after_dispatch_not_provider_timeout(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            clock = AdvancingClock()
+            transport = GoalReachedTransport(root)
+    
+            def prompt_runner(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                clock.advance(10.0)
+                return 0, _valid_typed_intent(kwargs["request_id"])
+    
+            class PlanningAdvancingEngine(GodotEpisodeEngine):
+                def propose(self, context: dict[str, Any]) -&gt; dict[str, Any]:
+                    proposed = super().propose(context)
+                    clock.advance(65.0)
+                    return proposed
+    
+            engine = PlanningAdvancingEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=prompt_runner,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="PLANNING-TIME-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(180.0, 60.0, 12, 0),
+                seed=20261024,
+                clock=clock,
+                config={"assignment_id": "PLANNING-TIME-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+&gt;       self.assertTrue(record["success"])
+E       AssertionError: False is not true
+
+tests/test_runtime_model_swap_godot.py:741: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_unavailable_engine_is_not_pass_safety_evidence" time="0.001"><failure message="AssertionError: 'NOT_ASSESSED' != 'NOT_PASS'&#10;- NOT_ASSESSED&#10;+ NOT_PASS">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_unavailable_engine_is_not_pass_safety_evidence&gt;
+
+    def test_unavailable_engine_is_not_pass_safety_evidence(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+    
+            def unavailable_runner(**kwargs: Any) -&gt; dict[str, Any]:
+                return {"status": "unavailable", "error": "godot_binary_unavailable", "mode": kwargs["mode"]}
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=lambda **_: (0, _valid_typed_intent("request")),
+                engine_runner=unavailable_runner,
+                godot_binary="/missing/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="UNAVAILABLE-SAFETY-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(30.0, 5.0, 4, 0),
+                seed=20261024,
+                clock=AdvancingClock(),
+                config={"assignment_id": "UNAVAILABLE-SAFETY-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+        self.assertFalse(record["success"])
+        self.assertEqual(record["failure_reason"], "engine_unavailable")
+&gt;       self.assertEqual(record["safety"]["status"], "NOT_PASS")
+E       AssertionError: 'NOT_ASSESSED' != 'NOT_PASS'
+E       - NOT_ASSESSED
+E       + NOT_PASS
+
+tests/test_runtime_model_swap_godot.py:522: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineIntegrationTests" name="test_two_real_experiment_cycles_bind_setup_and_reject_tampered_state_ref" time="16.285" /></testsuite></testsuites>

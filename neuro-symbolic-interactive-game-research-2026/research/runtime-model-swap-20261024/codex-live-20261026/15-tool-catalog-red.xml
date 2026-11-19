@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="5" time="0.512" timestamp="2026-10-26T19:39:29.463753+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap_native.NativeCodexCatalogTests" name="test_static_catalog_derivation_preserves_canonical_models_except_tool_fields" time="0.002" /><testcase classname="tests.test_runtime_model_swap_native.NativeHostContractTests" name="test_source_bound_real_transport_links_dummy_auth_persists_refresh_and_uses_codex_overrides" time="0.010"><failure message="AssertionError: False is not true : ({'request_permissions_tool', 'codex_hooks', 'plugins', 'code_mode_tool_search', 'send_message_to_user_async', 'code_mode_only', 'standalone_web_search', 'multi_agent_v2', 'multi_agent', 'token_budget', 'current_time_reminder', 'sleep_tool', 'deferred_executor', 'code_mode'}, {'unified_exec', 'computer_use', 'shell_snapshot', 'browser_use_full_cdp_access', 'image_generation', 'view_image', 'tool_call_mcp_elicitation', 'tool_suggest', 'apps', 'code_mode_host', 'browser_use', 'skill_mcp_dependency_install', 'browser_use_external', 'in_app_browser', 'mcp_2026_07_28', 'enable_mcp_apps', 'shell_tool', 'skill_search'})">tests/test_runtime_model_swap_native.py:3035: in test_source_bound_real_transport_links_dummy_auth_persists_refresh_and_uses_codex_overrides
+    response = runner(
+src/nesy_game/runtime_model_swap_native.py:1741: in __call__
+    completed = transport(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1124: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1128: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1189: in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap_native.py:2981: in run_host_spy
+    self.assertTrue(
+E   AssertionError: False is not true : ({'request_permissions_tool', 'codex_hooks', 'plugins', 'code_mode_tool_search', 'send_message_to_user_async', 'code_mode_only', 'standalone_web_search', 'multi_agent_v2', 'multi_agent', 'token_budget', 'current_time_reminder', 'sleep_tool', 'deferred_executor', 'code_mode'}, {'unified_exec', 'computer_use', 'shell_snapshot', 'browser_use_full_cdp_access', 'image_generation', 'view_image', 'tool_call_mcp_elicitation', 'tool_suggest', 'apps', 'code_mode_host', 'browser_use', 'skill_mcp_dependency_install', 'browser_use_external', 'in_app_browser', 'mcp_2026_07_28', 'enable_mcp_apps', 'shell_tool', 'skill_search'})</failure></testcase><testcase classname="tests.test_runtime_model_swap_native.NativeHostContractTests" name="test_missing_or_tampered_static_catalog_fails_before_auth_or_dispatch" time="0.162"><failure message="AttributeError: &lt;module 'nesy_game.runtime_model_swap_native' from '/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_native.py'&gt; does not have the attribute '_CODEX_TOOL_CATALOG_PATH'">tests/test_runtime_model_swap_native.py:3144: in test_missing_or_tampered_static_catalog_fails_before_auth_or_dispatch
+    with (
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: &lt;module 'nesy_game.runtime_model_swap_native' from '/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_native.py'&gt; does not have the attribute '_CODEX_TOOL_CATALOG_PATH'</failure><failure message="AttributeError: &lt;module 'nesy_game.runtime_model_swap_native' from '/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_native.py'&gt; does not have the attribute '_CODEX_TOOL_CATALOG_PATH'">tests/test_runtime_model_swap_native.py:3144: in test_missing_or_tampered_static_catalog_fails_before_auth_or_dispatch
+    with (
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1419: in get_original
+    raise AttributeError(
+E   AttributeError: &lt;module 'nesy_game.runtime_model_swap_native' from '/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_native.py'&gt; does not have the attribute '_CODEX_TOOL_CATALOG_PATH'</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="28" time="16.229" timestamp="2026-10-25T02:42:42.284696+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_assigned_manifest_rows_in_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_aggregate_keeps_unknown_identity_and_failures_in_original_denominator" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_authoritative_error_drives_bounded_repair_and_finishes_whole_goal" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_exhausted_source_is_explicit_failure_not_free_eof" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_existing_output_collision_fails_closed_without_overwrite" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_first_call_timeout_is_counted_and_traced_without_exception" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_observer_failure_after_commit_is_retained_as_assigned_failure" time="0.000"><failure message="RuntimeError: goal observer unavailable">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_goal_observer_failure_after_commit_is_retained_as_assigned_failure&gt;
+
+    def test_goal_observer_failure_after_commit_is_retained_as_assigned_failure(self) -&gt; None:
+        class GoalObserverFailureEngine(LighthouseEngine):
+            def objective_reached(self) -&gt; bool:
+                if self.commit_calls:
+                    raise RuntimeError("goal observer unavailable")
+                return super().objective_reached()
+    
+        engine = GoalObserverFailureEngine()
+        source = SequenceSource([proposal("collect_lens")])
+&gt;       record = run_offline(source, engine, limits=EpisodeLimits(30.0, 5.0, 12, 0))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_runtime_model_swap.py:622: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runtime_model_swap.py:157: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:298: in run_episode
+    if engine.objective_reached():
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;test_runtime_model_swap.RuntimeModelSwapTests.test_goal_observer_failure_after_commit_is_retained_as_assigned_failure.&lt;locals&gt;.GoalObserverFailureEngine object at 0x10702a0d0&gt;
+
+    def objective_reached(self) -&gt; bool:
+        if self.commit_calls:
+&gt;           raise RuntimeError("goal observer unavailable")
+E           RuntimeError: goal observer unavailable
+
+tests/test_runtime_model_swap.py:617: RuntimeError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_reached_after_wall_expiry_is_not_credited" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_goal_true_after_commit_deadline_is_not_credited" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_hard_invalid_proposal_cannot_mutate_canonical_state" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_host_budget_counts_failed_and_timeout_calls_in_original_denominator" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_initially_won_episode_is_not_a_success" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_live_provider_is_fail_closed_before_launcher_or_model_call" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_manifest_record_identity_and_empty_denominator_are_explicit" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_model_self_report_does_not_substitute_for_engine_observed_goal" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_offline_evidence_retains_unknown_provider_fields_and_semantic_trace" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_offline_provider_rejection_precedes_engine_and_source_activity" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_representation_swap_is_lossless_except_rendering" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_response_timeout_is_classified_and_does_not_commit_proposal" time="0.000" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_semantic_replay_rejects_rehashed_tampered_transition" time="0.001" /><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_three_decisions_preserve_canonical_state_and_credit_engine_goal_only" time="0.001" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_preserves_engine_receipt_fields" time="0.011" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output" time="0.004"><failure message="AssertionError: Lists differ: [{'mode': 'bootstrap', 'status': 'complete[905 chars]de'}] != []&#10;&#10;First list contains 1 additional elements.&#10;First extra element 0:&#10;{'mode': 'bootstrap', 'status': 'completed', 'trace': {'passed': True, 'observation': {'lens_reachable': True, 'lens_carried': False, 'signal_restored': False, 'tide_lead_authorized': False, 'goal_reached': False, 'in_dialogue': False}, 'state_ref': {'revision': 0, 'sha256': '0000000000000000000000000000000000000000000000000000000000000000'}, 'policy_hash': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'source_hashes': {'policy_hash': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, 'actions': []}, 'latency_ms': 3.5, 'input_sha256_before': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'input_sha256_after': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sidecar_path': '/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tmps80o0jli/outputs/godot-input/bootstrap.bootstrap.json.bootstrap.json', 'purpose': 'episode'}&#10;&#10;Diff is 1236 characters long. Set self.maxDiff to None to see it.">self = &lt;test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests testMethod=test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output&gt;
+
+    def test_adapter_uses_real_P_interpreter_and_traces_malformed_typed_output(self) -&gt; None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            transport = FakeEngineTransport(root)
+            prompt_calls: list[dict[str, Any]] = []
+    
+            def malformed_prompt(**kwargs: Any) -&gt; tuple[int, dict[str, Any]]:
+                prompt_calls.append(kwargs)
+                return 0, {
+                    "request_id": kwargs["request_id"],
+                    "typed_intent": {"label": "NOT_A_CANONICAL_LABEL", "claims": [], "target": None},
+                }
+    
+            engine = GodotEpisodeEngine(
+                project=root / "project",
+                output_root=root / "outputs",
+                prompt_runner=malformed_prompt,
+                engine_runner=transport,
+                godot_binary="/injected/godot",
+                fixture_ref=FIXTURE_REF,
+                assignment_id="SEAM-001",
+            )
+            record = run_episode(
+                engine=engine,
+                proposal_source=engine.propose,
+                model=ModelSpec("offline-scripted", "general_rule", None, None, True),
+                limits=EpisodeLimits(30.0, 5.0, 4, 0),
+                seed=20261024,
+                clock=lambda: 0.0,
+                config={"assignment_id": "SEAM-001", "fixture_ref": FIXTURE_REF},
+                prompt="Restore the lighthouse signal.",
+            )
+    
+        self.assertFalse(record["success"])
+        self.assertEqual(record["accounting"]["host_calls"], 1)
+        self.assertEqual(record["accounting"]["failed_calls"], 1)
+        self.assertEqual(record["evidence"]["calls"][0]["kind"], "proposal")
+        self.assertTrue(record["evidence"]["calls"][0]["failed"])
+        self.assertEqual(
+            record["evidence"]["raw_model_outputs"][0]["typed_intent"]["label"],
+            "NOT_A_CANONICAL_LABEL",
+        )
+        self.assertEqual(len(prompt_calls), 1)
+        self.assertEqual(len(transport.calls), 1)
+        self.assertEqual(transport.calls[0]["binary"], "/injected/godot")
+        self.assertEqual(record["decisions"][0]["commit"], None)
+        self.assertEqual([item["mode"] for item in engine.engine_evidence], ["bootstrap"])
+&gt;       self.assertEqual(record["evidence"]["engine_runs"], [])
+E       AssertionError: Lists differ: [{'mode': 'bootstrap', 'status': 'complete[905 chars]de'}] != []
+E       
+E       First list contains 1 additional elements.
+E       First extra element 0:
+E       {'mode': 'bootstrap', 'status': 'completed', 'trace': {'passed': True, 'observation': {'lens_reachable': True, 'lens_carried': False, 'signal_restored': False, 'tide_lead_authorized': False, 'goal_reached': False, 'in_dialogue': False}, 'state_ref': {'revision': 0, 'sha256': '0000000000000000000000000000000000000000000000000000000000000000'}, 'policy_hash': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'source_hashes': {'policy_hash': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'}, 'actions': []}, 'latency_ms': 3.5, 'input_sha256_before': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'input_sha256_after': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sidecar_path': '/Users/jangyoung/orca/neural_symbolic_in_game/neuro-symbolic-interactive-game-research-2026/tmps80o0jli/outputs/godot-input/bootstrap.bootstrap.json.bootstrap.json', 'purpose': 'episode'}
+E       
+E       Diff is 1236 characters long. Set self.maxDiff to None to see it.
+
+tests/test_runtime_model_swap_godot.py:176: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_controller_decision_blocks_tampered_raw_operation_before_transport" time="0.008" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_controller_request_budget_uses_runtime_limits" time="0.010" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_engine_unavailable_is_an_assigned_failure_record" time="0.001" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineSeamTests" name="test_semantic_rendering_reaches_prompt_without_rewriting_utterance" time="0.008" /><testcase classname="tests.test_runtime_model_swap_godot.GodotEpisodeEngineIntegrationTests" name="test_two_real_experiment_cycles_bind_setup_and_reject_tampered_state_ref" time="16.028" /></testsuite></testsuites>

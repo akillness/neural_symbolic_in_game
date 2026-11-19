@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="0.274" timestamp="2026-10-25T03:29:25.188906+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_final_state_after_timely_goal_preserves_primary_and_rejects_engineering" time="0.001"><failure message="TypeError: Object of type object is not JSON serializable">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_final_state_after_timely_goal_preserves_primary_and_rejects_engineering&gt;
+
+    def test_malformed_final_state_after_timely_goal_preserves_primary_and_rejects_engineering(
+        self,
+    ) -&gt; None:
+        class MalformedFinalStateEngine(LighthouseEngine):
+            def __init__(self) -&gt; None:
+                super().__init__()
+                self.goal_witnessed = False
+                self.state_invocations = 0
+                self.post_terminal_state_observed = False
+    
+            def state(self) -&gt; dict[str, Any]:
+                self.state_invocations += 1
+                state = super().state()
+                if self.goal_witnessed:
+                    self.post_terminal_state_observed = True
+                    state["facts"] = {"post_terminal": object()}
+                return state
+    
+            def objective_reached(self) -&gt; bool:
+                reached = super().objective_reached()
+                if reached:
+                    self.goal_witnessed = True
+                return reached
+    
+        with tempfile.TemporaryDirectory() as directory:
+            assignment_id = "CALLBACK-FINAL-STATE-001"
+            output = Path(directory) / "episode.json"
+            engine = MalformedFinalStateEngine()
+            source = SequenceSource(
+                [
+                    proposal("collect_lens"),
+                    proposal("move_to_lighthouse"),
+                    proposal("install_lens"),
+                ]
+            )
+&gt;           record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_runtime_model_swap.py:961: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x106457910&gt;
+o = &lt;object object at 0x10062d660&gt;
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type object is not JSON serializable
+
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: TypeError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows" time="0.055"><failure message="TypeError: Object of type object is not JSON serializable">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows&gt;
+
+    def test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows(self) -&gt; None:
+        class MalformedPreconditionsEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.preconditions_invocations = 0
+                self._value = value
+    
+            def preconditions(self) -&gt; dict[str, Any]:
+                self.preconditions_invocations += 1
+                return {"collect_lens": self._value}
+    
+        cases = (
+            ("initial_object", {"bad": object()}),
+            ("initial_set", {"bad": {"unserializable"}}),
+            ("initial_nan", {"bad": float("nan")}),
+            ("semantic_object", MalformedPreconditionsEngine(object())),
+            ("semantic_set", MalformedPreconditionsEngine({"unserializable"})),
+            ("semantic_nan", MalformedPreconditionsEngine(float("nan"))),
+        )
+    
+        for name, malformed in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                assignment_id = "CALLBACK-STATE-" + name
+                output = Path(directory) / "episode.json"
+                if isinstance(malformed, LighthouseEngine):
+                    engine = malformed
+                else:
+                    initial = {
+                        "location": "dock",
+                        "inventory": [],
+                        "facts": malformed,
+                        "signal_restored": False,
+                    }
+                    engine = LighthouseEngine(initial=initial)
+    
+                source = SequenceSource([proposal("collect_lens")])
+&gt;               record = run_offline(
+                    source, engine, assignment_id=assignment_id, output_path=output
+                )
+
+tests/test_runtime_model_swap.py:767: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x10698c2d0&gt;
+o = &lt;object object at 0x106892e60&gt;
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type object is not JSON serializable
+
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: TypeError</failure><failure message="UnboundLocalError: cannot access local variable 'record' where it is not associated with a value">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows&gt;
+
+    def test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows(self) -&gt; None:
+        class MalformedPreconditionsEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.preconditions_invocations = 0
+                self._value = value
+    
+            def preconditions(self) -&gt; dict[str, Any]:
+                self.preconditions_invocations += 1
+                return {"collect_lens": self._value}
+    
+        cases = (
+            ("initial_object", {"bad": object()}),
+            ("initial_set", {"bad": {"unserializable"}}),
+            ("initial_nan", {"bad": float("nan")}),
+            ("semantic_object", MalformedPreconditionsEngine(object())),
+            ("semantic_set", MalformedPreconditionsEngine({"unserializable"})),
+            ("semantic_nan", MalformedPreconditionsEngine(float("nan"))),
+        )
+    
+        for name, malformed in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                assignment_id = "CALLBACK-STATE-" + name
+                output = Path(directory) / "episode.json"
+                if isinstance(malformed, LighthouseEngine):
+                    engine = malformed
+                else:
+                    initial = {
+                        "location": "dock",
+                        "inventory": [],
+                        "facts": malformed,
+                        "signal_restored": False,
+                    }
+                    engine = LighthouseEngine(initial=initial)
+    
+                source = SequenceSource([proposal("collect_lens")])
+                record = run_offline(
+                    source, engine, assignment_id=assignment_id, output_path=output
+                )
+                self._assert_strict_persisted_record(record, output, assignment_id)
+    
+&gt;           self.assertFalse(record["success"])
+                             ^^^^^^
+E           UnboundLocalError: cannot access local variable 'record' where it is not associated with a value
+
+tests/test_runtime_model_swap.py:772: UnboundLocalError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance" time="0.036"><failure message="AttributeError: 'list' object has no attribute 'get'">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance&gt;
+
+    def test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance(self) -&gt; None:
+        class MalformedReplayEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.reexecute_invocations = 0
+                self._value = value
+    
+            def reexecute(self) -&gt; object:
+                self.reexecute_invocations += 1
+                return copy.deepcopy(self._value)
+    
+        cases = (
+            ("replay_list", []),
+            ("replay_nonjson", {"valid": object()}),
+            ("replay_missing_marker", {"status": "completed"}),
+            ("replay_nonboolean_marker", {"valid": 1}),
+        )
+    
+        for name, malformed in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                assignment_id = "CALLBACK-REPLAY-" + name
+                output = Path(directory) / "episode.json"
+                engine = MalformedReplayEngine(malformed)
+                source = SequenceSource(
+                    [
+                        proposal("collect_lens"),
+                        proposal("move_to_lighthouse"),
+                        proposal("install_lens"),
+                    ]
+                )
+&gt;               record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_runtime_model_swap.py:913: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+record = {'schema_version': 'runtime-model-swap/1', 'assignment_id': 'CALLBACK-REPLAY-replay_list', 'scope': 'bookkeeping', 'mo...'model_id': 'offline-synthetic-model', 'representation': 'general_rule', 'provider': None, 'revision': None, ...}, ...}
+output_path = PosixPath('/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmp3nw39cqc/episode.json')
+
+    def _finish(record: dict[str, Any], output_path: str | Path | None) -&gt; dict[str, Any]:
+        checks = []
+        previous = record["initial_state"]
+        for decision in record["decisions"]:
+            if decision.get("commit") is not None:
+                checks.append(decision["state"] == previous)
+                previous = decision["commit"]["state"]
+        checks.append(previous == record["final_state"])
+        replay = record["evidence"].get("engine_reexecution")
+&gt;       replay_ok = replay is None or replay.get("valid") is not False
+                                      ^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'get'
+
+src/nesy_game/runtime_model_swap.py:497: AttributeError</failure><failure message="UnboundLocalError: cannot access local variable 'record' where it is not associated with a value">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance&gt;
+
+    def test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance(self) -&gt; None:
+        class MalformedReplayEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.reexecute_invocations = 0
+                self._value = value
+    
+            def reexecute(self) -&gt; object:
+                self.reexecute_invocations += 1
+                return copy.deepcopy(self._value)
+    
+        cases = (
+            ("replay_list", []),
+            ("replay_nonjson", {"valid": object()}),
+            ("replay_missing_marker", {"status": "completed"}),
+            ("replay_nonboolean_marker", {"valid": 1}),
+        )
+    
+        for name, malformed in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                assignment_id = "CALLBACK-REPLAY-" + name
+                output = Path(directory) / "episode.json"
+                engine = MalformedReplayEngine(malformed)
+                source = SequenceSource(
+                    [
+                        proposal("collect_lens"),
+                        proposal("move_to_lighthouse"),
+                        proposal("install_lens"),
+                    ]
+                )
+                record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+                self._assert_strict_persisted_record(record, output, assignment_id)
+    
+&gt;           self.assertTrue(record["success"])
+                            ^^^^^^
+E           UnboundLocalError: cannot access local variable 'record' where it is not associated with a value
+
+tests/test_runtime_model_swap.py:916: UnboundLocalError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows" time="0.034"><failure message="AttributeError: 'list' object has no attribute 'get'">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows&gt;
+
+    def test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows(self) -&gt; None:
+        class MalformedValidationEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.validation_invocations = 0
+                self._value = value
+    
+            def validate(self, proposal_value: dict[str, Any]) -&gt; object:
+                self.validation_invocations += 1
+                super().validate(proposal_value)
+                return copy.deepcopy(self._value)
+    
+        class MalformedCommitEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.commit_invocations = 0
+                self._value = value
+    
+            def commit(self, proposal_value: dict[str, Any]) -&gt; object:
+                self.commit_invocations += 1
+                super().commit(proposal_value)
+                return copy.deepcopy(self._value)
+    
+        class MalformedObjectiveEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.objective_invocations = 0
+                self._value = value
+    
+            def objective_reached(self) -&gt; object:
+                self.objective_invocations += 1
+                if self.objective_invocations == 1:
+                    return False
+                return copy.deepcopy(self._value)
+    
+        validation_cases = (
+            ("validation_list", []),
+            ("validation_object", {"valid": False, "detail": object()}),
+            ("validation_set", {"valid": False, "detail": {"unserializable"}}),
+            ("validation_nan", {"valid": False, "detail": float("nan")}),
+        )
+        commit_cases = (
+            ("commit_object", {"bad": object()}),
+            ("commit_set", {"bad": {"unserializable"}}),
+            ("commit_nan", {"bad": float("nan")}),
+        )
+        objective_cases = (
+            ("objective_object", object()),
+            ("objective_set", {"unserializable"}),
+            ("objective_nan", float("nan")),
+            ("objective_nonboolean", 1),
+        )
+    
+        for name, malformed in validation_cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                assignment_id = "CALLBACK-VALIDATION-" + name
+                output = Path(directory) / "episode.json"
+                engine = MalformedValidationEngine(malformed)
+                source = SequenceSource([proposal("collect_lens")])
+&gt;               record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_runtime_model_swap.py:838: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+engine = &lt;test_runtime_model_swap.RuntimeModelSwapTests.test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows.&lt;locals&gt;.MalformedValidationEngine object at 0x10661a1d0&gt;
+proposal_source = &lt;test_runtime_model_swap.SequenceSource object at 0x10661a910&gt;
+model = ModelSpec(model_id='offline-synthetic-model', representation='general_rule', provider=None, revision=None, offline=True)
+limits = EpisodeLimits(wall_seconds=30.0, response_seconds=5.0, max_host_calls=12, max_repairs_per_decision=2)
+seed = 20261024
+clock = &lt;test_runtime_model_swap.FakeClock object at 0x10661a090&gt;
+config = {'goal': 'signal_restored', 'fixture': 'offline-lighthouse-v1', 'assignment_id': 'CALLBACK-VALIDATION-validation_list'}
+prompt = 'Restore the lighthouse signal by carrying and installing the lens.'
+repair_source = None, provider_launcher = None
+output_path = PosixPath('/var/folders/ln/_tgvj8cx53g_zzgqkk2w_vvm0000gn/T/tmpsjwspt9u/episode.json')
+
+    def run_episode(
+        *,
+        engine: EpisodeEngine,
+        proposal_source: Callable[[dict[str, Any]], dict[str, Any]],
+        model: ModelSpec,
+        limits: EpisodeLimits,
+        seed: int,
+        clock: Callable[[], float],
+        config: Mapping[str, Any],
+        prompt: str,
+        repair_source: Callable[[dict[str, Any], dict[str, Any], int], dict[str, Any]] | None = None,
+        provider_launcher: Callable[..., Any] | None = None,
+        output_path: str | Path | None = None,
+    ) -&gt; dict[str, Any]:
+        if output_path is not None and Path(output_path).exists():
+            raise FileExistsError(f"output already exists: {output_path}")
+        preparation_started = float(clock())
+        started: float | None = None
+        evidence: dict[str, Any] = {
+            "provenance": {"mode": "offline", "synthetic": True},
+            "seed": seed,
+            "provider_identity": None,
+            "provider_revision": None,
+            "cost_usd": None,
+            "provider_request_count": None,
+            "provider_process_launch_count": 0,
+            "prompt_hash": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+            "config_hash": _hash(dict(config)),
+            "request_hash": None,
+            "raw_proposals": [],
+            "raw_model_outputs": [],
+            "validation": [],
+            "repair": [],
+            "commit": [],
+            "calls": [],
+            "engine_runs": [],
+            "time": {
+                "preparation_started": preparation_started,
+                "preparation_ended": None,
+                "started": None,
+                "ended": None,
+                "boundary": "first_host_dispatch_to_terminal_observation",
+            },
+        }
+        record: dict[str, Any] = {
+            "schema_version": "runtime-model-swap/1",
+            "assignment_id": config.get("assignment_id"),
+            "scope": "bookkeeping",
+            "model": asdict(model),
+            "limits": asdict(limits),
+            "seed": seed,
+            "config": copy.deepcopy(dict(config)),
+            "prompt": prompt,
+            "initial_state": {},
+            "final_state": {},
+            "decisions": [],
+            "evidence": evidence,
+            "accounting": {
+                "host_calls": 0,
+                "source_attempts": 0,
+                "failed_calls": 0,
+                "timeout_calls": 0,
+                "transport_retries": 0,
+                "repair_calls": 0,
+                "successful_repairs": 0,
+                "initial_proposal_failures": 0,
+                "wall_expired": False,
+                "denominator_eligible": True,
+            },
+            "safety": {
+                "status": "NO_COMMIT_OBSERVED",
+                "committed_transitions": 0,
+                "committed_invariant_violations": 0,
+                "errors": [],
+            },
+            "failure_reason": None,
+            "last_error": None,
+            "status": "failure",
+            "success": False,
+            "goal_reached": False,
+        }
+        accounting = record["accounting"]
+    
+        def expired() -&gt; bool:
+            return started is not None and float(clock()) - started &gt;= limits.wall_seconds
+    
+        def finish(*, observe: bool = True) -&gt; dict[str, Any]:
+            evidence["time"]["ended"] = float(clock())
+            if started is None:
+                evidence["time"]["preparation_ended"] = evidence["time"]["ended"]
+            elif expired():
+                accounting["wall_expired"] = True
+            if record["failure_reason"] in {
+                "engine_unavailable",
+                "validation_failure",
+                "goal_observation_unavailable",
+            } and record["safety"]["status"] != "FAIL":
+                record["safety"]["status"] = "NOT_PASS"
+            if observe:
+                try:
+                    record["final_state"] = copy.deepcopy(engine.state())
+                except Exception as exc:  # noqa: BLE001 -- Preserve failures from injected state observers.
+                    record["failure_reason"] = "engine_unavailable"
+                    record["last_error"] = f"{type(exc).__name__}: {exc}"
+                    record["success"] = record["goal_reached"] = False
+                    record["status"] = "failure"
+                    if record["safety"]["status"] != "FAIL":
+                        record["safety"]["status"] = "NOT_PASS"
+            evidence["raw_model_outputs"] = (
+                copy.deepcopy(getattr(engine, "raw_model_outputs", [])) if observe else []
+            )
+            if observe:
+                replay = getattr(engine, "reexecute", None)
+                if callable(replay):
+                    try:
+                        evidence["engine_reexecution"] = replay()
+                    except Exception as exc:  # noqa: BLE001 -- Replay failure must not erase the assigned row.
+                        evidence["engine_reexecution"] = {
+                            "valid": False,
+                            "status": "failed",
+                            "error": f"{type(exc).__name__}: {exc}",
+                            "model_calls": 0,
+                        }
+                runs = getattr(engine, "engine_evidence", [])
+                evidence["preparation"] = copy.deepcopy(
+                    [run for run in runs if run.get("mode") == "import"]
+                )
+                evidence["engine_runs"] = copy.deepcopy(
+                    [run for run in runs if run.get("mode") != "import"]
+                )
+                evidence["prompt_invocations"] = copy.deepcopy(getattr(engine, "prompt_calls", []))
+                evidence["source_hashes"] = copy.deepcopy(getattr(engine, "source_hashes", {}))
+            return _finish(record, output_path)
+    
+        if not model.offline or model.provider is not None or provider_launcher is not None:
+            record["failure_reason"] = "provider_not_allowed_offline"
+            evidence["provenance"] = {"mode": "rejected", "synthetic": False}
+            return finish(observe=False)
+        configure = getattr(engine, "configure_runtime", None)
+        if callable(configure):
+            configure(
+                limits=limits, clock=clock, started=started, model_id=model.model_id, prompt=prompt
+            )
+        try:
+            record["initial_state"] = copy.deepcopy(engine.state())
+            record["final_state"] = copy.deepcopy(record["initial_state"])
+            if getattr(engine, "engine_error", None):
+                raise RuntimeError(str(engine.engine_error))
+            if engine.objective_reached():
+                record["failure_reason"] = "initial_goal_reached"
+                return finish()
+        except Exception as exc:  # noqa: BLE001 -- Engine initialization is an external callback boundary.
+            record["failure_reason"] = "engine_unavailable"
+            record["last_error"] = f"{type(exc).__name__}: {exc}"
+            return finish()
+    
+        logical_index = 0
+        while True:
+            if expired():
+                accounting["wall_expired"] = True
+                record["failure_reason"] = "wall_budget_exhausted"
+                break
+            if accounting["host_calls"] &gt;= limits.max_host_calls:
+                record["failure_reason"] = "host_call_budget_exhausted"
+                break
+            try:
+                state = copy.deepcopy(engine.state())
+                semantic = {
+                    "state": state,
+                    "legal_actions": engine.legal_actions(),
+                    "preconditions": engine.preconditions(),
+                    "constraints": engine.constraints(),
+                    "objective": engine.objective(),
+                }
+            except Exception as exc:  # noqa: BLE001 -- Preserve failed observations in the denominator.
+                record["failure_reason"] = "engine_unavailable"
+                record["last_error"] = f"{type(exc).__name__}: {exc}"
+                break
+            model_input = {
+                **semantic,
+                "representation": model.representation,
+                "rendering": _render(semantic, model.representation),
+            }
+            context = {
+                "state": state,
+                "model_input": model_input,
+                "logical_request_id": f"decision-{logical_index}",
+                "remaining_wall_seconds": limits.wall_seconds
+                if started is None
+                else max(0.0, limits.wall_seconds - (float(clock()) - started)),
+            }
+            request_hash = _hash({"seed": seed, "config": config, "prompt": prompt, "context": context})
+            evidence["request_hash"] = request_hash
+            decision: dict[str, Any] = {
+                "state": state,
+                "model_input": copy.deepcopy(model_input),
+                "request_hash": request_hash,
+                "logical_request_id": context["logical_request_id"],
+                "raw_proposals": [],
+                "validation": None,
+                "repair": None,
+                "commit": None,
+            }
+            evidence["repair"].append({"attempt": 0, "proposal": None})
+            accepted = None
+            retry_transport = False
+            error: dict[str, Any] = {}
+            for attempt in range(limits.max_repairs_per_decision + 1):
+                if attempt and repair_source is None:
+                    record["failure_reason"] = "repair_budget_exhausted"
+                    break
+                if expired():
+                    accounting["wall_expired"] = True
+                    record["failure_reason"] = "wall_budget_exhausted"
+                    break
+                if accounting["host_calls"] &gt;= limits.max_host_calls:
+                    record["failure_reason"] = "host_call_budget_exhausted"
+                    break
+                if started is None:
+                    started = float(clock())
+                    evidence["time"].update(started=started, preparation_ended=started)
+                    if callable(configure):
+                        configure(
+                            limits=limits,
+                            clock=clock,
+                            started=started,
+                            model_id=model.model_id,
+                            prompt=prompt,
+                        )
+                before_count = getattr(engine, "prompt_invocation_count", None)
+                row: dict[str, Any] = {
+                    "kind": "repair" if attempt else "proposal",
+                    "attempt": attempt,
+                    "logical_request_id": context["logical_request_id"],
+                    "started": float(clock()),
+                    "failed": False,
+                    "host_invocations": 1,
+                }
+                evidence["calls"].append(row)
+                accounting["source_attempts"] += 1
+                accounting["host_calls"] += 1
+                if attempt:
+                    accounting["repair_calls"] += 1
+                try:
+                    if attempt:
+                        proposal = repair_source(copy.deepcopy(context), copy.deepcopy(error), attempt)
+                    else:
+                        proposal = proposal_source(copy.deepcopy(context))
+                    captured = _evidence_value(proposal)
+                    evidence["raw_proposals"].append(captured)
+                    decision["raw_proposals"].append(copy.deepcopy(captured))
+                    if attempt:
+                        evidence["repair"][-1] = {
+                            "attempt": attempt,
+                            "proposal": copy.deepcopy(captured),
+                        }
+                    if (
+                        before_count is None
+                        and float(clock()) - row["started"] &gt;= limits.response_seconds
+                    ):
+                        raise TimeoutError("response deadline exceeded")
+                    if not isinstance(proposal, dict):
+                        raise TypeError("proposal_must_be_object")
+                    _json(proposal)
+                except TimeoutError as exc:
+                    row.update(failed=True, error=f"{type(exc).__name__}: {exc}")
+                    accounting["failed_calls"] += 1
+                    accounting["timeout_calls"] += 1
+                    record["last_error"] = "response_timeout"
+                    record["failure_reason"] = "response_timeout"
+                    break
+                except Exception as exc:  # noqa: BLE001 -- Untrusted adapter failures consume recorded calls.
+                    row.update(failed=True, error=f"{type(exc).__name__}: {exc}")
+                    accounting["failed_calls"] += 1
+                    record["last_error"] = row["error"]
+                    record["failure_reason"] = (
+                        "repair_source_error" if attempt else "proposal_source_error"
+                    )
+                    if before_count is not None and any(
+                        call.get("timed_out") for call in engine.prompt_calls[before_count:]
+                    ):
+                        accounting["timeout_calls"] += 1
+                        record["failure_reason"] = "response_timeout"
+                        break
+                    if getattr(engine, "engine_error", None):
+                        record["failure_reason"] = "engine_unavailable"
+                    elif isinstance(exc, RuntimeError) and not attempt:
+                        retry_transport = True
+                    elif repair_source is not None and attempt &lt; limits.max_repairs_per_decision:
+                        error = {"code": "PROPOSAL_FORMAT_ERROR", "message": row["error"]}
+                        decision["validation"] = error | {"valid": False}
+                        evidence["validation"].append(copy.deepcopy(decision["validation"]))
+                        if attempt == 0:
+                            accounting["initial_proposal_failures"] += 1
+                        continue
+                    break
+                finally:
+                    row["ended"] = float(clock())
+                    row["duration_seconds"] = row["ended"] - row["started"]
+                    if before_count is not None:
+                        observed = engine.prompt_invocation_count - before_count
+                        row["host_invocations"] = observed
+                        accounting["host_calls"] += observed - 1
+                try:
+                    validation = engine.validate(copy.deepcopy(proposal))
+                    if engine.state() != state:
+                        record["safety"]["status"] = "FIX_VALIDATION_MUTATED_STATE"
+                        raise RuntimeError("validation_changed_canonical_state")
+                except Exception as exc:  # noqa: BLE001 -- Validator callbacks cannot discard assignments.
+                    record["failure_reason"] = "validation_failure"
+                    record["last_error"] = f"{type(exc).__name__}: {exc}"
+                    break
+                decision["validation"] = copy.deepcopy(validation)
+                evidence["validation"].append(copy.deepcopy(validation))
+&gt;               if validation.get("valid") is True:
+                   ^^^^^^^^^^^^^^
+E               AttributeError: 'list' object has no attribute 'get'
+
+src/nesy_game/runtime_model_swap.py:406: AttributeError</failure><failure message="UnboundLocalError: cannot access local variable 'record' where it is not associated with a value">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows&gt;
+
+    def test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows(self) -&gt; None:
+        class MalformedValidationEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.validation_invocations = 0
+                self._value = value
+    
+            def validate(self, proposal_value: dict[str, Any]) -&gt; object:
+                self.validation_invocations += 1
+                super().validate(proposal_value)
+                return copy.deepcopy(self._value)
+    
+        class MalformedCommitEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.commit_invocations = 0
+                self._value = value
+    
+            def commit(self, proposal_value: dict[str, Any]) -&gt; object:
+                self.commit_invocations += 1
+                super().commit(proposal_value)
+                return copy.deepcopy(self._value)
+    
+        class MalformedObjectiveEngine(LighthouseEngine):
+            def __init__(self, value: object) -&gt; None:
+                super().__init__()
+                self.objective_invocations = 0
+                self._value = value
+    
+            def objective_reached(self) -&gt; object:
+                self.objective_invocations += 1
+                if self.objective_invocations == 1:
+                    return False
+                return copy.deepcopy(self._value)
+    
+        validation_cases = (
+            ("validation_list", []),
+            ("validation_object", {"valid": False, "detail": object()}),
+            ("validation_set", {"valid": False, "detail": {"unserializable"}}),
+            ("validation_nan", {"valid": False, "detail": float("nan")}),
+        )
+        commit_cases = (
+            ("commit_object", {"bad": object()}),
+            ("commit_set", {"bad": {"unserializable"}}),
+            ("commit_nan", {"bad": float("nan")}),
+        )
+        objective_cases = (
+            ("objective_object", object()),
+            ("objective_set", {"unserializable"}),
+            ("objective_nan", float("nan")),
+            ("objective_nonboolean", 1),
+        )
+    
+        for name, malformed in validation_cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                assignment_id = "CALLBACK-VALIDATION-" + name
+                output = Path(directory) / "episode.json"
+                engine = MalformedValidationEngine(malformed)
+                source = SequenceSource([proposal("collect_lens")])
+                record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+                self._assert_strict_persisted_record(record, output, assignment_id)
+    
+&gt;           self.assertFalse(record["success"])
+                             ^^^^^^
+E           UnboundLocalError: cannot access local variable 'record' where it is not associated with a value
+
+tests/test_runtime_model_swap.py:841: UnboundLocalError</failure></testcase></testsuite></testsuites>

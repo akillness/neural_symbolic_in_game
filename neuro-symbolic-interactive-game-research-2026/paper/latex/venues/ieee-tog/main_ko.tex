@@ -1,0 +1,62 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\input{../_shared/ko/preamble_ko}
+\input{../_shared/macros}
+\anonymoussubmissionfalse
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.02}
+\AtBeginDocument{%
+  \setcounter{dbltopnumber}{1}%
+  \renewcommand{\topfraction}{0.92}%
+  \renewcommand{\dbltopfraction}{0.92}%
+  \renewcommand{\textfraction}{0.05}%
+  \renewcommand{\floatpagefraction}{0.88}%
+  \renewcommand{\dblfloatpagefraction}{0.88}%
+}
+
+\title{TRACE-RPG: 에이전트 게임 시스템을 위한 감사 가능한 엔진 제안--커밋 경계와 온톨로지 검증}
+
+\author{정장영$^{1}$, 강신진$^{2,*}$\\
+\small $^{1}$홍익대학교 게임학과 (제1저자)\\
+\small $^{2}$홍익대학교 교수 (교신저자)\\
+\small $^{*}$교신저자}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+스키마에 부합하는 게임 내 행동 제안이라도 접근 불가 물체 요구, 비인가 상태 전이, 조기 비밀 공개를 포함할 수 있다. 플레이어 경험·인간 평가는 후속 과제($N{=}0$)로 명시 분리하고 게임 엔진 런타임 안전성과 결정론적 재현성에 초점을 맞추어, \system{}는 \texttt{nesy\_game.multihop}의 이행적 Datalog 폐쇄, 7술어 게이트, 상태 비참조 수리 $\rho(a,E)$, 해시 연쇄 리플레이로 제안·커밋 권한을 분리한다(정리 1--4, \textbf{I1--I4}). 1,664건 유한 그래프 감사, Godot~4.7.1 장기 실행(1,600틱, p95 0.708\,ms), 480건 $R{\le}64, d{\le}5$ Datalog 검증(100.0\%, $\le$7.12\,$\mu$s)에 이어, 직접 HTTPS Anthropic Claude~5.5 API(Haiku·Sonnet·Opus~5.5, deprecated \texttt{temperature} 생략·\texttt{output\_config.json\_schema}) 및 3모델군 CLI 평가는 다음을 보인다: 105회 독립 5턴 폐루프(\textbf{P15}: 15/15 무누출·0 위험, 정리~2 $\rho_{\mathrm{repairs}}{=}0$ 무세탁 실증·하이브리드 \textbf{15/15} 목표 대 Safe-RL 0/15·NeMo 1/15), 60회 요인 실험(\textbf{P16A}: \texttt{ontology\_multihop} 30/30·22건 $\rho$수리·11/30 대 규칙 22/30·0/30), Godot~4.7.1 인증 21회+CLI 42회(\textbf{P16B}, \textbf{P13}: 전량 리플레이 일치, 제품 6/6 해시 일치, 0/63 누출), $(a,E)$ 동등 수리 27/27(0토큰), 통합 540회 한·영 우회(\textbf{P17}: $\kappa{=}0.8813$, 0\% FRR), Croissant~1.0 v5(26/26), 격리된 \texttt{TR01--TR06}($N{=}0$).
+\end{abstract}
+
+\begin{IEEEkeywords}
+게임 엔진 검증, 뉴로심볼릭 시스템, 액션 실딩, 반례 수리, 결정론적 리플레이
+\end{IEEEkeywords}
+
+\section{서론}
+\input{../_shared/ko/sec_intro_gap_phase5_ko}
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.64\textwidth]{../../figures/fig_architecture.pdf}
+  \caption{정책과 상태 $c_t$가 제안을 게이팅한다. 오류는 제한된 $\rho$ 수리 또는 상태 불변 fallback으로 이어지며, 통과 후보는 재검증 뒤 커밋·기록·리플레이된다.}
+  \label{fig:architecture}
+\end{figure*}
+
+\input{../_shared/ko/sec_problem_arch_phase5_ko}
+\input{../_shared/ko/sec_eval_tog_phase5_ko}
+\input{../_shared/ko/sec_conclusion_phase5_ko}
+
+\FloatBarrier
+\bibliographystyle{IEEEtran}
+\bibliography{../../references,../_shared/venue_extra}
+
+\end{document}

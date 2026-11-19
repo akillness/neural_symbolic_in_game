@@ -1,0 +1,23 @@
+\subsection{Core Multi-Hop Consolidation and Confound-Free Phase-4 Evaluation}\label{sec:phase4-compact}
+Beyond Phase-1--3 foundations (\textbf{P9}: 480 Datalog-verified $R{\le}64, d{\le}5$ closure cases at 100.0\% and $O(d)$ $\le$7.12\,$\mu$s median latency vs.\ 46.67\% flat and 60.00\% 2-hop, $Q{=}1100.19$), Phase~4 consolidates multi-hop verification directly into the installable core subpackage \texttt{nesy\_\allowbreak game.\allowbreak multihop} (\texttt{validate\_\allowbreak candidate\_\allowbreak multihop}, \texttt{execute\_\allowbreak with\_\allowbreak multihop\_\allowbreak repair}, keeping the 15 frozen top-level \texttt{src/\allowbreak nesy\_\allowbreak game/*.py} hashes unchanged at 20/20), benchmarks external \textbf{Safe-RL Action Masking} (\texttt{evaluate\_\allowbreak action\_\allowbreak mask\_\allowbreak shield}) and \textbf{NeMo-style Colang Output Rail} (\texttt{evaluate\_\allowbreak dialog\_\allowbreak rail\_\allowbreak filter}) baselines, and eliminates every Phase-3 protocol confound across four live 3-family tracks (\textbf{P11}--\textbf{P14}) alongside \texttt{DATASHEET\_v4.md} and Croissant~1.0 v4 (22/22 SHA-256 digests; Table~\ref{tab:phase4-compact}).
+
+In unguided 3-family 3-agent negotiation (\textbf{P11}; 30 episodes across Claude~Sonnet~5.5, GPT-OSS~120B, and Gemini~4~Hydrogen, 79/90 parsed turns, 11 GPT-OSS PF retained, 0 prompt confound markers), dynamic world-enum schemas eliminate Turn-1 deadlocks (\texttt{gpt-oss}: 12 commits, 4 milestones, 2 live $\rho$ repairs): \system{} maintains \textbf{30/30} zero-leak protection and \textbf{16/30 (53.3\%)} safe milestones (${\ge}2$ commits) at \textbf{0/79} unsafe turns vs.\ Safe-RL masking (9/30 zero-leak, 37/79 unsafe, $p{=}9.5{\times}10^{-7}$), NeMo-style rails (6/30, 43/79 unsafe, $p{=}1.2{\times}10^{-7}$), and flat 1-hop gating (11/30, 29/79 unsafe, $p{=}3.81{\times}10^{-6}$; $Q{=}118.93$). Across 90 live 5-world proposals (\textbf{P12}; \textbf{84/90} parsed, $Q{=}281.23$), passing the exact failed candidate $a$ and structured error counterexamples $E$ resolves prior self-repair confounds: on 27 matched policy+stage faults, deterministic $\rho_{K=2}$ achieves \textbf{27/27 (100.0\%)} at 0 extra tokens vs.\ matched \textbf{State-Blind LLM ($K{=}2$, 26/27 = 96.3\%)} at 530,044 extra tokens / 515.67\,s and \textbf{State-Aware LLM ($K{=}2$, 26/27 = 96.3\%)} at 542,042 extra tokens / 508.37\,s ($p{=}1.0$), while LLM $K{=}2$ safely re-targets 52/55 natural Theorem~2 rejections at 0 unsafe commits. Across 42 prompt-leak-free Godot~4.7.1 closed-loop episodes (\textbf{P13}; 30 5-world + 12 production \texttt{SealedLighthouseMachine}), models attain \textbf{23/30 (76.7\%)} 5-world goals and \textbf{9/12} production \texttt{EXACT\_TERMINAL\_HASH} matches (Claude \& Hydrogen \textbf{14/14 = 100.0\%}, GPT-OSS 4/14) with \textbf{42/42} exact 0-LLM replays and \textbf{0/42} leaks. Finally, 720 bilingual EN/KO escape checks spanning 4 neural models across all 3 families (\textbf{P14}) achieve Fleiss' $\kappa{=}\mathbf{0.9367}$ ($\kappa_{3\text{-fam}}{=}0.9309$; \texttt{gpt-oss} $F_1{=}0.9714$, 0/72 FRR, $p{=}2.5{\times}10^{-7}$ vs.\ rule hybrid).
+
+\begin{table}[!tbp]
+\caption{Phase-4 Core \texttt{nesy\_game.multihop} and Confound-Free 3-Family Summary (\textbf{P9}, \textbf{P11}--\textbf{P14})}
+\label{tab:phase4-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Phase-4 Track} & \textbf{Measured Result (95\% Wilson CI; Cochran's $Q$ / McNemar $p$)} \\
+\midrule
+\textbf{P9} Core Datalog (480) & $R{\le}64, d{\le}5$: \texttt{flat} 46.7\%, \texttt{2hop} 60.0\%, \texttt{multihop} \textbf{100.0\%} [99.2\%, 100\%], 0 oracle diffs, p50 $\le$7.12\,$\mu$s ($Q{=}1100.19$). \\
+\textbf{P11} Unguided MAS (30 ep) & \textbf{30/30} zero-leak, \textbf{16/30 (53.3\%)} milestones, \textbf{0/79} unsafe (vs.\ Safe-RL 37/79, NeMo 43/79, flat 29/79; $Q{=}118.93$); \texttt{gpt-oss} active (12 commits, 2 $\rho$). \\
+\textbf{P12} Repair $(a, E)$ (84/90) & 7-arm unsafe: Safe-RL 54/84, NeMo 55/84, flat 32/84 vs.\ \system{} \textbf{0/84}. 27 faults: $\rho_{K=2}$ \textbf{27/27} (0 tok) vs.\ Blind LLM 26/27 (530k tok) vs.\ Aware LLM 26/27 (542k tok). \\
+\textbf{P13} Unguided Godot (42 ep) & \textbf{42/42} 0-LLM replays, \textbf{0/42} leaks: 23/30 5-world + 9/12 \texttt{SealedLighthouse} (Claude/Hydrogen \textbf{14/14}, GPT-OSS 4/14). \\
+\textbf{P14} 3-Family Escape (720) & 4 neural models (3 families): $\kappa_{4}{=}\mathbf{0.9367}$ ($\kappa_{3}{=}\mathbf{0.9309}$); GPT-OSS 66/72 para / 0\% FRR / $F_1{=}0.9714$; Hydrogen \textbf{1.000}. \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,60 @@
+{
+  "artifact_type": "independent_agent_cases",
+  "created_at_utc": "2026-11-10T07:22:36Z",
+  "author": {"type": "model_agent", "model": null, "role": "independent scenario designer"},
+  "human_gold": false,
+  "same_model_family_limitation": "The author is a model agent; independence of judgments by another agent from the same model family is not guaranteed.",
+  "rule_source": "llm-wiki/wiki/reports/2026-10-23-signal-notation-review.md:35-42",
+  "schema_source": "neuro-symbolic-interactive-game-research-2026/src/nesy_game/contracts.py:42-172",
+  "blindness": {"existing_cases_read": false, "existing_results_read": false, "validator_implementation_opened": false, "comparator_implementation_opened": false, "accidental_exposure": "An initial search returned a validator.py preview containing the module description, import, seven rule names and a truncated function declaration. Its implementation body was not opened. A later paper search displayed a quest-stage monotonicity table row. This design is not fully blind to predicate names."},
+  "evaluation_notice": "Not human gold; no validator or real-model run. Expected values and rationales are bundled here and must be withheld from a blinded judge; identical model family is not independent human review. These prospective labels are conclusions from the documented rules, not empirical evidence or causal effects.",
+  "cases": [
+    {
+      "id": "fresh-v2-01",
+      "WorldState": {"state_id": "courier-gate", "locations": ["gate"], "reachable_locations": ["gate"], "object_locations": {"parcel": "gate"}, "inventory": [], "facts": ["gate_open"], "action_policies": {"inspect": {"required_preconditions": ["gate_open"], "allowed_effects": [], "required_effects": [], "allowed_quest_stage_effects": []}}, "npc_knowledge": {"courier": []}, "forbidden_disclosures": {"courier": []}, "quest_stage": 2},
+      "CandidateAction": {"action_id": "inspect-parcel", "actor_id": "courier", "action_type": "inspect", "preconditions": ["gate_open"], "effects": [], "required_objects": ["parcel"], "used_facts": [], "disclosed_facts": [], "required_quest_stage": 2, "quest_stage_effect": null, "narrative_text": "", "metadata": {}},
+      "expected": "valid",
+      "rationale": "The inspect policy exists and its required precondition is declared and true; there are no effects or stage target. The parcel is at a reachable location, no facts are used or disclosed, and the required stage equals the current stage."
+    },
+    {
+      "id": "fresh-v2-02",
+      "WorldState": {"state_id": "shop-cabinet", "locations": ["shop"], "reachable_locations": ["shop"], "object_locations": {"cabinet": "shop"}, "inventory": [], "facts": ["cabinet_locked"], "action_policies": {"open": {"required_preconditions": ["cabinet_unlocked"], "allowed_effects": ["cabinet_open"], "required_effects": ["cabinet_open"], "allowed_quest_stage_effects": []}}, "npc_knowledge": {"apothecary": []}, "forbidden_disclosures": {"apothecary": []}, "quest_stage": 1},
+      "CandidateAction": {"action_id": "open-cabinet", "actor_id": "apothecary", "action_type": "open", "preconditions": ["cabinet_unlocked"], "effects": ["cabinet_open"], "required_objects": ["cabinet"], "used_facts": [], "disclosed_facts": [], "required_quest_stage": 1, "quest_stage_effect": null, "narrative_text": "", "metadata": {}},
+      "expected": "invalid",
+      "expected_rule_violations": ["precondition"],
+      "rationale": "cabinet_unlocked is a candidate precondition absent from the current facts."
+    },
+    {
+      "id": "fresh-v2-03",
+      "WorldState": {"state_id": "river-crossing", "locations": ["near_bank", "far_bank"], "reachable_locations": ["near_bank"], "object_locations": {"lantern": "far_bank"}, "inventory": [], "facts": [], "action_policies": {"take": {"required_preconditions": [], "allowed_effects": ["lantern_taken"], "required_effects": ["lantern_taken"], "allowed_quest_stage_effects": []}}, "npc_knowledge": {"scout": []}, "forbidden_disclosures": {"scout": []}, "quest_stage": 1},
+      "CandidateAction": {"action_id": "take-lantern", "actor_id": "scout", "action_type": "take", "preconditions": [], "effects": ["lantern_taken"], "required_objects": ["lantern"], "used_facts": [], "disclosed_facts": [], "required_quest_stage": 1, "quest_stage_effect": null, "narrative_text": "", "metadata": {}},
+      "expected": "invalid",
+      "expected_rule_violations": ["object_reachability"],
+      "rationale": "The required lantern is not in inventory and its far_bank location is not reachable."
+    },
+    {
+      "id": "fresh-v2-04",
+      "WorldState": {"state_id": "herald-square", "locations": ["square"], "reachable_locations": ["square"], "object_locations": {}, "inventory": [], "facts": [], "action_policies": {"announce": {"required_preconditions": [], "allowed_effects": [], "required_effects": [], "allowed_quest_stage_effects": []}}, "npc_knowledge": {"herald": ["festival_date"]}, "forbidden_disclosures": {"herald": ["vault_location"]}, "quest_stage": 1},
+      "CandidateAction": {"action_id": "announce-vault", "actor_id": "herald", "action_type": "announce", "preconditions": [], "effects": [], "required_objects": [], "used_facts": [], "disclosed_facts": ["vault_location"], "required_quest_stage": 1, "quest_stage_effect": null, "narrative_text": "", "metadata": {}},
+      "expected": "invalid",
+      "expected_rule_violations": ["npc_knowledge", "forbidden_disclosure"],
+      "rationale": "The disclosed vault_location is outside the herald's listed knowledge and is explicitly forbidden for the herald."
+    },
+    {
+      "id": "fresh-v2-05",
+      "WorldState": {"state_id": "forge-claim", "locations": ["forge"], "reachable_locations": ["forge"], "object_locations": {}, "inventory": [], "facts": [], "action_policies": {}, "npc_knowledge": {"artisan": []}, "forbidden_disclosures": {"artisan": []}, "quest_stage": 1},
+      "CandidateAction": {"action_id": "claim-forge-reward", "actor_id": "artisan", "action_type": "claim_reward", "preconditions": [], "effects": [], "required_objects": [], "used_facts": [], "disclosed_facts": [], "required_quest_stage": 3, "quest_stage_effect": null, "narrative_text": "", "metadata": {}},
+      "expected": "invalid",
+      "expected_rule_violations": ["action_policy", "quest_stage"],
+      "rationale": "No policy exists for claim_reward, and required stage 3 exceeds current stage 1."
+    },
+    {
+      "id": "fresh-v2-06",
+      "WorldState": {"state_id": "archive-ledger", "locations": ["archive"], "reachable_locations": ["archive"], "object_locations": {"ledger": "archive"}, "inventory": [], "facts": [], "action_policies": {"inspect": {"required_preconditions": [], "allowed_effects": [], "required_effects": [], "allowed_quest_stage_effects": [2]}}, "npc_knowledge": {"archivist": []}, "forbidden_disclosures": {"archivist": []}, "quest_stage": 4},
+      "CandidateAction": {"action_id": "inspect-ledger", "actor_id": "archivist", "action_type": "inspect", "preconditions": [], "effects": [], "required_objects": ["ledger"], "used_facts": [], "disclosed_facts": [], "required_quest_stage": 4, "quest_stage_effect": 2, "narrative_text": "", "metadata": {}},
+      "expected": "invalid",
+      "expected_rule_violations": ["quest_stage_monotonicity"],
+      "rationale": "The explicitly policy-authorized stage target is 2, less than the current stage 4; monotonicity independently rejects this regression."
+    }
+  ]
+}

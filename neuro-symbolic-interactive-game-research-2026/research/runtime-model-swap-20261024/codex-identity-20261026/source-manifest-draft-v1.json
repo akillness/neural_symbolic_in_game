@@ -1,0 +1,34 @@
+{
+  "schema_version": "runtime-codex-identity-source-manifest-draft/1",
+  "artifact_id": "runtime-model-swap-20261024-codex-identity-20261026-source-manifest-draft-v1",
+  "status": "DRAFT_SOURCE_CHANGING_DO_NOT_FREEZE",
+  "engineering_only": false,
+  "source_root": "neuro-symbolic-interactive-game-research-2026",
+  "prior_manifest_ref": "research/runtime-model-swap-20261024/codex-live-20261026/public-packet-v1/source-manifest.json",
+  "prior_manifest_is_immutable": true,
+  "mutable_source_bindings": [
+    {"path":"src/nesy_game/runtime_model_swap_native.py","role":"controller","sha256":null,"status":"changing_under_NativeIdentityEngineer"},
+    {"path":"src/nesy_game/codex_extension_no_tools_models.json","role":"identity_catalog","sha256":null,"status":"pending_current_catalog_freeze"},
+    {"path":"scripts/run_runtime_model_swap_native.py","role":"controller","sha256":null,"status":"pending_current_source_freeze"}
+  ],
+  "stable_public_source_bindings_reused_from_v1": [
+    {"path":"game-track/godot/project.godot","role":"game","sha256":"2e7966bf2ac6b54bfaf2db84b3f446686436bd3a1f8efea592ffa82e91249edd"},
+    {"path":"game-track/schemas/npc-goal-recovery.schema.json","role":"schema","sha256":"649ccc5dfef6a6a6c7ba60136643a57630d9a7f460f5fc4607833700e4f4fbbc"},
+    {"path":"configs/npc-goal-recovery.json","role":"schema","sha256":"d63f5679f360d3fd8d1a424422f5cae4a7096ba46441f746cdd97de56044e098"},
+    {"path":"game-track/godot/scripts/sealed_lighthouse_machine.gd","role":"game","sha256":"5d5cffb4335378e7130dae8a994908111757a33a2ed46f0a4066f6674e4dd8b7"},
+    {"path":"game-track/godot/scripts/canonical_state.gd","role":"game","sha256":"6a4eb4693e0c34c24399e2d23ace4aceebb45fe9eb54e410bb25708232e88a58"},
+    {"path":"game-track/godot/data/sealed_lighthouse.json","role":"game","sha256":"f262455e57be7204f5f597736a89379f37f3f698475fa745a48be6ef2ebb28d9"}
+  ],
+  "hash_policy": {
+    "do_not_copy_stale_controller_hashes": true,
+    "main_recompute_after_native_source_stabilizes": true,
+    "assignment_plan_hashes_remain_null_until_recompute": true
+  },
+  "admission": {
+    "source_bound": false,
+    "current_source_hash_receipt": null,
+    "launch_authorized": false,
+    "generation_requests": 0
+  },
+  "disclosure": "LOCAL_DRAFT_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

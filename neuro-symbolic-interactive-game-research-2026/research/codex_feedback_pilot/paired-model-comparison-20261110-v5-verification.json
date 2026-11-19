@@ -1,0 +1,250 @@
+{
+  "schema_version": "paired-selector-development-comparison/1",
+  "status": "COLLECTION_COMPLETE_WITH_OBSERVED_MODEL_FAILURES",
+  "cohort": "paired-model-comparison-20261110-v5",
+  "collection": {
+    "assigned": 20,
+    "native_dispatches": 20,
+    "terminal_response_receipts": 20,
+    "strictly_parsed_and_evaluated": 10,
+    "schema_failed": 10,
+    "pending": 0,
+    "gate_accepted": 8,
+    "objective_reached": 7,
+    "operator_retries_per_assignment": 0
+  },
+  "summary": {
+    "gpt-5.6-luna": [
+      {
+        "condition": "detailed",
+        "assigned": 5,
+        "responses_received": 5,
+        "evaluated": 4,
+        "evaluation_failed": 1,
+        "failed": 1,
+        "pending": 0,
+        "gate_accepted": 4,
+        "objective_reached": 3,
+        "median_response_seconds": 8.302,
+        "sum_response_seconds": 40.919
+      },
+      {
+        "condition": "generic",
+        "assigned": 5,
+        "responses_received": 5,
+        "evaluated": 5,
+        "evaluation_failed": 0,
+        "failed": 0,
+        "pending": 0,
+        "gate_accepted": 3,
+        "objective_reached": 3,
+        "median_response_seconds": 9.764,
+        "sum_response_seconds": 58.928
+      }
+    ],
+    "gpt-5.6-terra": [
+      {
+        "condition": "detailed",
+        "assigned": 5,
+        "responses_received": 5,
+        "evaluated": 0,
+        "evaluation_failed": 5,
+        "failed": 5,
+        "pending": 0,
+        "gate_accepted": 0,
+        "objective_reached": 0,
+        "median_response_seconds": 8.432,
+        "sum_response_seconds": 44.99
+      },
+      {
+        "condition": "generic",
+        "assigned": 5,
+        "responses_received": 5,
+        "evaluated": 1,
+        "evaluation_failed": 4,
+        "failed": 4,
+        "pending": 0,
+        "gate_accepted": 1,
+        "objective_reached": 1,
+        "median_response_seconds": 8.987,
+        "sum_response_seconds": 46.4
+      }
+    ]
+  },
+  "cohort_files": {
+    "gpt-5.6-luna": {
+      "results": "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-luna/results.json",
+      "results_sha256": "11e0d2d0eda6a73d83922adbfe2b3b87a300397fe1fd6ccd12793d502fd1d446",
+      "approved_results": "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-luna/approved_results.json",
+      "approval_sha256": "690e2b6763efd3a5a1bb0fadcab27b88a03a014f24b87a5cd782f3ab16cb84a1",
+      "status": "COMPLETED_WITH_FAILURES"
+    },
+    "gpt-5.6-terra": {
+      "results": "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-terra/results.json",
+      "results_sha256": "d7adbd213704f6ca64f4968337620643a67c1b06ff4b16eb55030eafdcdc2942",
+      "approved_results": "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-gpt-5.6-terra/approved_results.json",
+      "approval_sha256": "b24ff0587c4fa4836b8fa6b303641708cee32284ed6c0d3db50ac99ec5c66eb8",
+      "status": "COMPLETED_WITH_FAILURES"
+    }
+  },
+  "protocol": {
+    "completion": "COMPLETED_WITH_FAILURES means collection finished, not all tasks passed",
+    "continuation": "only after successful adapter receipt; FAILED/evaluation_error; no retry",
+    "denominator": "all assigned rows; failed outputs count as zero gate/objective successes",
+    "expected_output_errors": [
+      "JSONDecodeError",
+      "CandidateParseError"
+    ],
+    "id": "parse-failures-continue-v1",
+    "other_errors": "hard stop; remaining assignments stay pending",
+    "prompt_and_evaluator": "unchanged"
+  },
+  "source_snapshot": {
+    "path": "research/codex_feedback_pilot/paired-model-comparison-20261110-v5-source.zip",
+    "sha256": "22bdfebbb40d55f7a2ff951aab1b18789c495a8fc388f0624ef5ef6658b34b60",
+    "members": 7,
+    "all_members_match_both_approved_source_maps": true,
+    "post_collection_style_cleanup": "Working collector imports/datetime.UTC alias and explanatory lint-boundary comments were cleaned after collection; executed bytes remain in the immutable ZIP."
+  },
+  "independent_verification": {
+    "reviewer": "PairedEvidenceCheck",
+    "collection_verdict": "PASS",
+    "same_input_pairs": 10,
+    "source_and_prompt_hash_mismatches": 0,
+    "exact_deterministic_replays": 10,
+    "replay_mismatches": 0,
+    "schema_failed_raw_responses": "hash/byte-count only; no independent reparsing of absent raw output claimed",
+    "final_v5_verdict": "COLLECTION_PASS",
+    "terminal_receipts": 20,
+    "parse_completed": 10,
+    "schema_failed": 10,
+    "pending": 0,
+    "all_prompt_regenerations_match": true,
+    "source_zip_members_match_both_approvals": 7,
+    "independent_replay_process_exit": 0,
+    "historical_preservation_scope": "v4 separate/unpooled independently observed; other historical cohorts byte preservation verified by Main only"
+  },
+  "historical_evidence": {
+    "original_cohorts_unchanged": 11,
+    "pooled": false,
+    "v4": "separate Luna10 evaluations, Terra1 schema failure and9 pending; not pooled",
+    "v3": "prepared but unattempted after stricter source review; not pooled",
+    "startup_diagnostics": "separate failed diagnostic observations; not pooled"
+  },
+  "unobserved": {
+    "actual_served_model_identity": null,
+    "model_revision": null,
+    "seed": null,
+    "provider_request_count": null,
+    "cost_usd": null,
+    "provider_internal_retries": null
+  },
+  "interpretation": "Five designed synthetic development fixtures per signal per requested selector; unequal-information feedback and fixed Luna-then-Terra order. Descriptive results only, not a holdout, human evaluation, causal model ranking, ontology efficacy, or confirmatory A/C result.",
+  "publication": {
+    "table_label": "tab:paired-feedback-v5",
+    "english_pdf": "paper/latex/en/main.pdf",
+    "korean_pdf": "paper/latex/ko/main.pdf",
+    "pages_each": 15,
+    "visual_inspection": {
+      "en_table_page": 10,
+      "ko_table_page": 9,
+      "observed_clipping_or_overlap": false
+    },
+    "forbidden_log_diagnostics": 0
+  },
+  "verification": {
+    "related_tests": 282,
+    "publication_tests_after_regex_cleanup": 7,
+    "ruff": "PASS",
+    "visual_source_receipts": 142,
+    "svg_assets": 10,
+    "visual_asset_validation": "PASS",
+    "pytest_command": ".venv/bin/python -m pytest tests/test_codex_feedback_live_security.py tests/test_codex_feedback_pilot.py tests/test_codex_isolation_wrapper.py tests/test_codex_feedback_publication.py -q -p no:cacheprovider",
+    "pytest_result": "282 passed in 8.02s; exit 0",
+    "ruff_command": ".venv/bin/ruff check scripts/codex_feedback_live_adapter.py scripts/codex_feedback_pilot.py scripts/update_visual_source_manifest.py tests/test_codex_feedback_live_security.py tests/test_codex_feedback_pilot.py tests/test_codex_feedback_publication.py",
+    "ruff_result": "All checks passed; exit 0",
+    "visual_command": ".venv/bin/python scripts/validate_visual_assets.py",
+    "visual_result": "PASS;142 unique source/artifact receipts;10 SVG assets;exit 0",
+    "dedicated_final_code_review": {
+      "status": "UNAVAILABLE",
+      "observed_error": "HTTP429 rate_limit_error before review work",
+      "fallback": "FinalReviewFallback: APPROVE; bounded separate-context static review, no current blockers; did not run tests or live calls; not cross-provider evidence"
+    },
+    "fallback_review_anchors": [
+      "scripts/codex_feedback_live_adapter.py:315-324,418-425",
+      "scripts/codex_feedback_pilot.py:278-283,303-307",
+      "scripts/update_visual_source_manifest.py:276-289",
+      "tests/test_codex_feedback_publication.py:79-166"
+    ]
+  },
+  "permissions": {
+    "purchase_or_automatic_reload_changes": false,
+    "account_settings_changed": false,
+    "commit_push_publish_deploy": false
+  },
+  "routing": {
+    "profile": "jeopi",
+    "backend": "api/typesafe",
+    "model": "jev-1.14.0",
+    "tier": "unvalidated",
+    "skill": "ab-test-analysis",
+    "review_verdict": "proposal_only",
+    "scientific_evidence": false
+  },
+  "self_evaluation": {
+    "accuracy": {
+      "score": 4,
+      "evidence": "20 terminal receipts, exact replay of all10 reparsable outputs; served identity/cost and raw malformed responses remain unavailable."
+    },
+    "completeness": {
+      "score": 5,
+      "evidence": "All20 assigned responses collected; failures retained, no pending units; bilingual result table and PDFs delivered."
+    },
+    "clarity": {
+      "score": 4,
+      "evidence": "Response receipt, strict gate, objective and schema failure separated; requested-selector versus served-model identity still needs an explicit caveat."
+    },
+    "actionability": {
+      "score": 5,
+      "evidence": "Result JSONs, fixed inputs, exact source ZIP, tests and bilingual PDFs retained with hashes."
+    },
+    "conciseness": {
+      "score": 4,
+      "evidence": "One four-row comparative table; detailed provenance remains in machine-readable receipt rather than final prose."
+    },
+    "overall": 4.4,
+    "improvement": "A future separately approved study should retain privacy-safe schema-failure field categories and response-bound provider identity; do not infer them from this pilot."
+  },
+  "reported_usage": {
+    "gpt-5.6-luna": {
+      "native_cli_reported_tokens": {
+        "input_tokens": 70316,
+        "cached_input_tokens": 62720,
+        "output_tokens": 2484
+      },
+      "cash_or_credit_cost_verified": false
+    },
+    "gpt-5.6-terra": {
+      "native_cli_reported_tokens": {
+        "input_tokens": 85338,
+        "cached_input_tokens": 45824,
+        "output_tokens": 1177
+      },
+      "cash_or_credit_cost_verified": false
+    }
+  },
+  "protocol_source": {
+    "url": "https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/exec/src/event_processor_with_jsonl_output.rs#L411-L459",
+    "retrieved_at": "2026-11-10",
+    "evidence_level": "official tagged software source; local synthetic and real CLI observations",
+    "license": "not re-verified in this turn",
+    "distinction": "Warning/ConfigWarning map to item.completed ErrorItem while continuing; true provider errors remain fatal"
+  },
+  "memory": {
+    "repository_report": "llm-wiki/wiki/reports/2026-10-26-fixed-game-native-runtime-comparison.md#Completed v5 paired-selector collection — 2026-11-10",
+    "repository_index_and_log_updated": true,
+    "global_project_pointer_updated": true,
+    "obsidian_cli": "Fresh read failed exit1: app not found; direct-file fallback used",
+    "manual_graph_or_index_rebuild": false
+  }
+}

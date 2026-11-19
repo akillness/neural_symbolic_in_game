@@ -1,0 +1,21 @@
+\subsection{Phase-3 Cross-Family Shielding, 5-World Godot~4.7.1 Loop, Datalog Scaling, and Escape Verification}\label{sec:phase3-compact}
+Beyond Phase-2 five-world baselines (\textbf{P1}: 120 closure cases 100.0\% vs.\ 50.83\%, $p{<}10^{-16}$; \textbf{P2}: 30 scripted multi-agent runs 66.7\% vs.\ 33.3\%, 0/90 unsafe; \textbf{P3}: 16 Godot~4.7.1 runs, 16/16 replay; \textbf{P4}: $\rho$ 12/12 noisy vs.\ candidate-blind LLM regeneration 2/12; \textbf{P5}: 180 EN/KO cases, Flash 97.2\% / Hydrogen 100.0\%), Phase~3 evaluates Anthropic \texttt{claude-\allowbreak sonnet-\allowbreak 5-\allowbreak 5-\allowbreak medium}, open-weight \texttt{gpt-\allowbreak oss-\allowbreak 120b-\allowbreak medium}, and Google \texttt{gemini-\allowbreak 4-\allowbreak hydrogen-\allowbreak medium} / \texttt{gemini-\allowbreak 3.8-\allowbreak flash-\allowbreak medium} across five additive tracks alongside \texttt{DATASHEET\_v3.md} and Croissant~1.0 v3 (17/17 SHA-256 digests; Table~\ref{tab:phase3-compact}). Across 30 live scripted-choreography 3-agent episodes (\textbf{P6}; 88/90 parsed turns, 2 GPT-OSS pf), multi-hop shielding guarantees 30/30 zero-leak vs.\ 14/30 flat ($p{=}3.05{\times}10^{-5}$; Cochran's $Q{=}84.63$) and $\rho_{K=2}$ lifts milestones from 23.33\% to \textbf{53.33\%} ($p{=}0.00391$) at 0/88 unsafe turns (noting GPT-OSS emitted placeholder \texttt{action\_type} strings on all 9 parsed Turn-1 calls, yielding 0 commits / 0 flat leaks). Across 90 live 5-world tasks (\textbf{P7}; \textbf{87/90 = 96.7\%} parsed, 3 GPT-OSS pf), multihop + $\rho_{K=2}$ holds unsafe commits to \textbf{0/87} (vs.\ 27/87 flat) and repairs \textbf{30/30} noisy policies at 0 extra tokens ($Q{=}191.28, p{=}2.81{\times}10^{-40}$), while candidate-blind stateless LLM regeneration ($K{=}1$, omitting failed candidate $a$ from prompt) reaches 1/30 at 1,717,068 extra tokens (not a matched repair comparison). On 180 EN/KO escape items across 3 neural models spanning 2 families (\textbf{P8}; 540 evals, GPT-OSS 429 on \texttt{agy} unfabricated), agreement hits Fleiss' $\kappa{=}\mathbf{0.9614}$ and $\alpha_{\mathrm{nom}}{=}\mathbf{0.9614}$ ($Q{=}2.80, p{=}0.2466$; Claude 72/72 para / 4.17\% FRR / $F_1{=}0.9863$; Hydrogen 72/72 / 0\% / 1.000; Flash 70/72 / 0\% / 0.9907). On 480 Datalog-certified cases ($R{\le}64, d{\le}5$, \textbf{P9}), \texttt{multihop\_}\allowbreak\texttt{ontology\_}\allowbreak\texttt{gate} achieves \textbf{100.0\%} [99.21\%, 100.0\%] at $O(d)$ 6.46--7.12\,$\mu$s median invariant to $R{\le}64$ vs.\ 46.67\% flat and 60.00\% bounded-2hop ($Q{=}1100.19$). Finally, 50 live 5-world Godot~4.7.1 episodes (\textbf{P10}) yield \textbf{50/50} 0-LLM fresh replays and \textbf{0/50} leaks: Cohort~A blindspot tests Theorem~2 refusal (30/30 replays, 1/30 goal), while prompt-guided Cohort~B completes \textbf{20/20} [83.89\%, 100.0\%] goals with 10/10 shorthand $\rho$ repairs.
+
+\begin{table}[!tbp]
+\caption{Phase-3 Cross-Family, 5-World Godot~4.7.1, Datalog Scaling, and Escape Summary}
+\label{tab:phase3-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Phase-3 Track} & \textbf{Result (95\% Wilson CI; Cochran's $Q$ / McNemar $p$)} \\
+\midrule
+\textbf{P6} Live 3-Agent (30 ep) & Zero-leak: \texttt{flat} 14/30 vs.\ \texttt{multihop} \textbf{30/30} ($p{=}3.05{\times}10^{-5}$); milestones $\rho$ \textbf{16/30 (53.3\%)} vs.\ 7/30; GPT-OSS Turn-1 deadlock 0 commits. \\
+\textbf{P7} 3-Family (90 tasks) & 87/90 parsed (96.7\%): \texttt{flat} 27/87 unsafe vs.\ $\rho$ \textbf{0/87} + \textbf{30/30} noisy ($Q{=}191.28$; blind LLM regen $K{=}1$: 1/30 @ 1.72M tok). \\
+\textbf{P8} Escape (540 evals) & 3 neural models (2 families): $\kappa{=}\mathbf{0.9614}$, $\alpha{=}\mathbf{0.9614}$ ($Q{=}2.80$); Claude $F_1{=}0.986$, Flash $0.991$, Hydrogen \textbf{1.000}. \\
+\textbf{P9} Datalog (480 cases) & $R{\le}64,d{\le}5$: \texttt{flat} 46.7\%, \texttt{2hop} 60.0\%, \texttt{multihop} \textbf{100.0\%} [99.2\%, 100\%], 0 oracle diffs, p50 $\le$7.12\,$\mu$s ($Q{=}1100.19$). \\
+\textbf{P10} Godot~4.7.1 (50 ep) & \textbf{50/50} 0-LLM replays, \textbf{0/50} leaks: Cohort~A blindspot 30/30 safe (1/30); guided Cohort~B \textbf{20/20} goals + 10/10 $\rho$. \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.154" timestamp="2026-10-25T03:56:58.565687+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_counter_only_prompt_telemetry_preserves_initial_source_failure_row" time="0.021"><failure message="AssertionError: 'ValueError: bad offline response' != 'bad offline response'&#10;- ValueError: bad offline response&#10;? ------------&#10;+ bad offline response">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_counter_only_prompt_telemetry_preserves_initial_source_failure_row&gt;
+
+    def test_counter_only_prompt_telemetry_preserves_initial_source_failure_row(self) -&gt; None:
+        class CounterOnlyEngine(LighthouseEngine):
+            def __init__(self) -&gt; None:
+                super().__init__()
+                self.prompt_invocation_count = 0
+    
+        class FailingSource:
+            def __init__(self, engine: CounterOnlyEngine) -&gt; None:
+                self.engine = engine
+                self.calls = 0
+    
+            def __call__(self, _context: dict[str, Any]) -&gt; dict[str, Any]:
+                self.calls += 1
+                self.engine.prompt_invocation_count += 1
+                raise ValueError("bad offline response")
+    
+        with tempfile.TemporaryDirectory() as directory:
+            assignment_id = "COUNTER-ONLY-INITIAL-SOURCE"
+            output = Path(directory) / "episode.json"
+            engine = CounterOnlyEngine()
+            source = FailingSource(engine)
+            record = run_offline(
+                source,
+                engine,
+                assignment_id=assignment_id,
+                output_path=output,
+            )
+            persisted = self._assert_strict_persisted_record(record, output, assignment_id)
+            json.dumps(record, ensure_ascii=False, allow_nan=False, sort_keys=True).encode("utf-8")
+    
+        self.assertFalse(record["success"])
+        self.assertFalse(record["primary_success"])
+        self.assertEqual(record["failure_reason"], "proposal_source_error")
+&gt;       self.assertEqual(record["last_error"], "bad offline response")
+E       AssertionError: 'ValueError: bad offline response' != 'bad offline response'
+E       - ValueError: bad offline response
+E       ? ------------
+E       + bad offline response
+
+tests/test_runtime_model_swap.py:1109: AssertionError</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_counter_only_prompt_telemetry_preserves_repair_source_failure_row" time="0.032"><failure message="AssertionError: 'ValueError: bad offline response' != 'bad offline response'&#10;- ValueError: bad offline response&#10;? ------------&#10;+ bad offline response">self = &lt;test_runtime_model_swap.RuntimeModelSwapTests testMethod=test_counter_only_prompt_telemetry_preserves_repair_source_failure_row&gt;
+
+    def test_counter_only_prompt_telemetry_preserves_repair_source_failure_row(self) -&gt; None:
+        class CounterOnlyEngine(LighthouseEngine):
+            def __init__(self) -&gt; None:
+                super().__init__()
+                self.prompt_invocation_count = 0
+    
+        class FailingRepair:
+            def __init__(self, engine: CounterOnlyEngine) -&gt; None:
+                self.engine = engine
+                self.calls = 0
+                self.contexts: list[dict[str, Any]] = []
+    
+            def __call__(
+                self,
+                context: dict[str, Any],
+                _error: dict[str, Any],
+                attempt: int,
+            ) -&gt; dict[str, Any]:
+                self.calls += 1
+                self.contexts.append(copy.deepcopy(context))
+                self.engine.prompt_invocation_count += 1
+                self.assert_attempt = attempt
+                raise ValueError("bad offline response")
+    
+        with tempfile.TemporaryDirectory() as directory:
+            assignment_id = "COUNTER-ONLY-REPAIR-SOURCE"
+            output = Path(directory) / "episode.json"
+            engine = CounterOnlyEngine()
+            repair = FailingRepair(engine)
+            record = run_offline(
+                SequenceSource([proposal("install_lens")]),
+                engine,
+                assignment_id=assignment_id,
+                output_path=output,
+                repair_source=repair,
+            )
+            persisted = self._assert_strict_persisted_record(record, output, assignment_id)
+            json.dumps(record, ensure_ascii=False, allow_nan=False, sort_keys=True).encode("utf-8")
+    
+        self.assertFalse(record["success"])
+        self.assertFalse(record["primary_success"])
+        self.assertEqual(record["failure_reason"], "repair_source_error")
+&gt;       self.assertEqual(record["last_error"], "bad offline response")
+E       AssertionError: 'ValueError: bad offline response' != 'bad offline response'
+E       - ValueError: bad offline response
+E       ? ------------
+E       + bad offline response
+
+tests/test_runtime_model_swap.py:1165: AssertionError</failure></testcase></testsuite></testsuites>

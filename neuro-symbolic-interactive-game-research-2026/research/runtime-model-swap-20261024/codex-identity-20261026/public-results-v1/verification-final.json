@@ -1,0 +1,342 @@
+{
+  "actual_runtime_status": "NOT_PASSED",
+  "failure": {
+    "engineering_record_accepted": false,
+    "fresh_engine_replay": "NOT_RUN",
+    "model_incapability_inferred": false,
+    "primary": "provider_identity_missing",
+    "proposal_constraint_validity": null,
+    "raw_bootstrap_stop_reason": "episode_record_integrity_invalid",
+    "raw_terminal_failure_reason": "repair_source_error",
+    "record_hash_valid": true,
+    "safety": "NO_COMMIT_OBSERVED",
+    "secondary": "outgoing_request_tuple_not_bound",
+    "semantic_record_links_valid": true
+  },
+  "frozen_scope": {
+    "actual_native_dispatch_cap_per_episode": 12,
+    "effort": "medium",
+    "episode_wall_seconds": 180,
+    "logical_repair_budget_per_decision": 2,
+    "quest_id": "sealed-lighthouse-v1",
+    "repeats": [
+      1,
+      2
+    ],
+    "representations": [
+      "general_rule",
+      "ontology"
+    ],
+    "requested_selectors": [
+      "gpt-6-luna",
+      "gpt-6-sol",
+      "gpt-5.6-luna",
+      "gpt-5.6-sol",
+      "gpt-5.6-terra"
+    ],
+    "response_seconds": 60,
+    "seed": 20261024,
+    "serial_concurrency": 1
+  },
+  "independent_review": {
+    "dedicated_python": "UNAVAILABLE_HTTP_429, no verdict and not PASS",
+    "initial_standards": "FIX: 2 MEDIUM findings preserved",
+    "provider_or_cross_model_attestation": false,
+    "python_spec_rubric_fallback": {
+      "publication_spec": "PASS",
+      "python": "PASS",
+      "scientific_goal": "NOT_MET",
+      "severity_findings": 0
+    },
+    "reviewers_independently_reproduced_main_tests_or_builds": false,
+    "standards_closure": "PASS, actual terminal verdict recovered by IRC; no reviewer command execution"
+  },
+  "memory_updates": {
+    "canonical_project_report": "llm-wiki/wiki/reports/2026-10-26-fixed-game-native-runtime-comparison.md",
+    "graph_or_search_index_regeneration": false,
+    "obsidian_cli": "app unavailable; authorized file fallback used",
+    "project_index_and_log_updated": true,
+    "shared_vault_current_project_pointers_updated": true
+  },
+  "native_cli_reported_usage": {
+    "cache_write_input_tokens": 0,
+    "cached_input_tokens": 0,
+    "input_tokens": 8520,
+    "output_tokens": 136,
+    "reasoning_output_tokens": 95
+  },
+  "no_new_commit_push_hosted_ci_or_deployment_claimed": true,
+  "observed_counts": {
+    "assigned": 1,
+    "blocked_repair_requests": 2,
+    "committed_transitions": 0,
+    "executed": 1,
+    "host_invocations": 3,
+    "identity_qualified": 0,
+    "native_processes": 1,
+    "planned": 20,
+    "system_goal_successes": 0,
+    "unattempted": 19,
+    "unsafe_committed_transitions": 0
+  },
+  "operational_closure": {
+    "account_purchase_or_provider_settings_changed": false,
+    "actual_credits_or_cash_claimed_zero": false,
+    "automatic_reload_off_observed_before_after": true,
+    "further_launch_authority_from_this_scope": false,
+    "native_browser_account_match_observed_before_after": true,
+    "native_processes_added_during_publication_review": 0,
+    "original_private_native_episode_and_source_evidence_preserved": true,
+    "owned_disposable_preparation_and_historical_build_roots_removed": 2,
+    "reruns": 0,
+    "unused_authority_root_removed": true
+  },
+  "paper_build": {
+    "bilingual_pdf_contracts": {
+      "en": {
+        "all_five_requested_selectors_in_identity_page": true,
+        "bibcite_count": 58,
+        "identity_table_total_20_1_0_19": true,
+        "pages": 13,
+        "table_xiv_in_separate_supplement": true,
+        "table_xv_in_last_page": true,
+        "unique_bibcite_count": 58
+      },
+      "ko": {
+        "all_five_requested_selectors_in_identity_page": true,
+        "bibcite_count": 58,
+        "identity_table_total_20_1_0_19": true,
+        "pages": 13,
+        "table_xiv_in_separate_supplement": true,
+        "table_xv_in_last_page": true,
+        "unique_bibcite_count": 58
+      }
+    },
+    "clipping_or_figure_reference_overlap_observed": false,
+    "command": "rtk proxy make -C paper/latex all",
+    "environment": {
+      "NPC_PAPER_EVIDENCE_ROOT": "<EXPLICIT_ARCHIVED_FA9FB8A_SOURCE_ROOT>",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "UV_OFFLINE": "1"
+    },
+    "exact_58_citation_id_number_pairs_equal": true,
+    "font_checks": [
+      {
+        "font_count": 23,
+        "path": "paper/latex/en/main.pdf",
+        "type3_fonts": 0
+      },
+      {
+        "font_count": 7,
+        "path": "paper/latex/en/traceability-supplement.pdf",
+        "type3_fonts": 0
+      },
+      {
+        "font_count": 27,
+        "path": "paper/latex/ko/main.pdf",
+        "type3_fonts": 0
+      },
+      {
+        "font_count": 10,
+        "path": "paper/latex/ko/traceability-supplement.pdf",
+        "type3_fonts": 0
+      }
+    ],
+    "four_pdf_bytes_equal_to_visually_inspected_outputs": true,
+    "historical_npc_current_release_authority": false,
+    "historical_npc_runtime_pins_matched": 10,
+    "historical_npc_scope": "dated-historical-only",
+    "historical_npc_source_revision": "fa9fb8a",
+    "identity_appendix_page": 13,
+    "immutable_npc_manifest_rewritten": false,
+    "independent_clean_rebuild_claimed": false,
+    "initial_current_source_binding_failure_preserved": true,
+    "main_font_reduced": false,
+    "missing_character_overfull_undefined_reference_or_citation_warnings": 0,
+    "pdfs": [
+      {
+        "final_log_problems": [],
+        "pages": 13,
+        "path": "paper/latex/en/main.pdf",
+        "sha256": "82ac33e2f32b3d4538a389e8779b63eb5038e1f97c7c5ebe7dd8594b3289f634",
+        "text_extracted": true
+      },
+      {
+        "final_log_problems": [],
+        "pages": 1,
+        "path": "paper/latex/en/traceability-supplement.pdf",
+        "sha256": "aee38c9ad2487a9a0bdc0d0e0389c80596a01a2cfbe28c542c8f1758be66a071",
+        "text_extracted": true
+      },
+      {
+        "final_log_problems": [
+          "LaTeX Font Warning: Font shape `TU/ptm/m/n' undefined",
+          "LaTeX Font Warning: Font shape `TU/ptm/bx/n' undefined",
+          "LaTeX Font Warning: Font shape `TU/ptm/m/it' undefined",
+          "LaTeX Font Warning: Font shape `TU/ptm/bx/it' undefined",
+          "LaTeX Font Warning: Font shape `TU/TimesNewRoman(0)/m/sc' undefined"
+        ],
+        "pages": 13,
+        "path": "paper/latex/ko/main.pdf",
+        "sha256": "3bb217fceddca4ea26ff3c567f63edd8826dbbab347a8d5b2b10dc017115871e",
+        "text_extracted": true
+      },
+      {
+        "final_log_problems": [
+          "LaTeX Font Warning: Font shape `TU/ptm/m/n' undefined",
+          "LaTeX Font Warning: Font shape `TU/ptm/bx/n' undefined",
+          "LaTeX Font Warning: Font shape `TU/ptm/m/it' undefined",
+          "LaTeX Font Warning: Font shape `TU/ptm/bx/it' undefined",
+          "LaTeX Font Warning: Font shape `TU/TimesNewRoman(0)/m/sc' undefined"
+        ],
+        "pages": 1,
+        "path": "paper/latex/ko/traceability-supplement.pdf",
+        "sha256": "a796a3ad9ea85b87c6cf25c63296b30b1f70431eee4e30bd8e0103ea8f78b91e",
+        "text_extracted": true
+      }
+    ],
+    "post_hardening_pipeline_rerun": "PASS; latexmk incrementally up-to-date",
+    "reference_pages": [
+      10,
+      11
+    ],
+    "remaining_korean_font_shape_substitution_warnings_per_log": 5,
+    "runtime_figure_appendix_page": 12,
+    "visual_readback_count": 8
+  },
+  "public_evidence_files_sha256": {
+    "execution-audit.json": "3cf756238a6024c34022061a54b07185cdd769790c620900c2f3ea8e9c1d8bcd",
+    "operational-closure.json": "d196f81aad3a67d8a2a3d98350bcea962bbf754501e5dffa78c2a654f25d8a04",
+    "results.json": "12fee3535d99930311b71ffa7e56b9aaa8b220353a14533cc25194211bf5554c",
+    "review-python-dedicated-status.json": "cbbd09478f61438f4caf1c76d193d1e2e18bfe77682b4b80dd0073e1226813ac",
+    "review-python-spec-fallback.json": "9d2335fc2283d48ca448d863b4447c0b79cbc7d5a92d125d8b92abf996bd81f0",
+    "review-standards-closure.json": "972c728e81181c809bdec055422d4c62cf42e63fa4d9f350fcbf44cdf3ca081e",
+    "review-standards-initial.json": "e06d47c57bfabb2f4fe61402961ce1d946a8b73b9d6bddee0db541fa4bf85822",
+    "self-evaluation.json": "5e81ea9b6f0eeebd9062b1ea0fb441b2523267fdc37254f6a21a13b079abd1d0",
+    "traces.jsonl": "de629e470a6e126fe899c9441b5810f2353534f9c612e9078d9b07047c2faafb"
+  },
+  "public_exclusions": [
+    "raw operator logs",
+    "raw native output",
+    "raw account identifiers",
+    "account balances",
+    "credentials",
+    "external authority capabilities"
+  ],
+  "publication_engineering_status": "PASS_BOUNDED_WORKING_TREE",
+  "publication_spec_status": "PASS_BOUNDED_RUBRIC_FALLBACK",
+  "schema_version": "runtime-codex-identity-final-verification/1",
+  "scientific_goal_status": "NOT_MET",
+  "scope_of_verification": "Declared changed runtime/publication sources and artifacts only; not a full-tree CI, hosted CI, deployment, current native runtime validation, independent clean rebuild, provider attestation or full paper-release pass",
+  "self_evaluation": {
+    "completeness": 2,
+    "overall": 3.6,
+    "scientific_objective_complete": false
+  },
+  "served_models": "UNVERIFIED",
+  "source_bindings": {
+    "declared_code_and_publication_files_sha256_repository_relative": {
+      ".gitignore": "a276e2da27b05fe5f11b378168ec1549a1451072e1a914f1137b89b262f9e0d0",
+      "neuro-symbolic-interactive-game-research-2026/paper/latex/Makefile": "9be06c8b83a59ba0277985ff67863effa135d74e3715f11a8ee4ed3876be81b3",
+      "neuro-symbolic-interactive-game-research-2026/paper/latex/en/main.tex": "7794c79e4cceb35cf3694b92fed7ad352e52ae397a6459910cbad5c2d9072180",
+      "neuro-symbolic-interactive-game-research-2026/paper/latex/generated/runtime_identity_extension_en.tex": "c2fdf33e87c25ca9517926947bf52ad53a457317e60b54bf854578bfe378beb7",
+      "neuro-symbolic-interactive-game-research-2026/paper/latex/generated/runtime_identity_extension_ko.tex": "593b3d9f2d8fb83d048075a4c50a4fc1b97349dca4800398cbce807aa964c4dd",
+      "neuro-symbolic-interactive-game-research-2026/paper/latex/ko/main.tex": "41bbec5bd91d0255b20bdb754640d3617deab51a74e232cc4e6c30d31b537cee",
+      "neuro-symbolic-interactive-game-research-2026/pyproject.toml": "2cc6bccb1d67c1e717ac0e4d4c50f3d424aa072d103d27299a12c039ca11eddf",
+      "neuro-symbolic-interactive-game-research-2026/scripts/generate_runtime_comparison_publication.py": "e2d38e27f2c7c5da5b0f15674df43b2da8fb1d638bae13656f16daf9b5957dc0",
+      "neuro-symbolic-interactive-game-research-2026/scripts/run_runtime_model_swap_native.py": "2de08089522c5a39b3b6973b4abc460802ba13329b1ccc271321c4a94256f871",
+      "neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap.py": "2a689c25d0d78c3dedf8fd9097e9f9c4cc6c2a101b1bd9c29be61b27df9d72df",
+      "neuro-symbolic-interactive-game-research-2026/src/nesy_game/runtime_model_swap_native.py": "c96e7599da28f655880ad7ae01c92c35d3553e9e9051c0c79eb61efbdb1db181",
+      "neuro-symbolic-interactive-game-research-2026/tests/test_current_research_publication.py": "dbc83202a2008b1501d34a9c10c1d19dd112ab1c34619f2f70926cf2112fa6b6",
+      "neuro-symbolic-interactive-game-research-2026/tests/test_latex_makefile.py": "368477d10f1b5d65f233c0f4dfe520851ceeeeb4391fe2d2a76d05adea6e53c1",
+      "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_comparison_publication.py": "8ddbc2a29eb2c38a202ecd8dd2123308f6f9db1bea38a8855fd671aeb26762e6",
+      "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_model_swap.py": "005a45dbbf5ec3292f652726241de49e9e03f97080adb1dfbcf24afc3cabb42b",
+      "neuro-symbolic-interactive-game-research-2026/tests/test_runtime_model_swap_native.py": "474f9306d75787c4c9a063c67407d63af5856da4a61e20a414db013bb345a2ab"
+    },
+    "native_runtime_snapshot_file_count": 23,
+    "native_runtime_snapshot_manifest_sha256": "dce1ae153d3f3a2306224f8a5dacdca1eb163ea7fe475ae207c0b17b8b9cc730",
+    "native_runtime_snapshot_visibility": "local_only",
+    "native_runtime_source_manifest_sha256": "c4991e9a1fbf8f296d4ecff14bc158e037b4064b9ce8f545a9edc95987637840",
+    "project_memory_files_sha256_repository_relative": {
+      "llm-wiki/index.md": "a8571eed56bea5b3885c45df922ab97f898f9d2d84619e0a424e560ee3fad6db",
+      "llm-wiki/log.md": "929b756bc413eb10d1054754a94cc1d8976b31decd21717ecf9f18ecc18b9b72",
+      "llm-wiki/wiki/reports/2026-10-26-fixed-game-native-runtime-comparison.md": "deb17a1f1fdc102db60249973cda325184c01e9e9e19da8a06be8b8d8c06b939"
+    },
+    "separate_operator_source_supplement": {
+      "authority_capability_files_included": false,
+      "file_count": 4,
+      "manifest_sha256": "5cbf02ad45187917d53dae6ff82a0c9a47a05aab0dfe82b8f88e7c5dcd9cbab5",
+      "original_23_file_runtime_snapshot_unchanged": true,
+      "visibility": "local_only"
+    }
+  },
+  "static_checks": {
+    "lint_rules_disabled": false,
+    "ruff_check": "All checks passed",
+    "ruff_check_command": "rtk proxy .venv/bin/ruff check scripts/generate_runtime_comparison_publication.py tests/test_runtime_comparison_publication.py tests/test_current_research_publication.py",
+    "ruff_format_check": "3 files already formatted",
+    "ruff_format_check_command": "rtk proxy .venv/bin/ruff format --check scripts/generate_runtime_comparison_publication.py tests/test_runtime_comparison_publication.py tests/test_current_research_publication.py",
+    "semantic_preserving_lint_corrections": [
+      "ISC004 parentheses",
+      "UP017 UTC alias on Python>=3.11",
+      "I001 import order"
+    ]
+  },
+  "study_id": "runtime-model-swap-codex-identity-20261026-v1",
+  "tests": {
+    "assertions_dropped_or_skipped_to_pass": false,
+    "command": "rtk proxy .venv/bin/python -m pytest tests/test_runtime_model_swap_native.py tests/test_runtime_model_swap.py tests/test_latex_makefile.py tests/test_current_research_publication.py tests/test_runtime_comparison_publication.py -q --tb=short",
+    "engineered_fixture_results_are_not_native_model_comparison": true,
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "UV_OFFLINE": "1"
+    },
+    "passed": 220,
+    "review_regression_green": {
+      "passed_subtests": 308,
+      "passed_tests": 51,
+      "seconds": 7.3
+    },
+    "review_regression_red": {
+      "failed_items_including_subtests": 118,
+      "passed_subtests": 191,
+      "passed_tests": 50,
+      "seconds": 5.17
+    },
+    "subtests_passed": 591,
+    "test_seconds": 21.06,
+    "wall_seconds": 21.45
+  },
+  "time_boundaries": {
+    "episode_elapsed_seconds": 4.257275750016561,
+    "native_process_seconds": 4.207244207995245,
+    "orchestration_seconds": 11.565993416996207,
+    "preparation_seconds": 7.144387000007555,
+    "pure_inference_latency_claimed": false,
+    "successful_completion_seconds": null
+  },
+  "unchanged_unpooled_original_cohort": {
+    "assigned": 8,
+    "pooled": false,
+    "results_sha256": "ba369ab2f4e02afaeac643490e13fe6785ac7f8cbd04a5b88507c2cc4691c26e",
+    "system_goal_successes": 5,
+    "unchanged": true
+  },
+  "unmet_requirements": [
+    "Luna served identity verification",
+    "Sol served identity verification",
+    "Terra served identity verification",
+    "verified GPT 6 comparison",
+    "verified GPT 5.6 comparison"
+  ],
+  "unverified_identity_revision_settings_and_cost": {
+    "actual_cash_charge": null,
+    "actual_credit_consumption": null,
+    "effective_effort": null,
+    "provider_cost_usd": null,
+    "provider_identity": null,
+    "provider_request_count": null,
+    "provider_revision": null
+  },
+  "usage_is_not_verified_model_identity_or_billed_usage": true
+}

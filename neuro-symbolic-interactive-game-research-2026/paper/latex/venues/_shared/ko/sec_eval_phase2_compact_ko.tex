@@ -1,0 +1,21 @@
+\subsection{2단계 5월드·다중 에이전트·라이브 Godot 폐루프·자가수리 및 3도메인 우회}\label{sec:phase2-compact}
+기존 3개 월드에 6방 \texttt{ivory-\allowbreak citadel-\allowbreak v1}과 8방 \texttt{glass-\allowbreak foundry-\allowbreak v1}을 추가하고 95\% Wilson CI·양측 정확 McNemar 검정·\texttt{DATASHEET.md}·Croissant~1.0 v2(12/12 SHA-256)를 구축하였다(표~\ref{tab:phase2-compact}). 120건 5월드 폐쇄(\textbf{P1})에서 \texttt{affordance\_}\allowbreak\texttt{mask\_only}는 28.33\%, 평면 규칙은 50.83\%에 그쳤으나 \texttt{multihop\_}\allowbreak\texttt{ontology\_}\allowbreak\texttt{gate}는 \textbf{100.0\%} [96.9\%, 100.0\%](0 누출, $p{<}10^{-16}$)를 달성했다. 30에피소드$\times$5암 다중 에이전트(\textbf{P2})에서 다중 홉 실드는 90턴 위험을 전량 차단(0/90, $p{=}0.00195$)했고 $\rho_{K=2}$는 목표 달성을 33.3\%에서 \textbf{66.7\%} [48.8\%, 80.8\%]($p{=}0.00195$, FRR 0/5)로 두 배 높였다. 16개 라이브 Gemini $\rightarrow$ Godot~4.7.1 폐루프(\textbf{P3})는 위험 커밋 0/16과 0-LLM 재실행 일치 \textbf{16/16}을 기록했고(Hydrogen 8/8 해시 일치, Flash 5/8·파싱실패 4 보존·역할상속 vs.\ Godot 액터ID 안전 거부 1건), 60개 라이브 5월드 작업(\textbf{P4}; 36파싱·24타임아웃 보존)에서 $\rho$는 추가 토큰 없이 노이즈 12/12를 복구한 반면($p{=}0.000488$) LLM 자가수리 $K{=}1$은 702,293토큰으로 2/12만 복구했다(위험 0/36). 비중복 180건 3비밀 한·영 코퍼스(\textbf{P5})에서 비과적합 규칙 52.8\% 대 라이브 Flash 97.2\%($F_1{=}0.991$)·Hydrogen \textbf{100.0\%}(72/72, FRR 0/72, $F_1{=}1.000$)를 기록하였다.
+
+\begin{table}[!tbp]
+\caption{2단계 5월드, 다중 에이전트, 라이브 Godot~4.7.1, 자가수리 및 3도메인 우회 요약}
+\label{tab:phase2-compact}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.25\columnwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{2단계 트랙} & \textbf{결과 요약 (95\% Wilson CI; 정확 McNemar $p$)} \\
+\midrule
+\textbf{P1} 5월드(120) & \texttt{affordance\_mask\_only} 28.3\%, 평면 50.8\% 대 다중 홉 \textbf{100.0\%} [96.9\%, 100.0\%] ($p{<}10^{-16}$). \\
+\textbf{P2} 3역할(30$\times$5) & 목표: 평면 16.7\%, 다중 홉 33.3\%, \textbf{TRACE-RPG($\rho$)} \textbf{66.7\%} ($p{=}0.00195$); 위험 \textbf{0/90}. \\
+\textbf{P3} 라이브 Godot & 누출 \textbf{0/16}, 0-LLM 재실행 \textbf{16/16}; Hydrogen \textbf{8/8} 해시; Flash \textbf{5/8} (오류 4·거부 1). \\
+\textbf{P4} 라이브 5월드 & 36파싱(24타임아웃 보존): 평면 9/36 위험 대 다중 홉 \textbf{0/36}; $\rho$ \textbf{12/12}(0 tok) 대 LLM 2/12(702k tok). \\
+\textbf{P5} 3비밀(180) & 우회/FRR/$F_1$: \texttt{rule\_hybrid} 52.8\%/0\%/0.813; Flash 97.2\%/0\%/0.991; Hydrogen \textbf{100\%/0\%/1.000}. \\
+\bottomrule
+\end{tabularx}
+\end{table}

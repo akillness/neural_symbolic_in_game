@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="21" skipped="0" tests="25" time="0.941" timestamp="2026-10-25T03:30:56.725648+09:00" hostname="MacBook-Pro-2.local"><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_final_state_after_timely_goal_preserves_primary_and_rejects_engineering" time="0.001"><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:961: in test_malformed_final_state_after_timely_goal_preserves_primary_and_rejects_engineering
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows" time="0.259"><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:767: in test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure><failure message="TypeError: Object of type set is not JSON serializable">tests/test_runtime_model_swap.py:767: in test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type set is not JSON serializable</failure><failure message="ValueError: Out of range float values are not JSON compliant">tests/test_runtime_model_swap.py:767: in test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+E   ValueError: Out of range float values are not JSON compliant</failure><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:767: in test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure><failure message="TypeError: Object of type set is not JSON serializable">tests/test_runtime_model_swap.py:767: in test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type set is not JSON serializable</failure><failure message="ValueError: Out of range float values are not JSON compliant">tests/test_runtime_model_swap.py:767: in test_malformed_initial_and_semantic_callbacks_are_assigned_output_rows
+    record = run_offline(
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:273: in run_episode
+    "rendering": _render(semantic, model.representation),
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in _render
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:89: in &lt;genexpr&gt;
+    return "rules:" + ";".join(f"{key}={_json(value)}" for key, value in semantic.items())
+                                        ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+E   ValueError: Out of range float values are not JSON compliant</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance" time="0.116"><failure message="AttributeError: 'list' object has no attribute 'get'">tests/test_runtime_model_swap.py:913: in test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:497: in _finish
+    replay_ok = replay is None or replay.get("valid") is not False
+                                  ^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'</failure><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:913: in test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure><failure message="AssertionError: True is not false">tests/test_runtime_model_swap.py:914: in test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance
+    self._assert_strict_persisted_record(record, output, assignment_id)
+tests/test_runtime_model_swap.py:727: in _assert_strict_persisted_record
+    self.assertFalse(record["accepted_for_engineering_verification"])
+E   AssertionError: True is not false</failure><failure message="AssertionError: True is not false">tests/test_runtime_model_swap.py:914: in test_malformed_posthoc_replay_retains_primary_goal_but_rejects_engineering_acceptance
+    self._assert_strict_persisted_record(record, output, assignment_id)
+tests/test_runtime_model_swap.py:727: in _assert_strict_persisted_record
+    self.assertFalse(record["accepted_for_engineering_verification"])
+E   AssertionError: True is not false</failure></testcase><testcase classname="tests.test_runtime_model_swap.RuntimeModelSwapTests" name="test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows" time="0.465"><failure message="AttributeError: 'list' object has no attribute 'get'">tests/test_runtime_model_swap.py:838: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:406: in run_episode
+    if validation.get("valid") is True:
+       ^^^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'</failure><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:838: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure><failure message="TypeError: Object of type set is not JSON serializable">tests/test_runtime_model_swap.py:838: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type set is not JSON serializable</failure><failure message="ValueError: Out of range float values are not JSON compliant">tests/test_runtime_model_swap.py:838: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+E   ValueError: Out of range float values are not JSON compliant</failure><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:859: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure><failure message="TypeError: Object of type set is not JSON serializable">tests/test_runtime_model_swap.py:859: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type set is not JSON serializable</failure><failure message="ValueError: Out of range float values are not JSON compliant">tests/test_runtime_model_swap.py:859: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+E   ValueError: Out of range float values are not JSON compliant</failure><failure message="TypeError: Object of type object is not JSON serializable">tests/test_runtime_model_swap.py:874: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type object is not JSON serializable</failure><failure message="TypeError: Object of type set is not JSON serializable">tests/test_runtime_model_swap.py:874: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:180: in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+E   TypeError: Object of type set is not JSON serializable</failure><failure message="ValueError: Out of range float values are not JSON compliant">tests/test_runtime_model_swap.py:874: in test_malformed_validation_commit_and_goal_callbacks_are_assigned_output_rows
+    record = run_offline(source, engine, output_path=output, assignment_id=assignment_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_model_swap.py:162: in run_offline
+    return run_episode(
+src/nesy_game/runtime_model_swap.py:485: in run_episode
+    return finish()
+           ^^^^^^^^
+src/nesy_game/runtime_model_swap.py:224: in finish
+    return _finish(record, output_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:515: in _finish
+    record["record_hash"] = _hash(
+src/nesy_game/runtime_model_swap.py:67: in _hash
+    return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
+                          ^^^^^^^^^^^^
+src/nesy_game/runtime_model_swap.py:61: in _json
+    return json.dumps(
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:258: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+E   ValueError: Out of range float values are not JSON compliant</failure></testcase></testsuite></testsuites>

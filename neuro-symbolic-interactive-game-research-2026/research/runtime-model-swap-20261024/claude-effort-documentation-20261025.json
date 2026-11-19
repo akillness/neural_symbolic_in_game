@@ -1,0 +1,50 @@
+{
+  "schema_version": "runtime-native-effort-documentation/1",
+  "status": "OFFICIAL_DOCUMENTATION_EXCERPTS_NOT_RUNTIME_VERIFICATION",
+  "retrieved_at": "2026-10-25T07:45:29.616Z",
+  "retrieval_method": "Context7 /websites/code_claude, model-specific CLI effort query",
+  "records": [
+    {
+      "url": "https://code.claude.com/docs/en/model-config",
+      "evidence_level": "official_documentation_excerpt",
+      "license": null,
+      "scope": "Adjust effort level; model aliases",
+      "quoted_model_row": "Opus 5.5, Sonnet 5.5, Haiku 5.5, Opus 5, Sonnet 5, Opus 4.8, and Opus 4.7 | low, medium, high, xhigh, max",
+      "establishes": "Documentation lists medium for Opus 5.5 and Sonnet 5.5; actual aliases may resolve differently across providers.",
+      "does_not_establish": [
+        "Native account entitlement",
+        "Actual selected/served provider/model/revision",
+        "Effective effort for a future run"
+      ]
+    },
+    {
+      "url": "https://code.claude.com/docs/en/cli-reference",
+      "evidence_level": "official_documentation_excerpt",
+      "license": null,
+      "scope": "--effort",
+      "quoted_excerpt": "Set the effort level for the current session. Options: low, medium, high, xhigh, max, or ultracode. Available levels depend on the model. Overrides modelSettings and effortLevel settings for this session and does not persist.",
+      "establishes": "An explicit session effort flag is documented; no flag or configuration was applied here."
+    },
+    {
+      "url": "https://code.claude.com/docs/en/env-vars",
+      "evidence_level": "official_documentation_excerpt",
+      "license": null,
+      "scope": "CLAUDE_CODE_EFFORT_LEVEL",
+      "quoted_excerpt": "Takes precedence over --effort, /effort, and the modelSettings and effortLevel settings. A maxEffortLevel cap still applies.",
+      "establishes": "A future effective-effort preflight must account for overrides and caps without exposing secrets or altering global settings."
+    }
+  ],
+  "native_environment_or_config_read": false,
+  "native_configuration_changed": false,
+  "claude_effort_approved": false,
+  "inference_requests_sent": 0,
+  "not_established": [
+    "Actual medium effort in any native session",
+    "CLI/account/provider parity",
+    "Performance, latency, cost or compute equivalence"
+  ],
+  "unresolved_conflicts": [
+    "Native model identity and effective effort must be source-bound at activation; official documentation alone does not attest either."
+  ],
+  "disclosure": "LOCAL_ONLY_NOT_COMMITTED_OR_PUSHED"
+}

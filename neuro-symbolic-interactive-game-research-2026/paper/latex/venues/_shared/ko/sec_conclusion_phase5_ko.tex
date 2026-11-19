@@ -1,0 +1,12 @@
+\FloatBarrier
+\section{타당성 위협, 한계 및 결론}\label{sec:conclusion}
+{\sloppy\textbf{한계 및 타당성 위협.} 본 연구의 주장 범위는 네 가지 투명한 경계를 따른다:
+(1)~5단계 직접 HTTPS Anthropic \texttt{claude-\allowbreak haiku-\allowbreak 5-\allowbreak 5}·\texttt{sonnet-\allowbreak 5-\allowbreak 5}·\texttt{opus-\allowbreak 5-\allowbreak 5} API 호출은 구조화 JSON 출력(\texttt{output\_\allowbreak config.\allowbreak json\_\allowbreak schema})을 사용하며 Claude~5.5 API에서 deprecated 처리되어 거부되는 \texttt{temperature} 매개변수를 생략하였고, \textbf{P15}는 단일 API 공급자·턴 스케줄 기반 2-NPC 프로토콜 위에서 통제된 내장 Safe-RL/NeMo 프록시와 비교되며(\textbf{P11} 3모델군 CLI로 교차 보완), 4단계 CLI 트랙(\textbf{P11}--\textbf{P14})은 비고정 시드 디코딩을 포함한다(모든 API/CLI 파싱 실패는 분모에 전량 보존);
+(2)~사전 등록 180단위 코호트(\texttt{prospective-\allowbreak pilot-\allowbreak 20261103})는 \texttt{0/180}(\texttt{NOT\_RUN/BLOCKED}) 상태 그대로 불변 보존하며 5단계 인증 \textbf{P16}과 혼합하지 않는다;
+(3)~5개 퀘스트 월드($\le$8방, $\le$3역할), 실제 제품 \texttt{Sealed\allowbreak Lighthouse\allowbreak Machine}, $R{\le}64, d{\le}5$ Datalog 그래프는 대규모 자유형 3D 오픈월드가 아니라 심볼릭 런타임 권한과 Godot~4.7.1 상태 무결성을 검증한다;
+(4)~인간 평가($N{=}0$)는 미실행 상태이며 블라인드 36항목 \texttt{TR01--TR06} 패킷(\texttt{AWAITING\_}\allowbreak\texttt{HUMAN\_}\allowbreak\texttt{RATERS})에는 합성 인간 라벨이 0건이므로 플레이어 재미·몰입·인간 Krippendorff~$\alpha$는 후속 연구 과제다.\par}
+
+\textbf{결론.} \system{}는 7술어 결정론적 검증기, 상향 Datalog 폐쇄(\texttt{nesy\_game.multihop}), 상태 비참조 수리 $\rho(a,E)$, SHA-256 해시 연쇄 리플레이를 통해 신경망 제안과 정본 엔진 커밋 권한을 분리한다(정리 1--4, \textbf{I1--I4}). $R{\le}64, d{\le}5$ 오라클 스케일링(\textbf{P9}: 480/480, $\le$7.12\,$\mu$s)을 넘어, Haiku·Sonnet·Opus~5.5 직접 HTTPS API 평가는 105회 독립 폐루프 5턴 협상(\textbf{P15}: \texttt{nesy\_game.multihop} 전 암 \textbf{15/15} 무누출·\textbf{0} 위험, 28건 상태 의존 거부에서 $\rho_{\mathrm{repairs}}{=}0$으로 정리~2 무세탁 불변식 실증, 하이브리드 $\rho{+}\text{LLM}_{K=1}$ \textbf{15/15} 안전 목표 대 Safe-RL 프록시 0/15·NeMo 프록시 1/15, $Q{=}68.71$)을 입증하였고, 결정론적 $\rho$는 60회 요인 실험(\textbf{P16A}: \textbf{22건} 라이브 수리, \texttt{ontology\_multihop} 30/30 무누출·11/30 목표 대 \texttt{general\_rule} 22/30·0/30)·동등 $(a,E)$ 수리(\textbf{P12}: \textbf{27/27} 0토큰)·유한 그래프(128/260)에서 직접 수리를 수행하며, Godot~4.7.1 21회(\textbf{P16B}: 21/21 재실행·제품 6/6 해시 일치·0/21 누출)도 완결되었다. Open-weight GPT-OSS~120B·Gemini~4~Hydrogen 교차 검증(\textbf{P11}--\textbf{P14}), 통합 한·영 우회 검증(\textbf{P17}: 540회, $\kappa{=}0.8813$, 0\% FRR), Croissant~1.0 v5(26/26)·\texttt{DATASHEET\_v5.md}와 결합하여 감사 가능한 기준을 확립한다.
+
+\section*{윤리 및 아티팩트 진술}
+LLM은 원고 초안·보조 하니스·테스트 작성에만 보조적으로 활용되었으며, 모든 정리·인용·API 추적·통계·리플레이는 허구 인간 라벨 없이 저자들이 직접 검증하였다($N{=}0$). 공개 저장소 및 재현 스크립트: \RepoURL.

@@ -1,0 +1,47 @@
+{
+  "verdict": "FIX",
+  "scope": "Current source/config isolation for the two pinned SOL model records under Codex 0.164.0 only. No native inference, provider behavior, billing, authority, or scientific result is certified.",
+  "blocking_finding": {
+    "severity": "HIGH",
+    "title": "Default-enabled goal tools remain in the native registry",
+    "file": "src/nesy_game/runtime_model_swap_native.py",
+    "lines": "62-80",
+    "issue": "The 32-entry `_CODEX_NO_TOOLS_FEATURES` tuple does not disable `goals`. In pinned Codex rust-v0.164.0, `Feature::Goals` is stable and default-enabled (`codex-rs/features/src/lib.rs#L1957-L1961`). `codex exec` initializes `state_db` (`codex-rs/exec/src/lib.rs#L715`), and the in-process app-server extension setup installs the goal extension whenever that state DB exists, with tool enablement controlled by `Feature::Goals` (`codex-rs/app-server/src/extensions.rs#L87-L97`). The goal extension exposes its goal tools on ordinary threads, excluding only review subagents (`codex-rs/ext/goal/src/extension.rs#L105-L112`, tool contribution at `#L545-L595`).",
+    "failure_scenario": "For either authorized SOL selector, the runner launches ordinary `codex exec` in a fresh scratch home. The static model catalog suppresses model-defined patch/code-mode/multi-agent tools and the command suppresses the listed feature tools, but `goals` remains at its default true value. Because exec has a state DB, the extension contributes goal tools, so the request tool registry is non-empty despite the no-tools contract.",
+    "why_existing_guards_do_not_catch_it": "`apply_patch_tool_type=null`, `experimental_supported_tools=[]`, `tool_mode=direct`, and `multi_agent_version=null` affect model/core tool selection, not this independently installed extension. `agents.enabled=false`, plan/request-input false, empty MCP, disabled plugins/skills/web, and scratch HOME likewise do not disable `Feature::Goals`. Current regression constants mirror the same omission, so the command-shape tests pass without asserting `--disable goals`.",
+    "minimal_correction": [
+      "Add the exact feature key `goals` to `_CODEX_NO_TOOLS_FEATURES`.",
+      "Add `goals` to the regression expected-disable set and assert that the constructed Codex command emits `--disable goals`.",
+      "Repeat the bounded credential-free strict-config/catalog parse check and source-only registry review before Main considers operator admission. No authenticated generation is required to prove this client configuration correction."
+    ]
+  },
+  "checks_that_passed_review": [
+    "Pinned catalog SHA-256 is checked and copied before the auth symlink and before dispatch; tampered/missing catalog paths prevent auth linking and process launch.",
+    "The two derived model records are constrained to the four declared changes only: `apply_patch_tool_type=null`, empty `experimental_supported_tools`, `tool_mode=direct`, and `multi_agent_version=null`; IDs, default instructions, reasoning, and other metadata are exact-compared without this reviewer reading full default instruction bodies.",
+    "Direct tool mode plus null model agent override correctly falls back to configuration, where agents are disabled. Loaded `tools.experimental_request_user_input.enabled=false` and `tools.update_plan.enabled=false` are explicit even though the config API projection omits them.",
+    "Fresh HOME/CODEX_HOME/XDG/temp, project-doc bytes zero, memories/cloud skills false, web disabled, MCP empty, and plugin/app/skill/core feature disables close the reviewed non-goal paths.",
+    "Real transport uses a file-auth symlink rather than copying/parsing credentials; native auth refresh writes through that symlink to the original auth file. Fixture transport does not link auth. Missing-auth and catalog-tamper tests fail before dispatch.",
+    "`pyproject.toml:27-32` packages the catalog plus license/notice assets. Provenance names the official rust-v0.164.0 models-manager source and truthfully describes the original as a canonical two-record extraction, not a full byte-identical source snapshot.",
+    "The recorded `16-tool-catalog-green.xml:1` reports zero failures/errors across 329 JUnit cases/subtests, and `17-clean-native-metadata-v1.json:1` records credential-free config/catalog acceptance without a thread, turn, auth link, or generation. These artifacts do not prove the residual goal registry is empty."
+  ],
+  "python_review_label": "Fallback Python/security rubric by this code reviewer only. The dedicated Python reviewer attempt failed HTTP 429 and is not represented as certification. No additional concrete Python lifecycle, auth, provenance, or package defect above the confidence threshold was found in the bounded files.",
+  "remaining_operator_prerequisites": [
+    "Do not admit the eight native rows while this FIX remains.",
+    "After adding and regression-testing `--disable goals`, Main must perform the final bounded source/config closure check and separately apply the already-owned operator/admission gates.",
+    "Any later authenticated execution still requires the existing human authorization, financial/account, identity, and run controls; none were evaluated here."
+  ],
+  "review_summary": {
+    "CRITICAL": 0,
+    "HIGH": 1,
+    "MEDIUM": 0,
+    "LOW": 0,
+    "status": "WARNING / FIX — complete tool-registry closure is not yet established."
+  },
+  "self_evaluation": {
+    "accuracy": "5/5 — finding is tied to the pinned Codex tag and an exact executable registry path.",
+    "completeness": "5/5 — reviewed every requested control category and isolated one residual extension path.",
+    "clarity": "5/5 — trigger, bad outcome, non-applicable guards, and minimum correction are explicit.",
+    "actionability": "5/5 — two small source/test changes are identified without expanding scope.",
+    "conciseness": "4/5 — source chain is necessarily detailed to support the hard blocker."
+  }
+}
